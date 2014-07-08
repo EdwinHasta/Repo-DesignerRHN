@@ -138,6 +138,8 @@ public class ControlEmpleadoIndividual implements Serializable {
     private StreamedContent fotoEmpleado;
     private FileInputStream fis;
     private boolean existenHV;
+    //
+    private String infoRegistroTipoDocumento, infoRegistroCiudad, infoRegistroCargo;
 
     public ControlEmpleadoIndividual() {
         formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
@@ -607,6 +609,7 @@ public class ControlEmpleadoIndividual implements Serializable {
 
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
     public void cambiarTablaRastro(String tabla) {
+        System.out.println("cambiarTablaRastro");
         nombreTabla = tabla;
     }
 
@@ -646,7 +649,80 @@ public class ControlEmpleadoIndividual implements Serializable {
     }
 
     //MODIFICACION
+    public void eventoDataSelectFechaNacimiento(String tipoCampo) {
+        System.out.println("Here");
+        if (persona.getFechanacimiento() != null) {
+            if (tipoCampo.equals("P")) {
+                if (modificacionPersona == false) {
+                    modificacionPersona = true;
+                }
+            } else if (tipoCampo.equals("E")) {
+                if (modificacionEmpleado == false) {
+                    modificacionEmpleado = true;
+                }
+            } else if (tipoCampo.equals("HV")) {
+                if (modificacionHV == false) {
+                    modificacionHV = true;
+                }
+            }
+            if (guardado == true) {
+                guardado = false;
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:ACEPTAR");
+            }
+        }
+    }
+
+    public void eventoDataSelectFechaVencimiento(String tipoCampo) {
+        System.out.println("Here");
+        if (persona.getFechavencimientocertificado() != null) {
+            if (tipoCampo.equals("P")) {
+                if (modificacionPersona == false) {
+                    modificacionPersona = true;
+                }
+            } else if (tipoCampo.equals("E")) {
+                if (modificacionEmpleado == false) {
+                    modificacionEmpleado = true;
+                }
+            } else if (tipoCampo.equals("HV")) {
+                if (modificacionHV == false) {
+                    modificacionHV = true;
+                }
+            }
+            if (guardado == true) {
+                guardado = false;
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:ACEPTAR");
+            }
+        }
+    }
+
+    public void eventoDataSelectFechaFallecimiento(String tipoCampo) {
+        System.out.println("Here");
+        if (persona.getFechafallecimiento() != null) {
+            if (tipoCampo.equals("P")) {
+                if (modificacionPersona == false) {
+                    modificacionPersona = true;
+                }
+            } else if (tipoCampo.equals("E")) {
+                if (modificacionEmpleado == false) {
+                    modificacionEmpleado = true;
+                }
+            } else if (tipoCampo.equals("HV")) {
+                if (modificacionHV == false) {
+                    modificacionHV = true;
+                }
+            }
+            if (guardado == true) {
+                guardado = false;
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:ACEPTAR");
+            }
+        }
+    }
+
     public void modificarCampo(String tipoCampo) {
+        System.out.println("modificarCampo");
         if (tipoCampo.equals("P")) {
             if (modificacionPersona == false) {
                 modificacionPersona = true;
@@ -670,6 +746,7 @@ public class ControlEmpleadoIndividual implements Serializable {
 
     public void guardarCambios() {
         RequestContext context = RequestContext.getCurrentInstance();
+        try{
         if (guardado == false) {
             if (modificacionPersona == true) {
                 administrarEmpleadoIndividual.modificarPersona(persona);
@@ -700,6 +777,11 @@ public class ControlEmpleadoIndividual implements Serializable {
             context.update("form");
             context.update("form:aceptar");
             FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+        }
+        } catch(Exception e){
+        FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado, intente nuevamente");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
         }
@@ -788,7 +870,7 @@ public class ControlEmpleadoIndividual implements Serializable {
     public Empleados getEmpleado() {
         if (empleado == null) {
             empleado = administrarEmpleadoIndividual.buscarEmpleado(secuencia);
-            if(empleado != null){
+            if (empleado != null) {
                 persona = empleado.getPersona();
             }
         }
@@ -1138,4 +1220,47 @@ public class ControlEmpleadoIndividual implements Serializable {
             context.update("form:panelInferior");
         }
     }
+
+    public String getInfoRegistroTipoDocumento() {
+        getListaTiposDocumentos();
+        if (listaTiposDocumentos != null) {
+            infoRegistroTipoDocumento = "Cantidad de registros : " + listaTiposDocumentos.size();
+        } else {
+            infoRegistroTipoDocumento = "Cantidad de registros : 0";
+        }
+        return infoRegistroTipoDocumento;
+    }
+
+    public void setInfoRegistroTipoDocumento(String infoRegistroTipoDocumento) {
+        this.infoRegistroTipoDocumento = infoRegistroTipoDocumento;
+    }
+
+    public String getInfoRegistroCiudad() {
+        getListaCiudades();
+        if (listaCiudades != null) {
+            infoRegistroCiudad = "Cantidad de registros : " + listaCiudades.size();
+        } else {
+            infoRegistroCiudad = "Cantidad de registros : 0";
+        }
+        return infoRegistroCiudad;
+    }
+
+    public void setInfoRegistroCiudad(String infoRegistroCiudad) {
+        this.infoRegistroCiudad = infoRegistroCiudad;
+    }
+
+    public String getInfoRegistroCargo() {
+        getListaCargos();
+        if (listaCargos != null) {
+            infoRegistroCargo = "Cantidad de registros : " + listaCargos.size();
+        } else {
+            infoRegistroCargo = "Cantidad de registros : 0";
+        }
+        return infoRegistroCargo;
+    }
+
+    public void setInfoRegistroCargo(String infoRegistroCargo) {
+        this.infoRegistroCargo = infoRegistroCargo;
+    }
+
 }

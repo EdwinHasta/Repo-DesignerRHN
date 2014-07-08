@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -44,9 +45,14 @@ public class ControlTercero implements Serializable {
     //
     private List<Terceros> listTerceros;
     private List<Terceros> filtrarListTercero;
+    private List<Terceros> listTercerosLOV;
+    private List<Terceros> filtrarListTerceroLOV;
+    private Terceros terceroTablaSeleccionado;
+    private Terceros terceroLOVSeleccionado;
     //
     private List<TercerosSucursales> listTercerosSucursales;
     private List<TercerosSucursales> filtrarListTercerosSucursales;
+    private TercerosSucursales terceroSucursalTablaSeleccionado;
     //
     private List<Empresas> listEmpresas;
     private List<Empresas> filtrarListEmpresas;
@@ -73,7 +79,7 @@ public class ControlTercero implements Serializable {
     private boolean aceptar;
     private int index;
     private List<Terceros> listTerceroModificar;
-    private boolean guardado, guardarOk;
+    private boolean guardado;
     public Terceros nuevoTercero;
     private List<Terceros> listTerceroCrear;
     private BigInteger l;
@@ -92,8 +98,6 @@ public class ControlTercero implements Serializable {
     private int cualCeldaTS, tipoListaTS;
     private String nombreXML;
     private String nombreTabla;
-    private boolean retroactivo;
-    private int valorTotal;
     private boolean cambiosTercero, cambiosTerceroSucursal;
     private BigInteger secRegistroTercero, secRegistroTerceroSucursal;
     private BigInteger backUpSecRegistroTercero, backUpSecRegistroTerceroSucursal;
@@ -106,11 +110,24 @@ public class ControlTercero implements Serializable {
     private String terceroConsolidador, ciudad, ciudadTS;
     private long nitConsolidado;
     private String paginaAnterior;
+    //
+    private String infoRegistroEmpresa, infoRegistroCiudad2, infoRegistroCiudad1, infoRegistroTercero, infoRegistroTerceroConsolidador;
+    //
+    private String altoTablaTercero, altoTablaSucursal;
+    //
+    private String auxNombreTercero;
+    private long auxNitTercero;
+    //
+    private BigInteger auxCodigoSucursal;
 
     /**
      * Creates a new instance of ControlTercero
      */
     public ControlTercero() {
+        altoTablaTercero = "150";
+        altoTablaSucursal = "90";
+        terceroLOVSeleccionado = new Terceros();
+        listTercerosLOV = null;
         editarTerceroSucursal = new TercerosSucursales();
         indexAux = 0;
         listCiudades = null;
@@ -127,7 +144,6 @@ public class ControlTercero implements Serializable {
         secRegistroTerceroSucursal = null;
         backUpSecRegistroTercero = null;
         backUpSecRegistroTerceroSucursal = null;
-        listTerceros = null;
         empleado = new Empleados();
         //Otros
         aceptar = true;
@@ -154,6 +170,8 @@ public class ControlTercero implements Serializable {
         nuevoTercero = new Terceros();
         nuevoTercero.setTerceroconsolidador(new Terceros());
         nuevoTercero.setCiudad(new Ciudades());
+        nuevoTerceroSucursal = new TercerosSucursales();
+        nuevoTerceroSucursal.setCiudad(new Ciudades());
         index = -1;
         bandera = 0;
         banderaTS = 0;
@@ -166,8 +184,6 @@ public class ControlTercero implements Serializable {
         nombreXML = "TercerosXML";
 
         cambiosTerceroSucursal = false;
-
-        retroactivo = true;
         duplicarTercero = new Terceros();
         cambiosTercero = false;
     }
@@ -180,20 +196,17 @@ public class ControlTercero implements Serializable {
             administrarTercero.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
-    }
-    
-    public void obtenerEmpresa() {
-        index = -1;
-        listTerceros = null;
-        listTercerosSucursales = null;
-        empresaActual = getEmpresaActual();
     }
 
     public void recibirPaginaEntrante(String pagina) {
         paginaAnterior = pagina;
+        index = -1;
+        empresaActual = getEmpresaActual();
+        listTerceros = null;
+        getListTerceros();
     }
 
     public String redirigir() {
@@ -207,36 +220,51 @@ public class ControlTercero implements Serializable {
      * @param indice Fila donde se efectu el cambio
      */
     public void modificarTercero(int indice) {
-        if (tipoLista == 0) {
-            if (!listTerceroCrear.contains(listTerceros.get(indice))) {
-                if (listTerceroModificar.isEmpty()) {
-                    listTerceroModificar.add(listTerceros.get(indice));
-                } else if (!listTerceroModificar.contains(listTerceros.get(indice))) {
-                    listTerceroModificar.add(listTerceros.get(indice));
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (validarCamposNulosTercero(0) == true) {
+            if (tipoLista == 0) {
+                if (!listTerceroCrear.contains(listTerceros.get(indice))) {
+                    if (listTerceroModificar.isEmpty()) {
+                        listTerceroModificar.add(listTerceros.get(indice));
+                    } else if (!listTerceroModificar.contains(listTerceros.get(indice))) {
+                        listTerceroModificar.add(listTerceros.get(indice));
+                    }
+                    if (guardado == true) {
+                        guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                    }
                 }
-                if (guardado == true) {
-                    guardado = false;
+                listTerceros.get(indice).getTerceroconsolidador().setNit(nitConsolidado);
+                index = -1;
+                secRegistroTercero = null;
+            } else {
+                if (!listTerceroCrear.contains(filtrarListTercero.get(indice))) {
+                    if (listTerceroModificar.isEmpty()) {
+                        listTerceroModificar.add(filtrarListTercero.get(indice));
+                    } else if (!listTerceroModificar.contains(filtrarListTercero.get(indice))) {
+                        listTerceroModificar.add(filtrarListTercero.get(indice));
+                    }
+                    if (guardado == true) {
+                        guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                    }
                 }
+                index = -1;
+                secRegistroTercero = null;
+                filtrarListTercero.get(indice).getTerceroconsolidador().setNit(nitConsolidado);
             }
-            listTerceros.get(indice).getTerceroconsolidador().setNit(nitConsolidado);
-            index = -1;
-            secRegistroTercero = null;
+            cambiosTercero = true;
         } else {
-            if (!listTerceroCrear.contains(filtrarListTercero.get(indice))) {
-                if (listTerceroModificar.isEmpty()) {
-                    listTerceroModificar.add(filtrarListTercero.get(indice));
-                } else if (!listTerceroModificar.contains(filtrarListTercero.get(indice))) {
-                    listTerceroModificar.add(filtrarListTercero.get(indice));
-                }
-                if (guardado == true) {
-                    guardado = false;
-                }
+            if (tipoLista == 0) {
+                listTerceros.get(indice).setNit(auxNitTercero);
+                listTerceros.get(indice).setNombre(auxNombreTercero);
+            } else {
+                filtrarListTercero.get(indice).setNit(auxNitTercero);
+                filtrarListTercero.get(indice).setNombre(auxNombreTercero);
             }
-            index = -1;
-            secRegistroTercero = null;
-            filtrarListTercero.get(indice).getTerceroconsolidador().setNit(nitConsolidado);
+            context.execute("errorDatosNullTerceros.show()");
         }
-        cambiosTercero = true;
+        context.update("form:datosTerceros");
     }
 
     public void modificarTerceroAutocompletar(int indice, String confirmarCambio, String valorConfirmar) {
@@ -245,57 +273,79 @@ public class ControlTercero implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("TERCEROCONSOLIDADOR")) {
-            if (tipoLista == 0) {
-                listTerceros.get(indice).getTerceroconsolidador().setNombre(terceroConsolidador);
-            } else {
-                filtrarListTercero.get(indice).getTerceroconsolidador().setNombre(terceroConsolidador);
-            }
-            for (int i = 0; i < listTerceroConsolidador.size(); i++) {
-                if (listTerceroConsolidador.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoLista == 0) {
-                    listTerceros.get(indice).setTerceroconsolidador(listTerceroConsolidador.get(indiceUnicoElemento));
+                    listTerceros.get(indice).getTerceroconsolidador().setNombre(terceroConsolidador);
                 } else {
-                    filtrarListTercero.get(indice).setTerceroconsolidador(listTerceroConsolidador.get(indiceUnicoElemento));
+                    filtrarListTercero.get(indice).getTerceroconsolidador().setNombre(terceroConsolidador);
+                }
+                for (int i = 0; i < listTerceroConsolidador.size(); i++) {
+                    if (listTerceroConsolidador.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoLista == 0) {
+                        listTerceros.get(indice).setTerceroconsolidador(listTerceroConsolidador.get(indiceUnicoElemento));
+                    } else {
+                        filtrarListTercero.get(indice).setTerceroconsolidador(listTerceroConsolidador.get(indiceUnicoElemento));
+                    }
+                    listTerceroConsolidador.clear();
+                    getListTerceroConsolidador();
+                } else {
+                    permitirIndex = false;
+                    context.update("form:TerceroDialogo");
+                    context.execute("TerceroDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+            } else {
+                coincidencias = 1;
+                if (tipoLista == 0) {
+                    listTerceros.get(indice).setTerceroconsolidador(new Terceros());
+                } else {
+                    filtrarListTercero.get(indice).setTerceroconsolidador(new Terceros());
                 }
                 listTerceroConsolidador.clear();
                 getListTerceroConsolidador();
-            } else {
-                permitirIndex = false;
-                context.update("form:TerceroDialogo");
-                context.execute("TerceroDialogo.show()");
-                tipoActualizacion = 0;
             }
         }
         if (confirmarCambio.equalsIgnoreCase("CIUDAD")) {
-            if (tipoLista == 0) {
-                listTerceros.get(indice).getCiudad().setNombre(ciudad);
-            } else {
-                filtrarListTercero.get(indice).getCiudad().setNombre(ciudad);
-            }
-            for (int i = 0; i < listCiudades.size(); i++) {
-                if (listCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoLista == 0) {
-                    listTerceros.get(indice).setCiudad(listCiudades.get(indiceUnicoElemento));
+                    listTerceros.get(indice).getCiudad().setNombre(ciudad);
                 } else {
-                    filtrarListTercero.get(indice).setCiudad(listCiudades.get(indiceUnicoElemento));
+                    filtrarListTercero.get(indice).getCiudad().setNombre(ciudad);
+                }
+                for (int i = 0; i < listCiudades.size(); i++) {
+                    if (listCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoLista == 0) {
+                        listTerceros.get(indice).setCiudad(listCiudades.get(indiceUnicoElemento));
+                    } else {
+                        filtrarListTercero.get(indice).setCiudad(listCiudades.get(indiceUnicoElemento));
+                    }
+                    listCiudades.clear();
+                    getListCiudades();
+                } else {
+                    permitirIndex = false;
+                    context.update("form:CiudadDialogo");
+                    context.execute("CiudadDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+            } else {
+                coincidencias = 1;
+                if (tipoLista == 0) {
+                    listTerceros.get(indice).setCiudad(new Ciudades());
+                } else {
+                    filtrarListTercero.get(indice).setCiudad(new Ciudades());
                 }
                 listCiudades.clear();
                 getListCiudades();
-            } else {
-                permitirIndex = false;
-                context.update("form:CiudadDialogo");
-                context.execute("CiudadDialogo.show()");
-                tipoActualizacion = 0;
             }
         }
         if (coincidencias == 1) {
@@ -308,6 +358,7 @@ public class ControlTercero implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -321,6 +372,7 @@ public class ControlTercero implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -332,69 +384,8 @@ public class ControlTercero implements Serializable {
     }
 
     public void modificarTerceroSucursal(int indice) {
-        if (tipoListaTS == 0) {
-            if (!listTerceroSucursalCrear.contains(listTercerosSucursales.get(indice))) {
-                if (listTerceroSucursalModificar.isEmpty()) {
-                    listTerceroSucursalModificar.add(listTercerosSucursales.get(indice));
-                } else if (!listTerceroSucursalModificar.contains(listTercerosSucursales.get(indice))) {
-                    listTerceroSucursalModificar.add(listTercerosSucursales.get(indice));
-                }
-                if (guardado == true) {
-                    guardado = false;
-                }
-            }
-            indexTS = -1;
-            secRegistroTerceroSucursal = null;
-        } else {
-            if (!listTerceroSucursalCrear.contains(filtrarListTercerosSucursales.get(indice))) {
-                if (listTerceroSucursalModificar.isEmpty()) {
-                    listTerceroSucursalModificar.add(filtrarListTercerosSucursales.get(indice));
-                } else if (!listTerceroSucursalModificar.contains(filtrarListTercerosSucursales.get(indice))) {
-                    listTerceroSucursalModificar.add(filtrarListTercerosSucursales.get(indice));
-                }
-                if (guardado == true) {
-                    guardado = false;
-                }
-            }
-            indexTS = -1;
-            secRegistroTerceroSucursal = null;
-        }
-        cambiosTerceroSucursal = true;
-    }
-
-    public void modificarTerceroSucursalAutocompletar(int indice, String confirmarCambio, String valorConfirmar) {
-        index = indice;
-        int coincidencias = 0;
-        int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
-        if (confirmarCambio.equalsIgnoreCase("CIUDAD")) {
-            if (tipoLista == 0) {
-                listTercerosSucursales.get(indice).getCiudad().setNombre(ciudadTS);
-            } else {
-                filtrarListTercerosSucursales.get(indice).getCiudad().setNombre(ciudadTS);
-            }
-            for (int i = 0; i < listCiudades.size(); i++) {
-                if (listCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                if (tipoLista == 0) {
-                    listTercerosSucursales.get(indice).setCiudad(listCiudades.get(indiceUnicoElemento));
-                } else {
-                    filtrarListTercerosSucursales.get(indice).setCiudad(listCiudades.get(indiceUnicoElemento));
-                }
-                listCiudades.clear();
-                getListCiudades();
-            } else {
-                permitirIndex = false;
-                context.update("form:CiudadTSDialogo");
-                context.execute("CiudadTSDialogo.show()");
-                tipoActualizacion = 0;
-            }
-        }
-        if (coincidencias == 1) {
+        if (validarCamposNulosTerceroSucursal(0) == true) {
             if (tipoListaTS == 0) {
                 if (!listTerceroSucursalCrear.contains(listTercerosSucursales.get(indice))) {
                     if (listTerceroSucursalModificar.isEmpty()) {
@@ -404,6 +395,7 @@ public class ControlTercero implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 indexTS = -1;
@@ -417,6 +409,92 @@ public class ControlTercero implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                    }
+                }
+                indexTS = -1;
+                secRegistroTerceroSucursal = null;
+            }
+            cambiosTerceroSucursal = true;
+        } else {
+            if (tipoListaTS == 0) {
+                listTercerosSucursales.get(indice).setCodigosucursal(auxCodigoSucursal);
+            } else {
+                filtrarListTercerosSucursales.get(indice).setCodigosucursal(auxCodigoSucursal);
+            }
+            context.execute("errorDatosNullSucursal.show()");
+        }
+        context.update("form:datosTercerosSucursales");
+    }
+
+    public void modificarTerceroSucursalAutocompletar(int indice, String confirmarCambio, String valorConfirmar) {
+        index = indice;
+        int coincidencias = 0;
+        int indiceUnicoElemento = 0;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (confirmarCambio.equalsIgnoreCase("CIUDAD")) {
+            if (!valorConfirmar.isEmpty()) {
+                if (tipoLista == 0) {
+                    listTercerosSucursales.get(indice).getCiudad().setNombre(ciudadTS);
+                } else {
+                    filtrarListTercerosSucursales.get(indice).getCiudad().setNombre(ciudadTS);
+                }
+                for (int i = 0; i < listCiudades.size(); i++) {
+                    if (listCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoLista == 0) {
+                        listTercerosSucursales.get(indice).setCiudad(listCiudades.get(indiceUnicoElemento));
+                    } else {
+                        filtrarListTercerosSucursales.get(indice).setCiudad(listCiudades.get(indiceUnicoElemento));
+                    }
+                    listCiudades.clear();
+                    getListCiudades();
+                } else {
+                    permitirIndex = false;
+                    context.update("form:CiudadTSDialogo");
+                    context.execute("CiudadTSDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+            } else {
+                coincidencias = 1;
+                if (tipoLista == 0) {
+                    listTercerosSucursales.get(indice).setCiudad(new Ciudades());
+                } else {
+                    filtrarListTercerosSucursales.get(indice).setCiudad(new Ciudades());
+                }
+                listCiudades.clear();
+                getListCiudades();
+            }
+        }
+        if (coincidencias == 1) {
+            if (tipoListaTS == 0) {
+                if (!listTerceroSucursalCrear.contains(listTercerosSucursales.get(indice))) {
+                    if (listTerceroSucursalModificar.isEmpty()) {
+                        listTerceroSucursalModificar.add(listTercerosSucursales.get(indice));
+                    } else if (!listTerceroSucursalModificar.contains(listTercerosSucursales.get(indice))) {
+                        listTerceroSucursalModificar.add(listTercerosSucursales.get(indice));
+                    }
+                    if (guardado == true) {
+                        guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                    }
+                }
+                indexTS = -1;
+                secRegistroTerceroSucursal = null;
+            } else {
+                if (!listTerceroSucursalCrear.contains(filtrarListTercerosSucursales.get(indice))) {
+                    if (listTerceroSucursalModificar.isEmpty()) {
+                        listTerceroSucursalModificar.add(filtrarListTercerosSucursales.get(indice));
+                    } else if (!listTerceroSucursalModificar.contains(filtrarListTercerosSucursales.get(indice))) {
+                        listTerceroSucursalModificar.add(filtrarListTercerosSucursales.get(indice));
+                    }
+                    if (guardado == true) {
+                        guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 indexTS = -1;
@@ -443,37 +521,58 @@ public class ControlTercero implements Serializable {
      */
     public void cambiarIndice(int indice, int celda) {
         if (cambiosTerceroSucursal == false) {
-            if (banderaTS == 1) {
-                terceroSucursalCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
-                terceroSucursalCodigo.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalPatronal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
-                terceroSucursalPatronal.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalObservacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
-                terceroSucursalObservacion.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
-                terceroSucursalCiudad.setFilterStyle("display: none; visibility: hidden;");
+            if (permitirIndex == true) {
+                if (banderaTS == 1) {
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    altoTablaSucursal = "90";
+                    terceroSucursalCodigo = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
+                    terceroSucursalCodigo.setFilterStyle("display: none; visibility: hidden;");
+                    terceroSucursalPatronal = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
+                    terceroSucursalPatronal.setFilterStyle("display: none; visibility: hidden;");
+                    terceroSucursalObservacion = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
+                    terceroSucursalObservacion.setFilterStyle("display: none; visibility: hidden;");
+                    terceroSucursalCiudad = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
+                    terceroSucursalCiudad.setFilterStyle("display: none; visibility: hidden;");
+                    RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
+                    banderaTS = 0;
+                    filtrarListTercerosSucursales = null;
+                    tipoListaTS = 0;
+                }
+                cualCelda = celda;
+                index = indice;
+                indexAux = indice;
+                if (tipoLista == 0) {
+                    secRegistroTercero = listTerceros.get(index).getSecuencia();
+                    auxNitTercero = listTerceros.get(index).getNit();
+                    auxNombreTercero = listTerceros.get(index).getNombre();
+                    if (cualCelda == 7) {
+                        terceroConsolidador = listTerceros.get(index).getTerceroconsolidador().getNombre();
+                    }
+                    if (cualCelda == 8) {
+                        nitConsolidado = listTerceros.get(index).getTerceroconsolidador().getNit();
+                    }
+                    if (cualCelda == 9) {
+                        ciudad = listTerceros.get(index).getCiudad().getNombre();
+                    }
+                } else {
+                    secRegistroTercero = filtrarListTercero.get(index).getSecuencia();
+                    auxNitTercero = filtrarListTercero.get(index).getNit();
+                    auxNombreTercero = filtrarListTercero.get(index).getNombre();
+                    if (cualCelda == 7) {
+                        terceroConsolidador = filtrarListTercero.get(index).getTerceroconsolidador().getNombre();
+                    }
+                    if (cualCelda == 8) {
+                        nitConsolidado = filtrarListTercero.get(index).getTerceroconsolidador().getNit();
+                    }
+                    if (cualCelda == 9) {
+                        ciudad = filtrarListTercero.get(index).getCiudad().getNombre();
+                    }
+                }
+                indexTS = -1;
+                secRegistroTerceroSucursal = null;
+                listTercerosSucursales = null;
+                getListTercerosSucursales();
                 RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
-                banderaTS = 0;
-                filtrarListTercerosSucursales = null;
-                tipoListaTS = 0;
-            }
-            cualCelda = celda;
-            index = indice;
-            indexAux = indice;
-            secRegistroTercero = listTerceros.get(index).getSecuencia();
-            indexTS = -1;
-            secRegistroTerceroSucursal = null;
-            getListTercerosSucursales();
-            RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
-
-            if (cualCelda == 7) {
-                terceroConsolidador = listTerceros.get(index).getTerceroconsolidador().getNombre();
-            }
-            if (cualCelda == 8) {
-                nitConsolidado = listTerceros.get(index).getTerceroconsolidador().getNit();
-            }
-            if (cualCelda == 9) {
-                ciudad = listTerceros.get(index).getCiudad().getNombre();
             }
         }
         if (cambiosTerceroSucursal == true) {
@@ -489,39 +588,19 @@ public class ControlTercero implements Serializable {
             cualCeldaTS = celda;
             indexTS = indice;
             index = -1;
-            secRegistroTerceroSucursal = listTercerosSucursales.get(indice).getSecuencia();
-            if (cualCeldaTS == 3) {
-                ciudadTS = listTercerosSucursales.get(indexTS).getCiudad().getNombre();
+            if (tipoListaTS == 0) {
+                auxCodigoSucursal = listTercerosSucursales.get(indice).getCodigosucursal();
+                secRegistroTerceroSucursal = listTercerosSucursales.get(indice).getSecuencia();
+                if (cualCeldaTS == 3) {
+                    ciudadTS = listTercerosSucursales.get(indexTS).getCiudad().getNombre();
+                }
+            } else {
+                secRegistroTerceroSucursal = filtrarListTercerosSucursales.get(indice).getSecuencia();
+                auxCodigoSucursal = filtrarListTercerosSucursales.get(indice).getCodigosucursal();
+                if (cualCeldaTS == 3) {
+                    ciudadTS = filtrarListTercerosSucursales.get(indexTS).getCiudad().getNombre();
+                }
             }
-            if (bandera == 1) {
-                terceroNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNombre");
-                terceroNombre.setFilterStyle("display: none; visibility: hidden;");
-                terceroNIT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNIT");
-                terceroNIT.setFilterStyle("display: none; visibility: hidden;");
-                terceroDigitoVerificacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
-                terceroDigitoVerificacion.setFilterStyle("display: none; visibility: hidden;");
-                terceroNITAlternativo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
-                terceroNITAlternativo.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSS = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
-                terceroCodigoSS.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
-                terceroCodigoSP.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
-                terceroCodigoSC.setFilterStyle("display: none; visibility: hidden;");
-                terceroTConsolidador = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
-                terceroTConsolidador.setFilterStyle("display: none; visibility: hidden;");
-                terceroNITConsolidado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
-                terceroNITConsolidado.setFilterStyle("display: none; visibility: hidden;");
-                terceroCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
-                terceroCiudad.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoAlterno = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
-                terceroCodigoAlterno.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosTerceros");
-                bandera = 0;
-                filtrarListTercero = null;
-                tipoLista = 0;
-            }
-
         }
     }
 
@@ -530,78 +609,125 @@ public class ControlTercero implements Serializable {
      * Metodo de guardado general para la pagina
      */
     public void guardadoGeneral() {
-        if (cambiosTercero == true) {
-            guardarCambiosTercero();
+        if (guardado == false) {
+            if (cambiosTercero == true) {
+                guardarCambiosTercero();
+            }
+            if (cambiosTerceroSucursal == true) {
+                guardarCambiosTerceroSucursales();
+            }
+            guardado = true;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
         }
-        if (cambiosTerceroSucursal == true) {
-            guardarCambiosTerceroSucursales();
-        }
-        guardado = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
     }
 
-    /**
-     * Metodo que guarda los cambios efectuados en la pagina
-     * VigenciasLocalizaciones
-     */
     public void guardarCambiosTercero() {
-        if (guardado == false) {
-            if (!listTerceroBorrar.isEmpty()) {
-                for (int i = 0; i < listTerceroBorrar.size(); i++) {
-                    administrarTercero.borrarTercero(listTerceroBorrar.get(i));
+        RequestContext context = RequestContext.getCurrentInstance();
+        try {
+            if (guardado == false) {
+                if (!listTerceroBorrar.isEmpty()) {
+                    for (int i = 0; i < listTerceroBorrar.size(); i++) {
+                        if (listTerceroBorrar.get(i).getTerceroconsolidador().getSecuencia() == null) {
+                            listTerceroBorrar.get(i).setTerceroconsolidador(null);
+                        }
+                        if (listTerceroBorrar.get(i).getCiudad().getSecuencia() == null) {
+                            listTerceroBorrar.get(i).setCiudad(null);
+                        }
+                        administrarTercero.borrarTercero(listTerceroBorrar.get(i));
+                    }
+                    listTerceroBorrar.clear();
                 }
-                listTerceroBorrar.clear();
-            }
-            if (!listTerceroCrear.isEmpty()) {
-                for (int i = 0; i < listTerceroCrear.size(); i++) {
-                    administrarTercero.crearTercero(listTerceroCrear.get(i));
+                if (!listTerceroCrear.isEmpty()) {
+                    for (int i = 0; i < listTerceroCrear.size(); i++) {
+                        if (listTerceroCrear.get(i).getTerceroconsolidador().getSecuencia() == null) {
+                            listTerceroCrear.get(i).setTerceroconsolidador(null);
+                        }
+                        if (listTerceroCrear.get(i).getCiudad().getSecuencia() == null) {
+                            listTerceroCrear.get(i).setCiudad(null);
+                        }
+                        administrarTercero.crearTercero(listTerceroCrear.get(i));
+                    }
+                    listTerceroCrear.clear();
                 }
-                listTerceroCrear.clear();
-            }
-            if (!listTerceroModificar.isEmpty()) {
-                for (int i = 0; i < listTerceroModificar.size(); i++) {
-                    administrarTercero.modificarTercero(listTerceroModificar.get(i));
+                if (!listTerceroModificar.isEmpty()) {
+                    for (int i = 0; i < listTerceroModificar.size(); i++) {
+                        if (listTerceroModificar.get(i).getTerceroconsolidador().getSecuencia() == null) {
+                            listTerceroModificar.get(i).setTerceroconsolidador(null);
+                        }
+                        if (listTerceroModificar.get(i).getCiudad().getSecuencia() == null) {
+                            listTerceroModificar.get(i).setCiudad(null);
+                        }
+                        administrarTercero.modificarTercero(listTerceroModificar.get(i));
+                    }
+                    listTerceroModificar.clear();
                 }
-                listTerceroModificar.clear();
+                listTerceros = null;
+
+                context.update("form:datosTerceros");
+                k = 0;
+                index = -1;
+                secRegistroTercero = null;
+                cambiosTercero = false;
+                FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos de Tercero con éxito");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                context.update("form:growl");
             }
-            listTerceros = null;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosTerceros");
-            k = 0;
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosTercero Controlador : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado de Tercero, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
-        index = -1;
-        secRegistroTercero = null;
-        cambiosTercero = false;
     }
 
     public void guardarCambiosTerceroSucursales() {
-        if (guardado == false) {
-            if (!listTerceroSucursalBorrar.isEmpty()) {
-                for (int i = 0; i < listTerceroSucursalBorrar.size(); i++) {
-                    administrarTercero.borrarTerceroSucursales(listTerceroSucursalBorrar.get(i));
+        RequestContext context = RequestContext.getCurrentInstance();
+        try {
+            if (guardado == false) {
+                if (!listTerceroSucursalBorrar.isEmpty()) {
+                    for (int i = 0; i < listTerceroSucursalBorrar.size(); i++) {
+                        if (listTerceroSucursalBorrar.get(i).getCiudad().getSecuencia() == null) {
+                            listTerceroSucursalBorrar.get(i).setCiudad(null);
+                        }
+                        administrarTercero.borrarTerceroSucursales(listTerceroSucursalBorrar.get(i));
+                    }
+                    listTerceroSucursalBorrar.clear();
                 }
-                listTerceroSucursalBorrar.clear();
-            }
-            if (!listTerceroSucursalCrear.isEmpty()) {
-                for (int i = 0; i < listTerceroSucursalCrear.size(); i++) {
-                    administrarTercero.crearTerceroSucursales(listTerceroSucursalCrear.get(i));
+                if (!listTerceroSucursalCrear.isEmpty()) {
+                    for (int i = 0; i < listTerceroSucursalCrear.size(); i++) {
+                        if (listTerceroSucursalCrear.get(i).getCiudad().getSecuencia() == null) {
+                            listTerceroSucursalCrear.get(i).setCiudad(null);
+                        }
+                        administrarTercero.crearTerceroSucursales(listTerceroSucursalCrear.get(i));
+                    }
+                    listTerceroSucursalCrear.clear();
                 }
-                listTerceroSucursalCrear.clear();
-            }
-            if (!listTerceroSucursalModificar.isEmpty()) {
-                for (int i = 0; i < listTerceroSucursalModificar.size(); i++) {
-                    administrarTercero.modificarTerceroSucursales(listTerceroSucursalModificar.get(i));
+                if (!listTerceroSucursalModificar.isEmpty()) {
+                    for (int i = 0; i < listTerceroSucursalModificar.size(); i++) {
+                        if (listTerceroSucursalModificar.get(i).getCiudad().getSecuencia() == null) {
+                            listTerceroSucursalModificar.get(i).setCiudad(null);
+                        }
+                        administrarTercero.modificarTerceroSucursales(listTerceroSucursalModificar.get(i));
+                    }
+                    listTerceroSucursalModificar.clear();
                 }
-                listTerceroSucursalModificar.clear();
+                listTercerosSucursales = null;
+                getListTercerosSucursales();
+                context.update("form:datosTercerosSucursales");
+                k = 0;
+                indexTS = -1;
+                secRegistroTerceroSucursal = null;
+                cambiosTerceroSucursal = false;
+                FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos de Tercero Sucursal con éxito");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                context.update("form:growl");
             }
-            listTercerosSucursales = null;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosTercerosSucursales");
-            k = 0;
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosTercero Controlador : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado de Tercero Sucursal, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
-        indexTS = -1;
-        secRegistroTerceroSucursal = null;
-        cambiosTerceroSucursal = false;
     }
 
     //CANCELAR MODIFICACIONES
@@ -609,29 +735,30 @@ public class ControlTercero implements Serializable {
      * Cancela las modificaciones realizas en la pagina
      */
     public void cancelarModificacion() {
-        System.out.println("Cancelo Modificacion");
         if (bandera == 1) {
-            terceroNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNombre");
+            FacesContext c = FacesContext.getCurrentInstance();
+            altoTablaTercero = "150";
+            terceroNombre = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNombre");
             terceroNombre.setFilterStyle("display: none; visibility: hidden;");
-            terceroNIT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNIT");
+            terceroNIT = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNIT");
             terceroNIT.setFilterStyle("display: none; visibility: hidden;");
-            terceroDigitoVerificacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
+            terceroDigitoVerificacion = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
             terceroDigitoVerificacion.setFilterStyle("display: none; visibility: hidden;");
-            terceroNITAlternativo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
+            terceroNITAlternativo = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
             terceroNITAlternativo.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoSS = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
+            terceroCodigoSS = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
             terceroCodigoSS.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoSP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
+            terceroCodigoSP = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
             terceroCodigoSP.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoSC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
+            terceroCodigoSC = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
             terceroCodigoSC.setFilterStyle("display: none; visibility: hidden;");
-            terceroTConsolidador = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
+            terceroTConsolidador = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
             terceroTConsolidador.setFilterStyle("display: none; visibility: hidden;");
-            terceroNITConsolidado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
+            terceroNITConsolidado = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
             terceroNITConsolidado.setFilterStyle("display: none; visibility: hidden;");
-            terceroCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
+            terceroCiudad = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
             terceroCiudad.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoAlterno = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
+            terceroCodigoAlterno = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
             terceroCodigoAlterno.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTerceros");
             bandera = 0;
@@ -640,13 +767,15 @@ public class ControlTercero implements Serializable {
         }
 
         if (banderaTS == 1) {
-            terceroSucursalCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
+            FacesContext c = FacesContext.getCurrentInstance();
+            altoTablaSucursal = "90";
+            terceroSucursalCodigo = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
             terceroSucursalCodigo.setFilterStyle("display: none; visibility: hidden;");
-            terceroSucursalPatronal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
+            terceroSucursalPatronal = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
             terceroSucursalPatronal.setFilterStyle("display: none; visibility: hidden;");
-            terceroSucursalObservacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
+            terceroSucursalObservacion = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
             terceroSucursalObservacion.setFilterStyle("display: none; visibility: hidden;");
-            terceroSucursalCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
+            terceroSucursalCiudad = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
             terceroSucursalCiudad.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
             banderaTS = 0;
@@ -668,6 +797,7 @@ public class ControlTercero implements Serializable {
         listTercerosSucursales = null;
         cambiosTerceroSucursal = false;
         guardado = true;
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
         cambiosTercero = false;
         getListTerceros();
         getListTercerosSucursales();
@@ -812,75 +942,156 @@ public class ControlTercero implements Serializable {
         }
     }
 
-    //CREAR VL
-    /**
-     * Metodo que se encarga de agregar un nueva VigenciasLocalizaciones
-     */
+    public boolean validarCamposNulosTercero(int i) {
+        boolean retorno = true;
+        if (i == 0) {
+            Terceros aux = null;
+            if (tipoLista == 0) {
+                aux = listTerceros.get(index);
+            } else {
+                aux = filtrarListTercero.get(index);
+            }
+            if (aux.getNit() < 0) {
+                retorno = false;
+            }
+            if (aux.getNombre() == null) {
+                retorno = false;
+            } else {
+                if (aux.getNombre().isEmpty()) {
+                    retorno = false;
+                }
+            }
+        }
+        if (i == 1) {
+            if (nuevoTercero.getNit() < 0) {
+                retorno = false;
+            }
+            if (nuevoTercero.getNombre() == null) {
+                retorno = false;
+            } else {
+                if (nuevoTercero.getNombre().isEmpty()) {
+                    retorno = false;
+                }
+            }
+        }
+        if (i == 2) {
+            if (duplicarTercero.getNit() < 0) {
+                retorno = false;
+            }
+            if (duplicarTercero.getNombre() == null) {
+                retorno = false;
+            } else {
+                if (duplicarTercero.getNombre().isEmpty()) {
+                    retorno = false;
+                }
+            }
+        }
+        return retorno;
+    }
+
+    public boolean validarCamposNulosTerceroSucursal(int i) {
+        boolean retorno = true;
+        if (i == 0) {
+            TercerosSucursales aux = null;
+            if (tipoListaTS == 0) {
+                aux = listTercerosSucursales.get(indexTS);
+            } else {
+                aux = filtrarListTercerosSucursales.get(indexTS);
+            }
+            if (aux.getCodigosucursal() == null) {
+                retorno = false;
+            }
+        }
+        if (i == 1) {
+            if (nuevoTerceroSucursal.getCodigosucursal() == null) {
+                retorno = false;
+            }
+        }
+        if (i == 2) {
+            if (duplicarTerceroSucursal.getCodigosucursal() == null) {
+                retorno = false;
+            }
+        }
+        return retorno;
+    }
+
     public void agregarNuevoTercero() {
-        if (bandera == 1) {
-            terceroNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNombre");
-            terceroNombre.setFilterStyle("display: none; visibility: hidden;");
-            terceroNIT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNIT");
-            terceroNIT.setFilterStyle("display: none; visibility: hidden;");
-            terceroDigitoVerificacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
-            terceroDigitoVerificacion.setFilterStyle("display: none; visibility: hidden;");
-            terceroNITAlternativo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
-            terceroNITAlternativo.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoSS = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
-            terceroCodigoSS.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoSP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
-            terceroCodigoSP.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoSC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
-            terceroCodigoSC.setFilterStyle("display: none; visibility: hidden;");
-            terceroTConsolidador = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
-            terceroTConsolidador.setFilterStyle("display: none; visibility: hidden;");
-            terceroNITConsolidado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
-            terceroNITConsolidado.setFilterStyle("display: none; visibility: hidden;");
-            terceroCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
-            terceroCiudad.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoAlterno = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
-            terceroCodigoAlterno.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosTerceros");
-            bandera = 0;
-            filtrarListTercero = null;
-            tipoLista = 0;
-        }
-        if (banderaTS == 1) {
-            terceroSucursalCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
-            terceroSucursalCodigo.setFilterStyle("display: none; visibility: hidden;");
-            terceroSucursalPatronal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
-            terceroSucursalPatronal.setFilterStyle("display: none; visibility: hidden;");
-            terceroSucursalObservacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
-            terceroSucursalObservacion.setFilterStyle("display: none; visibility: hidden;");
-            terceroSucursalCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
-            terceroSucursalCiudad.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
-            banderaTS = 0;
-            filtrarListTercerosSucursales = null;
-            tipoListaTS = 0;
-        }
-        //AGREGAR REGISTRO A LA LISTA VIGENCIAS 
-        k++;
-        BigInteger var = BigInteger.valueOf(k);
-        nuevoTercero.setSecuencia(var);
-        nuevoTercero.setEmpresa(empresaActual);
-        listTerceroCrear.add(nuevoTercero);
-        listTerceros.add(nuevoTercero);
-        ////------////
-        nuevoTercero = new Terceros();
-        nuevoTercero.setTerceroconsolidador(new Terceros());
-        nuevoTercero.setCiudad(new Ciudades());
-        ////-----////
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosTerceros");
-        if (guardado == true) {
-            guardado = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+        if (validarCamposNulosTercero(1) == true) {
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+                altoTablaTercero = "150";
+                terceroNombre = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNombre");
+                terceroNombre.setFilterStyle("display: none; visibility: hidden;");
+                terceroNIT = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNIT");
+                terceroNIT.setFilterStyle("display: none; visibility: hidden;");
+                terceroDigitoVerificacion = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
+                terceroDigitoVerificacion.setFilterStyle("display: none; visibility: hidden;");
+                terceroNITAlternativo = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
+                terceroNITAlternativo.setFilterStyle("display: none; visibility: hidden;");
+                terceroCodigoSS = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
+                terceroCodigoSS.setFilterStyle("display: none; visibility: hidden;");
+                terceroCodigoSP = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
+                terceroCodigoSP.setFilterStyle("display: none; visibility: hidden;");
+                terceroCodigoSC = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
+                terceroCodigoSC.setFilterStyle("display: none; visibility: hidden;");
+                terceroTConsolidador = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
+                terceroTConsolidador.setFilterStyle("display: none; visibility: hidden;");
+                terceroNITConsolidado = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
+                terceroNITConsolidado.setFilterStyle("display: none; visibility: hidden;");
+                terceroCiudad = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
+                terceroCiudad.setFilterStyle("display: none; visibility: hidden;");
+                terceroCodigoAlterno = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
+                terceroCodigoAlterno.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosTerceros");
+                bandera = 0;
+                filtrarListTercero = null;
+                tipoLista = 0;
+            }
+            if (banderaTS == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+                altoTablaSucursal = "90";
+                terceroSucursalCodigo = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
+                terceroSucursalCodigo.setFilterStyle("display: none; visibility: hidden;");
+                terceroSucursalPatronal = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
+                terceroSucursalPatronal.setFilterStyle("display: none; visibility: hidden;");
+                terceroSucursalObservacion = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
+                terceroSucursalObservacion.setFilterStyle("display: none; visibility: hidden;");
+                terceroSucursalCiudad = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
+                terceroSucursalCiudad.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
+                banderaTS = 0;
+                filtrarListTercerosSucursales = null;
+                tipoListaTS = 0;
+            }
+            //AGREGAR REGISTRO A LA LISTA VIGENCIAS 
+            k++;
+            BigInteger var = BigInteger.valueOf(k);
+            nuevoTercero.setSecuencia(var);
+            nuevoTercero.setEmpresa(empresaActual);
+            listTerceroCrear.add(nuevoTercero);
+            if (listTerceros == null) {
+                listTerceros = new ArrayList<Terceros>();
+            }
+            listTerceros.add(nuevoTercero);
+            ////------////
+            nuevoTercero = new Terceros();
+            nuevoTercero.setTerceroconsolidador(new Terceros());
+            nuevoTercero.setCiudad(new Ciudades());
+            ////-----////
+
+            context.update("form:datosTerceros");
+            if (guardado == true) {
+                guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+            }
+            context.execute("NuevoRegistroTercero.hide()");
+            cambiosTercero = true;
+            index = -1;
+            secRegistroTercero = null;
+        } else {
+            context.execute("errorDatosNullTerceros.show()");
         }
-        context.execute("NuevoRegistroTercero.hide()");
-        cambiosTercero = true;
-        index = -1;
-        secRegistroTercero = null;
     }
 
     //LIMPIAR NUEVO REGISTRO
@@ -897,69 +1108,85 @@ public class ControlTercero implements Serializable {
 
     ////////--- //// ---////
     public void agregarNuevoTerceroSucursal() {
-        if (bandera == 1) {
-            terceroNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNombre");
-            terceroNombre.setFilterStyle("display: none; visibility: hidden;");
-            terceroNIT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNIT");
-            terceroNIT.setFilterStyle("display: none; visibility: hidden;");
-            terceroDigitoVerificacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
-            terceroDigitoVerificacion.setFilterStyle("display: none; visibility: hidden;");
-            terceroNITAlternativo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
-            terceroNITAlternativo.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoSS = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
-            terceroCodigoSS.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoSP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
-            terceroCodigoSP.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoSC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
-            terceroCodigoSC.setFilterStyle("display: none; visibility: hidden;");
-            terceroTConsolidador = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
-            terceroTConsolidador.setFilterStyle("display: none; visibility: hidden;");
-            terceroNITConsolidado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
-            terceroNITConsolidado.setFilterStyle("display: none; visibility: hidden;");
-            terceroCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
-            terceroCiudad.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoAlterno = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
-            terceroCodigoAlterno.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosTerceros");
-            bandera = 0;
-            filtrarListTercero = null;
-            tipoLista = 0;
-        }
-        if (banderaTS == 1) {
-            terceroSucursalCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
-            terceroSucursalCodigo.setFilterStyle("display: none; visibility: hidden;");
-            terceroSucursalPatronal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
-            terceroSucursalPatronal.setFilterStyle("display: none; visibility: hidden;");
-            terceroSucursalObservacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
-            terceroSucursalObservacion.setFilterStyle("display: none; visibility: hidden;");
-            terceroSucursalCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
-            terceroSucursalCiudad.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
-            banderaTS = 0;
-            filtrarListTercerosSucursales = null;
-            tipoListaTS = 0;
-        }
-        //AGREGAR REGISTRO A LA LISTA VIGENCIAS 
-        k++;
-        BigInteger var = BigInteger.valueOf(k);
-        nuevoTerceroSucursal.setSecuencia(var);
-        nuevoTerceroSucursal.setTercero(listTerceros.get(indexAux));
-        listTerceroSucursalCrear.add(nuevoTerceroSucursal);
-        listTercerosSucursales.add(nuevoTerceroSucursal);
-        ////------////
-        nuevoTerceroSucursal = new TercerosSucursales();
-        nuevoTerceroSucursal.setCiudad(new Ciudades());
-        ////-----////
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosTercerosSucursales");
-        if (guardado == true) {
-            guardado = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+        if (validarCamposNulosTerceroSucursal(1) == true) {
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+                altoTablaTercero = "150";
+                terceroNombre = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNombre");
+                terceroNombre.setFilterStyle("display: none; visibility: hidden;");
+                terceroNIT = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNIT");
+                terceroNIT.setFilterStyle("display: none; visibility: hidden;");
+                terceroDigitoVerificacion = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
+                terceroDigitoVerificacion.setFilterStyle("display: none; visibility: hidden;");
+                terceroNITAlternativo = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
+                terceroNITAlternativo.setFilterStyle("display: none; visibility: hidden;");
+                terceroCodigoSS = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
+                terceroCodigoSS.setFilterStyle("display: none; visibility: hidden;");
+                terceroCodigoSP = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
+                terceroCodigoSP.setFilterStyle("display: none; visibility: hidden;");
+                terceroCodigoSC = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
+                terceroCodigoSC.setFilterStyle("display: none; visibility: hidden;");
+                terceroTConsolidador = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
+                terceroTConsolidador.setFilterStyle("display: none; visibility: hidden;");
+                terceroNITConsolidado = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
+                terceroNITConsolidado.setFilterStyle("display: none; visibility: hidden;");
+                terceroCiudad = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
+                terceroCiudad.setFilterStyle("display: none; visibility: hidden;");
+                terceroCodigoAlterno = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
+                terceroCodigoAlterno.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosTerceros");
+                bandera = 0;
+                filtrarListTercero = null;
+                tipoLista = 0;
+            }
+            if (banderaTS == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+                altoTablaSucursal = "90";
+                terceroSucursalCodigo = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
+                terceroSucursalCodigo.setFilterStyle("display: none; visibility: hidden;");
+                terceroSucursalPatronal = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
+                terceroSucursalPatronal.setFilterStyle("display: none; visibility: hidden;");
+                terceroSucursalObservacion = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
+                terceroSucursalObservacion.setFilterStyle("display: none; visibility: hidden;");
+                terceroSucursalCiudad = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
+                terceroSucursalCiudad.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
+                banderaTS = 0;
+                filtrarListTercerosSucursales = null;
+                tipoListaTS = 0;
+            }
+            //AGREGAR REGISTRO A LA LISTA VIGENCIAS 
+            k++;
+            BigInteger var = BigInteger.valueOf(k);
+            nuevoTerceroSucursal.setSecuencia(var);
+            if (tipoLista == 0) {
+                nuevoTerceroSucursal.setTercero(listTerceros.get(indexAux));
+            } else {
+                nuevoTerceroSucursal.setTercero(filtrarListTercero.get(indexAux));
+            }
+            listTerceroSucursalCrear.add(nuevoTerceroSucursal);
+            if (listTercerosSucursales == null) {
+                listTercerosSucursales = new ArrayList<TercerosSucursales>();
+            }
+            listTercerosSucursales.add(nuevoTerceroSucursal);
+            ////------////
+            nuevoTerceroSucursal = new TercerosSucursales();
+            nuevoTerceroSucursal.setCiudad(new Ciudades());
+            ////-----////
+
+            context.update("form:datosTercerosSucursales");
+            if (guardado == true) {
+                guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+            }
+            context.execute("NuevoRegistroTerceroSucursal.hide()");
+            cambiosTerceroSucursal = true;
+            indexTS = -1;
+            secRegistroTerceroSucursal = null;
+        } else {
+            context.execute("errorDatosNullSucursal.show()");
         }
-        context.execute("DuplicarRegistroTerceroSucursal.hide()");
-        cambiosTerceroSucursal = true;
-        indexTS = -1;
-        secRegistroTerceroSucursal = null;
     }
 
     //LIMPIAR NUEVO REGISTRO
@@ -982,7 +1209,6 @@ public class ControlTercero implements Serializable {
      * Duplica una nueva vigencia localizacion
      */
     public void duplicarTercero() {
-        index = indexAux;
         if (index >= 0) {
             duplicarTercero = new Terceros();
             if (tipoLista == 0) {
@@ -1032,30 +1258,32 @@ public class ControlTercero implements Serializable {
      * VigenciasLocalizaciones
      */
     public void confirmarDuplicar() {
-        index = indexAux;
-        if (index >= 0) {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (validarCamposNulosTercero(2) == true) {
             if (bandera == 1) {
-                terceroNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNombre");
+                FacesContext c = FacesContext.getCurrentInstance();
+                altoTablaTercero = "150";
+                terceroNombre = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNombre");
                 terceroNombre.setFilterStyle("display: none; visibility: hidden;");
-                terceroNIT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNIT");
+                terceroNIT = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNIT");
                 terceroNIT.setFilterStyle("display: none; visibility: hidden;");
-                terceroDigitoVerificacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
+                terceroDigitoVerificacion = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
                 terceroDigitoVerificacion.setFilterStyle("display: none; visibility: hidden;");
-                terceroNITAlternativo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
+                terceroNITAlternativo = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
                 terceroNITAlternativo.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSS = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
+                terceroCodigoSS = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
                 terceroCodigoSS.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
+                terceroCodigoSP = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
                 terceroCodigoSP.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
+                terceroCodigoSC = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
                 terceroCodigoSC.setFilterStyle("display: none; visibility: hidden;");
-                terceroTConsolidador = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
+                terceroTConsolidador = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
                 terceroTConsolidador.setFilterStyle("display: none; visibility: hidden;");
-                terceroNITConsolidado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
+                terceroNITConsolidado = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
                 terceroNITConsolidado.setFilterStyle("display: none; visibility: hidden;");
-                terceroCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
+                terceroCiudad = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
                 terceroCiudad.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoAlterno = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
+                terceroCodigoAlterno = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
                 terceroCodigoAlterno.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTerceros");
                 bandera = 0;
@@ -1063,13 +1291,15 @@ public class ControlTercero implements Serializable {
                 tipoLista = 0;
             }
             if (banderaTS == 1) {
-                terceroSucursalCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
+                FacesContext c = FacesContext.getCurrentInstance();
+                altoTablaSucursal = "90";
+                terceroSucursalCodigo = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
                 terceroSucursalCodigo.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalPatronal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
+                terceroSucursalPatronal = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
                 terceroSucursalPatronal.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalObservacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
+                terceroSucursalObservacion = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
                 terceroSucursalObservacion.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
+                terceroSucursalCiudad = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
                 terceroSucursalCiudad.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
                 banderaTS = 0;
@@ -1083,16 +1313,18 @@ public class ControlTercero implements Serializable {
             listTerceroCrear.add(duplicarTercero);
             listTerceros.add(duplicarTercero);
             duplicarTercero = new Terceros();
-            RequestContext context = RequestContext.getCurrentInstance();
+
             context.update("form:datosTerceros");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.execute("DuplicarRegistroTercero.hide()");
             cambiosTercero = true;
             index = -1;
             secRegistroTercero = null;
+        } else {
+            context.execute("errorDatosNullTerceros.show()");
         }
     }
 
@@ -1111,7 +1343,6 @@ public class ControlTercero implements Serializable {
                 duplicarTerceroSucursal.setCodigopatronal(listTercerosSucursales.get(indexTS).getCodigopatronal());
                 duplicarTerceroSucursal.setDescripcion(listTercerosSucursales.get(indexTS).getDescripcion());
                 duplicarTerceroSucursal.setCiudad(listTercerosSucursales.get(indexTS).getCiudad());
-                duplicarTerceroSucursal.setTercero(listTerceros.get(indexAux));
 
             }
             if (tipoListaTS == 1) {
@@ -1119,7 +1350,6 @@ public class ControlTercero implements Serializable {
                 duplicarTerceroSucursal.setCodigopatronal(filtrarListTercerosSucursales.get(indexTS).getCodigopatronal());
                 duplicarTerceroSucursal.setDescripcion(filtrarListTercerosSucursales.get(indexTS).getDescripcion());
                 duplicarTerceroSucursal.setCiudad(filtrarListTercerosSucursales.get(indexTS).getCiudad());
-                duplicarTerceroSucursal.setTercero(listTerceros.get(index));
 
             }
             if (duplicarTerceroSucursal.getCiudad() == null) {
@@ -1138,29 +1368,32 @@ public class ControlTercero implements Serializable {
      * VigenciasLocalizaciones
      */
     public void confirmarDuplicarTS() {
-        if (indexTS >= 0) {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (validarCamposNulosTerceroSucursal(2) == true) {
             if (bandera == 1) {
-                terceroNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNombre");
+                FacesContext c = FacesContext.getCurrentInstance();
+                altoTablaTercero = "150";
+                terceroNombre = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNombre");
                 terceroNombre.setFilterStyle("display: none; visibility: hidden;");
-                terceroNIT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNIT");
+                terceroNIT = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNIT");
                 terceroNIT.setFilterStyle("display: none; visibility: hidden;");
-                terceroDigitoVerificacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
+                terceroDigitoVerificacion = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
                 terceroDigitoVerificacion.setFilterStyle("display: none; visibility: hidden;");
-                terceroNITAlternativo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
+                terceroNITAlternativo = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
                 terceroNITAlternativo.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSS = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
+                terceroCodigoSS = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
                 terceroCodigoSS.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
+                terceroCodigoSP = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
                 terceroCodigoSP.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
+                terceroCodigoSC = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
                 terceroCodigoSC.setFilterStyle("display: none; visibility: hidden;");
-                terceroTConsolidador = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
+                terceroTConsolidador = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
                 terceroTConsolidador.setFilterStyle("display: none; visibility: hidden;");
-                terceroNITConsolidado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
+                terceroNITConsolidado = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
                 terceroNITConsolidado.setFilterStyle("display: none; visibility: hidden;");
-                terceroCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
+                terceroCiudad = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
                 terceroCiudad.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoAlterno = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
+                terceroCodigoAlterno = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
                 terceroCodigoAlterno.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTerceros");
                 bandera = 0;
@@ -1168,13 +1401,15 @@ public class ControlTercero implements Serializable {
                 tipoLista = 0;
             }
             if (banderaTS == 1) {
-                terceroSucursalCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
+                FacesContext c = FacesContext.getCurrentInstance();
+                altoTablaSucursal = "90";
+                terceroSucursalCodigo = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
                 terceroSucursalCodigo.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalPatronal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
+                terceroSucursalPatronal = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
                 terceroSucursalPatronal.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalObservacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
+                terceroSucursalObservacion = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
                 terceroSucursalObservacion.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
+                terceroSucursalCiudad = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
                 terceroSucursalCiudad.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
                 banderaTS = 0;
@@ -1184,20 +1419,25 @@ public class ControlTercero implements Serializable {
             k++;
             BigInteger var = BigInteger.valueOf(k);
             duplicarTerceroSucursal.setSecuencia(var);
-            duplicarTerceroSucursal.setTercero(listTerceros.get(indexAux));
+            if (tipoLista == 0) {
+                duplicarTerceroSucursal.setTercero(listTerceros.get(indexAux));
+            } else {
+                duplicarTerceroSucursal.setTercero(filtrarListTercero.get(indexAux));
+            }
             listTerceroSucursalCrear.add(duplicarTerceroSucursal);
             listTercerosSucursales.add(duplicarTerceroSucursal);
             duplicarTerceroSucursal = new TercerosSucursales();
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosTerceros");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.execute("DuplicarRegistroTerceroSucursal.hide()");
             cambiosTerceroSucursal = true;
             indexTS = -1;
             secRegistroTerceroSucursal = null;
+        } else {
+            context.execute("errorDatosNullSucursal.show()");
         }
     }
 
@@ -1250,6 +1490,7 @@ public class ControlTercero implements Serializable {
             cambiosTercero = true;
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         }
     }
@@ -1294,6 +1535,7 @@ public class ControlTercero implements Serializable {
             cambiosTerceroSucursal = true;
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         }
     }
@@ -1317,53 +1559,56 @@ public class ControlTercero implements Serializable {
      */
     public void filtradoTercero() {
         if (index >= 0) {
+            FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 0) {
-                terceroNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNombre");
+                altoTablaTercero = "128";
+                terceroNombre = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNombre");
                 terceroNombre.setFilterStyle("width: 80px");
-                terceroNIT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNIT");
+                terceroNIT = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNIT");
                 terceroNIT.setFilterStyle("width: 80px");
-                terceroDigitoVerificacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
+                terceroDigitoVerificacion = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
                 terceroDigitoVerificacion.setFilterStyle("width: 80px");
-                terceroNITAlternativo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
+                terceroNITAlternativo = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
                 terceroNITAlternativo.setFilterStyle("width: 80px");
-                terceroCodigoSS = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
+                terceroCodigoSS = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
                 terceroCodigoSS.setFilterStyle("width: 80px");
-                terceroCodigoSP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
+                terceroCodigoSP = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
                 terceroCodigoSP.setFilterStyle("width: 80px");
-                terceroCodigoSC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
+                terceroCodigoSC = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
                 terceroCodigoSC.setFilterStyle("width: 80px");
-                terceroTConsolidador = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
+                terceroTConsolidador = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
                 terceroTConsolidador.setFilterStyle("width: 80px");
-                terceroNITConsolidado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
+                terceroNITConsolidado = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
                 terceroNITConsolidado.setFilterStyle("width: 80px");
-                terceroCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
+                terceroCiudad = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
                 terceroCiudad.setFilterStyle("width: 80px");
-                terceroCodigoAlterno = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
+                terceroCodigoAlterno = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
                 terceroCodigoAlterno.setFilterStyle("width: 80px");
                 RequestContext.getCurrentInstance().update("form:datosTerceros");
                 bandera = 1;
             } else if (bandera == 1) {
-                terceroNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNombre");
+                altoTablaTercero = "150";
+                terceroNombre = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNombre");
                 terceroNombre.setFilterStyle("display: none; visibility: hidden;");
-                terceroNIT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNIT");
+                terceroNIT = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNIT");
                 terceroNIT.setFilterStyle("display: none; visibility: hidden;");
-                terceroDigitoVerificacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
+                terceroDigitoVerificacion = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
                 terceroDigitoVerificacion.setFilterStyle("display: none; visibility: hidden;");
-                terceroNITAlternativo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
+                terceroNITAlternativo = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
                 terceroNITAlternativo.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSS = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
+                terceroCodigoSS = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
                 terceroCodigoSS.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
+                terceroCodigoSP = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
                 terceroCodigoSP.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
+                terceroCodigoSC = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
                 terceroCodigoSC.setFilterStyle("display: none; visibility: hidden;");
-                terceroTConsolidador = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
+                terceroTConsolidador = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
                 terceroTConsolidador.setFilterStyle("display: none; visibility: hidden;");
-                terceroNITConsolidado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
+                terceroNITConsolidado = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
                 terceroNITConsolidado.setFilterStyle("display: none; visibility: hidden;");
-                terceroCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
+                terceroCiudad = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
                 terceroCiudad.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoAlterno = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
+                terceroCodigoAlterno = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
                 terceroCodigoAlterno.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTerceros");
                 bandera = 0;
@@ -1375,25 +1620,28 @@ public class ControlTercero implements Serializable {
 
     public void filtradoTerceroSucursal() {
         if (indexTS >= 0) {
+            FacesContext c = FacesContext.getCurrentInstance();
             if (banderaTS == 0) {
-                terceroSucursalCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
+                altoTablaSucursal = "68";
+                terceroSucursalCodigo = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
                 terceroSucursalCodigo.setFilterStyle("width: 80px");
-                terceroSucursalPatronal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
+                terceroSucursalPatronal = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
                 terceroSucursalPatronal.setFilterStyle("width: 80px");
-                terceroSucursalObservacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
+                terceroSucursalObservacion = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
                 terceroSucursalObservacion.setFilterStyle("width: 80px");
-                terceroSucursalCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
+                terceroSucursalCiudad = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
                 terceroSucursalCiudad.setFilterStyle("width: 80px");
                 RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
                 banderaTS = 1;
             } else if (banderaTS == 1) {
-                terceroSucursalCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
+                altoTablaSucursal = "90";
+                terceroSucursalCodigo = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
                 terceroSucursalCodigo.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalPatronal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
+                terceroSucursalPatronal = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
                 terceroSucursalPatronal.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalObservacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
+                terceroSucursalObservacion = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
                 terceroSucursalObservacion.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
+                terceroSucursalCiudad = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
                 terceroSucursalCiudad.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
                 banderaTS = 0;
@@ -1409,27 +1657,29 @@ public class ControlTercero implements Serializable {
      */
     public void salir() {
         if (bandera == 1) {
-            terceroNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNombre");
+            FacesContext c = FacesContext.getCurrentInstance();
+            altoTablaTercero = "150";
+            terceroNombre = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNombre");
             terceroNombre.setFilterStyle("display: none; visibility: hidden;");
-            terceroNIT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNIT");
+            terceroNIT = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNIT");
             terceroNIT.setFilterStyle("display: none; visibility: hidden;");
-            terceroDigitoVerificacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
+            terceroDigitoVerificacion = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
             terceroDigitoVerificacion.setFilterStyle("display: none; visibility: hidden;");
-            terceroNITAlternativo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
+            terceroNITAlternativo = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
             terceroNITAlternativo.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoSS = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
+            terceroCodigoSS = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
             terceroCodigoSS.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoSP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
+            terceroCodigoSP = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
             terceroCodigoSP.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoSC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
+            terceroCodigoSC = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
             terceroCodigoSC.setFilterStyle("display: none; visibility: hidden;");
-            terceroTConsolidador = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
+            terceroTConsolidador = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
             terceroTConsolidador.setFilterStyle("display: none; visibility: hidden;");
-            terceroNITConsolidado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
+            terceroNITConsolidado = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
             terceroNITConsolidado.setFilterStyle("display: none; visibility: hidden;");
-            terceroCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
+            terceroCiudad = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
             terceroCiudad.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoAlterno = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
+            terceroCodigoAlterno = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
             terceroCodigoAlterno.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTerceros");
             bandera = 0;
@@ -1438,13 +1688,15 @@ public class ControlTercero implements Serializable {
         }
 
         if (banderaTS == 1) {
-            terceroSucursalCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
+            FacesContext c = FacesContext.getCurrentInstance();
+            altoTablaSucursal = "90";
+            terceroSucursalCodigo = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
             terceroSucursalCodigo.setFilterStyle("display: none; visibility: hidden;");
-            terceroSucursalPatronal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
+            terceroSucursalPatronal = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
             terceroSucursalPatronal.setFilterStyle("display: none; visibility: hidden;");
-            terceroSucursalObservacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
+            terceroSucursalObservacion = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
             terceroSucursalObservacion.setFilterStyle("display: none; visibility: hidden;");
-            terceroSucursalCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
+            terceroSucursalCiudad = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
             terceroSucursalCiudad.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
             banderaTS = 0;
@@ -1462,6 +1714,7 @@ public class ControlTercero implements Serializable {
         k = 0;
         listTerceros = null;
         guardado = true;
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
     }
     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO) (list = ESTRUCTURAS - MOTIVOSLOCALIZACIONES - PROYECTOS)
 
@@ -1578,68 +1831,92 @@ public class ControlTercero implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("TERCEROCONSOLIDADOR")) {
-            if (tipoNuevo == 1) {
-                nuevoTercero.getTerceroconsolidador().setNombre(terceroConsolidador);
-            } else if (tipoNuevo == 2) {
-                duplicarTercero.getTerceroconsolidador().setNombre(terceroConsolidador);
-            }
-            for (int i = 0; i < listTerceroConsolidador.size(); i++) {
-                if (listTerceroConsolidador.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevoTercero.setTerceroconsolidador(listTerceroConsolidador.get(indiceUnicoElemento));
+                    nuevoTercero.getTerceroconsolidador().setNombre(terceroConsolidador);
+                } else if (tipoNuevo == 2) {
+                    duplicarTercero.getTerceroconsolidador().setNombre(terceroConsolidador);
+                }
+                for (int i = 0; i < listTerceroConsolidador.size(); i++) {
+                    if (listTerceroConsolidador.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevoTercero.setTerceroconsolidador(listTerceroConsolidador.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevaTerceroCT");
+                    } else if (tipoNuevo == 2) {
+                        duplicarTercero.setTerceroconsolidador(listTerceroConsolidador.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarTerceroCT");
+                    }
+                    listTerceroConsolidador.clear();
+                    getListTerceroConsolidador();
+                } else {
+                    context.update("form:TerceroDialogo");
+                    context.execute("TerceroDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevaTerceroCT");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarTerceroCT");
+                    }
+                }
+            } else {
+                if (tipoNuevo == 1) {
+                    nuevoTercero.setTerceroconsolidador(new Terceros());
                     context.update("formularioDialogos:nuevaTerceroCT");
                 } else if (tipoNuevo == 2) {
-                    duplicarTercero.setTerceroconsolidador(listTerceroConsolidador.get(indiceUnicoElemento));
+                    duplicarTercero.setTerceroconsolidador(new Terceros());
                     context.update("formularioDialogos:duplicarTerceroCT");
                 }
                 listTerceroConsolidador.clear();
                 getListTerceroConsolidador();
-            } else {
-                context.update("form:TerceroDialogo");
-                context.execute("TerceroDialogo.show()");
-                tipoActualizacion = tipoNuevo;
-                if (tipoNuevo == 1) {
-                    context.update("formularioDialogos:nuevaTerceroCT");
-                } else if (tipoNuevo == 2) {
-                    context.update("formularioDialogos:duplicarTerceroCT");
-                }
             }
         } else if (confirmarCambio.equalsIgnoreCase("CIUDAD")) {
-            if (tipoNuevo == 1) {
-                nuevoTercero.getCiudad().setNombre(ciudad);
-            } else if (tipoNuevo == 2) {
-                duplicarTercero.getCiudad().setNombre(ciudad);
-            }
-            for (int i = 0; i < listCiudades.size(); i++) {
-                if (listCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevoTercero.setCiudad(listCiudades.get(indiceUnicoElemento));
+                    nuevoTercero.getCiudad().setNombre(ciudad);
+                } else if (tipoNuevo == 2) {
+                    duplicarTercero.getCiudad().setNombre(ciudad);
+                }
+                for (int i = 0; i < listCiudades.size(); i++) {
+                    if (listCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevoTercero.setCiudad(listCiudades.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevaCodigoAT");
+                    } else if (tipoNuevo == 2) {
+                        duplicarTercero.setCiudad(listCiudades.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarCodigoAT");
+                    }
+                    listCiudades.clear();
+                    getListCiudades();
+                } else {
+                    context.update("form:CiudadDialogo");
+                    context.execute("CiudadDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevaCodigoAT");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarCodigoAT");
+                    }
+                }
+            } else {
+                if (tipoNuevo == 1) {
+                    nuevoTercero.setCiudad(new Ciudades());
                     context.update("formularioDialogos:nuevaCodigoAT");
                 } else if (tipoNuevo == 2) {
-                    duplicarTercero.setCiudad(listCiudades.get(indiceUnicoElemento));
+                    duplicarTercero.setCiudad(new Ciudades());
                     context.update("formularioDialogos:duplicarCodigoAT");
                 }
                 listCiudades.clear();
                 getListCiudades();
-            } else {
-                context.update("form:CiudadDialogo");
-                context.execute("CiudadDialogo.show()");
-                tipoActualizacion = tipoNuevo;
-                if (tipoNuevo == 1) {
-                    context.update("formularioDialogos:nuevaCodigoAT");
-                } else if (tipoNuevo == 2) {
-                    context.update("formularioDialogos:duplicarCodigoAT");
-                }
             }
         }
     }
@@ -1649,36 +1926,48 @@ public class ControlTercero implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("CIUDAD")) {
-            if (tipoNuevo == 1) {
-                nuevoTerceroSucursal.getCiudad().setNombre(ciudadTS);
-            } else if (tipoNuevo == 2) {
-                duplicarTerceroSucursal.getCiudad().setNombre(ciudadTS);
-            }
-            for (int i = 0; i < listCiudades.size(); i++) {
-                if (listCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevoTerceroSucursal.setCiudad(listCiudades.get(indiceUnicoElemento));
+                    nuevoTerceroSucursal.getCiudad().setNombre(ciudadTS);
+                } else if (tipoNuevo == 2) {
+                    duplicarTerceroSucursal.getCiudad().setNombre(ciudadTS);
+                }
+                for (int i = 0; i < listCiudades.size(); i++) {
+                    if (listCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevoTerceroSucursal.setCiudad(listCiudades.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevaCiudadTS");
+                    } else if (tipoNuevo == 2) {
+                        duplicarTerceroSucursal.setCiudad(listCiudades.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarCiudadTS");
+                    }
+                    listCiudades.clear();
+                    getListCiudades();
+                } else {
+                    context.update("form:CiudadTSDialogo");
+                    context.execute("CiudadTSDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevaCiudadTS");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarCiudadTS");
+                    }
+                }
+            } else {
+                if (tipoNuevo == 1) {
+                    nuevoTerceroSucursal.setCiudad(new Ciudades());
                     context.update("formularioDialogos:nuevaCiudadTS");
                 } else if (tipoNuevo == 2) {
-                    duplicarTerceroSucursal.setCiudad(listCiudades.get(indiceUnicoElemento));
+                    duplicarTerceroSucursal.setCiudad(new Ciudades());
                     context.update("formularioDialogos:duplicarCiudadTS");
                 }
                 listCiudades.clear();
                 getListCiudades();
-            } else {
-                context.update("form:CiudadTSDialogo");
-                context.execute("CiudadTSDialogo.show()");
-                tipoActualizacion = tipoNuevo;
-                if (tipoNuevo == 1) {
-                    context.update("formularioDialogos:nuevaCiudadTS");
-                } else if (tipoNuevo == 2) {
-                    context.update("formularioDialogos:duplicarCiudadTS");
-                }
             }
         }
     }
@@ -1688,6 +1977,7 @@ public class ControlTercero implements Serializable {
     }
 
     public void actualizarTerceros() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 listTerceros.get(index).setTerceroconsolidador(terceroCSeleccionado);
@@ -1710,34 +2000,39 @@ public class ControlTercero implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             cambiosTercero = true;
             permitirIndex = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarTConsolidador");
-            context.update(":form:editarTerceroNITConsolidado");
+
+            context.update("form:datosTerceros");
         } else if (tipoActualizacion == 1) {
             nuevoTercero.setTerceroconsolidador(terceroCSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaTerceroCT");
             context.update("formularioDialogos:nuevaTerceroCNITT");
         } else if (tipoActualizacion == 2) {
             duplicarTercero.setTerceroconsolidador(terceroCSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarTTerceroCT");
             context.update("formularioDialogos:duplicarTTerceroCNITT");
         }
-        filtrarListTercero = null;
-        terceroCSeleccionado = null;
+        filtrarListTerceroConsolidador = null;
+        terceroCSeleccionado = new Terceros();
         aceptar = true;
         index = -1;
         secRegistroTercero = null;
         tipoActualizacion = -1;
+
+        context.update("form:TerceroDialogo");
+        context.update("form:lovTercero");
+        context.update("form:aceptarT");
+        context.reset("form:lovTercero:globalFilter");
+        context.execute("TerceroDialogo.hide()");
+
     }
 
     public void cancelarCambioTerceros() {
-        filtrarListTercero = null;
-        terceroCSeleccionado = null;
+        filtrarListTerceroConsolidador = null;
+        terceroCSeleccionado = new Terceros();
         aceptar = true;
         index = -1;
         secRegistroTercero = null;
@@ -1746,6 +2041,7 @@ public class ControlTercero implements Serializable {
     }
 
     public void actualizarCiudad() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 listTerceros.get(index).setCiudad(ciudadSeleccionada);
@@ -1768,31 +2064,36 @@ public class ControlTercero implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             cambiosTercero = true;
             permitirIndex = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarTerceroCiudad");
+
+            context.update("form:datosTerceros");
         } else if (tipoActualizacion == 1) {
             nuevoTercero.setCiudad(ciudadSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaCiudadT");
         } else if (tipoActualizacion == 2) {
             duplicarTercero.setCiudad(ciudadSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarTCiudadT");
         }
         filtrarListCiudades = null;
-        ciudadSeleccionada = null;
+        ciudadSeleccionada = new Ciudades();
         aceptar = true;
         index = -1;
         secRegistroTercero = null;
         tipoActualizacion = -1;
+
+        context.update("form:CiudadDialogo");
+        context.update("form:lovCiudad");
+        context.update("form:aceptarC");
+        context.reset("form:lovCiudad:globalFilter");
+        context.execute("CiudadDialogo.hide()");
     }
 
     public void cancelarCambioCiudad() {
         filtrarListCiudades = null;
-        ciudadSeleccionada = null;
+        ciudadSeleccionada = new Ciudades();
         aceptar = true;
         index = -1;
         secRegistroTercero = null;
@@ -1801,6 +2102,7 @@ public class ControlTercero implements Serializable {
     }
 
     public void actualizarCiudadTS() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoListaTS == 0) {
                 listTercerosSucursales.get(indexTS).setCiudad(ciudadSeleccionada);
@@ -1823,31 +2125,35 @@ public class ControlTercero implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             cambiosTerceroSucursal = true;
             permitirIndexTS = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarTerceroSucursalCiudad");
+            context.update("form:datosTercerosSucursales");
         } else if (tipoActualizacion == 1) {
             nuevoTerceroSucursal.setCiudad(ciudadSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaCiudadTS");
         } else if (tipoActualizacion == 2) {
             duplicarTerceroSucursal.setCiudad(ciudadSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarCiudadTS");
         }
         filtrarListCiudades = null;
-        ciudadSeleccionada = null;
+        ciudadSeleccionada = new Ciudades();
         aceptar = true;
         indexTS = -1;
         secRegistroTerceroSucursal = null;
         tipoActualizacion = -1;
+
+        context.update("form:CiudadTSDialogo");
+        context.update("form:lovCiudadTS");
+        context.update("form:aceptarCTS");
+        context.reset("form:lovCiudadTS:globalFilter");
+        context.execute("CiudadTSDialogo.hide()");
     }
 
     public void cancelarCambioCiudadTS() {
         filtrarListCiudades = null;
-        ciudadSeleccionada = null;
+        ciudadSeleccionada = new Ciudades();
         aceptar = true;
         indexTS = -1;
         secRegistroTerceroSucursal = null;
@@ -1993,21 +2299,30 @@ public class ControlTercero implements Serializable {
         if (cambiosTercero == false && cambiosTerceroSucursal == false) {
             listTerceros = null;
             listTerceros = new ArrayList<Terceros>();
-            if (terceroCSeleccionado.getCiudad() == null) {
-                terceroCSeleccionado.setCiudad(new Ciudades());
+            if (terceroLOVSeleccionado.getCiudad() == null) {
+                terceroLOVSeleccionado.setCiudad(new Ciudades());
             }
-            if (terceroCSeleccionado.getTerceroconsolidador() == null) {
-                terceroCSeleccionado.setTerceroconsolidador(new Terceros());
+            if (terceroLOVSeleccionado.getTerceroconsolidador() == null) {
+                terceroLOVSeleccionado.setTerceroconsolidador(new Terceros());
             }
-            listTerceros.add(terceroCSeleccionado);
-            terceroCSeleccionado = new Terceros();
-            filtrarListTerceroConsolidador = null;
+            listTerceros.add(terceroLOVSeleccionado);
+            terceroLOVSeleccionado = new Terceros();
+            filtrarListTerceroLOV = null;
+            listTercerosLOV.clear();
+            getListTercerosLOV();
             context.update("form:datosTerceros");
             getListTercerosSucursales();
             context.update("form:datosTercerosSucursales");
+
+            context.update("form:BuscarTerceroDialogo");
+            context.update("form:aceptarBT");
+            context.update("form:datosTerceros");
+            context.reset("form:lovBuscarTercero:globalFilter");
+            context.execute("BuscarTerceroDialogo.hide()");
         } else {
-            terceroCSeleccionado = new Terceros();
-            filtrarListTerceroConsolidador = null;
+            terceroLOVSeleccionado = new Terceros();
+            filtrarListTerceroLOV = null;
+            listTercerosLOV.clear();
             context.execute("confirmarGuardar.show()");
         }
     }
@@ -2126,6 +2441,10 @@ public class ControlTercero implements Serializable {
         index = -1;
         secRegistroTercero = null;
         cualCelda = -1;
+        indexTS = -1;
+        cualCeldaTS = -1;
+        secRegistroTerceroSucursal = null;
+        RequestContext.getCurrentInstance().update("formularioDialogos:EmpresasDialogo");
         RequestContext.getCurrentInstance().execute("EmpresasDialogo.show()");
     }
 
@@ -2136,10 +2455,11 @@ public class ControlTercero implements Serializable {
             context.update("form:nitEmpresa");
             filtrarListEmpresas = null;
             aceptar = true;
-            context.execute("EmpresasDialogo.hide()");
-            context.reset("formularioDialogos:lovEmpresas:globalFilter");
+            context.update("formularioDialogos:EmpresasDialogo");
             context.update("formularioDialogos:lovEmpresas");
             context.update("formularioDialogos:aceptarE");
+            context.reset("formularioDialogos:lovEmpresas:globalFilter");
+            context.execute("EmpresasDialogo.hide()");
             backUpEmpresaActual = empresaActual;
             listTerceros = null;
             listTercerosSucursales = null;
@@ -2154,6 +2474,11 @@ public class ControlTercero implements Serializable {
 
     public void cancelarCambioEmpresa() {
         index = -1;
+        secRegistroTercero = null;
+        cualCelda = -1;
+        indexTS = -1;
+        cualCeldaTS = -1;
+        secRegistroTerceroSucursal = null;
         filtrarListEmpresas = null;
     }
 
@@ -2167,15 +2492,16 @@ public class ControlTercero implements Serializable {
     public List<Terceros> getListTerceros() {
         try {
             if (listTerceros == null) {
-                listTerceros = null;
-                listTerceros = administrarTercero.obtenerListTerceros(empresaActual.getSecuencia());
-                if (listTerceros != null) {
-                    for (int i = 0; i < listTerceros.size(); i++) {
-                        if (listTerceros.get(i).getCiudad() == null) {
-                            listTerceros.get(i).setCiudad(new Ciudades());
-                        }
-                        if (listTerceros.get(i).getTerceroconsolidador() == null) {
-                            listTerceros.get(i).setTerceroconsolidador(new Terceros());
+                if (empresaActual.getSecuencia() != null) {
+                    listTerceros = administrarTercero.obtenerListTerceros(empresaActual.getSecuencia());
+                    if (listTerceros != null) {
+                        for (int i = 0; i < listTerceros.size(); i++) {
+                            if (listTerceros.get(i).getCiudad() == null) {
+                                listTerceros.get(i).setCiudad(new Ciudades());
+                            }
+                            if (listTerceros.get(i).getTerceroconsolidador() == null) {
+                                listTerceros.get(i).setTerceroconsolidador(new Terceros());
+                            }
                         }
                     }
                 }
@@ -2229,14 +2555,6 @@ public class ControlTercero implements Serializable {
 
     public void setAceptar(boolean aceptar) {
         this.aceptar = aceptar;
-    }
-
-    public boolean isRetroactivo() {
-        return retroactivo;
-    }
-
-    public void setRetroactivo(boolean retroactivo) {
-        this.retroactivo = retroactivo;
     }
 
     public BigInteger getSecRegistroVS() {
@@ -2345,13 +2663,18 @@ public class ControlTercero implements Serializable {
 
     public List<TercerosSucursales> getListTercerosSucursales() {
         try {
-            if (index >= 0) {
-                listTercerosSucursales = null;
-                listTercerosSucursales = administrarTercero.obtenerListTercerosSucursales(listTerceros.get(index).getSecuencia());
-                if (!listTercerosSucursales.isEmpty()) {
-                    for (int i = 0; i < listTercerosSucursales.size(); i++) {
-                        if (listTercerosSucursales.get(i).getCiudad() == null) {
-                            listTercerosSucursales.get(i).setCiudad(new Ciudades());
+            if (listTercerosSucursales == null) {
+                if (index >= 0) {
+                    if (tipoLista == 0) {
+                        listTercerosSucursales = administrarTercero.obtenerListTercerosSucursales(listTerceros.get(index).getSecuencia());
+                    } else {
+                        listTercerosSucursales = administrarTercero.obtenerListTercerosSucursales(filtrarListTercero.get(index).getSecuencia());
+                    }
+                    if (listTercerosSucursales != null) {
+                        for (int i = 0; i < listTercerosSucursales.size(); i++) {
+                            if (listTercerosSucursales.get(i).getCiudad() == null) {
+                                listTercerosSucursales.get(i).setCiudad(new Ciudades());
+                            }
                         }
                     }
                 }
@@ -2376,9 +2699,9 @@ public class ControlTercero implements Serializable {
     }
 
     public List<Empresas> getListEmpresas() {
-        if (listEmpresas == null) {
-            listEmpresas = administrarTercero.listEmpresas();
-            if (!listEmpresas.isEmpty()) {
+        listEmpresas = administrarTercero.listEmpresas();
+        if (listEmpresas != null) {
+            if (listEmpresas.size() > 0) {
                 empresaActual = listEmpresas.get(0);
                 backUpEmpresaActual = empresaActual;
             }
@@ -2416,9 +2739,7 @@ public class ControlTercero implements Serializable {
     }
 
     public List<Ciudades> getListCiudades() {
-        if (listCiudades == null) {
-            listCiudades = administrarTercero.listCiudades();
-        }
+        listCiudades = administrarTercero.listCiudades();
         return listCiudades;
     }
 
@@ -2443,7 +2764,7 @@ public class ControlTercero implements Serializable {
     }
 
     public List<Terceros> getListTerceroConsolidador() {
-        if (listTerceroConsolidador == null) {
+        if (empresaActual.getSecuencia() != null) {
             listTerceroConsolidador = administrarTercero.obtenerListTerceros(empresaActual.getSecuencia());
         }
         return listTerceroConsolidador;
@@ -2516,4 +2837,166 @@ public class ControlTercero implements Serializable {
     public void setDuplicarTerceroSucursal(TercerosSucursales duplicarTerceroSucursal) {
         this.duplicarTerceroSucursal = duplicarTerceroSucursal;
     }
+
+    public Terceros getTerceroTablaSeleccionado() {
+        getListTerceros();
+        if (listTerceros != null) {
+            int tam = listTerceros.size();
+            if (tam > 0) {
+                terceroTablaSeleccionado = listTerceros.get(0);
+            }
+        }
+        return terceroTablaSeleccionado;
+    }
+
+    public void setTerceroTablaSeleccionado(Terceros terceroTablaSeleccionado) {
+        this.terceroTablaSeleccionado = terceroTablaSeleccionado;
+    }
+
+    public TercerosSucursales getTerceroSucursalTablaSeleccionado() {
+        getListTercerosSucursales();
+        if (listTercerosSucursales != null) {
+            int tam = listTercerosSucursales.size();
+            if (tam > 0) {
+                terceroSucursalTablaSeleccionado = listTercerosSucursales.get(0);
+            }
+        }
+        return terceroSucursalTablaSeleccionado;
+    }
+
+    public void setTerceroSucursalTablaSeleccionado(TercerosSucursales terceroSucursalTablaSeleccionado) {
+        this.terceroSucursalTablaSeleccionado = terceroSucursalTablaSeleccionado;
+    }
+
+    public String getInfoRegistroEmpresa() {
+        getListEmpresas();
+        if (listEmpresas != null) {
+            infoRegistroEmpresa = "Cantidad de registros : " + listEmpresas.size();
+        } else {
+            infoRegistroEmpresa = "Cantidad de registros : 0";
+        }
+        return infoRegistroEmpresa;
+    }
+
+    public void setInfoRegistroEmpresa(String infoRegistroEmpresa) {
+        this.infoRegistroEmpresa = infoRegistroEmpresa;
+    }
+
+    public String getInfoRegistroCiudad2() {
+        getListCiudades();
+        if (listCiudades != null) {
+            infoRegistroCiudad2 = "Cantidad de registros : " + listCiudades.size();
+        } else {
+            infoRegistroCiudad2 = "Cantidad de registros : 0";
+        }
+        return infoRegistroCiudad2;
+    }
+
+    public void setInfoRegistroCiudad2(String infoRegistroCiudad2) {
+        this.infoRegistroCiudad2 = infoRegistroCiudad2;
+    }
+
+    public String getInfoRegistroCiudad1() {
+        getListCiudades();
+        if (listCiudades != null) {
+            infoRegistroCiudad1 = "Cantidad de registros : " + listCiudades.size();
+        } else {
+            infoRegistroCiudad1 = "Cantidad de registros : 0";
+        }
+        return infoRegistroCiudad1;
+    }
+
+    public void setInfoRegistroCiudad1(String infoRegistroCiudad1) {
+        this.infoRegistroCiudad1 = infoRegistroCiudad1;
+    }
+
+    public String getInfoRegistroTercero() {
+        getListTerceros();
+        if (listTerceros != null) {
+            infoRegistroTercero = "Cantidad de registros : " + listTerceros.size();
+        } else {
+            infoRegistroTercero = "Cantidad de registros : 0";
+        }
+        return infoRegistroTercero;
+    }
+
+    public void setInfoRegistroTercero(String infoRegistroTercero) {
+        this.infoRegistroTercero = infoRegistroTercero;
+    }
+
+    public String getInfoRegistroTerceroConsolidador() {
+        getListTerceroConsolidador();
+        if (listTerceroConsolidador != null) {
+            infoRegistroTerceroConsolidador = "Cantidad de registros : " + listTerceroConsolidador.size();
+        } else {
+            infoRegistroTerceroConsolidador = "Cantidad de registros : 0";
+        }
+        return infoRegistroTerceroConsolidador;
+    }
+
+    public void setInfoRegistroTerceroConsolidador(String infoRegistroTerceroConsolidador) {
+        this.infoRegistroTerceroConsolidador = infoRegistroTerceroConsolidador;
+    }
+
+    public List<Terceros> getListTercerosLOV() {
+        if (empresaActual.getSecuencia() != null) {
+            listTercerosLOV = administrarTercero.obtenerListTerceros(empresaActual.getSecuencia());
+            if (listTercerosLOV != null) {
+                for (int i = 0; i < listTercerosLOV.size(); i++) {
+                    if (listTercerosLOV.get(i).getCiudad() == null) {
+                        listTercerosLOV.get(i).setCiudad(new Ciudades());
+                    }
+                    if (listTercerosLOV.get(i).getTerceroconsolidador() == null) {
+                        listTercerosLOV.get(i).setTerceroconsolidador(new Terceros());
+                    }
+                }
+            }
+        }
+        return listTercerosLOV;
+    }
+
+    public void setListTercerosLOV(List<Terceros> listTercerosLOV) {
+        this.listTercerosLOV = listTercerosLOV;
+    }
+
+    public List<Terceros> getFiltrarListTerceroLOV() {
+        return filtrarListTerceroLOV;
+    }
+
+    public void setFiltrarListTerceroLOV(List<Terceros> filtrarListTerceroLOV) {
+        this.filtrarListTerceroLOV = filtrarListTerceroLOV;
+    }
+
+    public Terceros getTerceroLOVSeleccionado() {
+        return terceroLOVSeleccionado;
+    }
+
+    public void setTerceroLOVSeleccionado(Terceros terceroLOVSeleccionado) {
+        this.terceroLOVSeleccionado = terceroLOVSeleccionado;
+    }
+
+    public String getAltoTablaTercero() {
+        return altoTablaTercero;
+    }
+
+    public void setAltoTablaTercero(String altoTablaTercero) {
+        this.altoTablaTercero = altoTablaTercero;
+    }
+
+    public String getAltoTablaSucursal() {
+        return altoTablaSucursal;
+    }
+
+    public void setAltoTablaSucursal(String altoTablaSucursal) {
+        this.altoTablaSucursal = altoTablaSucursal;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+
 }
