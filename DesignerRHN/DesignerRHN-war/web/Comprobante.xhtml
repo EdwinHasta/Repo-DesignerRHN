@@ -11,60 +11,101 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
+                    
                     <f:loadBundle basename="Recursos.comprobante" var="msg"/>
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; text-align: left" >  
+                    
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 530px; text-align: left" >  
 
-                        <fieldset style="position: absolute; left: 10px; top: 60px; font-size: 12px; width: 835px; height: 83px; border-radius: 10px; ">
-                            <legend style="font-size: 14px; color: blue;text-align: left"><strong>#{msg['empleado']}</strong></legend>
-                            <p:panel id="panelInf" style="border: none">
-                                <h:outputText value="#{msg['codigo']}" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; top: 20px; left: 9px"/>
-                                <p:inputText value="#{controlComprobantes.parametroActual.empleado.codigoempleado}"  readonly="true" style="position: absolute; top: 35px; width: 70px; left: 9px"/>
-                                <h:outputText value="#{msg['pa']}" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 90px; top: 20px"/>
-                                <p:inputText value="#{controlComprobantes.parametroActual.empleado.persona.primerapellido}" readonly="true" style="position: absolute; top: 35px; left: 90px; width: 110px"/>
-                                <h:outputText value="#{msg['sa']}" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 211px; top: 20px"/>
-                                <p:inputText value="#{controlComprobantes.parametroActual.empleado.persona.segundoapellido}" readonly="true" style="position: absolute; top: 35px; left: 211px; width: 110px" />
-                                <h:outputText value="#{msg['nombre']}" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 332px; top: 20px"/>
-                                <p:inputText value="#{controlComprobantes.parametroActual.empleado.persona.nombre}" readonly="true" style="position: absolute; top: 35px; left: 332px; width: 213px"/>
-                                <h:outputText value="#{msg['correo']}" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 556px; top: 20px"/>
-                                <p:inputText value="#{controlComprobantes.parametroActual.empleado.persona.email}" readonly="true" style="position: absolute; top: 35px; left: 556px; width: 240px"/>
+                        
+                        <p:toolbar style="position: absolute; top: 37px; left: 12px; height: 23px">  
+                            <p:toolbarGroup align="left"> 
 
-                                <h:outputText value="#{msg['periodo']}" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; top: 60px; left: 10px"/>
-                                <h:outputText value="#{controlComprobantes.parametroActual.fechasParametros}" style="color: black; font-size: 12px; font-weight: bold; position: absolute; top: 76px; left: 10px"/>
-                                <h:outputText value="#{msg['estructura']}" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; top: 60px; left: 300px"/>
-                                <h:outputText value="#{controlComprobantes.parametroEstructura.estructura.nombre}" style="color: black; font-size: 12px; font-weight: bold; position: absolute; top: 76px; left: 300px"/>
+                                <p:commandButton id="guardarRapido" disabled="true" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; "  process="@this" />
+                                <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
+                                
+                                <p:commandButton id="editar" disabled="true" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>
+                                <p:tooltip  for="editar" value="#{msg['editar']}" />
 
-                                <p:commandButton id="btnArriba" style="position: absolute; left: 815px; top: 24px; font-size: 11px; font-family: Arial, Helvetica, sans-serif; width: 20px; height: 20px; background-image: url(Imagenes/arriba.JPG); background-size: 100% 100%; background-repeat: no-repeat; "  value="" actionListener="#{controlComprobantes.anteriorEmpleado()}" disabled="#{controlComprobantes.estadoBtnArriba}" process="@this" />
-                                <p:commandButton id="btnAbajo" style="position: absolute; left: 815px; top: 45px; font-size: 11px; font-family: Arial, Helvetica, sans-serif; width: 20px; height: 20px; background-image: url(Imagenes/abajo.JPG); background-size: 100% 100%; background-repeat: no-repeat; " value=""  actionListener="#{controlComprobantes.siguienteEmpleado()}" disabled="#{controlComprobantes.estadoBtnAbajo}" process="@this" />
-                                <p:commandButton style="position: absolute; left: 620px; top: 65px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="buscarEmpleado" value="#{msg['buscar']}"  process="@this" oncomplete="buscarEmpleadoDialogo.show();" update=":formularioDialogos:buscarEmpleadoDialogo" />
-                                <p:commandButton style="position: absolute; left: 740px; top: 65px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" disabled="#{controlComprobantes.mostrarTodos}" id="mostrarTodos" value="#{msg['mostrar']}" actionListener="#{controlComprobantes.mostarTodosEmpleados()}" process="@this" />
-                            </p:panel>
-                        </fieldset>
+                                <p:separator style="position: relative; top: -9px"/>
 
-                        <p:toolbar style="font-size: 12px; position: absolute; top: 31px; left: 11px; height: 23px">  
-                            <p:toolbarGroup align="left">
+                                <p:commandButton id="listaValores" disabled="true" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>
+                                <p:tooltip  for="listaValores" value="#{msg['lista']}" />
+
                                 <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlComprobantes.activarCtrlF11()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="filtrar" value="#{msg['filtrar']}" />
-                                <p:separator />
+                                <p:tooltip for="filtrar" value="#{msg['filtrar']}" />
+                                
+                                <p:separator style="position: relative; top: -9px"/>
 
                                 <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlComprobantes.exportXLS()}" />
-                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="#{msg['xls']}" />
+                                <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportar:datosSolucionesNodosEmpleadoExportar" fileName="SolucionesNodosEmpleadoXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
-                                <p:tooltip style="font-size: 12px" for="exportarXML" value="#{msg['xml']}" />
+                                <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
 
                                 <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlComprobantes.exportPDF()}" ajax="false"/>
-                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}" />
-                            </p:toolbarGroup>  
-                        </p:toolbar>
+                                <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
 
-                        <fieldset style="position: absolute; top: 160px; font-size: 11px; width: 835px; height: 158px; border-radius: 10px; ">
-                            <legend style="font-size: 12px; font-weight: bold; color: #00F;">#{msg['empleado']}</legend>
+                                <p:separator style="position: relative; top: -9px"/>
+                                
+                                <p:commandButton id="insertar" disabled="true" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/> 
+                                <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
 
-                            <p:dataTable id="datosSolucionesNodosEmpleado" var="solucionNodoEmpleado" style="font-size: 11px; width: 830px;" value="#{controlComprobantes.listaSolucionesNodosEmpleado}"
+                                <p:commandButton id="eliminar" disabled="true" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " process="@this"/>  
+                                <p:tooltip  for="eliminar" value="#{msg['eliminar']}" />
+
+                                <p:commandButton id="duplicar" disabled="true" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "   process="@this"/>  
+                                <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+                                
+                                <p:commandButton id="rastro" value="" disabled="true" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>  
+                                <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
+
+                                <p:separator style="position: relative; top: -9px"/>
+                                
+                                <p:commandButton id="refrescar" disabled="true" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>  
+                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+                                
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplComprobantes.salir()}" action="nomina" process="@this"/>  
+                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
+                                
+                            </p:toolbarGroup>
+                        </p:toolbar> 
+                        
+                        <fieldset style="position: absolute; left: 10px; top: 75px; width: 835px; height: 83px; border-radius: 10px; ">
+                            <legend style="color: blue;text-align: left"><strong>#{msg['empleado']}</strong></legend>
+                            <p:panel id="panelInf" style="border: none">
+                                <h:outputText value="#{msg['codigo']}" style="color: #14388B; font-weight: bold; position: absolute; top: 20px; left: 9px"/>
+                                <p:inputText value="#{controlComprobantes.parametroActual.empleado.codigoempleado}"  readonly="true" style="position: absolute; top: 35px; width: 70px; left: 9px"/>
+                                <h:outputText value="#{msg['pa']}" style="color: #14388B; font-weight: bold; position: absolute; left: 90px; top: 20px"/>
+                                <p:inputText value="#{controlComprobantes.parametroActual.empleado.persona.primerapellido}" readonly="true" style="position: absolute; top: 35px; left: 90px; width: 110px"/>
+                                <h:outputText value="#{msg['sa']}" style="color: #14388B; font-weight: bold; position: absolute; left: 211px; top: 20px"/>
+                                <p:inputText value="#{controlComprobantes.parametroActual.empleado.persona.segundoapellido}" readonly="true" style="position: absolute; top: 35px; left: 211px; width: 110px" />
+                                <h:outputText value="#{msg['nombre']}" style="color: #14388B; font-weight: bold; position: absolute; left: 332px; top: 20px"/>
+                                <p:inputText value="#{controlComprobantes.parametroActual.empleado.persona.nombre}" readonly="true" style="position: absolute; top: 35px; left: 332px; width: 213px"/>
+                                <h:outputText value="#{msg['correo']}" style="color: #14388B; font-weight: bold; position: absolute; left: 556px; top: 20px"/>
+                                <p:inputText value="#{controlComprobantes.parametroActual.empleado.persona.email}" readonly="true" style="position: absolute; top: 35px; left: 556px; width: 240px"/>
+
+                                <h:outputText value="#{msg['periodo']}" style="color: #14388B; font-weight: bold; position: absolute; top: 60px; left: 10px"/>
+                                <h:outputText value="#{controlComprobantes.parametroActual.fechasParametros}" style="color: black; font-weight: bold; position: absolute; top: 76px; left: 10px"/>
+                                <h:outputText value="#{msg['estructura']}" style="color: #14388B; font-weight: bold; position: absolute; top: 60px; left: 300px"/>
+                                <h:outputText value="#{controlComprobantes.parametroEstructura.estructura.nombre}" style="color: black; font-weight: bold; position: absolute; top: 76px; left: 300px"/>
+
+                                <p:commandButton id="btnArriba" style="position: absolute; left: 815px; top: 24px; width: 20px; height: 20px; background-image: url(Imagenes/arriba.JPG); background-size: 100% 100%; background-repeat: no-repeat; "  value="" actionListener="#{controlComprobantes.anteriorEmpleado()}" disabled="#{controlComprobantes.estadoBtnArriba}" process="@this" />
+                                <p:commandButton id="btnAbajo" style="position: absolute; left: 815px; top: 45px; width: 20px; height: 20px; background-image: url(Imagenes/abajo.JPG); background-size: 100% 100%; background-repeat: no-repeat; " value=""  actionListener="#{controlComprobantes.siguienteEmpleado()}" disabled="#{controlComprobantes.estadoBtnAbajo}" process="@this" />
+                                <p:commandButton style="position: absolute; left: 580px; top: 65px;" id="buscarEmpleado" value="#{msg['buscar']}"  process="@this" oncomplete="buscarEmpleadoDialogo.show();" update=":formularioDialogos:buscarEmpleadoDialogo" />
+                                <p:commandButton style="position: absolute; left: 710px; top: 65px;" disabled="#{controlComprobantes.mostrarTodos}" id="mostrarTodos" value="#{msg['mostrar']}" actionListener="#{controlComprobantes.mostarTodosEmpleados()}" process="@this" />
+                            </p:panel>
+                        </fieldset>
+
+                        <fieldset style="position: absolute;left: 10px; top: 175px; width: 835px; height: 148px; border-radius: 10px; ">
+                            <legend style="font-weight: bold; color: #00F;">#{msg['empleado']}</legend>
+
+                            <p:dataTable id="datosSolucionesNodosEmpleado" var="solucionNodoEmpleado" style="width: 830px;" value="#{controlComprobantes.listaSolucionesNodosEmpleado}"
                                          rowKey="#{solucionNodoEmpleado.secuencia}" scrollable="true" rowIndexVar="indice"
-                                         editable="true" editMode="cell"  scrollHeight="#{controlComprobantes.altoScrollSolucionesNodosEmpleado}" filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleado}" emptyMessage="#{msg['sinregistros']}">
+                                         editable="true" editMode="cell"  scrollHeight="#{controlComprobantes.altoScrollSolucionesNodosEmpleado}" filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleado}" emptyMessage="#{msg['vacio']}">
 
                                 <p:column width="20" style="padding: 0px"> 
                                     <p:commandButton value="" style="width: 20px; height: 20px;" actionListener="#{controlComprobantes.parcialSolucionNodo(indice,0)}"/>
@@ -76,7 +117,7 @@
                                             <h:outputText value="#{solucionNodoEmpleado.concepto.codigo}" />
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleado.concepto.codigo}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                            <p:inputText value="#{solucionNodoEmpleado.concepto.codigo}" style="width: 98%; text-transform: uppercase" readonly="true"/>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
@@ -87,7 +128,7 @@
                                             <h:outputText value="#{solucionNodoEmpleado.concepto.descripcion}" />
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleado.concepto.descripcion}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                            <p:inputText value="#{solucionNodoEmpleado.concepto.descripcion}" style="width: 98%; text-transform: uppercase" readonly="true"/>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
@@ -98,7 +139,7 @@
                                             <h:outputText value="#{solucionNodoEmpleado.unidades}" />
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleado.unidades}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                            <p:inputText value="#{solucionNodoEmpleado.unidades}" style="width: 98%; text-transform: uppercase" readonly="true"/>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
@@ -112,7 +153,7 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleado.pago}" style="width: 96%; text-transform: uppercase; text-align: right" readonly="true">
+                                            <p:inputText value="#{solucionNodoEmpleado.pago}" style="width: 98%; text-transform: uppercase; text-align: right" readonly="true">
                                                 <f:convertNumber currencyCode="COP"/>
                                             </p:inputText>
                                         </f:facet>
@@ -126,7 +167,7 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleado.descuento}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                            <p:inputText value="#{solucionNodoEmpleado.descuento}" style="width: 98%; text-transform: uppercase" readonly="true">
                                                 <f:convertNumber currencyCode="COP"/>
                                             </p:inputText>
                                         </f:facet>
@@ -138,7 +179,7 @@
                                             <h:outputText value="#{solucionNodoEmpleado.nit.nombre}" />
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleado.nit.nombre}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                            <p:inputText value="#{solucionNodoEmpleado.nit.nombre}" style="width: 98%; text-transform: uppercase" readonly="true"/>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
@@ -151,7 +192,7 @@
                                             </h:outputText> 
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleado.fechahasta}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                            <p:inputText value="#{solucionNodoEmpleado.fechahasta}" style="width: 98%; text-transform: uppercase" readonly="true">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:inputText>
                                         </f:facet>
@@ -164,7 +205,7 @@
                                             <h:outputText value="#{solucionNodoEmpleado.cuentad.codigo}" />
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleado.cuentad.codigo}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                            <p:inputText value="#{solucionNodoEmpleado.cuentad.codigo}" style="width: 98%; text-transform: uppercase" readonly="true"/>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
@@ -175,7 +216,7 @@
                                             <h:outputText value="#{solucionNodoEmpleado.centrocostod.nombre}" />
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleado.centrocostod.nombre}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                            <p:inputText value="#{solucionNodoEmpleado.centrocostod.nombre}" style="width: 98%; text-transform: uppercase" readonly="true"/>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
@@ -185,7 +226,7 @@
                                             <h:outputText value="#{solucionNodoEmpleado.cuentac.codigo}" />
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleado.cuentac.codigo}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                            <p:inputText value="#{solucionNodoEmpleado.cuentac.codigo}" style="width: 98%; text-transform: uppercase" readonly="true"/>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
@@ -196,7 +237,7 @@
                                             <h:outputText value="#{solucionNodoEmpleado.centrocostoc.nombre}" />
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleado.centrocostoc.nombre}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                            <p:inputText value="#{solucionNodoEmpleado.centrocostoc.nombre}" style="width: 98%; text-transform: uppercase" readonly="true"/>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
@@ -207,7 +248,7 @@
                                             <h:outputText value="#{solucionNodoEmpleado.saldo}" />
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleado.saldo}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                            <p:inputText value="#{solucionNodoEmpleado.saldo}" style="width: 98%; text-transform: uppercase" readonly="true"/>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
@@ -220,7 +261,7 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleado.fechadesde}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                            <p:inputText value="#{solucionNodoEmpleado.fechadesde}" style="width: 98%; text-transform: uppercase" readonly="true">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:inputText>
                                         </f:facet>
@@ -235,7 +276,7 @@
                                             </h:outputText> 
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleado.fechapago}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                            <p:inputText value="#{solucionNodoEmpleado.fechapago}" style="width: 98%; text-transform: uppercase" readonly="true">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:inputText>
                                         </f:facet>
@@ -250,7 +291,7 @@
                                             </h:outputText> 
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleado.ultimamodificacion}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                            <p:inputText value="#{solucionNodoEmpleado.ultimamodificacion}" style="width: 98%; text-transform: uppercase" readonly="true">
                                                 <f:convertDateTime pattern="dd/MM/yyyy - hh:mm" />
                                             </p:inputText>
                                         </f:facet>
@@ -279,12 +320,12 @@
                             </p:dataTable>
                         </fieldset>
 
-                        <fieldset style="position: absolute; top: 332px; font-size: 11px; width: 835px; height: 158px; border-radius: 10px; ">
-                            <legend style="font-size: 12px; font-weight: bold; color: #00F;">#{msg['empleador']}</legend>
+                        <fieldset style="position: absolute;left: 10px; top: 342px; width: 835px; height: 148px; border-radius: 10px; ">
+                            <legend style="font-weight: bold; color: #00F;">#{msg['empleador']}</legend>
 
-                            <p:dataTable id="datosSolucionesNodosEmpleador" var="solucionNodoEmpleador" style="font-size: 11px; width: 830px;" value="#{controlComprobantes.listaSolucionesNodosEmpleador}"
+                            <p:dataTable id="datosSolucionesNodosEmpleador" var="solucionNodoEmpleador" style="width: 830px;" value="#{controlComprobantes.listaSolucionesNodosEmpleador}"
                                          rowKey="#{solucionNodoEmpleador.secuencia}" scrollable="true" rowIndexVar="indiceER"
-                                         editable="true" editMode="cell"  scrollHeight="#{controlComprobantes.altoScrollSolucionesNodosEmpleador}" filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleador}" emptyMessage="#{msg['sinregistros']}">
+                                         editable="true" editMode="cell"  scrollHeight="#{controlComprobantes.altoScrollSolucionesNodosEmpleador}" filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleador}" emptyMessage="#{msg['vacio']}">
 
                                 <p:column width="20" style="padding: 0px"> 
                                     <p:commandButton value="" style="width: 20px; height: 20px;" actionListener="#{controlComprobantes.parcialSolucionNodo(indiceER, 1)}"/>
@@ -296,7 +337,7 @@
                                             <h:outputText value="#{solucionNodoEmpleador.concepto.codigo}" />
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleador.concepto.codigo}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                            <p:inputText value="#{solucionNodoEmpleador.concepto.codigo}" style="width: 98%; text-transform: uppercase" readonly="true"/>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
@@ -307,7 +348,7 @@
                                             <h:outputText value="#{solucionNodoEmpleador.concepto.descripcion}" />
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleador.concepto.descripcion}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                            <p:inputText value="#{solucionNodoEmpleador.concepto.descripcion}" style="width: 98%; text-transform: uppercase" readonly="true"/>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
@@ -318,7 +359,7 @@
                                             <h:outputText value="#{solucionNodoEmpleador.unidades}" />
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleador.unidades}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                            <p:inputText value="#{solucionNodoEmpleador.unidades}" style="width: 98%; text-transform: uppercase" readonly="true"/>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
@@ -331,7 +372,7 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleador.pasivo}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                            <p:inputText value="#{solucionNodoEmpleador.pasivo}" style="width: 98%; text-transform: uppercase" readonly="true">
                                                 <f:convertNumber currencyCode="COP"/>
                                             </p:inputText>
                                         </f:facet>
@@ -345,7 +386,7 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleador.gasto}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                            <p:inputText value="#{solucionNodoEmpleador.gasto}" style="width: 98%; text-transform: uppercase" readonly="true">
                                                 <f:convertNumber currencyCode="COP"/>
                                             </p:inputText>
                                         </f:facet>
@@ -357,7 +398,7 @@
                                             <h:outputText value="#{solucionNodoEmpleador.nit.nombre}" />
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleador.nit.nombre}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                            <p:inputText value="#{solucionNodoEmpleador.nit.nombre}" style="width: 98%; text-transform: uppercase" readonly="true"/>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
@@ -370,7 +411,7 @@
                                             </h:outputText> 
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleador.fechahasta}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                            <p:inputText value="#{solucionNodoEmpleador.fechahasta}" style="width: 98%; text-transform: uppercase" readonly="true">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:inputText>
                                         </f:facet>
@@ -383,7 +424,7 @@
                                             <h:outputText value="#{solucionNodoEmpleador.cuentad.codigo}" />
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleador.cuentad.codigo}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                            <p:inputText value="#{solucionNodoEmpleador.cuentad.codigo}" style="width: 98%; text-transform: uppercase" readonly="true"/>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
@@ -394,7 +435,7 @@
                                             <h:outputText value="#{solucionNodoEmpleador.centrocostod.nombre}" />
                                         </f:facet>
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleador.centrocostod.nombre}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                            <p:inputText value="#{solucionNodoEmpleador.centrocostod.nombre}" style="width: 98%; text-transform: uppercase" readonly="true"/>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
@@ -404,7 +445,7 @@
                                             <h:outputText value="#{solucionNodoEmpleador.cuentac.codigo}" />
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleador.cuentac.codigo}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                            <p:inputText value="#{solucionNodoEmpleador.cuentac.codigo}" style="width: 98%; text-transform: uppercase" readonly="true"/>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
@@ -415,7 +456,7 @@
                                             <h:outputText value="#{solucionNodoEmpleador.centrocostoc.nombre}" />
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleador.centrocostoc.nombre}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                            <p:inputText value="#{solucionNodoEmpleador.centrocostoc.nombre}" style="width: 98%; text-transform: uppercase" readonly="true"/>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
@@ -426,7 +467,7 @@
                                             <h:outputText value="#{solucionNodoEmpleador.saldo}" />
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleador.saldo}" style="width: 96%; text-transform: uppercase" readonly="true"/>
+                                            <p:inputText value="#{solucionNodoEmpleador.saldo}" style="width: 98%; text-transform: uppercase" readonly="true"/>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
@@ -439,7 +480,7 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleador.fechadesde}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                            <p:inputText value="#{solucionNodoEmpleador.fechadesde}" style="width: 98%; text-transform: uppercase" readonly="true">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:inputText>
                                         </f:facet>
@@ -454,7 +495,7 @@
                                             </h:outputText> 
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleador.fechapago}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                            <p:inputText value="#{solucionNodoEmpleador.fechapago}" style="width: 98%; text-transform: uppercase" readonly="true">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:inputText>
                                         </f:facet>
@@ -469,7 +510,7 @@
                                             </h:outputText> 
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{solucionNodoEmpleador.ultimamodificacion}" style="width: 96%; text-transform: uppercase" readonly="true">
+                                            <p:inputText value="#{solucionNodoEmpleador.ultimamodificacion}" style="width: 98%; text-transform: uppercase" readonly="true">
                                                 <f:convertDateTime pattern="dd/MM/yyyy - hh:mm" />
                                             </p:inputText>
                                         </f:facet>
@@ -498,13 +539,13 @@
                                 </p:columnGroup>
                             </p:dataTable>
                         </fieldset>
-                        <p:commandButton style="position: absolute; left: 800px; top: 505px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlComprobantes.salir()}" icon="ui-icon-arrowreturnthick-1-w" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 505px;" id="ATRAS" value="#{msg['cancelar']}" actionListener="#{controlComprobantes.salir()}" icon="ui-icon-closethick" action="nomina" process="@this" />
                     </p:panel>
                 </h:form>
                 <h:form id="formularioDialogos">
-                    <p:dialog id="buscarEmpleadoDialogo" header="#{msg['empleados']}" widgetVar="buscarEmpleadoDialogo"  resizable="false" draggable="false" modal="true" height="300"  width="732" style="font-size: 12px" closable="false">  
-                        <p:dataTable  id="lovEmpleados" style="font-size: 11px; width: 700px" var="parametro" value="#{controlComprobantes.listaParametrosLOV}"
-                                      scrollable="true" scrollHeight="162" scrollWidth="720" widgetVar="lovEmpleados" 
+                    <p:dialog id="buscarEmpleadoDialogo" header="#{msg['empleados']}" widgetVar="buscarEmpleadoDialogo"  resizable="false" draggable="false" modal="true" width="732"  closable="false">  
+                        <p:dataTable  id="lovEmpleados" style="width: 700px" var="parametro" value="#{controlComprobantes.listaParametrosLOV}"
+                                      scrollable="true" scrollHeight="225" scrollWidth="716" widgetVar="lovEmpleados" liveScroll="true" scrollRows="20"
                                       filteredValue="#{controlComprobantes.filtradoListaParametrosLOV}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{parametro.empleado.secuencia}" selection="#{controlComprobantes.parametroSeleccionado}" selectionMode="single" >
 
@@ -534,21 +575,23 @@
                             </p:column> 
                         </p:dataTable> 
 
-                        <p:commandButton id="aceptarP" style="position: relative; left: 567px" value="#{msg['aceptar']}" disabled="#{controlComprobantes.aceptar}" actionListener="#{controlComprobantes.seleccionarEmpleado()}" update="aceptarP" process="@this">
+                        <h:outputText id="infoRegistroEmpleado" value="#{controlComprobantes.infoRegistroEmpleado}" style="position: absolute; left: 20px; top: 325px; font-weight: bold"/>
+                        
+                        <p:commandButton icon="ui-icon-check" id="aceptarP" style="position: relative; left: 545px" value="#{msg['aceptar']}" disabled="#{controlComprobantes.aceptar}" actionListener="#{controlComprobantes.seleccionarEmpleado()}" update="aceptarP" process="@this">
                             <p:resetInput target=":formularioDialogos:lovEmpleados:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasP" style="position: relative; left: 567px" value="#{msg['atras']}" onclick="buscarEmpleadoDialogo.hide(), lovEmpleados.clearFilters();" actionListener="#{controlComprobantes.cancelarSeleccionEmpleado()}" update="lovEmpleados, aceptarP" process="@this">
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasP" style="position: relative; left: 545px" value="#{msg['atras']}" onclick="buscarEmpleadoDialogo.hide(), lovEmpleados.clearFilters();" actionListener="#{controlComprobantes.cancelarSeleccionEmpleado()}" update="lovEmpleados, aceptarP" process="@this">
                             <p:resetInput target=":formularioDialogos:lovEmpleados:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
-                    <p:dialog id="parcialesConcepto" header="#{msg['parciales']}" widgetVar="parcialesConcepto"  resizable="false" draggable="false" modal="true" height="182" width="345" style="font-size: 12px" closable="false">  
+                    <p:dialog id="parcialesConcepto" header="#{msg['parciales']}" widgetVar="parcialesConcepto"  resizable="false" draggable="false" modal="true" height="182" width="345"  closable="false">  
                         <p:inputTextarea value="#{controlComprobantes.parcialesSolucionNodos}" style="position: absolute; left: 10px; top: 10px; width: 300px; height: 125px; font-weight:bold; overflow: auto" readonly="true" />
                         <p:commandButton value="#{msg['aceptar']}" style="position: absolute; top: 148px; left: 248px" onclick="parcialesConcepto.hide();
                                 confirmacionFormatoExtendido.show();"/>
                     </p:dialog>
 
-                    <p:dialog id="confirmacionFormatoExtendido" header="#{msg['atencion']}" widgetVar="confirmacionFormatoExtendido"  resizable="false" draggable="false" modal="true" height="110" width="430" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmacionFormatoExtendido" header="#{msg['atencion']}" widgetVar="confirmacionFormatoExtendido"  resizable="false" draggable="false" modal="true" height="110" width="430"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="70" style="position: absolute; left: 10px; top: 15px;"  />
                         <h:outputText value="#{msg['formato']}" style="position: absolute; left: 100px; top: 10px; width: 300px; font-weight:bold;" />
                         <h:outputText value="#{msg['aclaracion']}" style="position: absolute; left: 103px; top: 30px; width: 280px; font-weight:bold; text-align: justify" />
@@ -556,10 +599,10 @@
                         <p:commandButton value="No" style="position: absolute; top: 80px; left: 340px" onclick="confirmacionFormatoExtendido.hide();"/>
                     </p:dialog>
 
-                    <p:dialog id="detallesFormulas" header="#{msg['atencion']}" widgetVar="detallesFormulas"  resizable="false" draggable="false" modal="true" height="220" width="505" style="font-size: 12px" closable="false">  
+                    <p:dialog id="detallesFormulas" header="#{msg['atencion']}" widgetVar="detallesFormulas"  resizable="false" draggable="false" modal="true" height="220" width="505"  closable="false">  
                         <fieldset style="position: absolute; top: 10px; width: 455px; height: 185px; border-radius: 10px; ">
-                            <legend style="font-size: 12px; font-weight: bold; color: #00F;">Estructura de la formula</legend>
-                            <p:dataTable  id="detalleF" style="font-size: 11px; width: 440px" var="detalleFormula" value="#{controlComprobantes.listaDetallesFormulas}"
+                            <legend style="font-weight: bold; color: #00F;">#{msg['estructuraFormula']}</legend>
+                            <p:dataTable  id="detalleF" style="width: 440px" var="detalleFormula" value="#{controlComprobantes.listaDetallesFormulas}"
                                           scrollable="true" scrollHeight="127" scrollWidth="455" widgetVar="detalleF" 
                                           emptyMessage="#{msg['lovvacio']}"
                                           rowKey="#{detalleFormula.id}">

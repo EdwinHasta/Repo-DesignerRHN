@@ -380,6 +380,9 @@ public class Cuentas implements Serializable {
     }
 
     public Rubrospresupuestales getRubropresupuestal() {
+        if (rubropresupuestal == null) {
+            rubropresupuestal = new Rubrospresupuestales();
+        }
         return rubropresupuestal;
     }
 
@@ -553,6 +556,9 @@ public class Cuentas implements Serializable {
     }
 
     public Cuentas getContracuentatesoreria() {
+        if (contracuentatesoreria == null) {
+            contracuentatesoreria = new Cuentas();
+        }
         return contracuentatesoreria;
     }
 

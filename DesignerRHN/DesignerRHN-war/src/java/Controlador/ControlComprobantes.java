@@ -66,6 +66,8 @@ public class ControlComprobantes implements Serializable {
     //FORMATO FECHAS
     private SimpleDateFormat formatoFecha;
     private boolean estadoBtnArriba, estadoBtnAbajo;
+    //
+    private String infoRegistroEmpleado;
 
     public ControlComprobantes() {
         registroActual = 0;
@@ -76,8 +78,8 @@ public class ControlComprobantes implements Serializable {
         subtotalPasivo = new BigDecimal(0);
         subtotalGasto = new BigDecimal(0);
         bandera = 0;
-        altoScrollSolucionesNodosEmpleado = "105";
-        altoScrollSolucionesNodosEmpleador = "105";
+        altoScrollSolucionesNodosEmpleado = "95";
+        altoScrollSolucionesNodosEmpleador = "95";
         listaDetallesFormulas = null;
         formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
         estadoBtnArriba = false;
@@ -156,12 +158,15 @@ public class ControlComprobantes implements Serializable {
         getListaSolucionesNodosEmpleado();
         getListaSolucionesNodosEmpleador();
         RequestContext context = RequestContext.getCurrentInstance();
-        context.reset("formularioDialogos:lovEmpleados:globalFilter");
-        context.update("formularioDialogos:lovEmpleados");
-        context.execute("buscarEmpleadoDialogo.hide()");
         context.update("form:panelInf");
         context.update("form:datosSolucionesNodosEmpleado");
         context.update("form:datosSolucionesNodosEmpleador");
+        
+        context.update("formularioDialogos:buscarEmpleadoDialogo");
+        context.update("formularioDialogos:lovEmpleados");
+        context.update("formularioDialogos:aceptarP");
+        context.reset("formularioDialogos:lovEmpleados:globalFilter");
+        context.execute("buscarEmpleadoDialogo.hide()");
     }
 
     public void cancelarSeleccionEmpleado() {
@@ -254,8 +259,8 @@ public class ControlComprobantes implements Serializable {
             FechaModificacioSNER = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleador:FechaModificacioSNER");
             FechaModificacioSNER.setFilterStyle("width: 70px");
 
-            altoScrollSolucionesNodosEmpleado = "81";
-            altoScrollSolucionesNodosEmpleador = "81";
+            altoScrollSolucionesNodosEmpleado = "72";
+            altoScrollSolucionesNodosEmpleador = "72";
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosSolucionesNodosEmpleado");
             context.update("form:datosSolucionesNodosEmpleador");
@@ -326,8 +331,8 @@ public class ControlComprobantes implements Serializable {
             FechaModificacioSNER = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleador:FechaModificacioSNER");
             FechaModificacioSNER.setFilterStyle("display: none; visibility: hidden;");
 
-            altoScrollSolucionesNodosEmpleado = "105";
-            altoScrollSolucionesNodosEmpleador = "105";
+            altoScrollSolucionesNodosEmpleado = "95";
+            altoScrollSolucionesNodosEmpleador = "95";
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosSolucionesNodosEmpleado");
             context.update("form:datosSolucionesNodosEmpleador");
@@ -340,11 +345,9 @@ public class ControlComprobantes implements Serializable {
         DataTable tabla;
         Exporter exporter = new ExportarPDFTablasAnchas();
         FacesContext context = FacesContext.getCurrentInstance();
-        System.out.println("1");
         tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosSolucionesNodosEmpleadoExportar");
         exporter.export(context, tabla, "SolucionesNodosEmpleadoPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        System.out.println("2");
         tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosSolucionesNodosEmpleadorExportar");
         exporter.export(context, tabla, "SolucionesNodosEmpleadorPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
@@ -398,11 +401,11 @@ public class ControlComprobantes implements Serializable {
     public List<Parametros> getListaParametros() {
         listaParametros = administrarComprobantes.consultarParametrosComprobantesActualUsuario();
         if (listaParametros == null || listaParametros.isEmpty() || listaParametros.size() == 1) {
-            estadoBtnArriba = false;
-            estadoBtnAbajo = false;
-        } else {
             estadoBtnArriba = true;
             estadoBtnAbajo = true;
+        } else {
+            estadoBtnArriba = false;
+            estadoBtnAbajo = false;
         }
         return listaParametros;
     }
@@ -437,9 +440,9 @@ public class ControlComprobantes implements Serializable {
     }
 
     public List<Parametros> getListaParametrosLOV() {
-        if (listaParametrosLOV == null) {
-            listaParametrosLOV = administrarComprobantes.consultarParametrosComprobantesActualUsuario();
-        }
+
+        listaParametrosLOV = administrarComprobantes.consultarParametrosComprobantesActualUsuario();
+
         return listaParametrosLOV;
     }
 
@@ -508,7 +511,7 @@ public class ControlComprobantes implements Serializable {
 
     public List<SolucionesNodos> getListaSolucionesNodosEmpleador() {
         //if (listaSolucionesNodosEmpleador == null && parametroActual != null) {
-        if (parametroActual != null) {
+        if (parametroActual.getEmpleado().getSecuencia() != null) {
             listaSolucionesNodosEmpleador = administrarComprobantes.consultarSolucionesNodosEmpleador(parametroActual.getEmpleado().getSecuencia());
             if (listaSolucionesNodosEmpleador != null) {
                 subtotalPasivo = new BigDecimal(0);
@@ -611,4 +614,19 @@ public class ControlComprobantes implements Serializable {
     public boolean isEstadoBtnAbajo() {
         return estadoBtnAbajo;
     }
+
+    public String getInfoRegistroEmpleado() {
+        getListaParametrosLOV();
+        if (listaParametrosLOV != null) {
+            infoRegistroEmpleado = "Cantidad de registros : " + listaParametrosLOV.size();
+        } else {
+            infoRegistroEmpleado = "Cantidad de registros : 0";
+        }
+        return infoRegistroEmpleado;
+    }
+
+    public void setInfoRegistroEmpleado(String infoRegistroEmpleado) {
+        this.infoRegistroEmpleado = infoRegistroEmpleado;
+    }
+
 }

@@ -35,7 +35,7 @@ public class PersistenciaCuentas implements PersistenciaCuentasInterface {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(cuentas);
+            em.persist(cuentas);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaCuentas.crear: " + e);

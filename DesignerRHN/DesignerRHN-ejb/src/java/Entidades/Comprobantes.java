@@ -73,6 +73,8 @@ public class Comprobantes implements Serializable {
     private boolean readOnlyFecha;
     @Transient
     private boolean readOnlyFechaEntregado;
+    @Transient
+    private boolean readOnlyNumero;
 
     public Comprobantes() {
     }
@@ -138,8 +140,7 @@ public class Comprobantes implements Serializable {
             if (fechaentregado == null) {
                 fechaentregado = new Date();
             }
-        }
-        else {
+        } else {
             checkEntregado = false;
         }
         return checkEntregado;
@@ -217,6 +218,19 @@ public class Comprobantes implements Serializable {
 
     public void setNumero(BigInteger numero) {
         this.numero = numero;
+    }
+
+    public boolean isReadOnlyNumero() {
+        if (numero == null) {
+            readOnlyNumero = false;
+        } else {
+            readOnlyNumero = true;
+        }
+        return readOnlyNumero;
+    }
+
+    public void setReadOnlyNumero(boolean readOnlyNumero) {
+        this.readOnlyNumero = readOnlyNumero;
     }
 
 }

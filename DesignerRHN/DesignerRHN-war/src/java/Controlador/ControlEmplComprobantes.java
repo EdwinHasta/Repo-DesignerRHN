@@ -19,9 +19,12 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -138,6 +141,8 @@ public class ControlEmplComprobantes implements Serializable {
     private SimpleDateFormat formatoFecha;
     //
     private String infoRegistroProceso, infoRegistroTercero, infoRegistroCuentaDebito, infoRegistroCuentaCredito, infoRegistroCentroCostoDebito, infoRegistroCentroCostoCredito;
+    //
+    private Date auxFechaEntregadoComprobante;
 
     public ControlEmplComprobantes() {
         permitirIndex = true;
@@ -178,7 +183,6 @@ public class ControlEmplComprobantes implements Serializable {
         nuevoComprobante = new Comprobantes();
         nuevoCorteProceso = new CortesProcesos();
         nuevoCorteProceso.setProceso(new Procesos());
-        nuevoCorteProceso.getProceso().setDescripcion(" ");
         duplicarComprobante = new Comprobantes();
         secRegistro = null;
         tablaExportar = ":formExportar:datosComprobantesExportar";
@@ -206,7 +210,8 @@ public class ControlEmplComprobantes implements Serializable {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
-    }
+    } 
+    
 
     public void recibirEmpleado(BigInteger sec) {
         subtotalPago = new BigDecimal(0);
@@ -226,10 +231,15 @@ public class ControlEmplComprobantes implements Serializable {
                         } else {
                             listaComprobantes.get(i).setReadOnlyFecha(true);
                         }
-                        if (listaComprobantes.get(i).getFechaentregado()== null) {
+                        if (listaComprobantes.get(i).getFechaentregado() == null) {
                             listaComprobantes.get(i).setReadOnlyFechaEntregado(false);
                         } else {
                             listaComprobantes.get(i).setReadOnlyFechaEntregado(true);
+                        }
+                        if (listaComprobantes.get(i).getNumero() == null) {
+                            listaComprobantes.get(i).setReadOnlyNumero(false);
+                        } else {
+                            listaComprobantes.get(i).setReadOnlyNumero(true);
                         }
                     }
                     seleccionComprobante = listaComprobantes.get(0);
@@ -257,7 +267,16 @@ public class ControlEmplComprobantes implements Serializable {
             }
         }
     }
-    //Ubicacion Celda y Tabla.
+    
+    public void posicionComprobante() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+        String name = map.get("n"); // name attribute of node
+        String type = map.get("t"); // type attribute of node
+        int indice = Integer.parseInt(type);
+        int columna = Integer.parseInt(name);
+        cambiarIndiceComprobantes(indice, columna);
+    }
 
     public void cambiarIndiceComprobantes(int indice, int celda) {
         RequestContext context = RequestContext.getCurrentInstance();
@@ -275,6 +294,7 @@ public class ControlEmplComprobantes implements Serializable {
                     seleccionComprobante = listaComprobantes.get(indexComprobante);
                     if (tipoListaComprobantes == 0) {
                         secRegistro = listaComprobantes.get(indexComprobante).getSecuencia();
+                        auxFechaEntregadoComprobante = listaComprobantes.get(indexComprobante).getFechaentregado();
                         listaCortesProcesos = administrarComprobantes.consultarCortesProcesosComprobante(listaComprobantes.get(indexComprobante).getSecuencia());
                         if (!listaCortesProcesos.isEmpty()) {
                             listaSolucionesNodosEmpleado = administrarComprobantes.consultarSolucionesNodosEmpleado(listaCortesProcesos.get(0).getSecuencia(), secuenciaEmpleado);
@@ -285,6 +305,7 @@ public class ControlEmplComprobantes implements Serializable {
                         }
                     } else {
                         secRegistro = filtradolistaComprobantes.get(indexComprobante).getSecuencia();
+                        auxFechaEntregadoComprobante = filtradolistaComprobantes.get(indexComprobante).getFechaentregado();
                         listaCortesProcesos = administrarComprobantes.consultarCortesProcesosComprobante(filtradolistaComprobantes.get(indexComprobante).getSecuencia());
                         if (!listaCortesProcesos.isEmpty()) {
                             listaSolucionesNodosEmpleado = administrarComprobantes.consultarSolucionesNodosEmpleado(listaCortesProcesos.get(0).getSecuencia(), secuenciaEmpleado);
@@ -547,9 +568,33 @@ public class ControlEmplComprobantes implements Serializable {
         nombreArchivoExportar = "SolucionesNodosEmpleadorXML";
     }
 
-    public void modificarComprobantes(int indice) {
+    public void modificarComprobantesFechaEntregado(int indice, int tipoEvento, int celda) {
         indexComprobante = indice;
         RequestContext context = RequestContext.getCurrentInstance();
+        Comprobantes aux = null;
+        if (tipoListaComprobantes == 0) {
+            aux = listaComprobantes.get(indice);
+        } else {
+            aux = filtradolistaComprobantes.get(indice);
+        }
+        if (aux.getFechaentregado() == null && aux.isCheckEntregado() == true) {
+            if (tipoListaComprobantes == 0) {
+                listaComprobantes.get(indice).setFechaentregado(auxFechaEntregadoComprobante);
+            } else {
+                filtradolistaComprobantes.get(indice).setFechaentregado(auxFechaEntregadoComprobante);
+            }
+            context.execute("errorFechaEntregaNull.show()");
+        } else {
+            if (tipoEvento == 1 && aux.getFechaentregado() == null) {
+                cambiarIndiceComprobantes(indice, celda);
+            } else {
+                modificarComprobantes(indice);
+            }
+        }
+    }
+
+    public void modificarComprobantes(int indice) {
+
         if (tipoListaComprobantes == 0) {
             if (!listaComprobantesCrear.contains(listaComprobantes.get(indice))) {
                 if (listaComprobantesModificar.isEmpty()) {
@@ -577,6 +622,7 @@ public class ControlEmplComprobantes implements Serializable {
         secRegistro = null;
         tipoTabla = -1;
         modificacionesComprobantes = true;
+        RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosComprobantes");
     }
 
@@ -614,7 +660,6 @@ public class ControlEmplComprobantes implements Serializable {
             modificacionesCortesProcesos = true;
             context.update("form:datosCortesProcesos");
         } else if (confirmarCambio.equalsIgnoreCase("PROCESO")) {
-            System.out.println("Entro " + Proceso);
             if (tipoListaCortesProcesos == 0) {
                 listaCortesProcesos.get(indice).getProceso().setDescripcion(Proceso);
             } else {
@@ -670,6 +715,56 @@ public class ControlEmplComprobantes implements Serializable {
         }
 
         context.update("form:datosCortesProcesos");
+    }
+
+    //AUTOCOMPLETAR NUEVO Y DUPLICADO
+    public void valoresBackupAutocompletar(int tipoNuevo, String Campo) {
+        if (Campo.equals("PROCESO")) {
+            if (tipoNuevo == 1) {
+                Proceso = nuevoCorteProceso.getProceso().getDescripcion();
+            } else if (tipoNuevo == 2) {
+                Proceso = duplicarCorteProceso.getProceso().getDescripcion();
+            }
+        }
+    }
+
+    public void autocompletarNuevoyDuplicado(String confirmarCambio, String valorConfirmar, int tipoNuevo) {
+        int coincidencias = 0;
+        int indiceUnicoElemento = 0;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (confirmarCambio.equalsIgnoreCase("PROCESO")) {
+            if (tipoNuevo == 1) {
+                nuevoCorteProceso.getProceso().setDescripcion(Proceso);
+            } else if (tipoNuevo == 2) {
+                duplicarCorteProceso.getProceso().setDescripcion(Proceso);
+            }
+            for (int i = 0; i < listaProcesos.size(); i++) {
+                if (listaProcesos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                if (tipoNuevo == 1) {
+                    nuevoCorteProceso.setProceso(listaProcesos.get(indiceUnicoElemento));
+                    context.update("formularioDialogos:nuevoProceso");
+                } else if (tipoNuevo == 2) {
+                    duplicarCorteProceso.setProceso(listaProcesos.get(indiceUnicoElemento));
+                    context.update("formularioDialogos:duplicadoProceso");
+                }
+                listaProcesos.clear();
+                getListaProcesos();
+            } else {
+                context.update("formularioDialogos:ProcesosDialogo");
+                context.execute("ProcesosDialogo.show()");
+                tipoActualizacion = tipoNuevo;
+                if (tipoNuevo == 1) {
+                    context.update("formularioDialogos:nuevoProceso");
+                } else if (tipoNuevo == 2) {
+                    context.update("formularioDialogos:duplicadoProceso");
+                }
+            }
+        }
     }
 
     public void modificarSolucionesNodos(String tipoDato, int indice, String valorConfirmar) {
@@ -1599,9 +1694,11 @@ public class ControlEmplComprobantes implements Serializable {
             mensajeValidacion = " * Fecha Comprobante \n";
             pasa++;
         }
-        if (nuevoComprobante.getFechaentregado() == null) {
-            mensajeValidacion = mensajeValidacion + " * Fecha Entrega \n";
-            pasa++;
+        if (nuevoComprobante.isCheckEntregado() == true) {
+            if (nuevoComprobante.getFechaentregado() == null) {
+                mensajeValidacion = mensajeValidacion + " * Fecha Entrega \n";
+                pasa++;
+            }
         }
         if (pasa == 0) {
             if (banderaComprobantes == 1) {
@@ -1687,7 +1784,6 @@ public class ControlEmplComprobantes implements Serializable {
             listaCortesProcesos.add(nuevoCorteProceso);
             nuevoCorteProceso = new CortesProcesos();
             nuevoCorteProceso.setProceso(new Procesos());
-            nuevoCorteProceso.getProceso().setDescripcion(" ");
             context.update("form:datosCortesProcesos");
             if (guardado == true) {
                 guardado = false;
@@ -1708,7 +1804,6 @@ public class ControlEmplComprobantes implements Serializable {
     public void limpiarNuevoCorteProceso() {
         nuevoCorteProceso = new CortesProcesos();
         nuevoCorteProceso.setProceso(new Procesos());
-        nuevoCorteProceso.getProceso().setDescripcion(" ");
         indexCortesProcesos = -1;
         tipoTabla = -1;
         secRegistro = null;
@@ -1719,17 +1814,13 @@ public class ControlEmplComprobantes implements Serializable {
         if (tipoTabla == 0) {
             if (indexComprobante >= 0) {
                 duplicarComprobante = new Comprobantes();
-                k++;
-                l = BigInteger.valueOf(k);
                 if (tipoListaComprobantes == 0) {
-                    duplicarComprobante.setSecuencia(l);
                     duplicarComprobante.setNumero(listaComprobantes.get(indexComprobante).getNumero());
                     duplicarComprobante.setFecha(listaComprobantes.get(indexComprobante).getFecha());
                     duplicarComprobante.setFechaentregado(listaComprobantes.get(indexComprobante).getFechaentregado());
                     duplicarComprobante.setEmpleado(listaComprobantes.get(indexComprobante).getEmpleado());
                     duplicarComprobante.setValor(new BigDecimal(0));
                 } else if (tipoListaComprobantes == 1) {
-                    duplicarComprobante.setSecuencia(l);
                     duplicarComprobante.setNumero(filtradolistaComprobantes.get(indexComprobante).getNumero());
                     duplicarComprobante.setFecha(filtradolistaComprobantes.get(indexComprobante).getFecha());
                     duplicarComprobante.setFechaentregado(filtradolistaComprobantes.get(indexComprobante).getFechaentregado());
@@ -1745,16 +1836,12 @@ public class ControlEmplComprobantes implements Serializable {
         } else if (tipoTabla == 1) {
             if (indexCortesProcesos >= 0) {
                 duplicarCorteProceso = new CortesProcesos();
-                k++;
-                l = BigInteger.valueOf(k);
                 if (tipoListaCortesProcesos == 0) {
-                    duplicarCorteProceso.setSecuencia(l);
                     duplicarCorteProceso.setCorte(listaCortesProcesos.get(indexCortesProcesos).getCorte());
                     duplicarCorteProceso.setProceso(listaCortesProcesos.get(indexCortesProcesos).getProceso());
                     duplicarCorteProceso.setEmpleado(listaCortesProcesos.get(indexCortesProcesos).getEmpleado());
                     duplicarCorteProceso.setComprobante(seleccionComprobante);
                 } else if (tipoListaCortesProcesos == 1) {
-                    duplicarCorteProceso.setSecuencia(l);
                     duplicarCorteProceso.setCorte(filtradolistaCortesProcesos.get(indexCortesProcesos).getCorte());
                     duplicarCorteProceso.setProceso(filtradolistaCortesProcesos.get(indexCortesProcesos).getProceso());
                     duplicarCorteProceso.setEmpleado(filtradolistaCortesProcesos.get(indexCortesProcesos).getEmpleado());
@@ -1781,38 +1868,43 @@ public class ControlEmplComprobantes implements Serializable {
             mensajeValidacion = " * Fecha Comprobante \n";
             pasa++;
         }
-        if (duplicarComprobante.getFechaentregado() == null) {
-            mensajeValidacion = mensajeValidacion + " * Fecha Entrega \n";
-            pasa++;
+        if (duplicarComprobante.isCheckEntregado() == true) {
+            if (duplicarComprobante.getFechaentregado() == null) {
+                mensajeValidacion = mensajeValidacion + " * Fecha Entrega \n";
+                pasa++;
+            }
         }
         if (pasa == 0) {
-        listaComprobantes.add(duplicarComprobante);
-        listaComprobantesCrear.add(duplicarComprobante);
-        context.update("form:datosComprobantes");
-        context.execute("DuplicarRegistroComprobantes.hide()");
-        indexComprobante = -1;
-        tipoTabla = -1;
-        modificacionesComprobantes = true;
-        secRegistro = null;
-        if (guardado == true) {
-            guardado = false;
-            RequestContext.getCurrentInstance().update("form:ACEPTAR");
-        }
-        if (banderaComprobantes == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
+            k++;
+            l = BigInteger.valueOf(k);
+            duplicarComprobante.setSecuencia(l);
+            listaComprobantes.add(duplicarComprobante);
+            listaComprobantesCrear.add(duplicarComprobante);
+            context.update("form:datosComprobantes");
+            context.execute("DuplicarRegistroComprobantes.hide()");
+            indexComprobante = -1;
+            tipoTabla = -1;
+            modificacionesComprobantes = true;
+            secRegistro = null;
+            if (guardado == true) {
+                guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+            }
+            if (banderaComprobantes == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
 
-            numeroComprobanteC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
-            numeroComprobanteC.setFilterStyle("display: none; visibility: hidden;");
-            fechaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaC");
-            fechaC.setFilterStyle("display: none; visibility: hidden;");
-            fechaEntregaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
-            fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
-            altoScrollComprobante = "67";
-            RequestContext.getCurrentInstance().update("form:datosComprobantes");
-            banderaComprobantes = 0;
-            filtradolistaComprobantes = null;
-            tipoListaComprobantes = 0;
-        }
+                numeroComprobanteC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
+                numeroComprobanteC.setFilterStyle("display: none; visibility: hidden;");
+                fechaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaC");
+                fechaC.setFilterStyle("display: none; visibility: hidden;");
+                fechaEntregaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
+                fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
+                altoScrollComprobante = "67";
+                RequestContext.getCurrentInstance().update("form:datosComprobantes");
+                banderaComprobantes = 0;
+                filtradolistaComprobantes = null;
+                tipoListaComprobantes = 0;
+            }
         } else {
             context.update("formularioDialogos:validacioNuevoComprobante");
             context.execute("validacioNuevoComprobante.show()");
@@ -1828,31 +1920,49 @@ public class ControlEmplComprobantes implements Serializable {
     }
 
     public void confirmarDuplicarCortesProcesos() {
-        listaCortesProcesos.add(duplicarCorteProceso);
-        listaCortesProcesosCrear.add(duplicarCorteProceso);
+        int pasa = 0;
+        mensajeValidacion = "";
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosCortesProcesos");
-        context.execute("DuplicarCortesProcesos.hide()");
-        indexCortesProcesos = -1;
-        tipoTabla = -1;
-        modificacionesCortesProcesos = true;
-        secRegistro = null;
-        if (guardado == true) {
-            guardado = false;
-            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+        if (duplicarCorteProceso.getCorte() == null) {
+            mensajeValidacion = " * Fecha Corte \n";
+            pasa++;
         }
-        if (banderaCortesProcesos == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
+        if (duplicarCorteProceso.getProceso().getSecuencia() == null) {
+            mensajeValidacion = " * Proceso \n";
+            pasa++;
+        }
+        if (pasa == 0) {
+            k++;
+            l = BigInteger.valueOf(k);
+            duplicarCorteProceso.setSecuencia(l);
+            listaCortesProcesos.add(duplicarCorteProceso);
+            listaCortesProcesosCrear.add(duplicarCorteProceso);
+            context.update("form:datosCortesProcesos");
+            context.execute("DuplicarCortesProcesos.hide()");
+            indexCortesProcesos = -1;
+            tipoTabla = -1;
+            modificacionesCortesProcesos = true;
+            secRegistro = null;
+            if (guardado == true) {
+                guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+            }
+            if (banderaCortesProcesos == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
 
-            fechaCorteCP = (Column) c.getViewRoot().findComponent("form:datosCortesProcesos:fechaCorteCP");
-            fechaCorteCP.setFilterStyle("display: none; visibility: hidden;");
-            procesoCP = (Column) c.getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
-            procesoCP.setFilterStyle("display: none; visibility: hidden;");
-            altoScrollCortesProcesos = "67";
-            RequestContext.getCurrentInstance().update("form:datosCortesProcesos");
-            banderaCortesProcesos = 0;
-            filtradolistaCortesProcesos = null;
-            tipoListaCortesProcesos = 0;
+                fechaCorteCP = (Column) c.getViewRoot().findComponent("form:datosCortesProcesos:fechaCorteCP");
+                fechaCorteCP.setFilterStyle("display: none; visibility: hidden;");
+                procesoCP = (Column) c.getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
+                procesoCP.setFilterStyle("display: none; visibility: hidden;");
+                altoScrollCortesProcesos = "67";
+                RequestContext.getCurrentInstance().update("form:datosCortesProcesos");
+                banderaCortesProcesos = 0;
+                filtradolistaCortesProcesos = null;
+                tipoListaCortesProcesos = 0;
+            }
+        } else {
+            context.update("formularioDialogos:validacioNuevoCorteProceso");
+            context.execute("validacioNuevoCorteProceso.show()");
         }
     }
 
@@ -1996,7 +2106,6 @@ public class ControlEmplComprobantes implements Serializable {
                 context.update("formDialogos:errorTablaConRastro");
                 context.execute("errorTablaConRastro.show()");
             } else if (resultado == 5) {
-                //System.out.println("Valor: " + nombreTabla);
                 context.update("formDialogos:errorTablaSinRastro");
                 context.execute("errorTablaSinRastro.show()");
             }
@@ -2137,22 +2246,17 @@ public class ControlEmplComprobantes implements Serializable {
         context.update("form:tablaInferiorDerechaEM");
     }
 
-    //GUARDAR
-    public void guardarCambios() {
+    public void guardarCambiosComprobantes() {
         RequestContext context = RequestContext.getCurrentInstance();
-        //if (guardado == false) {
-        if (modificacionesComprobantes == true) {
-            System.out.println("Realizando Operaciones - Comprobantes");
+        try {
             if (!listaComprobantesBorrar.isEmpty()) {
                 for (int i = 0; i < listaComprobantesBorrar.size(); i++) {
-                    System.out.println("Borrando Comprobante...");
                     administrarComprobantes.borrarComprobantes(listaComprobantesBorrar.get(i));
                 }
                 listaComprobantesBorrar.clear();
             }
             if (!listaComprobantesCrear.isEmpty()) {
                 for (int i = 0; i < listaComprobantesCrear.size(); i++) {
-                    System.out.println("Creando Comprobante...");
                     administrarComprobantes.crearComprobante(listaComprobantesCrear.get(i));
                 }
                 listaComprobantesCrear.clear();
@@ -2161,7 +2265,6 @@ public class ControlEmplComprobantes implements Serializable {
                 administrarComprobantes.modificarComprobantes(listaComprobantesModificar);
                 listaComprobantesModificar.clear();
             }
-            System.out.println("Se guardaron los datos con exito - Comprobantes");
             listaComprobantes = null;
             context.update("form:datosComprobantes");
             guardado = true;
@@ -2169,12 +2272,22 @@ public class ControlEmplComprobantes implements Serializable {
             RequestContext.getCurrentInstance().update("form:ACEPTAR");
             k = 0;
             indexComprobante = -1;
+            FacesMessage msg = new FacesMessage("Información", "Los datos de Comprobante se guardaron con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosComprobantes Controlador: " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado de Comprobante, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
-        if (modificacionesCortesProcesos == true) {
-            System.out.println("Realizando Operaciones -Cortes Procesos");
+    }
+
+    public void guardarCambiosCorteProceso() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        try {
             if (!listaCortesProcesosBorrar.isEmpty()) {
                 for (int i = 0; i < listaCortesProcesosBorrar.size(); i++) {
-                    System.out.println("Borrando Corte proceso...");
                     if (listaCortesProcesosBorrar.get(i).getProceso().getSecuencia() == null) {
                         listaCortesProcesosBorrar.get(i).setProceso(null);
                         administrarComprobantes.borrarCortesProcesos(listaCortesProcesosBorrar.get(i));
@@ -2186,7 +2299,6 @@ public class ControlEmplComprobantes implements Serializable {
             }
             if (!listaCortesProcesosCrear.isEmpty()) {
                 for (int i = 0; i < listaCortesProcesosCrear.size(); i++) {
-                    System.out.println("Creando Corte proceso...");
                     if (listaCortesProcesosCrear.get(i).getProceso().getSecuencia() == null) {
                         listaCortesProcesosCrear.get(i).setProceso(null);
                         administrarComprobantes.crearCorteProceso(listaCortesProcesosCrear.get(i));
@@ -2200,7 +2312,6 @@ public class ControlEmplComprobantes implements Serializable {
                 administrarComprobantes.modificarCortesProcesos(listaCortesProcesosModificar);
                 listaCortesProcesosModificar.clear();
             }
-            System.out.println("Se guardaron los datos con exito - Cortes procesos");
             listaCortesProcesos = null;
             context.update("form:datosCortesProcesos");
             guardado = true;
@@ -2208,45 +2319,93 @@ public class ControlEmplComprobantes implements Serializable {
             context.update("form:aceptar");
             k = 0;
             indexCortesProcesos = -1;
+            FacesMessage msg = new FacesMessage("Información", "Los datos de Corte Proceso se guardaron con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosCorteProceso Controlador: " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado de Corte Proceso, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
-        if (modificacionesSolucionesNodosEmpleado = true) {
+    }
+
+    public void guardarCambiosEmpleado() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        try {
             if (!listaSolucionesNodosEmpleadoModificar.isEmpty()) {
                 administrarComprobantes.modificarSolucionesNodosEmpleado(listaSolucionesNodosEmpleadoModificar);
                 listaSolucionesNodosEmpleadoModificar.clear();
             }
-            System.out.println("Se guardaron los datos con exito - Soluciones Nodo Empleado");
             listaSolucionesNodosEmpleado = null;
             context.update("form:tablaInferiorDerecha");
             guardado = true;
             modificacionesSolucionesNodosEmpleado = false;
             RequestContext.getCurrentInstance().update("form:ACEPTAR");
             indexSolucionesEmpleado = -1;
+            FacesMessage msg = new FacesMessage("Información", "Los datos de Empleado se guardaron con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosEmpleado Controlador: " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado de Empleado, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
+    }
 
-        if (modificacionesSolucionesNodosEmpleador = true) {
+    public void guardarCambiosEmpleador() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        try {
             if (!listaSolucionesNodosEmpleadorModificar.isEmpty()) {
                 administrarComprobantes.modificarSolucionesNodosEmpleado(listaSolucionesNodosEmpleadorModificar);
                 listaSolucionesNodosEmpleadorModificar.clear();
             }
-            System.out.println("Se guardaron los datos con exito - Soluciones Nodo Empleador");
             listaSolucionesNodosEmpleador = null;
             context.update("form:tablaInferiorDerechaEM");
             guardado = true;
             modificacionesSolucionesNodosEmpleador = false;
             RequestContext.getCurrentInstance().update("form:ACEPTAR");
             indexSolucionesEmpleador = -1;
+            FacesMessage msg = new FacesMessage("Información", "Los datos de Empleador se guardaron con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosEmpleador Controlador: " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado de Empleador, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
-        //}
-        recibirEmpleado(secuenciaEmpleado);
-        tablaExportar = ":formExportar:datosComprobantesExportar";
-        context.update("form:datosComprobantes");
-        context.update("form:datosCortesProcesos");
-        context.update("form:tablaInferiorIzquierda");
-        context.update("form:tablaInferiorDerecha");
-        context.update("form:tablaInferiorIzquierdaEM");
-        context.update("form:tablaInferiorDerechaEM");
-        context.update("form:exportarXML");
-        secRegistro = null;
+    }
+
+    //GUARDAR
+    public void guardarCambios() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (guardado == false) {
+            if (modificacionesComprobantes == true) {
+                guardarCambiosComprobantes();
+            }
+            if (modificacionesCortesProcesos == true) {
+                guardarCambiosCorteProceso();
+            }
+            if (modificacionesSolucionesNodosEmpleado == true) {
+                guardarCambiosEmpleado();
+            }
+
+            if (modificacionesSolucionesNodosEmpleador == true) {
+                guardarCambiosEmpleador();
+            }
+            recibirEmpleado(secuenciaEmpleado);
+            tablaExportar = ":formExportar:datosComprobantesExportar";
+            context.update("form:datosComprobantes");
+            context.update("form:datosCortesProcesos");
+            context.update("form:tablaInferiorIzquierda");
+            context.update("form:tablaInferiorDerecha");
+            context.update("form:tablaInferiorIzquierdaEM");
+            context.update("form:tablaInferiorDerechaEM");
+            context.update("form:exportarXML");
+            secRegistro = null;
+        }
     }
 
     public void organizarTablasEmpleado() {

@@ -73,7 +73,13 @@ public class AdministrarCuentas implements AdministrarCuentasInterface {
     public void crearCuentas(List<Cuentas> listCuentasCrear) {
         try {
             for (int i = 0; i < listCuentasCrear.size(); i++) {
-                persistenciaCuentas.crear(em,listCuentasCrear.get(i));
+                if (listCuentasCrear.get(i).getContracuentatesoreria().getSecuencia() == null) {
+                    listCuentasCrear.get(i).setContracuentatesoreria(null);
+                }
+                if (listCuentasCrear.get(i).getRubropresupuestal().getSecuencia() == null) {
+                    listCuentasCrear.get(i).setRubropresupuestal(null);
+                }
+                persistenciaCuentas.crear(em, listCuentasCrear.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error en crearCuentas Admi : " + e.toString());
@@ -84,7 +90,7 @@ public class AdministrarCuentas implements AdministrarCuentasInterface {
     public void modificarCuentas(List<Cuentas> listCuentasModificar) {
         try {
             for (int i = 0; i < listCuentasModificar.size(); i++) {
-                persistenciaCuentas.editar(em,listCuentasModificar.get(i));
+                persistenciaCuentas.editar(em, listCuentasModificar.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error en modificarCuentas Admi : " + e.toString());
@@ -95,7 +101,7 @@ public class AdministrarCuentas implements AdministrarCuentasInterface {
     public void borrarCuentas(List<Cuentas> listCuentasBorrar) {
         try {
             for (int i = 0; i < listCuentasBorrar.size(); i++) {
-                persistenciaCuentas.borrar(em,listCuentasBorrar.get(i));
+                persistenciaCuentas.borrar(em, listCuentasBorrar.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error en borrarCuentas Admi : " + e.toString());
@@ -105,7 +111,7 @@ public class AdministrarCuentas implements AdministrarCuentasInterface {
     @Override
     public List<Cuentas> consultarCuentasEmpresa(BigInteger secuencia) {
         try {
-            List<Cuentas> listCuentas = persistenciaCuentas.buscarCuentasSecuenciaEmpresa(em,secuencia);
+            List<Cuentas> listCuentas = persistenciaCuentas.buscarCuentasSecuenciaEmpresa(em, secuencia);
             return listCuentas;
         } catch (Exception e) {
             System.out.println("Error en listCuentasEmpresa Admi : " + e.toString());

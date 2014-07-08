@@ -35,7 +35,7 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(terceros);
+            em.persist(terceros);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaTerceros.crear: " + e);
@@ -151,14 +151,13 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     @Override
     public List<Terceros> lovTerceros(EntityManager em, BigInteger secEmpresa) {
         try {
-            Query query = em.createQuery("SELECT t FROM Terceros t "
-                    + "WHERE t.empresa.secuencia = :secEmpresa ORDER BY t.nombre");
+            Query query = em.createQuery("SELECT t FROM Terceros t WHERE t.empresa.secuencia = :secEmpresa ORDER BY t.nombre");
             query.setParameter("secEmpresa", secEmpresa);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Terceros> listaTerceros = query.getResultList();
             return listaTerceros;
         } catch (Exception e) {
-            System.out.println("Exepcion lovTerceros: " + e);
+            System.out.println("Error PersistenciaTercerosInterface lovTerceros: " + e.toString());
             return null;
         }
     }

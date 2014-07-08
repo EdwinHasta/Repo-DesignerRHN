@@ -24,19 +24,22 @@
 
                         <fieldset style="position: absolute; left: 10px; top: 65px; width: 830px; height: 215px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['recargos']}</strong></legend>
-
-                            <p:dataTable id="datosExtraRecargo" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="position: relative;border: 1px; text-align: left;width: 815px"                           
-                                         value="#{controlATExtraRecargo.listExtrasRecargos}" scrollable="true" scrollHeight="#{controlATExtraRecargo.altoTablaRecargo}"  scrollWidth="830"
-                                         filteredValue="#{controlATExtraRecargo.filtrarListExtrasRecargos}" emptyMessage="#{msg['vacio']}" liveScroll="true" scrollRows="13"
-                                         editable="true" selection="#{controlATExtraRecargo.extraRecargoTablaSeleccionado}" selectionMode="single">
+                            
+                            <p:dataTable id="datosExtraRecargo" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="border: 1px;width: 815px" scrollWidth="830"                          
+                                         value="#{controlATExtraRecargo.listExtrasRecargos}" scrollable="true" scrollHeight="#{controlATExtraRecargo.altoTablaRecargo}"
+                                         filteredValue="#{controlATExtraRecargo.filtrarListExtrasRecargos}" emptyMessage="#{msg['vacio']}"
+                                         editable="true" editMode="cell" 
+                                         selection="#{controlATExtraRecargo.extraRecargoTablaSeleccionado}" selectionMode="single">
 
                                 <p:ajax event="filter" listener="#{controlATExtraRecargo.eventoFiltrar()}"/>
 
                                 <p:column headerText="#{msg['codigo']}" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains" id="extraCodigo" width="35" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.codigo}" /></f:facet>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info.codigo}" />
+                                        </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.codigo}" id="editarExtraCodigo" style="border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText value="#{info.codigo}" id="editarExtraCodigo" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
                                                 <p:ajax event="change" listener="#{controlATExtraRecargo.modificarExtraRecargo(indice)}" update="editarExtraCodigo" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlATExtraRecargo.cambiarIndice(indice, 0)}"  process="@this"/>
                                             </p:inputText>
@@ -50,9 +53,11 @@
 
                                 <p:column  headerText="#{msg['descripcion']}" sortBy="#{info.descripcion}" filterBy="#{info.descripcion}" filterMatchMode="contains" id="extraDescripcion" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.descripcion}" /></f:facet>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info.descripcion}" />
+                                        </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.descripcion}" maxlength="40" id="editarExtraDescripcion" style="border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText value="#{info.descripcion}" maxlength="40" id="editarExtraDescripcion" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
                                                 <p:ajax event="change" listener="#{controlATExtraRecargo.procesoModificacionExtraRecargo(indice)}" update="editarExtraDescripcion" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlATExtraRecargo.cambiarIndice(indice, 1)}" process="@this"/>
                                             </p:inputText>
@@ -67,10 +72,11 @@
                                 <p:column  headerText="#{msg['tipodia']}" sortBy="#{info.tipodia.descripcion}" filterBy="#{info.tipodia.descripcion}" filterMatchMode="contains" 
                                           id="extraTipoDia" width="80" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.tipodia.descripcion}" >
-                                            </h:outputText></f:facet>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info.tipodia.descripcion}" />
+                                        </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.tipodia.descripcion}" id="editarExtraTipoDia" style="border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText value="#{info.tipodia.descripcion}" id="editarExtraTipoDia" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
                                                 <p:ajax event="select" listener="#{controlATExtraRecargo.cambiarIndice(indice, 2)}" process="@this"/>
                                                 <p:ajax event="change" listener="#{controlATExtraRecargo.modificarExtraRecargo(indice, 'DIAS', info.tipodia.descripcion)}" process="@this" update="editarExtraTipoDia"/>
                                                 <p:ajax event="dblclick" listener="#{controlATExtraRecargo.asignarIndex(indice,0,0,0)}" process="@this" update="editarExtraTipoDia"/>
@@ -80,17 +86,18 @@
 
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="color: blue; height: 16px; border: none;width: 100%" value="#{msg['tipodia']}" action="adelanteAtExtraRecargoTipoDia" actionListener="#{controlTiposDias.recibirAtras('atrasAtExtraRecargoTipoDia')}" id="fooTipoDiaExtra"/>
+                                        <p:commandButton style="color: blue; height: 16px; border: none;width: 300px" value=" " action="adelanteAtExtraRecargoTipoDia" actionListener="#{controlTiposDias.recibirAtras('atrasAtExtraRecargoTipoDia')}" id="fooTipoDiaExtra"/>
                                     </f:facet>
                                 </p:column>
 
                                 <p:column  headerText="#{msg['tipojornada']}" sortBy="#{info.tipojornada.descripcion}" filterBy="#{info.tipojornada.descripcion}" filterMatchMode="contains" 
                                           id="extraTipoJornada" width="100" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.tipojornada.descripcion}" >
-                                            </h:outputText></f:facet>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info.tipojornada.descripcion}" />
+                                        </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.tipojornada.descripcion}" id="editarExtraTipoJornada" style="border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText value="#{info.tipojornada.descripcion}" id="editarExtraTipoJornada" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
                                                 <p:ajax event="change" listener="#{controlATExtraRecargo.modificarExtraRecargo(indice, 'JORNADA', info.tipojornada.descripcion)}" process="@this" update="editarExtraTipoJornada"/>
                                                 <p:ajax event="dblclick" listener="#{controlATExtraRecargo.asignarIndex(indice,1,0,0)}" process="@this" update="editarExtraTipoJornada"/>
                                                 <p:ajax event="select" listener="#{controlATExtraRecargo.cambiarIndice(indice, 3)}" />
@@ -106,10 +113,11 @@
                                 <p:column  headerText="#{msg['tipolegislacionlaboral']}" sortBy="#{info.tipolegislacion.descripcion}" filterBy="#{info.tipolegislacion.descripcion}" filterMatchMode="contains" 
                                           id="extraTipoLegislacion" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.tipolegislacion.descripcion}" >
-                                            </h:outputText></f:facet>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info.tipolegislacion.descripcion}" />
+                                        </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.tipolegislacion.descripcion}" id="editarExtraTipoLegislacion" style="border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText value="#{info.tipolegislacion.descripcion}" id="editarExtraTipoLegislacion" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
                                                 <p:ajax event="change" listener="#{controlATExtraRecargo.modificarExtraRecargo(indice, 'LEGISLACION', info.tipolegislacion.descripcion)}" process="@this" update="editarExtraTipoLegislacion"/>
                                                 <p:ajax event="dblclick" listener="#{controlATExtraRecargo.asignarIndex(indice,2,0,0)}" process="@this" update="editarExtraTipoLegislacion"/>
                                                 <p:ajax event="select" listener="#{controlATExtraRecargo.cambiarIndice(indice, 4)}" />
