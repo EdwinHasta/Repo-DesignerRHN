@@ -85,13 +85,23 @@ public class ControlTiposDescansos implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
+    private String paginaAnterior;
+
+    public void recibirPagina(String pagina) {
+        paginaAnterior = pagina;
+    }
+
+    public String redirigirPaginaAnterior() {
+        return paginaAnterior;
+    }
 
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlTiposDescansos.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
-            }  RequestContext context = RequestContext.getCurrentInstance();
+            }
+            RequestContext context = RequestContext.getCurrentInstance();
             infoRegistro = "Cantidad de registros: " + filtrarTiposDescansos.size();
             context.update("form:informacionRegistro");
         } catch (Exception e) {
@@ -303,7 +313,7 @@ public class ControlTiposDescansos implements Serializable {
                         listTiposDescansos.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
                     }
-                    if (listTiposDescansos.get(indice).getDescripcion()==null) {
+                    if (listTiposDescansos.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         listTiposDescansos.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
@@ -357,7 +367,7 @@ public class ControlTiposDescansos implements Serializable {
                         listTiposDescansos.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
                     }
-                    if (listTiposDescansos.get(indice).getDescripcion()==null) {
+                    if (listTiposDescansos.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         listTiposDescansos.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
@@ -413,7 +423,7 @@ public class ControlTiposDescansos implements Serializable {
                         filtrarTiposDescansos.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
                     }
-                    if (filtrarTiposDescansos.get(indice).getDescripcion()==null) {
+                    if (filtrarTiposDescansos.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         filtrarTiposDescansos.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
@@ -470,7 +480,7 @@ public class ControlTiposDescansos implements Serializable {
                         filtrarTiposDescansos.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
                     }
-                    if (filtrarTiposDescansos.get(indice).getDescripcion()==null) {
+                    if (filtrarTiposDescansos.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         filtrarTiposDescansos.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
@@ -681,7 +691,7 @@ public class ControlTiposDescansos implements Serializable {
             }
 
         }
-        if (nuevoTiposDescansos.getDescripcion()==null) {
+        if (nuevoTiposDescansos.getDescripcion() == null) {
             mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -802,7 +812,7 @@ public class ControlTiposDescansos implements Serializable {
             }
 
         }
-        if (duplicarTiposDescansos.getDescripcion()==null) {
+        if (duplicarTiposDescansos.getDescripcion() == null) {
             mensajeValidacion = mensajeValidacion + "   *Descripcion  \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 

@@ -36,9 +36,7 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-                                    <f:facet name="footer">
-                                        <h:outputText value="Código"/>
-                                    </f:facet>
+
                                 </p:column>
                                 <p:column headerText="Descripción" sortBy="#{info.nombre}" filterBy="#{info.nombre}" filterMatchMode="contains" id="descripcion" width="155" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
@@ -50,9 +48,7 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-                                    <f:facet name="footer">
-                                        <h:outputText value="Descripción"/>
-                                    </f:facet>
+
                                 </p:column>
                                 <p:column headerText="Pais" sortBy="#{info.pais.nombre}" filterBy="#{info.pais.nombre}" filterMatchMode="contains" id="pais" width="155" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
@@ -66,7 +62,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 320px; margin: -14px; height: 50px; border: none; color: blue" id="fooPais" value="Pais"/>
+                                        <p:commandButton value="" style="width: 300px; margin: -14px; height: 20px; border: none; color: blue;" id="fooPais" action="pais" />
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>

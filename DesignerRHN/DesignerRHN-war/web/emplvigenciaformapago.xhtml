@@ -86,7 +86,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton value="" style="width: 780px; margin: -14px; height: 20px; border: none; color: blue;" id="fooSucursal" />
+                                        <p:commandButton value="" style="width: 780px; margin: -14px; height: 20px; border: none; color: blue;" action="sucursal" id="fooSucursal"  />
                                     </f:facet>
                                 </p:column> 
 
@@ -102,7 +102,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton value="" style="width: 780px; margin: -14px; height: 20px; border: none; color: blue;"  id="fooFormaPago"/>
+                                        <p:commandButton value="" style="width: 780px; margin: -14px; height: 20px; border: none; color: blue;" action="periodicidad" actionListener="#{controlPeriodicidades.recibirPaginaEntrante('atrasperiodicidad')}" id="fooFormaPago"/>
                                     </f:facet>
                                 </p:column> 
 

@@ -65,6 +65,7 @@ public class ControlMotivosMvrs implements Serializable {
     private String backUpDescripcion;
     private int tamano;
     private String infoRegistro;
+    private String paginaAnterior;
 
     public ControlMotivosMvrs() {
         listMotivosMvrs = null;
@@ -90,6 +91,16 @@ public class ControlMotivosMvrs implements Serializable {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
+    }
+
+    public void recibirPaginaAnterior(String pagina) {
+        paginaAnterior = pagina;
+        System.out.println("ControlMotivosMvrs recibirPaginaAnterior pagina : " + paginaAnterior);
+    }
+
+    public String redireccionarPaginaAnterior() {
+        System.out.println("ControlMotivosMvrs redireccionarPaginaAnterior pagina : " + paginaAnterior);
+        return paginaAnterior;
     }
 
     public void eventoFiltrar() {

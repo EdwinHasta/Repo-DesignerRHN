@@ -92,6 +92,15 @@ public class ControlTiposChequeos implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
+    private String paginaAnterior;
+
+    public void recibirPagina(String pagina) {
+        paginaAnterior = pagina;
+    }
+
+    public String redirigirPaginaAnterior() {
+        return paginaAnterior;
+    }
 
     public void eventoFiltrar() {
         try {

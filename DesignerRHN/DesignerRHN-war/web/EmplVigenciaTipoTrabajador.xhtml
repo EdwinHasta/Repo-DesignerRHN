@@ -192,7 +192,7 @@
                                 <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.cambiosPension()}" update="clasePension"/>
                                 <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.dialogoClasePension()}"  process="@this"/>
                             </p:inputText>
-                            <p:commandButton value="" process="@this" icon="ui-icon-search" actionListener="#{controlVigenciaTipoTrabajador.dialogoClasePension()}" style="position: absolute; left: 235px; top: 84px; height: 23px; width: 23px"/>
+                            <p:commandButton value="" process="@this" icon="ui-icon-search" action="clasepension" style="position: absolute; left: 235px; top: 84px; height: 23px; width: 23px"/>
 
                             <h:outputText value="#{msg['tipoP']}:" style="position: absolute; left: 258px; top: 68px"/>
                             <p:inputText onclick="select();" id="tipoPensionado" value="#{controlVigenciaTipoTrabajador.pensionVigencia.tipopensionado.descripcion}" style="position: absolute; left: 258px; top: 83px; width: 120px">
@@ -200,7 +200,7 @@
                                 <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}" process="@this"/>
                                 <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.cambiosPension()}" update="tipoPensionado"/>
                             </p:inputText>
-                            <p:commandButton value="" process="@this" actionListener="#{controlVigenciaTipoTrabajador.dialogoTipoPensionado()}" icon="ui-icon-search" style="position: absolute; left: 388px; top: 84px; height: 23px; width: 23px"/>
+                            <p:commandButton value="" process="@this" action="tipopensionado" icon="ui-icon-search" style="position: absolute; left: 388px; top: 84px; height: 23px; width: 23px"/>
 
                             <h:outputText value="#{msg['nombreP']}:" style="position: absolute; left: 5px; top: 112px"/>
                             <p:inputText onclick="select();" id="causaBiente" value="#{controlVigenciaTipoTrabajador.pensionVigencia.causabiente.persona.nombre}" style="position: absolute; left: 5px; top: 127px; width: 302px">
@@ -235,7 +235,7 @@
                                 <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.dialogoRetiros()}" immediate="true" process="@this"/>
                                 <p:ajax event="click"  listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoRetirados()}" process="@this" immediate="true"/>
                             </p:inputText>
-                            <p:commandButton value="" actionListener="#{controlVigenciaTipoTrabajador.dialogoRetiros()}" icon="ui-icon-search" style="position: absolute; left: 393px; top: 41px; height: 23px; width: 23px" process="@this"/>
+                            <p:commandButton value="" actionListener="#{controlMotivosReemplazos.recibirPaginaAnterior('atrasmotivoreemplazo')}"  icon="ui-icon-search" style="position: absolute; left: 393px; top: 41px; height: 23px; width: 23px" action="motivoreempleazo" process="@this"/>
                             <p:watermark for="motivoRetiro" value="#{msg['motivoretiroR']}" />
 
 
@@ -633,7 +633,7 @@
                         <p:commandButton value="#{msg['cancelar']}" onclick="guardarCambiosRetiros.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
 
-                    
+
                     <p:dialog id="informacionEliminarExtrabajador" header="#{msg['atencion']}" widgetVar="informacionEliminarExtrabajador"  resizable="false" draggable="false" modal="true" height="100" width="450px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['informacionEliminarExtrabajador']}" style="position: absolute; left: 100px; top: 20px; width: 340px;" />
