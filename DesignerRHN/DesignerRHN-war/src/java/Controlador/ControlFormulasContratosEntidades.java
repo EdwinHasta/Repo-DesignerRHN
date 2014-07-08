@@ -75,6 +75,7 @@ public class ControlFormulasContratosEntidades implements Serializable {
     //private BigInteger secuenciaFormulaSeleccionada;
     private String infoRegistro;
     private String infoRegistroLOVTipoEntidad;
+    private String paginaAnterior;
 
     public ControlFormulasContratosEntidades() {
         listFormulasContratosEntidades = null;
@@ -111,9 +112,15 @@ public class ControlFormulasContratosEntidades implements Serializable {
         }
     }
 
-    public void recibirSecuenciaFormulaContrato(BigInteger secuenciaFormulaContratoActual, BigInteger secuenciaFormula) {
+    public void recibirSecuenciaFormulaContratoYPaginaAnterior(BigInteger secuenciaFormulaContratoActual, String paginaAnterior) {
         secuenciaFormulasContratos = secuenciaFormulaContratoActual;
-        //secuenciaFormulaSeleccionada = secuenciaFormula;
+        this.paginaAnterior = paginaAnterior;
+        System.out.println("ControlFormulasContratosEntidades PaginaAnterior : " + this.paginaAnterior);
+    }
+
+    public String redirigirPagina() {
+        System.out.println("ControlFormulasContratosEntidades  Rediriciengo");
+        return paginaAnterior;
     }
 
     public void eventoFiltrar() {
