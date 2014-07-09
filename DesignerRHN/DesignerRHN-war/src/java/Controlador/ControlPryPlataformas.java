@@ -91,6 +91,9 @@ public class ControlPryPlataformas implements Serializable {
         }
     }
 
+    private String paginaAnterior;
+public void recibirPagina(String pagina){paginaAnterior = pagina;}
+public String redirigirPaginaAnterior(){return paginaAnterior;}
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlPryPlataformas.eventoFiltrar \n");

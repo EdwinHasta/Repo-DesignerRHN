@@ -648,7 +648,7 @@ public class ControlActividades implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listActividades = null;
-            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesMessage msg = new FacesMessage("Información", "Se guardarón los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
             context.update("form:datosActividades");

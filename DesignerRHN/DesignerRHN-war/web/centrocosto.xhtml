@@ -192,7 +192,7 @@
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlBetaCentrosCostos.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="Refrescar"/>
 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlBetaCentrosCostos.salir()}" action="nomina"  process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlBetaCentrosCostos.salir()}" action="#{controlBetaCentrosCostos.redirigirPaginaAnterior()}"  process="@this"/>  
                                 <p:tooltip  for="salir" value="Salir"/>
 
                             </p:toolbarGroup>  
@@ -241,7 +241,7 @@
                         <p:commandButton style="position: absolute; left: 10px; top: 475px;  "  icon="ui-icon-search" id="BUSCARCENTROCOSTO" disabled="#{controlBetaCentrosCostos.buscarCentrocosto}" value="#{msg['buscar']}" actionListener="#{controlBetaCentrosCostos.llamadoDialogoBuscarCentrosCostos()}" process="@this" />
                         <p:commandButton style="position: absolute; left: 180px; top: 475px;  " icon="ui-icon-search" id="MOSTRARTODOS" disabled="#{controlBetaCentrosCostos.mostrartodos}" value="#{msg['mostrar']}" actionListener="#{controlBetaCentrosCostos.cancelarModificacion()}" process="@this"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 475px;  " icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" disabled="#{controlBetaCentrosCostos.guardado}" onclick="confirmarGuardar.show();" update=":form:datosCentrosCostos" process="@this" />
-                        <p:commandButton style=" position: absolute; left: 785px; top: 475px;  " icon="ui-icon-closethick" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlBetaCentrosCostos.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style=" position: absolute; left: 785px; top: 475px;  " icon="ui-icon-closethick" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlBetaCentrosCostos.salir()}" action="#{controlBetaCentrosCostos.redirigirPaginaAnterior()}" process="@this" />
 
                     </p:panel>
 
@@ -275,8 +275,8 @@
                     <p:dialog id="confirmarGuardar" header="ATENCION...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlBetaCentrosCostos.guardarCambiosCentroCosto()}" action="nomina" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
-                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" actionListener="#{controlBetaCentrosCostos.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
+                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlBetaCentrosCostos.guardarCambiosCentroCosto()}" action="#{controlBetaCentrosCostos.redirigirPaginaAnterior()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" actionListener="#{controlBetaCentrosCostos.cancelarModificacion()}" action="#{controlBetaCentrosCostos.redirigirPaginaAnterior()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                         <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
 

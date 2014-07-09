@@ -59,7 +59,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 303px; margin: -14px; height: 20px; border: none; color: blue" id="fooGrupoAsociado" value=""/>
+                                        <p:commandButton style="width: 303px; margin: -14px; height: 20px; border: none; color: blue"  action="grupotipoentidadtipoentidad" actionListener="#{controlGruposTiposEntidades.recibirPagina('atrasgrupotipoentidadtipoentidad')}"  id="fooGrupoAsociado" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -114,7 +114,7 @@
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="Refrescar"/>
 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.salir()}" process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.salir()}" action="#{controlTiposEntidades.redirigirPaginaAnterior()}" process="@this"/>  
                                 <p:tooltip  for="salir" value="Salir"/>
 
                             </p:toolbarGroup>  
@@ -122,7 +122,7 @@
 
                         <h:outputText id="informacionRegistro" value="#{controlTiposEntidades.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px;  font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  onclick="confirmarGuardar.show();" disabled="#{controlTiposEntidades.guardado}" update="datosTipoEntidad"  process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 785px; top: 470px;  font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras"    />
+                        <p:commandButton style=" position: absolute; left: 785px; top: 470px;  font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" action="#{controlTiposEntidades.redirigirPaginaAnterior()}" value="Atras"    />
 
 
 
@@ -132,8 +132,8 @@
                     <p:dialog id="confirmarGuardar" header="ATENCION...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlTiposEntidades.guardarCambiosTiposEntidades()}" action="normalaboralNominaF" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
-                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" actionListener="#{controlTiposEntidades.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
+                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" action="#{controlTiposEntidades.redirigirPaginaAnterior()}" actionListener="#{controlTiposEntidades.guardarCambiosTiposEntidades()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" action="#{controlTiposEntidades.redirigirPaginaAnterior()}" actionListener="#{controlTiposEntidades.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                         <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
 

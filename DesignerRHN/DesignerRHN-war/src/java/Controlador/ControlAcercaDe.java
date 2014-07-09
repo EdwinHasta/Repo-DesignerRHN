@@ -6,7 +6,10 @@
 package Controlador;
 
 import Entidades.Empresas;
+import Exportar.ExportarPDF;
+import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarPapelesInterface;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -15,6 +18,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.Exporter;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -35,6 +40,7 @@ public class ControlAcercaDe implements Serializable {
     private List<Empresas> filtradoListaEmpresas;
 
     private Empresas empresaSeleccionada;
+    private Empresas nuevoEmpresas;
     private String correo;
     private String version;
     private String grh;
@@ -76,6 +82,7 @@ public class ControlAcercaDe implements Serializable {
         correo1 = "gerencia@nomina.com.co";
         correo2 = "www.nomina.com.co/wiki";
         derechos = "1998 - 2014 Todos los Derechos Reservados";
+        nuevoEmpresas = new Empresas(); 
     }
     @PostConstruct
     public void inicializarAdministrador() {
@@ -114,6 +121,27 @@ public class ControlAcercaDe implements Serializable {
         filtradoListaEmpresas = null;
     }
 
+        public void limpiarNuevoEmpresas() {
+        nuevoEmpresas = new Empresas();
+    }
+
+    public void exportPDF() throws IOException {
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosExportar");
+        FacesContext context = FacesContext.getCurrentInstance();
+        Exporter exporter = new ExportarPDF();
+        exporter.export(context, tabla, "ACERCADE", false, false, "UTF-8", null, null);
+        context.responseComplete();
+
+    }
+
+    public void exportXLS() throws IOException {
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosExportar");
+        FacesContext context = FacesContext.getCurrentInstance();
+        Exporter exporter = new ExportarXLS();
+        exporter.export(context, tabla, "ACERCADE", false, false, "UTF-8", null, null);
+        context.responseComplete();
+
+    }
     public List<Empresas> getListaEmpresas() {
         try {
             RequestContext context = RequestContext.getCurrentInstance();
