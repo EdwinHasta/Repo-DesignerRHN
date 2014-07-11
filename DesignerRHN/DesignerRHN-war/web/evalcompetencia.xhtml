@@ -41,7 +41,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.descripcion}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.descripcion}" id="editarNombre" style=" height: 12px; border-radius: 0px; width: 420px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.descripcion}" maxlength="50" id="editarNombre" style=" height: 12px; border-radius: 0px; width: 420px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlEvalCompetencias.cambiarIndice(indice, 1)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlEvalCompetencias.modificarEvalCompetencia(indice, 'N', info.descripcion)}" update="descripcion"/>
                                             </p:inputText>
@@ -54,7 +54,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.desCompetencia}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.desCompetencia}" id="editarDescripcionCompetencia" style="height: 12px;  border-radius: 0px; width: 420px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.desCompetencia}" maxlength="1000" id="editarDescripcionCompetencia" style="height: 12px;  border-radius: 0px; width: 420px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlEvalCompetencias.cambiarIndice(indice, 2)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlEvalCompetencias.modificarEvalCompetencia(indice, 'N', info.desCompetencia)}" update="descripcionCompetencia"/>
                                             </p:inputText>
@@ -240,13 +240,13 @@
                             <p:watermark for="nuevoCodigo" value="Código" />
 
                             <strong><h:outputText value="*Descripción :"  style="left: 15px; position: absolute; top: 90px;" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlEvalCompetencias.nuevoEvalCompetencia.descripcion}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText  id="nuevoNombre" maxlength="50" value="#{controlEvalCompetencias.nuevoEvalCompetencia.descripcion}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoNombre" value="Descripción" />
 
                             <strong><h:outputText value="Descripción Competencia :"  style="left: 15px; position: absolute; top: 120px;" /></strong>
-                            <p:inputTextarea  id="nuevoDC" value="#{controlEvalCompetencias.nuevoEvalCompetencia.desCompetencia}" style="height: 60px ;width: 275px; position: absolute; left: 15px; top: 140px;text-transform: uppercase">
+                            <p:inputTextarea  id="nuevoDC" maxlength="1000" value="#{controlEvalCompetencias.nuevoEvalCompetencia.desCompetencia}" style="height: 60px ;width: 275px; position: absolute; left: 15px; top: 140px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputTextarea>
                             <p:watermark for="nuevoDC" value="Descripción Competencia" />
@@ -269,7 +269,7 @@
                             <p:watermark for="duplicarCodigo" value="Código" />
 
                             <strong><h:outputText value="*Descripción :"  style="left: 15px; position: absolute; top: 90px;" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlEvalCompetencias.duplicarEvalCompetencia.descripcion}"  style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText id="duplicarNombre" maxlength="50" value="#{controlEvalCompetencias.duplicarEvalCompetencia.descripcion}"  style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Descripción" />

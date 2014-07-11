@@ -283,7 +283,7 @@ public class ControlMotivosMvrs implements Serializable {
                     } else {
                         for (int j = 0; j < listMotivosMvrs.size(); j++) {
                             if (j != indice) {
-                                if (listMotivosMvrs.get(indice).getCodigo() == listMotivosMvrs.get(j).getCodigo()) {
+                                if (listMotivosMvrs.get(indice).getCodigo().equals(listMotivosMvrs.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -297,14 +297,14 @@ public class ControlMotivosMvrs implements Serializable {
                         }
 
                     }
+                    if (listMotivosMvrs.get(indice).getNombre()==null) {
+                        listMotivosMvrs.get(indice).setNombre(backUpDescripcion);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
                     if (listMotivosMvrs.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         listMotivosMvrs.get(indice).setNombre(backUpDescripcion);
-                        banderita = false;
-                    }
-                    if (listMotivosMvrs.get(indice).getNombre().equals(" ")) {
-                        listMotivosMvrs.get(indice).setNombre(backUpDescripcion);
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
 
@@ -333,7 +333,7 @@ public class ControlMotivosMvrs implements Serializable {
                     } else {
                         for (int j = 0; j < listMotivosMvrs.size(); j++) {
                             if (j != indice) {
-                                if (listMotivosMvrs.get(indice).getCodigo() == listMotivosMvrs.get(j).getCodigo()) {
+                                if (listMotivosMvrs.get(indice).getCodigo().equals(listMotivosMvrs.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -347,14 +347,14 @@ public class ControlMotivosMvrs implements Serializable {
                         }
 
                     }
+                    if (listMotivosMvrs.get(indice).getNombre()==null) {
+                        listMotivosMvrs.get(indice).setNombre(backUpDescripcion);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
                     if (listMotivosMvrs.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         listMotivosMvrs.get(indice).setNombre(backUpDescripcion);
-                        banderita = false;
-                    }
-                    if (listMotivosMvrs.get(indice).getNombre().equals(" ")) {
-                        listMotivosMvrs.get(indice).setNombre(backUpDescripcion);
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
 
@@ -379,9 +379,9 @@ public class ControlMotivosMvrs implements Serializable {
                         filtrarMotivosMvrs.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
                     } else {
-                        for (int j = 0; j < listMotivosMvrs.size(); j++) {
+                        for (int j = 0; j < filtrarMotivosMvrs.size(); j++) {
                             if (j != indice) {
-                                if (listMotivosMvrs.get(indice).getCodigo() == listMotivosMvrs.get(j).getCodigo()) {
+                                if (filtrarMotivosMvrs.get(indice).getCodigo().equals(filtrarMotivosMvrs.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -396,14 +396,14 @@ public class ControlMotivosMvrs implements Serializable {
 
                     }
 
+                    if (filtrarMotivosMvrs.get(indice).getNombre()==null) {
+                        filtrarMotivosMvrs.get(indice).setNombre(backUpDescripcion);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
                     if (filtrarMotivosMvrs.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         filtrarMotivosMvrs.get(indice).setNombre(backUpDescripcion);
-                        banderita = false;
-                    }
-                    if (filtrarMotivosMvrs.get(indice).getNombre().equals(" ")) {
-                        filtrarMotivosMvrs.get(indice).setNombre(backUpDescripcion);
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
 
@@ -430,9 +430,9 @@ public class ControlMotivosMvrs implements Serializable {
                         filtrarMotivosMvrs.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
                     } else {
-                        for (int j = 0; j < listMotivosMvrs.size(); j++) {
+                        for (int j = 0; j < filtrarMotivosMvrs.size(); j++) {
                             if (j != indice) {
-                                if (listMotivosMvrs.get(indice).getCodigo() == listMotivosMvrs.get(j).getCodigo()) {
+                                if (filtrarMotivosMvrs.get(indice).getCodigo().equals(filtrarMotivosMvrs.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -446,15 +446,15 @@ public class ControlMotivosMvrs implements Serializable {
                         }
 
                     }
+                    if (filtrarMotivosMvrs.get(indice).getNombre()==null) {
+                        filtrarMotivosMvrs.get(indice).setNombre(backUpDescripcion);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
 
                     if (filtrarMotivosMvrs.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         filtrarMotivosMvrs.get(indice).setNombre(backUpDescripcion);
-                        banderita = false;
-                    }
-                    if (filtrarMotivosMvrs.get(indice).getNombre().equals(" ")) {
-                        filtrarMotivosMvrs.get(indice).setNombre(backUpDescripcion);
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
 
@@ -763,7 +763,7 @@ public class ControlMotivosMvrs implements Serializable {
             }
         }
         if (duplicarMotivosMvrs.getNombre() == (null) || duplicarMotivosMvrs.getNombre().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * Un Nombre \n";
+            mensajeValidacion = mensajeValidacion + "   *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {

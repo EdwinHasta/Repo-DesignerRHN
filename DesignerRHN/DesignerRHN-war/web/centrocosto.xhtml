@@ -40,7 +40,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.codigo}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.codigo}" id="editarCodigoCC" style=" border-radius: 0px; width: 99%; height: 12px; text-transform: uppercase" > 
+                                            <p:inputText value="#{info.codigo}" maxlength="15" id="editarCodigoCC" style=" border-radius: 0px; width: 99%; height: 12px; text-transform: uppercase" > 
                                                 <p:ajax  event="change" listener="#{controlBetaCentrosCostos.modificandoCentroCosto(indice, 'N', info.codigo)}" update="@this"/>
                                                 <p:ajax event="select" listener="#{controlBetaCentrosCostos.cambiarIndice(indice,0)}" /> 
                                             </p:inputText>
@@ -55,7 +55,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.nombre}" style="text-transform: uppercase" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText id="editarNombreCentroCoso" value="#{info.nombre}" style=" border-radius: 0px; width: 93.5%;height: 12px; text-transform: uppercase">
+                                            <p:inputText id="editarNombreCentroCoso" maxlength="30" value="#{info.nombre}" style=" border-radius: 0px; width: 93.5%;height: 12px; text-transform: uppercase">
                                                 <p:ajax event="change" listener="#{controlBetaCentrosCostos.modificandoCentroCosto(indice, 'N', info.nombre)}" update="@this" />
                                                 <p:ajax event="select" listener="#{controlBetaCentrosCostos.cambiarIndice(indice, 1)}" />
                                             </p:inputText>
@@ -98,7 +98,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.codigoalternativo}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.codigoalternativo}" id="editarCodigoAT" style="height: 12px; border-radius: 0px; width: 93.5%; text-transform: uppercase" > 
+                                            <p:inputText value="#{info.codigoalternativo}" maxlength="30" id="editarCodigoAT" style="height: 12px; border-radius: 0px; width: 93.5%; text-transform: uppercase" > 
                                                 <p:ajax event="change" listener="#{controlBetaCentrosCostos.modificandoCentroCosto(indice, 'N', info.codigoalternativo )}" update="@this" />
                                                 <p:ajax event="select" listener="#{controlBetaCentrosCostos.cambiarIndice(indice, 4)}" />
                                             </p:inputText>
@@ -118,7 +118,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.codigoctt}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.codigoctt}" id="editarCodigoCTT" style="height: 12px; border-radius: 0px; width: 93.5%; text-transform: uppercase" > 
+                                            <p:inputText value="#{info.codigoctt}" maxlength="20" id="editarCodigoCTT" style="height: 12px; border-radius: 0px; width: 93.5%; text-transform: uppercase" > 
                                                 <p:ajax event="change" listener="#{controlBetaCentrosCostos.modificandoCentroCosto(indice, 'N', info.codigoctt )}" update="@this" />
                                                 <p:ajax event="select" listener="#{controlBetaCentrosCostos.cambiarIndice(indice, 6)}" />
                                             </p:inputText>
@@ -347,13 +347,13 @@
 
                             <!--0-->
                             <strong><h:outputText value="*#{msg['codigoccN']}" style=" position: absolute; top: 60px" /></strong>
-                            <p:inputText id="nuevaCodigoCC" value="#{controlBetaCentrosCostos.nuevoCentroCosto.codigo}" style=" width: 140px; position: absolute; left: 190px; top: 55px;text-transform: uppercase">  
+                            <p:inputText id="nuevaCodigoCC" maxlength="15" value="#{controlBetaCentrosCostos.nuevoCentroCosto.codigo}" style=" width: 140px; position: absolute; left: 190px; top: 55px;text-transform: uppercase">  
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevaCodigoCC" value="#{msg['codigoccWM']}" />
                             <!--1-->
                             <strong><h:outputText value="*#{msg['nombrecentrocostoN']}" style=" position: absolute; top: 90px" /></strong>
-                            <p:inputText id="nuevaNombreCentroCostos" value="#{controlBetaCentrosCostos.nuevoCentroCosto.nombre}" style=" width: 140px; position: absolute; left: 190px; top: 85px;text-transform: uppercase">
+                            <p:inputText id="nuevaNombreCentroCostos" maxlength="30" value="#{controlBetaCentrosCostos.nuevoCentroCosto.nombre}" style=" width: 140px; position: absolute; left: 190px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevaNombreCentroCostos" value="#{msg['nombrecentrocostoWM']}" />
@@ -379,7 +379,7 @@
                             <p:watermark for="nuevaManodeObra" value="#{msg['manodeobraWM']}" />
                             <!--4-->
                             <strong><h:outputText value="#{msg['codigoatN']}" style=" position: absolute; top: 180px" /></strong>
-                            <p:inputText id="nuevaCodigoAT" value="#{controlBetaCentrosCostos.nuevoCentroCosto.codigoalternativo}" style=" width: 140px; position: absolute; left: 190px; top: 175px;text-transform: uppercase">  
+                            <p:inputText id="nuevaCodigoAT" maxlength="30" value="#{controlBetaCentrosCostos.nuevoCentroCosto.codigoalternativo}" style=" width: 140px; position: absolute; left: 190px; top: 175px;text-transform: uppercase">  
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevaCodigoAT" value="#{msg['codigoatWM']}" />
@@ -394,7 +394,7 @@
                             <p:watermark for="nuevaObsoleto" value="#{msg['obsoletoWM']}" />
                             <!--6-->
                             <strong><h:outputText value="#{msg['codigocttN']}" style=" position: absolute; top: 240px" /></strong>
-                            <p:inputText id="nuevaCodigoCTT" value="#{controlBetaCentrosCostos.nuevoCentroCosto.codigoctt}" style=" width: 140px; position: absolute; left: 190px; top: 235px;text-transform: uppercase">  
+                            <p:inputText id="nuevaCodigoCTT" maxlength="20" value="#{controlBetaCentrosCostos.nuevoCentroCosto.codigoctt}" style=" width: 140px; position: absolute; left: 190px; top: 235px;text-transform: uppercase">  
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevaCodigoCTT" value="#{msg['codigocttWM']}" />
@@ -464,13 +464,13 @@
                         <p:panel id="duplicarCentroCostos" style="border: none;">
                             <!--0-->
                             <strong><h:outputText value="*#{msg['codigoccN']}" style=" position: absolute; top: 60px" /></strong>
-                            <p:inputText id="duplicarCodigoCC" value="#{controlBetaCentrosCostos.duplicarCentroCosto.codigo}" style=" width: 140px; position: absolute; left: 190px; top: 55px;text-transform: uppercase">  
+                            <p:inputText id="duplicarCodigoCC" maxlength="15" value="#{controlBetaCentrosCostos.duplicarCentroCosto.codigo}" style=" width: 140px; position: absolute; left: 190px; top: 55px;text-transform: uppercase">  
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigoCC" value="#{msg['codigoccWM']}" />
                             <!--1-->
                             <strong><h:outputText value="*#{msg['nombrecentrocostoN']}" style=" position: absolute; top: 90px" /></strong>
-                            <p:inputText id="duplicarNombreCentroCostos" value="#{controlBetaCentrosCostos.duplicarCentroCosto.nombre}" style=" width: 140px; position: absolute; left: 190px; top: 85px;text-transform: uppercase">  
+                            <p:inputText id="duplicarNombreCentroCostos" maxlength="30" value="#{controlBetaCentrosCostos.duplicarCentroCosto.nombre}" style=" width: 140px; position: absolute; left: 190px; top: 85px;text-transform: uppercase">  
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombreCentroCostos" value="#{msg['nombrecentrocostoWM']}" />
@@ -494,7 +494,7 @@
                             <p:watermark for="duplicarManodeObra" value="#{msg['manodeobraWM']}" />
                             <!--4-->
                             <strong><h:outputText value="#{msg['codigoatN']}" style=" position: absolute; top: 180px" /></strong>
-                            <p:inputText id="duplicarCodigoAT" value="#{controlBetaCentrosCostos.duplicarCentroCosto.codigoalternativo}" style=" width: 140px; position: absolute; left: 190px; top: 175px;text-transform: uppercase">  
+                            <p:inputText id="duplicarCodigoAT" maxlength="30" value="#{controlBetaCentrosCostos.duplicarCentroCosto.codigoalternativo}" style=" width: 140px; position: absolute; left: 190px; top: 175px;text-transform: uppercase">  
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigoAT" value="#{msg['codigoatWM']}" />
@@ -509,7 +509,7 @@
                             <p:watermark for="duplicarObsoleto" value="#{msg['obsoletoWM']}" />
                             <!--6-->
                             <strong><h:outputText value="#{msg['codigocttN']}" style=" position: absolute; top: 240px" /></strong>
-                            <p:inputText id="duplicarCodigoCTT" value="#{controlBetaCentrosCostos.duplicarCentroCosto.codigoctt}" style=" width: 140px; position: absolute; left: 190px; top: 235px;text-transform: uppercase">  
+                            <p:inputText id="duplicarCodigoCTT" maxlength="20" value="#{controlBetaCentrosCostos.duplicarCentroCosto.codigoctt}" style=" width: 140px; position: absolute; left: 190px; top: 235px;text-transform: uppercase">  
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigoCTT" value="#{msg['codigocttWM']}" />

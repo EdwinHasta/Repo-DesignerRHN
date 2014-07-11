@@ -284,7 +284,7 @@ public class ControlMotivosLocalizaciones implements Serializable {
                     } else {
                         for (int j = 0; j < listMotivosLocalizaciones.size(); j++) {
                             if (j != indice) {
-                                if (listMotivosLocalizaciones.get(indice).getCodigo() == listMotivosLocalizaciones.get(j).getCodigo()) {
+                                if (listMotivosLocalizaciones.get(indice).getCodigo().equals(listMotivosLocalizaciones.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -299,13 +299,13 @@ public class ControlMotivosLocalizaciones implements Serializable {
                         }
 
                     }
-                    if (listMotivosLocalizaciones.get(indice).getDescripcion().isEmpty()) {
+                    if (listMotivosLocalizaciones.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                         listMotivosLocalizaciones.get(indice).setDescripcion(backUpDescripcion);
 
                     }
-                    if (listMotivosLocalizaciones.get(indice).getDescripcion().equals(" ")) {
+                    if (listMotivosLocalizaciones.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                         listMotivosLocalizaciones.get(indice).setDescripcion(backUpDescripcion);
@@ -336,7 +336,7 @@ public class ControlMotivosLocalizaciones implements Serializable {
                     } else {
                         for (int j = 0; j < listMotivosLocalizaciones.size(); j++) {
                             if (j != indice) {
-                                if (listMotivosLocalizaciones.get(indice).getCodigo() == listMotivosLocalizaciones.get(j).getCodigo()) {
+                                if (listMotivosLocalizaciones.get(indice).getCodigo().equals(listMotivosLocalizaciones.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -351,13 +351,13 @@ public class ControlMotivosLocalizaciones implements Serializable {
                         }
 
                     }
-                    if (listMotivosLocalizaciones.get(indice).getDescripcion().isEmpty()) {
+                    if (listMotivosLocalizaciones.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                         listMotivosLocalizaciones.get(indice).setDescripcion(backUpDescripcion);
 
                     }
-                    if (listMotivosLocalizaciones.get(indice).getDescripcion().equals(" ")) {
+                    if (listMotivosLocalizaciones.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                         listMotivosLocalizaciones.get(indice).setDescripcion(backUpDescripcion);
@@ -386,9 +386,9 @@ public class ControlMotivosLocalizaciones implements Serializable {
                         banderita = false;
                         filtrarMotivosLocalizaciones.get(indice).setCodigo(backUpCodigo);
                     } else {
-                        for (int j = 0; j < listMotivosLocalizaciones.size(); j++) {
+                        for (int j = 0; j < filtrarMotivosLocalizaciones.size(); j++) {
                             if (j != indice) {
-                                if (filtrarMotivosLocalizaciones.get(indice).getCodigo() == listMotivosLocalizaciones.get(j).getCodigo()) {
+                                if (filtrarMotivosLocalizaciones.get(indice).getCodigo().equals(filtrarMotivosLocalizaciones.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -436,9 +436,9 @@ public class ControlMotivosLocalizaciones implements Serializable {
                         banderita = false;
                         filtrarMotivosLocalizaciones.get(indice).setCodigo(backUpCodigo);
                     } else {
-                        for (int j = 0; j < listMotivosLocalizaciones.size(); j++) {
+                        for (int j = 0; j < filtrarMotivosLocalizaciones.size(); j++) {
                             if (j != indice) {
-                                if (filtrarMotivosLocalizaciones.get(indice).getCodigo() == listMotivosLocalizaciones.get(j).getCodigo()) {
+                                if (filtrarMotivosLocalizaciones.get(indice).getCodigo().equals(filtrarMotivosLocalizaciones.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -634,7 +634,7 @@ public class ControlMotivosLocalizaciones implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoMotivoContrato.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoMotivoContrato.getCodigo());
@@ -655,11 +655,11 @@ public class ControlMotivosLocalizaciones implements Serializable {
             }
         }
         if (nuevoMotivoContrato.getDescripcion() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener Una  Descripcion \n";
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else if (nuevoMotivoContrato.getDescripcion().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener Una  Descripcion \n";
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -765,7 +765,7 @@ public class ControlMotivosLocalizaciones implements Serializable {
         System.err.println("ConfirmarDuplicar nombre " + duplicarMotivoContrato.getDescripcion());
 
         if (duplicarMotivoContrato.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listMotivosLocalizaciones.size(); x++) {
@@ -783,7 +783,7 @@ public class ControlMotivosLocalizaciones implements Serializable {
             }
         }
         if (duplicarMotivoContrato.getDescripcion() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Un Nombre \n";
+            mensajeValidacion = mensajeValidacion + "   *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
