@@ -35,7 +35,7 @@ public class TiposEntidades implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
-    private short codigo;
+    private Short codigo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoentidad")
     private Collection<AportesEntidades> aportesEntidadesCollection;
 
@@ -159,11 +159,11 @@ public class TiposEntidades implements Serializable {
         this.detallesTiposCotizantesCollection = detallesTiposCotizantesCollection;
     }
 
-    public short getCodigo() {
+    public Short getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(Short codigo) {
         this.codigo = codigo;
     }
 
