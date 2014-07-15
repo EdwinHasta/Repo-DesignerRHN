@@ -366,8 +366,10 @@
 
                             <div id="superiorDerecha" style="height: 50px; width: 528px; overflow-x: hidden; position: absolute; left: 307px; top: -11px;" >
                                 <p:dataTable id="tablaSuperiorDerecha" var="solucionNodoEmpleado" style=" width: 1350px; position: relative; top: 24px;" value="#{controlEmplComprobantes.listaSolucionesNodosEmpleado}"
-                                             widgetVar="tablaSuperiorDerecha" styleClass="hide-row-names"
-                                             filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleado}">
+                                             widgetVar="tablaSuperiorDerecha" styleClass="hide-row-names" rowKey="#{solucionNodoEmpleado.secuencia}"
+                                             filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleado}"
+                                             selection="#{controlEmplComprobantes.empleadoTablaSeleccionado}" selectionMode="single"
+                                             >
 
                                     <p:ajax event="sort" listener="#{controlEmplComprobantes.organizarTablasEmpleado()}" />
                                   <!--  <p:ajax event="sort" listener="#{controlRemoto.recargar()}" /> 
@@ -399,8 +401,8 @@
                             <legend style=" font-weight: bold; color: #00F;">#{msg['empleador']}</legend>
                             <div id="superiorIzquierdoEM" style="height: 200px; width: 300px; overflow-y: hidden; position: absolute; top: -5px" >
                                 <p:dataTable id="tablaSuperiorIzquierdaEM" var="solucionNodoEmpleador" style=" width: 300px; position: relative; top: 18px;" value="#{controlEmplComprobantes.listaSolucionesNodosEmpleador}"
-                                             rowKey="#{solucionNodoEmpleador.secuencia}" widgetVar="tablaSuperiorIzquierdaEM" styleClass="hide-row-names" filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleador}"
-                                             selection="#{controlEmplComprobantes.empleadorTablaSeleccionado}" selectionMode="single"
+                                             widgetVar="tablaSuperiorIzquierdaEM" styleClass="hide-row-names" filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleador}" 
+                                             selection="#{controlEmplComprobantes.empleadorTablaSeleccionado}" selectionMode="single" rowKey="#{solucionNodoEmpleador.secuencia}"
                                              >
                                     <p:ajax event="sort" listener="#{controlEmplComprobantes.organizarTablasEmpleador()}" />
 
@@ -562,7 +564,8 @@
                             <div id="superiorDerechaEM" style="height: 50px; width: 525px; overflow-x: hidden; position: absolute; left: 307px; top: -11px;" >
                                 <p:dataTable id="tablaSuperiorDerechaEM" var="solucionNodoEmpleador" style=" width: 1350px; position: relative; top: 24px;" value="#{controlEmplComprobantes.listaSolucionesNodosEmpleador}"
                                              widgetVar="tablaSuperiorDerechaEM" styleClass="hide-row-names"
-                                             filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleador}">
+                                             filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleador}"
+                                             selection="#{controlEmplComprobantes.empleadorTablaSeleccionado}" selectionMode="single" rowKey="#{solucionNodoEmpleador.secuencia}">
 
                                     <p:ajax event="sort" listener="#{controlEmplComprobantes.organizarTablasEmpleador()}" />
                                  <!--  <p:ajax event="sort" listener="#{controlRemoto.recargar()}" /> 

@@ -168,12 +168,7 @@ public class ControlIdiomaPersona implements Serializable {
         }
     }
 
-    /**
-     * Metodo que modifica los cambios efectuados en la tabla
-     * VigenciasReformasLaborales de la pagina
-     *
-     * @param indice Fila en la cual se realizo el cambio
-     */
+    
     public void modificarIdiomaPersona(int indice, String confirmarCambio, String valorConfirmar) {
         index = indice;
         int coincidencias = 0;
@@ -293,46 +288,38 @@ public class ControlIdiomaPersona implements Serializable {
         }
     }
 
-    //Ubicacion Celda.
-    /**
-     * Metodo que obtiene la posicion dentro de la tabla
-     * VigenciasReformasLaborales
-     *
-     * @param indice Fila de la tabla
-     * @param celda Columna de la tabla
-     */
+   
     public void cambiarIndice(int indice, int celda) {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
-            secRegistro = listIdiomasPersonas.get(index).getSecuencia();
-            if (cualCelda == 0) {
-                idioma = listIdiomasPersonas.get(index).getIdioma().getNombre();
+            if (tipoLista == 0) {
+                secRegistro = listIdiomasPersonas.get(index).getSecuencia();
+                if (cualCelda == 0) {
+                    idioma = listIdiomasPersonas.get(index).getIdioma().getNombre();
+                }
+            } else {
+                secRegistro = filtrarListIdiomasPersonas.get(index).getSecuencia();
+                if (cualCelda == 0) {
+                    idioma = filtrarListIdiomasPersonas.get(index).getIdioma().getNombre();
+                }
             }
         }
     }
-    //GUARDAR
-
-    /**
-     * Metodo que guarda los cambios efectuados en la pagina
-     * VigenciasReformasLaborales
-     */
+   
     public void guardarCambios() {
         RequestContext context = RequestContext.getCurrentInstance();
         try {
             if (guardado == false) {
                 if (!listIdiomaPersonaBorrar.isEmpty()) {
-                    System.out.println("listIdiomaPersonaBorrar.size : " + listIdiomaPersonaBorrar.size());
                     administrarIdiomaPersona.borrarIdiomasPersonas(listIdiomaPersonaBorrar);
                     listIdiomaPersonaBorrar.clear();
                 }
                 if (!listIdiomaPersonaCrear.isEmpty()) {
-                    System.out.println("listIdiomaPersonaCrear.size : " + listIdiomaPersonaCrear.size());
                     administrarIdiomaPersona.crearIdiomasPersonas(listIdiomaPersonaCrear);
                     listIdiomaPersonaCrear.clear();
                 }
                 if (!listIdiomaPersonaModificar.isEmpty()) {
-                    System.out.println("listIdiomaPersonaModificar.size : " + listIdiomaPersonaModificar.size());
                     administrarIdiomaPersona.editarIdiomasPersonas(listIdiomaPersonaModificar);
                     listIdiomaPersonaModificar.clear();
                 }
@@ -361,11 +348,7 @@ public class ControlIdiomaPersona implements Serializable {
             context.update("form:growl");
         }
     }
-    //CANCELAR MODIFICACIONES
-
-    /**
-     * Cancela las modificaciones realizas en la pagina
-     */
+   
     public void cancelarModificacion() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
@@ -405,11 +388,7 @@ public class ControlIdiomaPersona implements Serializable {
         context.update("form:datosIdiomas");
     }
 
-    //MOSTRAR DATOS CELDA
-    /**
-     * Metodo que muestra los dialogos de editar con respecto a la lista real o
-     * la lista filtrada y a la columna
-     */
+  
     public void editarCelda() {
         if (index >= 0) {
             if (tipoLista == 0) {
@@ -442,10 +421,7 @@ public class ControlIdiomaPersona implements Serializable {
         secRegistro = null;
     }
 
-    //CREAR VU
-    /**
-     * Metodo que se encarga de agregar un nueva VigenciaReformaLaboral
-     */
+  
     public void agregarNuevaIdiomaPersona() {
         if (nuevaIdiomaPersona.getIdioma().getSecuencia() != null) {
             FacesContext c = FacesContext.getCurrentInstance();
@@ -498,31 +474,18 @@ public class ControlIdiomaPersona implements Serializable {
             context.execute("errorRegNull.show()");
         }
     }
-    //LIMPIAR NUEVO REGISTRO
-
-    /**
-     * Metodo que limpia las casillas de la nueva vigencia
-     */
+   
     public void limpiarNuevaIdiomaPersona() {
         nuevaIdiomaPersona = new IdiomasPersonas();
         nuevaIdiomaPersona.setIdioma(new Idiomas());
         index = -1;
         secRegistro = null;
     }
-    //DUPLICAR VC
-
-    /**
-     * Metodo que duplica una vigencia especifica dado por la posicion de la
-     * fila
-     */
+   
     public void duplicarIdiomaPersonaM() {
         if (index >= 0) {
             duplicarIdiomaPersona = new IdiomasPersonas();
-            k++;
-            l = BigInteger.valueOf(k);
-
             if (tipoLista == 0) {
-                duplicarIdiomaPersona.setSecuencia(l);
                 duplicarIdiomaPersona.setEscritura(listIdiomasPersonas.get(index).getEscritura());
                 duplicarIdiomaPersona.setHabla(listIdiomasPersonas.get(index).getHabla());
                 duplicarIdiomaPersona.setIdioma(listIdiomasPersonas.get(index).getIdioma());
@@ -530,7 +493,6 @@ public class ControlIdiomaPersona implements Serializable {
                 duplicarIdiomaPersona.setPersona(listIdiomasPersonas.get(index).getPersona());
             }
             if (tipoLista == 1) {
-                duplicarIdiomaPersona.setSecuencia(l);
                 duplicarIdiomaPersona.setEscritura(filtrarListIdiomasPersonas.get(index).getEscritura());
                 duplicarIdiomaPersona.setHabla(filtrarListIdiomasPersonas.get(index).getHabla());
                 duplicarIdiomaPersona.setIdioma(filtrarListIdiomasPersonas.get(index).getIdioma());
@@ -547,15 +509,15 @@ public class ControlIdiomaPersona implements Serializable {
         }
     }
 
-    /**
-     * Metodo que confirma el duplicado y actualiza los datos de la tabla
-     * VigenciasReformasLaborales
-     */
+   
     public void confirmarDuplicar() {
         if (duplicarIdiomaPersona.getIdioma().getSecuencia() != null) {
             if (listIdiomasPersonas == null) {
                 listIdiomasPersonas = new ArrayList<IdiomasPersonas>();
             }
+            k++;
+            l = BigInteger.valueOf(k);
+            duplicarIdiomaPersona.setSecuencia(l);
             duplicarIdiomaPersona.setPersona(empleadoActual.getPersona());
             listIdiomasPersonas.add(duplicarIdiomaPersona);
             listIdiomaPersonaCrear.add(duplicarIdiomaPersona);
@@ -598,22 +560,14 @@ public class ControlIdiomaPersona implements Serializable {
             context.execute("errorRegNull.show()");
         }
     }
-    //LIMPIAR DUPLICAR
-
-    /**
-     * Metodo que limpia los datos de un duplicar Vigencia
-     */
+    
     public void limpiarDuplicar() {
         duplicarIdiomaPersona = new IdiomasPersonas();
         duplicarIdiomaPersona.setIdioma(new Idiomas());
     }
 
-    //BORRAR VC
-    /**
-     * Metodo que borra las vigencias seleccionadas
-     */
+    
     public void borrarIdiomaPersona() {
-
         if (index >= 0) {
             if (tipoLista == 0) {
                 if (!listIdiomaPersonaModificar.isEmpty() && listIdiomaPersonaModificar.contains(listIdiomasPersonas.get(index))) {
@@ -662,12 +616,7 @@ public class ControlIdiomaPersona implements Serializable {
             }
         }
     }
-    //CTRL + F11 ACTIVAR/DESACTIVAR
-
-    /**
-     * Metodo que activa el filtrado por medio de la opcion en el tollbar o por
-     * medio de la tecla Crtl+F11
-     */
+   
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
@@ -699,10 +648,7 @@ public class ControlIdiomaPersona implements Serializable {
         }
     }
 
-    //SALIR
-    /**
-     * Metodo que cierra la sesion y limpia los datos en la pagina
-     */
+   
     public void salir() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
@@ -732,15 +678,7 @@ public class ControlIdiomaPersona implements Serializable {
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
     }
-    //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO)
-
-    /**
-     * Metodo que ejecuta el dialogo de reforma laboral
-     *
-     * @param indice Fila de la tabla
-     * @param list Lista filtrada - Lista real
-     * @param LND Tipo actualizacion = LISTA - NUEVO - DUPLICADO
-     */
+    
     public void asignarIndex(Integer indice, int LND) {
         index = indice;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -756,11 +694,7 @@ public class ControlIdiomaPersona implements Serializable {
         context.execute("IdiomasDialogo.show()");
     }
 
-    //LOVS
-    //CIUDAD
-    /**
-     * Metodo que actualiza la reforma laboral seleccionada
-     */
+    
     public void actualizarIdioma() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
@@ -788,6 +722,7 @@ public class ControlIdiomaPersona implements Serializable {
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             permitirIndex = true;
+            context.update("form:datosIdiomas");
         } else if (tipoActualizacion == 1) {
             nuevaIdiomaPersona.setIdioma(idiomaSeleccionado);
             context.update("formularioDialogos:nuevaIdioma");
@@ -808,9 +743,7 @@ public class ControlIdiomaPersona implements Serializable {
         context.execute("IdiomasDialogo.hide()");
     }
 
-    /**
-     * Metodo que cancela los cambios sobre reforma laboral
-     */
+   
     public void cancelarCambioIdioma() {
         filtrarListIdiomas = null;
         idiomaSeleccionado = null;
@@ -846,19 +779,11 @@ public class ControlIdiomaPersona implements Serializable {
         }
     }
 
-    /**
-     * Metodo que activa el boton aceptar de la pagina y los dialogos
-     */
+   
     public void activarAceptar() {
         aceptar = false;
     }
-    //EXPORTAR
-
-    /**
-     * Metodo que exporta datos a PDF
-     *
-     * @throws IOException Excepcion de In-Out de datos
-     */
+   
     public void exportPDF() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosIdiomaExportar");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -869,11 +794,7 @@ public class ControlIdiomaPersona implements Serializable {
         secRegistro = null;
     }
 
-    /**
-     * Metodo que exporta datos a XLS
-     *
-     * @throws IOException Excepcion de In-Out de datos
-     */
+   
     public void exportXLS() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosIdiomaExportar");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -883,11 +804,7 @@ public class ControlIdiomaPersona implements Serializable {
         index = -1;
         secRegistro = null;
     }
-    //EVENTO FILTRAR
-
-    /**
-     * Evento que cambia la lista reala a la filtrada
-     */
+    
     public void eventoFiltrar() {
         if (tipoLista == 0) {
             tipoLista = 1;
@@ -929,14 +846,7 @@ public class ControlIdiomaPersona implements Serializable {
         }
         index = -1;
     }
-    //GETTERS AND SETTERS
-
-    /**
-     * Metodo que obtiene las VigenciasReformasLaborales de un empleado, en caso
-     * de ser null por medio del administrar hace el llamado para almacenarlo
-     *
-     * @return listVC Lista VigenciasReformasLaborales
-     */
+    
     public List<IdiomasPersonas> getListIdiomasPersonas() {
         try {
             if (listIdiomasPersonas == null) {
