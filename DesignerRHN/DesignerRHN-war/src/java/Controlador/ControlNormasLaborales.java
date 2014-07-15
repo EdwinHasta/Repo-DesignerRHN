@@ -289,7 +289,7 @@ public class ControlNormasLaborales implements Serializable {
                     } else {
                         for (int j = 0; j < listNormasLaborales.size(); j++) {
                             if (j != indice) {
-                                if (listNormasLaborales.get(indice).getCodigo() == listNormasLaborales.get(j).getCodigo()) {
+                                if (listNormasLaborales.get(indice).getCodigo().equals(listNormasLaborales.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -339,7 +339,7 @@ public class ControlNormasLaborales implements Serializable {
                     } else {
                         for (int j = 0; j < listNormasLaborales.size(); j++) {
                             if (j != indice) {
-                                if (listNormasLaborales.get(indice).getCodigo() == listNormasLaborales.get(j).getCodigo()) {
+                                if (listNormasLaborales.get(indice).getCodigo().equals(listNormasLaborales.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -386,9 +386,9 @@ public class ControlNormasLaborales implements Serializable {
                         banderita = false;
                         filtrarNormasLaborales.get(indice).setCodigo(backUpCodigo);
                     } else {
-                        for (int j = 0; j < listNormasLaborales.size(); j++) {
+                        for (int j = 0; j < filtrarNormasLaborales.size(); j++) {
                             if (j != indice) {
-                                if (filtrarNormasLaborales.get(indice).getCodigo() == listNormasLaborales.get(j).getCodigo()) {
+                                if (filtrarNormasLaborales.get(indice).getCodigo().equals(filtrarNormasLaborales.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -436,9 +436,9 @@ public class ControlNormasLaborales implements Serializable {
                         banderita = false;
                         filtrarNormasLaborales.get(indice).setCodigo(backUpCodigo);
                     } else {
-                        for (int j = 0; j < listNormasLaborales.size(); j++) {
+                        for (int j = 0; j < filtrarNormasLaborales.size(); j++) {
                             if (j != indice) {
-                                if (filtrarNormasLaborales.get(indice).getCodigo() == listNormasLaborales.get(j).getCodigo()) {
+                                if (filtrarNormasLaborales.get(indice).getCodigo().equals(filtrarNormasLaborales.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -637,7 +637,7 @@ public class ControlNormasLaborales implements Serializable {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoNormaLaboral.getCodigo());
 
             for (int x = 0; x < listNormasLaborales.size(); x++) {
-                if (listNormasLaborales.get(x).getCodigo() == nuevoNormaLaboral.getCodigo()) {
+                if (listNormasLaborales.get(x).getCodigo().equals(nuevoNormaLaboral.getCodigo())) {
                     duplicados++;
                 }
             }
@@ -763,7 +763,7 @@ public class ControlNormasLaborales implements Serializable {
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listNormasLaborales.size(); x++) {
-                if (listNormasLaborales.get(x).getCodigo() == duplicarNormaLaboral.getCodigo()) {
+                if (listNormasLaborales.get(x).getCodigo().equals(duplicarNormaLaboral.getCodigo())) {
                     duplicados++;
                 }
             }

@@ -58,7 +58,7 @@ public class AdministrarTiposDescansos implements AdministrarTiposDescansosInter
     @Override
     public void crearTiposDescansos(List<TiposDescansos> listaTiposDescansos) {
         for (int i = 0; i < listaTiposDescansos.size(); i++) {
-            System.out.println("Administrar Borrando...");
+            System.out.println("Administrar Creando...");
             persistenciaTiposDescansos.crear(em, listaTiposDescansos.get(i));
         }
     }

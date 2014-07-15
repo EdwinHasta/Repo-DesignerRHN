@@ -38,7 +38,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.nombre}" style=" text-transform: uppercase" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.nombre}" id="editarNombre" style="height: 12px;   border-radius: 0px; width: 99%; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.nombre}" maxlength="30" id="editarNombre" style="height: 12px;   border-radius: 0px; width: 99%; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlTiposEntidades.cambiarIndice(indice, 1)}" process="@this"/> 
                                                 <p:ajax event="change" listener="#{controlTiposEntidades.modificarTipoEntidad(indice, 'N', info.nombre)}" update="nombre"/>
                                             </p:inputText>
@@ -284,7 +284,7 @@
                             <p:watermark for="nuevoCodigo" value="Código" />
 
                             <strong><h:outputText value="*Nombre: "  style="left: 10px; position: absolute; top: 90px;" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlTiposEntidades.nuevoTipoEntidad.nombre}" style=" width: 135px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText  id="nuevoNombre" maxlength="30" value="#{controlTiposEntidades.nuevoTipoEntidad.nombre}" style=" width: 135px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoNombre" value="Nombre" />
@@ -316,7 +316,7 @@
                             <p:watermark for="duplicarCodigo" value="Codigo" />
 
                             <strong><h:outputText value="*Nombre:"  style="left: 10px; position: absolute; top: 90px;" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlTiposEntidades.duplicarTipoEntidad.nombre}"  style=" width: 135px; position: absolute; left: 150px; top: 85px; text-transform: uppercase" >
+                            <p:inputText id="duplicarNombre" maxlength="30" value="#{controlTiposEntidades.duplicarTipoEntidad.nombre}"  style=" width: 135px; position: absolute; left: 150px; top: 85px; text-transform: uppercase" >
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Nombre" />

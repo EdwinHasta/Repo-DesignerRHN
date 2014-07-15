@@ -276,7 +276,7 @@ public class ControlPartesCuerpo implements Serializable {
                     } else {
                         for (int j = 0; j < listPartesCuerpo.size(); j++) {
                             if (j != indice) {
-                                if (listPartesCuerpo.get(indice).getCodigo() == listPartesCuerpo.get(j).getCodigo()) {
+                                if (listPartesCuerpo.get(indice).getCodigo().equals(listPartesCuerpo.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -325,7 +325,7 @@ public class ControlPartesCuerpo implements Serializable {
                     } else {
                         for (int j = 0; j < listPartesCuerpo.size(); j++) {
                             if (j != indice) {
-                                if (listPartesCuerpo.get(indice).getCodigo() == listPartesCuerpo.get(j).getCodigo()) {
+                                if (listPartesCuerpo.get(indice).getCodigo().equals(listPartesCuerpo.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -374,7 +374,7 @@ public class ControlPartesCuerpo implements Serializable {
 
                         for (int j = 0; j < filtrarPartesCuerpo.size(); j++) {
                             if (j != indice) {
-                                if (filtrarPartesCuerpo.get(indice).getCodigo() == filtrarPartesCuerpo.get(j).getCodigo()) {
+                                if (filtrarPartesCuerpo.get(indice).getCodigo().equals(filtrarPartesCuerpo.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -423,9 +423,9 @@ public class ControlPartesCuerpo implements Serializable {
                         banderita = false;
                     } else {
 
-                        for (int j = 0; j < listPartesCuerpo.size(); j++) {
+                        for (int j = 0; j < filtrarPartesCuerpo.size(); j++) {
                             if (j != indice) {
-                                if (filtrarPartesCuerpo.get(indice).getCodigo() == listPartesCuerpo.get(j).getCodigo()) {
+                                if (filtrarPartesCuerpo.get(indice).getCodigo().equals(filtrarPartesCuerpo.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -648,7 +648,7 @@ public class ControlPartesCuerpo implements Serializable {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoPartesCuerpo.getCodigo());
 
             for (int x = 0; x < listPartesCuerpo.size(); x++) {
-                if (listPartesCuerpo.get(x).getCodigo() == nuevoPartesCuerpo.getCodigo()) {
+                if (listPartesCuerpo.get(x).getCodigo().equals(nuevoPartesCuerpo.getCodigo())) {
                     duplicados++;
                 }
             }
@@ -773,7 +773,7 @@ public class ControlPartesCuerpo implements Serializable {
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listPartesCuerpo.size(); x++) {
-                if (listPartesCuerpo.get(x).getCodigo() == duplicarPartesCuerpo.getCodigo()) {
+                if (listPartesCuerpo.get(x).getCodigo().equals(duplicarPartesCuerpo.getCodigo())) {
                     duplicados++;
                 }
             }

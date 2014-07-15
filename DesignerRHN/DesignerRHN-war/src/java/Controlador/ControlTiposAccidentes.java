@@ -276,7 +276,7 @@ public class ControlTiposAccidentes implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposAccidentes.size(); j++) {
                             if (j != indice) {
-                                if (listTiposAccidentes.get(indice).getCodigo() == listTiposAccidentes.get(j).getCodigo()) {
+                                if (listTiposAccidentes.get(indice).getCodigo().equals(listTiposAccidentes.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -325,7 +325,7 @@ public class ControlTiposAccidentes implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposAccidentes.size(); j++) {
                             if (j != indice) {
-                                if (listTiposAccidentes.get(indice).getCodigo() == listTiposAccidentes.get(j).getCodigo()) {
+                                if (listTiposAccidentes.get(indice).getCodigo().equals(listTiposAccidentes.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -372,9 +372,9 @@ public class ControlTiposAccidentes implements Serializable {
                         banderita = false;
                     } else {
 
-                        for (int j = 0; j < listTiposAccidentes.size(); j++) {
+                        for (int j = 0; j < filtrarTiposAccidentes.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposAccidentes.get(indice).getCodigo() == listTiposAccidentes.get(j).getCodigo()) {
+                                if (filtrarTiposAccidentes.get(indice).getCodigo().equals(filtrarTiposAccidentes.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -423,9 +423,9 @@ public class ControlTiposAccidentes implements Serializable {
                         banderita = false;
                     } else {
 
-                        for (int j = 0; j < listTiposAccidentes.size(); j++) {
+                        for (int j = 0; j < filtrarTiposAccidentes.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposAccidentes.get(indice).getCodigo() == listTiposAccidentes.get(j).getCodigo()) {
+                                if (filtrarTiposAccidentes.get(indice).getCodigo().equals(filtrarTiposAccidentes.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -642,7 +642,7 @@ public class ControlTiposAccidentes implements Serializable {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTiposAccidentes.getCodigo());
 
             for (int x = 0; x < listTiposAccidentes.size(); x++) {
-                if (listTiposAccidentes.get(x).getCodigo() == nuevoTiposAccidentes.getCodigo()) {
+                if (listTiposAccidentes.get(x).getCodigo().equals(nuevoTiposAccidentes.getCodigo())) {
                     duplicados++;
                 }
             }
@@ -767,7 +767,7 @@ public class ControlTiposAccidentes implements Serializable {
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listTiposAccidentes.size(); x++) {
-                if (listTiposAccidentes.get(x).getCodigo() == duplicarTiposAccidentes.getCodigo()) {
+                if (listTiposAccidentes.get(x).getCodigo().equals(duplicarTiposAccidentes.getCodigo())) {
                     duplicados++;
                 }
             }

@@ -280,7 +280,7 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
                     } else {
                         for (int j = 0; j < listTiposFamiliares.size(); j++) {
                             if (j != indice) {
-                                if (listTiposFamiliares.get(indice).getCodigo() == listTiposFamiliares.get(j).getCodigo()) {
+                                if (listTiposFamiliares.get(indice).getCodigo().equals(listTiposFamiliares.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -329,7 +329,7 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
                     } else {
                         for (int j = 0; j < listTiposFamiliares.size(); j++) {
                             if (j != indice) {
-                                if (listTiposFamiliares.get(indice).getCodigo() == listTiposFamiliares.get(j).getCodigo()) {
+                                if (listTiposFamiliares.get(indice).getCodigo().equals(listTiposFamiliares.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -376,9 +376,9 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
                         banderita = false;
                     } else {
 
-                        for (int j = 0; j < listTiposFamiliares.size(); j++) {
+                        for (int j = 0; j < filtrarTiposFamiliares.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposFamiliares.get(indice).getCodigo() == listTiposFamiliares.get(j).getCodigo()) {
+                                if (filtrarTiposFamiliares.get(indice).getCodigo().equals(filtrarTiposFamiliares.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -427,9 +427,9 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
                         banderita = false;
                     } else {
 
-                        for (int j = 0; j < listTiposFamiliares.size(); j++) {
+                         for (int j = 0; j < filtrarTiposFamiliares.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposFamiliares.get(indice).getCodigo() == listTiposFamiliares.get(j).getCodigo()) {
+                                if (filtrarTiposFamiliares.get(indice).getCodigo().equals(filtrarTiposFamiliares.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -642,7 +642,7 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTiposFamiliares.getCodigo());
 
             for (int x = 0; x < listTiposFamiliares.size(); x++) {
-                if (listTiposFamiliares.get(x).getCodigo() == nuevoTiposFamiliares.getCodigo()) {
+                if (listTiposFamiliares.get(x).getCodigo().equals(nuevoTiposFamiliares.getCodigo())) {
                     duplicados++;
                 }
             }
@@ -767,7 +767,7 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listTiposFamiliares.size(); x++) {
-                if (listTiposFamiliares.get(x).getCodigo() == duplicarTiposFamiliares.getCodigo()) {
+                if (listTiposFamiliares.get(x).getCodigo().equals(duplicarTiposFamiliares.getCodigo())) {
                     duplicados++;
                 }
             }

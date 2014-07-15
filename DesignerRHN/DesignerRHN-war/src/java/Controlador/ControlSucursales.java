@@ -1441,6 +1441,7 @@ public class ControlSucursales implements Serializable {
         duplicarSucursales.setCiudad(new Ciudades());
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("nuevoRegistroSucursales.show()");
+        context.update("formularioDialogos:nuevaTipoempresa");
 
     }
 
