@@ -160,7 +160,11 @@ public interface PersistenciaEmpleadoInterface {
 
     public Empleados buscarEmpleadoPorCodigoyEmpresa(EntityManager em, BigInteger codigo, BigInteger empresa);
 
-    public Empleados obtenerUltimoEmpleadoAlmacenado(EntityManager em,BigInteger secuenciaEmpresa, BigInteger codigoEmpleado);
- public Empleados buscarEmpleadoSecuenciaPersona(EntityManager em, BigInteger secuencia);
-  public List<Empleados> consultarEmpleadosLiquidacionesLog(EntityManager em);
+    public Empleados obtenerUltimoEmpleadoAlmacenado(EntityManager em, BigInteger secuenciaEmpresa, BigInteger codigoEmpleado);
+
+    public Empleados buscarEmpleadoSecuenciaPersona(EntityManager em, BigInteger secuencia);
+
+    public List<Empleados> consultarEmpleadosLiquidacionesLog(EntityManager em);
+
+    public List<Empleados> consultarEmpleadosParametroAutoliq(EntityManager em);
 }

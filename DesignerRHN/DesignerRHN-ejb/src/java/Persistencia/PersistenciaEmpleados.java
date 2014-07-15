@@ -356,4 +356,24 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             return null;
         }
     }
+
+    @Override
+    public List<Empleados> consultarEmpleadosParametroAutoliq(EntityManager em) {
+        try {
+            String sql = "SELECT * FROM empleados E WHERE EXISTS (SELECT 1 FROM VigenciasTiposTrabajadores vtte,tipostrabajadores tt\n"
+                    + "  WHERE vtte.empleado = E.SECUENCIA\n"
+                    + "  and vtte.tipotrabajador = tt.secuencia\n"
+                    + "  and tt.tipo != 'DISPONIBLE'\n"
+                    + "  AND  vtte.fechavigencia = (select max(fechavigencia)\n"
+                    + "  from vigenciastipostrabajadores vtti\n"
+                    + "  WHERE  vtti.empleado = vtte.empleado\n"
+                    + "  and   vtti.fechavigencia <= last_day(sysdate)))";
+            Query query = em.createNativeQuery(sql, Empleados.class);
+            List<Empleados> lista = query.getResultList();
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error consultarEmpleadosParametroAutoliq PersistenciaEmpleados : " + e.toString());
+            return null;
+        }
+    }
 }

@@ -104,4 +104,6 @@ public interface PersistenciaTercerosInterface {
     public String buscarCodigoSSPorSecuenciaTercero(EntityManager em, BigInteger secuencia);
 
     public String buscarCodigoSPPorSecuenciaTercero(EntityManager em, BigInteger secuencia);
+
+    public List<Terceros> buscarTercerosParametrosAutoliq(EntityManager em);
 }

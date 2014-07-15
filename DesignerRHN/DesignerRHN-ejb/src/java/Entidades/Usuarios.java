@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -42,7 +43,7 @@ public class Usuarios implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Size(max = 1)
     @Column(name = "ACTIVO")
     private String activo;
@@ -65,15 +66,15 @@ public class Usuarios implements Serializable {
     public Usuarios() {
     }
 
-    public Usuarios(BigDecimal secuencia) {
+    public Usuarios(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 

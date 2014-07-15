@@ -39,6 +39,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Empresas.findAll", query = "SELECT e FROM Empresas e")})
 public class Empresas implements Serializable {
+    @OneToMany(mappedBy = "empresa")
+    private Collection<AportesEntidades> aportesEntidadesCollection;
+    @OneToMany(mappedBy = "empresa")
+    private Collection<ParametrosAutoliq> parametrosAutoliqCollection;
 
     @Size(max = 1)
     @Column(name = "CDIUSAHTTPS")
@@ -1395,6 +1399,24 @@ public class Empresas implements Serializable {
 
     public void setReteticketsumabasecompara(String reteticketsumabasecompara) {
         this.reteticketsumabasecompara = reteticketsumabasecompara;
+    }
+
+    @XmlTransient
+    public Collection<AportesEntidades> getAportesEntidadesCollection() {
+        return aportesEntidadesCollection;
+    }
+
+    public void setAportesEntidadesCollection(Collection<AportesEntidades> aportesEntidadesCollection) {
+        this.aportesEntidadesCollection = aportesEntidadesCollection;
+    }
+
+    @XmlTransient
+    public Collection<ParametrosAutoliq> getParametrosAutoliqCollection() {
+        return parametrosAutoliqCollection;
+    }
+
+    public void setParametrosAutoliqCollection(Collection<ParametrosAutoliq> parametrosAutoliqCollection) {
+        this.parametrosAutoliqCollection = parametrosAutoliqCollection;
     }
 
 }

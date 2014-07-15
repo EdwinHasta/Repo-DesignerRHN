@@ -104,6 +104,21 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     }
 
     @Override
+    public List<Terceros> buscarTercerosParametrosAutoliq(EntityManager em) {
+        try {
+            String sql = "SELECT * FROM TERCEROS t\n"
+                    + "   where exists (select 'x' from tercerossucursales ts\n"
+                    + "   where ts.tercero=t.secuencia)";
+            Query query = em.createNativeQuery(sql, Terceros.class);
+            List<Terceros> terceros = (List<Terceros>) query.getResultList();
+            return terceros;
+        } catch (Exception e) {
+            System.out.println("Error buscarTercerosParametrosAutoliq PersistenciaTercerosInterface : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
     public Terceros buscarTercerosSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT t FROM Terceros t WHERE t.secuencia = :secuencia");
