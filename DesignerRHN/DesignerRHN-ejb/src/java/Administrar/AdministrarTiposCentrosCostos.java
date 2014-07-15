@@ -62,7 +62,7 @@ public class AdministrarTiposCentrosCostos implements AdministrarTiposCentrosCos
     public void crearTiposCentrosCostos(List<TiposCentrosCostos> listaTiposCentrosCostos) {
         for (int i = 0; i < listaTiposCentrosCostos.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaTiposCentrosCostos.borrar(em, listaTiposCentrosCostos.get(i));
+            persistenciaTiposCentrosCostos.crear(em, listaTiposCentrosCostos.get(i));
         }
     }
 

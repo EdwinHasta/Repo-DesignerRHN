@@ -106,6 +106,14 @@ public class ControlTiposCentrosCostos implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
+    
+    private String paginaAnterior;
+    public void recibirPaginaAnterior(String pagina){
+    paginaAnterior=pagina;
+    }
+    
+    public String redirigirPaginaAnterior(){
+    return paginaAnterior;}
 
     public void eventoFiltrar() {
         try {

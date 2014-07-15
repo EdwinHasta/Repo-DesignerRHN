@@ -273,7 +273,7 @@ public class ControlTiposConclusiones implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposConclusiones.size(); j++) {
                             if (j != indice) {
-                                if (listTiposConclusiones.get(indice).getCodigo() == listTiposConclusiones.get(j).getCodigo()) {
+                                if (listTiposConclusiones.get(indice).getCodigo().equals(listTiposConclusiones.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -322,7 +322,7 @@ public class ControlTiposConclusiones implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposConclusiones.size(); j++) {
                             if (j != indice) {
-                                if (listTiposConclusiones.get(indice).getCodigo() == listTiposConclusiones.get(j).getCodigo()) {
+                                if (listTiposConclusiones.get(indice).getCodigo().equals(listTiposConclusiones.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -369,9 +369,9 @@ public class ControlTiposConclusiones implements Serializable {
                         banderita = false;
                     } else {
 
-                        for (int j = 0; j < listTiposConclusiones.size(); j++) {
+                        for (int j = 0; j < filtrarTiposConclusiones.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposConclusiones.get(indice).getCodigo() == listTiposConclusiones.get(j).getCodigo()) {
+                                if (filtrarTiposConclusiones.get(indice).getCodigo().equals(filtrarTiposConclusiones.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -420,9 +420,9 @@ public class ControlTiposConclusiones implements Serializable {
                         banderita = false;
                     } else {
 
-                        for (int j = 0; j < listTiposConclusiones.size(); j++) {
+                        for (int j = 0; j < filtrarTiposConclusiones.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposConclusiones.get(indice).getCodigo() == listTiposConclusiones.get(j).getCodigo()) {
+                                if (filtrarTiposConclusiones.get(indice).getCodigo().equals(filtrarTiposConclusiones.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -635,7 +635,7 @@ public class ControlTiposConclusiones implements Serializable {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTiposConclusiones.getCodigo());
 
             for (int x = 0; x < listTiposConclusiones.size(); x++) {
-                if (listTiposConclusiones.get(x).getCodigo() == nuevoTiposConclusiones.getCodigo()) {
+                if (listTiposConclusiones.get(x).getCodigo().equals(nuevoTiposConclusiones.getCodigo())) {
                     duplicados++;
                 }
             }
@@ -760,7 +760,7 @@ public class ControlTiposConclusiones implements Serializable {
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listTiposConclusiones.size(); x++) {
-                if (listTiposConclusiones.get(x).getCodigo() == duplicarTiposConclusiones.getCodigo()) {
+                if (listTiposConclusiones.get(x).getCodigo().equals(duplicarTiposConclusiones.getCodigo())) {
                     duplicados++;
                 }
             }

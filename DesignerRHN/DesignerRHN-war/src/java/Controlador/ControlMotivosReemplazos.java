@@ -64,6 +64,7 @@ public class ControlMotivosReemplazos implements Serializable {
     private int tamano;
     private Integer backUpCodigo;
     private String backUpDescripcion;
+    private String paginaAnterior;
 
     public ControlMotivosReemplazos() {
         listMotivosReemplazos = null;
@@ -91,6 +92,16 @@ public class ControlMotivosReemplazos implements Serializable {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
+    }
+
+    public void recibirPaginaAnterior(String pagina) {
+        paginaAnterior = pagina;
+        System.out.println("ControlMotivosReemplazos recibirPaginaAnterior paginaAnterior : " + paginaAnterior);
+    }
+
+    public String redirigirPaginaAnterior() {
+        System.out.println("ControlMotivosReemplazos redirigirPaginaAnterior paginaAnterior : " + paginaAnterior);
+        return paginaAnterior;
     }
 
     public void eventoFiltrar() {

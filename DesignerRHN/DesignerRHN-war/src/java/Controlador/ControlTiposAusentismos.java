@@ -276,7 +276,7 @@ public class ControlTiposAusentismos implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposAusentismos.size(); j++) {
                             if (j != indice) {
-                                if (listTiposAusentismos.get(indice).getCodigo() == listTiposAusentismos.get(j).getCodigo()) {
+                                if (listTiposAusentismos.get(indice).getCodigo().equals(listTiposAusentismos.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -325,7 +325,7 @@ public class ControlTiposAusentismos implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposAusentismos.size(); j++) {
                             if (j != indice) {
-                                if (listTiposAusentismos.get(indice).getCodigo() == listTiposAusentismos.get(j).getCodigo()) {
+                                if (listTiposAusentismos.get(indice).getCodigo().equals(listTiposAusentismos.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -372,9 +372,9 @@ public class ControlTiposAusentismos implements Serializable {
                         banderita = false;
                     } else {
 
-                        for (int j = 0; j < listTiposAusentismos.size(); j++) {
+                        for (int j = 0; j < filtrarTiposAusentismos.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposAusentismos.get(indice).getCodigo() == listTiposAusentismos.get(j).getCodigo()) {
+                                if (filtrarTiposAusentismos.get(indice).getCodigo().equals(filtrarTiposAusentismos.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -423,9 +423,9 @@ public class ControlTiposAusentismos implements Serializable {
                         banderita = false;
                     } else {
 
-                        for (int j = 0; j < listTiposAusentismos.size(); j++) {
+                        for (int j = 0; j < filtrarTiposAusentismos.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposAusentismos.get(indice).getCodigo() == listTiposAusentismos.get(j).getCodigo()) {
+                                if (filtrarTiposAusentismos.get(indice).getCodigo().equals(filtrarTiposAusentismos.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -642,7 +642,7 @@ public class ControlTiposAusentismos implements Serializable {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTiposAusentismos.getCodigo());
 
             for (int x = 0; x < listTiposAusentismos.size(); x++) {
-                if (listTiposAusentismos.get(x).getCodigo() == nuevoTiposAusentismos.getCodigo()) {
+                if (listTiposAusentismos.get(x).getCodigo().equals(nuevoTiposAusentismos.getCodigo())) {
                     duplicados++;
                 }
             }
@@ -767,7 +767,7 @@ public class ControlTiposAusentismos implements Serializable {
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listTiposAusentismos.size(); x++) {
-                if (listTiposAusentismos.get(x).getCodigo() == duplicarTiposAusentismos.getCodigo()) {
+                if (listTiposAusentismos.get(x).getCodigo().equals(duplicarTiposAusentismos.getCodigo())) {
                     duplicados++;
                 }
             }

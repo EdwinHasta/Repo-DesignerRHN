@@ -74,7 +74,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.numerocuenta}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.numerocuenta}" id="editarSubTituloFirma" style="height: 12px;  border-radius: 0px; width: 99%; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.numerocuenta}" maxlength="20" id="editarSubTituloFirma" style="height: 12px;  border-radius: 0px; width: 99%; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlEmpresasBancos.cambiarIndice(indice, 3)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlEmpresasBancos.modificarEmpresasBancos(indice, 'N', info.numerocuenta)}" update="subTituloFirma"/>
                                             </p:inputText>
@@ -411,7 +411,7 @@
                             <p:watermark for="nuevoCargo" value="Ciudad" />
 
                             <strong><h:outputText value="*Numero Cuenta:"  style="left: 15px; position: absolute; top: 150px;" /></strong>
-                            <p:inputText  id="nuevoSubtituloFirma" value="#{controlEmpresasBancos.nuevoEmpresasBancos.numerocuenta}" style=" width: 135px; position: absolute; left: 140px; top: 145px;text-transform: uppercase">
+                            <p:inputText  id="nuevoSubtituloFirma" maxlength="20" value="#{controlEmpresasBancos.nuevoEmpresasBancos.numerocuenta}" style=" width: 135px; position: absolute; left: 140px; top: 145px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoSubtituloFirma" value="Numero Cuenta" />
@@ -465,7 +465,7 @@
                             <p:watermark for="duplicarCargo" value="Ciudad" />
 
                             <strong><h:outputText value="*Numero Cuenta"  style="left: 15px; position: absolute; top: 150px;" /></strong>
-                            <p:inputText id="duplicarSubtituloFirma" value="#{controlEmpresasBancos.duplicarEmpresasBancos.numerocuenta}"  style=" width: 135px; position: absolute; left: 140px; top:145px;text-transform: uppercase">
+                            <p:inputText id="duplicarSubtituloFirma" maxlength="20" value="#{controlEmpresasBancos.duplicarEmpresasBancos.numerocuenta}"  style=" width: 135px; position: absolute; left: 140px; top:145px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarSubtituloFirma" value="Numero Cuenta" />

@@ -275,7 +275,7 @@ public class ControlTiposCursos implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposCursos.size(); j++) {
                             if (j != indice) {
-                                if (listTiposCursos.get(indice).getCodigo() == listTiposCursos.get(j).getCodigo()) {
+                                if (listTiposCursos.get(indice).getCodigo().equals(listTiposCursos.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -324,7 +324,7 @@ public class ControlTiposCursos implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposCursos.size(); j++) {
                             if (j != indice) {
-                                if (listTiposCursos.get(indice).getCodigo() == listTiposCursos.get(j).getCodigo()) {
+                                if (listTiposCursos.get(indice).getCodigo().equals(listTiposCursos.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -371,9 +371,9 @@ public class ControlTiposCursos implements Serializable {
                         banderita = false;
                     } else {
 
-                        for (int j = 0; j < listTiposCursos.size(); j++) {
+                        for (int j = 0; j < filtrarTiposCursos.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposCursos.get(indice).getCodigo() == listTiposCursos.get(j).getCodigo()) {
+                                if (filtrarTiposCursos.get(indice).getCodigo().equals(filtrarTiposCursos.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -424,7 +424,7 @@ public class ControlTiposCursos implements Serializable {
 
                         for (int j = 0; j < listTiposCursos.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposCursos.get(indice).getCodigo() == listTiposCursos.get(j).getCodigo()) {
+                                if (filtrarTiposCursos.get(indice).getCodigo().equals(filtrarTiposCursos.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -637,7 +637,7 @@ public class ControlTiposCursos implements Serializable {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTiposCursos.getCodigo());
 
             for (int x = 0; x < listTiposCursos.size(); x++) {
-                if (listTiposCursos.get(x).getCodigo() == nuevoTiposCursos.getCodigo()) {
+                if (listTiposCursos.get(x).getCodigo().equals(nuevoTiposCursos.getCodigo())) {
                     duplicados++;
                 }
             }
@@ -762,7 +762,7 @@ public class ControlTiposCursos implements Serializable {
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listTiposCursos.size(); x++) {
-                if (listTiposCursos.get(x).getCodigo() == duplicarTiposCursos.getCodigo()) {
+                if (listTiposCursos.get(x).getCodigo().equals(duplicarTiposCursos.getCodigo())) {
                     duplicados++;
                 }
             }

@@ -23,9 +23,9 @@
                             <h:outputText value="#{msg['boton']}" style="font-size:11px; font-weight: bold; width: 160px; text-align: justify; position: absolute; left: 65px;"/>
                             <p:inputText value="#{controlEmplComprobantes.empleado.persona.nombreCompleto}" style="position: absolute; top: 77px; width: 206px; color: #BF1A1A; font-weight: bold; text-align: center" readonly="true" />
                         </fieldset>
-                        
+
                         <p:remoteCommand name="posicionComprobante" actionListener="#{controlEmplComprobantes.posicionComprobante()}"/>
-                        
+
                         <fieldset style="position: absolute; left: 250px; top: 75px;  width: 270px; height: 100px; border-radius: 10px; ">
                             <legend style=" font-weight: bold; color: #00F;">#{msg['titulo']}</legend>
 
@@ -90,7 +90,7 @@
                                         <f:facet name="input">
                                             <lnk:calendar id="editarFechaEntregado" readonly="#{comprobante.readOnlyFechaEntregado}" value="#{comprobante.fechaentregado}" height="12" width="99"
                                                           onselect="posicionComprobante([{name: 'n', value: '2'}, {name: 't', value: '#{indiceComprobante}'}]);"> 
-                                                          
+
                                                 <p:ajax event="dateSelect" listener="#{controlEmplComprobantes.modificarComprobantesFechaEntregado(indiceComprobante,0,2)}" update="@this"/>
                                                 <p:ajax event="change" listener="#{controlEmplComprobantes.modificarComprobantesFechaEntregado(indiceComprobante,1,2)}" update="@this" />
                                                 <p:ajax event="select" listener="#{controlEmplComprobantes.cambiarIndiceComprobantes(indiceComprobante, 2)}"/>
@@ -131,7 +131,7 @@
                                 <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
-                                
+
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplComprobantes.nuevoRegistro()}" process="@this"/> 
                                 <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
 
@@ -311,6 +311,9 @@
                                                 </p:inputText>
                                             </f:facet>
                                         </p:cellEditor>
+                                        <f:facet name="footer">
+                                            <p:commandButton style="width: 190px; margin: -14px; height: 26px;  border: none; color: blue" action="centrocostoEmplComprobante" actionListener="#{controlBetaCentrosCostos.recibirPagina('atrascentrocostoEmplComprobante')}" id="fooNombreJornada" value=""/>
+                                        </f:facet>
                                     </p:column>
                                     <p:column id="creditoSNE" headerText="#{msg['credito']}" sortBy="#{solucionNodoEmpleado.cuentac.codigo}" style="width: 40px" filterBy="#{solucionNodoEmpleado.cuentac.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
                                         <p:cellEditor>  
@@ -608,7 +611,7 @@
                         <center><strong><h:outputText value="#{msg['ingresarnuevoC']}" style="color: blue; position: relative; top: 15px" /></strong></center> 
 
                         <p:panel id="nuevoComprobante" style="border: none;">
-                            
+
                             <strong><h:outputText value="*#{msg['numeroC']}" style=" position: absolute; top: 75px" /></strong>
                             <p:inputText id="nuevoNumeroComprobante" value="#{controlEmplComprobantes.nuevoComprobante.numero}" style=" position: absolute; top: 70px; left: 200px; width: 100px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this" />
@@ -621,10 +624,10 @@
                                     <p:ajax event="change" update="nuevaFechaComprobante" process="@this"/>
                                 </lnk:calendar>
                             </div>
-                            
+
                             <strong><h:outputText value="#{msg['entregadoC']}" style=" position: absolute; top: 135px" /></strong>
                             <p:selectBooleanCheckbox id="nuevaCheck" style="position: absolute; top: 130px; left: 200px" value="#{controlEmplComprobantes.nuevoComprobante.checkEntregado}">
-                                        <p:ajax event="change" update="@this" process="@this"/>
+                                <p:ajax event="change" update="@this" process="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['fechaentregaC']}" style=" position: absolute; top: 165px" /></strong>
@@ -634,7 +637,7 @@
                                     <p:ajax event="change" update="nuevaFechaEntrega" process="@this"/>
                                 </lnk:calendar>
                             </div>
-                            
+
 
                             <p:commandButton id="limpiarComprobante" value="#{msg['limpiar']}" icon="ui-icon-trash" style=" position: absolute; left: 20px; top: 195px;" actionListener="#{controlEmplComprobantes.limpiarNuevoComprobante()}" update="nuevoComprobante" process="@this"/>
                             <p:commandButton id="agregarComprobante" value="#{msg['agregar']}" icon="ui-icon-circle-check" style=" position: absolute; left: 130px; top: 195px;"  process="@this" actionListener="#{controlEmplComprobantes.agregarNuevoComprobante()}"/>
@@ -659,10 +662,10 @@
                                     <p:ajax event="change" update="duplicadoFechaComprobante" process="@this"/>
                                 </lnk:calendar>
                             </div>
-                            
+
                             <strong><h:outputText value="#{msg['entregadoC']}" style=" position: absolute; top: 135px" /></strong>
                             <p:selectBooleanCheckbox id="duplicadoCheck" style="position: absolute; top: 130px; left: 200px" value="#{controlEmplComprobantes.duplicarComprobante.checkEntregado}">
-                                        <p:ajax event="change" update="@this" process="@this"/>
+                                <p:ajax event="change" update="@this" process="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['fechaentregaC']}" style=" position: absolute; top: 165px" /></strong>
@@ -835,7 +838,7 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['latabla']} #{controlEmplComprobantes.nombreTabla} #{msg['objetosDB']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
-                    
+
                     <p:dialog id="errorFechaEntregaNull" header="#{msg['atencion']}" widgetVar="errorFechaEntregaNull"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFechaEntregaNull']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />

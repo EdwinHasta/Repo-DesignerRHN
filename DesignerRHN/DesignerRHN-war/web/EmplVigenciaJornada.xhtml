@@ -60,7 +60,7 @@
                                 <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaJornada.verificarRastroTabla()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
-                                
+
                                 <p:separator style="position: relative; top: -9px"/> 
 
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaJornada.cancelarModificacion()}" process="@this"/>  
@@ -131,7 +131,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooTIpoDescanso" value=""/>
+                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooTIpoDescanso" action="tipodescanso" actionListener="#{controlTiposDescansos.recibirPagina('atrastipodescanso')}" value=""/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>  
@@ -295,9 +295,9 @@
                                     <h:outputText value="#{jLaboral.codigo}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroJornadaLaboral" value="#{controlVigenciaJornada.infoRegistroJornadaLaboral}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarJL" style="position: relative; left: 210px" value="#{msg['aceptar']}" disabled="#{controlVigenciaJornada.aceptar}" onclick="JornadaLaboralDialogo.hide(), lovJornadaLaboral.clearFilters();" actionListener="#{controlVigenciaJornada.actualizarJornadaLaboral()}" update="lovJornadaLaboral, aceptarJL, datosVJEmpleado" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":form:lovJornadaLaboral:globalFilter"/>
                             </p:commandButton>
@@ -331,9 +331,9 @@
                                     <h:outputText value="#{tDescanso.codigo}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroTipoDescanso" value="#{controlVigenciaJornada.infoRegistroTipoDescanso}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarTD" style="position: relative; left: 210px" value="#{msg['aceptar']}" disabled="#{controlVigenciaJornada.aceptar}" onclick="TiposDescansosDialogo.hide(), lovTipoDescanso.clearFilters();" actionListener="#{controlVigenciaJornada.actualizarTipoDescanso()}" update="lovTipoDescanso, aceptarTD, datosVJEmpleado" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":form:lovTipoDescanso:globalFilter"/>
                             </p:commandButton>
@@ -345,7 +345,7 @@
                         <p:commandButton style="position: absolute; left: 683px; top: 478px;  " id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVJEmpleado" process="@this" disabled="#{controlVigenciaJornada.guardado}"/>
                         <p:commandButton style="position: absolute; left: 775px; top: 478px;  " id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlVigenciaJornada.cancelarModificacion()}" action="nomina" process="@this" />
                     </p:panel>
-                    
+
                     <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
@@ -353,7 +353,7 @@
                         <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciaJornada.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
-                    
+
                     <p:dialog id="confirmarGuardarSinSalida" header="#{msg['atencion']}" widgetVar="confirmarGuardarSinSalida"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
@@ -419,12 +419,12 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFechas']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
                     </p:dialog>
-                    
+
                     <p:dialog id="errorFechaDescanso" header="#{msg['atencion']}" widgetVar="errorFechaDescanso"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFechaDescanso']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
                     </p:dialog>
-                    
+
                     <p:dialog id="errorNullDescanso" header="#{msg['atencion']}" widgetVar="errorNullDescanso"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorNullDescanso']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
@@ -705,7 +705,7 @@
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </p:inputTextarea>
                     </p:dialog>
-                    
+
                     <p:dialog id="guardarCambiosVigenciaCompensacionTiempo" header="#{msg['atencion']}" widgetVar="guardarCambiosVigenciaCompensacionTiempo"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
@@ -713,7 +713,7 @@
                         <p:commandButton value="#{msg['no']}" onclick="guardarCambiosVigenciaCompensacionTiempo.hide();" actionListener="#{controlVigenciaJornada.cancelarModificacionVCT()}"  style="position: absolute; top: 60px; left: 255px" process="@this" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="guardarCambiosVigenciaCompensacionTiempo.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="guardarCambiosVigenciaCompensacionDinero" header="#{msg['atencion']}" widgetVar="guardarCambiosVigenciaCompensacionDinero"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />

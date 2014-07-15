@@ -276,7 +276,7 @@ public class ControlTiposPagos implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposPagos.size(); j++) {
                             if (j != indice) {
-                                if (listTiposPagos.get(indice).getCodigo() == listTiposPagos.get(j).getCodigo()) {
+                                if (listTiposPagos.get(indice).getCodigo().equals(listTiposPagos.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -325,7 +325,7 @@ public class ControlTiposPagos implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposPagos.size(); j++) {
                             if (j != indice) {
-                                if (listTiposPagos.get(indice).getCodigo() == listTiposPagos.get(j).getCodigo()) {
+                                if (listTiposPagos.get(indice).getCodigo().equals(listTiposPagos.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -372,9 +372,9 @@ public class ControlTiposPagos implements Serializable {
                         banderita = false;
                     } else {
 
-                        for (int j = 0; j < listTiposPagos.size(); j++) {
+                        for (int j = 0; j < filtrarTiposPagos.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposPagos.get(indice).getCodigo() == listTiposPagos.get(j).getCodigo()) {
+                                if (filtrarTiposPagos.get(indice).getCodigo().equals(filtrarTiposPagos.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -423,9 +423,9 @@ public class ControlTiposPagos implements Serializable {
                         banderita = false;
                     } else {
 
-                        for (int j = 0; j < listTiposPagos.size(); j++) {
+                       for (int j = 0; j < filtrarTiposPagos.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposPagos.get(indice).getCodigo() == listTiposPagos.get(j).getCodigo()) {
+                                if (filtrarTiposPagos.get(indice).getCodigo().equals(filtrarTiposPagos.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -638,7 +638,7 @@ public class ControlTiposPagos implements Serializable {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTiposPagos.getCodigo());
 
             for (int x = 0; x < listTiposPagos.size(); x++) {
-                if (listTiposPagos.get(x).getCodigo() == nuevoTiposPagos.getCodigo()) {
+                if (listTiposPagos.get(x).getCodigo().equals(nuevoTiposPagos.getCodigo())) {
                     duplicados++;
                 }
             }
@@ -763,7 +763,7 @@ public class ControlTiposPagos implements Serializable {
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listTiposPagos.size(); x++) {
-                if (listTiposPagos.get(x).getCodigo() == duplicarTiposPagos.getCodigo()) {
+                if (listTiposPagos.get(x).getCodigo().equals(duplicarTiposPagos.getCodigo())) {
                     duplicados++;
                 }
             }

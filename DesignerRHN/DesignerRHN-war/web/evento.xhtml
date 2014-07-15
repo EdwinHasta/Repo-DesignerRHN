@@ -42,7 +42,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.descripcion}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.descripcion}" id="editarNombre" style="height: 10px; border-radius: 0px; width: 420px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.descripcion}"  maxlength="40"  id="editarNombre" style="height: 10px; border-radius: 0px; width: 420px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlEventos.cambiarIndice(indice, 1)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlEventos.modificarEventos(indice, 'N', info.descripcion)}" update="descripcion"/>
                                             </p:inputText>
@@ -55,7 +55,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.organizador}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.organizador}" id="editarOrganizador" style="height: 10px; border-radius: 0px; width: 420px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.organizador}" maxlength="40"  id="editarOrganizador" style="height: 10px; border-radius: 0px; width: 420px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlEventos.cambiarIndice(indice, 2)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlEventos.modificarEventos(indice, 'N', info.organizador)}" update="organizador"/>
                                             </p:inputText>
@@ -68,7 +68,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.objetivo}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.objetivo}" id="editarObjetivo" style="height: 10px; border-radius: 0px; width: 420px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.objetivo}" maxlength="200"  id="editarObjetivo" style="height: 10px; border-radius: 0px; width: 420px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlEventos.cambiarIndice(indice, 3)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlEventos.modificarEventos(indice, 'N', info.objetivo)}" update="objetivo"/>
                                             </p:inputText>
@@ -260,17 +260,17 @@
                             <p:watermark for="nuevoCodigo" value="Código" />
 
                             <strong><h:outputText value="*Descripción: "  style="left: 15px; position: absolute; top: 90px;" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlEventos.nuevoEvento.descripcion}" style="width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText  id="nuevoNombre" maxlength="40"  value="#{controlEventos.nuevoEvento.descripcion}" style="width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoNombre" value="Descripción" />
                             <strong><h:outputText value="*Organizador: "  style="left: 15px; position: absolute; top: 120px;" /></strong>
-                            <p:inputText  id="nuevoEstado" value="#{controlEventos.nuevoEvento.organizador}" style="width: 140px; position: absolute; left: 150px; top: 115px;text-transform: uppercase">
+                            <p:inputText  id="nuevoEstado" maxlength="40"  value="#{controlEventos.nuevoEvento.organizador}" style="width: 140px; position: absolute; left: 150px; top: 115px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoEstado" value="Organizador" />
                             <strong><h:outputText value="*Objetivo: "  style="left: 15px; position: absolute; top: 150px;" /></strong>
-                            <p:inputText  id="nuevoObjetivo" value="#{controlEventos.nuevoEvento.objetivo}" style="width: 140px; position: absolute; left: 150px; top: 145px;text-transform: uppercase">
+                            <p:inputText  id="nuevoObjetivo" maxlength="200"  value="#{controlEventos.nuevoEvento.objetivo}" style="width: 140px; position: absolute; left: 150px; top: 145px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoObjetivo" value="Objetivo" />
@@ -293,19 +293,19 @@
                             <p:watermark for="duplicarCodigo" value="Código" />
 
                             <strong><h:outputText value="Descripción"  style=" position: absolute; top: 90px;" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlEventos.duplicarEvento.descripcion}"  style="width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText id="duplicarNombre" maxlength="40"  value="#{controlEventos.duplicarEvento.descripcion}"  style="width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Descripción" />
 
                             <strong><h:outputText value="Organizador: "  style=" position: absolute; top: 120px;" /></strong>
-                            <p:inputText  id="duplicarEstado" value="#{controlEventos.duplicarEvento.organizador}" style="width: 140px; position: absolute; left: 150px; top: 115px;text-transform: uppercase">
+                            <p:inputText  id="duplicarEstado" maxlength="40"  value="#{controlEventos.duplicarEvento.organizador}" style="width: 140px; position: absolute; left: 150px; top: 115px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarEstado" value="Organizador" />
 
                             <strong><h:outputText value="Objetivo: "  style=" position: absolute; top: 150px;" /></strong>
-                            <p:inputText  id="duplicarObjetivo" value="#{controlEventos.duplicarEvento.objetivo}" style="width: 140px; position: absolute; left: 150px; top: 145px;text-transform: uppercase">
+                            <p:inputText  id="duplicarObjetivo" maxlength="200"  value="#{controlEventos.duplicarEvento.objetivo}" style="width: 140px; position: absolute; left: 150px; top: 145px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarObjetivo" value="Objetivo" />

@@ -113,12 +113,16 @@
                                     <!-- Fila de Abajo -->
                                     <p:row>
                                         <p:column  style="width: 100px" colspan="1" width="100" headerText="#{msg['tipo']}" filterBy="#{ausentismos.tipo.descripcion}" filterMatchMode="contains" id="ATipo" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.tipo.descripcion}" />  
-                                        <p:column  style="width: 100px" width="100" headerText="#{msg['clase']}" filterBy="#{ausentismos.clase.descripcion}" filterMatchMode="contains" id="AClase" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.clase.descripcion}" />  
+                                        <p:column  style="width: 100px" width="100" headerText="#{msg['clase']}" filterBy="#{ausentismos.clase.descripcion}" filterMatchMode="contains" id="AClase" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.clase.descripcion}" >     
+                                            <f:facet name="footer">
+                                                <p:commandButton style="width: 190px; margin: -14px; height: 26px;  border: none; color: blue" action="claseausentismoatausentismo" actionListener="#{controlClasesAusentismos.recibirAtras('atrasclaseausentismoatausentismo')}" id="fooNombreJornada" value=""/>
+                                            </f:facet>
+                                        </p:column>
                                         <p:column  style="width: 100px" width="100" headerText="#{msg['causa']}" filterBy="#{ausentismos.causa.descripcion}" filterMatchMode="contains" id="ACausa" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.causa.descripcion}" />  
 
                                         <p:column  headerText="#{msg['dias']}" filterBy="#{ausentismos.dias}" filterMatchMode="contains" id="ADias" filterStyle="display: none; visibility: hidden;" sortBy= "#{ausentismos.dias}"/>
                                         <p:column  headerText="#{msg['horas']}" filterBy="#{ausentismos.horas}" filterMatchMode="contains" id="AHoras" filterStyle="display: none; visibility: hidden;" sortBy= "#{ausentismos.horas}"/>
-                                        
+
                                         <p:column  filterBy="#{ausentismos.fecha}" filterMatchMode="contains" id="AFecha" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fecha}">
                                             <f:facet name="header">
                                                 <h:outputText id="fechaHead" value="#{msg['iausencia']}"/>
@@ -190,15 +194,15 @@
                                             </f:facet> 
                                         </p:column>
                                         <p:column  headerText="#{msg['prorroga']}" filterBy="#{ausentismos.prorroga}" filterMatchMode="contains" id="AProrroga" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.prorroga}" />
-                                        
+
                                         <p:column  filterBy="#{controlAusentismos.relacion}" filterMatchMode="contains" id="ARelacion" filterStyle="display: none; visibility: hidden;" sortBy="#{controlAusentismos.relacion}" >
                                             <f:facet name="header">
                                                 <h:outputText id="periodoHead" value="#{msg['periodo']}" />
                                                 <p:tooltip for="periodoHead" value="#{msg['tpe']}"  showEffect="fade" hideEffect="fade"/>
                                             </f:facet> 
                                         </p:column>
-                                        
-                                        
+
+
                                         <p:column  filterBy="#{ausentismos.relacionada}" filterMatchMode="contains" id="ARelacionada" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.relacionada}" >
                                             <f:facet name="header">
                                                 <h:outputText id="relacionadaHead" value="..." />
@@ -621,7 +625,7 @@
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 691px; top: 265px;  " id="btnNuevaForma" actionListener="#{controlAusentismos.asignarIndex(indice, 6, 1)}" icon="ui-icon-search" process="@this" />
 
-                           
+
 
                             <p:commandButton id="limpiar" value="#{msg['limpiar']}" style=" position: absolute; left: 50px; top: 550px;" actionListener="#{controlAusentismos.limpiarNuevoAusentismo()}" update="nuevoAusentismo" process="@this"/>
                             <p:commandButton id="agregarNA" value="#{msg['agregar']}" style=" position: absolute; left: 550px; top: 550px;"  actionListener="#{controlAusentismos.agregarNuevoAusentismo()}" process="@this"/>

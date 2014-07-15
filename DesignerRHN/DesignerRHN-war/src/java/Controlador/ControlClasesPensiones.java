@@ -287,7 +287,7 @@ public class ControlClasesPensiones implements Serializable {
                     } else {
                         for (int j = 0; j < listClasesPensiones.size(); j++) {
                             if (j != indice) {
-                                if (listClasesPensiones.get(indice).getCodigo() == listClasesPensiones.get(j).getCodigo()) {
+                                if (listClasesPensiones.get(indice).getCodigo().equals(listClasesPensiones.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -336,7 +336,7 @@ public class ControlClasesPensiones implements Serializable {
                     } else {
                         for (int j = 0; j < listClasesPensiones.size(); j++) {
                             if (j != indice) {
-                                if (listClasesPensiones.get(indice).getCodigo() == listClasesPensiones.get(j).getCodigo()) {
+                                if (listClasesPensiones.get(indice).getCodigo().equals(listClasesPensiones.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -383,9 +383,9 @@ public class ControlClasesPensiones implements Serializable {
                         banderita = false;
                     } else {
 
-                        for (int j = 0; j < listClasesPensiones.size(); j++) {
+                        for (int j = 0; j < filtrarClasesPensiones.size(); j++) {
                             if (j != indice) {
-                                if (filtrarClasesPensiones.get(indice).getCodigo() == listClasesPensiones.get(j).getCodigo()) {
+                                if (filtrarClasesPensiones.get(indice).getCodigo().equals(filtrarClasesPensiones.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -434,9 +434,9 @@ public class ControlClasesPensiones implements Serializable {
                         banderita = false;
                     } else {
 
-                        for (int j = 0; j < listClasesPensiones.size(); j++) {
+                        for (int j = 0; j < filtrarClasesPensiones.size(); j++) {
                             if (j != indice) {
-                                if (filtrarClasesPensiones.get(indice).getCodigo() == listClasesPensiones.get(j).getCodigo()) {
+                                if (filtrarClasesPensiones.get(indice).getCodigo().equals(filtrarClasesPensiones.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -649,7 +649,7 @@ public class ControlClasesPensiones implements Serializable {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoClasesPensiones.getCodigo());
 
             for (int x = 0; x < listClasesPensiones.size(); x++) {
-                if (listClasesPensiones.get(x).getCodigo() == nuevoClasesPensiones.getCodigo()) {
+                if (listClasesPensiones.get(x).getCodigo().equals(nuevoClasesPensiones.getCodigo())) {
                     duplicados++;
                 }
             }
@@ -774,7 +774,7 @@ public class ControlClasesPensiones implements Serializable {
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listClasesPensiones.size(); x++) {
-                if (listClasesPensiones.get(x).getCodigo() == duplicarClasesPensiones.getCodigo()) {
+                if (listClasesPensiones.get(x).getCodigo().equals(duplicarClasesPensiones.getCodigo())) {
                     duplicados++;
                 }
             }

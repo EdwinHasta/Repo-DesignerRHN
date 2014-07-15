@@ -124,7 +124,7 @@
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormulasAseguradas.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormulasAseguradas.salir()}"  process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormulasAseguradas.salir()}" action="atrasformulasaseguradas" process="@this"/>  
                                 <p:tooltip  for="salir" value="Salir"/>
                             </p:toolbarGroup>  
                         </p:toolbar>
@@ -133,7 +133,7 @@
                         <p:commandButton style="position: absolute; left: 10px; top: 475px; "  icon="ui-icon-search" id="BUSCARCENTROCOSTO" disabled="#{controlFormulasAseguradas.buscarFormulas}" value="#{msg['buscarFormulasAseguradas']}" actionListener="#{controlFormulasAseguradas.llamadoDialogoBuscarFormulas()}" process="@this" />
                         <p:commandButton style="position: absolute; left: 150px; top: 475px; " icon="ui-icon-search" id="MOSTRARTODOS" disabled="#{controlFormulasAseguradas.mostrarTodos}" value="#{msg['mostrarTodos']}" actionListener="#{controlFormulasAseguradas.cancelarModificacion()}" process="@this"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 475px; " icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  actionListener="#{controlFormulasAseguradas.revisarDialogoGuardar()}" disabled="#{controlFormulasAseguradas.guardado}"    process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 785px; top: 475px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}"    />
+                        <p:commandButton style=" position: absolute; left: 785px; top: 475px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" action="atrasformulasaseguradas"    />
 
 
 
@@ -252,8 +252,8 @@
                         <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                            <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlFormulasAseguradas.guardarFormulasAseguradas()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
-                            <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlFormulasAseguradas.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
+                            <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlFormulasAseguradas.guardarFormulasAseguradas()}" action="atrasformulasaseguradas"  style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                            <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlFormulasAseguradas.cancelarModificacion()}" action="atrasformulasaseguradas"  style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                             <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                         </p:dialog>
 

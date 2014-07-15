@@ -272,7 +272,7 @@ public class ControlElementosCausasAccidentes implements Serializable {
                     } else {
                         for (int j = 0; j < listElementosCausasAccidentes.size(); j++) {
                             if (j != indice) {
-                                if (listElementosCausasAccidentes.get(indice).getCodigo() == listElementosCausasAccidentes.get(j).getCodigo()) {
+                                if (listElementosCausasAccidentes.get(indice).getCodigo().equals(listElementosCausasAccidentes.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -321,7 +321,7 @@ public class ControlElementosCausasAccidentes implements Serializable {
                     } else {
                         for (int j = 0; j < listElementosCausasAccidentes.size(); j++) {
                             if (j != indice) {
-                                if (listElementosCausasAccidentes.get(indice).getCodigo() == listElementosCausasAccidentes.get(j).getCodigo()) {
+                                if (listElementosCausasAccidentes.get(indice).getCodigo().equals(listElementosCausasAccidentes.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -369,20 +369,12 @@ public class ControlElementosCausasAccidentes implements Serializable {
                     } else {
                         for (int j = 0; j < listElementosCausasAccidentes.size(); j++) {
                             if (j != indice) {
-                                if (filtrarElementosCausasAccidentes.get(indice).getCodigo() == listElementosCausasAccidentes.get(j).getCodigo()) {
+                                if (filtrarElementosCausasAccidentes.get(indice).getCodigo().equals(filtrarElementosCausasAccidentes.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
                         }
 
-                        for (int j = 0; j < filtrarElementosCausasAccidentes.size(); j++) {
-                            //System.err.println("indice filtrar indice : " + filtrarElementosCausasAccidentes.get(j).getCodigo());
-                            if (j != indice) {
-                                if (filtrarElementosCausasAccidentes.get(indice).getCodigo() == filtrarElementosCausasAccidentes.get(j).getCodigo()) {
-                                    contador++;
-                                }
-                            }
-                        }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
@@ -429,20 +421,12 @@ public class ControlElementosCausasAccidentes implements Serializable {
                     } else {
                         for (int j = 0; j < listElementosCausasAccidentes.size(); j++) {
                             if (j != indice) {
-                                if (filtrarElementosCausasAccidentes.get(indice).getCodigo() == listElementosCausasAccidentes.get(j).getCodigo()) {
+                                if (filtrarElementosCausasAccidentes.get(indice).getCodigo().equals(filtrarElementosCausasAccidentes.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
                         }
 
-                        for (int j = 0; j < filtrarElementosCausasAccidentes.size(); j++) {
-                            //System.err.println("indice filtrar indice : " + filtrarElementosCausasAccidentes.get(j).getCodigo());
-                            if (j != indice) {
-                                if (filtrarElementosCausasAccidentes.get(indice).getCodigo() == filtrarElementosCausasAccidentes.get(j).getCodigo()) {
-                                    contador++;
-                                }
-                            }
-                        }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;

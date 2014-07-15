@@ -12,10 +12,10 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    
+
                     <f:loadBundle basename="Recursos.detalleconcepto" var="msg" />
                     <p:growl id="growl" showDetail="true" />
-                    
+
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 535px; text-align: left;" >  
 
                         <h:outputText value="#{msg['concepto']}" style="position: absolute;left: 45px; top: 80px;color: #14388B;font-weight: bold"/>
@@ -95,7 +95,7 @@
                                                 </f:facet>  
                                             </p:cellEditor>
                                             <f:facet name="footer">
-                                                <p:commandButton style="width: 400px; margin: -14px; height: 26px; border: none; color: blue" id="fooTipoCC" value=" "/>
+                                                <p:commandButton style="width: 400px; margin: -14px; height: 26px; border: none; color: blue" id="fooTipoCC" action="tiposcentroscostosdetalleconcepto" actionListener="#{controlTiposCentrosCostos.recibirPaginaAnterior('atrastiposcentroscostosdetalleconcepto')}" value=" "/>
                                             </f:facet>
                                         </p:column>
 
@@ -146,7 +146,7 @@
                                                 </f:facet>  
                                             </p:cellEditor>
                                             <f:facet name="footer">
-                                                <h:outputText value=""/>
+                                                <p:commandButton style="width: 190px; margin: -14px; height: 26px;  border: none; color: blue" action="centrocostodetalleconcepto" actionListener="#{controlBetaCentrosCostos.recibirPagina('atrascentrocostodetalleconcepto')}" id="fooNombreJornada" value=""/>
                                             </f:facet>
                                         </p:column>
 
@@ -198,8 +198,8 @@
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
-                                            <f:facet name="footer">
-                                                <h:outputText value=""/>
+                                                                                        <f:facet name="footer">
+                                                <p:commandButton style="width: 190px; margin: -14px; height: 26px;  border: none; color: blue" action="centrocostodetalleconcepto" actionListener="#{controlBetaCentrosCostos.recibirPagina('atrascentrocostodetalleconcepto')}" id="fooccconsolidadador" value=""/>
                                             </f:facet>
                                         </p:column>
 
@@ -379,7 +379,7 @@
                                                  value="#{controlDetalleConcepto.listVigenciasConceptosTCConcepto}" scrollable="true" scrollHeight="#{controlDetalleConcepto.altoTablaVigenciaConceptoTC}" scrollWidth="815"
                                                  filteredValue="#{controlDetalleConcepto.filtrarListVigenciasConceptosTC}" emptyMessage="#{msg['vacio']}" selectionMode="single"
                                                  editable="true" editMode="cell" liveScroll="true" scrollRows="15" selection="#{controlDetalleConcepto.vigenciaConceptoTCTablaSeleccionada}">
- 
+
                                         <p:ajax event="filter" listener="#{controlDetalleConcepto.eventoFiltrar()}"/>
 
                                         <p:column headerText="#{msg['fechainicial']}" sortBy="#{infoVCTC.strFechaInicial}" filterBy="#{infoVCTC.strFechaInicial}" filterMatchMode="contains" id="vigenciaCTCFechaInicial" width="40"
@@ -702,26 +702,28 @@
                         <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlDetalleConcepto.cancelarModificacion()}" action="retornoConcepto" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
-                    
-                     <p:dialog id="errorEliminacionConcepto" header="#{msg['eliminacionError']}" widgetVar="errorEliminacionConcepto"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+
+                    <p:dialog id="errorEliminacionConcepto" header="#{msg['eliminacionError']}" widgetVar="errorEliminacionConcepto"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorEliminacionConcepto']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="OK" onclick="errorEliminacionConcepto.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
-                    
-                     <p:dialog id="paso1Eliminacion" header="#{msg['eliminacion14']}" widgetVar="paso1Eliminacion"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+
+                    <p:dialog id="paso1Eliminacion" header="#{msg['eliminacion14']}" widgetVar="paso1Eliminacion"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['paso1Eliminacion']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="OK" onclick="paso2Eliminacion.show();paso1Eliminacion.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                        <p:commandButton value="OK" onclick="paso2Eliminacion.show();
+                                paso1Eliminacion.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="paso2Eliminacion" header="#{msg['eliminacion24']}" widgetVar="paso2Eliminacion"  resizable="false" draggable="false" modal="true" height="95" width="350px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['paso2Eliminacion']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['continuar']}" onclick="paso3Eliminacion.show();paso2Eliminacion.hide();" style="position: absolute; top: 60px; left: 170px" process="@this" />
+                        <p:commandButton value="#{msg['continuar']}" onclick="paso3Eliminacion.show();
+                                paso2Eliminacion.hide();" style="position: absolute; top: 60px; left: 170px" process="@this" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="paso2Eliminacion.hide();" style="position: absolute; top: 60px; left: 260px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="paso3Eliminacion" header="#{msg['eliminacion34']}" widgetVar="paso3Eliminacion"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{controlDetalleConcepto.conceptoAEliminar()}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
@@ -750,9 +752,9 @@
                                 <h:outputText value="#{tiposCC.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroTipoCentroCosto" value="#{controlDetalleConcepto.infoRegistroTipoCentroCosto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton icon="ui-icon-check"  id="aceptarTCC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" onclick="TipoCCDialogo.hide(), lovTiposCC.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarTipoCentroCosto()}" update="lovTiposCC, aceptarTCC, datosVigenciaCuenta" process="@this">
                             <p:resetInput target=":form:lovTiposCC:globalFilter"/>
                         </p:commandButton>
@@ -787,9 +789,9 @@
                                 <h:outputText value="#{debito.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroCuentaDebito" value="#{controlDetalleConcepto.infoRegistroCuentaDebito}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton icon="ui-icon-check"  id="aceptarCD" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" onclick="DebitoDialogo.hide(), lovDebito.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarCuentaDebito()}" update="lovDebito, aceptarCD, datosVigenciaCuenta" process="@this">
                             <p:resetInput target=":form:lovDebito:globalFilter"/>
                         </p:commandButton>
@@ -824,9 +826,9 @@
                                 <h:outputText value="#{credito.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroCuentaCredito" value="#{controlDetalleConcepto.infoRegistroCuentaCredito}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton icon="ui-icon-check"  id="aceptarCC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" onclick="CreditoDialogo.hide(), lovCredito.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarCuentaCredito()}" update="lovCredito, aceptarCC, datosVigenciaCuenta" process="@this">
                             <p:resetInput target=":form:lovCredito:globalFilter"/>
                         </p:commandButton>
@@ -860,9 +862,9 @@
                                 <h:outputText value="#{centroD.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroCentroCostoDebito" value="#{controlDetalleConcepto.infoRegistroCentroCostoDebito}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton icon="ui-icon-check"  id="aceptarCCD" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" onclick="CentroCostoDDialogo.hide(), lovCentroCostoD.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarCentroCostoDebito()}" update="lovCentroCostoD, aceptarCCD, datosVigenciaCuenta" process="@this">
                             <p:resetInput target=":form:lovCentroCostoD:globalFilter"/>
                         </p:commandButton>
@@ -897,9 +899,9 @@
                                 <h:outputText value="#{centroC.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroCentroCostoCredito" value="#{controlDetalleConcepto.infoRegistroCentroCostoCredito}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton icon="ui-icon-check"  id="aceptarCCC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" onclick="CentroCostoCDialogo.hide(), lovCentroCostoC.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarCentroCostoCredito()}" update="lovCentroCostoC, aceptarCCC, datosVigenciaCuenta" process="@this">
                             <p:resetInput target=":form:lovCentroCostoC:globalFilter"/>
                         </p:commandButton>
@@ -933,9 +935,9 @@
                                 <h:outputText value="#{grupoC.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroGrupoConcepto" value="#{controlDetalleConcepto.infoRegistroGrupoConcepto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton icon="ui-icon-check"  id="aceptarGC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" onclick="GruposConceptosDialogo.hide(), lovGrupoConcepto.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarGrupoConcepto()}" update="lovGrupoConcepto, aceptarGC,datosVigenciaGrupoConcepto" process="@this">
                             <p:resetInput target=":form:lovGrupoConcepto:globalFilter"/>
                         </p:commandButton>
@@ -963,9 +965,9 @@
                                 <h:outputText value="#{tiposTra.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroTipoTrabajador" value="#{controlDetalleConcepto.infoRegistroTipoTrabajador}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton icon="ui-icon-check"  id="aceptarTTr" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" onclick="TipoTrabajadorDialogo.hide(), lovTipoTrabajador.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarTipoTrabajador()}" update="lovTipoTrabajador, aceptarTTr, datosVigenciaConceptoTT" process="@this">
                             <p:resetInput target=":form:lovTipoTrabajador:globalFilter"/>
                         </p:commandButton>
@@ -992,9 +994,9 @@
                                 <h:outputText value="#{tiposCon.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroTipoContrato" value="#{controlDetalleConcepto.infoRegistroTipoContrato}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton icon="ui-icon-check"  id="aceptarTCt" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" onclick="TipoContratosDialogo.hide(), lovTipoContrato.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarTipoContrato()}" update="lovTipoContrato, aceptarTCt, datosVigenciaConceptoTC" process="@this">
                             <p:resetInput target=":form:lovTipoContrato:globalFilter"/>
                         </p:commandButton>
@@ -1021,9 +1023,9 @@
                                 <h:outputText value="#{reformaL.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroReformaLaboral" value="#{controlDetalleConcepto.infoRegistroReformaLaboral}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton icon="ui-icon-check"  id="aceptarRL" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" onclick="ReformaLaboralDialogo.hide(), lovReformaLaboral.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarReformaLaboral()}" update="lovReformaLaboral, aceptarRL, datosVigenciaConceptoRL" process="@this">
                             <p:resetInput target=":form:lovReformaLaboral:globalFilter"/>
                         </p:commandButton>
@@ -1057,9 +1059,9 @@
                                 <h:outputText value="#{formula.nombrecorto}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroFormula" value="#{controlDetalleConcepto.infoRegistroFormula}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton  icon="ui-icon-check" id="aceptarF" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" onclick="FormulasDialogo.hide(), lovFormula.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarFormula()}" update="lovFormula, aceptarF, datosFormulaConcepto" process="@this">
                             <p:resetInput target=":form:lovFormula:globalFilter"/>
                         </p:commandButton>
@@ -1092,9 +1094,9 @@
                                 <h:outputText value="#{formulaC.concepto.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroOrden" value="#{controlDetalleConcepto.infoRegistroOrden}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton icon="ui-icon-check" id="aceptarFC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" onclick="FormulaConceptoDialogo.hide(), lovFormulaC.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarOrden()}" update="lovFormulaC, aceptarFC, datosFormulaConcepto" process="@this">
                             <p:resetInput target=":form:lovFormulaC:globalFilter"/>
                         </p:commandButton>
@@ -1109,7 +1111,7 @@
                 <h:form style="position: relative">
                     <p:toolbar style="position: absolute; top: 35px; left: 10px;">
                         <p:toolbarGroup align="left"> 
-                            
+
                             <p:commandButton id="guardarRapido" value="" style="background-size: 100% 100%;background-image: url(Imagenes/guardar.jpg) ;background-repeat: no-repeat; width: 25px; height: 25px;"  process="@this" actionListener="#{controlDetalleConcepto.guardadoGeneral()}"/>
                             <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
 
@@ -1138,7 +1140,7 @@
                             <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
 
                             <p:separator style="position: relative; top: -9px"/>
-                            
+
                             <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlDetalleConcepto.ingresoNuevoRegistro()}"  process="@this"/> 
                             <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
 
@@ -1149,18 +1151,18 @@
                             <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
 
                             <p:separator style="position: relative; top: -9px"/>
-                            
+
                             <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlDetalleConcepto.verificarRastroTabla()}" process="@this"/>  
                             <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
-                            
+
                             <p:separator style="position: relative; top: -9px"/>
-                            
+
                             <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlDetalleConcepto.cancelarModificacion()}" process="@this"/>  
                             <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
-                                
+
                             <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlDetalleConcepto.salir()}" action="retornoConcepto" process="@this"/>  
                             <p:tooltip  for="salir" value="#{msg['salir']}"/>
-                                
+
                         </p:toolbarGroup>  
                     </p:toolbar> 
                 </h:form>

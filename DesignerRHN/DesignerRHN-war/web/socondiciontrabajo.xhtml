@@ -34,7 +34,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.codigo}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.codigo}" id="editarCodigo" style="height: 12px;  border-radius: 0px; width: 400px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.codigo}" maxlength="4" id="editarCodigo" style="height: 12px;  border-radius: 0px; width: 400px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlSoCondicionesTrabajos.cambiarIndice(indice, 0)}" process="@this"/> 
                                                 <p:ajax event="change" listener="#{controlSoCondicionesTrabajos.modificarSoCondicionesTrabajos(indice, 'N', info.codigo)}"  update="codigo"/>
                                             </p:inputText>
@@ -46,7 +46,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.factorriesgo}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.factorriesgo}" id="editarNombre" style="height: 12px;  border-radius: 0px; width: 440px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.factorriesgo}" maxlength="2000" id="editarNombre" style="height: 12px;  border-radius: 0px; width: 440px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlSoCondicionesTrabajos.cambiarIndice(indice, 1)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlSoCondicionesTrabajos.modificarSoCondicionesTrabajos(indice, 'N', info.factorriesgo)}" update="descripcion"/>
                                             </p:inputText>
@@ -57,7 +57,7 @@
 
                         </fieldset>
 
-                         <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">  
+                        <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlSoCondicionesTrabajos.guardarSoCondicionesTrabajos()}" process="@this" />
@@ -103,7 +103,7 @@
                                 <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSoCondicionesTrabajos.cancelarModificacion()}"  process="@this"/>  
                                 <p:tooltip  for="refrescar" value="Refrescar"/>
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSoCondicionesTrabajos.salir()}" process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSoCondicionesTrabajos.salir()}" action="atrassocondiciontrabajo" process="@this"/>  
                                 <p:tooltip  for="salir" value="Salir"/>
 
                             </p:toolbarGroup>  
@@ -111,13 +111,13 @@
 
                         <h:outputText id="informacionRegistro" value="#{controlSoCondicionesTrabajos.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px; " icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  actionListener="#{controlSoCondicionesTrabajos.revisarDialogoGuardar()}" disabled="#{controlSoCondicionesTrabajos.guardado}"    process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras"    />
+                        <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" action="atrassocondiciontrabajo"    />
 
                         <p:dialog id="confirmarGuardar" header="ATENCION...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                            <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlSoCondicionesTrabajos.guardarSoCondicionesTrabajos()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
-                            <p:commandButton value="No" onclick="confirmarGuardar.hide();" actionListener="#{controlSoCondicionesTrabajos.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
+                            <p:commandButton value="Si" onclick="confirmarGuardar.hide();" action="atrassocondiciontrabajo" actionListener="#{controlSoCondicionesTrabajos.guardarSoCondicionesTrabajos()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                            <p:commandButton value="No" onclick="confirmarGuardar.hide();"  action="atrassocondiciontrabajo" actionListener="#{controlSoCondicionesTrabajos.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                             <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                         </p:dialog>
                     </p:panel>
@@ -220,13 +220,13 @@
                         <p:panel id="nuevaTipoempresa" style="border: none;">
 
                             <strong><h:outputText value="*Código: "  style=" position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlSoCondicionesTrabajos.nuevoSoCondicionesTrabajos.codigo}" style=" width: 150px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
+                            <p:inputText id="nuevoCodigo" maxlength="4" value="#{controlSoCondicionesTrabajos.nuevoSoCondicionesTrabajos.codigo}" style=" width: 150px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />
 
                             <strong><h:outputText value="*Factor Riesgo: "  style=" position: absolute; top: 90px;" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlSoCondicionesTrabajos.nuevoSoCondicionesTrabajos.factorriesgo}" style=" width: 150px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText  id="nuevoNombre" maxlength="2000" value="#{controlSoCondicionesTrabajos.nuevoSoCondicionesTrabajos.factorriesgo}" style=" width: 150px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoNombre" value="Factor de Riesgo" />
@@ -243,13 +243,13 @@
 
                         <p:panel id="duplicarTE" style="border: none;">
                             <strong><h:outputText value="*Código: "  style=" position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlSoCondicionesTrabajos.duplicarSoCondicionesTrabajos.codigo}" style=" width: 150px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
+                            <p:inputText id="duplicarCodigo" maxlength="4" value="#{controlSoCondicionesTrabajos.duplicarSoCondicionesTrabajos.codigo}" style=" width: 150px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Código" />
 
                             <strong><h:outputText value="*Factor Riesgo:"  style=" position: absolute; top: 90px;" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlSoCondicionesTrabajos.duplicarSoCondicionesTrabajos.factorriesgo}"  style=" width: 150px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText id="duplicarNombre" maxlength="2000" value="#{controlSoCondicionesTrabajos.duplicarSoCondicionesTrabajos.factorriesgo}"  style=" width: 150px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Factor de Riesgo" />

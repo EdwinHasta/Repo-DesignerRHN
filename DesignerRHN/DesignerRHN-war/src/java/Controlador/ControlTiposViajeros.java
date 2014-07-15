@@ -98,7 +98,8 @@ public class ControlTiposViajeros implements Serializable {
             System.out.println("\n ENTRE A ControlTiposViajeros.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
-            }RequestContext context = RequestContext.getCurrentInstance();
+            }
+            RequestContext context = RequestContext.getCurrentInstance();
             infoRegistro = "Cantidad de registros: " + filtrarTiposViajeros.size();
             context.update("form:informacionRegistro");
         } catch (Exception e) {
@@ -275,7 +276,7 @@ public class ControlTiposViajeros implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposViajeros.size(); j++) {
                             if (j != indice) {
-                                if (listTiposViajeros.get(indice).getCodigo() == listTiposViajeros.get(j).getCodigo()) {
+                                if (listTiposViajeros.get(indice).getCodigo().equals(listTiposViajeros.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -324,7 +325,7 @@ public class ControlTiposViajeros implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposViajeros.size(); j++) {
                             if (j != indice) {
-                                if (listTiposViajeros.get(indice).getCodigo() == listTiposViajeros.get(j).getCodigo()) {
+                                if (listTiposViajeros.get(indice).getCodigo().equals(listTiposViajeros.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -371,9 +372,9 @@ public class ControlTiposViajeros implements Serializable {
                         banderita = false;
                     } else {
 
-                        for (int j = 0; j < listTiposViajeros.size(); j++) {
+                        for (int j = 0; j < filtrarTiposViajeros.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposViajeros.get(indice).getCodigo() == listTiposViajeros.get(j).getCodigo()) {
+                                if (filtrarTiposViajeros.get(indice).getCodigo().equals(filtrarTiposViajeros.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -421,10 +422,9 @@ public class ControlTiposViajeros implements Serializable {
                         filtrarTiposViajeros.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
                     } else {
-
-                        for (int j = 0; j < listTiposViajeros.size(); j++) {
+                        for (int j = 0; j < filtrarTiposViajeros.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposViajeros.get(indice).getCodigo() == listTiposViajeros.get(j).getCodigo()) {
+                                if (filtrarTiposViajeros.get(indice).getCodigo().equals(filtrarTiposViajeros.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -641,7 +641,7 @@ public class ControlTiposViajeros implements Serializable {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTiposViajeros.getCodigo());
 
             for (int x = 0; x < listTiposViajeros.size(); x++) {
-                if (listTiposViajeros.get(x).getCodigo() == nuevoTiposViajeros.getCodigo()) {
+                if (listTiposViajeros.get(x).getCodigo().equals(nuevoTiposViajeros.getCodigo())) {
                     duplicados++;
                 }
             }
@@ -766,7 +766,7 @@ public class ControlTiposViajeros implements Serializable {
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listTiposViajeros.size(); x++) {
-                if (listTiposViajeros.get(x).getCodigo() == duplicarTiposViajeros.getCodigo()) {
+                if (listTiposViajeros.get(x).getCodigo().equals(duplicarTiposViajeros.getCodigo())) {
                     duplicados++;
                 }
             }

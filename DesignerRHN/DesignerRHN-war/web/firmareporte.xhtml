@@ -40,7 +40,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.descripcion}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.descripcion}" id="editarNombre" style="height: 12px;  border-radius: 0px; width: 99%; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.descripcion}" maxlength="100"  id="editarNombre" style="height: 12px;  border-radius: 0px; width: 99%; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlFirmasReportes.cambiarIndice(indice, 1)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlFirmasReportes.modificarFirmasReportes(indice, 'N', info.descripcion)}" update="descripcion"/>
                                             </p:inputText>
@@ -67,7 +67,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.subtitulofirma}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.subtitulofirma}" id="editarSubTituloFirma" style="height: 12px;  border-radius: 0px; width: 99%; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.subtitulofirma}" maxlength="50" id="editarSubTituloFirma" style="height: 12px;  border-radius: 0px; width: 99%; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlFirmasReportes.cambiarIndice(indice, 3)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlFirmasReportes.modificarFirmasReportes(indice, 'N', info.subtitulofirma)}" update="subTituloFirma"/>
                                             </p:inputText>
@@ -203,7 +203,7 @@
                             </p:commandButton>
                         </p:dialog>
 
-                        <p:dialog header="PERSONAS" widgetVar="personasDialogo" draggable="false" resizable="false" closable="false" id="personasDialogo"  
+                        <p:dialog header="Personas" widgetVar="personasDialogo" draggable="false" resizable="false" closable="false" id="personasDialogo"  
                                   showEffect="fade" hideEffect="fade" width="450" modal="true" style="">
                             <p:dataTable id="lovPersonas" style=" width: 410px" var="personaFirmas" value="#{controlFirmasReportes.listaPersonas}" rowKey="#{personaFirmas.secuencia}"
                                          selection="#{controlFirmasReportes.personaSeleccionado}" selectionMode="single" widgetVar="lovPersonas" scrollable="true" scrollWidth="430" scrollHeight="280"
@@ -404,7 +404,7 @@
                             <p:watermark for="nuevoCodigo" value="Código" />
 
                             <strong><h:outputText value="*Descripcion: "  style=" position: absolute; top: 90px;" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlFirmasReportes.nuevoFirmasReportes.descripcion}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText  id="nuevoNombre" maxlength="100" value="#{controlFirmasReportes.nuevoFirmasReportes.descripcion}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoNombre" value="Nombre" />
@@ -419,7 +419,7 @@
                             <p:watermark for="nuevoPais" value="Empresa" />
 
                             <strong><h:outputText value="*SubTituloFirma: "  style=" position: absolute; top: 150px;" /></strong>
-                            <p:inputText  id="nuevoSubtituloFirma" value="#{controlFirmasReportes.nuevoFirmasReportes.subtitulofirma}" style=" width: 140px; position: absolute; left: 150px; top: 145px;text-transform: uppercase">
+                            <p:inputText  id="nuevoSubtituloFirma" maxlength="50" value="#{controlFirmasReportes.nuevoFirmasReportes.subtitulofirma}" style=" width: 140px; position: absolute; left: 150px; top: 145px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoSubtituloFirma" value="Subtitulo Firma" />
@@ -462,7 +462,7 @@
                             <p:watermark for="duplicarCodigo" value="Código" />
 
                             <strong><h:outputText value="Descripcion"  style=" position: absolute; top: 90px;" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlFirmasReportes.duplicarFirmasReportes.descripcion}"  style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase" >
+                            <p:inputText id="duplicarNombre" maxlength="100" value="#{controlFirmasReportes.duplicarFirmasReportes.descripcion}"  style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase" >
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Descripcion" />
@@ -477,7 +477,7 @@
                             <p:watermark for="duplicarPais" value="Empresa" />
 
                             <strong><h:outputText value="SubtituloFirma"  style=" position: absolute; top: 150px;" /></strong>
-                            <p:inputText id="duplicarSubtituloFirma" value="#{controlFirmasReportes.duplicarFirmasReportes.subtitulofirma}"  style=" width: 140px; position: absolute; left: 150px; top:145px;text-transform: uppercase" >
+                            <p:inputText id="duplicarSubtituloFirma" maxlength="50" value="#{controlFirmasReportes.duplicarFirmasReportes.subtitulofirma}"  style=" width: 140px; position: absolute; left: 150px; top:145px;text-transform: uppercase" >
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarSubtituloFirma" value="SubtituloFirma" />

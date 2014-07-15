@@ -159,7 +159,8 @@ public class ControlVigenciasPlantas implements Serializable {
     }
 
     public void cancelarModificacion() {
-        if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
             codigo = (Column) c.getViewRoot().findComponent("form:datosVigenciaPlanta:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
@@ -192,7 +193,8 @@ public class ControlVigenciasPlantas implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void salir() {FacesContext c = FacesContext.getCurrentInstance();
+    public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
             codigo = (Column) c.getViewRoot().findComponent("form:datosVigenciaPlanta:codigo");
@@ -226,7 +228,8 @@ public class ControlVigenciasPlantas implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void activarCtrlF11() {FacesContext c = FacesContext.getCurrentInstance();
+    public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             tamano = 246;
             codigo = (Column) c.getViewRoot().findComponent("form:datosVigenciaPlanta:codigo");
@@ -386,7 +389,7 @@ public class ControlVigenciasPlantas implements Serializable {
                     } else {
                         for (int j = 0; j < listVigenciasPlantas.size(); j++) {
                             if (j != indice) {
-                                if (listVigenciasPlantas.get(indice).getCodigo() == listVigenciasPlantas.get(j).getCodigo()) {
+                                if (listVigenciasPlantas.get(indice).getCodigo().equals(listVigenciasPlantas.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -424,7 +427,7 @@ public class ControlVigenciasPlantas implements Serializable {
                     } else {
                         for (int j = 0; j < listVigenciasPlantas.size(); j++) {
                             if (j != indice) {
-                                if (listVigenciasPlantas.get(indice).getCodigo() == listVigenciasPlantas.get(j).getCodigo()) {
+                                if (listVigenciasPlantas.get(indice).getCodigo().equals(listVigenciasPlantas.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -462,7 +465,7 @@ public class ControlVigenciasPlantas implements Serializable {
                     } else {
                         for (int j = 0; j < filtrarVigenciasPlantas.size(); j++) {
                             if (j != indice) {
-                                if (filtrarVigenciasPlantas.get(indice).getCodigo() == listVigenciasPlantas.get(j).getCodigo()) {
+                                if (filtrarVigenciasPlantas.get(indice).getCodigo().equals(filtrarVigenciasPlantas.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -503,12 +506,11 @@ public class ControlVigenciasPlantas implements Serializable {
                     } else {
                         for (int j = 0; j < filtrarVigenciasPlantas.size(); j++) {
                             if (j != indice) {
-                                if (filtrarVigenciasPlantas.get(indice).getCodigo() == listVigenciasPlantas.get(j).getCodigo()) {
+                                if (filtrarVigenciasPlantas.get(indice).getCodigo().equals(filtrarVigenciasPlantas.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
                         }
-
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
@@ -704,7 +706,7 @@ public class ControlVigenciasPlantas implements Serializable {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoVigenciaPlanta.getCodigo());
 
             for (int x = 0; x < listVigenciasPlantas.size(); x++) {
-                if (listVigenciasPlantas.get(x).getCodigo() == nuevoVigenciaPlanta.getCodigo()) {
+                if (listVigenciasPlantas.get(x).getCodigo().equals(nuevoVigenciaPlanta.getCodigo())) {
                     duplicados++;
                 }
             }
@@ -736,7 +738,7 @@ public class ControlVigenciasPlantas implements Serializable {
         }
 
         System.out.println("contador " + contador);
-FacesContext c = FacesContext.getCurrentInstance();
+        FacesContext c = FacesContext.getCurrentInstance();
         if (contador == 2) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
@@ -833,7 +835,7 @@ FacesContext c = FacesContext.getCurrentInstance();
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listVigenciasPlantas.size(); x++) {
-                if (listVigenciasPlantas.get(x).getCodigo() == duplicarVigenciaPlanta.getCodigo()) {
+                if (listVigenciasPlantas.get(x).getCodigo().equals(duplicarVigenciaPlanta.getCodigo())) {
                     duplicados++;
                 }
             }
@@ -882,7 +884,8 @@ FacesContext c = FacesContext.getCurrentInstance();
 
             context.update("form:informacionRegistro");
             context.update("form:ACEPTAR");
-            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 codigo = (Column) c.getViewRoot().findComponent("form:datosVigenciaPlanta:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");

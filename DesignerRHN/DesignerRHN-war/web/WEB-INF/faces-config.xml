@@ -2418,7 +2418,7 @@
         <from-view-id>/centrocosto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>cambioTipoCentroCosto</from-outcome>
-            <to-view-id>/tiposcentroscostos.xhtml</to-view-id>
+            <to-view-id>/tipocentrocosto.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
@@ -2428,7 +2428,7 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/tiposcentroscostos.xhtml</from-view-id>
+        <from-view-id>/tipocentrocosto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>cambioCentroCosto</from-outcome>
             <to-view-id>/centrocosto.xhtml</to-view-id>
@@ -3312,24 +3312,6 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/unidad.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>tipounidad</from-outcome>
-            <to-view-id>/tipounidad.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    <navigation-rule>
-        <from-view-id>/tipounidad.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>unidad</from-outcome>
-            <to-view-id>/unidad.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    
-    
-    <navigation-rule>
         <from-view-id>/PruebasUnitariasComponentes.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>adelante</from-outcome>
@@ -3879,6 +3861,642 @@
         <navigation-case>
             <from-outcome>atrasmotivodemanda</from-outcome>
             <to-view-id>/empldemanda.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/EmplVigenciaLocalizacion.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>motivolocalizacion</from-outcome>
+            <to-view-id>/motivolocalizacion.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/motivolocalizacion.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasmotivolocalizacion</from-outcome>
+            <to-view-id>/EmplVigenciaLocalizacion.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    
+    
+    <navigation-rule>
+        <from-view-id>/EmplMvrs.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>motivomvr</from-outcome>
+            <to-view-id>/motivomvr.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/motivomvr.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasmotivomvr</from-outcome>
+            <to-view-id>/EmplMvrs.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    
+    <navigation-rule>
+        <from-view-id>/EmplVigenciaTipoTrabajador.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>motivoreempleazo</from-outcome>
+            <to-view-id>/motivoreemplazo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/motivoreemplazo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasmotivoreemplazo</from-outcome>
+            <to-view-id>/EmplVigenciaTipoTrabajador.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/departamento.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>pais</from-outcome>
+            <to-view-id>/pais.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/pais.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atraspais</from-outcome>
+            <to-view-id>/departamento.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/liquidarproyeccion1.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>opciones</from-outcome>
+            <to-view-id>/opciones.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/opciones.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasopciones</from-outcome>
+            <to-view-id>/liquidarproyeccion1.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/emplvigenciaformapago.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>periodicidad</from-outcome>
+            <to-view-id>/periodicidad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/periodicidad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasperiodicidad</from-outcome>
+            <to-view-id>/emplvigenciaformapago.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    
+    <navigation-rule>
+        <from-view-id>/gersaludocupacional.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>socondiciontrabajo</from-outcome>
+            <to-view-id>/socondiciontrabajo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/socondiciontrabajo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrassocondiciontrabajo</from-outcome>
+            <to-view-id>/gersaludocupacional.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    
+    
+    <navigation-rule>
+        <from-view-id>/emplvigenciaformapago.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>sucursal</from-outcome>
+            <to-view-id>/sucursal.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/sucursal.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrassucursal</from-outcome>
+            <to-view-id>/emplvigenciaformapago.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+       
+        
+    <navigation-rule>
+        <from-view-id>/detalleconcepto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tiposcentroscostosdetalleconcepto</from-outcome>
+            <to-view-id>/tipocentrocosto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/tipocentrocosto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrastiposcentroscostosdetalleconcepto</from-outcome>
+            <to-view-id>/detalleconcepto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+        
+    <navigation-rule>
+        <from-view-id>/EmplMvrs.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tipocertificado</from-outcome>
+            <to-view-id>/tipocertificado.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/tipocertificado.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrastipocertificado</from-outcome>
+            <to-view-id>/EmplMvrs.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+        
+    <navigation-rule>
+        <from-view-id>/EmplVigenciaJornada.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tipodescanso</from-outcome>
+            <to-view-id>/tipodescanso.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/tipodescanso.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrastipodescanso</from-outcome>
+            <to-view-id>/EmplVigenciaJornada.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+        
+    <navigation-rule>
+        <from-view-id>/cargo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tipoempresa</from-outcome>
+            <to-view-id>/tipoempresa.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/tipoempresa.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrastipoempresa</from-outcome>
+            <to-view-id>/cargo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+        
+    <navigation-rule>
+        <from-view-id>/emplvigenciaindicador.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tipoindicador</from-outcome>
+            <to-view-id>/tipoindicador.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/tipoindicador.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrastipoindicador</from-outcome>
+            <to-view-id>/emplvigenciaindicador.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+        
+    <navigation-rule>
+        <from-view-id>/proceso.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tipopago</from-outcome>
+            <to-view-id>/tipopago.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/tipopago.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrastipopago</from-outcome>
+            <to-view-id>/proceso.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+        
+    <navigation-rule>
+        <from-view-id>/EmplVigenciaTipoTrabajador.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tipopensionado</from-outcome>
+            <to-view-id>/tipopensionado.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/tipopensionado.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrastipopensionado</from-outcome>
+            <to-view-id>/EmplVigenciaTipoTrabajador.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+        
+    <navigation-rule>
+        <from-view-id>/vigenciatalla.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tipotalla</from-outcome>
+            <to-view-id>/tipotalla.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/tipotalla.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrastipotalla</from-outcome>
+            <to-view-id>/vigenciatalla.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/unidad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tipounidad</from-outcome>
+            <to-view-id>/tipounidad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/tipounidad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrastipounidad</from-outcome>
+            <to-view-id>/unidad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/EmplUbicacionGeografica.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>ubicaciongeografica</from-outcome>
+            <to-view-id>/ubicaciongeografica.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/ubicaciongeografica.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasubicaciongeografica</from-outcome>
+            <to-view-id>/EmplUbicacionGeografica.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/historiaformula.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>valoresconceptos</from-outcome>
+            <to-view-id>/valoresconceptos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/valoresconceptos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasvaloresconceptos</from-outcome>
+            <to-view-id>/historiaformula.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/perreferencialaboral1.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tiposfamiliaresperreferencialaboral1</from-outcome>
+            <to-view-id>/tipofamiliar.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/tipofamiliar.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrastiposfamiliaresperreferencialaboral1</from-outcome>
+            <to-view-id>/perreferencialaboral1.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/EmplVigenciaSueldo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tipoentidademplvigenciasueldo</from-outcome>
+            <to-view-id>/tipoentidad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/tipoentidad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrastipoentidademplvigenciasueldo</from-outcome>
+            <to-view-id>/EmplVigenciaSueldo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/EmplVigenciaAfiliacion3.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tipoentidademplvigenciaafiliacion3</from-outcome>
+            <to-view-id>/tipoentidad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/tipoentidad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrastipoentidademplvigenciaafiliacion3</from-outcome>
+            <to-view-id>/EmplVigenciaAfiliacion3.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/tiposueldo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tipoentidadtiposueldo</from-outcome>
+            <to-view-id>/tipoentidad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/tipoentidad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrastipoentidadtiposueldo</from-outcome>
+            <to-view-id>/tiposueldo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/formulacontratoentidad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tipoentidadformulacontratoentidad</from-outcome>
+            <to-view-id>/tipoentidad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/tipoentidad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrastipoentidadformulacontratoentidad</from-outcome>
+            <to-view-id>/formulacontratoentidad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/Proyecto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>pry_plataformaproyecto</from-outcome>
+            <to-view-id>/pry_plataforma.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/pry_plataforma.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atraspry_plataformaproyecto</from-outcome>
+            <to-view-id>/Proyecto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/Proyecto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>pry_clienteproyecto</from-outcome>
+            <to-view-id>/pry_cliente.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/pry_cliente.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atraspry_clienteproyecto</from-outcome>
+            <to-view-id>/Proyecto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/EmplVigenciasCargos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>centrocostoemplvigenciacargo</from-outcome>
+            <to-view-id>/centrocosto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/centrocosto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrascentrocostoemplvigenciacargo</from-outcome>
+            <to-view-id>/EmplVigenciasCargos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/EmplVigenciaLocalizacion.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>centrocostoEmplVigenciaLocalizacion</from-outcome>
+            <to-view-id>/centrocosto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/centrocosto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrascentrocostoEmplVigenciaLocalizacion</from-outcome>
+            <to-view-id>/EmplVigenciaLocalizacion.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/EmplComprobante.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>centrocostoEmplComprobante</from-outcome>
+            <to-view-id>/centrocosto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/centrocosto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrascentrocostoEmplComprobante</from-outcome>
+            <to-view-id>/EmplComprobante.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/detalleconcepto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>centrocostodetalleconcepto</from-outcome>
+            <to-view-id>/centrocosto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/centrocosto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrascentrocostodetalleconcepto</from-outcome>
+            <to-view-id>/detalleconcepto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/estructuraplanta.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>centrocostoestructuraplanta</from-outcome>
+            <to-view-id>/centrocosto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/centrocosto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrascentrocostoestructuraplanta</from-outcome>
+            <to-view-id>/estructuraplanta.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/Atausentismos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>claseausentismoatausentismo</from-outcome>
+            <to-view-id>/claseausentismo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/claseausentismo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasclaseausentismoatausentismo</from-outcome>
+            <to-view-id>/Atausentismos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/formulaproceso.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>formulasaseguradas</from-outcome>
+            <to-view-id>/formulasaseguradas.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/formulasaseguradas.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasformulasaseguradas</from-outcome>
+            <to-view-id>/formulaproceso.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/tiposueldo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>grupotipoentidadtiposueldo</from-outcome>
+            <to-view-id>/grupotipoentidad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/grupotipoentidad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasgrupotipoentidadtiposueldo</from-outcome>
+            <to-view-id>/tiposueldo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/tipoentidad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>grupotipoentidadtipoentidad</from-outcome>
+            <to-view-id>/grupotipoentidad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/grupotipoentidad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasgrupotipoentidadtipoentidad</from-outcome>
+            <to-view-id>/tipoentidad.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>

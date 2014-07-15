@@ -97,12 +97,23 @@ public class ControlTiposEntidades implements Serializable {
         }
     }
 
+    private String paginaAnterior;
+
+    public void recibirPagina(String pagina) {
+        paginaAnterior = pagina;
+    }
+
+    public String redirigirPaginaAnterior() {
+        return paginaAnterior;
+    }
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlTiposEntidades.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
-            }  RequestContext context = RequestContext.getCurrentInstance();
+            }
+            RequestContext context = RequestContext.getCurrentInstance();
             infoRegistro = "Cantidad de registros: " + filtrarTiposEntidades.size();
             context.update("form:informacionRegistro");
         } catch (Exception e) {
@@ -119,7 +130,7 @@ public class ControlTiposEntidades implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listTiposEntidades.get(index).getSecuencia();
-            if (cualCelda == 1) {
+            if (cualCelda == 0) {
                 if (tipoLista == 0) {
                     backUpCodigo = listTiposEntidades.get(index).getCodigo();
                 } else {
@@ -274,7 +285,7 @@ public class ControlTiposEntidades implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposEntidades.size(); j++) {
                             if (j != indice) {
-                                if (listTiposEntidades.get(indice).getCodigo() == listTiposEntidades.get(j).getCodigo()) {
+                                if (listTiposEntidades.get(indice).getCodigo().equals(listTiposEntidades.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -325,7 +336,7 @@ public class ControlTiposEntidades implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposEntidades.size(); j++) {
                             if (j != indice) {
-                                if (listTiposEntidades.get(indice).getCodigo() == listTiposEntidades.get(j).getCodigo()) {
+                                if (listTiposEntidades.get(indice).getCodigo().equals(listTiposEntidades.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -371,9 +382,9 @@ public class ControlTiposEntidades implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
-                        for (int j = 0; j < listTiposEntidades.size(); j++) {
+                        for (int j = 0; j < filtrarTiposEntidades.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposEntidades.get(indice).getCodigo() == listTiposEntidades.get(j).getCodigo()) {
+                                if (filtrarTiposEntidades.get(indice).getCodigo().equals(filtrarTiposEntidades.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -418,9 +429,9 @@ public class ControlTiposEntidades implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
-                        for (int j = 0; j < listTiposEntidades.size(); j++) {
+                        for (int j = 0; j < filtrarTiposEntidades.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposEntidades.get(indice).getCodigo() == listTiposEntidades.get(j).getCodigo()) {
+                                if (filtrarTiposEntidades.get(indice).getCodigo().equals(filtrarTiposEntidades.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -680,7 +691,7 @@ public class ControlTiposEntidades implements Serializable {
             System.out.println("codigo en tipo entidad: " + nuevoTipoEntidad.getCodigo());
 
             for (int x = 0; x < listTiposEntidades.size(); x++) {
-                if (listTiposEntidades.get(x).getCodigo() == nuevoTipoEntidad.getCodigo()) {
+                if (listTiposEntidades.get(x).getCodigo().equals(nuevoTipoEntidad.getCodigo())) {
                     duplicados++;
                 }
             }
@@ -952,7 +963,7 @@ public class ControlTiposEntidades implements Serializable {
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listTiposEntidades.size(); x++) {
-                if (listTiposEntidades.get(x).getCodigo() == duplicarTipoEntidad.getCodigo()) {
+                if (listTiposEntidades.get(x).getCodigo().equals(duplicarTipoEntidad.getCodigo())) {
                     duplicados++;
                 }
             }
