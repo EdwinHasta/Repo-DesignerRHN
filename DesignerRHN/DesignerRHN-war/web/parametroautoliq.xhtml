@@ -1,19 +1,19 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:lnk="http://java.sun.com/jsf/composite/linkare"> 
     <h:head>
+
     </h:head>
-    <h:body>
-        <ui:composition template="/Template.xhtml">
-            <ui:define name="body">                  
-                <h:form id="form">
+        
+    <h:body >
+        <ui:composition  template="/Template.xhtml">
+            <ui:define  name="body">                  
+                <h:form id="form"> 
 
                     <f:loadBundle basename="Recursos.parametroautoliq" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
@@ -148,20 +148,22 @@
                                 </p:column>
 
                             </p:dataTable> 
-                            
+
                             <h:outputText id="infoRegistroParametro" value="#{controlParametroAutoliq.infoRegistroParametro}" style="position: absolute; left: 15px; top: 120px; font-weight: bold"/>
                         </fieldset>  
 
                         <fieldset style="position: absolute; left: 10px; top: 180px;width: 835px; height: 240px; border-radius: 10px; ">
                             <legend style="color: blue;text-align:left"><strong>#{msg['aportesEntidades']}</strong></legend>
 
-                            <p:dataTable id="datosAporteEntidad" var="infoAE" rowKey="#{infoAE.secuencia}" rowIndexVar="indiceAE" style="border: 1px; width: 820px"  scrollWidth="831"                      
-                                         value="#{controlParametroAutoliq.listaAportesEntidades}" scrollable="true" scrollHeight="#{controlParametroAutoliq.altoTablaAporte}"  
+                            <p:dataTable id="datosAporteEntidad" var="infoAE" rowKey="#{infoAE.secuencia}" rowIndexVar="indiceAE" style="width: 814px;" scrollWidth="830"   
+                                         value="#{controlParametroAutoliq.listaAportesEntidades}" scrollable="true"  scrollHeight="#{controlParametroAutoliq.altoTablaAporte}"  
                                          filteredValue="#{controlParametroAutoliq.filtrarListaAportesEntidades}" emptyMessage="#{msg['vacio']}" selectionMode="single" liveScroll="true"
                                          editable="true" editMode="cell" selection="#{controlParametroAutoliq.aporteTablaSeleccionado}" scrollRows="14">
-                            
-                                <p:column  headerText="#{msg['codEmpl']}" sortBy="#{infoAE.empleado.codigoempleado}" filterBy="#{infoAEempleado.empleado.codigoempleado}" 
-                                           filterMatchMode="contains" id="aporteCodigoEmpleado" width="100" filterStyle="display: none; visibility: hidden;" >                                  
+
+                                <p:ajax event="filter" listener="#{controlParametroAutoliq.eventoFiltrar()}"/>
+
+                                <p:column  headerText="#{msg['codEmpl']}"  sortBy="#{infoAE.empleado.codigoempleado}" filterBy="#{infoAEempleado.empleado.codigoempleado}" 
+                                           filterMatchMode="contains" id="aporteCodigoEmpleado" width="85" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoAE.empleado.codigoempleado}" /></f:facet>  
                                         <f:facet name="input">
@@ -209,9 +211,6 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                 </p:column>
-
-
-
 
                                 <p:column headerText="#{msg['nitTercero']}" sortBy="#{infoAE.terceroRegistro.strNit}" filterBy="#{infoAE.terceroRegistro.strNit}" 
                                           filterMatchMode="contains" width="100" id="aporteNIT" filterStyle="display: none; visibility: hidden;"   >                                  
@@ -1111,8 +1110,9 @@
                                     </p:cellEditor>
                                 </p:column>
 
+
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroAporte" value="#{controlParametroAutoliq.infoRegistroAporte}" style="position: absolute; left: 15px; top: 235px; font-weight: bold"/>
 
                         </fieldset>
@@ -1150,12 +1150,17 @@
                         <p:remoteCommand name="posicionParametro" actionListener="#{controlParametroAutoliq.posicionParametro()}"/>
 
                     </p:panel>
+
+                </h:form>
+
+                <h:form id="formularioDialogos" >
+
                     <p:dialog header="#{msg['tipoTrabajadorM']}" widgetVar="TipoTrabajadorDialogo" draggable="false" resizable="false" closable="false" id="TipoTrabajadorDialogo"  
                               showEffect="fade" hideEffect="fade" width="431" modal="true" >
                         <p:dataTable id="lovTipoTrabajador" liveScroll="true" scrollRows="20" style="width: 400px" var="tipoT" value="#{controlParametroAutoliq.lovTiposTrabajadores}" rowKey="#{tipoT.secuencia}"
                                      selection="#{controlParametroAutoliq.tipoTrabajadorSeleccionado}" selectionMode="single" widgetVar="lovTipoTrabajador" scrollable="true" scrollWidth="415" scrollHeight="250"
                                      filteredValue="#{controlParametroAutoliq.filtrarLovTiposTrabajadores}" emptyMessage="#{msg['lovvacio']}">              
-                            <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":form:aceptarTT"/>
+                            <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":formularioDialogos:aceptarTT"/>
                             <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarTipoTrabajador()}" process="@this" onstart="lovTipoTrabajador.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTT']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1173,10 +1178,10 @@
                         <h:outputText id="infoRegistroTipoTrabajador" value="#{controlParametroAutoliq.infoRegistroTipoTrabajador}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
                         <p:commandButton id="aceptarTT" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}" onclick="TipoTrabajadorDialogo.hide(), lovTipoTrabajador.clearFilters();" actionListener="#{controlParametroAutoliq.actualizarTipoTrabajador()}" update="lovTipoTrabajador, aceptarTT" process="@this">
-                            <p:resetInput target=":form:lovTipoTrabajador:globalFilter"/>
+                            <p:resetInput target=":formularioDialogos:lovTipoTrabajador:globalFilter"/>
                         </p:commandButton>
                         <p:commandButton id="atrasTT" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="TipoTrabajadorDialogo.hide(), lovTipoTrabajador.clearFilters();" actionListener="#{controlParametroAutoliq.cancelarCambioTipoTrabajador()}" update="lovTipoTrabajador" process="@this">
-                            <p:resetInput target=":form:lovTipoTrabajador:globalFilter"/>
+                            <p:resetInput target=":formularioDialogos:lovTipoTrabajador:globalFilter"/>
                         </p:commandButton>
                     </p:dialog> 
 
@@ -1186,7 +1191,7 @@
                         <p:dataTable id="lovEmpresa" liveScroll="true" scrollRows="20" style="width: 500px" var="empresa" value="#{controlParametroAutoliq.lovEmpresas}" rowKey="#{empresa.secuencia}"
                                      selection="#{controlParametroAutoliq.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresa" scrollable="true" scrollWidth="515" scrollHeight="250"
                                      filteredValue="#{controlParametroAutoliq.filtrarLovEmpresas}" emptyMessage="#{msg['lovvacio']}">              
-                            <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":form:aceptarE"/>
+                            <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":formularioDialogos:aceptarE"/>
                             <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarEmpresa()}" process="@this" onstart="lovEmpresa.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarE']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1216,10 +1221,10 @@
                         <h:outputText id="infoRegistroEmpresa" value="#{controlParametroAutoliq.infoRegistroEmpresa}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
                         <p:commandButton id="aceptarE" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}" onclick="EmpresaDialogo.hide(), lovEmpresa.clearFilters();" actionListener="#{controlParametroAutoliq.actualizarEmpresa()}" update="lovEmpresa, aceptarE" process="@this">
-                            <p:resetInput target=":form:lovEmpresa:globalFilter"/>
+                            <p:resetInput target=":formularioDialogos:lovEmpresa:globalFilter"/>
                         </p:commandButton>
                         <p:commandButton id="atrasI" style="position: relative; left: 330px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="EmpresaDialogo.hide(), lovEmpresa.clearFilters();" actionListener="#{controlParametroAutoliq.cancelarCambioEmpresa()}" update="lovEmpresa" process="@this">
-                            <p:resetInput target=":form:lovEmpresa:globalFilter"/>
+                            <p:resetInput target=":formularioDialogos:lovEmpresa:globalFilter"/>
                         </p:commandButton>
                     </p:dialog> 
 
@@ -1228,7 +1233,7 @@
                         <p:dataTable id="lovTipoEntidad" liveScroll="true" scrollRows="20" style="width: 400px" var="tipoE" value="#{controlParametroAutoliq.lovTiposEntidades}" rowKey="#{tipoE.secuencia}"
                                      selection="#{controlParametroAutoliq.tipoEntidadSeleccionado}" selectionMode="single" widgetVar="lovTipoEntidad" scrollable="true" scrollWidth="415" scrollHeight="250"
                                      filteredValue="#{controlParametroAutoliq.filtrarLovTiposEntidades}" emptyMessage="#{msg['lovvacio']}">              
-                            <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":form:aceptarTE"/>
+                            <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":formularioDialogos:aceptarTE"/>
                             <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarTipoEntidad()}" process="@this" onstart="lovTipoEntidad.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTE']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1246,10 +1251,10 @@
                         <h:outputText id="infoRegistroTipoEntidad" value="#{controlParametroAutoliq.infoRegistroTipoEntidad}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
                         <p:commandButton id="aceptarTE" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}" onclick="TipoEntidadDialogo.hide(), lovTipoEntidad.clearFilters();" actionListener="#{controlParametroAutoliq.actualizarTipoEntidad()}" update="lovTipoEntidad, aceptarTE" process="@this">
-                            <p:resetInput target=":form:lovTipoEntidad:globalFilter"/>
+                            <p:resetInput target=":formularioDialogos:lovTipoEntidad:globalFilter"/>
                         </p:commandButton>
                         <p:commandButton id="atrasTE" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="TipoEntidadDialogo.hide(), lovTipoEntidad.clearFilters();" actionListener="#{controlParametroAutoliq.cancelarCambioTipoEntidad()}" update="lovTipoEntidad" process="@this">
-                            <p:resetInput target=":form:lovTipoEntidad:globalFilter"/>
+                            <p:resetInput target=":formularioDialogos:lovTipoEntidad:globalFilter"/>
                         </p:commandButton>
                     </p:dialog> 
 
@@ -1258,7 +1263,7 @@
                         <p:dataTable id="lovEmpleado" liveScroll="true" scrollRows="20" style="width: 400px" var="empleado" value="#{controlParametroAutoliq.lovEmpleados}" rowKey="#{empleado.secuencia}"
                                      selection="#{controlParametroAutoliq.empleadoSeleccionado}" selectionMode="single" widgetVar="lovEmpleado" scrollable="true" scrollWidth="415" scrollHeight="250"
                                      filteredValue="#{controlParametroAutoliq.filtrarLovEmpleados}" emptyMessage="#{msg['lovvacio']}">              
-                            <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":form:aceptarEMPL"/>
+                            <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":formularioDialogos:aceptarEMPL"/>
                             <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarEmpleado()}" process="@this" onstart="lovEmpleado.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEMPL']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1283,10 +1288,10 @@
                         <h:outputText id="infoRegistroEmpleado" value="#{controlParametroAutoliq.infoRegistroEmpleado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
                         <p:commandButton id="aceptarEMPL" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}" onclick="EmpleadoDialogo.hide(), lovEmpleado.clearFilters();" actionListener="#{controlParametroAutoliq.actualizarEmpleado()}" update="lovEmpleado, aceptarEMPL" process="@this">
-                            <p:resetInput target=":form:lovEmpleado:globalFilter"/>
+                            <p:resetInput target=":formularioDialogos:lovEmpleado:globalFilter"/>
                         </p:commandButton>
                         <p:commandButton id="atrasEMPL" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="EmpleadoDialogo.hide(), lovEmpleado.clearFilters();" actionListener="#{controlParametroAutoliq.cancelarCambioEmpleado()}" update="lovEmpleado" process="@this">
-                            <p:resetInput target=":form:lovEmpleado:globalFilter"/>
+                            <p:resetInput target=":formularioDialogos:lovEmpleado:globalFilter"/>
                         </p:commandButton>
                     </p:dialog> 
 
@@ -1295,7 +1300,7 @@
                         <p:dataTable id="lovTercero" liveScroll="true" scrollRows="20" style="width: 500px" var="tercero" value="#{controlParametroAutoliq.lovTerceros}" rowKey="#{tercero.secuencia}"
                                      selection="#{controlParametroAutoliq.terceroSeleccionado}" selectionMode="single" widgetVar="lovTercero" scrollable="true" scrollWidth="515" scrollHeight="250"
                                      filteredValue="#{controlParametroAutoliq.filtrarLovTerceros}" emptyMessage="#{msg['lovvacio']}">              
-                            <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":form:aceptarT"/>
+                            <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":formularioDialogos:aceptarT"/>
                             <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarTercero()}" process="@this" onstart="lovTercero.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarT']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1325,10 +1330,10 @@
                         <h:outputText id="infoRegistroTercero" value="#{controlParametroAutoliq.infoRegistroTercero}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
                         <p:commandButton id="aceptarT" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}" onclick="TerceroDialogo.hide(), lovTercero.clearFilters();" actionListener="#{controlParametroAutoliq.actualizarTercero()}" update="lovTercero, aceptarT" process="@this">
-                            <p:resetInput target=":form:lovTercero:globalFilter"/>
+                            <p:resetInput target=":formularioDialogos:lovTercero:globalFilter"/>
                         </p:commandButton>
                         <p:commandButton id="atrasT" style="position: relative; left: 330px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="TerceroDialogo.hide(), lovTercero.clearFilters();" actionListener="#{controlParametroAutoliq.cancelarCambioTercero()}" update="lovTercero" process="@this">
-                            <p:resetInput target=":form:lovTercero:globalFilter"/>
+                            <p:resetInput target=":formularioDialogos:lovTercero:globalFilter"/>
                         </p:commandButton>
                     </p:dialog> 
 
@@ -1338,7 +1343,7 @@
                         <p:dataTable id="lovBuscarAporte" liveScroll="true" scrollRows="20" style="width: 500px" var="buscarA" value="#{controlParametroAutoliq.lovAportesEntidades}" rowKey="#{buscarA.secuencia}"
                                      selection="#{controlParametroAutoliq.aporteEntidadSeleccionado}" selectionMode="single" widgetVar="lovBuscarAporte" scrollable="true" scrollWidth="515" scrollHeight="250"
                                      filteredValue="#{controlParametroAutoliq.filtrarLovAportesEntidades}" emptyMessage="#{msg['lovvacio']}">              
-                            <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":form:aceptarBA"/>
+                            <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":formularioDialogos:aceptarBA"/>
                             <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarAporteEntidad()}" process="@this" onstart="lovBuscarAporte.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarBA']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1369,10 +1374,10 @@
                         <h:outputText id="infoRegistroAporteEntidad" value="#{controlParametroAutoliq.infoRegistroAporteEntidad}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
                         <p:commandButton id="aceptarBA" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}" onclick="BuscarAporteDialogo.hide(), lovBuscarAporte.clearFilters();" actionListener="#{controlParametroAutoliq.actualizarAporteEntidad()}" update="lovBuscarAporte, aceptarBA" process="@this">
-                            <p:resetInput target=":form:lovBuscarAporte:globalFilter"/>
+                            <p:resetInput target=":formularioDialogos:lovBuscarAporte:globalFilter"/>
                         </p:commandButton>
                         <p:commandButton id="atrasBA" style="position: relative; left: 330px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="BuscarAporteDialogo.hide(), lovBuscarAporte.clearFilters();" actionListener="#{controlParametroAutoliq.cancelarCambioAporteEntidad()}" update="lovBuscarAporte" process="@this">
-                            <p:resetInput target=":form:lovBuscarAporte:globalFilter"/>
+                            <p:resetInput target=":formularioDialogos:lovBuscarAporte:globalFilter"/>
                         </p:commandButton>
                     </p:dialog> 
 
@@ -1401,7 +1406,7 @@
 
                     <p:dialog id="confirmarRastroAporte" header="#{msg['atencion']}" widgetVar="confirmarRastroAporte"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['confirmarRastro']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <h:outputText value="#{msg['confirmarRastroAporte']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarRastroAporte.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlParametroAutoliq.backUpSecRegistroAporte, 'AportesEntidades', 'parametroAutoliqRastro')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarRastroAporte.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
                     </p:dialog>
@@ -1415,7 +1420,7 @@
 
                     <p:dialog id="confirmarRastroHistoricoAporte" header="#{msg['atencion']}" widgetVar="confirmarRastroHistoricoAporte"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['confirmarRastroHistorico']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <h:outputText value="#{msg['confirmarRastroHistoricoAporte']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistoricoAporte.hide();" actionListener="#{controlRastro.historicosTabla('AportesEntidades', 'parametroAutoliqRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistoricoAporte.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
@@ -1466,28 +1471,28 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorBorrarParametro']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;text-align: center" />
                     </p:dialog>
-                    
+
                     <p:dialog id="confirmarBorrarTodoAuto" header="#{msg['atencion']}" widgetVar="confirmarBorrarTodoAuto"  resizable="false" draggable="false" modal="true" height="85" width="290px"  closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarBorrarTodoAuto']}" style="position: absolute; left: 60px; top: 15px; width: 200px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="confirmarBorrarTodoAuto.hide();" actionListener="#{controlParametroAutoliq.borrarAporteEntidadProcesoAutomatico()}" style="position: absolute; top: 50px; left: 70px" process="@this" icon="ui-icon-check" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarBorrarTodoAuto.hide();" style="position: absolute; top: 50px; left: 170px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
-                    
+
                     <p:dialog id="errorProcesoLiquidacionFechas" header="#{msg['atencion']}" widgetVar="errorProcesoLiquidacionFechas"  resizable="false" draggable="false" modal="true" height="105" width="435" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['errorProcesoLiquidacionFechas']}" style="position: absolute; left: 120px; top: 10px; width: 280px; font-weight:bold;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="errorProcesoLiquidacionFechas.hide();" actionListener="#{controlParametroAutoliq.cambiarFechasParametros()}" style="position: absolute; top: 70px; left: 207px" process="@this" icon="ui-icon-check" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="errorProcesoLiquidacionFechas.hide();" style="position: absolute; top: 70px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
-                    
+
                     <p:dialog id="procesoLiquidacionOK" header="#{msg['atencion']}" widgetVar="procesoLiquidacionOK"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['procesoLiquidacionOK']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="procesoLiquidacionOK.hide();" actionListener="#{controlParametroAutoliq.procesoLiquidacionOK()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="procesoLiquidacionOK.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
-                    
+
                     <p:dialog id="acumularDiferenciaOK" header="#{msg['atencion']}" widgetVar="acumularDiferenciaOK"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['acumularDiferenciaOK']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
@@ -1499,11 +1504,9 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 20px;"  />
                         <h:outputText value="#{msg['errorAcumularDiferencia']}" style="position: absolute; left: 70px; top: 10px; width: 270px; font-weight:bold;text-align: center" />
                     </p:dialog>
-                    
-                    <p:hotkey bind="ctrl+f11" actionListener="#{controlParametroAutoliq.activarCtrlF11()}"/> 
-                </h:form>
 
-                <h:form id="formularioDialogos" >
+                    <p:hotkey bind="ctrl+f11" actionListener="#{controlParametroAutoliq.activarCtrlF11()}"/> 
+
 
                     <p:dialog id="NuevoRegistroParametro" header="#{msg['nuevoregistro']}" widgetVar="NuevoRegistroParametro" closable="false" resizable="false"  draggable="false" modal="true" height="225" width="400" style="padding: 0px">  
 
@@ -1885,312 +1888,313 @@
                             <h:outputText value="#{infoExp.empresa.nombre}" />
                         </p:column>
                     </p:dataTable>
+
+
+                    <p:dataTable id="datosAporteEntidadExportar" var="info2Exp" style="visibility: hidden; display: none;"                           
+                                 value="#{controlParametroAutoliq.listaAportesEntidades}"> 
+
+                        <p:column headerText="#{msg['codEmplXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['codEmplX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.empleado.codigoempleado}" />
+                        </p:column>  
+
+                        <p:column headerText="#{msg['anoX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['anoX']}"/>
+                            </f:facet> 
+                            <h:outputText value="#{info2Exp.ano}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['mesX']}">                                  
+                            <f:facet name="header">
+                                <h:outputText value="#{msg['mesX']}"/> 
+                            </f:facet> 
+                            <h:outputText value="#{info2Exp.mes}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['nombreEmpleadoXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['nombreEmpleadoX']}"/></f:facet> 
+                            <h:outputText value="#{info2Exp.empleado.persona.nombreCompleto}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['nitTerceroXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['nitTerceroX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.terceroRegistro.nit}" />
+                        </p:column>  
+
+                        <p:column headerText="#{msg['nombreTerceroXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['nombreTerceroX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.terceroRegistro.nombre}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['tipoEntidadXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['tipoEntidadX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.tipoentidad.nombre}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['empleadoX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['empleadoX']}"/></f:facet> 
+                            <h:outputText value="#{info2Exp.cotizacion1}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['empleadorX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['empleadorX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.cotizacion2}" />
+                        </p:column>  
+
+                        <p:column headerText="#{msg['ajustePatronalXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['ajustePatronalX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.cotizacion5}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['solidaridadX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['solidaridadX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.novedad3}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['subSistenciaX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['subSistenciaX']}"/></f:facet> 
+                            <h:outputText value="#{info2Exp.novedad4}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['subsPensionadosX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['subsPensionadosX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.novedad5}" />
+                        </p:column> 
+
+                        <p:column headerText="#{msg['salarioBasicoXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['salarioBasicoX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.salariobasico}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['ibcX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['ibcX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.ibc}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['ibcReferenciaXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['ibcReferenciaX']}"/></f:facet> 
+                            <h:outputText value="#{info2Exp.ibcreferencia}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['diasCotizadosXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['diasCotizadosX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.diascotizados}" />
+                        </p:column>  
+
+                        <p:column headerText="#{msg['tipoAportanteXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['tipoAportanteX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.tipoaportante}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['ingX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['ingX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.ing}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['retX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['retX']}"/></f:facet> 
+                            <h:outputText value="#{info2Exp.ret}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['tdaX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['tdaX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.tda}" />
+                        </p:column>  
+
+                        <p:column headerText="#{msg['taaX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['taaX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.taa}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['vspX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['vspX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.vsp}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['vteX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['vteX']}"/></f:facet> 
+                            <h:outputText value="#{info2Exp.vte}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['vstX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['vstX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.vst}" />
+                        </p:column> 
+
+                        <p:column headerText="#{msg['slnX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['slnX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.sln}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['igeX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['igeX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.ige}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['lmaX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['lmaX']}"/></f:facet> 
+                            <h:outputText value="#{info2Exp.lma}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['vcaX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['vcaX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.vac}" />
+                        </p:column>  
+
+                        <p:column headerText="#{msg['avpX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['avpX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.avp}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['vctX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['vctX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.vct}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['irpX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['irpX']}"/></f:facet> 
+                            <h:outputText value="#{info2Exp.irp}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['susX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['susX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.sus}" />
+                        </p:column>  
+
+                        <p:column headerText="#{msg['inteX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['inteX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.integral}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['tarifaEPSXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['tarifaEPSX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.tarifaeps}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['tarifaAAFPXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['tarifaAAFPX']}"/></f:facet> 
+                            <h:outputText value="#{info2Exp.tarifaafp}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['tarifaACTTXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['tarifaACTTX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.tarifactt}" />
+                        </p:column>  
+
+                        <p:column headerText="#{msg['codigoCTTXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['codigoCTTX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.codigoctt}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['avpeValorXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['avpeValorX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.avpevalor}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['avppValorXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['avppValorX']}"/></f:facet> 
+                            <h:outputText value="#{info2Exp.avppvalor}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['retcontaValorXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['retcontaValorX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.retcontavpvalor}" />
+                        </p:column>  
+
+                        <p:column headerText="#{msg['codigoNEPSXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['codigoNEPSX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.codigoneps}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['codigoNAFPXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['codigoNAFPX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.codigonafp}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['egValorXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['egValorX']}"/></f:facet> 
+                            <h:outputText value="#{info2Exp.egvalor}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['egAutorizacionXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['egAutorizacionX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.egautorizacion}" />
+                        </p:column> 
+
+                        <p:column headerText="#{msg['maternidadValorXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['maternidadValorX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.maternidadvalor}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['maternidadAutoXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['maternidadAutoX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.maternidadautorizacion}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['upcValorXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['upcValorX']}"/></f:facet> 
+                            <h:outputText value="#{info2Exp.upcvalor}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['tipoX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['tipoX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.tipo}" />
+                        </p:column>  
+
+                        <p:column headerText="#{msg['TPX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['TPX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.tipopensionado}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['PCX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['PCX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.pensioncompartida}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['EXTRX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['EXTRX']}"/></f:facet> 
+                            <h:outputText value="#{info2Exp.extranjero}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['fechaIngresoXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['fechaIngresoX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.fechaingreso}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>    
+                        </p:column>  
+
+                        <p:column headerText="#{msg['subTipoCotizanteXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['subTipoCotizanteX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.subtipocotizanteSTR}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['tarifaCajaXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['tarifaCajaX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.tarifacaja}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['tarifaSenaXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['tarifaSenaX']}"/></f:facet> 
+                            <h:outputText value="#{info2Exp.tarifasena}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['tarifaICBFXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['tarifaICBFX']}"/> </f:facet> 
+                            <h:outputText value="#{info2Exp.tarifaicbf}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['tarifaESAPXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['tarifaESAPX']}"/></f:facet> 
+                            <h:outputText value="#{info2Exp.tarifaesap}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['tarifaMENXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['tarifaMENX']}"/></f:facet> 
+                            <h:outputText value="#{info2Exp.tarifamen}" />
+                        </p:column>
+
+                    </p:dataTable>
                 </h:form>
-
-                <p:dataTable id="datosAporteEntidadExportar" var="info2Exp" style="visibility: hidden; display: none;"                           
-                             value="#{controlParametroAutoliq.listaAportesEntidades}"> 
-
-                    <p:column headerText="#{msg['codEmplXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['codEmplX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.empleado.codigoempleado}" />
-                    </p:column>  
-
-                    <p:column headerText="#{msg['anoX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['anoX']}"/>
-                        </f:facet> 
-                        <h:outputText value="#{info2Exp.ano}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['mesX']}">                                  
-                        <f:facet name="header">
-                            <h:outputText value="#{msg['mesX']}"/> 
-                        </f:facet> 
-                        <h:outputText value="#{info2Exp.mes}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['nombreEmpleadoXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['nombreEmpleadoX']}"/></f:facet> 
-                        <h:outputText value="#{info2Exp.empleado.persona.nombreCompleto}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['nitTerceroXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['nitTerceroX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.terceroRegistro.nit}" />
-                    </p:column>  
-
-                    <p:column headerText="#{msg['nombreTerceroXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['nombreTerceroX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.terceroRegistro.nombre}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['tipoEntidadXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['tipoEntidadX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.tipoentidad.nombre}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['empleadoX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['empleadoX']}"/></f:facet> 
-                        <h:outputText value="#{info2Exp.cotizacion1}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['empleadorX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['empleadorX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.cotizacion2}" />
-                    </p:column>  
-
-                    <p:column headerText="#{msg['ajustePatronalXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['ajustePatronalX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.cotizacion5}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['solidaridadX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['solidaridadX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.novedad3}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['subSistenciaX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['subSistenciaX']}"/></f:facet> 
-                        <h:outputText value="#{info2Exp.novedad4}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['subsPensionadosX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['subsPensionadosX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.novedad5}" />
-                    </p:column> 
-
-                    <p:column headerText="#{msg['salarioBasicoXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['salarioBasicoX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.salariobasico}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['ibcX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['ibcX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.ibc}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['ibcReferenciaXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['ibcReferenciaX']}"/></f:facet> 
-                        <h:outputText value="#{info2Exp.ibcreferencia}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['diasCotizadosXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['diasCotizadosX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.diascotizados}" />
-                    </p:column>  
-
-                    <p:column headerText="#{msg['tipoAportanteXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['tipoAportanteX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.tipoaportante}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['ingX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['ingX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.ing}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['retX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['retX']}"/></f:facet> 
-                        <h:outputText value="#{info2Exp.ret}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['tdaX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['tdaX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.tda}" />
-                    </p:column>  
-
-                    <p:column headerText="#{msg['taaX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['taaX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.taa}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['vspX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['vspX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.vsp}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['vteX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['vteX']}"/></f:facet> 
-                        <h:outputText value="#{info2Exp.vte}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['vstX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['vstX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.vst}" />
-                    </p:column> 
-
-                    <p:column headerText="#{msg['slnX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['slnX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.sln}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['igeX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['igeX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.ige}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['lmaX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['lmaX']}"/></f:facet> 
-                        <h:outputText value="#{info2Exp.lma}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['vcaX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['vcaX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.vac}" />
-                    </p:column>  
-
-                    <p:column headerText="#{msg['avpX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['avpX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.avp}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['vctX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['vctX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.vct}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['irpX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['irpX']}"/></f:facet> 
-                        <h:outputText value="#{info2Exp.irp}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['susX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['susX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.sus}" />
-                    </p:column>  
-
-                    <p:column headerText="#{msg['inteX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['inteX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.integral}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['tarifaEPSXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['tarifaEPSX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.tarifaeps}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['tarifaAAFPXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['tarifaAAFPX']}"/></f:facet> 
-                        <h:outputText value="#{info2Exp.tarifaafp}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['tarifaACTTXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['tarifaACTTX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.tarifactt}" />
-                    </p:column>  
-
-                    <p:column headerText="#{msg['codigoCTTXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['codigoCTTX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.codigoctt}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['avpeValorXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['avpeValorX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.avpevalor}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['avppValorXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['avppValorX']}"/></f:facet> 
-                        <h:outputText value="#{info2Exp.avppvalor}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['retcontaValorXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['retcontaValorX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.retcontavpvalor}" />
-                    </p:column>  
-
-                    <p:column headerText="#{msg['codigoNEPSXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['codigoNEPSX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.codigoneps}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['codigoNAFPXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['codigoNAFPX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.codigonafp}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['egValorXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['egValorX']}"/></f:facet> 
-                        <h:outputText value="#{info2Exp.egvalor}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['egAutorizacionXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['egAutorizacionX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.egautorizacion}" />
-                    </p:column> 
-
-                    <p:column headerText="#{msg['maternidadValorXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['maternidadValorX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.maternidadvalor}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['maternidadAutoXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['maternidadAutoX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.maternidadautorizacion}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['upcValorXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['upcValorX']}"/></f:facet> 
-                        <h:outputText value="#{info2Exp.upcvalor}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['tipoX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['tipoX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.tipo}" />
-                    </p:column>  
-
-                    <p:column headerText="#{msg['TPX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['TPX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.tipopensionado}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['PCX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['PCX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.pensioncompartida}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['EXTRX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['EXTRX']}"/></f:facet> 
-                        <h:outputText value="#{info2Exp.extranjero}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['fechaIngresoXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['fechaIngresoX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.fechaingreso}" >
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
-                        </h:outputText>    
-                    </p:column>  
-
-                    <p:column headerText="#{msg['subTipoCotizanteXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['subTipoCotizanteX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.subtipocotizanteSTR}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['tarifaCajaXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['tarifaCajaX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.tarifacaja}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['tarifaSenaXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['tarifaSenaX']}"/></f:facet> 
-                        <h:outputText value="#{info2Exp.tarifasena}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['tarifaICBFXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['tarifaICBFX']}"/> </f:facet> 
-                        <h:outputText value="#{info2Exp.tarifaicbf}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['tarifaESAPXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['tarifaESAPX']}"/></f:facet> 
-                        <h:outputText value="#{info2Exp.tarifaesap}" />
-                    </p:column>
-
-                    <p:column headerText="#{msg['tarifaMENXX']}">                                  
-                        <f:facet name="header"><h:outputText value="#{msg['tarifaMENX']}"/></f:facet> 
-                        <h:outputText value="#{info2Exp.tarifamen}" />
-                    </p:column>
-
-                </p:dataTable>
 
             </ui:define>
         </ui:composition>
