@@ -56,7 +56,7 @@ public class AdministrarConceptosProyecciones implements AdministrarConceptosPro
         }
     }
 
-    public List<ConceptosProyecciones> consultarConceptostosProyecciones() {
+    public List<ConceptosProyecciones> consultarConceptosProyecciones() {
         List<ConceptosProyecciones> lista = persistenciaConceptosProyecciones.buscarConceptosProyecciones(em);
         return lista;
     }
