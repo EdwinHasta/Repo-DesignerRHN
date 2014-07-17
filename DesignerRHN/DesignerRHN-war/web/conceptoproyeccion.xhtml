@@ -88,7 +88,7 @@
                                 <p:tooltip  for="exportarXLS" value="Exportar a XLS" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlConceptosProyecciones.limpiarNuevoConceptosProyecciones()}"  ajax="false">
-                                    <p:dataExporter type="xml"  target=":formExportar:datosConceptosProyeccionesExportar" fileName="SUCURSALES" encoding="UTF-8"/> 
+                                    <p:dataExporter type="xml"  target=":formExportar:datosConceptosProyeccionesExportar" fileName="CONCEPTOSPROYECCIONES" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip  for="exportarXML" value="Exportar a XML" />
 
@@ -128,7 +128,7 @@
                                   showEffect="fade" hideEffect="fade" width="470" modal="true" >
                             <p:dataTable id="lovCiudades" style=" width: 430px" var="personaCiudades" value="#{controlConceptosProyecciones.listaConceptos}" rowKey="#{personaCiudades.secuencia}"
                                          selection="#{controlConceptosProyecciones.conceptoSeleccionado}" selectionMode="single" widgetVar="lovCiudades" scrollable="true" scrollWidth="450" scrollHeight="280"
-                                         filteredValue="#{controlConceptosProyecciones.filtradoConceptos}" emptyMessage="#{msg['lovvacioD']}">              
+                                         filteredValue="#{controlConceptosProyecciones.filtradoConceptos}" emptyMessage="No se encontrarón resultados para la búsqueda">              
                                 <p:ajax event="rowSelect" listener="#{controlConceptosProyecciones.activarAceptar()}" update=":form:aceptarCar"/>
                                 <p:ajax event="rowDblselect" listener="#{controlConceptosProyecciones.actualizarConceptos()}" process="@this" onstart="lovCiudades.clearFilters()"/>
                                 <f:facet name="header">  
@@ -158,8 +158,8 @@
                         <p:dialog id="confirmarGuardar" header="ATENCION...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                            <p:commandButton value="Si" onclick="confirmarGuardar.hide();" action="atrasdepartamento"  actionListener="#{controlConceptosProyecciones.guardarConceptosProyecciones()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
-                            <p:commandButton value="No" onclick="confirmarGuardar.hide();"  action="atrasdepartamento"  actionListener="#{controlConceptosProyecciones.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
+                            <p:commandButton value="Si" onclick="confirmarGuardar.hide();"   actionListener="#{controlConceptosProyecciones.guardarConceptosProyecciones()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                            <p:commandButton value="No" onclick="confirmarGuardar.hide();"    actionListener="#{controlConceptosProyecciones.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                             <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                         </p:dialog>
 
@@ -205,14 +205,14 @@
                     <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla 'CONCEPTOSPROYECCIONES' tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlConceptosProyecciones.secRegistro, 'ConceptosProyecciones','departamento')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlConceptosProyecciones.secRegistro, 'ConceptosProyecciones','conceptoproyeccion')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla CONCEPTOSPROYECCIONES tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('ConceptosProyecciones','departamento')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('ConceptosProyecciones','conceptoproyeccion')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
@@ -229,7 +229,7 @@
                     <p:dialog id="errorTablaConRastro" header="ATENCIÓN" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlConceptosProyecciones.secRegistro, 'ConceptosProyecciones','departamento')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlConceptosProyecciones.secRegistro, 'ConceptosProyecciones','conceptoproyeccion')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
