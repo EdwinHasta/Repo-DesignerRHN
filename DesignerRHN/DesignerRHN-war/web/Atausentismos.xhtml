@@ -630,10 +630,14 @@
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 531px; top: 280px;  " id="btnNuevaForma" actionListener="#{controlAusentismos.asignarIndex(indice, 6, 1)}" icon="ui-icon-search" process="@this" />
 
+
                             <!-- MODULO DE SALUD OCUPACIONAL -->
                             <p:panel id="panel" header="#{msg['modulo']}" toggleable="true" collapsed="#{controlAusentismos.colapsado}" style="position: absolute; left:20px; height: 30px;top: 350px;width:540px" toggleSpeed="700" closeSpeed="500"  widgetVar="panel">  
                                 <!-- AJAX para que al cerrar el módulo el  alto del modulo se arregle-->
                                 <p:ajax event="toggle" listener="#{controlAusentismos.cambiosToggle()}" process="@this"/> 
+
+                                
+                                
 
                                 <strong><h:outputText value="#{msg['accident']}" style=" position: absolute; top: 65px" /></strong>
                                 <p:inputText id="nuevoAccidente" value="#{controlAusentismos.nuevoAusentismo.accidente.descripcioncaso}" style=" width: 122px; position: absolute; left: 110px; top: 60px; text-transform: uppercase" onclick="select();">
