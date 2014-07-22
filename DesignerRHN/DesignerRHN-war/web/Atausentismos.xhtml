@@ -833,7 +833,7 @@
                                 </p:inputText>
 
                                 <strong><h:outputText value="#{msg['cdiagnostico']}" style=" position: absolute; top: 185px" /></strong>
-                                <p:inputText id="duplicarDiagnostico" value="#{controlAusentismos.duplicarAusentismo.diagnosticocategoria.codigo}" style=" width: 122px; position: absolute; left: 100px; top: 180px; text-transform: uppercase" onclick="select();">
+                                <p:inputText id="duplicarDiagnostico" value="#{controlAusentismos.duplicarAusentismo.diagnosticocategoria.codigo}" style=" width: 122px; position: absolute; left: 110px; top: 180px; text-transform: uppercase" onclick="select();">
                                     <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(2, 'DIAGNOSTICO')}" />
                                     <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('DIAGNOSTICO', controlAusentismos.duplicarAusentismo.diagnosticocategoria.codigo, 2)}" />
                                     <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 9, 2)}" />
@@ -857,7 +857,7 @@
                                 <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 511px; top: 100px; " id="btnDuplicarTercero" actionListener="#{controlAusentismos.asignarIndex(indice, 11, 2)}" icon="ui-icon-search" process="@this" />
 
                                 <strong><h:outputText value="#{msg['observaciones']}" style=" position: absolute; top: 145px;left: 280px" /></strong>
-                                <p:inputText id="duplicarObservacion" value="#{controlAusentismos.duplicarAusentismo.observaciones}" style=" width: 122px; position: absolute; left: 570px; top: 145px; text-transform: uppercase" onclick="select();">
+                                <p:inputText id="duplicarObservacion" value="#{controlAusentismos.duplicarAusentismo.observaciones}" style=" width: 122px; position: absolute; left: 380px; top: 145px; text-transform: uppercase" onclick="select();">
                                     <p:ajax event="change" update="@this"/>
                                 </p:inputText>
                             </p:panel>
