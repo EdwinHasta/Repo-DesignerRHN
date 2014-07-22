@@ -376,4 +376,16 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             return null;
         }
     }
+    
+    public List<Empleados> consultarEmpleadosParaProyecciones(EntityManager em) {
+        try {
+            String sql = "SELECT * FROM Empleados c WHERE  EXISTS (SELECT 'X' FROM Proyecciones n WHERE n.empleado  = c.secuencia)";
+            Query query = em.createNativeQuery(sql, Empleados.class);
+            List<Empleados> lista = query.getResultList();
+            return lista;
+        } catch (Exception e) {
+            System.err.println("Error consultarEmpleadosParaProyecciones PersistenciaEmpleados : " + e.toString());
+            return null;
+        }
+    }
 }
