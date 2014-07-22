@@ -79,8 +79,8 @@ public class Modulos implements Serializable {
     }
 
     public String getNombre() {
-        if(nombre == null){
-            nombre = " ";
+        if(nombre != null){
+            nombre = nombre.toUpperCase();
         }
         return nombre;
     }

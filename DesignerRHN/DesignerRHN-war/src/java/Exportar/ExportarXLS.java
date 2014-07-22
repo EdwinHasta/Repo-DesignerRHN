@@ -65,7 +65,6 @@ public class ExportarXLS extends ExcelExporter {
         writeExcelToResponse(context.getExternalContext(), wb, filename);
     }
 
-    @Override
     protected void exportPageOnly(FacesContext context, DataTable table, Sheet sheet) {
         int first = table.getFirst();
         int rowsToExport = first + table.getRows();
@@ -75,7 +74,6 @@ public class ExportarXLS extends ExcelExporter {
         }
     }
 
-    @Override
     protected void exportSelectionOnly(FacesContext context, DataTable table, Sheet sheet) {
         Object selection = table.getSelection();
         String var = table.getVar();
@@ -99,7 +97,6 @@ public class ExportarXLS extends ExcelExporter {
         }
     }
 
-    @Override
     protected void exportAll(FacesContext context, DataTable table, Sheet sheet) {
         int first = table.getFirst();
         int rowCount = table.getRowCount();
@@ -129,7 +126,6 @@ public class ExportarXLS extends ExcelExporter {
         }
     }
 
-    @Override
     protected void exportRow(DataTable table, Sheet sheet, int rowIndex) {
         table.setRowIndex(rowIndex);
 
@@ -140,7 +136,6 @@ public class ExportarXLS extends ExcelExporter {
         exportCells(table, sheet);
     }
 
-    @Override
     protected void exportCells(DataTable table, Sheet sheet) {
         int sheetRowIndex = sheet.getLastRowNum() + 1;
         Row row = sheet.createRow(sheetRowIndex);

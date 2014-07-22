@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  * Clase Stateless.<br>
@@ -86,9 +87,31 @@ public class PersistenciaModulos implements PersistenciaModulosInterface {
 
     @Override
     public List<Modulos> buscarModulos(EntityManager em) {
-        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(Modulos.class));
-        return em.createQuery(cq).getResultList();
+        try {
+            em.clear();
+            Query query = em.createQuery("SELECT m FROM Modulos m");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<Modulos> lista = query.getResultList();
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error buscarModulos PersistenciaModulos : " + e.toString());
+            return null;
+        }
+    }
+    
+    @Override
+    public Modulos buscarModulosPorSecuencia(EntityManager em, BigInteger secModulo) {
+        try {
+            em.clear();
+            Query query = em.createQuery("SELECT m FROM Modulos m where m.secuencia = :secModulo");
+            query.setParameter("secModulo", secModulo);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            Modulos modu = (Modulos) query.getSingleResult();
+            return modu;
+        } catch (Exception e) {
+            System.out.println("Error buscarModulos PersistenciaModulos : " + e.toString());
+            return null;
+        }
     }
 
 }

@@ -11,6 +11,7 @@ import InterfaceAdministrar.AdministrarInforeportesInterface;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaInforeportesInterface;
 import InterfacePersistencia.PersistenciaModulosInterface;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
@@ -24,7 +25,7 @@ public class AdministrarInforeportes implements AdministrarInforeportesInterface
     @EJB
     PersistenciaModulosInterface persistenciaModulos;
 
-        /**
+    /**
      * Enterprise JavaBean.<br>
      * Atributo que representa todo lo referente a la conexión del usuario que
      * está usando el aplicativo.
@@ -32,7 +33,7 @@ public class AdministrarInforeportes implements AdministrarInforeportesInterface
     @EJB
     AdministrarSesionesInterface administrarSesiones;
 
-    private EntityManager em;
+    private EntityManager em; 
 
     @Override
     public void obtenerConexion(String idSesion) {
@@ -43,6 +44,12 @@ public class AdministrarInforeportes implements AdministrarInforeportesInterface
         List<Inforeportes> listaInforeportes;
         listaInforeportes = persistenciaInforeportes.buscarInforeportes(em);
         return listaInforeportes;
+    }
+    
+    public Modulos buscarModuloPorSecuencia(BigInteger secModulo) {
+        Modulos modu;
+        modu = persistenciaModulos.buscarModulosPorSecuencia(em, secModulo);
+        return modu;
     }
 
     public List<Modulos> lovmodulos() {
@@ -61,8 +68,6 @@ public class AdministrarInforeportes implements AdministrarInforeportesInterface
         persistenciaInforeportes.crear(em, inforeportes);
     }
     
-    
-
     @Override
     public void modificarInforeporte(List<Inforeportes> listaInforeportesModificar) {
         for (int i = 0; i < listaInforeportesModificar.size(); i++) {

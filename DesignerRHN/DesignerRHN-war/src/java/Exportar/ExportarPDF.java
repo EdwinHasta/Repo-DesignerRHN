@@ -94,7 +94,6 @@ public class ExportarPDF extends PDFExporter {
         return pdfTable;
     }
 
-    @Override
     protected void exportPageOnly(FacesContext context, DataTable table, PdfPTable pdfTable) {
         int first = table.getFirst();
         int rowsToExport = first + table.getRows();
@@ -104,7 +103,6 @@ public class ExportarPDF extends PDFExporter {
         }
     }
 
-    @Override
     protected void exportSelectionOnly(FacesContext context, DataTable table, PdfPTable pdfTable) {
         Object selection = table.getSelection();
         String var = table.getVar();
