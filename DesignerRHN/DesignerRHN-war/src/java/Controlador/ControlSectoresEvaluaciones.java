@@ -97,6 +97,9 @@ public class ControlSectoresEvaluaciones implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarSectoresEvaluaciones.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlSectoresEvaluaciones eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -153,7 +156,8 @@ public class ControlSectoresEvaluaciones implements Serializable {
     public void listaValoresBoton() {
     }
 
-    public void cancelarModificacion() {FacesContext c = FacesContext.getCurrentInstance();
+    public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
             codigo = (Column) c.getViewRoot().findComponent("form:datosSectoresEvaluaciones:codigo");
@@ -188,7 +192,8 @@ public class ControlSectoresEvaluaciones implements Serializable {
     }
 
     public void salir() {
-        if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
             codigo = (Column) c.getViewRoot().findComponent("form:datosSectoresEvaluaciones:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
@@ -221,7 +226,8 @@ public class ControlSectoresEvaluaciones implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void activarCtrlF11() {FacesContext c = FacesContext.getCurrentInstance();
+    public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             tamano = 246;
             codigo = (Column) c.getViewRoot().findComponent("form:datosSectoresEvaluaciones:codigo");
@@ -629,7 +635,8 @@ public class ControlSectoresEvaluaciones implements Serializable {
         System.out.println("contador " + contador);
 
         if (contador == 2) {
-            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
                 codigo = (Column) c.getViewRoot().findComponent("form:datosSectoresEvaluaciones:codigo");
@@ -759,7 +766,8 @@ public class ControlSectoresEvaluaciones implements Serializable {
             infoRegistro = "Cantidad de registros: " + listSectoresEvaluaciones.size();
             context.update("form:informacionRegistro");
             context.update("form:ACEPTAR");
-            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 codigo = (Column) c.getViewRoot().findComponent("form:datosSectoresEvaluaciones:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
@@ -943,6 +951,4 @@ public class ControlSectoresEvaluaciones implements Serializable {
         this.infoRegistro = infoRegistro;
     }
 
-    
-    
 }

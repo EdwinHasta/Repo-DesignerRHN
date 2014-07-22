@@ -36,6 +36,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Parametrospresupuestos.findAll", query = "SELECT p FROM Parametrospresupuestos p")})
 public class Parametrospresupuestos implements Serializable {
+    @OneToMany(mappedBy = "parametropresupuesto")
+    private Collection<AportesEntidades> aportesEntidadesCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -225,6 +227,15 @@ public class Parametrospresupuestos implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Parametrospresupuestos[ secuencia=" + secuencia + " ]";
+    }
+
+    @XmlTransient
+    public Collection<AportesEntidades> getAportesEntidadesCollection() {
+        return aportesEntidadesCollection;
+    }
+
+    public void setAportesEntidadesCollection(Collection<AportesEntidades> aportesEntidadesCollection) {
+        this.aportesEntidadesCollection = aportesEntidadesCollection;
     }
     
 }

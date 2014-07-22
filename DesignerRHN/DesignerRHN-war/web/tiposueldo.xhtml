@@ -44,7 +44,7 @@
                                 </p:column>
 
                                 <p:column  headerText="#{msg['descripcion']}" sortBy="#{info.descripcion}" filterBy="#{info.descripcion}" filterMatchMode="contains"
-                                          id="tipoSueldoDescripcion" width="130" filterStyle="display: none; visibility: hidden;" >                                  
+                                           id="tipoSueldoDescripcion" width="130" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.descripcion}" style="text-transform: uppercase"/></f:facet>  
                                         <f:facet name="input">
@@ -142,7 +142,7 @@
                                 <p:separator style="position: relative; top: -9px"/> 
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTipoSueldo.verificarRastro()}" process="@this"/>  
                                 <p:tooltip for="rastro" value="#{msg['rastro']}"/>
-                                
+
                                 <p:separator style="position: relative; top: -9px"/> 
 
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTipoSueldo.cancelarModificacionGeneral()}"   process="@this"/>  
@@ -150,7 +150,7 @@
 
                                 <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTipoSueldo.salir()}" action="#{controlTipoSueldo.valorPaginaAnterior()}" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
-                                
+
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
@@ -186,7 +186,7 @@
                                 </p:column>
 
                                 <p:column  headerText="#{msg['concepto']}" sortBy="#{infoTSF.concepto.descripcion}" filterBy="#{infoTSF.concepto.descripcion}" filterMatchMode="contains"  width="50" 
-                                          id="tsFormulaConcepto" filterStyle="display: none; visibility: hidden;"  >  
+                                           id="tsFormulaConcepto" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoTSF.concepto.descripcion}" >
@@ -263,8 +263,12 @@
                                                 <p:ajax event="dblclick" listener="#{controlTipoSueldo.asignarIndex(indiceTSG,0,0,2)}" process="@this" update="editarGrupoTSGrupo"/>
                                             </p:inputText>
                                         </f:facet>   
-                                    </p:cellEditor>
-                                </p:column>
+                                    </p:cellEditor>   
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 99%; margin: -14px; height: 26px; border: none; color: blue" id="fooTipoEntidad" action="grupotipoentidadtiposueldo" actionListener="#{controlGruposTiposEntidades.recibirPagina('atrasgrupotipoentidadtiposueldo')}"  value=" " />
+                                    </f:facet>
+
+                                </p:column> 
                             </p:dataTable>  
                         </fieldset> 
 
@@ -297,7 +301,7 @@
                                         </f:facet>   
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 99%; margin: -14px; height: 26px; border: none; color: blue" id="fooTipoEntidad" value=" " />
+                                        <p:commandButton style="width: 99%; margin: -14px; height: 26px; border: none; color: blue" id="fooTipoEntidad" action="tipoentidadtiposueldo" actionListener="#{controlTiposEntidades.recibirPagina('atrastipoentidadtiposueldo')}"  value=" " />
                                     </f:facet>
                                 </p:column>
 
@@ -322,7 +326,7 @@
                                 </p:column>
 
                                 <p:column  headerText="#{msg['concepto']}" sortBy="#{infoTEF.concepto.descripcion}" filterBy="#{infoTEF.concepto.descripcion}" filterMatchMode="contains" 
-                                          id="teFormulaConcepto"  width="100" filterStyle="display: none; visibility: hidden;"  >  
+                                           id="teFormulaConcepto"  width="100" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoTEF.concepto.descripcion}" >
@@ -342,7 +346,7 @@
                                 </p:column>
 
                                 <p:column  headerText="#{msg['empresa']}" sortBy="#{infoTEF.concepto.empresa.nombre}" filterBy="#{infoTEF.concepto.empresa.nombre}" filterMatchMode="contains" 
-                                          id="teFormulaEmpresa"  width="100" filterStyle="display: none; visibility: hidden;"  >  
+                                           id="teFormulaEmpresa"  width="100" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoTEF.concepto.empresa.nombre}" >
@@ -480,9 +484,9 @@
                                 <h:outputText value="#{formula.nombrelargo}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroFormula" value="#{controlTipoSueldo.infoRegistroFormula}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton id="aceptarF" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlTipoSueldo.aceptar}" onclick="FormulaDialogo.hide(), lovFormula.clearFilters();" actionListener="#{controlTipoSueldo.actualizarFormula()}" update="lovFormula, aceptarF, datosTSFormula" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovFormula:globalFilter"/>
                         </p:commandButton>
@@ -521,9 +525,9 @@
                                 <h:outputText value="#{concept.empresa.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroConcepto" value="#{controlTipoSueldo.infoRegistroConcepto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton id="aceptarC" style="position: relative; left: 330px" value="#{msg['aceptar']}" disabled="#{controlTipoSueldo.aceptar}" onclick="ConceptoDialogo.hide(), lovConcepto.clearFilters();"  actionListener="#{controlTipoSueldo.actualizarConcepto()}" update="lovConcepto, aceptarC, datosTSFormula" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovConcepto:globalFilter"/>
                         </p:commandButton>
@@ -556,9 +560,9 @@
                                 <h:outputText value="#{grupo.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroGrupo" value="#{controlTipoSueldo.infoRegistroGrupo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton id="aceptarG" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlTipoSueldo.aceptar}" onclick="GrupoDialogo.hide(), lovGrupo.clearFilters();" actionListener="#{controlTipoSueldo.actualizarGrupo()}" update="lovGrupo, aceptarG, datosTSGrupo" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovGrupo:globalFilter"/>
                         </p:commandButton>
@@ -591,9 +595,9 @@
                                 <h:outputText value="#{tipoE.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroTipoEntidad" value="#{controlTipoSueldo.infoRegistroTipoEntidad}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton id="aceptarTE" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlTipoSueldo.aceptar}" onclick="TipoEntidadDialogo.hide(), lovTipoEntidad.clearFilters();" actionListener="#{controlTipoSueldo.actualizarTipoEntidad()}" update="lovTipoEntidad, aceptarTE, datosTEFormula" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovTipoEntidad:globalFilter"/>
                         </p:commandButton>
@@ -620,9 +624,9 @@
                                 <h:outputText value="#{formulaTE.nombrelargo}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroFormulaTE" value="#{controlTipoSueldo.infoRegistroFormulaTE}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton id="aceptarFTE" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlTipoSueldo.aceptar}" onclick="FormulaTEDialogo.hide(), lovFormulaTE.clearFilters();" actionListener="#{controlTipoSueldo.actualizarFormulaTE()}" update="lovFormulaTE, aceptarFTE, datosTEFormula" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovFormulaTE:globalFilter"/>
                         </p:commandButton>
@@ -661,9 +665,9 @@
                                 <h:outputText value="#{conceptTE.empresa.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroConceptoTE" value="#{controlTipoSueldo.infoRegistroConceptoTE}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton id="aceptarCTE" style="position: relative; left: 330px" value="#{msg['aceptar']}" disabled="#{controlTipoSueldo.aceptar}" onclick="ConceptoTEDialogo.hide(), lovConceptoTE.clearFilters();"  actionListener="#{controlTipoSueldo.actualizarConceptoTE()}" update="lovConceptoTE, aceptarCTE, datosTEFormula" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovConceptoTE:globalFilter"/>
                         </p:commandButton>

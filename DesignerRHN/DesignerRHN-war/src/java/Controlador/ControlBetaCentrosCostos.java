@@ -125,12 +125,18 @@ public class ControlBetaCentrosCostos implements Serializable {
         }
     }
 
+    private String paginaAnterior;
+public void recibirPagina(String pagina){paginaAnterior = pagina;}
+public String redirigirPaginaAnterior(){return paginaAnterior;}
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A CONTROLBETACENTROSCOSTOS.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarCentrosCostos.size();
+            context.update("form:informacionRegistro");
 
         } catch (Exception e) {
             System.out.println("ERROR CONTROLBETACENTROSCOSTOS eventoFiltrar ERROR===" + e.getMessage());

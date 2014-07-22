@@ -36,7 +36,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output" ><h:outputText value="#{info.codigo}" style="text-transform: uppercase"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.codigo}" id="editarCodigoCC" style="height: 12px; border-radius: 0px; width: 99%; text-transform: uppercase" > 
+                                            <p:inputText value="#{info.codigo}" maxlength="30" id="editarCodigoCC" style="height: 12px; border-radius: 0px; width: 99%; text-transform: uppercase" > 
                                                 <p:ajax  event="change" listener="#{controlPapeles.modificandoPapel(indice, 'N', info.codigo)}" update="@this"/>
                                                 <p:ajax event="select" listener="#{controlPapeles.cambiarIndice(indice,0)}" /> 
                                             </p:inputText>
@@ -50,7 +50,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.descripcion}" style="text-transform: uppercase" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText id="editarNombreCentroCoso" value="#{info.descripcion}" style="height: 12px; border-radius: 0px; width: 99%; text-transform: uppercase">
+                                            <p:inputText id="editarNombreCentroCoso" maxlength="200" value="#{info.descripcion}" style="height: 12px; border-radius: 0px; width: 99%; text-transform: uppercase">
                                                 <p:ajax event="change" listener="#{controlPapeles.modificandoPapel(indice, 'N', info.descripcion)}" update="@this" />
                                                 <p:ajax event="select" listener="#{controlPapeles.cambiarIndice(indice, 1)}" />
                                             </p:inputText>
@@ -62,7 +62,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.codigoalternativo}" style="text-transform: uppercase"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.codigoalternativo}" id="editarCodigoAT" style="height: 12px; border-radius: 0px; width: 93.5%; text-transform: uppercase" > 
+                                            <p:inputText value="#{info.codigoalternativo}" maxlength="50" id="editarCodigoAT" style="height: 12px; border-radius: 0px; width: 93.5%; text-transform: uppercase" > 
                                                 <p:ajax event="change" listener="#{controlPapeles.modificandoPapel(indice, 'N', info.codigoalternativo )}" update="@this" />
                                                 <p:ajax event="select" listener="#{controlPapeles.cambiarIndice(indice, 2)}" />
                                             </p:inputText>
@@ -139,10 +139,10 @@
                         <p:commandButton value="Aceptar" onclick="validacionDuplicarVigencia.hide();" style="position: absolute; top: 50px; left: 280px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="validacionModificar" header="ATENCIÓN...!" widgetVar="validacionModificar"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="" closable="false">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 30px; top: 20px;"  />
-                        <h:outputText value=" #{controlPapeles.mensajeValidacion}" style="position: absolute; left: 100px; top: 25px; width: 250px; font-weight:bold" />
-                        <p:commandButton value="Aceptar" onclick="validacionModificar.hide();" style="position: absolute; top: 60px; left: 250px" process="@this" />
+                    <p:dialog id="validacionModificar" header="ATENCIÓN...!" widgetVar="validacionModificar"  resizable="false" draggable="false" modal="true" height="77" width="330px" style="" closable="false">  
+                        <h:graphicImage value="Imagenes/error.png" width="60" height="60" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value=" #{controlPapeles.mensajeValidacion}" style="position: absolute; left: 80px; top: 15px; width: 250px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="validacionModificar.hide();" style="position: absolute; top: 40px; left: 230px" process="@this" />
                     </p:dialog>
                     <p:dialog id="validacionBorrar" header="ATENCIÓN...!" widgetVar="validacionBorrar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="" closable="false">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 25px; top: 10px;"  />
@@ -226,7 +226,7 @@
                     </p:dialog> 
 
 
-                    <p:dialog id="NuevoRegistroPapeles" header="Nuevo Registro" widgetVar="NuevoRegistroPapeles" closable="false" resizable="false"  draggable="false" modal="true" height="190" width="330" style=" padding: 0px">  
+                    <p:dialog id="NuevoRegistroPapeles" header="Nuevo Registro" widgetVar="NuevoRegistroPapeles" closable="false" resizable="false"  draggable="false" modal="true" height="180" width="320" style=" padding: 0px">  
 
                         <center><strong><h:outputText value="Ingresar Nuevo Papel" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
@@ -234,57 +234,57 @@
 
                             <!--0-->
                             <strong><h:outputText value="*Codigo:" style="left: 10px; position: absolute; top: 60px" /></strong>
-                            <p:inputText id="nuevaCodigoCC" value="#{controlPapeles.nuevoPapel.codigo}" style=" width: 135px; position: absolute; left: 170px; top: 55px;">
+                            <p:inputText id="nuevaCodigoCC" maxlength="30" value="#{controlPapeles.nuevoPapel.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevaCodigoCC" value="Codigo" />
                             <!--1-->
                             <strong><h:outputText value="*Descripcion:" style="left: 10px; position: absolute; top: 90px" /></strong>
-                            <p:inputText id="nuevaNombrePapeles" value="#{controlPapeles.nuevoPapel.descripcion}" style=" width: 135px; position: absolute; left: 170px; top: 85px;text-transform: uppercase">
+                            <p:inputText id="nuevaNombrePapeles" maxlength="200" value="#{controlPapeles.nuevoPapel.descripcion}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevaNombrePapeles" value="Descripcion" />
                             <strong><h:outputText value="Codigo Alternativo:" style=" left: 10px;position: absolute; top: 120px" /></strong>
-                            <p:inputText id="nuevaCodigoAT" value="#{controlPapeles.nuevoPapel.codigoalternativo}" style=" width: 135px; position: absolute; left: 170px; top: 115px;">
+                            <p:inputText id="nuevaCodigoAT" maxlength="50" value="#{controlPapeles.nuevoPapel.codigoalternativo}" style=" width: 140px; position: absolute; left: 150px; top: 115px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevaCodigoAT" value="CODIGO ALTERNATIVO" />
 
 
                             <p:commandButton id="limpiar" value="Limpiar" icon="ui-icon-trash" style="  ;position: absolute; left: 10px; top: 150px;" actionListener="#{controlPapeles.limpiarNuevoPapeles()}" update="nuevoPapeles" process="@this"/>
-                            <p:commandButton id="agregarCC" value="Agregar" icon="ui-icon-circle-check" style=" position: absolute; left: 130px; top: 150px;"  process="@this" actionListener="#{controlPapeles.agregarNuevoPapeles()}"  />
-                            <p:commandButton id="cancelarCC" value="Cancelar" icon="ui-icon-circle-close" style=" position: absolute; left: 220px; top: 150px;" actionListener="#{controlPapeles.limpiarNuevoPapeles()}" update="nuevoPapeles" onclick="NuevoRegistroPapeles.hide();"  process="@this"/>
+                            <p:commandButton id="agregarCC" value="Agregar" icon="ui-icon-circle-check" style=" position: absolute; left: 120px; top: 150px;"  process="@this" actionListener="#{controlPapeles.agregarNuevoPapeles()}"  />
+                            <p:commandButton id="cancelarCC" value="Cancelar" icon="ui-icon-circle-close" style=" position: absolute; left: 210px; top: 150px;" actionListener="#{controlPapeles.limpiarNuevoPapeles()}" update="nuevoPapeles" onclick="NuevoRegistroPapeles.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
                     <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->                    
-                    <p:dialog id="DuplicarRegistroPapeles" header="Duplicar Registro" widgetVar="DuplicarRegistroPapeles" closable="false" resizable="false"  draggable="false" modal="true" height="190" width="330" style=" padding: 0px">  
+                    <p:dialog id="DuplicarRegistroPapeles" header="Duplicar Registro" widgetVar="DuplicarRegistroPapeles" closable="false" resizable="false"  draggable="false" modal="true" height="180" width="320" style=" padding: 0px">  
 
                         <center><strong><h:outputText value="Ingresar Informacion del Papel" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarPapeles" style="border: none;">
                             <!--0-->
                             <strong><h:outputText value="Codigo" style=" position: absolute; left: 10px; top:60px" /></strong>
-                            <p:inputText id="duplicarCodigoCC" value="#{controlPapeles.duplicarPapel.codigo}" style="left: 170px; width: 135px; position: absolute;  top: 55px;">
+                            <p:inputText id="duplicarCodigoCC" maxlength="30" value="#{controlPapeles.duplicarPapel.codigo}" style="left: 150px; width: 140px; position: absolute;  top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigoCC" value="Codigo" />
                             <!--1-->
                             <strong><h:outputText value="Descripcion" style=" position: absolute;left: 10px; top: 90px" /></strong>
-                            <p:inputText id="duplicarNombrePapeles" value="#{controlPapeles.duplicarPapel.descripcion}" style="left: 170px; width: 135px; position: absolute;  top: 85px;">
+                            <p:inputText id="duplicarNombrePapeles" maxlength="200" value="#{controlPapeles.duplicarPapel.descripcion}" style="left: 150px; width: 140px; position: absolute;  top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombrePapeles" value="Descripcion" />
                             <!--4-->
                             <strong><h:outputText value="Codigo Alternativo" style=" position: absolute; left: 10px; top: 120px" /></strong>
-                            <p:inputText id="duplicarCodigoAT" value="#{controlPapeles.duplicarPapel.codigoalternativo}" style="left: 170px; width: 135px; position: absolute; top: 115px;">
+                            <p:inputText id="duplicarCodigoAT" maxlength="50" value="#{controlPapeles.duplicarPapel.codigoalternativo}" style="left: 150px; width: 140px; position: absolute; top: 115px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigoAT" value="Codigo Alternativo" />
 
                             <p:commandButton id="limpiarDuplicadoCC" value="Limpiar"  icon="ui-icon-trash" style="  position: absolute; left: 10px; top: 150px;" actionListener="#{controlPapeles.limpiarDuplicarPapeles()}" update="duplicarPapeles" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoCC" value="Agregar" icon="ui-icon-circle-check" style=" position: absolute; left: 130px; top: 150px;"  process="@this" actionListener="#{controlPapeles.confirmarDuplicar()}"/>
-                            <p:commandButton id="cancelarDuplicadoCC" value="Cancelar" icon="ui-icon-circle-close" style=" position: absolute; left: 220px; top: 150px;" actionListener="#{controlPapeles.limpiarDuplicarPapeles()}" update="duplicarPapeles" onclick="DuplicarRegistroPapeles.hide();" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoCC" value="Agregar" icon="ui-icon-circle-check" style=" position: absolute; left: 120px; top: 150px;"  process="@this" actionListener="#{controlPapeles.confirmarDuplicar()}"/>
+                            <p:commandButton id="cancelarDuplicadoCC" value="Cancelar" icon="ui-icon-circle-close" style=" position: absolute; left: 210px; top: 150px;" actionListener="#{controlPapeles.limpiarDuplicarPapeles()}" update="duplicarPapeles" onclick="DuplicarRegistroPapeles.hide();" process="@this"/>
                         </p:panel>
                     </p:dialog>
 

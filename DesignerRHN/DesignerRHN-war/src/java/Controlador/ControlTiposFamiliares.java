@@ -92,6 +92,10 @@ public class ControlTiposFamiliares implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
+    
+    private String paginaAnterior;
+public void recibirPagina(String pagina){paginaAnterior = pagina;}
+public String redirigirPaginaAnterior(){return paginaAnterior;}
 
     public void eventoFiltrar() {
         try {
@@ -99,6 +103,9 @@ public class ControlTiposFamiliares implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarTiposFamiliares.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlTiposFamiliares eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -273,7 +280,7 @@ public class ControlTiposFamiliares implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposFamiliares.size(); j++) {
                             if (j != indice) {
-                                if (listTiposFamiliares.get(indice).getCodigo() == listTiposFamiliares.get(j).getCodigo()) {
+                                if (listTiposFamiliares.get(indice).getCodigo().equals(listTiposFamiliares.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -322,7 +329,7 @@ public class ControlTiposFamiliares implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposFamiliares.size(); j++) {
                             if (j != indice) {
-                                if (listTiposFamiliares.get(indice).getCodigo() == listTiposFamiliares.get(j).getCodigo()) {
+                                if (listTiposFamiliares.get(indice).getCodigo().equals(listTiposFamiliares.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -369,9 +376,9 @@ public class ControlTiposFamiliares implements Serializable {
                         banderita = false;
                     } else {
 
-                        for (int j = 0; j < listTiposFamiliares.size(); j++) {
+                        for (int j = 0; j < filtrarTiposFamiliares.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposFamiliares.get(indice).getCodigo() == listTiposFamiliares.get(j).getCodigo()) {
+                                if (filtrarTiposFamiliares.get(indice).getCodigo().equals(filtrarTiposFamiliares.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -420,9 +427,9 @@ public class ControlTiposFamiliares implements Serializable {
                         banderita = false;
                     } else {
 
-                        for (int j = 0; j < listTiposFamiliares.size(); j++) {
+                         for (int j = 0; j < filtrarTiposFamiliares.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposFamiliares.get(indice).getCodigo() == listTiposFamiliares.get(j).getCodigo()) {
+                                if (filtrarTiposFamiliares.get(indice).getCodigo().equals(filtrarTiposFamiliares.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -635,7 +642,7 @@ public class ControlTiposFamiliares implements Serializable {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTiposFamiliares.getCodigo());
 
             for (int x = 0; x < listTiposFamiliares.size(); x++) {
-                if (listTiposFamiliares.get(x).getCodigo() == nuevoTiposFamiliares.getCodigo()) {
+                if (listTiposFamiliares.get(x).getCodigo().equals(nuevoTiposFamiliares.getCodigo())) {
                     duplicados++;
                 }
             }
@@ -760,7 +767,7 @@ public class ControlTiposFamiliares implements Serializable {
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listTiposFamiliares.size(); x++) {
-                if (listTiposFamiliares.get(x).getCodigo() == duplicarTiposFamiliares.getCodigo()) {
+                if (listTiposFamiliares.get(x).getCodigo().equals(duplicarTiposFamiliares.getCodigo())) {
                     duplicados++;
                 }
             }

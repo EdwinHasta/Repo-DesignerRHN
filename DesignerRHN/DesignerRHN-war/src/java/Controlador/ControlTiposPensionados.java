@@ -94,6 +94,9 @@ public class ControlTiposPensionados implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarTiposPensionados.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlTiposPensionados eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -271,7 +274,7 @@ public class ControlTiposPensionados implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposPensionados.size(); j++) {
                             if (j != indice) {
-                                if (listTiposPensionados.get(indice).getCodigo() == listTiposPensionados.get(j).getCodigo()) {
+                                if (listTiposPensionados.get(indice).getCodigo().equals(listTiposPensionados.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -320,7 +323,7 @@ public class ControlTiposPensionados implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposPensionados.size(); j++) {
                             if (j != indice) {
-                                if (listTiposPensionados.get(indice).getCodigo() == listTiposPensionados.get(j).getCodigo()) {
+                                if (listTiposPensionados.get(indice).getCodigo().equals(listTiposPensionados.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -369,18 +372,12 @@ public class ControlTiposPensionados implements Serializable {
                     } else {
                         for (int j = 0; j < filtrarTiposPensionados.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposPensionados.get(indice).getCodigo() == listTiposPensionados.get(j).getCodigo()) {
+                                if (filtrarTiposPensionados.get(indice).getCodigo().equals(filtrarTiposPensionados.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
                         }
-                        for (int j = 0; j < listTiposPensionados.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarTiposPensionados.get(indice).getCodigo() == listTiposPensionados.get(j).getCodigo()) {
-                                    contador++;
-                                }
-                            }
-                        }
+
                         if (contador > 0) {
                             filtrarTiposPensionados.get(indice).setCodigo(backUpCodigo);
                             mensajeValidacion = "CODIGOS REPETIDOS";
@@ -427,18 +424,12 @@ public class ControlTiposPensionados implements Serializable {
                     } else {
                         for (int j = 0; j < filtrarTiposPensionados.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposPensionados.get(indice).getCodigo() == listTiposPensionados.get(j).getCodigo()) {
+                                if (filtrarTiposPensionados.get(indice).getCodigo().equals(filtrarTiposPensionados.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
                         }
-                        for (int j = 0; j < listTiposPensionados.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarTiposPensionados.get(indice).getCodigo() == listTiposPensionados.get(j).getCodigo()) {
-                                    contador++;
-                                }
-                            }
-                        }
+
                         if (contador > 0) {
                             filtrarTiposPensionados.get(indice).setCodigo(backUpCodigo);
                             mensajeValidacion = "CODIGOS REPETIDOS";
@@ -649,7 +640,7 @@ public class ControlTiposPensionados implements Serializable {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTiposPensionados.getCodigo());
 
             for (int x = 0; x < listTiposPensionados.size(); x++) {
-                if (listTiposPensionados.get(x).getCodigo() == nuevoTiposPensionados.getCodigo()) {
+                if (listTiposPensionados.get(x).getCodigo().equals(nuevoTiposPensionados.getCodigo())) {
                     duplicados++;
                 }
             }
@@ -769,7 +760,7 @@ public class ControlTiposPensionados implements Serializable {
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listTiposPensionados.size(); x++) {
-                if (listTiposPensionados.get(x).getCodigo() == duplicarTiposPensionados.getCodigo()) {
+                if (listTiposPensionados.get(x).getCodigo().equals(duplicarTiposPensionados.getCodigo())) {
                     duplicados++;
                 }
             }

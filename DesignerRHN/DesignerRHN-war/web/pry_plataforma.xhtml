@@ -46,7 +46,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.descripcion}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.descripcion}" id="editarNombre" style="height: 12px;  border-radius: 0px; width: 420px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.descripcion}" maxlength="100" id="editarNombre" style="height: 12px;  border-radius: 0px; width: 420px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlPryPlataformas.cambiarIndice(indice, 1)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlPryPlataformas.modificarEvalPlataforma(indice, 'N', info.descripcion)}" update="descripcion"/>
                                             </p:inputText>
@@ -59,7 +59,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.observacion}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.observacion}" id="editarobservacion" style="height: 12px;  border-radius: 0px; width: 420px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.observacion}" maxlength="100" id="editarobservacion" style="height: 12px;  border-radius: 0px; width: 420px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlPryPlataformas.cambiarIndice(indice, 2)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlPryPlataformas.modificarEvalPlataforma(indice, 'N', info.observacion)}" update="observacion"/>
                                             </p:inputText>
@@ -74,7 +74,7 @@
 
                         </fieldset>
 
-                         <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">  
+                        <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlPryPlataformas.guardarPryPlataformas()}" process="@this" />
@@ -120,7 +120,7 @@
                                 <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPryPlataformas.cancelarModificacion()}"  process="@this"/>  
                                 <p:tooltip  for="refrescar" value="Refrescar"/>
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPryPlataformas.salir()}" process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPryPlataformas.salir()}" action="#{controlPryPlataformas.redirigirPaginaAnterior()}" process="@this"/>  
                                 <p:tooltip  for="salir" value="Salir"/>
 
                             </p:toolbarGroup>  
@@ -128,13 +128,13 @@
 
                         <h:outputText id="informacionRegistro" value="#{controlPryPlataformas.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px; " icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  actionListener="#{controlPryPlataformas.revisarDialogoGuardar()}" disabled="#{controlPryPlataformas.guardado}"    process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras"    />
+                        <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" action="#{controlPryPlataformas.redirigirPaginaAnterior()}" value="Atras"    />
 
                         <p:dialog id="confirmarGuardar" header="ATENCION...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                            <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlPryPlataformas.guardarPryPlataformas()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
-                            <p:commandButton value="No" onclick="confirmarGuardar.hide();" actionListener="#{controlPryPlataformas.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
+                            <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlPryPlataformas.guardarPryPlataformas()}" action="#{controlPryPlataformas.redirigirPaginaAnterior()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                            <p:commandButton value="No" onclick="confirmarGuardar.hide();" actionListener="#{controlPryPlataformas.cancelarModificacion()}" action="#{controlPryPlataformas.redirigirPaginaAnterior()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                             <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                         </p:dialog>
                     </p:panel>
@@ -245,13 +245,13 @@
                             <p:watermark for="nuevoCodigo" value="Código" />
 
                             <strong><h:outputText value="*Descripción: "  style=" position: absolute; top: 90px;" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlPryPlataformas.nuevoPryPlataforma.descripcion}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText  id="nuevoNombre" maxlength="100" value="#{controlPryPlataformas.nuevoPryPlataforma.descripcion}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoNombre" value="Descripción" />
 
                             <strong><h:outputText value="Obversvación: "  style=" position: absolute; top: 120px;" /></strong>
-                            <p:inputText  id="nuevoObservacion" value="#{controlPryPlataformas.nuevoPryPlataforma.observacion}" style="width: 140px; position: absolute; left: 150px; top: 115px;text-transform: uppercase">
+                            <p:inputText  id="nuevoObservacion" maxlength="100" value="#{controlPryPlataformas.nuevoPryPlataforma.observacion}" style="width: 140px; position: absolute; left: 150px; top: 115px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoObservacion" value="Obversvación" />
@@ -274,13 +274,13 @@
                             <p:watermark for="duplicarCodigo" value="Código" />
 
                             <strong><h:outputText value="Descripción"  style=" position: absolute; top: 90px;" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlPryPlataformas.duplicarPryPlataforma.descripcion}"  style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText id="duplicarNombre" maxlength="100" value="#{controlPryPlataformas.duplicarPryPlataforma.descripcion}"  style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Descripción" />
 
                             <strong><h:outputText value="Obversvación "  style=" position: absolute; top: 120px;" /></strong>
-                            <p:inputText  id="duplicarObservacion" value="#{controlPryPlataformas.duplicarPryPlataforma.observacion}" style="width: 140px; position: absolute; left: 150px; top: 115px;text-transform: uppercase">
+                            <p:inputText  id="duplicarObservacion" maxlength="100" value="#{controlPryPlataformas.duplicarPryPlataforma.observacion}" style="width: 140px; position: absolute; left: 150px; top: 115px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarObservacion" value="Obversvación" />

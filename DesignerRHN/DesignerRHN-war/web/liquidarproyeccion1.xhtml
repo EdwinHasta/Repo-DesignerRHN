@@ -58,13 +58,13 @@
                                 <h:outputText id="t5" value="#{controlLiquidarProyeccion1.tituloBoton}" style="font-weight: bold;position: absolute;top: 135px;left: 405px;font-size: 12px; color: #{controlLiquidarProyeccion1.color}"/>
                                 <h:outputText style="position: absolute;top: 155px;left: 405px; width: 130px; height: 200px; font-size: 12px  " value="Presenta los resultados de la liquidación y los calculos de retroactivos o proyecciones"/>
 
-                                <p:commandButton  onclick="opciones.show();" process="@this" style="background: url(Imagenes/nom_borrar.gif)  ;border-color:#045491; width:90px ; height: 100px ; border-width: 2px; position: absolute;top: 250px;left: 305px" id="b6" disabled="#{controlLiquidarProyeccion1.b1}" value=" "></p:commandButton>
+                                <p:commandButton  onclick="opciones.show();" process="@this" style="background: url(Imagenes/nom_borrar.gif)  ;border-color:#045491; width:90px ; height: 100px ; border-width: 2px; position: absolute;top: 250px;left: 305px" id="b6" disabled="#{controlLiquidarProyeccion1.b1}" action="opciones" value=" "></p:commandButton>
                                 <h:outputText id="t6"  value="Borrar y/o Cerrar Proceso" style="font-weight: bold;position: absolute;top: 265px;left: 405px;font-size: 12px; color: #{controlLiquidarProyeccion1.color}"/>
                                 <h:outputText style="position: absolute;top: 285px;left: 405px; width: 130px; height: 200px; font-size: 12px  " value="Elimina los resultados de la liquidación y los calculos de retroactivos"/>
                             </fieldset>
                         </fieldset>
-                        <p:commandButton style=" position: absolute; left: 800px; top: 500px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras"/>
-                        
+                        <p:commandButton style=" position: absolute; left: 800px; top: 500px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" action="atrasliquidarproyeccion1" value="Atras"/>
+
                         <p:dialog header="Tipo Entidad" widgetVar="opciones" draggable="false" resizable="false" closable="false" id="opciones"  
                                   showEffect="fade" hideEffect="fade" width="290" height="170" modal="true" style="font-size: 11px;">
                             <fieldset style="position: absolute; left: 10px; top: 10px; font-size: 10px; width: 250px; height: 140px; border-radius: 10px;" >

@@ -19,6 +19,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -33,7 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Comprobantes.findAll", query = "SELECT c FROM Comprobantes c")})
 public class Comprobantes implements Serializable {
-   
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -66,6 +67,14 @@ public class Comprobantes implements Serializable {
     @JoinColumn(name = "EMPLEADO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Empleados empleado;
+    @Transient
+    private boolean checkEntregado;
+    @Transient
+    private boolean readOnlyFecha;
+    @Transient
+    private boolean readOnlyFechaEntregado;
+    @Transient
+    private boolean readOnlyNumero;
 
     public Comprobantes() {
     }
@@ -97,7 +106,6 @@ public class Comprobantes implements Serializable {
         this.fecha = fecha;
     }
 
-
     public BigDecimal getValor() {
         return valor;
     }
@@ -115,11 +123,36 @@ public class Comprobantes implements Serializable {
     }
 
     public String getEntregado() {
+        if (entregado == null) {
+            entregado = "N";
+        }
         return entregado;
     }
 
     public void setEntregado(String entregado) {
         this.entregado = entregado;
+    }
+
+    public boolean isCheckEntregado() {
+        getEntregado();
+        if (entregado.equalsIgnoreCase("S")) {
+            checkEntregado = true;
+            if (fechaentregado == null) {
+                fechaentregado = new Date();
+            }
+        } else {
+            checkEntregado = false;
+        }
+        return checkEntregado;
+    }
+
+    public void setCheckEntregado(boolean check) {
+        if (check == false) {
+            entregado = "N";
+        } else {
+            entregado = "S";
+        }
+        this.checkEntregado = check;
     }
 
     public Date getFechaentregado() {
@@ -137,7 +170,23 @@ public class Comprobantes implements Serializable {
     public void setEmpleado(Empleados empleado) {
         this.empleado = empleado;
     }
-    
+
+    public boolean isReadOnlyFecha() {
+        return readOnlyFecha;
+    }
+
+    public void setReadOnlyFecha(boolean readOnlyFecha) {
+        this.readOnlyFecha = readOnlyFecha;
+    }
+
+    public boolean isReadOnlyFechaEntregado() {
+        return readOnlyFechaEntregado;
+    }
+
+    public void setReadOnlyFechaEntregado(boolean readOnlyFechaEntregado) {
+        this.readOnlyFechaEntregado = readOnlyFechaEntregado;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -170,5 +219,18 @@ public class Comprobantes implements Serializable {
     public void setNumero(BigInteger numero) {
         this.numero = numero;
     }
-    
+
+    public boolean isReadOnlyNumero() {
+        if (numero == null) {
+            readOnlyNumero = false;
+        } else {
+            readOnlyNumero = true;
+        }
+        return readOnlyNumero;
+    }
+
+    public void setReadOnlyNumero(boolean readOnlyNumero) {
+        this.readOnlyNumero = readOnlyNumero;
+    }
+
 }

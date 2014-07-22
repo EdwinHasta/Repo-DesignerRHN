@@ -36,6 +36,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TiposTrabajadores.findAll", query = "SELECT t FROM TiposTrabajadores t ORDER BY t.nombre"),
     @NamedQuery(name = "TiposTrabajadores.findByCodigo", query = "SELECT t FROM TiposTrabajadores t WHERE t.codigo = :codigo")})
 public class TiposTrabajadores implements Serializable {
+    @OneToMany(mappedBy = "tipotrabajador")
+    private Collection<AportesEntidades> aportesEntidadesCollection;
+    @OneToMany(mappedBy = "tipotrabajador")
+    private Collection<ParametrosAutoliq> parametrosAutoliqCollection;
     @Size(max = 1)
     @Column(name = "PROMEDIABASICOACUMULADOS")
     private String promediabasicoacumulados;
@@ -373,5 +377,23 @@ public class TiposTrabajadores implements Serializable {
 
     public void setPromediabasicoacumulados(String promediabasicoacumulados) {
         this.promediabasicoacumulados = promediabasicoacumulados;
+    }
+
+    @XmlTransient
+    public Collection<AportesEntidades> getAportesEntidadesCollection() {
+        return aportesEntidadesCollection;
+    }
+
+    public void setAportesEntidadesCollection(Collection<AportesEntidades> aportesEntidadesCollection) {
+        this.aportesEntidadesCollection = aportesEntidadesCollection;
+    }
+
+    @XmlTransient
+    public Collection<ParametrosAutoliq> getParametrosAutoliqCollection() {
+        return parametrosAutoliqCollection;
+    }
+
+    public void setParametrosAutoliqCollection(Collection<ParametrosAutoliq> parametrosAutoliqCollection) {
+        this.parametrosAutoliqCollection = parametrosAutoliqCollection;
     }
 }

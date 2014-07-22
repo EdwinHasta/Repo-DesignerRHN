@@ -78,7 +78,6 @@ public class AdministrarNReporteLaboral implements AdministrarNReporteLaboralInt
     public List<Inforeportes> listInforeportesUsuario() {
         try {
             listInforeportes = persistenciaInforeportes.buscarInforeportesUsuarioLaboral(em);
-            System.out.println("Tamaño: " + listInforeportes.size());
             return listInforeportes;
         } catch (Exception e) {
             System.out.println("Error listInforeportesUsuario " + e);

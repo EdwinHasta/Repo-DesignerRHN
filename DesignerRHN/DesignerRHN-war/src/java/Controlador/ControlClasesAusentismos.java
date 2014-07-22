@@ -74,6 +74,7 @@ public class ControlClasesAusentismos implements Serializable {
     private String nuevoYduplicarCompletarPersona;
     //--------------------------------------
     private String backupTipo;
+    private String paginaAnterior;
 
     public ControlClasesAusentismos() {
         listClasesAusentismos = null;
@@ -89,6 +90,7 @@ public class ControlClasesAusentismos implements Serializable {
         listaTiposausentismos = null;
         filtradoTiposausentismos = null;
         guardado = true;
+        aceptar = true;
         tamano = 270;
     }
 
@@ -105,12 +107,24 @@ public class ControlClasesAusentismos implements Serializable {
         }
     }
 
+    public void recibirAtras(String atras) {
+        paginaAnterior = atras;
+        System.out.println("ControlClasesAusentismos pagina anterior : " + paginaAnterior);
+    }
+
+    public String redireccionarAtras() {
+        return paginaAnterior;
+    }
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlClasesAusentismos.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarClasesAusentismos.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlClasesAusentismos eventoFiltrar ERROR===" + e.getMessage());
         }

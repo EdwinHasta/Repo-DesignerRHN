@@ -97,6 +97,9 @@ public class ControlIdiomas implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarIdiomas.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlIdiomas eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -180,6 +183,7 @@ public class ControlIdiomas implements Serializable {
         context.update("form:datosIdiomas");
         context.update("form:ACEPTAR");
     }
+
     public void salir() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
@@ -265,7 +269,7 @@ public class ControlIdiomas implements Serializable {
                     } else {
                         for (int j = 0; j < listIdiomas.size(); j++) {
                             if (j != indice) {
-                                if (listIdiomas.get(indice).getCodigo() == listIdiomas.get(j).getCodigo()) {
+                                if (listIdiomas.get(indice).getCodigo().equals(listIdiomas.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -324,7 +328,7 @@ public class ControlIdiomas implements Serializable {
                     } else {
                         for (int j = 0; j < listIdiomas.size(); j++) {
                             if (j != indice) {
-                                if (listIdiomas.get(indice).getCodigo() == listIdiomas.get(j).getCodigo()) {
+                                if (listIdiomas.get(indice).getCodigo().equals(listIdiomas.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -377,18 +381,12 @@ public class ControlIdiomas implements Serializable {
                     } else {
                         for (int j = 0; j < filtrarIdiomas.size(); j++) {
                             if (j != indice) {
-                                if (filtrarIdiomas.get(indice).getCodigo() == listIdiomas.get(j).getCodigo()) {
+                                if (filtrarIdiomas.get(indice).getCodigo().equals(filtrarIdiomas.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
                         }
-                        for (int j = 0; j < listIdiomas.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarIdiomas.get(indice).getCodigo() == listIdiomas.get(j).getCodigo()) {
-                                    contador++;
-                                }
-                            }
-                        }
+
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
@@ -435,7 +433,7 @@ public class ControlIdiomas implements Serializable {
                     } else {
                         for (int j = 0; j < filtrarIdiomas.size(); j++) {
                             if (j != indice) {
-                                if (filtrarIdiomas.get(indice).getCodigo() == listIdiomas.get(j).getCodigo()) {
+                                if (filtrarIdiomas.get(indice).getCodigo().equals(filtrarIdiomas.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -654,7 +652,7 @@ public class ControlIdiomas implements Serializable {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoIdiomas.getCodigo());
 
             for (int x = 0; x < listIdiomas.size(); x++) {
-                if (listIdiomas.get(x).getCodigo() == nuevoIdiomas.getCodigo()) {
+                if (listIdiomas.get(x).getCodigo().equals(nuevoIdiomas.getCodigo())) {
                     duplicados++;
                 }
             }
@@ -774,7 +772,7 @@ public class ControlIdiomas implements Serializable {
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listIdiomas.size(); x++) {
-                if (listIdiomas.get(x).getCodigo() == duplicarIdiomas.getCodigo()) {
+                if (listIdiomas.get(x).getCodigo().equals(duplicarIdiomas.getCodigo())) {
                     duplicados++;
                 }
             }

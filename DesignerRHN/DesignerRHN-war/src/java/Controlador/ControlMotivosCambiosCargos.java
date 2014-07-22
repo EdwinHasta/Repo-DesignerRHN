@@ -102,6 +102,9 @@ public class ControlMotivosCambiosCargos implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarMotivosCambiosCargos.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlMotiviosCambiosCargos eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -278,7 +281,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
                     } else {
                         for (int j = 0; j < listMotivosCambiosCargos.size(); j++) {
                             if (j != indice) {
-                                if (listMotivosCambiosCargos.get(indice).getCodigo() == listMotivosCambiosCargos.get(j).getCodigo()) {
+                                if (listMotivosCambiosCargos.get(indice).getCodigo().equals(listMotivosCambiosCargos.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -293,17 +296,17 @@ public class ControlMotivosCambiosCargos implements Serializable {
                         }
 
                     }
+                    if (listMotivosCambiosCargos.get(indice).getNombre() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listMotivosCambiosCargos.get(indice).setNombre(backupNombre);
+
+                        banderita = false;
+                    }
                     if (listMotivosCambiosCargos.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                         listMotivosCambiosCargos.get(indice).setNombre(backupNombre);
 
-                    }
-                    if (listMotivosCambiosCargos.get(indice).getNombre().equals(" ")) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        listMotivosCambiosCargos.get(indice).setNombre(backupNombre);
-
-                        banderita = false;
                     }
 
                     if (banderita == true) {
@@ -312,6 +315,53 @@ public class ControlMotivosCambiosCargos implements Serializable {
                         } else if (!modificarMotivoCambioCargo.contains(listMotivosCambiosCargos.get(indice))) {
                             modificarMotivoCambioCargo.add(listMotivosCambiosCargos.get(indice));
                         }
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listMotivosCambiosCargos.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listMotivosCambiosCargos.get(indice).setCodigo(backupCodigo);
+                    } else {
+                        for (int j = 0; j < listMotivosCambiosCargos.size(); j++) {
+                            if (j != indice) {
+                                if (listMotivosCambiosCargos.get(indice).getCodigo().equals(listMotivosCambiosCargos.get(j).getCodigo())) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            listMotivosCambiosCargos.get(indice).setCodigo(backupCodigo);
+
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listMotivosCambiosCargos.get(indice).getNombre() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listMotivosCambiosCargos.get(indice).setNombre(backupNombre);
+
+                        banderita = false;
+                    }
+                    if (listMotivosCambiosCargos.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listMotivosCambiosCargos.get(indice).setNombre(backupNombre);
+
+                    }
+
+                    if (banderita == true) {
                         if (guardado == true) {
                             guardado = false;
                         }
@@ -331,20 +381,14 @@ public class ControlMotivosCambiosCargos implements Serializable {
                         filtrarMotivosCambiosCargos.get(indice).setCodigo(backupCodigo);
                         banderita = false;
                     } else {
-                        for (int j = 0; j < listMotivosCambiosCargos.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarMotivosCambiosCargos.get(indice).getCodigo() == listMotivosCambiosCargos.get(j).getCodigo()) {
-                                    contador++;
-                                }
-                            }
-                        }
                         for (int j = 0; j < filtrarMotivosCambiosCargos.size(); j++) {
                             if (j != indice) {
-                                if (filtrarMotivosCambiosCargos.get(indice).getCodigo() == filtrarMotivosCambiosCargos.get(j).getCodigo()) {
+                                if (filtrarMotivosCambiosCargos.get(indice).getCodigo().equals(filtrarMotivosCambiosCargos.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
                         }
+
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             filtrarMotivosCambiosCargos.get(indice).setCodigo(backupCodigo);
@@ -354,13 +398,12 @@ public class ControlMotivosCambiosCargos implements Serializable {
                         }
 
                     }
-
-                    if (filtrarMotivosCambiosCargos.get(indice).getNombre().isEmpty()) {
+                    if (filtrarMotivosCambiosCargos.get(indice).getNombre() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                         filtrarMotivosCambiosCargos.get(indice).setNombre(backupNombre);
                     }
-                    if (filtrarMotivosCambiosCargos.get(indice).getNombre().equals(" ")) {
+                    if (filtrarMotivosCambiosCargos.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                         filtrarMotivosCambiosCargos.get(indice).setNombre(backupNombre);
@@ -372,6 +415,52 @@ public class ControlMotivosCambiosCargos implements Serializable {
                         } else if (!modificarMotivoCambioCargo.contains(filtrarMotivosCambiosCargos.get(indice))) {
                             modificarMotivoCambioCargo.add(filtrarMotivosCambiosCargos.get(indice));
                         }
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarMotivosCambiosCargos.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarMotivosCambiosCargos.get(indice).setCodigo(backupCodigo);
+                        banderita = false;
+                    } else {
+                        for (int j = 0; j < filtrarMotivosCambiosCargos.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarMotivosCambiosCargos.get(indice).getCodigo().equals(filtrarMotivosCambiosCargos.get(j).getCodigo())) {
+                                    contador++;
+                                }
+                            }
+                        }
+
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarMotivosCambiosCargos.get(indice).setCodigo(backupCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (filtrarMotivosCambiosCargos.get(indice).getNombre() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarMotivosCambiosCargos.get(indice).setNombre(backupNombre);
+                    }
+                    if (filtrarMotivosCambiosCargos.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarMotivosCambiosCargos.get(indice).setNombre(backupNombre);
+                    }
+
+                    if (banderita == true) {
+
                         if (guardado == true) {
                             guardado = false;
                         }

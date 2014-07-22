@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
     <h:head>
         <title>Hola</title>
     </h:head>
@@ -14,17 +15,24 @@
                 <h:form id="form"> 
                     <f:loadBundle basename="Recursos.empleadoindividual" var="msg" />
                     <p:growl id="growl" showDetail="true"/> 
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" > 
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 530px;" > 
 
                         <p:toolbar style="font-size: 12px; position: absolute; top: 35px; left: 13px; height: 24px">   
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlEmpleadoIndividual.guardarCambios()}" process="@this" />
                                 <p:tooltip style="font-size: 12px" for="guardarRapido" value="#{msg['guardar']}" />
+
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasCargos.editarCelda()}" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="editar" value="#{msg['editar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+
                                 <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmpleadoIndividual.listaValoresBoton()}" process="@this"/> 
                                 <p:tooltip style="font-size: 12px" for="listaValores" value="#{msg['lista']}" />
+
+                                <p:commandButton id="filtrar" value="" disabled="true" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " process="@this"/>
+                                <p:tooltip  for="filtrar" value="#{msg['filtrar']}" />
 
                                 <p:separator style="position: relative; top: -9px;" />
 
@@ -39,10 +47,29 @@
                                 <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmpleadoIndividual.exportPDF()}" ajax="false"/>
                                 <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}" />
 
-                                <p:separator style="position: relative; top: -9px;"/> 
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="insertar" disabled="true" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/> 
+                                <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
+
+                                <p:commandButton id="eliminar" disabled="true" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " process="@this"/>  
+                                <p:tooltip  for="eliminar" value="#{msg['eliminar']}" />
+
+                                <p:commandButton id="duplicar" disabled="true" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "   process="@this"/>  
+                                <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
 
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmpleadoIndividual.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}"/>
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmpleadoIndividual.refrescar()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmpleadoIndividual.refrescar()}" action="nomina" process="@this"/>  
+                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
@@ -106,14 +133,15 @@
                             </p:selectOneMenu>
 
                             <h:outputText value="#{msg['fechanacimiento']}" style="position: absolute; left: 123px; font-weight: bold; color: #14388B; top: 67px" />
-                            <p:calendar value="#{controlEmpleadoIndividual.persona.fechanacimiento}" style="position: absolute; left: 223px; top: 62px;" onclick="select();" id="fechaNacimiento"   styleClass="ui-datepicker, calendarEmpleadoPersonal"  
-                                        navigator="true" maxlength="10" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">
-                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                <p:ajax event="dateSelect" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
-                                <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
-                                <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
-                            </p:calendar>
+                            <div id="posicionFechaNacimiento" style="position: absolute; left: 223px; top: 62px;width: 95px">
+                                <lnk:calendar id="fechaNacimiento" value="#{controlEmpleadoIndividual.persona.fechanacimiento}" >
+                                    <p:ajax process="@this" event="dateSelect" listener="#{controlEmpleadoIndividual.eventoDataSelectFechaNacimiento('P')}" update="@this"/>
+                                    <p:ajax process="@this" event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
+                                    <p:ajax process="@this" event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}"  update="@this"/>
+                                </lnk:calendar>
+                            </div>
                             <p:watermark for="fechaNacimiento" value="#{msg['fechanacimientowm']}" />
+
                             <h:outputText value="#{msg['ciudad']}" style="position: absolute; left: 292px; font-weight: bold; color: #14388B; top: 67px" />
                             <p:inputText value="#{controlEmpleadoIndividual.persona.ciudadnacimiento.nombre}" id="lugarNacimiento" style="position: absolute; left: 334px; top: 62px; width: 83px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="dblclick" listener="#{controlEmpleadoIndividual.dialogoCiudad(1)}"/>
@@ -154,15 +182,17 @@
                                 <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                             </p:inputText>
                             <p:watermark for="certificadoJudicial" value="#{msg['certificadojudicialwm']}" />
+
                             <h:outputText value="#{msg['fechavencimiento']}" style="position: absolute; left: 339px; font-weight: bold; color: #14388B; top: 98px" />
-                            <p:calendar  value="#{controlEmpleadoIndividual.persona.fechavencimientocertificado}" style="position: absolute; left: 446px; top: 93px;" onclick="select();" id="fechaVencimientoCJ"   styleClass="ui-datepicker, calendarEmpleadoPersonal"  
-                                         navigator="true" maxlength="10" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">
-                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                <p:ajax event="dateSelect" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
-                                <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
-                                <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
-                            </p:calendar> 
+                            <div id="posicionFechaVencimiento" style="position: absolute; left: 446px; top: 93px; width: 95px">
+                                <lnk:calendar id="fechaVencimientoCJ" value="#{controlEmpleadoIndividual.persona.fechavencimientocertificado}" > modificarCampo
+                                    <p:ajax event="dateSelect" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" process="@this" update="@this"/>
+                                    <p:ajax event="click" process="@this" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
+                                    <p:ajax event="change" process="@this" listener="#{controlEmpleadoIndividual.eventoDataSelectFechaVencimiento('P')}" update="@this"/>
+                                </lnk:calendar>
+                            </div>
                             <p:watermark for="fechaVencimientoCJ" value="#{msg['fechavencimientowm']}" />
+
                             <h:outputText value="#{msg['libretamilitar']}" style="position: absolute; left: 514px; font-weight: bold; color: #14388B; top: 98px" />
                             <p:inputText value="#{controlEmpleadoIndividual.persona.numerolibretamilitar}" id="libretaMilitar" style="position: absolute; left: 595px; top: 93px; width: 80px; " onclick="select();">
                                 <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
@@ -228,37 +258,39 @@
                                 <f:selectItem itemLabel="#{msg['noo']}" itemValue="N" />
                                 <p:ajax listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this" />
                             </p:selectOneMenu>
+
                             <h:outputText value="#{msg['fechafallecimiento']}" style="position: absolute; left: 518px; font-weight: bold; color: #14388B; top: 155px" />
-                            <p:calendar value="#{controlEmpleadoIndividual.persona.fechafallecimiento}" style="position: absolute; left: 633px; top: 149px;" onclick="select();" id="fechaFallecimiento"   styleClass="ui-datepicker, calendarEmpleadoPersonal"  
-                                        navigator="true" maxlength="10" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">
-                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                <p:ajax event="dateSelect" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
-                                <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
-                                <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
-                            </p:calendar>
+                            <div id="posicionFechaFallecimiento" style="position: absolute; left: 633px; top: 149px; width: 95px">
+                                <lnk:calendar id="fechaFallecimiento" value="#{controlEmpleadoIndividual.persona.fechafallecimiento}" >
+                                    <p:ajax process="@this" event="dateSelect" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
+                                    <p:ajax process="@this" event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
+                                    <p:ajax process="@this" event="change" listener="#{controlEmpleadoIndividual.eventoDataSelectFechaFallecimiento('P')}" update="@this"/>
+                                </lnk:calendar>
+                            </div>
                             <p:watermark for="fechaFallecimiento" value="#{msg['fechafallecimientowm']}" />
+
                             <p:commandButton value="#{msg['tallas']}" process="@this" actionListener="#{controlVigenciasTallas.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" action="adelanteVigenciaTalla" style="position: absolute; top: 140px; left: 10px; font-size: 12px; width: 100px"/>
                             <p:commandButton value="#{msg['anteriorescontratos']}" style="position: absolute; top: 146px; left: 700px; "/>
                         </fieldset>
 
-                        <p:scrollPanel id="panelInferior" style="position: absolute; top: 250px; width: 855px; height: 243px; font-size: 11px; left: 10px; border: none" mode="native">  
-                            <fieldset style="position: relative; width: 817px; height: 75px; border-radius: 7px; left: -2px ">
+                        <p:scrollPanel id="panelInferior" style="position: absolute; top: 250px; width: 855px; height: 243px; left: 10px; border: none" mode="native">  
+                            <fieldset style="position: relative; width: 817px; height: 72px; border-radius: 7px; left: -2px ">
 
                                 <h:outputText value="#{msg['perfilprofesional']}" style="position: absolute; left: 10px; font-weight: bold; color: #14388B;" />
-                                <p:inputTextarea value="#{controlEmpleadoIndividual.hojaDeVidaPersona.perfilprofesional}" style="position: relative; top: 18px; width: 395px; height: 50px; overflow: auto">
+                                <p:inputTextarea value="#{controlEmpleadoIndividual.hojaDeVidaPersona.perfilprofesional}" style="position: relative; top: 15px; width: 395px; height: 50px; overflow: auto">
                                     <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('HVHojasDeVida')}"/>
                                     <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('HV')}" update="@this"/>
                                 </p:inputTextarea>
 
                                 <h:outputText value="#{msg['informeejecutivo']}" style="position: absolute; left: 420px; font-weight: bold; color: #14388B;" />
-                                <p:inputTextarea value="#{controlEmpleadoIndividual.hojaDeVidaPersona.informeejecutivo}" style="position: relative; left: 5px; top: 18px; width: 395px; height: 50px; overflow: auto">
+                                <p:inputTextarea value="#{controlEmpleadoIndividual.hojaDeVidaPersona.informeejecutivo}" style="position: relative; left: 5px; top: 15px; width: 395px; height: 50px; overflow: auto">
                                     <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('HVHojasDeVida')}"/>
                                     <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('HV')}" update="@this"/>
                                 </p:inputTextarea>
 
                             </fieldset>
-                            <fieldset style="position: relative; width: 185px; height: 230px; border-radius: 7px; left: -2px; top: 2px ">
-                                <legend style="font-size: 11px; color: blue"><strong>#{msg['ubicacion']}</strong></legend>
+                            <fieldset style="position: relative; width: 185px; height: 235px; border-radius: 7px; left: -2px; top: 2px ">
+                                <legend style="color: blue"><strong>#{msg['ubicacion']}</strong></legend>
                                 <p:commandButton id="btnTelefono" value="" style="background-image: url(Imagenes/telefono.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute " action="telefonospersona" actionListener="#{controlPerTelefonos.recibirPersona(controlEmpleadoIndividual.persona.secuencia)}" process="@this"/>
                                 <h:outputText value="#{msg['telefonos']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B;" />
                                 <p:inputText id="telefonos" value="#{controlEmpleadoIndividual.telefonoP}" style="position: absolute; left: 45px; top: 30px; width: 140px" readonly="true"/>
@@ -280,8 +312,8 @@
                                 <p:inputText id="reemplazos" value="#{controlEmpleadoIndividual.reemplazoP}" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 210px" readonly="true"/>
                             </fieldset>
                             <br/>
-                            <fieldset style="position: absolute; width: 185px; height: 136px; border-radius: 7px; left: 208px; top: 91px ">
-                                <legend style="font-size: 11px; color: blue"><strong>#{msg['educacion']}</strong></legend>
+                            <fieldset style="position: absolute; width: 185px; height: 136px; border-radius: 7px; left: 208px; top: 89px ">
+                                <legend style="color: blue"><strong>#{msg['educacion']}</strong></legend>
 
                                 <p:commandButton id="btnEducacion" value="" style="background-image: url(Imagenes/niveleducativo.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute " process="@this" action="personaeducacion" actionListener="#{controlPersonaEducacion.recibirPersona(controlEmpleadoIndividual.persona.secuencia)}"/>
                                 <h:outputText value="#{msg['educacion']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B;" />
@@ -296,8 +328,8 @@
                                 <p:inputText id="proyectos" value="#{controlEmpleadoIndividual.proyectosP}" readonly="true" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 120px"/>
                             </fieldset>
 
-                            <fieldset style="position: absolute; width: 187px; height: 136px; border-radius: 7px; left: 418px; top: 91px ">
-                                <legend style="font-size: 11px; color: blue"><strong>#{msg['experiencia']}</strong></legend>
+                            <fieldset style="position: absolute; width: 187px; height: 136px; border-radius: 7px; left: 418px; top: 89px ">
+                                <legend style="color: blue"><strong>#{msg['experiencia']}</strong></legend>
 
                                 <p:commandButton id="btnReferenciaLaboral" value="" action="perReferenciaLaboral" actionListener="#{controlHvReferencias.recibirEmpleado(controlEmpleadoIndividual.empleado.persona.secuencia)}" style="background-image: url(Imagenes/tipotrabajador.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute " process="@this"/>
                                 <h:outputText value="#{msg['referencialaboral']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B;" />
@@ -313,8 +345,8 @@
 
                             </fieldset>
 
-                            <fieldset style="position: absolute; width: 185px; height: 230px; border-radius: 7px; left: 630px; top: 91px ">
-                                <legend style="font-size: 11px; color: blue"><strong>#{msg['datos']}</strong></legend>
+                            <fieldset style="position: absolute; width: 185px; height: 235px; border-radius: 7px; left: 630px; top: 89px ">
+                                <legend style="color: blue"><strong>#{msg['datos']}</strong></legend>
 
                                 <p:commandButton id="btnPruebasAplicadas" value="" style="background-image: url(Imagenes/g_evaldesempeno.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute " process="@this"/>
                                 <h:outputText value="#{msg['pruebasaplicadas']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B;" />
@@ -338,39 +370,49 @@
                             </fieldset>
 
 
-                            <fieldset style="position: absolute; width: 397px; height: 81px; border-radius: 7px; left: 208px; top: 240px ">
-                                <legend style="font-size: 11px; color: blue"><strong>#{msg['actividades']}</strong></legend>
-                                <p:commandButton id="btnEventos" value="" style="background-image: url(Imagenes/evento.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 10px " process="@this" action="vigenciasEvents" actionListener="#{controlEmplVigenciaEvento.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
-                                <h:outputText value="#{msg['eventos']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 10px" />
-                                <p:inputText id="eventos" value="#{controlEmpleadoIndividual.eventosP}" readonly="true" style="position: absolute; left: 45px; top: 23px; width: 140px"/>
-                                <p:commandButton id="btnDeporte" value="" style="background-image: url(Imagenes/deporte.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 50px; " process="@this" action="infoDeportesPersona" actionListener="#{controlVigenciaDeporte.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
-                                <h:outputText value="#{msg['deporte']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 50px" />
-                                <p:inputText id="deporte" value="#{controlEmpleadoIndividual.deportesP}" readonly="true" style="position: absolute; left: 45px; top: 63px; width: 140px"/>
+                            <fieldset style="position: absolute; width: 397px; height: 82px; border-radius: 7px; left: 208px; top: 242px ">
+                                <legend style="color: blue"><strong>#{msg['actividades']}</strong></legend>
 
-                                <p:commandButton id="btnAficiones" value="" style="background-image: url(Imagenes/aficion.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 10px; left: 218px " action="infoAficionesPersona" actionListener="#{controlVigenciaAficion.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" process="@this"/>
-                                <h:outputText value="#{msg['aficiones']}" style="position: absolute; left: 258px; font-weight: bold; color: #14388B; top: 10px;" />
-                                <p:inputText id="aficiones" value="#{controlEmpleadoIndividual.aficionesP}" readonly="true" style="position: absolute; left: 256px; top: 23px; width: 140px"/>
+                                <p:commandButton id="btnEventos" value="" style="background-image: url(Imagenes/evento.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 14px " process="@this" action="vigenciasEvents" actionListener="#{controlEmplVigenciaEvento.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
+                                <h:outputText value="#{msg['eventos']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 14px" />
+                                <p:inputText id="eventos" value="#{controlEmpleadoIndividual.eventosP}" readonly="true" style="position: absolute; left: 45px; top: 27px; width: 140px"/>
 
-                                <p:commandButton id="btnFamiliares" value="" style="background-image: url(Imagenes/familiar.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 50px; left: 218px " process="@this"/>
-                                <h:outputText value="#{msg['familiares']}" style="position: absolute; left: 258px; font-weight: bold; color: #14388B; top: 50px" />
-                                <p:inputText id="familiares" value="#{controlEmpleadoIndividual.familiaresP}" readonly="true" style="position: absolute; left: 256px; top: 63px; width: 140px"/>
+                                <p:commandButton id="btnDeporte" value="" style="background-image: url(Imagenes/deporte.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 54px; " process="@this" action="infoDeportesPersona" actionListener="#{controlVigenciaDeporte.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
+                                <h:outputText value="#{msg['deporte']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 54px" />
+                                <p:inputText id="deporte" value="#{controlEmpleadoIndividual.deportesP}" readonly="true" style="position: absolute; left: 45px; top: 67px; width: 140px"/>
+
+                                <p:commandButton id="btnAficiones" value="" style="background-image: url(Imagenes/aficion.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 14px; left: 218px " action="infoAficionesPersona" actionListener="#{controlVigenciaAficion.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" process="@this"/>
+                                <h:outputText value="#{msg['aficiones']}" style="position: absolute; left: 258px; font-weight: bold; color: #14388B; top: 14px;" />
+                                <p:inputText id="aficiones" value="#{controlEmpleadoIndividual.aficionesP}" readonly="true" style="position: absolute; left: 256px; top: 27px; width: 140px"/>
+
+                                <p:commandButton id="btnFamiliares" value="" style="background-image: url(Imagenes/familiar.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 54px; left: 218px " process="@this"/>
+                                <h:outputText value="#{msg['familiares']}" style="position: absolute; left: 258px; font-weight: bold; color: #14388B; top: 54px" />
+                                <p:inputText id="familiares" value="#{controlEmpleadoIndividual.familiaresP}" readonly="true" style="position: absolute; left: 256px; top: 67px; width: 140px"/>
                             </fieldset>
                         </p:scrollPanel>
 
-                        <p:commandButton style="position: absolute; left: 717px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" disabled="#{controlEmpleadoIndividual.guardado}" value="#{msg['aceptar']}" icon="ui-icon-check" process="@this" />
-                        <p:commandButton style="position: absolute; left: 9px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlEmpleadoIndividual.refrescar()}"  process="@this" />
-                        <p:commandButton style="position: absolute; left: 100px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="IMPRIMIRHOJAVIDA" value="#{msg['imprimirhojadevida']}" process="@this"/>
-                        <p:commandButton style="position: absolute; left: 243px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REPORTESPERSONAL" value="#{msg['reportesdepersonal']}" process="@this" action="reportePersonal" actionListener="#{controlNReportePersonal.iniciarPagina()}"/>
-                        <p:commandButton style="position: absolute; left: 800px; top: 498px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasCargos.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 15px; top: 498px; " id="IMPRIMIRHOJAVIDA" value="#{msg['imprimirhojadevida']}" process="@this"/>
+                        <p:commandButton style="position: absolute; left: 175px; top: 498px; " id="REPORTESPERSONAL" value="#{msg['reportesdepersonal']}" process="@this" action="reportePersonal" actionListener="#{controlNReportePersonal.iniciarPagina()}"/>
+
+                        <p:commandButton style="position: absolute; left: 775px; top: 498px; " id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlEmpleadoIndividual.refrescar()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 683px; top: 498px; " id="ACEPTAR" disabled="#{controlEmpleadoIndividual.guardado}" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show()" process="@this" />
 
                     </p:panel>
+
+                    <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlEmpleadoIndividual.guardarCambios()}" action="nomina" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlEmpleadoIndividual.refrescar()}" action="nomina" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                    </p:dialog>
                 </h:form>
 
                 <h:form id="formDialogos">
                     <p:dialog header="#{msg['tiposdedocumentosTD']}" widgetVar="TiposDocumentosDialogo" draggable="false" resizable="false" closable="false" id="TiposDocumentosDialogo"  
-                              showEffect="fade" hideEffect="fade" width="466" modal="true" style="font-size: 12px;">
-                        <p:dataTable id="lovTiposDocumentos" style="font-size: 11px; width: 430px" var="tipoDocumento" value="#{controlEmpleadoIndividual.listaTiposDocumentos}" rowKey="#{tipoDocumento.secuencia}"
-                                     selection="#{controlEmpleadoIndividual.seleccionTipoDocumento}" selectionMode="single" widgetVar="lovTiposDocumentos" scrollable="true" scrollWidth="445" scrollHeight="250"
+                              showEffect="fade" hideEffect="fade" width="431" modal="true" >
+                        <p:dataTable id="lovTiposDocumentos" style="width: 400px" var="tipoDocumento" value="#{controlEmpleadoIndividual.listaTiposDocumentos}" rowKey="#{tipoDocumento.secuencia}"
+                                     selection="#{controlEmpleadoIndividual.seleccionTipoDocumento}" selectionMode="single" widgetVar="lovTiposDocumentos" scrollable="true" scrollWidth="416" scrollHeight="250"
                                      filteredValue="#{controlEmpleadoIndividual.filtradoListaTiposDocumentos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlEmpleadoIndividual.activarAceptar()}" update=":formDialogos:aceptarTD"/>
                             <p:ajax event="rowDblselect" process="@this" listener="#{controlEmpleadoIndividual.seleccionarTipoDocumento()}" onstart="lovTiposDocumentos.clearFilters()"/>
@@ -391,27 +433,30 @@
                                 <h:outputText value="#{tipoDocumento.nombrelargo}" />
                             </p:column> 
                         </p:dataTable>
-                        <p:commandButton id="aceptarTD" style="position: relative; left: 303px" value="#{msg['aceptar']}" disabled="#{controlEmpleadoIndividual.aceptar}" actionListener="#{controlEmpleadoIndividual.seleccionarTipoDocumento()}"  onclick="lovTiposDocumentos.clearFilters();" update="aceptarTD" process="@this">
+
+                        <h:outputText id="infoRegistroTipoDocumento" value="#{controlEmpleadoIndividual.infoRegistroTipoDocumento}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+
+                        <p:commandButton icon="ui-icon-check" id="aceptarTD" style="position: relative; left: 303px" value="#{msg['aceptar']}" disabled="#{controlEmpleadoIndividual.aceptar}" actionListener="#{controlEmpleadoIndividual.seleccionarTipoDocumento()}"  onclick="lovTiposDocumentos.clearFilters();" update="aceptarTD" process="@this">
                             <p:resetInput target=":formDialogos:lovTiposDocumentos:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasTD" style="position: relative; left: 303px" value="#{msg['atras']}" onclick="TiposDocumentosDialogo.hide(), lovTiposDocumentos.clearFilters();" actionListener="#{controlEmpleadoIndividual.cancelarSeleccionTipoDocumento()}" update="aceptarTD, lovTiposDocumentos" process="@this">
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasTD" style="position: relative; left: 303px" value="#{msg['atras']}" onclick="TiposDocumentosDialogo.hide(), lovTiposDocumentos.clearFilters();" actionListener="#{controlEmpleadoIndividual.cancelarSeleccionTipoDocumento()}" update="aceptarTD, lovTiposDocumentos" process="@this">
                             <p:resetInput target=":formDialogos:lovTiposDocumentos:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
                     <p:dialog header="#{controlEmpleadoIndividual.cabezeraDialogoCiudad}" widgetVar="CiudadesDialogo" draggable="false" resizable="false" closable="false" id="CiudadesDialogo"  
-                              showEffect="fade" hideEffect="fade" width="466" modal="true" style="font-size: 12px;">
-                        <p:dataTable id="lovCiudades" style="font-size: 11px; width: 430px" var="ciudad" value="#{controlEmpleadoIndividual.listaCiudades}" rowKey="#{ciudad.secuencia}"
-                                     selection="#{controlEmpleadoIndividual.seleccionCiudades}" selectionMode="single" widgetVar="lovCiudades" scrollable="true" scrollWidth="445" scrollHeight="250"
+                              showEffect="fade" hideEffect="fade" width="431" modal="true" >
+                        <p:dataTable id="lovCiudades" style="width: 400px" var="ciudad" value="#{controlEmpleadoIndividual.listaCiudades}" rowKey="#{ciudad.secuencia}"
+                                     selection="#{controlEmpleadoIndividual.seleccionCiudades}" selectionMode="single" widgetVar="lovCiudades" scrollable="true" scrollWidth="416" scrollHeight="250"
                                      filteredValue="#{controlEmpleadoIndividual.filtradoListaCiudades}" emptyMessage="#{msg['lovvacio']}" liveScroll="true"
                                      scrollRows="15">              
                             <p:ajax event="rowSelect" listener="#{controlEmpleadoIndividual.activarAceptar()}" update=":formDialogos:aceptarC" />
                             <p:ajax event="rowDblselect" process="@this" listener="#{controlEmpleadoIndividual.seleccionarCiudad()}" onstart="lovCiudades.clearFilters()"/>
                             <f:facet name="header">  
-                                <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 16px; font-size: 12px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovCiudades.filter();" style="width:150px; position: relative; left: -30px;" />  
+                                <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 16px;"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovCiudades.filter();" style="width:150px; position: relative; left: -10px;" />  
                             </f:facet>
-                            <p:column filterBy="#{ciudad.nombre}" width="200"  filterMatchMode="contains">
+                            <p:column filterBy="#{ciudad.nombre}"  filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="#{msg['nombreC']}" />
                                 </f:facet>
@@ -424,24 +469,27 @@
                                 <h:outputText value="#{ciudad.departamento.nombre}" />
                             </p:column> 
                         </p:dataTable>
-                        <p:commandButton id="aceptarC" style="position: relative; left: 303px" value="#{msg['aceptar']}" disabled="#{controlEmpleadoIndividual.aceptar}" actionListener="#{controlEmpleadoIndividual.seleccionarCiudad()}"  onclick="lovCiudades.clearFilters();" update="aceptarC" process="@this">
+
+                        <h:outputText id="infoRegistroCiudad" value="#{controlEmpleadoIndividual.infoRegistroCiudad}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+
+                        <p:commandButton icon="ui-icon-check" id="aceptarC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEmpleadoIndividual.aceptar}" actionListener="#{controlEmpleadoIndividual.seleccionarCiudad()}"  onclick="lovCiudades.clearFilters();" update="aceptarC" process="@this">
                             <p:resetInput target=":formDialogos:lovCiudades:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasC" style="position: relative; left: 303px" value="#{msg['atras']}" onclick="CiudadesDialogo.hide(), lovCiudades.clearFilters();" actionListener="#{controlEmpleadoIndividual.cancelarSeleccionCiudad()}" update="aceptarC, lovCiudades" process="@this">
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasC" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="CiudadesDialogo.hide(), lovCiudades.clearFilters();" actionListener="#{controlEmpleadoIndividual.cancelarSeleccionCiudad()}" update="aceptarC, lovCiudades" process="@this">
                             <p:resetInput target=":formDialogos:lovCiudades:globalFilter"/>
                         </p:commandButton>
                     </p:dialog> 
 
                     <p:dialog header="#{msg['cargopostuladoCP']}" widgetVar="CargosDialogo" draggable="false" resizable="false" closable="false" id="CargosDialogo"  
-                              showEffect="fade" hideEffect="fade" width="466" modal="true" style="font-size: 12px;">
-                        <p:dataTable id="lovCargos" style="font-size: 11px; width: 430px" var="cargo" value="#{controlEmpleadoIndividual.listaCargos}" rowKey="#{cargo.secuencia}"
-                                     selection="#{controlEmpleadoIndividual.seleccionCargo}" selectionMode="single" widgetVar="lovCargos" scrollable="true" scrollWidth="445" scrollHeight="250"
-                                     filteredValue="#{controlEmpleadoIndividual.filtradoListaCargos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                              showEffect="fade" hideEffect="fade" width="431" modal="true" >
+                        <p:dataTable id="lovCargos" style="width: 400px" var="cargo" value="#{controlEmpleadoIndividual.listaCargos}" rowKey="#{cargo.secuencia}"
+                                     selection="#{controlEmpleadoIndividual.seleccionCargo}" selectionMode="single" widgetVar="lovCargos" scrollable="true" scrollWidth="416" scrollHeight="250"
+                                     filteredValue="#{controlEmpleadoIndividual.filtradoListaCargos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlEmpleadoIndividual.activarAceptar()}" update=":formDialogos:aceptarCA"/>
                             <p:ajax event="rowDblselect" process="@this" listener="#{controlEmpleadoIndividual.seleccionarCargo()}" onstart="lovCargos.clearFilters()"/>
                             <f:facet name="header">  
-                                <h:outputText value="#{msg['buscarCP']}"  style="position: absolute; left: 27px; top: 16px; font-size: 12px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovCargos.filter();" style="width:150px; position: relative; left: -30px;" />  
+                                <h:outputText value="#{msg['buscarCP']}"  style="position: absolute; left: 27px; top: 16px;"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovCargos.filter();" style="width:150px; position: relative; left: -10px;" />  
                             </f:facet>
                             <p:column filterBy="#{cargo.nombre}" width="200"  filterMatchMode="contains">
                                 <f:facet name="header">
@@ -450,10 +498,13 @@
                                 <h:outputText value="#{cargo.nombre}" />
                             </p:column> 
                         </p:dataTable>
-                        <p:commandButton id="aceptarCA" style="position: relative; left: 303px" value="#{msg['aceptar']}" disabled="#{controlEmpleadoIndividual.aceptar}" actionListener="#{controlEmpleadoIndividual.seleccionarCargo()}"  onclick="lovCargos.clearFilters();" update="aceptarCA" process="@this">
+
+                        <h:outputText id="infoRegistroCargo" value="#{controlEmpleadoIndividual.infoRegistroCargo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+
+                        <p:commandButton icon="ui-icon-check" id="aceptarCA" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEmpleadoIndividual.aceptar}" actionListener="#{controlEmpleadoIndividual.seleccionarCargo()}"  onclick="lovCargos.clearFilters();" update="aceptarCA" process="@this">
                             <p:resetInput target=":formDialogos:lovCargos:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasCA" style="position: relative; left: 303px" value="#{msg['atras']}" onclick="CargosDialogo.hide(), lovCargos.clearFilters();" actionListener="#{controlEmpleadoIndividual.cancelarSeleccionCargo()}" update="aceptarCA, lovCargos" process="@this">
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasCA" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="CargosDialogo.hide(), lovCargos.clearFilters();" actionListener="#{controlEmpleadoIndividual.cancelarSeleccionCargo()}" update="aceptarCA, lovCargos" process="@this">
                             <p:resetInput target=":formDialogos:lovCargos:globalFilter"/>
                         </p:commandButton>
                     </p:dialog> 
@@ -511,135 +562,135 @@
                     </p:dialog>
                 </h:form>
                 <h:form id="formExportar">
-                    <p:dataTable id="datosEmpleadoExportar" var="info" style="visibility: hidden; display: none;"                           
+                    <p:dataTable id="datosEmpleadoExportar" var="infoExp" style="visibility: hidden; display: none;"                           
                                  value="#{controlEmpleadoIndividual.empleadoIndividualExportar}">
 
                         <p:column headerText="#{msg['nombrecompletoXX']}">  
                             <f:facet name="header"><h:outputText value="#{msg['nombrecompletoX']}" /></f:facet>
-                            <h:outputText value="#{info.persona.nombreCompleto}"/>
+                            <h:outputText value="#{infoExp.persona.nombreCompleto}"/>
                         </p:column>
 
                         <p:column headerText="#{msg['tipodocumentoXX']}">                                  
                             <f:facet name="header"><h:outputText value="#{msg['tipodocumentoX']}"/></f:facet> 
-                            <h:outputText value="#{info.persona.tipodocumento.nombrecorto}" />
+                            <h:outputText value="#{infoExp.persona.tipodocumento.nombrecorto}" />
                         </p:column>  
 
                         <p:column headerText="#{msg['numerodocumentoXX']}">      
                             <f:facet name="header"><h:outputText value="#{msg['numerodocumentoX']}"/></f:facet>
-                            <h:outputText value="#{info.persona.numerodocumento}" />
+                            <h:outputText value="#{infoExp.persona.numerodocumento}" />
                         </p:column>
 
                         <p:column headerText="#{msg['digitoverifXX']}">                                                              
                             <f:facet name="header"> 
                                 <h:outputText value="#{msg['digitoverifX']}"/>
                             </f:facet>
-                            <h:outputText value="#{info.persona.digitoverificaciondocumento}" />
+                            <h:outputText value="#{infoExp.persona.digitoverificaciondocumento}" />
                         </p:column>  
 
                         <p:column headerText="#{msg['ciudadexpedicionXX']}">                                                                                              
                             <f:facet name="header"><h:outputText value="#{msg['ciudadexpedicionX']}"/></f:facet>
-                            <h:outputText value="#{info.persona.ciudaddocumento.nombre}" />
+                            <h:outputText value="#{infoExp.persona.ciudaddocumento.nombre}" />
                         </p:column>  
 
                         <p:column>                                                              
                             <f:facet name="header"><h:outputText value="#{msg['edadX']}"/></f:facet>
-                            <h:outputText value="#{info.persona.edad}" />
+                            <h:outputText value="#{infoExp.persona.edad}" />
                         </p:column>
 
                         <p:column>                                                              
                             <f:facet name="header"><h:outputText value="#{msg['sexoX']}"/></f:facet>
-                            <h:outputText value="#{info.persona.sexo}" />
+                            <h:outputText value="#{infoExp.persona.sexo}" />
                         </p:column>
 
                         <p:column headerText="#{msg['fechanacimientoXX']}">  
                             <f:facet name="header"><h:outputText value="#{msg['fechanacimientoX']}"/></f:facet>
-                            <h:outputText value="#{info.persona.fechanacimiento}">
+                            <h:outputText value="#{infoExp.persona.fechanacimiento}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
 
                         <p:column headerText="#{msg['ciudadnacimientoXX']}">                                                                                              
                             <f:facet name="header"><h:outputText value="#{msg['ciudadnacimientoX']}"/></f:facet>
-                            <h:outputText value="#{info.persona.ciudadnacimiento.nombre}" />
+                            <h:outputText value="#{infoExp.persona.ciudadnacimiento.nombre}" />
                         </p:column>
 
                         <p:column headerText="#{msg['gruposXX']}">                                                                                              
                             <f:facet name="header"><h:outputText value="#{msg['gruposX']}"/></f:facet>
-                            <h:outputText value="#{info.persona.gruposanguineo}" />
+                            <h:outputText value="#{infoExp.persona.gruposanguineo}" />
                         </p:column>
 
                         <p:column>                                                                                              
                             <f:facet name="header"><h:outputText value="#{msg['rhX']}"/></f:facet>
-                            <h:outputText value="#{info.persona.factorrh}" />
+                            <h:outputText value="#{infoExp.persona.factorrh}" />
                         </p:column>
 
                         <p:column>                                                                                              
                             <f:facet name="header"><h:outputText value="#{msg['emailX']}"/></f:facet>
-                            <h:outputText value="#{info.persona.email}" />
+                            <h:outputText value="#{infoExp.persona.email}" />
                         </p:column>
 
                         <p:column headerText="#{msg['numerocertificadojudicialXX']}">      
                             <f:facet name="header"><h:outputText value="#{msg['numerocertificadojudicialX']}"/></f:facet>
-                            <h:outputText value="#{info.persona.certificadojudicial}" />
+                            <h:outputText value="#{infoExp.persona.certificadojudicial}" />
                         </p:column>
 
                         <p:column headerText="#{msg['fechavencimientocertXX']}">  
                             <f:facet name="header"><h:outputText value="#{msg['fechavencimientocertX']}"/></f:facet>
-                            <h:outputText value="#{info.persona.fechavencimientocertificado}">
+                            <h:outputText value="#{infoExp.persona.fechavencimientocertificado}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
 
                         <p:column headerText="#{msg['libretaXX']}">  
                             <f:facet name="header"><h:outputText value="#{msg['libretaX']}"/></f:facet>
-                            <h:outputText value="#{info.persona.numerolibretamilitar}">
+                            <h:outputText value="#{infoExp.persona.numerolibretamilitar}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
 
                         <p:column headerText="#{msg['distritoXX']}">  
                             <f:facet name="header"><h:outputText value="#{msg['distritoX']}"/></f:facet>
-                            <h:outputText value="#{info.persona.distritomilitar}"/>
+                            <h:outputText value="#{infoExp.persona.distritomilitar}"/>
                         </p:column>
 
                         <p:column>  
                             <f:facet name="header"><h:outputText value="#{msg['claseX']}"/></f:facet>
-                            <h:outputText value="#{info.persona.distritomilitar}"/>
+                            <h:outputText value="#{infoExp.persona.distritomilitar}"/>
                         </p:column>
 
                         <p:column headerText="#{msg['viviendaXX']}">  
                             <f:facet name="header"><h:outputText value="#{msg['viviendaX']}"/></f:facet>
-                            <h:outputText value="#{info.persona.distritomilitar}"/>
+                            <h:outputText value="#{infoExp.persona.distritomilitar}"/>
                         </p:column>
 
                         <p:column>  
                             <f:facet name="header"><h:outputText value="#{msg['placaX']}"/></f:facet>
-                            <h:outputText value="#{info.persona.placavehiculo}"/>
+                            <h:outputText value="#{infoExp.persona.placavehiculo}"/>
                         </p:column> 
 
                         <p:column>  
                             <f:facet name="header"><h:outputText value="#{msg['parqueoX']}"/></f:facet>
-                            <h:outputText value="#{info.empleado.parqueadero}"/>
+                            <h:outputText value="#{infoExp.empleado.parqueadero}"/>
                         </p:column> 
 
                         <p:column>  
                             <f:facet name="header"><h:outputText value="#{msg['rutaX']}"/></f:facet>
-                            <h:outputText value="#{info.empleado.rutatransporte}"/>
+                            <h:outputText value="#{infoExp.empleado.rutatransporte}"/>
                         </p:column> 
 
                         <p:column headerText="#{msg['cargopostuladoXX']}">  
                             <f:facet name="header"><h:outputText value="#{msg['cargopostuladoX']}"/></f:facet>
-                            <h:outputText value="#{info.hojaDeVida.cargo.nombre}"/>
+                            <h:outputText value="#{infoExp.hojaDeVida.cargo.nombre}"/>
                         </p:column> 
 
                         <p:column headerText="#{msg['vehiculoXX']}">  
                             <f:facet name="header"><h:outputText value="#{msg['vehiculoX']}"/></f:facet>
-                            <h:outputText value="#{info.persona.vehiculoempresa}"/>
+                            <h:outputText value="#{infoExp.persona.vehiculoempresa}"/>
                         </p:column> 
 
                         <p:column headerText="#{msg['fechafallecimientoXX']}">  
                             <f:facet name="header"><h:outputText value="#{msg['fechafallecimientoX']}"/></f:facet>
-                            <h:outputText value="#{info.persona.fechafallecimiento}">
+                            <h:outputText value="#{infoExp.persona.fechafallecimiento}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>

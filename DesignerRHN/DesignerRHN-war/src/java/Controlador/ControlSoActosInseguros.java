@@ -99,6 +99,9 @@ public class ControlSoActosInseguros implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarSoActosInseguros.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR EVENTO FILTRAR ERROR===" + e.getMessage());
         }
@@ -217,7 +220,7 @@ public class ControlSoActosInseguros implements Serializable {
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
         context.update("form:datosSoCondicionesAmbientalesP");
     }
-    
+
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
@@ -655,7 +658,7 @@ public class ControlSoActosInseguros implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevaSoActoInseguro.getCodigo() == null) {
-            mensajeValidacion = " *Debe tener un codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevaSoActoInseguro.getCodigo());
@@ -676,7 +679,7 @@ public class ControlSoActosInseguros implements Serializable {
             }
         }
         if (nuevaSoActoInseguro.getDescripcion() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe tener Un Descripción \n";
+            mensajeValidacion = mensajeValidacion + " *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -777,7 +780,7 @@ public class ControlSoActosInseguros implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarSoActoInseguro.getDescripcion());
 
         if (duplicarSoActoInseguro.getCodigo() == null || duplicarSoActoInseguro.getCodigo().equals(" ") || duplicarSoActoInseguro.getCodigo().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * Un Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -796,7 +799,7 @@ public class ControlSoActosInseguros implements Serializable {
             }
         }
         if (duplicarSoActoInseguro.getDescripcion() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Un Descripción \n";
+            mensajeValidacion = mensajeValidacion + "   *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {

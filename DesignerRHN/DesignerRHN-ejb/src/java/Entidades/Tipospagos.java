@@ -31,6 +31,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Tipospagos.findAll", query = "SELECT t FROM Tipospagos t")})
 public class Tipospagos implements Serializable {
+        @Column(name = "CODIGO")
+    private Integer codigo;
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -39,8 +41,6 @@ public class Tipospagos implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Column(name = "CODIGO")
-    private Integer codigo;
     @Basic(optional = false)
     @Column(name = "DESCRIPCION")
     private String descripcion;
@@ -68,13 +68,6 @@ public class Tipospagos implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public Integer getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(Integer codigo) {
-        this.codigo = codigo;
-    }
 
     public String getDescripcion() {
         return descripcion;
@@ -120,6 +113,14 @@ public class Tipospagos implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Tipospagos[ secuencia=" + secuencia + " ]";
+    }
+
+    public Integer getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Integer codigo) {
+        this.codigo = codigo;
     }
 
 }

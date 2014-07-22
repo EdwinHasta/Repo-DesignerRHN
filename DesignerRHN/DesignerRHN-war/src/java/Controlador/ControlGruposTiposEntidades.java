@@ -90,6 +90,9 @@ public class ControlGruposTiposEntidades implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
+private String paginaAnterior;
+public void recibirPagina(String pagina){paginaAnterior = pagina;}
+public String redirigirPaginaAnterior(){return paginaAnterior;}
 
     public void eventoFiltrar() {
         try {
@@ -97,6 +100,9 @@ public class ControlGruposTiposEntidades implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarGruposTiposEntidades.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlGruposTiposEntidades eventoFiltrar ERROR===" + e.getMessage());
         }

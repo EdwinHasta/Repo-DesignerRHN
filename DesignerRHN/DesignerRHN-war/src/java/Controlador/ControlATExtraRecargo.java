@@ -43,17 +43,19 @@ public class ControlATExtraRecargo implements Serializable {
     AdministrarRastrosInterface administrarRastros;
     private List<ExtrasRecargos> listExtrasRecargos;
     private List<ExtrasRecargos> filtrarListExtrasRecargos;
+    private ExtrasRecargos extraRecargoTablaSeleccionado;
     ///////
     private List<DetallesExtrasRecargos> listDetallesExtrasRecargos;
     private List<DetallesExtrasRecargos> filtrarListDetallesExtrasRecargos;
+    private DetallesExtrasRecargos detalleTablaSeleccionado;
     //Activo/Desactivo Crtl + F11
     private int bandera, banderaDER;
-    //Columnas Tabla VC
+
     private Column extraCodigo, extraDescripcion, extraTipoDia, extraTipoJornada, extraTipoLegislacion, extraTurno, extraAprobacion;
     private Column detalleHI, detalleHF, detalleConcepto, detalleEmpresa, detalleDia, detalleAdicion, detalleMinutos, detallePagoAdicion, detalleIniFin, detalleGarantiza;
     //Otros
     private boolean aceptar;
-    private int index, indexDER, indexAux, indexAuxDER;
+    private int index, indexDER, indexAux;
     //modificar
     private List<ExtrasRecargos> listExtraRecargoModificar;
     private List<DetallesExtrasRecargos> listDetalleExtraRecargoModificar;
@@ -104,8 +106,16 @@ public class ControlATExtraRecargo implements Serializable {
     private int tipoActualizacion;
     private String auxExtraDescripcion;
     private BigDecimal auxDetalleIni, auxDetalleFin;
+    //
+    private String altoTablaRecargo, altoTablaDetalle;
+    private String infoRegistroTipoDia, infoRegistroTipoJornada, infoRegistroLegislacion, infoRegistroConcepto;
+    //
+    private boolean cambiosPagina;
 
     public ControlATExtraRecargo() {
+        altoTablaDetalle = "135";
+        altoTablaRecargo = "160";
+        cambiosPagina = true;
         auxExtraDescripcion = "";
         auxDetalleIni = null;
         permitirIndex = true;
@@ -159,7 +169,7 @@ public class ControlATExtraRecargo implements Serializable {
         secRegistroDER = null;
         backUpSecRegistroDER = null;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -168,7 +178,7 @@ public class ControlATExtraRecargo implements Serializable {
             administrarATExtraRecargo.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -183,17 +193,56 @@ public class ControlATExtraRecargo implements Serializable {
             if (tipoLista == 1) {
                 aux = filtrarListExtrasRecargos.get(index);
             }
-            if (aux.getDescripcion().isEmpty() || aux.getTipodia().getDescripcion().isEmpty() || aux.getTipojornada().getDescripcion().isEmpty() || aux.getTipolegislacion().getDescripcion().isEmpty()) {
+            if (aux.getDescripcion() == null) {
+                retorno = false;
+            } else {
+                if (aux.getDescripcion().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (aux.getTipodia().getSecuencia() == null) {
+                retorno = false;
+            }
+            if (aux.getTipojornada().getSecuencia() == null) {
+                retorno = false;
+            }
+            if (aux.getTipolegislacion().getSecuencia() == null) {
                 retorno = false;
             }
         }
         if (i == 1) {
-            if (nuevoExtraRecargo.getDescripcion().isEmpty() || nuevoExtraRecargo.getTipodia().getDescripcion().isEmpty() || nuevoExtraRecargo.getTipojornada().getDescripcion().isEmpty() || nuevoExtraRecargo.getTipolegislacion().getDescripcion().isEmpty()) {
+            if (nuevoExtraRecargo.getDescripcion() == null) {
+                retorno = false;
+            } else {
+                if (nuevoExtraRecargo.getDescripcion().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (nuevoExtraRecargo.getTipodia().getSecuencia() == null) {
+                retorno = false;
+            }
+            if (nuevoExtraRecargo.getTipojornada().getSecuencia() == null) {
+                retorno = false;
+            }
+            if (nuevoExtraRecargo.getTipolegislacion().getSecuencia() == null) {
                 retorno = false;
             }
         }
         if (i == 2) {
-            if (duplicarExtraRecargo.getDescripcion().isEmpty() || duplicarExtraRecargo.getTipodia().getDescripcion().isEmpty() || duplicarExtraRecargo.getTipojornada().getDescripcion().isEmpty() || duplicarExtraRecargo.getTipolegislacion().getDescripcion().isEmpty()) {
+            if (duplicarExtraRecargo.getDescripcion() == null) {
+                retorno = false;
+            } else {
+                if (duplicarExtraRecargo.getDescripcion().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (duplicarExtraRecargo.getTipodia().getSecuencia() == null) {
+                retorno = false;
+            }
+            if (duplicarExtraRecargo.getTipojornada().getSecuencia() == null) {
+                retorno = false;
+            }
+            if (duplicarExtraRecargo.getTipolegislacion().getSecuencia() == null) {
                 retorno = false;
             }
         }
@@ -290,6 +339,8 @@ public class ControlATExtraRecargo implements Serializable {
                     if (guardado == true) {
                         guardado = false;
                     }
+                    cambiosPagina = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
             }
             if (tipoLista == 1) {
@@ -303,8 +354,9 @@ public class ControlATExtraRecargo implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
-                        //RequestContext.getCurrentInstance().update("form:aceptar");
                     }
+                    cambiosPagina = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
             }
             index = -1;
@@ -425,6 +477,8 @@ public class ControlATExtraRecargo implements Serializable {
                     if (guardado == true) {
                         guardado = false;
                     }
+                    cambiosPagina = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
             }
             if (tipoLista == 1) {
@@ -436,8 +490,9 @@ public class ControlATExtraRecargo implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
-                        //RequestContext.getCurrentInstance().update("form:aceptar");
                     }
+                    cambiosPagina = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
             }
             guardado = true;
@@ -456,6 +511,8 @@ public class ControlATExtraRecargo implements Serializable {
                 if (guardadoDER == true) {
                     guardadoDER = false;
                 }
+                cambiosPagina = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         }
         if (tipoListaDER == 1) {
@@ -467,8 +524,9 @@ public class ControlATExtraRecargo implements Serializable {
                 }
                 if (guardadoDER == true) {
                     guardadoDER = false;
-                    //RequestContext.getCurrentInstance().update("form:aceptar");
                 }
+                cambiosPagina = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         }
         indexDER = -1;
@@ -483,57 +541,83 @@ public class ControlATExtraRecargo implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("CONCEPTO")) {
-            if (tipoLista == 0) {
-                listDetallesExtrasRecargos.get(indice).getConcepto().setDescripcion(concepto);
-            } else {
-                filtrarListDetallesExtrasRecargos.get(indice).getConcepto().setDescripcion(concepto);
-            }
-            for (int i = 0; i < lovConceptos.size(); i++) {
-                if (lovConceptos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoLista == 0) {
-                    listDetallesExtrasRecargos.get(indice).setConcepto(lovConceptos.get(indiceUnicoElemento));
+                    listDetallesExtrasRecargos.get(indice).getConcepto().setDescripcion(concepto);
                 } else {
-                    filtrarListDetallesExtrasRecargos.get(indice).setConcepto(lovConceptos.get(indiceUnicoElemento));
+                    filtrarListDetallesExtrasRecargos.get(indice).getConcepto().setDescripcion(concepto);
                 }
+                for (int i = 0; i < lovConceptos.size(); i++) {
+                    if (lovConceptos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoLista == 0) {
+                        listDetallesExtrasRecargos.get(indice).setConcepto(lovConceptos.get(indiceUnicoElemento));
+                    } else {
+                        filtrarListDetallesExtrasRecargos.get(indice).setConcepto(lovConceptos.get(indiceUnicoElemento));
+                    }
+                    lovConceptos.clear();
+                    getLovConceptos();
+                } else {
+                    permitirIndexDER = false;
+                    context.update("form:ConceptoDialogo");
+                    context.execute("ConceptoDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+            } else {
                 lovConceptos.clear();
                 getLovConceptos();
-            } else {
-                permitirIndexDER = false;
-                context.update("form:ConceptoDialogo");
-                context.execute("ConceptoDialogo.show()");
-                tipoActualizacion = 0;
+                coincidencias = 1;
+                if (tipoLista == 0) {
+                    listDetallesExtrasRecargos.get(indice).setConcepto(new Conceptos());
+                    listDetallesExtrasRecargos.get(indice).getConcepto().setEmpresa(new Empresas());
+                } else {
+                    filtrarListDetallesExtrasRecargos.get(indice).setConcepto(new Conceptos());
+                    filtrarListDetallesExtrasRecargos.get(indice).getConcepto().setEmpresa(new Empresas());
+                }
             }
         }
         if (confirmarCambio.equalsIgnoreCase("EMPRESA")) {
-            if (tipoLista == 0) {
-                listDetallesExtrasRecargos.get(indice).getConcepto().getEmpresa().setNombre(empresa);
-            } else {
-                filtrarListDetallesExtrasRecargos.get(indice).getConcepto().getEmpresa().setNombre(empresa);
-            }
-            for (int i = 0; i < lovConceptos.size(); i++) {
-                if (lovConceptos.get(i).getEmpresa().getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoLista == 0) {
-                    listDetallesExtrasRecargos.get(indice).setConcepto(lovConceptos.get(indiceUnicoElemento));
+                    listDetallesExtrasRecargos.get(indice).getConcepto().getEmpresa().setNombre(empresa);
                 } else {
-                    filtrarListDetallesExtrasRecargos.get(indice).setConcepto(lovConceptos.get(indiceUnicoElemento));
+                    filtrarListDetallesExtrasRecargos.get(indice).getConcepto().getEmpresa().setNombre(empresa);
                 }
+                for (int i = 0; i < lovConceptos.size(); i++) {
+                    if (lovConceptos.get(i).getEmpresa().getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoLista == 0) {
+                        listDetallesExtrasRecargos.get(indice).setConcepto(lovConceptos.get(indiceUnicoElemento));
+                    } else {
+                        filtrarListDetallesExtrasRecargos.get(indice).setConcepto(lovConceptos.get(indiceUnicoElemento));
+                    }
+                    lovConceptos.clear();
+                    getLovConceptos();
+                } else {
+                    permitirIndexDER = false;
+                    context.update("form:ConceptoDialogo");
+                    context.execute("ConceptoDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+            } else {
+                coincidencias = 1;
                 lovConceptos.clear();
                 getLovConceptos();
-            } else {
-                permitirIndexDER = false;
-                context.update("form:ConceptoDialogo");
-                context.execute("ConceptoDialogo.show()");
-                tipoActualizacion = 0;
+                if (tipoLista == 0) {
+                    listDetallesExtrasRecargos.get(indice).setConcepto(new Conceptos());
+                    listDetallesExtrasRecargos.get(indice).getConcepto().setEmpresa(new Empresas());
+                } else {
+                    filtrarListDetallesExtrasRecargos.get(indice).setConcepto(new Conceptos());
+                    filtrarListDetallesExtrasRecargos.get(indice).getConcepto().setEmpresa(new Empresas());
+                }
             }
         }
         if (coincidencias == 1) {
@@ -547,6 +631,8 @@ public class ControlATExtraRecargo implements Serializable {
                     if (guardadoDER == true) {
                         guardadoDER = false;
                     }
+                    cambiosPagina = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
             }
             if (tipoListaDER == 1) {
@@ -558,8 +644,9 @@ public class ControlATExtraRecargo implements Serializable {
                     }
                     if (guardadoDER == true) {
                         guardadoDER = false;
-                        //RequestContext.getCurrentInstance().update("form:aceptar");
                     }
+                    cambiosPagina = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
             }
         }
@@ -593,25 +680,27 @@ public class ControlATExtraRecargo implements Serializable {
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:datosDetalleExtraRecargo");
                 if (banderaDER == 1) {
-                    detalleHF = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHF");
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    altoTablaDetalle = "135";
+                    detalleHF = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHF");
                     detalleHF.setFilterStyle("display: none; visibility: hidden;");
-                    detalleHI = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHI");
+                    detalleHI = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHI");
                     detalleHI.setFilterStyle("display: none; visibility: hidden;");
-                    detalleConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleConcepto");
+                    detalleConcepto = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleConcepto");
                     detalleConcepto.setFilterStyle("display: none; visibility: hidden;");
-                    detalleEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleEmpresa");
+                    detalleEmpresa = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleEmpresa");
                     detalleEmpresa.setFilterStyle("display: none; visibility: hidden;");
-                    detalleDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleDia");
+                    detalleDia = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleDia");
                     detalleDia.setFilterStyle("display: none; visibility: hidden;");
-                    detalleAdicion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleAdicion");
+                    detalleAdicion = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleAdicion");
                     detalleAdicion.setFilterStyle("display: none; visibility: hidden;");
-                    detalleMinutos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleMinutos");
+                    detalleMinutos = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleMinutos");
                     detalleMinutos.setFilterStyle("display: none; visibility: hidden;");
-                    detallePagoAdicion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detallePagoAdicion");
+                    detallePagoAdicion = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detallePagoAdicion");
                     detallePagoAdicion.setFilterStyle("display: none; visibility: hidden;");
-                    detalleIniFin = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleIniFin");
+                    detalleIniFin = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleIniFin");
                     detalleIniFin.setFilterStyle("display: none; visibility: hidden;");
-                    detalleGarantiza = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleGarantiza");
+                    detalleGarantiza = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleGarantiza");
                     detalleGarantiza.setFilterStyle("display: none; visibility: hidden;");
                     RequestContext.getCurrentInstance().update("form:datosDetalleExtraRecargo");
                     banderaDER = 0;
@@ -629,7 +718,6 @@ public class ControlATExtraRecargo implements Serializable {
         if (permitirIndexDER == true) {
             indexDER = indice;
             index = -1;
-            indexAuxDER = indice;
             cualCeldaDER = celda;
             if (tipoListaDER == 0) {
                 auxDetalleFin = listDetallesExtrasRecargos.get(indexDER).getHorasfinal();
@@ -645,20 +733,22 @@ public class ControlATExtraRecargo implements Serializable {
                 concepto = filtrarListDetallesExtrasRecargos.get(indexDER).getConcepto().getDescripcion();
                 empresa = filtrarListDetallesExtrasRecargos.get(indexDER).getConcepto().getEmpresa().getNombre();
             }
-            if (bandera == 1) {
-                extraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraCodigo");
+            if (bandera == 0) {
+                FacesContext c = FacesContext.getCurrentInstance();
+                altoTablaRecargo = "160";
+                extraCodigo = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraCodigo");
                 extraCodigo.setFilterStyle("display: none; visibility: hidden;");
-                extraDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraDescripcion");
+                extraDescripcion = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraDescripcion");
                 extraDescripcion.setFilterStyle("display: none; visibility: hidden;");
-                extraTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoDia");
+                extraTipoDia = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTipoDia");
                 extraTipoDia.setFilterStyle("display: none; visibility: hidden;");
-                extraTipoJornada = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoJornada");
+                extraTipoJornada = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTipoJornada");
                 extraTipoJornada.setFilterStyle("display: none; visibility: hidden;");
-                extraTipoLegislacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoLegislacion");
+                extraTipoLegislacion = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTipoLegislacion");
                 extraTipoLegislacion.setFilterStyle("display: none; visibility: hidden;");
-                extraTurno = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTurno");
+                extraTurno = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTurno");
                 extraTurno.setFilterStyle("display: none; visibility: hidden;");
-                extraAprobacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraAprobacion");
+                extraAprobacion = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraAprobacion");
                 extraAprobacion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosExtraRecargo");
                 bandera = 0;
@@ -672,73 +762,86 @@ public class ControlATExtraRecargo implements Serializable {
     public void guardarGeneral() {
         guardarCambiosExtraRecargo();
         guardarCambiosDetalleExtraRecargo();
-        FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        cambiosPagina = true;
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
     }
 
     public void guardarCambiosExtraRecargo() {
-        if (guardado == false) {
-            if (!listExtraRecargoBorrar.isEmpty()) {
-                for (int i = 0; i < listExtraRecargoBorrar.size(); i++) {
-                    administrarATExtraRecargo.borrarExtrasRecargos(listExtraRecargoBorrar);
+        RequestContext context = RequestContext.getCurrentInstance();
+        try {
+            if (guardado == false) {
+                if (!listExtraRecargoBorrar.isEmpty()) {
+                    for (int i = 0; i < listExtraRecargoBorrar.size(); i++) {
+                        administrarATExtraRecargo.borrarExtrasRecargos(listExtraRecargoBorrar);
+                    }
+                    listExtraRecargoBorrar.clear();
                 }
-                listExtraRecargoBorrar.clear();
-            }
-            if (!listExtraRecargoCrear.isEmpty()) {
-                for (int i = 0; i < listExtraRecargoCrear.size(); i++) {
-                    administrarATExtraRecargo.crearExtrasRecargos(listExtraRecargoCrear);
+                if (!listExtraRecargoCrear.isEmpty()) {
+                    for (int i = 0; i < listExtraRecargoCrear.size(); i++) {
+                        administrarATExtraRecargo.crearExtrasRecargos(listExtraRecargoCrear);
+                    }
+                    listExtraRecargoCrear.clear();
                 }
-                listExtraRecargoCrear.clear();
+                if (!listExtraRecargoModificar.isEmpty()) {
+                    administrarATExtraRecargo.editarExtrasRecargos(listExtraRecargoModificar);
+                    listExtraRecargoModificar.clear();
+                }
+                listExtrasRecargos = null;
+                context.update("form:datosExtraRecargo");
+                guardado = true;
+                k = 0;
+                index = -1;
+                secRegistro = null;
+                FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos de Recargo Extra con éxito");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                context.update("form:growl");
             }
-            if (!listExtraRecargoModificar.isEmpty()) {
-                administrarATExtraRecargo.editarExtrasRecargos(listExtraRecargoModificar);
-                listExtraRecargoModificar.clear();
-            }
-            listExtrasRecargos = null;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosExtraRecargo");
-            guardado = true;
-            RequestContext.getCurrentInstance().update("form:aceptar");
-            k = 0;
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosExtraRecargo : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado de Recargo Extra, intente nuevamente");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
-        index = -1;
-        secRegistro = null;
-
     }
 
     public void guardarCambiosDetalleExtraRecargo() {
-        if (guardadoDER == false) {
-            if (!listDetalleExtraRecargoBorrar.isEmpty()) {
-                for (int i = 0; i < listDetalleExtraRecargoBorrar.size(); i++) {
-                    administrarATExtraRecargo.borrarDetallesExtrasRecargos(listDetalleExtraRecargoBorrar);
+        RequestContext context = RequestContext.getCurrentInstance();
+        try {
+            if (guardadoDER == false) {
+                if (!listDetalleExtraRecargoBorrar.isEmpty()) {
+                    for (int i = 0; i < listDetalleExtraRecargoBorrar.size(); i++) {
+                        administrarATExtraRecargo.borrarDetallesExtrasRecargos(listDetalleExtraRecargoBorrar);
+                    }
+                    listDetalleExtraRecargoBorrar.clear();
                 }
-                listDetalleExtraRecargoBorrar.clear();
-            }
-            if (!listDetalleExtraRecargoCrear.isEmpty()) {
-                for (int i = 0; i < listDetalleExtraRecargoCrear.size(); i++) {
-                    administrarATExtraRecargo.crearDetallesExtrasRecargos(listDetalleExtraRecargoCrear);
+                if (!listDetalleExtraRecargoCrear.isEmpty()) {
+                    for (int i = 0; i < listDetalleExtraRecargoCrear.size(); i++) {
+                        administrarATExtraRecargo.crearDetallesExtrasRecargos(listDetalleExtraRecargoCrear);
+                    }
+                    listDetalleExtraRecargoCrear.clear();
                 }
-                listDetalleExtraRecargoCrear.clear();
+                if (!listDetalleExtraRecargoModificar.isEmpty()) {
+                    administrarATExtraRecargo.editarDetallesExtrasRecargos(listDetalleExtraRecargoModificar);
+                    listDetalleExtraRecargoModificar.clear();
+                }
+                listDetallesExtrasRecargos = null;
+                context.update("form:datosDetalleExtraRecargo");
+                guardadoDER = true;
+                k = 0;
+                indexDER = -1;
+                secRegistroDER = null;
+                FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos de Detalle con éxito");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                context.update("form:growl");
             }
-            if (!listDetalleExtraRecargoModificar.isEmpty()) {
-                administrarATExtraRecargo.editarDetallesExtrasRecargos(listDetalleExtraRecargoModificar);
-                listDetalleExtraRecargoModificar.clear();
-            }
-            listDetallesExtrasRecargos = null;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosDetalleExtraRecargo");
-            guardadoDER = true;
-            RequestContext.getCurrentInstance().update("form:aceptar");
-            k = 0;
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosExtraRecargo : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado de Detalle, intente nuevamente");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
-        indexDER = -1;
-        secRegistroDER = null;
     }
-    //CANCELAR MODIFICACIONES
 
-    /**
-     * Cancela las modificaciones realizas en la pagina
-     */
     public void cancelarModificacionGeneral() {
         if (guardado == false) {
             cancelarModificacionExtraRecargo();
@@ -750,24 +853,27 @@ public class ControlATExtraRecargo implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosDetalleExtraRecargo");
         }
+        cambiosPagina = true;
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
     }
 
     public void cancelarModificacionExtraRecargo() {
         if (bandera == 1) {
-
-            extraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraCodigo");
+            altoTablaRecargo = "160";
+            FacesContext c = FacesContext.getCurrentInstance();
+            extraCodigo = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraCodigo");
             extraCodigo.setFilterStyle("display: none; visibility: hidden;");
-            extraDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraDescripcion");
+            extraDescripcion = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraDescripcion");
             extraDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            extraTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoDia");
+            extraTipoDia = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTipoDia");
             extraTipoDia.setFilterStyle("display: none; visibility: hidden;");
-            extraTipoJornada = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoJornada");
+            extraTipoJornada = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTipoJornada");
             extraTipoJornada.setFilterStyle("display: none; visibility: hidden;");
-            extraTipoLegislacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoLegislacion");
+            extraTipoLegislacion = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTipoLegislacion");
             extraTipoLegislacion.setFilterStyle("display: none; visibility: hidden;");
-            extraTurno = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTurno");
+            extraTurno = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTurno");
             extraTurno.setFilterStyle("display: none; visibility: hidden;");
-            extraAprobacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraAprobacion");
+            extraAprobacion = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraAprobacion");
             extraAprobacion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosExtraRecargo");
             bandera = 0;
@@ -789,25 +895,27 @@ public class ControlATExtraRecargo implements Serializable {
 
     public void cancelarModificacionDetalleExtraRecargo() {
         if (banderaDER == 1) {
-            detalleHF = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHF");
+            altoTablaDetalle = "135";
+            FacesContext c = FacesContext.getCurrentInstance();
+            detalleHF = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHF");
             detalleHF.setFilterStyle("display: none; visibility: hidden;");
-            detalleHI = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHI");
+            detalleHI = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHI");
             detalleHI.setFilterStyle("display: none; visibility: hidden;");
-            detalleConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleConcepto");
+            detalleConcepto = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleConcepto");
             detalleConcepto.setFilterStyle("display: none; visibility: hidden;");
-            detalleEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleEmpresa");
+            detalleEmpresa = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleEmpresa");
             detalleEmpresa.setFilterStyle("display: none; visibility: hidden;");
-            detalleDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleDia");
+            detalleDia = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleDia");
             detalleDia.setFilterStyle("display: none; visibility: hidden;");
-            detalleAdicion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleAdicion");
+            detalleAdicion = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleAdicion");
             detalleAdicion.setFilterStyle("display: none; visibility: hidden;");
-            detalleMinutos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleMinutos");
+            detalleMinutos = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleMinutos");
             detalleMinutos.setFilterStyle("display: none; visibility: hidden;");
-            detallePagoAdicion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detallePagoAdicion");
+            detallePagoAdicion = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detallePagoAdicion");
             detallePagoAdicion.setFilterStyle("display: none; visibility: hidden;");
-            detalleIniFin = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleIniFin");
+            detalleIniFin = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleIniFin");
             detalleIniFin.setFilterStyle("display: none; visibility: hidden;");
-            detalleGarantiza = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleGarantiza");
+            detalleGarantiza = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleGarantiza");
             detalleGarantiza.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosDetalleExtraRecargo");
             banderaDER = 0;
@@ -923,19 +1031,21 @@ public class ControlATExtraRecargo implements Serializable {
             tamDes = nuevoExtraRecargo.getDescripcion().length();
             if (tamDes >= 1 && tamDes <= 40) {
                 if (bandera == 1) {
-                    extraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraCodigo");
+                    altoTablaRecargo = "160";
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    extraCodigo = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraCodigo");
                     extraCodigo.setFilterStyle("display: none; visibility: hidden;");
-                    extraDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraDescripcion");
+                    extraDescripcion = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraDescripcion");
                     extraDescripcion.setFilterStyle("display: none; visibility: hidden;");
-                    extraTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoDia");
+                    extraTipoDia = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTipoDia");
                     extraTipoDia.setFilterStyle("display: none; visibility: hidden;");
-                    extraTipoJornada = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoJornada");
+                    extraTipoJornada = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTipoJornada");
                     extraTipoJornada.setFilterStyle("display: none; visibility: hidden;");
-                    extraTipoLegislacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoLegislacion");
+                    extraTipoLegislacion = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTipoLegislacion");
                     extraTipoLegislacion.setFilterStyle("display: none; visibility: hidden;");
-                    extraTurno = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTurno");
+                    extraTurno = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTurno");
                     extraTurno.setFilterStyle("display: none; visibility: hidden;");
-                    extraAprobacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraAprobacion");
+                    extraAprobacion = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraAprobacion");
                     extraAprobacion.setFilterStyle("display: none; visibility: hidden;");
                     RequestContext.getCurrentInstance().update("form:datosExtraRecargo");
                     bandera = 0;
@@ -959,8 +1069,9 @@ public class ControlATExtraRecargo implements Serializable {
                 context.execute("NuevoRegistroExtraRecargo.hide()");
                 if (guardado == true) {
                     guardado = false;
-                    RequestContext.getCurrentInstance().update("form:aceptar");
                 }
+                cambiosPagina = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 index = -1;
                 secRegistro = null;
             } else {
@@ -977,25 +1088,27 @@ public class ControlATExtraRecargo implements Serializable {
         boolean respueta = validarCamposNulosDetalleExtraRecargo(1);
         if (respueta == true) {
             if (banderaDER == 1) {
-                detalleHF = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHF");
+                altoTablaDetalle = "135";
+                FacesContext c = FacesContext.getCurrentInstance();
+                detalleHF = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHF");
                 detalleHF.setFilterStyle("display: none; visibility: hidden;");
-                detalleHI = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHI");
+                detalleHI = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHI");
                 detalleHI.setFilterStyle("display: none; visibility: hidden;");
-                detalleConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleConcepto");
+                detalleConcepto = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleConcepto");
                 detalleConcepto.setFilterStyle("display: none; visibility: hidden;");
-                detalleEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleEmpresa");
+                detalleEmpresa = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleEmpresa");
                 detalleEmpresa.setFilterStyle("display: none; visibility: hidden;");
-                detalleDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleDia");
+                detalleDia = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleDia");
                 detalleDia.setFilterStyle("display: none; visibility: hidden;");
-                detalleAdicion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleAdicion");
+                detalleAdicion = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleAdicion");
                 detalleAdicion.setFilterStyle("display: none; visibility: hidden;");
-                detalleMinutos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleMinutos");
+                detalleMinutos = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleMinutos");
                 detalleMinutos.setFilterStyle("display: none; visibility: hidden;");
-                detallePagoAdicion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detallePagoAdicion");
+                detallePagoAdicion = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detallePagoAdicion");
                 detallePagoAdicion.setFilterStyle("display: none; visibility: hidden;");
-                detalleIniFin = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleIniFin");
+                detalleIniFin = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleIniFin");
                 detalleIniFin.setFilterStyle("display: none; visibility: hidden;");
-                detalleGarantiza = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleGarantiza");
+                detalleGarantiza = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleGarantiza");
                 detalleGarantiza.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosDetalleExtraRecargo");
                 banderaDER = 0;
@@ -1022,8 +1135,9 @@ public class ControlATExtraRecargo implements Serializable {
             context.execute("NuevoRegistroDetalleExtraRecargo.hide()");
             if (guardadoDER == true) {
                 guardadoDER = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
             }
+            cambiosPagina = false;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
             indexDER = -1;
             secRegistroDER = null;
         } else {
@@ -1031,10 +1145,7 @@ public class ControlATExtraRecargo implements Serializable {
             context.execute("errorDatosNullDetalle.show()");
         }
     }
-    //LIMPIAR NUEVO REGISTRO
 
-    /**
-     */
     public void limpiarNuevaExtraRecargo() {
         nuevoExtraRecargo = new ExtrasRecargos();
         nuevoExtraRecargo.setTipodia(new TiposDias());
@@ -1052,9 +1163,6 @@ public class ControlATExtraRecargo implements Serializable {
         secRegistroDER = null;
     }
 
-    //DUPLICAR VC
-    /**
-     */
     public void verificarRegistroDuplicar() {
         if (index >= 0) {
             duplicarExtraRecargoM();
@@ -1067,10 +1175,7 @@ public class ControlATExtraRecargo implements Serializable {
     public void duplicarExtraRecargoM() {
         if (index >= 0) {
             duplicarExtraRecargo = new ExtrasRecargos();
-            k++;
-            l = BigInteger.valueOf(k);
             if (tipoLista == 0) {
-                duplicarExtraRecargo.setSecuencia(l);
                 duplicarExtraRecargo.setAprobacionautomatica(listExtrasRecargos.get(index).getAprobacionautomatica());
                 duplicarExtraRecargo.setDescripcion(listExtrasRecargos.get(index).getDescripcion());
                 duplicarExtraRecargo.setTipodia(listExtrasRecargos.get(index).getTipodia());
@@ -1080,7 +1185,6 @@ public class ControlATExtraRecargo implements Serializable {
                 duplicarExtraRecargo.setCodigo(listExtrasRecargos.get(index).getCodigo());
             }
             if (tipoLista == 1) {
-                duplicarExtraRecargo.setSecuencia(l);
                 duplicarExtraRecargo.setAprobacionautomatica(filtrarListExtrasRecargos.get(index).getAprobacionautomatica());
                 duplicarExtraRecargo.setDescripcion(filtrarListExtrasRecargos.get(index).getDescripcion());
                 duplicarExtraRecargo.setTipodia(filtrarListExtrasRecargos.get(index).getTipodia());
@@ -1100,10 +1204,7 @@ public class ControlATExtraRecargo implements Serializable {
     public void duplicarDetalleExtraRecuerdoM() {
         if (indexDER >= 0) {
             duplicarDetalleExtraRecargo = new DetallesExtrasRecargos();
-            k++;
-            l = BigInteger.valueOf(k);
             if (tipoListaDER == 0) {
-                duplicarDetalleExtraRecargo.setSecuencia(l);
                 duplicarDetalleExtraRecargo.setAdicional(listDetallesExtrasRecargos.get(indexDER).getAdicional());
                 duplicarDetalleExtraRecargo.setAdicionaliniciofinjornada(listDetallesExtrasRecargos.get(indexDER).getAdicionaliniciofinjornada());
                 duplicarDetalleExtraRecargo.setConcepto(listDetallesExtrasRecargos.get(indexDER).getConcepto());
@@ -1115,7 +1216,6 @@ public class ControlATExtraRecargo implements Serializable {
                 duplicarDetalleExtraRecargo.setPagotiempocompleto(listDetallesExtrasRecargos.get(indexDER).getPagotiempocompleto());
             }
             if (tipoListaDER == 1) {
-                duplicarDetalleExtraRecargo.setSecuencia(l);
                 duplicarDetalleExtraRecargo.setAdicional(filtrarListDetallesExtrasRecargos.get(indexDER).getAdicional());
                 duplicarDetalleExtraRecargo.setAdicionaliniciofinjornada(filtrarListDetallesExtrasRecargos.get(indexDER).getAdicionaliniciofinjornada());
                 duplicarDetalleExtraRecargo.setConcepto(filtrarListDetallesExtrasRecargos.get(indexDER).getConcepto());
@@ -1134,15 +1234,15 @@ public class ControlATExtraRecargo implements Serializable {
         }
     }
 
-    /**
-     * Metodo que confirma el duplicado y actualiza los datos de la tabla Sets
-     */
     public void confirmarDuplicarExtraRecargo() {
         boolean respueta = validarCamposNulosExtraRecargo(2);
         if (respueta == true) {
             int tamDes = 0;
-            tamDes = nuevoExtraRecargo.getDescripcion().length();
+            tamDes = duplicarExtraRecargo.getDescripcion().length();
             if (tamDes >= 1 && tamDes <= 40) {
+                k++;
+                l = BigInteger.valueOf(k);
+                duplicarExtraRecargo.setSecuencia(l);
                 String text = duplicarExtraRecargo.getDescripcion().toUpperCase();
                 duplicarExtraRecargo.setDescripcion(text);
                 listExtrasRecargos.add(duplicarExtraRecargo);
@@ -1154,22 +1254,25 @@ public class ControlATExtraRecargo implements Serializable {
                 secRegistro = null;
                 if (guardado == true) {
                     guardado = false;
-                    //RequestContext.getCurrentInstance().update("form:aceptar");
                 }
+                cambiosPagina = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 if (bandera == 1) {
-                    extraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraCodigo");
+                    altoTablaRecargo = "160";
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    extraCodigo = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraCodigo");
                     extraCodigo.setFilterStyle("display: none; visibility: hidden;");
-                    extraDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraDescripcion");
+                    extraDescripcion = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraDescripcion");
                     extraDescripcion.setFilterStyle("display: none; visibility: hidden;");
-                    extraTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoDia");
+                    extraTipoDia = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTipoDia");
                     extraTipoDia.setFilterStyle("display: none; visibility: hidden;");
-                    extraTipoJornada = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoJornada");
+                    extraTipoJornada = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTipoJornada");
                     extraTipoJornada.setFilterStyle("display: none; visibility: hidden;");
-                    extraTipoLegislacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoLegislacion");
+                    extraTipoLegislacion = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTipoLegislacion");
                     extraTipoLegislacion.setFilterStyle("display: none; visibility: hidden;");
-                    extraTurno = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTurno");
+                    extraTurno = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTurno");
                     extraTurno.setFilterStyle("display: none; visibility: hidden;");
-                    extraAprobacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraAprobacion");
+                    extraAprobacion = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraAprobacion");
                     extraAprobacion.setFilterStyle("display: none; visibility: hidden;");
                     RequestContext.getCurrentInstance().update("form:datosExtraRecargo");
                     bandera = 0;
@@ -1190,6 +1293,9 @@ public class ControlATExtraRecargo implements Serializable {
     public void confirmarDuplicarDetalleExtraCargo() {
         boolean respueta = validarCamposNulosDetalleExtraRecargo(2);
         if (respueta == true) {
+            k++;
+            l = BigInteger.valueOf(k);
+            duplicarDetalleExtraRecargo.setSecuencia(l);
             if (tipoLista == 0) {
                 duplicarDetalleExtraRecargo.setExtrarecargo(listExtrasRecargos.get(indexAux));
             }
@@ -1205,28 +1311,31 @@ public class ControlATExtraRecargo implements Serializable {
             secRegistroDER = null;
             if (guardadoDER == true) {
                 guardadoDER = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
             }
+            cambiosPagina = false;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
             if (banderaDER == 1) {
-                detalleHF = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHF");
+                altoTablaDetalle = "135";
+                FacesContext c = FacesContext.getCurrentInstance();
+                detalleHF = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHF");
                 detalleHF.setFilterStyle("display: none; visibility: hidden;");
-                detalleHI = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHI");
+                detalleHI = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHI");
                 detalleHI.setFilterStyle("display: none; visibility: hidden;");
-                detalleConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleConcepto");
+                detalleConcepto = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleConcepto");
                 detalleConcepto.setFilterStyle("display: none; visibility: hidden;");
-                detalleEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleEmpresa");
+                detalleEmpresa = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleEmpresa");
                 detalleEmpresa.setFilterStyle("display: none; visibility: hidden;");
-                detalleDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleDia");
+                detalleDia = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleDia");
                 detalleDia.setFilterStyle("display: none; visibility: hidden;");
-                detalleAdicion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleAdicion");
+                detalleAdicion = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleAdicion");
                 detalleAdicion.setFilterStyle("display: none; visibility: hidden;");
-                detalleMinutos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleMinutos");
+                detalleMinutos = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleMinutos");
                 detalleMinutos.setFilterStyle("display: none; visibility: hidden;");
-                detallePagoAdicion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detallePagoAdicion");
+                detallePagoAdicion = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detallePagoAdicion");
                 detallePagoAdicion.setFilterStyle("display: none; visibility: hidden;");
-                detalleIniFin = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleIniFin");
+                detalleIniFin = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleIniFin");
                 detalleIniFin.setFilterStyle("display: none; visibility: hidden;");
-                detalleGarantiza = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleGarantiza");
+                detalleGarantiza = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleGarantiza");
                 detalleGarantiza.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosDetalleExtraRecargo");
                 banderaDER = 0;
@@ -1240,10 +1349,6 @@ public class ControlATExtraRecargo implements Serializable {
         }
     }
 
-    //LIMPIAR DUPLICAR
-    /**
-     * Metodo que limpia los datos de un duplicar Set
-     */
     public void limpiarDuplicarExtraRecargo() {
         duplicarExtraRecargo = new ExtrasRecargos();
         duplicarExtraRecargo.setTipodia(new TiposDias());
@@ -1264,9 +1369,6 @@ public class ControlATExtraRecargo implements Serializable {
         nombreTablaRastro = "";
     }
 
-    //BORRAR VC
-    /**
-     */
     public void verificarRegistroBorrar() {
         if (index >= 0) {
             if (listDetallesExtrasRecargos.isEmpty()) {
@@ -1319,8 +1421,9 @@ public class ControlATExtraRecargo implements Serializable {
 
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
             }
+            cambiosPagina = false;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
         }
     }
 
@@ -1362,49 +1465,49 @@ public class ControlATExtraRecargo implements Serializable {
 
             if (guardadoDER == true) {
                 guardadoDER = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
             }
+            cambiosPagina = false;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
         }
     }
-    //CTRL + F11 ACTIVAR/DESACTIVAR
 
-    /**
-     * Metodo que activa el filtrado por medio de la opcion en el tollbar o por
-     * medio de la tecla Crtl+F11
-     */
     public void activarCtrlF11() {
         if (index >= 0) {
             if (bandera == 0) {
-                extraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraCodigo");
+                altoTablaRecargo = "138";
+                FacesContext c = FacesContext.getCurrentInstance();
+                extraCodigo = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraCodigo");
                 extraCodigo.setFilterStyle("width: 25px");
-                extraDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraDescripcion");
+                extraDescripcion = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraDescripcion");
                 extraDescripcion.setFilterStyle("width: 120px");
-                extraTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoDia");
+                extraTipoDia = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTipoDia");
                 extraTipoDia.setFilterStyle("width: 65px");
-                extraTipoJornada = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoJornada");
+                extraTipoJornada = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTipoJornada");
                 extraTipoJornada.setFilterStyle("width: 80px");
-                extraTipoLegislacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoLegislacion");
+                extraTipoLegislacion = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTipoLegislacion");
                 extraTipoLegislacion.setFilterStyle("width: 120px");
-                extraTurno = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTurno");
+                extraTurno = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTurno");
                 extraTurno.setFilterStyle("width: 10px");
-                extraAprobacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraAprobacion");
+                extraAprobacion = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraAprobacion");
                 extraAprobacion.setFilterStyle("width: 10px");
                 RequestContext.getCurrentInstance().update("form:datosExtraRecargo");
                 bandera = 1;
-            } else if (bandera == 1) {
-                extraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraCodigo");
+            } else {
+                altoTablaRecargo = "160";
+                FacesContext c = FacesContext.getCurrentInstance();
+                extraCodigo = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraCodigo");
                 extraCodigo.setFilterStyle("display: none; visibility: hidden;");
-                extraDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraDescripcion");
+                extraDescripcion = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraDescripcion");
                 extraDescripcion.setFilterStyle("display: none; visibility: hidden;");
-                extraTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoDia");
+                extraTipoDia = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTipoDia");
                 extraTipoDia.setFilterStyle("display: none; visibility: hidden;");
-                extraTipoJornada = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoJornada");
+                extraTipoJornada = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTipoJornada");
                 extraTipoJornada.setFilterStyle("display: none; visibility: hidden;");
-                extraTipoLegislacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoLegislacion");
+                extraTipoLegislacion = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTipoLegislacion");
                 extraTipoLegislacion.setFilterStyle("display: none; visibility: hidden;");
-                extraTurno = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTurno");
+                extraTurno = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTurno");
                 extraTurno.setFilterStyle("display: none; visibility: hidden;");
-                extraAprobacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraAprobacion");
+                extraAprobacion = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraAprobacion");
                 extraAprobacion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosExtraRecargo");
                 bandera = 0;
@@ -1414,49 +1517,52 @@ public class ControlATExtraRecargo implements Serializable {
         }
         if (indexDER >= 0) {
             if (banderaDER == 0) {
-
-                detalleHF = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHF");
+                altoTablaDetalle = "113";
+                FacesContext c = FacesContext.getCurrentInstance();
+                detalleHF = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHF");
                 detalleHF.setFilterStyle("width: 40px");
-                detalleHI = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHI");
+                detalleHI = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHI");
                 detalleHI.setFilterStyle("width: 40px");
-                detalleConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleConcepto");
+                detalleConcepto = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleConcepto");
                 detalleConcepto.setFilterStyle("width: 120px");
-                detalleEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleEmpresa");
+                detalleEmpresa = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleEmpresa");
                 detalleEmpresa.setFilterStyle("width: 120px");
-                detalleDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleDia");
+                detalleDia = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleDia");
                 detalleDia.setFilterStyle("width: 80px");
-                detalleAdicion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleAdicion");
+                detalleAdicion = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleAdicion");
                 detalleAdicion.setFilterStyle("width: 15px");
-                detalleMinutos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleMinutos");
+                detalleMinutos = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleMinutos");
                 detalleMinutos.setFilterStyle("width: 25px");
-                detallePagoAdicion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detallePagoAdicion");
+                detallePagoAdicion = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detallePagoAdicion");
                 detallePagoAdicion.setFilterStyle("width: 15px");
-                detalleIniFin = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleIniFin");
+                detalleIniFin = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleIniFin");
                 detalleIniFin.setFilterStyle("width: 70px");
-                detalleGarantiza = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleGarantiza");
+                detalleGarantiza = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleGarantiza");
                 detalleGarantiza.setFilterStyle("width: 15px");
                 RequestContext.getCurrentInstance().update("form:datosDetalleExtraRecargo");
                 banderaDER = 1;
-            } else if (banderaDER == 1) {
-                detalleHF = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHF");
+            } else {
+                altoTablaDetalle = "135";
+                FacesContext c = FacesContext.getCurrentInstance();
+                detalleHF = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHF");
                 detalleHF.setFilterStyle("display: none; visibility: hidden;");
-                detalleHI = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHI");
+                detalleHI = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHI");
                 detalleHI.setFilterStyle("display: none; visibility: hidden;");
-                detalleConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleConcepto");
+                detalleConcepto = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleConcepto");
                 detalleConcepto.setFilterStyle("display: none; visibility: hidden;");
-                detalleEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleEmpresa");
+                detalleEmpresa = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleEmpresa");
                 detalleEmpresa.setFilterStyle("display: none; visibility: hidden;");
-                detalleDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleDia");
+                detalleDia = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleDia");
                 detalleDia.setFilterStyle("display: none; visibility: hidden;");
-                detalleAdicion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleAdicion");
+                detalleAdicion = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleAdicion");
                 detalleAdicion.setFilterStyle("display: none; visibility: hidden;");
-                detalleMinutos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleMinutos");
+                detalleMinutos = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleMinutos");
                 detalleMinutos.setFilterStyle("display: none; visibility: hidden;");
-                detallePagoAdicion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detallePagoAdicion");
+                detallePagoAdicion = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detallePagoAdicion");
                 detallePagoAdicion.setFilterStyle("display: none; visibility: hidden;");
-                detalleIniFin = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleIniFin");
+                detalleIniFin = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleIniFin");
                 detalleIniFin.setFilterStyle("display: none; visibility: hidden;");
-                detalleGarantiza = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleGarantiza");
+                detalleGarantiza = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleGarantiza");
                 detalleGarantiza.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosDetalleExtraRecargo");
                 banderaDER = 0;
@@ -1466,25 +1572,23 @@ public class ControlATExtraRecargo implements Serializable {
         }
     }
 
-    //SALIR
-    /**
-     * Metodo que cierra la sesion y limpia los datos en la pagina
-     */
     public void salir() {
         if (bandera == 1) {
-            extraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraCodigo");
+            altoTablaRecargo = "160";
+            FacesContext c = FacesContext.getCurrentInstance();
+            extraCodigo = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraCodigo");
             extraCodigo.setFilterStyle("display: none; visibility: hidden;");
-            extraDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraDescripcion");
+            extraDescripcion = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraDescripcion");
             extraDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            extraTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoDia");
+            extraTipoDia = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTipoDia");
             extraTipoDia.setFilterStyle("display: none; visibility: hidden;");
-            extraTipoJornada = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoJornada");
+            extraTipoJornada = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTipoJornada");
             extraTipoJornada.setFilterStyle("display: none; visibility: hidden;");
-            extraTipoLegislacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTipoLegislacion");
+            extraTipoLegislacion = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTipoLegislacion");
             extraTipoLegislacion.setFilterStyle("display: none; visibility: hidden;");
-            extraTurno = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraTurno");
+            extraTurno = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraTurno");
             extraTurno.setFilterStyle("display: none; visibility: hidden;");
-            extraAprobacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosExtraRecargo:extraAprobacion");
+            extraAprobacion = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraAprobacion");
             extraAprobacion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosExtraRecargo");
             bandera = 0;
@@ -1493,25 +1597,27 @@ public class ControlATExtraRecargo implements Serializable {
         }
 
         if (banderaDER == 1) {
-            detalleHF = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHF");
+            altoTablaDetalle = "135";
+            FacesContext c = FacesContext.getCurrentInstance();
+            detalleHF = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHF");
             detalleHF.setFilterStyle("display: none; visibility: hidden;");
-            detalleHI = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHI");
+            detalleHI = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleHI");
             detalleHI.setFilterStyle("display: none; visibility: hidden;");
-            detalleConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleConcepto");
+            detalleConcepto = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleConcepto");
             detalleConcepto.setFilterStyle("display: none; visibility: hidden;");
-            detalleEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleEmpresa");
+            detalleEmpresa = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleEmpresa");
             detalleEmpresa.setFilterStyle("display: none; visibility: hidden;");
-            detalleDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleDia");
+            detalleDia = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleDia");
             detalleDia.setFilterStyle("display: none; visibility: hidden;");
-            detalleAdicion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleAdicion");
+            detalleAdicion = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleAdicion");
             detalleAdicion.setFilterStyle("display: none; visibility: hidden;");
-            detalleMinutos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleMinutos");
+            detalleMinutos = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleMinutos");
             detalleMinutos.setFilterStyle("display: none; visibility: hidden;");
-            detallePagoAdicion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detallePagoAdicion");
+            detallePagoAdicion = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detallePagoAdicion");
             detallePagoAdicion.setFilterStyle("display: none; visibility: hidden;");
-            detalleIniFin = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleIniFin");
+            detalleIniFin = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleIniFin");
             detalleIniFin.setFilterStyle("display: none; visibility: hidden;");
-            detalleGarantiza = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleGarantiza");
+            detalleGarantiza = (Column) c.getViewRoot().findComponent("form:datosDetalleExtraRecargo:detalleGarantiza");
             detalleGarantiza.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosDetalleExtraRecargo");
             banderaDER = 0;
@@ -1527,7 +1633,6 @@ public class ControlATExtraRecargo implements Serializable {
         listDetalleExtraRecargoModificar.clear();
         index = -1;
         indexAux = -1;
-        indexAuxDER = -1;
         indexDER = -1;
         secRegistroDER = null;
         secRegistro = null;
@@ -1536,6 +1641,8 @@ public class ControlATExtraRecargo implements Serializable {
         listDetallesExtrasRecargos = null;
         guardado = true;
         guardadoDER = true;
+        cambiosPagina = true;
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
     }
 
     public void listaValoresBoton() {
@@ -1760,73 +1867,114 @@ public class ControlATExtraRecargo implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("CONCEPTO")) {
-            if (tipoNuevo == 1) {
-                nuevoDetalleExtraRecargo.getConcepto().setDescripcion(concepto);
-            } else if (tipoNuevo == 2) {
-                duplicarDetalleExtraRecargo.getConcepto().setDescripcion(concepto);
-            }
-            for (int i = 0; i < lovConceptos.size(); i++) {
-                if (lovConceptos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevoDetalleExtraRecargo.setConcepto(lovConceptos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevaTerceroCT");
+                    nuevoDetalleExtraRecargo.getConcepto().setDescripcion(concepto);
                 } else if (tipoNuevo == 2) {
-                    duplicarDetalleExtraRecargo.setConcepto(lovConceptos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicarTerceroCT");
+                    duplicarDetalleExtraRecargo.getConcepto().setDescripcion(concepto);
                 }
-                lovTiposDias.clear();
-                getLovTiposDias();
+                for (int i = 0; i < lovConceptos.size(); i++) {
+                    if (lovConceptos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevoDetalleExtraRecargo.setConcepto(lovConceptos.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevoDetalleConcepto");
+                        context.update("formularioDialogos:nuevoExtraEmpresa");
+                    } else if (tipoNuevo == 2) {
+                        duplicarDetalleExtraRecargo.setConcepto(lovConceptos.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarDetalleConcepto");
+                        context.update("formularioDialogos:duplicarExtraEmpresa");
+                    }
+                    lovConceptos.clear();;
+                    getLovConceptos();
+                } else {
+                    context.update("form:ConceptoDialogo");
+                    context.execute("ConceptoDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevoDetalleConcepto");
+                        context.update("formularioDialogos:nuevoExtraEmpresa");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarDetalleConcepto");
+                        context.update("formularioDialogos:duplicarExtraEmpresa");
+                    }
+                }
             } else {
-                context.update("form:ConceptoDialogo");
-                context.execute("ConceptoDialogo.show()");
-                tipoActualizacion = tipoNuevo;
+                lovConceptos.clear();
+                getLovConceptos();
                 if (tipoNuevo == 1) {
-                    context.update("formularioDialogos:nuevaTerceroCT");
+                    nuevoDetalleExtraRecargo.setConcepto(new Conceptos());
+                    nuevoDetalleExtraRecargo.getConcepto().setEmpresa(new Empresas());
+                    context.update("formularioDialogos:nuevoDetalleConcepto");
+                    context.update("formularioDialogos:nuevoExtraEmpresa");
                 } else if (tipoNuevo == 2) {
-                    context.update("formularioDialogos:duplicarTerceroCT");
+                    duplicarDetalleExtraRecargo.setConcepto(new Conceptos());
+                    duplicarDetalleExtraRecargo.getConcepto().setEmpresa(new Empresas());
+                    context.update("formularioDialogos:duplicarDetalleConcepto");
+                    context.update("formularioDialogos:duplicarExtraEmpresa");
                 }
             }
         } else if (confirmarCambio.equalsIgnoreCase("EMPRESA")) {
-            if (tipoNuevo == 1) {
-                nuevoDetalleExtraRecargo.getConcepto().getEmpresa().setNombre(empresa);
-            } else if (tipoNuevo == 2) {
-                duplicarDetalleExtraRecargo.getConcepto().getEmpresa().setNombre(empresa);
-            }
-            for (int i = 0; i < lovConceptos.size(); i++) {
-                if (lovConceptos.get(i).getEmpresa().getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevoDetalleExtraRecargo.setConcepto(lovConceptos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevaCodigoAT");
+                    nuevoDetalleExtraRecargo.getConcepto().getEmpresa().setNombre(empresa);
                 } else if (tipoNuevo == 2) {
-                    duplicarDetalleExtraRecargo.setConcepto(lovConceptos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicarCodigoAT");
+                    duplicarDetalleExtraRecargo.getConcepto().getEmpresa().setNombre(empresa);
                 }
+                for (int i = 0; i < lovConceptos.size(); i++) {
+                    if (lovConceptos.get(i).getEmpresa().getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevoDetalleExtraRecargo.setConcepto(lovConceptos.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevoDetalleConcepto");
+                        context.update("formularioDialogos:nuevoExtraEmpresa");
+                    } else if (tipoNuevo == 2) {
+                        duplicarDetalleExtraRecargo.setConcepto(lovConceptos.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarDetalleConcepto");
+                        context.update("formularioDialogos:duplicarExtraEmpresa");
+                    }
+                    lovConceptos.clear();
+                    getLovConceptos();
+                } else {
+                    context.update("form:ConceptoDialogo");
+                    context.execute("ConceptoDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevoDetalleConcepto");
+                        context.update("formularioDialogos:nuevoExtraEmpresa");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarDetalleConcepto");
+                        context.update("formularioDialogos:duplicarExtraEmpresa");
+                    }
+                }
+            } else {
                 lovConceptos.clear();
                 getLovConceptos();
-            } else {
-                context.update("form:ConceptoDialogo");
-                context.execute("ConceptoDialogo.show()");
-                tipoActualizacion = tipoNuevo;
                 if (tipoNuevo == 1) {
-                    context.update("formularioDialogos:nuevaCodigoAT");
+                    nuevoDetalleExtraRecargo.setConcepto(new Conceptos());
+                    nuevoDetalleExtraRecargo.getConcepto().setEmpresa(new Empresas());
+                    context.update("formularioDialogos:nuevoDetalleConcepto");
+                    context.update("formularioDialogos:nuevoExtraEmpresa");
                 } else if (tipoNuevo == 2) {
-                    context.update("formularioDialogos:duplicarCodigoAT");
+                    duplicarDetalleExtraRecargo.setConcepto(new Conceptos());
+                    duplicarDetalleExtraRecargo.getConcepto().setEmpresa(new Empresas());
+                    context.update("formularioDialogos:duplicarDetalleConcepto");
+                    context.update("formularioDialogos:duplicarExtraEmpresa");
                 }
             }
         }
     }
 
     public void actualizarTipoDia() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 listExtrasRecargos.get(index).setTipodia(tipoDiaSeleccionado);
@@ -1850,16 +1998,15 @@ public class ControlATExtraRecargo implements Serializable {
             if (guardado == true) {
                 guardado = false;
             }
+            cambiosPagina = false;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
             permitirIndex = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarExtraTipoDia");
+            context.update("form:datosExtraRecargo");
         } else if (tipoActualizacion == 1) {
             nuevoExtraRecargo.setTipodia(tipoDiaSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevoExtraTipoDia");
         } else if (tipoActualizacion == 2) {
             duplicarExtraRecargo.setTipodia(tipoDiaSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarExtraTipoDia");
         }
         filtrarLovTiposDias = null;
@@ -1868,6 +2015,12 @@ public class ControlATExtraRecargo implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+
+        context.update("form:TipoDiaDialogo");
+        context.update("form:lovTipoDia");
+        context.update("form:aceptarTD");
+        context.reset("form:lovTipoDia:globalFilter");
+        context.execute("TipoDiaDialogo.hide()");
     }
 
     public void cancelarCambioTipoDia() {
@@ -1881,6 +2034,7 @@ public class ControlATExtraRecargo implements Serializable {
     }
 
     public void actualizarTipoJornada() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 listExtrasRecargos.get(index).setTipojornada(tipoJornadaSeleccionada);
@@ -1904,16 +2058,15 @@ public class ControlATExtraRecargo implements Serializable {
             if (guardado == true) {
                 guardado = false;
             }
+            cambiosPagina = false;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
             permitirIndex = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarExtraTipoJornada");
+            context.update("form:datosExtraRecargo");
         } else if (tipoActualizacion == 1) {
             nuevoExtraRecargo.setTipojornada(tipoJornadaSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevoExtraTipoJornada");
         } else if (tipoActualizacion == 2) {
             duplicarExtraRecargo.setTipojornada(tipoJornadaSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarExtraTipoJornada");
         }
         filtrarLovTiposJornadaS = null;
@@ -1922,6 +2075,12 @@ public class ControlATExtraRecargo implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+
+        context.update("form:TipoJornadaDialogo");
+        context.update("form:lovTipoJornada");
+        context.update("form:aceptarTJ");
+        context.reset("form:lovTipoJornada:globalFilter");
+        context.execute("TipoJornadaDialogo.hide()");
     }
 
     public void cancelarCambioTipoJornada() {
@@ -1935,6 +2094,7 @@ public class ControlATExtraRecargo implements Serializable {
     }
 
     public void actualizarLegislacion() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 listExtrasRecargos.get(index).setTipolegislacion(contratoSeleccionado);
@@ -1958,16 +2118,15 @@ public class ControlATExtraRecargo implements Serializable {
             if (guardado == true) {
                 guardado = false;
             }
+            cambiosPagina = false;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
             permitirIndex = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarExtraTipoLegislacion");
+            context.update("form:datosExtraRecargo");
         } else if (tipoActualizacion == 1) {
             nuevoExtraRecargo.setTipolegislacion(contratoSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevoExtraLegislacion");
         } else if (tipoActualizacion == 2) {
             duplicarExtraRecargo.setTipolegislacion(contratoSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarExtraLegislacion");
         }
         filtrarLovContratos = null;
@@ -1976,6 +2135,12 @@ public class ControlATExtraRecargo implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+
+        context.update("form:LegislacionDialogo");
+        context.update("form:lovLegislacion");
+        context.update("form:aceptarLeg");
+        context.reset("form:lovLegislacion:globalFilter");
+        context.execute("LegislacionDialogo.hide()");
     }
 
     public void cancelarCambioLegislacion() {
@@ -1989,6 +2154,7 @@ public class ControlATExtraRecargo implements Serializable {
     }
 
     public void actualizarConcepto() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoListaDER == 0) {
                 listDetallesExtrasRecargos.get(indexDER).setConcepto(conceptoSeleccionado);
@@ -2012,18 +2178,16 @@ public class ControlATExtraRecargo implements Serializable {
             if (guardadoDER == true) {
                 guardadoDER = false;
             }
+            cambiosPagina = false;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
             permitirIndexDER = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:editarDetalleConcepto");
-            context.update("form:editarDetalleEmpresa");
+            context.update("form:datosDetalleExtraRecargo");
         } else if (tipoActualizacion == 1) {
             nuevoDetalleExtraRecargo.setConcepto(conceptoSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevoDetalleConcepto");
             context.update("formularioDialogos:nuevoExtraEmpresa");
         } else if (tipoActualizacion == 2) {
             duplicarDetalleExtraRecargo.setConcepto(conceptoSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarDetalleConcepto");
             context.update("formularioDialogos:duplicarExtraEmpresa");
         }
@@ -2033,6 +2197,12 @@ public class ControlATExtraRecargo implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+
+        context.update("form:ConceptoDialogo");
+        context.update("form:lovConcepto");
+        context.update("form:aceptarCon");
+        context.reset("form:lovConcepto:globalFilter");
+        context.execute("ConceptoDialogo.hide()");
     }
 
     public void cancelarCambioConcepto() {
@@ -2045,9 +2215,6 @@ public class ControlATExtraRecargo implements Serializable {
         permitirIndex = true;
     }
 
-    /**
-     * Metodo que activa el boton aceptar de la pantalla y dialogos
-     */
     public void activarAceptar() {
         aceptar = false;
     }
@@ -2065,11 +2232,6 @@ public class ControlATExtraRecargo implements Serializable {
         return nombreTabla;
     }
 
-    /**
-     * Metodo que exporta datos a PDF
-     *
-     * @throws IOException Excepcion de In-Out de datos
-     */
     public void validarExportPDF() throws IOException {
         if (index >= 0) {
             exportPDF_ER();
@@ -2099,11 +2261,6 @@ public class ControlATExtraRecargo implements Serializable {
         secRegistro = null;
     }
 
-    /**
-     * Metodo que exporta datos a XLS
-     *
-     * @throws IOException Excepcion de In-Out de datos
-     */
     public void validarExportXLS() throws IOException {
         if (index >= 0) {
             exportXLS_ER();
@@ -2132,11 +2289,7 @@ public class ControlATExtraRecargo implements Serializable {
         index = -1;
         secRegistro = null;
     }
-    //EVENTO FILTRAR
 
-    /**
-     * Evento que cambia la lista reala a la filtrada
-     */
     public void eventoFiltrar() {
         if (index >= 0) {
             if (tipoLista == 0) {
@@ -2247,12 +2400,11 @@ public class ControlATExtraRecargo implements Serializable {
             if (listExtrasRecargos == null) {
                 listExtrasRecargos = new ArrayList<ExtrasRecargos>();
                 listExtrasRecargos = administrarATExtraRecargo.consultarExtrasRecargos();
-                return listExtrasRecargos;
-            } else {
-                return listExtrasRecargos;
             }
+            return listExtrasRecargos;
+
         } catch (Exception e) {
-            System.out.println("Error...!! getListGruposSalariales " + e.toString());
+            System.out.println("Error...!! getListExtrasRecargos " + e.toString());
             return null;
         }
     }
@@ -2314,17 +2466,23 @@ public class ControlATExtraRecargo implements Serializable {
     }
 
     public List<DetallesExtrasRecargos> getListDetallesExtrasRecargos() {
-        if (listDetallesExtrasRecargos == null) {
-            listDetallesExtrasRecargos = new ArrayList<DetallesExtrasRecargos>();
-            index = indexAux;
-            if (tipoLista == 0) {
-                listDetallesExtrasRecargos = administrarATExtraRecargo.consultarDetallesExtrasRecargos(listExtrasRecargos.get(index).getSecuencia());
+        try {
+            if (listDetallesExtrasRecargos == null) {
+                listDetallesExtrasRecargos = new ArrayList<DetallesExtrasRecargos>();
+                if (index >= 0) {
+                    if (tipoLista == 0) {
+                        listDetallesExtrasRecargos = administrarATExtraRecargo.consultarDetallesExtrasRecargos(listExtrasRecargos.get(index).getSecuencia());
+                    }
+                    if (tipoLista == 1) {
+                        listDetallesExtrasRecargos = administrarATExtraRecargo.consultarDetallesExtrasRecargos(filtrarListExtrasRecargos.get(index).getSecuencia());
+                    }
+                }
             }
-            if (tipoLista == 1) {
-                listDetallesExtrasRecargos = administrarATExtraRecargo.consultarDetallesExtrasRecargos(filtrarListExtrasRecargos.get(index).getSecuencia());
-            }
+            return listDetallesExtrasRecargos;
+        } catch (Exception e) {
+            System.out.println("Error getListDetallesExtrasRecargos : " + e.toString());
+            return null;
         }
-        return listDetallesExtrasRecargos;
     }
 
     public void setListDetallesExtrasRecargos(List<DetallesExtrasRecargos> setListDetallesExtrasRecargos) {
@@ -2476,9 +2634,7 @@ public class ControlATExtraRecargo implements Serializable {
     }
 
     public List<TiposDias> getLovTiposDias() {
-        if (lovTiposDias == null) {
-            lovTiposDias = administrarATExtraRecargo.consultarLOVListaTiposDias();
-        }
+        lovTiposDias = administrarATExtraRecargo.consultarLOVListaTiposDias();
         return lovTiposDias;
     }
 
@@ -2503,9 +2659,7 @@ public class ControlATExtraRecargo implements Serializable {
     }
 
     public List<TiposJornadas> getLovTiposJornadas() {
-        if (lovTiposJornadas == null) {
-            lovTiposJornadas = administrarATExtraRecargo.consultarLOVTiposJornadas();
-        }
+        lovTiposJornadas = administrarATExtraRecargo.consultarLOVTiposJornadas();
         return lovTiposJornadas;
     }
 
@@ -2530,9 +2684,7 @@ public class ControlATExtraRecargo implements Serializable {
     }
 
     public List<Contratos> getLovContratos() {
-        if (lovContratos == null) {
-            lovContratos = administrarATExtraRecargo.consultarLOVContratos();
-        }
+        lovContratos = administrarATExtraRecargo.consultarLOVContratos();
         return lovContratos;
     }
 
@@ -2557,9 +2709,7 @@ public class ControlATExtraRecargo implements Serializable {
     }
 
     public List<Conceptos> getLovConceptos() {
-        if (lovConceptos == null) {
-            lovConceptos = administrarATExtraRecargo.consultarLOVConceptos();
-        }
+        lovConceptos = administrarATExtraRecargo.consultarLOVConceptos();
         return lovConceptos;
     }
 
@@ -2581,6 +2731,116 @@ public class ControlATExtraRecargo implements Serializable {
 
     public void setConceptoSeleccionado(Conceptos conceptoSeleccionado) {
         this.conceptoSeleccionado = conceptoSeleccionado;
+    }
+
+    public ExtrasRecargos getExtraRecargoTablaSeleccionado() {
+        getListExtrasRecargos();
+        if (listExtrasRecargos != null) {
+            int tam = listExtrasRecargos.size();
+            if (tam > 0) {
+                extraRecargoTablaSeleccionado = listExtrasRecargos.get(0);
+            }
+        }
+        return extraRecargoTablaSeleccionado;
+    }
+
+    public void setExtraRecargoTablaSeleccionado(ExtrasRecargos extraRecargoTablaSeleccionado) {
+        this.extraRecargoTablaSeleccionado = extraRecargoTablaSeleccionado;
+    }
+
+    public DetallesExtrasRecargos getDetalleTablaSeleccionado() {
+        getListDetallesExtrasRecargos();
+        if (listDetallesExtrasRecargos != null) {
+            int tam = listDetallesExtrasRecargos.size();
+            if (tam > 0) {
+                detalleTablaSeleccionado = listDetallesExtrasRecargos.get(0);
+            }
+        }
+        return detalleTablaSeleccionado;
+    }
+
+    public void setDetalleTablaSeleccionado(DetallesExtrasRecargos detalleTablaSeleccionado) {
+        this.detalleTablaSeleccionado = detalleTablaSeleccionado;
+    }
+
+    public String getAltoTablaRecargo() {
+        return altoTablaRecargo;
+    }
+
+    public void setAltoTablaRecargo(String altoTablaRecargo) {
+        this.altoTablaRecargo = altoTablaRecargo;
+    }
+
+    public String getAltoTablaDetalle() {
+        return altoTablaDetalle;
+    }
+
+    public void setAltoTablaDetalle(String altoTablaDetalle) {
+        this.altoTablaDetalle = altoTablaDetalle;
+    }
+
+    public String getInfoRegistroTipoDia() {
+        getLovTiposDias();
+        if (lovTiposDias != null) {
+            infoRegistroTipoDia = "Cantidad de registros : " + lovTiposDias.size();
+        } else {
+            infoRegistroTipoDia = "Cantidad de registros : 0";
+        }
+        return infoRegistroTipoDia;
+    }
+
+    public void setInfoRegistroTipoDia(String infoRegistroTipoDia) {
+        this.infoRegistroTipoDia = infoRegistroTipoDia;
+    }
+
+    public String getInfoRegistroTipoJornada() {
+        getLovTiposJornadas();
+        if (lovTiposJornadas != null) {
+            infoRegistroTipoJornada = "Cantidad de registros : " + lovTiposJornadas.size();
+        } else {
+            infoRegistroTipoJornada = "Cantidad de registros : 0";
+        }
+        return infoRegistroTipoJornada;
+    }
+
+    public void setInfoRegistroTipoJornada(String infoRegistroTipoJornada) {
+        this.infoRegistroTipoJornada = infoRegistroTipoJornada;
+    }
+
+    public String getInfoRegistroLegislacion() {
+        getLovContratos();
+        if (lovContratos != null) {
+            infoRegistroLegislacion = "Cantidad de registros : " + lovContratos.size();
+        } else {
+            infoRegistroLegislacion = "Cantidad de registros : 0";
+        }
+        return infoRegistroLegislacion;
+    }
+
+    public void setInfoRegistroLegislacion(String infoRegistroLegislacion) {
+        this.infoRegistroLegislacion = infoRegistroLegislacion;
+    }
+
+    public String getInfoRegistroConcepto() {
+        getLovConceptos();
+        if (lovConceptos != null) {
+            infoRegistroConcepto = "Cantidad de registros : " + lovConceptos.size();
+        } else {
+            infoRegistroConcepto = "Cantidad de registros : 0";
+        }
+        return infoRegistroConcepto;
+    }
+
+    public void setInfoRegistroConcepto(String infoRegistroConcepto) {
+        this.infoRegistroConcepto = infoRegistroConcepto;
+    }
+
+    public boolean isCambiosPagina() {
+        return cambiosPagina;
+    }
+
+    public void setCambiosPagina(boolean cambiosPagina) {
+        this.cambiosPagina = cambiosPagina;
     }
 
 }

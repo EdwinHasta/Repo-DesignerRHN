@@ -56,23 +56,21 @@ function iniciarScrollEmpleado() {
     leftDiv.onscroll = function() {
         rightDiv.scrollTop = leftDiv.scrollTop;
     };
-}
+    
+    var leftDiv2 = document.getElementById('inferiorIzquierdaEM');
+    var rightDiv2 = document.getElementById('inferiorDerechaEM');
+    var rightDivSub2 = document.getElementById('inferiorDerechaSubtotalesEmpleador');
+    var topDiv2 = document.getElementById('superiorDerechaEM');
 
-function iniciarScrollEmpleador() {
-    var leftDiv = document.getElementById('inferiorIzquierdaEM');
-    var rightDiv = document.getElementById('inferiorDerechaEM');
-    var rightDivSub = document.getElementById('inferiorDerechaSubtotalesEmpleador');
-    var topDiv = document.getElementById('superiorDerechaEM');
-
-    rightDiv.onscroll = function() {
-        leftDiv.scrollTop = rightDiv.scrollTop;
+    rightDiv2.onscroll = function() {
+        leftDiv2.scrollTop = rightDiv2.scrollTop;
     };
-    rightDivSub.onscroll = function() {
-        topDiv.scrollLeft = rightDivSub.scrollLeft;
-        rightDiv.scrollLeft = rightDivSub.scrollLeft;
+    rightDivSub2.onscroll = function() {
+        topDiv2.scrollLeft = rightDivSub2.scrollLeft;
+        rightDiv2.scrollLeft = rightDivSub2.scrollLeft;
     };
-    leftDiv.onscroll = function() {
-        rightDiv.scrollTop = leftDiv.scrollTop;
+    leftDiv2.onscroll = function() {
+        rightDiv2.scrollTop = leftDiv2.scrollTop;
     };
 }
 

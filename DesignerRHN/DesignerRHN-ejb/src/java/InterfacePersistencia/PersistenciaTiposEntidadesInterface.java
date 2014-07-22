@@ -102,4 +102,6 @@ public interface PersistenciaTiposEntidadesInterface {
 
     public TiposEntidades buscarTipoEntidadPorCodigo(EntityManager em, Short codigo);
 
+    public List<TiposEntidades> buscarTiposEntidadesParametroAutoliq(EntityManager em);
+
 }

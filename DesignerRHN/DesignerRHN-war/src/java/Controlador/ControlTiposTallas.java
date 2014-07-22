@@ -99,6 +99,9 @@ public class ControlTiposTallas implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarTiposTallas.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlTiposTallas eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -273,7 +276,7 @@ public class ControlTiposTallas implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposTallas.size(); j++) {
                             if (j != indice) {
-                                if (listTiposTallas.get(indice).getCodigo() == listTiposTallas.get(j).getCodigo()) {
+                                if (listTiposTallas.get(indice).getCodigo().equals(listTiposTallas.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -322,7 +325,7 @@ public class ControlTiposTallas implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposTallas.size(); j++) {
                             if (j != indice) {
-                                if (listTiposTallas.get(indice).getCodigo() == listTiposTallas.get(j).getCodigo()) {
+                                if (listTiposTallas.get(indice).getCodigo().equals(listTiposTallas.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -369,9 +372,9 @@ public class ControlTiposTallas implements Serializable {
                         banderita = false;
                     } else {
 
-                        for (int j = 0; j < listTiposTallas.size(); j++) {
+                        for (int j = 0; j < filtrarTiposTallas.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposTallas.get(indice).getCodigo() == listTiposTallas.get(j).getCodigo()) {
+                                if (filtrarTiposTallas.get(indice).getCodigo().equals(filtrarTiposTallas.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -420,9 +423,9 @@ public class ControlTiposTallas implements Serializable {
                         banderita = false;
                     } else {
 
-                        for (int j = 0; j < listTiposTallas.size(); j++) {
+                        for (int j = 0; j < filtrarTiposTallas.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposTallas.get(indice).getCodigo() == listTiposTallas.get(j).getCodigo()) {
+                                if (filtrarTiposTallas.get(indice).getCodigo().equals(filtrarTiposTallas.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -639,7 +642,7 @@ public class ControlTiposTallas implements Serializable {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTiposTallas.getCodigo());
 
             for (int x = 0; x < listTiposTallas.size(); x++) {
-                if (listTiposTallas.get(x).getCodigo() == nuevoTiposTallas.getCodigo()) {
+                if (listTiposTallas.get(x).getCodigo().equals(nuevoTiposTallas.getCodigo())) {
                     duplicados++;
                 }
             }
@@ -764,7 +767,7 @@ public class ControlTiposTallas implements Serializable {
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listTiposTallas.size(); x++) {
-                if (listTiposTallas.get(x).getCodigo() == duplicarTiposTallas.getCodigo()) {
+                if (listTiposTallas.get(x).getCodigo().equals(duplicarTiposTallas.getCodigo())) {
                     duplicados++;
                 }
             }

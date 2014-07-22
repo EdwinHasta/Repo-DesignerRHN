@@ -4,9 +4,7 @@
 package Persistencia;
 
 import Entidades.Empresas;
-import InterfacePersistencia.PersistenciaEmpresasInterface;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -36,7 +34,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(empresas);
+            em.persist(empresas);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaVigenciasCargos.crear: " + e);

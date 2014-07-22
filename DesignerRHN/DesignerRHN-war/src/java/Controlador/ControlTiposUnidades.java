@@ -93,7 +93,7 @@ public class ControlTiposUnidades implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void recibirPaginaEntrante(String pagina) {
         paginaAnterior = pagina;
     }
@@ -108,6 +108,9 @@ public class ControlTiposUnidades implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarTiposUnidades.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlTiposUnidades eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -282,7 +285,7 @@ public class ControlTiposUnidades implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposUnidades.size(); j++) {
                             if (j != indice) {
-                                if (listTiposUnidades.get(indice).getCodigo() == listTiposUnidades.get(j).getCodigo()) {
+                                if (listTiposUnidades.get(indice).getCodigo().equals(listTiposUnidades.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -331,7 +334,7 @@ public class ControlTiposUnidades implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposUnidades.size(); j++) {
                             if (j != indice) {
-                                if (listTiposUnidades.get(indice).getCodigo() == listTiposUnidades.get(j).getCodigo()) {
+                                if (listTiposUnidades.get(indice).getCodigo().equals(listTiposUnidades.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -378,9 +381,9 @@ public class ControlTiposUnidades implements Serializable {
                         banderita = false;
                     } else {
 
-                        for (int j = 0; j < listTiposUnidades.size(); j++) {
+                        for (int j = 0; j < filtrarTiposUnidades.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposUnidades.get(indice).getCodigo() == listTiposUnidades.get(j).getCodigo()) {
+                                if (filtrarTiposUnidades.get(indice).getCodigo().equals(filtrarTiposUnidades.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -428,10 +431,9 @@ public class ControlTiposUnidades implements Serializable {
                         filtrarTiposUnidades.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
                     } else {
-
-                        for (int j = 0; j < listTiposUnidades.size(); j++) {
+                        for (int j = 0; j < filtrarTiposUnidades.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposUnidades.get(indice).getCodigo() == listTiposUnidades.get(j).getCodigo()) {
+                                if (filtrarTiposUnidades.get(indice).getCodigo().equals(filtrarTiposUnidades.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -644,7 +646,7 @@ public class ControlTiposUnidades implements Serializable {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTiposUnidades.getCodigo());
 
             for (int x = 0; x < listTiposUnidades.size(); x++) {
-                if (listTiposUnidades.get(x).getCodigo() == nuevoTiposUnidades.getCodigo()) {
+                if (listTiposUnidades.get(x).getCodigo().equals(nuevoTiposUnidades.getCodigo())) {
                     duplicados++;
                 }
             }
@@ -769,7 +771,7 @@ public class ControlTiposUnidades implements Serializable {
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listTiposUnidades.size(); x++) {
-                if (listTiposUnidades.get(x).getCodigo() == duplicarTiposUnidades.getCodigo()) {
+                if (listTiposUnidades.get(x).getCodigo().equals(duplicarTiposUnidades.getCodigo())) {
                     duplicados++;
                 }
             }

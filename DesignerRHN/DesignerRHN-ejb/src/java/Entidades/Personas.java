@@ -40,13 +40,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Personas.findAll", query = "SELECT p FROM Personas p")})
 public class Personas implements Serializable {
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona", fetch = FetchType.LAZY)
-    private List<IbcsPersona> ibcsPersonaList;
     @Basic(optional = false)
     @NotNull
     @Column(name = "NUMERODOCUMENTO")
     private BigInteger numerodocumento;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona", fetch = FetchType.LAZY)
+    private List<IbcsPersona> ibcsPersonaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona")
     private Collection<Declarantes> declarantesCollection;
 
@@ -699,13 +699,6 @@ public class Personas implements Serializable {
         this.enfermeadadesProfesionalesCollection = enfermeadadesProfesionalesCollection;
     }
 
-    public BigInteger getNumerodocumento() {
-        return numerodocumento;
-    }
-
-    public void setNumerodocumento(BigInteger numerodocumento) {
-        this.numerodocumento = numerodocumento;
-    }
 
     @XmlTransient
     public Collection<Declarantes> getDeclarantesCollection() {
@@ -723,5 +716,13 @@ public class Personas implements Serializable {
 
     public void setIbcsPersonaList(List<IbcsPersona> ibcsPersonaList) {
         this.ibcsPersonaList = ibcsPersonaList;
+    }
+
+    public BigInteger getNumerodocumento() {
+        return numerodocumento;
+    }
+
+    public void setNumerodocumento(BigInteger numerodocumento) {
+        this.numerodocumento = numerodocumento;
     }
 }

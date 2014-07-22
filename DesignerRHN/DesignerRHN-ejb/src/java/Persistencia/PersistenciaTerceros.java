@@ -35,7 +35,7 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(terceros);
+            em.persist(terceros);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaTerceros.crear: " + e);
@@ -104,6 +104,21 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     }
 
     @Override
+    public List<Terceros> buscarTercerosParametrosAutoliq(EntityManager em) {
+        try {
+            String sql = "SELECT * FROM TERCEROS t\n"
+                    + "   where exists (select 'x' from tercerossucursales ts\n"
+                    + "   where ts.tercero=t.secuencia)";
+            Query query = em.createNativeQuery(sql, Terceros.class);
+            List<Terceros> terceros = (List<Terceros>) query.getResultList();
+            return terceros;
+        } catch (Exception e) {
+            System.out.println("Error buscarTercerosParametrosAutoliq PersistenciaTercerosInterface : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
     public Terceros buscarTercerosSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT t FROM Terceros t WHERE t.secuencia = :secuencia");
@@ -151,14 +166,13 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     @Override
     public List<Terceros> lovTerceros(EntityManager em, BigInteger secEmpresa) {
         try {
-            Query query = em.createQuery("SELECT t FROM Terceros t "
-                    + "WHERE t.empresa.secuencia = :secEmpresa ORDER BY t.nombre");
+            Query query = em.createQuery("SELECT t FROM Terceros t WHERE t.empresa.secuencia = :secEmpresa ORDER BY t.nombre");
             query.setParameter("secEmpresa", secEmpresa);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Terceros> listaTerceros = query.getResultList();
             return listaTerceros;
         } catch (Exception e) {
-            System.out.println("Exepcion lovTerceros: " + e);
+            System.out.println("Error PersistenciaTercerosInterface lovTerceros: " + e.toString());
             return null;
         }
     }

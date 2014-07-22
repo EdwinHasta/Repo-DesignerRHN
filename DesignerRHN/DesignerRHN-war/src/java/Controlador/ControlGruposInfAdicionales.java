@@ -97,6 +97,9 @@ public class ControlGruposInfAdicionales implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarGruposInfAdicionales.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlGruposInfAdicionales eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -187,6 +190,7 @@ public class ControlGruposInfAdicionales implements Serializable {
         context.update("form:datosGruposInfAdicionales");
         context.update("form:ACEPTAR");
     }
+
     public void salir() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {

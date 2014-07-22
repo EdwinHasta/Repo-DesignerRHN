@@ -29,7 +29,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.codigo}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.codigo}" id="editarCodigo" style="height: 12px;  border-radius: 0px; width: 400px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.codigo}" maxlength="4" id="editarCodigo" style="height: 12px;  border-radius: 0px; width: 400px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlTiposDias.cambiarIndice(indice, 0)}" process="@this"/> 
                                                 <p:ajax event="change" listener="#{controlTiposDias.modificandoTipoDia(indice, 'N', info.codigo)}"  update="codigo"/>
                                             </p:inputText>
@@ -37,11 +37,11 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column headerText="#{msg['descripcion']}" sortBy="#{info.descripcion}" filterBy="#{info.descripcion}" filterMatchMode="contains" id="descripcion" width="260" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="#{msg['descripcion']}"  sortBy="#{info.descripcion}" filterBy="#{info.descripcion}" filterMatchMode="contains" id="descripcion" width="260" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.descripcion}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.descripcion}" id="editarNombre" style="height: 12px;  border-radius: 0px; width: 420px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.descripcion}" maxlength="30" id="editarNombre" style="height: 12px;  border-radius: 0px; width: 420px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlTiposDias.cambiarIndice(indice, 1)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlTiposDias.modificandoTipoDia(indice, 'N', info.descripcion)}" update="descripcion"/>
                                             </p:inputText>
@@ -118,7 +118,7 @@
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposDias.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="Refrescar"/>
 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposDias.salir()}"  process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposDias.salir()}" action="#{controlTiposDias.redireccionarAtras()}"  process="@this"/>  
                                 <p:tooltip  for="salir" value="Salir"/>
 
                             </p:toolbarGroup>  
@@ -126,13 +126,13 @@
 
                         <h:outputText id="informacionRegistro" value="#{controlTiposDias.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px;"  icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  disabled="#{controlTiposDias.guardado}" actionListener="#{controlTiposDias.revisarDialogoGuardar()}"     process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-closethick" id="ATRAS" actionListener="#{controlTiposDias.salir()}" value="#{msg['atras']}"    />
+                        <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-closethick" id="ATRAS" actionListener="#{controlTiposDias.salir()}" action="#{controlTiposDias.redireccionarAtras()}" value="#{msg['atras']}"    />
 
                         <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                            <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlTiposDias.guardandoTiposDias()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
-                            <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlTiposDias.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
+                            <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlTiposDias.guardandoTiposDias()}" action="#{controlTiposDias.redireccionarAtras()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                            <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlTiposDias.cancelarModificacion()}" action="#{controlTiposDias.redireccionarAtras()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                             <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                         </p:dialog>
 
@@ -235,13 +235,13 @@
                         <p:panel id="nuevaTipoReemplazo" style="border: none;">
 
                             <strong><h:outputText value="*#{msg['codigoN']}"  style="left: 15px; position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlTiposDias.nuevoTipoDia.codigo}" style="left: 15px; width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
+                            <p:inputText id="nuevoCodigo" maxlength="4" value="#{controlTiposDias.nuevoTipoDia.codigo}" style="left: 15px; width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="#{msg['codigoWM']}" />
 
                             <strong><h:outputText value="*#{msg['descripcionN']}"  style="left: 15px; position: absolute; top: 90px;" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlTiposDias.nuevoTipoDia.descripcion}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText  id="nuevoNombre" maxlength="30" value="#{controlTiposDias.nuevoTipoDia.descripcion}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoNombre" value="#{msg['descripcionWM']}" />
@@ -269,13 +269,13 @@
 
                         <p:panel id="duplicarTTR" style="border: none;">
                             <strong><h:outputText value="#{msg['codigoN']}"  style="left: 15px; position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlTiposDias.duplicarTipoDia.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">  
+                            <p:inputText id="duplicarCodigo" maxlength="4" value="#{controlTiposDias.duplicarTipoDia.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">  
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="#{msg['codigoWM']}" />
 
                             <strong><h:outputText value="#{msg['descripcionN']}"  style="left: 15px; position: absolute; top: 90px;" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlTiposDias.duplicarTipoDia.descripcion}"  style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">  
+                            <p:inputText id="duplicarNombre" maxlength="30" value="#{controlTiposDias.duplicarTipoDia.descripcion}"  style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">  
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="#{msg['descripcionWM']}" />

@@ -41,7 +41,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.descripcion}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.descripcion}" id="editarNombre" style=" height: 12px; border-radius: 0px; width: 420px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.descripcion}" maxlength="50" id="editarNombre" style=" height: 12px; border-radius: 0px; width: 420px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlEvalCompetencias.cambiarIndice(indice, 1)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlEvalCompetencias.modificarEvalCompetencia(indice, 'N', info.descripcion)}" update="descripcion"/>
                                             </p:inputText>
@@ -54,7 +54,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.desCompetencia}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.desCompetencia}" id="editarDescripcionCompetencia" style="height: 12px;  border-radius: 0px; width: 420px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.desCompetencia}" maxlength="1000" id="editarDescripcionCompetencia" style="height: 12px;  border-radius: 0px; width: 420px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlEvalCompetencias.cambiarIndice(indice, 2)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlEvalCompetencias.modificarEvalCompetencia(indice, 'N', info.desCompetencia)}" update="descripcionCompetencia"/>
                                             </p:inputText>
@@ -112,7 +112,7 @@
                                 <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEvalCompetencias.cancelarModificacion()}"  process="@this"/>  
                                 <p:tooltip  for="refrescar" value="Refrescar"/>
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEvalCompetencias.salir()}" process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEvalCompetencias.salir()}" process="@this" action="atrasevalcompetencia" />  
                                 <p:tooltip  for="salir" value="Salir"/>
 
                             </p:toolbarGroup>  
@@ -120,13 +120,13 @@
 
                         <h:outputText id="informacionRegistro" value="#{controlEvalCompetencias.infoRegistro}" style="position: absolute; left: 15px; top: 485px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px;  " icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  actionListener="#{controlEvalCompetencias.revisarDialogoGuardar()}"  disabled="#{controlEvalCompetencias.guardado}"   process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 785px; top: 470px;  " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras"    />
+                        <p:commandButton style=" position: absolute; left: 785px; top: 470px;  " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" action="atrasevalcompetencia"   />
 
                         <p:dialog id="confirmarGuardar" header="ATENCION...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                            <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlEvalCompetencias.guardarEvalCompetencias()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
-                            <p:commandButton value="No" onclick="confirmarGuardar.hide();" actionListener="#{controlEvalCompetencias.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
+                            <p:commandButton value="Si" onclick="confirmarGuardar.hide();" action="atrasevalcompetencia" actionListener="#{controlEvalCompetencias.guardarEvalCompetencias()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                            <p:commandButton value="No" onclick="confirmarGuardar.hide();" action="atrasevalcompetencia" actionListener="#{controlEvalCompetencias.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                             <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                         </p:dialog>
 
@@ -170,7 +170,7 @@
 
                     <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla 'TIPOSCERTIFICADOS' tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <h:outputText value="La tabla 'EVALCOMPETENCIAS' tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlEvalCompetencias.secRegistro, 'EvalCompetencias', 'evalcompetencia')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
                     </p:dialog>
@@ -240,13 +240,13 @@
                             <p:watermark for="nuevoCodigo" value="Código" />
 
                             <strong><h:outputText value="*Descripción :"  style="left: 15px; position: absolute; top: 90px;" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlEvalCompetencias.nuevoEvalCompetencia.descripcion}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText  id="nuevoNombre" maxlength="50" value="#{controlEvalCompetencias.nuevoEvalCompetencia.descripcion}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoNombre" value="Descripción" />
 
                             <strong><h:outputText value="Descripción Competencia :"  style="left: 15px; position: absolute; top: 120px;" /></strong>
-                            <p:inputTextarea  id="nuevoDC" value="#{controlEvalCompetencias.nuevoEvalCompetencia.desCompetencia}" style="height: 60px ;width: 275px; position: absolute; left: 15px; top: 140px;text-transform: uppercase">
+                            <p:inputTextarea  id="nuevoDC" maxlength="1000" value="#{controlEvalCompetencias.nuevoEvalCompetencia.desCompetencia}" style="height: 60px ;width: 275px; position: absolute; left: 15px; top: 140px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputTextarea>
                             <p:watermark for="nuevoDC" value="Descripción Competencia" />
@@ -269,7 +269,7 @@
                             <p:watermark for="duplicarCodigo" value="Código" />
 
                             <strong><h:outputText value="*Descripción :"  style="left: 15px; position: absolute; top: 90px;" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlEvalCompetencias.duplicarEvalCompetencia.descripcion}"  style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText id="duplicarNombre" maxlength="50" value="#{controlEvalCompetencias.duplicarEvalCompetencia.descripcion}"  style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Descripción" />

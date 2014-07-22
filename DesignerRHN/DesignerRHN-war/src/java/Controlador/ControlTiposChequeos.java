@@ -92,6 +92,15 @@ public class ControlTiposChequeos implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
+    private String paginaAnterior;
+
+    public void recibirPagina(String pagina) {
+        paginaAnterior = pagina;
+    }
+
+    public String redirigirPaginaAnterior() {
+        return paginaAnterior;
+    }
 
     public void eventoFiltrar() {
         try {
@@ -99,6 +108,9 @@ public class ControlTiposChequeos implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarTiposChequeos.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlTiposChequeos eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -273,7 +285,7 @@ public class ControlTiposChequeos implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposChequeos.size(); j++) {
                             if (j != indice) {
-                                if (listTiposChequeos.get(indice).getCodigo() == listTiposChequeos.get(j).getCodigo()) {
+                                if (listTiposChequeos.get(indice).getCodigo().equals(listTiposChequeos.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -322,7 +334,7 @@ public class ControlTiposChequeos implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposChequeos.size(); j++) {
                             if (j != indice) {
-                                if (listTiposChequeos.get(indice).getCodigo() == listTiposChequeos.get(j).getCodigo()) {
+                                if (listTiposChequeos.get(indice).getCodigo().equals(listTiposChequeos.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -369,9 +381,9 @@ public class ControlTiposChequeos implements Serializable {
                         banderita = false;
                     } else {
 
-                        for (int j = 0; j < listTiposChequeos.size(); j++) {
+                        for (int j = 0; j < filtrarTiposChequeos.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposChequeos.get(indice).getCodigo() == listTiposChequeos.get(j).getCodigo()) {
+                                if (filtrarTiposChequeos.get(indice).getCodigo().equals(filtrarTiposChequeos.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -420,9 +432,9 @@ public class ControlTiposChequeos implements Serializable {
                         banderita = false;
                     } else {
 
-                        for (int j = 0; j < listTiposChequeos.size(); j++) {
+                        for (int j = 0; j < filtrarTiposChequeos.size(); j++) {
                             if (j != indice) {
-                                if (filtrarTiposChequeos.get(indice).getCodigo() == listTiposChequeos.get(j).getCodigo()) {
+                                if (filtrarTiposChequeos.get(indice).getCodigo().equals(filtrarTiposChequeos.get(j).getCodigo())) {
                                     contador++;
                                 }
                             }
@@ -638,7 +650,7 @@ public class ControlTiposChequeos implements Serializable {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTiposChequeos.getCodigo());
 
             for (int x = 0; x < listTiposChequeos.size(); x++) {
-                if (listTiposChequeos.get(x).getCodigo() == nuevoTiposChequeos.getCodigo()) {
+                if (listTiposChequeos.get(x).getCodigo().equals(nuevoTiposChequeos.getCodigo())) {
                     duplicados++;
                 }
             }
@@ -763,7 +775,7 @@ public class ControlTiposChequeos implements Serializable {
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listTiposChequeos.size(); x++) {
-                if (listTiposChequeos.get(x).getCodigo() == duplicarTiposChequeos.getCodigo()) {
+                if (listTiposChequeos.get(x).getCodigo().equals(duplicarTiposChequeos.getCodigo())) {
                     duplicados++;
                 }
             }

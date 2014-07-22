@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -31,6 +32,12 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TiposEntidades.findAll", query = "SELECT t FROM TiposEntidades t")})
 public class TiposEntidades implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CODIGO")
+    private Short codigo;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoentidad")
+    private Collection<AportesEntidades> aportesEntidadesCollection;
 
     @OneToMany(mappedBy = "tipoentidad")
     private Collection<DetallesTiposCotizantes> detallesTiposCotizantesCollection;
@@ -45,8 +52,6 @@ public class TiposEntidades implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Column(name = "CODIGO")
-    private Short codigo;
     @Column(name = "NOMBRE")
     private String nombre;
     @JoinColumn(name = "RUBROPRESUPUESTAL", referencedColumnName = "SECUENCIA")
@@ -77,13 +82,6 @@ public class TiposEntidades implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public Short getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(Short codigo) {
-        this.codigo = codigo;
-    }
 
     public String getNombre() {
         return nombre;
@@ -159,6 +157,23 @@ public class TiposEntidades implements Serializable {
 
     public void setDetallesTiposCotizantesCollection(Collection<DetallesTiposCotizantes> detallesTiposCotizantesCollection) {
         this.detallesTiposCotizantesCollection = detallesTiposCotizantesCollection;
+    }
+
+    public Short getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Short codigo) {
+        this.codigo = codigo;
+    }
+
+    @XmlTransient
+    public Collection<AportesEntidades> getAportesEntidadesCollection() {
+        return aportesEntidadesCollection;
+    }
+
+    public void setAportesEntidadesCollection(Collection<AportesEntidades> aportesEntidadesCollection) {
+        this.aportesEntidadesCollection = aportesEntidadesCollection;
     }
 
 }

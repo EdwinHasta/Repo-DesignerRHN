@@ -1,4 +1,3 @@
-
 package Controlador;
 
 import Entidades.Empleados;
@@ -38,10 +37,11 @@ public class ControlSolucionFormula implements Serializable {
     AdministrarRastrosInterface administrarRastros;
     private List<SolucionesFormulas> listaSolucionesFormulas;
     private List<SolucionesFormulas> filtrarListaSolucionesFormulas;
+    private SolucionesFormulas solucionTablaSeleccionada;
     private Empleados empleado;
     private Novedades novedad;
     private int bandera;
-    private Column fechaHasta, concepto, valor, saldo, fechaPago, proceso,formula;
+    private Column fechaHasta, concepto, valor, saldo, fechaPago, proceso, formula;
     private boolean aceptar;
     private int index;
     private SolucionesFormulas editarSolucionFormula;
@@ -50,9 +50,11 @@ public class ControlSolucionFormula implements Serializable {
     private BigInteger backUpSecRegistro;
     private String informacionEmpleadoNovedad;
     private String algoTabla;
+    //
+    private String infoRegistro;
 
     public ControlSolucionFormula() {
-        algoTabla = "200";
+        algoTabla = "210";
         empleado = new Empleados();
         novedad = new Novedades();
         backUpSecRegistro = null;
@@ -72,11 +74,11 @@ public class ControlSolucionFormula implements Serializable {
             administrarSolucionesFormulas.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void recibirParametros(BigInteger codEmpleado, BigInteger secNovedad) {
         empleado = administrarSolucionesFormulas.empleadoActual(codEmpleado);
         listaSolucionesFormulas = administrarSolucionesFormulas.listaSolucionesFormulaParaEmpleadoYNovedad(empleado.getSecuencia(), secNovedad);
@@ -87,15 +89,19 @@ public class ControlSolucionFormula implements Serializable {
             informacionEmpleadoNovedad = empleado.getPersona().getNombreCompleto().toUpperCase() + " NOVEDAD POR VALOR DE : $ " + novedad.getValortotal().toString();
         }
         int tamanio = informacionEmpleadoNovedad.length();
-        if(tamanio>60){
+        if (tamanio > 60) {
             String aux = informacionEmpleadoNovedad;
-            informacionEmpleadoNovedad="";
-            for(int i = 0;i<56;i++){
-                informacionEmpleadoNovedad = informacionEmpleadoNovedad+aux.charAt(i)+"";
+            informacionEmpleadoNovedad = "";
+            for (int i = 0; i < 56; i++) {
+                informacionEmpleadoNovedad = informacionEmpleadoNovedad + aux.charAt(i) + "";
             }
             informacionEmpleadoNovedad = informacionEmpleadoNovedad + "...";
         }
-        
+        if (listaSolucionesFormulas != null) {
+            infoRegistro = "Cantidad de registros : " + listaSolucionesFormulas.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
     }
 
     public void posicionTabla() {
@@ -165,7 +171,7 @@ public class ControlSolucionFormula implements Serializable {
 
     public void activarCtrlF11() {
         if (bandera == 0) {
-            algoTabla = "178";
+            algoTabla = "188";
             fechaHasta = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionFormula:fechaHasta");
             fechaHasta.setFilterStyle("width: 60px");
             concepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionFormula:concepto");
@@ -183,7 +189,7 @@ public class ControlSolucionFormula implements Serializable {
             RequestContext.getCurrentInstance().update("form:datosSolucionFormula");
             bandera = 1;
         } else if (bandera == 1) {
-            algoTabla = "200";
+            algoTabla = "210";
             fechaHasta = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionFormula:fechaHasta");
             fechaHasta.setFilterStyle("display: none; visibility: hidden;");
             concepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionFormula:concepto");
@@ -209,7 +215,7 @@ public class ControlSolucionFormula implements Serializable {
 
     public void salir() {
         if (bandera == 1) {
-            algoTabla = "200";
+            algoTabla = "210";
             fechaHasta = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionFormula:fechaHasta");
             fechaHasta.setFilterStyle("display: none; visibility: hidden;");
             concepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionFormula:concepto");
@@ -232,10 +238,6 @@ public class ControlSolucionFormula implements Serializable {
         index = -1;
         secRegistro = null;
         listaSolucionesFormulas = null;
-    }
-
-    public void activarAceptar() {
-        aceptar = false;
     }
     //EXPORTAR
 
@@ -277,6 +279,8 @@ public class ControlSolucionFormula implements Serializable {
         if (tipoLista == 0) {
             tipoLista = 1;
         }
+        infoRegistro = "Cantidad de registros : " + filtrarListaSolucionesFormulas.size();
+        RequestContext.getCurrentInstance().update("form:informacionRegistro");
     }
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
 
@@ -390,6 +394,29 @@ public class ControlSolucionFormula implements Serializable {
 
     public void setAlgoTabla(String algoTabla) {
         this.algoTabla = algoTabla;
+    }
+
+    public SolucionesFormulas getSolucionTablaSeleccionada() {
+        getListaSolucionesFormulas();
+        if (listaSolucionesFormulas != null) {
+            int tam = listaSolucionesFormulas.size();
+            if (tam > 0) {
+                solucionTablaSeleccionada = listaSolucionesFormulas.get(0);
+            }
+        }
+        return solucionTablaSeleccionada;
+    }
+
+    public void setSolucionTablaSeleccionada(SolucionesFormulas solucionTablaSeleccionada) {
+        this.solucionTablaSeleccionada = solucionTablaSeleccionada;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

@@ -25,8 +25,6 @@
                                          filteredValue="#{controlEmplIbcs.filtrarIbcsPorEmpleado}" emptyMessage="No se encontrarón resultados para la búsqueda"
                                          editable="true" editMode="cell" selectionMode="single" selection="#{controlEmplIbcs.ibcSeleccionado}">
                                 <p:ajax event="filter" listener="#{controlEmplIbcs.eventoFiltrar()}"/>
-                                <p:ajax event="rowSelect" update=":form:datosIbcs" />  
-
 
                                 <p:column  id="fechaInicial" headerText="#{msg['fechaInicial']}" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains"  width="220"  filterStyle="display: none; visibility: hidden;" >
                                     <p:cellEditor>
@@ -35,10 +33,9 @@
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:outputText>
                                         </f:facet>  
-                                        <f:facet  name="input">
-                                            <p:inputText value="#{info.fechainicial}" id="editarFechaInicial" style="  border-radius: 0px; width: 275px; text-transform: uppercase; height: 12px" > 
-                                                <p:ajax event="select" listener="#{controlEmplIbcs.cambiarIndice(indice, 0)}" process="@this"/> 
-                                                <p:ajax event="change" listener="#{controlEmplIbcs.revisarCambios()}"   update="editarFechaInicial"/>
+                                        <f:facet  name="input">                                            
+                                            <p:inputText  readonly="true" value="#{info.fechainicial}" id="editarFechaInicial" style="border-radius: 0px; width: 99.5%"
+                                                          onselect="posicionIBCS([{name: 'n', value: '0'}, {name: 't', value: '#{indice}'}]);"> 
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:inputText>
                                         </f:facet>
@@ -56,9 +53,8 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet  name="input">
-                                            <p:inputText   value="#{info.fechafinal}" id="editarfechaFinal" style="  border-radius: 0px; width: 260px; text-transform: uppercase; height: 12px"> 
-                                                <p:ajax event="select" listener="#{controlEmplIbcs.cambiarIndice(indice, 1)}" process="@this"/> 
-                                                <p:ajax event="change" listener="#{controlEmplIbcs.revisarCambios()}"  update="editarfechaFinal"/>
+                                            <p:inputText  readonly="true" value="#{info.fechafinal}" id="editarfechaFinal" style="border-radius: 0px; width: 99.5%"
+                                                          onselect="posicionIBCS([{name: 'n', value: '1'}, {name: 't', value: '#{indice}'}]);"> 
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </p:inputText>
                                         </f:facet>
@@ -76,10 +72,9 @@
                                             </h:outputText>
                                         </f:facet>
                                         <f:facet name="input">
-                                            <p:inputText  value="#{info.valor}" id="editarUnidades" style="  border-radius: 0px; width: 300px; text-transform: uppercase; height: 12px"  > 
-                                                <p:ajax event="select" listener="#{controlEmplIbcs.cambiarIndice(indice, 2)}" process="@this"/> 
-                                                <p:ajax event="change" listener="#{controlEmplIbcs.revisarCambios()}"  update="editarUnidades"/>
-
+                                            <p:inputText  readonly="true" value="#{info.valor}" id="editarUnidades" style="border-radius: 0px; width: 99.5%"
+                                                          onselect="posicionIBCS([{name: 'n', value: '2'}, {name: 't', value: '#{indice}'}]);"> 
+                                                <f:convertNumber currencySymbol="$" type="currency" />
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -90,6 +85,8 @@
 
                             </p:dataTable>
                         </fieldset>
+                        
+                        <p:remoteCommand name="posicionIBCS" actionListener="#{controlEmplIbcs.posicionIBCS()}"/>
 
                         <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">  
                             <p:toolbarGroup align="left"> 
@@ -132,9 +129,9 @@
                                 <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " disabled="true"  process="@this"/>  
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplIbcs.cancelarModificacion()}"  process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " action="atrasEmplIbcs" process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplIbcs.cancelarModificacion()}" action="atrasEmplIbcs" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
 
                             </p:toolbarGroup>  

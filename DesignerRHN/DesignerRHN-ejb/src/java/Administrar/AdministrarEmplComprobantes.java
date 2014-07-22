@@ -3,8 +3,10 @@
  */
 package Administrar;
 
+import Entidades.CentrosCostos;
 import Entidades.Comprobantes;
 import Entidades.CortesProcesos;
+import Entidades.Cuentas;
 import Entidades.DetallesFormulas;
 import Entidades.Empleados;
 import Entidades.Procesos;
@@ -12,8 +14,10 @@ import Entidades.SolucionesNodos;
 import Entidades.Terceros;
 import InterfaceAdministrar.AdministrarEmplComprobantesInterface;
 import InterfaceAdministrar.AdministrarSesionesInterface;
+import InterfacePersistencia.PersistenciaCentrosCostosInterface;
 import InterfacePersistencia.PersistenciaComprobantesInterface;
 import InterfacePersistencia.PersistenciaCortesProcesosInterface;
+import InterfacePersistencia.PersistenciaCuentasInterface;
 import InterfacePersistencia.PersistenciaDetallesFormulasInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaHistoriasformulasInterface;
@@ -95,6 +99,10 @@ public class AdministrarEmplComprobantes implements AdministrarEmplComprobantesI
      */
     @EJB
     PersistenciaHistoriasformulasInterface persistenciaHistoriasformulas;
+    @EJB
+    PersistenciaCuentasInterface persistenciaCuentas;
+    @EJB
+    PersistenciaCentrosCostosInterface persistenciaCentrosCostos;
     /**
      * Enterprise JavaBean.<br>
      * Atributo que representa todo lo referente a la conexión del usuario que
@@ -117,7 +125,7 @@ public class AdministrarEmplComprobantes implements AdministrarEmplComprobantesI
     public Empleados consultarEmpleado(BigInteger secuencia) {
         Empleados empleado;
         try {
-            empleado = persistenciaEmpleado.buscarEmpleadoSecuencia(em,secuencia);
+            empleado = persistenciaEmpleado.buscarEmpleadoSecuencia(em, secuencia);
             return empleado;
         } catch (Exception e) {
             empleado = null;
@@ -132,22 +140,22 @@ public class AdministrarEmplComprobantes implements AdministrarEmplComprobantesI
 
     @Override
     public List<Comprobantes> consultarComprobantesEmpleado(BigInteger secuenciaEmpleado) {
-        return persistenciaComprobantes.comprobantesEmpleado(em,secuenciaEmpleado);
+        return persistenciaComprobantes.comprobantesEmpleado(em, secuenciaEmpleado);
     }
 
     @Override
     public List<CortesProcesos> consultarCortesProcesosComprobante(BigInteger secuenciaComprobante) {
-        return persistenciaCortesProcesos.cortesProcesosComprobante(em,secuenciaComprobante);
+        return persistenciaCortesProcesos.cortesProcesosComprobante(em, secuenciaComprobante);
     }
 
     @Override
     public List<SolucionesNodos> consultarSolucionesNodosEmpleado(BigInteger secuenciaCorteProceso, BigInteger secuenciaEmpleado) {
-        return persistenciaSolucionesNodos.solucionNodoCorteProcesoEmpleado(em,secuenciaCorteProceso, secuenciaEmpleado);
+        return persistenciaSolucionesNodos.solucionNodoCorteProcesoEmpleado(em, secuenciaCorteProceso, secuenciaEmpleado);
     }
 
     @Override
     public List<SolucionesNodos> consultarSolucionesNodosEmpleador(BigInteger secuenciaCorteProceso, BigInteger secuenciaEmpleado) {
-        return persistenciaSolucionesNodos.solucionNodoCorteProcesoEmpleador(em,secuenciaCorteProceso, secuenciaEmpleado);
+        return persistenciaSolucionesNodos.solucionNodoCorteProcesoEmpleador(em, secuenciaCorteProceso, secuenciaEmpleado);
     }
 
     @Override
@@ -157,14 +165,14 @@ public class AdministrarEmplComprobantes implements AdministrarEmplComprobantesI
 
     @Override
     public List<Terceros> consultarLOVTerceros(BigInteger secEmpresa) {
-        return persistenciaTerceros.lovTerceros(em,secEmpresa);
+        return persistenciaTerceros.lovTerceros(em, secEmpresa);
     }
 
     @Override
     public void modificarComprobantes(List<Comprobantes> listComprobantes) {
         for (int i = 0; i < listComprobantes.size(); i++) {
             System.out.println("Modificando Comprobantes...");
-            persistenciaComprobantes.editar(em,listComprobantes.get(i));
+            persistenciaComprobantes.editar(em, listComprobantes.get(i));
         }
 
     }
@@ -172,7 +180,7 @@ public class AdministrarEmplComprobantes implements AdministrarEmplComprobantesI
     @Override
     public void borrarComprobantes(Comprobantes comprobante) {
         try {
-            persistenciaComprobantes.borrar(em,comprobante);
+            persistenciaComprobantes.borrar(em, comprobante);
         } catch (Exception e) {
             System.out.println("Error borrarComprobantes" + e);
         }
@@ -180,7 +188,7 @@ public class AdministrarEmplComprobantes implements AdministrarEmplComprobantesI
 
     @Override
     public void crearComprobante(Comprobantes comprobantes) {
-        persistenciaComprobantes.crear(em,comprobantes);
+        persistenciaComprobantes.crear(em, comprobantes);
     }
 
     @Override
@@ -189,9 +197,9 @@ public class AdministrarEmplComprobantes implements AdministrarEmplComprobantesI
             System.out.println("Modificando Cortes procesos...");
             if (listaCortesProcesos.get(i).getProceso().getSecuencia() == null) {
                 listaCortesProcesos.get(i).setProceso(null);
-                persistenciaCortesProcesos.editar(em,listaCortesProcesos.get(i));
+                persistenciaCortesProcesos.editar(em, listaCortesProcesos.get(i));
             } else {
-                persistenciaCortesProcesos.editar(em,listaCortesProcesos.get(i));
+                persistenciaCortesProcesos.editar(em, listaCortesProcesos.get(i));
             }
         }
     }
@@ -199,7 +207,7 @@ public class AdministrarEmplComprobantes implements AdministrarEmplComprobantesI
     @Override
     public void borrarCortesProcesos(CortesProcesos corteProceso) {
         try {
-            persistenciaCortesProcesos.borrar(em,corteProceso);
+            persistenciaCortesProcesos.borrar(em, corteProceso);
         } catch (Exception e) {
             System.out.println("Error borrarCortesProcesos" + e);
         }
@@ -208,7 +216,7 @@ public class AdministrarEmplComprobantes implements AdministrarEmplComprobantesI
 
     @Override
     public void crearCorteProceso(CortesProcesos corteProceso) {
-        persistenciaCortesProcesos.crear(em,corteProceso);
+        persistenciaCortesProcesos.crear(em, corteProceso);
     }
 
     @Override
@@ -217,20 +225,30 @@ public class AdministrarEmplComprobantes implements AdministrarEmplComprobantesI
             System.out.println("Modificando Soluciones Nodo Empleado...");
             if (listaSolucionesNodosEmpleado.get(i).getNit().getSecuencia() == null) {
                 listaSolucionesNodosEmpleado.get(i).setNit(null);
-                persistenciaSolucionesNodos.editar(em,listaSolucionesNodosEmpleado.get(i));
+                persistenciaSolucionesNodos.editar(em, listaSolucionesNodosEmpleado.get(i));
             } else {
-                persistenciaSolucionesNodos.editar(em,listaSolucionesNodosEmpleado.get(i));
+                persistenciaSolucionesNodos.editar(em, listaSolucionesNodosEmpleado.get(i));
             }
         }
     }
 
     @Override
     public List<DetallesFormulas> consultarDetallesFormula(BigInteger secEmpleado, String fechaDesde, String fechaHasta, BigInteger secProceso, BigInteger secHistoriaFormula) {
-        return persistenciaDetallesFormulas.detallesFormula(em,secEmpleado, fechaDesde, fechaHasta, secProceso, secHistoriaFormula);
+        return persistenciaDetallesFormulas.detallesFormula(em, secEmpleado, fechaDesde, fechaHasta, secProceso, secHistoriaFormula);
     }
 
     @Override
     public BigInteger consultarHistoriaFormula(BigInteger secFormula, String fechaDesde) {
-        return persistenciaHistoriasformulas.obtenerSecuenciaHistoriaFormula(em,secFormula, fechaDesde);
+        return persistenciaHistoriasformulas.obtenerSecuenciaHistoriaFormula(em, secFormula, fechaDesde);
+    }
+
+    @Override
+    public List<Cuentas> lovCuentas() {
+        return persistenciaCuentas.buscarCuentas(em);
+    }
+
+    @Override
+    public List<CentrosCostos> lovCentrosCostos() {
+        return persistenciaCentrosCostos.buscarCentrosCostos(em);
     }
 }

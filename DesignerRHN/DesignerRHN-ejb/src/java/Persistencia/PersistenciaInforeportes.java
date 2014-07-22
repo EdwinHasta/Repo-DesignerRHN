@@ -15,19 +15,20 @@ import javax.persistence.criteria.CriteriaQuery;
 
 /**
  * Clase Stateless.<br>
- * Clase encargada de realizar operaciones sobre la tabla 'Inforeportes'
- * de la base de datos.
- * (las busquedas se realizan sobre la tabla 'UsuariosInforeportes')
+ * Clase encargada de realizar operaciones sobre la tabla 'Inforeportes' de la
+ * base de datos. (las busquedas se realizan sobre la tabla
+ * 'UsuariosInforeportes')
+ *
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaInforeportes implements PersistenciaInforeportesInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     @Override
     public void crear(EntityManager em, Inforeportes inforeportes) {
         em.clear();
@@ -87,7 +88,7 @@ public class PersistenciaInforeportes implements PersistenciaInforeportesInterfa
             cq.select(cq.from(Inforeportes.class));
             return em.createQuery(cq).getResultList();
         } catch (Exception e) {
-            System.out.println("Error buscarInforeportes");
+            System.out.println("Error PersistenciaInforeportes buscarInforeportes : " + e.toString());
             return null;
         }
     }
@@ -95,12 +96,13 @@ public class PersistenciaInforeportes implements PersistenciaInforeportesInterfa
     @Override
     public List<Inforeportes> buscarInforeportesUsuarioNomina(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT ui.inforeporte FROM UsuariosInforeportes ui WHERE ui.inforeporte.modulo.nombrecorto = 'NOM' AND ui.usuario.alias = (SELECT a.alias FROM ActualUsuario a) ORDER BY ui.inforeporte.codigo DESC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Inforeportes> inforeportes = (List<Inforeportes>) query.getResultList();
             return inforeportes;
         } catch (Exception e) {
-            System.out.println("Error en buscarInforeportesUsuario " + e);
+            System.out.println("Error en buscarInforeportesUsuario PersistenciaInforeportes : " + e.toString());
             return null;
         }
     }
@@ -108,13 +110,13 @@ public class PersistenciaInforeportes implements PersistenciaInforeportesInterfa
     @Override
     public List<Inforeportes> buscarInforeportesUsuarioLaboral(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT ui.inforeporte FROM UsuariosInforeportes ui WHERE ui.inforeporte.modulo.nombrecorto = 'LBL' AND ui.usuario.alias = (SELECT a.alias FROM ActualUsuario a) ORDER BY ui.inforeporte.codigo DESC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Inforeportes> inforeportes = (List<Inforeportes>) query.getResultList();
-            System.out.println("Size : " + inforeportes.size());
             return inforeportes;
         } catch (Exception e) {
-            System.out.println("Error en buscarInforeportesUsuario " + e);
+            System.out.println("Error en buscarInforeportesUsuario PersistenciaInforeportes : " + e.toString());
             return null;
         }
     }
@@ -125,10 +127,9 @@ public class PersistenciaInforeportes implements PersistenciaInforeportesInterfa
             Query query = em.createQuery("SELECT ui.inforeporte FROM UsuariosInforeportes ui WHERE ui.inforeporte.modulo.nombrecorto = 'BAN' AND ui.usuario.alias = (SELECT a.alias FROM ActualUsuario a) ORDER BY ui.inforeporte.codigo DESC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Inforeportes> inforeportes = (List<Inforeportes>) query.getResultList();
-            System.out.println("Size : " + inforeportes.size());
             return inforeportes;
         } catch (Exception e) {
-            System.out.println("Error en buscarInforeportesUsuario " + e);
+            System.out.println("Error en buscarInforeportesUsuario PersistenciaInforeportes : " + e.toString());
             return null;
         }
     }
@@ -139,10 +140,9 @@ public class PersistenciaInforeportes implements PersistenciaInforeportesInterfa
             Query query = em.createQuery("SELECT ui.inforeporte FROM UsuariosInforeportes ui WHERE ui.inforeporte.modulo.nombrecorto = 'CON' AND ui.usuario.alias = (SELECT a.alias FROM ActualUsuario a) ORDER BY ui.inforeporte.codigo DESC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Inforeportes> inforeportes = (List<Inforeportes>) query.getResultList();
-            System.out.println("Size : " + inforeportes.size());
             return inforeportes;
         } catch (Exception e) {
-            System.out.println("Error en buscarInforeportesUsuario " + e);
+            System.out.println("Error en buscarInforeportesUsuario PersistenciaInforeportes" + e.toString());
             return null;
         }
     }
@@ -153,24 +153,22 @@ public class PersistenciaInforeportes implements PersistenciaInforeportesInterfa
             Query query = em.createQuery("SELECT ui.inforeporte FROM UsuariosInforeportes ui WHERE ui.inforeporte.modulo.nombrecorto = 'PER' AND ui.usuario.alias = (SELECT a.alias FROM ActualUsuario a) ORDER BY ui.inforeporte.codigo DESC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Inforeportes> inforeportes = (List<Inforeportes>) query.getResultList();
-            System.out.println("Size : " + inforeportes.size());
             return inforeportes;
         } catch (Exception e) {
-            System.out.println("Error en buscarInforeportesUsuario " + e);
+            System.out.println("Error en buscarInforeportesUsuario PersistenciaInforeportes : " + e.toString());
             return null;
         }
     }
-    
+
     @Override
-     public List<Inforeportes> buscarInforeportesUsuarioBienestar(EntityManager em) {
+    public List<Inforeportes> buscarInforeportesUsuarioBienestar(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT ui.inforeporte FROM UsuariosInforeportes ui WHERE ui.inforeporte.modulo.nombrecorto = 'BIN' AND ui.usuario.alias = (SELECT a.alias FROM ActualUsuario a) ORDER BY ui.inforeporte.codigo DESC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Inforeportes> inforeportes = (List<Inforeportes>) query.getResultList();
-            System.out.println("Size : " + inforeportes.size());
             return inforeportes;
         } catch (Exception e) {
-            System.out.println("Error en buscarInforeportesUsuario " + e);
+            System.out.println("Error en buscarInforeportesUsuario PersistenciaInforeportes : " + e.toString());
             return null;
         }
     }

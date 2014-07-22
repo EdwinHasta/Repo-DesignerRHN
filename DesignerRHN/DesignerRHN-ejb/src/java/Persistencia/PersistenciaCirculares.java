@@ -36,7 +36,7 @@ public class PersistenciaCirculares implements PersistenciaCircularesInterface {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(circulares);
+            em.persist(circulares);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaCentrosCostos.crear: " + e);

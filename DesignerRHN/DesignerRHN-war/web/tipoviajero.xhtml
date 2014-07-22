@@ -33,7 +33,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.codigo}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.codigo}" id="editarCodigo" style="height: 12px;  border-radius: 0px; width: 400px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.codigo}" maxlength="4" id="editarCodigo" style="height: 12px;  border-radius: 0px; width: 400px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlTiposViajeros.cambiarIndice(indice, 0)}" process="@this"/> 
                                                 <p:ajax event="change" listener="#{controlTiposViajeros.modificarTiposViajeros(indice, 'N', info.codigo)}"  update="codigo"/>
                                             </p:inputText>
@@ -45,7 +45,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.nombre}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.nombre}" id="editarNombre" style="height: 12px;  border-radius: 0px; width: 99%; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.nombre}" maxlength="50" id="editarNombre" style="height: 12px;  border-radius: 0px; width: 99%; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlTiposViajeros.cambiarIndice(indice, 1)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlTiposViajeros.modificarTiposViajeros(indice, 'N', info.nombre)}" update="descripcion"/>
                                             </p:inputText>
@@ -218,48 +218,48 @@
 
 
 
-                    <p:dialog id="nuevoRegistroTiposViajeros" header="Nuevo Registro" widgetVar="nuevoRegistroTiposViajeros" closable="false" resizable="false"  draggable="false" modal="true" height="160" width="310" style=" padding: 0px">  
+                    <p:dialog id="nuevoRegistroTiposViajeros" header="Nuevo Registro" widgetVar="nuevoRegistroTiposViajeros" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="320" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacion" value="Nuevo Tipo Viajero" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaTipoempresa" style="border: none;">
 
                             <strong><h:outputText value="*Código: "  style="left: 10px; position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlTiposViajeros.nuevoTiposViajeros.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
+                            <p:inputText id="nuevoCodigo" maxlength="4" value="#{controlTiposViajeros.nuevoTiposViajeros.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />
 
                             <strong><h:outputText value="*Nombre: "  style="left: 10px; position: absolute; top: 90px;" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlTiposViajeros.nuevoTiposViajeros.nombre}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText  id="nuevoNombre" maxlength="50" value="#{controlTiposViajeros.nuevoTiposViajeros.nombre}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoNombre" value="Nombre" />
 
                             <p:commandButton id="limpiar" icon="ui-icon-trash" value="Limpiar" style=" position: absolute; left: 10px; top: 120px;"  actionListener="#{controlTiposViajeros.limpiarNuevoTiposViajeros()}" update="nuevaTipoempresa" process="@this"/>
-                            <p:commandButton id="agregarTE" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 110px; top: 120px;" actionListener="#{controlTiposViajeros.agregarNuevoTiposViajeros()}" process="@this" />
+                            <p:commandButton id="agregarTE" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 120px; top: 120px;" actionListener="#{controlTiposViajeros.agregarNuevoTiposViajeros()}" process="@this" />
                             <p:commandButton id="cancelarTE" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 210px; top: 120px;"  update="nuevaTipoempresa" onclick="nuevoRegistroTiposViajeros.hide();"  actionListener="#{controlTiposViajeros.limpiarNuevoTiposViajeros()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
 
 
-                    <p:dialog id="duplicarRegistroTiposViajeros" header="duplicar Registro" widgetVar="duplicarRegistroTiposViajeros" closable="false" resizable="false"  draggable="false" modal="true" height="160" width="310" style=" padding: 0px">  
+                    <p:dialog id="duplicarRegistroTiposViajeros" header="duplicar Registro" widgetVar="duplicarRegistroTiposViajeros" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="320" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Tipo Viajero" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarTE" style="border: none;">
                             <strong><h:outputText value="*Código: "  style=" position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlTiposViajeros.duplicarTiposViajeros.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
+                            <p:inputText id="duplicarCodigo" maxlength="4" value="#{controlTiposViajeros.duplicarTiposViajeros.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Código" />
 
                             <strong><h:outputText value="*Nombre:"  style=" position: absolute; top: 90px;" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlTiposViajeros.duplicarTiposViajeros.nombre}"  style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText id="duplicarNombre" maxlength="50" value="#{controlTiposViajeros.duplicarTiposViajeros.nombre}"  style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Nombre" />
                             <p:commandButton id="limpiarD" icon="ui-icon-trash" value="Limpiar" style=" position: absolute; left: 10px; top: 120px;"  actionListener="#{controlTiposViajeros.limpiarDuplicarTiposViajeros() }" update="duplicarTE"  process="@this"/>
-                            <p:commandButton id="duplicarVFP" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 110px; top: 120px;" actionListener="#{controlTiposViajeros.confirmarDuplicar()}"  process="@this" />
+                            <p:commandButton id="duplicarVFP" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 120px; top: 120px;" actionListener="#{controlTiposViajeros.confirmarDuplicar()}"  process="@this" />
                             <p:commandButton id="cancelarDuplicarVFP" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 210px; top: 120px;"  update="duplicarTE" onclick="duplicarRegistroTiposViajeros.hide();" actionListener="#{controlTiposViajeros.limpiarDuplicarTiposViajeros()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>

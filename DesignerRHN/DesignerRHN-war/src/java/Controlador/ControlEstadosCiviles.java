@@ -99,6 +99,9 @@ public class ControlEstadosCiviles implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarEstadosCiviles.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlEstadosCiviles eventoFiltrar ERROR===" + e.getMessage());
         }

@@ -64,6 +64,7 @@ public class ControlMotivosReemplazos implements Serializable {
     private int tamano;
     private Integer backUpCodigo;
     private String backUpDescripcion;
+    private String paginaAnterior;
 
     public ControlMotivosReemplazos() {
         listMotivosReemplazos = null;
@@ -93,12 +94,25 @@ public class ControlMotivosReemplazos implements Serializable {
         }
     }
 
+    public void recibirPaginaAnterior(String pagina) {
+        paginaAnterior = pagina;
+        System.out.println("ControlMotivosReemplazos recibirPaginaAnterior paginaAnterior : " + paginaAnterior);
+    }
+
+    public String redirigirPaginaAnterior() {
+        System.out.println("ControlMotivosReemplazos redirigirPaginaAnterior paginaAnterior : " + paginaAnterior);
+        return paginaAnterior;
+    }
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlMotivosReemplazos.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarMotivosReemplazos.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlMotivosReemplazos eventoFiltrar ERROR===" + e.getMessage());
         }

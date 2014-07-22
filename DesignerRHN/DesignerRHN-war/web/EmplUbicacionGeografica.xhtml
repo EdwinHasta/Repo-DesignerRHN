@@ -55,7 +55,7 @@
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasUbicaciones.duplicarVigenciaU()}"  process="@this"/>  
                                 <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
-                                
+
                                 <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasUbicaciones.verificarRastro()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
@@ -81,7 +81,7 @@
 
                                 <p:ajax event="filter" listener="#{controlVigenciasUbicaciones.eventoFiltrar()}"/>
 
-                                <p:column headerText="#{msg['fecha']}" sortBy="#{info.fechavigencia}" filterBy="#{info.fechavigencia}" filterMatchMode="contains"  width="20" id="vuFecha" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column headerText="#{msg['fecha']}" sortBy="#{info.fechavigencia}" filterBy="#{info.fechavigencia}"   width="20" id="vuFecha"  filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.fechavigencia}" >
@@ -115,8 +115,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-
-                                        <p:commandButton style="width: 400px; margin: -14px; height: 26px; border: none; color: blue" id="fooUbicacion" action="ubicaciongeografica" actionListener="#{controlUbicacionesGeograficas.recibirPaginaEntrante('emplubicaciongeografica')}" value=" "/>
+                                        <p:commandButton style="width: 400px; margin: -14px; height: 26px; border: none; color: blue" id="fooUbicacion" action="ubicaciongeografica" actionListener="#{controlUbicacionesGeograficas.recibirPagina('atrasubicaciongeografica')}" value=" "/>
                                     </f:facet>
                                 </p:column>  
 
@@ -133,10 +132,10 @@
                                     </f:facet>
                                 </p:column>
                             </p:dataTable> 
-                            
+
                             <p:remoteCommand name="cambioIndice" actionListener="#{controlVigenciasUbicaciones.cambioIndiceReadOnly()}" process="@this"/>
                         </fieldset>
- 
+
                         <!-- DIALOGO L.O.V ESTATICO UBICACIONES -->
                         <p:dialog header="#{msg['ubicacionesU']}" widgetVar="UbicacionesGeograficasDialogo" draggable="false" resizable="false" closable="false" id="UbicacionesGeograficasDialogo"  
                                   showEffect="fade" hideEffect="fade" width="467" modal="true" >
@@ -168,9 +167,9 @@
                                     <h:outputText value="#{ubicaciones.ciudad.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroUbicacion" value="#{controlVigenciasUbicaciones.infoRegistroUbicacion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarU" style="position: relative; left: 270px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlVigenciasUbicaciones.aceptar}" onclick="lovUbicaciones.clearFilters();" actionListener="#{controlVigenciasUbicaciones.actualizarUbicacion()}" update="aceptarU" process="@this">
                                 <p:resetInput target=":form:lovUbicaciones:globalFilter"/>
                             </p:commandButton>
@@ -200,7 +199,7 @@
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciasUbicaciones.activarCtrlF11()}"/> 
                 </h:form>
                 <h:form id="formularioDialogos" >
-                    
+
                     <!-- DIALOGOS RASTROS -->
 
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
@@ -248,19 +247,19 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
-                    
+
                     <p:dialog id="validacionFechaDuplicada" header="#{msg['atencion']}" widgetVar="validacionFechaDuplicada"  resizable="false" draggable="false" modal="true" height="95" width="440"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
                         <h:outputText value="#{msg['fechaDuplicada']}" style="position: absolute; left: 110px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="validacionFechaDuplicada.hide();" style="position: absolute; top: 60px; left: 300px"  process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="validacionFechaVacia" header="#{msg['atencion']}" widgetVar="validacionFechaVacia"  resizable="false" draggable="false" modal="true" height="95" width="440"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
                         <h:outputText value="#{msg['fechaVacia']}" style="position: absolute; left: 110px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="validacionFechaVacia.hide();" style="position: absolute; top: 60px; left: 300px"  process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="NuevoRegistroVU" header="#{msg['nuevoregistro']}" widgetVar="NuevoRegistroVU" closable="false" resizable="false"  draggable="false" modal="true" height="240" width="320" style=" padding: 0px">  
 
                         <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 

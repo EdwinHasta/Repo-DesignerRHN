@@ -22,21 +22,20 @@ import javax.persistence.criteria.CriteriaQuery;
  * @author Andres Pineda
  */
 @Stateless
-public class PersistenciaEscalafones implements PersistenciaEscalafonesInterface{
+public class PersistenciaEscalafones implements PersistenciaEscalafonesInterface {
 
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+    /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;*/
     @Override
-    public void crear(EntityManager em,Escalafones escalafones) {
+    public void crear(EntityManager em, Escalafones escalafones) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(escalafones);
+            em.persist(escalafones);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaEscalafones.crear: " + e);
@@ -47,7 +46,7 @@ public class PersistenciaEscalafones implements PersistenciaEscalafonesInterface
     }
 
     @Override
-    public void editar(EntityManager em,Escalafones escalafones) {
+    public void editar(EntityManager em, Escalafones escalafones) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -63,7 +62,7 @@ public class PersistenciaEscalafones implements PersistenciaEscalafonesInterface
     }
 
     @Override
-    public void borrar(EntityManager em,Escalafones escalafon) {
+    public void borrar(EntityManager em, Escalafones escalafon) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -82,15 +81,21 @@ public class PersistenciaEscalafones implements PersistenciaEscalafonesInterface
         }
     }
 
-    @Override
+    //@Override
     public List<Escalafones> buscarEscalafones(EntityManager em) {
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(Escalafones.class));
-        return em.createQuery(cq).getResultList();
+        try {
+            Query query = em.createQuery("SELECT e FROM Escalafones e");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<Escalafones> lista = query.getResultList();
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaEscalafones buscarEscalafones : " + e.toString());
+            return null;
+        }
     }
 
     @Override
-    public Escalafones buscarEscalafonSecuencia(EntityManager em,BigInteger secEscalafon) {
+    public Escalafones buscarEscalafonSecuencia(EntityManager em, BigInteger secEscalafon) {
         try {
             Query query = em.createNamedQuery("SELECT e FROM Escalafones e WHERE e.secuencia=:secuencia");
             query.setParameter("secuencia", secEscalafon);

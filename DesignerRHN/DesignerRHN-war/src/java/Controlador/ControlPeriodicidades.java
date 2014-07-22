@@ -129,6 +129,9 @@ public class ControlPeriodicidades implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarPeriodicidades.size();
+            context.update("form:informacionRegistro");
 
         } catch (Exception e) {
             System.out.println("ERROR CONTROLPERIODICIDADES eventoFiltrar ERROR===" + e);
@@ -2069,7 +2072,8 @@ public class ControlPeriodicidades implements Serializable {
         this.duplicarPeriodicidad = duplicarPeriodicidad;
     }
     private String infoRegistroUnidades;
-private String infoRegistroUnidades1;
+    private String infoRegistroUnidades1;
+
     public List<Unidades> getListaUnidades() {
         if (listaUnidades == null) {
             listaUnidades = administrarPeriodicidades.consultarLOVUnidades();

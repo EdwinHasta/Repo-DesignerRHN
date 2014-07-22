@@ -107,9 +107,9 @@ public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresI
     public BigInteger verificarBorradoEvalPruebas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
-            Query query = em.createQuery("SELECT count(vp) FROM EvalPruebas vp WHERE vp.evalevaluador.secuencia =:secEvalEvalualores ");
-            query.setParameter("secEvalEvalualores", secuencia);
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            String sqql = "SELECT COUNT (*) FROM  evalpruebas  WHERE evalevaluador = ?";
+            Query query = em.createNativeQuery(sqql);
+            query.setParameter(1, secuencia);
             retorno = new BigInteger(query.getSingleResult().toString());
             System.err.println("PersistenciaEvalEvaluadores retorno ==" + retorno.intValue());
         } catch (Exception e) {

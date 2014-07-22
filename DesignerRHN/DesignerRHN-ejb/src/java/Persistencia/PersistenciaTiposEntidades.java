@@ -177,4 +177,20 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
             return null;
         }
     }
+
+    @Override
+    public List<TiposEntidades> buscarTiposEntidadesParametroAutoliq(EntityManager em) {
+        try {
+            String sql = "SELECT * FROM TIPOSENTIDADES te\n"
+                    + "   where exists (select 'x' from grupostiposentidades gte\n"
+                    + "   where gte.secuencia=te.grupo\n"
+                    + "   and gte.requeridopila='S')";
+            Query query = em.createNativeQuery(sql, TiposEntidades.class);
+            List<TiposEntidades> tiposEntidades = query.getResultList();
+            return tiposEntidades;
+        } catch (Exception e) {
+            System.out.println("Error buscarTiposEntidadesParametroAutoliq PersistenciaTiposEntidades : " + e.toString());
+            return null;
+        }
+    }
 }

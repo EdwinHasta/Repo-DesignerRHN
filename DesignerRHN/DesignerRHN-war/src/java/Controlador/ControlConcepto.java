@@ -108,7 +108,6 @@ public class ControlConcepto implements Serializable {
         activoDetalle = true;
         altoTabla = "205";
         conceptoRegistro = new Conceptos();
-        listaConceptosEmpresa = null;
         listaConceptosEmpresa_Estado = null;
         conjuntoC = new LinkedHashMap<String, String>();
         listaUnidades = new ArrayList<Unidades>();
@@ -130,7 +129,7 @@ public class ControlConcepto implements Serializable {
         aceptarEditar = true;
         mostrarTodos = true;
         cualCelda = -1;
-        tipoLista = 0;
+        tipoLista = 0; 
         //guardar
         guardado = true;
         //Crear VC
@@ -224,13 +223,13 @@ public class ControlConcepto implements Serializable {
         estadoConceptoEmpresa = "S";
         backUpEstadoConceptoEmpresa = "S";
         listaConceptosEmpresa = null;
+        getEmpresaActual();
         getListaConceptosEmpresa();
         if (listaConceptosEmpresa != null) {
             infoRegistro = "Cantidad de registros : " + listaConceptosEmpresa.size();
         } else {
             infoRegistro = "Cantidad de registros : 0";
         }
-
     }
 
     public String redirigir() {

@@ -106,6 +106,14 @@ public class ControlTiposCentrosCostos implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
+    
+    private String paginaAnterior;
+    public void recibirPaginaAnterior(String pagina){
+    paginaAnterior=pagina;
+    }
+    
+    public String redirigirPaginaAnterior(){
+    return paginaAnterior;}
 
     public void eventoFiltrar() {
         try {
@@ -113,6 +121,9 @@ public class ControlTiposCentrosCostos implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarTiposCentrosCostos.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlTiposCentrosCostos eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -262,7 +273,8 @@ public class ControlTiposCentrosCostos implements Serializable {
     }
 //------------------------------------------------------------------------------
 
-    public void cancelarModificacion() {FacesContext c = FacesContext.getCurrentInstance();
+    public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
             codigo = (Column) c.getViewRoot().findComponent("form:datosTipoCentroCosto:codigo");
@@ -298,7 +310,8 @@ public class ControlTiposCentrosCostos implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void salir() {FacesContext c = FacesContext.getCurrentInstance();
+    public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
             codigo = (Column) c.getViewRoot().findComponent("form:datosTipoCentroCosto:codigo");
@@ -568,7 +581,8 @@ public class ControlTiposCentrosCostos implements Serializable {
     }
     //------------------------------------------------------------------------- 
 
-    public void activarCtrlF11() {FacesContext c = FacesContext.getCurrentInstance();
+    public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             tamano = 246;
             codigo = (Column) c.getViewRoot().findComponent("form:datosTipoCentroCosto:codigo");
@@ -732,7 +746,8 @@ public class ControlTiposCentrosCostos implements Serializable {
          }*/
         //----------------------------------------------------------------------
         if (contador == 3) {
-            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
                 codigo = (Column) c.getViewRoot().findComponent("form:datosTipoCentroCosto:codigo");
@@ -930,7 +945,8 @@ public class ControlTiposCentrosCostos implements Serializable {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
-            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 codigo = (Column) c.getViewRoot().findComponent("form:datosTipoCentroCosto:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");

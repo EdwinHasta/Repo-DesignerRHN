@@ -66,6 +66,7 @@ public class ControlTiposDias implements Serializable {
     private String backUpDescripcion;
     private int tamano;
     private String infoRegistro;
+    private String paginaAnterior;
 
     public ControlTiposDias() {
         listTiposDias = null;
@@ -93,12 +94,24 @@ public class ControlTiposDias implements Serializable {
         }
     }
 
+    public void recibirAtras(String atras) {
+        paginaAnterior = atras;
+        System.out.println("ControlTiposDias pagina anterior : " + paginaAnterior);
+    }
+
+    public String redireccionarAtras() {
+        return paginaAnterior;
+    }
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A CONTROLTIPOSDIAS EVENTOFILTRAR \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarTiposDias.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR CONTROLTIPOSDIAS EVENTOFILTRAR ERROR===" + e.getMessage());
         }
@@ -694,7 +707,7 @@ public class ControlTiposDias implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoTipoDia.getCodigo() == a) {
-            mensajeValidacion = " *Debe tener un codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTipoDia.getCodigo());
@@ -716,11 +729,11 @@ public class ControlTiposDias implements Serializable {
         }
         System.out.println("NUEVA DESCRIPCION : " + nuevoTipoDia.getDescripcion());
         if (nuevoTipoDia.getDescripcion() == null) {
-            mensajeValidacion = mensajeValidacion + " *Debe tener una descripción \n";
+            mensajeValidacion = mensajeValidacion + " *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else if (nuevoTipoDia.getDescripcion().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + " *Debe tener una descripción \n";
+            mensajeValidacion = mensajeValidacion + " *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -825,7 +838,7 @@ public class ControlTiposDias implements Serializable {
         a = null;
 
         if (duplicarTipoDia.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listTiposDias.size(); x++) {
@@ -843,15 +856,11 @@ public class ControlTiposDias implements Serializable {
             }
         }
         if (duplicarTipoDia.getDescripcion() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Una descripción \n";
+            mensajeValidacion = mensajeValidacion + "   * Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else if (duplicarTipoDia.getDescripcion().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * Un descripción \n";
-            System.out.println("Mensaje validacion : " + mensajeValidacion);
-
-        } else if (duplicarTipoDia.getDescripcion() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Un descripción \n";
+            mensajeValidacion = mensajeValidacion + "   *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {

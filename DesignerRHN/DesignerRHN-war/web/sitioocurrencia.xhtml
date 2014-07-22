@@ -34,7 +34,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.codigo}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.codigo}" id="editarCodigo" style="height: 12px;  border-radius: 0px; width: 400px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.codigo}" maxlength="4" id="editarCodigo" style="height: 12px;  border-radius: 0px; width: 400px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlLugaresOcurrencias.cambiarIndice(indice, 0)}" process="@this"/> 
                                                 <p:ajax event="change" listener="#{controlLugaresOcurrencias.modificarLugaresOcurrencias(indice, 'N', info.codigo)}"  update="codigo"/>
                                             </p:inputText>
@@ -46,7 +46,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.descripcion}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.descripcion}" id="editarNombre" style="height: 12px;  border-radius: 0px; width: 440px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.descripcion}" maxlength="100" id="editarNombre" style="height: 12px;  border-radius: 0px; width: 440px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlLugaresOcurrencias.cambiarIndice(indice, 1)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlLugaresOcurrencias.modificarLugaresOcurrencias(indice, 'N', info.descripcion)}" update="descripcion"/>
                                             </p:inputText>
@@ -57,7 +57,7 @@
 
                         </fieldset>
 
-                         <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">  
+                        <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlLugaresOcurrencias.guardarLugaresOcurrencias()}" process="@this" />
@@ -214,48 +214,48 @@
 
 
 
-                    <p:dialog id="nuevoRegistroLugaresOcurrencias" header="Nuevo Registro" widgetVar="nuevoRegistroLugaresOcurrencias" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="340" style=" padding: 0px">  
+                    <p:dialog id="nuevoRegistroLugaresOcurrencias" header="Nuevo Registro" widgetVar="nuevoRegistroLugaresOcurrencias" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="320" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacion" value="Ingresar Nuevo Sitio" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaTipoempresa" style="border: none;">
 
                             <strong><h:outputText value="*Código: "  style=" position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlLugaresOcurrencias.nuevoLugaresOcurrencias.codigo}" style=" width: 150px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
+                            <p:inputText id="nuevoCodigo" maxlength="4" value="#{controlLugaresOcurrencias.nuevoLugaresOcurrencias.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />
 
                             <strong><h:outputText value="*Descripcion: "  style=" position: absolute; top: 90px;" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlLugaresOcurrencias.nuevoLugaresOcurrencias.descripcion}" style=" width: 150px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText  id="nuevoNombre" maxlength="100" value="#{controlLugaresOcurrencias.nuevoLugaresOcurrencias.descripcion}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoNombre" value="Descripcion" />
                             <p:commandButton icon="ui-icon-trash" id="limpiar" value="Limpiar" style=" position: absolute; left: 10px; top: 120px;"  actionListener="#{controlLugaresOcurrencias.limpiarNuevoLugaresOcurrencias()}" update="nuevaTipoempresa" process="@this"/>
-                            <p:commandButton icon="ui-icon-circle-check" id="agregarTE" value="Agregar" style=" position: absolute; left: 130px; top: 120px;" actionListener="#{controlLugaresOcurrencias.agregarNuevoLugaresOcurrencias()}" process="@this" />
-                            <p:commandButton icon="ui-icon-circle-close" id="cancelarTE" value="Cancelar" style=" position: absolute; left: 220px; top: 120px;"  update="nuevaTipoempresa" onclick="nuevoRegistroLugaresOcurrencias.hide();"  actionListener="#{controlLugaresOcurrencias.limpiarNuevoLugaresOcurrencias()}"  process="@this"/>
+                            <p:commandButton icon="ui-icon-circle-check" id="agregarTE" value="Agregar" style=" position: absolute; left: 120px; top: 120px;" actionListener="#{controlLugaresOcurrencias.agregarNuevoLugaresOcurrencias()}" process="@this" />
+                            <p:commandButton icon="ui-icon-circle-close" id="cancelarTE" value="Cancelar" style=" position: absolute; left: 210px; top: 120px;"  update="nuevaTipoempresa" onclick="nuevoRegistroLugaresOcurrencias.hide();"  actionListener="#{controlLugaresOcurrencias.limpiarNuevoLugaresOcurrencias()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
 
 
-                    <p:dialog id="duplicarRegistroLugaresOcurrencias" header="duplicar Registro" widgetVar="duplicarRegistroLugaresOcurrencias" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="340" style=" padding: 0px">  
+                    <p:dialog id="duplicarRegistroLugaresOcurrencias" header="duplicar Registro" widgetVar="duplicarRegistroLugaresOcurrencias" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="320" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Sitio" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarTE" style="border: none;">
                             <strong><h:outputText value="*Código: "  style=" position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlLugaresOcurrencias.duplicarLugaresOcurrencias.codigo}" style=" width: 150px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
+                            <p:inputText id="duplicarCodigo" maxlength="4" value="#{controlLugaresOcurrencias.duplicarLugaresOcurrencias.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Código" />
 
                             <strong><h:outputText value="*Descripcion:"  style=" position: absolute; top: 90px;" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlLugaresOcurrencias.duplicarLugaresOcurrencias.descripcion}"  style=" width: 150px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText id="duplicarNombre" maxlength="100" value="#{controlLugaresOcurrencias.duplicarLugaresOcurrencias.descripcion}"  style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Descripcion" />
                             <p:commandButton icon="ui-icon-trash" id="limpiarD" value="Limpiar" style=" position: absolute; left: 10px; top: 120px;"  actionListener="#{controlLugaresOcurrencias.limpiarDuplicarLugaresOcurrencias() }" update="duplicarTE"  process="@this"/>
-                            <p:commandButton icon="ui-icon-circle-check" id="duplicarVFP" value="Agregar" style=" position: absolute; left: 130px; top: 120px;" actionListener="#{controlLugaresOcurrencias.confirmarDuplicar()}"  process="@this" />
-                            <p:commandButton icon="ui-icon-circle-close" id="cancelarDuplicarVFP" value="Cancelar" style=" position: absolute; left: 220px; top: 120px;"  update="duplicarTE" onclick="duplicarRegistroLugaresOcurrencias.hide();" actionListener="#{controlLugaresOcurrencias.limpiarDuplicarLugaresOcurrencias()}"  process="@this"/>
+                            <p:commandButton icon="ui-icon-circle-check" id="duplicarVFP" value="Agregar" style=" position: absolute; left: 120px; top: 120px;" actionListener="#{controlLugaresOcurrencias.confirmarDuplicar()}"  process="@this" />
+                            <p:commandButton icon="ui-icon-circle-close" id="cancelarDuplicarVFP" value="Cancelar" style=" position: absolute; left: 210px; top: 120px;"  update="duplicarTE" onclick="duplicarRegistroLugaresOcurrencias.hide();" actionListener="#{controlLugaresOcurrencias.limpiarDuplicarLugaresOcurrencias()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
                 </h:form>

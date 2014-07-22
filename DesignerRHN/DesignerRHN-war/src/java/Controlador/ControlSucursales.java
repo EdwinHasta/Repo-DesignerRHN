@@ -120,6 +120,9 @@ public class ControlSucursales implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarSucursales.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlSucursales eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -1438,6 +1441,7 @@ public class ControlSucursales implements Serializable {
         duplicarSucursales.setCiudad(new Ciudades());
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("nuevoRegistroSucursales.show()");
+        context.update("formularioDialogos:nuevaTipoempresa");
 
     }
 

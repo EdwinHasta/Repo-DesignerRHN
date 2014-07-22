@@ -99,6 +99,9 @@ public class ControlNiveles implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarNiveles.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlNiveles eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -985,7 +988,6 @@ public class ControlNiveles implements Serializable {
         this.tamano = tamano;
     }
 
-    
     public String getInfoRegistro() {
         return infoRegistro;
     }

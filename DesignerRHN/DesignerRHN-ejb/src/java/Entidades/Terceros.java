@@ -48,6 +48,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Terceros.findByTiponit", query = "SELECT t FROM Terceros t WHERE t.tiponit = :tiponit"),
     @NamedQuery(name = "Terceros.findByCodigotercerosap", query = "SELECT t FROM Terceros t WHERE t.codigotercerosap = :codigotercerosap")})
 public class Terceros implements Serializable {
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "NIT")
@@ -224,10 +225,6 @@ public class Terceros implements Serializable {
     }
 
     public String getNitalternativo() {
-        if (nitalternativo == null) {
-            nitalternativo = (" ");
-        }
-
         return nitalternativo;
     }
 
@@ -269,6 +266,9 @@ public class Terceros implements Serializable {
     }
 
     public Terceros getTerceroconsolidador() {
+        if (terceroconsolidador == null) {
+            terceroconsolidador = new Terceros();
+        }
         return terceroconsolidador;
     }
 
@@ -285,6 +285,9 @@ public class Terceros implements Serializable {
     }
 
     public Ciudades getCiudad() {
+        if (ciudad == null) {
+            ciudad = new Ciudades();
+        }
         return ciudad;
     }
 

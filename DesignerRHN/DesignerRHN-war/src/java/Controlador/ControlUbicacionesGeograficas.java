@@ -136,14 +136,18 @@ public class ControlUbicacionesGeograficas implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-
+private String paginaAnterior;
+public void recibirPagina(String pagina){paginaAnterior = pagina;}
+public String redirigirPaginaAnterior(){return paginaAnterior;}
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A CONTROLUBICACIONESGEOGRAFICAS.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
-
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarUbicacionesGeograficas.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR CONTROLUBICACIONESGEOGRAFICAS eventoFiltrar ERROR===" + e);
         }

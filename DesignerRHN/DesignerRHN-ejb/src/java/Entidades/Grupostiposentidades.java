@@ -32,6 +32,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Grupostiposentidades.findAll", query = "SELECT g FROM Grupostiposentidades g")})
 public class Grupostiposentidades implements Serializable {
 
+    @Column(name = "CODIGO")
+    private Integer codigo;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupotipoentidad")
     private Collection<TSGruposTiposEntidades> tSGruposTiposEntidadesCollection;
     private static final long serialVersionUID = 1L;
@@ -41,8 +44,6 @@ public class Grupostiposentidades implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Column(name = "CODIGO")
-    private Integer codigo;
     @Column(name = "NOMBRE")
     private String nombre;
     @Size(max = 1)
@@ -72,16 +73,8 @@ public class Grupostiposentidades implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public Integer getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(Integer codigo) {
-        this.codigo = codigo;
-    }
-
     public String getNombre() {
-      return nombre;
+        return nombre;
     }
 
     public void setNombre(String nombre) {
@@ -137,6 +130,14 @@ public class Grupostiposentidades implements Serializable {
 
     public void setTSGruposTiposEntidadesCollection(Collection<TSGruposTiposEntidades> tSGruposTiposEntidadesCollection) {
         this.tSGruposTiposEntidadesCollection = tSGruposTiposEntidadesCollection;
+    }
+
+    public Integer getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Integer codigo) {
+        this.codigo = codigo;
     }
 
 }

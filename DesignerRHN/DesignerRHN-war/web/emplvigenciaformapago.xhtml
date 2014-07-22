@@ -47,7 +47,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.cuenta}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.cuenta}" id="editarCuenta" style="  border-radius: 0px; width: 210px;; height: 12px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.cuenta}" maxlength="25" id="editarCuenta" style="  border-radius: 0px; width: 210px;; height: 12px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlVigenciasFormasPagos.cambiarIndice(indice, 1)}" process="@this"/> 
                                                 <p:ajax event="change" listener="#{controlVigenciasFormasPagos.modificarVigenciasFormasPagos(indice, 'N', info.cuenta)}" update="cuenta"/>
                                             </p:inputText>
@@ -86,7 +86,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton value="" style="width: 780px; margin: -14px; height: 20px; border: none; color: blue;" id="fooSucursal" />
+                                        <p:commandButton value="" style="width: 780px; margin: -14px; height: 20px; border: none; color: blue;" action="sucursal" id="fooSucursal"  />
                                     </f:facet>
                                 </p:column> 
 
@@ -102,7 +102,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton value="" style="width: 780px; margin: -14px; height: 20px; border: none; color: blue;" id="fooFormaPago"/>
+                                        <p:commandButton value="" style="width: 780px; margin: -14px; height: 20px; border: none; color: blue;" action="periodicidad" actionListener="#{controlPeriodicidades.recibirPaginaEntrante('atrasperiodicidad')}" id="fooFormaPago"/>
                                     </f:facet>
                                 </p:column> 
 
@@ -110,7 +110,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.tipocuenta}" style=" text-transform: uppercase" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.tipocuenta}" id="editarTC" style="  border-radius: 0px; height: 12px; width: 210px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.tipocuenta}" maxlength="1" id="editarTC" style="  border-radius: 0px; height: 12px; width: 210px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlVigenciasFormasPagos.cambiarIndice(indice, 5)}" process="@this"/> 
                                                 <p:ajax event="change" listener="#{controlVigenciasFormasPagos.modificarVigenciasFormasPagos(indice, 'N', info.tipocuenta)}"  update="tc" process="@this"/>
                                             </p:inputText>
@@ -133,7 +133,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton value="" style="width: 780px; margin: -14px; height: 20px; border: none; color: blue;" id="fooMetodoPago" />
+                                        <p:commandButton value="" style="width: 780px; margin: -14px; height: 20px; border: none; color: blue;" action="metodospagos" id="fooMetodoPago" />
                                     </f:facet>
                                 </p:column> 
 
@@ -440,7 +440,7 @@
                             </div>
 
                             <strong><h:outputText value="#{msg['cuentaN']}"  style=" position: absolute; top: 125px" /></strong>
-                            <p:inputText id="nuevoCuenta" value="#{controlVigenciasFormasPagos.nuevaVigenciaFormasPago.cuenta}" style=" width: 140px; position: absolute; left: 150px; top: 120px;">
+                            <p:inputText id="nuevoCuenta" maxlength="25" value="#{controlVigenciasFormasPagos.nuevaVigenciaFormasPago.cuenta}" style=" width: 140px; position: absolute; left: 150px; top: 120px;">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCuenta" value="#{msg['cuenta']}" />
@@ -472,7 +472,7 @@
                             <p:watermark for="nuevaFormaPago" value="#{msg['formaPago']}" />
 
                             <strong><h:outputText value="#{msg['tipoCuentaN']}"  style=" position: absolute; top: 285px ; " /></strong>
-                            <p:inputText id="nuevoTC" value="#{controlVigenciasFormasPagos.nuevaVigenciaFormasPago.tipocuenta}"  style=" width: 140px; position: absolute; left: 150px; top: 280px;" >
+                            <p:inputText id="nuevoTC" maxlength="1" value="#{controlVigenciasFormasPagos.nuevaVigenciaFormasPago.tipocuenta}"  style=" width: 140px; position: absolute; left: 150px; top: 280px;" >
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoTC" value="#{msg['tc']}" />

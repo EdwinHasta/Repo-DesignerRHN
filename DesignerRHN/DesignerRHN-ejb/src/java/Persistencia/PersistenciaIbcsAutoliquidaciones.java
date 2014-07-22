@@ -33,7 +33,7 @@ public class PersistenciaIbcsAutoliquidaciones implements PersistenciaIbcsAutoli
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(autoliquidaciones);
+            em.persist(autoliquidaciones);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaIbcsAutoliquidaciones.crear: " + e);

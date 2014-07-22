@@ -19,6 +19,7 @@
 
                         <p:commandButton style="position: absolute; left: 683px; top: 405px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" disabled="#{controlFormulaProceso.guardado}" update=":form:datosFormulaProceso" process="@this" />
                         <p:commandButton style="position: absolute; left: 775px; top: 405px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlFormulaProceso.salir()}" action="retornoFormula" process="@this" />
+                        <p:commandButton style="position: absolute; left: 180px; top: 405px;" id="FORMULASASEGURADAS" value="[Formulas Aseguradas]" action="formulasaseguradas" process="@this" />
                         <h:outputText id="informacionRegistro" value="#{controlFormulaProceso.infoRegistro}" style="position: absolute; left: 15px; top: 415px; font-weight: bold"/>
 
                         <fieldset style="position: absolute; left: 10px; top: 75px; width: 830px; height: 315px; border-radius: 10px; ">

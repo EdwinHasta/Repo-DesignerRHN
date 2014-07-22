@@ -134,6 +134,9 @@ public class ControlVigenciasTallas implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarVigenciasTallas.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlVigenciasTallas eventoFiltrar ERROR===" + e.getMessage());
         }

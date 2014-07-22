@@ -36,7 +36,7 @@ public class PersistenciaTercerosSucursales implements PersistenciaTercerosSucur
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(tercerosSucursales);
+            em.persist(tercerosSucursales);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaTercerosSucursales.crear: " + e);

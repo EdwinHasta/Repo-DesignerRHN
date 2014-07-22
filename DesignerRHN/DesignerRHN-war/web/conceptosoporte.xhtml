@@ -39,7 +39,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100px; margin: -14px; height: 50px;  border: none; color: blue" id="fooCodigo"  value="#{msg['codigo']}"/>
+                                        <p:commandButton value="" style="width: 780px; margin: -14px; height: 20px; border: none; color: blue;" id="fooCodigo"  />
                                     </f:facet>
                                 </p:column>
                                 <p:column headerText="#{msg['concepto']}" sortBy="#{info.concepto.descripcion}" filterBy="#{info.concepto.descripcion}" filterMatchMode="contains" id="personafir" width="200" filterStyle="display: none; visibility: hidden;" >                                  
@@ -54,7 +54,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 390px; margin: -14px; height: 50px;  border: none; color: blue" id="fooCiudad"  value="#{msg['concepto']}"/>
+                                        <p:commandButton value="" style="width: 780px; margin: -14px; height: 20px; border: none; color: blue;" id="fooCiudad"  />
                                     </f:facet>
                                 </p:column>
                                 <p:column headerText="#{msg['operando']}" sortBy="#{info.operando.nombre}" filterBy="#{info.operando.nombre}" filterMatchMode="contains" id="cargo" width="200" filterStyle="display: none; visibility: hidden;" >                                  
@@ -69,7 +69,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 320px; margin: -14px; height: 50px;  border: none; color: blue" id="fooOperando"  value="#{msg['operando']}"/>
+                                        <p:commandButton value="" style="width: 780px; margin: -14px; height: 20px; border: none; color: blue;" id="fooOperando"  />
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>
@@ -121,7 +121,7 @@
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlConceptosSoportes.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlConceptosSoportes.salir()}"  process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlConceptosSoportes.salir()}" action="atrasconceptosporte" process="@this"/>  
                                 <p:tooltip  for="salir" value="Salir"/>
 
                             </p:toolbarGroup>  
@@ -130,8 +130,8 @@
                         <h:outputText id="informacionRegistro" value="#{controlConceptosSoportes.infoRegistro}"  style="position: absolute; left: 15px; top: 450px;font-weight: bold"/>
                         <p:commandButton style="position: absolute; left: 10px; top: 475px; " id="BUSCARCENTROCOSTO" disabled="#{controlConceptosSoportes.buscarConceptoSoporte}" icon="ui-icon-search"  value="#{msg['buscarConcepto']}" actionListener="#{controlConceptosSoportes.llamadoDialogoBuscarConceptos()}" process="@this" />
                         <p:commandButton style="position: absolute; left: 180px; top: 475px;  " id="MOSTRARTODOS" icon="ui-icon-search" disabled="#{controlConceptosSoportes.mostrarTodos}" value="#{msg['mostrarTodos']}" actionListener="#{controlConceptosSoportes.cancelarModificacion()}" process="@this"/>
-                        <p:commandButton style=" position: absolute; left: 688px; top: 475px;  " icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  actionListener="#{controlConceptosSoportes.revisarDialogoGuardar()}" disabled="#{controlConceptosSoportes.guardado}"    process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 785px; top: 475px;  " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}"    />
+                        <p:commandButton style=" position: absolute; left: 688px; top: 475px;  " icon="ui-icon-check" id="ACEPTAR"  value="#{msg['aceptar']}"  actionListener="#{controlConceptosSoportes.revisarDialogoGuardar()}" disabled="#{controlConceptosSoportes.guardado}"    process="@this"   />
+                        <p:commandButton style=" position: absolute; left: 785px; top: 475px;  " icon="ui-icon-arrowreturnthick-1-w" action="atrasconceptosporte" id="ATRAS" value="#{msg['atras']}"    />
 
 
 
@@ -213,8 +213,8 @@
                         <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                            <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlConceptosSoportes.guardarConceptosSoportes()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
-                            <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlConceptosSoportes.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
+                            <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" action="atrasconceptosporte" actionListener="#{controlConceptosSoportes.guardarConceptosSoportes()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                            <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" action="atrasconceptosporte" actionListener="#{controlConceptosSoportes.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                             <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                         </p:dialog>
 

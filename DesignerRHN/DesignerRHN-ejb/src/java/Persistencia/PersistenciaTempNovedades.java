@@ -66,14 +66,13 @@ public class PersistenciaTempNovedades implements PersistenciaTempNovedadesInter
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            Query query = em.createQuery("DELETE FROM TempNovedades t "
-                    + "WHERE t.usuariobd = :usuarioBD AND t.estado = 'N'");
+            Query query = em.createQuery("DELETE FROM TempNovedades t WHERE t.usuariobd =:usuarioBD AND t.estado = 'N'");
             query.setParameter("usuarioBD", usuarioBD);
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            //query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             query.executeUpdate();
             tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo borrar el registro.");
+            System.out.println("No se pudo borrar el registro (borrarRegistrosTempNovedades) : " + e.toString());
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -121,7 +120,7 @@ public class PersistenciaTempNovedades implements PersistenciaTempNovedadesInter
             query.setParameter(1, fechaReporte);
             query.setParameter(2, nombreCortoFormula);
             query.setParameter(3, usarFormula);
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            //query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             query.executeUpdate();
             System.out.println("executeUpdate: ");
             tx.commit();

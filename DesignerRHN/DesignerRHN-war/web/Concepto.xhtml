@@ -88,7 +88,7 @@
                             <legend style="color: blue"><strong>#{msg['titulo']}</strong></legend>
 
                             <p:dataTable id="datosConceptos" var="concepto" rowKey="#{concepto.secuencia}" rowIndexVar="indice" style="width: 820px; position: relative;"                           
-                                         value="#{controlConcepto.listaConceptosEmpresa}" scrollable="true" scrollWidth="835" scrollHeight="#{controlConcepto.altoTabla}" liveScroll="true" scrollRows="20"
+                                         value="#{controlConcepto.listaConceptosEmpresa}" scrollable="true" scrollWidth="835" scrollHeight="#{controlConcepto.altoTabla}" liveScroll="true" scrollRows="50"
                                          filteredValue="#{controlConcepto.filtradoConceptosEmpresa}" emptyMessage="#{msg['vacio']}" widgetVar="datos"
                                          editable="true" editMode="cell" selection="#{controlConcepto.seleccionConceptoEmpresa}" selectionMode="single">
 
@@ -281,7 +281,7 @@
 
                         <p:commandButton style="position: absolute; left: 9px; top: 378px;" id="grupoConcepto" value="#{msg['grupoconceptos']}" process="@this" />
                         <p:commandButton style="position: absolute; left: 160px; top: 378px;" id="conceptoRedondeos" value="#{msg['conceptosredondeos']}"  process="@this" />
-                        <p:commandButton style="position: absolute; left: 340px; top: 378px;" id="unidadesConcepto" value="#{msg['unidadconcepto']}"  process="@this" />
+                        <p:commandButton style="position: absolute; left: 340px; top: 378px;" id="unidadesConcepto" action="conceptosoporte" value="#{msg['unidadconcepto']}"  process="@this" />
                         <p:commandButton style="position: absolute; left: 620px; top: 378px;" id="buscarConcepto" value="#{msg['buscar']}" actionListener="#{controlConcepto.lovConcepto(0)}" process="@this" />
                         <p:commandButton style="position: absolute; left: 755px; top: 378px;" disabled="#{controlConcepto.mostrarTodos}" id="mostrarTodos" actionListener="#{controlConcepto.mostrarTodosConceptos()}" value="#{msg['mostrar']}" process="@this" />
 
@@ -581,15 +581,15 @@
 
                     <!-- LOV EMPRESAS -->
                     <p:dialog header="#{msg['empresas']}" widgetVar="EmpresasDialogo" draggable="false" resizable="false" closable="false" id="EmpresasDialogo"  
-                              showEffect="fade" hideEffect="fade" width="341" modal="true" >
-                        <p:dataTable id="lovEmpresas" style="width: 310px" var="empresa" value="#{controlConcepto.listaEmpresas}" rowKey="#{empresa.secuencia}"
-                                     selection="#{controlConcepto.empresaActual}" selectionMode="single" widgetVar="lovEmpresas" scrollable="true" scrollWidth="325" scrollHeight="250"
+                              showEffect="fade" hideEffect="fade" width="431" modal="true" >
+                        <p:dataTable id="lovEmpresas" style="width: 400px" var="empresa" value="#{controlConcepto.listaEmpresas}" rowKey="#{empresa.secuencia}"
+                                     selection="#{controlConcepto.empresaActual}" selectionMode="single" widgetVar="lovEmpresas" scrollable="true" scrollWidth="415" scrollHeight="250"
                                      filteredValue="#{controlConcepto.filtradoListaEmpresas}" emptyMessage="#{msg['lovvacion']}">              
                             <p:ajax event="rowSelect" listener="#{controlConcepto.activarAceptar()}" update=":formularioDialogos:aceptarE"/>
                             <p:ajax event="rowDblselect" listener="#{controlConcepto.cambiarEmpresa()}" process="@this" onstart="lovEmpresas.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarempresa']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovEmpresas.filter();" style="width:100px; position: relative; left: 10px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovEmpresas.filter();" style="width:100px; position: relative; left: 30px;" />  
                             </f:facet>
                             <p:column filterBy="#{empresa.nit}" width="60" filterMatchMode="contains" filterStyle="width: 50px">
                                 <f:facet name="header">
@@ -607,10 +607,10 @@
                         
                         <h:outputText id="infoRegistroEmpresa" value="#{controlConcepto.infoRegistroEmpresa}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton icon="ui-icon-check" id="aceptarE" style="position: relative; left: 240px" value="#{msg['aceptar']}" disabled="#{controlConcepto.aceptar}" actionListener="#{controlConcepto.cambiarEmpresa()}" update="aceptarE" process="@this">
+                        <p:commandButton icon="ui-icon-check" id="aceptarE" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlConcepto.aceptar}" actionListener="#{controlConcepto.cambiarEmpresa()}" update="aceptarE" process="@this">
                             <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasE" style="position: relative; left: 240px" value="#{msg['atras']}" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlConcepto.cancelarCambioEmpresa()}" update="lovEmpresas" process="@this">
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasE" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlConcepto.cancelarCambioEmpresa()}" update="lovEmpresas" process="@this">
                             <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>

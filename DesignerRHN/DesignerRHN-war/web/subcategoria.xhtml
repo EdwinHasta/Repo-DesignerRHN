@@ -41,7 +41,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.descripcion}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.descripcion}" id="editarNombre" style="height: 12px;  border-radius: 0px; width: 99%; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.descripcion}" maxlength="80" id="editarNombre" style="height: 12px;  border-radius: 0px; width: 99%; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlSubCategorias.cambiarIndice(indice, 1)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlSubCategorias.modificarSubCategoria(indice, 'N', info.descripcion)}" update="descripcion"/>
                                             </p:inputText>
@@ -95,7 +95,7 @@
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSubCategorias.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="" for="rastro" value="Rastro"/>
 
-                           <p:separator style="position: relative; top: -9px"/>
+                                <p:separator style="position: relative; top: -9px"/>
 
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSubCategorias.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="Refrescar"/>
@@ -141,10 +141,10 @@
                         <h:outputText value="Se han borrado #{controlSubCategorias.registrosBorrados}  Registros" style="position: absolute; left: 90px; top: 15px; width: 180px; font-weight:bold" />
                         <p:commandButton value="Aceptar" onclick="mostrarBorrados.hide();" style="position: absolute; top: 50px; left: 180px" process="@this" />
                     </p:dialog>
-                    <p:dialog id="validacionNuevaCentroCosto" header="ATENCIÓN...!" widgetVar="validacionNuevaCentroCosto"  resizable="false" draggable="false" modal="true" height="95" width="450px" style="" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="70" style="position: absolute; left: 15px; top: 10px;"  />
-                        <h:outputText value="Para agregar es necesario adicionar: #{controlSubCategorias.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
-                        <p:commandButton value="Aceptar" onclick="validacionNuevaCentroCosto.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    <p:dialog id="validacionNuevaCentroCosto" header="ATENCIÓN...!" widgetVar="validacionNuevaCentroCosto"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="70" style="position: absolute; left: 10px; top: 15px;"  />
+                        <h:outputText value="Para agregar es necesario adicionar: #{controlSubCategorias.mensajeValidacion}" style="position: absolute; left: 90px; top: 20px; width: 280px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="validacionNuevaCentroCosto.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
                     </p:dialog>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlSubCategorias.activarCtrlF11()}"/> 
                 </h:form>
@@ -208,7 +208,7 @@
 
 
 
-                    <p:dialog id="nuevoRegistroSubCategorias" header="Nuevo Registro" widgetVar="nuevoRegistroSubCategorias" closable="false" resizable="false"  draggable="false" modal="true" height="160" width="315" style=" padding: 0px">  
+                    <p:dialog id="nuevoRegistroSubCategorias" header="Nuevo Registro" widgetVar="nuevoRegistroSubCategorias" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="320" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacion" value="Ingresar Nueva SubCategoria" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaTipoempresa" style="border: none;">
@@ -220,19 +220,19 @@
                             <p:watermark for="nuevoCodigo" value="Código" />
 
                             <strong><h:outputText value="*Descripción: "  style="left: 10px; position: absolute; top: 90px;" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlSubCategorias.nuevoSubCategoria.descripcion}" style=" width: 135px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText  id="nuevoNombre" maxlength="80" value="#{controlSubCategorias.nuevoSubCategoria.descripcion}" style=" width: 135px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoNombre" value="Descripción" />
                             <p:commandButton id="limpiar" value="Limpiar" icon="ui-icon-trash" style=" position: absolute; left: 10px; top: 120px;"  actionListener="#{controlSubCategorias.limpiarNuevoSubCategorias()}" update="nuevaTipoempresa" process="@this"/>
-                            <p:commandButton id="agregarTE" value="Agregar" icon="ui-icon-circle-check" style=" position: absolute; left: 110px; top: 120px;" actionListener="#{controlSubCategorias.agregarNuevoSubCategorias()}" process="@this" />
-                            <p:commandButton id="cancelarTE" value="Cancelar" icon="ui-icon-circle-close" style=" position: absolute; left: 205px; top: 120px;"  update="nuevaTipoempresa" onclick="nuevoRegistroSubCategorias.hide();"  actionListener="#{controlSubCategorias.limpiarNuevoSubCategorias()}"  process="@this"/>
+                            <p:commandButton id="agregarTE" value="Agregar" icon="ui-icon-circle-check" style=" position: absolute; left: 120px; top: 120px;" actionListener="#{controlSubCategorias.agregarNuevoSubCategorias()}" process="@this" />
+                            <p:commandButton id="cancelarTE" value="Cancelar" icon="ui-icon-circle-close" style=" position: absolute; left: 210px; top: 120px;"  update="nuevaTipoempresa" onclick="nuevoRegistroSubCategorias.hide();"  actionListener="#{controlSubCategorias.limpiarNuevoSubCategorias()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
 
 
-                    <p:dialog id="duplicarRegistroSubCategorias" header="duplicar Registro" widgetVar="duplicarRegistroSubCategorias" closable="false" resizable="false"  draggable="false" modal="true" height="160" width="315" style=" padding: 0px">  
+                    <p:dialog id="duplicarRegistroSubCategorias" header="duplicar Registro" widgetVar="duplicarRegistroSubCategorias" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="320" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacionDuplicar" value="Duplicar SubCategoria" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarTE" style="border: none;">
@@ -243,13 +243,13 @@
                             <p:watermark for="duplicarCodigo" value="Código" />
 
                             <strong><h:outputText value="*Descripción: "  style="left: 10px; position: absolute; top: 90px" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlSubCategorias.duplicarSubCategoria.descripcion}"  style=" width: 135px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText id="duplicarNombre" maxlength="80" value="#{controlSubCategorias.duplicarSubCategoria.descripcion}"  style=" width: 135px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Descripción" />
                             <p:commandButton id="limpiarD" icon="ui-icon-trash" value="Limpiar" style=" position: absolute; left: 10px; top: 120px;"  actionListener="#{controlSubCategorias.limpiarDuplicarSubCategorias() }" update="duplicarTE"  process="@this"/>
-                            <p:commandButton id="duplicarVFP" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 110px; top: 120px;" actionListener="#{controlSubCategorias.confirmarDuplicar()}"  process="@this" />
-                            <p:commandButton id="cancelarDuplicarVFP" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 205px; top: 120px;"  update="duplicarTE" onclick="duplicarRegistroSubCategorias.hide();" actionListener="#{controlSubCategorias.limpiarDuplicarSubCategorias()}"  process="@this"/>
+                            <p:commandButton id="duplicarVFP" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 120px; top: 120px;" actionListener="#{controlSubCategorias.confirmarDuplicar()}"  process="@this" />
+                            <p:commandButton id="cancelarDuplicarVFP" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 210px; top: 120px;"  update="duplicarTE" onclick="duplicarRegistroSubCategorias.hide();" actionListener="#{controlSubCategorias.limpiarDuplicarSubCategorias()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
                 </h:form>

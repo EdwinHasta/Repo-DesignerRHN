@@ -122,7 +122,9 @@ public class ControlSucursalesPila implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
-
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarSucursalesPila.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR CONTROLSUCURSALESPILA eventoFiltrar ERROR===" + e.getMessage());
         }
