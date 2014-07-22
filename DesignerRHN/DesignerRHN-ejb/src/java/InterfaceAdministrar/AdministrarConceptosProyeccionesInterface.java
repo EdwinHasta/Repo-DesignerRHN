@@ -21,6 +21,6 @@ public interface AdministrarConceptosProyeccionesInterface {
     public void crearConceptosProyecciones(List<ConceptosProyecciones> lista);
     public void borrarConceptosProyecciones(List<ConceptosProyecciones> lista);
     public void modificarConceptosProyecciones(List<ConceptosProyecciones> lista);
-    public List<ConceptosProyecciones> consultarConceptostosProyecciones() ;
+    public List<ConceptosProyecciones> consultarConceptosProyecciones() ;
     public List<Conceptos> consultarLOVConceptos();
 }

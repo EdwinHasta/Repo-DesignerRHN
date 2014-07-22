@@ -167,4 +167,6 @@ public interface PersistenciaEmpleadoInterface {
     public List<Empleados> consultarEmpleadosLiquidacionesLog(EntityManager em);
 
     public List<Empleados> consultarEmpleadosParametroAutoliq(EntityManager em);
+
+    public List<Empleados> consultarEmpleadosParaProyecciones(EntityManager em);
 }
