@@ -64,7 +64,7 @@ public class ControlJornadas implements Serializable {
     private Integer backupCodigo;
     private String backupDescripcion;
     private String infoRegistro;
-    public String paginaAnterior;
+    private String paginaAnterior;
 
     public ControlJornadas() {
         listJornadas = null;
@@ -1018,5 +1018,15 @@ public class ControlJornadas implements Serializable {
     public void setInfoRegistro(String infoRegistro) {
         this.infoRegistro = infoRegistro;
     }
+
+    public String getPaginaAnterior() {
+        return paginaAnterior;
+    }
+
+    public void setPaginaAnterior(String paginaAnterior) {
+        this.paginaAnterior = paginaAnterior;
+    }
+    
+    
 
 }
