@@ -692,8 +692,8 @@
 
                             <p:commandButton id="limpiar" value="#{msg['limpiar']}" icon="ui-icon-trash" style="position: absolute; left: 50px; top: 400px;" actionListener="#{controlAusentismos.limpiarNuevoAusentismo()}" update="nuevoAusentismo" process="@this"/>
                             <p:commandButton id="agregarNA" value="#{msg['agregar']}" icon="ui-icon-circle-check" style=" position: absolute; left: 350px; top: 400px;"  actionListener="#{controlAusentismos.agregarNuevoAusentismo()}" process="@this"/>
-                            <p:commandButton id="cancelarNA" value="#{msg['cancelar']}" icon="ui-icon-circle-close" style=" position: absolute; left: 450px; top: 400px;" actionListener="#{controlAusentismos.limpiarNuevoAusentismo()}" update="nuevoAusentismo" onclick="NuevoAusentismoEmpleado.hide();" process="@this"/>
-                        </p:panel>                   
+                            <p:commandButton id="cancelarNA" value="#{msg['cancelar']}" icon="ui-icon-circle-close" style=" position: absolute; left: 450px; top: 400px;" actionListener="#{controlAusentismos.salirNuevoAusentismo()}" update="nuevoAusentismo" onclick="NuevoAusentismoEmpleado.hide();" process="@this"/>
+                        </p:panel>
                     </p:dialog>
 
                     <p:dialog id="validacionNuevoAusentismo" header="#{msg['atencion']}" widgetVar="validacionNuevoAusentismo"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
@@ -872,7 +872,7 @@
 
                             <p:commandButton id="limpiarDuplicado" value="#{msg['limpiar']}" icon="ui-icon-trash" style="position: absolute; left: 50px; top: 400px;"  actionListener="#{controlAusentismos.limpiarduplicarAusentismos()}" update="duplicarAusentismo" process="@this"/>
                             <p:commandButton id="agregarNADuplicado" value="#{msg['agregar']}" icon="ui-icon-circle-check" style=" position: absolute; left: 350px; top: 400px;"  actionListener="#{controlAusentismos.confirmarDuplicar()}" process="@this"/>
-                            <p:commandButton id="cancelarNADuplicado" value="#{msg['cancelar']}" icon="ui-icon-circle-close" style=" position: absolute; left: 450px; top: 400px;"  actionListener="#{controlAusentismos.limpiarduplicarAusentismos()}" update="duplicarAusentismo" onclick="DuplicarAusentismoEmpleado.hide();"  process="@this"/>
+                            <p:commandButton id="cancelarNADuplicado" value="#{msg['cancelar']}" icon="ui-icon-circle-close" style=" position: absolute; left: 450px; top: 400px;"  actionListener="#{controlAusentismos.salirduplicarAusentismos()}" update="duplicarAusentismo" onclick="DuplicarAusentismoEmpleado.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
@@ -1440,7 +1440,7 @@
 
                     <!-- ACA ESTA LO DE LA PRORROGA -->
                     <!-- L.O.V Prorrogas-->
-                    <p:dialog header="#{msg['prorrogasP']}" widgetVar="prorrogasDialogo" draggable="false" resizable="false" id="prorrogasDialogo" closable="false"  
+                    <p:dialog header="#{msg['prorrogasPR']}" widgetVar="prorrogasDialogo" draggable="false" resizable="false" id="prorrogasDialogo" closable="false"  
                               showEffect="fade" hideEffect="fade" modal="true" width="650" height="350" >
 
                         <p:dataTable  id="LOVProrrogas" style=" width: 600px" var="prorrogas" value="#{controlAusentismos.listaProrrogas}"
@@ -1450,7 +1450,7 @@
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarPR"/>
                             <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarProrrogas()}" process="@this" onstart="LOVProrrogas.clearFilters()"/>
                             <f:facet name="header">  
-                                <h:outputText value="#{msg['buscarP']}" style="width: 120px; position: absolute; left: 27px; top: 15px;"/>  
+                                <h:outputText value="#{msg['buscarPR']}" style="width: 120px; position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVProrrogas.filter();" style="width: 400px; position: relative; left: 60px;" />  
                             </f:facet>
 
@@ -1526,7 +1526,7 @@
                     </p:dialog>
 
                     <!-- L.O.V TERCEROS-->
-                    <p:dialog header="#{msg['tercero']}" widgetVar="tercerosDialogo" draggable="false" resizable="false" id="tercerosDialogo" closable="false"  
+                    <p:dialog header="#{msg['tercerosT']}" widgetVar="tercerosDialogo" draggable="false" resizable="false" id="tercerosDialogo" closable="false"  
                               showEffect="fade" hideEffect="fade" modal="true" width="350" height="340" >
 
                         <p:dataTable  id="LOVTerceros" style=" width: 320px" var="terceros" value="#{controlAusentismos.listaTerceros}"
@@ -1536,7 +1536,7 @@
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarTER"/>
                             <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarAD()}" process="@this" onstart="LOVTerceros.clearFilters()"/>
                             <f:facet name="header">  
-                                <h:outputText value="#{msg['tercero']}" style="position: absolute; left: 27px; top: 15px;"/>  
+                                <h:outputText value="#{msg['buscarT']}" style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVTerceros.filter();" style="width: 150px; position: relative; left: 60px;" />  
                             </f:facet>
 

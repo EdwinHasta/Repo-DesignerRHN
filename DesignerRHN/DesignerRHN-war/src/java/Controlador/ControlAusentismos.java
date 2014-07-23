@@ -2219,6 +2219,20 @@ public class ControlAusentismos implements Serializable {
         index = -1;
         secRegistro = null;
         System.out.println("Entro a Bandera B. 1");
+        RequestContext context = RequestContext.getCurrentInstance();
+        //context.update("formularioDialogos:limpiar");
+    }
+
+//Salir NUEVO AUSENTISMO
+    public void salirNuevoAusentismo() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        nuevoAusentismo = new Soausentismos();
+        nuevoAusentismo.setTipo(new Tiposausentismos());
+        nuevoAusentismo.setCausa(new Causasausentismos());
+        nuevoAusentismo.setClase(new Clasesausentismos());
+        index = -1;
+        secRegistro = null;
+        System.out.println("Entro a Bandera B. 1");
         botonLimpiar = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:limpiar");
         botonLimpiar.setStyle("position: absolute; left: 50px; top: 400px;");
         botonAgregar = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:agregarNA");
@@ -2229,8 +2243,6 @@ public class ControlAusentismos implements Serializable {
         banderaBotones = 0;
         colapsado = true;
         RequestContext context = RequestContext.getCurrentInstance();
-        //context.update("formularioDialogos:limpiar");
-        context.update("formularioDialogos:nuevoAusentismo");
         context.update("formularioDialogos:NuevoAusentismoEmpleado");
     }
 
@@ -2660,6 +2672,29 @@ public class ControlAusentismos implements Serializable {
         index = -1;
         secRegistro = null;
     }
+    
+    public void salirduplicarAusentismos() {
+        duplicarAusentismo = new Soausentismos();
+        duplicarAusentismo.setTipo(new Tiposausentismos());
+        duplicarAusentismo.setCausa(new Causasausentismos());
+        duplicarAusentismo.setClase(new Clasesausentismos());
+        index = -1;
+        secRegistro = null;
+        FacesContext c = FacesContext.getCurrentInstance();
+        System.out.println("Entro a Bandera B. 1");
+        botonLimpiarD = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:limpiarDuplicado");
+        botonLimpiarD.setStyle("position: absolute; left: 50px; top: 400px;");
+        botonAgregarD = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:agregarNADuplicado");
+        botonAgregarD.setStyle("position: absolute; left: 350px; top: 400px;");
+        botonCancelarD = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:cancelarNADuplicado");
+        botonCancelarD.setStyle("position: absolute; left: 450px; top: 400px;");
+        altoDialogoDuplicar = "430";
+        banderaBotonesD = 0;
+        colapsado = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("formularioDialogos:DuplicarAusentismoEmpleado");
+    }
+    
 
     //GUARDAR
     public void guardarCambiosAusentismos() {
@@ -3710,5 +3745,5 @@ public class ControlAusentismos implements Serializable {
     public void setColapsado(boolean colapsado) {
         this.colapsado = colapsado;
     }
-    
+
 }
