@@ -4178,7 +4178,57 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+
+<navigation-rule>
+        <from-view-id>/jornadaslaborales.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>VigenciaJornada</from-outcome>
+            <to-view-id>/EmplVigenciaJornada.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/EmplVigenciaJornada.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>jornadaslaborales</from-outcome>
+            <to-view-id>/jornadaslaborales.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
     
+    <navigation-rule>
+        <from-view-id>/jornadaslaborales.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>jornada</from-outcome>
+            <to-view-id>/jornada.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/jornada.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>jornadaslaborales</from-outcome>
+            <to-view-id>/jornadaslaborales.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/jornadaslaborales.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>    
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>jornadaslaborales</from-outcome>
+            <to-view-id>/jornadaslaborales.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>    
     
     <navigation-rule>
         <from-view-id>/EmplUbicacionGeografica.xhtml</from-view-id>

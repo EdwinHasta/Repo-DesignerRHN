@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -37,7 +38,7 @@ public class JornadasLaborales implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Column(name = "CODIGO")
     private Short codigo;
     @Basic(optional = false)
@@ -60,24 +61,28 @@ public class JornadasLaborales implements Serializable {
     @JoinColumn(name = "JORNADA", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Jornadas jornada;
+    @Transient
+    private boolean estadoRotativo;
+    @Transient
+    private boolean estadoTurnoRelativo;
 
     public JornadasLaborales() {
     }
 
-    public JornadasLaborales(BigDecimal secuencia) {
+    public JornadasLaborales(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public JornadasLaborales(BigDecimal secuencia, String descripcion) {
+    public JornadasLaborales(BigInteger secuencia, String descripcion) {
         this.secuencia = secuencia;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -90,7 +95,10 @@ public class JornadasLaborales implements Serializable {
     }
 
     public String getDescripcion() {
-        return descripcion;
+        if (descripcion == null) {
+            descripcion = "";
+        }
+        return descripcion.toUpperCase();
     }
 
     public void setDescripcion(String descripcion) {
@@ -137,7 +145,54 @@ public class JornadasLaborales implements Serializable {
         this.cuadrillahorasdiarias = cuadrillahorasdiarias;
     }
 
+    public boolean isEstadoRotativo() {
+        if (rotativo != null) {
+            if (rotativo.equals("S")) {
+                estadoRotativo = true;
+            } else {
+                estadoRotativo = false;
+            }
+        } else {
+            estadoRotativo = false;
+        }
+        return estadoRotativo;
+    }
+
+    public void setEstadoRotativo(boolean estadoRotativo) {
+        if (estadoRotativo == true) {
+            rotativo = "S";
+        } else {
+            rotativo = "N";
+        }
+        this.estadoRotativo = estadoRotativo;
+    }
+
+    public boolean isEstadoTurnoRelativo() {
+        if (turnorelativo != null) {
+            if (turnorelativo.equals("S")) {
+                estadoTurnoRelativo = true;
+            } else {
+                estadoTurnoRelativo = false;
+            }
+        } else {
+            estadoTurnoRelativo = false;
+        }
+        return estadoTurnoRelativo;
+    }
+
+    public void setEstadoTurnoRelativo(boolean estadoTurnoRelativo) {
+        if (estadoTurnoRelativo == true) {
+            turnorelativo = "S";
+        } else {
+            turnorelativo = "N";
+        }
+        this.estadoTurnoRelativo = estadoTurnoRelativo;
+    }
+
     public Jornadas getJornada() {
+        if (jornada == null) {
+            jornada = new Jornadas();
+        }
         return jornada;
     }
 

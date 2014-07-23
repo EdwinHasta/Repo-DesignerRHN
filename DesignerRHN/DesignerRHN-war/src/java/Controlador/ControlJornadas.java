@@ -64,6 +64,7 @@ public class ControlJornadas implements Serializable {
     private Integer backupCodigo;
     private String backupDescripcion;
     private String infoRegistro;
+    public String paginaAnterior;
 
     public ControlJornadas() {
         listJornadas = null;
@@ -89,6 +90,14 @@ public class ControlJornadas implements Serializable {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
+    }
+
+    public void recibirPaginaEntrante(String pagina) {
+        paginaAnterior = pagina;
+    }
+
+    public String redirigir() {
+        return paginaAnterior;
     }
 
     public void eventoFiltrar() {
