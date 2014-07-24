@@ -84,13 +84,19 @@
                                 <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlAusentismos.verificarRastro()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
+                                <p:separator style="position: relative; top: -9px"/> 
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlAusentismos.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlAusentismos.salir()}" action="novedad" process="@this"/>  
+                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
 
                             </p:toolbarGroup>  
                         </p:toolbar>
 
                         <p:commandButton style="position: absolute; left: 670px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" disabled="#{controlAusentismos.cambiosPagina}" onclick="confirmarGuardar.show();" update=":form:datosAusentismosEmpleado" process="@this" />
-                        <p:commandButton style="position: absolute; left: 10px; top: 470px;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlAusentismos.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 760px; top: 470px;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlAusentismos.salir()}" action="individual" />
+                        <p:commandButton style="position: absolute; left: 760px; top: 470px;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['cancelar']}" actionListener="#{controlAusentismos.salir()}" action="novedad" />
 
 
                         <fieldset style="position: absolute; left: 10px; top: 230px;  width: 100px; height: 220px; border-radius: 10px; ">
