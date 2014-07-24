@@ -45,7 +45,7 @@
                 <p:inputText id="baseDatos" value="#{controlInicioRed.baseDatos}" style="position: absolute; top: 95px; left: 185px; font-weight: bold; text-transform: uppercase" disabled="#{controlInicioRed.estadoInicio}"/>
 
                 <p:focus for="usuario"/>
-                <p:commandButton id="btnLogin" value="#{controlInicioRed.txtBoton}" actionListener="#{controlInicioRed.ingresar()}"  style="position: relative; left: 100px; top: 90px" onclick="validarMensaje();" oncomplete="estadoSesion.hide()" /> 
+                <p:commandButton id="btnLogin" value="#{controlInicioRed.txtBoton}"  actionListener="#{controlInicioRed.ingresar()}"  style="position: relative; left: 100px; top: 90px" onclick="validarMensaje();" oncomplete="estadoSesion.hide()" /> 
                 <p:commandButton id="btnCambioClave" value="Cambio de Clave" disabled="#{controlInicioRed.cambioClave}" update=":formularioDialogos:cambiarClave" oncomplete="cambiarClave.show();" style="position: relative; left: 100px; top: 90px"/>
                 
                 <p:remoteCommand name="validarMensaje" actionListener="#{controlInicioRed.validarDialogoSesion()}"/>

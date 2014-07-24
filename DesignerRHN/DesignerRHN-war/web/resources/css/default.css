@@ -205,7 +205,15 @@ a:link:hover, a:visited:hover  {
 .hide-row-names table td {
     display: none;
 }
-
+.reduce-size-headerName table thead tr {
+    padding: 0px
+}
+.table-color-prueba th {
+    height: 0.5%!important;
+}
+.table-color-prueba2 th {
+    height: 0.5%!important;
+}
 /*SELECT ON RADIO*/
 
 .ui-radiobutton{

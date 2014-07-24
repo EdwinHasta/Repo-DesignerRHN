@@ -39,7 +39,7 @@
                                 <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlUnidad.limpiarNuevaUnidad()}" ajax="false">
-                                    <p:dataExporter type="xml"  target=":formExportar:datosUnidadesExportar" fileName="UnidadesXML" encoding="UTF-8"/> 
+                                    <p:dataExporter type="xml"  target="#{controlUnidad.tablaImprimir}" fileName="#{controlUnidad.nombreArchivo}" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
 
@@ -84,6 +84,10 @@
                                 <p:ajax event="filter" listener="#{controlUnidad.eventofiltrar()}"/>
 
                                 <p:column headerText="#{msg['codigo']}" width="10" sortBy="#{unidades.codigo}" filterBy="#{unidades.codigo}" filterMatchMode="contains" id="unidadesCodigos" filterStyle="display: none; visibility: hidden;"  >  
+                                     <f:facet name="header">
+                                        <h:outputText id="headercodigo" value="#{msg['codigo']}" />
+                                        <p:tooltip for="headercodigo" value="#{msg['codigott']}"/>
+                                    </f:facet>                                    
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{unidades.codigo}" >
@@ -96,12 +100,15 @@
                                             </p:inputText> 
                                         </f:facet>   
                                     </p:cellEditor>
-
                                     <f:facet name="footer">
                                     </f:facet>
                                 </p:column>
 
                                 <p:column headerText="#{msg['nombre']}" width="50" sortBy="#{unidades.nombre}" filterBy="#{unidades.nombre}"  filterMatchMode="contains" id="unidadesNombres" filterStyle="display: none; visibility: hidden;"  >  
+                                    <f:facet name="header">
+                                        <h:outputText id="headernombre" value="#{msg['nombre']}" />
+                                        <p:tooltip for="headernombre" value="#{msg['nombrett']}"/>
+                                    </f:facet>  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{unidades.nombre}"  style="text-transform: uppercase;">
@@ -119,6 +126,10 @@
                                 </p:column>
 
                                 <p:column headerText="#{msg['tipodeunidad']}" width="100" sortBy="#{unidades.tipounidad.nombre}" filterBy="#{unidades.tipounidad.nombre}" filterMatchMode="contains" id="unidadesTipos" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="headertipounidad" value="#{msg['tipodeunidad']}" />
+                                        <p:tooltip for="headertipounidad" value="#{msg['tipodeunidadtt']}"/>
+                                    </f:facet>  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase;" value="#{unidades.tipounidad.nombre}" /></f:facet>  
                                         <f:facet name="input">
@@ -310,15 +321,15 @@
 
                     <!-- DIALOGOS EDITAR -->
 
-                    <p:dialog id="editarCodigos" header="#{msg['editarCodigos']}" widgetVar="editarCodigos" resizable="false" draggable="false" modal="true" height="55" width="240" style=" padding: 0px">  
+                    <p:dialog id="editarCodigos" header="#{msg['codigoe']}" widgetVar="editarCodigos" resizable="false" draggable="false" modal="true" height="55" width="240" style=" padding: 0px">  
                         <p:inputTextarea value="#{controlUnidad.editarUnidad.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarNombres" header="#{msg['editarNombres']}" widgetVar="editarNombres" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                    <p:dialog id="editarNombres" header="#{msg['nombree']}" widgetVar="editarNombres" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlUnidad.editarUnidad.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTipos" header="#{msg['editarTipos']}" widgetVar="editarTipos" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                    <p:dialog id="editarTipos" header="#{msg['tipounidade']}" widgetVar="editarTipos" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlUnidad.editarUnidad.tipounidad.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>
 
@@ -327,12 +338,12 @@
                     <p:dataTable id="datosUnidadesExportar" var="u" style="visibility: hidden; display: none;"                           
                                  value="#{controlUnidad.listaUnidades}"> 
                         <!--COLUMNAS TABLA UNIDADES--> 
-                        <p:column headerText="#{msg['codigoX']}">                                  
+                        <p:column headerText="#{msg['codigoXX']}">                                  
                             <f:facet name="header"><h:outputText value="#{msg['codigoX']}"/> </f:facet> 
                             <h:outputText value="#{u.codigo}" />
                         </p:column> 
 
-                        <p:column headerText="#{msg['nombreX']}">                                  
+                        <p:column headerText="#{msg['nombreXX']}">                                  
                             <f:facet name="header"><h:outputText value="#{msg['nombreX']}"/> </f:facet> 
                             <h:outputText value="#{u.nombre}" />
                         </p:column>

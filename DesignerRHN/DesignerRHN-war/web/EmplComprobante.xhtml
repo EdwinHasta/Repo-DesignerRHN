@@ -29,6 +29,7 @@
                         <fieldset style="position: absolute; left: 250px; top: 75px;  width: 270px; height: 100px; border-radius: 10px; ">
                             <legend style=" font-weight: bold; color: #00F;">#{msg['titulo']}</legend>
 
+                            
                             <p:dataTable id="datosComprobantes" widgetVar="datosComprobantes" var="comprobante" value="#{controlEmplComprobantes.listaComprobantes}"
                                          rowKey="#{comprobante.secuencia}" rowIndexVar="indiceComprobante" style=" border: 1px; text-align: left"                           
                                          scrollable="true" scrollHeight="#{controlEmplComprobantes.altoScrollComprobante}" filteredValue="#{controlEmplComprobantes.filtradolistaComprobantes}" 

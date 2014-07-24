@@ -37,7 +37,7 @@
                                         <f:facet name="input">
                                             <p:inputText value="#{info.codigo}" id="editarCodigosInforeportes" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
                                                 <p:ajax event="select" listener="#{controlAdminreportes.cambiarIndice(indice, 0)}" />
-                                                <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'N', info.codigo)}" update="@this"/>
+                                                <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'C', info.codigo)}" update="@this"/>
                                             </p:inputText> 
                                         </f:facet>   
                                     </p:cellEditor>
@@ -130,7 +130,7 @@
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase;" value="#{info.modulo.nombre}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{info.modulo.nombre}" id="editarModulos" style=" border-radius: 0px; width: 99.5%;text-transform: uppercase;height: 12px"> 
-                                                <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'DEPARTAMENTOS', info.modulo.nombre)}"/>
+                                                <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'MODULO', info.modulo.nombre)}"/>
                                                 <p:ajax event="select" listener="#{controlAdminreportes.cambiarIndice(indice, 5)}" />
                                                 <p:ajax event="dblclick" listener="#{controlAdminreportes.asignarIndex(indice,1,0)}"/>
                                             </p:inputText>
@@ -414,7 +414,7 @@
                             </p:toolbarGroup> 
                         </p:toolbar>
 
-                        <p:commandButton style="position: absolute; left: 688px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" disabled="#{controlAdminreportes.cambiosPagina}" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosInforeportes" process="@this" />
+                        <p:commandButton style="position: absolute; left: 688px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" disabled="#{controlAdminreportes.guardado}" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosInforeportes" process="@this" />
                         <p:commandButton style="position: absolute; left: 785px; top: 470px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlAdminreportes.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
@@ -426,10 +426,12 @@
                     <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlAdminreportes.guardarCambiosInforeportes()}" action="nomina" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlAdminreportes.guardarCambiosInforeportes()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlAdminreportes.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
+                    
+                    
 
                     <!-- DIALOGO L.O.V INFOREPORTES-->
                     <p:dialog header="#{msg['reportesR']}"  widgetVar="inforeportesDialogo" draggable="false" resizable="false" closable="false" id="inforeportesDialogo"  
@@ -489,6 +491,10 @@
 
                     <!-- DIALOGOS EDITAR -->
 
+                    <p:dialog id="repetido" header="#{msg['atencion']}" widgetVar="repetido"  resizable="false" draggable="false" modal="true" height="55" width="425" closable="true">  
+                        <h:outputText value="#{msg['repetido']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
+                    </p:dialog>
+                    
                     <p:dialog id="editarCodigos" header="#{msg['editarCodigos']}" widgetVar="editarCodigos" resizable="false" draggable="false" modal="true" height="55" width="240" style=" padding: 0px">  
                         <p:inputTextarea value="#{controlAdminreportes.editarInforeportes.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>
@@ -518,27 +524,27 @@
                         <p:panel id="nuevoInforeporte" style="border: none;">
 
                             <strong><h:outputText value="#{msg['codigoN']}" style=" position: absolute; top: 65px" /></strong>
-                            <p:inputText id="nuevoCodigoInforeporte" value="#{controlAdminreportes.nuevoInforeporte.codigo}" style=" width: 122px; position: absolute; left: 180px; top: 65px; text-transform: uppercase" onclick="select();">
+                            <p:inputText id="nuevoCodigoInforeporte" value="#{controlAdminreportes.nuevoInforeporte.codigo}" style=" width: 122px; position: absolute; left: 180px; top: 60px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
 
                             <strong><h:outputText value="#{msg['reporteN']}" style=" position: absolute; top: 105px" /></strong>
-                            <p:inputText id="nuevoNombreInforeporte" value="#{controlAdminreportes.nuevoInforeporte.nombre}" style=" width: 122px; position: absolute; left: 180px; top: 105px; text-transform: uppercase" onclick="select();" >
+                            <p:inputText id="nuevoNombreInforeporte" value="#{controlAdminreportes.nuevoInforeporte.nombre}" style=" width: 122px; position: absolute; left: 180px; top: 100px; text-transform: uppercase" onclick="select();" >
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
 
                             <strong><h:outputText value="#{msg['contadorN']}" style=" position: absolute; top: 145px" /></strong>
-                            <p:inputText id="nuevoContadorInforeporte" value="#{controlAdminreportes.nuevoInforeporte.contador}" style=" width: 122px; position: absolute; left: 180px; top: 145px; text-transform: uppercase" onclick="select();">
+                            <p:inputText id="nuevoContadorInforeporte" value="#{controlAdminreportes.nuevoInforeporte.contador}" style=" width: 122px; position: absolute; left: 180px; top: 140px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
 
                             <strong><h:outputText value="#{msg['nombrereporteN']}" style=" position: absolute; top: 185px" /></strong>
-                            <p:inputText id="nuevoNombreReporteInforeporte" value="#{controlAdminreportes.nuevoInforeporte.nombrereporte}" style=" width: 122px; position: absolute; left: 180px; top: 185px; text-transform: uppercase" onclick="select();">
+                            <p:inputText id="nuevoNombreReporteInforeporte" value="#{controlAdminreportes.nuevoInforeporte.nombrereporte}" style=" width: 122px; position: absolute; left: 180px; top: 180px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
 
                             <strong><h:outputText value="#{msg['tipoN']}" style=" position: absolute; top: 225px" /></strong>
-                            <p:selectOneMenu id="nuevoTipoInforeporte" value="#{controlAdminreportes.nuevoInforeporte.estadoTipo}"  style=" width: 122px; position: absolute; left: 180px; top: 225px; text-transform: uppercase">
+                            <p:selectOneMenu id="nuevoTipoInforeporte" value="#{controlAdminreportes.nuevoInforeporte.estadoTipo}"  style=" width: 122px; position: absolute; left: 180px; top: 220px; text-transform: uppercase">
                                 <f:selectItem itemLabel="PDF" itemValue="PDF" />  
                                 <f:selectItem itemLabel="XHTML" itemValue="XHTML" />  
                                 <f:selectItem itemLabel="XLS" itemValue="XLS" />  
@@ -550,7 +556,7 @@
 
 
                             <strong><h:outputText value="#{msg['moduloN']}" style=" position: absolute; top: 265px" /></strong>
-                            <p:inputText id="nuevoModuloInforeporte" value="#{controlAdminreportes.nuevoInforeporte.modulo.nombre}" style=" width: 122px; position: absolute; left: 180px; top: 265px; text-transform: uppercase" onclick="select();">
+                            <p:inputText id="nuevoModuloInforeporte" value="#{controlAdminreportes.nuevoInforeporte.modulo.nombre}" style=" width: 122px; position: absolute; left: 180px; top: 260px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlAdminreportes.valoresBackupAutocompletar(1, 'MODULO')}" />
                                 <p:ajax event="change" listener="#{controlAdminreportes.autocompletarNuevoyDuplicado('MODULO', controlAdminreportes.nuevoInforeporte.modulo.nombre, 1)}" />
                                 <p:ajax event="dblclick" listener="#{controlAdminreportes.asignarIndex(indice, 1, 1)}" />
@@ -558,58 +564,58 @@
 
                             <strong><h:outputText value="#{msg['fechadesdeN']}" style=" position: absolute; top: 305px" /></strong>
 
-                            <p:selectBooleanCheckbox value="#{controlAdminreportes.nuevoInforeporte.estadoFechaDesde}" style="position: absolute; left: 180px; top: 305px;">
-                                <p:ajax update="@this"/>
+                            <p:selectBooleanCheckbox value="#{controlAdminreportes.nuevoInforeporte.estadoFechaDesde}" style="position: absolute; left: 180px; top: 300px;">
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['fechahastaN']}" style=" position: absolute; left: 350px; top: 65px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.nuevoInforeporte.estadoFechaHasta}" style="position: absolute; left: 470px; top: 65px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['empleadodesdeN']}" style=" position: absolute; left: 350px; top: 105px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.nuevoInforeporte.estadoEmpleadoDesde}" style="position: absolute; left: 470px; top: 105px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['empleadohastaN']}" style=" position: absolute; left: 350px; top: 145px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.nuevoInforeporte.estadoEmpleadoHasta}" style="position: absolute; left: 470px; top: 145px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['localizacionN']}" style=" position: absolute; left: 350px; top: 185px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.nuevoInforeporte.estadoLocalizacion}" style="position: absolute; left: 470px; top: 185px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['estadoN']}" style=" position: absolute; left: 350px; top: 225px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.nuevoInforeporte.estadoEstado}" style="position: absolute; left: 470px; top: 225px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['grupoN']}" style=" position: absolute; left: 350px; top: 265px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.nuevoInforeporte.estadoGrupo}" style="position: absolute; left: 470px; top: 265px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['terceroN']}" style=" position: absolute; left: 350px; top: 305px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.nuevoInforeporte.estadoTercero}" style="position: absolute; left: 470px; top: 305px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['trabajadorN']}" style=" position: absolute; left: 500px; top: 65px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.nuevoInforeporte.estadoTrabajador}" style="position: absolute; left: 620px; top: 65px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['tipotrabajadorN']}" style=" position: absolute; left: 500px; top: 105px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.nuevoInforeporte.estadoTipoTrabajador}" style="position: absolute; left: 620px; top: 105px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['solicitudN']}" style=" position: absolute; left: 500px; top: 145px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.nuevoInforeporte.estadoSolicitud}" style="position: absolute; left: 620px; top: 145px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['ciudadN']}" style=" position: absolute; left: 500px; top: 185px" /></strong>
@@ -619,42 +625,42 @@
 
                             <strong><h:outputText value="#{msg['tipotelefonoN']}" style=" position: absolute; left: 500px; top: 225px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.nuevoInforeporte.estadoTipoTelefono}" style="position: absolute; left: 620px; top: 225px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['estadocivilN']}" style=" position: absolute; left: 500px; top: 265px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.nuevoInforeporte.estadoEstadoCivil}" style="position: absolute; left: 620px; top: 265px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['deporteN']}" style=" position: absolute; left: 500px; top: 305px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.nuevoInforeporte.estadoDeporte}" style="position: absolute; left: 620px; top: 305px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['idiomaN']}" style=" position: absolute; left: 650px; top: 65px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.nuevoInforeporte.estadoIdioma}" style="position: absolute; left: 770px; top: 65px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['aficionN']}" style=" position: absolute; left: 650px; top: 105px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.nuevoInforeporte.estadoAficion}" style="position: absolute; left: 770px; top: 105px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change"  update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['jefedivisionN']}" style=" position: absolute; left: 650px; top: 145px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.nuevoInforeporte.estadoJefeDivision}" style="position: absolute; left: 770px; top: 145px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['rodamientoN']}" style=" position: absolute; left: 650px; top: 185px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.nuevoInforeporte.estadoRodamiento}" style="position: absolute; left: 770px; top: 185px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['enviomasivoN']}" style=" position: absolute; left: 650px; top: 225px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.nuevoInforeporte.estadoEnvioMasivo}" style="position: absolute; left: 770px; top:225px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 311px; top: 265px;  " id="btnNuevoModuloInforeporte" actionListener="#{controlAdminreportes.asignarIndex(indice, 1, 1)}" icon="ui-icon-search" process="@this" />
 
@@ -664,9 +670,7 @@
                         </p:panel>
                     </p:dialog>
 
-
                     <!-- Dialogo de Duplicar --> 
-
 
                     <p:dialog id="DuplicarInforeporte" header="#{msg['duplicarregistro']}" widgetVar="DuplicarInforeporte" closable="false" resizable="false"  draggable="false" modal="true" height="400" width="830" style=" padding: 0px">  
 
@@ -717,102 +721,102 @@
                             <strong><h:outputText value="#{msg['fechadesdeN']}" style=" position: absolute; top: 305px" /></strong>
 
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.duplicarInforeporte.estadoFechaDesde}" style="position: absolute; left: 180px; top: 305px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['fechahastaN']}" style=" position: absolute; left: 350px; top: 65px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.duplicarInforeporte.estadoFechaHasta}" style="position: absolute; left: 470px; top: 65px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['empleadodesdeN']}" style=" position: absolute; left: 350px; top: 105px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.duplicarInforeporte.estadoEmpleadoDesde}" style="position: absolute; left: 470px; top: 105px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['empleadohastaN']}" style=" position: absolute; left: 350px; top: 145px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.duplicarInforeporte.estadoEmpleadoHasta}" style="position: absolute; left: 470px; top: 145px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['localizacionN']}" style=" position: absolute; left: 350px; top: 185px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.duplicarInforeporte.estadoLocalizacion}" style="position: absolute; left: 470px; top: 185px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['estadoN']}" style=" position: absolute; left: 350px; top: 225px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.duplicarInforeporte.estadoEstado}" style="position: absolute; left: 470px; top: 225px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['grupoN']}" style=" position: absolute; left: 350px; top: 265px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.duplicarInforeporte.estadoGrupo}" style="position: absolute; left: 470px; top: 265px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['terceroN']}" style=" position: absolute; left: 350px; top: 305px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.duplicarInforeporte.estadoTercero}" style="position: absolute; left: 470px; top: 305px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['trabajadorN']}" style=" position: absolute; left: 500px; top: 65px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.duplicarInforeporte.estadoTrabajador}" style="position: absolute; left: 620px; top: 65px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['tipotrabajadorN']}" style=" position: absolute; left: 500px; top: 105px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.duplicarInforeporte.estadoTipoTrabajador}" style="position: absolute; left: 620px; top: 105px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['solicitud']}" style=" position: absolute; left: 500px; top: 145px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.duplicarInforeporte.estadoSolicitud}" style="position: absolute; left: 620px; top: 145px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['ciudadN']}" style=" position: absolute; left: 500px; top: 185px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.duplicarInforeporte.estadoCiudad}" style="position: absolute; left: 620px; top: 185px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['tipotelefonoN']}" style=" position: absolute; left: 500px; top: 225px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.duplicarInforeporte.estadoTipoTelefono}" style="position: absolute; left: 620px; top: 225px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['estadocivilN']}" style=" position: absolute; left: 500px; top: 265px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.duplicarInforeporte.estadoEstadoCivil}" style="position: absolute; left: 620px; top: 265px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['deporteN']}" style=" position: absolute; left: 500px; top: 305px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.duplicarInforeporte.estadoDeporte}" style="position: absolute; left: 620px; top: 305px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['idiomaN']}" style=" position: absolute; left: 650px; top: 65px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.duplicarInforeporte.estadoIdioma}" style="position: absolute; left: 770px; top: 65px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['aficionN']}" style=" position: absolute; left: 650px; top: 105px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.duplicarInforeporte.estadoAficion}" style="position: absolute; left: 770px; top: 105px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['jefedivisionN']}" style=" position: absolute; left: 650px; top: 145px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.duplicarInforeporte.estadoJefeDivision}" style="position: absolute; left: 770px; top: 145px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['rodamientoN']}" style=" position: absolute; left: 650px; top: 185px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.duplicarInforeporte.estadoRodamiento}" style="position: absolute; left: 770px; top: 185px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['enviomasivoN']}" style=" position: absolute; left: 650px; top: 225px" /></strong>
                             <p:selectBooleanCheckbox value="#{controlAdminreportes.duplicarInforeporte.estadoEnvioMasivo}" style="position: absolute; left: 770px; top:225px;">
-                                <p:ajax update="@this"/>
+                                <p:ajax event="change" update="@this"/>
                             </p:selectBooleanCheckbox>
 
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 311px; top: 265px;  " id="btnDuplicarModuloInforeporte" actionListener="#{controlAdminreportes.asignarIndex(indice, 1, 2)}" icon="ui-icon-search" process="@this" />
@@ -882,7 +886,6 @@
                             <f:facet name="header"><h:outputText value="#{msg['codigoX']}"/> </f:facet> 
                             <h:outputText value="#{inforeportes.codigo}" />
                         </p:column>  
-
 
                         <p:column headerText="#{msg['nombreX']}">                                  
                             <f:facet name="header"><h:outputText value="#{msg['nombreX']}"/> </f:facet> 

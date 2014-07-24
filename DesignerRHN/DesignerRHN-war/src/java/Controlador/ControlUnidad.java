@@ -5,7 +5,6 @@
  */
 package Controlador;
 
-import Entidades.Ciudades;
 import Entidades.TiposUnidades;
 import Entidades.Unidades;
 import Exportar.ExportarPDF;
@@ -58,16 +57,16 @@ public class ControlUnidad implements Serializable {
     private int cualCelda;
     //Activo/Desactivo Crtl + F11
     private int bandera;
-    //Modificar Ciudades
+    //Modificar Unidades
     private List<Unidades> listaUnidadesModificar;
     private boolean guardado, guardarOk;
-    //Crear Ciudades
+    //Crear Unidades
     public Unidades nuevaUnidad;
     private List<Unidades> listaUnidadesCrear;
     private BigInteger l;
     private int k;
     private String mensajeValidacion;
-    //Borrar Ciudad
+    //Borrar Unidad
     private List<Unidades> listaUnidadesBorrar;
     //AUTOCOMPLETAR
     private String tipoUnidad;
@@ -81,6 +80,8 @@ public class ControlUnidad implements Serializable {
     public String altoTabla;
     public String infoRegistroTiposUnidades;
     //
+    //Tabla a Imprimir
+    private String tablaImprimir, nombreArchivo;
     private Column unidadesCodigos, unidadesNombres, unidadesTipos;
     public String infoRegistro;
     ///////////////////////////////////////////////
@@ -113,6 +114,8 @@ public class ControlUnidad implements Serializable {
         altoTabla = "270";
         guardado = true;
         buscador = false;
+        tablaImprimir = ":formExportar:datosUnidadesExportar";
+        nombreArchivo = "UnidadesXML";
         //     secuenciaPruebaConceptoEmpresa = new BigInteger("11197246");
         //secuenciaEmpleado = new BigInteger("11280578");
         secuenciaEmpleado = null;
@@ -136,6 +139,14 @@ public class ControlUnidad implements Serializable {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
+    }
+
+    public void recibirPaginaEntrante(String pagina) {
+        paginaAnterior = pagina;
+    }
+
+    public String redirigir() {
+        return paginaAnterior;
     }
 
     public void activarAceptar() {
@@ -191,7 +202,8 @@ public class ControlUnidad implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
-
+            tablaImprimir = ":formExportar:datosUnidadesExportar";
+            nombreArchivo = "UnidadesXML";
             if (tipoLista == 0) {
                 secRegistro = listaUnidades.get(index).getSecuencia();
                 if (cualCelda == 2) {
@@ -426,7 +438,7 @@ public class ControlUnidad implements Serializable {
         if (index >= 0) {
             RequestContext context = RequestContext.getCurrentInstance();
             if (cualCelda == 2) {
-                context.update("form:tiposUnidadesDialogo");
+                context.update("formularioDialogos:tiposUnidadesDialogo");
                 context.execute("tiposUnidadesDialogo.show()");
                 tipoActualizacion = 0;
             }
@@ -454,7 +466,7 @@ public class ControlUnidad implements Serializable {
         secRegistro = null;
     }
 
-    //LIMPIAR NUEVO REGISTRO CIUDAD
+    //LIMPIAR NUEVO REGISTRO UNIDAD
     public void limpiarNuevaUnidad() {
         nuevaUnidad = new Unidades();
         nuevaUnidad.setTipounidad(new TiposUnidades());
@@ -570,23 +582,12 @@ public class ControlUnidad implements Serializable {
         secRegistro = null;
         k = 0;
         listaUnidades = null;
-        getListaUnidades();
-        if (listaUnidades != null && !listaUnidades.isEmpty()) {
-            unidadSeleccionada = listaUnidades.get(0);
-            infoRegistro = "Cantidad de registros: " + listaUnidades.size();
-        } else {
-            infoRegistro = "Cantidad de registros: 0";
-        }
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:ACEPTAR");
         context.update("form:datosUnidades");
         context.update("form:informacionRegistro");
-    }
-
-    public void recibirPaginaEntrante(String pagina) {
-        paginaAnterior = pagina;
     }
 
     public void valoresBackupAutocompletar(int tipoNuevo) {
@@ -678,7 +679,7 @@ public class ControlUnidad implements Serializable {
                 int CIndex = listaUnidades.indexOf(filtradoListaUnidades.get(index));
                 listaUnidades.remove(CIndex);
                 filtradoListaUnidades.remove(index);
-                infoRegistro = "Cantidad de registros: " + listaUnidades.size();
+                infoRegistro = "Cantidad de registros: " + filtradoListaUnidades.size();
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -802,7 +803,6 @@ public class ControlUnidad implements Serializable {
         k++;
         l = BigInteger.valueOf(k);
         duplicarUnidad.setSecuencia(l);
-
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (duplicarUnidad.getNombre() == null) {
@@ -832,8 +832,6 @@ public class ControlUnidad implements Serializable {
         if (pasa == 0) {
             listaUnidades.add(duplicarUnidad);
             listaUnidadesCrear.add(duplicarUnidad);
-            infoRegistro = "Cantidad de registros: " + listaUnidades.size();
-            context.update("form:informacionRegistro");
             context.update("form:datosUnidades");
             index = -1;
             secRegistro = null;
@@ -859,6 +857,8 @@ public class ControlUnidad implements Serializable {
                 tipoLista = 0;
             }
             duplicarUnidad = new Unidades();
+            infoRegistro = "Cantidad de registros: " + listaUnidades.size();
+            context.update("form:informacionRegistro");
 
         }
         context.update("formularioDialogos:duplicarUnidad");
@@ -1095,5 +1095,22 @@ public class ControlUnidad implements Serializable {
     public void setSecuenciaEmpleado(BigInteger secuenciaEmpleado) {
         this.secuenciaEmpleado = secuenciaEmpleado;
     }
+
+    public String getTablaImprimir() {
+        return tablaImprimir;
+    }
+
+    public void setTablaImprimir(String tablaImprimir) {
+        this.tablaImprimir = tablaImprimir;
+    }
+
+    public String getNombreArchivo() {
+        return nombreArchivo;
+    }
+
+    public void setNombreArchivo(String nombreArchivo) {
+        this.nombreArchivo = nombreArchivo;
+    }
+    
 
 }

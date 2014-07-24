@@ -41,7 +41,6 @@ public class ControlAdminreportes implements Serializable {
     AdministrarInforeportesInterface administrarInforeportes;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
 
     //LISTA INFOREPORTES
     private List<Inforeportes> listaInforeportes;
@@ -85,6 +84,7 @@ public class ControlAdminreportes implements Serializable {
     //ALTO SCROLL TABLA
     private String altoTabla;
     private boolean cambiosPagina;
+    private BigInteger codiguin;
 
     public ControlAdminreportes() {
         cambiosPagina = true;
@@ -104,7 +104,7 @@ public class ControlAdminreportes implements Serializable {
         altoTabla = "270";
         duplicarInforeporte = new Inforeportes();
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -113,7 +113,7 @@ public class ControlAdminreportes implements Serializable {
             administrarInforeportes.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -123,12 +123,16 @@ public class ControlAdminreportes implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
+            System.out.println("tipoLista : " + tipoLista);
             if (tipoLista == 0) {
+                codiguin = listaInforeportes.get(index).getCodigo();
                 secRegistro = listaInforeportes.get(index).getSecuencia();
                 if (cualCelda == 5) {
                     Modulo = listaInforeportes.get(index).getModulo().getNombre();
                 }
             } else {
+                System.out.println("Index = " + index);
+                codiguin = filtradosListaInforeportes.get(index).getCodigo();
                 secRegistro = filtradosListaInforeportes.get(index).getSecuencia();
                 if (cualCelda == 5) {
                     Modulo = filtradosListaInforeportes.get(index).getModulo().getNombre();
@@ -142,8 +146,84 @@ public class ControlAdminreportes implements Serializable {
         index = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
+        int pasa = 0;
+        int pasaf = 0;
+
         RequestContext context = RequestContext.getCurrentInstance();
-        if (confirmarCambio.equalsIgnoreCase("N")) {
+        if (confirmarCambio.equalsIgnoreCase("C")) {
+            if (tipoLista == 0) {
+                if (!listaInforeportesCrear.contains(listaInforeportes.get(indice))) {
+                    for (int i = 0; i < listaInforeportes.size(); i++) {
+                        if (listaInforeportes.get(indice).getCodigo().equals(listaInforeportes.get(i).getCodigo())) {
+                            System.out.println("MODIFICACIONES El Codigo ya está ahora revisamos modulo en: " + i);
+                            if (listaInforeportes.get(indice).getModulo().getNombre().equals(listaInforeportes.get(i).getModulo().getNombre())) {
+                                System.out.println("MODIFICACIONES El codigo y el módulo ya existen en: " + i);
+                                pasa++;
+                                System.out.println("Codiguin: " + codiguin);
+
+                            }
+                        }
+                    }
+                    System.out.println("Pasa C: " + pasa);
+                    if (pasa == 1) {
+                        System.out.println("Entro");
+                        if (listaInforeportesModificar.isEmpty()) {
+                            listaInforeportesModificar.add(listaInforeportes.get(indice));
+                        } else if (!listaInforeportesModificar.contains(listaInforeportes.get(indice))) {
+                            listaInforeportesModificar.add(listaInforeportes.get(indice));
+                        }
+
+                        if (guardado == true) {
+                            guardado = false;
+                            cambiosPagina = false;
+                            context.update("form:ACEPTAR");
+                        }
+                    } else {
+                        listaInforeportes.get(indice).setCodigo(codiguin);
+                        context.update("formularioDialogos:repetido");
+                        context.execute("repetido.show()");
+                    }
+
+                }
+                index = -1;
+                secRegistro = null;
+            } else {
+                if (!listaInforeportesCrear.contains(filtradosListaInforeportes.get(indice))) {
+                    for (int i = 0; i < filtradosListaInforeportes.size(); i++) {
+                        if (filtradosListaInforeportes.get(indice).getCodigo().equals(filtradosListaInforeportes.get(i).getCodigo())) {
+                            System.out.println("MODIFICACIONES El Codigo ya está ahora revisamos modulo en: " + i);
+                            if (filtradosListaInforeportes.get(indice).getModulo().getNombre().equals(filtradosListaInforeportes.get(i).getModulo().getNombre())) {
+                                System.out.println("MODIFICACIONES El codigo y el módulo ya existen en: " + i);
+                                pasaf++;
+                                System.out.println("Codiguin: " + codiguin);
+
+                            }
+                        }
+                    }
+                    System.out.println("Pasaf C: " + pasaf);
+                    if (pasaf == 1) {
+                        if (listaInforeportesCrear.isEmpty()) {
+                            listaInforeportesCrear.add(filtradosListaInforeportes.get(indice));
+                        } else if (!listaInforeportesCrear.contains(filtradosListaInforeportes.get(indice))) {
+                            listaInforeportesCrear.add(filtradosListaInforeportes.get(indice));
+                        }
+
+                        if (guardado == true) {
+                            guardado = false;
+                            cambiosPagina = false;
+                            context.update("form:ACEPTAR");
+                        }
+                    } else {
+                        filtradosListaInforeportes.get(indice).setCodigo(codiguin);
+                        context.update("formularioDialogos:repetido");
+                        context.execute("repetido.show()");
+                    }
+                }
+                index = -1;
+                secRegistro = null;
+            }
+            context.update("form:datosInforeportes");
+        } else if (confirmarCambio.equalsIgnoreCase("N")) {
             if (tipoLista == 0) {
                 if (!listaInforeportesCrear.contains(listaInforeportes.get(indice))) {
 
@@ -152,6 +232,7 @@ public class ControlAdminreportes implements Serializable {
                     } else if (!listaInforeportesModificar.contains(listaInforeportes.get(indice))) {
                         listaInforeportesModificar.add(listaInforeportes.get(indice));
                     }
+
                     if (guardado == true) {
                         guardado = false;
                         cambiosPagina = false;
@@ -159,10 +240,8 @@ public class ControlAdminreportes implements Serializable {
                     }
 
                 }
-
                 index = -1;
                 secRegistro = null;
-
             } else {
                 if (!listaInforeportesCrear.contains(filtradosListaInforeportes.get(indice))) {
 
@@ -183,9 +262,13 @@ public class ControlAdminreportes implements Serializable {
             }
             context.update("form:datosInforeportes");
         } else if (confirmarCambio.equalsIgnoreCase("MODULO")) {
+            BigInteger secModulo = null;
+            System.out.println("La secuencia del modulo de la lista es : " + listaInforeportes.get(indice).getModulo().getSecuencia());
             if (tipoLista == 0) {
+                secModulo = listaInforeportes.get(indice).getModulo().getSecuencia();
                 listaInforeportes.get(indice).getModulo().setNombre(Modulo);
             } else {
+                secModulo = filtradosListaInforeportes.get(indice).getModulo().getSecuencia();
                 filtradosListaInforeportes.get(indice).getModulo().setNombre(Modulo);
             }
 
@@ -203,8 +286,26 @@ public class ControlAdminreportes implements Serializable {
                 }
                 lovListaModulos.clear();
                 getLovListaModulos();
-                cambiosPagina = false;
-                context.update("form:ACEPTAR");
+                for (int i = 0; i < listaInforeportes.size(); i++) {
+                    if (listaInforeportes.get(indice).getCodigo().equals(listaInforeportes.get(i).getCodigo())) {
+                        if (listaInforeportes.get(indice).getModulo().getSecuencia().equals(listaInforeportes.get(i).getModulo().getSecuencia())) {
+                            pasa++;
+                        }
+                    }
+                }
+                if (pasa == 1) {
+                    cambiosPagina = false;
+                    context.update("form:ACEPTAR");
+                } else {
+                    Modulos moduloAnterior = administrarInforeportes.buscarModuloPorSecuencia(secModulo);
+                    if (tipoLista == 0) {
+                        listaInforeportes.get(indice).setModulo(moduloAnterior);
+                    } else {
+                        filtradosListaInforeportes.get(indice).setModulo(moduloAnterior);
+                    }
+                    context.update("formularioDialogos:repetido");
+                    context.execute("repetido.show()");
+                }
             } else {
                 permitirIndex = false;
                 context.update("formularioDialogos:modulosDialogo");
@@ -394,47 +495,64 @@ public class ControlAdminreportes implements Serializable {
     }
 
     public void confirmarDuplicar() {
-
+        int pasa = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         cambiosPagina = false;
         context.update("form:ACEPTAR");
-        listaInforeportes.add(duplicarInforeporte);
-        listaInforeportesCrear.add(duplicarInforeporte);
+        if (!nuevoInforeporte.getCodigo().equals(null) && nuevoInforeporte.getModulo().getNombre() != null) {
+            for (int i = 0; i < listaInforeportes.size(); i++) {
+                if (nuevoInforeporte.getCodigo().equals(listaInforeportes.get(i).getCodigo())) {
+                    System.out.println("El Codigo ya está ahora revisamos modulo en: " + i);
+                    if (nuevoInforeporte.getModulo().getNombre().equals(listaInforeportes.get(i).getModulo().getNombre())) {
+                        System.out.println("El codigo y el módulo ya existen en: " + i);
+                        pasa++;
 
-        index = -1;
-        if (guardado == true) {
-            guardado = false;
-            cambiosPagina = false;
-            context.update("form:ACEPTAR");
-            //RequestContext.getCurrentInstance().update("form:aceptar");
+                    }
+                }
+            }
         }
-        if (bandera == 1) {
-            altoTabla = "270";
-            FacesContext c = FacesContext.getCurrentInstance();
+        if (pasa == 0) {
+            listaInforeportes.add(duplicarInforeporte);
+            listaInforeportesCrear.add(duplicarInforeporte);
 
-            System.out.println("Desactivar");
-            System.out.println("TipoLista= " + tipoLista);
-            inforeportesCodigos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesCodigos");
-            inforeportesCodigos.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesNombres = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesNombres");
-            inforeportesNombres.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesContadores = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesContadores");
-            inforeportesContadores.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesNombresReportes = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesNombresReportes");
-            inforeportesNombresReportes.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesTipos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesTipos");
-            inforeportesTipos.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesModulos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesModulos");
-            inforeportesModulos.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosInforeportes");
-            bandera = 0;
-            filtradosListaInforeportes = null;
-            tipoLista = 0;
+            index = -1;
+            if (guardado == true) {
+                guardado = false;
+                cambiosPagina = false;
+                context.update("form:ACEPTAR");
+                //RequestContext.getCurrentInstance().update("form:aceptar");
+            }
+            if (bandera == 1) {
+                altoTabla = "270";
+                FacesContext c = FacesContext.getCurrentInstance();
+
+                System.out.println("Desactivar");
+                System.out.println("TipoLista= " + tipoLista);
+                inforeportesCodigos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesCodigos");
+                inforeportesCodigos.setFilterStyle("display: none; visibility: hidden;");
+                inforeportesNombres = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesNombres");
+                inforeportesNombres.setFilterStyle("display: none; visibility: hidden;");
+                inforeportesContadores = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesContadores");
+                inforeportesContadores.setFilterStyle("display: none; visibility: hidden;");
+                inforeportesNombresReportes = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesNombresReportes");
+                inforeportesNombresReportes.setFilterStyle("display: none; visibility: hidden;");
+                inforeportesTipos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesTipos");
+                inforeportesTipos.setFilterStyle("display: none; visibility: hidden;");
+                inforeportesModulos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesModulos");
+                inforeportesModulos.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosInforeportes");
+                bandera = 0;
+                filtradosListaInforeportes = null;
+                tipoLista = 0;
+            }
+            context.update("form:datosInforeportes");
+            duplicarInforeporte = new Inforeportes();
+            context.update("formularioDialogos:DuplicarInforeporte");
+            context.execute("DuplicarInforeporte.hide()");
+        } else {
+            context.update("formularioDialogos:repetido");
+            context.execute("repetido.show()");
         }
-        context.update("form:datosInforeportes");
-        duplicarInforeporte = new Inforeportes();
-        context.update("formularioDialogos:DuplicarInforeporte");
-        context.execute("DuplicarInforeporte.hide()");
     }
 
     public void activarAceptar() {
@@ -506,7 +624,7 @@ public class ControlAdminreportes implements Serializable {
             context.update("formularioDialogos:duplicarModuloInforeporte");
 
         }
-        filtradosListaInforeportes = null;
+        lovFiltradoslistaModulos = null;
         moduloSeleccionado = null;
         aceptar = true;
         index = -1;
@@ -758,191 +876,206 @@ public class ControlAdminreportes implements Serializable {
 
     //CREAR NOVEDADES
     public void agregarNuevoInforeporte() {
-
+        int pasa = 0;
         RequestContext context = RequestContext.getCurrentInstance();
-
-        if (bandera == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
-
-            altoTabla = "270";
-            inforeportesCodigos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesCodigos");
-            inforeportesCodigos.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesNombres = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesNombres");
-            inforeportesNombres.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesContadores = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesContadores");
-            inforeportesContadores.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesNombresReportes = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesNombresReportes");
-            inforeportesNombresReportes.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesTipos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesTipos");
-            inforeportesTipos.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesModulos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesModulos");
-            inforeportesModulos.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosInforeportes");
-            bandera = 0;
-            filtradosListaInforeportes = null;
-            tipoLista = 0;
-
-        }
-        //AGREGAR REGISTRO A LA LISTA NOVEDADES .
-        k++;
-        l = BigInteger.valueOf(k);
-        nuevoInforeporte.setSecuencia(l);
-        if (nuevoInforeporte.isEstadoFechaDesde() == true) {
-            nuevoInforeporte.setFecdesde("SI");
-
-        } else if (nuevoInforeporte.isEstadoFechaDesde() == false) {
-            nuevoInforeporte.setFecdesde("NO");
+        if (!nuevoInforeporte.getCodigo().equals(null) && nuevoInforeporte.getModulo().getNombre() != null) {
+            for (int i = 0; i < listaInforeportes.size(); i++) {
+                if (nuevoInforeporte.getCodigo().equals(listaInforeportes.get(i).getCodigo())) {
+                    System.out.println("El Codigo ya está ahora revisamos modulo en: " + i);
+                    if (nuevoInforeporte.getModulo().getNombre().equals(listaInforeportes.get(i).getModulo().getNombre())) {
+                        System.out.println("El codigo y el módulo ya existen en: " + i);
+                        pasa++;
+                    }
+                }
+            }
         }
 
-        if (nuevoInforeporte.isEstadoFechaHasta() == true) {
-            nuevoInforeporte.setFechasta("SI");
-        } else if (nuevoInforeporte.isEstadoFechaHasta() == false) {
-            nuevoInforeporte.setFechasta("NO");
-        }
+        if (pasa == 0) {
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
 
-        if (nuevoInforeporte.isEstadoEmpleadoDesde() == true) {
-            nuevoInforeporte.setEmdesde("SI");
-        } else if (nuevoInforeporte.isEstadoEmpleadoDesde() == false) {
-            nuevoInforeporte.setEmdesde("NO");
-        }
+                altoTabla = "270";
+                inforeportesCodigos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesCodigos");
+                inforeportesCodigos.setFilterStyle("display: none; visibility: hidden;");
+                inforeportesNombres = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesNombres");
+                inforeportesNombres.setFilterStyle("display: none; visibility: hidden;");
+                inforeportesContadores = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesContadores");
+                inforeportesContadores.setFilterStyle("display: none; visibility: hidden;");
+                inforeportesNombresReportes = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesNombresReportes");
+                inforeportesNombresReportes.setFilterStyle("display: none; visibility: hidden;");
+                inforeportesTipos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesTipos");
+                inforeportesTipos.setFilterStyle("display: none; visibility: hidden;");
+                inforeportesModulos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesModulos");
+                inforeportesModulos.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosInforeportes");
+                bandera = 0;
+                filtradosListaInforeportes = null;
+                tipoLista = 0;
 
-        if (nuevoInforeporte.isEstadoEmpleadoHasta() == true) {
-            nuevoInforeporte.setEmhasta("SI");
-        } else if (nuevoInforeporte.isEstadoEmpleadoHasta() == false) {
-            nuevoInforeporte.setEmhasta("NO");
-        }
+            }
+            //AGREGAR REGISTRO A LA LISTA NOVEDADES .
+            k++;
+            l = BigInteger.valueOf(k);
+            nuevoInforeporte.setSecuencia(l);
+            if (nuevoInforeporte.isEstadoFechaDesde() == true) {
+                nuevoInforeporte.setFecdesde("SI");
 
-        if (nuevoInforeporte.isEstadoLocalizacion() == true) {
-            nuevoInforeporte.setLocalizacion("SI");
-        } else if (nuevoInforeporte.isEstadoLocalizacion() == false) {
-            nuevoInforeporte.setLocalizacion("NO");
-        }
+            } else if (nuevoInforeporte.isEstadoFechaDesde() == false) {
+                nuevoInforeporte.setFecdesde("NO");
+            }
 
-        if (nuevoInforeporte.isEstadoEstado() == true) {
+            if (nuevoInforeporte.isEstadoFechaHasta() == true) {
+                nuevoInforeporte.setFechasta("SI");
+            } else if (nuevoInforeporte.isEstadoFechaHasta() == false) {
+                nuevoInforeporte.setFechasta("NO");
+            }
 
-            nuevoInforeporte.setEstado("SI");
-        } else if (nuevoInforeporte.isEstadoEstado() == false) {
-            nuevoInforeporte.setEstado("NO");
-        }
+            if (nuevoInforeporte.isEstadoEmpleadoDesde() == true) {
+                nuevoInforeporte.setEmdesde("SI");
+            } else if (nuevoInforeporte.isEstadoEmpleadoDesde() == false) {
+                nuevoInforeporte.setEmdesde("NO");
+            }
 
-        if (nuevoInforeporte.isEstadoGrupo() == true) {
+            if (nuevoInforeporte.isEstadoEmpleadoHasta() == true) {
+                nuevoInforeporte.setEmhasta("SI");
+            } else if (nuevoInforeporte.isEstadoEmpleadoHasta() == false) {
+                nuevoInforeporte.setEmhasta("NO");
+            }
 
-            nuevoInforeporte.setGrupo("SI");
-        } else if (nuevoInforeporte.isEstadoGrupo() == false) {
-            nuevoInforeporte.setGrupo("NO");
-        }
+            if (nuevoInforeporte.isEstadoLocalizacion() == true) {
+                nuevoInforeporte.setLocalizacion("SI");
+            } else if (nuevoInforeporte.isEstadoLocalizacion() == false) {
+                nuevoInforeporte.setLocalizacion("NO");
+            }
 
-        if (nuevoInforeporte.isEstadoTercero() == true) {
+            if (nuevoInforeporte.isEstadoEstado() == true) {
 
-            nuevoInforeporte.setTercero("SI");
-        } else if (nuevoInforeporte.isEstadoTercero() == false) {
-            nuevoInforeporte.setTercero("NO");
-        }
+                nuevoInforeporte.setEstado("SI");
+            } else if (nuevoInforeporte.isEstadoEstado() == false) {
+                nuevoInforeporte.setEstado("NO");
+            }
 
-        if (nuevoInforeporte.isEstadoTrabajador() == true) {
+            if (nuevoInforeporte.isEstadoGrupo() == true) {
 
-            nuevoInforeporte.setTrabajador("SI");
-        } else if (nuevoInforeporte.isEstadoTrabajador() == false) {
-            nuevoInforeporte.setTrabajador("NO");
-        }
+                nuevoInforeporte.setGrupo("SI");
+            } else if (nuevoInforeporte.isEstadoGrupo() == false) {
+                nuevoInforeporte.setGrupo("NO");
+            }
 
-        if (nuevoInforeporte.isEstadoTipoTrabajador() == true) {
+            if (nuevoInforeporte.isEstadoTercero() == true) {
 
-            nuevoInforeporte.setTipotrabajador("SI");
-        } else if (nuevoInforeporte.isEstadoTipoTrabajador() == false) {
-            nuevoInforeporte.setTipotrabajador("NO");
-        }
+                nuevoInforeporte.setTercero("SI");
+            } else if (nuevoInforeporte.isEstadoTercero() == false) {
+                nuevoInforeporte.setTercero("NO");
+            }
 
-        if (nuevoInforeporte.isEstadoSolicitud() == true) {
+            if (nuevoInforeporte.isEstadoTrabajador() == true) {
 
-            nuevoInforeporte.setSolicitud("SI");
-        } else if (nuevoInforeporte.isEstadoSolicitud() == false) {
-            nuevoInforeporte.setSolicitud("NO");
-        }
+                nuevoInforeporte.setTrabajador("SI");
+            } else if (nuevoInforeporte.isEstadoTrabajador() == false) {
+                nuevoInforeporte.setTrabajador("NO");
+            }
 
-        if (nuevoInforeporte.isEstadoCiudad() == true) {
+            if (nuevoInforeporte.isEstadoTipoTrabajador() == true) {
 
-            nuevoInforeporte.setCiudad("SI");
-        } else if (nuevoInforeporte.isEstadoCiudad() == false) {
-            nuevoInforeporte.setCiudad("NO");
-        }
+                nuevoInforeporte.setTipotrabajador("SI");
+            } else if (nuevoInforeporte.isEstadoTipoTrabajador() == false) {
+                nuevoInforeporte.setTipotrabajador("NO");
+            }
 
-        if (nuevoInforeporte.isEstadoTipoTelefono() == true) {
+            if (nuevoInforeporte.isEstadoSolicitud() == true) {
 
-            nuevoInforeporte.setTipotelefono("SI");
-        } else if (nuevoInforeporte.isEstadoTipoTelefono() == false) {
-            nuevoInforeporte.setTipotelefono("NO");
-        }
+                nuevoInforeporte.setSolicitud("SI");
+            } else if (nuevoInforeporte.isEstadoSolicitud() == false) {
+                nuevoInforeporte.setSolicitud("NO");
+            }
 
-        if (nuevoInforeporte.isEstadoEstadoCivil() == true) {
+            if (nuevoInforeporte.isEstadoCiudad() == true) {
 
-            nuevoInforeporte.setEstadocivil("SI");
-        } else if (nuevoInforeporte.isEstadoEstadoCivil() == false) {
-            nuevoInforeporte.setEstadocivil("NO");
-        }
+                nuevoInforeporte.setCiudad("SI");
+            } else if (nuevoInforeporte.isEstadoCiudad() == false) {
+                nuevoInforeporte.setCiudad("NO");
+            }
 
-        if (nuevoInforeporte.isEstadoDeporte() == true) {
+            if (nuevoInforeporte.isEstadoTipoTelefono() == true) {
 
-            nuevoInforeporte.setDeporte("SI");
-        } else if (nuevoInforeporte.isEstadoDeporte() == false) {
-            nuevoInforeporte.setDeporte("NO");
-        }
+                nuevoInforeporte.setTipotelefono("SI");
+            } else if (nuevoInforeporte.isEstadoTipoTelefono() == false) {
+                nuevoInforeporte.setTipotelefono("NO");
+            }
 
-        if (nuevoInforeporte.isEstadoIdioma() == true) {
+            if (nuevoInforeporte.isEstadoEstadoCivil() == true) {
 
-            nuevoInforeporte.setIdioma("SI");
-        } else if (nuevoInforeporte.isEstadoIdioma() == false) {
-            nuevoInforeporte.setIdioma("NO");
-        }
+                nuevoInforeporte.setEstadocivil("SI");
+            } else if (nuevoInforeporte.isEstadoEstadoCivil() == false) {
+                nuevoInforeporte.setEstadocivil("NO");
+            }
 
-        if (nuevoInforeporte.isEstadoAficion() == true) {
+            if (nuevoInforeporte.isEstadoDeporte() == true) {
 
-            nuevoInforeporte.setAficion("SI");
-        } else if (nuevoInforeporte.isEstadoAficion() == false) {
-            nuevoInforeporte.setAficion("NO");
-        }
+                nuevoInforeporte.setDeporte("SI");
+            } else if (nuevoInforeporte.isEstadoDeporte() == false) {
+                nuevoInforeporte.setDeporte("NO");
+            }
 
-        if (nuevoInforeporte.isEstadoJefeDivision() == true) {
+            if (nuevoInforeporte.isEstadoIdioma() == true) {
 
-            nuevoInforeporte.setJefedivision("SI");
-        } else if (nuevoInforeporte.isEstadoJefeDivision() == false) {
-            nuevoInforeporte.setJefedivision("NO");
-        }
+                nuevoInforeporte.setIdioma("SI");
+            } else if (nuevoInforeporte.isEstadoIdioma() == false) {
+                nuevoInforeporte.setIdioma("NO");
+            }
 
-        if (nuevoInforeporte.isEstadoRodamiento() == true) {
+            if (nuevoInforeporte.isEstadoAficion() == true) {
 
-            nuevoInforeporte.setRodamiento("SI");
-        } else if (nuevoInforeporte.isEstadoRodamiento() == false) {
-            nuevoInforeporte.setRodamiento("NO");
-        }
+                nuevoInforeporte.setAficion("SI");
+            } else if (nuevoInforeporte.isEstadoAficion() == false) {
+                nuevoInforeporte.setAficion("NO");
+            }
 
-        if (nuevoInforeporte.isEstadoEnvioMasivo() == true) {
+            if (nuevoInforeporte.isEstadoJefeDivision() == true) {
 
-            nuevoInforeporte.setEnviomasivo("S");
-        } else if (nuevoInforeporte.isEstadoEnvioMasivo() == false) {
-            nuevoInforeporte.setEnviomasivo("N");
-        }
+                nuevoInforeporte.setJefedivision("SI");
+            } else if (nuevoInforeporte.isEstadoJefeDivision() == false) {
+                nuevoInforeporte.setJefedivision("NO");
+            }
 
-        System.out.println("Fecha Desde: " + nuevoInforeporte.getFecdesde());
-        System.out.println("Fecha Hasta: " + nuevoInforeporte.getFechasta());
-        System.out.println("Empleado Desde: " + nuevoInforeporte.getEmdesde());
-        System.out.println("Empleado Hasta: " + nuevoInforeporte.getEmhasta());
-        System.out.println("Localización: " + nuevoInforeporte.getLocalizacion());
-        cambiosPagina = false;
-        context.update("form:ACEPTAR");
-        listaInforeportesCrear.add(nuevoInforeporte);
-        listaInforeportes.add(nuevoInforeporte);
-        nuevoInforeporte = new Inforeportes();
-        context.update("form:datosInforeportes");
-        if (guardado == true) {
-            guardado = false;
+            if (nuevoInforeporte.isEstadoRodamiento() == true) {
+
+                nuevoInforeporte.setRodamiento("SI");
+            } else if (nuevoInforeporte.isEstadoRodamiento() == false) {
+                nuevoInforeporte.setRodamiento("NO");
+            }
+
+            if (nuevoInforeporte.isEstadoEnvioMasivo() == true) {
+
+                nuevoInforeporte.setEnviomasivo("S");
+            } else if (nuevoInforeporte.isEstadoEnvioMasivo() == false) {
+                nuevoInforeporte.setEnviomasivo("N");
+            }
+
+            System.out.println("Fecha Desde: " + nuevoInforeporte.getFecdesde());
+            System.out.println("Fecha Hasta: " + nuevoInforeporte.getFechasta());
+            System.out.println("Empleado Desde: " + nuevoInforeporte.getEmdesde());
+            System.out.println("Empleado Hasta: " + nuevoInforeporte.getEmhasta());
+            System.out.println("Localización: " + nuevoInforeporte.getLocalizacion());
             cambiosPagina = false;
             context.update("form:ACEPTAR");
+            listaInforeportesCrear.add(nuevoInforeporte);
+            listaInforeportes.add(nuevoInforeporte);
+            nuevoInforeporte = new Inforeportes();
+            context.update("form:datosInforeportes");
+            if (guardado == true) {
+                guardado = false;
+                cambiosPagina = false;
+                context.update("form:ACEPTAR");
+            }
+            context.execute("NuevoInforeporte.hide()");
+            index = -1;
+            secRegistro = null;
+        } else {
+            context.update("formularioDialogos:repetido");
+            context.update("repetido.show()");
         }
-        context.execute("NuevoInforeporte.hide()");
-        index = -1;
-        secRegistro = null;
-
     }
 
     //BORRAR CIUDADES
@@ -1385,9 +1518,7 @@ public class ControlAdminreportes implements Serializable {
     }
 
     public List<Modulos> getLovListaModulos() {
-        if (lovListaModulos == null) {
-            lovListaModulos = administrarInforeportes.lovmodulos();
-        }
+        lovListaModulos = administrarInforeportes.lovmodulos();
         return lovListaModulos;
     }
 
@@ -1469,6 +1600,14 @@ public class ControlAdminreportes implements Serializable {
 
     public void setInforeporteSeleccionado(Inforeportes inforeporteSeleccionado) {
         this.inforeporteSeleccionado = inforeporteSeleccionado;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
     }
 
 }

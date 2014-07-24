@@ -260,9 +260,6 @@ public class Soausentismos implements Serializable {
     }
 
     public String getFormaliquidacion() {
-        if (formaliquidacion == null) {
-            formaliquidacion = ("");
-        }
         return formaliquidacion;
     }
 

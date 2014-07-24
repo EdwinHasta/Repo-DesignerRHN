@@ -42,4 +42,7 @@ public interface PersistenciaModulosInterface {
      * @return Retorna una lista de Modulos.
      */
     public List<Modulos> buscarModulos(EntityManager em);
+    
+    public Modulos buscarModulosPorSecuencia(EntityManager em, BigInteger secModulo);
+
 }

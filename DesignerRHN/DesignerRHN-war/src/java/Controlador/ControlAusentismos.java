@@ -31,6 +31,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
+import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
 import org.primefaces.context.RequestContext;
@@ -83,6 +84,8 @@ public class ControlAusentismos implements Serializable {
     private int index;
     private int tipoActualizacion; //Activo/Desactivo Crtl + F11
     private int bandera;
+    private int banderaBotones;
+    private int banderaBotonesD;
     private boolean permitirIndex;
     //RASTROS
     private BigInteger secRegistro;
@@ -91,7 +94,6 @@ public class ControlAusentismos implements Serializable {
     private List<Soausentismos> listaAusentismosCrear;
 
     public Soausentismos nuevoAusentismo;
-    public Soausentismos duplicarAusentismo;
     private int k;
     private BigInteger l;
     private String mensajeValidacion;
@@ -141,7 +143,7 @@ public class ControlAusentismos implements Serializable {
     private List<Soausentismos> filtradoslistaProrrogas;
     private Soausentismos seleccionProrrogas;
     //Duplicar
-
+    public Soausentismos duplicarAusentismo;
     //PRORROGA MOSTRAR
     private String Prorroga, Relacion;
     //Columnas Tabla NOVEDADES
@@ -149,11 +151,32 @@ public class ControlAusentismos implements Serializable {
             AFechaFinpago, APorcentaje, ABase, AForma, ADescripcionCaso, AEnfermedad, ANumero, ADiagnostico,
             AProrroga, ARelacion, ARelacionada, ATercero, AObservaciones;
     //
+    private CommandButton botonAgregar, botonCancelar, botonLimpiar;
+    private CommandButton botonAgregarD, botonCancelarD, botonLimpiarD;
+    //
     private boolean cambiosPagina;
     //
     private String altoTabla;
+    private String altoDialogoNuevo;
+    private String altoDialogoDuplicar;
+    private boolean colapsado;
+    private String infoRegistroTipo;
+    private String infoRegistroClase;
+    private String infoRegistroCausa;
+    private String infoRegistroPorcentaje;
+    private String infoRegistroBase;
+    private String infoRegistroForma;
+    private String infoRegistroAccidente;
+    private String infoRegistroEnfermedad;
+    private String infoRegistroDiagnostico;
+    private String infoRegistroProrroga;
+    private String infoRegistroTercero;
+    private String infoRegistroEmpleado;
 
     public ControlAusentismos() {
+        colapsado = true;
+        altoDialogoNuevo = "430";
+        altoDialogoDuplicar = "430";
         altoTabla = "145";
         cambiosPagina = true;
         Relacion = null;
@@ -187,7 +210,6 @@ public class ControlAusentismos implements Serializable {
         listaAusentismosBorrar = new ArrayList<Soausentismos>();
         listaAusentismosCrear = new ArrayList<Soausentismos>();
         listaAusentismosModificar = new ArrayList<Soausentismos>();
-
         //Crear VC
         nuevoAusentismo = new Soausentismos();
         nuevoAusentismo.setTipo(new Tiposausentismos());
@@ -195,13 +217,15 @@ public class ControlAusentismos implements Serializable {
         nuevoAusentismo.setCausa(new Causasausentismos());
         nuevoAusentismo.setPorcentajeindividual(BigInteger.valueOf(0));
         nuevoAusentismo.setBaseliquidacion(BigInteger.valueOf(0));
-        nuevoAusentismo.setFormaliquidacion(" ");
         nuevoAusentismo.setRelacionadaBool(false);
         nuevoAusentismo.setAccidente(new Soaccidentes());
         nuevoAusentismo.setEnfermedad(new EnfermeadadesProfesionales());
         nuevoAusentismo.setDiagnosticocategoria(new Diagnosticoscategorias());
         nuevoAusentismo.setProrroga(new Soausentismos());
         nuevoAusentismo.setTercero(new Terceros());
+        bandera = 0;
+        banderaBotones = 0;
+        banderaBotonesD = 0;
     }
 
     @PostConstruct
@@ -243,12 +267,6 @@ public class ControlAusentismos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosAusentismosEmpleado");
     }
-    //}
-/*else {
-     RequestContext context = RequestContext.getCurrentInstance();
-     context.update("formularioDialogos:cambiar");
-     context.execute("cambiar.show()");
-     }*/
 
     public void eventoFiltrar() {
         if (tipoLista == 0) {
@@ -1033,7 +1051,7 @@ public class ControlAusentismos implements Serializable {
     //AUTOCOMPLETAR
     public void modificarAusentismos(int indice, String confirmarCambio, String valorConfirmar) {
         index = indice;
-
+        System.out.println("modificarAusentismos");
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1473,7 +1491,7 @@ public class ControlAusentismos implements Serializable {
     //Ubicacion Celda Indice Abajo. //Van los que no son NOT NULL.
 
     public void cambiarIndice(int indice, int celda) {
-
+        System.out.println("Cambiar Indice");
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
@@ -1598,7 +1616,7 @@ public class ControlAusentismos implements Serializable {
             System.out.println("Entro a editar... valor celda: " + cualCelda);
             if (cualCelda == 0) {
                 context.update("formularioDialogos:editarTiposAusentismos");
-                context.execute("TiposAusentismos.show()");
+                context.execute("editarTiposAusentismos.show()");
                 cualCelda = -1;
             } else if (cualCelda == 1) {
                 context.update("formularioDialogos:editarClasesAusentismos");
@@ -1606,7 +1624,7 @@ public class ControlAusentismos implements Serializable {
                 cualCelda = -1;
             } else if (cualCelda == 2) {
                 context.update("formularioDialogos:editarCausasAusentismos");
-                context.execute("editCausasAusentismos.show()");
+                context.execute("editarCausasAusentismos.show()");
                 cualCelda = -1;
             } else if (cualCelda == 3) {
                 context.update("formularioDialogos:editarDias");
@@ -2193,12 +2211,39 @@ public class ControlAusentismos implements Serializable {
 
     //LIMPIAR NUEVO AUSENTISMO
     public void limpiarNuevoAusentismo() {
+        FacesContext c = FacesContext.getCurrentInstance();
         nuevoAusentismo = new Soausentismos();
         nuevoAusentismo.setTipo(new Tiposausentismos());
         nuevoAusentismo.setCausa(new Causasausentismos());
         nuevoAusentismo.setClase(new Clasesausentismos());
         index = -1;
         secRegistro = null;
+        System.out.println("Entro a Bandera B. 1");
+        RequestContext context = RequestContext.getCurrentInstance();
+        //context.update("formularioDialogos:limpiar");
+    }
+
+//Salir NUEVO AUSENTISMO
+    public void salirNuevoAusentismo() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        nuevoAusentismo = new Soausentismos();
+        nuevoAusentismo.setTipo(new Tiposausentismos());
+        nuevoAusentismo.setCausa(new Causasausentismos());
+        nuevoAusentismo.setClase(new Clasesausentismos());
+        index = -1;
+        secRegistro = null;
+        System.out.println("Entro a Bandera B. 1");
+        botonLimpiar = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:limpiar");
+        botonLimpiar.setStyle("position: absolute; left: 50px; top: 400px;");
+        botonAgregar = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:agregarNA");
+        botonAgregar.setStyle("position: absolute; left: 350px; top: 400px;");
+        botonCancelar = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:cancelarNA");
+        botonCancelar.setStyle("position: absolute; left: 450px; top: 400px;");
+        altoDialogoNuevo = "430";
+        banderaBotones = 0;
+        colapsado = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("formularioDialogos:NuevoAusentismoEmpleado");
     }
 
     public void activarCtrlF11() {
@@ -2260,7 +2305,6 @@ public class ControlAusentismos implements Serializable {
             tipoLista = 1;
         } else if (bandera == 1) {
             altoTabla = "145";
-
             System.out.println("Activar");
             System.out.println("TipoLista= " + tipoLista);
             ATipo = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATipo");
@@ -2395,11 +2439,12 @@ public class ControlAusentismos implements Serializable {
             pasa++;
         }
 
-        if (nuevoAusentismo.getFormaliquidacion().equals("")) {
+        if (nuevoAusentismo.getFormaliquidacion() == null) {
             System.out.println("Entro a Forma");
             mensajeValidacion = mensajeValidacion + " * Forma Liquidación\n";
             pasa++;
         }
+
         System.out.println("Valor Pasa: " + pasa);
 
         if (pasa != 0) {
@@ -2499,7 +2544,6 @@ public class ControlAusentismos implements Serializable {
             context.execute("NuevoAusentismoEmpleado.hide()");
             index = -1;
             secRegistro = null;
-        } else {
         }
     }
 
@@ -2621,7 +2665,6 @@ public class ControlAusentismos implements Serializable {
      * Metodo que limpia los datos de un duplicar Ausentismos
      */
     public void limpiarduplicarAusentismos() {
-
         duplicarAusentismo = new Soausentismos();
         duplicarAusentismo.setTipo(new Tiposausentismos());
         duplicarAusentismo.setCausa(new Causasausentismos());
@@ -2629,6 +2672,29 @@ public class ControlAusentismos implements Serializable {
         index = -1;
         secRegistro = null;
     }
+    
+    public void salirduplicarAusentismos() {
+        duplicarAusentismo = new Soausentismos();
+        duplicarAusentismo.setTipo(new Tiposausentismos());
+        duplicarAusentismo.setCausa(new Causasausentismos());
+        duplicarAusentismo.setClase(new Clasesausentismos());
+        index = -1;
+        secRegistro = null;
+        FacesContext c = FacesContext.getCurrentInstance();
+        System.out.println("Entro a Bandera B. 1");
+        botonLimpiarD = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:limpiarDuplicado");
+        botonLimpiarD.setStyle("position: absolute; left: 50px; top: 400px;");
+        botonAgregarD = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:agregarNADuplicado");
+        botonAgregarD.setStyle("position: absolute; left: 350px; top: 400px;");
+        botonCancelarD = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:cancelarNADuplicado");
+        botonCancelarD.setStyle("position: absolute; left: 450px; top: 400px;");
+        altoDialogoDuplicar = "430";
+        banderaBotonesD = 0;
+        colapsado = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("formularioDialogos:DuplicarAusentismoEmpleado");
+    }
+    
 
     //GUARDAR
     public void guardarCambiosAusentismos() {
@@ -2825,8 +2891,6 @@ public class ControlAusentismos implements Serializable {
             ADiagnostico.setFilterStyle("display: none; visibility: hidden;");
             AProrroga = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AProrroga");
             AProrroga.setFilterStyle("display: none; visibility: hidden;");
-            ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
-            ANumero.setFilterStyle("display: none; visibility: hidden;");
             ARelacion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacion");
             ARelacion.setFilterStyle("display: none; visibility: hidden;");
             ARelacionada = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacionada");
@@ -2840,10 +2904,28 @@ public class ControlAusentismos implements Serializable {
             filtradosListaAusentismos = null;
             tipoLista = 0;
         }
+        FacesContext d = FacesContext.getCurrentInstance();
 
+        botonLimpiar = (CommandButton) d.getViewRoot().findComponent("formularioDialogos:limpiar");
+        botonLimpiar.setStyle("position: absolute; left: 50px; top: 400px;");
+        botonAgregar = (CommandButton) d.getViewRoot().findComponent("formularioDialogos:agregarNA");
+        botonAgregar.setStyle("position: absolute; left: 350px; top: 400px;");
+        botonCancelar = (CommandButton) d.getViewRoot().findComponent("formularioDialogos:cancelarNA");
+        botonCancelar.setStyle("position: absolute; left: 450px; top: 400px;");
+        altoDialogoNuevo = "430";
+        botonLimpiarD = (CommandButton) d.getViewRoot().findComponent("formularioDialogos:limpiarDuplicado");
+        botonLimpiarD.setStyle("position: absolute; left: 50px; top: 400px;");
+        botonAgregarD = (CommandButton) d.getViewRoot().findComponent("formularioDialogos:agregarNADuplicado");
+        botonAgregarD.setStyle("position: absolute; left: 350px; top: 400px;");
+        botonCancelarD = (CommandButton) d.getViewRoot().findComponent("formularioDialogos:cancelarNADuplicado");
+        botonCancelarD.setStyle("position: absolute; left: 450px; top: 400px;");
+        altoDialogoDuplicar = "430";
+        banderaBotonesD = 0;
+        banderaBotones = 0;
         listaAusentismosBorrar.clear();
         listaAusentismosCrear.clear();
         listaAusentismosModificar.clear();
+        colapsado = true;
         index = -1;
         secRegistro = null;
         listaAusentismos = null;
@@ -2853,7 +2935,75 @@ public class ControlAusentismos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:ACEPTAR");
         context.update("form:datosAusentismosEmpleado");
+        context.update("formularioDialogos:nuevoAusentismo");
+        context.update("formularioDialogos:duplicarAusentismo");
+        context.update("formularioDialogos:NuevoAusentismoEmpleado");
+        context.update("formularioDialogos:DuplicarAusentismoEmpleado");
 
+    }
+
+    public void cambiosToggle() {
+        System.out.println("cambiosToggle");
+        FacesContext c = FacesContext.getCurrentInstance();
+        if (banderaBotones == 0) {
+            System.out.println("Entro a Bandera B. 0");
+            botonLimpiar = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:limpiar");
+            botonLimpiar.setStyle("position: absolute; left: 50px; top: 570px;");
+            botonAgregar = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:agregarNA");
+            botonAgregar.setStyle("position: absolute; left: 350px; top: 570px;");
+            botonCancelar = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:cancelarNA");
+            botonCancelar.setStyle("position: absolute; left: 450px; top: 570px;");
+            altoDialogoNuevo = "530";
+            banderaBotones = 1;
+        } else if (banderaBotones == 1) {
+            System.out.println("Entro a Bandera B. 1");
+            botonLimpiar = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:limpiar");
+            botonLimpiar.setStyle("position: absolute; left: 50px; top: 400px;");
+            botonAgregar = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:agregarNA");
+            botonAgregar.setStyle("position: absolute; left: 350px; top: 400px;");
+            botonCancelar = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:cancelarNA");
+            botonCancelar.setStyle("position: absolute; left: 450px; top: 400px;");
+            altoDialogoNuevo = "430";
+            banderaBotones = 0;
+        }
+
+        RequestContext context = RequestContext.getCurrentInstance();
+        //context.update("formularioDialogos:limpiar");
+        context.update("formularioDialogos:nuevoAusentismo");
+        context.update("formularioDialogos:NuevoAusentismoEmpleado");
+        context.execute("NuevoAusentismoEmpleado.show()");
+    }
+
+    public void cambiosToggleD() {
+        System.out.println("cambiosToggle");
+        FacesContext c = FacesContext.getCurrentInstance();
+        if (banderaBotonesD == 0) {
+            System.out.println("Entro a Bandera B. 0");
+            botonLimpiarD = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:limpiarDuplicado");
+            botonLimpiarD.setStyle("position: absolute; left: 50px; top: 570px;");
+            botonAgregarD = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:agregarNADuplicado");
+            botonAgregarD.setStyle("position: absolute; left: 350px; top: 570px;");
+            botonCancelarD = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:cancelarNADuplicado");
+            botonCancelarD.setStyle("position: absolute; left: 450px; top: 570px;");
+            altoDialogoDuplicar = "530";
+            banderaBotonesD = 1;
+        } else if (banderaBotonesD == 1) {
+            System.out.println("Entro a Bandera B. 1");
+            botonLimpiarD = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:limpiarDuplicado");
+            botonLimpiarD.setStyle("position: absolute; left: 50px; top: 400px;");
+            botonAgregarD = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:agregarNADuplicado");
+            botonAgregarD.setStyle("position: absolute; left: 350px; top: 400px;");
+            botonCancelarD = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:cancelarNADuplicado");
+            botonCancelarD.setStyle("position: absolute; left: 450px; top: 400px;");
+            altoDialogoDuplicar = "430";
+            banderaBotonesD = 0;
+        }
+
+        RequestContext context = RequestContext.getCurrentInstance();
+        //context.update("formularioDialogos:limpiar");
+        context.update("formularioDialogos:duplicarAusentismo");
+        context.update("formularioDialogos:DuplicarAusentismoEmpleado");
+        context.execute("DuplicarAusentismoEmpleado.show()");
     }
 
     //SALIR
@@ -2928,7 +3078,7 @@ public class ControlAusentismos implements Serializable {
 
     //GETTER & SETTER
     public List<Soausentismos> getListaAusentismos() {
-        if (listaAusentismos == null) {
+        if (listaAusentismos == null && secuenciaEmpleado != null) {
             listaAusentismos = administrarAusentismos.ausentismosEmpleado(secuenciaEmpleado);
             if (listaAusentismos != null && !listaAusentismos.isEmpty()) {
                 for (int i = 0; i < listaAusentismos.size(); i++) {
@@ -2954,8 +3104,14 @@ public class ControlAusentismos implements Serializable {
     public List<Empleados> getListaEmpleadosAusentismo() {
         if (listaEmpleadosAusentismo == null) {
             listaEmpleadosAusentismo = administrarAusentismos.lovEmpleados();
-            seleccionMostrar = listaEmpleadosAusentismo.get(0);
-            System.out.println(seleccionMostrar.getSecuencia());
+            if (!listaEmpleadosAusentismo.isEmpty()) {
+                seleccionMostrar = listaEmpleadosAusentismo.get(0);
+                secuenciaEmpleado = seleccionMostrar.getSecuencia();
+                System.out.println(seleccionMostrar.getSecuencia());
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosEmpleados");
+                System.out.println("Seleccionado: " + seleccionMostrar.getPersona().getNombreCompleto());
+            }
         }
         return listaEmpleadosAusentismo;
     }
@@ -2983,6 +3139,9 @@ public class ControlAusentismos implements Serializable {
     public List<Empleados> getListaEmpleados() {
         if (listaEmpleados == null) {
             listaEmpleados = administrarAusentismos.lovEmpleados();
+            if (!listaEmpleados.isEmpty()) {
+                seleccionMostrar = listaEmpleados.get(0);
+            }
         }
         return listaEmpleados;
     }
@@ -3329,7 +3488,6 @@ public class ControlAusentismos implements Serializable {
             if (Prorroga == null) {
                 Prorroga = administrarAusentismos.mostrarProrroga(seleccionProrrogas.getSecuencia());
             }
-
         }
         return Prorroga;
     }
@@ -3393,6 +3551,199 @@ public class ControlAusentismos implements Serializable {
 
     public void setAltoTabla(String altoTabla) {
         this.altoTabla = altoTabla;
+    }
+
+    public String getAltoDialogoNuevo() {
+        return altoDialogoNuevo;
+    }
+
+    public void setAltoDialogoNuevo(String altoDialogoNuevo) {
+        this.altoDialogoNuevo = altoDialogoNuevo;
+    }
+
+    public String getAltoDialogoDuplicar() {
+        return altoDialogoDuplicar;
+    }
+
+    public void setAltoDialogoDuplicar(String altoDialogoDuplicar) {
+        this.altoDialogoDuplicar = altoDialogoDuplicar;
+    }
+
+    public String getInfoRegistroTipo() {
+        getListaTiposAusentismos();
+        if (listaTiposAusentismos != null) {
+            infoRegistroTipo = "Cantidad de registros : " + listaTiposAusentismos.size();
+        } else {
+            infoRegistroTipo = "Cantidad de registros : 0";
+        }
+
+        return infoRegistroTipo;
+    }
+
+    public void setInfoRegistroTipo(String infoRegistroTipo) {
+        this.infoRegistroTipo = infoRegistroTipo;
+    }
+
+    public String getInfoRegistroClase() {
+        getListaClasesAusentismos();
+        if (listaClasesAusentismos != null) {
+            infoRegistroClase = "Cantidad de registros : " + listaClasesAusentismos.size();
+        } else {
+            infoRegistroClase = "Cantidad de registros : 0";
+        }
+        return infoRegistroClase;
+    }
+
+    public void setInfoRegistroClase(String infoRegistroClase) {
+        this.infoRegistroClase = infoRegistroClase;
+    }
+
+    public String getInfoRegistroCausa() {
+        getListaCausasAusentismos();
+        if (listaCausasAusentismos != null) {
+            infoRegistroCausa = "Cantidad de registros : " + listaCausasAusentismos.size();
+        } else {
+            infoRegistroCausa = "Cantidad de registros : 0";
+        }
+        return infoRegistroCausa;
+    }
+
+    public void setInfoRegistroCausa(String infoRegistroCausa) {
+        this.infoRegistroCausa = infoRegistroCausa;
+    }
+
+    public String getInfoRegistroPorcentaje() {
+        getListaPorcentaje();
+        if (listaPorcentaje != null) {
+            infoRegistroPorcentaje = "Cantidad de registros : " + listaPorcentaje.size();
+        } else {
+            infoRegistroPorcentaje = "Cantidad de registros : 0";
+        }
+        return infoRegistroPorcentaje;
+    }
+
+    public void setInfoRegistroPorcentaje(String infoRegistroPorcentaje) {
+        this.infoRegistroPorcentaje = infoRegistroPorcentaje;
+    }
+
+    public String getInfoRegistroBase() {
+        getListaIBCS();
+        if (listaIBCS != null) {
+            infoRegistroBase = "Cantidad de registros : " + listaIBCS.size();
+        } else {
+            infoRegistroBase = "Cantidad de registros : 0";
+        }
+        return infoRegistroBase;
+    }
+
+    public void setInfoRegistroBase(String infoRegistroBase) {
+        this.infoRegistroBase = infoRegistroBase;
+    }
+
+    public String getInfoRegistroAccidente() {
+        getListaAccidentes();
+        if (listaAccidentes != null) {
+            infoRegistroAccidente = "Cantidad de registros : " + listaAccidentes.size();
+        } else {
+            infoRegistroAccidente = "Cantidad de registros : 0";
+        }
+        return infoRegistroAccidente;
+    }
+
+    public void setInfoRegistroAccidente(String infoRegistroAccidente) {
+        this.infoRegistroAccidente = infoRegistroAccidente;
+    }
+
+    public String getInfoRegistroEnfermedad() {
+        getListaEnfermeadadesProfesionales();
+        if (listaEnfermeadadesProfesionales != null) {
+            infoRegistroEnfermedad = "Cantidad de registros : " + listaEnfermeadadesProfesionales.size();
+        } else {
+            infoRegistroEnfermedad = "Cantidad de registros : 0";
+        }
+        return infoRegistroEnfermedad;
+    }
+
+    public void setInfoRegistroEnfermedad(String infoRegistroEnfermedad) {
+        this.infoRegistroEnfermedad = infoRegistroEnfermedad;
+    }
+
+    public String getInfoRegistroDiagnostico() {
+        getListaDiagnosticos();
+        if (listaDiagnosticos != null) {
+            infoRegistroDiagnostico = "Cantidad de registros : " + listaDiagnosticos.size();
+        } else {
+            infoRegistroDiagnostico = "Cantidad de registros : 0";
+        }
+        return infoRegistroDiagnostico;
+    }
+
+    public void setInfoRegistroDiagnostico(String infoRegistroDiagnostico) {
+        this.infoRegistroDiagnostico = infoRegistroDiagnostico;
+    }
+
+    public String getInfoRegistroProrroga() {
+        getListaProrrogas();
+        if (listaProrrogas != null) {
+            infoRegistroProrroga = "Cantidad de registros : " + listaProrrogas.size();
+        } else {
+            infoRegistroProrroga = "Cantidad de registros : 0";
+        }
+        return infoRegistroProrroga;
+    }
+
+    public void setInfoRegistroProrroga(String infoRegistroProrroga) {
+        this.infoRegistroProrroga = infoRegistroProrroga;
+    }
+
+    public String getInfoRegistroTercero() {
+        getListaTerceros();
+        if (listaTerceros != null) {
+            infoRegistroTercero = "Cantidad de registros : " + listaTerceros.size();
+        } else {
+            infoRegistroTercero = "Cantidad de registros : 0";
+        }
+        return infoRegistroTercero;
+    }
+
+    public void setInfoRegistroTercero(String infoRegistroTercero) {
+        this.infoRegistroTercero = infoRegistroTercero;
+    }
+
+    public String getInfoRegistroEmpleado() {
+        getListaEmpleadosAusentismo();
+        if (listaEmpleadosAusentismo != null) {
+            infoRegistroEmpleado = "Cantidad de registros : " + listaEmpleadosAusentismo.size();
+        } else {
+            infoRegistroEmpleado = "Cantidad de registros : 0";
+        }
+        return infoRegistroEmpleado;
+    }
+
+    public void setInfoRegistroEmpleado(String infoRegistroEmpleado) {
+        this.infoRegistroEmpleado = infoRegistroEmpleado;
+    }
+
+    public String getInfoRegistroForma() {
+        getListaForma();
+        if (listaForma != null) {
+            infoRegistroForma = "Cantidad de registros : " + listaForma.size();
+        } else {
+            infoRegistroForma = "Cantidad de registros : 0";
+        }
+        return infoRegistroForma;
+    }
+
+    public void setInfoRegistroForma(String infoRegistroForma) {
+        this.infoRegistroForma = infoRegistroForma;
+    }
+
+    public boolean isColapsado() {
+        return colapsado;
+    }
+
+    public void setColapsado(boolean colapsado) {
+        this.colapsado = colapsado;
     }
 
 }
