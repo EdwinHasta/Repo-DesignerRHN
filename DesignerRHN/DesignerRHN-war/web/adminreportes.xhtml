@@ -1,6 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
@@ -12,11 +11,13 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form">
+                    
                     <f:loadBundle basename="Recursos.adminreportes" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">  
 
-                        <p:commandButton style="position: absolute; left: 15px; top: 470px;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlAdminreportes.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 30px;  " id="btnBuscarEmpleados" actionListener="#{controlAdminreportes.asignarIndex(-1, 0, 0)}" value="Buscar Reporte" process="@this"/>
+                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 60px;  " id="btnMostrarTodos" actionListener="#{controlAdminreportes.mostrarTodos()}" value="Mostrar Todos"  process="@this"/>
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: #14388B"><strong>#{msg['reportes']}</strong></legend>
 
@@ -43,7 +44,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['codigo']}" />
+                                        <h:outputText value=" " />
                                     </f:facet>
                                 </p:column>
 
@@ -62,7 +63,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['reporte']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -81,7 +82,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['contador']}" />
+                                        <h:outputText value=" " />
                                     </f:facet>
                                 </p:column>
 
@@ -100,7 +101,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['nombrereporte']}" />
+                                        <h:outputText value=" " />
                                     </f:facet>
                                 </p:column>
 
@@ -121,7 +122,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['tipo']}" />
+                                        <h:outputText value=" " />
                                     </f:facet>
                                 </p:column>
 
@@ -138,7 +139,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="left: -45px; width: 170px; margin: -14px; height: 26px; border: none; color: blue" id="fooDepartamentos" value="#{msg['modulo']} "/>
+                                        <p:commandButton style="left: -45px; width: 170px; margin: -14px; height: 26px; border: none; color: blue" id="fooDepartamentos" value=" "/>
                                     </f:facet>
                                 </p:column>
 
@@ -411,11 +412,19 @@
                                 <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlAdminreportes.verificarRastro()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
+                                
+                                <p:separator style="position: relative; top: -9px"/> 
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlAdminreportes.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlAdminreportes.salir()}" action="nomina" process="@this"/>  
+                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
                             </p:toolbarGroup> 
                         </p:toolbar>
 
                         <p:commandButton style="position: absolute; left: 688px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" disabled="#{controlAdminreportes.guardado}" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosInforeportes" process="@this" />
-                        <p:commandButton style="position: absolute; left: 785px; top: 470px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlAdminreportes.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 780px; top: 470px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['cancelar']}" actionListener="#{controlAdminreportes.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
 
@@ -430,8 +439,6 @@
                         <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlAdminreportes.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
-                    
-                    
 
                     <!-- DIALOGO L.O.V INFOREPORTES-->
                     <p:dialog header="#{msg['reportesR']}"  widgetVar="inforeportesDialogo" draggable="false" resizable="false" closable="false" id="inforeportesDialogo"  
@@ -444,7 +451,7 @@
                             <p:ajax event="rowDblselect" listener="#{controlAdminreportes.actualizarInforeportes()}" process="@this" onstart="LOVInforeportes.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarR']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="LOVInforeportes.filter();" style="width:150px; position: relative; left: 8px;" />  
+                                <p:inputText id="globalFilter" onkeyup="LOVInforeportes.filter();" style="width:150px; position: relative; left: 30px;" />  
                             </f:facet>
                             <p:column filterBy="#{inforeportes.codigo}" width="200"  filterMatchMode="contains">
                                 <f:facet name="header">
@@ -453,10 +460,10 @@
                                 <h:outputText value="#{inforeportes.codigo}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarI" value="#{msg['aceptar']}"  disabled="#{controlAdminreportes.aceptar}" icon="ui-icon-check" style="position: absolute; top: 305px; left: 155px;" actionListener="#{controlAdminreportes.actualizarInforeportes()}" onclick="LOVInforeportes.clearFilters();" update="aceptarI" process="@this">
+                        <p:commandButton id="aceptarI" value="#{msg['aceptar']}"  disabled="#{controlAdminreportes.aceptar}" icon="ui-icon-check" style="position: absolute; top: 305px; left: 185px;" actionListener="#{controlAdminreportes.actualizarInforeportes()}" onclick="LOVInforeportes.clearFilters();" update="aceptarI" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVInforeportes:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasI" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 250px; " icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlAdminreportes.cancelarCambioInforeportes()}" onclick="inforeportesDialogo.hide(), LOVInforeportes.clearFilters();"  update="LOVInforeportes" process="@this">
+                        <p:commandButton id="atrasI" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 280px; " icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlAdminreportes.cancelarCambioInforeportes()}" onclick="inforeportesDialogo.hide(), LOVInforeportes.clearFilters();"  update="LOVInforeportes" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVInforeportes:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -481,10 +488,13 @@
                                 <h:outputText value="#{modulo.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarM" value="#{msg['aceptar']}" disabled="#{controlAdminreportes.aceptar}" icon="ui-icon-check" style="position: absolute; top: 305px; left: 155px;" actionListener="#{controlAdminreportes.actualizarModulos()}" onclick="LOVModulos.clearFilters();" update="aceptarM" process="@this">
+
+                        <h:outputText id="infoRegistroModulos" value="#{controlAdminreportes.infoRegistroModulo}" style="position: relative; top: 15px; font-weight: bold"/>
+
+                        <p:commandButton id="aceptarM" value="#{msg['aceptar']}" disabled="#{controlAdminreportes.aceptar}" icon="ui-icon-check" style="position: absolute; top: 305px; left: 185px;" actionListener="#{controlAdminreportes.actualizarModulos()}" onclick="LOVModulos.clearFilters();" update="aceptarM" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVModulos:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasM" style="position: absolute; top: 305px; left: 250px; " icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlAdminreportes.cancelarCambioModulos()}" onclick="modulosDialogo.hide(), LOVModulos.clearFilters();"  update="LOVModulos" process="@this">
+                        <p:commandButton id="atrasM" style="position: absolute; top: 305px; left: 280px; " icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlAdminreportes.cancelarCambioModulos()}" onclick="modulosDialogo.hide(), LOVModulos.clearFilters();"  update="LOVModulos" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVModulos:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -494,7 +504,7 @@
                     <p:dialog id="repetido" header="#{msg['atencion']}" widgetVar="repetido"  resizable="false" draggable="false" modal="true" height="55" width="425" closable="true">  
                         <h:outputText value="#{msg['repetido']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
                     </p:dialog>
-                    
+
                     <p:dialog id="editarCodigos" header="#{msg['editarCodigos']}" widgetVar="editarCodigos" resizable="false" draggable="false" modal="true" height="55" width="240" style=" padding: 0px">  
                         <p:inputTextarea value="#{controlAdminreportes.editarInforeportes.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>

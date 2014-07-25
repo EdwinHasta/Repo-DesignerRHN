@@ -85,6 +85,8 @@ public class ControlAdminreportes implements Serializable {
     private String altoTabla;
     private boolean cambiosPagina;
     private BigInteger codiguin;
+    private String infoRegistroModulo;
+    private String infoRegistroInfoReporte;
 
     public ControlAdminreportes() {
         cambiosPagina = true;
@@ -1494,6 +1496,7 @@ public class ControlAdminreportes implements Serializable {
     }
 
     public List<Inforeportes> getLovlistaInforeportes() {
+        lovlistaInforeportes = administrarInforeportes.inforeportes();
         return lovlistaInforeportes;
     }
 
@@ -1608,6 +1611,36 @@ public class ControlAdminreportes implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+    
+    public String getInfoRegistroModulo() {
+        getLovListaModulos();
+        if (lovListaModulos != null) {
+            infoRegistroModulo = "Cantidad de registros : " + lovListaModulos.size();
+        } else {
+            infoRegistroModulo = "Cantidad de registros : 0";
+        }
+
+        return infoRegistroModulo;
+    }
+
+    public void setInfoRegistroModulo(String infoRegistroModulo) {
+        this.infoRegistroModulo = infoRegistroModulo;
+    }
+    
+    public String getInfoRegistroInfoReporte() {
+        getLovlistaInforeportes();
+        if (lovlistaInforeportes != null) {
+            infoRegistroInfoReporte = "Cantidad de registros : " + lovlistaInforeportes.size();
+        } else {
+            infoRegistroInfoReporte = "Cantidad de registros : 0";
+        }
+
+        return infoRegistroInfoReporte;
+    }
+
+    public void setInfoRegistroInfoReporte(String infoRegistroInfoReporte) {
+        this.infoRegistroInfoReporte = infoRegistroInfoReporte;
     }
 
 }

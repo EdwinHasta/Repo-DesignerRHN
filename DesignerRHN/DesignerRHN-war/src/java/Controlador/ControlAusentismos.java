@@ -3175,9 +3175,7 @@ public class ControlAusentismos implements Serializable {
     }
 
     public List<Tiposausentismos> getListaTiposAusentismos() {
-        if (listaTiposAusentismos == null) {
             listaTiposAusentismos = administrarAusentismos.lovTiposAusentismos();
-        }
         return listaTiposAusentismos;
     }
 
@@ -3218,9 +3216,7 @@ public class ControlAusentismos implements Serializable {
     }
 
     public List<Clasesausentismos> getListaClasesAusentismos() {
-        if (listaClasesAusentismos == null) {
             listaClasesAusentismos = administrarAusentismos.lovClasesAusentismos();
-        }
         return listaClasesAusentismos;
     }
 
@@ -3237,9 +3233,7 @@ public class ControlAusentismos implements Serializable {
     }
 
     public List<Causasausentismos> getListaCausasAusentismos() {
-        if (listaCausasAusentismos == null) {
             listaCausasAusentismos = administrarAusentismos.lovCausasAusentismos();
-        }
         return listaCausasAusentismos;
     }
 
@@ -3296,9 +3290,7 @@ public class ControlAusentismos implements Serializable {
     }
 
     public List<Ibcs> getListaIBCS() {
-        if (listaIBCS == null) {
             listaIBCS = administrarAusentismos.empleadosIBCS(secuenciaEmpleado);
-        }
         return listaIBCS;
     }
 
@@ -3347,9 +3339,7 @@ public class ControlAusentismos implements Serializable {
     }
 
     public List<Soaccidentes> getListaAccidentes() {
-        if (listaAccidentes == null) {
             listaAccidentes = administrarAusentismos.lovAccidentes(secuenciaEmpleado);
-        }
         return listaAccidentes;
     }
 
@@ -3374,9 +3364,7 @@ public class ControlAusentismos implements Serializable {
     }
 
     public List<EnfermeadadesProfesionales> getListaEnfermeadadesProfesionales() {
-        if (listaEnfermeadadesProfesionales == null) {
             listaEnfermeadadesProfesionales = administrarAusentismos.empleadosEP(secuenciaEmpleado);
-        }
         return listaEnfermeadadesProfesionales;
     }
 
@@ -3401,9 +3389,7 @@ public class ControlAusentismos implements Serializable {
     }
 
     public List<Diagnosticoscategorias> getListaDiagnosticos() {
-        if (listaDiagnosticos == null) {
             listaDiagnosticos = administrarAusentismos.lovDiagnosticos();
-        }
         return listaDiagnosticos;
     }
 
@@ -3428,9 +3414,7 @@ public class ControlAusentismos implements Serializable {
     }
 
     public List<Terceros> getListaTerceros() {
-        if (listaTerceros == null) {
-            listaTerceros = administrarAusentismos.lovTerceros();
-        }
+        listaTerceros = administrarAusentismos.lovTerceros();
         return listaTerceros;
     }
 
@@ -3455,11 +3439,7 @@ public class ControlAusentismos implements Serializable {
     }
 
     public List<Soausentismos> getListaProrrogas() {
-        //System.out.println("Tiene algo" + listaProrrogas.size());
-        if (listaProrrogas == null) {
-            System.out.println("...");
-            listaProrrogas = administrarAusentismos.lovProrrogas(secuenciaEmpleado, secuenciaCausa, secuenciaAusentismo);
-        }
+        listaProrrogas = administrarAusentismos.lovProrrogas(secuenciaEmpleado, secuenciaCausa, secuenciaAusentismo);
         return listaProrrogas;
     }
 
