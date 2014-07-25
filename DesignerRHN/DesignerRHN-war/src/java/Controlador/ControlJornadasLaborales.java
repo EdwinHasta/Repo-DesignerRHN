@@ -806,7 +806,7 @@ public class ControlJornadasLaborales implements Serializable {
                 context.update("formEditar:editarHorasMensuales");
                 context.execute("editarHorasMensuales.show()");
                 cualCelda = -1;
-            } else if (cualCelda == 6) {
+            } else if (cualCelda == 7) {
                 context.update("formEditar:editarJornada");
                 context.execute("editarJornada.show()");
                 cualCelda = -1;

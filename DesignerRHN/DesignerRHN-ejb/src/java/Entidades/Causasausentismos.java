@@ -19,6 +19,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -44,7 +45,7 @@ public class Causasausentismos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
-    private short codigo;
+    private Short codigo;
     @Size(max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
@@ -77,6 +78,18 @@ public class Causasausentismos implements Serializable {
     @JoinColumn(name = "CLASE", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Clasesausentismos clase;
+    @Transient
+    private String estadoOrigenIncapacidad;
+    @Transient
+    private String estadoFormaLiquidacion;
+    @Transient
+    private boolean estadoRemunerada;
+    @Transient
+    private boolean estadoDescuentaTiempoContinuo;
+    @Transient
+    private boolean estadoRestaTiempoSoloPrestaciones;
+    @Transient
+    private boolean estadoGarantizaBaseml;
 
     public Causasausentismos() {
     }
@@ -85,7 +98,7 @@ public class Causasausentismos implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public Causasausentismos(BigInteger secuencia, short codigo) {
+    public Causasausentismos(BigInteger secuencia, Short codigo) {
         this.secuencia = secuencia;
         this.codigo = codigo;
     }
@@ -98,11 +111,11 @@ public class Causasausentismos implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public short getCodigo() {
+    public Short getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(Short codigo) {
         this.codigo = codigo;
     }
 
@@ -126,6 +139,9 @@ public class Causasausentismos implements Serializable {
     }
 
     public String getOrigenincapacidad() {
+        if(origenincapacidad == null){
+            origenincapacidad = " ";
+        }
         return origenincapacidad;
     }
 
@@ -158,6 +174,9 @@ public class Causasausentismos implements Serializable {
     }
 
     public String getFormaliquidacion() {
+        if(formaliquidacion == null){
+            formaliquidacion = " ";
+        }
         return formaliquidacion;
     }
 
@@ -231,5 +250,156 @@ public class Causasausentismos implements Serializable {
     public String toString() {
         return "Entidades.Causasausentismos[ secuencia=" + secuencia + " ]";
     }
+
+    public String getEstadoOrigenIncapacidad() {
+        if (estadoOrigenIncapacidad == null) {
+            if (origenincapacidad == null) {
+                estadoOrigenIncapacidad = " ";
+
+            } else {
+                if (origenincapacidad.equalsIgnoreCase("AT")) {
+                    estadoOrigenIncapacidad = "AT";
+                } else if (origenincapacidad.equalsIgnoreCase("EG")) {
+                    estadoOrigenIncapacidad = "EG";
+                } else if (origenincapacidad.equalsIgnoreCase("EP")) {
+                    estadoOrigenIncapacidad = "EP";
+                } else if (origenincapacidad.equalsIgnoreCase("MA")) {
+                    estadoOrigenIncapacidad = "MA";
+                } else if (origenincapacidad.equalsIgnoreCase("OT")) {
+                    estadoOrigenIncapacidad = "OT";
+                }  else if (origenincapacidad.equalsIgnoreCase(" ")) {
+                    estadoOrigenIncapacidad = " ";
+                }
+            }
+        }
+        return estadoOrigenIncapacidad;
+    }
+
+    public void setEstadoOrigenIncapacidad(String estadoOrigenIncapacidad) {
+        this.estadoOrigenIncapacidad = estadoOrigenIncapacidad;
+    }
+
+    public String getEstadoFormaLiquidacion() {
+        if (estadoFormaLiquidacion == null) {
+            if (formaliquidacion == null) {
+                estadoFormaLiquidacion = " ";
+
+            } else {
+                if (formaliquidacion.equalsIgnoreCase("BASICO")) {
+                    estadoFormaLiquidacion = "BASICO";
+                } else if (formaliquidacion.equalsIgnoreCase("IBC MES ANTERIOR")) {
+                    estadoFormaLiquidacion = "IBC MES ANTERIOR";
+                } else if (formaliquidacion.equalsIgnoreCase("IBC MES ENERO")) {
+                    estadoFormaLiquidacion = "IBC MES ENERO";
+                } else if (formaliquidacion.equalsIgnoreCase("IBC MES INCAPACIDAD")) {
+                    estadoFormaLiquidacion = "IBC MES INCAPACIDAD";
+                } else if (formaliquidacion.equalsIgnoreCase("PROMEDIO ACUMULADOS 12 MESES")) {
+                    estadoFormaLiquidacion = "PROMEDIO ACUMULADOS 12 MESES";
+                } else if (formaliquidacion.equalsIgnoreCase("PROMEDIO IBC 12 MESES")) {
+                    estadoFormaLiquidacion = "PROMEDIO IBC 12 MESES";
+                }else if (formaliquidacion.equalsIgnoreCase("PROMEDIO IBC 6 MESES")) {
+                    estadoFormaLiquidacion = "PROMEDIO IBC 6 MESES";
+                } else if (formaliquidacion.equalsIgnoreCase(" ")) {
+                    estadoFormaLiquidacion = " ";
+                }
+            }
+        }
+        return estadoFormaLiquidacion;
+    }
+
+    public void setEstadoFormaLiquidacion(String estadoFormaLiquidacion) {
+        this.estadoFormaLiquidacion = estadoFormaLiquidacion;
+    }   
+
+    public boolean isEstadoRemunerada() {
+        if (remunerada != null) {
+            if (remunerada.equals("S")) {
+                estadoRemunerada = true;
+            } else {
+                estadoRemunerada = false;
+            }
+        } else {
+            estadoRemunerada = false;
+        }
+        return estadoRemunerada;
+    }
+
+    public void setEstadoRemunerada(boolean estadoRemunerada) {
+        if (estadoRemunerada == true) {
+            remunerada = "S";
+        } else {
+            remunerada = "N";
+        }
+        this.estadoRemunerada = estadoRemunerada;
+    }
+
+    public boolean isEstadoDescuentaTiempoContinuo() {
+        if (descuentatiempocontinuo != null) {
+            if (descuentatiempocontinuo.equals("S")) {
+                estadoDescuentaTiempoContinuo = true;
+            } else {
+                estadoDescuentaTiempoContinuo = false;
+            }
+        } else {
+            estadoDescuentaTiempoContinuo = false;
+        }
+        return estadoDescuentaTiempoContinuo;
+    }
+
+    public void setEstadoDescuentaTiempoContinuo(boolean estadoDescuentaTiempoContinuo) {
+        if (estadoDescuentaTiempoContinuo == true) {
+            descuentatiempocontinuo = "S";
+        } else {
+            descuentatiempocontinuo = "N";
+        }
+        this.estadoDescuentaTiempoContinuo = estadoDescuentaTiempoContinuo;
+    }
+
+    public boolean isEstadoRestaTiempoSoloPrestaciones() {
+        if (restatiemposoloprestaciones != null) {
+            if (restatiemposoloprestaciones.equals("S")) {
+                estadoRestaTiempoSoloPrestaciones = true;
+            } else {
+                estadoRestaTiempoSoloPrestaciones = false;
+            }
+        } else {
+            estadoRestaTiempoSoloPrestaciones = false;
+        }
+        return estadoRestaTiempoSoloPrestaciones;
+    }
+
+    public void setEstadoRestaTiempoSoloPrestaciones(boolean estadoRestaTiempoSoloPrestaciones) {
+        if (estadoRestaTiempoSoloPrestaciones == true) {
+            restatiemposoloprestaciones = "S";
+        } else {
+            restatiemposoloprestaciones = "N";
+        }
+        this.estadoRestaTiempoSoloPrestaciones = estadoRestaTiempoSoloPrestaciones;
+    }
+
+    public boolean isEstadoGarantizaBaseml() {
+        if (garantizabasesml != null) {
+            if (garantizabasesml.equals("S")) {
+                estadoGarantizaBaseml = true;
+            } else {
+                estadoGarantizaBaseml = false;
+            }
+        } else {
+            estadoGarantizaBaseml = false;
+        }
+        return estadoGarantizaBaseml;
+    }
+
+    public void setEstadoGarantizaBaseml(boolean estadoGarantizaBaseml) {
+        if (estadoGarantizaBaseml == true) {
+            garantizabasesml = "S";
+        } else {
+            garantizabasesml = "N";
+        }
+        this.estadoGarantizaBaseml = estadoGarantizaBaseml;
+    }
+    
+    
+    
     
 }
