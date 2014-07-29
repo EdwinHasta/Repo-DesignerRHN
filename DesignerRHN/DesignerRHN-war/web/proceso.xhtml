@@ -14,14 +14,14 @@
                 <h:form id="form"> 
                     <f:loadBundle basename="Recursos.proceso" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 535px;  text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px;  text-align: left" >  
 
-                        <p:commandButton style="position: absolute; left: 20px; top: 510px;" id="OPERANDOGC" value="#{msg['operandoGC']}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 683px; top: 510px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" disabled="#{controlProceso.cambiosPagina}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 510px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlProceso.salir()}" action="#{controlProceso.valorPaginaAnterior()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 20px; top: 480px;" id="OPERANDOGC" value="#{msg['operandoGC']}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 683px; top: 480px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" disabled="#{controlProceso.cambiosPagina}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 480px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlProceso.salir()}" action="#{controlProceso.valorPaginaAnterior()}" process="@this" />
 
 
-                        <fieldset style="position: absolute; left: 10px; top: 65px; width: 830px; height: 180px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 65px; width: 830px; height: 158px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['proceso']}</strong></legend>
 
                             <p:dataTable id="datosProceso" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="position: relative; border: 1px; text-align: left;width: 810px"                           
@@ -251,7 +251,7 @@
                         </p:toolbar> 
 
 
-                        <fieldset style="position: absolute; left: 10px; top: 260px; width: 415px; height: 165px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 240px; width: 415px; height: 155px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['formulaProceso']}</strong></legend>
 
                             <p:dataTable id="datosFormulaProceso" var="infoFP" rowKey="#{infoFP.secuencia}" rowIndexVar="indiceFP" style="position: relative; border: 1px; text-align: left;width: 395px"
@@ -294,7 +294,7 @@
 
                         <p:remoteCommand name="posicionOperando" actionListener="#{controlProceso.posicionOperando()}"/>
 
-                        <fieldset style="position: absolute; left: 450px; top: 260px; width: 392px; height: 165px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 450px; top: 240px; width: 392px; height: 155px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['operandoLog']}</strong></legend>
 
                             <p:dataTable id="datosOperando" var="infoOL" rowKey="#{infoOL.secuencia}" rowIndexVar="indiceOL" style="border: 1px; text-align: left;width: 370px"
@@ -336,7 +336,7 @@
                             </p:dataTable>  
                         </fieldset> 
 
-                        <fieldset style="position: absolute; left: 10px; top: 440px; width: 833px; height:50px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 410px; width: 833px; height:50px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['procesoClonar']}</strong></legend>
 
                             <h:outputText style="position: absolute; top: 15px; left: 30px" value="#{msg['nuevoClonado']}"/>

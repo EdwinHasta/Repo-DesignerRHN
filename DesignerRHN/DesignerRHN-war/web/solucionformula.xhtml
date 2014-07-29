@@ -13,7 +13,7 @@
             <ui:define name="body">                  
                 <h:form id="form"> 
                     <f:loadBundle basename="Recursos.solucionformula" var="msg" />
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" position: absolute; width: 874px; height: 430px;  text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" position: absolute; width: 874px; height: 510px;  text-align: left" >  
 
                         <h:outputText style="position: absolute; top: 40px; height: 12px;position: absolute; color: #14388B; font-weight: bold;text-align: right;width: 480px;left: 380px;" id="informacionEmpleadoNovedad"  value="#{controlSolucionFormula.informacionEmpleadoNovedad}"/>  
 
@@ -74,7 +74,7 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <fieldset style="position: absolute; left: 10px; top: 80px; width: 830px; height: 270px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 80px; width: 830px; height: 370px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['informacion']}</strong></legend>
 
                             <p:dataTable id="datosSolucionFormula" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" 
@@ -207,8 +207,8 @@
 
 
 
-                        <p:commandButton style="position: absolute; left: 775px; top: 382px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlSolucionFormula.salir()}" action="novedadEmpl" process="@this" />
-                        <h:outputText id="informacionRegistro" value="#{controlSolucionFormula.infoRegistro}" style="position: absolute; left: 15px; top: 386px; font-weight: bold"/>
+                        <p:commandButton style="position: absolute; left: 775px; top: 475px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlSolucionFormula.salir()}" action="novedadEmpl" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlSolucionFormula.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
 
                     </p:panel>
 

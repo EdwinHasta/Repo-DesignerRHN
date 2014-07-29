@@ -54,7 +54,7 @@ public class ControlSolucionFormula implements Serializable {
     private String infoRegistro;
 
     public ControlSolucionFormula() {
-        algoTabla = "210";
+        algoTabla = "300";
         empleado = new Empleados();
         novedad = new Novedades();
         backUpSecRegistro = null;
@@ -171,7 +171,7 @@ public class ControlSolucionFormula implements Serializable {
 
     public void activarCtrlF11() {
         if (bandera == 0) {
-            algoTabla = "188";
+            algoTabla = "278";
             fechaHasta = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionFormula:fechaHasta");
             fechaHasta.setFilterStyle("width: 60px");
             concepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionFormula:concepto");
@@ -189,7 +189,7 @@ public class ControlSolucionFormula implements Serializable {
             RequestContext.getCurrentInstance().update("form:datosSolucionFormula");
             bandera = 1;
         } else if (bandera == 1) {
-            algoTabla = "210";
+            algoTabla = "300";
             fechaHasta = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionFormula:fechaHasta");
             fechaHasta.setFilterStyle("display: none; visibility: hidden;");
             concepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionFormula:concepto");
@@ -215,7 +215,7 @@ public class ControlSolucionFormula implements Serializable {
 
     public void salir() {
         if (bandera == 1) {
-            algoTabla = "210";
+            algoTabla = "300";
             fechaHasta = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionFormula:fechaHasta");
             fechaHasta.setFilterStyle("display: none; visibility: hidden;");
             concepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionFormula:concepto");
@@ -412,6 +412,12 @@ public class ControlSolucionFormula implements Serializable {
     }
 
     public String getInfoRegistro() {
+        getListaSolucionesFormulas();
+        if (listaSolucionesFormulas != null) {
+            infoRegistro = "Cantidad de registros : " + listaSolucionesFormulas.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
         return infoRegistro;
     }
 

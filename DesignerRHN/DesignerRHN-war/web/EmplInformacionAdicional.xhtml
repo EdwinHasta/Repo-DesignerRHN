@@ -15,16 +15,16 @@
                     <f:loadBundle basename="Recursos.emplinformacionadicional" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
 
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" position: absolute; width: 874px; height: 475px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" position: absolute; width: 874px; height: 510px; text-align: left" >  
 
                         <h:outputText style="position: absolute;top: 50px; height: 12px;position: absolute;color: red; font-weight: bold;text-align: right;width: 240px;left: 600px; "  id="nombreEmpleado" value="#{controlEmplInformacionAdicional.empleado.persona.primerapellido} #{controlEmplInformacionAdicional.empleado.persona.segundoapellido} #{controlEmplInformacionAdicional.empleado.persona.nombre}"/>  
 
-                        <fieldset style="position: absolute; left: 10px; top: 80px;  width: 820px; height: 330px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 80px;  width: 820px; height: 375px; border-radius: 10px; ">
                             <legend style="color: blue;text-align: left"><strong>#{msg['informacion']}</strong></legend>
 
 
                             <p:dataTable id="datosInfoAdEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style=" border: 1px;width: 820px"                           
-                                         value="#{controlEmplInformacionAdicional.listInformacionAdicional}" scrollable="true" scrollHeight="280" scrollWidth="820"
+                                         value="#{controlEmplInformacionAdicional.listInformacionAdicional}" scrollable="true" scrollHeight="#{controlEmplInformacionAdicional.altoTabla}" scrollWidth="820"
                                          filteredValue="#{controlEmplInformacionAdicional.filtrarListInformacionAdicional}" emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell" liveScroll="true" scrollRows="15"
                                          selectionMode="single" selection="#{controlEmplInformacionAdicional.informacionTablaSeleccionada}"
@@ -264,9 +264,9 @@
 
 
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 445px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" disabled="#{controlEmplInformacionAdicional.guardado}" update=":form:datosInfoAdEmpleado" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 445px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick"  actionListener="#{controlEmplInformacionAdicional.salir()}" action="individualEmpl" process="@this" />
-                        <h:outputText id="informacionRegistro" value="#{controlEmplInformacionAdicional.infoRegistro}" style="position: absolute; left: 15px; top: 450px; font-weight: bold"/>
+                        <p:commandButton style="position: absolute; left: 683px; top: 475px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" disabled="#{controlEmplInformacionAdicional.guardado}" update=":form:datosInfoAdEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 475px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick"  actionListener="#{controlEmplInformacionAdicional.salir()}" action="individualEmpl" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlEmplInformacionAdicional.infoRegistro}" style="position: absolute; left: 15px; top: 480px; font-weight: bold"/>
 
                     </p:panel>
                     

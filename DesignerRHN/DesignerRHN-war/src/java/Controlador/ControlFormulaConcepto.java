@@ -87,7 +87,7 @@ public class ControlFormulaConcepto implements Serializable {
     private String infoRegistroConcepto, infoRegistroOrden;
 
     public ControlFormulaConcepto() {
-        altoTabla = "260";
+        altoTabla = "310";
         formulaActual = new Formulas();
         listFormulasConceptosFormula = null;
         fechaParametro = new Date(1, 1, 0);
@@ -740,7 +740,7 @@ public class ControlFormulaConcepto implements Serializable {
      */
     public void cancelarModificacion() {
         if (banderaFormulasConceptos == 1) {
-            altoTabla = "260";
+            altoTabla = "310";
             formulaFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaFechaInicial");
             formulaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             formulaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaFechaFinal");
@@ -935,7 +935,7 @@ public class ControlFormulaConcepto implements Serializable {
             boolean validacion = validarFechasRegistroFormulas(1);
             if (validacion == true) {
                 if (banderaFormulasConceptos == 1) {
-                    altoTabla = "260";
+                    altoTabla = "310";
                     formulaFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaFechaInicial");
                     formulaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
                     formulaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaFechaFinal");
@@ -1033,7 +1033,7 @@ public class ControlFormulaConcepto implements Serializable {
             if (validacion == true) {
 
                 if (banderaFormulasConceptos == 1) {
-                    altoTabla = "260";
+                    altoTabla = "310";
                     formulaFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaFechaInicial");
                     formulaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
                     formulaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaFechaFinal");
@@ -1161,7 +1161,7 @@ public class ControlFormulaConcepto implements Serializable {
      */
     public void filtradoFormula() {
         if (banderaFormulasConceptos == 0) {
-            altoTabla = "238";
+            altoTabla = "288";
             formulaFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaFechaInicial");
             formulaFechaInicial.setFilterStyle("width: 60px");
             formulaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaFechaFinal");
@@ -1180,7 +1180,7 @@ public class ControlFormulaConcepto implements Serializable {
             RequestContext.getCurrentInstance().update("form:datosFormulaConcepto");
             banderaFormulasConceptos = 1;
         } else if (banderaFormulasConceptos == 1) {
-            altoTabla = "260";
+            altoTabla = "310";
             formulaFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaFechaInicial");
             formulaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             formulaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaFechaFinal");
@@ -1209,7 +1209,7 @@ public class ControlFormulaConcepto implements Serializable {
      */
     public void salir() {
         if (banderaFormulasConceptos == 1) {
-            altoTabla = "260";
+            altoTabla = "310";
             formulaFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaFechaInicial");
             formulaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             formulaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaFechaFinal");

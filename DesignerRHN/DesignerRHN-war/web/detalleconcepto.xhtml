@@ -16,7 +16,7 @@
                     <f:loadBundle basename="Recursos.detalleconcepto" var="msg" />
                     <p:growl id="growl" showDetail="true" />
 
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 535px; text-align: left;" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left;" >  
 
                         <h:outputText value="#{msg['concepto']}" style="position: absolute;left: 45px; top: 80px;color: #14388B;font-weight: bold"/>
                         <h:outputText id="nombreConcepto" value="#{controlDetalleConcepto.comportamientoConcepto}" style="font-weight: bold; color: #BF1A1A; position: absolute; left: 115px; top: 80px"/>
@@ -24,10 +24,10 @@
                         <p:tooltip  for="btnDeteleConcepto" value="#{msg['hojadevidadelconcepto']}" />
 
 
-                        <fieldset  style="position: absolute; left: 3px; top: 105px; width: 850px; height: 390px; border-radius: 10px; text-align: left;">
+                        <fieldset  style="position: absolute; left: 3px; top: 105px; width: 850px; height: 355px; border-radius: 10px; text-align: left;">
                             <legend style="color: blue"><strong>#{msg['asignaciondecuentas']}</strong></legend>
 
-                            <p:scrollPanel id="scrollPrincipal" style="position: absolute; left: 3px; top: 15px; width:856px; height:380px; border: none" mode="native">  
+                            <p:scrollPanel id="scrollPrincipal" style="position: absolute; left: 3px; top: 15px; width:856px; height:345px; border: none" mode="native">  
 
                                 <fieldset style="position: absolute; top: 10px; width: 815px; height: 220px; border-radius: 10px; text-align: left">
                                     <legend style="color: blue"><strong>#{msg['cuentasytipocc']}</strong></legend>
@@ -616,8 +616,8 @@
                             </p:scrollPanel>  
                         </fieldset>
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 510px;" id="ACEPTAR" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.guardado}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVigenciaCuenta" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 510px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlDetalleConcepto.salir()}" action="retornoConcepto" process="@this" />
+                        <p:commandButton style="position: absolute; left: 683px; top: 480px;" id="ACEPTAR" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.guardado}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVigenciaCuenta" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 480px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlDetalleConcepto.salir()}" action="retornoConcepto" process="@this" />
                     </p:panel>
 
 

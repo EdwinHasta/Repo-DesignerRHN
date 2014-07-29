@@ -80,7 +80,7 @@ public class ControlDetalleCuenta implements Serializable {
 
     public ControlDetalleCuenta() {
         altoTablaDebito = "105";
-        altoTablaCredito = "152";
+        altoTablaCredito = "120";
         nombreTablaRastro = "";
         backUp = null;
         listCuentasDebito = null;
@@ -285,7 +285,7 @@ public class ControlDetalleCuenta implements Serializable {
      */
     public void filtradoCredito() {
         if (banderaCredito == 0) {
-            altoTablaCredito = "130";
+            altoTablaCredito = "98";
             creditoFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCuentaCredito:creditoFechaInicial");
             creditoFechaInicial.setFilterStyle("width: 60px");
             creditoFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCuentaCredito:creditoFechaFinal");
@@ -303,7 +303,7 @@ public class ControlDetalleCuenta implements Serializable {
             RequestContext.getCurrentInstance().update("form:datosCuentaCredito");
             banderaCredito = 1;
         } else if (banderaCredito == 1) {
-            altoTablaCredito = "152";
+            altoTablaCredito = "120";
             creditoFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCuentaCredito:creditoFechaInicial");
             creditoFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             creditoFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCuentaCredito:creditoFechaFinal");
@@ -378,7 +378,7 @@ public class ControlDetalleCuenta implements Serializable {
      */
     public void salir() {
         if (banderaCredito == 1) {
-            altoTablaCredito = "152";
+            altoTablaCredito = "120";
             creditoFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCuentaCredito:creditoFechaInicial");
             creditoFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             creditoFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCuentaCredito:creditoFechaFinal");

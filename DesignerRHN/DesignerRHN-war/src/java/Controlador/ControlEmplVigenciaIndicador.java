@@ -90,7 +90,7 @@ public class ControlEmplVigenciaIndicador implements Serializable {
     private String altoTabla;
 
     public ControlEmplVigenciaIndicador() {
-        altoTabla = "270";
+        altoTabla = "310";
         empleado = new Empleados();
         backUpSecRegistro = null;
         tipoLista = 0;
@@ -562,7 +562,7 @@ public class ControlEmplVigenciaIndicador implements Serializable {
 
     public void cancelarModificacionV() {
         if (banderaV == 1) {
-            altoTabla = "270";
+            altoTabla = "310";
             FacesContext c = FacesContext.getCurrentInstance();
             viTipoIndicador = (Column) c.getViewRoot().findComponent("form:datosVigencia:viTipoIndicador");
             viTipoIndicador.setFilterStyle("display: none; visibility: hidden;");
@@ -643,7 +643,7 @@ public class ControlEmplVigenciaIndicador implements Serializable {
             if (validarFechasRegistro(1) == true) {
                 //CERRAR FILTRADO
                 if (banderaV == 1) {
-                    altoTabla = "270";
+                    altoTabla = "310";
                     FacesContext c = FacesContext.getCurrentInstance();
                     viTipoIndicador = (Column) c.getViewRoot().findComponent("form:datosVigencia:viTipoIndicador");
                     viTipoIndicador.setFilterStyle("display: none; visibility: hidden;");
@@ -757,7 +757,7 @@ public class ControlEmplVigenciaIndicador implements Serializable {
                 }
                 if (banderaV == 1) {
                     //CERRAR FILTRADO
-                    altoTabla = "270";
+                    altoTabla = "310";
                     FacesContext c = FacesContext.getCurrentInstance();
                     viTipoIndicador = (Column) c.getViewRoot().findComponent("form:datosVigencia:viTipoIndicador");
                     viTipoIndicador.setFilterStyle("display: none; visibility: hidden;");
@@ -859,7 +859,7 @@ public class ControlEmplVigenciaIndicador implements Serializable {
     public void filtradoVigencia() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (banderaV == 0) {
-            altoTabla = "248";
+            altoTabla = "288";
             viFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigencia:viFechaInicial");
             viFechaInicial.setFilterStyle("width: 50px");
 
@@ -877,7 +877,7 @@ public class ControlEmplVigenciaIndicador implements Serializable {
             tipoLista = 1;
             banderaV = 1;
         } else if (banderaV == 1) {
-            altoTabla = "270";
+            altoTabla = "310";
             viTipoIndicador = (Column) c.getViewRoot().findComponent("form:datosVigencia:viTipoIndicador");
             viTipoIndicador.setFilterStyle("display: none; visibility: hidden;");
 
@@ -899,7 +899,7 @@ public class ControlEmplVigenciaIndicador implements Serializable {
 
     public void salir() {
         if (banderaV == 1) {
-            altoTabla = "270";
+            altoTabla = "310";
             FacesContext c = FacesContext.getCurrentInstance();
             viTipoIndicador = (Column) c.getViewRoot().findComponent("form:datosVigencia:viTipoIndicador");
             viTipoIndicador.setFilterStyle("display: none; visibility: hidden;");

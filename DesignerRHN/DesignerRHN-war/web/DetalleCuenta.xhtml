@@ -12,7 +12,7 @@
             <ui:define name="body">                  
                 <h:form id="form">
                     <f:loadBundle basename="Recursos.detallecuenta" var="msg" />
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 540px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left" >  
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #009;font-weight: bold;text-align: right;width: 240px;left: 300px;" value="#{msg['cuenta']}"/>
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: red;font-weight: bold;text-align: left;width: 240px;left: 550px;" id="nombreCuenta" value="#{controlDetalleCuenta.cuentaActual.codigo} - #{controlDetalleCuenta.cuentaActual.descripcion}">
                         </h:outputText>
@@ -72,7 +72,7 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <fieldset style="position: absolute; left: 10px; top: 90px; width: 830px; height: 210px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute; left: 10px; top: 90px; width: 830px; height: 180px; border-radius: 10px; text-align: left">
                             <legend style="color: blue"><strong>#{msg['cuentacredito']}</strong></legend>
                             <!-- TABLA EMPLVIGENCIALOCALIZACION -->
 
@@ -218,7 +218,7 @@
                             </p:dataTable>
                         </fieldset>
 
-                        <fieldset style="position: absolute;top: 320px;left: 10px;height: 160px;width: 830px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 290px;left: 10px;height: 160px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="color: blue"><strong>#{msg['cuentadebito']}</strong></legend> 
                             <p:dataTable id="datosCuentaDebito" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceD" value="#{controlDetalleCuenta.listCuentasDebito}" 
                                          filteredValue="#{controlDetalleCuenta.filtrarListCuentasDebito}" editable="true" editMode="cell" liveScroll="true" scrollRows="12"
@@ -365,7 +365,7 @@
                         <p:remoteCommand name="posicionD" actionListener="#{controlDetalleCuenta.posicionDebito()}"/>
 
 
-                        <p:commandButton style="position: absolute; left: 775px; top: 505px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlDetalleCuenta.salir()}" action="cuentasBack" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 475px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlDetalleCuenta.salir()}" action="cuentasBack" process="@this" />
 
                     </p:panel>
 

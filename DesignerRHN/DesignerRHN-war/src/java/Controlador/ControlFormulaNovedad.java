@@ -86,7 +86,7 @@ public class ControlFormulaNovedad implements Serializable {
     private String altoTabla;
 
     public ControlFormulaNovedad() {
-        altoTabla = "260";
+        altoTabla = "310";
         auxFormulaDescripcion = "";
         permitirIndex = true;
         tipoActualizacion = -1;
@@ -336,7 +336,7 @@ public class ControlFormulaNovedad implements Serializable {
     public void cancelarModificacionFormulaNovedad() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
-            altoTabla = "260";
+            altoTabla = "310";
             formulaCorto = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaCorto");
             formulaCorto.setFilterStyle("display: none; visibility: hidden;");
             formulaNombre = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaNombre");
@@ -409,7 +409,7 @@ public class ControlFormulaNovedad implements Serializable {
         if (nuevoFormulaNovedad.getFormula().getSecuencia() != null) {
             FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
-                altoTabla = "260";
+                altoTabla = "310";
                 formulaCorto = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaCorto");
                 formulaCorto.setFilterStyle("display: none; visibility: hidden;");
                 formulaNombre = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaNombre");
@@ -524,7 +524,7 @@ public class ControlFormulaNovedad implements Serializable {
             }
             FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
-                altoTabla = "260";
+                altoTabla = "310";
                 formulaCorto = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaCorto");
                 formulaCorto.setFilterStyle("display: none; visibility: hidden;");
                 formulaNombre = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaNombre");
@@ -625,7 +625,7 @@ public class ControlFormulaNovedad implements Serializable {
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            altoTabla = "238";
+            altoTabla = "288";
             formulaCorto = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaCorto");
             formulaCorto.setFilterStyle("width: 125px");
             formulaNombre = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaNombre");
@@ -641,7 +641,7 @@ public class ControlFormulaNovedad implements Serializable {
             RequestContext.getCurrentInstance().update("form:datosFormulaNovedad");
             bandera = 1;
         } else if (bandera == 1) {
-            altoTabla = "260";
+            altoTabla = "310";
             formulaCorto = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaCorto");
             formulaCorto.setFilterStyle("display: none; visibility: hidden;");
             formulaNombre = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaNombre");
@@ -668,7 +668,7 @@ public class ControlFormulaNovedad implements Serializable {
     public void salir() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
-            altoTabla = "260";
+            altoTabla = "310";
             formulaCorto = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaCorto");
             formulaCorto.setFilterStyle("display: none; visibility: hidden;");
             formulaNombre = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaNombre");

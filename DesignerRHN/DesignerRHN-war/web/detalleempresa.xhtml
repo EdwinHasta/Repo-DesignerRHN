@@ -16,7 +16,7 @@
                     <f:loadBundle basename="Recursos.detalleempresa" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
                     
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 485px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left" >  
 
                         <p:toolbar style="position: absolute; top: 37px; left: 12px; height: 23px">  
                             <p:toolbarGroup align="left"> 
@@ -77,7 +77,7 @@
                         </p:toolbar> 
 
 
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 330px;width: 830px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 375px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="color: blue"><strong>#{msg['titulo']}</strong></legend>
                             <p:dataTable id="datosDetalleEmpresa" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceDE" value="#{controlDetalleEmpresa.listaDetallesEmpresas}" 
                                          filteredValue="#{controlDetalleEmpresa.filtrarListaDetallesEmpresas}" editable="true" editMode="cell" 
@@ -910,9 +910,9 @@
                             </p:commandButton>
                         </p:dialog>
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 455px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" update=":form:datosDetalleEmpresa"  disabled="#{controlDetalleEmpresa.cambiosPagina}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 455px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlDetalleEmpresa.salir()}" action="#{controlDetalleEmpresa.regresarAPaginaAnterior()}" process="@this" />
-                        <h:outputText id="informacionRegistro" value="#{controlDetalleEmpresa.infoRegistro}" style="position: absolute; left: 15px; top: 460px; font-weight: bold"/>
+                        <p:commandButton style="position: absolute; left: 683px; top: 480px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" update=":form:datosDetalleEmpresa"  disabled="#{controlDetalleEmpresa.cambiosPagina}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 480px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlDetalleEmpresa.salir()}" action="#{controlDetalleEmpresa.regresarAPaginaAnterior()}" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlDetalleEmpresa.infoRegistro}" style="position: absolute; left: 15px; top: 485px; font-weight: bold"/>
 
                     </p:panel>
 

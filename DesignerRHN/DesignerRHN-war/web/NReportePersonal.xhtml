@@ -17,11 +17,11 @@
                     <f:loadBundle basename="Recursos.nreportepersonal" var="msg" />                    
                     <p:growl id="growl" showDetail="true"/>
                     
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 545px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left" >  
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 518px;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  actionListener="#{controlNReportePersonal.dispararDialogoGuardarCambios()}" disabled="#{controlNReportePersonal.cambiosReporte}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 518px;" icon="ui-icon-closethick" id="ATRAS" value="#{msg['cancelar']}" action="individual" actionListener="#{controlNReportePersonal.salir()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 10px; top: 518px;" id="ENVIOCORREO" value="#{msg['envio']}"   process="@this" oncomplete="EnvioCorreoDialogo.show()" actionListener="#{controlNReportePersonal.defaultPropiedadesParametrosReporte()}"/>
+                        <p:commandButton style="position: absolute; left: 683px; top: 483px;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  actionListener="#{controlNReportePersonal.dispararDialogoGuardarCambios()}" disabled="#{controlNReportePersonal.cambiosReporte}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 483px;" icon="ui-icon-closethick" id="ATRAS" value="#{msg['cancelar']}" action="individual" actionListener="#{controlNReportePersonal.salir()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 10px; top: 483px;" id="ENVIOCORREO" value="#{msg['envio']}"   process="@this" oncomplete="EnvioCorreoDialogo.show()" actionListener="#{controlNReportePersonal.defaultPropiedadesParametrosReporte()}"/>
                         
                         <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
@@ -39,11 +39,11 @@
                             <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardarSinSalida.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                         </p:dialog>
 
-                        <fieldset style="position: absolute; left: 10px; top: 272px;height: 230px;width: 85px; border-radius: 10px;">
-                            <h:outputText id="btn" style="position: absolute; left: 1px; top: 10px; background-image: url(Imagenes/reporte.jpg); width:100px ;height:230px; background-repeat: no-repeat; background-size: 100% 100%; "/>
+                        <fieldset style="position: absolute; left: 10px; top: 272px;height: 195px;width: 85px; border-radius: 10px;">
+                            <h:outputText id="btn" style="position: absolute; left: 1px; top: 5px; background-image: url(Imagenes/reporte.jpg); width:100px ;height: 195px; background-repeat: no-repeat; background-size: 100% 100%; "/>
                         </fieldset>
 
-                        <fieldset style="position: absolute; left: 120px; top: 272px; width: 725px; height: 230px; border-radius: 10px;">
+                        <fieldset style="position: absolute; left: 120px; top: 270px; width: 725px; height: 197px; border-radius: 10px;">
                             <legend style="color: blue;text-align:left"><strong>#{msg['reportes']}</strong></legend>
                             <p:dataTable id="reportesPersonal" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="border: 1px;width: 705px"                           
                                          value="#{controlNReportePersonal.listaIR}" scrollable="true" scrollHeight="#{controlNReportePersonal.altoTabla}" scrollWidth="720"
@@ -75,13 +75,13 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <p:commandButton style="position: absolute; left: 585px; top: 210px; " id="MOSTRARTODOS" value="#{msg['mostrar']}"  process="@this" actionListener="#{controlNReportePersonal.mostrarTodos()}" disabled="#{controlNReportePersonal.activoMostrarTodos}"  />
+                            <p:commandButton style="position: absolute; left: 585px; top: 174px; " id="MOSTRARTODOS" value="#{msg['mostrar']}"  process="@this" actionListener="#{controlNReportePersonal.mostrarTodos()}" disabled="#{controlNReportePersonal.activoMostrarTodos}"  />
                             <p:tooltip  for="MOSTRARTODOS" value="#{msg['mostrarTodos']}" />
-                            <p:commandButton style="position: absolute; left: 460px; top: 210px; " id="BUSCARREPORTE" value="#{msg['buscar']}"   process="@this" actionListener="#{controlNReportePersonal.mostrarDialogoBuscarReporte()}" disabled="#{controlNReportePersonal.activoBuscarReporte}" />
+                            <p:commandButton style="position: absolute; left: 460px; top: 174px; " id="BUSCARREPORTE" value="#{msg['buscar']}"   process="@this" actionListener="#{controlNReportePersonal.mostrarDialogoBuscarReporte()}" disabled="#{controlNReportePersonal.activoBuscarReporte}" />
                             <p:tooltip  for="BUSCARREPORTE" value="#{msg['buscarReporte']}" />
-                            <p:commandButton style="position: absolute; left: 10px; top: 210px; " id="GENERARREPORTE" value="#{msg['generar']}"   process="@this" actionListener="#{controlNReportePersonal.generarReporte()}"/>
+                            <p:commandButton style="position: absolute; left: 10px; top: 174px; " id="GENERARREPORTE" value="#{msg['generar']}"   process="@this" actionListener="#{controlNReportePersonal.generarReporte()}"/>
                             <p:tooltip  for="GENERARREPORTE" value="#{msg['generarReporte']}" />
-                            <h:outputText id="informacionRegistro" value="#{controlNReportePersonal.infoRegistro}" style="position: absolute; left: 15px; top: 190px; font-weight: bold"/>
+                            <h:outputText id="informacionRegistro" value="#{controlNReportePersonal.infoRegistro}" style="position: absolute; left: 15px; top: 155px; font-weight: bold"/>
 
                         </fieldset>
 

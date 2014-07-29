@@ -17,20 +17,20 @@
                     <f:loadBundle basename="Recursos.vigenciaaficion" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
                     
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 470px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left" >  
 
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: red;font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlVigenciaAficion.empleado.persona.primerapellido} #{controlVigenciaAficion.empleado.persona.segundoapellido} #{controlVigenciaAficion.empleado.persona.nombre}">
                         </h:outputText>
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 435px;" id="ACEPTAR" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlVigenciaAficion.guardado}" onclick="confirmarGuardar.show();" update=":form:datosVigenciasAficiones" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 435px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlVigenciaAficion.cancelarSalir()}" action="vigAfiEmplInd" process="@this" />
-                        <h:outputText id="informacionRegistro" value="#{controlVigenciaAficion.infoRegistro}" style="position: absolute; left: 15px; top: 440px; font-weight: bold"/>
+                        <p:commandButton style="position: absolute; left: 683px; top: 475px;" id="ACEPTAR" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlVigenciaAficion.guardado}" onclick="confirmarGuardar.show();" update=":form:datosVigenciasAficiones" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 475px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlVigenciaAficion.cancelarSalir()}" action="vigAfiEmplInd" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlVigenciaAficion.infoRegistro}" style="position: absolute; left: 15px; top: 480px; font-weight: bold"/>
 
-                        <fieldset style="position: absolute; left: 10px; top: 80px;width: 830px; height: 330px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 80px;width: 830px; height: 375px; border-radius: 10px; ">
                             <legend style="color: blue;text-align:left"><strong>#{msg['aficionesPersona']}</strong></legend>
 
                             <p:dataTable id="datosVigenciasAficiones" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="border: 1px; text-align: left;width: 820px"                           
-                                         value="#{controlVigenciaAficion.listVigenciasAficiones}" scrollable="true" scrollHeight="270" scrollWidth="820"
+                                         value="#{controlVigenciaAficion.listVigenciasAficiones}" scrollable="true" scrollHeight="#{controlVigenciaAficion.altoTabla}" scrollWidth="820"
                                          filteredValue="#{controlVigenciaAficion.filtrarListVigenciasAficiones}" emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell" liveScroll="true" scrollRows="15"
                                          selection="#{controlVigenciaAficion.vigenciaTablaSeleccionada}" selectionMode="single"
