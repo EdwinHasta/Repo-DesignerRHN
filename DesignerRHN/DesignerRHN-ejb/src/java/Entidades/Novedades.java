@@ -22,6 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -49,8 +50,8 @@ public class Novedades implements Serializable {
     @Column(name = "FECHAFINAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechafinal;
-    @Basic(optional = false)
-    @NotNull
+    //@Basic(optional = false)
+    //@NotNull
     @Column(name = "FECHAINICIAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechainicial;
@@ -130,6 +131,8 @@ public class Novedades implements Serializable {
     @JoinColumn(name = "USUARIOAPRUEBA", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Usuarios usuarioaprueba;
+    @Transient
+    private Date fechaInicialPrueba;
 
     public Novedades() {
     }
@@ -386,6 +389,8 @@ public class Novedades implements Serializable {
     public void setUsuarioaprueba(Usuarios usuarioaprueba) {
         this.usuarioaprueba = usuarioaprueba;
     }
+    
+    
 
     @Override
     public int hashCode() {

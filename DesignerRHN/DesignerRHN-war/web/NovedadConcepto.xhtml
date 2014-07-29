@@ -85,12 +85,18 @@
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesConceptos.verificarRastro()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
 
+                                <p:separator style="position: relative; top: -9px"/> 
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesConceptos.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesConceptos.salir()}" action="novedad" process="@this"/>  
+                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
                             </p:toolbarGroup>  
                         </p:toolbar>
 
                         <p:commandButton style="position: absolute; left: 670px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" disabled="#{controlNovedadesConceptos.guardado}" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosNovedadesConcepto" process="@this" />
-                        <p:commandButton style="position: absolute; left: 510px; top: 470px;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlNovedadesConceptos.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 760px; top: 470px;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlNovedadesConceptos.salir()}" action="novedad" />
+                        <p:commandButton style="position: absolute; left: 760px; top: 470px;" icon="ui-icon-closethick" id="ATRAS" value="#{msg['cancelar']}" actionListener="#{controlNovedadesConceptos.salir()}" action="novedad" />
 
                         <p:commandButton style="position: absolute; left: 10px; top: 470px; " id="TODAS" value="#{msg['todas']}" actionListener="#{controlNovedadesConceptos.todasNovedades()}" disabled="#{controlNovedadesConceptos.todas}" process="@this" />
                         <p:commandButton style="position: absolute; left: 165px; top: 470px;" id="ACTUALES" value="#{msg['actuales']}" actionListener="#{controlNovedadesConceptos.actualesNovedades()}" disabled="#{controlNovedadesConceptos.actuales}" process="@this" />
@@ -121,7 +127,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooEmpleado" value="#{msg['empleadoNOV']}"/>
+                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooEmpleado" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -136,7 +142,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['nombreempleadoNOV']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -150,15 +156,15 @@
                                         <f:facet name="input">
                                             <lnk:calendar id="editFechaInicial" value="#{novedades.fechainicial}" width="99"> 
                                                 <p:ajax event="dateSelect"  update="editFechaInicial"/>
-                                                <p:ajax event="change" listener="#{controlNovedadesConceptos.modificarNovedades(indice, 'N', novedades.fechaInicial)}"/>
-                                                <p:ajax event="select" listener="#{controlNovedadesConceptos.cambiarIndice(indice, 2)}" process="@this" />
+                                                <p:ajax event="change" listener="#{controlNovedadesConceptos.modificarNovedades(indice, 'N', novedades.fechainicial)}"/>
+                                                <p:ajax event="click" listener="#{controlNovedadesConceptos.cambiarIndice(indice, 2)}" process="@this" />
                                             </lnk:calendar>
 
                                         </f:facet>   
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['inicialNOV']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -173,13 +179,13 @@
                                             <lnk:calendar id="editFechaFinal" value="#{novedades.fechafinal}" width="99"> 
                                                 <p:ajax event="dateSelect"  update="editFechaFinal"/>
                                                 <p:ajax event="change" listener="#{controlNovedadesConceptos.modificarNovedades(indice, 'N', novedades.fechafinal)}"/>
-                                                <p:ajax event="select" listener="#{controlNovedadesConceptos.cambiarIndice(indice, 3)}" process="@this" />
+                                                <p:ajax event="click" listener="#{controlNovedadesConceptos.cambiarIndice(indice, 3)}" process="@this" />
                                             </lnk:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['finalNOV']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -195,7 +201,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['valorNOV']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -211,7 +217,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['saldoNOV']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -228,7 +234,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooPeriodicidad" actionListener="#{controlPeriodicidades.recibirPaginaEntrante('novedadconcepto')}" action="periodicidades"  value="#{msg['codigoNOV']}"/>
+                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooPeriodicidad" actionListener="#{controlPeriodicidades.recibirPaginaEntrante('novedadconcepto')}" action="periodicidades"  value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -243,7 +249,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['descripcionperiodicidadNOV']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -260,7 +266,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooTercerosNit" actionListener="#{controlTercero.recibirPaginaEntrante('novedadconcepto')}" action="terceros"  value="#{msg['nitNOV']}"/>
+                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooTercerosNit" actionListener="#{controlTercero.recibirPaginaEntrante('novedadconcepto')}" action="terceros"  value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -275,7 +281,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['nombredelterceroNOV']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -292,7 +298,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooFormulas" actionListener="#{controlFormula.recibirPaginaEntrante('novedadconcepto')}" action="formulas" value="#{msg['formulasNOV']}"/>
+                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooFormulas" actionListener="#{controlFormula.recibirPaginaEntrante('novedadconcepto')}" action="formulas" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -308,7 +314,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['horasdiasNOV']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -324,7 +330,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['minutohoraNOV']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -342,7 +348,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['tipoNOV']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -638,12 +644,12 @@
                         <p:commandButton value="#{msg['aceptar']}" onclick="validacionNuevaNovedadConcepto.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlNovedadesConceptos.guardarCambiosNovedades()}" style="position: absolute; top: 50px; left: 215px" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlNovedadesConceptos.cancelarModificacion()}" style="position: absolute; top: 50px; left: 255px" process="@this" />
-                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
+                    <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlNovedadesConceptos.guardarCambiosNovedades()}" action="novedad" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlNovedadesConceptos.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
 
                     <p:dialog id="inconsistencia" header="#{msg['atencion']}" widgetVar="inconsistencia"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
@@ -722,7 +728,6 @@
                         <p:inputTextarea value="#{controlNovedadesConceptos.editarNovedades.tipo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>
 
-
                     <!-- L.O.V CONCEPTOS-->
                     <p:dialog header="#{msg['conceptosC']}" widgetVar="conceptosDialogo" draggable="false" resizable="false" id="conceptosDialogo" closable="false"  
                               showEffect="fade" hideEffect="fade" modal="true" width="650" height="350" >
@@ -761,6 +766,8 @@
 
                         </p:dataTable>
 
+                        <h:outputText id="infoRegistroConceptos" value="#{controlNovedadesConceptos.infoRegistroConceptos}" style="position: relative; top: 15px; font-weight: bold"/>
+
                         <p:commandButton id="aceptarC" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlNovedadesConceptos.aceptar}" style="position: absolute; top: 305px; left: 450px; " actionListener="#{controlNovedadesConceptos.actualizarConceptosNovedad()}" onclick="LOVConceptos.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVConceptos:globalFilter"/>
                         </p:commandButton>
@@ -793,11 +800,12 @@
                             </p:column>
 
                         </p:dataTable>
+                        <h:outputText id="infoRegistroFormulas" value="#{controlNovedadesConceptos.infoRegistroFormulas}" style="position: relative; top: 15px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarF" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlNovedadesConceptos.aceptar}" style="position: absolute; top: 305px; left: 155px;" actionListener="#{controlNovedadesConceptos.actualizarFormulas()}" onclick="LOVFormulas.clearFilters();" update="@this" process="@this">
+                        <p:commandButton id="aceptarF" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlNovedadesConceptos.aceptar}" style="position: absolute; top: 305px; left: 200px;" actionListener="#{controlNovedadesConceptos.actualizarFormulas()}" onclick="LOVFormulas.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVFormulas:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasF" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 250px; " onclick="formulasDialogo.hide(), LOVFormulas.clearFilters();" actionListener="#{controlNovedadesConceptos.cancelarCambioFormulas()}" update="LOVFormulas, aceptarF" process="@this">
+                        <p:commandButton id="atrasF" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 290px; " onclick="formulasDialogo.hide(), LOVFormulas.clearFilters();" actionListener="#{controlNovedadesConceptos.cancelarCambioFormulas()}" update="LOVFormulas, aceptarF" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVFormulas:globalFilter"/>
                         </p:commandButton>
 
@@ -833,11 +841,12 @@
                             </p:column>
 
                         </p:dataTable>
+                        <h:outputText id="infoRegistroEmpleados" value="#{controlNovedadesConceptos.infoRegistroEmpleados}" style="position: relative; top: 15px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarE" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlNovedadesConceptos.aceptar}" style="position: absolute; top: 305px; left: 150px; " actionListener="#{controlNovedadesConceptos.actualizarEmpleados}" onclick="LOVEmpleados.clearFilters();" update="@this" process="@this">
+                        <p:commandButton id="aceptarE" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlNovedadesConceptos.aceptar}" style="position: absolute; top: 305px; left: 200px; " actionListener="#{controlNovedadesConceptos.actualizarEmpleados}" onclick="LOVEmpleados.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVEmpleados:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasE" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 250px;" onclick="empleadosDialogo.hide(), LOVEmpleados.clearFilters();" actionListener="#{controlNovedadesConceptos.cancelarCambioEmpleados()}" update="LOVEmpleados, aceptarE" process="@this">
+                        <p:commandButton id="atrasE" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 290px;" onclick="empleadosDialogo.hide(), LOVEmpleados.clearFilters();" actionListener="#{controlNovedadesConceptos.cancelarCambioEmpleados()}" update="LOVEmpleados, aceptarE" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVEmpleados:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -871,11 +880,12 @@
                                 <h:outputText value="#{periodicidades.nombre}" />  
                             </p:column>
                         </p:dataTable>
+                        <h:outputText id="infoRegistroPeriodicidades" value="#{controlNovedadesConceptos.infoRegistroPeriodicidades}" style="position: relative; top: 15px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarP" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlNovedadesConceptos.aceptar}" style="position: absolute; top: 305px; left: 150px; " actionListener="#{controlNovedadesConceptos.actualizarPeriodicidades()}" onclick="LOVPeriodicidades.clearFilters();" update="@this" process="@this">
+                        <p:commandButton id="aceptarP" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlNovedadesConceptos.aceptar}" style="position: absolute; top: 305px; left: 200px; " actionListener="#{controlNovedadesConceptos.actualizarPeriodicidades()}" onclick="LOVPeriodicidades.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVPeriodicidades:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasP" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 250px;" onclick="periodicidadesDialogo.hide(), LOVPeriodicidades.clearFilters();" actionListener="#{controlNovedadesConceptos.cancelarCambioPeriodicidades()}" update="LOVPeriodicidades, aceptarP" process="@this">
+                        <p:commandButton id="atrasP" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 290px;" onclick="periodicidadesDialogo.hide(), LOVPeriodicidades.clearFilters();" actionListener="#{controlNovedadesConceptos.cancelarCambioPeriodicidades()}" update="LOVPeriodicidades, aceptarP" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVPeriodicidades:globalFilter"/>
                         </p:commandButton>
 
@@ -911,10 +921,13 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarT" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlNovedadesConceptos.aceptar}" style="position: absolute; top: 305px; left: 150px;" actionListener="#{controlNovedadesConceptos.actualizarTerceros()}" onclick="LOVTerceros.clearFilters();" update="@this" process="@this">
+                        <h:outputText id="infoRegistroTerceros" value="#{controlNovedadesConceptos.infoRegistroTerceros}" style="position: relative; top: 15px; font-weight: bold"/>
+
+
+                        <p:commandButton id="aceptarT" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlNovedadesConceptos.aceptar}" style="position: absolute; top: 305px; left: 200px;" actionListener="#{controlNovedadesConceptos.actualizarTerceros()}" onclick="LOVTerceros.clearFilters();" update="@this" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVTerceros:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasT" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 250px;" onclick="tercerosDialogo.hide(), LOVTerceros.clearFilters();" actionListener="#{controlNovedadesConceptos.cancelarCambioConceptos()}" update="LOVTerceros, aceptarT" process="@this">
+                        <p:commandButton id="atrasT" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 290px;" onclick="tercerosDialogo.hide(), LOVTerceros.clearFilters();" actionListener="#{controlNovedadesConceptos.cancelarCambioConceptos()}" update="LOVTerceros, aceptarT" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVTerceros:globalFilter"/>
                         </p:commandButton>
 
