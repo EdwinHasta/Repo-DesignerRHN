@@ -704,7 +704,7 @@
 
                         <p:dataTable  id="LOVJornadas" style=" width: 330px" var="jornadas" value="#{controlJornadasLaborales.lovJornadas}"
                                       scrollable="true" scrollWidth="345" widgetVar="LOVJornadas" 
-                                      filteredValue="#{controlJornadasLaborales.lovFiltradoJornadas}" emptyMessage="No hay nada"
+                                      filteredValue="#{controlJornadasLaborales.lovFiltradoJornadas}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{jornadas.secuencia}" selection="#{controlJornadasLaborales.jornadaSeleccionada}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlJornadasLaborales.activarAceptar()}" update=":formularioDialogos:aceptarJ"/>
                             <p:ajax event="rowDblselect" listener="#{controlJornadasLaborales.actualizarJornadas()}" process="@this" onstart="LOVJornadas.clearFilters()"/>
@@ -858,7 +858,7 @@
                         </p:inputText>
                     </p:dialog>
                     <p:dialog id="editarJornada" header="#{msg['jornadae']}" widgetVar="editarJornada" resizable="false" draggable="false" modal="true" height="55" width="240">  
-                        <p:inputText value="#{controlJornadasLaborales.editarJornadaLaboral.jornada}" style="overflow: auto; width: 200px; height: 40px" readonly="true">                               
+                        <p:inputText value="#{controlJornadasLaborales.editarJornadaLaboral.jornada.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true">                               
                         </p:inputText>
                     </p:dialog>
                     <!-- Editar Semana Laboral -->

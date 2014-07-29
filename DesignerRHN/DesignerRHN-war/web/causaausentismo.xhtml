@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>        
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">                  
+                <h:form id="form">
+                    <p:growl id="growl" showDetail="true"/>
+
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">
+                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
+                            <legend style="font-size: 14px; color: blue"><strong>Causas de Ausentismo</strong></legend>
+
+                            <p:dataTable id="datosCausasAusentismos" var="causaausentismo" rowKey="#{causaausentismo.secuencia}" rowIndexVar="indice"                            
+                                         value="#{controlCausasAusentismos.listaCausasAusentismos}" scrollable="true"
+                                         filteredValue="#{controlCausasAusentismos.filtrarCausasAusentismos}"
+                                         scrollHeight="#{controlCausasAusentismos.altoTabla}" scrollWidth="830"
+                                         style="border: 1px;width: 810px" liveScroll="true" scrollRows="80"
+                                         emptyMessage="#{msg['vacio']}"
+                                         editable="true" editMode="cell"
+                                         selection="#{controlCausasAusentismos.causasAusentismoSeleccionado}" selectionMode="single">
+
+                                <p:ajax event="filter" listener="#{controlCausasAusentismos.eventofiltrar()}"/>
+
+                                <p:column headerText="Código" width="30" sortBy="#{causaausentismo.codigo}" filterBy="#{causaausentismo.codigo}" filterMatchMode="contains" id="codigo" filterStyle="display: none; visibility: hidden;"  >  
+                                    <f:facet name="header">
+                                        <h:outputText id="headercodigo" value="Código" />
+                                        <p:tooltip for="headercodigo" value="Código de la Causa del Ausentismo"/>
+                                    </f:facet>                                    
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{causaausentismo.codigo}" >
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{causaausentismo.codigo}" id="editarCodigo" style="border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
+                                                <p:ajax event="select" listener="#{controlCausasAusentismos.cambiarIndice(indice, 0)}" />
+                                                <p:ajax event="change" listener="#{controlCausasAusentismos.modificarCausasAusentismos (indice, 'N', causaausentismo.codigo)}" update="@this"/>
+                                            </p:inputText> 
+                                        </f:facet>   
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Descripción" width="150" sortBy="#{causaausentismo.descripcion}" filterBy="#{causaausentismo.descripcion}"  filterMatchMode="contains" id="descripcion" filterStyle="display: none; visibility: hidden;"  >  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerdescripcion" value="Descripción" />
+                                        <p:tooltip for="headerdescripcion" value="Nombre de la Causa del Ausentismo"/>
+                                    </f:facet>  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{causaausentismo.descripcion}"  style="text-transform: uppercase;">
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{causaausentismo.descripcion}" id="editarDescripcion" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
+                                                <p:ajax event="select" listener="#{controlCausasAusentismos.cambiarIndice(indice, 1)}" />
+                                                <p:ajax event="change" listener="#{controlCausasAusentismos.modificarCausasAusentismos (indice, 'N', causaausentismo.descripcion)}" update="@this" />
+                                            </p:inputText> 
+                                        </f:facet>   
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Clase" width="80" sortBy="#{causaausentismo.clase.descripcion}" filterBy="#{causaausentismo.clase.descripcion}" filterMatchMode="contains" id="clase" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerclase" value="Clase" />
+                                        <p:tooltip for="headerclase" value="Seleccione la Clase de Ausentismo"/>
+                                    </f:facet>  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText style="text-transform: uppercase;" value="#{causaausentismo.clase.descripcion}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{causaausentismo.clase.descripcion}" id="editarClase" style=" border-radius: 0px; width: 99.5%;text-transform: uppercase;height: 12px"> 
+                                                <p:ajax event="change" listener="#{controlCausasAusentismos.modificarCausasAusentismos(indice, 'CLASESAUSENTISMOS', causaausentismo.clase.descripcion)}"/>
+                                                <p:ajax event="select" listener="#{controlCausasAusentismos.cambiarIndice(indice, 2)}" />
+                                                <p:ajax event="dblclick" listener="#{controlCausasAusentismos.asignarIndex(indice,0,0)}"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 315px; margin: -14px; height: 26px; border: none; color: blue" value=" " id="fooClaseAusentismo" action="tipounidad" actionListener="#{controlTiposUnidades.recibirPaginaEntrante('atrastipounidad')}"/>
+                                    </f:facet>
+                                </p:column>
+                                
+                                <p:column headerText="O.I." width="20" sortBy="#{causaausentismo.estadoOrigenIncapacidad}" filterBy="#{causaausentismo.estadoOrigenIncapacidad}" filterMatchMode="contains" id="origenIncapacidad" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerorigenIncapacidad" value="O.I." />
+                                        <p:tooltip for="headerorigenIncapacidad" value="Origen Incapacidad"/>
+                                    </f:facet>
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText id="outOrigenIncapacidad" value="#{causaausentismo.estadoOrigenIncapacidad}" style="text-transform: uppercase;height: 12px"/></f:facet>  
+                                        <f:facet name="input">
+                                            <p:selectOneMenu  id="editarOrigenIncapacidad" value="#{causaausentismo.estadoOrigenIncapacidad}" style="width: 100%;height: 20px">  
+                                                <f:selectItem itemLabel="AT" itemValue="AT" />  
+                                                <f:selectItem itemLabel="EG" itemValue="EG" />  
+                                                <f:selectItem itemLabel="EP" itemValue="EP" />  
+                                                <f:selectItem itemLabel="MA" itemValue="MA" />  
+                                                <f:selectItem itemLabel="OT" itemValue="OT" />
+                                                <f:selectItem itemLabel=" " itemValue=" " />
+                                                <p:ajax listener="#{controlCausasAusentismos.seleccionarOrigenIncapacidad(estadoOrigenIncapacidad, indice, celda)}" event="change" update="editarOrigenIncapacidad" />
+                                            </p:selectOneMenu>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="%" width="20" sortBy="#{causaausentismo.porcentajeliquidacion}" filterBy="#{causaausentismo.porcentajeliquidacion}"  filterMatchMode="contains" id="porcentajeLiquidacion" filterStyle="display: none; visibility: hidden;"  >  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerporcentajeLiquidacion" value="%" />
+                                        <p:tooltip for="headerporcentajeLiquidacion" value="Porcentaje Liquidación"/>
+                                    </f:facet>  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{causaausentismo.porcentajeliquidacion}"  style="text-transform: uppercase;">
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{causaausentismo.porcentajeliquidacion}" id="editarPorcentajeLiquidacion" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
+                                                <p:ajax event="select" listener="#{controlCausasAusentismos.cambiarIndice(indice, 3)}" />
+                                                <p:ajax event="change" listener="#{controlCausasAusentismos.modificarCausasAusentismos (indice, 'N', causaausentismo.porcentajeliquidacion)}" update="@this" />
+                                            </p:inputText> 
+                                        </f:facet>   
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="R.D." width="20" sortBy="#{causaausentismo.restadiasincapacidad}" filterBy="#{causaausentismo.restadiasincapacidad}"  filterMatchMode="contains" id="restaDiasIncapacidad" filterStyle="display: none; visibility: hidden;"  >  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerrestaDiasIncapacidad" value="R.D." />
+                                        <p:tooltip for="headerrestaDiasIncapacidad" value="Resta Días Incapacidad"/>
+                                    </f:facet>  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{causaausentismo.restadiasincapacidad}"  style="text-transform: uppercase;">
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{causaausentismo.restadiasincapacidad}" id="editarRestaDiasIncapacidad" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
+                                                <p:ajax event="select" listener="#{controlCausasAusentismos.cambiarIndice(indice, 4)}" />
+                                                <p:ajax event="change" listener="#{controlCausasAusentismos.modificarCausasAusentismos (indice, 'N', causaausentismo.restadiasincapacidad)}" update="@this" />
+                                            </p:inputText> 
+                                        </f:facet>   
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Forma Liq." width="50" sortBy="#{causaausentismo.estadoFormaLiquidacion}" filterBy="#{causaausentismo.estadoFormaLiquidacion}" filterMatchMode="contains" id="formaLiquidacion" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerformaLiquidacion" value="Forma Liq." />
+                                        <p:tooltip for="headerformaLiquidacion" value="Forma de Liquidación"/>
+                                    </f:facet>
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText id="outFormaLiquidacion" value="#{causaausentismo.estadoFormaLiquidacion}" style="text-transform: uppercase;height: 12px"/></f:facet>  
+                                        <f:facet name="input">
+                                            <p:selectOneMenu  id="editarFormaLiquidacion" value="#{causaausentismo.estadoFormaLiquidacion}" style="width: 100%;height: 20px">  
+                                                <f:selectItem itemLabel="BASICO" itemValue="BASICO" />  
+                                                <f:selectItem itemLabel="IBC MES ANTERIOR" itemValue="IBC MES ANTERIOR" />  
+                                                <f:selectItem itemLabel="IBC MES ENERO" itemValue="IBC MES ENERO" />  
+                                                <f:selectItem itemLabel="IBC MES INCAPACIDAD" itemValue="IBC MES INCAPACIDAD" />  
+                                                <f:selectItem itemLabel="PROMEDIO ACUMULADOS 12 MESES" itemValue="PROMEDIO ACUMULADOS 12 MESES" />
+                                                <f:selectItem itemLabel="PROMEDIO IBC 12 MESES" itemValue="PROMEDIO IBC 12 MESES" />
+                                                <f:selectItem itemLabel="PROMEDIO IBC 6 MESES" itemValue="PROMEDIO IBC 6 MESES" />
+                                                <f:selectItem itemLabel=" " itemValue=" " />
+                                                <p:ajax listener="#{controlCausasAusentismos.seleccionarFormaLiquidacion(estadoFormaLiquidacion, indice, celda)}" event="change" update="editarFormaLiquidacion" />
+                                            </p:selectOneMenu>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="..." style="width:15px" sortBy="#{causaausentismo.remunerada}" filterBy="#{causaausentismo.remunerada}" filterMatchMode="exact" id="Remunerada" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerremunerada" value="..." />
+                                        <p:tooltip  for="headerremunerada" value="Remunerada" />
+                                    </f:facet>  
+                                    <p:selectBooleanCheckbox value="#{causaausentismo.estadoRemunerada}" style="height :12px; position: relative;top: -3px">  
+                                        <p:ajax event="change" listener="#{controlCausasAusentismos.modificarCausasAusentismos(indice, 'N', causaausentismo.estadoRemunerada)}" update="@this"/>  
+                                    </p:selectBooleanCheckbox> 
+                                </p:column>
+
+                                <p:column headerText="..." style="width:15px" sortBy="#{causaausentismo.descuentatiempocontinuo}" filterBy="#{causaausentismo.descuentatiempocontinuo}" filterMatchMode="exact" id="descuentaTiempoContinuo" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerdescuentaTiempoContinuo" value="..." />
+                                        <p:tooltip  for="headerdescuentaTiempoContinuo" value="Descuenta Tiempo Continuo(Resta días del básico y afecta prestaciones sociales)" />
+                                    </f:facet>  
+                                    <p:selectBooleanCheckbox value="#{causaausentismo.estadoDescuentaTiempoContinuo}" style="height :12px; position: relative;top: -3px">  
+                                        <p:ajax event="change" listener="#{controlCausasAusentismos.modificarCausasAusentismos(indice, 'N', causaausentismo.estadoDescuentaTiempoContinuo)}" update="@this"/>  
+                                    </p:selectBooleanCheckbox> 
+                                </p:column>
+
+                                <p:column headerText="..." style="width:15px" sortBy="#{causaausentismo.restatiemposoloprestaciones}" filterBy="#{causaausentismo.restatiemposoloprestaciones}" filterMatchMode="exact" id="descuentaTiempoSoloPS" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerdescuentaTiempoSoloPS" value="..." />
+                                        <p:tooltip  for="headerdescuentaTiempoSoloPS" value="Descuenta tiempo solo de las prestaciones sociales" />
+                                    </f:facet>  
+                                    <p:selectBooleanCheckbox value="#{causaausentismo.estadoRestaTiempoSoloPrestaciones}" style="height :12px; position: relative;top: -3px">  
+                                        <p:ajax event="change" listener="#{controlCausasAusentismos.modificarCausasAusentismos(indice, 'N', causaausentismo.estadoRestaTiempoSoloPrestaciones)}" update="@this"/>  
+                                    </p:selectBooleanCheckbox> 
+                                </p:column>
+
+                                <p:column headerText="..." style="width:15px" sortBy="#{causaausentismo.garantizabasesml}" filterBy="#{causaausentismo.garantizabasesml}" filterMatchMode="exact" id="garantizaBaseSalario" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="headergarantizaBaseSalario" value="..." />
+                                        <p:tooltip  for="headergarantizaBaseSalario" value="Garantiza Base Salario Minimo" />
+                                    </f:facet>  
+                                    <p:selectBooleanCheckbox value="#{causaausentismo.estadoGarantizaBaseml}" style="height :12px; position: relative;top: -3px">  
+                                        <p:ajax event="change" listener="#{controlCausasAusentismos.modificarCausasAusentismos(indice, 'N', causaausentismo.estadoGarantizaBaseml)}" update="@this"/>  
+                                    </p:selectBooleanCheckbox> 
+                                </p:column>
+
+
+                            </p:dataTable>
+                            <h:outputText id="informacionRegistro" value="#{controlCausasAusentismos.infoRegistro}" style="position: absolute; left: 15px; top: 340px; font-weight: bold"/>
+
+                        </fieldset>
+                        <p:commandButton style="position: absolute; left: 683px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" disabled="#{controlUnidad.guardado}" update=":form:datosCausasAusentismos" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 470px;" icon="ui-icon-closethick" id="ATRAS" value="#{msg['cancelar']}" actionListener="#{controlUnidad.salir()}" process="@this" />
+
+                    </p:panel>
+                    <p:hotkey bind="ctrl+f11" actionListener="#{controlCausasAusentismos.activarCtrlF11()}" process="@this"/> 
+
+                </h:form>
+
+                <h:form id="formularioDialogos">
+
+                    <!-- Ya Existe -->
+
+                    <p:dialog id="existe" header="#{msg['atencion']}" widgetVar="existe"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['existe']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="existe.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+
+                    <!-- DIALOGOS RASTROS -->
+
+                    <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['confirmarRastro']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlCausasAusentismos.secRegistro, 'Causasausentismos', 'causaausentismo')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="confirmarRastroHistorico" header="#{msg['atencion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['confirmarRastroHistorico']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('Causasausentismos', 'causaausentismo')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRastroHistorico" header="#{msg['atencion']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRegistroRastro" header="#{msg['atencion']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorTablaConRastro']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlCausasAusentismos.secRegistro, 'Causasausentismos', 'causaausentismo')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorTablaSinRastro" header="#{msg['atencion']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorTablaSinRastro']}" style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <!-- DIALOGO L.O.V ESTATICO DE CLASES DE AUSENTISMO -->
+                    <p:dialog header="Clase de Ausentismo" widgetVar="clasesAusentismosDialogo" draggable="false" resizable="false" closable="false" id="clasesAusentismosDialogo"  
+                              showEffect="fade" hideEffect="fade" width="380" height="350" modal="true" >
+                        <p:dataTable id="LOVClasesAusentismos" style="width: 330px" var="clasesAusentismos" value="#{controlCausasAusentismos.lovClasesAusentismos}" rowKey="#{clasesAusentismos.secuencia}"
+                                     selection="#{controlCausasAusentismos.clasesAusentismosSeleccionado}" selectionMode="single" widgetVar="LOVClasesAusentismos" scrollable="true" scrollHeight="200" scrollWidth="345"
+                                     filteredValue="#{controlCausasAusentismos.lovFiltradoClasesAusentismos}" emptyMessage="#{msg['lovvacio']}">              
+                            <p:ajax event="rowSelect" listener="#{controlCausasAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarCLA"/>
+                            <p:ajax event="rowDblselect" listener="#{controlCausasAusentismos.actualizarClases()}" process="@this" onstart="LOVClasesAusentismos.clearFilters()"/>
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Clase Ausentismo"  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="LOVClasesAusentismos.filter();" style="width:120px; position: relative; left: 55px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{clasesAusentismos.codigo}" width="10" filterStyle="width:30px" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Código" />
+                                </f:facet>
+                                <h:outputText value="#{clasesAusentismos.codigo}" />
+                            </p:column>
+                            <p:column filterBy="#{clasesAusentismos.descripcion}" width="130"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Descripción" />
+                                </f:facet>
+                                <h:outputText value="#{clasesAusentismos.descripcion}" />
+                            </p:column>
+                        </p:dataTable>
+
+                        <h:outputText id="infoRegistroClasesausentismos" value="#{controlCausasAusentismos.infoRegistroCausasausentismos}" style="position: absolute; left: 15px; top: 315px; font-weight: bold"/>
+
+                        <p:commandButton id="aceptarCLA" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlCausasAusentismos.aceptar}" style="position: absolute; top: 305px; left: 180px;" actionListener="#{controlCausasAusentismos.actualizarClases()}" onclick="LOVClasesAusentismos.clearFilters();" update="aceptarCLA" process="@this">
+                            <p:resetInput target=":formularioDialogos:LOVClasesAusentismoss:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="cancelarCLA" style="position: absolute; top: 305px; left: 275px; " icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlCausasAusentismos.cancelarCambioClase()}" onclick="clasesAusentismosDialogo.hide(), LOVClasesAusentismos.clearFilters();"  update="LOVClasesAusentismos" process="@this">
+                            <p:resetInput target=":formularioDialogos:LOVClasesAusentismos:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>                    
+
+                    <!-- DIALOGOS EDITAR -->
+
+                    <p:dialog id="editarCodigo" header="Código" widgetVar="editarCodigo" resizable="false" draggable="false" modal="true" height="55" width="240" style=" padding: 0px">  
+                        <p:inputTextarea value="#{controlCausasAusentismos.editarCausasAusentismos.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarDescripcion" header="Descripción" widgetVar="editarDescripcion" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                        <p:inputTextarea value="#{controlCausasAusentismos.editarCausasAusentismos.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarClase" header="Clase Ausentismo" widgetVar="editarClase" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                        <p:inputTextarea value="#{controlCausasAusentismos.editarCausasAusentismos.clase.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarPorcentajeLiquidacion" header="Porcentaje Liquidacion" widgetVar="editarPorcentajeLiquidacion" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                        <p:inputTextarea value="#{controlCausasAusentismos.editarCausasAusentismos.porcentajeliquidacion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarRestaDiasIncapacidad" header="Resta Dias Incapacidad" widgetVar="editarRestaDiasIncapacidad" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                        <p:inputTextarea value="#{controlCausasAusentismos.editarCausasAusentismos.restadiasincapacidad}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+
+                </h:form>
+            </ui:define>
+        </ui:composition>
+
+    </h:body>
+</html>
