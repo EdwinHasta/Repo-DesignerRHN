@@ -793,6 +793,7 @@ public class ControlAdminreportes implements Serializable {
         k = 0;
         listaInforeportes = null;
         getListaInforeportes();
+        
         if (listaInforeportes != null && !listaInforeportes.isEmpty()) {
             inforeporteSeleccionado = listaInforeportes.get(0);
             infoRegistro = "Cantidad de registros: " + listaInforeportes.size();
@@ -801,7 +802,6 @@ public class ControlAdminreportes implements Serializable {
         }
         guardado = true;
         permitirIndex = true;
-        cambiosPagina = false;
 
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:ACEPTAR");
