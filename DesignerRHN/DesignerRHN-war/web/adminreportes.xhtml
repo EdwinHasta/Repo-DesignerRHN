@@ -11,20 +11,20 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form">
-                    
+
                     <f:loadBundle basename="Recursos.adminreportes" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">  
 
-                        <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 30px;  " id="btnBuscarEmpleados" actionListener="#{controlAdminreportes.asignarIndex(-1, 0, 0)}" value="Buscar Reporte" process="@this"/>
-                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 60px;  " id="btnMostrarTodos" actionListener="#{controlAdminreportes.mostrarTodos()}" value="Mostrar Todos"  process="@this"/>
+                        <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 15px; top: 470px;  " id="btnBuscarEmpleados" actionListener="#{controlAdminreportes.asignarIndex(-1, 0, 0)}" value="Buscar Reporte" process="@this"/>
+                        <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 220px; top: 470px;  " id="btnMostrarTodos" actionListener="#{controlAdminreportes.mostrarTodos()}" value="Mostrar Todos"  process="@this"/>
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: #14388B"><strong>#{msg['reportes']}</strong></legend>
 
                             <p:dataTable id="datosInforeportes" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="border: 1px;width: 830px"                         
                                          value="#{controlAdminreportes.listaInforeportes}" scrollable="true" scrollWidth="830"  scrollHeight="#{controlAdminreportes.altoTabla}" 
                                          filteredValue="#{controlAdminreportes.filtradosListaInforeportes}" emptyMessage="#{msg['vacio']}"
-                                         editable="true" editMode="cell" liveScroll="true" scrollRows="10" 
+                                         editable="true" editMode="cell" liveScroll="true" scrollRows="12" 
                                          selectionMode="single" selection="#{controlAdminreportes.inforeporteSeleccionado}">
 
                                 <p:ajax event="filter" listener="#{controlAdminreportes.eventoFiltrar()}"/>
@@ -48,7 +48,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['reporte']}" width="210" sortBy="#{info.nombre}" filterBy="#{info.nombre}"  filterMatchMode="contains" id="inforeportesNombres" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column headerText="#{msg['reporte']}" width="210" sortBy="#{info.nombre}" filterBy="#{info.nombre}"  filterMatchMode="contains" id="inforeportesNombres" filterStyle="display: none; visibility: hidden;">  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.nombre}"  style="text-transform: uppercase;">
@@ -67,7 +67,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['contador']}" width="40" sortBy="#{info.contador}" filterBy="#{info.contador}"  filterMatchMode="contains" id="inforeportesContadores" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column headerText="#{msg['contador']}" width="40" sortBy="#{info.contador}" filterBy="#{info.contador}"  filterMatchMode="contains" id="inforeportesContadores" filterStyle="display: none; visibility: hidden;">  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.contador}"  style="text-transform: uppercase;">
@@ -82,7 +82,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value=" " />
+                                        <h:outputText value=" "/>
                                     </f:facet>
                                 </p:column>
 
@@ -412,7 +412,7 @@
                                 <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlAdminreportes.verificarRastro()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
-                                
+
                                 <p:separator style="position: relative; top: -9px"/> 
 
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlAdminreportes.cancelarModificacion()}" process="@this"/>  
@@ -422,6 +422,8 @@
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
                             </p:toolbarGroup> 
                         </p:toolbar>
+
+                        <h:outputText id="informacionRegistro" value="#{controlAdminreportes.infoRegistro}" style="position: absolute; left: 15px; top: 450px; font-weight: bold"/>
 
                         <p:commandButton style="position: absolute; left: 688px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" disabled="#{controlAdminreportes.guardado}" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosInforeportes" process="@this" />
                         <p:commandButton style="position: absolute; left: 780px; top: 470px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['cancelar']}" actionListener="#{controlAdminreportes.salir()}" action="nomina" process="@this" />
@@ -453,13 +455,22 @@
                                 <h:outputText value="#{msg['buscarR']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVInforeportes.filter();" style="width:150px; position: relative; left: 30px;" />  
                             </f:facet>
-                            <p:column filterBy="#{inforeportes.codigo}" width="200"  filterMatchMode="contains">
+                            <p:column filterBy="#{inforeportes.codigo}" width="50" filterStyle="width:30px;" filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="#{msg['codigoR']}" />
                                 </f:facet>
                                 <h:outputText value="#{inforeportes.codigo}" />
                             </p:column>
+
+                            <p:column filterBy="#{inforeportes.nombre}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="#{msg['reporte']}" />
+                                </f:facet>
+                                <h:outputText value="#{inforeportes.nombre}" />
+                            </p:column>
                         </p:dataTable>
+                        <h:outputText id="infoRegistroInfoReporte" value="#{controlAdminreportes.infoRegistroInfoReporte}" style="position: relative; top: 15px; font-weight: bold"/>
+
                         <p:commandButton id="aceptarI" value="#{msg['aceptar']}"  disabled="#{controlAdminreportes.aceptar}" icon="ui-icon-check" style="position: absolute; top: 305px; left: 185px;" actionListener="#{controlAdminreportes.actualizarInforeportes()}" onclick="LOVInforeportes.clearFilters();" update="aceptarI" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVInforeportes:globalFilter"/>
                         </p:commandButton>
@@ -502,6 +513,7 @@
                     <!-- DIALOGOS EDITAR -->
 
                     <p:dialog id="repetido" header="#{msg['atencion']}" widgetVar="repetido"  resizable="false" draggable="false" modal="true" height="55" width="425" closable="true">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['repetido']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
                     </p:dialog>
 

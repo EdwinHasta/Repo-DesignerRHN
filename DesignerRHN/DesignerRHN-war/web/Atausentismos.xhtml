@@ -14,6 +14,8 @@
             <ui:define name="body">                  
                 <h:form id="form">
                     <f:loadBundle basename="Recursos.atausentismos" var="msg" />
+                    <p:growl id="growl" showDetail="true"/>
+
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">    
 
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 130px;width: 580px; border-radius: 10px; text-align: left">
@@ -95,7 +97,7 @@
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style="position: absolute; left: 688px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" disabled="#{controlAusentismos.cambiosPagina}" onclick="confirmarGuardar.show();" update=":form:datosAusentismosEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 688px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" disabled="#{controlAusentismos.guardado}" onclick="confirmarGuardar.show();" update=":form:datosAusentismosEmpleado" process="@this" />
                         <p:commandButton style="position: absolute; left: 785px; top: 470px;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['cancelar']}" actionListener="#{controlAusentismos.salir()}" action="novedad" />
 
 
@@ -122,10 +124,14 @@
                                         <p:column  style="width: 100px" colspan="1" width="100" headerText="#{msg['tipo']}" filterBy="#{ausentismos.tipo.descripcion}" filterMatchMode="contains" id="ATipo" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.tipo.descripcion}" />  
                                         <p:column  style="width: 100px" width="100" headerText="#{msg['clase']}" filterBy="#{ausentismos.clase.descripcion}" filterMatchMode="contains" id="AClase" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.clase.descripcion}" >     
                                             <f:facet name="footer">
-                                                <p:commandButton style="width: 190px; margin: -14px; height: 26px;  border: none; color: blue" action="claseausentismoatausentismo" actionListener="#{controlClasesAusentismos.recibirAtras('atrasclaseausentismoatausentismo')}" id="fooNombreJornada" value=""/>
+                                                <p:commandButton style="width: 190px; margin: -14px; height: 26px;  border: none; color: blue" action="claseausentismoatausentismo" actionListener="#{controlClasesAusentismos.recibirAtras('atrasclaseausentismoatausentismo')}" id="fooClases" value=""/>
                                             </f:facet>
                                         </p:column>
-                                        <p:column  style="width: 100px" width="100" headerText="#{msg['causa']}" filterBy="#{ausentismos.causa.descripcion}" filterMatchMode="contains" id="ACausa" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.causa.descripcion}" />  
+                                        <p:column  style="width: 100px" width="100" headerText="#{msg['causa']}" filterBy="#{ausentismos.causa.descripcion}" filterMatchMode="contains" id="ACausa" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.causa.descripcion}" >
+                                            <f:facet name="footer">
+                                                <p:commandButton style="width: 190px; margin: -14px; height: 26px;  border: none; color: blue" action="causasausentismos" id="fooCausas" value=""/>
+                                            </f:facet>
+                                        </p:column>
 
                                         <p:column  headerText="#{msg['dias']}" filterBy="#{ausentismos.dias}" filterMatchMode="contains" id="ADias" filterStyle="display: none; visibility: hidden;" sortBy= "#{ausentismos.dias}"/>
                                         <p:column  headerText="#{msg['horas']}" filterBy="#{ausentismos.horas}" filterMatchMode="contains" id="AHoras" filterStyle="display: none; visibility: hidden;" sortBy= "#{ausentismos.horas}"/>
@@ -642,8 +648,8 @@
                                 <!-- AJAX para que al cerrar el módulo el  alto del modulo se arregle-->
                                 <p:ajax event="toggle" listener="#{controlAusentismos.cambiosToggle()}" process="@this"/> 
 
-                                
-                                
+
+
 
                                 <strong><h:outputText value="#{msg['accident']}" style=" position: absolute; top: 65px" /></strong>
                                 <p:inputText id="nuevoAccidente" value="#{controlAusentismos.nuevoAusentismo.accidente.descripcioncaso}" style=" width: 122px; position: absolute; left: 110px; top: 60px; text-transform: uppercase" onclick="select();">
@@ -711,8 +717,8 @@
                     <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlAusentismos.guardarCambiosAusentismos()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlAusentismos.guardarCambiosAusentismos()}" action="novedad" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlAusentismos.cancelarModificacion()}"  style="position: absolute; top: 60px; left: 255px" process="@this" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
@@ -1360,7 +1366,7 @@
                                 <h:outputText value="#{msg['buscarA']}"  style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVAccidentes.filter();" style="width: 400px; position: relative; left: 60px;" />  
                             </f:facet>
-  
+
                             <p:column sortBy="#{accidentes.hora}" filterBy="#{accidentes.hora}" width="150" filterMatchMode="contains" > 
                                 <f:facet name="header">
                                     <h:outputText value="#{msg['hora']}" />
@@ -1392,7 +1398,7 @@
                                 <h:outputText value="#{accidentes.descripcioncaso}" />  
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroAccidente" value="#{controlAusentismos.infoRegistroAccidente}" style="position: absolute; top: 315px; font-weight: bold"/>
 
                         <p:commandButton id="aceptarAD" value="#{msg['aceptar']}" disabled="#{controlAusentismos.aceptar}" icon="ui-icon-check" style="position: absolute; top: 305px; left: 550px; " actionListener="#{controlAusentismos.actualizarAD()}" onclick="LOVAccidentes.clearFilters();" update="@this" process="@this">
@@ -1520,7 +1526,7 @@
                                 <h:outputText value="#{prorrogas.numerocertificado}" />  
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroProrroga" value="#{controlAusentismos.infoRegistroProrroga}" style="position: absolute; top: 315px; font-weight: bold"/>
 
                         <p:commandButton id="aceptarPR" value="#{msg['aceptar']}" icon="ui-icon-check"  disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 305px; left: 450px; " actionListener="#{controlAusentismos.actualizarProrrogas()}" onclick="LOVProrrogas.clearFilters();" update="@this" process="@this">
@@ -1601,7 +1607,7 @@
                                 <h:outputText value="#{enfermedades.categoria.codigo}" />  
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroEnfermedad" value="#{controlAusentismos.infoRegistroEnfermedad}" style="position: absolute; top: 315px; font-weight: bold"/>
 
 

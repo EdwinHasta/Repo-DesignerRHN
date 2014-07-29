@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Formulas.findAll", query = "SELECT f FROM Formulas f")})
 public class Formulas implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
     private Collection<DetallesFormasDtos> detallesFormasDtosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
@@ -124,7 +125,7 @@ public class Formulas implements Serializable {
     }
 
     public String getNombrecorto() {
-       return nombrecorto;
+        return nombrecorto;
     }
 
     public void setNombrecorto(String nombrecorto) {
@@ -136,7 +137,10 @@ public class Formulas implements Serializable {
     }
 
     public String getNombrelargo() {
-                return nombrelargo;
+        if(nombrelargo == null){
+            nombrelargo = "";
+        }
+        return nombrelargo;
     }
 
     public void setNombrelargo(String nombrelargo) {
