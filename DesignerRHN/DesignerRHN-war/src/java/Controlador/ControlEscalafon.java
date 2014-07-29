@@ -87,7 +87,7 @@ public class ControlEscalafon implements Serializable {
     private String infoRegistro;
 
     public ControlEscalafon() {
-        algoTabla = "200";
+        algoTabla = "300";
         cambiosPagina = true;
         lovCategorias = null;
         lovSubCategorias = null;
@@ -455,7 +455,7 @@ public class ControlEscalafon implements Serializable {
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            algoTabla = "200";
+            algoTabla = "300";
             escalafonCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEscalafon:escalafonCodigo");
             escalafonCodigo.setFilterStyle("display: none; visibility: hidden;");
             escalafonSubCategoria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEscalafon:escalafonSubCategoria");
@@ -533,7 +533,7 @@ public class ControlEscalafon implements Serializable {
         if (validarDatos == true) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                algoTabla = "200";
+                algoTabla = "300";
                 escalafonCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEscalafon:escalafonCodigo");
                 escalafonCodigo.setFilterStyle("display: none; visibility: hidden;");
                 escalafonSubCategoria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEscalafon:escalafonSubCategoria");
@@ -639,7 +639,7 @@ public class ControlEscalafon implements Serializable {
             }
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                algoTabla = "200";
+                algoTabla = "300";
                 escalafonCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEscalafon:escalafonCodigo");
                 escalafonCodigo.setFilterStyle("display: none; visibility: hidden;");
                 escalafonSubCategoria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEscalafon:escalafonSubCategoria");
@@ -716,7 +716,7 @@ public class ControlEscalafon implements Serializable {
 
     public void activarCtrlF11() {
         if (bandera == 0) {
-            algoTabla = "178";
+            algoTabla = "278";
             escalafonCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEscalafon:escalafonCodigo");
             escalafonCodigo.setFilterStyle("width: 100px");
             escalafonSubCategoria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEscalafon:escalafonSubCategoria");
@@ -727,7 +727,7 @@ public class ControlEscalafon implements Serializable {
             bandera = 1;
         } else if (bandera == 1) {
             //CERRAR FILTRADO
-            algoTabla = "200";
+            algoTabla = "300";
             escalafonCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEscalafon:escalafonCodigo");
             escalafonCodigo.setFilterStyle("display: none; visibility: hidden;");
             escalafonSubCategoria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEscalafon:escalafonSubCategoria");
@@ -744,7 +744,7 @@ public class ControlEscalafon implements Serializable {
     public void salir() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            algoTabla = "200";
+            algoTabla = "300";
             escalafonCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEscalafon:escalafonCodigo");
             escalafonCodigo.setFilterStyle("display: none; visibility: hidden;");
             escalafonSubCategoria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEscalafon:escalafonSubCategoria");

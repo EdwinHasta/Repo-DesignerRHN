@@ -17,10 +17,10 @@
                     <f:loadBundle basename="Recursos.gruposalarial" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
 
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 530px;  text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px;  text-align: left" >  
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 495px;" id="ACEPTAR" value="#{msg['aceptar']}" disabled="#{controlGrupoSalarial.cambiosPagina}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosGrupoSalarial" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 495px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlGrupoSalarial.salir()}" action="#{controlGrupoSalarial.redirigir()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 683px; top: 475px;" id="ACEPTAR" value="#{msg['aceptar']}" disabled="#{controlGrupoSalarial.cambiosPagina}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosGrupoSalarial" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 475px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlGrupoSalarial.salir()}" action="#{controlGrupoSalarial.redirigir()}" process="@this" />
 
 
                         <fieldset style="position: absolute; left: 10px; top: 80px; width: 830px; height: 200px; border-radius: 10px; ">
@@ -135,7 +135,7 @@
                         </p:toolbar> 
 
 
-                        <fieldset style="position: absolute; left: 10px; top: 300px; width: 830px; height: 177px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 300px; width: 830px; height: 155px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['vigencia']}</strong></legend>
 
                             <p:dataTable id="datosVigenciaGrupoSalarial" var="infoV" rowKey="#{infoV.secuencia}" rowIndexVar="indiceV" style="border: 1px; text-align: left;"                           

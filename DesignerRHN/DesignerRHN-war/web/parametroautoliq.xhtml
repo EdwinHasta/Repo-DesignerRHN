@@ -25,7 +25,9 @@
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlParametroAutoliq.guardadoGeneral()}" process="@this" />
                                 <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
 
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlParametroAutoliq.editarCelda()}" process="@this"/>
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlParametroAutoliq.editarCelda()}" process="@this"
+                                                 onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()"
+                                                 />
                                 <p:tooltip  for="editar" value="#{msg['editar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
@@ -33,7 +35,9 @@
                                 <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlParametroAutoliq.listaValoresBoton()}" process="@this"/>
                                 <p:tooltip for="listaValores" value="#{msg['lista']}" />
 
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlParametroAutoliq.activarCtrlF11()}" process="@this"/>
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlParametroAutoliq.activarCtrlF11()}" process="@this"
+                                                 onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()"
+                                                 />
                                 <p:tooltip  for="filtrar" value="#{msg['filtrar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
@@ -67,7 +71,9 @@
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlParametroAutoliq.cancelarModificacion()}" process="@this"/>  
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlParametroAutoliq.cancelarModificacion()}" process="@this"
+                                                 onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()"
+                                                 />  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
                                 <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlParametroAutoliq.salir()}" action="#{controlParametroAutoliq.redirigir()}" process="@this"/>  
@@ -177,7 +183,6 @@
                                     $win.scroll(function() {
                                         if ($win.height() + $win.scrollTop() == $num) {
                                             pruebaRemota();
-                                            $(document.getElementById('inferiorDerecha')).reload();
                                         }
                                     });
                                 });
@@ -193,8 +198,8 @@
                                                  widgetVar="tablaSuperiorIzquierda" styleClass="hide-row-names" filteredValue="#{controlParametroAutoliq.filtrarListaAportesEntidades}"
                                                  selection="#{controlParametroAutoliq.aporteTablaSeleccionado}" selectionMode="single"
                                                  >
-                                        <p:ajax event="sort" listener="#{controlParametroAutoliq.organizarTablas()}" />   
-                                        <p:ajax event="filter" listener="#{controlParametroAutoliq.eventoFiltrar()}"/>
+                                        <p:ajax event="sort" onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" listener="#{controlParametroAutoliq.organizarTablas()}" />   
+                                        <p:ajax event="filter" onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" listener="#{controlParametroAutoliq.eventoFiltrar()}"/>
                                         <!-- NO SE OLVIDE !!! 
                                         <p:ajax event="filter" update=":form:tablaInferiorDerecha, :form:tablaInferiorIzquierda"/> -->
 
@@ -284,8 +289,8 @@
                                                  selection="#{controlParametroAutoliq.aporteTablaSeleccionado}" selectionMode="single"
                                                  >
 
-                                        <p:ajax event="filter" listener="#{controlParametroAutoliq.eventoFiltrar()}"/>
-                                        <p:ajax event="sort" listener="#{controlParametroAutoliq.organizarTablas()}" />   
+                                        <p:ajax event="filter" onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" listener="#{controlParametroAutoliq.eventoFiltrar()}"/>
+                                        <p:ajax event="sort" onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" listener="#{controlParametroAutoliq.organizarTablas()}" />   
                                       <!--  <p:ajax event="sort" listener="#{controlRemoto.recargar()}" /> 
                                         <p:ajax event="filter" update=":form:tablaInferiorDerecha, :form:tablaInferiorIzquierda"/> -->
 
@@ -2117,6 +2122,11 @@
 
                     <p:dialog id="editarTarifaMEND" header="#{msg['editarTarifaMEND']}" widgetVar="editarTarifaMEND" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tarifamen}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="operacionEnProceso" header="#{msg['atencion']}" widgetVar="operacionEnProceso"  resizable="false" draggable="false" modal="true" height="65" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/cargando.gif" width="50" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['operacionEnProceso']}" style="font-size: 12px; position: absolute; left: 95px; top: 20px; width: 240px; font-weight:bold;" />
                     </p:dialog>
 
 

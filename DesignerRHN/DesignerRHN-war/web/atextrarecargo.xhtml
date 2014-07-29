@@ -16,13 +16,13 @@
                     <f:loadBundle basename="Recursos.atextrarecargo" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
                     
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 540px;  text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px;  text-align: left" >  
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 509px;" id="ACEPTAR" value="#{msg['aceptar']}" disabled="#{controlATExtraRecargo.cambiosPagina}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosExtraRecargo" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 509px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlATExtraRecargo.salir()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 683px; top: 480px;" id="ACEPTAR" value="#{msg['aceptar']}" disabled="#{controlATExtraRecargo.cambiosPagina}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosExtraRecargo" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 480px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlATExtraRecargo.salir()}" process="@this" />
 
 
-                        <fieldset style="position: absolute; left: 10px; top: 65px; width: 830px; height: 215px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 65px; width: 830px; height: 190px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['recargos']}</strong></legend>
                             
                             <p:dataTable id="datosExtraRecargo" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="border: 1px;width: 815px" scrollWidth="830"                          
@@ -224,7 +224,7 @@
                         </p:toolbar> 
 
 
-                        <fieldset style="position: absolute; left: 10px; top: 305px; width: 830px; height: 187px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 275px; width: 830px; height: 187px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['detalles']}</strong></legend>
                            
 

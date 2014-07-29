@@ -114,7 +114,7 @@ public class ControlATExtraRecargo implements Serializable {
 
     public ControlATExtraRecargo() {
         altoTablaDetalle = "135";
-        altoTablaRecargo = "160";
+        altoTablaRecargo = "135";
         cambiosPagina = true;
         auxExtraDescripcion = "";
         auxDetalleIni = null;
@@ -735,7 +735,7 @@ public class ControlATExtraRecargo implements Serializable {
             }
             if (bandera == 0) {
                 FacesContext c = FacesContext.getCurrentInstance();
-                altoTablaRecargo = "160";
+                altoTablaRecargo = "135";
                 extraCodigo = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraCodigo");
                 extraCodigo.setFilterStyle("display: none; visibility: hidden;");
                 extraDescripcion = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraDescripcion");
@@ -859,7 +859,7 @@ public class ControlATExtraRecargo implements Serializable {
 
     public void cancelarModificacionExtraRecargo() {
         if (bandera == 1) {
-            altoTablaRecargo = "160";
+            altoTablaRecargo = "135";
             FacesContext c = FacesContext.getCurrentInstance();
             extraCodigo = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraCodigo");
             extraCodigo.setFilterStyle("display: none; visibility: hidden;");
@@ -1031,7 +1031,7 @@ public class ControlATExtraRecargo implements Serializable {
             tamDes = nuevoExtraRecargo.getDescripcion().length();
             if (tamDes >= 1 && tamDes <= 40) {
                 if (bandera == 1) {
-                    altoTablaRecargo = "160";
+                    altoTablaRecargo = "135";
                     FacesContext c = FacesContext.getCurrentInstance();
                     extraCodigo = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraCodigo");
                     extraCodigo.setFilterStyle("display: none; visibility: hidden;");
@@ -1258,7 +1258,7 @@ public class ControlATExtraRecargo implements Serializable {
                 cambiosPagina = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 if (bandera == 1) {
-                    altoTablaRecargo = "160";
+                    altoTablaRecargo = "135";
                     FacesContext c = FacesContext.getCurrentInstance();
                     extraCodigo = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraCodigo");
                     extraCodigo.setFilterStyle("display: none; visibility: hidden;");
@@ -1474,7 +1474,7 @@ public class ControlATExtraRecargo implements Serializable {
     public void activarCtrlF11() {
         if (index >= 0) {
             if (bandera == 0) {
-                altoTablaRecargo = "138";
+                altoTablaRecargo = "113";
                 FacesContext c = FacesContext.getCurrentInstance();
                 extraCodigo = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraCodigo");
                 extraCodigo.setFilterStyle("width: 25px");
@@ -1493,7 +1493,7 @@ public class ControlATExtraRecargo implements Serializable {
                 RequestContext.getCurrentInstance().update("form:datosExtraRecargo");
                 bandera = 1;
             } else {
-                altoTablaRecargo = "160";
+                altoTablaRecargo = "135";
                 FacesContext c = FacesContext.getCurrentInstance();
                 extraCodigo = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraCodigo");
                 extraCodigo.setFilterStyle("display: none; visibility: hidden;");
@@ -1574,7 +1574,7 @@ public class ControlATExtraRecargo implements Serializable {
 
     public void salir() {
         if (bandera == 1) {
-            altoTablaRecargo = "160";
+            altoTablaRecargo = "135";
             FacesContext c = FacesContext.getCurrentInstance();
             extraCodigo = (Column) c.getViewRoot().findComponent("form:datosExtraRecargo:extraCodigo");
             extraCodigo.setFilterStyle("display: none; visibility: hidden;");

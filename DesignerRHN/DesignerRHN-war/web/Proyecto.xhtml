@@ -16,7 +16,7 @@
                     <f:loadBundle basename="Recursos.proyecto" var="msg" />
                     <p:growl id="growl" showDetail="true"/> 
 
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 480px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left" >  
 
 
                         <p:toolbar style="position: absolute; top: 37px; left: 12px; height: 23px">  
@@ -76,7 +76,7 @@
                         </p:toolbar> 
 
 
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 330px;width: 830px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 370px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="color: blue"><strong>#{msg['titulo']}</strong></legend>
                             <p:dataTable id="datosProyectos" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceP" value="#{controlProyecto.listProyectos}" 
                                          filteredValue="#{controlProyecto.filtrarListProyectos}" editable="true" editMode="cell" 
@@ -456,11 +456,11 @@
                             </p:commandButton>
                         </p:dialog>
 
-                        <p:commandButton style="position: absolute;left: 20px;top: 435px;" id="BUSCARPROYECTO" process="@this" value="#{msg['buscar']}" actionListener="#{controlProyecto.dialogoProyecto()}"/> 
-                        <p:commandButton style="position: absolute;left: 150px;top: 435px;" id="MOSTRARTODOS" process="@this" value="#{msg['mostrar']}" actionListener="#{controlProyecto.mostrarTodos()}" update=":form:datosProyectos"/>
-                        <p:commandButton style="position: absolute; left: 683px; top: 435px;" id="ACEPTAR" disabled="#{controlProyecto.guardado}" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosProyectos" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 435px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlProyecto.salir()}" action="#{controlProyecto.redirigir()}" process="@this" />
-                        <h:outputText id="informacionRegistro" value="#{controlProyecto.infoRegistro}" style="position: absolute; left: 20px; top: 405px; font-weight: bold"/>
+                        <p:commandButton style="position: absolute;left: 20px;top: 475px;" id="BUSCARPROYECTO" process="@this" value="#{msg['buscar']}" actionListener="#{controlProyecto.dialogoProyecto()}"/> 
+                        <p:commandButton style="position: absolute;left: 150px;top: 475px;" id="MOSTRARTODOS" process="@this" value="#{msg['mostrar']}" actionListener="#{controlProyecto.mostrarTodos()}" update=":form:datosProyectos"/>
+                        <p:commandButton style="position: absolute; left: 683px; top: 475px;" id="ACEPTAR" disabled="#{controlProyecto.guardado}" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosProyectos" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 475px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlProyecto.salir()}" action="#{controlProyecto.redirigir()}" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlProyecto.infoRegistro}" style="position: absolute; left: 20px; top: 445px; font-weight: bold"/>
 
 
                     </p:panel>

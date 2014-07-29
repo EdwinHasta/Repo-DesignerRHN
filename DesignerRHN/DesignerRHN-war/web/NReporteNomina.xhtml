@@ -16,15 +16,15 @@
                     <f:loadBundle basename="Recursos.nreportenomina" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
 
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="  position: absolute; width: 874px; height: 530px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="  position: absolute; width: 874px; height: 510px; text-align: left" >  
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 501px; " icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  actionListener="#{controlNReporteNomina.dispararDialogoGuardarCambios()}" disabled="#{controlNReporteNomina.cambiosReporte}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 501px; " icon="ui-icon-closethick"  id="ATRAS" value="#{msg['cancelar']}" action="nomina" actionListener="#{controlNReporteNomina.cancelarYSalir()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 683px; top: 483px; " icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  actionListener="#{controlNReporteNomina.dispararDialogoGuardarCambios()}" disabled="#{controlNReporteNomina.cambiosReporte}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 483px; " icon="ui-icon-closethick"  id="ATRAS" value="#{msg['cancelar']}" action="nomina" actionListener="#{controlNReporteNomina.cancelarYSalir()}" process="@this" />
                         
-                        <p:commandButton style="position: absolute; left: 323px; top: 501px; " id="ESTIMACIONES" value="#{msg['estimaciones']}"   process="@this" />
-                        <p:commandButton style="position: absolute; left: 145px; top: 501px; " id="ENVIOLOTE" value="#{msg['lote']}"   process="@this" />
+                        <p:commandButton style="position: absolute; left: 323px; top: 483px; " id="ESTIMACIONES" value="#{msg['estimaciones']}"   process="@this" />
+                        <p:commandButton style="position: absolute; left: 145px; top: 483px; " id="ENVIOLOTE" value="#{msg['lote']}"   process="@this" />
                         <p:tooltip  for="ENVIOLOTE" value="#{msg['envioLote']}" />
-                        <p:commandButton style="position: absolute; left: 10px; top: 501px; " id="ENVIOCORREO" value="#{msg['envio']}"   process="@this" oncomplete="EnvioCorreoDialogo.show()" actionListener="#{controlNReporteNomina.defaultPropiedadesParametrosReporte()}"/>
+                        <p:commandButton style="position: absolute; left: 10px; top: 483px; " id="ENVIOCORREO" value="#{msg['envio']}"   process="@this" oncomplete="EnvioCorreoDialogo.show()" actionListener="#{controlNReporteNomina.defaultPropiedadesParametrosReporte()}"/>
 
                         <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
@@ -42,11 +42,11 @@
                             <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardarSinSalida.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                         </p:dialog>
 
-                        <fieldset style="position: absolute; left: 10px; top: 242px;height: 243px;width: 115px; border-radius: 10px;">
-                            <h:outputText id="btn" style="position: absolute; left: 18px; top: 10px; background-image: url(Imagenes/reporte.jpg); width:100px ;height:230px; background-repeat: no-repeat; background-size: 100% 100%; "/>
+                        <fieldset style="position: absolute; left: 10px; top: 242px;height: 220px;width: 115px; border-radius: 10px;">
+                            <h:outputText id="btn" style="position: absolute; left: 10px; top: 10px; background-image: url(Imagenes/reporte.jpg); width:115px ;height:210px; background-repeat: no-repeat; background-size: 100% 100%; "/>
                         </fieldset>
 
-                        <fieldset style="position: absolute; left: 150px; top: 235px;  width: 690px; height: 250px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 150px; top: 235px;  width: 690px; height: 228px; border-radius: 10px; ">
                             <legend style=" color: blue;text-align:left"><strong>#{msg['titulo']}</strong></legend>
 
                             <p:dataTable id="reportesNomina" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="border: 1px; width: 675px"                           
@@ -76,16 +76,16 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <p:commandButton style="position: absolute; left: 585px; top: 231px; " id="MOSTRARTODOS" value="#{msg['mostrar']}"  process="@this" actionListener="#{controlNReporteNomina.mostrarTodos()}" disabled="#{controlNReporteNomina.activoMostrarTodos}" />
-                            <p:tooltip style="font-size: 12px" for="MOSTRARTODOS" value="#{msg['mostrarTodos']}" />
-                            <p:commandButton style="position: absolute; left: 460px; top: 231px; " id="BUSCARREPORTE" value="#{msg['buscar']}"   process="@this" actionListener="#{controlNReporteNomina.mostrarDialogoBuscarReporte()}" disabled="#{controlNReporteNomina.activoBuscarReporte}"/>
-                            <p:tooltip style="font-size: 12px" for="BUSCARREPORTE" value="#{msg['buscarReporte']}" />
-                            <p:commandButton style="position: absolute; left: 10px; top: 231px; " id="GENERARREPORTE" value="#{msg['generar']}"   process="@this" actionListener="#{controlNReporteNomina.generarReporte()}" onclick="generandoReporte.show();" />
-                            <p:tooltip style="font-size: 12px" for="GENERARREPORTE" value="#{msg['generarReporte']}" />
+                            <p:commandButton style="position: absolute; left: 585px; top: 207px; " id="MOSTRARTODOS" value="#{msg['mostrar']}"  process="@this" actionListener="#{controlNReporteNomina.mostrarTodos()}" disabled="#{controlNReporteNomina.activoMostrarTodos}" />
+                            <p:tooltip  for="MOSTRARTODOS" value="#{msg['mostrarTodos']}" />
+                            <p:commandButton style="position: absolute; left: 460px; top: 207px; " id="BUSCARREPORTE" value="#{msg['buscar']}"   process="@this" actionListener="#{controlNReporteNomina.mostrarDialogoBuscarReporte()}" disabled="#{controlNReporteNomina.activoBuscarReporte}"/>
+                            <p:tooltip  for="BUSCARREPORTE" value="#{msg['buscarReporte']}" />
+                            <p:commandButton style="position: absolute; left: 10px; top: 207px; " id="GENERARREPORTE" value="#{msg['generar']}"   process="@this" actionListener="#{controlNReporteNomina.generarReporte()}" onclick="generandoReporte.show();" />
+                            <p:tooltip  for="GENERARREPORTE" value="#{msg['generarReporte']}" />
                             <p:remoteCommand name="validarDescargaReporte" actionListener="#{controlNReporteNomina.validarDescargaReporte()}"/>
                         </fieldset>
 
-                        <p:toolbar style=" position: absolute; top: 30px; left: 10px;">  
+                        <p:toolbar style="position: absolute; top: 30px; left: 10px;">  
                             <p:toolbarGroup align="left"> 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlNReporteNomina.guardarCambios()}" process="@this" />
                                 <p:tooltip style="font-size: 12px" for="guardarRapido" value="#{msg['guardar']}" />

@@ -143,7 +143,7 @@ public class ControlNReportePersonal implements Serializable {
         actualInfoReporteTabla = new Inforeportes();
         cambiosReporte = true;
         listaInfoReportesModificados = new ArrayList<Inforeportes>();
-        altoTabla = "140";
+        altoTabla = "110";
         parametroDeInforme = null;
         listaIR = null;
         listaIRRespaldo = new ArrayList<Inforeportes>();
@@ -1307,7 +1307,7 @@ public class ControlNReportePersonal implements Serializable {
             reporteIR.setFilterStyle("display: none; visibility: hidden;");
             tipoIR = (Column) c.getViewRoot().findComponent("form:reportesPersonal:tipoIR");
             tipoIR.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "140";
+            altoTabla = "110";
             RequestContext.getCurrentInstance().update("form:reportesPersonal");
             bandera = 0;
             filtrarListInforeportesUsuario = null;
@@ -1445,7 +1445,7 @@ public class ControlNReportePersonal implements Serializable {
     public void salir() {
         if (bandera == 1) {
             FacesContext c = FacesContext.getCurrentInstance();
-            altoTabla = "140";
+            altoTabla = "110";
             codigoIR = (Column) c.getViewRoot().findComponent("form:reportesPersonal:codigoIR");
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
             reporteIR = (Column) c.getViewRoot().findComponent("form:reportesPersonal:reporteIR");
@@ -1481,7 +1481,7 @@ public class ControlNReportePersonal implements Serializable {
     public void actualizarSeleccionInforeporte() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (bandera == 1) {
-            altoTabla = "140";
+            altoTabla = "110";
             FacesContext c = FacesContext.getCurrentInstance();
             codigoIR = (Column) c.getViewRoot().findComponent("form:reportesPersonal:codigoIR");
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
@@ -1551,7 +1551,7 @@ public class ControlNReportePersonal implements Serializable {
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            altoTabla = "118";
+            altoTabla = "88";
             codigoIR = (Column) c.getViewRoot().findComponent("form:reportesPersonal:codigoIR");
             codigoIR.setFilterStyle("width: 25px");
             reporteIR = (Column) c.getViewRoot().findComponent("form:reportesPersonal:reporteIR");
@@ -1562,7 +1562,7 @@ public class ControlNReportePersonal implements Serializable {
             tipoLista = 1;
             bandera = 1;
         } else if (bandera == 1) {
-            altoTabla = "140";
+            altoTabla = "110";
             codigoIR = (Column) c.getViewRoot().findComponent("form:reportesPersonal:codigoIR");
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
             reporteIR = (Column) c.getViewRoot().findComponent("form:reportesPersonal:reporteIR");

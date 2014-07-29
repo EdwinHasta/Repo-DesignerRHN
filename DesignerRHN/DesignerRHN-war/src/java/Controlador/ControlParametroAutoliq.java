@@ -702,47 +702,79 @@ public class ControlParametroAutoliq implements Serializable {
 
     public void cambiarIndice(int indice, int celda) {
         if (permitirIndex == true) {
-            index = indice;
-            cualCelda = celda;
-            indexAUX = indice;
-            if (tipoLista == 0) {
-                secRegistro = listaParametrosAutoliq.get(index).getSecuencia();
-                auxTipoTipoTrabajador = listaParametrosAutoliq.get(index).getTipotrabajador().getNombre();
-            } else {
-                secRegistro = filtrarListaParametrosAutoliq.get(index).getSecuencia();
-                auxTipoTipoTrabajador = filtrarListaParametrosAutoliq.get(index).getTipotrabajador().getNombre();
-            }
-            if (banderaAporte == 1) {
-                desactivarFiltradoAporteEntidad();
-                banderaAporte = 0;
-                filtrarListaAportesEntidades = null;
-                tipoListaAporte = 0;
-            }
-            listaAportesEntidades = null;
-            getListaAportesEntidades();
-            if (listaAportesEntidades != null) {
-                infoRegistroAporte = "Cantidad de registros : " + listaAportesEntidades.size();
-            } else {
-                infoRegistroAporte = "Cantidad de registros : 0";
-            }
             RequestContext context = RequestContext.getCurrentInstance();
-            activoBtnsPaginas = false;
-            numeroScrollAporte = 505;
-            rowsAporteEntidad = 20;
-            context.update("form:PanelTotal");
-            //context.update("form:datosAporteEntidad2");
-            lovAportesEntidades = null;
-            getLovAportesEntidades();
-            if (lovAportesEntidades != null) {
-                if (lovAportesEntidades.isEmpty()) {
-                    disabledBuscar = true;
+            if (index == indice) {
+                index = indice;
+                cualCelda = celda;
+                indexAUX = indice;
+                if (tipoLista == 0) {
+                    secRegistro = listaParametrosAutoliq.get(index).getSecuencia();
+                    auxTipoTipoTrabajador = listaParametrosAutoliq.get(index).getTipotrabajador().getNombre();
                 } else {
-                    disabledBuscar = false;
+                    secRegistro = filtrarListaParametrosAutoliq.get(index).getSecuencia();
+                    auxTipoTipoTrabajador = filtrarListaParametrosAutoliq.get(index).getTipotrabajador().getNombre();
                 }
-            } else {
-                disabledBuscar = true;
+                if (banderaAporte == 1) {
+                    desactivarFiltradoAporteEntidad();
+                    banderaAporte = 0;
+                    filtrarListaAportesEntidades = null;
+                    tipoListaAporte = 0;
+                }
+                activoBtnsPaginas = false;
+                numeroScrollAporte = 505;
+                rowsAporteEntidad = 20;
+                //context.update("form:datosAporteEntidad2");
+                
+                context.update("form:btn2");
+                context.update("form:btn3");
+                context.update("form:btn4");
+                context.update("form:btn5");
+                context.update("form:btn7");
+                context.update("form:infoRegistroAporte");
+                context.update("form:tablaSuperiorIzquierda");
+                context.update("form:tablaSuperiorDerecha");
+                context.update("form:tablaInferiorIzquierda");
+                context.update("form:tablaInferiorDerecha");
+                getParametroTablaSeleccionado();
+            } else if (index != indice) {
+                index = indice;
+                cualCelda = celda;
+                indexAUX = indice;
+                if (tipoLista == 0) {
+                    secRegistro = listaParametrosAutoliq.get(index).getSecuencia();
+                    auxTipoTipoTrabajador = listaParametrosAutoliq.get(index).getTipotrabajador().getNombre();
+                    parametroTablaSeleccionado = listaParametrosAutoliq.get(index);
+                } else {
+                    secRegistro = filtrarListaParametrosAutoliq.get(index).getSecuencia();
+                    auxTipoTipoTrabajador = filtrarListaParametrosAutoliq.get(index).getTipotrabajador().getNombre();
+                    parametroTablaSeleccionado = filtrarListaParametrosAutoliq.get(index);
+                }
+                if (banderaAporte == 1) {
+                    desactivarFiltradoAporteEntidad();
+                    banderaAporte = 0;
+                    filtrarListaAportesEntidades = null;
+                    tipoListaAporte = 0;
+                }
+                activoBtnsPaginas = false;
+                numeroScrollAporte = 505;
+                rowsAporteEntidad = 20;
+                listaAportesEntidades = null;
+                getListaAportesEntidades();
+                lovAportesEntidades = null;
+                getLovAportesEntidades();
+                if (listaAportesEntidades != null) {
+                    infoRegistroAporte = "Cantidad de registros : " + listaAportesEntidades.size();
+                    if (listaAportesEntidades.isEmpty()) {
+                        disabledBuscar = true;
+                    } else {
+                        infoRegistroAporte = "Cantidad de registros : 0";
+                        disabledBuscar = false;
+                    }
+                } else {
+                    disabledBuscar = true;
+                }
+                context.update("form:PanelTotal");
             }
-            context.update("form:btn1");
         }
     }
 
@@ -2902,6 +2934,7 @@ public class ControlParametroAutoliq implements Serializable {
     }
 
     public ParametrosAutoliq getParametroTablaSeleccionado() {
+        System.out.println("parametroTablaSeleccionado : " + parametroTablaSeleccionado.getMes());
         return parametroTablaSeleccionado;
     }
 

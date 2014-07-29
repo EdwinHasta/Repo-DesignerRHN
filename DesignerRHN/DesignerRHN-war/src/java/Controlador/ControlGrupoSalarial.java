@@ -94,7 +94,7 @@ public class ControlGrupoSalarial implements Serializable {
     public ControlGrupoSalarial() {
         cambiosPagina = true;
         altoTablaGrupo = "160";
-        altoTablaVigencia = "140";
+        altoTablaVigencia = "120";
         indexVGS = -1;
         backUpSecRegistro = null;
         listGruposSalariales = null;
@@ -491,7 +491,7 @@ public class ControlGrupoSalarial implements Serializable {
     public void cancelarModificacionVigenciaGrupoSalarial() {
         if (banderaVGS == 1) {
             FacesContext c = FacesContext.getCurrentInstance();
-            altoTablaVigencia = "140";
+            altoTablaVigencia = "120";
             vgsValor = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoSalarial:vgsValor");
             vgsValor.setFilterStyle("display: none; visibility: hidden;");
             vgsFechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoSalarial:vgsFechaVigencia");
@@ -640,7 +640,7 @@ public class ControlGrupoSalarial implements Serializable {
         if (nuevoVigenciaGrupoSalarial.getFechavigencia() != null && nuevoVigenciaGrupoSalarial.getValor() != null) {
             if (banderaVGS == 1) {
                 FacesContext c = FacesContext.getCurrentInstance();
-                altoTablaVigencia = "140";
+                altoTablaVigencia = "120";
                 vgsValor = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoSalarial:vgsValor");
                 vgsValor.setFilterStyle("display: none; visibility: hidden;");
                 vgsFechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoSalarial:vgsFechaVigencia");
@@ -819,7 +819,7 @@ public class ControlGrupoSalarial implements Serializable {
             RequestContext.getCurrentInstance().update("form:ACEPTAR");
             if (banderaVGS == 1) {
                 FacesContext c = FacesContext.getCurrentInstance();
-                altoTablaVigencia = "140";
+                altoTablaVigencia = "120";
                 vgsValor = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoSalarial:vgsValor");
                 vgsValor.setFilterStyle("display: none; visibility: hidden;");
                 vgsFechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoSalarial:vgsFechaVigencia");
@@ -986,15 +986,15 @@ public class ControlGrupoSalarial implements Serializable {
         }
         if (indexVGS >= 0) {
             if (banderaVGS == 0) {
-                altoTablaVigencia = "118";
+                altoTablaVigencia = "98";
                 vgsValor = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoSalarial:vgsValor");
-                vgsValor.setFilterStyle("width: 40px");
+                vgsValor.setFilterStyle("width: 180px");
                 vgsFechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoSalarial:vgsFechaVigencia");
-                vgsFechaVigencia.setFilterStyle("width: 180px");
+                vgsFechaVigencia.setFilterStyle("width: 40px");
                 RequestContext.getCurrentInstance().update("form:datosVigenciaGrupoSalarial");
                 banderaVGS = 1;
             } else if (banderaVGS == 1) {
-                altoTablaVigencia = "140";
+                altoTablaVigencia = "120";
                 vgsValor = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoSalarial:vgsValor");
                 vgsValor.setFilterStyle("display: none; visibility: hidden;");
                 vgsFechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoSalarial:vgsFechaVigencia");
@@ -1025,7 +1025,7 @@ public class ControlGrupoSalarial implements Serializable {
 
         if (banderaVGS == 1) {
             FacesContext c = FacesContext.getCurrentInstance();
-            altoTablaVigencia = "140";
+            altoTablaVigencia = "120";
             vgsValor = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoSalarial:vgsValor");
             vgsValor.setFilterStyle("display: none; visibility: hidden;");
             vgsFechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoSalarial:vgsFechaVigencia");

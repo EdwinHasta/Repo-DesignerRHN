@@ -147,8 +147,8 @@ public class ControlEmpresa implements Serializable {
         paginaAnterior = "";
         //altos tablas
         altoTablaEmpresa = "112";
-        altoTablaVigencia = "125";
-        altoTablaCircular = "130";
+        altoTablaVigencia = "110";
+        altoTablaCircular = "115";
         //Permitir index
         permitirIndex = true;
         permitirIndexVigencia = true;
@@ -885,7 +885,7 @@ public class ControlEmpresa implements Serializable {
                 getListaCirculares();
                 context.update("form:datosCircular");
                 if (banderaVigencia == 1) {
-                    altoTablaVigencia = "125";
+                    altoTablaVigencia = "110";
                     vigenciaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaCodigo");
                     vigenciaCodigo.setFilterStyle("display: none; visibility: hidden;");
                     vigenciaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaFecha");
@@ -898,7 +898,7 @@ public class ControlEmpresa implements Serializable {
                     tipoListaVigencia = 0;
                 }
                 if (banderaCircular == 1) {
-                    altoTablaCircular = "130";
+                    altoTablaCircular = "115";
                     circularFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularFecha");
                     circularFecha.setFilterStyle("display: none; visibility: hidden;");
                     circularExpedido = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularExpedido");
@@ -1166,7 +1166,7 @@ public class ControlEmpresa implements Serializable {
 
     public void cancelarModificacionVigencia() {
         if (banderaVigencia == 1) {
-            altoTablaVigencia = "125";
+            altoTablaVigencia = "110";
             vigenciaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaCodigo");
             vigenciaCodigo.setFilterStyle("display: none; visibility: hidden;");
             vigenciaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaFecha");
@@ -1193,7 +1193,7 @@ public class ControlEmpresa implements Serializable {
 
     public void cancelarModificacionCircular() {
         if (banderaCircular == 1) {
-            altoTablaCircular = "130";
+            altoTablaCircular = "115";
             circularFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularFecha");
             circularFecha.setFilterStyle("display: none; visibility: hidden;");
             circularExpedido = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularExpedido");
@@ -1422,7 +1422,7 @@ public class ControlEmpresa implements Serializable {
         if (respueta == true) {
             if (validarFechaVigenciaMonedaBase(1) == true) {
                 if (banderaVigencia == 1) {
-                    altoTablaVigencia = "125";
+                    altoTablaVigencia = "110";
                     vigenciaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaCodigo");
                     vigenciaCodigo.setFilterStyle("display: none; visibility: hidden;");
                     vigenciaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaFecha");
@@ -1476,7 +1476,7 @@ public class ControlEmpresa implements Serializable {
         if (pte == true) {
             if (validarFechaCircular(1) == true) {
                 if (banderaCircular == 1) {
-                    altoTablaCircular = "130";
+                    altoTablaCircular = "115";
                     circularFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularFecha");
                     circularFecha.setFilterStyle("display: none; visibility: hidden;");
                     circularExpedido = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularExpedido");
@@ -1697,7 +1697,7 @@ public class ControlEmpresa implements Serializable {
         if (respueta == true) {
             if (validarFechaVigenciaMonedaBase(2) == true) {
                 if (banderaVigencia == 1) {
-                    altoTablaVigencia = "125";
+                    altoTablaVigencia = "110";
                     vigenciaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaCodigo");
                     vigenciaCodigo.setFilterStyle("display: none; visibility: hidden;");
                     vigenciaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaFecha");
@@ -1748,7 +1748,7 @@ public class ControlEmpresa implements Serializable {
         if (respueta == true) {
             if (validarFechaCircular(2) == true) {
                 if (banderaCircular == 1) {
-                    altoTablaCircular = "130";
+                    altoTablaCircular = "115";
                     circularFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularFecha");
                     circularFecha.setFilterStyle("display: none; visibility: hidden;");
                     circularExpedido = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularExpedido");
@@ -2030,7 +2030,7 @@ public class ControlEmpresa implements Serializable {
         }
         if (indexVigencia >= 0) {
             if (banderaVigencia == 0) {
-                altoTablaVigencia = "103";
+                altoTablaVigencia = "88";
                 vigenciaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaCodigo");
                 vigenciaCodigo.setFilterStyle("width: 80px");
                 vigenciaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaFecha");
@@ -2040,7 +2040,7 @@ public class ControlEmpresa implements Serializable {
                 RequestContext.getCurrentInstance().update("form:datosVigenciaMonedaBase");
                 banderaVigencia = 1;
             } else if (banderaVigencia == 1) {
-                altoTablaVigencia = "125";
+                altoTablaVigencia = "110";
                 vigenciaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaCodigo");
                 vigenciaCodigo.setFilterStyle("display: none; visibility: hidden;");
                 vigenciaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaFecha");
@@ -2055,7 +2055,7 @@ public class ControlEmpresa implements Serializable {
         }
         if (indexCircular >= 0) {
             if (banderaCircular == 0) {
-                altoTablaCircular = "108";
+                altoTablaCircular = "93";
                 circularFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularFecha");
                 circularFecha.setFilterStyle("width: 100px");
                 circularExpedido = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularExpedido");
@@ -2065,7 +2065,7 @@ public class ControlEmpresa implements Serializable {
                 RequestContext.getCurrentInstance().update("form:datosCircular");
                 banderaCircular = 1;
             } else if (banderaCircular == 1) {
-                altoTablaCircular = "130";
+                altoTablaCircular = "115";
                 circularFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularFecha");
                 circularFecha.setFilterStyle("display: none; visibility: hidden;");
                 circularExpedido = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularExpedido");
@@ -2105,7 +2105,7 @@ public class ControlEmpresa implements Serializable {
             tipoLista = 0;
         }
         if (banderaVigencia == 1) {
-            altoTablaVigencia = "125";
+            altoTablaVigencia = "110";
             vigenciaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaCodigo");
             vigenciaCodigo.setFilterStyle("display: none; visibility: hidden;");
             vigenciaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaFecha");
@@ -2118,7 +2118,7 @@ public class ControlEmpresa implements Serializable {
             tipoListaVigencia = 0;
         }
         if (banderaCircular == 1) {
-            altoTablaCircular = "130";
+            altoTablaCircular = "115";
             circularFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularFecha");
             circularFecha.setFilterStyle("display: none; visibility: hidden;");
             circularExpedido = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularExpedido");

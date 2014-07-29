@@ -192,7 +192,7 @@ public class ControlCargo implements Serializable {
         activoTipoDetalle = true;
         paginaAnterior = "";
         //altos tablas
-        altoTablaCargo = "125";
+        altoTablaCargo = "90";
         altoTablaSueldoMercado = "68";
         altoTablaCompetencia = "68";
         altoTablaTipoDetalle = "68";
@@ -1493,7 +1493,7 @@ public class ControlCargo implements Serializable {
 
     public void cancelarModificacionCargos() {
         if (bandera == 1) {
-            altoTablaCargo = "125";
+            altoTablaCargo = "90";
             cargoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoCodigo");
             cargoCodigo.setFilterStyle("display: none; visibility: hidden;");
             cargoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoNombre");
@@ -1828,7 +1828,7 @@ public class ControlCargo implements Serializable {
             tamDes = nuevoCargo.getNombre().length();
             if (tamDes >= 1 && tamDes <= 50) {
                 if (bandera == 1) {
-                    altoTablaCargo = "125";
+                    altoTablaCargo = "90";
                     cargoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoCodigo");
                     cargoCodigo.setFilterStyle("display: none; visibility: hidden;");
                     cargoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoNombre");
@@ -2202,7 +2202,7 @@ public class ControlCargo implements Serializable {
             tamDes = nuevoCargo.getNombre().length();
             if (tamDes >= 1 && tamDes <= 50) {
                 if (bandera == 1) {
-                    altoTablaCargo = "125";
+                    altoTablaCargo = "90";
                     cargoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoCodigo");
                     cargoCodigo.setFilterStyle("display: none; visibility: hidden;");
                     cargoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoNombre");
@@ -2673,7 +2673,7 @@ public class ControlCargo implements Serializable {
     public void activarCtrlF11() {
         if (index >= 0) {
             if (bandera == 0) {
-                altoTablaCargo = "103";
+                altoTablaCargo = "68";
                 cargoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoCodigo");
                 cargoCodigo.setFilterStyle("width: 25px");
                 cargoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoNombre");
@@ -2699,7 +2699,7 @@ public class ControlCargo implements Serializable {
                 RequestContext.getCurrentInstance().update("form:datosCargo");
                 bandera = 1;
             } else if (bandera == 1) {
-                altoTablaCargo = "125";
+                altoTablaCargo = "90";
                 cargoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoCodigo");
                 cargoCodigo.setFilterStyle("display: none; visibility: hidden;");
                 cargoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoNombre");
@@ -2804,7 +2804,7 @@ public class ControlCargo implements Serializable {
      */
     public void salir() {
         if (bandera == 1) {
-            altoTablaCargo = "125";
+            altoTablaCargo = "90";
             cargoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoCodigo");
             cargoCodigo.setFilterStyle("display: none; visibility: hidden;");
             cargoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoNombre");

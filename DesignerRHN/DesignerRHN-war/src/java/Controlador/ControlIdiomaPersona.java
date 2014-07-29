@@ -82,7 +82,7 @@ public class ControlIdiomaPersona implements Serializable {
     private String infoRegistroIdioma;
 
     public ControlIdiomaPersona() {
-        altoTabla = "280";
+        altoTabla = "300";
         listIdiomasPersonas = null;
         listIdiomas = null;
         //Otros
@@ -352,7 +352,7 @@ public class ControlIdiomaPersona implements Serializable {
     public void cancelarModificacion() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
-            altoTabla = "280";
+            altoTabla = "300";
             //CERRAR FILTRADO
             idIdioma = (Column) c.getViewRoot().findComponent("form:datosIdiomas:idIdioma");
             idIdioma.setFilterStyle("display: none; visibility: hidden;");
@@ -426,7 +426,7 @@ public class ControlIdiomaPersona implements Serializable {
         if (nuevaIdiomaPersona.getIdioma().getSecuencia() != null) {
             FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
-                altoTabla = "280";
+                altoTabla = "300";
                 //CERRAR FILTRADO
                 idIdioma = (Column) c.getViewRoot().findComponent("form:datosIdiomas:idIdioma");
                 idIdioma.setFilterStyle("display: none; visibility: hidden;");
@@ -539,7 +539,7 @@ public class ControlIdiomaPersona implements Serializable {
             }
             FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
-                altoTabla = "280";
+                altoTabla = "300";
                 //CERRAR FILTRADO
                 idIdioma = (Column) c.getViewRoot().findComponent("form:datosIdiomas:idIdioma");
                 idIdioma.setFilterStyle("display: none; visibility: hidden;");
@@ -620,7 +620,7 @@ public class ControlIdiomaPersona implements Serializable {
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            altoTabla = "258";
+            altoTabla = "278";
             idIdioma = (Column) c.getViewRoot().findComponent("form:datosIdiomas:idIdioma");
             idIdioma.setFilterStyle("width: 100px");
             idConversacion = (Column) c.getViewRoot().findComponent("form:datosIdiomas:idConversacion");
@@ -632,7 +632,7 @@ public class ControlIdiomaPersona implements Serializable {
             RequestContext.getCurrentInstance().update("form:datosIdiomas");
             bandera = 1;
         } else if (bandera == 1) {
-            altoTabla = "280";
+            altoTabla = "300";
             idIdioma = (Column) c.getViewRoot().findComponent("form:datosIdiomas:idIdioma");
             idIdioma.setFilterStyle("display: none; visibility: hidden;");
             idConversacion = (Column) c.getViewRoot().findComponent("form:datosIdiomas:idConversacion");
@@ -652,7 +652,7 @@ public class ControlIdiomaPersona implements Serializable {
     public void salir() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
-            altoTabla = "280";
+            altoTabla = "300";
             idIdioma = (Column) c.getViewRoot().findComponent("form:datosIdiomas:idIdioma");
             idIdioma.setFilterStyle("display: none; visibility: hidden;");
             idConversacion = (Column) c.getViewRoot().findComponent("form:datosIdiomas:idConversacion");

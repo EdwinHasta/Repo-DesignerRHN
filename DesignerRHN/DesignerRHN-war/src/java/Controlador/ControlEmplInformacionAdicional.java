@@ -87,7 +87,7 @@ public class ControlEmplInformacionAdicional implements Serializable {
     private String infoRegistroGrupo;
 
     public ControlEmplInformacionAdicional() {
-        altoTabla = "280";
+        altoTabla = "310";
         secRegistro = null;
         grupoSelecionado = new GruposInfAdicionales();
         backUpSecRegistro = null;
@@ -465,7 +465,7 @@ public class ControlEmplInformacionAdicional implements Serializable {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            altoTabla = "280";
+            altoTabla = "310";
             infoAdFechaInicial = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdFechaInicial");
             infoAdFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             infoAdFechaFinal = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdFechaFinal");
@@ -557,7 +557,7 @@ public class ControlEmplInformacionAdicional implements Serializable {
             if (validarFechasRegistro(1) == true) {
                 FacesContext c = FacesContext.getCurrentInstance();
                 if (bandera == 1) {
-                    altoTabla = "280";
+                    altoTabla = "310";
                     //CERRAR FILTRADO
                     infoAdFechaInicial = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdFechaInicial");
                     infoAdFechaInicial.setFilterStyle("display: none; visibility: hidden;");
@@ -678,7 +678,7 @@ public class ControlEmplInformacionAdicional implements Serializable {
                 }
                 FacesContext c = FacesContext.getCurrentInstance();
                 if (bandera == 1) {
-                    altoTabla = "280";
+                    altoTabla = "310";
                     //CERRAR FILTRADO
                     infoAdFechaInicial = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdFechaInicial");
                     infoAdFechaInicial.setFilterStyle("display: none; visibility: hidden;");
@@ -767,7 +767,7 @@ public class ControlEmplInformacionAdicional implements Serializable {
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            altoTabla = "258";
+            altoTabla = "288";
             infoAdFechaInicial = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdFechaInicial");
             infoAdFechaInicial.setFilterStyle("width: 60px");
             infoAdFechaFinal = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdFechaFinal");
@@ -786,7 +786,7 @@ public class ControlEmplInformacionAdicional implements Serializable {
             RequestContext.getCurrentInstance().update("form:datosInfoAdEmpleado");
             bandera = 1;
         } else if (bandera == 1) {
-            altoTabla = "280";
+            altoTabla = "310";
             infoAdFechaInicial = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdFechaInicial");
             infoAdFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             infoAdFechaFinal = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdFechaFinal");
@@ -812,7 +812,7 @@ public class ControlEmplInformacionAdicional implements Serializable {
     public void salir() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
-            altoTabla = "280";
+            altoTabla = "310";
             infoAdFechaInicial = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdFechaInicial");
             infoAdFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             infoAdFechaFinal = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdFechaFinal");
