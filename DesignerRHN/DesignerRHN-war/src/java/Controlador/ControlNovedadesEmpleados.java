@@ -291,6 +291,7 @@ public class ControlNovedadesEmpleados implements Serializable {
         if (listaNovedadesCrear.isEmpty() && listaNovedadesBorrar.isEmpty() && listaNovedadesModificar.isEmpty()) {
             secuenciaEmpleado = seleccionMostrar.getId();
             listaNovedades = null;
+            getListaNovedades();
             RequestContext context = RequestContext.getCurrentInstance();
             activoBtnAcumulado = true;
             context.update("form:ACUMULADOS");
@@ -309,8 +310,12 @@ public class ControlNovedadesEmpleados implements Serializable {
         listaNovedadesModificar.clear();
         secuenciaEmpleado = seleccionMostrar.getId();
         listaNovedades = null;
+        guardado = true;
+        getListaNovedades();
+        System.out.println("listaNovedades Valor" + listaNovedades.get(0).getValortotal());
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosNovedadesEmpleado");
+        context.update("form:ACEPTAR");
     }
 
     public void seleccionarTipoNuevaNovedad(String tipo, int tipoNuevo) {
@@ -507,7 +512,7 @@ public class ControlNovedadesEmpleados implements Serializable {
             }
         }
 
-        if (nuevaNovedad.getConcepto() == null) {
+        if (nuevaNovedad.getConcepto().getCodigoSTR() == null) {
             System.out.println("Entro a Concepto");
             mensajeValidacion = mensajeValidacion + " * Concepto\n";
             pasa++;

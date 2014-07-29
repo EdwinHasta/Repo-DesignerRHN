@@ -195,8 +195,11 @@ public class ControlNovedadesConceptos implements Serializable {
         listaNovedadesCrear.clear();
         listaNovedadesBorrar.clear();
         listaNovedadesModificar.clear();
+        guardado = true;
+        listaNovedades = null;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosNovedadesConcepto");
+        context.update("form:ACEPTAR");
     }
 
     public void activarAceptar() {

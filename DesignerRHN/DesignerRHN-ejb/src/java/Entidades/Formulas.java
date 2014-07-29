@@ -137,9 +137,6 @@ public class Formulas implements Serializable {
     }
 
     public String getNombrelargo() {
-        if(nombrelargo == null){
-            nombrelargo = "";
-        }
         return nombrelargo;
     }
 
