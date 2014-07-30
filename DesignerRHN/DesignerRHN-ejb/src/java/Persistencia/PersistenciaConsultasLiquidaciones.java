@@ -28,6 +28,7 @@ public class PersistenciaConsultasLiquidaciones implements PersistenciaConsultas
     @Override
     public List<ConsultasLiquidaciones> liquidacionesCerradas(EntityManager em,String fechaInicial, String fechaFinal) {
         try {
+            em.clear();
             String sqlQuery = "select rownum ID, T.EMPRESACODIGO, T.CORTE, T.PROCESO, T.CODIGO, T.TOTAL\n"
                     + "FROM\n"
                     + "(select --+ rule\n"
@@ -55,6 +56,7 @@ public class PersistenciaConsultasLiquidaciones implements PersistenciaConsultas
     @Override
     public List<ConsultasLiquidaciones> preNomina(EntityManager em) {
         try {
+            em.clear();
             String sqlQuery = "SELECT ROWNUM ID, T.EMPRESACODIGO, T.CORTE, T.PROCESO, T.CODIGO, T.TOTAL, 'PRENOMINA' OBSERVACION\n"
                     + "FROM (SELECT\n"
                     + "     emp.codigo empresacodigo, sn.fechapago corte, p.descripcion proceso, p.codigo codigo, count(distinct empleado) total\n"

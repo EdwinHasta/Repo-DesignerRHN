@@ -78,6 +78,7 @@ public class PersistenciaVigenciasGruposConceptos implements PersistenciaVigenci
     @Override
     public boolean verificacionGrupoUnoConcepto(EntityManager em, BigInteger secuenciaConcepto) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(vgc) FROM VigenciasGruposConceptos vgc WHERE vgc.concepto.secuencia = :secuenciaConcepto AND vgc.gruposConceptos.codigo = 1");
             query.setParameter("secuenciaConcepto", secuenciaConcepto);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -92,6 +93,7 @@ public class PersistenciaVigenciasGruposConceptos implements PersistenciaVigenci
     @Override
     public List<VigenciasGruposConceptos> listVigenciasGruposConceptosPorConcepto(EntityManager em, BigInteger secuenciaC) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vgc FROM VigenciasGruposConceptos vgc WHERE vgc.concepto.secuencia = :secuenciaConcepto");
             query.setParameter("secuenciaConcepto", secuenciaC);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -106,6 +108,7 @@ public class PersistenciaVigenciasGruposConceptos implements PersistenciaVigenci
     @Override
     public List<VigenciasGruposConceptos> listVigenciasGruposConceptosPorGrupoConcepto(EntityManager em, BigInteger secuenciaG) {
         try {
+            em.clear();
             String sqlQuery = ("SELECT *\n"
                     + "FROM VIGENCIASGRUPOSCONCEPTOS V\n"
                     + "WHERE V.GRUPOCONCEPTO = ? AND EXISTS (SELECT 1 FROM CONCEPTOS C WHERE C.SECUENCIA = V.CONCEPTO)");

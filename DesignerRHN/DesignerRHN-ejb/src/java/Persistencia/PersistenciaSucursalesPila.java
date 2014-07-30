@@ -76,6 +76,7 @@ public class PersistenciaSucursalesPila implements PersistenciaSucursalesPilaInt
     @Override
     public List<SucursalesPila> consultarSucursalesPila(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT ta FROM SucursalesPila ta ORDER BY ta.codigo");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<SucursalesPila> todosSucursalesPila = query.getResultList();
@@ -88,6 +89,7 @@ public class PersistenciaSucursalesPila implements PersistenciaSucursalesPilaInt
 
     public List<SucursalesPila> consultarSucursalesPilaPorEmpresa(EntityManager em, BigInteger secEmpresa) {
         try {
+            em.clear();
             System.out.println("PersistenciaSucursalesPila consultarSucursalesPilaPorEmpresa secuenciaEmpresa : " + secEmpresa);
             Query query = em.createQuery("SELECT cce FROM SucursalesPila cce WHERE cce.empresa.secuencia = :secuenciaEmpr ORDER BY cce.codigo ASC");
             query.setParameter("secuenciaEmpr", secEmpresa);
@@ -106,6 +108,7 @@ public class PersistenciaSucursalesPila implements PersistenciaSucursalesPilaInt
     public BigInteger contarUbicacionesGeograficasSucursal_Pila(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM ubicacionesgeograficas WHERE sucursal_pila = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -121,6 +124,7 @@ public class PersistenciaSucursalesPila implements PersistenciaSucursalesPilaInt
     public BigInteger contarParametrosInformesSucursal_Pila(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM parametrosinformes WHERE sucursal_pila = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -136,6 +140,7 @@ public class PersistenciaSucursalesPila implements PersistenciaSucursalesPilaInt
     public BigInteger contarOdiscorReaccionesCabSucursal_Pila(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM odiscorReccionescab WHERE sucursal_pila = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -151,6 +156,7 @@ public class PersistenciaSucursalesPila implements PersistenciaSucursalesPilaInt
     public BigInteger contarOdisCabecerasSucursal_Pila(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM odiscabeceras WHERE sucursal_pila = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -166,6 +172,7 @@ public class PersistenciaSucursalesPila implements PersistenciaSucursalesPilaInt
     public BigInteger contarNovedadesCorreccionesAutolSucursal_Pila(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM novedadescorreccionesautol WHERE sucursal_pila = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -181,6 +188,7 @@ public class PersistenciaSucursalesPila implements PersistenciaSucursalesPilaInt
     public BigInteger contarNovedadesAutoLiquidacionesSucursal_Pila(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM novedadesautoliquidaciones WHERE sucursal_pila = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

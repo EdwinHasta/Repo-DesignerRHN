@@ -28,6 +28,7 @@ public class PersistenciaUsuarios implements PersistenciaUsuariosInterface{
     @Override
     public Usuarios buscarUsuario(EntityManager em, String alias) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT u FROM Usuarios u WHERE u.alias= :alias");
             query.setParameter("alias",alias);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

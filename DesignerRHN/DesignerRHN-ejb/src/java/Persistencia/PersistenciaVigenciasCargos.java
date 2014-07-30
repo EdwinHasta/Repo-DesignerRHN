@@ -88,6 +88,7 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
     @Override
     public VigenciasCargos buscarVigenciaCargo(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(VigenciasCargos.class, secuencia);
         } catch (Exception e) {
             return null;
@@ -96,6 +97,7 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
 
     @Override
     public List<VigenciasCargos> buscarVigenciasCargos(EntityManager em) {
+        em.clear();
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasCargos.class));
         return em.createQuery(cq).getResultList();
@@ -103,6 +105,7 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
 
     public List<VigenciasCargos> buscarVigenciasCargosEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
+            em.clear();
             //em.flush();
             //em.getTransaction().begin();
             Query query = em.createNamedQuery("Empleados.findBySecuencia");

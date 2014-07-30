@@ -28,7 +28,6 @@ public class PersistenciaLesiones implements PersistenciaLesionesInterface {
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
      private EntityManager em;*/
-
     @Override
     public void crear(EntityManager em, Lesiones lesiones) {
         em.clear();
@@ -84,6 +83,7 @@ public class PersistenciaLesiones implements PersistenciaLesionesInterface {
     @Override
     public Lesiones buscarLesion(EntityManager em, BigInteger secuenciaL) {
         try {
+            em.clear();
             return em.find(Lesiones.class, secuenciaL);
         } catch (Exception e) {
             return null;
@@ -93,6 +93,7 @@ public class PersistenciaLesiones implements PersistenciaLesionesInterface {
     @Override
     public List<Lesiones> buscarLesiones(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT l FROM Lesiones l ORDER BY l.codigo ASC ");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Lesiones> listMotivosDemandas = query.getResultList();
@@ -107,6 +108,7 @@ public class PersistenciaLesiones implements PersistenciaLesionesInterface {
     public BigInteger contadorDetallesLicensias(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM  detalleslicencias dl WHERE dl.lesion= ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -123,6 +125,7 @@ public class PersistenciaLesiones implements PersistenciaLesionesInterface {
     public BigInteger contadorSoAccidentesDomesticos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM soaccidentesmedicos sm WHERE sm.lesion = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

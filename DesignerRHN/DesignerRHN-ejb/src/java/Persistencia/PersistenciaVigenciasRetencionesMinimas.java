@@ -77,6 +77,7 @@ public class PersistenciaVigenciasRetencionesMinimas implements PersistenciaVige
 
     @Override
     public List<VigenciasRetencionesMinimas> buscarVigenciasRetencionesMinimas(EntityManager em) {
+        em.clear();
         Query query = em.createNamedQuery("VigenciasRetencionesMinimas.findAll");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<VigenciasRetencionesMinimas> setsLista = (List<VigenciasRetencionesMinimas>) query.getResultList();

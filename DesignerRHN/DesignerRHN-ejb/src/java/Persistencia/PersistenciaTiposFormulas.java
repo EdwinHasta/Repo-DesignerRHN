@@ -82,6 +82,7 @@ public class PersistenciaTiposFormulas implements PersistenciaTiposFormulasInter
     @Override
     public List<TiposFormulas> tiposFormulas(EntityManager em, BigInteger secuenciaOperando, String tipo) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT DISTINCT tf FROM TiposFormulas tf, Operandos op WHERE tf.operando.secuencia =:secuenciaOperando and op.tipo=:tipo ORDER BY tf.fechafinal DESC");
             query.setParameter("secuenciaOperando", secuenciaOperando);
             query.setParameter("tipo", tipo);

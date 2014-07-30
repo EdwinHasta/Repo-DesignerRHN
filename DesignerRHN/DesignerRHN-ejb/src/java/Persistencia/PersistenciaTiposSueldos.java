@@ -83,6 +83,7 @@ public class PersistenciaTiposSueldos implements PersistenciaTiposSueldosInterfa
     @Override
     public List<TiposSueldos> buscarTiposSueldos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM TiposSueldos t ORDER BY t.codigo ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposSueldos> tiposSueldos = (List<TiposSueldos>) query.getResultList();
@@ -96,6 +97,7 @@ public class PersistenciaTiposSueldos implements PersistenciaTiposSueldosInterfa
     @Override
     public List<TiposSueldos> buscarTiposSueldosParaUsuarioConectado(EntityManager em) {
         try {
+            em.clear();
             String sql = "SELECT v.*  FROM TIPOSSUELDOS V  where exists (select 'x' from usuariostipossueldos uts, usuarios u where u.alias=user and uts.usuario = u.secuencia and uts.tiposueldo=v.secuencia) ORDER BY V.DESCRIPCION";
             Query query = em.createNativeQuery(sql, TiposSueldos.class);
             List<TiposSueldos> tiposSueldos = query.getResultList();
@@ -109,6 +111,7 @@ public class PersistenciaTiposSueldos implements PersistenciaTiposSueldosInterfa
     @Override
     public TiposSueldos buscarTipoSueldoSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM TiposSueldos t WHERE t.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

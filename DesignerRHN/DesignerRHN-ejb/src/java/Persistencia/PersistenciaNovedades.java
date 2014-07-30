@@ -80,6 +80,7 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
     @Override
     public Novedades buscarNovedad(EntityManager em, BigInteger secNovedad) {
         try {
+            em.clear();
             if (secNovedad != null) {
                 Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.secuencia = :secNovedad");
                 query.setParameter("secNovedad", secNovedad);
@@ -98,6 +99,7 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
     @Override
     public List<Novedades> novedadesParaReversar(EntityManager em, BigInteger usuarioBD, String documentoSoporte) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.usuarioreporta.secuencia = :usuarioBD AND n.documentosoporte = :documentoSoporte");
             query.setParameter("usuarioBD", usuarioBD);
             query.setParameter("documentoSoporte", documentoSoporte);
@@ -113,6 +115,7 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
     @Override
     public List<Novedades> todasNovedadesEmpleado(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.empleado.secuencia = :secuenciaEmpleado");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -127,6 +130,7 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
     @Override
     public List<Novedades> todasNovedadesConcepto(EntityManager em, BigInteger secuenciaConcepto) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.concepto.secuencia= :secuenciaConcepto");
             query.setParameter("secuenciaConcepto", secuenciaConcepto);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -141,6 +145,7 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
     @Override
     public List<Novedades> todasNovedadesTercero(EntityManager em, BigInteger secuenciaTercero) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.tercero.secuencia= :secuenciaTercero");
             query.setParameter("secuenciaTercero", secuenciaTercero);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -155,6 +160,7 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
     @Override
     public int reversarNovedades(EntityManager em, BigInteger usuarioBD, String documentoSoporte) {
         try {
+            em.clear();
             Query query = em.createQuery("DELETE FROM Novedades n WHERE n.usuarioreporta.secuencia = :usuarioBD AND n.documentosoporte = :documentoSoporte");
             query.setParameter("usuarioBD", usuarioBD);
             query.setParameter("documentoSoporte", documentoSoporte);
@@ -170,6 +176,7 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
     @Override
     public List<Novedades> novedadesEmpleado(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
+            em.clear();
             List<Novedades> listaNovedades;
             String sqlQuery = "SELECT * FROM Novedades n WHERE  n.empleado = ? AND n.tipo IN ('FIJA','PAGO POR FUERA','OCASIONAL') and ((n.fechafinal IS NULL AND NVL(SALDO,99999) > 0) OR (n.saldo > 0 and n.fechainicial >= (SELECT fechadesdecausado FROM vwactualesfechas)) OR n.fechafinal > (SELECT fechadesdecausado FROM vwactualesfechas )) ORDER BY n.fechafinal";
             Query query = em.createNativeQuery(sqlQuery, Novedades.class);
@@ -184,6 +191,7 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
 
     public List<Novedades> novedadesConcepto(EntityManager em, BigInteger secuenciaConcepto) {
         try {
+            em.clear();
             List<Novedades> listaNovedades;
             String sqlQuery = "SELECT N.* from novedades N where N.concepto = ? and tipo in ('FIJA','PAGO POR FUERA','OCASIONAL' ) and \n"
                     + "EXISTS (SELECT 'X' FROM EMPLEADOS E WHERE E.SECUENCIA=N.EMPLEADO) \n"
@@ -200,6 +208,7 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
 
     public List<Novedades> novedadesTercero(EntityManager em, BigInteger secuenciaTercero) {
         try {
+            em.clear();
             List<Novedades> listaNovedades;
             String sqlQuery = "SELECT N.* from novedades N where N.tercero = ? and tipo in ('FIJA','PAGO POR FUERA','OCASIONAL' )\n"
                     + "AND EXISTS (SELECT 'X' FROM EMPLEADOS E WHERE E.SECUENCIA=N.EMPLEADO)\n"

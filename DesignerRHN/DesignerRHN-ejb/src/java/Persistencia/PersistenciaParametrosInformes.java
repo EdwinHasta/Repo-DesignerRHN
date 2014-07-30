@@ -79,6 +79,7 @@ public class PersistenciaParametrosInformes implements PersistenciaParametrosInf
     @Override
     public ParametrosInformes buscarParametroInforme(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(ParametrosInformes.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error buscarParametroInforme Persistencia");
@@ -89,6 +90,7 @@ public class PersistenciaParametrosInformes implements PersistenciaParametrosInf
     @Override
     public List<ParametrosInformes> buscarParametrosInformes(EntityManager em) {
         try {
+            em.clear();
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(ParametrosInformes.class));
             return em.createQuery(cq).getResultList();
@@ -101,6 +103,7 @@ public class PersistenciaParametrosInformes implements PersistenciaParametrosInf
     @Override
     public ParametrosInformes buscarParametroInformeUsuario(EntityManager em, String alias) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT pi FROM ParametrosInformes pi WHERE pi.usuario =:Alias");
             query.setParameter("Alias", alias);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

@@ -81,9 +81,9 @@ public class PersistenciaVigenciasTiposContratos implements PersistenciaVigencia
     }
 
     @Override
-    public VigenciasTiposContratos buscarVigenciaTipoContrato(EntityManager em, BigInteger secuencia
-    ) {
+    public VigenciasTiposContratos buscarVigenciaTipoContrato(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(VigenciasTiposContratos.class, secuencia);
         } catch (Exception e) {
             return null;
@@ -91,17 +91,17 @@ public class PersistenciaVigenciasTiposContratos implements PersistenciaVigencia
     }
 
     @Override
-    public List<VigenciasTiposContratos> buscarVigenciasTiposContratos(EntityManager em
-    ) {
+    public List<VigenciasTiposContratos> buscarVigenciasTiposContratos(EntityManager em) {
+        em.clear();
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasTiposContratos.class));
         return em.createQuery(cq).getResultList();
     }
 
     @Override
-    public List<VigenciasTiposContratos> buscarVigenciaTipoContratoEmpleado(EntityManager em, BigInteger secuencia
-    ) {
+    public List<VigenciasTiposContratos> buscarVigenciaTipoContratoEmpleado(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vtc FROM VigenciasTiposContratos vtc WHERE vtc.empleado.secuencia = :secuenciaEmpl ORDER BY vtc.fechavigencia DESC");
             query.setParameter("secuenciaEmpl", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -114,9 +114,9 @@ public class PersistenciaVigenciasTiposContratos implements PersistenciaVigencia
     }
 
     @Override
-    public Date fechaMaxContratacion(EntityManager em, Empleados secuencia
-    ) {
+    public Date fechaMaxContratacion(EntityManager em, Empleados secuencia) {
         try {
+            em.clear();
             Date fechaContratacion;
             Query query = em.createQuery("SELECT vwac.fechaVigencia FROM VWActualesTiposContratos vwac WHERE vwac.empleado =:empleado");
             query.setParameter("empleado", secuencia);
@@ -133,6 +133,7 @@ public class PersistenciaVigenciasTiposContratos implements PersistenciaVigencia
     @Override 
     public Date fechaFinalContratacionVacaciones(EntityManager em, BigInteger secuencia) {
         try{
+            em.clear();
             Date fecha;
             Query query2 = em.createQuery("SELECT vtc.fechavigencia FROM VigenciasTiposContratos vtc WHERE vtc.empleado.secuencia =:secuencia AND vtc.fechavigencia = (SELECT MIN(vtci.fechavigencia) FROM VigenciasTiposContratos vtci WHERE vtci.empleado.secuencia = vtc.empleado.secuencia AND vtci.fechavigencia <= (SELECT vaf.fechaHastaCausado FROM VWActualesFechas vaf))");
             query2.setParameter("secuencia", secuencia);

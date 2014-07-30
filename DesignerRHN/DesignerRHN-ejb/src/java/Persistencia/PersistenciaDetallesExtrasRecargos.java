@@ -83,6 +83,7 @@ public class PersistenciaDetallesExtrasRecargos implements PersistenciaDetallesE
     @Override
     public DetallesExtrasRecargos buscarDetalleExtraRecargo(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(DetallesExtrasRecargos.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error PersistenciaDetallesExtrasRecargos buscarDetalleExtraRecargo : " + e.toString());
@@ -93,6 +94,7 @@ public class PersistenciaDetallesExtrasRecargos implements PersistenciaDetallesE
     @Override
     public List<DetallesExtrasRecargos> buscaDetallesExtrasRecargos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT der FROM DetallesExtrasRecargos der ORDER BY der.codigo DESC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<DetallesExtrasRecargos> extrasRecargos = query.getResultList();
@@ -106,6 +108,7 @@ public class PersistenciaDetallesExtrasRecargos implements PersistenciaDetallesE
     @Override
     public List<DetallesExtrasRecargos> buscaDetallesExtrasRecargosPorSecuenciaExtraRecargo(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT der FROM DetallesExtrasRecargos der WHERE der.extrarecargo.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

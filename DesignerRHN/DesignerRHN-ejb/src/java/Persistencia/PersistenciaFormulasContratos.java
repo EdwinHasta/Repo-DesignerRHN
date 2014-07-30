@@ -83,6 +83,7 @@ public class PersistenciaFormulasContratos implements PersistenciaFormulasContra
     @Override
     public List<Formulascontratos> formulasContratosParaFormulaSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query queryFinal = em.createQuery("SELECT fc FROM Formulascontratos fc WHERE fc.formula.secuencia=:secuencia");
             queryFinal.setParameter("secuencia", secuencia);
             queryFinal.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -97,6 +98,7 @@ public class PersistenciaFormulasContratos implements PersistenciaFormulasContra
     @Override
     public List<Formulascontratos> formulasContratosParaContratoSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query queryFinal = em.createQuery("SELECT fc FROM Formulascontratos fc WHERE fc.contrato.secuencia=:secuencia");
             queryFinal.setParameter("secuencia", secuencia);
             queryFinal.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -110,6 +112,7 @@ public class PersistenciaFormulasContratos implements PersistenciaFormulasContra
 
     public Formulascontratos formulasContratosParaContratoFormulasContratosEntidades(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query queryFinal = em.createQuery("SELECT fc FROM Formulascontratos fc WHERE fc.secuencia=:secuencia");
             queryFinal.setParameter("secuencia", secuencia);
             queryFinal.setHint("javax.persistence.cache.storeMode", "REFRESH");

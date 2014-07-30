@@ -80,6 +80,7 @@ public class PersistenciaSubCategorias implements PersistenciaSubCategoriasInter
     @Override
     public List<SubCategorias> consultarSubCategorias(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT l FROM SubCategorias  l ORDER BY l.codigo ASC ");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<SubCategorias> listSubCategorias = query.getResultList();
@@ -94,6 +95,7 @@ public class PersistenciaSubCategorias implements PersistenciaSubCategoriasInter
     @Override
     public SubCategorias consultarSubCategoria(EntityManager em, BigInteger secSubCategoria) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("SELECT sc FROM SubCategorias sc WHERE sc.secuencia=:secuencia");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             query.setParameter("secuencia", secSubCategoria);
@@ -108,6 +110,7 @@ public class PersistenciaSubCategorias implements PersistenciaSubCategoriasInter
     public BigInteger contarEscalafones(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM escalafones WHERE subcategoria = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

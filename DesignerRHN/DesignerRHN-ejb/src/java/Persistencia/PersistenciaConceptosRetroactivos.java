@@ -73,6 +73,7 @@ public class PersistenciaConceptosRetroactivos implements PersistenciaConceptosR
 
     public ConceptosRetroactivos buscarConceptoProyeccion(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(ConceptosRetroactivos.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error buscarDeporte PersistenciaConceptosRetroactivos : " + e.toString());
@@ -82,6 +83,7 @@ public class PersistenciaConceptosRetroactivos implements PersistenciaConceptosR
 
     public List<ConceptosRetroactivos> buscarConceptosRetroactivos(EntityManager em) {
         try {
+            em.clear();
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(ConceptosRetroactivos.class));
             return em.createQuery(cq).getResultList();

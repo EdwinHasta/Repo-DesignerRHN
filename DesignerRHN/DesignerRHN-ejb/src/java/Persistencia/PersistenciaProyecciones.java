@@ -74,6 +74,7 @@ public class PersistenciaProyecciones implements PersistenciaProyeccionesInterfa
     public List<Proyecciones> consultarProyecciones(EntityManager em, BigInteger secEmpleado) {
         List<Proyecciones> lista;
         try {
+            em.clear();
             String sql = "SELECT * FROM proyecciones p WHERE p.empleado = NVL(?,p.empleado)";
             Query query = em.createNativeQuery(sql, Proyecciones.class);
             query.setParameter(1, secEmpleado);

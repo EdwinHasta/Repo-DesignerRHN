@@ -90,6 +90,7 @@ public class PersistenciaVigenciasSueldos implements PersistenciaVigenciasSueldo
     }
 
     public List<VigenciasSueldos> buscarVigenciasSeldos(EntityManager em) {
+        em.clear();
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasSueldos.class));
         return em.createQuery(cq).getResultList();
@@ -98,6 +99,7 @@ public class PersistenciaVigenciasSueldos implements PersistenciaVigenciasSueldo
     @Override
     public List<VigenciasSueldos> buscarVigenciasSueldosEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vs FROM VigenciasSueldos vs WHERE vs.empleado.secuencia = :secuenciaEmpl ORDER BY vs.fechavigencia DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -112,6 +114,7 @@ public class PersistenciaVigenciasSueldos implements PersistenciaVigenciasSueldo
     @Override
     public VigenciasSueldos buscarVigenciasSueldosSecuencia(EntityManager em, BigInteger secVS) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("VigenciasSueldos.findBySecuencia").setParameter("secuencia", secVS);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasSueldos vigenciasSueldos = (VigenciasSueldos) query.getSingleResult();
@@ -125,6 +128,7 @@ public class PersistenciaVigenciasSueldos implements PersistenciaVigenciasSueldo
     @Override
     public List<VigenciasSueldos> buscarVigenciasSueldosEmpleadoRecientes(EntityManager em, BigInteger secEmpleado) {
         try {
+            em.clear();
             String consulta = "SELECT * FROM VIGENCIASSUELDOS v "
                     + "WHERE v.fechavigencia = ("
                     + "    SELECT MAX(i.fechavigencia) "

@@ -78,6 +78,7 @@ public class PersistenciaSectoresEconomicos implements PersistenciaSectoresEcono
     @Override
     public List<SectoresEconomicos> buscarSectoresEconomicos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT se FROM SectoresEconomicos se");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<SectoresEconomicos> sectoresEconomicos = (List<SectoresEconomicos>) query.getResultList();
@@ -91,6 +92,7 @@ public class PersistenciaSectoresEconomicos implements PersistenciaSectoresEcono
     @Override
     public SectoresEconomicos buscarSectoresEconomicosSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT se FROM SectoresEconomicos se WHERE se.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

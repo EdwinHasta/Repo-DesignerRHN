@@ -88,6 +88,7 @@ public class PersistenciaDetallesTiposCotizantes implements PersistenciaDetalles
     @Override
     public List<DetallesTiposCotizantes> detallesTiposCotizantes(EntityManager em,BigInteger tipoCotizante) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT d FROM DetallesTiposCotizantes d WHERE d.tipocotizante.secuencia = :tipoCotizante");
             query.setParameter("tipoCotizante", tipoCotizante);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

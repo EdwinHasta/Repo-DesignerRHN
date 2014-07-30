@@ -804,9 +804,8 @@ public class ControlAdminreportes implements Serializable {
         permitirIndex = true;
 
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:ACEPTAR");
-        context.update("form:datosInforeportes");
-        context.update("form:informacionRegistro");
+        context.update("form:PanelTotal");
+        
     }
 
     public void cancelarCambioInforeportes() {

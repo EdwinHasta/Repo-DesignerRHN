@@ -29,6 +29,7 @@ public class PersistenciaVWActualesPensiones implements  PersistenciaVWActualesP
     @Override
     public BigDecimal buscarSueldoPensionado(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vw FROM VWActualesPensiones vw WHERE vw.empleado.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

@@ -80,6 +80,7 @@ public class PersistenciaTiposViajeros implements PersistenciaTiposViajerosInter
     @Override
     public List<Tiposviajeros> consultarTiposViajeros(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT l FROM Tiposviajeros  l ORDER BY l.codigo ASC ");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Tiposviajeros> listTiposViajeros = query.getResultList();
@@ -94,6 +95,7 @@ public class PersistenciaTiposViajeros implements PersistenciaTiposViajerosInter
     @Override
     public Tiposviajeros consultarSubCategoria(EntityManager em, BigInteger secSubCategoria) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT sc FROM Tiposviajeros sc WHERE sc.secuencia=:secuencia");
             query.setParameter("secuencia", secSubCategoria);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -108,6 +110,7 @@ public class PersistenciaTiposViajeros implements PersistenciaTiposViajerosInter
     public BigInteger contarVigenciasViajerosTipoViajero(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM vigenciasviajeros WHERE tipoviajero = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -124,6 +127,7 @@ public class PersistenciaTiposViajeros implements PersistenciaTiposViajerosInter
     public BigInteger contarTiposLegalizacionesTipoViajero(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM tiposlegalizaciones WHERE tipoviajero = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

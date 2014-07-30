@@ -263,6 +263,7 @@ public class ControlParametroAutoliq implements Serializable {
         if (rowsAporteEntidad < tam) {
             rowsAporteEntidad = rowsAporteEntidad + 20;
             numeroScrollAporte = numeroScrollAporte + 500;
+            context.execute("operacionEnProceso.hide()");
             context.update("form:PanelTotal");
         }
     }
@@ -2934,7 +2935,6 @@ public class ControlParametroAutoliq implements Serializable {
     }
 
     public ParametrosAutoliq getParametroTablaSeleccionado() {
-        System.out.println("parametroTablaSeleccionado : " + parametroTablaSeleccionado.getMes());
         return parametroTablaSeleccionado;
     }
 

@@ -29,6 +29,7 @@ import javax.persistence.Query;
     
     public VWActualesTiposTrabajadores buscarTipoTrabajador(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("VWActualesTiposTrabajadores.findByEmpleado");
             query.setParameter("empleado", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -43,6 +44,7 @@ import javax.persistence.Query;
     @Override
     public List<VWActualesTiposTrabajadores> FiltrarTipoTrabajador(EntityManager em, String p_tipo) {
         try {
+            em.clear();
             if (!p_tipo.isEmpty()) {
                 List<VWActualesTiposTrabajadores> vwActualesTiposTrabajadoresLista = (List<VWActualesTiposTrabajadores>) em.createNamedQuery("VWActualesTiposTrabajadores.findByTipoTrabajador")
                         .setParameter("tipotrabajador", p_tipo)
@@ -63,6 +65,7 @@ import javax.persistence.Query;
     @Override
     public List<VWActualesTiposTrabajadores> busquedaRapidaTrabajadores(EntityManager em) {
         try {
+            em.clear();
             List<VWActualesTiposTrabajadores> vwActualesTiposTrabajadoresLista = (List<VWActualesTiposTrabajadores>) em.createNamedQuery("VWActualesTiposTrabajadores.findAll")
                     .getResultList();
             return vwActualesTiposTrabajadoresLista;
@@ -76,6 +79,7 @@ import javax.persistence.Query;
     @Override
     public boolean verificarTipoTrabajador(EntityManager em, Empleados empleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vw.tipoTrabajador.tipo FROM VWActualesTiposTrabajadores vw WHERE vw.empleado.secuencia= :secuencia");
             query.setParameter("secuencia", empleado.getSecuencia());
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -90,6 +94,7 @@ import javax.persistence.Query;
     @Override
     public List<VWActualesTiposTrabajadores> tipoTrabajadorEmpleado(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vw FROM VWActualesTiposTrabajadores vw where vw.tipoTrabajador.tipo IN ('ACTIVO','PENSIONADO','RETIRADO')");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VWActualesTiposTrabajadores> tipoEmpleado = query.getResultList();

@@ -83,6 +83,7 @@ public class PersistenciaEventos implements PersistenciaEventosInterface {
     @Override
     public Eventos buscarEvento(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(Eventos.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error en la PersistenciaEventos : " + e);
@@ -93,6 +94,7 @@ public class PersistenciaEventos implements PersistenciaEventosInterface {
     @Override
     public List<Eventos> buscarEventos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT e FROM Eventos e ORDER BY e.codigo DESC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Eventos> eventos = query.getResultList();
@@ -106,6 +108,7 @@ public class PersistenciaEventos implements PersistenciaEventosInterface {
     public BigInteger contadorVigenciasEventos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*) FROM vigenciaseventos WHERE evento = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

@@ -79,6 +79,7 @@ public class PersistenciaGruposViaticos implements PersistenciaGruposViaticosInt
     @Override
     public GruposViaticos buscarGrupoViatico(EntityManager em, BigInteger secuenciaGV) {
         try {
+            em.clear();
             return em.find(GruposViaticos.class, secuenciaGV);
         } catch (Exception e) {
             return null;
@@ -87,6 +88,7 @@ public class PersistenciaGruposViaticos implements PersistenciaGruposViaticosInt
 
     @Override
     public List<GruposViaticos> buscarGruposViaticos(EntityManager em) {
+        em.clear();
         Query query = em.createQuery("SELECT ec FROM GruposViaticos ec  ORDER BY ec.codigo ASC");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<GruposViaticos> listGruposViaticos = query.getResultList();
@@ -98,6 +100,7 @@ public class PersistenciaGruposViaticos implements PersistenciaGruposViaticosInt
     public BigInteger contadorCargos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = " SELECT COUNT(*) FROM cargos WHERE grupoviatico = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -114,6 +117,7 @@ public class PersistenciaGruposViaticos implements PersistenciaGruposViaticosInt
     public BigInteger contadorPlantas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = " SELECT COUNT(*) FROM plantas WHERE grupoviatico = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -130,6 +134,7 @@ public class PersistenciaGruposViaticos implements PersistenciaGruposViaticosInt
     public BigInteger contadorTablasViaticos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = " SELECT COUNT(*) FROM tablasviaticos  WHERE grupoviatico = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -146,6 +151,7 @@ public class PersistenciaGruposViaticos implements PersistenciaGruposViaticosInt
     public BigInteger contadorEersViaticos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = " SELECT COUNT(*) FROM eersviaticos WHERE grupoviatico = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

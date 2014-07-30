@@ -78,6 +78,7 @@ public class PersistenciaOtrosCertificados implements PersistenciaOtrosCertifica
 
     @Override
     public List<OtrosCertificados> buscarOtrosCertificados(EntityManager em) {
+        em.clear();
         Query query = em.createNamedQuery("OtrosCertificados.findAll");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<OtrosCertificados> certificados = (List<OtrosCertificados>) query.getResultList();
@@ -87,6 +88,7 @@ public class PersistenciaOtrosCertificados implements PersistenciaOtrosCertifica
     @Override
     public OtrosCertificados buscarOtroCertificadoSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT oc FROM OtrosCertificados oc WHERE oc.secuencia= :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -101,6 +103,7 @@ public class PersistenciaOtrosCertificados implements PersistenciaOtrosCertifica
     @Override
     public List<OtrosCertificados> buscarOtrosCertificadosEmpleado(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT oc FROM OtrosCertificados oc WHERE oc.empleado.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

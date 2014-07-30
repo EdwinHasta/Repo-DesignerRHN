@@ -83,6 +83,7 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
     @Override
     public List<UbicacionesGeograficas> consultarUbicacionesGeograficas(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT u FROM UbicacionesGeograficas u ORDER BY u.codigo ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<UbicacionesGeograficas> ubicacionesGeograficas = query.getResultList();
@@ -96,6 +97,7 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
     @Override
     public UbicacionesGeograficas consultarUbicacionGeografica(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT cc FROM UbicacionesGeograficas cc WHERE cc.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -111,6 +113,7 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
     @Override
     public List<UbicacionesGeograficas> consultarUbicacionesGeograficasPorEmpresa(EntityManager em, BigInteger secEmpresa) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT cce FROM UbicacionesGeograficas cce WHERE cce.empresa.secuencia = :secuenciaEmpr ORDER BY cce.codigo ASC");
             query.setParameter("secuenciaEmpr", secEmpresa);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -126,6 +129,7 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
     public BigInteger contarAfiliacionesEntidadesUbicacionGeografica(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM afiliacionesentidades WHERE ubicaciongeografica = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -141,6 +145,7 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
     public BigInteger contarInspeccionesUbicacionGeografica(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM inspecciones WHERE ubicaciongeografica = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -156,6 +161,7 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
     public BigInteger contarParametrosInformesUbicacionGeografica(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM parametrosinformes WHERE ubicaciongeografica = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -171,6 +177,7 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
     public BigInteger contarRevisionesUbicacionGeografica(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM revisiones WHERE ubicaciongeografica = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -186,6 +193,7 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
     public BigInteger contarVigenciasUbicacionesGeografica(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM vigenciasubicaciones WHERE ubicacion = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

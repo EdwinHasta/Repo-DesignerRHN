@@ -18,6 +18,7 @@ public class PersistenciaGenerales implements PersistenciaGeneralesInterface {
      private EntityManager em;*/
     public Generales obtenerRutas(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT g FROM Generales g");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Generales> listaGenerales = query.getResultList();
@@ -33,6 +34,7 @@ public class PersistenciaGenerales implements PersistenciaGeneralesInterface {
 
     public String obtenerPreValidadContabilidad(EntityManager em) {
         try {
+            em.clear();
             String sql = "SELECT NVL(PREVALIDACONTABILIDAD,'N') FROM GENERALES GROUP BY PREVALIDACONTABILIDAD";
             Query query = em.createNativeQuery(sql);
             String variable = (String) query.getSingleResult();
@@ -45,6 +47,7 @@ public class PersistenciaGenerales implements PersistenciaGeneralesInterface {
     
     public String obtenerPreValidaBloqueAIngreso(EntityManager em) {
         try {
+            em.clear();
             String sql = "SELECT NVL(PREVALIDABLOQUEAINGRESO,'N') FROM GENERALES GROUP BY PREVALIDABLOQUEAINGRESO";
             Query query = em.createNativeQuery(sql);
             String variable = (String) query.getSingleResult();

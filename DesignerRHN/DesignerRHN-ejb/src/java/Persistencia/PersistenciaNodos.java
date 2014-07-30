@@ -80,6 +80,7 @@ public class PersistenciaNodos implements PersistenciaNodosInterface {
     @Override
     public Nodos buscarNodoSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT n FROM Nodos n WHERE n.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -95,6 +96,7 @@ public class PersistenciaNodos implements PersistenciaNodosInterface {
     @Override
     public List<Nodos> listNodos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT n FROM Nodos n");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Nodos> nodos = (List<Nodos>) query.getResultList();
@@ -108,6 +110,7 @@ public class PersistenciaNodos implements PersistenciaNodosInterface {
     @Override
     public List<Nodos> buscarNodosPorSecuenciaHistoriaFormula(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT n FROM Nodos n WHERE n.historiaformula.secuencia=:secuenciaHF ORDER BY n.posicion ASC");
             query.setParameter("secuenciaHF", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

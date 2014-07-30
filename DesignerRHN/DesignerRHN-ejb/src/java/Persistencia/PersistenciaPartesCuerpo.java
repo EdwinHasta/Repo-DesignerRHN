@@ -79,6 +79,7 @@ public class PersistenciaPartesCuerpo implements PersistenciaPartesCuerpoInterfa
     @Override
     public PartesCuerpo buscarParteCuerpo(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(PartesCuerpo.class, secuencia);
         } catch (Exception e) {
             return null;
@@ -88,6 +89,7 @@ public class PersistenciaPartesCuerpo implements PersistenciaPartesCuerpoInterfa
     @Override
     public List<PartesCuerpo> buscarPartesCuerpo(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT l FROM PartesCuerpo  l ORDER BY l.codigo ASC ");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<PartesCuerpo> listPartesCuerpo = query.getResultList();
@@ -102,6 +104,7 @@ public class PersistenciaPartesCuerpo implements PersistenciaPartesCuerpoInterfa
     public BigInteger contadorSoAccidentesMedicos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*) FROM soaccidentesmedicos so WHERE so.parte = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -118,6 +121,7 @@ public class PersistenciaPartesCuerpo implements PersistenciaPartesCuerpoInterfa
     public BigInteger contadorDetallesExamenes(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*) FROM sodetallesexamenes se WHERE se.partecuerpo = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -134,6 +138,7 @@ public class PersistenciaPartesCuerpo implements PersistenciaPartesCuerpoInterfa
     public BigInteger contadorSoDetallesRevisiones(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*) FROM sodetallesrevisiones sr WHERE sr.organo = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

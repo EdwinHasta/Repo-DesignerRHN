@@ -21,7 +21,7 @@
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: #14388B"><strong>#{msg['reportes']}</strong></legend>
 
-                            <p:dataTable id="datosInforeportes" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="border: 1px;width: 830px"                         
+                            <p:dataTable id="datosInforeportes" widgetVar="datosInforeportes" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="border: 1px;width: 830px"                         
                                          value="#{controlAdminreportes.listaInforeportes}" scrollable="true" scrollWidth="830"  scrollHeight="#{controlAdminreportes.altoTabla}" 
                                          filteredValue="#{controlAdminreportes.filtradosListaInforeportes}" emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell" liveScroll="true" scrollRows="12" 

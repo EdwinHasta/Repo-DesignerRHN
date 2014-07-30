@@ -30,6 +30,7 @@ public class PersistenciaTablas implements PersistenciaTablasInterface {
     @Override
     public List<Tablas> buscarTablas(EntityManager em, BigInteger secuenciaMod) {
         try {
+            em.clear();
             Query query = em.createQuery("select t from Tablas t where t.modulo.secuencia = :secuenciaMod "
              +" and t.tipo in ('SISTEMA','CONFIGURACION' ) "
              +" and EXISTS (SELECT p FROM Pantallas p where t = p.tabla)"

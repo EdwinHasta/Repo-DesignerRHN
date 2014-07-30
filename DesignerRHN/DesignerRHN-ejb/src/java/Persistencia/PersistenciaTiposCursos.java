@@ -79,6 +79,7 @@ public class PersistenciaTiposCursos implements PersistenciaTiposCursosInterface
     @Override
     public List<TiposCursos> consultarTiposCursos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT g FROM TiposCursos g ORDER BY g.codigo ASC ");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List< TiposCursos> listMotivosDemandas = query.getResultList();
@@ -93,6 +94,7 @@ public class PersistenciaTiposCursos implements PersistenciaTiposCursosInterface
     @Override
     public TiposCursos consultarTipoCurso(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT te FROM TiposCursos te WHERE te.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -109,6 +111,7 @@ public class PersistenciaTiposCursos implements PersistenciaTiposCursosInterface
     public BigInteger contarCursosTipoCurso(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM cursos WHERE tipocurso = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

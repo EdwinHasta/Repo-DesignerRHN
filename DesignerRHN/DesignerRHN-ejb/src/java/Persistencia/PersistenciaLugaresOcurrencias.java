@@ -82,6 +82,7 @@ public class PersistenciaLugaresOcurrencias implements PersistenciaLugaresOcurre
     @Override
     public LugaresOcurrencias buscarLugaresOcurrencias(EntityManager em, BigInteger secuenciaLO) {
         try {
+            em.clear();
             return em.find(LugaresOcurrencias.class, secuenciaLO);
         } catch (Exception e) {
             return null;
@@ -91,6 +92,7 @@ public class PersistenciaLugaresOcurrencias implements PersistenciaLugaresOcurre
     @Override
     public List<LugaresOcurrencias> buscarLugaresOcurrencias(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT l FROM LugaresOcurrencias l ORDER BY l.codigo ASC ");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<LugaresOcurrencias> listMotivosDemandas = query.getResultList();
@@ -107,6 +109,7 @@ public class PersistenciaLugaresOcurrencias implements PersistenciaLugaresOcurre
     public BigInteger contadorSoAccidentes(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM soaccidentes WHERE sitioocurrencia = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

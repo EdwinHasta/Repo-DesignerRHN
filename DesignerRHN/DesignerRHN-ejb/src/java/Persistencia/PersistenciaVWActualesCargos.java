@@ -30,6 +30,7 @@ public class PersistenciaVWActualesCargos implements PersistenciaVWActualesCargo
     @Override
     public VWActualesCargos buscarCargoEmpleado(EntityManager entity, BigInteger secuencia) {
         try {
+            entity.clear();
             Query query = entity.createQuery("SELECT vw FROM VWActualesCargos vw WHERE vw.empleado.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -45,6 +46,7 @@ public class PersistenciaVWActualesCargos implements PersistenciaVWActualesCargo
     @Override  
     public Long conteoCodigosEmpleados(EntityManager em, BigInteger secEstructura) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT (em.codigoempleado) FROM VWActualesCargos vc, Empleados em WHERE vc.empleado.secuencia = em.secuencia AND vc.estructura.secuencia = :secEstructura AND EXISTS (SELECT vt FROM VWActualesTiposTrabajadores vt, TiposTrabajadores tt WHERE vt.empleado.secuencia = em.secuencia AND vt.tipoTrabajador.secuencia  = tt.secuencia AND tt.tipo = 'ACTIVO')");
             query.setParameter("secEstructura", secEstructura);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

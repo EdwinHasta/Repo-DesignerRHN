@@ -80,6 +80,7 @@ public class PersistenciaProcesosProductivos implements PersistenciaProcesosProd
     @Override
     public List<ProcesosProductivos> consultarProcesosProductivos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT pp FROM ProcesosProductivos pp ORDER BY pp.codigo ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<ProcesosProductivos> procesos = query.getResultList();
@@ -93,6 +94,7 @@ public class PersistenciaProcesosProductivos implements PersistenciaProcesosProd
     @Override
     public ProcesosProductivos consultarProcesosProductivos(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT pp FROM ProcesosProductivos pp WHERE pp.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -108,6 +110,7 @@ public class PersistenciaProcesosProductivos implements PersistenciaProcesosProd
     public BigInteger contarUnidadesProducidasProcesoProductivo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT (*)FROM unidadesproducidas WHERE procesoproductivo = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -123,6 +126,7 @@ public class PersistenciaProcesosProductivos implements PersistenciaProcesosProd
     public BigInteger contarTarifasProductosProcesoProductivo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT (*)FROM tarifasproductos WHERE procesoproductivo = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -138,6 +142,7 @@ public class PersistenciaProcesosProductivos implements PersistenciaProcesosProd
     public BigInteger contarCargosProcesoProductivo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT (*)FROM cargos WHERE procesoproductivo =  ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

@@ -87,6 +87,7 @@ public class PersistenciaDetallesEmpresas implements PersistenciaDetallesEmpresa
     public DetallesEmpresas buscarDetalleEmpresa(EntityManager em,Short codigoEmpresa) {
         DetallesEmpresas detallesEmpresas = null;
         try {
+            em.clear();
             Query query = em.createQuery("SELECT de FROM DetallesEmpresas de WHERE de.empresa.codigo = :codigoEmpresa");
             query.setParameter("codigoEmpresa", codigoEmpresa);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -102,6 +103,7 @@ public class PersistenciaDetallesEmpresas implements PersistenciaDetallesEmpresa
     @Override
     public DetallesEmpresas buscarDetalleEmpresaPorSecuencia(EntityManager em,BigInteger secEmpresa) {
         try {
+            em.clear();
             DetallesEmpresas detallesEmpresas = null;
             Query query = em.createQuery("SELECT de FROM DetallesEmpresas de WHERE de.empresa.secuencia =:secEmpresa");
             query.setParameter("secEmpresa", secEmpresa);
@@ -118,6 +120,7 @@ public class PersistenciaDetallesEmpresas implements PersistenciaDetallesEmpresa
     @Override
     public List<DetallesEmpresas> buscarDetallesEmpresas(EntityManager em) {
         try {
+            em.clear();
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(DetallesEmpresas.class));
             return em.createQuery(cq).getResultList();

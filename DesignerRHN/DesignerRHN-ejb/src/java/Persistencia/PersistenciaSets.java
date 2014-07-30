@@ -90,6 +90,7 @@ public class PersistenciaSets implements PersistenciaSetsInterface {
 
     @Override
     public List<Sets> buscarSets(EntityManager em) {
+        em.clear();
         Query query = em.createNamedQuery("Sets.findAll");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<Sets> setsLista = (List<Sets>) query.getResultList();
@@ -99,6 +100,7 @@ public class PersistenciaSets implements PersistenciaSetsInterface {
     @Override
     public Sets buscarSetSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT e FROM Sets e WHERE e.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -113,6 +115,7 @@ public class PersistenciaSets implements PersistenciaSetsInterface {
     @Override
     public List<Sets> buscarSetsEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT st FROM Sets st WHERE st.empleado.secuencia = :secuenciaEmpl ORDER BY st.fechainicial DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

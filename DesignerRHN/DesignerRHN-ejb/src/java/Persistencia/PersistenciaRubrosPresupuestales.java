@@ -80,6 +80,7 @@ public class PersistenciaRubrosPresupuestales implements PersistenciaRubrosPresu
     @Override
     public List<Rubrospresupuestales> buscarRubros(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("Rubrospresupuestales.findAll");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Rubrospresupuestales> rubrospresupuestales = (List<Rubrospresupuestales>) query.getResultList();
@@ -93,6 +94,7 @@ public class PersistenciaRubrosPresupuestales implements PersistenciaRubrosPresu
     @Override
     public Rubrospresupuestales buscarRubrosSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT c FROM Rubrospresupuestales c WHERE c.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

@@ -67,6 +67,7 @@ public class PersistenciaJornadasSemanales implements PersistenciaJornadasSemana
     @Override
     public List<JornadasSemanales> buscarJornadasSemanales(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("JornadasSemanales.findAll");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<JornadasSemanales> jornadasSemanales = (List<JornadasSemanales>) query.getResultList();
@@ -80,6 +81,7 @@ public class PersistenciaJornadasSemanales implements PersistenciaJornadasSemana
     @Override
     public JornadasSemanales buscarJornadaSemanalSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT jl FROM JornadasSemanales jl WHERE jl.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -96,6 +98,7 @@ public class PersistenciaJornadasSemanales implements PersistenciaJornadasSemana
     @Override
     public List<JornadasSemanales> buscarJornadasSemanalesPorJornadaLaboral(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT jl FROM JornadasSemanales jl WHERE jl.jornadalaboral.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

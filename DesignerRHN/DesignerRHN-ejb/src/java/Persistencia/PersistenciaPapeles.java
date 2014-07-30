@@ -74,6 +74,7 @@ public class PersistenciaPapeles implements PersistenciaPapelesInterface {
 
     public List<Papeles> consultarPapeles(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("Papeles.findAll");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Papeles> listaPapeles = (List<Papeles>) query.getResultList();
@@ -86,6 +87,7 @@ public class PersistenciaPapeles implements PersistenciaPapelesInterface {
 
     public Papeles consultarPapel(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT papelillo FROM Papeles papelillo WHERE papelillo.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -100,6 +102,7 @@ public class PersistenciaPapeles implements PersistenciaPapelesInterface {
 
     public List<Papeles> consultarPapelesEmpresa(EntityManager em, BigInteger secEmpresa) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT papelillo FROM Papeles papelillo WHERE papelillo.empresa.secuencia = :secuenciaEmpr ORDER BY papelillo.codigo ASC");
             query.setParameter("secuenciaEmpr", secEmpresa);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -113,6 +116,7 @@ public class PersistenciaPapeles implements PersistenciaPapelesInterface {
 
     public BigInteger contarVigenciasCargosPapel(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM vigenciascargos WHERE papel = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

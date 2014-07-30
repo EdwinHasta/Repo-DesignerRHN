@@ -80,6 +80,7 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     @Override
     public List<TiposEntidades> buscarTiposEntidades(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT te FROM TiposEntidades te");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposEntidades> tiposEntidades = query.getResultList();
@@ -93,6 +94,7 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     @Override
     public TiposEntidades buscarTiposEntidadesSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT te FROM TiposEntidades te WHERE te.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -108,6 +110,7 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     @Override
     public BigInteger verificarBorrado(EntityManager em, BigInteger secTipoEntidad) {
         try {
+            em.clear();
             BigInteger retorno = new BigInteger("-1");
             Query query = em.createQuery("SELECT COUNT(va) FROM VigenciasAfiliaciones va WHERE va.tipoentidad.secuencia = :secuencia");
             query.setParameter("secuencia", secTipoEntidad);
@@ -123,6 +126,7 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     @Override
     public BigInteger verificarBorradoFCE(EntityManager em, BigInteger secTipoEntidad) {
         try {
+            em.clear();
             BigInteger retorno = new BigInteger("-1");
             Query query = em.createQuery("SELECT COUNT(fce) FROM FormulasContratosEntidades fce WHERE fce.tipoentidad.secuencia = :secuencia");
             query.setParameter("secuencia", secTipoEntidad);
@@ -138,6 +142,7 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     @Override
     public List<TiposEntidades> buscarTiposEntidadesIBCS(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT te FROM TiposEntidades te WHERE EXISTS (SELECT gte FROM Grupostiposentidades gte WHERE gte.secuencia = te.grupo.secuencia AND gte.codigo IN(1,8))");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposEntidades> tiposEntidades = (List<TiposEntidades>) query.getResultList();
@@ -152,6 +157,7 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     @Override
     public List<TiposEntidades> buscarTiposEntidadesPorSecuenciaGrupo(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT te FROM TiposEntidades te WHERE te.grupo.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -167,6 +173,7 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     @Override
     public TiposEntidades buscarTipoEntidadPorCodigo(EntityManager em, Short codigo) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT te FROM TiposEntidades te WHERE te.codigo=:codigo");
             query.setParameter("codigo", codigo);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -181,6 +188,7 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     @Override
     public List<TiposEntidades> buscarTiposEntidadesParametroAutoliq(EntityManager em) {
         try {
+            em.clear();
             String sql = "SELECT * FROM TIPOSENTIDADES te\n"
                     + "   where exists (select 'x' from grupostiposentidades gte\n"
                     + "   where gte.secuencia=te.grupo\n"

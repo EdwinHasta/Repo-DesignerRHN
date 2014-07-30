@@ -86,6 +86,7 @@ public class PersistenciaMotivosCambiosSueldos implements PersistenciaMotivosCam
     @Override
     public List<MotivosCambiosSueldos> buscarMotivosCambiosSueldos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("MotivosCambiosSueldos.findAll");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<MotivosCambiosSueldos> motivosCambiosSueldos = (List<MotivosCambiosSueldos>) query.getResultList();
@@ -100,6 +101,7 @@ public class PersistenciaMotivosCambiosSueldos implements PersistenciaMotivosCam
     public MotivosCambiosSueldos buscarMotivoCambioSueldoSecuencia(EntityManager em, BigInteger secuencia) {
 
         try {
+            em.clear();
             Query query = em.createQuery("SELECT mcs FROM MotivosCambiosSueldos mcs WHERE mcs.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -116,6 +118,7 @@ public class PersistenciaMotivosCambiosSueldos implements PersistenciaMotivosCam
     public BigInteger verificarBorradoVigenciasSueldos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             Query query = em.createQuery("SELECT count(vs) FROM VigenciasSueldos vs WHERE vs.motivocambiosueldo.secuencia =:secMotivosCambiosSueldos ");
             query.setParameter("secMotivosCambiosSueldos", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

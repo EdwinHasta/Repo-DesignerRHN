@@ -84,6 +84,7 @@ public class PersistenciaEscalafones implements PersistenciaEscalafonesInterface
     //@Override
     public List<Escalafones> buscarEscalafones(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT e FROM Escalafones e");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Escalafones> lista = query.getResultList();
@@ -97,6 +98,7 @@ public class PersistenciaEscalafones implements PersistenciaEscalafonesInterface
     @Override
     public Escalafones buscarEscalafonSecuencia(EntityManager em, BigInteger secEscalafon) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("SELECT e FROM Escalafones e WHERE e.secuencia=:secuencia");
             query.setParameter("secuencia", secEscalafon);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

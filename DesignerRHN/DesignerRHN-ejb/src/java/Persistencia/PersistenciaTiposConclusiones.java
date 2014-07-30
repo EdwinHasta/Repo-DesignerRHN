@@ -75,6 +75,7 @@ public class PersistenciaTiposConclusiones implements PersistenciaTiposConclusio
 
     public List<TiposConclusiones> consultarTiposConclusiones(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM TiposConclusiones t ORDER BY t.codigo  ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposConclusiones> tiposConclusiones = query.getResultList();
@@ -87,6 +88,7 @@ public class PersistenciaTiposConclusiones implements PersistenciaTiposConclusio
 
     public TiposConclusiones consultarTipoConclusion(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM TiposConclusiones t WHERE t.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -102,6 +104,7 @@ public class PersistenciaTiposConclusiones implements PersistenciaTiposConclusio
     public BigInteger contarChequeosMedicosTipoConclusion(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM chequeosmedicos WHERE tipochequeo = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

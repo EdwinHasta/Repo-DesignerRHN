@@ -80,6 +80,7 @@ public class PersistenciaMotivosLocalizaciones implements PersistenciaMotivosLoc
     @Override
     public List<MotivosLocalizaciones> buscarMotivosLocalizaciones(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("MotivosLocalizaciones.findAll");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<MotivosLocalizaciones> motivosL = (List<MotivosLocalizaciones>) query.getResultList();
@@ -93,6 +94,7 @@ public class PersistenciaMotivosLocalizaciones implements PersistenciaMotivosLoc
     @Override
     public MotivosLocalizaciones buscarMotivoLocalizacionSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT m FROM MotivosLocalizaciones m WHERE m.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -108,6 +110,7 @@ public class PersistenciaMotivosLocalizaciones implements PersistenciaMotivosLoc
     public BigInteger contarVigenciasLocalizacionesMotivoLocalizacion(EntityManager em, BigInteger secMotivoLocalizacion) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM vigenciaslocalizaciones WHERE motivo =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secMotivoLocalizacion);

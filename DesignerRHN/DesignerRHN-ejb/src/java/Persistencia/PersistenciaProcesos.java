@@ -79,6 +79,7 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface {
     @Override
     public List<Procesos> buscarProcesos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM Procesos t ORDER BY t.codigo ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Procesos> procesos = query.getResultList();
@@ -92,6 +93,7 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface {
     @Override
     public Procesos buscarProcesosSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM Procesos t WHERE t.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -107,6 +109,7 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface {
     @Override
     public Procesos buscarProcesosPorCodigo(EntityManager em, short codigo) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM Procesos t WHERE t.codigo = :codigo");
             query.setParameter("codigo", codigo);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -122,6 +125,7 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface {
     @Override
     public List<Procesos> lovProcesos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT p FROM Procesos p ORDER BY p.descripcion");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Procesos> listaProcesos = query.getResultList();
@@ -135,6 +139,7 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface {
     @Override
     public List<Procesos> procesosParametros(EntityManager em) {
         try {
+            em.clear();
             String sqlQuery = "SELECT P.* FROM PROCESOS P\n"
                     + "                   WHERE EXISTS (SELECT 'x' FROM usuariosprocesos up, usuarios u \n"
                     + "		                           WHERE up.proceso=p.secuencia \n"

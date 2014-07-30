@@ -32,6 +32,7 @@ public class PersistenciaEncargaturas implements PersistenciaEncargaturasInterfa
     @Override
     public List<Encargaturas> reemplazoPersona(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(e) FROM Encargaturas e WHERE e.empleado.secuencia = :secuenciaEmpleado");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -104,6 +105,7 @@ public class PersistenciaEncargaturas implements PersistenciaEncargaturasInterfa
 
     @Override
     public List<Encargaturas> buscarEncargaturas(EntityManager em) {
+        em.clear();
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Encargaturas.class));
         return em.createQuery(cq).getResultList();
@@ -112,6 +114,7 @@ public class PersistenciaEncargaturas implements PersistenciaEncargaturasInterfa
     @Override
     public List<Encargaturas> encargaturasEmpleado(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT e FROM Encargaturas e WHERE e.empleado.secuencia= :secuenciaEmpleado ORDER BY e.fechainicial");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

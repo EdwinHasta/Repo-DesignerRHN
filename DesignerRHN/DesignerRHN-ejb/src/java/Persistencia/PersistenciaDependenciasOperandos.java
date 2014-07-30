@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Persistencia;
 
 import Entidades.DependenciasOperandos;
@@ -22,16 +21,15 @@ import javax.persistence.Query;
  * @author user
  */
 @Stateless
-public class PersistenciaDependenciasOperandos implements PersistenciaDependenciasOperandosInterface{
+public class PersistenciaDependenciasOperandos implements PersistenciaDependenciasOperandosInterface {
 
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-    
+     private EntityManager em;*/
     @Override
-    public void crear(EntityManager em,DependenciasOperandos dependenciasOperandos) {
+    public void crear(EntityManager em, DependenciasOperandos dependenciasOperandos) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -47,7 +45,7 @@ public class PersistenciaDependenciasOperandos implements PersistenciaDependenci
     }
 
     @Override
-    public void editar(EntityManager em,DependenciasOperandos dependenciasOperandos) {
+    public void editar(EntityManager em, DependenciasOperandos dependenciasOperandos) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -63,7 +61,7 @@ public class PersistenciaDependenciasOperandos implements PersistenciaDependenci
     }
 
     @Override
-    public void borrar(EntityManager em,DependenciasOperandos dependenciasOperandos) {
+    public void borrar(EntityManager em, DependenciasOperandos dependenciasOperandos) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -83,8 +81,9 @@ public class PersistenciaDependenciasOperandos implements PersistenciaDependenci
     }
 
     @Override
-    public List<DependenciasOperandos> dependenciasOperandos(EntityManager em,BigInteger secuenciaOperando) {
+    public List<DependenciasOperandos> dependenciasOperandos(EntityManager em, BigInteger secuenciaOperando) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT tf FROM DependenciasOperandos tf, Operandos op WHERE tf.operando.secuencia = :secuenciaOperando ORDER BY tf.codigo DESC");
             query.setParameter("secuenciaOperando", secuenciaOperando);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -96,10 +95,11 @@ public class PersistenciaDependenciasOperandos implements PersistenciaDependenci
             return null;
         }
     }
-    
+
     @Override
-    public String nombreOperandos(EntityManager em,int codigo) {
+    public String nombreOperandos(EntityManager em, int codigo) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT op.nombre FROM Operandos op WHERE op.codigo = :codigo");
             query.setParameter("codigo", codigo);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

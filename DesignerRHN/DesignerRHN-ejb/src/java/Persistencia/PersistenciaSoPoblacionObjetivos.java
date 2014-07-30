@@ -71,6 +71,7 @@ public class PersistenciaSoPoblacionObjetivos implements PersistenciaSoPoblacion
 
     public SoPoblacionObjetivos buscarSoPoblacionObjetivo(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(SoPoblacionObjetivos.class, secuencia);
         } catch (Exception e) {
             System.out.println("Persistencia SoPoblacionObjetivos " + e);
@@ -79,6 +80,7 @@ public class PersistenciaSoPoblacionObjetivos implements PersistenciaSoPoblacion
     }
 
     public List<SoPoblacionObjetivos> consultarSoPoblacionObjetivos(EntityManager em) {
+        em.clear();
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(SoPoblacionObjetivos.class));
         return em.createQuery(cq).getResultList();

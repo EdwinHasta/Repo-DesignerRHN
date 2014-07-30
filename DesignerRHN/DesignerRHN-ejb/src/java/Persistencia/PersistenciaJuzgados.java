@@ -82,6 +82,7 @@ public class PersistenciaJuzgados implements PersistenciaJuzgadosInterface {
     @Override
     public Juzgados buscarJuzgado(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(Juzgados.class, secuencia);
         } catch (Exception e) {
             return null;
@@ -90,6 +91,7 @@ public class PersistenciaJuzgados implements PersistenciaJuzgadosInterface {
 
     @Override
     public List<Juzgados> buscarJuzgados(EntityManager em) {
+        em.clear();
         Query query = em.createQuery("SELECT m FROM Juzgados m ORDER BY m.codigo ASC");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<Juzgados> listaMotivosPrestamos = query.getResultList();
@@ -99,6 +101,7 @@ public class PersistenciaJuzgados implements PersistenciaJuzgadosInterface {
     @Override
     public List<Juzgados> buscarJuzgadosPorCiudad(EntityManager em, BigInteger secCiudad) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT cce FROM Juzgados cce WHERE cce.ciudad.secuencia = :secuenciaJuzgado ORDER BY cce.codigo ASC");
             query.setParameter("secuenciaJuzgado", secCiudad);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -114,6 +117,7 @@ public class PersistenciaJuzgados implements PersistenciaJuzgadosInterface {
     public BigInteger contadorEerPrestamos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
+            em.clear();
             System.out.println("Persistencia secuencia borrado " + secuencia);
             String sqlQuery = " SELECT COUNT(*)FROM eersprestamos ers , juzgados juz WHERE ers.juzgado = juz.secuencia AND juz.secuencia = ? ";
             Query query = em.createNativeQuery(sqlQuery);

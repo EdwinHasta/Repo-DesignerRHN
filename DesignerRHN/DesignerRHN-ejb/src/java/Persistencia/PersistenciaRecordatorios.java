@@ -75,6 +75,7 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
     @Override
     public Recordatorios recordatorioRandom(EntityManager entity) {
         try {
+            entity.clear();
             String consulta = "SELECT *\n"
                     + "    FROM (SELECT * FROM  RECORDATORIOS R\n"
                     + "    WHERE TIPO = 'PROVERBIO' \n"
@@ -92,6 +93,7 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
     @Override
     public List<String> recordatoriosInicio(EntityManager entity) {
         try {
+            entity.clear();
             String consulta = "SELECT R.MENSAJE FROM RECORDATORIOS R WHERE R.TIPO='RECORDATORIO' "
                     + "AND (R.DIA=0 OR R.DIA=TO_NUMBER(TO_CHAR(SYSDATE,'DD'))) AND (R.MES=0 "
                     + "OR R.MES=TO_NUMBER(TO_CHAR(SYSDATE,'MM'))) AND (R.ANO=0 "
@@ -110,6 +112,7 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
     @Override
     public List<Recordatorios> consultasInicio(EntityManager entity) {
         try {
+            entity.clear();
             String consulta = "SELECT * FROM RECORDATORIOS R WHERE R.TIPO='CONSULTA' "
                     + "AND (R.DIA=0 OR R.DIA=TO_NUMBER(TO_CHAR(SYSDATE,'DD'))) AND (R.MES=0 "
                     + "OR R.MES=TO_NUMBER(TO_CHAR(SYSDATE,'MM'))) AND (R.ANO=0 "
@@ -128,6 +131,7 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
     @Override
     public List<Recordatorios> proverbiosRecordatorios(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT r FROM Recordatorios r WHERE r.tipo = 'PROVERBIO'");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Recordatorios> recordatorios = query.getResultList();
@@ -140,6 +144,7 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
     @Override
     public List<Recordatorios> mensajesRecordatorios(EntityManager em) {
         try {
+            em.clear();
             String consulta = "SELECT * FROM RECORDATORIOS R WHERE R.TIPO='RECORDATORIO'and usuario =(SELECT U.SECUENCIA FROM USUARIOS U "
                     + "WHERE U.ALIAS=USER)";
             Query query = em.createNativeQuery(consulta, Recordatorios.class);

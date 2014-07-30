@@ -72,6 +72,7 @@ public class PersistenciaVigenciasProrrateos implements PersistenciaVigenciasPro
     @Override
     public List<VigenciasProrrateos> buscarVigenciasProrrateos(EntityManager em) {
         try {
+            em.clear();
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(VigenciasProrrateos.class));
             return em.createQuery(cq).getResultList();
@@ -84,6 +85,7 @@ public class PersistenciaVigenciasProrrateos implements PersistenciaVigenciasPro
     @Override
     public List<VigenciasProrrateos> buscarVigenciasProrrateosEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vp FROM VigenciasProrrateos vp WHERE vp.viglocalizacion.empleado.secuencia = :secuenciaEmpl ORDER BY vp.fechainicial DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -98,6 +100,7 @@ public class PersistenciaVigenciasProrrateos implements PersistenciaVigenciasPro
     @Override
     public VigenciasProrrateos buscarVigenciaProrrateoSecuencia(EntityManager em, BigInteger secVP) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("VigenciasProrrateos.findBySecuencia").setParameter("secuencia", secVP);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasProrrateos vigenciasProrrateos = (VigenciasProrrateos) query.getSingleResult();
@@ -111,6 +114,7 @@ public class PersistenciaVigenciasProrrateos implements PersistenciaVigenciasPro
     @Override
     public List<VigenciasProrrateos> buscarVigenciasProrrateosVigenciaSecuencia(EntityManager em, BigInteger secVigencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vp FROM VigenciasProrrateos vp WHERE vp.viglocalizacion.secuencia = :secVigencia");
             query.setParameter("secVigencia", secVigencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

@@ -310,7 +310,6 @@ public class ControlConcepto implements Serializable {
             guardado = false;
             RequestContext.getCurrentInstance().update("form:ACEPTAR");
         }
-        RequestContext.getCurrentInstance().update("form:datosConceptos");
     }
 
     public void valoresBackupAutocompletar(int tipoNuevo, String Campo) {
@@ -1635,6 +1634,7 @@ public class ControlConcepto implements Serializable {
         RequestContext.getCurrentInstance().update("form:DETALLES");
         k = 0;
         listaConceptosEmpresa = null;
+        getListaConceptosEmpresa();
         guardado = true;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
         permitirIndex = true;

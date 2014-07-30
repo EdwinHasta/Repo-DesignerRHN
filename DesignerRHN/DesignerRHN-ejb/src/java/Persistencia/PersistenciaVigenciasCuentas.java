@@ -78,6 +78,7 @@ public class PersistenciaVigenciasCuentas implements PersistenciaVigenciasCuenta
 
     @Override
     public List<VigenciasCuentas> buscarVigenciasCuentas(EntityManager em) {
+        em.clear();
         Query query = em.createNamedQuery("VigenciasCuentas.findAll");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<VigenciasCuentas> vigenciasCuentas = (List<VigenciasCuentas>) query.getResultList();
@@ -87,6 +88,7 @@ public class PersistenciaVigenciasCuentas implements PersistenciaVigenciasCuenta
     @Override
     public VigenciasCuentas buscarVigenciaCuentaSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vc FROM VigenciasCuentas vc WHERE vc.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -101,6 +103,7 @@ public class PersistenciaVigenciasCuentas implements PersistenciaVigenciasCuenta
     @Override
     public List<VigenciasCuentas> buscarVigenciasCuentasPorCredito(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vc FROM VigenciasCuentas vc WHERE vc.cuentac.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -116,6 +119,7 @@ public class PersistenciaVigenciasCuentas implements PersistenciaVigenciasCuenta
     @Override
     public List<VigenciasCuentas> buscarVigenciasCuentasPorDebito(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vc FROM VigenciasCuentas vc WHERE vc.cuentad.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -131,6 +135,7 @@ public class PersistenciaVigenciasCuentas implements PersistenciaVigenciasCuenta
     @Override
     public List<VigenciasCuentas> buscarVigenciasCuentasPorConcepto(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vc FROM VigenciasCuentas vc WHERE vc.concepto.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

@@ -86,6 +86,7 @@ public class PersistenciaCiudades implements PersistenciaCiudadesInterface {
     @Override
     public List<Ciudades> ciudades(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT c FROM Ciudades c ORDER BY c.nombre");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Ciudades> ciudades = query.getResultList();

@@ -80,6 +80,7 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
     @Override
     public List<VigenciasCompensaciones> buscarVigenciasCompensaciones(EntityManager em) {
         try {
+            em.clear();
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(VigenciasCompensaciones.class));
             return em.createQuery(cq).getResultList();
@@ -92,6 +93,7 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
     @Override
     public List<VigenciasCompensaciones> buscarVigenciasCompensacionesEmpleado(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vc FROM VigenciasCompensaciones vc WHERE vc.vigenciajornada.empleado.secuencia = :secuenciaEmpl ORDER BY vc.fechainicial DESC");
             query.setParameter("secuenciaEmpl", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -106,6 +108,7 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
     @Override
     public VigenciasCompensaciones buscarVigenciaCompensacionSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("VigenciasCompensaciones.findBySecuencia").setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasCompensaciones vigenciasCompensaciones = (VigenciasCompensaciones) query.getSingleResult();
@@ -119,6 +122,7 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
     @Override
     public List<VigenciasCompensaciones> buscarVigenciasCompensacionesVigenciaSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vc FROM VigenciasCompensaciones vc WHERE vc.vigenciajornada.secuencia =:secVigencia ORDER BY vc.fechainicial DESC");
             query.setParameter("secVigencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -133,6 +137,7 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
     @Override
     public List<VigenciasCompensaciones> buscarVigenciasCompensacionesTipoCompensacion (EntityManager em, String tipoC){
         try{
+            em.clear();
            Query query = em.createQuery("SELECT vc FROM VigenciasCompensaciones vc WHERE vc.tipocompensacion =:tipoCompensacion ORDER BY  vc.fechainicial DESC");
            query.setParameter("tipoCompensacion", tipoC);
            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -147,6 +152,7 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
     @Override
      public List<VigenciasCompensaciones> buscarVigenciasCompensacionesVigenciayCompensacion(EntityManager em, String tipoC,BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vc FROM VigenciasCompensaciones vc WHERE vc.tipocompensacion =:tipoCompensacion AND vc.vigenciajornada.secuencia =:secVigencia ORDER BY  vc.fechainicial DESC");
             query.setParameter("tipoCompensacion", tipoC);
             query.setParameter("tipoCompensacion", tipoC);

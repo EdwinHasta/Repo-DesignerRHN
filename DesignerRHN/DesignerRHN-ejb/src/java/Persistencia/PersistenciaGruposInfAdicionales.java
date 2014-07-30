@@ -83,6 +83,7 @@ public class PersistenciaGruposInfAdicionales implements PersistenciaGruposInfAd
     @Override
     public GruposInfAdicionales buscarGrupoInfAdicional(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(GruposInfAdicionales.class, secuencia);
         } catch (Exception e) {
             System.err.println("Error buscarGrupoInfAdicional PersistenciaGruposInfAdicionales : " + e.toString());
@@ -93,6 +94,7 @@ public class PersistenciaGruposInfAdicionales implements PersistenciaGruposInfAd
     @Override
     public List<GruposInfAdicionales> buscarGruposInfAdicionales(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM GruposInfAdicionales t ORDER BY t.codigo  ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<GruposInfAdicionales> listaGruposInfAdicionales = query.getResultList();
@@ -106,6 +108,7 @@ public class PersistenciaGruposInfAdicionales implements PersistenciaGruposInfAd
     public BigInteger contadorInformacionesAdicionales(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM informacionesadicionales aa where grupo=?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

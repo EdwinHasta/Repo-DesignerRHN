@@ -77,11 +77,13 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
 
     @Override
     public Personas buscarPersona(EntityManager em, BigInteger secuencia) {
+        em.clear();
         return em.find(Personas.class, secuencia);
     }
 
     @Override
     public List<Personas> consultarPersonas(EntityManager em) {
+        em.clear();
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Personas.class));
         return em.createQuery(cq).getResultList();
@@ -90,6 +92,7 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
     @Override
     public void actualizarFotoPersona(EntityManager em, BigInteger identificacion) {
         try {
+            em.clear();
             em.getTransaction().begin();
             Query query = em.createNativeQuery("update Personas p set p.pathfoto='S' where p.numerodocumento = ?");
             query.setParameter(1, identificacion);
@@ -103,6 +106,7 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
     @Override
     public Personas buscarFotoPersona(EntityManager em, BigInteger identificacion) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT p from Personas p where p.numerodocumento = :identificacion");
             query.setParameter("identificacion", identificacion);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -118,6 +122,7 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
     public Personas buscarPersonaSecuencia(EntityManager em, BigInteger secuencia) {
         Personas persona;
         try {
+            em.clear();
             Query query = em.createQuery("SELECT p FROM Personas p WHERE p.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -133,6 +138,7 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
     @Override
     public Personas buscarPersonaPorNumeroDocumento(EntityManager em, BigInteger numeroDocumento) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT p FROM Personas p WHERE p.numerodocumento=:numeroDocumento AND p.digitoverificaciondocumento is null");
             query.setParameter("numeroDocumento", numeroDocumento);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -147,6 +153,7 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
     @Override
     public Personas obtenerUltimaPersonaAlmacenada(EntityManager em,BigInteger documento) {
         try {
+            em.clear();
             System.out.println("documento : "+documento);
             Query query = em.createQuery("SELECT p FROM Personas p WHERE p.numerodocumento=:documento");
             query.setParameter("documento", documento);

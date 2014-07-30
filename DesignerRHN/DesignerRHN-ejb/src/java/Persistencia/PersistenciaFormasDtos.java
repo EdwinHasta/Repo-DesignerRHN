@@ -81,6 +81,7 @@ public class PersistenciaFormasDtos implements PersistenciaFormasDtosInterface {
     @Override
     public List<FormasDtos> formasDescuentos(EntityManager em,BigInteger tipoEmbargo) {
         try {
+            em.clear();
             String sqlQuery = "SELECT SECUENCIA, DESCRIPCION FROM FORMASDTOS \n"
                     + "WHERE TIPO = 'EMBARGO'\n"
                     + "and nvl(tipoembargo, ?)= ?\n"

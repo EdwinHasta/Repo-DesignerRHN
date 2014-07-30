@@ -75,6 +75,7 @@ public class PersistenciaTiposEmpresas implements PersistenciaTiposEmpresasInter
 
     public TiposEmpresas buscarTipoEmpresa(EntityManager em, BigInteger secuenciaTE) {
         try {
+            em.clear();
             return em.find(TiposEmpresas.class, secuenciaTE);
         } catch (Exception e) {
             return null;
@@ -82,6 +83,7 @@ public class PersistenciaTiposEmpresas implements PersistenciaTiposEmpresasInter
     }
 
     public List<TiposEmpresas> buscarTiposEmpresas(EntityManager em) {
+        em.clear();
         Query query = em.createQuery("SELECT m FROM TiposEmpresas m ORDER BY m.codigo ASC ");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<TiposEmpresas> listMotivosDemandas = query.getResultList();
@@ -93,6 +95,7 @@ public class PersistenciaTiposEmpresas implements PersistenciaTiposEmpresasInter
     public BigInteger contadorSueldosMercados(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = " SELECT COUNT (*)FROM sueldosmercados sm WHERE tipoempresa = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

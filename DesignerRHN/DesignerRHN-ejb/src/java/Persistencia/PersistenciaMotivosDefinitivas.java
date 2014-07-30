@@ -83,6 +83,7 @@ public class PersistenciaMotivosDefinitivas implements PersistenciaMotivosDefini
     @Override
     public List<MotivosDefinitivas> buscarMotivosDefinitivas(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT md FROM MotivosDefinitivas md ORDER BY md.codigo ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<MotivosDefinitivas> motivoD = query.getResultList();
@@ -96,6 +97,7 @@ public class PersistenciaMotivosDefinitivas implements PersistenciaMotivosDefini
     @Override
     public MotivosDefinitivas buscarMotivoDefinitiva(EntityManager em, BigInteger secuenciaME) {
         try {
+            em.clear();
             return em.find(MotivosDefinitivas.class, secuenciaME);
         } catch (Exception e) {
             return null;
@@ -106,6 +108,7 @@ public class PersistenciaMotivosDefinitivas implements PersistenciaMotivosDefini
     public BigInteger contadorNovedadesSistema(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM novedadessistema WHERE motivodefinitiva = ? ";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

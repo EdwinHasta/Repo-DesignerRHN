@@ -21,6 +21,7 @@ public class PersistenciaClavesSap implements PersistenciaClavesSapInterface {
 
     public List<ClavesSap> consultarClavesSap(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT cp FROM ClavesSap cp");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<ClavesSap> claseP = query.getResultList();

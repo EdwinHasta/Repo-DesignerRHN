@@ -83,7 +83,7 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
     @Override
     public Grupostiposentidades consultarGrupoTipoEntidad(EntityManager em, BigInteger secuencia) {
         try {
-
+            em.clear();
             return em.find(Grupostiposentidades.class, secuencia);
         } catch (Exception e) {
             System.out.println("\n ERROR EN PersistenciaGruposTiposEntidades buscarGrupoTipoEntidad ERROR " + e);
@@ -95,6 +95,7 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
     @Override
     public List<Grupostiposentidades> consultarGruposTiposEntidades(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT ta FROM Grupostiposentidades ta ORDER BY ta.codigo");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Grupostiposentidades> todosGrupostiposentidades = query.getResultList();
@@ -108,6 +109,7 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
     public BigInteger contarTiposEntidadesGrupoTipoEntidad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*) FROM tiposentidades WHERE grupo =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -123,6 +125,7 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
     public BigInteger contarTSgruposTiposEntidadesTipoEntidad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*) FROM tsgrupostiposentidades WHERE grupotipoentidad =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

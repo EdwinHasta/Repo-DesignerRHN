@@ -80,6 +80,7 @@ public class PersistenciaTiposTelefonos implements PersistenciaTiposTelefonosInt
     @Override
     public TiposTelefonos buscarTipoTelefonos(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             BigInteger sec = new BigInteger(secuencia.toString());
             return em.find(TiposTelefonos.class, sec);
         } catch (Exception e) {
@@ -90,6 +91,7 @@ public class PersistenciaTiposTelefonos implements PersistenciaTiposTelefonosInt
     @Override
     public List<TiposTelefonos> tiposTelefonos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT tt FROM TiposTelefonos tt ORDER BY tt.codigo ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposTelefonos> listaTiposTelefonos = query.getResultList();

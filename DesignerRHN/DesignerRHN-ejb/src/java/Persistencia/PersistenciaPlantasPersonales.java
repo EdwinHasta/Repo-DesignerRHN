@@ -80,6 +80,7 @@ public class PersistenciaPlantasPersonales implements PersistenciaPlantasPersona
     @Override
     public List<PlantasPersonales> consultarPlantasPersonales(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT pp FROM PlantasPersonales pp ORDER BY pp.cantidad");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<PlantasPersonales> plantasPersonales = query.getResultList();
@@ -93,6 +94,7 @@ public class PersistenciaPlantasPersonales implements PersistenciaPlantasPersona
     @Override 
     public BigInteger consultarCantidadEstructuras(EntityManager em, BigInteger secEstructura) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT SUM(pp.cantidad) FROM PlantasPersonales pp WHERE pp.estructura.secuencia=:secEstructura");
             query.setParameter("secEstructura", secEstructura);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

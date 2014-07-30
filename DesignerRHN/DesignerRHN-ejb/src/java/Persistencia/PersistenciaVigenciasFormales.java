@@ -80,6 +80,7 @@ public class PersistenciaVigenciasFormales implements PersistenciaVigenciasForma
 
     @Override
     public List<VigenciasFormales> buscarVigenciasFormales(EntityManager em) {
+        em.clear();
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasFormales.class));
         return em.createQuery(cq).getResultList();
@@ -88,6 +89,7 @@ public class PersistenciaVigenciasFormales implements PersistenciaVigenciasForma
     @Override
     public List<VigenciasFormales> educacionPersona(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(vf) FROM VigenciasFormales vf WHERE vf.persona.secuencia = :secuenciaPersona");
             query.setParameter("secuenciaPersona", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -108,6 +110,7 @@ public class PersistenciaVigenciasFormales implements PersistenciaVigenciasForma
     @Override
     public List<VigenciasFormales> vigenciasFormalesPersona(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vF FROM VigenciasFormales vF WHERE vF.persona.secuencia = :secuenciaPersona ORDER BY vF.fechavigencia DESC");
             query.setParameter("secuenciaPersona", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

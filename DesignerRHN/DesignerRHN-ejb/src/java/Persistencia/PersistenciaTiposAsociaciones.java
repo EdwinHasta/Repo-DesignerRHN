@@ -79,6 +79,7 @@ public class PersistenciaTiposAsociaciones implements PersistenciaTiposAsociacio
     @Override
     public List<TiposAsociaciones> buscarTiposAsociaciones(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("TiposAsociaciones.findAll");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposAsociaciones> tiposAsociaciones = (List<TiposAsociaciones>) query.getResultList();
@@ -93,6 +94,7 @@ public class PersistenciaTiposAsociaciones implements PersistenciaTiposAsociacio
     public TiposAsociaciones buscarTiposAsociacionesSecuencia(EntityManager em, BigInteger secuencia) {
 
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM TiposAsociaciones t WHERE t.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

@@ -84,10 +84,10 @@ public class PersistenciaFormulasNovedades implements PersistenciaFormulasNoveda
     @Override
     public List<FormulasNovedades> formulasNovedadesParaFormulaSecuencia(EntityManager em,BigInteger secuencia) {
         try {
+            em.clear();
             Query queryFinal = em.createQuery("SELECT fn FROM FormulasNovedades fn WHERE fn.formula.secuencia=:secuencia");
             queryFinal.setParameter("secuencia", secuencia);
             queryFinal.setHint("javax.persistence.cache.storeMode", "REFRESH");
-                    ;
             List<FormulasNovedades> formulasNovedades = queryFinal.getResultList();
             return formulasNovedades;
         } catch (Exception e) {
@@ -99,6 +99,7 @@ public class PersistenciaFormulasNovedades implements PersistenciaFormulasNoveda
     @Override
     public boolean verificarExistenciaFormulasNovedades(EntityManager em,BigInteger secFormula) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(fn) FROM FormulasNovedades fn WHERE fn.formula.secuencia = :secFormula");
             query.setParameter("secFormula", secFormula);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

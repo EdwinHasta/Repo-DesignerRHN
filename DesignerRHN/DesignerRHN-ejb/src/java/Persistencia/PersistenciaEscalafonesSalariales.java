@@ -80,6 +80,7 @@ public class PersistenciaEscalafonesSalariales implements PersistenciaEscalafone
 
     @Override
     public List<EscalafonesSalariales> buscarEscalafones(EntityManager em) {
+        em.clear();
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(EscalafonesSalariales.class));
         return em.createQuery(cq).getResultList();
@@ -88,6 +89,7 @@ public class PersistenciaEscalafonesSalariales implements PersistenciaEscalafone
     @Override
     public EscalafonesSalariales buscarEscalafonSecuencia(EntityManager em,BigInteger secEscalafon) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("SELECT e FROM EscalafonesSalariales e WHERE e.secuencia=:secuencia");
             query.setParameter("secuencia", secEscalafon);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

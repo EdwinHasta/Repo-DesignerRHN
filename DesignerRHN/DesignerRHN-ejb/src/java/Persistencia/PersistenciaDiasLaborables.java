@@ -84,6 +84,7 @@ public class PersistenciaDiasLaborables implements PersistenciaDiasLaborablesInt
     @Override
     public DiasLaborables buscarDiaLaborableSecuencia(EntityManager em,BigInteger secDiaLaboral) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT dl FROM DiasLaborables dl WHERE dl.secuencia =:secuencia");
             query.setParameter("secuencia", secDiaLaboral);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -98,6 +99,7 @@ public class PersistenciaDiasLaborables implements PersistenciaDiasLaborablesInt
     @Override
     public List<DiasLaborables> diasLaborables(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT dl FROM DiasLaborables dl");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<DiasLaborables> diasLaborables = query.getResultList();
@@ -110,6 +112,7 @@ public class PersistenciaDiasLaborables implements PersistenciaDiasLaborablesInt
     @Override
     public List<DiasLaborables> diasLaborablesParaSecuenciaTipoContrato(EntityManager em,BigInteger secTipoContrato) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT dl FROM DiasLaborables dl WHERE dl.tipocontrato.secuencia=:secuencia");
             query.setParameter("secuencia", secTipoContrato);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

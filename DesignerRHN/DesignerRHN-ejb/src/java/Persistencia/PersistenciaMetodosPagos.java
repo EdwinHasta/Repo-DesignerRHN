@@ -79,6 +79,7 @@ public class PersistenciaMetodosPagos implements PersistenciaMetodosPagosInterfa
     @Override
     public MetodosPagos buscarMetodosPagosEmpleado(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(MetodosPagos.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error en la persistencia vigencias formas pagos ERROR : " + e);
@@ -87,6 +88,7 @@ public class PersistenciaMetodosPagos implements PersistenciaMetodosPagosInterfa
     }
 
     public List<MetodosPagos> buscarMetodosPagos(EntityManager em) {
+        em.clear();
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(MetodosPagos.class));
         return em.createQuery(cq).getResultList();
@@ -95,6 +97,7 @@ public class PersistenciaMetodosPagos implements PersistenciaMetodosPagosInterfa
     public BigInteger contadorvigenciasformaspagos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM vigenciasformaspagos WHERE metodopago = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

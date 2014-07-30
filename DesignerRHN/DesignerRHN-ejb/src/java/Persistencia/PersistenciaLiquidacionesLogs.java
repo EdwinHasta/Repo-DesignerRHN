@@ -72,6 +72,7 @@ public class PersistenciaLiquidacionesLogs implements PersistenciaLiquidacionesL
 
     public List<LiquidacionesLogs> consultarLiquidacionesLogs(EntityManager em) {
         try {
+            em.clear();
             //Query query = em.createQuery("SELECT l FROM LiquidacionesLogs l WHERE EXISTS (SELECT 0 FROM Empleados e WHERE e.secuencia = l.empleado.secuencia)");
             Query query = em.createQuery("SELECT l FROM LiquidacionesLogs l");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -85,6 +86,7 @@ public class PersistenciaLiquidacionesLogs implements PersistenciaLiquidacionesL
 
     public List<LiquidacionesLogs> consultarLiquidacionesLogsPorEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT cce FROM LiquidacionesLogs cce WHERE cce.empleado.secuencia = :secuenciaEmpleado ORDER BY cce.empleado.persona.nombre ASC");
             query.setParameter("secuenciaEmpleado", secEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
