@@ -407,7 +407,6 @@ public class ControlTipoCotizante implements Serializable {
                 duplicarTipoCotizante.setSubtipocotizante(null);
             }
             RequestContext context = RequestContext.getCurrentInstance();
-
             context.update("form:ACEPTAR");
             RequestContext.getCurrentInstance().update("formularioDialogos:duplicarSubTipoCotizacion");
         }
