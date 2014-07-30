@@ -23,6 +23,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -152,6 +154,7 @@ public class ControlParametroAutoliq implements Serializable {
     private int rowsAporteEntidad;
     //
     private int numero;
+    //
 
     public ControlParametroAutoliq() {
         infoRegistroAporte = "Cantidad de registros : 0";
@@ -725,7 +728,7 @@ public class ControlParametroAutoliq implements Serializable {
                 numeroScrollAporte = 505;
                 rowsAporteEntidad = 20;
                 //context.update("form:datosAporteEntidad2");
-                
+
                 context.update("form:btn2");
                 context.update("form:btn3");
                 context.update("form:btn4");
@@ -738,6 +741,7 @@ public class ControlParametroAutoliq implements Serializable {
                 context.update("form:tablaInferiorDerecha");
                 getParametroTablaSeleccionado();
             } else if (index != indice) {
+                System.out.println("Inicio el cargue de informacion");
                 index = indice;
                 cualCelda = celda;
                 indexAUX = indice;
