@@ -80,6 +80,7 @@ public class PersistenciaNovedadesOperandos implements PersistenciaNovedadesOper
     @Override
     public List<NovedadesOperandos> novedadesOperandos(EntityManager em, BigInteger secuenciaOperando) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT no FROM NovedadesOperandos no WHERE no.operando.secuencia =:secuenciaOperando");
             query.setParameter("secuenciaOperando", secuenciaOperando);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

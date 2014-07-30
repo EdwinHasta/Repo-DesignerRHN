@@ -82,11 +82,13 @@ public class PersistenciaDirecciones implements PersistenciaDireccionesInterface
 
     @Override
     public Direcciones buscarDireccion(EntityManager em, BigInteger secuencia) {
+        em.clear();
         return em.find(Direcciones.class, secuencia);
     }
 
     @Override
     public List<Direcciones> buscarDirecciones(EntityManager em) {
+        em.clear();
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Direcciones.class));
         return em.createQuery(cq).getResultList();
@@ -95,6 +97,7 @@ public class PersistenciaDirecciones implements PersistenciaDireccionesInterface
     @Override
     public List<Direcciones> direccionPersona(EntityManager em, BigInteger secuenciaPersona) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(d) FROM Direcciones d WHERE d.persona.secuencia = :secuenciaPersona");
             query.setParameter("secuenciaPersona", secuenciaPersona);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -116,6 +119,7 @@ public class PersistenciaDirecciones implements PersistenciaDireccionesInterface
     @Override
     public List<Direcciones> direccionesPersona(EntityManager em, BigInteger secuenciaPersona) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(d) FROM Direcciones d WHERE d.persona.secuencia = :secuenciaPersona");
             query.setParameter("secuenciaPersona", secuenciaPersona);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

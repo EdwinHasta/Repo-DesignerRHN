@@ -81,6 +81,7 @@ public class PersistenciaVigenciasNoFormales implements PersistenciaVigenciasNoF
 
     @Override
     public List<VigenciasNoFormales> buscarVigenciasNoFormales(EntityManager em) {
+        em.clear();
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasNoFormales.class));
         return em.createQuery(cq).getResultList();
@@ -89,6 +90,7 @@ public class PersistenciaVigenciasNoFormales implements PersistenciaVigenciasNoF
     @Override
     public List<VigenciasNoFormales> vigenciasNoFormalesPersona(EntityManager em, BigInteger secuenciaPersona) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vNF FROM VigenciasNoFormales vNF WHERE vNF.persona.secuencia = :secuenciaPersona ORDER BY vNF.fechavigencia DESC");
             query.setParameter("secuenciaPersona", secuenciaPersona);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

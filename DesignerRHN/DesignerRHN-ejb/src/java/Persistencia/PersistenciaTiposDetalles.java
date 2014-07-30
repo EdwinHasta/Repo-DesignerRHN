@@ -81,6 +81,7 @@ public class PersistenciaTiposDetalles implements PersistenciaTiposDetallesInter
     @Override
     public List<TiposDetalles> buscarTiposDetalles(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT td FROM TiposDetalles td ORDER BY td.codigo ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposDetalles> tiposDetalles = query.getResultList();
@@ -94,6 +95,7 @@ public class PersistenciaTiposDetalles implements PersistenciaTiposDetallesInter
     @Override
     public TiposDetalles buscarTiposDetallesSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT td FROM TiposDetalles td WHERE td.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

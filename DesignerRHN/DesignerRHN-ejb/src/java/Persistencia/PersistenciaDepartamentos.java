@@ -79,6 +79,7 @@ public class PersistenciaDepartamentos implements PersistenciaDepartamentosInter
 
     public Departamentos consultarDepartamento(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(Departamentos.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error buscarDeporte PersistenciaDepartamentos : " + e.toString());
@@ -89,6 +90,7 @@ public class PersistenciaDepartamentos implements PersistenciaDepartamentosInter
     @Override
     public List<Departamentos> consultarDepartamentos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT d FROM Departamentos d ORDER BY d.nombre");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Departamentos> departamentos = query.getResultList();
@@ -101,6 +103,7 @@ public class PersistenciaDepartamentos implements PersistenciaDepartamentosInter
     public BigInteger contarSoAccidentesMedicosDepartamento(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
+            em.clear();
             String sqlQuery = "select COUNT(*)from soaccidentesmedicos WHERE departamento = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -117,6 +120,7 @@ public class PersistenciaDepartamentos implements PersistenciaDepartamentosInter
     public BigInteger contarCiudadesDepartamento(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM ciudades WHERE departamento = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -133,6 +137,7 @@ public class PersistenciaDepartamentos implements PersistenciaDepartamentosInter
     public BigInteger contarCapModulosDepartamento(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM capmodulos WHERE departamento = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -150,6 +155,7 @@ public class PersistenciaDepartamentos implements PersistenciaDepartamentosInter
     public BigInteger contarBienProgramacionesDepartamento(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM bienprogramaciones WHERE departamento = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

@@ -77,6 +77,7 @@ public class PersistenciaEvalActividades implements PersistenciaEvalActividadesI
 
     public List<EvalActividades> consultarEvalActividades(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM EvalActividades t ORDER BY t.codigo ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<EvalActividades> evalActividades = query.getResultList();
@@ -89,6 +90,7 @@ public class PersistenciaEvalActividades implements PersistenciaEvalActividadesI
 
     public EvalActividades consultarEvalActividad(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM EvalActividades t WHERE t.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -104,6 +106,7 @@ public class PersistenciaEvalActividades implements PersistenciaEvalActividadesI
     public BigInteger contarEvalPlanesDesarrollosEvalActividad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM evalplanesdesarrollos WHERE evalactividad =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -119,6 +122,7 @@ public class PersistenciaEvalActividades implements PersistenciaEvalActividadesI
     public BigInteger contarCapNecesidadesEvalActividad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM CAPNECESIDADES WHERE tipoeducacion =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -134,6 +138,7 @@ public class PersistenciaEvalActividades implements PersistenciaEvalActividadesI
     public BigInteger contarCapBuzonesEvalActividad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM CAPBUZONES WHERE tipoeducacion =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

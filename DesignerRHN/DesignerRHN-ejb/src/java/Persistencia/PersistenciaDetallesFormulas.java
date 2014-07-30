@@ -26,6 +26,7 @@ public class PersistenciaDetallesFormulas implements PersistenciaDetallesFormula
     @Override
     public List<DetallesFormulas> detallesFormula(EntityManager em,BigInteger secEmpleado, String fechaDesde, String fechaHasta, BigInteger secProceso, BigInteger secHistoriaFormula) {
         try {
+            em.clear();
             String sqlQuery = "select ROWNUM ID, LEVEL NIVEL, \n"
                     + "        POSICION,\n"
                     + "        decode(descripcion, null,\n"

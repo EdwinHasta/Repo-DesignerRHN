@@ -27,6 +27,7 @@ public class PersistenciaAdiestramientosNF implements PersistenciaAdiestramiento
     @Override
         public List<AdiestramientosNF> adiestramientosNF(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT aNF FROM AdiestramientosNF aNF ORDER BY aNF.desccripcion");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<AdiestramientosNF> adiestramientosNF = query.getResultList();

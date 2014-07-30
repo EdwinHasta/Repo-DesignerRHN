@@ -26,6 +26,7 @@ public class PersistenciaEersAuxilios implements PersistenciaEersAuxiliosInterfa
     @Override
     public List<EersAuxilios> auxilios(EntityManager em) {
         try {
+            em.clear();
             String sqlQuery = "select * from eersauxilios e where EXISTS (SELECT 'X' FROM EMPLEADOS EM WHERE EM.SECUENCIA=E.EMPLEADO)";
             Query query = em.createNativeQuery(sqlQuery, EersAuxilios.class);
             List<EersAuxilios> listaAuxilios = query.getResultList();

@@ -87,12 +87,14 @@ public class PersistenciaAficiones implements PersistenciaAficionesInterface {
 
     @Override
     public Aficiones buscarAficion(EntityManager em, BigInteger secuencia) {
+        em.clear();
         return em.find(Aficiones.class, secuencia);
     }
 
     @Override
     public List<Aficiones> buscarAficiones(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT af FROM Aficiones af ORDER BY af.codigo");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Aficiones> aficiones = (List<Aficiones>) query.getResultList();
@@ -106,6 +108,7 @@ public class PersistenciaAficiones implements PersistenciaAficionesInterface {
     @Override
     public short maximoCodigoAficiones(EntityManager em) {
         Short max;
+        em.clear();
         Query query = em.createQuery("SELECT af FROM Aficiones af "
                 + "WHERE af.codigo=(SELECT MAX(afi.codigo) FROM Aficiones afi)");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -117,6 +120,7 @@ public class PersistenciaAficiones implements PersistenciaAficionesInterface {
 
     @Override
     public Aficiones buscarAficionCodigo(EntityManager em, Short cod) {
+        em.clear();
         Query query = em.createQuery("SELECT af FROM Aficiones af WHERE af.codigo=:cod");
         query.setParameter("cod", cod);
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");

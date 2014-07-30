@@ -80,6 +80,7 @@ public class PersistenciaRetencionesMinimas implements PersistenciaRetencionesMi
     @Override
     public List<RetencionesMinimas> retenciones(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT u FROM RetencionesMinimas u ORDER BY u.retencion ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<RetencionesMinimas> resultado = query.getResultList();
@@ -98,6 +99,7 @@ public class PersistenciaRetencionesMinimas implements PersistenciaRetencionesMi
     @Override
     public List<RetencionesMinimas> buscarRetencionesMinimasVig(EntityManager em, BigInteger secRetencion) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT r FROM RetencionesMinimas r WHERE r.vigenciaretencionminima.secuencia = :secRetencion");
             query.setParameter("secRetencion", secRetencion);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

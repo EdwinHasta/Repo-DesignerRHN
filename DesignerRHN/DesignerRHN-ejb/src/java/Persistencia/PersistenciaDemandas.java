@@ -81,6 +81,7 @@ public class PersistenciaDemandas implements PersistenciaDemandasInterface{
     @Override
     public List<Demandas> demandasPersona(EntityManager em,BigInteger secuenciaEmpl) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(d) FROM Demandas d WHERE d.empleado.secuencia = :secuenciaEmpl");
             query.setParameter("secuenciaEmpl", secuenciaEmpl);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

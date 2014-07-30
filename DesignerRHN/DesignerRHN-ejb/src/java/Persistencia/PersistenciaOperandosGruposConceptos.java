@@ -81,6 +81,7 @@ public class PersistenciaOperandosGruposConceptos implements PersistenciaOperand
     @Override
     public List<OperandosGruposConceptos> buscarOperandosGruposConceptos(EntityManager em) {
         try {
+            em.clear();
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(OperandosGruposConceptos.class));
             return em.createQuery(cq).getResultList();
@@ -93,6 +94,7 @@ public class PersistenciaOperandosGruposConceptos implements PersistenciaOperand
     @Override
     public OperandosGruposConceptos buscarOperandosGruposConceptosPorSecuencia(EntityManager em, BigInteger secOperando) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT o FROM OperandosGruposConceptos o WHERE o.secuencia=:secOperando");
             query.setParameter("secOperando", secOperando);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -107,6 +109,7 @@ public class PersistenciaOperandosGruposConceptos implements PersistenciaOperand
     @Override
     public List<OperandosGruposConceptos> buscarOperandosGruposConceptosPorProcesoSecuencia(EntityManager em, BigInteger secProceso) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT o FROM OperandosGruposConceptos o WHERE o.proceso.secuencia=:secuencia");
             query.setParameter("secuencia", secProceso);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

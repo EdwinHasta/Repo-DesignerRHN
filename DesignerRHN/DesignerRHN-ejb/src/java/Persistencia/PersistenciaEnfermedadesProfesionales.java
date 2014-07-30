@@ -83,6 +83,7 @@ public class PersistenciaEnfermedadesProfesionales implements PersistenciaEnferm
     @Override
     public EnfermeadadesProfesionales buscarEnfermedadesProfesionales(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(EnfermeadadesProfesionales.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error en la persistenciaEnfermedadesProfesionales ERROR : " + e);
@@ -93,6 +94,7 @@ public class PersistenciaEnfermedadesProfesionales implements PersistenciaEnferm
     @Override
     public List<EnfermeadadesProfesionales> buscarEPPorEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
+            em.clear();
             String sqlQuery = ("SELECT ep.fechanotificacion,d.descripcion ,d.codigo FROM EnfermeadadesProfesionales ep, Diagnosticoscategorias d, Empleados e WHERE ep.empleado=e.secuencia AND e.secuencia = ? ORDER BY ep.fechanotificacion DESC");
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secEmpleado);

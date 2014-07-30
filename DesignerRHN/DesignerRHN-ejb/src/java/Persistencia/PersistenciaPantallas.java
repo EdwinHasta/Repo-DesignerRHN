@@ -28,6 +28,7 @@ public class PersistenciaPantallas implements PersistenciaPantallasInterface{
     @Override
     public Pantallas buscarPantalla(EntityManager em, BigInteger secuenciaTab) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT p from Pantallas p where p.tabla.secuencia = :secuenciaTab");
             query.setParameter("secuenciaTab", secuenciaTab);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

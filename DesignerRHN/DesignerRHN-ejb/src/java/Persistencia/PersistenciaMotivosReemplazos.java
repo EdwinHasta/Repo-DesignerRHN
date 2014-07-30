@@ -79,6 +79,7 @@ public class PersistenciaMotivosReemplazos implements PersistenciaMotivosReempla
     @Override
     public List<MotivosReemplazos> motivosReemplazos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT mR FROM MotivosReemplazos mR ORDER BY mR.codigo");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<MotivosReemplazos> motivosReemplazos = query.getResultList();
@@ -91,6 +92,7 @@ public class PersistenciaMotivosReemplazos implements PersistenciaMotivosReempla
     public BigInteger contarEncargaturasMotivoReemplazo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM encargaturas sm WHERE sm.motivoreemplazo = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

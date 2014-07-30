@@ -85,6 +85,7 @@ public class PersistenciaCirculares implements PersistenciaCircularesInterface {
     @Override
     public List<Circulares> buscarCirculares(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT c FROM Circulares c");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Circulares> circulares = query.getResultList();
@@ -98,6 +99,7 @@ public class PersistenciaCirculares implements PersistenciaCircularesInterface {
     @Override
     public Circulares buscarCircularSecuencia(EntityManager em,BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT c FROM Circulares c WHERE c.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -113,6 +115,7 @@ public class PersistenciaCirculares implements PersistenciaCircularesInterface {
     @Override
     public List<Circulares> buscarCircularesPorSecuenciaEmpresa(EntityManager em,BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT c FROM Circulares c WHERE c.empresa.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

@@ -31,6 +31,7 @@ public class PersistenciaSolucionesFormulas implements PersistenciaSolucionesFor
     @Override
     public int validarNovedadesNoLiquidadas(EntityManager em, BigInteger secNovedad) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(sf) FROM SolucionesFormulas sf WHERE sf.novedad.secuencia = :secNovedad");
             query.setParameter("secNovedad", secNovedad);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -48,6 +49,7 @@ public class PersistenciaSolucionesFormulas implements PersistenciaSolucionesFor
     @Override
     public List<SolucionesFormulas> listaSolucionesFormulasParaEmpleadoYNovedad(EntityManager em, BigInteger secEmpleado, BigInteger secNovedad) {
         try {
+            em.clear();
             List<SolucionesFormulas> lista = null;
             if (secNovedad == null) {
                 Query query = em.createQuery("SELECT sf FROM SolucionesFormulas sf WHERE sf.solucionnodo.empleado.secuencia =:secEmpleado");

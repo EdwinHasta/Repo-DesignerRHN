@@ -28,7 +28,7 @@ public class PersistenciaCursos implements PersistenciaCursosInterface{
 
     @Override
         public List<Cursos> cursos(EntityManager em) {
-        try {
+        try {em.clear();
             Query query = em.createQuery("SELECT c FROM Cursos c ORDER BY c.nombre");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Cursos> cursos = query.getResultList();

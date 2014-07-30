@@ -78,6 +78,7 @@ public class PersistenciaElementosCausasAccidentes implements PersistenciaElemen
 
     public ElementosCausasAccidentes buscarElementoCausaAccidente(EntityManager em, BigInteger secuenciaECA) {
         try {
+            em.clear();
             return em.find(ElementosCausasAccidentes.class, secuenciaECA);
         } catch (Exception e) {
             return null;
@@ -86,6 +87,7 @@ public class PersistenciaElementosCausasAccidentes implements PersistenciaElemen
 
     public List<ElementosCausasAccidentes> buscarElementosCausasAccidentes(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT l FROM ElementosCausasAccidentes  l ORDER BY l.codigo ASC ");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<ElementosCausasAccidentes> listMotivosDemandas = query.getResultList();
@@ -100,6 +102,7 @@ public class PersistenciaElementosCausasAccidentes implements PersistenciaElemen
     public BigInteger contadorSoAccidentesMedicos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM soaccidentesmedicos WHERE agentelesion = ? ";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -116,6 +119,7 @@ public class PersistenciaElementosCausasAccidentes implements PersistenciaElemen
     public BigInteger contadorSoAccidentes(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM soaccidentes   WHERE causa = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -132,6 +136,7 @@ public class PersistenciaElementosCausasAccidentes implements PersistenciaElemen
     public BigInteger contadorSoIndicadoresFr(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM soindicadoresfr   WHERE fuente =  ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

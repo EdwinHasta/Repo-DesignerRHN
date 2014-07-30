@@ -81,6 +81,7 @@ public class PersistenciaTiposUnidades implements PersistenciaTiposUnidadesInter
     @Override
     public List<TiposUnidades> consultarTiposUnidades(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT g FROM TiposUnidades g ORDER BY g.codigo ASC ");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List< TiposUnidades> listMotivosDemandas = query.getResultList();
@@ -95,6 +96,7 @@ public class PersistenciaTiposUnidades implements PersistenciaTiposUnidadesInter
     @Override
     public TiposUnidades consultarTipoUnidad(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT te FROM TiposUnidades te WHERE te.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -111,6 +113,7 @@ public class PersistenciaTiposUnidades implements PersistenciaTiposUnidadesInter
     public BigInteger contarUnidadesTipoUnidad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM unidades WHERE tipounidad = ? ";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

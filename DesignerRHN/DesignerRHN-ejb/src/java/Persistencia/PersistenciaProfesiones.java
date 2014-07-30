@@ -27,6 +27,7 @@ public class PersistenciaProfesiones implements PersistenciaProfesionesInterface
     @Override
         public List<Profesiones> profesiones(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT p FROM Profesiones p ORDER BY p.descripcion");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Profesiones> profesiones = query.getResultList();

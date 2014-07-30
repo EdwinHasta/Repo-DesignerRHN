@@ -113,6 +113,7 @@ public class PersistenciaEmpresasBancos implements PersistenciaEmpresasBancosInt
 
     public List<EmpresasBancos> consultarEmpresasBancos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT g FROM EmpresasBancos g ");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List< EmpresasBancos> listMotivosDemandas = query.getResultList();
@@ -126,6 +127,7 @@ public class PersistenciaEmpresasBancos implements PersistenciaEmpresasBancosInt
 
     public EmpresasBancos consultarFirmaReporte(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT te FROM EmpresasBancos te WHERE te.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

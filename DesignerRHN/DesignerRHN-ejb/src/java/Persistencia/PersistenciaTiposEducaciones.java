@@ -30,6 +30,7 @@ public class PersistenciaTiposEducaciones implements PersistenciaTiposEducacione
     @Override
     public List<TiposEducaciones> tiposEducaciones(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT tE FROM TiposEducaciones tE ORDER BY tE.nombre");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposEducaciones> tiposEducaciones = query.getResultList();

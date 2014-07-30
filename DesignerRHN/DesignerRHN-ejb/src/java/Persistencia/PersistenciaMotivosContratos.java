@@ -86,6 +86,7 @@ public class PersistenciaMotivosContratos implements PersistenciaMotivosContrato
     @Override
     public MotivosContratos buscarMotivoContrato(EntityManager em, BigInteger secuenciaMotivosContratos) {
         try {
+            em.clear();
             return em.find(MotivosContratos.class, secuenciaMotivosContratos);
         } catch (Exception e) {
             System.err.println("ERROR PersistenciaMotivosContratos buscarMotivosContratos ERROR " + e);
@@ -96,6 +97,7 @@ public class PersistenciaMotivosContratos implements PersistenciaMotivosContrato
     @Override
     public List<MotivosContratos> motivosContratos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT m FROM MotivosContratos m ORDER BY m.codigo");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<MotivosContratos> motivosContratos = query.getResultList();
@@ -122,6 +124,7 @@ public class PersistenciaMotivosContratos implements PersistenciaMotivosContrato
     public BigInteger verificarBorradoVigenciasTiposContratos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             Query query = em.createQuery("SELECT count(v) FROM VigenciasTiposContratos v WHERE v.motivocontrato.secuencia =:secTipoCentroCosto ");
             query.setParameter("secTipoCentroCosto", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

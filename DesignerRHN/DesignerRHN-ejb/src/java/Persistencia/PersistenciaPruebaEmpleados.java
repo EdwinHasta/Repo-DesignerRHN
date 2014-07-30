@@ -27,6 +27,7 @@ public class PersistenciaPruebaEmpleados implements PersistenciaPruebaEmpleadosI
     @Override
     public PruebaEmpleados empleadosAsignacion(EntityManager em, BigInteger secEmpleado) {
         try {
+            em.clear();
             PruebaEmpleados pruebaEmpleado = null;            
             Query queryValidacion = em.createQuery("SELECT COUNT(vwa) FROM VWActualesSueldos vwa WHERE vwa.empleado.secuencia = :secEmpleado");
             queryValidacion.setParameter("secEmpleado", secEmpleado);

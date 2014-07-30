@@ -89,6 +89,7 @@ public class PersistenciaVigenciasViajeros implements PersistenciaVigenciasViaje
 
     public VigenciasViajeros consultarTipoExamen(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(VigenciasViajeros.class, secuencia);
         } catch (Exception e) {
             return null;
@@ -97,6 +98,7 @@ public class PersistenciaVigenciasViajeros implements PersistenciaVigenciasViaje
 
     public List<VigenciasViajeros> consultarVigenciasViajerosPorEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vrl FROM VigenciasViajeros vrl WHERE vrl.empleado.secuencia = :secuenciaEmpl ORDER BY vrl.fechavigencia DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -112,6 +114,7 @@ public class PersistenciaVigenciasViajeros implements PersistenciaVigenciasViaje
     }
 
     public List<VigenciasViajeros> consultarVigenciasViajeros(EntityManager em) {
+        em.clear();
         Query query = em.createQuery("SELECT te FROM VigenciasViajeros te ORDER BY te.fechavigencia ASC ");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<VigenciasViajeros> listMotivosDemandas = query.getResultList();

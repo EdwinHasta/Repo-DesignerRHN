@@ -77,6 +77,7 @@ public class PersistenciaEvalDimensiones implements PersistenciaEvalDimensionesI
 
     public EvalDimensiones buscarEvalDimension(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(EvalDimensiones.class, secuencia);
         } catch (Exception e) {
             return null;
@@ -85,6 +86,7 @@ public class PersistenciaEvalDimensiones implements PersistenciaEvalDimensionesI
 
     public List<EvalDimensiones> buscarEvalDimensiones(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT ed FROM EvalDimensiones ed ORDER BY ed.descripcion ");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<EvalDimensiones> evalDimensiones = query.getResultList();
@@ -98,6 +100,7 @@ public class PersistenciaEvalDimensiones implements PersistenciaEvalDimensionesI
     public BigInteger contradorEvalPlanillas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM evaldimensiones ev, evalplanillas ep  WHERE ep.dimension=ev.secuencia AND ev.secuencia = ? ";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

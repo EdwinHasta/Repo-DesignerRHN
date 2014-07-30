@@ -80,6 +80,7 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
     @Override
     public Pensionados buscarPensionado(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             BigInteger in = (BigInteger) secuencia;
             return em.find(Pensionados.class, in);
         } catch (Exception e) {
@@ -90,6 +91,7 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
 
     @Override
     public List<Pensionados> buscarPensionados(EntityManager em) {
+        em.clear();
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Pensionados.class));
         return em.createQuery(cq).getResultList();
@@ -98,6 +100,7 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
     @Override
     public List<Pensionados> buscarPensionadosEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT p FROM Pensionados p WHERE p.vigenciatipotrabajador.empleado.secuencia = :secuenciaEmpl ORDER BY p.fechainiciopension DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -112,6 +115,7 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
     @Override
     public Pensionados buscarPensionVigenciaSecuencia(EntityManager em, BigInteger secVigencia) {
         try {
+            em.clear();
             System.out.println("secVigencia : " + secVigencia);
             Query query = em.createQuery("SELECT p FROM Pensionados p WHERE p.vigenciatipotrabajador.secuencia = :secVigencia");
             query.setParameter("secVigencia", secVigencia);

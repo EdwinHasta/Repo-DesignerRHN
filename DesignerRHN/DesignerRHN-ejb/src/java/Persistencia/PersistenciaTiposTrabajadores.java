@@ -82,6 +82,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
 
     @Override
     public List<TiposTrabajadores> buscarTiposTrabajadores(EntityManager em) {
+        em.clear();
         List<TiposTrabajadores> tipoTLista = (List<TiposTrabajadores>) em.createNamedQuery("TiposTrabajadores.findAll").getResultList();
         return tipoTLista;
     }
@@ -89,6 +90,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
     @Override
     public TiposTrabajadores buscarTipoTrabajadorSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT tt FROM TiposTrabajadores e WHERE tt.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -115,6 +117,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
     @Override
     public String plantillaValidarTipoTrabajadorReformaLaboral(EntityManager em, BigInteger tipoTrabajador, BigInteger reformaLaboral) {
         try {
+            em.clear();
             String sqlQuery = "SELECT tipostrabajadores_PKG.plantillavalidarl(?,?) FROM dual";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, tipoTrabajador);
@@ -133,6 +136,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
     @Override
     public String plantillaValidarTipoTrabajadorTipoSueldo(EntityManager em, BigInteger tipoTrabajador, BigInteger tipoSueldo) {
         try {
+            em.clear();
             String sqlQuery = "SELECT tipostrabajadores_PKG.plantillavalidats(?,?) FROM dual";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, tipoTrabajador);
@@ -151,6 +155,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
     @Override
     public String plantillaValidarTipoTrabajadorTipoContrato(EntityManager em, BigInteger tipoTrabajador, BigInteger tipoContrato) {
         try {
+            em.clear();
             String sqlQuery = "SELECT tipostrabajadores_PKG.plantillavalidatc(?,?) FROM dual";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, tipoTrabajador);
@@ -169,6 +174,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
     @Override
     public String plantillaValidarTipoTrabajadorContrato(EntityManager em, BigInteger tipoTrabajador, BigInteger contrato) {
         try {
+            em.clear();
             String sqlQuery = "SELECT tipostrabajadores_PKG.plantillavalidall(?,?) FROM dual";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, tipoTrabajador);
@@ -187,6 +193,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
     @Override
     public String plantillaValidarTipoTrabajadorNormaLaboral(EntityManager em, BigInteger tipoTrabajador, BigInteger normaLaboral) {
         try {
+            em.clear();
             String sqlQuery = "SELECT tipostrabajadores_PKG.plantillavalidanl(?,?) FROM dual";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, tipoTrabajador);
@@ -205,6 +212,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
     @Override
     public TiposTrabajadores buscarTipoTrabajadorCodigoTiposhort(EntityManager em, short codigo) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM TiposTrabajadores t WHERE t.codigo=:codigo");
             query.setParameter("codigo", codigo);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

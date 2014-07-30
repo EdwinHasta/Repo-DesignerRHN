@@ -79,6 +79,7 @@ public class PersistenciaMotivosRetiros implements PersistenciaMotivosRetirosInt
     @Override
     public List<MotivosRetiros> consultarMotivosRetiros(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT l FROM MotivosRetiros  l ORDER BY l.codigo ASC ");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<MotivosRetiros> listTiposViajeros = query.getResultList();
@@ -94,6 +95,7 @@ public class PersistenciaMotivosRetiros implements PersistenciaMotivosRetirosInt
     public MotivosRetiros consultarMotivoRetiro(EntityManager em, BigInteger secuencia) {
 
         try {
+            em.clear();
             Query query = em.createQuery("SELECT mr FROM MotivosRetiros mr WHERE mr.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -109,6 +111,7 @@ public class PersistenciaMotivosRetiros implements PersistenciaMotivosRetirosInt
     public BigInteger contarHVExperienciasLaboralesMotivoRetiro(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM hvexperienciaslaborales WHERE motivoretiro = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -124,6 +127,7 @@ public class PersistenciaMotivosRetiros implements PersistenciaMotivosRetirosInt
     public BigInteger contarNovedadesSistemasMotivoRetiro(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM novedadessistema WHERE motivoretiro = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -139,6 +143,7 @@ public class PersistenciaMotivosRetiros implements PersistenciaMotivosRetirosInt
     public BigInteger contarRetiMotivosRetirosMotivoRetiro(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM parametroscambiosmasivos WHERE retimotivoretiro = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -154,6 +159,7 @@ public class PersistenciaMotivosRetiros implements PersistenciaMotivosRetirosInt
     public BigInteger contarRetiradosMotivoRetiro(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM retirados WHERE motivoretiro = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

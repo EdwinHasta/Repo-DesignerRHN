@@ -84,6 +84,7 @@ public class PersistenciaClasesPensiones implements PersistenciaClasesPensionesI
     @Override
     public List<ClasesPensiones> consultarClasesPensiones(EntityManager em) {
         try {
+            em.clear();
             System.out.println("PersistenciaClasesPensiones consultarClasesPensiones ");
             List<ClasesPensiones> clasesPensionesLista = (List<ClasesPensiones>) em.createNamedQuery("ClasesPensiones.findAll").getResultList();
             return clasesPensionesLista;
@@ -97,6 +98,7 @@ public class PersistenciaClasesPensiones implements PersistenciaClasesPensionesI
     public ClasesPensiones consultarClasePension(EntityManager em,BigInteger secuencia) {
 
         try {
+            em.clear();
             Query query = em.createQuery("SELECT cp FROM ClasesPensiones cp WHERE cp.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -113,6 +115,7 @@ public class PersistenciaClasesPensiones implements PersistenciaClasesPensionesI
     public BigInteger contarRetiradosClasePension(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM pensionados WHERE clase=?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

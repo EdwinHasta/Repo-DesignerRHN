@@ -93,6 +93,7 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
 
     @Override
     public List<VigenciasTiposTrabajadores> buscarVigenciasTiposTrabajadores(EntityManager em) {
+        em.clear();
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasTiposTrabajadores.class));
         return em.createQuery(cq).getResultList();
@@ -101,6 +102,7 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
     @Override
     public List<VigenciasTiposTrabajadores> buscarVigenciasTiposTrabajadoresEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vtt FROM VigenciasTiposTrabajadores vtt WHERE vtt.empleado.secuencia = :secuenciaEmpl ORDER BY vtt.fechavigencia DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -115,6 +117,7 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
     @Override
     public VigenciasTiposTrabajadores buscarVigenciasTiposTrabajadoresSecuencia(EntityManager em, BigInteger secVTT) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("VigenciasTiposTrabajadores.findBySecuencia").setParameter("secuencia", secVTT);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasTiposTrabajadores vigenciasTiposTrabajadores = (VigenciasTiposTrabajadores) query.getSingleResult();
@@ -126,7 +129,7 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
 
     @Override
     public List<VigenciasTiposTrabajadores> buscarEmpleados(EntityManager em) {
-
+        em.clear();
         Query query = em.createQuery("SELECT vtt FROM VigenciasTiposTrabajadores vtt "
                 + "WHERE vtt.fechavigencia = (SELECT MAX(vttt.fechavigencia) "
                 + "FROM VigenciasTiposTrabajadores vttt)");
@@ -137,6 +140,7 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
     @Override
     public VigenciasTiposTrabajadores buscarVigenciaTipoTrabajadorRestriccionUN(EntityManager em, BigInteger empleado,Date fechaVigencia, BigInteger tipoTrabajador) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vtt FROM VigenciasTiposTrabajadores vtt WHERE vtt.empleado.secuencia = :empleado AND vtt.fechavigencia=:fechaVigencia AND vtt.tipotrabajador.secuencia=:tipoTrabajador");
             query.setParameter("empleado", empleado);
             query.setParameter("fechaVigencia", fechaVigencia);

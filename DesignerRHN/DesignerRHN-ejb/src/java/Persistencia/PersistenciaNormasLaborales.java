@@ -94,6 +94,7 @@ public class PersistenciaNormasLaborales implements PersistenciaNormasLaboralesI
     @Override
     public NormasLaborales consultarNormaLaboral(EntityManager em, BigInteger secuenciaNL) {
         try {
+            em.clear();
             return em.find(NormasLaborales.class, secuenciaNL);
         } catch (Exception e) {
             return null;
@@ -102,6 +103,7 @@ public class PersistenciaNormasLaborales implements PersistenciaNormasLaboralesI
 
     @Override
     public List<NormasLaborales> consultarNormasLaborales(EntityManager em) {
+        em.clear();
         Query query = em.createQuery("SELECT m FROM NormasLaborales m");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<NormasLaborales> lista = query.getResultList();
@@ -112,6 +114,7 @@ public class PersistenciaNormasLaborales implements PersistenciaNormasLaboralesI
     public BigInteger contarVigenciasNormasEmpleadosNormaLaboral(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             Query query = em.createQuery("SELECT count(vn) FROM VigenciasNormasEmpleados vn WHERE vn.normalaboral.secuencia =:secNormaLaboral ");
             query.setParameter("secNormaLaboral", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

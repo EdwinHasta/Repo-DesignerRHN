@@ -78,6 +78,7 @@ public class PersistenciaFestivos implements PersistenciaFestivosInterface {
 
     public List<Festivos> consultarFestivosPais(EntityManager em, BigInteger secPais) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT fes FROM Festivos fes WHERE fes.pais.secuencia = :secuenciaPais");
 
             query.setParameter("secuenciaPais", secPais);
@@ -93,6 +94,7 @@ public class PersistenciaFestivos implements PersistenciaFestivosInterface {
 
     public Festivos consultarPais(EntityManager em, BigInteger secPais) {
         try {
+            em.clear();
             return em.find(Festivos.class, secPais);
         } catch (Exception e) {
             return null;

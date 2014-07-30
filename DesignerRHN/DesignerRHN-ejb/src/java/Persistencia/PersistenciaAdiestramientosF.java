@@ -27,6 +27,7 @@ public class PersistenciaAdiestramientosF implements PersistenciaAdiestramientos
     @Override
         public List<AdiestramientosF> adiestramientosF(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT aF FROM AdiestramientosF aF ORDER BY aF.descripcion");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<AdiestramientosF> adiestramientosF = query.getResultList();

@@ -26,6 +26,7 @@ public class PersistenciaVWActualesLocalizaciones implements PersistenciaVWActua
 
     public VWActualesLocalizaciones buscarLocalizacion(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vw FROM VWActualesLocalizaciones vw WHERE vw.empleado.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

@@ -80,6 +80,7 @@ public class PersistenciaOperandosLogs implements PersistenciaOperandosLogsInter
     @Override
     public List<OperandosLogs> buscarOperandosLogs(EntityManager em) {
         try {
+            em.clear();
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(OperandosLogs.class));
             return em.createQuery(cq).getResultList();
@@ -92,6 +93,7 @@ public class PersistenciaOperandosLogs implements PersistenciaOperandosLogsInter
     @Override
     public List<OperandosLogs> buscarOperandosLogsParaProcesoSecuencia(EntityManager em, BigInteger secProceso) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT ol FROM OperandosLogs ol WHERE ol.proceso.secuencia=:secProceso");
             query.setParameter("secProceso", secProceso);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

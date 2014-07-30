@@ -80,6 +80,7 @@ public class PersistenciaTiposChequeos implements PersistenciaTiposChequeosInter
     @Override
     public TiposChequeos buscarTipoChequeo(EntityManager em, BigInteger secuenciaTC) {
         try {
+            em.clear();
             return em.find(TiposChequeos.class, secuenciaTC);
         } catch (Exception e) {
             return null;
@@ -89,6 +90,7 @@ public class PersistenciaTiposChequeos implements PersistenciaTiposChequeosInter
     @Override
     public List<TiposChequeos> buscarTiposChequeos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT tc FROM TiposChequeos tc ORDER BY tc.codigo ASC ");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposChequeos> listMotivosDemandas = query.getResultList();
@@ -103,6 +105,7 @@ public class PersistenciaTiposChequeos implements PersistenciaTiposChequeosInter
     public BigInteger contadorChequeosMedicos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
+            em.clear();
             System.out.println("Persistencia secuencia borrado " + secuencia);
             String sqlQuery = " SELECT COUNT(*)FROM chequeosmedicos cm WHERE cm.tipochequeo = ? ";
             Query query = em.createNativeQuery(sqlQuery);
@@ -121,6 +124,7 @@ public class PersistenciaTiposChequeos implements PersistenciaTiposChequeosInter
     public BigInteger contadorTiposExamenesCargos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
+            em.clear();
             System.out.println("Persistencia secuencia borrado " + secuencia);
             String sqlQuery = " SELECT COUNT(*)FROM tiposexamenescargos cm WHERE cm.tipochequeo = ? ";
             Query query = em.createNativeQuery(sqlQuery);

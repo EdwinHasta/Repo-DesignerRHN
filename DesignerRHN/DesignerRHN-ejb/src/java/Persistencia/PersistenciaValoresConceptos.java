@@ -78,6 +78,7 @@ public class PersistenciaValoresConceptos implements PersistenciaValoresConcepto
 
     public List<ValoresConceptos> consultarValoresConceptos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT te FROM ValoresConceptos te");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<ValoresConceptos> valoresConceptos = query.getResultList();
@@ -90,6 +91,7 @@ public class PersistenciaValoresConceptos implements PersistenciaValoresConcepto
 
     public ValoresConceptos consultarValorConcepto(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT te FROM ValoresConceptos te WHERE te.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -104,6 +106,7 @@ public class PersistenciaValoresConceptos implements PersistenciaValoresConcepto
 
     public BigInteger consultarConceptoValorConcepto(EntityManager em, BigInteger concepto) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(te) FROM ValoresConceptos te WHERE te.concepto.secuencia = :concepto");
             query.setParameter("concepto", concepto);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

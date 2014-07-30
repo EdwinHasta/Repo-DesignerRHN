@@ -82,6 +82,7 @@ public class PersistenciaTiposAusentismos implements PersistenciaTiposAusentismo
     @Override
     public List<Tiposausentismos> consultarTiposAusentismos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT ta FROM Tiposausentismos ta ORDER BY ta.codigo");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Tiposausentismos> todosTiposAusentismos = query.getResultList();
@@ -94,6 +95,7 @@ public class PersistenciaTiposAusentismos implements PersistenciaTiposAusentismo
 
     public Tiposausentismos consultarTipoAusentismo(EntityManager em, BigInteger secClaseCategoria) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("SELECT cc FROM Tiposausentismos cc WHERE cc.secuencia=:secuencia");
             query.setParameter("secuencia", secClaseCategoria);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -107,6 +109,7 @@ public class PersistenciaTiposAusentismos implements PersistenciaTiposAusentismo
     public BigInteger contarClasesAusentimosTipoAusentismo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM clasesausentismos WHERE tipo = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -122,6 +125,7 @@ public class PersistenciaTiposAusentismos implements PersistenciaTiposAusentismo
     public BigInteger contarSOAusentimosTipoAusentismo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM soausentismos WHERE tipo = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

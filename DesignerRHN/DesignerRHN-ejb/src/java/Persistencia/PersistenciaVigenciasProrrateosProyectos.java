@@ -81,6 +81,7 @@ public class PersistenciaVigenciasProrrateosProyectos implements PersistenciaVig
     @Override
     public List<VigenciasProrrateosProyectos> buscarVigenciasProrrateosProyectos(EntityManager em) {
         try {
+            em.clear();
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(VigenciasProrrateosProyectos.class));
             return em.createQuery(cq).getResultList();
@@ -93,6 +94,7 @@ public class PersistenciaVigenciasProrrateosProyectos implements PersistenciaVig
     @Override
     public List<VigenciasProrrateosProyectos> buscarVigenciasProrrateosProyectosEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vpp FROM VigenciasProrrateosProyectos vpp WHERE vpp.vigencialocalizacion.empleado.secuencia = :secuenciaEmpl ORDER BY vpp.fechainicial DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -107,6 +109,7 @@ public class PersistenciaVigenciasProrrateosProyectos implements PersistenciaVig
     @Override
     public VigenciasProrrateosProyectos buscarVigenciasProrrateosProyectosSecuencia(EntityManager em, BigInteger secVPP) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("VigenciasProrrateosProyectos.findBySecuencia").setParameter("secuencia", secVPP);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasProrrateosProyectos prorrateosProyectos = (VigenciasProrrateosProyectos) query.getSingleResult();
@@ -120,6 +123,7 @@ public class PersistenciaVigenciasProrrateosProyectos implements PersistenciaVig
     @Override
     public List<VigenciasProrrateosProyectos> buscarVigenciasProrrateosProyectosVigenciaSecuencia(EntityManager em, BigInteger secVigencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vpp FROM VigenciasProrrateosProyectos vpp WHERE vpp.vigencialocalizacion.secuencia = :secVigencia");
             query.setParameter("secVigencia", secVigencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

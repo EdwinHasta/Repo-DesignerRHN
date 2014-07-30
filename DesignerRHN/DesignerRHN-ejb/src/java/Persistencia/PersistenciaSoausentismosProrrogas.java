@@ -28,6 +28,7 @@ public class PersistenciaSoausentismosProrrogas implements PersistenciaSoausenti
     @Override
     public List<SoausentismosProrrogas> prorrogas(EntityManager em, BigInteger secEmpleado, BigInteger secuenciaCausa, BigInteger secuenciaAusentismo) {
         try {
+            em.clear();
             String sqlQuery = "SELECT soa.secuencia, soa.fechafinaus+1 finsiguiente, ca.DESCRIPCION,\n"
                     + "(select dc.CODIGO from DIAGNOSTICOSCATEGORIAS dc where dc.secuencia = soa.diagnosticocategoria) codigodiagnostico,\n"
                     + "(select dc.DESCRIPCION from DIAGNOSTICOSCATEGORIAS dc where dc.secuencia = soa.diagnosticocategoria) descripciondiagnostico,\n"

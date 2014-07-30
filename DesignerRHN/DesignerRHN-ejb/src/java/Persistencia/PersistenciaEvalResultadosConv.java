@@ -28,6 +28,7 @@ public class PersistenciaEvalResultadosConv implements PersistenciaEvalResultado
     @Override
     public List<EvalResultadosConv> pruebasAplicadasPersona(EntityManager em,BigInteger secuenciaEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(er) FROM EvalResultadosConv er WHERE er.empleado.secuencia = :secuenciaEmpleado");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

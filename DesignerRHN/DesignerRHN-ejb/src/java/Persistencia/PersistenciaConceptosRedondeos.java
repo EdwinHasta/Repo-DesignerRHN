@@ -33,6 +33,7 @@ public class PersistenciaConceptosRedondeos implements PersistenciaConceptosRedo
     @Override
     public List<ConceptosRedondeos> buscarConceptosRedondeos(EntityManager em) {
         try {
+            em.clear();
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(ConceptosRedondeos.class));
             return em.createQuery(cq).getResultList();

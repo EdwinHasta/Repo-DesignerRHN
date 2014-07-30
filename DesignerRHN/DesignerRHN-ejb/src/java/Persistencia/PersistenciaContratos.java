@@ -87,6 +87,7 @@ public class PersistenciaContratos implements PersistenciaContratosInterface {
     @Override
     public Contratos buscarContratoSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT e FROM Contratos e WHERE e.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -101,6 +102,7 @@ public class PersistenciaContratos implements PersistenciaContratosInterface {
     @Override
     public List<Contratos> lovContratos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT c FROM Contratos c ORDER BY c.codigo ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Contratos> listaContratos = query.getResultList();
@@ -133,6 +135,7 @@ public class PersistenciaContratos implements PersistenciaContratosInterface {
     ///@Override
     public List<Contratos> buscarContratosPorUsuario(EntityManager em) {
         try {
+            em.clear();
             String sqlQuery = "SELECT  c.* FROM CONTRATOS c where exists (select 'x' from usuarios u, usuarioscontratos uc where u.alias=user and u.secuencia=uc.usuario and uc.contrato=c.secuencia) ORDER BY c.DESCRIPCION";
             Query query = em.createNativeQuery(sqlQuery, Contratos.class);
             List<Contratos> lista = query.getResultList();

@@ -82,7 +82,7 @@ public class PersistenciaDeportes implements PersistenciaDeportesInterface {
 
     @Override
     public Deportes buscarDeporte(EntityManager em, BigInteger secuencia) {
-        try {
+        try {em.clear();
             return em.find(Deportes.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error buscarDeporte PersistenciaDeportes : " + e.toString());
@@ -92,7 +92,7 @@ public class PersistenciaDeportes implements PersistenciaDeportesInterface {
 
     @Override
     public List<Deportes> buscarDeportes(EntityManager em) {
-        try {
+        try {em.clear();
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Deportes.class));
             return em.createQuery(cq).getResultList();
@@ -105,7 +105,7 @@ public class PersistenciaDeportes implements PersistenciaDeportesInterface {
     @Override
     public BigInteger contadorParametrosInformes(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
-        try {
+        try {em.clear();
             String sqlQuery = "SELECT COUNT (*) FROM parametrosinformes WHERE deporte =  ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -123,7 +123,7 @@ public class PersistenciaDeportes implements PersistenciaDeportesInterface {
     @Override
     public BigInteger contadorDeportesPersonas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
-        try {
+        try {em.clear();
             String sqlQuery = "SELECT COUNT(*) FROM deportespersonas WHERE deporte = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -140,7 +140,7 @@ public class PersistenciaDeportes implements PersistenciaDeportesInterface {
     @Override
     public BigInteger verificarBorradoVigenciasDeportes(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
-        try {
+        try {em.clear();
             String sqlQuery = "SELECT count(*) FROM VigenciasDeportes  WHERE  deporte   =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

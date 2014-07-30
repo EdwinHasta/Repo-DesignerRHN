@@ -78,6 +78,7 @@ public class PersistenciaSoCondicionesAmbientalesP implements PersistenciaSoCond
     @Override
     public SoCondicionesAmbientalesP buscarSoCondicionAmbientalP(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(SoCondicionesAmbientalesP.class, secuencia);
         } catch (Exception e) {
             return null;
@@ -87,6 +88,7 @@ public class PersistenciaSoCondicionesAmbientalesP implements PersistenciaSoCond
     @Override
     public List<SoCondicionesAmbientalesP> buscarSoCondicionesAmbientalesP(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT l FROM SoCondicionesAmbientalesP  l ORDER BY l.codigo ASC ");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<SoCondicionesAmbientalesP> listSoCondicionesAmbientalesP = query.getResultList();
@@ -102,6 +104,7 @@ public class PersistenciaSoCondicionesAmbientalesP implements PersistenciaSoCond
     public BigInteger contadorSoAccidentesMedicos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM soaccidentesmedicos sam WHERE sam.condicionambientalp = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

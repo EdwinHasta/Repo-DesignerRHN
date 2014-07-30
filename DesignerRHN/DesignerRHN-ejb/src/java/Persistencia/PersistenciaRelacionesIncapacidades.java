@@ -29,6 +29,7 @@ public class PersistenciaRelacionesIncapacidades implements PersistenciaRelacion
     @Override
     public String relaciones(EntityManager em, BigInteger secuenciaAusentismo) {
         try {
+            em.clear();
             String sqlQuery = ("SELECT COUNT(ri.ano||'.'||ri.mes) FROM RelacionesIncapacidades ri, Soausentismos so WHERE ri.soausentismo = so.secuencia AND so.secuencia = ?");
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuenciaAusentismo);

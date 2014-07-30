@@ -79,6 +79,7 @@ public class PersistenciaRetirados implements PersistenciaRetiradosInterface {
 
     @Override
     public List<Retirados> buscarRetirados(EntityManager em) {
+        em.clear();
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Retirados.class));
         return em.createQuery(cq).getResultList();
@@ -87,6 +88,7 @@ public class PersistenciaRetirados implements PersistenciaRetiradosInterface {
     @Override
     public List<Retirados> buscarRetirosEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT r FROM Retirados r WHERE r.vigenciatipotrabajador.empleado.secuencia = :secuenciaEmpl ORDER BY r.fecharetiro DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -101,6 +103,7 @@ public class PersistenciaRetirados implements PersistenciaRetiradosInterface {
     @Override
     public Retirados buscarRetiroSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("Retirados.findBySecuencia").setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Retirados retiro = (Retirados) query.getSingleResult();
@@ -113,6 +116,7 @@ public class PersistenciaRetirados implements PersistenciaRetiradosInterface {
     @Override
     public Retirados buscarRetiroVigenciaSecuencia(EntityManager em, BigInteger secVigencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT r FROM Retirados r WHERE r.vigenciatipotrabajador.secuencia = :secVigencia");
             query.setParameter("secVigencia", secVigencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

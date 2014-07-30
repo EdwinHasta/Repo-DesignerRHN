@@ -68,6 +68,7 @@ public class PersistenciaVigenciasTallas implements PersistenciaVigenciasTallasI
 
     public List<VigenciasTallas> consultarVigenciasTallasPorPersona(EntityManager em, BigInteger secEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT g FROM VigenciasTallas g WHERE g.empleado.secuencia = :secEmpleado ");
             query.setParameter("secEmpleado", secEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

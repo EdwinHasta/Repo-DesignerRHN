@@ -80,11 +80,13 @@ public class PersistenciaTelefonos implements PersistenciaTelefonosInterface {
 
     @Override
     public Telefonos buscarTelefono(EntityManager em, BigInteger secuencia) {
+        em.clear();
         return em.find(Telefonos.class, secuencia);
     }
 
     @Override
     public List<Telefonos> buscarTelefonos(EntityManager em) {
+        em.clear();
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Telefonos.class));
         return em.createQuery(cq).getResultList();
@@ -93,6 +95,7 @@ public class PersistenciaTelefonos implements PersistenciaTelefonosInterface {
     @Override
     public List<Telefonos> telefonosPersona(EntityManager em, BigInteger secuenciaPersona) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t "
                     + "FROM Telefonos t "
                     + "WHERE t.persona.secuencia = :secuenciaPersona "

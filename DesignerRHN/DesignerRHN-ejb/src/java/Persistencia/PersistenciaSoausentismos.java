@@ -80,6 +80,7 @@ public class PersistenciaSoausentismos implements PersistenciaSoausentismosInter
     @Override
     public List<Soausentismos> ausentismosEmpleado(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT soa FROM Soausentismos soa WHERE soa.empleado.secuencia= :secuenciaEmpleado");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -94,6 +95,7 @@ public class PersistenciaSoausentismos implements PersistenciaSoausentismosInter
     @Override
     public List<Soausentismos> prorrogas(EntityManager em, BigInteger secuenciaEmpleado, BigInteger secuenciaCausa, BigInteger secuenciaAusentismo) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT soa FROM Soausentismos soa WHERE soa.empleado.secuencia= :secuenciaEmpleado AND soa.causa.secuencia= :secuenciaCausa AND soa.secuencia= :secuenciaAusentismo");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
             query.setParameter("secuenciaCausa", secuenciaCausa);
@@ -110,6 +112,7 @@ public class PersistenciaSoausentismos implements PersistenciaSoausentismosInter
     @Override
     public String prorrogaMostrar(EntityManager em, BigInteger secuenciaProrroga) {
         try {
+            em.clear();
             String sqlQuery = ("SELECT nvl(A.NUMEROCERTIFICADO,'Falta # Certificado')||':'||A.fecha||'->'||A.fechafinaus\n"
                     + "FROM SOAUSENTISMOS A\n"
                     + "WHERE A.SECUENCIA = ?");

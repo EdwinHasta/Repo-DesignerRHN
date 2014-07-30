@@ -79,6 +79,7 @@ public class PersistenciaPryPlataformas implements PersistenciaPryPlataformasInt
     @Override
     public List<PryPlataformas> buscarPryPlataformas(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("PryPlataformas.findAll");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<PryPlataformas> plataformas = (List<PryPlataformas>) query.getResultList();
@@ -92,6 +93,7 @@ public class PersistenciaPryPlataformas implements PersistenciaPryPlataformasInt
     @Override
     public PryPlataformas buscarPryPlataformaSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT p FROM PryPlataformas p WHERE p.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -107,6 +109,7 @@ public class PersistenciaPryPlataformas implements PersistenciaPryPlataformasInt
     public BigInteger contadorProyectos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = " SELECT COUNT(*) FROM proyectos p , pry_plataformas pp WHERE p.pry_plataforma = pp.secuencia AND pp.secuencia = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

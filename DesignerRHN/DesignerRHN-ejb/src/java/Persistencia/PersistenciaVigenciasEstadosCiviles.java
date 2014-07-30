@@ -32,7 +32,6 @@ public class PersistenciaVigenciasEstadosCiviles implements PersistenciaVigencia
      */
     @Override
     public void crear(EntityManager em, VigenciasEstadosCiviles vigenciasEstadosCiviles) {
-        System.out.println("PASOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -81,11 +80,13 @@ public class PersistenciaVigenciasEstadosCiviles implements PersistenciaVigencia
 
     @Override
     public VigenciasEstadosCiviles buscarVigenciaEstadoCivil(EntityManager em, BigInteger secuencia) {
+        em.clear();
         return em.find(VigenciasEstadosCiviles.class, secuencia);
     }
 
     @Override
     public List<VigenciasEstadosCiviles> consultarVigenciasEstadosCiviles(EntityManager em) {
+        em.clear();
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasEstadosCiviles.class));
         return em.createQuery(cq).getResultList();
@@ -94,6 +95,7 @@ public class PersistenciaVigenciasEstadosCiviles implements PersistenciaVigencia
     @Override
     public List<VigenciasEstadosCiviles> consultarVigenciasEstadosCivilesPersona(EntityManager em, BigInteger secuenciaPersona) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(vec) FROM VigenciasEstadosCiviles vec WHERE vec.persona.secuencia = :secuenciaPersona");
             query.setParameter("secuenciaPersona", secuenciaPersona);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -114,6 +116,7 @@ public class PersistenciaVigenciasEstadosCiviles implements PersistenciaVigencia
     @Override
     public List<VigenciasEstadosCiviles> consultarVigenciasEstadosCivilesPorPersona(EntityManager em, BigInteger secuenciaPersona) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vec FROM VigenciasEstadosCiviles vec WHERE vec.persona.secuencia = :secuenciaPersona");
             query.setParameter("secuenciaPersona", secuenciaPersona);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

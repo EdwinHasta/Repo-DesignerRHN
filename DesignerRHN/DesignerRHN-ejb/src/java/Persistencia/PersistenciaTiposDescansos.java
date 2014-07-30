@@ -76,6 +76,7 @@ public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInt
     @Override
     public List<TiposDescansos> consultarTiposDescansos(EntityManager em) {
         try {
+            em.clear();
             //List<TiposDescansos> tiposDescansos = (List<TiposDescansos>) em.createNamedQuery("TiposDescansos.findAll").getResultList();
             //return tiposDescansos;
             Query query = em.createQuery("SELECT t FROM TiposDescansos t");
@@ -91,6 +92,7 @@ public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInt
     @Override
     public TiposDescansos consultarTipoDescanso(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT tp FROM TiposDescansos tp WHERE tp.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -106,6 +108,7 @@ public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInt
     public BigInteger contarVigenciasJornadasTipoDescanso(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM vigenciasjornadas WHERE tipodescanso=?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

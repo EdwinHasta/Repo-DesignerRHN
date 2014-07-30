@@ -28,6 +28,7 @@ public class PersistenciaVWActualesSueldos implements PersistenciaVWActualesSuel
     @Override
     public BigDecimal buscarSueldoActivo(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT SUM(vw.valor) FROM VWActualesSueldos vw WHERE vw.empleado.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

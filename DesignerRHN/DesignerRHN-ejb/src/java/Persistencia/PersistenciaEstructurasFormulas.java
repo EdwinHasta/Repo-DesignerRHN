@@ -30,6 +30,7 @@ public class PersistenciaEstructurasFormulas implements PersistenciaEstructurasF
     @Override
     public List<EstructurasFormulas> estructurasFormulasParaHistoriaFormula(EntityManager em,BigInteger secuencia) {
         try {
+            em.clear();
             String sqlQuery = "select rownum ID, LEVEL NIVEL, vw.posicion POSICION,\n"
                     + "decode(vw.descripcion, null, \n"
                     + "lpad(' ',level*5,' ')|| \n"

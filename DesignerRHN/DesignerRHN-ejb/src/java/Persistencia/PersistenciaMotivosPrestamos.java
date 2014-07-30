@@ -79,6 +79,7 @@ public class PersistenciaMotivosPrestamos implements PersistenciaMotivosPrestamo
     @Override
     public MotivosPrestamos buscarMotivoPrestamo(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(MotivosPrestamos.class, secuencia);
         } catch (Exception e) {
             return null;
@@ -87,6 +88,7 @@ public class PersistenciaMotivosPrestamos implements PersistenciaMotivosPrestamo
 
     @Override
     public List<MotivosPrestamos> buscarMotivosPrestamos(EntityManager em) {
+        em.clear();
         Query query = em.createQuery("SELECT m FROM MotivosPrestamos m ORDER BY m.codigo ASC");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<MotivosPrestamos> listaMotivosPrestamos = query.getResultList();
@@ -97,6 +99,7 @@ public class PersistenciaMotivosPrestamos implements PersistenciaMotivosPrestamo
     public BigInteger contadorEersPrestamos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM eersprestamos eer WHERE eer.motivoprestamo = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
