@@ -182,6 +182,7 @@
                                     var $num = #{controlParametroAutoliq.obtenerNumeroScrollAporte()};
                                     $win.scroll(function() {
                                         if ($win.height() + $win.scrollTop() == $num) {
+                                            operacionEnProceso.show();
                                             pruebaRemota();
                                         }
                                     });
