@@ -114,7 +114,7 @@ public class ControlTipoContrato implements Serializable {
         tipoContratoAClonar = new TiposContratos();
         tipoContratoSeleccionado = new TiposContratos();
         lovTiposContratos = null;
-        altoTablaTiposC = "187";
+        altoTablaTiposC = "160";
         altoTablaDiasLab = "140";
         cambiosPagina = true;
         permitirIndexDias = true;
@@ -486,7 +486,7 @@ public class ControlTipoContrato implements Serializable {
                 tipoDia = filtrarListaDiasLaborables.get(indexDias).getTipodia().getDescripcion();
             }
             if (bandera == 1) {
-                altoTablaTiposC = "187";
+                altoTablaTiposC = "160";
                 tipoCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCCodigo");
                 tipoCCodigo.setFilterStyle("display: none; visibility: hidden;");
                 tipoCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCNombre");
@@ -636,7 +636,7 @@ public class ControlTipoContrato implements Serializable {
 
     public void cancelarModificacionTipoContrato() {
         if (bandera == 1) {
-            altoTablaTiposC = "187";
+            altoTablaTiposC = "160";
             tipoCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCCodigo");
             tipoCCodigo.setFilterStyle("display: none; visibility: hidden;");
             tipoCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCNombre");
@@ -774,7 +774,7 @@ public class ControlTipoContrato implements Serializable {
             tamDes = nuevoTipoContrato.getNombre().length();
             if (tamDes >= 1 && tamDes <= 30) {
                 if (bandera == 1) {
-                    altoTablaTiposC = "187";
+                    altoTablaTiposC = "160";
                     tipoCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCCodigo");
                     tipoCCodigo.setFilterStyle("display: none; visibility: hidden;");
                     tipoCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCNombre");
@@ -978,7 +978,7 @@ public class ControlTipoContrato implements Serializable {
                     //RequestContext.getCurrentInstance().update("form:aceptar");
                 }
                 if (bandera == 1) {
-                    altoTablaTiposC = "187";
+                    altoTablaTiposC = "160";
                     tipoCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCCodigo");
                     tipoCCodigo.setFilterStyle("display: none; visibility: hidden;");
                     tipoCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCNombre");
@@ -1182,7 +1182,7 @@ public class ControlTipoContrato implements Serializable {
     public void activarCtrlF11() {
         if (index >= 0) {
             if (bandera == 0) {
-                altoTablaTiposC = "165";
+                altoTablaTiposC = "138";
                 tipoCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCCodigo");
                 tipoCCodigo.setFilterStyle("width: 65px");
                 tipoCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCNombre");
@@ -1196,7 +1196,7 @@ public class ControlTipoContrato implements Serializable {
                 RequestContext.getCurrentInstance().update("form:datosTipoContrato");
                 bandera = 1;
             } else if (bandera == 1) {
-                altoTablaTiposC = "187";
+                altoTablaTiposC = "160";
                 tipoCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCCodigo");
                 tipoCCodigo.setFilterStyle("display: none; visibility: hidden;");
                 tipoCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCNombre");
@@ -1246,7 +1246,7 @@ public class ControlTipoContrato implements Serializable {
      */
     public void salir() {
         if (bandera == 1) {
-            altoTablaTiposC = "187";
+            altoTablaTiposC = "160";
             tipoCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCCodigo");
             tipoCCodigo.setFilterStyle("display: none; visibility: hidden;");
             tipoCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCNombre");

@@ -16,15 +16,15 @@
                     <f:loadBundle basename="Recursos.formulaconcepto" var="msg" />
                     <p:growl id="growl" showDetail="true" />
                     
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 440px; text-align: left;" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left;" >  
 
-                        <fieldset style="position: absolute; top: 80px;width: 815px; height: 310px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute; top: 80px;width: 815px; height: 375px; border-radius: 10px; text-align: left">
                             <legend style=" color: blue"><strong>#{msg['infoFormula']}</strong></legend>
 
                             <p:dataTable id="datosFormulaConcepto" var="infoFC" rowKey="#{infoFC.secuencia}" rowIndexVar="indiceFC" style="border: 1px;width: 815px"   
                                          value="#{controlFormulaConcepto.listFormulasConceptosFormula}" scrollable="true" scrollHeight="#{controlFormulaConcepto.altoTabla}" scrollWidth="815"
                                          filteredValue="#{controlFormulaConcepto.filtrarListFormulasConceptosFormula}" emptyMessage="#{msg['vacio']}"
-                                         editable="true" editMode="cell" liveScroll="true" scrollRows="15" selectionMode="single" selection="#{controlFormulaConcepto.formulaTablaSeleccionada}">
+                                         editable="true" editMode="cell" liveScroll="true" scrollRows="25" selectionMode="single" selection="#{controlFormulaConcepto.formulaTablaSeleccionada}">
 
                                 <p:ajax event="filter" listener="#{controlFormulaConcepto.eventoFiltrar()}"/>
 
@@ -161,9 +161,9 @@
                             </p:dataTable>
                         </fieldset>
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 405px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" disabled="#{controlFormulaConcepto.guardado}" update=":form:datosFormulaConcepto" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 405px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlFormulaConcepto.salir()}" action="retornoFormula" process="@this" />
-                        <h:outputText id="informacionRegistro" value="#{controlFormulaConcepto.infoRegistro}" style="position: absolute; left: 15px; top: 410px; font-weight: bold"/>
+                        <p:commandButton style="position: absolute; left: 683px; top: 480px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" disabled="#{controlFormulaConcepto.guardado}" update=":form:datosFormulaConcepto" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 480px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlFormulaConcepto.salir()}" action="retornoFormula" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlFormulaConcepto.infoRegistro}" style="position: absolute; left: 15px; top: 485px; font-weight: bold"/>
                     </p:panel>
                     
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  

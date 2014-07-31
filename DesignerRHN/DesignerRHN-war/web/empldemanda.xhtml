@@ -16,7 +16,7 @@
                     <f:loadBundle basename="Recursos.empldemanda" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
 
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 475px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left" >  
 
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: red;font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlEmplDemanda.empleado.persona.primerapellido} #{controlEmplDemanda.empleado.persona.segundoapellido} #{controlEmplDemanda.empleado.persona.nombre}">
                         </h:outputText>
@@ -76,7 +76,7 @@
                         </p:toolbar> 
 
 
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 330px;width: 830px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 375px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="color: blue"><strong>#{msg['demandas']}</strong></legend>
                             <p:dataTable id="datosDemanda" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceD" value="#{controlEmplDemanda.listDemandasEmpleado}" 
                                          filteredValue="#{controlEmplDemanda.filtrarListDemandasEmpleado}" editable="true" editMode="cell" 
@@ -170,9 +170,9 @@
                             </p:commandButton>
                         </p:dialog>
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 445px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" disabled="#{controlEmplDemanda.guardado}" update=":form:datosDemanda" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 445px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlEmplDemanda.salir()}" action="infoEmplIndividual" process="@this" />
-                        <h:outputText id="informacionRegistro" value="#{controlEmplDemanda.infoRegistro}" style="position: absolute; left: 15px; top: 465px; font-weight: bold"/>
+                        <p:commandButton style="position: absolute; left: 683px; top: 475px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" disabled="#{controlEmplDemanda.guardado}" update=":form:datosDemanda" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 475px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlEmplDemanda.salir()}" action="infoEmplIndividual" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlEmplDemanda.infoRegistro}" style="position: absolute; left: 15px; top: 480px; font-weight: bold"/>
                     </p:panel>
 
                     <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  

@@ -14,17 +14,17 @@
                 <h:form id="form">
                     <f:loadBundle basename="Recursos.idiomapersona" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 490px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left" >  
 
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: red;font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlIdiomaPersona.empleadoActual.persona.primerapellido} #{controlIdiomaPersona.empleadoActual.persona.segundoapellido} #{controlIdiomaPersona.empleadoActual.persona.nombre}">
                         </h:outputText>
                         
                         
-                        <p:commandButton style="position: absolute; left: 683px; top: 450px;" disabled="#{controlIdiomaPersona.guardado}" id="ACEPTAR" icon="ui-icon-check" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosIdiomas" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 450px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlIdiomaPersona.salir()}" action="emplIndividual" process="@this" />
-                        <h:outputText id="informacionRegistro" value="#{controlIdiomaPersona.infoRegistro}" style="position: absolute; left: 15px; top: 450px; font-weight: bold"/>
+                        <p:commandButton style="position: absolute; left: 683px; top: 475px;" disabled="#{controlIdiomaPersona.guardado}" id="ACEPTAR" icon="ui-icon-check" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosIdiomas" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 475px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlIdiomaPersona.salir()}" action="emplIndividual" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlIdiomaPersona.infoRegistro}" style="position: absolute; left: 15px; top: 480px; font-weight: bold"/>
 
-                        <fieldset style="position: absolute; left: 10px; top: 80px;width: 830px; height: 335px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 80px;width: 830px; height: 370px; border-radius: 10px; ">
                             <legend style="color: blue;text-align:left"><strong>#{msg['idiomas']}</strong></legend>
 
                             <p:dataTable id="datosIdiomas" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="border: 1px; text-align: left"                           

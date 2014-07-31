@@ -14,19 +14,19 @@
                 <h:form id="form"> 
                     <f:loadBundle basename="Recursos.tipocontrato" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" position: absolute; width: 874px; height: 540px;  text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" position: absolute; width: 874px; height: 510px;  text-align: left" >  
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 515px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" disabled="#{controlTipoContrato.cambiosPagina}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px;  top: 515px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" action="#{controlTipoContrato.redirigir()}" actionListener="#{controlTipoContrato.salir()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 683px; top: 482px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" disabled="#{controlTipoContrato.cambiosPagina}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px;  top: 482px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" action="#{controlTipoContrato.redirigir()}" actionListener="#{controlTipoContrato.salir()}" process="@this" />
 
 
-                        <fieldset style="position: absolute; left: 10px; top: 65px; width: 830px; height: 235px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 65px; width: 830px; height: 200px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['tipoContrato']}</strong></legend>
 
                             <p:dataTable id="datosTipoContrato" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="border: 1px; text-align: left;width: 810px"                           
                                          value="#{controlTipoContrato.listaTiposContratos}" scrollable="true" scrollHeight="#{controlTipoContrato.altoTablaTiposC}"  scrollWidth="825"
                                          filteredValue="#{controlTipoContrato.filtrarListaTiposContratos}" emptyMessage="#{msg['vacio']}" selectionMode="single"
-                                         editable="true" editMode="cell" liveScroll="true" scrollRows="10" selection="#{controlTipoContrato.tipoContratoTablaSeleccionado}">
+                                         editable="true" editMode="cell" liveScroll="true" scrollRows="15" selection="#{controlTipoContrato.tipoContratoTablaSeleccionado}">
 
                                 <p:ajax event="filter" listener="#{controlTipoContrato.eventoFiltrar()}"/>
 
@@ -159,7 +159,7 @@
                         </p:toolbar> 
 
 
-                        <fieldset style="position: absolute; left: 10px; top: 315px; width: 415px; height: 180px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 285px; width: 415px; height: 180px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['diasLaborales']}</strong></legend>
 
                             <p:dataTable id="datosDiasLaborables" var="infoD" rowKey="#{infoD.secuencia}" rowIndexVar="indiceD" style="border: 1px; text-align: left;width: 400px"
@@ -227,7 +227,7 @@
                         </fieldset> 
 
 
-                        <fieldset style="position: absolute; left: 450px; top: 315px;width: 390px; height: 180px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 450px; top: 285px;width: 390px; height: 180px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['clonarTC']}</strong></legend>
 
                             <h:outputText value="#{msg['codigo']}" style="position: absolute; top : 35px; left: 30px"/> 

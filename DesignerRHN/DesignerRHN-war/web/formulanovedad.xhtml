@@ -15,19 +15,19 @@
 
                     <f:loadBundle basename="Recursos.formulanovedad" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 440px;  text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px;  text-align: left" >  
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 405px;" id="ACEPTAR" value="#{msg['aceptar']}" disabled="#{controlFormulaNovedad.guardado}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosFormulaNovedad" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 405px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlFormulaNovedad.salir()}" action="retornoFormula" process="@this" />
-                        <h:outputText id="informacionRegistro" value="#{controlFormulaNovedad.infoRegistro}" style="position: absolute; left: 15px; top: 415px; font-weight: bold"/>
+                        <p:commandButton style="position: absolute; left: 683px; top: 480px;" id="ACEPTAR" value="#{msg['aceptar']}" disabled="#{controlFormulaNovedad.guardado}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosFormulaNovedad" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 480px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlFormulaNovedad.salir()}" action="retornoFormula" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlFormulaNovedad.infoRegistro}" style="position: absolute; left: 15px; top: 485px; font-weight: bold"/>
 
-                        <fieldset style="position: absolute; left: 10px; top: 75px;width: 830px; height: 315px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 75px;width: 830px; height: 375px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['infoFormula']}</strong></legend>
 
                             <p:dataTable id="datosFormulaNovedad" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="border: 1px; text-align: left;width: 810px"                           
                                          value="#{controlFormulaNovedad.listFormulasNovedades}" scrollable="true" scrollHeight="#{controlFormulaNovedad.altoTabla}" scrollWidth="825"
                                          filteredValue="#{controlFormulaNovedad.filtrarListFormulasNovedades }" emptyMessage="#{msg['vacio']}" selectionMode="single"
-                                         editable="true" editMode="cell" liveScroll="true" scrollRows="15" selection="#{controlFormulaNovedad.formulaTablaSeleccionada}">
+                                         editable="true" editMode="cell" liveScroll="true" scrollRows="25" selection="#{controlFormulaNovedad.formulaTablaSeleccionada}">
 
                                 <p:ajax event="filter" listener="#{controlFormulaNovedad.eventoFiltrar()}"/>
 

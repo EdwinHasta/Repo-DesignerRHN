@@ -85,7 +85,7 @@ public class ControlEmplDemanda implements Serializable {
     private String altoTabla;
 
     public ControlEmplDemanda() {
-        altoTabla = "270";
+        altoTabla = "310";
         empleado = new Empleados();
         backUpSecRegistro = null;
         tipoLista = 0;
@@ -474,7 +474,7 @@ public class ControlEmplDemanda implements Serializable {
 
     public void cancelarModificacionD() {
         if (banderaD == 1) {
-            altoTabla = "270";
+            altoTabla = "310";
             dMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDemanda:dMotivo");
             dMotivo.setFilterStyle("display: none; visibility: hidden;");
 
@@ -577,7 +577,7 @@ public class ControlEmplDemanda implements Serializable {
                 cambioDemanda = true;
                 //CERRAR FILTRADO
                 if (banderaD == 1) {
-                    altoTabla = "270";
+                    altoTabla = "310";
                     dMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDemanda:dMotivo");
                     dMotivo.setFilterStyle("display: none; visibility: hidden;");
 
@@ -725,7 +725,7 @@ public class ControlEmplDemanda implements Serializable {
                     RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
                 if (banderaD == 1) {
-                    altoTabla = "270";
+                    altoTabla = "310";
                     //CERRAR FILTRADO
                     dMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDemanda:dMotivo");
                     dMotivo.setFilterStyle("display: none; visibility: hidden;");
@@ -841,7 +841,7 @@ public class ControlEmplDemanda implements Serializable {
      */
     public void filtradoDemanda() {
         if (banderaD == 0) {
-            altoTabla = "248";
+            altoTabla = "288";
             dMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDemanda:dMotivo");
             dMotivo.setFilterStyle("width: 40px");
             dSeguimiento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDemanda:dSeguimiento");
@@ -853,7 +853,7 @@ public class ControlEmplDemanda implements Serializable {
             tipoLista = 1;
             banderaD = 1;
         } else {
-            altoTabla = "270";
+            altoTabla = "310";
             dMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDemanda:dMotivo");
             dMotivo.setFilterStyle("display: none; visibility: hidden;");
 
@@ -877,7 +877,7 @@ public class ControlEmplDemanda implements Serializable {
      */
     public void salir() {
         if (banderaD == 1) {
-            altoTabla = "270";
+            altoTabla = "310";
             dMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDemanda:dMotivo");
             dMotivo.setFilterStyle("display: none; visibility: hidden;");
 
@@ -1199,7 +1199,7 @@ public class ControlEmplDemanda implements Serializable {
         return listDemandaEmpleadoBorrar;
     }
 
-    public void getListDemandaEmpleadoBorrar(List<Demandas> getListDemandaEmpleadoBorrar) {
+    public void setListDemandaEmpleadoBorrar(List<Demandas> getListDemandaEmpleadoBorrar) {
         this.listDemandaEmpleadoBorrar = getListDemandaEmpleadoBorrar;
     }
 
@@ -1264,6 +1264,12 @@ public class ControlEmplDemanda implements Serializable {
     }
 
     public String getInfoRegistro() {
+        getListDemandasEmpleado();
+        if (listDemandasEmpleado != null) {
+            infoRegistro = "Cantidad de registros : " + listDemandasEmpleado.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
         return infoRegistro;
     }
 

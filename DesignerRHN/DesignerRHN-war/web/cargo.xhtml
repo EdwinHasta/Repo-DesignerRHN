@@ -19,7 +19,7 @@
                     <p:hotkey bind="alt+p" actionListener="#{controlCargo.lovEmpresas()}" process="@this"/> 
 
 
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 543px;  text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px;  text-align: left" >  
 
                         <h:outputText value="#{msg['empresa']}" style="position: absolute; top: 40px;left: 445px;color: #14388B;font-weight: bold"/>
                         <h:outputText id="nombreEmpresa" value="#{controlCargo.empresaActual.nombre}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 40px;left: 510px;"/>
@@ -27,20 +27,20 @@
                         <h:outputText id="nitEmpresa" value="#{controlCargo.empresaActual.nit}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 40px;left: 790px;"/>
 
 
-                        <p:commandButton style="position: absolute; left: 20px; top: 515px;" id="BUSCARCARGO" value="#{msg['buscarCargo']}"  actionListener="#{controlCargo.dispararDialogoBuscarCargo()}"  process="@this" />
-                        <p:commandButton style="position: absolute; left: 120px; top: 515px;" id="MOSTRARTODOS" value="#{msg['mostrarTodos']}"  actionListener="#{controlCargo.mostrarTodos()}"  process="@this" />
+                        <p:commandButton style="position: absolute; left: 20px; top: 483px;" id="BUSCARCARGO" value="#{msg['buscarCargo']}"  actionListener="#{controlCargo.dispararDialogoBuscarCargo()}"  process="@this" />
+                        <p:commandButton style="position: absolute; left: 120px; top: 483px;" id="MOSTRARTODOS" value="#{msg['mostrarTodos']}"  actionListener="#{controlCargo.mostrarTodos()}"  process="@this" />
 
-                        <p:commandButton style="position: absolute; left: 690px; top: 515px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" disabled="#{controlCargo.cambiosPagina}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 786px; top: 515px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlCargo.salir()}" action="#{controlCargo.redirigir()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 690px; top: 483px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" disabled="#{controlCargo.cambiosPagina}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 786px; top: 483px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlCargo.salir()}" action="#{controlCargo.redirigir()}" process="@this" />
 
 
-                        <fieldset style="position: absolute; left: 10px; top: 65px; width: 830px; height: 175px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 65px; width: 830px; height: 138px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['cargos']}</strong></legend>
 
                             <p:dataTable id="datosCargo" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="border: 1px; text-align: left;width: 820px;position: relative"                           
                                          value="#{controlCargo.listaCargos}" scrollable="true" scrollHeight="#{controlCargo.altoTablaCargo}"  scrollWidth="820"
                                          filteredValue="#{controlCargo.filtrarListaCargos}"  emptyMessage="#{msg['vacio']}" selection="#{controlCargo.cargoTablaSeleccionado}" selectionMode="single"
-                                         editable="true" editMode="cell" liveScroll="true" scrollRows="6">
+                                         editable="true" editMode="cell" liveScroll="true" scrollRows="10">
 
                                 <p:ajax event="filter" listener="#{controlCargo.eventoFiltrar()}"/>
 
@@ -123,7 +123,7 @@
                                             <p:inputText value="#{info.sueldominimo}" onclick="select();" id="editarSueldoMinimoCargo" style="border-radius: 0px; width: 99.5%;text-transform: uppercase"> 
                                                 <p:ajax event="change" listener="#{controlCargo.modificarCargo(indice)}" update="editarSueldoMinimoCargo" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlCargo.cambiarIndice(indice, 4)}" process="@this"/>
-                                                ¿                                            </p:inputText>
+                                           </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
@@ -297,7 +297,7 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <fieldset style="position: absolute; left: 10px; top: 255px; width: 415px; height: 115px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 220px; width: 415px; height: 115px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['sueldosMercados']}</strong></legend>
 
                             <p:dataTable id="datosSueldoMercado" var="infoSM" rowKey="#{infoSM.secuencia}" rowIndexVar="indiceSM" style="border: 1px; text-align: left;width: 395px"
@@ -323,7 +323,7 @@
                                         </f:facet>   
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 120px; margin: -14px; height: 26px; border: none; color: blue" id="fooTipoEmpresa" action="tipoempresa"  value=" "/>
+                                        <p:commandButton style="width: 180px; margin: -14px; height: 26px; border: none; color: blue" id="fooTipoEmpresa" action="tipoempresa"  value=" "/>
                                     </f:facet>
                                 </p:column>
 
@@ -372,7 +372,7 @@
 
 
 
-                        <fieldset style="position: absolute; left: 10px; top: 388px; width: 415px; height: 115px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 353px; width: 415px; height: 115px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['competenciasCargos']}</strong></legend>
 
                             <p:dataTable id="datosCompetenciaCargo" var="infoCC" rowKey="#{infoCC.secuencia}" rowIndexVar="indiceCC" style="border: 1px; text-align: left;width: 395px"
@@ -398,13 +398,13 @@
                                         </f:facet>   
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 130px; margin: -14px; height: 26px; border: none; color: blue" id="fooEvalCompetencias"  value=" "  action="evalcompetencia" />
+                                        <p:commandButton style="width: 530px; margin: -14px; height: 26px; border: none; color: blue" id="fooEvalCompetencias"  value=" "  action="evalcompetencia" />
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>  
                         </fieldset> 
 
-                        <fieldset style="position: absolute; left: 450px; top: 255px; width: 392px; height: 247px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 450px; top: 220px; width: 392px; height: 247px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['tiposDetalles']}</strong></legend>
 
                             <p:dataTable id="datosTipoDetalle" var="infoTD" rowKey="#{infoTD.secuencia}" rowIndexVar="indiceTD" style="border: 1px; text-align: left;width: 370px"
@@ -849,9 +849,9 @@
 
 
                     <p:dialog header="#{msg['empresasD']}" widgetVar="EmpresasDialogo" draggable="false" resizable="false" closable="false" id="EmpresasDialogo"  
-                              showEffect="fade" hideEffect="fade" width="341" modal="true" >
-                        <p:dataTable id="lovEmpresas" style="width: 310px" var="empresa" value="#{controlCargo.listaEmpresas}" rowKey="#{empresa.secuencia}"
-                                     selection="#{controlCargo.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresas" scrollable="true" scrollWidth="325" scrollHeight="250"
+                              showEffect="fade" hideEffect="fade" width="441" modal="true" >
+                        <p:dataTable id="lovEmpresas" style="width: 410px" var="empresa" value="#{controlCargo.listaEmpresas}" rowKey="#{empresa.secuencia}"
+                                     selection="#{controlCargo.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresas" scrollable="true" scrollWidth="425" scrollHeight="250"
                                      filteredValue="#{controlCargo.filtrarListaEmpresas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlCargo.activarAceptar()}" update=":form:aceptarEM"/>
                             <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarEmpresa()}"  process="@this" onstart="lovEmpresas.clearFilters()"  />
@@ -875,10 +875,10 @@
 
                         <h:outputText id="infoRegistroEmpresa" value="#{controlCargo.infoRegistroEmpresa}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarEM" style="position: relative; left: 150px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" actionListener="#{controlCargo.actualizarEmpresa()}" update="aceptarEM" process="@this" icon="ui-icon-check">
+                        <p:commandButton id="aceptarEM" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" actionListener="#{controlCargo.actualizarEmpresa()}" update="aceptarEM" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovEmpresas:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasEM" style="position: relative; left: 150px" value="#{msg['atras']}" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlCargo.cancelarCambioEmpresa()}" update="lovEmpresas" process="@this" icon="ui-icon-arrowreturnthick-1-w">
+                        <p:commandButton id="atrasEM" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlCargo.cancelarCambioEmpresa()}" update="lovEmpresas" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovEmpresas:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>

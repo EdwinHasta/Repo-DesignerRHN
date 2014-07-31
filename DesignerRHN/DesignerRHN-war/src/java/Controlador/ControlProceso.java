@@ -139,9 +139,9 @@ public class ControlProceso implements Serializable {
         //
         paginaAnterior = "";
         //altos tablas
-        altoTablaProcesos = "120";
-        altoTablaFormulasProcesos = "125";
-        altoTablaOperandosLogs = "125";
+        altoTablaProcesos = "110";
+        altoTablaFormulasProcesos = "115";
+        altoTablaOperandosLogs = "115";
         //Permitir index
         permitirIndexFormulasProcesos = true;
         permitirIndex = true;
@@ -704,7 +704,7 @@ public class ControlProceso implements Serializable {
                 getListaOperandosLogs();
                 context.update("form:datosOperando");
                 if (banderaFormulasProcesos == 1) {
-                    altoTablaFormulasProcesos = "125";
+                    altoTablaFormulasProcesos = "115";
                     formulaProcesoPeriodicidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaProceso:formulaProcesoPeriodicidad");
                     formulaProcesoPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
                     formulaProcesoFormula = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaProceso:formulaProcesoFormula");
@@ -715,7 +715,7 @@ public class ControlProceso implements Serializable {
                     tipoListaFormulasProcesos = 0;
                 }
                 if (banderaOperandosLogs == 1) {
-                    altoTablaOperandosLogs = "125";
+                    altoTablaOperandosLogs = "115";
                     operandoOperando = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperando:operandoOperando");
                     operandoOperando.setFilterStyle("display: none; visibility: hidden;");
                     operandoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperando:operandoDescripcion");
@@ -927,7 +927,7 @@ public class ControlProceso implements Serializable {
 
     public void cancelarModificacionProceso() {
         if (bandera == 1) {
-            altoTablaProcesos = "120";
+            altoTablaProcesos = "110";
             procesoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProceso:procesoCodigo");
             procesoCodigo.setFilterStyle("display: none; visibility: hidden;");
             procesoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProceso:procesoDescripcion");
@@ -968,7 +968,7 @@ public class ControlProceso implements Serializable {
 
     public void cancelarModificacionFormulaProceso() {
         if (banderaFormulasProcesos == 1) {
-            altoTablaFormulasProcesos = "125";
+            altoTablaFormulasProcesos = "115";
             formulaProcesoPeriodicidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaProceso:formulaProcesoPeriodicidad");
             formulaProcesoPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
             formulaProcesoFormula = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaProceso:formulaProcesoFormula");
@@ -994,7 +994,7 @@ public class ControlProceso implements Serializable {
 
     public void cancelarModificacionOperandoLog() {
         if (banderaOperandosLogs == 1) {
-            altoTablaOperandosLogs = "125";
+            altoTablaOperandosLogs = "115";
             operandoOperando = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperando:operandoOperando");
             operandoOperando.setFilterStyle("display: none; visibility: hidden;");
             operandoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperando:operandoDescripcion");
@@ -1126,7 +1126,7 @@ public class ControlProceso implements Serializable {
             tamDes = nuevoProceso.getDescripcion().length();
             if (tamDes >= 1 && tamDes <= 30) {
                 if (bandera == 1) {
-                    altoTablaProcesos = "120";
+                    altoTablaProcesos = "110";
                     procesoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProceso:procesoCodigo");
                     procesoCodigo.setFilterStyle("display: none; visibility: hidden;");
                     procesoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProceso:procesoDescripcion");
@@ -1186,7 +1186,7 @@ public class ControlProceso implements Serializable {
         boolean respueta = validarCamposNulosFormulaProceso(1);
         if (respueta == true) {
             if (banderaFormulasProcesos == 1) {
-                altoTablaFormulasProcesos = "125";
+                altoTablaFormulasProcesos = "115";
                 formulaProcesoPeriodicidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaProceso:formulaProcesoPeriodicidad");
                 formulaProcesoPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
                 formulaProcesoFormula = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaProceso:formulaProcesoFormula");
@@ -1232,7 +1232,7 @@ public class ControlProceso implements Serializable {
     public void agregarNuevoOperandoLog() {
         if (nuevoOperandoLog.getOperando().getSecuencia() != null) {
             if (banderaOperandosLogs == 1) {
-                altoTablaOperandosLogs = "125";
+                altoTablaOperandosLogs = "115";
                 operandoOperando = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperando:operandoOperando");
                 operandoOperando.setFilterStyle("display: none; visibility: hidden;");
                 operandoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperando:operandoDescripcion");
@@ -1389,7 +1389,7 @@ public class ControlProceso implements Serializable {
             tamDes = nuevoProceso.getDescripcion().length();
             if (tamDes >= 1 && tamDes <= 30) {
                 if (bandera == 1) {
-                    altoTablaProcesos = "120";
+                    altoTablaProcesos = "110";
                     procesoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProceso:tipoSueldoCodigo");
                     procesoCodigo.setFilterStyle("display: none; visibility: hidden;");
                     procesoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProceso:tipoSueldoDescripcion");
@@ -1439,7 +1439,7 @@ public class ControlProceso implements Serializable {
         boolean respueta = validarCamposNulosFormulaProceso(2);
         if (respueta == true) {
             if (banderaFormulasProcesos == 1) {
-                altoTablaFormulasProcesos = "125";
+                altoTablaFormulasProcesos = "115";
                 formulaProcesoPeriodicidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaProceso:formulaProcesoPeriodicidad");
                 formulaProcesoPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
                 formulaProcesoFormula = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaProceso:formulaProcesoFormula");
@@ -1480,7 +1480,7 @@ public class ControlProceso implements Serializable {
     public void confirmarDuplicarOperandoLog() {
         if (duplicarOperandoLog.getOperando().getSecuencia() != null) {
             if (banderaOperandosLogs == 1) {
-                altoTablaOperandosLogs = "125";
+                altoTablaOperandosLogs = "115";
                 operandoOperando = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperando:operandoOperando");
                 operandoOperando.setFilterStyle("display: none; visibility: hidden;");
                 operandoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperando:operandoDescripcion");
@@ -1700,7 +1700,7 @@ public class ControlProceso implements Serializable {
     public void activarCtrlF11() {
         if (index >= 0) {
             if (bandera == 0) {
-                altoTablaProcesos = "98";
+                altoTablaProcesos = "88";
                 procesoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProceso:procesoCodigo");
                 procesoCodigo.setFilterStyle("width: 13px");
                 procesoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProceso:procesoDescripcion");
@@ -1725,7 +1725,7 @@ public class ControlProceso implements Serializable {
 
                 bandera = 1;
             } else if (bandera == 1) {
-                altoTablaProcesos = "120";
+                altoTablaProcesos = "110";
                 procesoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProceso:procesoCodigo");
                 procesoCodigo.setFilterStyle("display: none; visibility: hidden;");
                 procesoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProceso:procesoDescripcion");
@@ -1754,7 +1754,7 @@ public class ControlProceso implements Serializable {
         }
         if (indexFormulasProcesos >= 0) {
             if (banderaFormulasProcesos == 0) {
-                altoTablaFormulasProcesos = "104";
+                altoTablaFormulasProcesos = "93";
                 formulaProcesoPeriodicidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaProceso:formulaProcesoPeriodicidad");
                 formulaProcesoPeriodicidad.setFilterStyle("width: 80px");
                 formulaProcesoFormula = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaProceso:formulaProcesoFormula");
@@ -1763,7 +1763,7 @@ public class ControlProceso implements Serializable {
                 RequestContext.getCurrentInstance().update("form:datosFormulaProceso");
                 banderaFormulasProcesos = 1;
             } else if (banderaFormulasProcesos == 1) {
-                altoTablaFormulasProcesos = "125";
+                altoTablaFormulasProcesos = "115";
                 formulaProcesoPeriodicidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaProceso:formulaProcesoPeriodicidad");
                 formulaProcesoPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
                 formulaProcesoFormula = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaProceso:formulaProcesoFormula");
@@ -1776,7 +1776,7 @@ public class ControlProceso implements Serializable {
         }
         if (indexOperandosLogs >= 0) {
             if (banderaOperandosLogs == 0) {
-                altoTablaOperandosLogs = "104";
+                altoTablaOperandosLogs = "93";
                 operandoOperando = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperando:operandoOperando");
                 operandoOperando.setFilterStyle("width: 100px");
                 operandoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperando:operandoDescripcion");
@@ -1784,7 +1784,7 @@ public class ControlProceso implements Serializable {
                 RequestContext.getCurrentInstance().update("form:datosOperando");
                 banderaOperandosLogs = 1;
             } else if (banderaOperandosLogs == 1) {
-                altoTablaOperandosLogs = "125";
+                altoTablaOperandosLogs = "115";
                 operandoOperando = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperando:operandoOperando");
                 operandoOperando.setFilterStyle("display: none; visibility: hidden;");
                 operandoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperando:operandoDescripcion");
@@ -1803,7 +1803,7 @@ public class ControlProceso implements Serializable {
      */
     public void salir() {
         if (bandera == 1) {
-            altoTablaProcesos = "120";
+            altoTablaProcesos = "110";
             procesoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProceso:procesoCodigo");
             procesoCodigo.setFilterStyle("display: none; visibility: hidden;");
             procesoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProceso:procesoDescripcion");
@@ -1830,7 +1830,7 @@ public class ControlProceso implements Serializable {
             tipoLista = 0;
         }
         if (banderaFormulasProcesos == 1) {
-            altoTablaFormulasProcesos = "125";
+            altoTablaFormulasProcesos = "115";
             formulaProcesoPeriodicidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaProceso:formulaProcesoPeriodicidad");
             formulaProcesoPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
             formulaProcesoFormula = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaProceso:formulaProcesoFormula");
@@ -1841,7 +1841,7 @@ public class ControlProceso implements Serializable {
             tipoListaFormulasProcesos = 0;
         }
         if (banderaOperandosLogs == 1) {
-            altoTablaOperandosLogs = "125";
+            altoTablaOperandosLogs = "115";
             operandoOperando = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperando:operandoOperando");
             operandoOperando.setFilterStyle("display: none; visibility: hidden;");
             operandoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperando:operandoDescripcion");

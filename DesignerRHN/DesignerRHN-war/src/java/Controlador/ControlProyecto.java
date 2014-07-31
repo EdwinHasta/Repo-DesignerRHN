@@ -100,7 +100,7 @@ public class ControlProyecto implements Serializable {
     private String infoRegistroProyecto, infoRegistroTipoMoneda, infoRegistroPlataforma, infoRegistroCliente, infoRegistroEmpresa;
 
     public ControlProyecto() {
-        altoTabla = "270";
+        altoTabla = "300";
         proyectoSeleccionado = new Proyectos();
         backUpSecRegistro = null;
         //Otros
@@ -863,7 +863,7 @@ public class ControlProyecto implements Serializable {
     public void cancelarModificacionP() {
         if (banderaP == 1) {
             FacesContext c = FacesContext.getCurrentInstance();
-            altoTabla = "270";
+            altoTabla = "300";
             pryEmpresa = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryEmpresa");
             pryEmpresa.setFilterStyle("display: none; visibility: hidden;");
             pryCodigo = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryCodigo");
@@ -983,7 +983,7 @@ public class ControlProyecto implements Serializable {
             if (validarDatosNull(1) == true) {
                 if (banderaP == 1) {
                     FacesContext c = FacesContext.getCurrentInstance();
-                    altoTabla = "270";
+                    altoTabla = "300";
                     pryEmpresa = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryEmpresa");
                     pryEmpresa.setFilterStyle("display: none; visibility: hidden;");
                     pryCodigo = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryCodigo");
@@ -1131,7 +1131,7 @@ public class ControlProyecto implements Serializable {
                     RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
                 if (banderaP == 1) {
-                    altoTabla = "270";
+                    altoTabla = "300";
                     FacesContext c = FacesContext.getCurrentInstance();
                     //CERRAR FILTRADO
                     pryEmpresa = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryEmpresa");
@@ -1251,7 +1251,7 @@ public class ControlProyecto implements Serializable {
     public void filtradoProyecto() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (banderaP == 0) {
-            altoTabla = "248";
+            altoTabla = "278";
             pryEmpresa = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryEmpresa");
             pryEmpresa.setFilterStyle("width: 90px");
             pryCodigo = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryCodigo");
@@ -1278,7 +1278,7 @@ public class ControlProyecto implements Serializable {
             tipoListaP = 1;
             banderaP = 1;
         } else if (banderaP == 1) {
-            altoTabla = "270";
+            altoTabla = "300";
             pryEmpresa = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryEmpresa");
             pryEmpresa.setFilterStyle("display: none; visibility: hidden;");
             pryCodigo = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryCodigo");
@@ -1311,7 +1311,7 @@ public class ControlProyecto implements Serializable {
 
     public void salir() {
         if (banderaP == 1) {
-            altoTabla = "270";
+            altoTabla = "300";
             FacesContext c = FacesContext.getCurrentInstance();
             pryEmpresa = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryEmpresa");
             pryEmpresa.setFilterStyle("display: none; visibility: hidden;");

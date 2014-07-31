@@ -11,6 +11,7 @@ import Entidades.Terceros;
 import Entidades.TiposEntidades;
 import Entidades.TiposTrabajadores;
 import Exportar.ExportarPDF;
+import Exportar.ExportarPDFTablasAnchas;
 import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarParametroAutoliqInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
@@ -22,6 +23,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -151,8 +154,11 @@ public class ControlParametroAutoliq implements Serializable {
     private int rowsAporteEntidad;
     //
     private int numero;
+    //
 
     public ControlParametroAutoliq() {
+        infoRegistroAporte = "Cantidad de registros : 0";
+        infoRegistroParametro = "Cantidad de registros : 0";
         numero = 7;
         altoDivTablaInferiorIzquierda = "195px";
         topDivTablaInferiorIzquierda = "37px";
@@ -260,6 +266,7 @@ public class ControlParametroAutoliq implements Serializable {
         if (rowsAporteEntidad < tam) {
             rowsAporteEntidad = rowsAporteEntidad + 20;
             numeroScrollAporte = numeroScrollAporte + 500;
+            context.execute("operacionEnProceso.hide()");
             context.update("form:PanelTotal");
         }
     }
@@ -699,47 +706,80 @@ public class ControlParametroAutoliq implements Serializable {
 
     public void cambiarIndice(int indice, int celda) {
         if (permitirIndex == true) {
-            index = indice;
-            cualCelda = celda;
-            indexAUX = indice;
-            if (tipoLista == 0) {
-                secRegistro = listaParametrosAutoliq.get(index).getSecuencia();
-                auxTipoTipoTrabajador = listaParametrosAutoliq.get(index).getTipotrabajador().getNombre();
-            } else {
-                secRegistro = filtrarListaParametrosAutoliq.get(index).getSecuencia();
-                auxTipoTipoTrabajador = filtrarListaParametrosAutoliq.get(index).getTipotrabajador().getNombre();
-            }
-            if (banderaAporte == 1) {
-                desactivarFiltradoAporteEntidad();
-                banderaAporte = 0;
-                filtrarListaAportesEntidades = null;
-                tipoListaAporte = 0;
-            }
-            listaAportesEntidades = null;
-            getListaAportesEntidades();
-            if (listaAportesEntidades != null) {
-                infoRegistroAporte = "Cantidad de registros : " + listaAportesEntidades.size();
-            } else {
-                infoRegistroAporte = "Cantidad de registros : 0";
-            }
             RequestContext context = RequestContext.getCurrentInstance();
-            activoBtnsPaginas = false;
-            numeroScrollAporte = 505;
-            rowsAporteEntidad = 20;
-            context.update("form:PanelTotal");
-            //context.update("form:datosAporteEntidad2");
-            lovAportesEntidades = null;
-            getLovAportesEntidades();
-            if (lovAportesEntidades != null) {
-                if (lovAportesEntidades.isEmpty()) {
-                    disabledBuscar = true;
+            if (index == indice) {
+                index = indice;
+                cualCelda = celda;
+                indexAUX = indice;
+                if (tipoLista == 0) {
+                    secRegistro = listaParametrosAutoliq.get(index).getSecuencia();
+                    auxTipoTipoTrabajador = listaParametrosAutoliq.get(index).getTipotrabajador().getNombre();
                 } else {
-                    disabledBuscar = false;
+                    secRegistro = filtrarListaParametrosAutoliq.get(index).getSecuencia();
+                    auxTipoTipoTrabajador = filtrarListaParametrosAutoliq.get(index).getTipotrabajador().getNombre();
                 }
-            } else {
-                disabledBuscar = true;
+                if (banderaAporte == 1) {
+                    desactivarFiltradoAporteEntidad();
+                    banderaAporte = 0;
+                    filtrarListaAportesEntidades = null;
+                    tipoListaAporte = 0;
+                }
+                activoBtnsPaginas = false;
+                numeroScrollAporte = 505;
+                rowsAporteEntidad = 20;
+                //context.update("form:datosAporteEntidad2");
+
+                context.update("form:btn2");
+                context.update("form:btn3");
+                context.update("form:btn4");
+                context.update("form:btn5");
+                context.update("form:btn7");
+                context.update("form:infoRegistroAporte");
+                context.update("form:tablaSuperiorIzquierda");
+                context.update("form:tablaSuperiorDerecha");
+                context.update("form:tablaInferiorIzquierda");
+                context.update("form:tablaInferiorDerecha");
+                getParametroTablaSeleccionado();
+            } else if (index != indice) {
+                System.out.println("Inicio el cargue de informacion");
+                index = indice;
+                cualCelda = celda;
+                indexAUX = indice;
+                if (tipoLista == 0) {
+                    secRegistro = listaParametrosAutoliq.get(index).getSecuencia();
+                    auxTipoTipoTrabajador = listaParametrosAutoliq.get(index).getTipotrabajador().getNombre();
+                    parametroTablaSeleccionado = listaParametrosAutoliq.get(index);
+                } else {
+                    secRegistro = filtrarListaParametrosAutoliq.get(index).getSecuencia();
+                    auxTipoTipoTrabajador = filtrarListaParametrosAutoliq.get(index).getTipotrabajador().getNombre();
+                    parametroTablaSeleccionado = filtrarListaParametrosAutoliq.get(index);
+                }
+                if (banderaAporte == 1) {
+                    desactivarFiltradoAporteEntidad();
+                    banderaAporte = 0;
+                    filtrarListaAportesEntidades = null;
+                    tipoListaAporte = 0;
+                }
+                activoBtnsPaginas = false;
+                numeroScrollAporte = 505;
+                rowsAporteEntidad = 20;
+                listaAportesEntidades = null;
+                getListaAportesEntidades();
+                lovAportesEntidades = null;
+                getLovAportesEntidades();
+                if (listaAportesEntidades != null) {
+                    infoRegistroAporte = "Cantidad de registros : " + listaAportesEntidades.size();
+                    if (listaAportesEntidades.isEmpty()) {
+                        disabledBuscar = true;
+                    } else {
+                        infoRegistroAporte = "Cantidad de registros : 0";
+                        disabledBuscar = false;
+                    }
+                } else {
+                    disabledBuscar = true;
+                }
+                context.update("form:PanelTotal");
             }
-            context.update("form:btn1");
         }
     }
 
@@ -1635,7 +1675,7 @@ public class ControlParametroAutoliq implements Serializable {
                 listaAportesEntidades = null;
                 infoRegistroAporte = "Cantidad de registros : 0";
                 disabledBuscar = true;
-                
+
                 indexAUX = -1;
                 activoBtnsPaginas = true;
                 context.update("form:PanelTotal");
@@ -2242,7 +2282,7 @@ public class ControlParametroAutoliq implements Serializable {
         }
         numeroScrollAporte = 505;
         rowsAporteEntidad = 20;
-        
+
         listParametrosAutoliqBorrar.clear();
         listParametrosAutoliqCrear.clear();
         listParametrosAutoliqModificar.clear();
@@ -2688,6 +2728,15 @@ public class ControlParametroAutoliq implements Serializable {
         return nombre;
     }
 
+    public void validarExportPDF() throws IOException {
+        if (index >= 0) {
+            exportPDF();
+        }
+        if (indexAporte >= 0) {
+            exportPDF_AE();
+        }
+    }
+
     public void exportPDF() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosParametroAutoExportar");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -2705,6 +2754,25 @@ public class ControlParametroAutoliq implements Serializable {
         secRegistro = null;
     }
 
+    public void exportPDF_AE() throws IOException {
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosAporteEntidadExportar");
+        FacesContext context = FacesContext.getCurrentInstance();
+        Exporter exporter = new ExportarPDFTablasAnchas();
+        exporter.export(context, tabla, "AportesEntidades_PDF", false, false, "UTF-8", null, null);
+        context.responseComplete();
+        indexAporte = -1;
+        secRegistroAporte = null;
+    }
+
+    public void validarExportXLS() throws IOException {
+        if (index >= 0) {
+            exportXLS();
+        }
+        if (indexAporte >= 0) {
+            exportXLS_AE();
+        }
+    }
+
     public void exportXLS() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosParametroAutoExportar");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -2720,16 +2788,6 @@ public class ControlParametroAutoliq implements Serializable {
         context2.update("form:btn5");
         context2.update("form:btn7");
         secRegistro = null;
-    }
-
-    public void exportPDF_AE() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosAporteEntidadExportar");
-        FacesContext context = FacesContext.getCurrentInstance();
-        Exporter exporter = new ExportarPDF();
-        exporter.export(context, tabla, "AportesEntidades_PDF", false, false, "UTF-8", null, null);
-        context.responseComplete();
-        indexAporte = -1;
-        secRegistroAporte = null;
     }
 
     public void exportXLS_AE() throws IOException {
@@ -3287,6 +3345,12 @@ public class ControlParametroAutoliq implements Serializable {
     }
 
     public String getInfoRegistroAporte() {
+        getListaAportesEntidades();
+        if (listaAportesEntidades != null) {
+            infoRegistroAporte = "Cantidad de registros : " + listaAportesEntidades.size();
+        } else {
+            infoRegistroAporte = "Cantidad de registros : 0";
+        }
         return infoRegistroAporte;
     }
 
@@ -3296,7 +3360,9 @@ public class ControlParametroAutoliq implements Serializable {
 
     public ParametrosEstructuras getParametroEstructura() {
         getUsuario();
-        parametroEstructura = administrarParametroAutoliq.buscarParametroEstructura(usuario.getAlias());
+        if (usuario.getAlias() != null) {
+            parametroEstructura = administrarParametroAutoliq.buscarParametroEstructura(usuario.getAlias());
+        }
         return parametroEstructura;
     }
 

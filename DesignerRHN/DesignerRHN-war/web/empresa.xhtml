@@ -17,13 +17,13 @@
                     <f:loadBundle basename="Recursos.empresa" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
                     
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 550px;  text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px;  text-align: left" >  
 
-                        <p:commandButton style="position: absolute; left: 20px; top: 520px;" id="DETALLES" value="#{msg['detalle']}" disabled="#{controlEmpresa.activoBtnesAdd}"  actionListener="#{controlDetalleEmpresa.inicializarPagina(controlEmpresa.secRegistro, 'empresa')}" action="detalle" process="@this" />
-                        <p:commandButton style="position: absolute; left: 160px; top: 520px;" id="EMPRESABANCO" value="#{msg['empresaBanco']}" disabled="#{controlEmpresa.activoBtnesAdd}" process="@this" action="empresabanco"/>
-                        <p:commandButton style="position: absolute; left: 305px; top: 520px;" id="DIRECCIONES" value="#{msg['direccion']}"  disabled="#{controlEmpresa.activoBtnesAdd}" action="firmareporte" process="@this" />
-                        <p:commandButton style="position: absolute; left: 683px; top: 520px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" disabled="#{controlEmpresa.cambiosPagina}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 520px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlEmpresa.salir()}" action="#{controlEmpresa.valorPaginaAnterior()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 20px; top: 480px;" id="DETALLES" value="#{msg['detalle']}" disabled="#{controlEmpresa.activoBtnesAdd}"  actionListener="#{controlDetalleEmpresa.inicializarPagina(controlEmpresa.secRegistro, 'empresa')}" action="detalle" process="@this" />
+                        <p:commandButton style="position: absolute; left: 160px; top: 480px;" id="EMPRESABANCO" value="#{msg['empresaBanco']}" disabled="#{controlEmpresa.activoBtnesAdd}" process="@this" action="empresabanco"/>
+                        <p:commandButton style="position: absolute; left: 305px; top: 480px;" id="DIRECCIONES" value="#{msg['direccion']}"  disabled="#{controlEmpresa.activoBtnesAdd}" action="firmareporte" process="@this" />
+                        <p:commandButton style="position: absolute; left: 683px; top: 480px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" disabled="#{controlEmpresa.cambiosPagina}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 480px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlEmpresa.salir()}" action="#{controlEmpresa.valorPaginaAnterior()}" process="@this" />
 
                         <fieldset style="position: absolute; left: 10px; top: 65px; width: 830px; height: 150px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['empresa']}</strong></legend>
@@ -206,7 +206,7 @@
                         </p:toolbar> 
 
 
-                        <fieldset style="position: absolute; left: 10px; top: 230px; width: 415px; height: 180px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 230px; width: 415px; height: 160px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['conceptoJuridico']}</strong></legend>
 
                             <p:dataTable id="datosVigenciaMonedaBase" var="infoVMB" rowKey="#{infoVMB.secuencia}" rowIndexVar="indiceVMB" style="border: 1px; text-align: left;width: 400px"
@@ -279,7 +279,7 @@
                             </p:dataTable>  
                         </fieldset> 
 
-                        <fieldset style="position: absolute; left: 450px; top: 230px; width: 392px; height: 180px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 450px; top: 230px; width: 392px; height: 160px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['circular']}</strong></legend>
 
                             <p:dataTable id="datosCircular" var="infoC" rowKey="#{infoC.secuencia}" rowIndexVar="indiceC" style="border: 1px; text-align: left;width: 370px"
@@ -338,7 +338,7 @@
                             </p:dataTable>  
                         </fieldset> 
 
-                        <fieldset style="position: absolute; left: 10px; top: 430px; width: 833px; height:70px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 405px; width: 833px; height: 60px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['procesoClonar']}</strong></legend>
 
                             <h:outputText style="position: absolute; top: 15px; left: 30px" value="#{msg['clonarOrigen']}"/>

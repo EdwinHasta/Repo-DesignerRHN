@@ -14,13 +14,13 @@
                 <h:form id="form"> 
                     <f:loadBundle basename="Recursos.tiposueldo" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 550px;  text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px;  text-align: left" >  
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 525px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" disabled="#{controlTipoSueldo.cambiosPagina}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 525px" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlTipoSueldo.salir()}" action="#{controlTipoSueldo.valorPaginaAnterior()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 683px; top: 480px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" disabled="#{controlTipoSueldo.cambiosPagina}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 480px" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlTipoSueldo.salir()}" action="#{controlTipoSueldo.valorPaginaAnterior()}" process="@this" />
 
 
-                        <fieldset style="position: absolute; left: 10px; top: 65px;width: 830px; height: 140px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 65px;width: 830px; height: 120px; border-radius: 10px; ">
                             <legend style=" color: blue"><strong>#{msg['tipoSueldo']}</strong></legend>
 
                             <p:dataTable id="datosTipoSueldo" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style=" border: 1px; text-align: left;width: 820px"                           
@@ -155,7 +155,7 @@
                         </p:toolbar> 
 
 
-                        <fieldset style="position: absolute; left: 10px; top: 225px; width: 415px; height: 283px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 200px; width: 415px; height: 283px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['tsFormula']}</strong></legend>
 
                             <p:dataTable id="datosTSFormula" var="infoTSF" rowKey="#{infoTSF.secuencia}" rowIndexVar="indiceTSF" style="border: 1px; text-align: left;width: 410px"
@@ -239,7 +239,7 @@
 
                         <p:remoteCommand name="posicionTSFormula" actionListener="#{controlTipoSueldo.posicionTSFormula()}"/>
 
-                        <fieldset style="position: absolute; left: 450px; top: 225px;width: 392px; height: 130px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 450px; top: 200px;width: 392px; height: 120px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['tsGrupo']}</strong></legend>
 
                             <p:dataTable id="datosTSGrupo" var="infoTSG" rowKey="#{infoTSG.secuencia}" rowIndexVar="indiceTSG" style="border: 1px; text-align: left;width: 370px"
@@ -275,7 +275,7 @@
                         <p:remoteCommand name="posicionTEFormula" actionListener="#{controlTipoSueldo.posicionTEFormula()}"/>
 
 
-                        <fieldset style="position: absolute; left: 450px; top: 375px; width: 392px; height: 133px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 450px; top: 340px; width: 392px; height: 123px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['teFormula']}</strong></legend>
 
                             <p:dataTable id="datosTEFormula" var="infoTEF" rowKey="#{infoTEF.secuencia}" rowIndexVar="indiceTEF" style="border: 1px; text-align: left;width: 370px"
