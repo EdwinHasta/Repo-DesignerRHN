@@ -84,7 +84,7 @@
                                 <p:ajax event="filter" listener="#{controlUnidad.eventofiltrar()}"/>
 
                                 <p:column headerText="#{msg['codigo']}" width="10" sortBy="#{unidades.codigo}" filterBy="#{unidades.codigo}" filterMatchMode="contains" id="unidadesCodigos" filterStyle="display: none; visibility: hidden;"  >  
-                                     <f:facet name="header">
+                                    <f:facet name="header">
                                         <h:outputText id="headercodigo" value="#{msg['codigo']}" />
                                         <p:tooltip for="headercodigo" value="#{msg['codigott']}"/>
                                     </f:facet>                                    
@@ -165,7 +165,7 @@
                     <p:dialog id="existe" header="#{msg['atencion']}" widgetVar="existe"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['existe']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="existe.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="existe.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="NuevoRegistroUnidad" header="#{msg['nuevoregistro']}" widgetVar="NuevoRegistroUnidad" closable="false" resizable="false"  draggable="false" modal="true" height="265" width="350" style=" padding: 0px">  
@@ -227,6 +227,14 @@
                             <p:commandButton id="agregarDuplicadoUnidad" value="#{msg['agregar']}" icon="ui-icon-circle-check" style=" position: absolute; left: 140px; top: 210px;"  process="@this" actionListener="#{controlUnidad.confirmarDuplicar()}"  />
                             <p:commandButton id="cancelarDuplicadoUnidad" value="#{msg['cancelar']}" icon="ui-icon-circle-close" style=" position: absolute; left: 230px; top: 210px;" actionListener="#{controlUnidad.limpiarDuplicarUnidad()}" update="duplicarUnidad" onclick="DuplicarRegistroUnidad.hide();"  process="@this"/>
                         </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlUnidad.guardarCambiosUnidad()}" action="#{controlUnidad.redirigir()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlUnidad.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
 
                     <!-- DIALOGOS RASTROS -->
@@ -316,7 +324,7 @@
                     <p:dialog id="validacionNuevaUnidad" header="#{msg['atencion']}" widgetVar="validacionNuevaUnidad"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['validacionNuevo']} #{controlUnidad.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionNuevaUnidad.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionNuevaUnidad.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <!-- DIALOGOS EDITAR -->
