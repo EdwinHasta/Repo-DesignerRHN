@@ -68,7 +68,7 @@ and open the template in the editor.
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCausasAusentismos.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCausasAusentismos.cancelarModificacion()}" action="#{controlCausasAusentismos.redirigir()}" process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCausasAusentismos.salir()}" action="#{controlCausasAusentismos.redirigir()}" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
                             </p:toolbarGroup>  
                         </p:toolbar>
@@ -146,7 +146,7 @@ and open the template in the editor.
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 315px; margin: -14px; height: 26px; border: none; color: blue" value=" " id="fooClaseAusentismo" action="tipounidad" actionListener="#{controlTiposUnidades.recibirPaginaEntrante('atrastipounidad')}"/>
+                                        <p:commandButton style="width: 315px; margin: -14px; height: 26px; border: none; color: blue" value=" " id="fooClaseAusentismo" action="claseausentismos" actionListener="#{controlClasesAusentismos.recibirAtras('causasausentismos')}"/>
                                     </f:facet>
                                 </p:column>
 
@@ -286,7 +286,7 @@ and open the template in the editor.
 
                         </fieldset>
                         <p:commandButton style="position: absolute; left: 683px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" disabled="#{controlCausasAusentismos.guardado}" update=":form:datosCausasAusentismos" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 470px;" icon="ui-icon-closethick" id="ATRAS" value="#{msg['cancelar']}" actionListener="#{controlCausasAusentismos.cancelarModificacion()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 470px;" icon="ui-icon-closethick" id="ATRAS" value="#{msg['cancelar']}" actionListener="#{controlCausasAusentismos.salir()}" action="#{controlCausasAusentismos.redirigir()}" process="@this" />
 
                     </p:panel>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlCausasAusentismos.activarCtrlF11()}" process="@this"/> 

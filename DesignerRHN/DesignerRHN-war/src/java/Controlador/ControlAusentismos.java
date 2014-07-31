@@ -3758,4 +3758,14 @@ public class ControlAusentismos implements Serializable {
         this.colapsado = colapsado;
     }
 
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+    
+    
+
 }
