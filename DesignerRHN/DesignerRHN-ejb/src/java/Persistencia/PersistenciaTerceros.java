@@ -80,6 +80,7 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     @Override
     public List<Terceros> todosTerceros(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM Terceros t ORDER BY t.nombre");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Terceros> terceros = (List<Terceros>) query.getResultList();
@@ -93,6 +94,7 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     @Override
     public List<Terceros> buscarTerceros(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM Terceros t, Empresas e, TercerosSucursales ts  WHERE t.secuencia = ts.tercero.secuencia AND t.empresa.secuencia = e.secuencia");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Terceros> terceros = (List<Terceros>) query.getResultList();
@@ -106,6 +108,7 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     @Override
     public List<Terceros> buscarTercerosParametrosAutoliq(EntityManager em) {
         try {
+            em.clear();
             String sql = "SELECT * FROM TERCEROS t\n"
                     + "   where exists (select 'x' from tercerossucursales ts\n"
                     + "   where ts.tercero=t.secuencia)";
@@ -121,6 +124,7 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     @Override
     public Terceros buscarTercerosSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM Terceros t WHERE t.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -136,6 +140,7 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     @Override
     public boolean verificarTerceroPorNit(EntityManager em, BigInteger nit) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(t) FROM Terceros t WHERE t.nit = :nit");
             query.setParameter("nit", nit);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -150,6 +155,7 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     @Override
     public boolean verificarTerceroParaEmpresaEmpleado(EntityManager em, BigInteger nit, BigInteger secEmpresa) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(t) FROM Terceros t "
                     + "WHERE t.nit = :nit AND t.empresa.secuencia = :secEmpresa");
             query.setParameter("nit", nit);
@@ -166,6 +172,7 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     @Override
     public List<Terceros> lovTerceros(EntityManager em, BigInteger secEmpresa) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM Terceros t WHERE t.empresa.secuencia = :secEmpresa ORDER BY t.nombre");
             query.setParameter("secEmpresa", secEmpresa);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -180,6 +187,7 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     @Override
     public List<Terceros> tercerosEmbargos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t.nit, t.nombre, e.nombre FROM Terceros t, Empresas e Where e.secuencia=t.empresa ORDER BY t.nombre");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Terceros> listaTerceros = query.getResultList();
@@ -193,6 +201,7 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     @Override
     public String buscarCodigoSSPorSecuenciaTercero(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             String retorno = null;
             Query query = em.createQuery("SELECT t FROM Terceros t WHERE t.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
@@ -211,6 +220,7 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     @Override
     public String buscarCodigoSPPorSecuenciaTercero(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             String retorno = null;
             Query query = em.createQuery("SELECT t FROM Terceros t WHERE t.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
@@ -229,6 +239,7 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     @Override
     public String buscarCodigoSCPorSecuenciaTercero(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             String retorno = null;
             Query query = em.createQuery("SELECT t FROM Terceros t WHERE t.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);

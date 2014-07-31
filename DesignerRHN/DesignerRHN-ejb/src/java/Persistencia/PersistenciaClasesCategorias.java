@@ -79,6 +79,7 @@ public class PersistenciaClasesCategorias implements PersistenciaClasesCategoria
     @Override
     public List<ClasesCategorias> consultarClasesCategorias(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT td FROM ClasesCategorias td ORDER BY td.codigo DESC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<ClasesCategorias> clasesCategorias = query.getResultList();
@@ -92,6 +93,7 @@ public class PersistenciaClasesCategorias implements PersistenciaClasesCategoria
     @Override
     public ClasesCategorias consultarClaseCategoria(EntityManager em, BigInteger secClaseCategoria) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("SELECT cc FROM ClasesCategorias cc WHERE cc.secuencia=:secuencia");
             query.setParameter("secuencia", secClaseCategoria);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -106,6 +108,7 @@ public class PersistenciaClasesCategorias implements PersistenciaClasesCategoria
     public BigInteger contarCategoriasClaseCategoria(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM categorias WHERE clasecategoria = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

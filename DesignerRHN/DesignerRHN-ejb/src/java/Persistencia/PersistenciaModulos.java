@@ -82,6 +82,7 @@ public class PersistenciaModulos implements PersistenciaModulosInterface {
 
     @Override
     public Modulos buscarModulos(EntityManager em, BigInteger secuencia) {
+        em.clear();
         return em.find(Modulos.class, secuencia);
     }
 

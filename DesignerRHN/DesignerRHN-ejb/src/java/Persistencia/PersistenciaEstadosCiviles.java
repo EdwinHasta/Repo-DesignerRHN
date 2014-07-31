@@ -82,6 +82,7 @@ public class PersistenciaEstadosCiviles implements PersistenciaEstadosCivilesInt
     @Override
     public EstadosCiviles buscarEstadoCivil(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(EstadosCiviles.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error buscarEstadoCivil PersistenciaEstadosCiviles : " + e.toString());
@@ -91,6 +92,7 @@ public class PersistenciaEstadosCiviles implements PersistenciaEstadosCivilesInt
 
     @Override
     public List<EstadosCiviles> consultarEstadosCiviles(EntityManager em) {
+        em.clear();
         Query query = em.createQuery("SELECT e FROM EstadosCiviles e ORDER BY e.codigo ");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<EstadosCiviles> listEstadosCiviles = query.getResultList();
@@ -101,6 +103,7 @@ public class PersistenciaEstadosCiviles implements PersistenciaEstadosCivilesInt
     public BigInteger contadorVigenciasEstadosCiviles(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*) FROM vigenciasestadosciviles WHERE estadocivil = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

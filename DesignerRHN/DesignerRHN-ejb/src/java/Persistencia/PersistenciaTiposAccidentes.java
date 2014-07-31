@@ -75,6 +75,7 @@ public class PersistenciaTiposAccidentes implements PersistenciaTiposAccidentesI
 
     public TiposAccidentes buscarTipoAccidente(EntityManager em, BigInteger secuenciaTA) {
         try {
+            em.clear();
             return em.find(TiposAccidentes.class, secuenciaTA);
         } catch (Exception e) {
             return null;
@@ -83,6 +84,7 @@ public class PersistenciaTiposAccidentes implements PersistenciaTiposAccidentesI
 
     public List<TiposAccidentes> buscarTiposAccidentes(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT l FROM TiposAccidentes  l ORDER BY l.codigo ASC ");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposAccidentes> listPartesCuerpo = query.getResultList();
@@ -98,6 +100,7 @@ public class PersistenciaTiposAccidentes implements PersistenciaTiposAccidentesI
     public BigInteger contadorSoAccidentesMedicos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*) FROM soaccidentesmedicos WHERE tipoaccidente = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -114,6 +117,7 @@ public class PersistenciaTiposAccidentes implements PersistenciaTiposAccidentesI
     public BigInteger contadorAccidentes(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*) FROM accidentes WHERE tipoaccidente = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

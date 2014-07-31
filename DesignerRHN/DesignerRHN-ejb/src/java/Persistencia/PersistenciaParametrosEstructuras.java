@@ -48,6 +48,7 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
     @Override
     public BigInteger buscarEmpresaParametros(EntityManager em, String usuarioBD) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT p.estructura.organigrama.empresa.secuencia FROM ParametrosEstructuras p WHERE p.usuario.alias = :usuarioBD");
             query.setParameter("usuarioBD", usuarioBD);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -61,6 +62,7 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
     @Override
     public ParametrosEstructuras buscarParametro(EntityManager em, String usuarioBD) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(pe) FROM ParametrosEstructuras pe WHERE pe.usuario.alias = :usuarioBD");
             query.setParameter("usuarioBD", usuarioBD);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -102,6 +104,7 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
     @Override
     public Integer empleadosParametrizados(EntityManager em, BigInteger secProceso) {
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)\n"
                     + "FROM PARAMETROSESTRUCTURAS P \n"
                     + "WHERE P.PROCESO = ?\n"
@@ -122,6 +125,7 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
     @Override
     public Integer diasDiferenciaFechas(EntityManager em, String fechaInicial, String fechaFinal) {
         try {
+            em.clear();
             String sqlQuery = "SELECT DIAS360(to_date( ?, 'dd/MM/yyyy'), to_date( ?, 'dd/MM/yyyy')) Dias FROM dual";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, fechaInicial);

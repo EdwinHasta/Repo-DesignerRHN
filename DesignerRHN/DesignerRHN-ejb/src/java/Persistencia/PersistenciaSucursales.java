@@ -80,6 +80,7 @@ public class PersistenciaSucursales implements PersistenciaSucursalesInterface {
     @Override
     public Sucursales buscarSucursal(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(Sucursales.class, secuencia);
         } catch (Exception e) {
             System.out.println("Persistencia Sucursales " + e);
@@ -89,6 +90,7 @@ public class PersistenciaSucursales implements PersistenciaSucursalesInterface {
 
     @Override
     public List<Sucursales> consultarSucursales(EntityManager em) {
+        em.clear();
         Query query = em.createQuery("SELECT m FROM Sucursales m");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<Sucursales> lista = query.getResultList();
@@ -98,6 +100,7 @@ public class PersistenciaSucursales implements PersistenciaSucursalesInterface {
     public BigInteger contarVigenciasFormasPagosSucursal(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM vigenciasformaspagos WHERE sucursal = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

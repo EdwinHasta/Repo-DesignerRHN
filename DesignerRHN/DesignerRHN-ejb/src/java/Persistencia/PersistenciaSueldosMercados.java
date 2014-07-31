@@ -80,6 +80,7 @@ public class PersistenciaSueldosMercados implements PersistenciaSueldosMercadosI
     @Override
     public List<SueldosMercados> buscarSueldosMercados(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT sm FROM SueldosMercados sm ORDER BY sm.sueldomax ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<SueldosMercados> sueldosMercados = query.getResultList();
@@ -93,6 +94,7 @@ public class PersistenciaSueldosMercados implements PersistenciaSueldosMercadosI
     @Override
     public SueldosMercados buscarSueldosMercadosSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT sm FROM SueldosMercados sm WHERE sm.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -108,6 +110,7 @@ public class PersistenciaSueldosMercados implements PersistenciaSueldosMercadosI
     @Override
     public List<SueldosMercados> buscarSueldosMercadosPorSecuenciaCargo(EntityManager em, BigInteger secCargo) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT sm FROM SueldosMercados sm WHERE sm.cargo.secuencia=:secCargo");
             query.setParameter("secCargo", secCargo);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

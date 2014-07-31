@@ -242,7 +242,7 @@ public class Inforeportes implements Serializable {
         if (nombrereporte == null) {
             nombrereporte = "";
         }
-        return nombrereporte;
+        return nombrereporte.toUpperCase();
     }
 
     public void setNombrereporte(String nombrereporte) {
@@ -454,6 +454,9 @@ public class Inforeportes implements Serializable {
     }
 
     public Modulos getModulo() {
+        if(modulo== null){
+            modulo = new Modulos();
+        }
         return modulo;
     }
 

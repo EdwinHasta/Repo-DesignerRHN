@@ -75,6 +75,7 @@ public class PersistenciaTiposFamiliares implements PersistenciaTiposFamiliaresI
 
     public TiposFamiliares buscarTiposFamiliares(EntityManager em, BigInteger secuenciaTF) {
         try {
+            em.clear();
             return em.find(TiposFamiliares.class, secuenciaTF);
         } catch (Exception e) {
             return null;
@@ -82,6 +83,7 @@ public class PersistenciaTiposFamiliares implements PersistenciaTiposFamiliaresI
     }
 
     public List<TiposFamiliares> buscarTiposFamiliares(EntityManager em) {
+        em.clear();
         Query query = em.createQuery("SELECT te FROM TiposFamiliares te ORDER BY te.codigo ASC ");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<TiposFamiliares> listMotivosDemandas = query.getResultList();
@@ -92,6 +94,7 @@ public class PersistenciaTiposFamiliares implements PersistenciaTiposFamiliaresI
     public BigInteger contadorHvReferencias(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM  hvreferencias hvr WHERE parentesco =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

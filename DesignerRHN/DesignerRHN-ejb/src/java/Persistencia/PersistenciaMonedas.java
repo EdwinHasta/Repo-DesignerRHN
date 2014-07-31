@@ -85,6 +85,7 @@ public class PersistenciaMonedas implements PersistenciaMonedasInterface {
     public BigInteger contadorProyectos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = " SELECT COUNT(*) FROM proyectos WHERE tipomoneda = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -100,6 +101,7 @@ public class PersistenciaMonedas implements PersistenciaMonedasInterface {
     @Override
     public Monedas consultarMoneda(EntityManager em, BigInteger secuenciaTI) {
         try {
+            em.clear();
             return em.find(Monedas.class, secuenciaTI);
         } catch (Exception e) {
             return null;
@@ -108,6 +110,7 @@ public class PersistenciaMonedas implements PersistenciaMonedasInterface {
 
     @Override
     public List<Monedas> consultarMonedas(EntityManager em) {
+        em.clear();
         Query query = em.createQuery("SELECT m FROM Monedas m ORDER BY m.codigo ASC ");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<Monedas> listMotivosDemandas = query.getResultList();

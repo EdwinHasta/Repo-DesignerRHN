@@ -81,6 +81,7 @@ public class PersistenciaDetallesFormasDtos implements PersistenciaDetallesForma
     @Override
     public List<DetallesFormasDtos> detallesFormasDescuentos(EntityManager em,BigInteger formaDto) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT dfd FROM DetallesFormasDtos dfd WHERE dfd.formadto.secuencia = :formaDto ORDER BY 2");
             query.setParameter("formaDto", formaDto);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

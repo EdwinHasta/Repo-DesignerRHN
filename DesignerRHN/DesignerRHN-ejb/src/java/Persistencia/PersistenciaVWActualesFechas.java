@@ -16,6 +16,7 @@ public class PersistenciaVWActualesFechas implements PersistenciaVWActualesFecha
     @Override
     public Date actualFechaHasta(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vw.fechaHastaCausado FROM VWActualesFechas vw");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Date actualFechaHasta = (Date) query.getSingleResult();

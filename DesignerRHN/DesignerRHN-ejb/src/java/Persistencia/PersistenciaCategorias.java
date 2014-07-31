@@ -84,6 +84,7 @@ public class PersistenciaCategorias implements PersistenciaCategoriasInterface{
 
     @Override
     public List<Categorias> buscarCategorias(EntityManager em) {
+        em.clear();
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Categorias.class));
         return em.createQuery(cq).getResultList();
@@ -92,6 +93,7 @@ public class PersistenciaCategorias implements PersistenciaCategoriasInterface{
     @Override
     public Categorias buscarCategoriaSecuencia(EntityManager em,BigInteger secCategoria) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("SELECT c FROM Categorias c WHERE c.secuencia=:secuencia");
             query.setParameter("secuencia", secCategoria);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

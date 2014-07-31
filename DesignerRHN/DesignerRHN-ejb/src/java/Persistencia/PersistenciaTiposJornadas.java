@@ -79,6 +79,7 @@ public class PersistenciaTiposJornadas implements PersistenciaTiposJornadasInter
     @Override
     public TiposJornadas buscarTipoJornada(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(TiposJornadas.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error PersistenciaTiposJornadas buscarTipoJornada : " + e.toString());
@@ -89,6 +90,7 @@ public class PersistenciaTiposJornadas implements PersistenciaTiposJornadasInter
     @Override
     public List<TiposJornadas> buscarTiposJornadas(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT tj FROM TiposJornadas tj ORDER BY tj.codigo DESC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposJornadas> tiposJornadas = query.getResultList();

@@ -82,6 +82,7 @@ public class PersistenciaVigenciasMonedasBases implements PersistenciaVigenciasM
     @Override
     public List<VigenciasMonedasBases> buscarVigenciasMonedasBases(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT c FROM VigenciasMonedasBases c");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasMonedasBases> monedasBases = query.getResultList();
@@ -95,6 +96,7 @@ public class PersistenciaVigenciasMonedasBases implements PersistenciaVigenciasM
     @Override
     public VigenciasMonedasBases buscarVigenciaMonedaBaseSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT c FROM VigenciasMonedasBases c WHERE c.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -110,6 +112,7 @@ public class PersistenciaVigenciasMonedasBases implements PersistenciaVigenciasM
     @Override
     public List<VigenciasMonedasBases> buscarVigenciasMonedasBasesPorSecuenciaEmpresa(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT c FROM VigenciasMonedasBases c WHERE c.empresa.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

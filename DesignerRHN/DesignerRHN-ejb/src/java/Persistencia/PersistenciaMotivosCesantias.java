@@ -78,6 +78,7 @@ public class PersistenciaMotivosCesantias implements PersistenciaMotivosCesantia
 
     public MotivosCesantias buscarMotivoCensantia(EntityManager em, BigInteger secuenciaME) {
         try {
+            em.clear();
             return em.find(MotivosCesantias.class, secuenciaME);
         } catch (Exception e) {
             return null;
@@ -85,6 +86,7 @@ public class PersistenciaMotivosCesantias implements PersistenciaMotivosCesantia
     }
 
     public List<MotivosCesantias> buscarMotivosCesantias(EntityManager em) {
+        em.clear();
         Query query = em.createQuery("SELECT m FROM MotivosCesantias m ORDER BY m.codigo ASC");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<MotivosCesantias> listaMotivosEmbargos = query.getResultList();
@@ -94,6 +96,7 @@ public class PersistenciaMotivosCesantias implements PersistenciaMotivosCesantia
     public BigInteger contadorNovedadesSistema(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM novedadessistema WHERE motivocesantia =  ? ";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

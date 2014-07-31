@@ -28,6 +28,7 @@ public class PersistenciaFamiliares implements PersistenciaFamiliaresInterface{
     @Override
     public List<Familiares> familiaresPersona(EntityManager em,BigInteger secuenciaPersona) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(f) FROM Familiares f WHERE f.persona.secuencia = :secuenciaPersona");
             query.setParameter("secuenciaPersona", secuenciaPersona);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

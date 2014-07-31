@@ -26,7 +26,7 @@ public class PersistenciaObjetosDB implements PersistenciaObjetosDBInterface{
     @Override
     public ObjetosDB obtenerObjetoTabla(EntityManager em, String nombreTabla) {
         try {
-            System.out.println("em: " + em);
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(obj) FROM ObjetosDB obj WHERE obj.nombre = :nombreTabla");
             query.setParameter("nombreTabla", nombreTabla);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

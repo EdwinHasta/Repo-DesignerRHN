@@ -84,6 +84,7 @@ public class PersistenciaMotivosCambiosCargos implements PersistenciaMotivosCamb
     @Override
     public MotivosCambiosCargos buscarMotivoCambioCargo(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(MotivosCambiosCargos.class, secuencia);
         } catch (Exception e) {
             return null;
@@ -92,6 +93,7 @@ public class PersistenciaMotivosCambiosCargos implements PersistenciaMotivosCamb
 
     @Override
     public List<MotivosCambiosCargos> buscarMotivosCambiosCargos(EntityManager em) {
+        em.clear();
         Query query = em.createQuery("SELECT m FROM MotivosCambiosCargos m");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<MotivosCambiosCargos> lista = query.getResultList();
@@ -102,6 +104,7 @@ public class PersistenciaMotivosCambiosCargos implements PersistenciaMotivosCamb
     public BigInteger verificarBorradoVigenciasCargos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             Query query = em.createQuery("SELECT count(vc) FROM VigenciasCargos vc WHERE vc.motivocambiocargo.secuencia =:secMotivoCambioCargo");
             query.setParameter("secMotivoCambioCargo", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

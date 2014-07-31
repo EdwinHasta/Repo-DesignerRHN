@@ -81,6 +81,7 @@ public class PersistenciaTSGruposTiposEntidades implements PersistenciaTSGruposT
     @Override
     public List<TSGruposTiposEntidades> buscarTSGruposTiposEntidades(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM TSGruposTiposEntidades t ORDER BY t.secuencia ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TSGruposTiposEntidades> tSGruposTiposEntidades = (List<TSGruposTiposEntidades>) query.getResultList();
@@ -94,6 +95,7 @@ public class PersistenciaTSGruposTiposEntidades implements PersistenciaTSGruposT
     @Override
     public TSGruposTiposEntidades buscarTSGrupoTipoEntidadSecuencia(EntityManager em, BigInteger secTSGrupo) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM TSGruposTiposEntidades t WHERE t.secuencia = :secTSGrupo");
             query.setParameter("secTSGrupo", secTSGrupo);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -109,6 +111,7 @@ public class PersistenciaTSGruposTiposEntidades implements PersistenciaTSGruposT
     @Override
     public List<TSGruposTiposEntidades> buscarTSGruposTiposEntidadesPorSecuenciaTipoSueldo(EntityManager em, BigInteger secTipoSueldo) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM TSGruposTiposEntidades t WHERE t.tiposueldo.secuencia =:secTipoSueldo");
             query.setParameter("secTipoSueldo", secTipoSueldo);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

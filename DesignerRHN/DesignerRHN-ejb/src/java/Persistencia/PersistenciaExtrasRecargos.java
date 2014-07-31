@@ -83,6 +83,7 @@ public class PersistenciaExtrasRecargos implements PersistenciaExtrasRecargosInt
     @Override
     public ExtrasRecargos buscarExtraRecargo(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(ExtrasRecargos.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error PersistenciaExtrasRecargos buscarExtraRecargo : " + e.toString());
@@ -93,6 +94,7 @@ public class PersistenciaExtrasRecargos implements PersistenciaExtrasRecargosInt
     @Override
     public List<ExtrasRecargos> buscarExtrasRecargos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT er FROM ExtrasRecargos er ORDER BY er.codigo ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<ExtrasRecargos> extrasRecargos = query.getResultList();

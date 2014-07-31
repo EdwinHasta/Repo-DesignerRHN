@@ -82,6 +82,7 @@ public class PersistenciaGruposTiposCC implements PersistenciaGruposTiposCCInter
     @Override
     public GruposTiposCC buscarGruposTiposCCPorSecuencia(EntityManager em,BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(GruposTiposCC.class, secuencia);
         } catch (Exception e) {
             System.err.println("ERROR PersistenciaGruposTiposCC buscarGruposTiposCC ERROR " + e);
@@ -92,6 +93,7 @@ public class PersistenciaGruposTiposCC implements PersistenciaGruposTiposCCInter
     @Override
     public List<GruposTiposCC> buscarGruposTiposCC(EntityManager em) {
         try {
+            em.clear();
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(GruposTiposCC.class));
             return em.createQuery(cq).getResultList();

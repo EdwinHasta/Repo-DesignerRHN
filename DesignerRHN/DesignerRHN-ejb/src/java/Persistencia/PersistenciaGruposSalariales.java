@@ -82,6 +82,7 @@ public class PersistenciaGruposSalariales implements PersistenciaGruposSalariale
     @Override
     public List<GruposSalariales> buscarGruposSalariales(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT gs FROM GruposSalariales gs ORDER BY gs.secuencia");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<GruposSalariales> gruposSalariales = query.getResultList();
@@ -96,6 +97,7 @@ public class PersistenciaGruposSalariales implements PersistenciaGruposSalariale
     public GruposSalariales buscarGrupoSalarialSecuencia(EntityManager em,BigInteger secuencia) {
 
         try {
+            em.clear();
             Query query = em.createQuery("SELECT gs FROM GruposSalariales gs WHERE gs.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -111,6 +113,7 @@ public class PersistenciaGruposSalariales implements PersistenciaGruposSalariale
         @Override
     public List<GruposSalariales> buscarGruposSalarialesParaEscalafonSalarial(EntityManager em,BigInteger secEscalafon) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT gs FROM GruposSalariales gs WHERE gs.escalafonsalarial.secuencia=:secEscalafon");
             query.setParameter("secEscalafon", secEscalafon);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

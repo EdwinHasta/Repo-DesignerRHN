@@ -27,6 +27,7 @@ public class PersistenciaVWActualesAfiliacionesPension implements PersistenciaVW
     public VWActualesAfiliacionesPension buscarAfiliacionPension(EntityManager em, BigInteger secuencia) {
 
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vw FROM VWActualesAfiliacionesPension vw WHERE vw.empleado.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

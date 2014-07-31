@@ -79,6 +79,7 @@ public class PersistenciaTiposReemplazos implements PersistenciaTiposReemplazosI
     @Override
     public TiposReemplazos buscarTipoReemplazo(EntityManager em, BigInteger secuenciaTR) {
         try {
+            em.clear();
             return em.find(TiposReemplazos.class, secuenciaTR);
         } catch (Exception e) {
             return null;
@@ -88,6 +89,7 @@ public class PersistenciaTiposReemplazos implements PersistenciaTiposReemplazosI
     @Override
     public List<TiposReemplazos> buscarTiposReemplazos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT tR FROM TiposReemplazos tR ORDER BY tr.codigo");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposReemplazos> tiposReemplazos = query.getResultList();
@@ -101,6 +103,7 @@ public class PersistenciaTiposReemplazos implements PersistenciaTiposReemplazosI
     public BigInteger contadorEncargaturas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = " SELECT COUNT(*) FROM encargaturas WHERE tiporeemplazo = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -117,6 +120,7 @@ public class PersistenciaTiposReemplazos implements PersistenciaTiposReemplazosI
     public BigInteger contadorProgramacionesTiempos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*) FROM programacionestiempos  WHERE tiporeemplazo = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -133,6 +137,7 @@ public class PersistenciaTiposReemplazos implements PersistenciaTiposReemplazosI
     public BigInteger contadorReemplazos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*) FROM reemplazos WHERE tiporeemplazo = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

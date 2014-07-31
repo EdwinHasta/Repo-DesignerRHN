@@ -82,6 +82,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
 
     @Override
     public List<Conceptos> buscarConceptos(EntityManager em) {
+        em.clear();
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Conceptos.class));
         return em.createQuery(cq).getResultList();
@@ -90,6 +91,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     @Override
     public boolean verificarCodigoConcepto(EntityManager em, BigInteger codigoConcepto) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(c) FROM Conceptos c WHERE c.codigo = :codigo");
             query.setParameter("codigo", codigoConcepto);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -104,6 +106,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     @Override
     public Conceptos validarCodigoConcepto(EntityManager em, BigInteger codigoConcepto, BigInteger secEmpresa) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.codigo = :codigo AND c.empresa.secuencia = :secEmpresa");
             query.setParameter("codigo", codigoConcepto);
             query.setParameter("secEmpresa", secEmpresa);
@@ -118,6 +121,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     @Override
     public List<Conceptos> conceptosPorEmpresa(EntityManager em, BigInteger secEmpresa) {
         try {
+            em.clear();
            // Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.empresa.secuencia  = NVL(:secEmpresa, c.empresa.secuencia) ORDER BY c.codigo ASC");
                         Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.empresa.secuencia  = :secEmpresa ORDER BY c.codigo ASC");
 
@@ -133,6 +137,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     @Override
     public List<Conceptos> conceptosEmpresaActivos_Inactivos(EntityManager em, BigInteger secEmpresa, String estado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.empresa.secuencia = :secEmpresa AND c.activo = :estado ORDER BY c.codigo ASC");
             query.setParameter("secEmpresa", secEmpresa);
             query.setParameter("estado", estado);
@@ -147,6 +152,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     @Override
     public List<Conceptos> conceptosEmpresaSinPasivos(EntityManager em, BigInteger secEmpresa) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.empresa.secuencia = :secEmpresa AND c.naturaleza <> 'L' ORDER BY c.codigo ASC");
             query.setParameter("secEmpresa", secEmpresa);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -160,6 +166,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     @Override
     public void clonarConcepto(EntityManager em, BigInteger secConceptoOrigen, BigInteger codigoConceptoNuevo, String descripcionConceptoNuevo) {
         try {
+            em.clear();
             String sqlQuery = "call CONCEPTOS_PKG.CLONARCONCEPTO(?, ?, ?)";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secConceptoOrigen);
@@ -174,6 +181,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     @Override
     public Conceptos conceptosPorSecuencia(EntityManager em, BigInteger secConcepto) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.secuencia=:secConcepto");
             query.setParameter("secConcepto", secConcepto);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -188,6 +196,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     @Override
     public boolean eliminarConcepto(EntityManager em, BigInteger secuenciaConcepto) {
         try {
+            em.clear();
             String sqlQuery = "call conceptos_pkg.Eliminarconcepto(:secuencia)";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter("secuencia", secuenciaConcepto);
@@ -202,6 +211,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     @Override
     public String conceptoParaFormulaContrato(EntityManager em, BigInteger secuencia, Date fechaFin) {
         try {
+            em.clear();
             String sqlQuery = "select substr(c.codigo||'-'||c.descripcion,1,200)\n"
                     + "from formulasconceptos fc, conceptos c\n"
                     + "where fc.formula = ? \n"
@@ -234,6 +244,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
 
     public List<Conceptos> conceptoEmpresa(EntityManager em) {
         try {
+            em.clear();
             String sqlQuery = "SELECT  C.*,\n"
                     + "decode(c.naturaleza,'P','PAGO','D','DESCUENTO','L','PASIVO','G','GASTO','N','NETO') NATURALEZA\n"
                     + "FROM CONCEPTOS C, EMPRESAS S\n"
@@ -250,6 +261,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
 
     public List<Conceptos> novedadConceptos(EntityManager em) {
         try {
+            em.clear();
             String sqlQuery = "SELECT  V.* FROM Conceptos V WHERE EXISTS (select 'x' from empresas e where v.empresa=e.secuencia) AND NVL(V.ACTIVO,'S')='S'";
             Query query = em.createNativeQuery(sqlQuery, Conceptos.class);
             List<Conceptos> listaConceptos = query.getResultList();

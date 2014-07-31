@@ -81,6 +81,7 @@ public class PersistenciaTSFormulasConceptos implements PersistenciaTSFormulasCo
     @Override
     public List<TSFormulasConceptos> buscarTSFormulasConceptos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM TSFormulasConceptos t ORDER BY t.secuencia ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TSFormulasConceptos> tSFormulasConceptos = (List<TSFormulasConceptos>) query.getResultList();
@@ -94,6 +95,7 @@ public class PersistenciaTSFormulasConceptos implements PersistenciaTSFormulasCo
     @Override
     public TSFormulasConceptos buscarTSFormulaConceptoSecuencia(EntityManager em, BigInteger secTSFormula) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM TSFormulasConceptos t WHERE t.secuencia = :secTSFormula");
             query.setParameter("secTSFormula", secTSFormula);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -109,6 +111,7 @@ public class PersistenciaTSFormulasConceptos implements PersistenciaTSFormulasCo
     @Override
     public List<TSFormulasConceptos> buscarTSFormulasConceptosPorSecuenciaTipoSueldo(EntityManager em, BigInteger secTipoSueldo) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM TSFormulasConceptos t WHERE t.tiposueldo.secuencia =:secTipoSueldo");
             query.setParameter("secTipoSueldo", secTipoSueldo);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

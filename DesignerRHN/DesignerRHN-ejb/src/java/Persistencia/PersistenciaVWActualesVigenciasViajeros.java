@@ -26,6 +26,7 @@ public class PersistenciaVWActualesVigenciasViajeros implements PersistenciaVWAc
 */
     public VWActualesVigenciasViajeros buscarTipoViajero(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vw FROM VWActualesVigenciasViajeros vw WHERE vw.empleado.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

@@ -31,6 +31,7 @@ public class PersistenciaTarifaDeseo implements PersistenciaTarifaDeseoInterface
     @Override
     public List<TarifaDeseo> retenciones(EntityManager em, Date fechaFinal) {
         try {
+            em.clear();
             String sqlQuery = ("select rownum id,rm.retencion retencion,rm.secuencia secuenciaretencion, vrm.fechavigencia vigencia,\n"
                     + "to_char(\n"
                     + "retenciones_pkg.uvt(sysdate)*decode(rm.mensualizado,0,0,\n"

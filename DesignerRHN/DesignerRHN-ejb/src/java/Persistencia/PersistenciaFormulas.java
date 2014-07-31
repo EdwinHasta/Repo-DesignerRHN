@@ -83,6 +83,7 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
     @Override
     public Formulas buscarFormula(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(Formulas.class, secuencia);
         } catch (Exception e) {
             return null;
@@ -91,6 +92,7 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
 
     @Override
     public List<Formulas> buscarFormulas(EntityManager em) {
+        em.clear();
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Formulas.class));
         return em.createQuery(cq).getResultList();
@@ -99,6 +101,7 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
     @Override
     public List<Formulas> buscarFormulasCarge(EntityManager em) {
         try {
+           em.clear();
             Query query = em.createQuery("SELECT f FROM Formulas f WHERE f.secuencia IN (SELECT fn.formula.secuencia FROM FormulasNovedades fn WHERE fn.cargue = 'S')");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Formulas> listaFormulas = query.getResultList();
@@ -111,6 +114,7 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
     @Override
     public Formulas buscarFormulaCargeInicial(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT f FROM Formulas f WHERE f.secuencia IN (SELECT fn.formula.secuencia FROM FormulasNovedades fn WHERE fn.cargue = 'S' AND fn.formula.nombrecorto = 'LIQNOV')");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Formulas formulaInicial = (Formulas) query.getSingleResult();
@@ -123,6 +127,7 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
     @Override
     public List<Formulas> lovFormulas(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT f FROM Formulas f ORDER BY f.nombrelargo ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Formulas> listaFormulas = query.getResultList();

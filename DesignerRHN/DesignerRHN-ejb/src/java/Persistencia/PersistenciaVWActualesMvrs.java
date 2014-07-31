@@ -21,6 +21,7 @@ public class PersistenciaVWActualesMvrs implements PersistenciaVWActualesMvrsInt
     @Override
     public String buscarActualMVR(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
             Query query = em.createNativeQuery("SELECT sum(VALOR) FROM VWACTUALESMvrs a WHERE a.empleado = ?");
             query.setParameter(1, secuencia);

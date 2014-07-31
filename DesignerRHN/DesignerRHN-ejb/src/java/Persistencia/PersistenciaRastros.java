@@ -29,6 +29,7 @@ public class PersistenciaRastros implements PersistenciaRastrosInterface {
     @Override
     public List<Rastros> rastrosTabla(EntityManager em, BigInteger secRegistro, String nombreTabla) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT r FROM Rastros r WHERE r.tabla = :nombreTabla AND r.secuenciatabla = :secRegistro AND r.manipulacion IN ('I','U') ORDER BY r.fecharastro DESC");
             query.setParameter("nombreTabla", nombreTabla.toUpperCase());
             query.setParameter("secRegistro", secRegistro.toString());
@@ -45,6 +46,7 @@ public class PersistenciaRastros implements PersistenciaRastrosInterface {
     @Override
     public List<Rastros> rastrosTablaHistoricos(EntityManager em, String nombreTabla) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT r FROM Rastros r WHERE r.tabla = :nombreTabla AND r.manipulacion IN ('I','U') ORDER BY r.fecharastro DESC");
             query.setParameter("nombreTabla", nombreTabla.toUpperCase());
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -60,6 +62,7 @@ public class PersistenciaRastros implements PersistenciaRastrosInterface {
     @Override
     public List<Rastros> rastrosTablaHistoricosEliminados(EntityManager em, String nombreTabla) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT r FROM Rastros r WHERE r.tabla = :nombreTabla AND r.manipulacion = 'D' ORDER BY r.fecharastro DESC");
             query.setParameter("nombreTabla", nombreTabla.toUpperCase());
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -75,6 +78,7 @@ public class PersistenciaRastros implements PersistenciaRastrosInterface {
     @Override
     public List<Rastros> rastrosTablaHistoricosEliminadosEmpleados(EntityManager em, String nombreTabla) {
         try {
+            em.clear();
                 Query query = em.createQuery("SELECT r FROM Rastros r WHERE r.tabla = :nombreTabla AND r.manipulacion = 'D' AND EXISTS (SELECT r FROM RastrosValores rv where rv.nombrecolumna = 'EMPLEADO'AND EXISTS (SELECT t FROM "
                     + nombreTabla + " t WHERE rv.valorprevio = t.empleado.secuencia)) ORDER BY r.fecharastro DESC");
             query.setParameter("nombreTabla", nombreTabla.toUpperCase());
@@ -91,6 +95,7 @@ public class PersistenciaRastros implements PersistenciaRastrosInterface {
     @Override
     public List<Rastros> rastrosTablaFecha(EntityManager em, Date fechaRegistro, String nombreTabla) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT r FROM Rastros r WHERE r.tabla = :nombreTabla AND r.fecharastro = :fechaRegistro AND r.manipulacion IN ('I','U') ORDER BY r.fecharastro DESC");
             query.setParameter("nombreTabla", nombreTabla.toUpperCase());
             query.setParameter("fechaRegistro", fechaRegistro);
@@ -107,6 +112,7 @@ public class PersistenciaRastros implements PersistenciaRastrosInterface {
     @Override
     public boolean verificarRastroRegistroTabla(EntityManager em, BigInteger secRegistro, String nombreTabla) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(r) FROM Rastros r WHERE r.tabla = :nombreTabla AND r.manipulacion IN ('I','U') AND r.secuenciatabla = :secRegistro");
             query.setParameter("nombreTabla", nombreTabla.toUpperCase());
             query.setParameter("secRegistro", secRegistro.toString());
@@ -122,6 +128,7 @@ public class PersistenciaRastros implements PersistenciaRastrosInterface {
     @Override
     public boolean verificarRastroHistoricoTabla(EntityManager em, String nombreTabla) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(r) FROM Rastros r WHERE r.tabla = :nombreTabla AND r.manipulacion IN ('I','U')");
             query.setParameter("nombreTabla", nombreTabla);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -136,6 +143,7 @@ public class PersistenciaRastros implements PersistenciaRastrosInterface {
     @Override
     public boolean verificarEmpleadoTabla(EntityManager em, String nombreTabla) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(r) FROM Rastros r WHERE r.tabla = :nombreTabla AND r.manipulacion = 'D' AND EXISTS (SELECT r FROM RastrosValores rv where rv.nombrecolumna = 'EMPLEADO'AND EXISTS (SELECT t FROM "
                     + nombreTabla + " t WHERE rv.valorprevio = t.empleado.secuencia)) ORDER BY r.fecharastro DESC");
             query.setParameter("nombreTabla", nombreTabla.toUpperCase());

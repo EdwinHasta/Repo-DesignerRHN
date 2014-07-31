@@ -83,6 +83,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     @Override
     public List<Empresas> buscarEmpresas(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT e FROM Empresas e");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Empresas> empresas = query.getResultList();
@@ -95,7 +96,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
 
     public List<Empresas> buscarEmpresasLista(EntityManager em, BigInteger secuencia) {
         try {
-
+            em.clear();
             //Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.empresa.secuencia  = NVL(:secEmpresa, c.empresa.secuencia) ORDER BY c.codigo ASC");
             //Query query = em.createQuery("SELECT e FROM Empresas e WHERE e.secuencia  NVL(:secuencia, e)");
             //query.setParameter("secuencia", secuencia);
@@ -115,6 +116,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     public Empresas buscarEmpresasSecuencia(EntityManager em, BigInteger secuencia) {
         Empresas empresas;
         try {
+            em.clear();
             Query query = em.createQuery("SELECT e FROM Empresas e WHERE e.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -130,6 +132,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     @Override
     public String estadoConsultaDatos(EntityManager em, BigInteger secuenciaEmpresa) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT e.barraconsultadatos FROM Empresas e WHERE e.secuencia = :secuenciaEmpresa");
             query.setParameter("secuenciaEmpresa", secuenciaEmpresa);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -147,6 +150,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     @Override
     public String nombreEmpresa(EntityManager entity) {
         try {
+            entity.clear();
             Query query = entity.createQuery("SELECT COUNT(e) FROM Empresas e WHERE e.codigo > 0");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
@@ -169,6 +173,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     @Override
     public Short codigoEmpresa(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(e) FROM Empresas e");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
@@ -189,6 +194,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     @Override
     public List<Empresas> consultarEmpresas(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT e FROM Empresas e");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Empresas> empresas = query.getResultList();
@@ -202,6 +208,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     @Override
     public String consultarPrimeraEmpresa(EntityManager em) {
         try {
+            em.clear();
             String retorno = "";
             Query query = em.createNativeQuery("SELECT * FROM Empresas e WHERE ROWNUM=1", Empresas.class);
             Empresas empresa = (Empresas) query.getSingleResult();
@@ -228,6 +235,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     @Override
     public Empresas consultarPrimeraEmpresaSinPaquete(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createNativeQuery("SELECT * FROM Empresas e WHERE ROWNUM=1", Empresas.class);
             Empresas empresa = (Empresas) query.getSingleResult();
             return empresa;
@@ -240,6 +248,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     @Override
     public BigInteger calcularControlEmpleadosEmpresa(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             BigInteger contador = null;
             String sql = "SELECT COUNT(1) FROM vigenciastipostrabajadores vtt, tipostrabajadores tt, empleados e, vigenciascargos vc, estructuras est, organigramas org\n"
                     + "    WHERE tt.secuencia = vtt.tipotrabajador\n"
@@ -273,6 +282,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     @Override
     public BigInteger obtenerMaximoEmpleadosEmpresa(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             BigInteger contador = null;
             Query query = em.createQuery("SELECT e FROM Empresas e WHERE e.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);

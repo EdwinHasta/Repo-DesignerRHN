@@ -84,6 +84,7 @@ public class PersistenciaHistoriasformulas implements PersistenciaHistoriasformu
     @Override
     public Historiasformulas buscarHistoriaformula(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(Historiasformulas.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error en la PersistenciaHistoriasformulas  buscarHistoriaformula : " + e.toString());
@@ -94,6 +95,7 @@ public class PersistenciaHistoriasformulas implements PersistenciaHistoriasformu
     @Override
     public List<Historiasformulas> historiasFormulasParaFormulaSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query queryFinal = em.createQuery("SELECT hf FROM Historiasformulas hf WHERE hf.formula.secuencia=:secuencia");
             queryFinal.setParameter("secuencia", secuencia);
             queryFinal.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -108,6 +110,7 @@ public class PersistenciaHistoriasformulas implements PersistenciaHistoriasformu
     @Override
     public BigInteger obtenerSecuenciaHistoriaFormula(EntityManager em, BigInteger secFormula, String fecha) {
         try {
+            em.clear();
             String sqlQuery = "SELECT hf.secuencia\n"
                     + "FROM historiasformulas hf\n"
                     + "WHERE hf.formula = ?\n"

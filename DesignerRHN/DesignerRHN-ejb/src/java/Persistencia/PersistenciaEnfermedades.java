@@ -82,6 +82,7 @@ public class PersistenciaEnfermedades implements PersistenciaEnfermedadesInterfa
     @Override
     public Enfermedades buscarEnfermedad(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(Enfermedades.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error en la persistenciaEnfermedadesERROR : " + e);
@@ -92,6 +93,7 @@ public class PersistenciaEnfermedades implements PersistenciaEnfermedadesInterfa
     @Override
     public List<Enfermedades> buscarEnfermedades(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT e FROM Enfermedades e ORDER BY e.codigo DESC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Enfermedades> enfermedades = query.getResultList();
@@ -105,6 +107,7 @@ public class PersistenciaEnfermedades implements PersistenciaEnfermedadesInterfa
     public BigInteger contadorAusentimos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*) FROM ausentismos WHERE enfermedad = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -121,6 +124,7 @@ public class PersistenciaEnfermedades implements PersistenciaEnfermedadesInterfa
     public BigInteger contadorDetallesLicencias(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*) FROM detalleslicencias WHERE enfermedad = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -137,6 +141,7 @@ public class PersistenciaEnfermedades implements PersistenciaEnfermedadesInterfa
     public BigInteger contadorEnfermedadesPadecidas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*) FROM enfermedadespadecidas WHERE enfermedad= ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -153,6 +158,7 @@ public class PersistenciaEnfermedades implements PersistenciaEnfermedadesInterfa
     public BigInteger contadorSoausentismos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*) FROM soausentismos e  WHERE enfermedad = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -169,6 +175,7 @@ public class PersistenciaEnfermedades implements PersistenciaEnfermedadesInterfa
     public BigInteger contadorSorevisionessSistemas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*) FROM sorevisionessistemas e WHERE enfermedadactual = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

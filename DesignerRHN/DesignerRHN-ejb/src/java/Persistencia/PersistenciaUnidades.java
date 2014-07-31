@@ -81,14 +81,9 @@ public class PersistenciaUnidades implements PersistenciaUnidadesInterface {
     public List<Unidades> consultarUnidades(EntityManager em) {
         try {
             em.clear();
-            System.out.println("1");
             Query query = em.createQuery("SELECT c FROM Unidades c ORDER BY c.codigo ASC");
-            System.out.println("2");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
-            System.out.println("3");
             List<Unidades> listaUnidades = query.getResultList();
-            System.out.println("4");
-            System.out.println("LIsUNI" + listaUnidades);
             return listaUnidades;
         } catch (Exception e) {
             System.out.println("Error consultarUnidades PersistenciaUnidades : " + e.toString());

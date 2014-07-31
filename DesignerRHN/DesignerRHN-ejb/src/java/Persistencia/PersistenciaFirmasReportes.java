@@ -29,14 +29,6 @@ public class PersistenciaFirmasReportes implements PersistenciaFirmasReportesInt
      private EntityManager em;*/
     public void crear(EntityManager em, FirmasReportes tiposCursos) {
         try {
-            System.out.println("PERSISTENCIA CREAR------------------------");
-            System.out.println("CODIGO : " + tiposCursos.getCodigo());
-            System.out.println("NOMBRE: " + tiposCursos.getDescripcion());
-            System.out.println("EMPRESA: " + tiposCursos.getEmpresa().getNombre());
-            System.out.println("SUBTITULO : " + tiposCursos.getSubtitulofirma());
-            System.out.println("PERSONA : " + tiposCursos.getPersonaFirma().getNombre());
-            System.out.println("CARGO : " + tiposCursos.getCargo().getNombre());
-            System.out.println("--------------CREAR------------------------");
             em.clear();
             EntityTransaction tx = em.getTransaction();
             try {
@@ -90,6 +82,7 @@ public class PersistenciaFirmasReportes implements PersistenciaFirmasReportesInt
 
     public List<FirmasReportes> consultarFirmasReportes(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT g FROM FirmasReportes g ORDER BY g.codigo ASC ");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List< FirmasReportes> listMotivosDemandas = query.getResultList();
@@ -103,6 +96,7 @@ public class PersistenciaFirmasReportes implements PersistenciaFirmasReportesInt
 
     public FirmasReportes consultarFirmaReporte(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT te FROM FirmasReportes te WHERE te.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

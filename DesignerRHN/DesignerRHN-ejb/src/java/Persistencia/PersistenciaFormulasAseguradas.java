@@ -78,6 +78,7 @@ public class PersistenciaFormulasAseguradas implements PersistenciaFormulasAsegu
 
     public List<FormulasAseguradas> consultarFormulasAseguradas(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT te FROM FormulasAseguradas te");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<FormulasAseguradas> formulasAseguradas = query.getResultList();
@@ -90,6 +91,7 @@ public class PersistenciaFormulasAseguradas implements PersistenciaFormulasAsegu
 
     public FormulasAseguradas consultarFormulaAsegurada(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT te FROM FormulasAseguradas te WHERE te.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

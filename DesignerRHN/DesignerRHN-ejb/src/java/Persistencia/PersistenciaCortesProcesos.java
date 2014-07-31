@@ -83,11 +83,13 @@ public class PersistenciaCortesProcesos implements PersistenciaCortesProcesosInt
 
     @Override
     public CortesProcesos buscarCorteProcesoSecuencia(EntityManager em, BigInteger secuencia) {
+        em.clear();
         return em.find(CortesProcesos.class, secuencia);
     }
 
     @Override
     public List<CortesProcesos> buscarCortesProcesos(EntityManager em) {
+        em.clear();
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(CortesProcesos.class));
         return em.createQuery(cq).getResultList();
@@ -96,6 +98,7 @@ public class PersistenciaCortesProcesos implements PersistenciaCortesProcesosInt
     @Override
     public List<CortesProcesos> cortesProcesosComprobante(EntityManager em, BigInteger secuenciaComprobante) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT cp FROM CortesProcesos cp WHERE cp.comprobante.secuencia = :secuenciaComprobante");
             query.setParameter("secuenciaComprobante", secuenciaComprobante);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -110,6 +113,7 @@ public class PersistenciaCortesProcesos implements PersistenciaCortesProcesosInt
     @Override
     public Integer contarLiquidacionesCerradas(EntityManager em, BigInteger secProceso, String fechaDesde, String fechaHasta) {
         try {
+            em.clear();
             String sqlQuery = "SELECT nvl(COUNT(CP.SECUENCIA),0)\n"
                     + "       FROM CORTESPROCESOS CP, empleados e, comprobantes co\n"
                     + "       WHERE e.secuencia=cp.empleado\n"
@@ -153,6 +157,7 @@ public class PersistenciaCortesProcesos implements PersistenciaCortesProcesosInt
     @Override
     public CortesProcesos buscarComprobante(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
+            em.clear();
             Query query = em.createNativeQuery("SELECT cp.* from cortesprocesos cp, procesos p\n"
                     + "where cp.empleado=?\n"
                     + "and cp.proceso=p.secuencia\n"

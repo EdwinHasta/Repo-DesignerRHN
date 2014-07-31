@@ -31,9 +31,6 @@ public class PersistenciaIdiomasPersonas implements PersistenciaIdiomasPersonasI
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
-            System.out.println("idiomasPersonas Persona : "+idiomasPersonas.getPersona().getSecuencia());
-            System.out.println("idiomasPersonas Idioma : "+idiomasPersonas.getIdioma().getSecuencia());
-            System.out.println("idiomasPersonas Secuencia : "+idiomasPersonas.getSecuencia());
             tx.begin();
             em.persist(idiomasPersonas);
             tx.commit();
@@ -84,6 +81,7 @@ public class PersistenciaIdiomasPersonas implements PersistenciaIdiomasPersonasI
     @Override
     public List<IdiomasPersonas> idiomasPersona(EntityManager em, BigInteger secuenciaPersona) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(ip) FROM IdiomasPersonas ip WHERE ip.persona.secuencia = :secuenciaPersona");
             query.setParameter("secuenciaPersona", secuenciaPersona);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -105,6 +103,7 @@ public class PersistenciaIdiomasPersonas implements PersistenciaIdiomasPersonasI
     @Override
     public List<IdiomasPersonas> totalIdiomasPersonas(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT ip FROM IdiomasPersonas ip");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<IdiomasPersonas> resultado = (List<IdiomasPersonas>) query.getResultList();

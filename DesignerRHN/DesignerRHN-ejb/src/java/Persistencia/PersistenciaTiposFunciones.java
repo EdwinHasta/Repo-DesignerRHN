@@ -84,6 +84,7 @@ public class PersistenciaTiposFunciones implements PersistenciaTiposFuncionesInt
     @Override
     public List<TiposFunciones> tiposFunciones(EntityManager em, BigInteger secuenciaOperando, String tipo) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT DISTINCT tf FROM TiposFunciones tf, Operandos op WHERE tf.operando.secuencia =:secuenciaOperando and op.tipo=:tipo");
             query.setParameter("secuenciaOperando", secuenciaOperando);
             query.setParameter("tipo", tipo);

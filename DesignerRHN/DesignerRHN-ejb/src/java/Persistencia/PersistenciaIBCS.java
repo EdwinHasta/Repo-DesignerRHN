@@ -92,6 +92,7 @@ public class PersistenciaIBCS implements PersistenciaIBCSInterface {
     @Override
     public Ibcs buscarIbcs(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(Ibcs.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error en la persistenciaIBCS formas pagos ERROR : " + e);
@@ -102,6 +103,7 @@ public class PersistenciaIBCS implements PersistenciaIBCSInterface {
     @Override
     public List<Ibcs> buscarIbcsPorEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT ib FROM Ibcs ib WHERE ib.empleado.secuencia = :secuenciaEmpl ORDER BY ib.fechainicial DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

@@ -74,6 +74,7 @@ public class PersistenciaNiveles implements PersistenciaNivelesInterface {
 
     public Niveles consultarNivel(EntityManager em, BigInteger secNiveles) {
         try {
+            em.clear();
             return em.find(Niveles.class, secNiveles);
         } catch (Exception e) {
             return null;
@@ -82,6 +83,7 @@ public class PersistenciaNiveles implements PersistenciaNivelesInterface {
 
     @Override
     public List<Niveles> consultarNiveles(EntityManager em) {
+        em.clear();
         Query query = em.createQuery("SELECT te FROM Niveles te ORDER BY te.codigo ASC ");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<Niveles> listMotivosDemandas = query.getResultList();
@@ -92,6 +94,7 @@ public class PersistenciaNiveles implements PersistenciaNivelesInterface {
     public BigInteger contarEvalConvocatoriasNivel(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM evalconvocatorias WHERE nivel = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -107,6 +110,7 @@ public class PersistenciaNiveles implements PersistenciaNivelesInterface {
     public BigInteger contarPlantasNivel(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM plantas WHERE nivel = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -122,6 +126,7 @@ public class PersistenciaNiveles implements PersistenciaNivelesInterface {
     public BigInteger contarPlantasPersonalesNivel(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM plantaspersonales WHERE nivel = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

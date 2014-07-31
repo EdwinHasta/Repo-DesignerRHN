@@ -81,6 +81,7 @@ public class PersistenciaMotivosMvrs implements PersistenciaMotivosMvrsInterface
     @Override
     public Motivosmvrs buscarMotivosMvrs(EntityManager em, BigInteger secuenciaMM) {
         try {
+            em.clear();
             return em.find(Motivosmvrs.class, secuenciaMM);
         } catch (Exception e) {
             return null;
@@ -89,6 +90,7 @@ public class PersistenciaMotivosMvrs implements PersistenciaMotivosMvrsInterface
 
     //@Override
     public List<Motivosmvrs> buscarMotivosMvrs(EntityManager em) {
+        em.clear();
         Query query = em.createQuery("SELECT m FROM Motivosmvrs m");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<Motivosmvrs> lista = query.getResultList();

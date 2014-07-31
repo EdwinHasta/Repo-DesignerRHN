@@ -31,6 +31,7 @@ public class PersistenciaColumnasEscenarios implements PersistenciaColumnasEscen
     @Override
     public List<ColumnasEscenarios> buscarColumnasEscenarios(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createNativeQuery("SELECT * FROM ColumnasEscenarios cc WHERE ESCENARIO = (select SECUENCIA from escenarios where QVWNOMBRE= 'QVWEMPLEADOSCORTE') ORDER BY cc.nombrecolumna ASC", ColumnasEscenarios.class);
             List<ColumnasEscenarios> competenciascargos = query.getResultList();
             return competenciascargos;
@@ -43,6 +44,7 @@ public class PersistenciaColumnasEscenarios implements PersistenciaColumnasEscen
     @Override
     public List<ColumnasBusquedaAvanzada> buscarQVWEmpleadosCorteCodigoEmpleado(EntityManager em,List<Empleados> listaEmpleadosResultados, List<String> campos) {
         try {
+            em.clear();
             List<ColumnasBusquedaAvanzada> registro = new ArrayList<ColumnasBusquedaAvanzada>();
             for (int j = 0; j < listaEmpleadosResultados.size(); j++) {
                 ColumnasBusquedaAvanzada obj = new ColumnasBusquedaAvanzada();
@@ -102,6 +104,7 @@ public class PersistenciaColumnasEscenarios implements PersistenciaColumnasEscen
     @Override
     public List<ResultadoBusquedaAvanzada> buscarQVWEmpleadosCorteCodigoEmpleadoCodigo(EntityManager em,List<BigInteger> listaEmpleadosResultados, String campos) {
         try {
+            em.clear();
             String[] nnn = campos.split(",");
             String camposAux = "";
             int numColumna = 0;

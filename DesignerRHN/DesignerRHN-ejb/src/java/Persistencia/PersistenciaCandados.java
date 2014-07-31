@@ -29,6 +29,7 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
     @Override
     public boolean permisoLiquidar(EntityManager em, String usuarioBD) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(c) FROM Candados c WHERE c.usuario.alias = :usuarioBD");
             query.setParameter("usuarioBD", usuarioBD);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -62,6 +63,7 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
     @Override
     public String estadoLiquidacion(EntityManager em, String usuarioBD) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT c.estado FROM Candados c WHERE c.usuario.alias = :usuarioBD");
             query.setParameter("usuarioBD", usuarioBD);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -76,6 +78,7 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
     @Override
     public Integer progresoLiquidacion(EntityManager em, Integer totalEmpleadosALiquidar) {
         try {
+            em.clear();
             String sqlQuery = "select conteoliquidados(?) from dual";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, totalEmpleadosALiquidar);

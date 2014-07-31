@@ -78,6 +78,7 @@ public class PersistenciaReformasLaborales implements PersistenciaReformasLabora
 
     @Override
     public List<ReformasLaborales> buscarReformasLaborales(EntityManager em) {
+        em.clear();
         Query query = em.createQuery("SELECT e FROM ReformasLaborales e ORDER BY e.codigo ASC");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<ReformasLaborales> reformaLista = (List<ReformasLaborales>) query.getResultList();
@@ -87,20 +88,22 @@ public class PersistenciaReformasLaborales implements PersistenciaReformasLabora
     @Override
     public ReformasLaborales buscarReformaSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT e FROM ReformasLaborales e WHERE e.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             ReformasLaborales reformaL = (ReformasLaborales) query.getSingleResult();
             return reformaL;
         } catch (Exception e) {
+            ReformasLaborales reformaL = null;
+            return reformaL;
         }
-        ReformasLaborales reformaL = null;
-        return reformaL;
     }
 
     @Override
     public String obtenerCheckIntegralReformaLaboral(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             String sql = "SELECT REFORMASLABORALES_PKG.CheckIntegral(?) FROM dual";
             Query query = em.createNativeQuery(sql);
             query.setParameter(1, secuencia);

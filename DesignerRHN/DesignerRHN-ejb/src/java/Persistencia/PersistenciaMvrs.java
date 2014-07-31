@@ -90,6 +90,7 @@ public class PersistenciaMvrs implements PersistenciaMvrsInterface {
 
     @Override
     public List<Mvrs> buscarMvrs(EntityManager em) {
+        em.clear();
         List<Mvrs> mvrs = (List<Mvrs>) em.createNamedQuery("Mvrs.findAll").getResultList();
         return mvrs;
     }
@@ -98,6 +99,7 @@ public class PersistenciaMvrs implements PersistenciaMvrsInterface {
     public Mvrs buscarMvrSecuencia(EntityManager em, BigInteger secuencia) {
 
         try {
+            em.clear();
             Query query = em.createQuery("SELECT mvrs FROM Mvrs mvrs WHERE mvrs.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -112,6 +114,7 @@ public class PersistenciaMvrs implements PersistenciaMvrsInterface {
     @Override
     public List<Mvrs> buscarMvrsEmpleado(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT mvrs FROM Mvrs mvrs WHERE mvrs.empleado.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

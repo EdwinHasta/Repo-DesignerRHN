@@ -78,6 +78,7 @@ public class PersistenciaSectoresEvaluaciones implements PersistenciaSectoresEva
     @Override
     public List<SectoresEvaluaciones> consultarSectoresEvaluaciones(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT l FROM SectoresEvaluaciones  l ORDER BY l.codigo ASC ");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<SectoresEvaluaciones> listTiposViajeros = query.getResultList();
@@ -93,6 +94,7 @@ public class PersistenciaSectoresEvaluaciones implements PersistenciaSectoresEva
     public SectoresEvaluaciones consultarSectorEvaluacion(EntityManager em, BigInteger secuencia) {
 
         try {
+            em.clear();
             Query query = em.createQuery("SELECT mr FROM SectoresEvaluaciones mr WHERE mr.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

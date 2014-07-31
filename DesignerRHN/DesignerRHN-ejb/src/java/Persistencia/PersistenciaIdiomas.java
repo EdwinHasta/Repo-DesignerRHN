@@ -83,6 +83,7 @@ public class PersistenciaIdiomas implements PersistenciaIdiomasInterface {
 
     public Idiomas buscarIdioma(EntityManager em, BigInteger secuenciaI) {
         try {
+            em.clear();
             return em.find(Idiomas.class, secuenciaI);
         } catch (Exception e) {
             return null;
@@ -92,6 +93,7 @@ public class PersistenciaIdiomas implements PersistenciaIdiomasInterface {
     @Override
     public List<Idiomas> buscarIdiomas(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT i FROM Idiomas i");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Idiomas> idioma = (List<Idiomas>) query.getResultList();
@@ -105,6 +107,7 @@ public class PersistenciaIdiomas implements PersistenciaIdiomasInterface {
     public BigInteger contadorIdiomasPersonas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM idiomaspersonas WHERE idioma = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

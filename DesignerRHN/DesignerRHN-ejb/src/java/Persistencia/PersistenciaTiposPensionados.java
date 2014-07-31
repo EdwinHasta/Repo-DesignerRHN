@@ -80,6 +80,7 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
     @Override
     public List<TiposPensionados> consultarTiposPensionados(EntityManager em) {
         try {
+            em.clear();
             //List<TiposPensionados> tiposPensionadosLista = (List<TiposPensionados>) em.createNamedQuery("TiposPensionados.findAll").getResultList();
             //return tiposPensionadosLista;
             Query query = em.createQuery("SELECT t FROM  TiposPensionados t");
@@ -96,6 +97,7 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
     public TiposPensionados consultarTipoPensionado(EntityManager em, BigInteger secuencia) {
 
         try {
+            em.clear();
             Query query = em.createQuery("SELECT tp FROM TiposPensionados tp WHERE tp.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -112,6 +114,7 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
     public BigInteger contarPensionadosTipoPension(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM pensionados WHERE tipopensionado=?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

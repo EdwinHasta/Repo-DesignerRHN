@@ -80,6 +80,7 @@ public class PersistenciaActividades implements PersistenciaActividadesInterface
     @Override
     public List<Actividades> buscarActividades(EntityManager em) {
         try {
+            em.clear();
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Actividades.class));
             return em.createQuery(cq).getResultList();
@@ -92,6 +93,7 @@ public class PersistenciaActividades implements PersistenciaActividadesInterface
     public BigInteger contarBienNecesidadesActividad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM biennecesidades WHERE actividad = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -107,6 +109,7 @@ public class PersistenciaActividades implements PersistenciaActividadesInterface
     public BigInteger contarParametrosInformesActividad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM parametrosinformes WHERE actividadbienestar = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

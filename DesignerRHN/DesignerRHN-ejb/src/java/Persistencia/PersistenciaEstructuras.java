@@ -86,6 +86,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     @Override
     public Estructuras buscarEstructura(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(Estructuras.class, secuencia);
         } catch (Exception e) {
             return null;
@@ -95,6 +96,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     @Override
     public List<Estructuras> estructuras(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT e FROM Estructuras e ORDER BY e.nombre");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Estructuras> estructuras = query.getResultList();
@@ -107,6 +109,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     @Override
     public List<Estructuras> buscarEstructurasPorSecuenciaOrganigrama(EntityManager em, BigInteger secOrganigrama) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT e FROM Estructuras e WHERE e.organigrama.secuencia=:secOrganigrama ORDER BY e.nombre");
             query.setParameter("secOrganigrama", secOrganigrama);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -121,6 +124,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     @Override
     public List<Estructuras> buscarEstructurasPorOrganigrama(EntityManager em, BigInteger secOrganigrama) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT e FROM Estructuras e WHERE e.organigrama.secuencia=:secOrganigrama ORDER BY e.codigo ASC");
             query.setParameter("secOrganigrama", secOrganigrama);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -135,8 +139,8 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     @Override
     public List<Estructuras> buscarlistaValores(EntityManager em, String fechaVigencia) {
         List<Estructuras> estructuras;
-        System.out.println("Fecha: " + fechaVigencia);
         try {
+            em.clear();
             String sqlQuery = "SELECT  es.* FROM ESTRUCTURAS es, centroscostos cc, empresas emp, organigramas org WHERE es.centrocosto = cc.secuencia and es.organigrama = org.secuencia and org.empresa=emp.secuencia and emp.secuencia=cc.empresa and nvl(cc.obsoleto,'N')='N' and es.organigrama IN (select o.secuencia from organigramas o, empresas em where fecha = (select max(fecha) from organigramas, empresas e where e.secuencia =  organigramas.empresa and  o.secuencia=organigramas.secuencia and organigramas.secuencia = es.organigrama and fecha <= To_date(?, 'dd/mm/yyyy') and o.empresa=em.secuencia))";
             if (fechaVigencia != null) {
                 Query query = em.createNativeQuery(sqlQuery, Estructuras.class).setParameter(1, fechaVigencia);
@@ -159,6 +163,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     @Override
     public List<Estructuras> estructuraPadre(EntityManager em, BigInteger secOrg) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT e FROM Estructuras e WHERE e.organigrama.secuencia = :secOrg AND e.estructurapadre IS NULL");
             query.setParameter("secOrg", secOrg);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -173,6 +178,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     @Override
     public List<Estructuras> estructurasHijas(EntityManager em, BigInteger secEstructuraPadre, Short codigoEmpresa) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT e FROM Estructuras e WHERE e.organigrama.empresa.codigo = :codigoEmpresa AND e.estructurapadre.secuencia = :secEstructuraPadre");
             query.setParameter("secEstructuraPadre", secEstructuraPadre);
             query.setParameter("codigoEmpresa", codigoEmpresa);
@@ -188,6 +194,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     @Override
     public List<Estructuras> buscarEstructuras(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("Estructuras.findAll");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Estructuras> estructuras = (List<Estructuras>) query.getResultList();
@@ -203,6 +210,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     public Estructuras buscarEstructuraSecuencia(EntityManager em, BigInteger secuencia) {
         Estructuras estructura;
         try {
+            em.clear();
             Query query = em.createQuery("SELECT e FROM Estructuras e WHERE e.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -218,6 +226,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     @Override
     public List<Estructuras> buscarEstructurasPadres(EntityManager em, BigInteger secOrganigrama, BigInteger secEstructura) {
         try {
+            em.clear();
             String strQuery = "SELECT * FROM Estructuras WHERE organigrama =? AND secuencia != NVL(?,0) ORDER BY nombre ASC";
             Query query = em.createNativeQuery(strQuery, Estructuras.class);
             query.setParameter(1, secOrganigrama);
@@ -234,6 +243,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     public List<Estructuras> buscarEstructurasPorEmpresaFechaIngreso(EntityManager em, BigInteger secEmpresa, Date fechaIngreso) {
         List<Estructuras> estructura;
         try {
+            em.clear();
             String queryStr = "SELECT  est.* FROM ESTRUCTURAS est, organigramas org, centroscostos cc WHERE org.secuencia = est.organigrama and est.centrocosto=cc.secuencia and nvl(cc.obsoleto,'N')='N' and org.empresa = ? and exists (select secuencia from organigramas o where fecha = (select max(fecha) from organigramas , empresas e where e.secuencia = organigramas.empresa and fecha <= ? and organigramas.secuencia = est.organigrama)) ORDER BY est.codigo";
             Query query = em.createNativeQuery(queryStr, Estructuras.class);
             query.setParameter(1, secEmpresa);
@@ -251,6 +261,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     public List<Estructuras> buscarEstructurasPorEmpresa(EntityManager em, BigInteger secEmpresa) {
         List<Estructuras> estructura;
         try {
+            em.clear();
             String queryStr = "SELECT V.* FROM ESTRUCTURAS V, CENTROSCOSTOS CC,empresas e WHERE V.CENTROCOSTO = CC.SECUENCIA and cc.empresa = e.secuencia and e.secuencia = ? and nvl(cc.obsoleto,'N')='N' ORDER BY V.codigo";
             Query query = em.createNativeQuery(queryStr, Estructuras.class);
             query.setParameter(1, secEmpresa);

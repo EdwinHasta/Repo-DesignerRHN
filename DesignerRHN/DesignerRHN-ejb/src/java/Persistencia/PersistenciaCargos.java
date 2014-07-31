@@ -83,6 +83,7 @@ public class PersistenciaCargos implements PersistenciaCargosInterface {
     @Override
     public Cargos buscarCargoSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             BigInteger in;
             in = (BigInteger) secuencia;
             return em.find(Cargos.class, in);
@@ -95,6 +96,7 @@ public class PersistenciaCargos implements PersistenciaCargosInterface {
     @Override
     public List<Cargos> consultarCargos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT c FROM Cargos c ORDER BY c.nombre");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Cargos> cargos = query.getResultList();
@@ -107,6 +109,7 @@ public class PersistenciaCargos implements PersistenciaCargosInterface {
     @Override
     public List<Cargos> cargosSalario(EntityManager em) {
         try {
+            em.clear();
             List<Cargos> listaCargosSalario = consultarCargos(em);
             if (listaCargosSalario != null) {
                 for (int i = 0; i < listaCargosSalario.size(); i++) {
@@ -129,6 +132,7 @@ public class PersistenciaCargos implements PersistenciaCargosInterface {
     @Override
     public List<Cargos> buscarCargosPorSecuenciaEmpresa(EntityManager em, BigInteger secEmpresa) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT c FROM Cargos c  WHERE c.empresa.secuencia=:secEmpresa");
             query.setParameter("secEmpresa", secEmpresa);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

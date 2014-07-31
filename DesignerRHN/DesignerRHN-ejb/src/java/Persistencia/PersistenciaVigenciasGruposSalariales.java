@@ -79,6 +79,7 @@ public class PersistenciaVigenciasGruposSalariales implements PersistenciaVigenc
     @Override
     public List<VigenciasGruposSalariales> buscarVigenciasGruposSalariales(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("VigenciasGruposSalariales.findAll");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasGruposSalariales> vigenciasGruposSalariales = (List<VigenciasGruposSalariales>) query.getResultList();
@@ -92,6 +93,7 @@ public class PersistenciaVigenciasGruposSalariales implements PersistenciaVigenc
     @Override
     public VigenciasGruposSalariales buscarVigenciaGrupoSalarialSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vgs FROM VigenciasGruposSalariales vgs WHERE vgs.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -107,6 +109,7 @@ public class PersistenciaVigenciasGruposSalariales implements PersistenciaVigenc
     @Override
     public List<VigenciasGruposSalariales> buscarVigenciaGrupoSalarialSecuenciaGrupoSal(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vgs FROM VigenciasGruposSalariales vgs WHERE vgs.gruposalarial.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

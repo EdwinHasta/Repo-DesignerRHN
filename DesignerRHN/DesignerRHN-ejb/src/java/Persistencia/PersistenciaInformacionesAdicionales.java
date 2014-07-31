@@ -82,11 +82,13 @@ public class PersistenciaInformacionesAdicionales implements PersistenciaInforma
 
     @Override
     public InformacionesAdicionales buscarinformacionAdicional(EntityManager em, BigInteger secuencia) {
+        em.clear();
         return em.find(InformacionesAdicionales.class, secuencia);
     }
 
     @Override
     public List<InformacionesAdicionales> buscarinformacionesAdicionales(EntityManager em) {
+        em.clear();
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(InformacionesAdicionales.class));
         return em.createQuery(cq).getResultList();
@@ -95,6 +97,7 @@ public class PersistenciaInformacionesAdicionales implements PersistenciaInforma
     @Override
     public List<InformacionesAdicionales> informacionAdicionalPersona(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(ia) FROM InformacionesAdicionales ia WHERE ia.empleado.secuencia = :secuenciaEmpleado");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -116,6 +119,7 @@ public class PersistenciaInformacionesAdicionales implements PersistenciaInforma
     @Override
     public List<InformacionesAdicionales> informacionAdicionalEmpleadoSecuencia(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT ia FROM InformacionesAdicionales ia WHERE ia.empleado.secuencia = :secuenciaEmpleado");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

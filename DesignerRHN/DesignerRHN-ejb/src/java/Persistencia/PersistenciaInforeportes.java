@@ -84,9 +84,11 @@ public class PersistenciaInforeportes implements PersistenciaInforeportesInterfa
     @Override
     public List<Inforeportes> buscarInforeportes(EntityManager em) {
         try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Inforeportes.class));
-            return em.createQuery(cq).getResultList();
+            em.clear();
+            Query query = em.createQuery("SELECT i FROM Inforeportes i");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<Inforeportes> inforeportes = (List<Inforeportes>) query.getResultList();
+            return inforeportes;
         } catch (Exception e) {
             System.out.println("Error PersistenciaInforeportes buscarInforeportes : " + e.toString());
             return null;

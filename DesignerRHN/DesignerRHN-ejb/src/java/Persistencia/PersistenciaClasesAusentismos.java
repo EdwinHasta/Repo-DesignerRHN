@@ -84,6 +84,7 @@ public class PersistenciaClasesAusentismos implements PersistenciaClasesAusentis
     @Override
     public List<Clasesausentismos> buscarClasesAusentismos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT ca FROM Clasesausentismos ca ORDER BY ca.codigo");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Clasesausentismos> todasClasesAusentismos = query.getResultList();
@@ -97,6 +98,7 @@ public class PersistenciaClasesAusentismos implements PersistenciaClasesAusentis
     public BigInteger contadorSoAusentismosClaseAusentismo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             Query query = em.createNativeQuery("SELECT COUNT(*)FROM soausentismos WHERE clase = ?");
             query.setParameter(1, secuencia);
             retorno = new BigInteger(query.getSingleResult().toString());
@@ -111,6 +113,7 @@ public class PersistenciaClasesAusentismos implements PersistenciaClasesAusentis
     public BigInteger contadorCausasAusentismosClaseAusentismo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             Query query = em.createNativeQuery("SELECT COUNT(*)FROM causasausentismos WHERE clase = ?");
             query.setParameter(1, secuencia);
             retorno = new BigInteger(query.getSingleResult().toString());

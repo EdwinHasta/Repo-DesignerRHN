@@ -28,6 +28,7 @@ public class PersistenciaOperadores implements PersistenciaOperadoresInterface{
     @Override
     public List<Operadores> buscarOperadores(EntityManager em){
         try {
+            em.clear();
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Operadores.class));
             return em.createQuery(cq).getResultList();

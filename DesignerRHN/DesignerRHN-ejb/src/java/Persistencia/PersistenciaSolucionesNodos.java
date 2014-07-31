@@ -80,6 +80,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
 
     @Override
     public List<SolucionesNodos> buscarSolucionesNodos(EntityManager em) {
+        em.clear();
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(SolucionesNodos.class));
         return em.createQuery(cq).getResultList();
@@ -88,6 +89,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
     @Override
     public List<SolucionesNodos> solucionNodoCorteProcesoEmpleado(EntityManager em, BigInteger secuenciaCorteProceso, BigInteger secuenciaEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT sn FROM SolucionesNodos sn WHERE sn.estado = 'CERRADO' AND sn.tipo IN ('PAGO','DESCUENTO') AND sn.corteproceso.secuencia = :secuenciaCorteProceso AND sn.empleado.secuencia = :secuenciaEmpleado ORDER BY sn.concepto.codigo ASC");
             query.setParameter("secuenciaCorteProceso", secuenciaCorteProceso);
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
@@ -103,6 +105,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
     @Override
     public List<SolucionesNodos> solucionNodoCorteProcesoEmpleador(EntityManager em, BigInteger secuenciaCorteProceso, BigInteger secuenciaEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT sn FROM SolucionesNodos sn WHERE sn.estado = 'CERRADO' AND sn.tipo IN  ('PASIVO','GASTO','NETO') AND sn.corteproceso.secuencia = :secuenciaCorteProceso AND sn.empleado.secuencia = :secuenciaEmpleado ORDER BY sn.concepto.codigo ASC");
             query.setParameter("secuenciaCorteProceso", secuenciaCorteProceso);
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
@@ -118,6 +121,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
     @Override
     public BigDecimal diasProvisionados(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT SN1.unidades "
                     + "FROM SolucionesNodos SN1, Conceptos c "
                     + "WHERE SN1.empleado.secuencia =:secuenciaempleado "
@@ -148,6 +152,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
     @Override
     public Long validacionTercerosVigenciaAfiliacion(EntityManager em, BigInteger secuencia, Date fechaInicial, BigDecimal secuenciaTE, BigInteger secuenciaTer) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT count(v)  "
                     + "FROM SolucionesNodos v "
                     + "where v.fechapago > :fechaInicial "
@@ -177,6 +182,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
     @Override
     public List<SolucionesNodos> solucionNodoEmpleado(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT sn "
                     + "FROM SolucionesNodos sn "
                     + "WHERE sn.estado = 'LIQUIDADO' "
@@ -196,6 +202,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
     @Override
     public List<SolucionesNodos> solucionNodoEmpleador(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT sn "
                     + "FROM SolucionesNodos sn "
                     + "WHERE sn.estado = 'LIQUIDADO' "
@@ -215,6 +222,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
     @Override
     public Integer ContarProcesosSN(EntityManager em, BigInteger secProceso) {
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(distinct empleado)\n"
                     + "  FROM solucionesnodos sn\n"
                     + "  WHERE estado='LIQUIDADO'\n"
@@ -237,6 +245,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
     @Override
     public boolean solucionesNodosParaConcepto(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT count(sn) FROM SolucionesNodos sn WHERE sn.concepto.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

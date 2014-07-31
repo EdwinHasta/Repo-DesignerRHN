@@ -82,6 +82,7 @@ public class PersistenciaFormulasProcesos implements PersistenciaFormulasProceso
     @Override
     public List<FormulasProcesos> formulasProcesosParaFormulaSecuencia(EntityManager em,BigInteger secuencia) {
         try {
+            em.clear();
             Query queryFinal = em.createQuery("SELECT fp FROM FormulasProcesos fp WHERE fp.formula.secuencia=:secuencia");
             queryFinal.setParameter("secuencia", secuencia);
             queryFinal.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -97,6 +98,7 @@ public class PersistenciaFormulasProcesos implements PersistenciaFormulasProceso
     @Override 
     public List<FormulasProcesos> formulasProcesosParaProcesoSecuencia(EntityManager em,BigInteger secuencia) {
         try {
+            em.clear();
             Query queryFinal = em.createQuery("SELECT fp FROM FormulasProcesos fp WHERE fp.proceso.secuencia=:secuencia");
             queryFinal.setParameter("secuencia", secuencia);
             queryFinal.setHint("javax.persistence.cache.storeMode", "REFRESH");

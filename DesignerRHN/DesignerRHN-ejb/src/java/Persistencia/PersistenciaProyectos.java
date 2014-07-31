@@ -78,6 +78,7 @@ public class PersistenciaProyectos implements PersistenciaProyectosInterface {
     @Override
     public Proyectos buscarProyectoSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT p FROM Proyectos p WHERE p.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -93,6 +94,7 @@ public class PersistenciaProyectos implements PersistenciaProyectosInterface {
    @Override
     public List<Proyectos> proyectos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT p FROM Proyectos p ORDER BY p.empresa.nombre");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Proyectos> proyectos = query.getResultList();
@@ -105,6 +107,7 @@ public class PersistenciaProyectos implements PersistenciaProyectosInterface {
     @Override
    public Proyectos buscarProyectoNombre(EntityManager em, String nombreP){
        try{
+           em.clear();
            Query query = em.createQuery("SELECT p FROM Proyectos p WHERE p.nombreproyecto =:nombreP");
            query.setParameter("nombreP", nombreP);
            query.setHint("javax.persistence.cache.storeMode", "REFRESH");

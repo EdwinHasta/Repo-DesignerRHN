@@ -78,6 +78,7 @@ public class PersistenciaVigenciasConceptosTT implements PersistenciaVigenciasCo
     @Override
     public boolean verificacionZonaTipoTrabajador(EntityManager em, BigInteger secuenciaConcepto, BigInteger secuenciaTT) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vcTT FROM VigenciasConceptosTT vcTT WHERE vcTT.concepto.secuencia = :secuenciaConcepto AND vcTT.tipotrabajador.secuencia = :secuenciaTT");
             query.setParameter("secuenciaConcepto", secuenciaConcepto);
             query.setParameter("secuenciaTT", secuenciaTT);
@@ -93,6 +94,7 @@ public class PersistenciaVigenciasConceptosTT implements PersistenciaVigenciasCo
     @Override
     public List<VigenciasConceptosTT> listVigenciasConceptosTTPorConcepto(EntityManager em, BigInteger secuenciaC){
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vcTT FROM VigenciasConceptosTT vcTT WHERE vcTT.concepto.secuencia = :secuenciaConcepto");
             query.setParameter("secuenciaConcepto", secuenciaC);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

@@ -30,6 +30,7 @@ public class PersistenciaVWAcumulados implements PersistenciaVWAcumuladosInterfa
     @Override
     public List<VWAcumulados> buscarAcumuladosPorEmpleado(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vwa FROM VWAcumulados vwa WHERE vwa.empleado.secuencia = :secuenciaEmpl ORDER BY vwa.fechaPago DESC");
             query.setParameter("secuenciaEmpl", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

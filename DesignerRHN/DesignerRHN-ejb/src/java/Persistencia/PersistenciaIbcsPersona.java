@@ -17,6 +17,7 @@ public class PersistenciaIbcsPersona implements PersistenciaIbcsPersonaInterface
     @Override
     public IbcsPersona buscarIbcPersona(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT i FROM IbcsPersona i WHERE i.persona.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

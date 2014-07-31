@@ -81,6 +81,7 @@ public class PersistenciaOrganigramas implements PersistenciaOrganigramasInterfa
     @Override
     public Organigramas buscarOrganigrama(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(Organigramas.class, secuencia);
         } catch (Exception e) {
             return null;
@@ -104,6 +105,7 @@ public class PersistenciaOrganigramas implements PersistenciaOrganigramasInterfa
     @Override
     public List<Organigramas> buscarOrganigramasVigentes(EntityManager em, BigInteger secEmpresa, Date fechaVigencia) {
         try {
+            em.clear();
             SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
             String fecha = formatoFecha.format(fechaVigencia);
             Query query = em.createQuery("SELECT o FROM Organigramas o WHERE o.empresa.secuencia = :secEmpresa AND o.fecha >= TO_DATE(:fechaVigencia,'dd/MM/yyyy')");
@@ -122,6 +124,7 @@ public class PersistenciaOrganigramas implements PersistenciaOrganigramasInterfa
     @Override
     public Organigramas organigramaBaseArbol(EntityManager em, short codigoOrg) {
         try {
+            em.clear();
             Organigramas organigrama = null;
             Query query = em.createQuery("SELECT COUNT(o) FROM Organigramas o WHERE o.codigo = :codigoOrg");
             query.setParameter("codigoOrg", codigoOrg);

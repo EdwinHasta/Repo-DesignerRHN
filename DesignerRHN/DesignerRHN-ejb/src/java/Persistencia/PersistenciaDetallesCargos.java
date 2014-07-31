@@ -84,6 +84,7 @@ public class PersistenciaDetallesCargos implements PersistenciaDetallesCargosInt
     @Override
     public List<DetallesCargos> buscarDetallesCargos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT cc FROM DetallesCargos cc ORDER BY cc.peso ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<DetallesCargos> detallesCargos = query.getResultList();
@@ -97,6 +98,7 @@ public class PersistenciaDetallesCargos implements PersistenciaDetallesCargosInt
     @Override
     public DetallesCargos buscarDetallesCargosSecuencia(EntityManager em,BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT dc FROM DetallesCargos dc WHERE dc.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -112,6 +114,7 @@ public class PersistenciaDetallesCargos implements PersistenciaDetallesCargosInt
     @Override 
     public DetallesCargos buscarDetalleCargoParaSecuenciaTipoDetalle(EntityManager em,BigInteger secTipoDetalle, BigInteger secCargo) { 
         try {
+            em.clear();
             Query query = em.createQuery("SELECT dc FROM DetallesCargos dc WHERE dc.tipodetalle.secuencia=:secTipoDetalle AND dc.cargo.secuencia=:secCargo");
             query.setParameter("secTipoDetalle", secTipoDetalle);
             query.setParameter("secCargo", secCargo);
@@ -127,6 +130,7 @@ public class PersistenciaDetallesCargos implements PersistenciaDetallesCargosInt
     @Override 
     public List<DetallesCargos> buscarDetallesCargosDeCargoSecuencia(EntityManager em,BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT dc FROM DetallesCargos dc WHERE dc.cargo.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
