@@ -479,7 +479,7 @@ public class ControlUnidad implements Serializable {
     public void limpiarDuplicarUnidad() {
         duplicarUnidad = new Unidades();
     }
-
+    //VERIFICAR RASTRO
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("lol");
@@ -512,7 +512,7 @@ public class ControlUnidad implements Serializable {
         }
         index = -1;
     }
-
+    //REFRESCAR LA PAGINA, CANCELAR MODIFICACION SI NO SE A GUARDADO
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
@@ -646,7 +646,7 @@ public class ControlUnidad implements Serializable {
         context.execute("tiposUnidadesDialogo.show()");
     }
 
-    //BORRAR CIUDADES
+    //BORRAR UNIDADES
     public void borrarUnidades() {
 
         if (index >= 0) {
@@ -697,13 +697,12 @@ public class ControlUnidad implements Serializable {
 
     //CREAR UNIDAD
     public void agregarNuevaUnidad() {
-
-        int pasa = 0;
         int pasaA = 0;
+        int pasa = 0;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
 
-        if (nuevaUnidad.getNombre() == null) {
+        if (nuevaUnidad.getNombre() == null || nuevaUnidad.getNombre().equals("")) {
             System.out.println("Entra 1");
             mensajeValidacion = mensajeValidacion + "   * Nombre \n";
             pasa++;
@@ -726,12 +725,7 @@ public class ControlUnidad implements Serializable {
                 }
             }
         }
-
-        if (pasa != 0) {
-            context.update("formularioDialogos:validacionNuevaUnidad");
-            context.execute("validacionNuevaUnidad.show()");
-        }
-
+       
         if (pasa == 0 && pasaA == 0) {
             if (bandera == 1) {
                 FacesContext c = FacesContext.getCurrentInstance();
@@ -769,7 +763,11 @@ public class ControlUnidad implements Serializable {
             context.execute("NuevoRegistroUnidad.hide()");
             index = -1;
             secRegistro = null;
+        } else  if (pasa != 0) {
+            context.update("formularioDialogos:validacionNuevaUnidad");
+            context.execute("validacionNuevaUnidad.show()");
         }
+
     }
 
     //DUPLICAR CIUDAD
@@ -797,7 +795,6 @@ public class ControlUnidad implements Serializable {
     }
 
     public void confirmarDuplicar() {
-
         int pasaA = 0;
         int pasa = 0;
         k++;
@@ -805,7 +802,7 @@ public class ControlUnidad implements Serializable {
         duplicarUnidad.setSecuencia(l);
         RequestContext context = RequestContext.getCurrentInstance();
 
-        if (duplicarUnidad.getNombre() == null) {
+        if (duplicarUnidad.getNombre() == null || duplicarUnidad.getNombre().equals("")) {
             System.out.println("Entra 1");
             mensajeValidacion = mensajeValidacion + "   * Nombre \n";
             pasa++;
@@ -829,10 +826,7 @@ public class ControlUnidad implements Serializable {
             }
         }
 
-        if (pasa == 0) {
-            listaUnidades.add(duplicarUnidad);
-            listaUnidadesCrear.add(duplicarUnidad);
-            context.update("form:datosUnidades");
+        if (pasa == 0 && pasaA == 0) {            
             index = -1;
             secRegistro = null;
             if (guardado == true) {
@@ -856,14 +850,20 @@ public class ControlUnidad implements Serializable {
                 System.out.println("TipoLista= " + tipoLista);
                 tipoLista = 0;
             }
+            listaUnidades.add(duplicarUnidad);
+            listaUnidadesCrear.add(duplicarUnidad);
+            context.update("form:datosUnidades");
             duplicarUnidad = new Unidades();
             infoRegistro = "Cantidad de registros: " + listaUnidades.size();
             context.update("form:informacionRegistro");
+            context.update("formularioDialogos:DuplicarRegistroUnidad");
+            context.execute("DuplicarRegistroUnidad.hide()");
 
+        } else  if (pasa != 0) {
+            context.update("formularioDialogos:validacionNuevaUnidad");
+            context.execute("validacionNuevaUnidad.show()");
         }
-        context.update("formularioDialogos:duplicarUnidad");
-        context.execute("DuplicarRegistroUnidad.hide()");
-
+     
     }
 
     public void activarBuscador() {

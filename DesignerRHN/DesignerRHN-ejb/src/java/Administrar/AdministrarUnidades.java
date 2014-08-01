@@ -61,6 +61,9 @@ public class AdministrarUnidades implements AdministrarUnidadesInterface{
             if (listaUnidades.get(i).getCodigo().equals(null)) {
                 listaUnidades.get(i).setCodigo(null);
                 c = listaUnidades.get(i);
+            } else if (listaUnidades.get(i).getTipounidad().getSecuencia() == null) {
+                listaUnidades.get(i).setTipounidad(null);      
+                c = listaUnidades.get(i);
             } else {
                 c = listaUnidades.get(i);
             }
@@ -73,9 +76,10 @@ public class AdministrarUnidades implements AdministrarUnidadesInterface{
         for (int i = 0; i < listaUnidades.size(); i++) {
             System.out.println("Borrando...");
             if (listaUnidades.get(i).getCodigo().equals(null)) {
-
                 listaUnidades.get(i).setCodigo(null);
                 persistenciaUnidades.borrar(em,listaUnidades.get(i));
+            } else if (listaUnidades.get(i).getTipounidad().getSecuencia() == null) {
+                listaUnidades.get(i).setTipounidad(null);                
             } else {
                 persistenciaUnidades.borrar(em,listaUnidades.get(i));
             }
@@ -90,6 +94,8 @@ public class AdministrarUnidades implements AdministrarUnidadesInterface{
 
                 listaUnidades.get(i).setCodigo(null);
                 persistenciaUnidades.crear(em,listaUnidades.get(i));
+            } else if (listaUnidades.get(i).getTipounidad().getSecuencia() == null) {
+                listaUnidades.get(i).setTipounidad(null);                
             } else {
                 persistenciaUnidades.crear(em,listaUnidades.get(i));
             }

@@ -297,7 +297,10 @@ public class ControlTipoCotizante implements Serializable {
 
         if (tipoLista == 0) {
             if (estadoSubTipoCotizante != null) {
-                if (estadoSubTipoCotizante.equals("1")) {
+                
+                if (estadoSubTipoCotizante.equals(" ")) {
+                    listaTiposCotizantes.get(indice).setSubtipocotizante(null);
+                } else if (estadoSubTipoCotizante.equals("1")) {
                     listaTiposCotizantes.get(indice).setSubtipocotizante(Short.valueOf("1"));
                 } else if (estadoSubTipoCotizante.equals("2")) {
                     listaTiposCotizantes.get(indice).setSubtipocotizante(Short.valueOf("2"));
@@ -322,7 +325,9 @@ public class ControlTipoCotizante implements Serializable {
             }
         } else {
             if (estadoSubTipoCotizante != null) {
-                if (estadoSubTipoCotizante.equals("1")) {
+                if (estadoSubTipoCotizante.equals(" ")) {
+                    filtradosListaTiposCotizantes.get(indice).setSubtipocotizante(null);
+                } else if (estadoSubTipoCotizante.equals("1")) {
                     filtradosListaTiposCotizantes.get(indice).setSubtipocotizante(Short.valueOf("1"));
                 } else if (estadoSubTipoCotizante.equals("2")) {
                     filtradosListaTiposCotizantes.get(indice).setSubtipocotizante(Short.valueOf("2"));
@@ -360,7 +365,9 @@ public class ControlTipoCotizante implements Serializable {
         if (tipoNuevo == 1) {
             if (estadoSubTipoCotizante != null) {
 
-                if (estadoSubTipoCotizante.equals("1")) {
+                if (estadoSubTipoCotizante.equals(" ")) {
+                    nuevoTipoCotizante.setSubtipocotizante(null);
+                } else if (estadoSubTipoCotizante.equals("1")) {
                     nuevoTipoCotizante.setSubtipocotizante(new Short("1"));
                 } else if (estadoSubTipoCotizante.equals("2")) {
                     nuevoTipoCotizante.setSubtipocotizante(new Short("2"));
@@ -380,7 +387,9 @@ public class ControlTipoCotizante implements Serializable {
             RequestContext.getCurrentInstance().update("formularioDialogos:nuevoSubTipoCotizacion");
         } else {
             if (estadoSubTipoCotizante != null) {
-                if (estadoSubTipoCotizante.equals("1")) {
+                if (estadoSubTipoCotizante.equals(" ")) {
+                    duplicarTipoCotizante.setSubtipocotizante(null);
+                } else if (estadoSubTipoCotizante.equals("1")) {
                     duplicarTipoCotizante.setSubtipocotizante(new Short("1"));
                 } else if (estadoSubTipoCotizante.equals("2")) {
                     duplicarTipoCotizante.setSubtipocotizante(new Short("2"));
@@ -398,7 +407,6 @@ public class ControlTipoCotizante implements Serializable {
                 duplicarTipoCotizante.setSubtipocotizante(null);
             }
             RequestContext context = RequestContext.getCurrentInstance();
-
             context.update("form:ACEPTAR");
             RequestContext.getCurrentInstance().update("formularioDialogos:duplicarSubTipoCotizacion");
         }

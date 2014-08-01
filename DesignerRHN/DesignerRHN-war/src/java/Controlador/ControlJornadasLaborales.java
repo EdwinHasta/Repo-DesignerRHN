@@ -234,54 +234,24 @@ public class ControlJornadasLaborales implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando Operaciones JornadasLaborales");
             if (!listaJornadasLaboralesBorrar.isEmpty()) {
-                for (int i = 0; i < listaJornadasLaboralesBorrar.size(); i++) {
-                    System.out.println("Borrando jornada semanal...");
-                    if (listaJornadasLaboralesBorrar.get(i).getJornada().getSecuencia() == null) {
-                        listaJornadasLaboralesBorrar.get(i).setJornada(null);
-                        administrarJornadasLaborales.borrarJornadasLaborales(listaJornadasLaboralesBorrar);
-                    } else {
-
-                        administrarJornadasLaborales.borrarJornadasLaborales(listaJornadasLaboralesBorrar);
-                    }
-                    listaJornadasLaboralesBorrar.clear();
-                }
+                administrarJornadasLaborales.borrarJornadasLaborales(listaJornadasLaboralesBorrar);
+                listaJornadasLaboralesBorrar.clear();
             }
+
             if (!listaJornadasSemanalesBorrar.isEmpty()) {
-                for (int i = 0; i < listaJornadasSemanalesBorrar.size(); i++) {
-                    System.out.println("Borrando semana laboral...");
-
-                    administrarJornadasLaborales.borrarJornadasSemanales(listaJornadasSemanalesBorrar);
-
-                    System.out.println("Entra semana laboral");
-                }
+                administrarJornadasLaborales.borrarJornadasSemanales(listaJornadasSemanalesBorrar);
+                System.out.println("Entra semana laboral");
                 listaJornadasSemanalesBorrar.clear();
 
             }
             if (!listaJornadasLaboralesCrear.isEmpty()) {
-                for (int i = 0; i < listaJornadasLaboralesCrear.size(); i++) {
-                    System.out.println("Creando jornada laboral...");
-                    System.out.println(listaJornadasLaboralesCrear.size());
-
-                    if (listaJornadasLaboralesCrear.get(i).getJornada().getSecuencia() == null) {
-                        listaJornadasLaboralesCrear.get(i).setJornada(null);
-                        administrarJornadasLaborales.crearJornadasLaborales(listaJornadasLaboralesCrear);
-                    } else {
-                        administrarJornadasLaborales.crearJornadasLaborales(listaJornadasLaboralesCrear);
-                    }
-                }
+                administrarJornadasLaborales.crearJornadasLaborales(listaJornadasLaboralesCrear);
                 System.out.println("LimpiaLista jornada laboral");
                 listaJornadasLaboralesCrear.clear();
             }
 
             if (!listaJornadasSemanalesCrear.isEmpty()) {
-                for (int i = 0; i < listaJornadasSemanalesCrear.size(); i++) {
-                    System.out.println("Creando semana laboral...");
-                    System.out.println(listaJornadasSemanalesCrear.size());
-
-                    administrarJornadasLaborales.crearJornadasSemanales(listaJornadasSemanalesCrear);
-
-                }
-
+                administrarJornadasLaborales.crearJornadasSemanales(listaJornadasSemanalesCrear);
                 System.out.println("LimpiaLista semana laboral");
                 listaJornadasSemanalesCrear.clear();
             }
@@ -289,6 +259,10 @@ public class ControlJornadasLaborales implements Serializable {
             if (!listaJornadasLaboralesModificar.isEmpty()) {
                 administrarJornadasLaborales.modificarJornadasLaborales(listaJornadasLaboralesModificar);
                 listaJornadasLaboralesModificar.clear();
+            }
+            if (!listaJornadasSemanalesModificar.isEmpty()) {
+                administrarJornadasLaborales.modificarJornadasSemanales(listaJornadasSemanalesModificar);
+                listaJornadasSemanalesModificar.clear();
             }
 
             System.out.println("Se guardaron los datos con exito");
@@ -326,7 +300,7 @@ public class ControlJornadasLaborales implements Serializable {
 
     }
 
-    //Ubicacion Celda Arriba 
+//Ubicacion Celda Arriba 
     public void cambiarJornadaLaboral() {
         //Si ninguna de las 3 listas (crear,modificar,borrar) tiene algo, hace esto
         //{
@@ -344,10 +318,10 @@ public class ControlJornadasLaborales implements Serializable {
             }
             context.update("form:datosSemanasLaborales");
             context.update("form:infoRegistroSL");
-        } else if (listaJornadasLaborales.get(index) != jornadaLaboralSeleccionada) {
+        } else {
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("formularioDialogos:confirmarGuardar");
-            context.execute("confirmarGuardar.show()");
+            context.update("formularioDialogos:confirmarGuardarSinSalida");
+            context.execute("confirmarGuardarSinSalida.show()");
         }
     }
 
@@ -568,7 +542,7 @@ public class ControlJornadasLaborales implements Serializable {
         context.update("form:datosSemanasLaborales");
     }
 
-    //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO)
+    //ASIGNAR INDEX PARA DIALOGOS COMUNES (LND = LISTA - NUEVO - DUPLICADO)
     public void asignarIndex(Integer indice, int dlg, int LND) {
         index = indice;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1044,8 +1018,6 @@ public class ControlJornadasLaborales implements Serializable {
         if (nuevaJornadaLaboral.getCodigo() != null) {
 
             for (int i = 0; i < listaJornadasLaborales.size(); i++) {
-                System.out.println("Lista Jornadas Laborales Posicion " + i + "Codigo: " + listaJornadasLaborales.get(i).getCodigo());
-                System.out.println("Codigo NuevaJornadaLaboral:" + nuevaJornadaLaboral.getCodigo());
                 if (nuevaJornadaLaboral.getCodigo() == listaJornadasLaborales.get(i).getCodigo()) {
                     pasa++;
                     context.update("formularioDialogos:validacionCodigo");
@@ -1485,21 +1457,17 @@ public class ControlJornadasLaborales implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         index = -1;
         secRegistro = null;
-        if (guardado == true) {
-            guardado = false;
-            RequestContext.getCurrentInstance().update("form:ACEPTAR");
-        }
         int pasa = 0;
         mensajeValidacion = " ";
         mensajeValidacionhoras = " ";
 
-        if (duplicarJornadaLaboral.getHorasdiarias() != null && (duplicarJornadaLaboral.getHorasdiarias().compareTo(BigDecimal.ONE) == 0 || nuevaJornadaLaboral.getHorasdiarias().compareTo(BigDecimal.ONE) == -1)) {
+        if (duplicarJornadaLaboral.getHorasdiarias() != null && (duplicarJornadaLaboral.getHorasdiarias().compareTo(BigDecimal.ONE) == 0 || duplicarJornadaLaboral.getHorasdiarias().compareTo(BigDecimal.ONE) == -1)) {
             mensajeValidacionhoras = mensajeValidacionhoras + " Horas Diarias. ";
             pasa++;
             context.update("formularioDialogos:validacionHorasJL");
             context.execute("validacionHorasJL.show()");
         }
-        if (duplicarJornadaLaboral.getHorasmensuales() != null && (duplicarJornadaLaboral.getHorasmensuales().compareTo(Short.valueOf("0")) == 0 || nuevaJornadaLaboral.getHorasmensuales().compareTo(Short.valueOf("0")) < 0)) {
+        if (duplicarJornadaLaboral.getHorasmensuales() != null && (duplicarJornadaLaboral.getHorasmensuales().compareTo(Short.valueOf("0")) == 0 || duplicarJornadaLaboral.getHorasmensuales().compareTo(Short.valueOf("0")) < 0)) {
             mensajeValidacionhoras = mensajeValidacionhoras + " Horas Mensuale. ";
             pasa++;
             context.update("formularioDialogos:validacionHorasJL");
@@ -1509,9 +1477,9 @@ public class ControlJornadasLaborales implements Serializable {
             for (int i = 0; i < listaJornadasLaborales.size(); i++) {
                 if (duplicarJornadaLaboral.getCodigo() == listaJornadasLaborales.get(i).getCodigo()) {
                     pasa++;
+                    context.update("formularioDialogos:validacionCodigo");
+                    context.execute("validacionCodigo.show()");
                 }
-                context.update("formularioDialogos:validacionCodigo");
-                context.execute("validacionCodigo.show()");
             }
         }
         if (duplicarJornadaLaboral.getDescripcion() == null || duplicarJornadaLaboral.getDescripcion().equals("")) {
@@ -1521,11 +1489,6 @@ public class ControlJornadasLaborales implements Serializable {
         }
 
         if (pasa == 0) {
-
-            listaJornadasLaborales.add(duplicarJornadaLaboral);
-            listaJornadasLaboralesCrear.add(duplicarJornadaLaboral);
-
-            context.update("form:datosJornadasLaborales");
 
             if (bandera == 1) {
                 FacesContext c = FacesContext.getCurrentInstance();
@@ -1555,9 +1518,22 @@ public class ControlJornadasLaborales implements Serializable {
                 tipoLista = 0;
 
             }
+            listaJornadasLaborales.add(duplicarJornadaLaboral);
+            listaJornadasLaboralesCrear.add(duplicarJornadaLaboral);
+
+            context.update("form:datosJornadasLaborales");
+            if (guardado == true) {
+                guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+            }
+
             duplicarJornadaLaboral = new JornadasLaborales();
             infoRegistroJL = "Cantidad de registros: " + listaJornadasLaborales.size();
             context.update("form:infoRegistroJL");
+
+            context.update("formularioDialogos:DuplicarRegistroJornadaLaboral");
+            context.execute("DuplicarRegistroJornadaLaboral.hide()");
+
         } else if (duplicarJornadaLaboral.getDescripcion() == null || duplicarJornadaLaboral.getDescripcion().equals("")) {
             context.update("formularioDialogos:validacionNuevaJornadaLaboral");
             context.execute("validacionNuevaJornadaLaboral.show()");
@@ -1827,47 +1803,7 @@ public class ControlJornadasLaborales implements Serializable {
         context.update("form:infoRegistroJL");
         context.update("form:datosSemanasLaborales");
         context.update("form:infoRegistroSL");
-    }
-
-    //SALIR
-    public void salir() {
-
-        if (bandera == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
-
-            jornadasLaboralesCodigos = (Column) c.getViewRoot().findComponent("form:datosJornadasLaborales:jornadasLaboralesCodigos");
-            jornadasLaboralesCodigos.setFilterStyle("display: none; visibility: hidden;");
-            jornadasLaboralesDescripcion = (Column) c.getViewRoot().findComponent("form:datosJornadasLaborales:jornadasLaboralesDescripcion");
-            jornadasLaboralesDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            jornadasLaboralesHorasDiarias = (Column) c.getViewRoot().findComponent("form:datosJornadasLaborales:jornadasLaboralesHorasDiarias");
-            jornadasLaboralesHorasDiarias.setFilterStyle("display: none; visibility: hidden;");
-            jornadasLaboralesHorasMensuales = (Column) c.getViewRoot().findComponent("form:datosJornadasLaborales:jornadasLaboralesHorasMensuales");
-            jornadasLaboralesHorasMensuales.setFilterStyle("display: none; visibility: hidden;");
-            jornadasLaboralesRotativo = (Column) c.getViewRoot().findComponent("form:datosJornadasLaborales:jornadasLaboralesRotativo");
-            jornadasLaboralesRotativo.setFilterStyle("display: none; visibility: hidden;");
-            jornadasLaboralesTurnoRelativo = (Column) c.getViewRoot().findComponent("form:datosJornadasLaborales:jornadasLaboralesTurnoRelativo");
-            jornadasLaboralesTurnoRelativo.setFilterStyle("display: none; visibility: hidden;");
-            jornadasLaboralesCuadrillaHorasDiarias = (Column) c.getViewRoot().findComponent("form:datosJornadasLaborales:jornadasLaboralesCuadrillaHorasDiarias");
-            jornadasLaboralesCuadrillaHorasDiarias.setFilterStyle("display: none; visibility: hidden;");
-            jornadasLaboralesJornadas = (Column) c.getViewRoot().findComponent("form:datosJornadasLaborales:jornadasLaboralesJornadas");
-            jornadasLaboralesJornadas.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "115";
-            RequestContext.getCurrentInstance().update("form:datosJornadasLaborales");
-            bandera = 0;
-            filtradoListaJornadasLaborales = null;
-            tipoLista = 0;
-        }
-
-        listaJornadasLaboralesBorrar.clear();
-        listaJornadasLaboralesCrear.clear();
-        listaJornadasLaboralesModificar.clear();
-        index = -1;
-        secRegistro = null;
-        //  k = 0;
-        listaJornadasLaborales = null;
-        guardado = true;
-        permitirIndex = true;
-
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
     }
 
     //Getter & Setters

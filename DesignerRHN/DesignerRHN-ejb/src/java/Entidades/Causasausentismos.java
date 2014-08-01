@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Causasausentismos.findAll", query = "SELECT c FROM Causasausentismos c")})
 public class Causasausentismos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -120,10 +121,10 @@ public class Causasausentismos implements Serializable {
     }
 
     public String getDescripcion() {
-        if(descripcion == null){
-           descripcion = ("");
+        if (descripcion == null) {
+            descripcion = ("");
         }
-        return descripcion;
+        return descripcion.toUpperCase();
     }
 
     public void setDescripcion(String descripcion) {
@@ -139,9 +140,6 @@ public class Causasausentismos implements Serializable {
     }
 
     public String getOrigenincapacidad() {
-        if(origenincapacidad == null){
-            origenincapacidad = " ";
-        }
         return origenincapacidad;
     }
 
@@ -174,9 +172,6 @@ public class Causasausentismos implements Serializable {
     }
 
     public String getFormaliquidacion() {
-        if(formaliquidacion == null){
-            formaliquidacion = " ";
-        }
         return formaliquidacion;
     }
 
@@ -252,35 +247,47 @@ public class Causasausentismos implements Serializable {
     }
 
     public String getEstadoOrigenIncapacidad() {
-        if (estadoOrigenIncapacidad == null) {
-            if (origenincapacidad == null) {
-                estadoOrigenIncapacidad = " ";
-
-            } else {
-                if (origenincapacidad.equalsIgnoreCase("AT")) {
-                    estadoOrigenIncapacidad = "AT";
-                } else if (origenincapacidad.equalsIgnoreCase("EG")) {
-                    estadoOrigenIncapacidad = "EG";
-                } else if (origenincapacidad.equalsIgnoreCase("EP")) {
-                    estadoOrigenIncapacidad = "EP";
-                } else if (origenincapacidad.equalsIgnoreCase("MA")) {
-                    estadoOrigenIncapacidad = "MA";
-                } else if (origenincapacidad.equalsIgnoreCase("OT")) {
-                    estadoOrigenIncapacidad = "OT";
-                }  else if (origenincapacidad.equalsIgnoreCase(" ")) {
-                    estadoOrigenIncapacidad = " ";
-                }
+        getOrigenincapacidad();
+        if (origenincapacidad == null) {
+            estadoOrigenIncapacidad = " ";
+        } else {
+            if (origenincapacidad.equalsIgnoreCase("AT")) {
+                estadoOrigenIncapacidad = "AT";
+            } else if (origenincapacidad.equalsIgnoreCase("EG")) {
+                estadoOrigenIncapacidad = "EG";
+            } else if (origenincapacidad.equalsIgnoreCase("EP")) {
+                estadoOrigenIncapacidad = "EP";
+            } else if (origenincapacidad.equalsIgnoreCase("MA")) {
+                estadoOrigenIncapacidad = "MA";
+            } else if (origenincapacidad.equalsIgnoreCase("OT")) {
+                estadoOrigenIncapacidad = "OT";
+            } else if (origenincapacidad.equalsIgnoreCase(" ")) {
+                estadoOrigenIncapacidad = null;
             }
         }
+
         return estadoOrigenIncapacidad;
     }
 
     public void setEstadoOrigenIncapacidad(String estadoOrigenIncapacidad) {
+        if (estadoOrigenIncapacidad.equals("AT")) {
+            setOrigenincapacidad("AT");
+        } else if (estadoOrigenIncapacidad.equals("EG")) {
+            setOrigenincapacidad("EG");
+        } else if (estadoOrigenIncapacidad.equals("EP")) {
+            setOrigenincapacidad("EP");
+        } else if (estadoOrigenIncapacidad.equals("MA")) {
+            setOrigenincapacidad("MA");
+        } else if (estadoOrigenIncapacidad.equals("OT")) {
+            setOrigenincapacidad("OT");
+        } else if (estadoOrigenIncapacidad.equals(" ")) {
+            setOrigenincapacidad(null);
+        }
         this.estadoOrigenIncapacidad = estadoOrigenIncapacidad;
     }
 
     public String getEstadoFormaLiquidacion() {
-        if (estadoFormaLiquidacion == null) {
+        getFormaliquidacion();
             if (formaliquidacion == null) {
                 estadoFormaLiquidacion = " ";
 
@@ -297,19 +304,36 @@ public class Causasausentismos implements Serializable {
                     estadoFormaLiquidacion = "PROMEDIO ACUMULADOS 12 MESES";
                 } else if (formaliquidacion.equalsIgnoreCase("PROMEDIO IBC 12 MESES")) {
                     estadoFormaLiquidacion = "PROMEDIO IBC 12 MESES";
-                }else if (formaliquidacion.equalsIgnoreCase("PROMEDIO IBC 6 MESES")) {
+                } else if (formaliquidacion.equalsIgnoreCase("PROMEDIO IBC 6 MESES")) {
                     estadoFormaLiquidacion = "PROMEDIO IBC 6 MESES";
                 } else if (formaliquidacion.equalsIgnoreCase(" ")) {
-                    estadoFormaLiquidacion = " ";
+                    estadoFormaLiquidacion = null;
                 }
             }
-        }
+        
         return estadoFormaLiquidacion;
     }
 
     public void setEstadoFormaLiquidacion(String estadoFormaLiquidacion) {
+        if (estadoFormaLiquidacion.equals("BASICO")) {
+            setFormaliquidacion("BASICO");
+        } else if (estadoFormaLiquidacion.equals("IBC MES ANTERIOR")) {
+            setFormaliquidacion("IBC MES ANTERIOR");
+        } else if (estadoFormaLiquidacion.equals("IBC MES ENERO")) {
+            setFormaliquidacion("IBC MES ENERO");
+        } else if (estadoFormaLiquidacion.equals("IBC MES INCAPACIDAD")) {
+            setFormaliquidacion("IBC MES INCAPACIDAD");
+        } else if (estadoFormaLiquidacion.equals("PROMEDIO ACUMULADOS 12 MESES")) {
+            setFormaliquidacion("PROMEDIO ACUMULADOS 12 MESES");
+        } else if (estadoFormaLiquidacion.equals("PROMEDIO IBC 12 MESES")) {
+            setFormaliquidacion("PROMEDIO IBC 12 MESES");
+        } else if (estadoFormaLiquidacion.equals("PROMEDIO IBC 6 MESES")) {
+            setFormaliquidacion("PROMEDIO IBC 6 MESES");
+        } else if (estadoFormaLiquidacion.equals(" ")) {
+            setFormaliquidacion(null);
+        }
         this.estadoFormaLiquidacion = estadoFormaLiquidacion;
-    }   
+    }
 
     public boolean isEstadoRemunerada() {
         if (remunerada != null) {
@@ -398,8 +422,5 @@ public class Causasausentismos implements Serializable {
         }
         this.estadoGarantizaBaseml = estadoGarantizaBaseml;
     }
-    
-    
-    
-    
+
 }

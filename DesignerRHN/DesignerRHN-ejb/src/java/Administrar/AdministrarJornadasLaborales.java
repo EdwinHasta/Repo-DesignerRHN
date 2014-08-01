@@ -58,16 +58,15 @@ public class AdministrarJornadasLaborales implements AdministrarJornadasLaborale
 
     @Override
     public void modificarJornadasLaborales(List<JornadasLaborales> listaJornadasLaborales) {
-        JornadasLaborales c;
         for (int i = 0; i < listaJornadasLaborales.size(); i++) {
-            System.out.println("Modificando...JornadasLaborales");
             if (listaJornadasLaborales.get(i).getCodigo().equals(null)) {
                 listaJornadasLaborales.get(i).setCodigo(null);
-                c = listaJornadasLaborales.get(i);
+                persistenciaJornadasLaborales.editar(em, listaJornadasLaborales.get(i));
+            } else if (listaJornadasLaborales.get(i).getJornada().getSecuencia() == null) {
+                listaJornadasLaborales.get(i).setJornada(null);
             } else {
-                c = listaJornadasLaborales.get(i);
+                persistenciaJornadasLaborales.editar(em, listaJornadasLaborales.get(i));
             }
-            persistenciaJornadasLaborales.editar(em, c);
         }
     }
 
@@ -76,9 +75,10 @@ public class AdministrarJornadasLaborales implements AdministrarJornadasLaborale
         for (int i = 0; i < listaJornadasLaborales.size(); i++) {
             System.out.println("Borrando..JornadasLaborales.");
             if (listaJornadasLaborales.get(i).getCodigo().equals(null)) {
-
                 listaJornadasLaborales.get(i).setCodigo(null);
                 persistenciaJornadasLaborales.borrar(em, listaJornadasLaborales.get(i));
+            } else if (listaJornadasLaborales.get(i).getJornada().getSecuencia() == null) {
+                listaJornadasLaborales.get(i).setJornada(null);
             } else {
                 persistenciaJornadasLaborales.borrar(em, listaJornadasLaborales.get(i));
             }
@@ -90,9 +90,10 @@ public class AdministrarJornadasLaborales implements AdministrarJornadasLaborale
         for (int i = 0; i < listaJornadasLaborales.size(); i++) {
             System.out.println("Creando. JornadasLaborales..");
             if (listaJornadasLaborales.get(i).getCodigo().equals(null)) {
-
                 listaJornadasLaborales.get(i).setCodigo(null);
                 persistenciaJornadasLaborales.crear(em, listaJornadasLaborales.get(i));
+            } else if (listaJornadasLaborales.get(i).getJornada().getSecuencia() == null) {
+                listaJornadasLaborales.get(i).setJornada(null);
             } else {
                 persistenciaJornadasLaborales.crear(em, listaJornadasLaborales.get(i));
             }
@@ -101,12 +102,9 @@ public class AdministrarJornadasLaborales implements AdministrarJornadasLaborale
 
     @Override
     public void modificarJornadasSemanales(List<JornadasSemanales> listaJornadasSemanales) {
-        JornadasSemanales c;
         for (int i = 0; i < listaJornadasSemanales.size(); i++) {
             System.out.println("Modificando JornadasSemanales...");
-            c = listaJornadasSemanales.get(i);
-
-            persistenciaJornadasSemanales.editar(em, c);
+            persistenciaJornadasSemanales.editar(em, listaJornadasSemanales.get(i));
         }
     }
 
@@ -114,7 +112,6 @@ public class AdministrarJornadasLaborales implements AdministrarJornadasLaborale
     public void borrarJornadasSemanales(List<JornadasSemanales> listaJornadasSemanales) {
         for (int i = 0; i < listaJornadasSemanales.size(); i++) {
             System.out.println("Borrando JornadasSemanales...");
-
             persistenciaJornadasSemanales.borrar(em, listaJornadasSemanales.get(i));
 
         }
@@ -124,7 +121,7 @@ public class AdministrarJornadasLaborales implements AdministrarJornadasLaborale
     public void crearJornadasSemanales(List<JornadasSemanales> listaJornadasSemanales) {
         for (int i = 0; i < listaJornadasSemanales.size(); i++) {
             System.out.println("Creando JornadasSemanales...");
-            System.out.println("secuencia: "+ listaJornadasSemanales.get(i).getSecuencia());
+            System.out.println("secuencia: " + listaJornadasSemanales.get(i).getSecuencia());
             persistenciaJornadasSemanales.crear(em, listaJornadasSemanales.get(i));
 
         }

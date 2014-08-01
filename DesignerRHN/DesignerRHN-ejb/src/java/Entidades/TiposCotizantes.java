@@ -408,7 +408,9 @@ public class TiposCotizantes implements Serializable {
 
     public void setEstadoSubTipoCotizante(String estadoSubTipoCotizante) {
 
-        if (estadoSubTipoCotizante.equals("1")) {
+        if (estadoSubTipoCotizante.equals(" ")) {
+            setSubtipocotizante(null);
+        } else if (estadoSubTipoCotizante.equals("1")) {
             setSubtipocotizante(new Short("1"));
         } else if (estadoSubTipoCotizante.equals("2")) {
             setSubtipocotizante(new Short("2"));
