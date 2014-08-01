@@ -202,7 +202,7 @@
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px;  " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" action="perReferenciaLaboral1Atras"    />
 
 
-                        <p:dialog header="Parentesco" widgetVar="sucursalesDialogo" draggable="false" resizable="false" closable="false" id="sucursalesDialogo"  
+                        <p:dialog header="Tipo Indice" widgetVar="tiposindicesDialogo" draggable="false" resizable="false" closable="false" id="tiposindicesDialogo"  
                                   showEffect="fade" hideEffect="fade" width="470" modal="true" style="">
                             <p:dataTable id="lovTiposIndices" style=" width: 430px" var="tpoindice" value="#{controlIndices.listaTiposIndices}" rowKey="#{tpoindice.secuencia}"
                                          selection="#{controlIndices.tipoIndiceSeleccionado}" selectionMode="single" widgetVar="lovTiposIndices" scrollable="true" scrollWidth="450" scrollHeight="250"
@@ -210,7 +210,7 @@
                                 <p:ajax event="rowSelect" listener="#{controlIndices.activarAceptar()}" update=":form:aceptarS"/>
                                 <p:ajax event="rowDblselect" listener="#{controlIndices.actualizarTipoIndice()}" process="@this" onstart="lovTiposIndices.clearFilters()"/>
                                 <f:facet name="header">  
-                                    <h:outputText value="Buscar Parentesco"  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <h:outputText value="Buscar Tipo Indice"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTiposIndices.filter();" style="width:150px; position: relative; left: 50px;" />  
                                 </f:facet>
                                 <p:column filterBy="#{tpoindice.codigo}" width="60" filterStyle="width:50px;" filterMatchMode="contains">
@@ -228,10 +228,10 @@
 
                             </p:dataTable>
                             <h:outputText id="infoRegistroParentesco" value="#{controlIndices.infoRegistroParentesco}" style="position: absolute;  top: 355px; font-weight: bold"/>
-                            <p:commandButton id="aceptarS" icon="ui-icon-check" style="position: relative; left: 275px" value="Aceptar" disabled="#{controlIndices.aceptar}"  onclick="sucursalesDialogo.hide(), lovTiposIndices.clearFilters();"  actionListener="#{controlIndices.actualizarTipoIndice()}" update="lovTiposIndices, aceptarS, datosIndices" process="@this">
+                            <p:commandButton id="aceptarS" icon="ui-icon-check" style="position: relative; left: 275px" value="Aceptar" disabled="#{controlIndices.aceptar}"  onclick="tiposindicesDialogo.hide(), lovTiposIndices.clearFilters();"  actionListener="#{controlIndices.actualizarTipoIndice()}" update="lovTiposIndices, aceptarS, datosIndices" process="@this">
                                 <p:resetInput target=":form:lovTiposIndices:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 275px" value="Atras"  actionListener="#{controlIndices.cancelarCambioTiposIndices()}" onclick="sucursalesDialogo.hide();
+                            <p:commandButton id="atrasS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 275px" value="Atras"  actionListener="#{controlIndices.cancelarCambioTiposIndices()}" onclick="tiposindicesDialogo.hide();
                                     lovTiposIndices.clearFilters();" update="lovTiposIndices" process="@this">
                                 <p:resetInput target=":form:lovTiposIndices:globalFilter"/>
                             </p:commandButton>

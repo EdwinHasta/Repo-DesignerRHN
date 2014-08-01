@@ -70,7 +70,7 @@ public class ControlIndices implements Serializable {
     private String mensajeValidacion;
     //autocompletar
     private String tipoIndice;
-    private List<TiposIndices> listaTiposIndices;
+    private List<TiposIndices> listaClavesAjustes;
     private List<TiposIndices> filtradoTiposIndices;
     private TiposIndices tipoIndiceSeleccionado;
     private String nuevoParentesco;
@@ -91,7 +91,7 @@ public class ControlIndices implements Serializable {
         nuevoIndices.setTipoindice(new TiposIndices());
         duplicarIndices = new Indices();
         duplicarIndices.setTipoindice(new TiposIndices());
-        listaTiposIndices = null;
+        listaClavesAjustes = null;
         filtradoTiposIndices = null;
         tipoLista = 0;
         tamano = 270;
@@ -179,8 +179,8 @@ public class ControlIndices implements Serializable {
                 tipoActualizacion = 2;
             }
             if (dig == 2) {
-                context.update("form:sucursalesDialogo");
-                context.execute("sucursalesDialogo.show()");
+                context.update("form:tiposindicesDialogo");
+                context.execute("tiposindicesDialogo.show()");
                 dig = -1;
             }
 
@@ -197,9 +197,9 @@ public class ControlIndices implements Serializable {
         if (index >= 0) {
             RequestContext context = RequestContext.getCurrentInstance();
 
-            if (cualCelda == 4) {
-                context.update("form:sucursalesDialogo");
-                context.execute("sucursalesDialogo.show()");
+            if (cualCelda == 2) {
+                context.update("form:tiposindicesDialogo");
+                context.execute("tiposindicesDialogo.show()");
                 tipoActualizacion = 0;
             }
 
@@ -564,8 +564,8 @@ public class ControlIndices implements Serializable {
                     filtrarIndices.get(indice).getTipoindice().setDescripcion(tipoIndice);
                 }
 
-                for (int i = 0; i < listaTiposIndices.size(); i++) {
-                    if (listaTiposIndices.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                for (int i = 0; i < listaClavesAjustes.size(); i++) {
+                    if (listaClavesAjustes.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
                         indiceUnicoElemento = i;
                         coincidencias++;
                     }
@@ -573,18 +573,18 @@ public class ControlIndices implements Serializable {
 
                 if (coincidencias == 1) {
                     if (tipoLista == 0) {
-                        listIndices.get(indice).setTipoindice(listaTiposIndices.get(indiceUnicoElemento));
+                        listIndices.get(indice).setTipoindice(listaClavesAjustes.get(indiceUnicoElemento));
                     } else {
-                        filtrarIndices.get(indice).setTipoindice(listaTiposIndices.get(indiceUnicoElemento));
+                        filtrarIndices.get(indice).setTipoindice(listaClavesAjustes.get(indiceUnicoElemento));
                     }
-                    listaTiposIndices.clear();
-                    listaTiposIndices = null;
+                    listaClavesAjustes.clear();
+                    listaClavesAjustes = null;
                     getListaTiposIndices();
 
                 } else {
                     permitirIndex = false;
-                    context.update("form:sucursalesDialogo");
-                    context.execute("sucursalesDialogo.show()");
+                    context.update("form:tiposindicesDialogo");
+                    context.execute("tiposindicesDialogo.show()");
                     tipoActualizacion = 0;
                 }
             } else {
@@ -834,7 +834,7 @@ public class ControlIndices implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("sucursalesDialogo.hide()");
+        context.execute("tiposindicesDialogo.hide()");
         context.reset("form:lovTiposIndices:globalFilter");
         context.update("form:lovTiposIndices");
         context.update("form:datosIndices");
@@ -1075,8 +1075,8 @@ public class ControlIndices implements Serializable {
                 if (tipoNuevo == 1) {
                     nuevoIndices.getTipoindice().setDescripcion(nuevoParentesco);
                 }
-                for (int i = 0; i < listaTiposIndices.size(); i++) {
-                    if (listaTiposIndices.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                for (int i = 0; i < listaClavesAjustes.size(); i++) {
+                    if (listaClavesAjustes.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
                         indiceUnicoElemento = i;
                         coincidencias++;
                     }
@@ -1091,15 +1091,15 @@ public class ControlIndices implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoNuevo == 1) {
-                    nuevoIndices.setTipoindice(listaTiposIndices.get(indiceUnicoElemento));
+                    nuevoIndices.setTipoindice(listaClavesAjustes.get(indiceUnicoElemento));
                     context.update("formularioDialogos:nuevoNombreSucursal");
                 }
-                listaTiposIndices.clear();
-                listaTiposIndices = null;
+                listaClavesAjustes.clear();
+                listaClavesAjustes = null;
                 getListaTiposIndices();
             } else {
-                context.update("form:sucursalesDialogo");
-                context.execute("sucursalesDialogo.show()");
+                context.update("form:tiposindicesDialogo");
+                context.execute("tiposindicesDialogo.show()");
                 tipoActualizacion = tipoNuevo;
                 if (tipoNuevo == 1) {
                     context.update("formularioDialogos:nuevoNombreSucursal");
@@ -1119,25 +1119,25 @@ public class ControlIndices implements Serializable {
                 if (tipoNuevo == 2) {
                     duplicarIndices.getTipoindice().setDescripcion(nuevoParentesco);
                 }
-                for (int i = 0; i < listaTiposIndices.size(); i++) {
-                    if (listaTiposIndices.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                for (int i = 0; i < listaClavesAjustes.size(); i++) {
+                    if (listaClavesAjustes.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
                         indiceUnicoElemento = i;
                         coincidencias++;
                     }
                 }
                 if (coincidencias == 1) {
                     if (tipoNuevo == 2) {
-                        duplicarIndices.setTipoindice(listaTiposIndices.get(indiceUnicoElemento));
+                        duplicarIndices.setTipoindice(listaClavesAjustes.get(indiceUnicoElemento));
                         context.update("formularioDialogos:duplicarNombreSucursal");
 
                     }
-                    listaTiposIndices.clear();
-                    listaTiposIndices = null;
+                    listaClavesAjustes.clear();
+                    listaClavesAjustes = null;
                     context.update("formularioDialogos:duplicarNombreSucursal");
                     getListaTiposIndices();
                 } else {
-                    context.update("form:sucursalesDialogo");
-                    context.execute("sucursalesDialogo.show()");
+                    context.update("form:tiposindicesDialogo");
+                    context.execute("tiposindicesDialogo.show()");
                     tipoActualizacion = tipoNuevo;
                     if (tipoNuevo == 2) {
                         context.update("formularioDialogos:duplicarNombreSucursal");
@@ -1173,8 +1173,8 @@ public class ControlIndices implements Serializable {
             tipoActualizacion = 2;
         }
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:sucursalesDialogo");
-        context.execute("sucursalesDialogo.show()");
+        context.update("form:tiposindicesDialogo");
+        context.execute("tiposindicesDialogo.show()");
     }
 
     public void agregarNuevoIndices() {
@@ -1539,21 +1539,21 @@ public class ControlIndices implements Serializable {
     }
 
     public List<TiposIndices> getListaTiposIndices() {
-        if (listaTiposIndices == null) {
-            listaTiposIndices = administrarIndices.consultarLOVTiposIndices();
+        if (listaClavesAjustes == null) {
+            listaClavesAjustes = administrarIndices.consultarLOVTiposIndices();
         }
         RequestContext context = RequestContext.getCurrentInstance();
-        if (listaTiposIndices == null || listaTiposIndices.isEmpty()) {
+        if (listaClavesAjustes == null || listaClavesAjustes.isEmpty()) {
             infoRegistroParentesco = "Cantidad de registros: 0 ";
         } else {
-            infoRegistroParentesco = "Cantidad de registros: " + listaTiposIndices.size();
+            infoRegistroParentesco = "Cantidad de registros: " + listaClavesAjustes.size();
         }
         context.update("form:infoRegistroParentesco");
-        return listaTiposIndices;
+        return listaClavesAjustes;
     }
 
     public void setListaTiposIndices(List<TiposIndices> listaTiposIndices) {
-        this.listaTiposIndices = listaTiposIndices;
+        this.listaClavesAjustes = listaTiposIndices;
     }
 
     public List<TiposIndices> getFiltradoTiposIndices() {
