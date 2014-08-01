@@ -94,6 +94,7 @@ public class PersistenciaVigenciasUbicaciones implements PersistenciaVigenciasUb
     @Override
     public VigenciasUbicaciones buscarVigenciaUbicacion(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(VigenciasUbicaciones.class, secuencia);
         } catch (Exception e) {
             return null;
@@ -102,6 +103,7 @@ public class PersistenciaVigenciasUbicaciones implements PersistenciaVigenciasUb
 
     @Override
     public List<VigenciasUbicaciones> buscarVigenciasUbicaciones(EntityManager em) {
+        em.clear();
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasUbicaciones.class));
         return em.createQuery(cq).getResultList();
@@ -110,6 +112,7 @@ public class PersistenciaVigenciasUbicaciones implements PersistenciaVigenciasUb
     @Override
     public List<VigenciasUbicaciones> buscarVigenciaUbicacionesEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vu FROM VigenciasUbicaciones vu WHERE vu.empleado.secuencia = :secuenciaEmpl ORDER BY vu.fechavigencia DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

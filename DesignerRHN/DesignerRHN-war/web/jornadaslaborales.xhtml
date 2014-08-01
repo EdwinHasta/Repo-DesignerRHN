@@ -203,7 +203,7 @@
                                         <f:facet name="output">
                                             <h:outputText value="#{JornadasLaborales.jornada.descripcion}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{JornadasLaborales.jornada.descripcion}" id="editarProfesion" style=" border-radius: 0px; width: 95.5%;text-transform: uppercase;height: 12px"> 
+                                            <p:inputText value="#{JornadasLaborales.jornada.descripcion}" id="editarDescripcion" style=" border-radius: 0px; width: 95.5%;text-transform: uppercase;height: 12px"> 
                                                 <p:ajax event="change" listener="#{controlJornadasLaborales.modificarJornadasLaborales(indice, 'JORNADAS', JornadasLaborales.jornada.descripcion)}"/>
                                                 <p:ajax event="select" listener="#{controlJornadasLaborales.cambiarIndice(indice, 7)}" />
                                                 <p:ajax event="dblclick" listener="#{controlJornadasLaborales.asignarIndex(indice, 0, 0)}"/>
@@ -544,15 +544,15 @@
 
                             <strong><h:outputText value="#{msg['jornadajl']}" style=" position: absolute; top: 285px" /></strong>
                             <p:inputText id="duplicarJornada" value="#{controlJornadasLaborales.duplicarJornadaLaboral.jornada.descripcion}" style=" width: 122px; position: absolute; left: 200px; top: 285px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="click" listener="#{controlJornadasLaborales.valoresBackupAutocompletar(2)}" />
-                                <p:ajax event="change" listener="#{controlJornadasLaborales.autocompletarNuevoyDuplicado(controlJornadasLaborales.duplicarJornadaLaboral.jornada.descripcion, 2)}" />
+                                <p:ajax event="click" listener="#{controlJornadasLaborales.valoresBackupAutocompletar(2, 'JORNADA')}" />
+                                <p:ajax event="change" listener="#{controlJornadasLaborales.autocompletarNuevoyDuplicado('JORNADA', controlJornadasLaborales.nuevaJornadaLaboral.jornada.descripcion, 2)}" />
                                 <p:ajax event="dblclick" listener="#{controlJornadasLaborales.llamarLovJornadas(2)}" />
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 285px; " id="btnDuplicarJornada" process="@this" icon="ui-icon-search" actionListener="#{controlJornadasLaborales.llamarLovJornadas(2)}"/>
 
 
                             <p:commandButton id="limpiarDuplicadoJornadaLaboral" value="#{msg['limpiar']}" icon="ui-icon-trash" style=" position: absolute; left: 20px; top: 340px;" actionListener="#{controlJornadasLaborales.limpiarduplicarJornadaLaboral()}" update="duplicarJornadaLaboral" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoJornadaLaboral" value="#{msg['agregar']}" icon="ui-icon-circle-check" style=" position: absolute; left: 180px; top: 340px;" process="@this" actionListener="#{controlJornadasLaborales.confirmarDuplicarJL()}" onclick="DuplicarRegistroJornadaLaboral.hide();"  />
+                            <p:commandButton id="agregarDuplicadoJornadaLaboral" value="#{msg['agregar']}" icon="ui-icon-circle-check" style=" position: absolute; left: 180px; top: 340px;" process="@this" actionListener="#{controlJornadasLaborales.confirmarDuplicarJL()}" />
                             <p:commandButton id="cancelarDuplicadoJornadaLaboral" value="#{msg['cancelar']}" icon="ui-icon-circle-close" style=" position: absolute; left: 280px; top: 340px;" actionListener="#{controlJornadasLaborales.limpiarduplicarJornadaLaboral()}" update="duplicarJornadaLaboral" onclick="DuplicarRegistroJornadaLaboral.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
@@ -684,18 +684,19 @@
                     </p:dialog>                    
 
                     <!-- DIALOGO CAMBIO DE JORNADA -->
-                    <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                    <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425px"  closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['cambio']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />                                   
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlJornadasLaborales.guardarTodo()}" style="position: absolute; top: 63px; left: 207px" process="@this" icon="ui-icon-check" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlJornadasLaborales.limpiarListas()}" style="position: absolute; top: 63px; left: 270px" process="@this" icon="ui-icon-close" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlJornadasLaborales.guardarTodo()}" action="VigenciaJornada" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlJornadasLaborales.cancelarModificacion()}" style="position: absolute; top: 50px; left: 270px" process="@this" icon="ui-icon-close" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
 
                     <p:dialog id="confirmarGuardarSinSalida" header="#{msg['atencion']}" widgetVar="confirmarGuardarSinSalida"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarGuardarSinSalida.hide();" actionListener="#{controlJornadasLaborales.guardarTodo()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardarSinSalida.hide();" actionListener="#{controlVigenciaJornada.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardarSinSalida.hide();" actionListener="#{controlJornadasLaborales.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardarSinSalida.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
                     <!-- L.O.V jornada-->
@@ -704,7 +705,7 @@
 
                         <p:dataTable  id="LOVJornadas" style=" width: 330px" var="jornadas" value="#{controlJornadasLaborales.lovJornadas}"
                                       scrollable="true" scrollWidth="345" widgetVar="LOVJornadas" 
-                                      filteredValue="#{controlJornadasLaborales.lovFiltradoJornadas}" emptyMessage="No hay nada"
+                                      filteredValue="#{controlJornadasLaborales.lovFiltradoJornadas}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{jornadas.secuencia}" selection="#{controlJornadasLaborales.jornadaSeleccionada}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlJornadasLaborales.activarAceptar()}" update=":formularioDialogos:aceptarJ"/>
                             <p:ajax event="rowDblselect" listener="#{controlJornadasLaborales.actualizarJornadas()}" process="@this" onstart="LOVJornadas.clearFilters()"/>
@@ -858,7 +859,7 @@
                         </p:inputText>
                     </p:dialog>
                     <p:dialog id="editarJornada" header="#{msg['jornadae']}" widgetVar="editarJornada" resizable="false" draggable="false" modal="true" height="55" width="240">  
-                        <p:inputText value="#{controlJornadasLaborales.editarJornadaLaboral.jornada}" style="overflow: auto; width: 200px; height: 40px" readonly="true">                               
+                        <p:inputText value="#{controlJornadasLaborales.editarJornadaLaboral.jornada.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true">                               
                         </p:inputText>
                     </p:dialog>
                     <!-- Editar Semana Laboral -->

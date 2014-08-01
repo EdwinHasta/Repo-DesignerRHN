@@ -84,6 +84,7 @@ public class PersistenciaCompetenciasCargos implements PersistenciaCompetenciasC
     @Override
     public List<Competenciascargos> buscarCompetenciasCargos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT cc FROM Competenciascargos cc ORDER BY cc.peso ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Competenciascargos> competenciascargos = query.getResultList();
@@ -97,6 +98,7 @@ public class PersistenciaCompetenciasCargos implements PersistenciaCompetenciasC
     @Override
     public Competenciascargos buscarCompetenciasCargosSecuencia(EntityManager em,BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT cc FROM Competenciascargos cc WHERE cc.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -112,6 +114,7 @@ public class PersistenciaCompetenciasCargos implements PersistenciaCompetenciasC
     @Override
     public List<Competenciascargos> buscarCompetenciasCargosParaSecuenciaCargo(EntityManager em,BigInteger secCargo) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT cc FROM Competenciascargos cc WHERE cc.cargo.secuencia=:secCargo");
             query.setParameter("secCargo", secCargo);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

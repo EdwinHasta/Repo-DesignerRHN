@@ -80,6 +80,7 @@ public class PersistenciaTiposCertificados implements PersistenciaTiposCertifica
     @Override
     public TiposCertificados buscarTipoCertificado(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(TiposCertificados.class, secuencia);
         } catch (Exception e) {
             return null;
@@ -88,6 +89,7 @@ public class PersistenciaTiposCertificados implements PersistenciaTiposCertifica
 
     @Override
     public List<TiposCertificados> buscarTiposCertificados(EntityManager em) {
+        em.clear();
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(TiposCertificados.class));
         return em.createQuery(cq).getResultList();

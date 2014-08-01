@@ -17,7 +17,7 @@
                                 <h:graphicImage value="Imagenes/IconNFYO.gif" style="position: absolute; top: 18px; left: 5px; width: 35px  ; height: 50px "/>
                                 <p:commandButton style="position: absolute; left: 45px; width: 180px;top:21px; height: 25px ;" value="Por Empleado..." actionListener="#{controlNovedad.recibir('por empleado...')}" action="novedadempleado"/>
                                
-                                <p:commandButton style="position: absolute;top: 50px; left: 45px; width: 180px; height: 25px ;" value="Por Concepto..." actionListener="#{controlNovedad.recibir('por Concepto...')}" action="novedadconcepto" />
+                                <p:commandButton style="position: absolute;top: 50px; left: 45px; width: 180px; height: 25px ;" value="Por Concepto..." action="novedadconcepto" />
                                 <p:commandButton style="position: absolute;top: 79px; left: 45px; width: 180px; height: 25px ;" value="Por Tercero..." actionListener="#{controlNovedad.recibir('por Tercero...')}" action="Impresion"/>
                             </fieldset>
                             <fieldset style="position: absolute; left: 5px;top: 130px ;height: 101px; width: 225px; border-radius: 10px">
@@ -47,7 +47,7 @@
                                 <p:commandButton style="position: absolute; top: 105px;left: 90px; width: 180px; height: 25px; " value="Parametros Tiempos..." actionListener="#{controlNovedad.recibir('Parametros Tiempos')}" action="Impresion"></p:commandButton>
                                 <p:commandButton style="position: absolute; top: 145px;left: 90px; width: 180px; height: 25px; " value="Novedad Horas Extras..." actionListener="#{controlNovedad.recibir('Novedad Horas Extras')}" action="Impresion"></p:commandButton>
                                 <p:commandButton style="position: absolute; top: 185px;left: 90px; width: 180px; height: 25px; " value="Aprovación Horas Extras..." actionListener="#{controlNovedad.recibir('Aprovacion Horas Extras')}" action="Impresion"></p:commandButton>
-                                <p:commandButton style="position: absolute; top: 225px;left: 90px; width: 180px; height: 25px; " value="Ausentismos..." actionListener="#{controlNovedad.recibir('Ausentismos')}" action="Impresion" ></p:commandButton>
+                                <p:commandButton style="position: absolute; top: 225px;left: 90px; width: 180px; height: 25px; " value="Ausentismos..."  action="atausentismos" ></p:commandButton>
                             </fieldset>
                             <fieldset style="position: absolute; top: 280px ;left: 265px;height: 103px; width: 265px; border-radius: 10px">
                                 <legend style=" color: blue"><strong>Préstamos</strong></legend>

@@ -82,6 +82,7 @@ public class PersistenciaDiagnosticosCategorias implements PersistenciaDiagnosti
     @Override
     public List<Diagnosticoscategorias> buscarDiagnosticos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT d FROM Diagnosticoscategorias d ORDER BY d.codigo DESC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Diagnosticoscategorias> diagnosticosCategorias = query.getResultList();

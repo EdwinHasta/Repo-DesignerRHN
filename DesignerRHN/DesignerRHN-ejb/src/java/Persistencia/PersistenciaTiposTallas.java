@@ -88,6 +88,7 @@ public class PersistenciaTiposTallas implements PersistenciaTiposTallasInterface
 
     @Override
     public List<TiposTallas> buscarTiposTallas(EntityManager em) {
+        em.clear();
         Query query = em.createQuery("SELECT m FROM TiposTallas m ORDER BY m.codigo ASC ");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<TiposTallas> listMotivosDemandas = query.getResultList();
@@ -98,6 +99,7 @@ public class PersistenciaTiposTallas implements PersistenciaTiposTallasInterface
     public BigInteger contadorElementos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = " SELECT COUNT(*)FROM  elementos e WHERE e.tipotalla = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -114,6 +116,7 @@ public class PersistenciaTiposTallas implements PersistenciaTiposTallasInterface
     public BigInteger contadorVigenciasTallas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM  vigenciastallas vt WHERE vt.tipotalla = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

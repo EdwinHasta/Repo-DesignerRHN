@@ -82,6 +82,7 @@ public class PersistenciaNovedadesSistema implements PersistenciaNovedadesSistem
     @Override
     public List<NovedadesSistema> novedadesEmpleado(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT n FROM NovedadesSistema n WHERE n.tipo = 'DEFINITIVA' and n.empleado.secuencia = :secuenciaEmpleado ORDER BY n.fechainicialdisfrute DESC");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -95,6 +96,7 @@ public class PersistenciaNovedadesSistema implements PersistenciaNovedadesSistem
 
     public List<NovedadesSistema> novedadesEmpleadoVacaciones(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT n FROM NovedadesSistema n WHERE n.empleado.secuencia = :secuenciaEmpleado ORDER BY n.fechainicialdisfrute DESC");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -108,6 +110,7 @@ public class PersistenciaNovedadesSistema implements PersistenciaNovedadesSistem
 
     public String buscarEstadoVacaciones(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
+            em.clear();
             SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
             Date ultimaFechaDisfrute, fechaRegreso;
             try {

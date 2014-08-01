@@ -120,7 +120,7 @@ public class ControlReportesBancos implements Serializable {
         actualInfoReporteTabla = new Inforeportes();
         cambiosReporte = true;
         listaInfoReportesModificados = new ArrayList<Inforeportes>();
-        altoTabla = "185";
+        altoTabla = "160";
         parametroDeInforme = null;
         listaIR = null;
         listaIRRespaldo = new ArrayList<Inforeportes>();
@@ -924,7 +924,7 @@ public class ControlReportesBancos implements Serializable {
 
     public void salir() {
         if (bandera == 1) {
-            altoTabla = "185";
+            altoTabla = "160";
             codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesBancos:codigoIR");
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
             reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesBancos:reporteIR");
@@ -963,7 +963,7 @@ public class ControlReportesBancos implements Serializable {
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
             reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesBancos:reporteIR");
             reporteIR.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "185";
+            altoTabla = "160";
             RequestContext.getCurrentInstance().update("form:reportesBancos");
             bandera = 0;
             filtrarListInforeportesUsuario = null;
@@ -1022,7 +1022,7 @@ public class ControlReportesBancos implements Serializable {
 
     public void activarCtrlF11() {
         if (bandera == 0) {
-            altoTabla = "163";
+            altoTabla = "138";
             codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesBancos:codigoIR");
             codigoIR.setFilterStyle("width: 25px");
             reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesBancos:reporteIR");
@@ -1031,7 +1031,7 @@ public class ControlReportesBancos implements Serializable {
             tipoLista = 1;
             bandera = 1;
         } else if (bandera == 1) {
-            altoTabla = "185";
+            altoTabla = "160";
             codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesBancos:codigoIR");
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
             reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesBancos:reporteIR");

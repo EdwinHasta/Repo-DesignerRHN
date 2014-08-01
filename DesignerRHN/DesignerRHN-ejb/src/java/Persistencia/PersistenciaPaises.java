@@ -79,6 +79,7 @@ public class PersistenciaPaises implements PersistenciaPaisesInterface {
     @Override
     public List<Paises> consultarPaises(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT ta FROM Paises ta ORDER BY ta.codigo");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Paises> todosPaises = query.getResultList();
@@ -91,6 +92,7 @@ public class PersistenciaPaises implements PersistenciaPaisesInterface {
 
     public Paises consultarPais(EntityManager em, BigInteger secClaseCategoria) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("SELECT cc FROM Paises cc WHERE cc.secuencia=:secuencia");
             query.setParameter("secuencia", secClaseCategoria);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -104,6 +106,7 @@ public class PersistenciaPaises implements PersistenciaPaisesInterface {
     public BigInteger contarDepartamentosPais(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM departamentos WHERE pais = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -119,6 +122,7 @@ public class PersistenciaPaises implements PersistenciaPaisesInterface {
     public BigInteger contarFestivosPais(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM festivos WHERE pais = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

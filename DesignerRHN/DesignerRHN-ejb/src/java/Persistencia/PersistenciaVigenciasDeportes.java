@@ -78,6 +78,7 @@ public class PersistenciaVigenciasDeportes implements PersistenciaVigenciasDepor
     @Override
     public List<VigenciasDeportes> deportePersona(EntityManager em, BigInteger secuenciaPersona) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(vd) FROM VigenciasDeportes vd WHERE vd.persona.secuencia = :secuenciaPersona");
             query.setParameter("secuenciaPersona", secuenciaPersona);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -99,6 +100,7 @@ public class PersistenciaVigenciasDeportes implements PersistenciaVigenciasDepor
     @Override
     public List<VigenciasDeportes> deportesTotalesSecuenciaPersona(EntityManager em, BigInteger secuenciaP) {
         try {
+            em.clear();
             Query queryFinal = em.createQuery("SELECT vd FROM VigenciasDeportes vd WHERE vd.persona.secuencia = :secuenciaPersona");
             queryFinal.setParameter("secuenciaPersona", secuenciaP);
             queryFinal.setHint("javax.persistence.cache.storeMode", "REFRESH");

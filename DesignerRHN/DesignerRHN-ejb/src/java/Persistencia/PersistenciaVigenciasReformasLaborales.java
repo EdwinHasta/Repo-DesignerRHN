@@ -92,6 +92,7 @@ public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigen
 
     @Override
     public List<VigenciasReformasLaborales> buscarVigenciasRefLab(EntityManager em) {
+        em.clear();
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasReformasLaborales.class));
         return em.createQuery(cq).getResultList();
@@ -100,6 +101,7 @@ public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigen
     @Override
     public List<VigenciasReformasLaborales> buscarVigenciasReformasLaboralesEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vrl FROM VigenciasReformasLaborales vrl WHERE vrl.empleado.secuencia = :secuenciaEmpl ORDER BY vrl.fechavigencia DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -114,6 +116,7 @@ public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigen
     @Override
     public VigenciasReformasLaborales buscarVigenciaReformaLaboralSecuencia(EntityManager em, BigInteger secVRL){
         try{
+            em.clear();
             Query query = em.createNamedQuery("VigenciasReformasLaborales.findBySecuencia").setParameter("secuencia", secVRL);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasReformasLaborales vigenciaRefLab = (VigenciasReformasLaborales)query.getSingleResult();

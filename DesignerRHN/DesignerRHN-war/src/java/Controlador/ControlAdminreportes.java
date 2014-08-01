@@ -85,6 +85,9 @@ public class ControlAdminreportes implements Serializable {
     private String altoTabla;
     private boolean cambiosPagina;
     private BigInteger codiguin;
+    private String infoRegistroModulo;
+    private String infoRegistroInfoReporte;
+    public String infoRegistro;
 
     public ControlAdminreportes() {
         cambiosPagina = true;
@@ -112,6 +115,12 @@ public class ControlAdminreportes implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarInforeportes.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
+            getListaInforeportes();
+            if (listaInforeportes != null) {
+                infoRegistro = "Cantidad de registros : " + listaInforeportes.size();
+            } else {
+                infoRegistro = "Cantidad de registros : 0";
+            }
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
@@ -354,6 +363,9 @@ public class ControlAdminreportes implements Serializable {
         if (tipoLista == 0) {
             tipoLista = 1;
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        infoRegistro = "Cantidad de registros: " + filtradosListaInforeportes.size();
+        context.update("form:informacionRegistro");
     }
 
     public void seleccionarTipo(String estadoTipo, int indice, int celda) {
@@ -499,11 +511,11 @@ public class ControlAdminreportes implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         cambiosPagina = false;
         context.update("form:ACEPTAR");
-        if (!nuevoInforeporte.getCodigo().equals(null) && nuevoInforeporte.getModulo().getNombre() != null) {
+        if (!duplicarInforeporte.getCodigo().equals(null) && duplicarInforeporte.getModulo().getNombre() != null) {
             for (int i = 0; i < listaInforeportes.size(); i++) {
-                if (nuevoInforeporte.getCodigo().equals(listaInforeportes.get(i).getCodigo())) {
+                if (duplicarInforeporte.getCodigo().equals(listaInforeportes.get(i).getCodigo())) {
                     System.out.println("El Codigo ya está ahora revisamos modulo en: " + i);
-                    if (nuevoInforeporte.getModulo().getNombre().equals(listaInforeportes.get(i).getModulo().getNombre())) {
+                    if (duplicarInforeporte.getModulo().getNombre().equals(listaInforeportes.get(i).getModulo().getNombre())) {
                         System.out.println("El codigo y el módulo ya existen en: " + i);
                         pasa++;
 
@@ -512,6 +524,9 @@ public class ControlAdminreportes implements Serializable {
             }
         }
         if (pasa == 0) {
+            k++;
+            l = BigInteger.valueOf(k);
+            duplicarInforeporte.setSecuencia(l);
             listaInforeportes.add(duplicarInforeporte);
             listaInforeportesCrear.add(duplicarInforeporte);
 
@@ -547,6 +562,8 @@ public class ControlAdminreportes implements Serializable {
             }
             context.update("form:datosInforeportes");
             duplicarInforeporte = new Inforeportes();
+            infoRegistro = "Cantidad de registros: " + listaInforeportes.size();
+            context.update("form:informacionRegistro");
             context.update("formularioDialogos:DuplicarInforeporte");
             context.execute("DuplicarInforeporte.hide()");
         } else {
@@ -775,13 +792,20 @@ public class ControlAdminreportes implements Serializable {
         secRegistro = null;
         k = 0;
         listaInforeportes = null;
+        getListaInforeportes();
+        
+        if (listaInforeportes != null && !listaInforeportes.isEmpty()) {
+            inforeporteSeleccionado = listaInforeportes.get(0);
+            infoRegistro = "Cantidad de registros: " + listaInforeportes.size();
+        } else {
+            infoRegistro = "Cantidad de registros: 0";
+        }
         guardado = true;
         permitirIndex = true;
-        cambiosPagina = false;
 
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:ACEPTAR");
-        context.update("form:datosInforeportes");
+        context.update("form:PanelTotal");
+        
     }
 
     public void cancelarCambioInforeportes() {
@@ -878,18 +902,20 @@ public class ControlAdminreportes implements Serializable {
     public void agregarNuevoInforeporte() {
         int pasa = 0;
         RequestContext context = RequestContext.getCurrentInstance();
-        if (!nuevoInforeporte.getCodigo().equals(null) && nuevoInforeporte.getModulo().getNombre() != null) {
-            for (int i = 0; i < listaInforeportes.size(); i++) {
-                if (nuevoInforeporte.getCodigo().equals(listaInforeportes.get(i).getCodigo())) {
-                    System.out.println("El Codigo ya está ahora revisamos modulo en: " + i);
-                    if (nuevoInforeporte.getModulo().getNombre().equals(listaInforeportes.get(i).getModulo().getNombre())) {
-                        System.out.println("El codigo y el módulo ya existen en: " + i);
-                        pasa++;
+
+        if (nuevoInforeporte.getCodigo() != null) {
+            if (!nuevoInforeporte.getCodigo().equals(null) && nuevoInforeporte.getModulo().getNombre() != null) {
+                for (int i = 0; i < listaInforeportes.size(); i++) {
+                    if (nuevoInforeporte.getCodigo().equals(listaInforeportes.get(i).getCodigo())) {
+                        System.out.println("El Codigo ya está ahora revisamos modulo en: " + i);
+                        if (nuevoInforeporte.getModulo().getNombre().equals(listaInforeportes.get(i).getModulo().getNombre())) {
+                            System.out.println("El codigo y el módulo ya existen en: " + i);
+                            pasa++;
+                        }
                     }
                 }
             }
         }
-
         if (pasa == 0) {
             if (bandera == 1) {
                 FacesContext c = FacesContext.getCurrentInstance();
@@ -1053,15 +1079,12 @@ public class ControlAdminreportes implements Serializable {
                 nuevoInforeporte.setEnviomasivo("N");
             }
 
-            System.out.println("Fecha Desde: " + nuevoInforeporte.getFecdesde());
-            System.out.println("Fecha Hasta: " + nuevoInforeporte.getFechasta());
-            System.out.println("Empleado Desde: " + nuevoInforeporte.getEmdesde());
-            System.out.println("Empleado Hasta: " + nuevoInforeporte.getEmhasta());
-            System.out.println("Localización: " + nuevoInforeporte.getLocalizacion());
             cambiosPagina = false;
             context.update("form:ACEPTAR");
             listaInforeportesCrear.add(nuevoInforeporte);
             listaInforeportes.add(nuevoInforeporte);
+            infoRegistro = "Cantidad de registros: " + listaInforeportes.size();
+            context.update("form:informacionRegistro");
             nuevoInforeporte = new Inforeportes();
             context.update("form:datosInforeportes");
             if (guardado == true) {
@@ -1094,6 +1117,8 @@ public class ControlAdminreportes implements Serializable {
                     listaInforeportesBorrar.add(listaInforeportes.get(index));
                 }
                 listaInforeportes.remove(index);
+                infoRegistro = "Cantidad de registros: " + listaInforeportes.size();
+
             }
 
             if (tipoLista == 1) {
@@ -1110,11 +1135,14 @@ public class ControlAdminreportes implements Serializable {
                 int CIndex = listaInforeportes.indexOf(filtradosListaInforeportes.get(index));
                 listaInforeportes.remove(CIndex);
                 filtradosListaInforeportes.remove(index);
-                System.out.println("Realizado");
+                infoRegistro = "Cantidad de registros: " + filtradosListaInforeportes.size();
+
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosInforeportes");
+            context.update("form:informacionRegistro");
+
             index = -1;
             secRegistro = null;
 
@@ -1314,7 +1342,13 @@ public class ControlAdminreportes implements Serializable {
 
             System.out.println("Se guardaron los datos con exito");
             listaInforeportes = null;
-
+            getListaInforeportes();
+            if (listaInforeportes != null && !listaInforeportes.isEmpty()) {
+                inforeporteSeleccionado = listaInforeportes.get(0);
+                infoRegistro = "Cantidad de registros: " + listaInforeportes.size();
+            } else {
+                infoRegistro = "Cantidad de registros: 0";
+            }
             RequestContext context = RequestContext.getCurrentInstance();
             cambiosPagina = true;
             context.update("form:ACEPTAR");
@@ -1335,11 +1369,8 @@ public class ControlAdminreportes implements Serializable {
     public void duplicarI() {
         if (index >= 0) {
             duplicarInforeporte = new Inforeportes();
-            k++;
-            l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
-                duplicarInforeporte.setSecuencia(l);
                 duplicarInforeporte.setCodigo(listaInforeportes.get(index).getCodigo());
                 duplicarInforeporte.setNombre(listaInforeportes.get(index).getNombre());
                 duplicarInforeporte.setContador(listaInforeportes.get(index).getContador());
@@ -1369,7 +1400,6 @@ public class ControlAdminreportes implements Serializable {
 
             }
             if (tipoLista == 1) {
-                duplicarInforeporte.setSecuencia(l);
                 duplicarInforeporte.setCodigo(filtradosListaInforeportes.get(index).getCodigo());
                 duplicarInforeporte.setNombre(filtradosListaInforeportes.get(index).getNombre());
                 duplicarInforeporte.setContador(filtradosListaInforeportes.get(index).getContador());
@@ -1494,6 +1524,7 @@ public class ControlAdminreportes implements Serializable {
     }
 
     public List<Inforeportes> getLovlistaInforeportes() {
+        lovlistaInforeportes = administrarInforeportes.inforeportes();
         return lovlistaInforeportes;
     }
 
@@ -1608,6 +1639,44 @@ public class ControlAdminreportes implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public String getInfoRegistroModulo() {
+        getLovListaModulos();
+        if (lovListaModulos != null) {
+            infoRegistroModulo = "Cantidad de registros : " + lovListaModulos.size();
+        } else {
+            infoRegistroModulo = "Cantidad de registros : 0";
+        }
+
+        return infoRegistroModulo;
+    }
+
+    public void setInfoRegistroModulo(String infoRegistroModulo) {
+        this.infoRegistroModulo = infoRegistroModulo;
+    }
+
+    public String getInfoRegistroInfoReporte() {
+        getLovlistaInforeportes();
+        if (lovlistaInforeportes != null) {
+            infoRegistroInfoReporte = "Cantidad de registros : " + lovlistaInforeportes.size();
+        } else {
+            infoRegistroInfoReporte = "Cantidad de registros : 0";
+        }
+
+        return infoRegistroInfoReporte;
+    }
+
+    public void setInfoRegistroInfoReporte(String infoRegistroInfoReporte) {
+        this.infoRegistroInfoReporte = infoRegistroInfoReporte;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

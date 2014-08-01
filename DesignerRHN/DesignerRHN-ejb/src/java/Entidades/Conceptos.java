@@ -673,8 +673,8 @@ public class Conceptos implements Serializable {
             codigoSTR = codigo.toString();
 
         } else {
-            codigoSTR = " ";
-            codigo = BigInteger.valueOf(0);
+            codigoSTR = null;
+            codigo = null;
 
         }
         return codigoSTR;

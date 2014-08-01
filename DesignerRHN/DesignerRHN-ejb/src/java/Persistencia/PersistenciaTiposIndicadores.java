@@ -81,6 +81,7 @@ public class PersistenciaTiposIndicadores implements PersistenciaTiposIndicadore
     @Override
     public List<TiposIndicadores> buscarTiposIndicadores(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT g FROM TiposIndicadores g ORDER BY g.codigo ASC ");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List< TiposIndicadores> listMotivosDemandas = query.getResultList();
@@ -95,6 +96,7 @@ public class PersistenciaTiposIndicadores implements PersistenciaTiposIndicadore
     @Override
     public TiposIndicadores buscarTiposIndicadoresSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT te FROM TiposIndicadores te WHERE te.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -111,6 +113,7 @@ public class PersistenciaTiposIndicadores implements PersistenciaTiposIndicadore
     public BigInteger contadorVigenciasIndicadores(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*) FROM vigenciasindicadores WHERE tipoindicador= ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

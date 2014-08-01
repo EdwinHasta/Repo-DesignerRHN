@@ -81,6 +81,7 @@ public class PersistenciaTiposDocumentos implements PersistenciaTiposDocumentosI
     @Override
     public List<TiposDocumentos> consultarTiposDocumentos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT td FROM TiposDocumentos td ORDER BY td.nombrecorto");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposDocumentos> listaTiposDocumentos = query.getResultList();
@@ -94,6 +95,7 @@ public class PersistenciaTiposDocumentos implements PersistenciaTiposDocumentosI
     @Override
     public TiposDocumentos consultarTipoDocumento(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT tp FROM TiposDocumentos tp WHERE tp.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -110,6 +112,7 @@ public class PersistenciaTiposDocumentos implements PersistenciaTiposDocumentosI
     public BigInteger contarCodeudoresTipoDocumento(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM codeudores WHERE tipodocumento=?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -126,6 +129,7 @@ public class PersistenciaTiposDocumentos implements PersistenciaTiposDocumentosI
     public BigInteger contarPersonasTipoDocumento(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM personas WHERE tipodocumento=?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

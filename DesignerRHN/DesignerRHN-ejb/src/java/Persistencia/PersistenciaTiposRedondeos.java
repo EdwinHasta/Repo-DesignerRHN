@@ -31,6 +31,7 @@ public class PersistenciaTiposRedondeos implements PersistenciaTiposRedondeosInt
     @Override
     public List<TiposRedondeos> buscarTiposRedondeos(EntityManager em ) {
         try {
+            em.clear();
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(TiposRedondeos.class));
             return em.createQuery(cq).getResultList();

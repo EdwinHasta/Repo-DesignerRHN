@@ -73,11 +73,12 @@ public class PersistenciaConceptosSoportes implements PersistenciaConceptosSopor
 
     public List<ConceptosSoportes> consultarConceptosSoportes(EntityManager em) {
         try {
+            em.clear();
             /*Query query = em.createQuery("SELECT te FROM ConceptosSoportes te WHERE te.tipo='UNIDAD' AND EXISTS (SELECT 'X' FROM Conceptos n WHERE n.secuencia= te.concepto.secuencia)");
              query.setHint("javax.persistence.cache.storeMode", "REFRESH");
              List<ConceptosSoportes> conceptosSoportes = query.getResultList();*/
             String sql = "SELECT * FROM ConceptosSoportes c WHERE c.tipo = 'UNIDAD' AND EXISTS (SELECT 'X' FROM conceptos n WHERE n.SECUENCIA= c.CONCEPTO)";
-            Query query = em.createNativeQuery(sql,ConceptosSoportes.class);
+            Query query = em.createNativeQuery(sql, ConceptosSoportes.class);
             List<ConceptosSoportes> conceptosSoportes = query.getResultList();
             return conceptosSoportes;
         } catch (Exception e) {
@@ -88,6 +89,7 @@ public class PersistenciaConceptosSoportes implements PersistenciaConceptosSopor
 
     public ConceptosSoportes consultarConceptoSoporte(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT te FROM ConceptosSoportes te WHERE te.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -102,6 +104,7 @@ public class PersistenciaConceptosSoportes implements PersistenciaConceptosSopor
 
     public BigInteger consultarConceptoSoporteConceptoOperador(EntityManager em, BigInteger concepto, BigInteger operador) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(te) FROM ConceptosSoportes te WHERE te.concepto.secuencia = :concepto AND te.operando.secuencia = :operando");
             query.setParameter("concepto", concepto);
             query.setParameter("operando", operador);

@@ -13,7 +13,7 @@
 
                     <f:loadBundle basename="Recursos.cuenta" var="msg" />
 
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 525px; text-align: left;" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left;" >  
 
                         <p:toolbar style="position: absolute; top: 37px; left: 12px; height: 23px">  
                             <p:toolbarGroup align="left"> 
@@ -76,7 +76,7 @@
                         <h:outputText id="nitEmpresa" value="#{controlCuenta.empresaActual.nit}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 55px;left: 505px;"/>
 
 
-                        <fieldset style="position: absolute; left: 10px; top: 70px; width: 830px; height: 400px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute; left: 10px; top: 70px; width: 830px; height: 390px; border-radius: 10px; text-align: left">
                             <legend style="color: blue"><strong>#{msg['titulo']}</strong></legend>
 
                             <p:dataTable id="datosCuenta" var="infoC" rowKey="#{infoC.secuencia}" rowIndexVar="indice" style="border: 1px;width: 830px"   
@@ -286,19 +286,19 @@
 
                             </p:dataTable>
 
-                            <h:outputText id="informacionRegistro" value="#{controlCuenta.infoRegistro}" style="position: absolute; left: 15px; top: 390px; font-weight: bold"/>
+                            <h:outputText id="informacionRegistro" value="#{controlCuenta.infoRegistro}" style="position: absolute; left: 15px; top: 382px; font-weight: bold"/>
 
                         </fieldset>
 
-                        <p:commandButton value="#{msg['buscar']}"  style="position: absolute; left: 10px; top: 490px;" id="BUSCARTODOS" actionListener="#{controlCuenta.dialogoSeleccionarCuenta()}" process="@this"/>
-                        <p:commandButton value="#{msg['mostrar']}" style="position: absolute; left: 135px; top: 490px;" id="MOSTRARTODOS" actionListener="#{controlCuenta.mostrarTodos()}" process="@this"/>
+                        <p:commandButton value="#{msg['buscar']}"  style="position: absolute; left: 10px; top: 480px;" id="BUSCARTODOS" actionListener="#{controlCuenta.dialogoSeleccionarCuenta()}" process="@this"/>
+                        <p:commandButton value="#{msg['mostrar']}" style="position: absolute; left: 135px; top: 480px;" id="MOSTRARTODOS" actionListener="#{controlCuenta.mostrarTodos()}" process="@this"/>
 
-                        <p:separator id="separator"  style="vertical-align: central;position: absolute;height: 28px;width: 2px;top: 485px;left: 255px "/>  
-                        <p:commandButton  style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat;position: absolute; width: 28px; height: 28px; left: 265px; top: 492px;" id="DETALLES" value="" disabled="#{controlCuenta.activoDetalle}" process="@this" action="detalleCuenta" actionListener="#{controlDetalleCuenta.recibirCuenta(controlCuenta.cuentaActual.secuencia)}" />
+                        <p:separator id="separator"  style="vertical-align: central;position: absolute;height: 28px;width: 2px;top: 475px;left: 255px "/>  
+                        <p:commandButton  style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat;position: absolute; width: 28px; height: 28px; left: 265px; top: 482px;" id="DETALLES" value="" disabled="#{controlCuenta.activoDetalle}" process="@this" action="detalleCuenta" actionListener="#{controlDetalleCuenta.recibirCuenta(controlCuenta.cuentaActual.secuencia)}" />
                         <p:tooltip  for="DETALLES" value="#{msg['tdetallescuenta']}" />
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 490px;" id="ACEPTAR" value="#{msg['aceptar']}" disabled="#{controlCuenta.guardado}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" update=":form:datosCuenta" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 490px" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlCuenta.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 683px; top: 480px;" id="ACEPTAR" value="#{msg['aceptar']}" disabled="#{controlCuenta.guardado}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" update=":form:datosCuenta" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 480px" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlCuenta.salir()}" action="nomina" process="@this" />
                     </p:panel>
 
                     <p:dialog header="#{msg['contracuentaCT']}" widgetVar="ContracuentaDialogo" draggable="false" resizable="false" closable="false" id="ContracuentaDialogo"  

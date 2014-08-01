@@ -77,6 +77,7 @@ public class PersitenciaTiposExamenes implements PersistenciaTiposExamenesInterf
     @Override
     public TiposExamenes buscarTipoExamen(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(TiposExamenes.class, secuencia);
         } catch (Exception e) {
             return null;
@@ -85,6 +86,7 @@ public class PersitenciaTiposExamenes implements PersistenciaTiposExamenesInterf
 
     @Override
     public List<TiposExamenes> buscarTiposExamenes(EntityManager em) {
+        em.clear();
         Query query = em.createQuery("SELECT te FROM TiposExamenes te ORDER BY te.codigo ASC ");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<TiposExamenes> listMotivosDemandas = query.getResultList();
@@ -95,6 +97,7 @@ public class PersitenciaTiposExamenes implements PersistenciaTiposExamenesInterf
     public BigInteger contadorTiposExamenesCargos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM  tiposexamenescargos tec , tiposexamenes te WHERE tec.tipoexamen=te.secuencia AND te.secuencia = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -111,6 +114,7 @@ public class PersitenciaTiposExamenes implements PersistenciaTiposExamenesInterf
     public BigInteger contadorVigenciasExamenesMedicos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM  vigenciasexamenesmedicos vem , tiposexamenes te WHERE vem.tipoexamen=te.secuencia  AND te.secuencia = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

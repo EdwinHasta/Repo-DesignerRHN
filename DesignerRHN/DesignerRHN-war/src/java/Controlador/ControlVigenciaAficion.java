@@ -82,8 +82,10 @@ public class ControlVigenciaAficion implements Serializable {
     //
     private String infoRegistroAficion;
     private String infoRegistro;
+    private String altoTabla;
 
     public ControlVigenciaAficion() {
+        altoTabla = "300";
         listVigenciasAficiones = null;
         listAficiones = null;
         //Otros
@@ -478,6 +480,7 @@ public class ControlVigenciaAficion implements Serializable {
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
+            altoTabla = "300";
             veFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veFechaInicial");
             veFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             veFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veFechaFinal");
@@ -576,6 +579,7 @@ public class ControlVigenciaAficion implements Serializable {
             if (validarFechasRegistro(1) == true) {
                 if (bandera == 1) {
                     //CERRAR FILTRADO
+                    altoTabla = "300";
                     veFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veFechaInicial");
                     veFechaInicial.setFilterStyle("display: none; visibility: hidden;");
                     veFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veFechaFinal");
@@ -712,6 +716,7 @@ public class ControlVigenciaAficion implements Serializable {
                 }
                 if (bandera == 1) {
                     //CERRAR FILTRADO
+                    altoTabla = "300";
                     veFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veFechaInicial");
                     veFechaInicial.setFilterStyle("display: none; visibility: hidden;");
                     veFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veFechaFinal");
@@ -812,7 +817,7 @@ public class ControlVigenciaAficion implements Serializable {
      */
     public void activarCtrlF11() {
         if (bandera == 0) {
-
+            altoTabla = "278";
             veFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veFechaInicial");
             veFechaInicial.setFilterStyle("width: 50px");
             veFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veFechaFinal");
@@ -830,6 +835,7 @@ public class ControlVigenciaAficion implements Serializable {
             RequestContext.getCurrentInstance().update("form:datosVigenciasAficiones");
             bandera = 1;
         } else if (bandera == 1) {
+            altoTabla = "300";
             veFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veFechaInicial");
             veFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             veFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veFechaFinal");
@@ -857,6 +863,7 @@ public class ControlVigenciaAficion implements Serializable {
      */
     public void salir() {
         if (bandera == 1) {
+            altoTabla = "300";
             veFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veFechaInicial");
             veFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             veFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasAficiones:veFechaFinal");
@@ -1226,5 +1233,15 @@ public class ControlVigenciaAficion implements Serializable {
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
     }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+
+    public void setAltoTabla(String altoTabla) {
+        this.altoTabla = altoTabla;
+    }
+    
+    
 
 }

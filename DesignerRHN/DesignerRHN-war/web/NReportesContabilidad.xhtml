@@ -17,7 +17,7 @@
                     <f:loadBundle basename="Recursos.nreportescontabilidad" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
                     
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" position: absolute; width: 874px; height: 505px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" position: absolute; width: 874px; height: 510px; text-align: left" >  
 
                         <p:commandButton style="position: absolute; left: 683px; top: 470px; " icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  actionListener="#{controlNReporteContabilidad.dispararDialogoGuardarCambios()}" disabled="#{controlNReporteContabilidad.cambiosReporte}" process="@this" />
                         <p:commandButton style="position: absolute; left: 775px; top: 470px; " icon="ui-icon-closethick" id="ATRAS" value="#{msg['cancelar']}" action="nomina" actionListener="#{controlNReporteContabilidad.salir()}" process="@this" />

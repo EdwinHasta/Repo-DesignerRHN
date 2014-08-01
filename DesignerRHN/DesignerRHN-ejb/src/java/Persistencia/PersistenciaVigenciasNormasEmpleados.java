@@ -84,6 +84,7 @@ public class PersistenciaVigenciasNormasEmpleados implements PersistenciaVigenci
     @Override
     public VigenciasNormasEmpleados buscarVigenciasNormasEmpleado(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(VigenciasNormasEmpleados.class, secuencia);
         } catch (Exception e) {
             return null;
@@ -93,6 +94,7 @@ public class PersistenciaVigenciasNormasEmpleados implements PersistenciaVigenci
     @Override
     public List<VigenciasNormasEmpleados> buscarVigenciasNormasEmpleadosEmpl(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vne FROM VigenciasNormasEmpleados vne WHERE vne.empleado.secuencia = :secuenciaEmpl ORDER BY vne.fechavigencia DESC");
             query.setParameter("secuenciaEmpl", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -106,6 +108,7 @@ public class PersistenciaVigenciasNormasEmpleados implements PersistenciaVigenci
 
     @Override
     public List<VigenciasNormasEmpleados> buscarVigenciasNormasEmpleados(EntityManager em) {
+        em.clear();
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasNormasEmpleados.class));
         return em.createQuery(cq).getResultList();

@@ -78,6 +78,7 @@ public class PersistenciaTiposCotizantes implements PersistenciaTiposCotizantesI
     @Override
     public List<TiposCotizantes> lovTiposCotizantes(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT tc FROM TiposCotizantes tc ORDER BY tc.codigo ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposCotizantes> listaTiposCotizantes = query.getResultList();

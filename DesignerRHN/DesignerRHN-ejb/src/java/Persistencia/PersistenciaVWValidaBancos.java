@@ -17,6 +17,7 @@ public class PersistenciaVWValidaBancos implements PersistenciaVWValidaBancosInt
     @Override
     public VWValidaBancos validarDocumentoVWValidaBancos(EntityManager em, BigInteger documento) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT v FROM VWValidaBancos v WHERE v.codigoprimario=:documento");
             VWValidaBancos validacion = (VWValidaBancos) query.getSingleResult();
             return validacion;

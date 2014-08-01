@@ -80,6 +80,7 @@ public class PersistenciaCausasAusentismos implements PersistenciaCausasAusentis
     @Override
     public List<Causasausentismos> buscarCausasAusentismos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT ca FROM Causasausentismos ca ORDER BY ca.codigo");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Causasausentismos> todasCausasAusentismos = query.getResultList();

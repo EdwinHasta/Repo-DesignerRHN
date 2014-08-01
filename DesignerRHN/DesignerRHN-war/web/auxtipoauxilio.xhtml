@@ -15,8 +15,8 @@
                     <f:loadBundle basename="Recursos.auxtipoauxilio" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
                     
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 530px; left: 300px; top: 100px;text-align: left" >  
-                        <fieldset style="position: absolute; left: 10px; top: 90px; width: 835px; height: 375px; border-radius: 10px; ">
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; left: 300px; top: 100px;text-align: left" >  
+                        <fieldset style="position: absolute; left: 10px; top: 90px; width: 835px; height: 370px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['titulo']}</strong></legend>
 
                             <p:dataTable id="datosTipoReemplazo" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 819px ;border: 1px;"                           
@@ -108,8 +108,8 @@
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style=" position: absolute; left: 683px; top: 487px;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  disabled="#{controlTiposAuxilios.guardado}" actionListener="#{controlTiposAuxilios.revisarDialogoGuardar()}"     process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 775px; top: 487px;" icon="ui-icon-closethick" id="ATRAS" value="#{msg['cancelar']}"    />
+                        <p:commandButton style=" position: absolute; left: 683px; top: 480px;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  disabled="#{controlTiposAuxilios.guardado}" actionListener="#{controlTiposAuxilios.revisarDialogoGuardar()}"     process="@this"   />
+                        <p:commandButton style=" position: absolute; left: 775px; top: 480px;" icon="ui-icon-closethick" id="ATRAS" value="#{msg['cancelar']}"    />
                         <h:outputText id="informacionRegistro" value="#{controlTiposAuxilios.infoRegistro}" style="position: absolute; left: 15px; top: 490px; font-weight: bold"/>
                     </p:panel>
 

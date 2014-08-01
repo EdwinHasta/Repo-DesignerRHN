@@ -77,6 +77,7 @@ public class PersistenciaFormulasContratosEntidades implements PersistenciaFormu
 
     public List<FormulasContratosEntidades> consultarFormulasContratosEntidades(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT te FROM FormulasContratosEntidades te");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<FormulasContratosEntidades> formulasAseguradas = query.getResultList();
@@ -89,6 +90,7 @@ public class PersistenciaFormulasContratosEntidades implements PersistenciaFormu
 
     public List<FormulasContratosEntidades> consultarFormulasContratosEntidadesPorFormulaContrato(EntityManager em, BigInteger secFormulaContrato) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT te FROM FormulasContratosEntidades te WHERE te.formulacontrato.secuencia = :formulaContrato");
             query.setParameter("formulaContrato", secFormulaContrato);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -102,6 +104,7 @@ public class PersistenciaFormulasContratosEntidades implements PersistenciaFormu
 
     public FormulasContratosEntidades consultarFormulaContratoEntidad(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT te FROM FormulasContratosEntidades te WHERE te.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

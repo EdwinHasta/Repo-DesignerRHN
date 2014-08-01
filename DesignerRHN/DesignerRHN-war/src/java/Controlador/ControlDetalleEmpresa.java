@@ -114,8 +114,7 @@ public class ControlDetalleEmpresa implements Serializable {
     private String infoRegistro, infoRegistroEmpresa, infoRegistroCiudad, infoRegistroCiudadDocumento, infoRegistroGerente, infoRegistroPersona, infoRegistroCargo, infoRegistroSubGerente, infoRegistroRepresentante;
 
     public ControlDetalleEmpresa() {
-        paginaAnterior = "";
-        altoTabla = "260";
+        altoTabla = "300";
         actualEmpresa = null;
         secEmpresa = null;
         //Otros
@@ -174,6 +173,7 @@ public class ControlDetalleEmpresa implements Serializable {
     }
 
     public String regresarAPaginaAnterior() {
+        System.out.println("paginaAnterior : "+paginaAnterior);
         return paginaAnterior;
     }
 
@@ -1319,7 +1319,7 @@ public class ControlDetalleEmpresa implements Serializable {
     //CANCELAR MODIFICACIONES
     public void cancelarModificacion() {
         if (bandera == 1) {
-            altoTabla = "260";
+            altoTabla = "300";
             FacesContext c = FacesContext.getCurrentInstance();
             detalleEmpresa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmpresa");
             detalleEmpresa.setFilterStyle("display: none; visibility: hidden;");
@@ -1548,7 +1548,7 @@ public class ControlDetalleEmpresa implements Serializable {
                 cambiosPagina = false;
                 //CERRAR FILTRADO
                 if (bandera == 1) {
-                    altoTabla = "260";
+                    altoTabla = "300";
                     FacesContext c = FacesContext.getCurrentInstance();
                     detalleEmpresa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmpresa");
                     detalleEmpresa.setFilterStyle("display: none; visibility: hidden;");
@@ -1824,7 +1824,7 @@ public class ControlDetalleEmpresa implements Serializable {
                     //RequestContext.getCurrentInstance().update("form:aceptar");
                 }
                 if (bandera == 1) {
-                    altoTabla = "260";
+                    altoTabla = "300";
                     FacesContext c = FacesContext.getCurrentInstance();
                     detalleEmpresa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmpresa");
                     detalleEmpresa.setFilterStyle("display: none; visibility: hidden;");
@@ -2004,7 +2004,7 @@ public class ControlDetalleEmpresa implements Serializable {
     public void filtradoDetalleEmpresa() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            altoTabla = "238";
+            altoTabla = "278";
             detalleEmpresa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmpresa");
             detalleEmpresa.setFilterStyle("width: 90px");
             detalleTipoDocumento = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoDocumento");
@@ -2083,7 +2083,7 @@ public class ControlDetalleEmpresa implements Serializable {
             tipoLista = 1;
             bandera = 1;
         } else if (bandera == 1) {
-            altoTabla = "260";
+            altoTabla = "300";
             detalleEmpresa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmpresa");
             detalleEmpresa.setFilterStyle("display: none; visibility: hidden;");
             detalleTipoDocumento = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoDocumento");
@@ -2168,7 +2168,7 @@ public class ControlDetalleEmpresa implements Serializable {
 
     public void salir() {
         if (bandera == 1) {
-            altoTabla = "260";
+            altoTabla = "300";
             FacesContext c = FacesContext.getCurrentInstance();
             detalleEmpresa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmpresa");
             detalleEmpresa.setFilterStyle("display: none; visibility: hidden;");

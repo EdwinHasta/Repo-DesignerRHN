@@ -80,6 +80,7 @@ public class PersistenciaTiposPagos implements PersistenciaTiposPagosInterface {
     @Override
     public List<Tipospagos> consultarTiposPagos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM Tipospagos t ORDER BY t.codigo  ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Tipospagos> tipospagos = query.getResultList();
@@ -93,6 +94,7 @@ public class PersistenciaTiposPagos implements PersistenciaTiposPagosInterface {
     @Override
     public Tipospagos consultarTipoPago(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM Tipospagos t WHERE t.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -108,6 +110,7 @@ public class PersistenciaTiposPagos implements PersistenciaTiposPagosInterface {
     public BigInteger contarProcesosTipoPago(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = " SELECT COUNT(*)FROM procesos WHERE tipopago =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

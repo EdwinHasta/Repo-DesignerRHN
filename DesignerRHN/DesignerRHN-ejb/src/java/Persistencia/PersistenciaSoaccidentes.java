@@ -80,6 +80,7 @@ public class PersistenciaSoaccidentes implements PersistenciaSoaccidentesInterfa
     @Override
     public List<Soaccidentes> accidentesEmpleado(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT soa FROM Soaccidentes soa WHERE soa.empleado.secuencia = :secuenciaEmpleado");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

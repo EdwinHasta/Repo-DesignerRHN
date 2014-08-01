@@ -79,7 +79,7 @@ public class PersistenciaJornadas implements PersistenciaJornadasInterface {
 
     public Jornadas consultarJornada(EntityManager em, BigInteger secuencia) {
         try {
-
+            em.clear();
             return em.find(Jornadas.class, secuencia);
         } catch (Exception e) {
             System.out.println("\n ERROR EN PersistenciaJornadas buscarJornada ERROR " + e);
@@ -90,6 +90,7 @@ public class PersistenciaJornadas implements PersistenciaJornadasInterface {
 
     public List<Jornadas> consultarJornadas(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT ta FROM Jornadas ta ORDER BY ta.codigo");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Jornadas> todosJornadas = query.getResultList();
@@ -103,6 +104,7 @@ public class PersistenciaJornadas implements PersistenciaJornadasInterface {
     public BigInteger contarTarifasEscalafonesJornada(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT (*) FROM tarifasescalafones WHERE jornada =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -118,6 +120,7 @@ public class PersistenciaJornadas implements PersistenciaJornadasInterface {
     public BigInteger contarJornadasLaboralesJornada(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT (*) FROM jornadaslaborales WHERE jornada =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

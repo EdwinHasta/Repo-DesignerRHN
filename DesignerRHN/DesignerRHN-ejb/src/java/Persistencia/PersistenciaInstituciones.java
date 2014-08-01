@@ -84,6 +84,7 @@ public class PersistenciaInstituciones implements PersistenciaInstitucionesInter
     @Override
     public Instituciones buscarInstitucion(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             BigInteger sec = new BigInteger(secuencia.toString());
             return em.find(Instituciones.class, sec);
         } catch (Exception e) {
@@ -94,6 +95,7 @@ public class PersistenciaInstituciones implements PersistenciaInstitucionesInter
     @Override
     public List<Instituciones> instituciones(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT i FROM Instituciones i");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Instituciones> listaInstituciones = query.getResultList();

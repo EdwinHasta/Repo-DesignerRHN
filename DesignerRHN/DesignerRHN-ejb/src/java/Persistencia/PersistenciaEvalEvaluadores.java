@@ -83,6 +83,7 @@ public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresI
     @Override
     public EvalEvaluadores buscarEvalEvaluador(EntityManager em, BigInteger secuenciaEvalEvaluadores) {
         try {
+            em.clear();
             return em.find(EvalEvaluadores.class, secuenciaEvalEvaluadores);
         } catch (Exception e) {
             System.err.println("ERROR PersistenciaMotivosContratos buscarEvalEvaluadores ERROR " + e);
@@ -93,6 +94,7 @@ public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresI
     @Override
     public List<EvalEvaluadores> buscarEvalEvaluadores(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT ev FROM EvalEvaluadores ev ORDER BY ev.codigo ");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<EvalEvaluadores> evalEvaluadores = query.getResultList();
@@ -107,6 +109,7 @@ public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresI
     public BigInteger verificarBorradoEvalPruebas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqql = "SELECT COUNT (*) FROM  evalpruebas  WHERE evalevaluador = ?";
             Query query = em.createNativeQuery(sqql);
             query.setParameter(1, secuencia);

@@ -23,6 +23,7 @@ public class PersistenciaErroresLiquidaciones implements PersistenciaErroresLiqu
 
     public List<ErroresLiquidacion> consultarErroresLiquidacionPorEmpleado(EntityManager em, BigInteger semEmpleado) {
         try {
+            em.clear();
             String SqlQuery = "SELECT * FROM erroresliquidacion e WHERE e.empleado = NVL(?,e.empleado)";
             Query query = em.createNativeQuery(SqlQuery, ErroresLiquidacion.class);
             query.setParameter(1, semEmpleado);

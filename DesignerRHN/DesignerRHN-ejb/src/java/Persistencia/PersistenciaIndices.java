@@ -69,6 +69,7 @@ public class PersistenciaIndices implements PersistenciaIndicesInterface {
     public List<Indices> consultarIndices(EntityManager em) {
         List<Indices> lista;
         try {
+            em.clear();
             String sql = "select * from indices i where exists\n"
                     + " (select 'x' from  usuariosindices ui, usuarios u\n"
                     + "  where u.secuencia = ui.usuario and u.alias = user \n"
@@ -86,6 +87,7 @@ public class PersistenciaIndices implements PersistenciaIndicesInterface {
     public BigInteger contarUsuariosIndicesIndice(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "select count(*)from usuariosindices where indice = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -101,6 +103,7 @@ public class PersistenciaIndices implements PersistenciaIndicesInterface {
     public BigInteger contarParametrosIndicesIndice(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "select count(*) from parametrosindices where indice = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -116,6 +119,7 @@ public class PersistenciaIndices implements PersistenciaIndicesInterface {
     public BigInteger contarResultadosIndicesSoportesIndice(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "select count(*)from resultadosindicessoportes where indice =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -131,6 +135,7 @@ public class PersistenciaIndices implements PersistenciaIndicesInterface {
     public BigInteger contarResultadosIndicesDetallesIndice(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "select count(*) from resultadosindicesdetalles where resultadoindice = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -146,6 +151,7 @@ public class PersistenciaIndices implements PersistenciaIndicesInterface {
     public BigInteger contarResultadosIndicesIndice(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "select count(*) from resultadosindices where indice = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -161,6 +167,7 @@ public class PersistenciaIndices implements PersistenciaIndicesInterface {
     public BigInteger contarCodigosRepetidosIndices(EntityManager em, Short codigo) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "select count(*) from indices where codigo = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, codigo);

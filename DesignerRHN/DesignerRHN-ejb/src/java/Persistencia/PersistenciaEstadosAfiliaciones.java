@@ -82,6 +82,7 @@ public class PersistenciaEstadosAfiliaciones implements PersistenciaEstadosAfili
     @Override
     public EstadosAfiliaciones buscarEstadoAfiliacion(EntityManager em,BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(EstadosAfiliaciones.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error buscarbanco persistencia bancos : " + e.toString());

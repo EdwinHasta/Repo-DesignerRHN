@@ -82,6 +82,7 @@ public class PersistenciaTempNovedades implements PersistenciaTempNovedadesInter
     @Override
     public List<TempNovedades> obtenerTempNovedades(EntityManager em, String usuarioBD) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM TempNovedades t "
                     + "WHERE t.usuariobd = :usuarioBD AND t.estado = 'N'");
             query.setParameter("usuarioBD", usuarioBD);
@@ -97,6 +98,7 @@ public class PersistenciaTempNovedades implements PersistenciaTempNovedadesInter
     @Override
     public List<String> obtenerDocumentosSoporteCargados(EntityManager em, String usuarioBD) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t.documentosoporte FROM TempNovedades t "
                     + "WHERE t.usuariobd = :usuarioBD AND t.estado = 'C'");
             query.setParameter("usuarioBD", usuarioBD);

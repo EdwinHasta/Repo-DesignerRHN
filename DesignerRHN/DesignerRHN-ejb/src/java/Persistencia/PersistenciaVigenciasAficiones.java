@@ -78,6 +78,7 @@ public class PersistenciaVigenciasAficiones implements PersistenciaVigenciasAfic
     @Override
     public VigenciasAficiones buscarvigenciaAficion(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             BigInteger in = (BigInteger) secuencia;
             return em.find(VigenciasAficiones.class, in);
         } catch (Exception e) {
@@ -89,6 +90,7 @@ public class PersistenciaVigenciasAficiones implements PersistenciaVigenciasAfic
     @Override
     public List<VigenciasAficiones> aficionesPersona(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(va) FROM VigenciasAficiones va WHERE va.persona.secuencia = :secuenciaPersona");
             query.setParameter("secuenciaPersona", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -110,6 +112,7 @@ public class PersistenciaVigenciasAficiones implements PersistenciaVigenciasAfic
     @Override
     public List<VigenciasAficiones> aficionesTotalesSecuenciaPersona(EntityManager em, BigInteger secuencia){
         try{
+            em.clear();
         Query queryFinal = em.createQuery("SELECT va FROM VigenciasAficiones va WHERE va.persona.secuencia = :secuenciaPersona;");
                 queryFinal.setParameter("secuenciaPersona", secuencia);
                 queryFinal.setHint("javax.persistence.cache.storeMode", "REFRESH");

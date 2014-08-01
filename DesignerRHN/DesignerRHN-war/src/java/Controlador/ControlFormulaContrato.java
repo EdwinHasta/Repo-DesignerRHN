@@ -94,7 +94,7 @@ public class ControlFormulaContrato implements Serializable {
 
     public ControlFormulaContrato() {
         activoDetalle = true;
-        altoTabla = "260";
+        altoTabla = "310";
         formulaActual = new Formulas();
         listFormulasContratos = null;
         fechaParametro = new Date(1, 1, 0);
@@ -649,7 +649,7 @@ public class ControlFormulaContrato implements Serializable {
     public void cancelarModificacion() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (banderaFormulaContrato == 1) {
-            altoTabla = "260";
+            altoTabla = "310";
             formulaFechaInicial = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaInicial");
             formulaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             formulaFechaFinal = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaFinal");
@@ -828,7 +828,7 @@ public class ControlFormulaContrato implements Serializable {
             if (validacion == true) {
                 FacesContext c = FacesContext.getCurrentInstance();
                 if (banderaFormulaContrato == 1) {
-                    altoTabla = "260";
+                    altoTabla = "310";
                     formulaFechaInicial = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaInicial");
                     formulaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
                     formulaFechaFinal = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaFinal");
@@ -930,7 +930,7 @@ public class ControlFormulaContrato implements Serializable {
                 FacesContext c = FacesContext.getCurrentInstance();
                 RequestContext context = RequestContext.getCurrentInstance();
                 if (banderaFormulaContrato == 1) {
-                    altoTabla = "260";
+                    altoTabla = "310";
                     formulaFechaInicial = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaInicial");
                     formulaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
                     formulaFechaFinal = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaFinal");
@@ -1058,7 +1058,7 @@ public class ControlFormulaContrato implements Serializable {
     public void filtradoFormula() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (banderaFormulaContrato == 0) {
-            altoTabla = "238";
+            altoTabla = "288";
             formulaFechaInicial = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaInicial");
             formulaFechaInicial.setFilterStyle("width: 60px");
             formulaFechaFinal = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaFinal");
@@ -1073,7 +1073,7 @@ public class ControlFormulaContrato implements Serializable {
             RequestContext.getCurrentInstance().update("form:datosFormulaContrato");
             banderaFormulaContrato = 1;
         } else if (banderaFormulaContrato == 1) {
-            altoTabla = "260";
+            altoTabla = "310";
             formulaFechaInicial = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaInicial");
             formulaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             formulaFechaFinal = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaFinal");
@@ -1099,7 +1099,7 @@ public class ControlFormulaContrato implements Serializable {
     public void salir() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (banderaFormulaContrato == 1) {
-            altoTabla = "260";
+            altoTabla = "310";
             formulaFechaInicial = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaInicial");
             formulaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             formulaFechaFinal = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaFinal");

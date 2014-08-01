@@ -79,6 +79,7 @@ public class PersistenciaSoActosInseguros implements PersistenciaSoActosInseguro
     @Override
     public SoActosInseguros buscarSoActoInseguro(EntityManager em, BigInteger secuenciaSCAP) {
         try {
+            em.clear();
             return em.find(SoActosInseguros.class, secuenciaSCAP);
         } catch (Exception e) {
             return null;
@@ -88,6 +89,7 @@ public class PersistenciaSoActosInseguros implements PersistenciaSoActosInseguro
     @Override
     public List<SoActosInseguros> buscarSoActosInseguros(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT l FROM SoActosInseguros  l ORDER BY l.codigo ASC ");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<SoActosInseguros> listSoCondicionesAmbientalesP = query.getResultList();
@@ -102,6 +104,7 @@ public class PersistenciaSoActosInseguros implements PersistenciaSoActosInseguro
     public BigInteger contadorSoAccidentesMedicos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM soaccidentesmedicos sam WHERE sam.actoinseguro = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

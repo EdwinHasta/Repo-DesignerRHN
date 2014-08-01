@@ -1,7 +1,6 @@
 /**
  * Documentación a cargo de Hugo David Sin Gutiérrez
  */
-
 package Persistencia;
 
 import Entidades.ConceptosJuridicos;
@@ -16,20 +15,22 @@ import javax.persistence.Query;
 
 /**
  * Clase Stateless. <br>
- * Clase encargada de realizar operaciones sobre la tabla 'ConceptosJuridicos' 
+ * Clase encargada de realizar operaciones sobre la tabla 'ConceptosJuridicos'
  * de la base de datos.
+ *
  * @author Andres Pineda.
  */
 @Stateless
-public class PersistenciaConceptosJuridicos implements PersistenciaConceptosJuridicosInterface{
+public class PersistenciaConceptosJuridicos implements PersistenciaConceptosJuridicosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
+    /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;*/
 
     @Override
-    public void crear(EntityManager em,ConceptosJuridicos conceptosJuridicos) {
+    public void crear(EntityManager em, ConceptosJuridicos conceptosJuridicos) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -45,7 +46,7 @@ public class PersistenciaConceptosJuridicos implements PersistenciaConceptosJuri
     }
 
     @Override
-    public void editar(EntityManager em,ConceptosJuridicos conceptosJuridicos) {
+    public void editar(EntityManager em, ConceptosJuridicos conceptosJuridicos) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -61,7 +62,7 @@ public class PersistenciaConceptosJuridicos implements PersistenciaConceptosJuri
     }
 
     @Override
-    public void borrar(EntityManager em,ConceptosJuridicos conceptosJuridicos) {
+    public void borrar(EntityManager em, ConceptosJuridicos conceptosJuridicos) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -83,6 +84,7 @@ public class PersistenciaConceptosJuridicos implements PersistenciaConceptosJuri
     @Override
     public List<ConceptosJuridicos> buscarConceptosJuridicos(EntityManager em) {
         try {
+            em.clear();
             List<ConceptosJuridicos> conceptosJuridicos = (List<ConceptosJuridicos>) em.createNamedQuery("ConceptosJuridicos.findAll").getResultList();
             return conceptosJuridicos;
         } catch (Exception e) {
@@ -92,8 +94,9 @@ public class PersistenciaConceptosJuridicos implements PersistenciaConceptosJuri
     }
 
     @Override
-    public ConceptosJuridicos buscarConceptosJuridicosSecuencia(EntityManager em,BigInteger secuencia) {
+    public ConceptosJuridicos buscarConceptosJuridicosSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT cj FROM ConceptosJuridicos cj WHERE cj.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -107,8 +110,9 @@ public class PersistenciaConceptosJuridicos implements PersistenciaConceptosJuri
     }
 
     @Override
-    public List<ConceptosJuridicos> buscarConceptosJuridicosEmpresa(EntityManager em,BigInteger secuencia) {
+    public List<ConceptosJuridicos> buscarConceptosJuridicosEmpresa(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT cj FROM ConceptosJuridicos cj WHERE cj.empresa.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

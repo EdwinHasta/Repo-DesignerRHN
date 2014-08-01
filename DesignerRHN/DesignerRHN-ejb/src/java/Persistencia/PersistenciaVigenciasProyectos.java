@@ -81,6 +81,7 @@ public class PersistenciaVigenciasProyectos implements PersistenciaVigenciasProy
 
     @Override
     public List<VigenciasProyectos> buscarVigenciasProyectos(EntityManager em) {
+        em.clear();
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasProyectos.class));
         return em.createQuery(cq).getResultList();
@@ -89,6 +90,7 @@ public class PersistenciaVigenciasProyectos implements PersistenciaVigenciasProy
     @Override
     public List<VigenciasProyectos> proyectosEmpleado(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(vp) FROM VigenciasProyectos vp WHERE vp.empleado.secuencia = :secuenciaEmpleado");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -109,6 +111,7 @@ public class PersistenciaVigenciasProyectos implements PersistenciaVigenciasProy
     @Override
     public List<VigenciasProyectos> vigenciasProyectosEmpleado(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vp FROM VigenciasProyectos vp WHERE vp.empleado.secuencia= :secuenciaEmpleado ORDER BY vp.fechainicial DESC");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

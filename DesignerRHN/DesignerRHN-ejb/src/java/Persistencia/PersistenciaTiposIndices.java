@@ -74,6 +74,7 @@ public class PersistenciaTiposIndices implements PersistenciaTiposIndicesInterfa
 
     public List<TiposIndices> consultarTiposIndices(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM TiposIndices t ORDER BY t.codigo  ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposIndices> evalActividades = query.getResultList();
@@ -86,6 +87,7 @@ public class PersistenciaTiposIndices implements PersistenciaTiposIndicesInterfa
 
     public TiposIndices consultarTipoIndice(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM TiposIndices t WHERE t.secuencia =:secuencia");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             query.setParameter("secuencia", secuencia);
@@ -101,6 +103,7 @@ public class PersistenciaTiposIndices implements PersistenciaTiposIndicesInterfa
     public BigInteger contarIndicesTipoIndice(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM indices WHERE tipoindice = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

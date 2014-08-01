@@ -79,6 +79,7 @@ public class PersistenciaParametros implements PersistenciaParametrosInterface {
     @Override
     public List<Parametros> empleadosParametros(EntityManager em, String usuarioBD) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT p FROM Parametros p WHERE p.empleado IS NOT NULL AND p.usuario.alias = :usuarioBD");
             query.setParameter("usuarioBD", usuarioBD);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

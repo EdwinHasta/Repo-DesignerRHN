@@ -84,6 +84,7 @@ public class PersistenciaJornadasLaborales implements PersistenciaJornadasLabora
     @Override
     public List<JornadasLaborales> buscarJornadasLaborales(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("JornadasLaborales.findAll");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<JornadasLaborales> jornadasLaborales = (List<JornadasLaborales>) query.getResultList();
@@ -97,6 +98,7 @@ public class PersistenciaJornadasLaborales implements PersistenciaJornadasLabora
     @Override
     public JornadasLaborales buscarJornadaLaboralSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT jl FROM JornadasLaborales jl WHERE jl.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

@@ -94,6 +94,7 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
     @Override
     public List<VigenciasAfiliaciones> buscarVigenciasAfiliaciones(EntityManager em) {
         try {
+            em.clear();
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(VigenciasAfiliaciones.class));
             return em.createQuery(cq).getResultList();
@@ -106,6 +107,7 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
     @Override
     public List<VigenciasAfiliaciones> buscarVigenciasAfiliacionesEmpleado(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT va FROM VigenciasAfiliaciones va WHERE va.empleado.secuencia = :secuenciaEmpl ORDER BY va.fechainicial DESC");
             query.setParameter("secuenciaEmpl", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -120,6 +122,7 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
     @Override
     public VigenciasAfiliaciones buscarVigenciasAfiliacionesSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("VigenciasAfiliaciones.findBySecuencia").setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasAfiliaciones vigenciasAfiliaciones = (VigenciasAfiliaciones) query.getSingleResult();
@@ -133,6 +136,7 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
     @Override
     public List<VigenciasAfiliaciones> buscarVigenciasAfiliacionesVigenciaSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT va FROM VigenciasAfiliaciones va WHERE va.vigenciasueldo.secuencia = :secVigencia");
             query.setParameter("secVigencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

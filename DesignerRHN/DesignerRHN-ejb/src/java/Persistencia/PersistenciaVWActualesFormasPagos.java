@@ -26,6 +26,7 @@ public class PersistenciaVWActualesFormasPagos implements PersistenciaVWActuales
 
     public VWActualesFormasPagos buscarFormaPago(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vw FROM VWActualesFormasPagos vw WHERE vw.empleado.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

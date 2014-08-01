@@ -84,6 +84,7 @@ public class PersistenciaIndicadores implements PersistenciaIndicadoresInterface
     @Override
     public List<Indicadores> buscarIndicadores(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("Indicadores.findAll");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Indicadores> indicadores = (List<Indicadores>) query.getResultList();
@@ -98,6 +99,7 @@ public class PersistenciaIndicadores implements PersistenciaIndicadoresInterface
     public Indicadores buscarIndicadoresSecuencia(EntityManager em, BigInteger secuencia) {
 
         try {
+            em.clear();
             Query query = em.createQuery("SELECT te FROM Indicadores te WHERE te.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

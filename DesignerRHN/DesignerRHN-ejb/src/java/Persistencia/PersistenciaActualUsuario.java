@@ -25,6 +25,7 @@ public class PersistenciaActualUsuario implements PersistenciaActualUsuarioInter
     @Override
     public ActualUsuario actualUsuarioBD(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT au FROM ActualUsuario au");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             ActualUsuario actualUsuario;
@@ -38,6 +39,7 @@ public class PersistenciaActualUsuario implements PersistenciaActualUsuarioInter
     
     public String actualAliasBD(EntityManager em) {
         try {
+            em.clear();
             String sqlQuery = "SELECT au.ALIAS FROM VWActualUsuario au";
             Query query = em.createNativeQuery(sqlQuery);
             String alias;
@@ -51,6 +53,7 @@ public class PersistenciaActualUsuario implements PersistenciaActualUsuarioInter
     
     public String actualAliasBD_EM(EntityManager emg) {
         try {
+            emg.clear();
             String sqlQuery = "SELECT au.ALIAS FROM VWActualUsuario au";
             Query query = emg.createNativeQuery(sqlQuery);
             String alias;

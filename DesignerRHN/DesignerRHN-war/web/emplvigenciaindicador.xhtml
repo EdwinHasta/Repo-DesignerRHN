@@ -16,7 +16,7 @@
                     <f:loadBundle basename="Recursos.emplvigenciaindicador" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
                     
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 470px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left" >  
 
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: red;font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlEmplVigenciaIndicador.empleado.persona.primerapellido} #{controlEmplVigenciaIndicador.empleado.persona.segundoapellido} #{controlEmplVigenciaIndicador.empleado.persona.nombre}">
                         </h:outputText>
@@ -79,7 +79,7 @@
                         </p:toolbar> 
 
 
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 330px;width: 830px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 375px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="color: blue"><strong>#{msg['historicoCenso']}</strong></legend>
                             <p:dataTable id="datosVigencia" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceV" value="#{controlEmplVigenciaIndicador.listVigenciasIndicadores}" 
                                          filteredValue="#{controlEmplVigenciaIndicador.filtrarListVigenciasIndicadores}" editable="true" editMode="cell"
@@ -227,9 +227,9 @@
                             </p:commandButton>
                         </p:dialog>
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 435px" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" disabled="#{controlEmplVigenciaIndicador.guardado}" update=":form:datosVigencia" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 435px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlEmplVigenciaIndicador.salir()}" action="infoEmplIndividual" process="@this" />
-                        <h:outputText id="informacionRegistro" value="#{controlEmplVigenciaIndicador.infoRegistro}" style="position: absolute; left: 15px; top: 440px; font-weight: bold"/>
+                        <p:commandButton style="position: absolute; left: 683px; top: 475px" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" disabled="#{controlEmplVigenciaIndicador.guardado}" update=":form:datosVigencia" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 475px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlEmplVigenciaIndicador.salir()}" action="infoEmplIndividual" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlEmplVigenciaIndicador.infoRegistro}" style="position: absolute; left: 15px; top: 480px; font-weight: bold"/>
 
                     </p:panel>
 

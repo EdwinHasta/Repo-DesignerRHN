@@ -78,6 +78,7 @@ public class PersistenciaVigenciasIndicadores implements PersistenciaVigenciasIn
     @Override
     public List<VigenciasIndicadores> buscarVigenciasIndicadores(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vi FROM VigenciasIndicadores vi ORDER BY vi.secuencia");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasIndicadores> vigenciasIndicadores = query.getResultList();
@@ -91,6 +92,7 @@ public class PersistenciaVigenciasIndicadores implements PersistenciaVigenciasIn
     @Override
     public VigenciasIndicadores buscarVigenciaIndicadorSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vi FROM VigenciasIndicadores vi WHERE vi.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -106,6 +108,7 @@ public class PersistenciaVigenciasIndicadores implements PersistenciaVigenciasIn
     @Override
     public List<VigenciasIndicadores> ultimosIndicadoresEmpleado(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(vi) FROM VigenciasIndicadores vi WHERE vi.empleado.secuencia = :secuenciaEmpl");
             query.setParameter("secuenciaEmpl", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -126,6 +129,7 @@ public class PersistenciaVigenciasIndicadores implements PersistenciaVigenciasIn
     @Override
     public List<VigenciasIndicadores> indicadoresTotalesEmpleadoSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query queryFinal = em.createQuery("SELECT vi FROM VigenciasIndicadores vi WHERE vi.empleado.secuencia = :secuenciaEmpl");
                 queryFinal.setParameter("secuenciaEmpl", secuencia);
                 queryFinal.setHint("javax.persistence.cache.storeMode", "REFRESH");

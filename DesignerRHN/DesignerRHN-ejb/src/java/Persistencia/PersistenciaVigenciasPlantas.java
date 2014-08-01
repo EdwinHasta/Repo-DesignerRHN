@@ -75,6 +75,7 @@ public class PersistenciaVigenciasPlantas implements PersistenciaVigenciasPlanta
 
     public VigenciasPlantas consultarVigenciaPlanta(EntityManager em, BigInteger secVigenciasPlantas) {
         try {
+            em.clear();
             return em.find(VigenciasPlantas.class, secVigenciasPlantas);
         } catch (Exception e) {
             return null;
@@ -82,6 +83,7 @@ public class PersistenciaVigenciasPlantas implements PersistenciaVigenciasPlanta
     }
 
     public List<VigenciasPlantas> consultarVigenciasPlantas(EntityManager em) {
+        em.clear();
         Query query = em.createQuery("SELECT te FROM VigenciasPlantas te ORDER BY te.codigo ASC ");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<VigenciasPlantas> listMotivosDemandas = query.getResultList();
@@ -92,6 +94,7 @@ public class PersistenciaVigenciasPlantas implements PersistenciaVigenciasPlanta
     public BigInteger contarPlantasVigenciaPlanta(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM plantas WHERE vigencia = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

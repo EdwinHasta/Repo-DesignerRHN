@@ -82,6 +82,7 @@ public class PersistenciaIbcsAutoliquidaciones implements PersistenciaIbcsAutoli
     @Override
     public List<IbcsAutoliquidaciones> buscarIbcsAutoliquidaciones(EntityManager em) {
         try {
+            em.clear();
             Query query= em.createNamedQuery("IbcsAutoliquidaciones.findAll");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<IbcsAutoliquidaciones> autoliquidaciones = (List<IbcsAutoliquidaciones>) query.getResultList();
@@ -95,6 +96,7 @@ public class PersistenciaIbcsAutoliquidaciones implements PersistenciaIbcsAutoli
     @Override
     public IbcsAutoliquidaciones buscarIbcAutoliquidacionSecuencia(EntityManager em,BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT ibc FROM IbcsAutoliquidaciones ibc WHERE ibc.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -110,6 +112,7 @@ public class PersistenciaIbcsAutoliquidaciones implements PersistenciaIbcsAutoli
     @Override
     public List<IbcsAutoliquidaciones> buscarIbcsAutoliquidacionesTipoEntidadEmpleado(EntityManager em,BigInteger secuenciaTE, BigInteger secuenciaEmpl) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT ibc FROM IbcsAutoliquidaciones ibc WHERE ibc.tipoentidad.secuencia = :secuenciaTE AND ibc.empleado.secuencia = :secuenciaEmpl");
             query.setParameter("secuenciaTE", secuenciaTE);
             query.setParameter("secuenciaEmpl", secuenciaEmpl);

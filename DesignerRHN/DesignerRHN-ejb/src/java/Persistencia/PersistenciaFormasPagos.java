@@ -84,6 +84,7 @@ public class PersistenciaFormasPagos implements PersistenciaFormasPagosInterface
     @Override
     public FormasPagos buscarFormasPagos(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(FormasPagos.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error en la persistencia vigencias formas pagos ERROR : " + e);
@@ -94,6 +95,7 @@ public class PersistenciaFormasPagos implements PersistenciaFormasPagosInterface
     @Override
     public List<FormasPagos> buscarFormasPagosPorEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vfp FROM VigenciasFormasPagos vfp WHERE vfp.empleado.secuencia = :secuenciaEmpl ORDER BY vfp.fechavigencia DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -107,6 +109,7 @@ public class PersistenciaFormasPagos implements PersistenciaFormasPagosInterface
 
     @Override
     public List<FormasPagos> buscarFormasPagos(EntityManager em) {
+        em.clear();
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(FormasPagos.class));
         return em.createQuery(cq).getResultList();

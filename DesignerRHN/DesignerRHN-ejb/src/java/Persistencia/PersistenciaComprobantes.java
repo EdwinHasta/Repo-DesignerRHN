@@ -93,11 +93,13 @@ public class PersistenciaComprobantes implements PersistenciaComprobantesInterfa
 
     @Override
     public Comprobantes buscarComprobanteSecuencia(EntityManager em, BigInteger secuencia) {
+        em.clear();
         return em.find(Comprobantes.class, secuencia);
     }
 
     @Override
     public List<Comprobantes> buscarComprobantes(EntityManager em) {
+        em.clear();
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Comprobantes.class));
         return em.createQuery(cq).getResultList();
@@ -106,6 +108,7 @@ public class PersistenciaComprobantes implements PersistenciaComprobantesInterfa
     @Override
     public List<Comprobantes> comprobantesEmpleado(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT c FROM Comprobantes c WHERE c.empleado.secuencia = :secuenciaEmpleado ORDER BY c.numero DESC");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -120,6 +123,7 @@ public class PersistenciaComprobantes implements PersistenciaComprobantesInterfa
     @Override
     public BigInteger numeroMaximoComprobante(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT MAX(c.numero) FROM Comprobantes c");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             BigInteger max = (BigInteger) query.getSingleResult();
@@ -133,6 +137,7 @@ public class PersistenciaComprobantes implements PersistenciaComprobantesInterfa
     @Override
     public BigDecimal buscarValorNumeroMaximo(EntityManager em) {
         try {
+            em.clear();
             String sql = "SELECT nvl(MAX(NUMERO),0) FROM COMPROBANTES";
             Query query = em.createNativeQuery(sql);
             BigDecimal valor = (BigDecimal) query.getSingleResult();
@@ -146,6 +151,7 @@ public class PersistenciaComprobantes implements PersistenciaComprobantesInterfa
     @Override
     public Comprobantes buscarComprobanteParaPrimerRegistroEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT c FROM Comprobantes c WHERE c.empleado.secuencia=:secEmpleado");
             query.setParameter("secEmpleado", secEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

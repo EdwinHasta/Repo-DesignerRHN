@@ -32,6 +32,7 @@ public class PersistenciaVWPrestamoDtosRealizados implements PersistenciaVWPrest
     @Override
     public List<VWPrestamoDtosRealizados> buscarPrestamosDtos(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT vw FROM VWPrestamoDtosRealizados vw WHERE vw.eerprestamodto.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

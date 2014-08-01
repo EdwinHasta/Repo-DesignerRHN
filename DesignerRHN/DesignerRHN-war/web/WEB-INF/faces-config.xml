@@ -4551,5 +4551,76 @@
         </navigation-case>
     </navigation-rule>
     
+    <navigation-rule>
+        <from-view-id>/novedad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atausentismos</from-outcome>
+            <to-view-id>/Atausentismos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Atausentismos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedad</from-outcome>
+            <to-view-id>/novedad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Atausentismos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>causasausentismos</from-outcome>
+            <to-view-id>/causaausentismo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/causaausentismo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atausentismos</from-outcome>
+            <to-view-id>/Atausentismos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+        
+    <navigation-rule>
+        <from-view-id>/causaausentismo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>claseausentismos</from-outcome>
+            <to-view-id>/claseausentismo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/claseausentismo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>causasausentismos</from-outcome>
+            <to-view-id>/causaausentismo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/causaausentismo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>    
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>causasausentismos</from-outcome>
+            <to-view-id>/causaausentismo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>    
+    
+    
     
 </faces-config>

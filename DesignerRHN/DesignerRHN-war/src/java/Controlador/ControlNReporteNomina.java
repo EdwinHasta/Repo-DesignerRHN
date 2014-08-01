@@ -196,7 +196,7 @@ public class ControlNReporteNomina implements Serializable {
         procesoSeleccionado = new Procesos();
         asociacionSeleccionado = new Asociaciones();
         permitirIndex = true;
-        altoTabla = "185";
+        altoTabla = "160";
         indice = -1;
         //prueba = new FileInputStream(new File("C:\\Users\\Administrador\\Documents\\Guia JasperReport.pdf"));
         //reporte = new DefaultStreamedContent(prueba, "application/pdf");
@@ -1217,7 +1217,7 @@ public class ControlNReporteNomina implements Serializable {
     public void salir() {
         if (bandera == 1) {
             FacesContext c = FacesContext.getCurrentInstance();
-            altoTabla = "185";
+            altoTabla = "160";
             codigoIR = (Column) c.getViewRoot().findComponent("form:reportesNomina:codigoIR");
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
             reporteIR = (Column) c.getViewRoot().findComponent("form:reportesNomina:reporteIR");
@@ -1253,7 +1253,7 @@ public class ControlNReporteNomina implements Serializable {
     public void actualizarSeleccionInforeporte() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (bandera == 1) {
-            altoTabla = "185";
+            altoTabla = "160";
             FacesContext c = FacesContext.getCurrentInstance();
             codigoIR = (Column) c.getViewRoot().findComponent("form:reportesNomina:codigoIR");
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
@@ -1328,7 +1328,7 @@ public class ControlNReporteNomina implements Serializable {
 
     public void cancelarModificaciones() {
         if (bandera == 1) {
-            altoTabla = "185";
+            altoTabla = "160";
             FacesContext c = FacesContext.getCurrentInstance();
             codigoIR = (Column) c.getViewRoot().findComponent("form:reportesNomina:codigoIR");
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
@@ -1381,7 +1381,7 @@ public class ControlNReporteNomina implements Serializable {
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            altoTabla = "163";
+            altoTabla = "138";
             codigoIR = (Column) c.getViewRoot().findComponent("form:reportesNomina:codigoIR");
             codigoIR.setFilterStyle("width: 25px");
             reporteIR = (Column) c.getViewRoot().findComponent("form:reportesNomina:reporteIR");
@@ -1392,7 +1392,7 @@ public class ControlNReporteNomina implements Serializable {
             tipoLista = 1;
             bandera = 1;
         } else if (bandera == 1) {
-            altoTabla = "185";
+            altoTabla = "160";
             codigoIR = (Column) c.getViewRoot().findComponent("form:reportesNomina:codigoIR");
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
             reporteIR = (Column) c.getViewRoot().findComponent("form:reportesNomina:reporteIR");

@@ -75,6 +75,7 @@ public class PersistenciaPryClientes implements PersistenciaPryClientesInterface
 
     public PryClientes buscarPryCliente(EntityManager em, BigInteger secuenciaPC) {
         try {
+            em.clear();
             return em.find(PryClientes.class, secuenciaPC);
         } catch (Exception e) {
             return null;
@@ -84,6 +85,7 @@ public class PersistenciaPryClientes implements PersistenciaPryClientesInterface
     @Override
     public List<PryClientes> buscarPryClientes(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT pc FROM PryClientes pc ORDER BY pc.nombre ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<PryClientes> pryclientes = query.getResultList();
@@ -96,6 +98,7 @@ public class PersistenciaPryClientes implements PersistenciaPryClientesInterface
     public BigInteger contadorProyectos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = " SELECT COUNT(*)FROM  proyectos WHERE pry_cliente = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

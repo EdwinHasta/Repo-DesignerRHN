@@ -28,6 +28,7 @@ public class PersistenciaRastrosValores implements PersistenciaRastrosValoresInt
     @Override
     public List<RastrosValores> rastroValores(EntityManager em, BigInteger secRastro) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT rv FROM RastrosValores rv WHERE rv.rastro.secuencia = :secRastro");
             query.setParameter("secRastro", secRastro);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

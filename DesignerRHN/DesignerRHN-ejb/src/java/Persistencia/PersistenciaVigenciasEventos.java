@@ -80,6 +80,7 @@ public class PersistenciaVigenciasEventos implements PersistenciaVigenciasEvento
     @Override
     public List<VigenciasEventos> eventosEmpleado(EntityManager em, BigInteger secuenciaEmpl) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(ve) FROM VigenciasEventos ve WHERE ve.empleado.secuencia = :secuenciaEmpl");
             query.setParameter("secuenciaEmpl", secuenciaEmpl);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -100,6 +101,7 @@ public class PersistenciaVigenciasEventos implements PersistenciaVigenciasEvento
     @Override
     public List<VigenciasEventos> vigenciasEventosSecuenciaEmpleado(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT ve FROM VigenciasEventos ve WHERE ve.empleado.secuencia = :secuenciaEmpl");
             query.setParameter("secuenciaEmpl", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

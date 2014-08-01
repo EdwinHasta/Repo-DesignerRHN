@@ -84,6 +84,7 @@ public class PersistenciaTiposCentrosCostos implements PersistenciaTiposCentrosC
     @Override
     public TiposCentrosCostos buscarTipoCentrosCostos(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(TiposCentrosCostos.class, secuencia);
         } catch (Exception e) {
             System.err.println("ERROR PersistenciaTiposCentosCostos buscarTiposCentrosCostos ERROR " + e);
@@ -94,6 +95,7 @@ public class PersistenciaTiposCentrosCostos implements PersistenciaTiposCentrosC
     @Override
     public List<TiposCentrosCostos> buscarTiposCentrosCostos(EntityManager em) {
         try {
+            em.clear();
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(TiposCentrosCostos.class));
             return em.createQuery(cq).getResultList();
@@ -107,6 +109,7 @@ public class PersistenciaTiposCentrosCostos implements PersistenciaTiposCentrosC
     public BigInteger verificarBorradoCentrosCostos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             Query query = em.createQuery("SELECT count(cc) FROM CentrosCostos cc WHERE cc.tipocentrocosto.secuencia = :secTipoCentroCosto ");
             query.setParameter("secTipoCentroCosto", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -124,6 +127,7 @@ public class PersistenciaTiposCentrosCostos implements PersistenciaTiposCentrosC
     public BigInteger verificarBorradoVigenciasCuentas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             Query query = em.createQuery("SELECT count(vc) FROM VigenciasCuentas vc WHERE vc.tipocc.secuencia  = :secTipoCentroCosto ");
             query.setParameter("secTipoCentroCosto", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -141,6 +145,7 @@ public class PersistenciaTiposCentrosCostos implements PersistenciaTiposCentrosC
     public BigInteger verificarBorradoRiesgosProfesionales(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM riesgosprofesionales WHERE tipocentrocosto = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

@@ -79,6 +79,7 @@ public class PersistenciaTiposDias implements PersistenciaTiposDiasInterface {
     @Override
     public TiposDias buscarTipoDia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(TiposDias.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error PersistenciaTiposDias buscarTipoDia : " + e.toString());
@@ -89,6 +90,7 @@ public class PersistenciaTiposDias implements PersistenciaTiposDiasInterface {
     @Override
     public List<TiposDias> buscarTiposDias(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT td FROM TiposDias td ORDER BY td.codigo DESC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposDias> tiposDias = query.getResultList();
@@ -103,6 +105,7 @@ public class PersistenciaTiposDias implements PersistenciaTiposDiasInterface {
     public BigInteger contadorDiasLaborales(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
+            em.clear();
             String sqlQuery = " SELECT COUNT(*)FROM diaslaborables WHERE tipodia = ? ";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -120,6 +123,7 @@ public class PersistenciaTiposDias implements PersistenciaTiposDiasInterface {
     public BigInteger contadorExtrasRecargos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = " SELECT COUNT(*)FROM extrasrecargos WHERE tipodia = ? ";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

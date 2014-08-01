@@ -77,6 +77,7 @@ public class PersistenciaAsociaciones implements PersistenciaAsociacionesInterfa
     @Override
     public List<Asociaciones> buscarAsociaciones(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createNamedQuery("Asociaciones.findAll");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Asociaciones> asociaciones = (List<Asociaciones>) query.getResultList();
@@ -92,6 +93,7 @@ public class PersistenciaAsociaciones implements PersistenciaAsociacionesInterfa
     public Asociaciones buscarAsociacionesSecuencia(EntityManager em, BigInteger secuencia) {
 
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM Asociaciones t WHERE t.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

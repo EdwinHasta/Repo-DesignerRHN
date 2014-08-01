@@ -78,6 +78,7 @@ public class PersistenciaEnfoques implements PersistenciaEnfoquesInterface {
 
     public Enfoques buscarEnfoque(EntityManager em, BigInteger secuenciaEnfoques) {
         try {
+            em.clear();
             return em.find(Enfoques.class, secuenciaEnfoques);
         } catch (Exception e) {
             System.err.println("ERROR PersistenciaEnfoques buscarEnfoque ERROR " + e);
@@ -87,6 +88,7 @@ public class PersistenciaEnfoques implements PersistenciaEnfoquesInterface {
 
     public List<Enfoques> buscarEnfoques(EntityManager em) {
         try {
+            em.clear();
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Enfoques.class));
             return em.createQuery(cq).getResultList();
@@ -99,6 +101,7 @@ public class PersistenciaEnfoques implements PersistenciaEnfoquesInterface {
     public BigInteger contadorTiposDetalles(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM tiposdetalles td , enfoques eee WHERE eee.secuencia=td.enfoque AND eee.secuencia  = ? ";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

@@ -72,6 +72,7 @@ public class PersistenciaConceptosProyecciones implements PersistenciaConceptosP
 
     public ConceptosProyecciones buscarConceptoProyeccion(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(ConceptosProyecciones.class, secuencia);
         } catch (Exception e) {
             System.out.println("Error buscarDeporte PersistenciaConceptosProyecciones : " + e.toString());
@@ -81,6 +82,7 @@ public class PersistenciaConceptosProyecciones implements PersistenciaConceptosP
 
     public List<ConceptosProyecciones> buscarConceptosProyecciones(EntityManager em) {
         try {
+            em.clear();
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(ConceptosProyecciones.class));
             return em.createQuery(cq).getResultList();

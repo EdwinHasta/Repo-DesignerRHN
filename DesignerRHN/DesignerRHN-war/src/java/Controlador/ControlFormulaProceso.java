@@ -85,7 +85,7 @@ public class ControlFormulaProceso implements Serializable {
     private String infoRegistroProceso;
 
     public ControlFormulaProceso() {
-        altoTabla = "270";
+        altoTabla = "310";
         permitirIndex = true;
         tipoActualizacion = -1;
         lovProcesos = null;
@@ -314,7 +314,7 @@ public class ControlFormulaProceso implements Serializable {
 
     public void cancelarModificacionFormulaProceso() {
         if (bandera == 1) {
-            altoTabla = "260";
+            altoTabla = "310";
             formulaProceso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaProceso:formulaProceso");
             formulaProceso.setFilterStyle("display: none; visibility: hidden;");
 
@@ -376,7 +376,7 @@ public class ControlFormulaProceso implements Serializable {
     public void agregarNuevoFormulaProceso() {
         if (nuevoFormulaProceso.getProceso().getSecuencia() != null) {
             if (bandera == 1) {
-                altoTabla = "260";
+                altoTabla = "310";
                 formulaProceso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaProceso:formulaProceso");
                 formulaProceso.setFilterStyle("display: none; visibility: hidden;");
 
@@ -477,7 +477,7 @@ public class ControlFormulaProceso implements Serializable {
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             if (bandera == 1) {
-                altoTabla = "260";
+                altoTabla = "310";
                 formulaProceso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaProceso:formulaProceso");
                 formulaProceso.setFilterStyle("display: none; visibility: hidden;");
 
@@ -572,7 +572,7 @@ public class ControlFormulaProceso implements Serializable {
      */
     public void activarCtrlF11() {
         if (bandera == 0) {
-            altoTabla = "246";
+            altoTabla = "288";
             formulaProceso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaProceso:formulaProceso");
             formulaProceso.setFilterStyle("width: 125px");
 
@@ -582,7 +582,7 @@ public class ControlFormulaProceso implements Serializable {
             RequestContext.getCurrentInstance().update("form:datosFormulaProceso");
             bandera = 1;
         } else if (bandera == 1) {
-            altoTabla = "260";
+            altoTabla = "310";
             formulaProceso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaProceso:formulaProceso");
             formulaProceso.setFilterStyle("display: none; visibility: hidden;");
 
@@ -602,7 +602,7 @@ public class ControlFormulaProceso implements Serializable {
      */
     public void salir() {
         if (bandera == 1) {
-            altoTabla = "260";
+            altoTabla = "310";
             formulaProceso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaProceso:formulaProceso");
             formulaProceso.setFilterStyle("display: none; visibility: hidden;");
 

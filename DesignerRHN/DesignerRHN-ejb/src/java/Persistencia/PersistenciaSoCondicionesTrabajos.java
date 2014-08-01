@@ -79,6 +79,7 @@ public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicio
     @Override
     public SoCondicionesTrabajos buscarSoCondicionTrabajo(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             return em.find(SoCondicionesTrabajos.class, secuencia);
         } catch (Exception e) {
             System.err.println("ERROR PERSISTENCIASOCONDICIONESTRABAJOS ERROR " + e);
@@ -89,6 +90,7 @@ public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicio
     @Override
     public List<SoCondicionesTrabajos> buscarSoCondicionesTrabajos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT soct FROM SoCondicionesTrabajos soct ORDER BY soct.codigo ASC ");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<SoCondicionesTrabajos> listaSOCondicionesTrabajos = query.getResultList();
@@ -104,6 +106,7 @@ public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicio
     public BigInteger contadorInspecciones(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM inspecciones ins WHERE ins.factorriesgo = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -120,6 +123,7 @@ public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicio
     public BigInteger contadorSoAccidentesMedicos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM soaccidentesmedicos soa WHERE soa.factorriesgo = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -136,6 +140,7 @@ public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicio
     public BigInteger contadorSoDetallesPanoramas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM socondicionestrabajos st , sodetallespanoramas sop WHERE st.secuencia = sop.condiciontrabajo and sop.secuencia =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -152,6 +157,7 @@ public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicio
     public BigInteger contadorSoExposicionesFr(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM socondicionestrabajos st , soexposicionesfr  ser WHERE st.secuencia = ser.indicador and ser.secuencia = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

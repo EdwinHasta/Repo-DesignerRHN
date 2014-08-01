@@ -78,6 +78,7 @@ public class PersistenciaGruposFactoresRiesgos implements PersistenciaGruposFact
 
     public List<GruposFactoresRiesgos> consultarGruposFactoresRiesgos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM GruposFactoresRiesgos t ORDER BY t.codigo  ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<GruposFactoresRiesgos> evalActividades = query.getResultList();
@@ -90,6 +91,7 @@ public class PersistenciaGruposFactoresRiesgos implements PersistenciaGruposFact
 
     public GruposFactoresRiesgos consultarGrupoFactorRiesgo(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT t FROM GruposFactoresRiesgos t WHERE t.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -105,6 +107,7 @@ public class PersistenciaGruposFactoresRiesgos implements PersistenciaGruposFact
     public BigInteger contarSoProActividadesGrupoFactorRiesgo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM soprogactividades WHERE factorriesgo = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -120,6 +123,7 @@ public class PersistenciaGruposFactoresRiesgos implements PersistenciaGruposFact
     public BigInteger contarSoIndicadoresGrupoFactorRiesgo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM soindicadores WHERE factorriesgo = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
@@ -135,6 +139,7 @@ public class PersistenciaGruposFactoresRiesgos implements PersistenciaGruposFact
     public BigInteger contarFactoresRiesgoGrupoFactorRiesgo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
+            em.clear();
             String sqlQuery = "SELECT COUNT(*)FROM factoresriesgos WHERE grupo = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);

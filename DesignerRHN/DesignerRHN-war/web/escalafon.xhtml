@@ -14,7 +14,7 @@
                 <h:form id="form">
                     <f:loadBundle basename="Recursos.escalafon" var="msg" />
                     <p:growl id="growl" showDetail="true"/> 
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 445px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left" >  
 
                         <p:toolbar style="position: absolute; top: 37px; left: 12px; height: 23px">  
                             <p:toolbarGroup align="left"> 
@@ -73,7 +73,7 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <fieldset style="position: absolute; left: 10px; top: 80px; width: 830px; height: 300px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 80px; width: 830px; height: 380px; border-radius: 10px; ">
                             <legend style="color: blue;text-align:left"><strong>#{msg['escalafones']}</strong></legend>
 
                             <p:dataTable id="datosEscalafon" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="width: 815px; border: 1px; text-align: left"                           
@@ -197,9 +197,9 @@
                             </p:commandButton>
                         </p:dialog> 
 
-                        <h:outputText id="informacionRegistro" value="#{controlEscalafon.infoRegistro}" style="position: absolute; left: 15px; top: 410px; font-weight: bold"/>
-                        <p:commandButton style="position: absolute; left: 683px; top: 405px; " id="ACEPTAR" icon="ui-icon-check" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" disabled="#{controlEscalafon.cambiosPagina}" update=":form:datosEscalafon" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 405px;" icon="ui-icon-closethick" id="ATRAS" value="#{msg['cancelar']}" actionListener="#{controlEscalafon.salir()}" action="nomina" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlEscalafon.infoRegistro}" style="position: absolute; left: 15px; top: 480px; font-weight: bold"/>
+                        <p:commandButton style="position: absolute; left: 683px; top: 480px; " id="ACEPTAR" icon="ui-icon-check" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" disabled="#{controlEscalafon.cambiosPagina}" update=":form:datosEscalafon" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 480px;" icon="ui-icon-closethick" id="ATRAS" value="#{msg['cancelar']}" actionListener="#{controlEscalafon.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
 

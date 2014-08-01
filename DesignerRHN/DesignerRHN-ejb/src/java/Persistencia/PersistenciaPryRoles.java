@@ -27,6 +27,7 @@ public class PersistenciaPryRoles implements PersistenciaPryRolesInterface {
     @Override
     public List<PryRoles> pryroles(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT p FROM PryRoles p ORDER BY p.descripcion ");
             em.createNamedQuery("PryPlataformas.findAll");
             List<PryRoles> pryroles = query.getResultList();

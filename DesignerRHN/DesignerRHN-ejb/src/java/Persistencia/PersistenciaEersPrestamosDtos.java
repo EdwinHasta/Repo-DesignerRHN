@@ -82,6 +82,7 @@ public class PersistenciaEersPrestamosDtos implements PersistenciaEersPrestamosD
     @Override
     public List<EersPrestamosDtos> eersPrestamosDtosEmpleado(EntityManager em,BigInteger secuenciaEersPrestamo) {
         try {
+            em.clear();
             Query query = em.createQuery("select e from EersPrestamosDtos e where e.eerprestamo.secuencia = :secuenciaEersPrestamo ");
             query.setParameter("secuenciaEersPrestamo", secuenciaEersPrestamo);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

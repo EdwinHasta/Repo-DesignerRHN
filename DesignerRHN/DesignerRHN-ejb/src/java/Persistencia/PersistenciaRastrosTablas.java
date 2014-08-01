@@ -26,6 +26,7 @@ public class PersistenciaRastrosTablas implements PersistenciaRastrosTablasInter
     @Override
     public boolean verificarRastroTabla(EntityManager em, BigInteger secObjetoTabla) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT COUNT(rt) FROM RastrosTablas rt WHERE rt.objeto.secuencia = :secObjetoTabla");
             query.setParameter("secObjetoTabla", secObjetoTabla);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
