@@ -295,4 +295,19 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
             return null;
         }
     }
+
+    @Override
+    public Empresas consultarEmpresaPorCodigo(EntityManager em, short codigo) {
+        try {
+            em.clear();
+            Query query = em.createQuery("SELECT e FROM Empresas e WHERE e.codigo =:codigo");
+            query.setParameter("codigo", codigo);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            Empresas empresa = (Empresas) query.getSingleResult();
+            return empresa;
+        } catch (Exception e) {
+            System.out.println("Error consultarEmpresaPorCodigo PersistenciaEmpresas : " + e.toString());
+            return null;
+        }
+    }
 }

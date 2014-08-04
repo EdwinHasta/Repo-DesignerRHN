@@ -40,8 +40,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Conceptos.findAll", query = "SELECT c FROM Conceptos c")})
 public class Conceptos implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "CODIGO")
     private BigInteger codigo;
+    @OneToMany(mappedBy = "concepto")
+    private Collection<InterconTotal> interconTotalCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
     private Collection<ConceptosRedondeos> conceptosRedondeosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
@@ -743,6 +747,16 @@ public class Conceptos implements Serializable {
         this.detallesFormasDtosCollection = detallesFormasDtosCollection;
     }
 
+
+    @XmlTransient
+    public Collection<ConceptosRedondeos> getConceptosRedondeosCollection() {
+        return conceptosRedondeosCollection;
+    }
+
+    public void setConceptosRedondeosCollection(Collection<ConceptosRedondeos> conceptosRedondeosCollection) {
+        this.conceptosRedondeosCollection = conceptosRedondeosCollection;
+    }
+
     public BigInteger getCodigo() {
         return codigo;
     }
@@ -752,11 +766,11 @@ public class Conceptos implements Serializable {
     }
 
     @XmlTransient
-    public Collection<ConceptosRedondeos> getConceptosRedondeosCollection() {
-        return conceptosRedondeosCollection;
+    public Collection<InterconTotal> getInterconTotalCollection() {
+        return interconTotalCollection;
     }
 
-    public void setConceptosRedondeosCollection(Collection<ConceptosRedondeos> conceptosRedondeosCollection) {
-        this.conceptosRedondeosCollection = conceptosRedondeosCollection;
+    public void setInterconTotalCollection(Collection<InterconTotal> interconTotalCollection) {
+        this.interconTotalCollection = interconTotalCollection;
     }
 }

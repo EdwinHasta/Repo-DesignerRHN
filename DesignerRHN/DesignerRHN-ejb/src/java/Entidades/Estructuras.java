@@ -39,6 +39,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Estructuras.findByOrganigrama", query = "SELECT e FROM Estructuras e where e.organigrama = :Organigrama")})
 
 public class Estructuras implements Serializable {
+    @OneToMany(mappedBy = "estructura")
+    private Collection<SolucionesNodos> solucionesNodosCollection;
+    @OneToMany(mappedBy = "localizacion")
+    private Collection<SolucionesNodos> solucionesNodosCollection1;
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -223,5 +227,23 @@ public class Estructuras implements Serializable {
 
     public void setVigenciasArpsList(List<VigenciasArps> vigenciasArpsList) {
         this.vigenciasArpsList = vigenciasArpsList;
+    }
+
+    @XmlTransient
+    public Collection<SolucionesNodos> getSolucionesNodosCollection() {
+        return solucionesNodosCollection;
+    }
+
+    public void setSolucionesNodosCollection(Collection<SolucionesNodos> solucionesNodosCollection) {
+        this.solucionesNodosCollection = solucionesNodosCollection;
+    }
+
+    @XmlTransient
+    public Collection<SolucionesNodos> getSolucionesNodosCollection1() {
+        return solucionesNodosCollection1;
+    }
+
+    public void setSolucionesNodosCollection1(Collection<SolucionesNodos> solucionesNodosCollection1) {
+        this.solucionesNodosCollection1 = solucionesNodosCollection1;
     }
 }
