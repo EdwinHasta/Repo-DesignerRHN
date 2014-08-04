@@ -5,17 +5,18 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -38,7 +39,7 @@ public class ClavesSap implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Size(max = 2)
     @Column(name = "CLAVE")
     private String clave;
@@ -48,25 +49,29 @@ public class ClavesSap implements Serializable {
     @Size(max = 1)
     @Column(name = "NATURALEZA")
     private String naturaleza;
-    @Column(name = "CLAVEAJUSTE")
-    private BigInteger claveajuste;
+    @JoinColumn(name = "CLAVEAJUSTE", referencedColumnName = "SECUENCIA")
+    private ClavesSap claveAjuste;
     @OneToMany(mappedBy = "clavecontabledebito")
     private Collection<Conceptos> conceptosCollection;
     @OneToMany(mappedBy = "clavecontablecredito")
     private Collection<Conceptos> conceptosCollection1;
+    @Transient
+    private String clasificacionTransient;
+    @Transient
+    private String naturalezaTransient;
 
     public ClavesSap() {
     }
 
-    public ClavesSap(BigDecimal secuencia) {
+    public ClavesSap(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -98,12 +103,12 @@ public class ClavesSap implements Serializable {
         this.naturaleza = naturaleza;
     }
 
-    public BigInteger getClaveajuste() {
-        return claveajuste;
+    public ClavesSap getClaveAjuste() {
+        return claveAjuste;
     }
 
-    public void setClaveajuste(BigInteger claveajuste) {
-        this.claveajuste = claveajuste;
+    public void setClaveAjuste(ClavesSap claveAjuste) {
+        this.claveAjuste = claveAjuste;
     }
 
     @XmlTransient
@@ -147,6 +152,62 @@ public class ClavesSap implements Serializable {
     @Override
     public String toString() {
         return "Entidades.ClavesSap[ secuencia=" + secuencia + " ]";
+    }
+
+    public String getClasificacionTransient() {
+        if (clasificacion == null) {
+            clasificacionTransient = null;
+        } else if (clasificacion.equalsIgnoreCase("D")) {
+            clasificacionTransient = "DEUDORES";
+        } else if (clasificacion.equalsIgnoreCase("S")) {
+            clasificacionTransient = "STOCKS";
+        } else if (clasificacion.equalsIgnoreCase("K")) {
+            clasificacionTransient = "ACREEDOR";
+        } else if (clasificacion.equalsIgnoreCase("A")) {
+            clasificacionTransient = "ACTVOS FIJOS";
+        } else if (clasificacion.equalsIgnoreCase("M")) {
+            clasificacionTransient = "INVENTARIOS";
+        }
+        return clasificacionTransient;
+    }
+
+    public void setClasificacionTransient(String clasificacionTransient) {
+        if (clasificacionTransient.equals(" ")) {
+            clasificacion = null;
+        } else if (clasificacionTransient.equalsIgnoreCase("DEUDORES")) {
+            clasificacion = "D";
+        } else if (clasificacionTransient.equalsIgnoreCase("STOCKS")) {
+            clasificacion = "S";
+        } else if (clasificacionTransient.equalsIgnoreCase("ACREEDOR")) {
+            clasificacion = "K";
+        } else if (clasificacionTransient.equalsIgnoreCase("ACTVOS FIJOS")) {
+            clasificacion = "A";
+        } else if (clasificacionTransient.equalsIgnoreCase("INVENTARIOS")) {
+            clasificacion = "M";
+        }
+        this.clasificacionTransient = clasificacionTransient;
+    }
+
+    public String getNaturalezaTransient() {
+        if (naturaleza == null) {
+            naturalezaTransient = null;
+        } else if (naturaleza.equalsIgnoreCase("D")) {
+            naturalezaTransient = "DEBITO";
+        } else if (naturaleza.equalsIgnoreCase("C")) {
+            naturalezaTransient = "CREDITO";
+        }
+        return naturalezaTransient;
+    }
+
+    public void setNaturalezaTransient(String naturalezaTransient) {
+        if (naturalezaTransient.equals(" ")) {
+            naturaleza = null;
+        } else if (naturalezaTransient.equalsIgnoreCase("DEBITO")) {
+            naturaleza = "D";
+        } else if (naturalezaTransient.equalsIgnoreCase("CREDITO")) {
+            naturaleza = "C";
+        }
+        this.naturalezaTransient = naturalezaTransient;
     }
 
 }
