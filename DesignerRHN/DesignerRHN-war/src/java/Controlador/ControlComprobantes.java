@@ -84,6 +84,7 @@ public class ControlComprobantes implements Serializable {
         formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
         estadoBtnArriba = false;
         estadoBtnAbajo = false;
+        parametroActual = null;
     }
 
     @PostConstruct
@@ -161,7 +162,7 @@ public class ControlComprobantes implements Serializable {
         context.update("form:panelInf");
         context.update("form:datosSolucionesNodosEmpleado");
         context.update("form:datosSolucionesNodosEmpleador");
-        
+
         context.update("formularioDialogos:buscarEmpleadoDialogo");
         context.update("formularioDialogos:lovEmpleados");
         context.update("formularioDialogos:aceptarP");
@@ -511,20 +512,22 @@ public class ControlComprobantes implements Serializable {
 
     public List<SolucionesNodos> getListaSolucionesNodosEmpleador() {
         //if (listaSolucionesNodosEmpleador == null && parametroActual != null) {
-        if (parametroActual.getEmpleado().getSecuencia() != null) {
-            listaSolucionesNodosEmpleador = administrarComprobantes.consultarSolucionesNodosEmpleador(parametroActual.getEmpleado().getSecuencia());
-            if (listaSolucionesNodosEmpleador != null) {
-                subtotalPasivo = new BigDecimal(0);
-                subtotalGasto = new BigDecimal(0);
-                for (int i = 0; i < listaSolucionesNodosEmpleador.size(); i++) {
-                    if (listaSolucionesNodosEmpleador.get(i).getTipo().equals("PASIVO")) {
-                        subtotalPasivo = subtotalPasivo.add(listaSolucionesNodosEmpleador.get(i).getValor());
-                    } else if (listaSolucionesNodosEmpleador.get(i).getTipo().equals("GASTO")) {
-                        subtotalGasto = subtotalGasto.add(listaSolucionesNodosEmpleador.get(i).getValor());
+        if (parametroActual != null) {
+            if (parametroActual.getEmpleado().getSecuencia() != null) {
+                listaSolucionesNodosEmpleador = administrarComprobantes.consultarSolucionesNodosEmpleador(parametroActual.getEmpleado().getSecuencia());
+                if (listaSolucionesNodosEmpleador != null) {
+                    subtotalPasivo = new BigDecimal(0);
+                    subtotalGasto = new BigDecimal(0);
+                    for (int i = 0; i < listaSolucionesNodosEmpleador.size(); i++) {
+                        if (listaSolucionesNodosEmpleador.get(i).getTipo().equals("PASIVO")) {
+                            subtotalPasivo = subtotalPasivo.add(listaSolucionesNodosEmpleador.get(i).getValor());
+                        } else if (listaSolucionesNodosEmpleador.get(i).getTipo().equals("GASTO")) {
+                            subtotalGasto = subtotalGasto.add(listaSolucionesNodosEmpleador.get(i).getValor());
+                        }
                     }
+                    Pasivo = nf.format(subtotalPasivo);
+                    Gasto = nf.format(subtotalGasto);
                 }
-                Pasivo = nf.format(subtotalPasivo);
-                Gasto = nf.format(subtotalGasto);
             }
         }
         return listaSolucionesNodosEmpleador;
