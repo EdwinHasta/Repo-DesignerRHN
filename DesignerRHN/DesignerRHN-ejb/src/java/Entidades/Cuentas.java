@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -57,6 +58,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Cuentas.findByCodigoespecial", query = "SELECT c FROM Cuentas c WHERE c.codigoespecial = :codigoespecial"),
     @NamedQuery(name = "Cuentas.findByManejasubcuenta", query = "SELECT c FROM Cuentas c WHERE c.manejasubcuenta = :manejasubcuenta")})
 public class Cuentas implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentad")
+    private Collection<SolucionesNodos> solucionesNodosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentac")
+    private Collection<SolucionesNodos> solucionesNodosCollection1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuenta")
+    private Collection<InterconTotal> interconTotalCollection;
     @OneToMany(mappedBy = "cuentaneto")
     private Collection<Procesos> procesosCollection;
 
@@ -600,6 +607,33 @@ public class Cuentas implements Serializable {
 
     public void setProcesosCollection(Collection<Procesos> procesosCollection) {
         this.procesosCollection = procesosCollection;
+    }
+
+    @XmlTransient
+    public Collection<SolucionesNodos> getSolucionesNodosCollection() {
+        return solucionesNodosCollection;
+    }
+
+    public void setSolucionesNodosCollection(Collection<SolucionesNodos> solucionesNodosCollection) {
+        this.solucionesNodosCollection = solucionesNodosCollection;
+    }
+
+    @XmlTransient
+    public Collection<SolucionesNodos> getSolucionesNodosCollection1() {
+        return solucionesNodosCollection1;
+    }
+
+    public void setSolucionesNodosCollection1(Collection<SolucionesNodos> solucionesNodosCollection1) {
+        this.solucionesNodosCollection1 = solucionesNodosCollection1;
+    }
+
+    @XmlTransient
+    public Collection<InterconTotal> getInterconTotalCollection() {
+        return interconTotalCollection;
+    }
+
+    public void setInterconTotalCollection(Collection<InterconTotal> interconTotalCollection) {
+        this.interconTotalCollection = interconTotalCollection;
     }
 
 }

@@ -43,6 +43,14 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empleados.findBySecuencia", query = "SELECT e FROM Empleados e where e.secuencia = :secuencia")})
 public class Empleados implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
+    private Collection<SolucionesNodos> solucionesNodosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
+    private Collection<Comprobantes> comprobantesCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
+    private Collection<CortesProcesos> cortesProcesosCollection;
+    @OneToMany(mappedBy = "empleado")
+    private Collection<InterconTotal> interconTotalCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
     private Collection<AportesEntidades> aportesEntidadesCollection;
     @Size(max = 30)
     @Column(name = "USUARIOBD")
@@ -364,6 +372,42 @@ public class Empleados implements Serializable {
 
     public void setAportesEntidadesCollection(Collection<AportesEntidades> aportesEntidadesCollection) {
         this.aportesEntidadesCollection = aportesEntidadesCollection;
+    }
+
+    @XmlTransient
+    public Collection<SolucionesNodos> getSolucionesNodosCollection() {
+        return solucionesNodosCollection;
+    }
+
+    public void setSolucionesNodosCollection(Collection<SolucionesNodos> solucionesNodosCollection) {
+        this.solucionesNodosCollection = solucionesNodosCollection;
+    }
+
+    @XmlTransient
+    public Collection<Comprobantes> getComprobantesCollection() {
+        return comprobantesCollection;
+    }
+
+    public void setComprobantesCollection(Collection<Comprobantes> comprobantesCollection) {
+        this.comprobantesCollection = comprobantesCollection;
+    }
+
+    @XmlTransient
+    public Collection<CortesProcesos> getCortesProcesosCollection() {
+        return cortesProcesosCollection;
+    }
+
+    public void setCortesProcesosCollection(Collection<CortesProcesos> cortesProcesosCollection) {
+        this.cortesProcesosCollection = cortesProcesosCollection;
+    }
+
+    @XmlTransient
+    public Collection<InterconTotal> getInterconTotalCollection() {
+        return interconTotalCollection;
+    }
+
+    public void setInterconTotalCollection(Collection<InterconTotal> interconTotalCollection) {
+        this.interconTotalCollection = interconTotalCollection;
     }
 
    

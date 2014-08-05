@@ -7,8 +7,10 @@ package Entidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -16,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,6 +26,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -34,6 +38,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Comprobantes.findAll", query = "SELECT c FROM Comprobantes c")})
 public class Comprobantes implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "NUMERO")
+    private BigInteger numero;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "comprobante")
+    private Collection<CortesProcesos> cortesProcesosCollection;
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -47,10 +57,6 @@ public class Comprobantes implements Serializable {
     @Column(name = "FECHA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "NUMERO")
-    private BigInteger numero;
     @Basic(optional = false)
     @NotNull
     @Column(name = "VALOR")
@@ -212,13 +218,6 @@ public class Comprobantes implements Serializable {
         return "Entidades.Comprobantes[ secuencia=" + secuencia + " ]";
     }
 
-    public BigInteger getNumero() {
-        return numero;
-    }
-
-    public void setNumero(BigInteger numero) {
-        this.numero = numero;
-    }
 
     public boolean isReadOnlyNumero() {
         if (numero == null) {
@@ -231,6 +230,23 @@ public class Comprobantes implements Serializable {
 
     public void setReadOnlyNumero(boolean readOnlyNumero) {
         this.readOnlyNumero = readOnlyNumero;
+    }
+
+    public BigInteger getNumero() {
+        return numero;
+    }
+
+    public void setNumero(BigInteger numero) {
+        this.numero = numero;
+    }
+
+    @XmlTransient
+    public Collection<CortesProcesos> getCortesProcesosCollection() {
+        return cortesProcesosCollection;
+    }
+
+    public void setCortesProcesosCollection(Collection<CortesProcesos> cortesProcesosCollection) {
+        this.cortesProcesosCollection = cortesProcesosCollection;
     }
 
 }
