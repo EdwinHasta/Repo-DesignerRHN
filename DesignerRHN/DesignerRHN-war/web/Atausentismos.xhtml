@@ -358,6 +358,7 @@
                                             </lnk:calendar>
                                         </f:facet>
                                     </p:cellEditor>                                     
+
                                 </p:column>
                                 <!-- Fecha Expedicion -->
                                 <p:column >  
@@ -391,7 +392,7 @@
                                                 <p:ajax event="click" listener="#{controlAusentismos.cambiarIndice(indice, 8)}" process="@this" />
                                             </lnk:calendar>
                                         </f:facet>
-                                    </p:cellEditor>   
+                                    </p:cellEditor> 
                                 </p:column>
                                 <!-- Fecha Pago Final -->
                                 <p:column  >  
@@ -421,7 +422,7 @@
                                                 <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 4, 0)}"/>
                                             </p:inputText>
                                         </f:facet>
-                                    </p:cellEditor>                                      
+                                    </p:cellEditor>  
                                 </p:column>
                                 <!-- Base Liquidacion -->
                                 <p:column  >                                  
@@ -485,7 +486,7 @@
                                                 <p:ajax event="select" listener="#{controlAusentismos.cambiarIndice(indice, 15)}" process="@this"/>
                                             </p:inputText>
                                         </f:facet>
-                                    </p:cellEditor>                                    
+                                    </p:cellEditor>       
                                 </p:column>
                                 <!-- Diagnosticos Categoria -->
                                 <p:column  >                                  
@@ -511,8 +512,7 @@
                                                 <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 10, 0)}"/>
                                             </p:inputText>
                                         </f:facet>
-                                    </p:cellEditor>  
-
+                                    </p:cellEditor>
                                 </p:column>
                                 <p:column>                            
                                     <p:cellEditor>
@@ -523,7 +523,6 @@
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor> 
-
                                 </p:column>
                                 <!-- Aca va el CheckBox ese ficti -->
                                 <p:column>
