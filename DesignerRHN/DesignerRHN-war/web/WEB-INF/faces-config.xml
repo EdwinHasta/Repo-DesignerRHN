@@ -4558,8 +4558,7 @@
             <to-view-id>/Atausentismos.xhtml</to-view-id>
             <redirect />
         </navigation-case>
-    </navigation-rule>
-    
+    </navigation-rule>    
     <navigation-rule>
         <from-view-id>/Atausentismos.xhtml</from-view-id>
         <navigation-case>
@@ -4576,8 +4575,7 @@
             <to-view-id>/causaausentismo.xhtml</to-view-id>
             <redirect />
         </navigation-case>
-    </navigation-rule>
-    
+    </navigation-rule>    
     <navigation-rule>
         <from-view-id>/causaausentismo.xhtml</from-view-id>
         <navigation-case>

@@ -51,39 +51,30 @@ public class JornadasSemanales implements Serializable {
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "HORAFINAL")
     private Short horafinal;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "HORAFINALALIMENTACION")
     private Short horafinalalimentacion;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "HORAINICIAL")
     private Short horainicial;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "HORAINICIALALIMENTACION")
     private Short horainicialalimentacion;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "MINUTOFINAL")
     private Short minutofinal;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "MINUTOFINALALIMENTACION")
     private Short minutofinalalimentacion;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "MINUTOINICIAL")
     private Short minutoinicial;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "MINUTOINICIALALIMENTACION")
     private Short minutoinicialalimentacion;
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 3)
     @Column(name = "DIA")
     private String dia;
@@ -186,9 +177,6 @@ public class JornadasSemanales implements Serializable {
     }
 
     public String getDia() {
-        if(dia == null){
-            dia = "LUN";
-        }
         return dia;
     }
 
@@ -249,8 +237,6 @@ public class JornadasSemanales implements Serializable {
                     estadoDia = "SABADO";
                 } else if (dia.equalsIgnoreCase("DOM")) {
                     estadoDia = "DOMINGO";                
-                } else if (dia.equalsIgnoreCase(" ")) {
-                    estadoDia = "NADA";
                 }
             }
         }

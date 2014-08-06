@@ -504,19 +504,26 @@ public class ControlCausasAusentismos implements Serializable {
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         int pasa = 0;
+        int pasac = 0;
         int pasaf = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("C")) {
-           if (tipoLista == 0) {
+            if (tipoLista == 0) {
 
                 if (!listaCausasAusentismosCrear.contains(listaCausasAusentismos.get(indice))) {
-                    for (int i = 0; i < listaCausasAusentismos.size(); i++) {
-                        if (listaCausasAusentismos.get(indice).getCodigo().equals(listaCausasAusentismos.get(i).getCodigo())) {
-                            pasa++;
-
+                    if (listaCausasAusentismos.get(indice).getCodigo() != null) {
+                        for (int i = 0; i < listaCausasAusentismos.size(); i++) {
+                            if (listaCausasAusentismos.get(indice).getCodigo().compareTo(listaCausasAusentismos.get(i).getCodigo()) == 0) {
+                                pasa++;
+                            }
                         }
                     }
-                    if (pasa == 0) {
+                    if (listaCausasAusentismos.get(indice).getCodigo() == null || (listaCausasAusentismos.get(indice).getCodigo().toString()).equals("")) {
+                        pasac++;
+                        System.out.println("pasac: " + pasac);
+                    }
+                    if (pasa == 1 && pasac == 0) {
+                        System.out.println("pasac es: " + pasac);
                         if (listaCausasAusentismosModificar.isEmpty()) {
                             listaCausasAusentismosModificar.add(listaCausasAusentismos.get(indice));
                         } else if (!listaCausasAusentismosModificar.contains(listaCausasAusentismos.get(indice))) {
@@ -527,7 +534,12 @@ public class ControlCausasAusentismos implements Serializable {
                             guardado = false;
                             context.update("form:ACEPTAR");
                         }
-                    } else {
+                    } else if (pasac != 0) {
+                        listaCausasAusentismos.get(indice).setCodigo(codiguin);
+                        context.update("formularioDialogos:validacionCodigo2");
+                        context.execute("validacionCodigo2.show()");
+
+                    } else if (pasa > 1) {
                         listaCausasAusentismos.get(indice).setCodigo(codiguin);
                         context.update("formularioDialogos:validacionCodigo");
                         context.execute("validacionCodigo.show()");
@@ -538,11 +550,14 @@ public class ControlCausasAusentismos implements Serializable {
             } else {
                 if (!listaCausasAusentismosCrear.contains(filtrarCausasAusentismos.get(indice))) {
                     for (int i = 0; i < filtrarCausasAusentismos.size(); i++) {
-                        if (filtrarCausasAusentismos.get(indice).getCodigo().equals(filtrarCausasAusentismos.get(i).getCodigo())) {
+                        if (filtrarCausasAusentismos.get(indice).getCodigo().compareTo(filtrarCausasAusentismos.get(i).getCodigo()) == 0) {
                             pasaf++;
                         }
                     }
-                    if (pasaf == 0) {
+                    if (filtrarCausasAusentismos.get(indice).getCodigo() == null || filtrarCausasAusentismos.get(indice).getCodigo().equals("")) {
+                        pasaf++;
+                    }
+                    if (pasaf == 1) {
                         if (listaCausasAusentismosCrear.isEmpty()) {
                             listaCausasAusentismosCrear.add(filtrarCausasAusentismos.get(indice));
                         } else if (!listaCausasAusentismosCrear.contains(filtrarCausasAusentismos.get(indice))) {
@@ -553,121 +568,122 @@ public class ControlCausasAusentismos implements Serializable {
                             context.update("form:ACEPTAR");
                         }
 
-                    }
-                    else {
+                    } else {
                         filtrarCausasAusentismos.get(indice).setCodigo(codiguin);
                         context.update("formularioDialogos:validacionCodigo");
                         context.execute("validacionCodigo.show()");
                     }
                 }
-                    index = -1;
-                    secRegistro = null;
-                }
-                context.update("form:datosCausasAusentismos");
+                index = -1;
+                secRegistro = null;
+            }
+            context.update("form:datosCausasAusentismos");
 
-            } if (confirmarCambio.equalsIgnoreCase("N")) {
+        }
+        if (confirmarCambio.equalsIgnoreCase("N")) {
 
-                if (tipoLista == 0) {
+            if (tipoLista == 0) {
 
-                    if (!listaCausasAusentismosCrear.contains(listaCausasAusentismos.get(indice))) {
+                if (!listaCausasAusentismosCrear.contains(listaCausasAusentismos.get(indice))) {
 
-                        if (listaCausasAusentismosModificar.isEmpty()) {
-                            listaCausasAusentismosModificar.add(listaCausasAusentismos.get(indice));
-                        } else if (!listaCausasAusentismosModificar.contains(listaCausasAusentismos.get(indice))) {
-                            listaCausasAusentismosModificar.add(listaCausasAusentismos.get(indice));
-                        }
-
-                        if (guardado == true) {
-                            guardado = false;
-                            context.update("form:ACEPTAR");
-                        }
-
+                    if (listaCausasAusentismosModificar.isEmpty()) {
+                        listaCausasAusentismosModificar.add(listaCausasAusentismos.get(indice));
+                    } else if (!listaCausasAusentismosModificar.contains(listaCausasAusentismos.get(indice))) {
+                        listaCausasAusentismosModificar.add(listaCausasAusentismos.get(indice));
                     }
-                    index = -1;
-                    secRegistro = null;
-                } else {
-                    if (!listaCausasAusentismosCrear.contains(filtrarCausasAusentismos.get(indice))) {
 
-                        if (listaCausasAusentismosCrear.isEmpty()) {
-                            listaCausasAusentismosCrear.add(filtrarCausasAusentismos.get(indice));
-                        } else if (!listaCausasAusentismosCrear.contains(filtrarCausasAusentismos.get(indice))) {
-                            listaCausasAusentismosCrear.add(filtrarCausasAusentismos.get(indice));
-                        }
-                        if (guardado == true) {
-                            guardado = false;
-                            context.update("form:ACEPTAR");
-                        }
+                    if (guardado == true) {
+                        guardado = false;
+                        context.update("form:ACEPTAR");
+                    }
 
-                    }
-                    index = -1;
-                    secRegistro = null;
                 }
-                context.update("form:datosCausasAusentismos");
+                index = -1;
+                secRegistro = null;
+            } else {
+                if (!listaCausasAusentismosCrear.contains(filtrarCausasAusentismos.get(indice))) {
 
-            } else if (confirmarCambio.equalsIgnoreCase("CLASESAUSENTISMOS")) {
-                if (tipoLista == 0) {
-                    listaCausasAusentismos.get(indice).getClase().setDescripcion(claseAusentismo);
-                } else {
-                    filtrarCausasAusentismos.get(indice).getClase().setDescripcion(claseAusentismo);
-                }
-                for (int i = 0; i < lovClasesAusentismos.size(); i++) {
-                    if (lovClasesAusentismos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                        indiceUnicoElemento = i;
-                        coincidencias++;
+                    if (listaCausasAusentismosCrear.isEmpty()) {
+                        listaCausasAusentismosCrear.add(filtrarCausasAusentismos.get(indice));
+                    } else if (!listaCausasAusentismosCrear.contains(filtrarCausasAusentismos.get(indice))) {
+                        listaCausasAusentismosCrear.add(filtrarCausasAusentismos.get(indice));
                     }
-                }
-                if (coincidencias == 1) {
-                    if (tipoLista == 0) {
-                        listaCausasAusentismos.get(indice).setClase(lovClasesAusentismos.get(indiceUnicoElemento));
-                    } else {
-                        filtrarCausasAusentismos.get(indice).setClase(lovClasesAusentismos.get(indiceUnicoElemento));
+                    if (guardado == true) {
+                        guardado = false;
+                        context.update("form:ACEPTAR");
                     }
-                    lovClasesAusentismos.clear();
-                    getLovClasesAusentismos();
-                } else {
-                    permitirIndex = false;
-                    context.update("formularioDialogos:clasesAusentismosDialogo");
-                    context.execute("clasesAusentismosDialogo.show()");
-                    tipoActualizacion = 0;
+
+                }
+                index = -1;
+                secRegistro = null;
+            }
+            context.update("form:datosCausasAusentismos");
+
+        } else if (confirmarCambio.equalsIgnoreCase("CLASESAUSENTISMOS")) {
+            if (tipoLista == 0) {
+                listaCausasAusentismos.get(indice).getClase().setDescripcion(claseAusentismo);
+            } else {
+                filtrarCausasAusentismos.get(indice).getClase().setDescripcion(claseAusentismo);
+            }
+            for (int i = 0; i < lovClasesAusentismos.size(); i++) {
+                if (lovClasesAusentismos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
                 }
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    if (!listaCausasAusentismosCrear.contains(listaCausasAusentismos.get(indice))) {
-                        if (listaCausasAusentismosModificar.isEmpty()) {
-                            listaCausasAusentismosModificar.add(listaCausasAusentismos.get(indice));
-                        } else if (!listaCausasAusentismosModificar.contains(listaCausasAusentismos.get(indice))) {
-                            listaCausasAusentismosModificar.add(listaCausasAusentismos.get(indice));
-                        }
-                        if (guardado == true) {
-                            guardado = false;
-                            RequestContext.getCurrentInstance().update("form:ACEPTAR");
-
-                        }
-                    }
-                    index = -1;
-                    secRegistro = null;
+                    listaCausasAusentismos.get(indice).setClase(lovClasesAusentismos.get(indiceUnicoElemento));
                 } else {
-                    if (!listaCausasAusentismosCrear.contains(filtrarCausasAusentismos.get(indice))) {
-
-                        if (listaCausasAusentismosModificar.isEmpty()) {
-                            listaCausasAusentismosModificar.add(filtrarCausasAusentismos.get(indice));
-                        } else if (!listaCausasAusentismosModificar.contains(filtrarCausasAusentismos.get(indice))) {
-                            listaCausasAusentismosModificar.add(filtrarCausasAusentismos.get(indice));
-                        }
-                        if (guardado == true) {
-                            guardado = false;
-                            RequestContext.getCurrentInstance().update("form:ACEPTAR");
-
-                        }
-                    }
-                    index = -1;
-                    secRegistro = null;
+                    filtrarCausasAusentismos.get(indice).setClase(lovClasesAusentismos.get(indiceUnicoElemento));
                 }
+                lovClasesAusentismos.clear();
+                getLovClasesAusentismos();
+            } else {
+                permitirIndex = false;
+                context.update("formularioDialogos:clasesAusentismosDialogo");
+                context.execute("clasesAusentismosDialogo.show()");
+                tipoActualizacion = 0;
             }
-            context.update("form:datosCausasAusentismos");
         }
-        //MOSTRAR L.O.V CLASES DE AUSENTISMO   
+        if (coincidencias == 1) {
+            if (tipoLista == 0) {
+                if (!listaCausasAusentismosCrear.contains(listaCausasAusentismos.get(indice))) {
+                    if (listaCausasAusentismosModificar.isEmpty()) {
+                        listaCausasAusentismosModificar.add(listaCausasAusentismos.get(indice));
+                    } else if (!listaCausasAusentismosModificar.contains(listaCausasAusentismos.get(indice))) {
+                        listaCausasAusentismosModificar.add(listaCausasAusentismos.get(indice));
+                    }
+                    if (guardado == true) {
+                        guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
+                    }
+                }
+                index = -1;
+                secRegistro = null;
+            } else {
+                if (!listaCausasAusentismosCrear.contains(filtrarCausasAusentismos.get(indice))) {
+
+                    if (listaCausasAusentismosModificar.isEmpty()) {
+                        listaCausasAusentismosModificar.add(filtrarCausasAusentismos.get(indice));
+                    } else if (!listaCausasAusentismosModificar.contains(filtrarCausasAusentismos.get(indice))) {
+                        listaCausasAusentismosModificar.add(filtrarCausasAusentismos.get(indice));
+                    }
+                    if (guardado == true) {
+                        guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
+                    }
+                }
+                index = -1;
+                secRegistro = null;
+            }
+        }
+        context.update("form:datosCausasAusentismos");
+    }
+
+    //MOSTRAR L.O.V CLASES DE AUSENTISMO   
     public void actualizarClases() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {

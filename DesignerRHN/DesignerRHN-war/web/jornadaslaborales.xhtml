@@ -89,7 +89,7 @@
                                         <f:facet name="input">
                                             <p:inputText value="#{JornadasLaborales.codigo}" id="editarJornadaLaboralCodigo" style=" border-radius: 0px; width: 95.5%;text-transform: uppercase;height: 12px"> 
                                                 <p:ajax event="select" listener="#{controlJornadasLaborales.cambiarIndice(indice, 0)}"/>
-                                                <p:ajax event="change" listener="#{controlJornadasLaborales.modificarJornadasLaborales(indice, 'N', JornadasLaborales.codigo)}"/>
+                                                <p:ajax event="change" listener="#{controlJornadasLaborales.modificarJornadasLaborales(indice, 'C', JornadasLaborales.codigo)}"/>
 
                                             </p:inputText>
                                         </f:facet> 
@@ -106,7 +106,7 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{JornadasLaborales.descripcion}" id="editarJornadaLaboralDescripcion" style=" border-radius: 0px; width: 95.5%;text-transform: uppercase;height: 12px"> 
-                                                <p:ajax event="change" listener="#{controlJornadasLaborales.modificarJornadasLaborales(indice, 'N', JornadasLaborales.descripcion)}"/>
+                                                <p:ajax event="change" listener="#{controlJornadasLaborales.modificarJornadasLaborales(indice, 'D', JornadasLaborales.descripcion)}"/>
                                                 <p:ajax event="select" listener="#{controlJornadasLaborales.cambiarIndice(indice, 1)}" />
                                             </p:inputText>
                                         </f:facet>  
@@ -232,10 +232,7 @@
 
                                 <p:ajax event="filter" listener="#{controlJornadasLaborales.eventoFiltrarJS()}"/>
 
-                                <p:column headerText="#{msg['dia']}" sortBy="#{SemanasLaborales.estadoDia}" filterBy="#{SemanasLaborales.estadoDia}" filterMatchMode="contains" id="SemanaLaboralDia" width="50" filterStyle="display: none; visibility: hidden;" >                                  
-                                    <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText id="OutDia" value="#{SemanasLaborales.estadoDia}" style="text-transform: uppercase;height: 12px"/></f:facet>  
-                                        <f:facet name="input">
+                                <p:column style="padding: 0px" headerText="#{msg['dia']}" sortBy="#{SemanasLaborales.estadoDia}" filterBy="#{SemanasLaborales.estadoDia}" filterMatchMode="contains" id="SemanaLaboralDia" width="50" filterStyle="display: none; visibility: hidden;" >                                  
                                             <p:selectOneMenu  id="editarDias" value="#{SemanasLaborales.estadoDia}" style="width: 100%;height: 20px">  
                                                 <f:selectItem itemLabel="LUNES" itemValue="LUNES" />  
                                                 <f:selectItem itemLabel="MARTES" itemValue="MARTES" />  
@@ -244,11 +241,8 @@
                                                 <f:selectItem itemLabel="VIERNES" itemValue="VIERNES" />    
                                                 <f:selectItem itemLabel="SABADO" itemValue="SABADO" />
                                                 <f:selectItem itemLabel="DOMINGO" itemValue="DOMINGO" />
-                                                <f:selectItem itemLabel=" " itemValue="NADA" />
                                                 <p:ajax listener="#{controlJornadasLaborales.seleccionarDia(SemanasLaborales.estadoDia, indiceJS, celda)}" event="change" update="editarDias" />
                                             </p:selectOneMenu>
-                                        </f:facet>  
-                                    </p:cellEditor>
                                     <f:facet name="footer">
                                     </f:facet>
                                 </p:column>
@@ -429,11 +423,38 @@
                         <h:outputText value="#{msg['validacionCodigoJL']}" style="position: absolute; left: 100px; top: 10px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="validacionCodigo.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
                     </p:dialog>  
+                    <p:dialog id="validacionDia" header="#{msg['atencion']}" widgetVar="validacionDia"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['validacionDiaSL']}" style="position: absolute; left: 100px; top: 10px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionDia.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
+                    </p:dialog>  
+                    <p:dialog id="validacionDescripcion" header="#{msg['atencion']}" widgetVar="validacionDescripcion"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['validaciondescripcion']}" style="position: absolute; left: 100px; top: 10px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionDescripcion.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
+                    </p:dialog>  
+                    <p:dialog id="validacionHorasSL" header="#{msg['atencion']}" widgetVar="validacionHorasSL"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['validacionHorasSL']} #{controlJornadasLaborales.mensajeValidacionhora}" style="position: absolute; left: 100px; top: 10px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionHorasSL.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
+                    </p:dialog>  
+                    <p:dialog id="validacionMinutosSL" header="#{msg['atencion']}" widgetVar="validacionMinutosSL"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['validacionMinutosSL']} #{controlJornadasLaborales.mensajeValidacionminuto}" style="position: absolute; left: 100px; top: 10px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionMinutosSL.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
+                    </p:dialog>  
                     <p:dialog id="validacionHorasJL" header="#{msg['atencion']}" widgetVar="validacionHorasJL"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['validacionHorasJL']} #{controlJornadasLaborales.mensajeValidacionhoras}" style="position: absolute; left: 100px; top: 10px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="validacionHorasJL.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
                     </p:dialog>  
+
+                    <!--DIALOGO VALIDACION NUEVA JORNADA LABORAL-->
+                    <p:dialog id="validacionNuevaJornadaLaboral" header="#{msg['atencion']}" widgetVar="validacionNuevaJornadaLaboral"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['validacionNuevo']} #{controlJornadasLaborales.mensajeValidacion}" style="position: absolute; left: 100px; top: 10px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionNuevaJornadaLaboral.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
+                    </p:dialog>
 
                     <!--DIALOGO NUEVA JORNADA LABORAL-->
 
@@ -490,13 +511,6 @@
                             <p:commandButton id="agregarJL" value="#{msg['agregar']}" icon="ui-icon-circle-check" style=" position: absolute; left: 180px; top: 340px;"  process="@this" actionListener="#{controlJornadasLaborales.agregarNuevaJornadaLaboral()}"/>
                             <p:commandButton id="cancelarJL" value="#{msg['cancelar']}" icon="ui-icon-circle-close" style=" position: absolute; left: 280px; top: 340px;" actionListener="#{controlJornadasLaborales.limpiarNuevaJornadaLaboral()}" update="nuevaJornadaLaboral" onclick="NuevoRegistroJornadaLaboral.hide();"  process="@this"/>
                         </p:panel>
-                    </p:dialog>
-
-                    <!--DIALOGO VALIDACION NUEVA JORNADA LABORAL-->
-                    <p:dialog id="validacionNuevaJornadaLaboral" header="#{msg['atencion']}" widgetVar="validacionNuevaJornadaLaboral"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['validacionNuevo']} #{controlJornadasLaborales.mensajeValidacion}" style="position: absolute; left: 100px; top: 10px; width: 300px;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionNuevaJornadaLaboral.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <!--DIALOGO DUPLICAR JORNADA LABORAL-->
@@ -573,7 +587,6 @@
                                 <f:selectItem itemLabel="VIERNES" itemValue="VIERNES" />    
                                 <f:selectItem itemLabel="SABADO" itemValue="SABADO" />
                                 <f:selectItem itemLabel="DOMINGO" itemValue="DOMINGO" />
-                                <f:selectItem itemLabel=" " itemValue="NADA" />
                                 <p:ajax listener="#{controlJornadasLaborales.seleccionarDiaNuevaSemana(controlJornadasLaborales.nuevaJornadaSemanal.estadoDia, 1)}" update="@this" />
                             </p:selectOneMenu>
 
@@ -633,7 +646,6 @@
                                 <f:selectItem itemLabel="VIERNES" itemValue="VIERNES" />    
                                 <f:selectItem itemLabel="SABADO" itemValue="SABADO" />
                                 <f:selectItem itemLabel="DOMINGO" itemValue="DOMINGO" />
-                                <f:selectItem itemLabel=" " itemValue="NADA" />
                                 <p:ajax listener="#{controlJornadasLaborales.seleccionarDiaNuevaSemana(controlJornadasLaborales.duplicarSemanaLaboral.estadoDia, 2)}" update="@this" />
                             </p:selectOneMenu>                           
 
