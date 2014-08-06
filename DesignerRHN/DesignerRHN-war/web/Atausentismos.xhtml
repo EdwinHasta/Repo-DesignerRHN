@@ -123,31 +123,19 @@
                                     <p:row>
                                         <p:column  style="width: 100px" colspan="1" width="100" headerText="#{msg['tipo']}" filterBy="#{ausentismos.tipo.descripcion}" filterMatchMode="contains" id="ATipo" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.tipo.descripcion}" />  
                                         <p:column  style="width: 100px" width="100" headerText="#{msg['clase']}" filterBy="#{ausentismos.clase.descripcion}" filterMatchMode="contains" id="AClase" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.clase.descripcion}" >     
-                                            <f:facet name="footer">
-                                                <p:commandButton style="width: 190px; margin: -14px; height: 26px;  border: none; color: blue" action="claseausentismoatausentismo" actionListener="#{controlClasesAusentismos.recibirAtras('atrasclaseausentismoatausentismo')}" id="fooClase" value=""/>
-                                            </f:facet>
                                         </p:column>
 
                                         <p:column  style="width: 100px" width="100" headerText="#{msg['causa']}" filterBy="#{ausentismos.causa.descripcion}" filterMatchMode="contains" id="ACausa" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.causa.descripcion}" >
-                                            <f:facet name="footer">
-                                                <p:commandButton style="width: 190px; margin: -14px; height: 26px;  border: none; color: blue" action="causasausentismos" actionListener="#{controlCausasAusentismos.recibirPaginaEntrante('causasausentismos')}" id="fooCausas" value=""/>
-                                            </f:facet>
                                         </p:column>
 
                                         <p:column  headerText="#{msg['dias']}" filterBy="#{ausentismos.dias}" filterMatchMode="contains" id="ADias" filterStyle="display: none; visibility: hidden;" sortBy= "#{ausentismos.dias}">
-                                            <f:facet name="footer">
-                                            </f:facet>
                                         </p:column>
                                         <p:column  headerText="#{msg['horas']}" filterBy="#{ausentismos.horas}" filterMatchMode="contains" id="AHoras" filterStyle="display: none; visibility: hidden;" sortBy= "#{ausentismos.horas}">
-                                            <f:facet name="footer">
-                                            </f:facet>
                                         </p:column>
                                         <p:column  filterBy="#{ausentismos.fecha}" filterMatchMode="contains" id="AFecha" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fecha}">
                                             <f:facet name="header">
                                                 <h:outputText id="fechaHead" value="#{msg['iausencia']}"/>
                                                 <p:tooltip for="fechaHead" value="#{msg['tia']}" showEffect="fade" hideEffect="fade"/>
-                                            </f:facet>
-                                            <f:facet name="footer">
                                             </f:facet>
                                         </p:column>
 
@@ -156,8 +144,6 @@
                                                 <h:outputText id="fechafinausHead" value="#{msg['fausencia']}"/>
                                                 <p:tooltip for="fechafinausHead" value="#{msg['tfa']}" showEffect="fade" hideEffect="fade"/>
                                             </f:facet> 
-                                            <f:facet name="footer">
-                                            </f:facet>
                                         </p:column>
 
                                         <p:column  headerText="#{msg['expedicion']}" filterBy="#{ausentismos.fechaexpedicion}" filterMatchMode="contains" id="AFechaExpedicion" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fechaexpedicion}"/>  
@@ -167,8 +153,6 @@
                                                 <h:outputText id="fechainipagoHead" value="#{msg['ipago']}" />
                                                 <p:tooltip for="fechainipagoHead" value="#{msg['tip']}" showEffect="fade" hideEffect="fade"/>
                                             </f:facet> 
-                                            <f:facet name="footer">
-                                            </f:facet>
                                         </p:column>
 
                                         <p:column  filterBy="#{ausentismos.fechafinpago}" filterMatchMode="contains" id="AFechaFinpago" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fechafinpago}">
@@ -176,8 +160,6 @@
                                                 <h:outputText id="fechafinpagoHead" value="#{msg['fpago']}"/>
                                                 <p:tooltip for="fechafinpagoHead" value="#{msg['tfp']}" showEffect="fade" hideEffect="fade"/>
                                             </f:facet> 
-                                            <f:facet name="footer">
-                                            </f:facet>
                                         </p:column>
 
                                         <p:column  filterBy="#{ausentismos.porcentajeindividual}" filterMatchMode="contains" id="APorcentaje" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.porcentajeindividual}">  
@@ -185,8 +167,6 @@
                                                 <h:outputText id="porcentajeHead" value="%" />
                                                 <p:tooltip for="porcentajeHead" value="#{msg['tp']}"/>
                                             </f:facet> 
-                                            <f:facet name="footer">
-                                            </f:facet>
                                         </p:column>
 
                                         <p:column  filterBy="#{ausentismos.baseliquidacion}" filterMatchMode="contains" id="ABase" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.baseliquidacion}">  
@@ -194,8 +174,6 @@
                                                 <h:outputText id="baseHead" value="#{msg['bliquidacion']}" />
                                                 <p:tooltip for="baseHead" value="#{msg['tbl']}"/>
                                             </f:facet> 
-                                            <f:facet name="footer">
-                                            </f:facet>
                                         </p:column>
 
                                         <p:column  filterBy="#{ausentismos.formaliquidacion}" filterMatchMode="contains" id="AForma" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.formaliquidacion}">
@@ -212,8 +190,6 @@
                                                 <h:outputText id="atHead" value="#{msg['at']}" />
                                                 <p:tooltip for="atHead" value="#{msg['tat']}" showEffect="fade" hideEffect="fade"/>
                                             </f:facet> 
-                                            <f:facet name="footer">
-                                            </f:facet>
                                         </p:column>
 
                                         <p:column  filterBy="#{ausentismos.enfermedad.categoria.descripcion}" filterMatchMode="contains" id="AEnfermedad" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.enfermedad.categoria.descripcion}" >
@@ -221,31 +197,21 @@
                                                 <h:outputText id="epHead" value="#{msg['ep']}" />
                                                 <p:tooltip for="epHead" value="#{msg['tep']}" showEffect="fade" hideEffect="fade"/>
                                             </f:facet> 
-                                            <f:facet name="footer">
-                                            </f:facet>
                                         </p:column>
                                         <p:column  headerText="#{msg['numero']}" filterBy="#{ausentismos.numerocertificado}" filterMatchMode="contains" id="ANumero" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.numerocertificado}" >
-                                            <f:facet name="footer">
-                                            </f:facet>
                                         </p:column>
                                         <p:column  filterBy="#{ausentismos.diagnosticocategoria.descripcion}" filterMatchMode="contains" id="ADiagnostico" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.diagnosticocategoria.descripcion}" >
                                             <f:facet name="header">
                                                 <h:outputText id="cdHead" value="#{msg['cdiagnostico']}" />
                                                 <p:tooltip for="cdHead" value="#{msg['tcd']}"  showEffect="fade" hideEffect="fade"/>
                                             </f:facet> 
-                                            <f:facet name="footer">
-                                            </f:facet>
                                         </p:column>
                                         <p:column  headerText="#{msg['prorroga']}" filterBy="#{ausentismos.prorroga}" filterMatchMode="contains" id="AProrroga" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.prorroga}" >
-                                            <f:facet name="footer">
-                                            </f:facet>
                                         </p:column>
                                         <p:column  filterBy="#{controlAusentismos.relacion}" filterMatchMode="contains" id="ARelacion" filterStyle="display: none; visibility: hidden;" sortBy="#{controlAusentismos.relacion}" >
                                             <f:facet name="header">
                                                 <h:outputText id="periodoHead" value="#{msg['periodo']}" />
                                                 <p:tooltip for="periodoHead" value="#{msg['tpe']}"  showEffect="fade" hideEffect="fade"/>
-                                            </f:facet>
-                                            <f:facet name="footer">
                                             </f:facet>
                                         </p:column>
 
@@ -254,18 +220,44 @@
                                                 <h:outputText id="relacionadaHead" value="..." />
                                                 <p:tooltip for="relacionadaHead" value="#{msg['reportada']}"  showEffect="fade" hideEffect="fade"/>
                                             </f:facet> 
-                                            <f:facet name="footer">
-                                            </f:facet>
                                         </p:column>
 
                                         <p:column  headerText="#{msg['tercero']}" filterBy="#{ausentismos.tercero.nombre}" filterMatchMode="contains" id="ATercero" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.tercero.nombre}" >
-                                            <f:facet name="footer">
-                                            </f:facet>
                                         </p:column>
                                         <p:column  headerText="#{msg['observaciones']}" filterBy="#{ausentismos.observaciones}" filterMatchMode="contains" id="AObservaciones" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.observaciones}" >
+                                        </p:column>
+                                    </p:row>
+                                </p:columnGroup>
+
+                                <p:columnGroup type="footer"> 
+                                    <!-- Footers-->
+                                    <p:row>  
+                                        <p:column  rowspan="1" colspan="1"  />                                        
+                                        <p:column  rowspan="1" colspan="1"  />                               
+                                        <p:column  rowspan="1" colspan="1"  >  
                                             <f:facet name="footer">
+                                                <p:commandButton style="width: 315px; margin: -14px; height: 26px; border: none; color: blue" value=" " id="fooCausaAusentismo" action="causasausentismos" actionListener="#{controlCausasAusentismos.recibirPaginaEntrante('atausentismos')}"/>
                                             </f:facet>
                                         </p:column>
+                                        <p:column  rowspan="1" colspan="1"  />  
+                                        <p:column  rowspan="1" colspan="1"  />  
+                                        <p:column  rowspan="1" colspan="1"  />  
+                                        <p:column  rowspan="1" colspan="1"  />  
+                                        <p:column  rowspan="1" colspan="1"  />  
+                                        <p:column  rowspan="1" colspan="1"  />  
+                                        <p:column  rowspan="1" colspan="1"  />  
+                                        <p:column  rowspan="1" colspan="1"  />  
+                                        <p:column  rowspan="1" colspan="3"  />  
+                                        <p:column  rowspan="1" colspan="1"  />  
+                                        <p:column  rowspan="1" colspan="1"  />  
+                                        <p:column  rowspan="1" colspan="1"  />  
+                                        <p:column  rowspan="1" colspan="1"  />  
+                                        <p:column  rowspan="1" colspan="1"  />  
+                                        <p:column  rowspan="1" colspan="1"  />    
+                                        <p:column  rowspan="1" colspan="1"  />  
+                                        <p:column  rowspan="1" colspan="1"  />  
+                                        <p:column  rowspan="1" colspan="1"  />  
+                                        <p:column  rowspan="1" colspan="1"  />  
                                     </p:row>
                                 </p:columnGroup>
                                 <!-- DATOS-->
@@ -282,8 +274,6 @@
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor>
-                                    <f:facet name="footer">
-                                    </f:facet>
                                 </p:column>
                                 <!--Clase Ausentismo -->
                                 <p:column >                                  
@@ -297,8 +287,6 @@
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor>  
-                                    <f:facet name="footer">
-                                    </f:facet>
                                 </p:column>
                                 <!--Causa Ausentismo-->
                                 <p:column >                                  
@@ -312,8 +300,6 @@
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor>  
-                                    <f:facet name="footer">
-                                    </f:facet>
                                 </p:column>
                                 <!-- Dias Ausentismo -->  
                                 <p:column >                                  
@@ -326,8 +312,6 @@
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor>  
-                                    <f:facet name="footer">
-                                    </f:facet>
                                 </p:column>
                                 <!-- Horas Ausentismo -->
                                 <p:column >                                  
@@ -340,8 +324,6 @@
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor>  
-                                    <f:facet name="footer">
-                                    </f:facet>
                                 </p:column>
                                 <!--Fecha Inicial Ausentismo-->
                                 <p:column  >
@@ -359,8 +341,6 @@
                                             </lnk:calendar>
                                         </f:facet>
                                     </p:cellEditor>  
-                                    <f:facet name="footer">
-                                    </f:facet>
                                 </p:column>
                                 <!--Fecha Final Ausencia -->
                                 <p:column >  
@@ -377,9 +357,8 @@
                                                 <p:ajax event="click" listener="#{controlAusentismos.cambiarIndice(indice, 6)}" process="@this" />
                                             </lnk:calendar>
                                         </f:facet>
-                                    </p:cellEditor> 
-                                    <f:facet name="footer">
-                                    </f:facet>
+                                    </p:cellEditor>                                     
+
                                 </p:column>
                                 <!-- Fecha Expedicion -->
                                 <p:column >  
@@ -397,8 +376,6 @@
                                             </lnk:calendar>
                                         </f:facet>
                                     </p:cellEditor>  
-                                    <f:facet name="footer">
-                                    </f:facet>
                                 </p:column>
                                 <!-- Fecha Pago Inicial -->
                                 <p:column >  
@@ -415,11 +392,8 @@
                                                 <p:ajax event="click" listener="#{controlAusentismos.cambiarIndice(indice, 8)}" process="@this" />
                                             </lnk:calendar>
                                         </f:facet>
-                                    </p:cellEditor>   
-                                    <f:facet name="footer">
-                                    </f:facet>
+                                    </p:cellEditor> 
                                 </p:column>
-
                                 <!-- Fecha Pago Final -->
                                 <p:column  >  
                                     <p:cellEditor>  
@@ -436,8 +410,6 @@
                                             </lnk:calendar>
                                         </f:facet>
                                     </p:cellEditor> 
-                                    <f:facet name="footer">
-                                    </f:facet>
                                 </p:column>
                                 <!-- % Liquidación -->
                                 <p:column   >                                  
@@ -451,8 +423,6 @@
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor>  
-                                    <f:facet name="footer">
-                                    </f:facet>
                                 </p:column>
                                 <!-- Base Liquidacion -->
                                 <p:column  >                                  
@@ -466,8 +436,6 @@
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor> 
-                                    <f:facet name="footer">
-                                    </f:facet>
                                 </p:column>
                                 <!-- Forma Liquidacion -->
                                 <p:column  >                                  
@@ -481,8 +449,6 @@
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor>  
-                                    <f:facet name="footer">
-                                    </f:facet>
                                 </p:column>
                                 <!-- Descripcion Accidente -->
                                 <p:column  >                                  
@@ -496,8 +462,6 @@
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor>
-                                    <f:facet name="footer">
-                                    </f:facet>
                                 </p:column>
                                 <!-- Enfermedad-->
                                 <p:column  >                                  
@@ -511,8 +475,6 @@
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor> 
-                                    <f:facet name="footer">
-                                    </f:facet>
                                 </p:column>
                                 <!-- Numero Certificado -->
                                 <p:column  >                                  
@@ -524,9 +486,7 @@
                                                 <p:ajax event="select" listener="#{controlAusentismos.cambiarIndice(indice, 15)}" process="@this"/>
                                             </p:inputText>
                                         </f:facet>
-                                    </p:cellEditor>
-                                    <f:facet name="footer">
-                                    </f:facet>
+                                    </p:cellEditor>       
                                 </p:column>
                                 <!-- Diagnosticos Categoria -->
                                 <p:column  >                                  
@@ -540,8 +500,6 @@
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor>
-                                    <f:facet name="footer">
-                                    </f:facet>
                                 </p:column>
                                 <!-- Prorroga -->
                                 <p:column >                                  
@@ -555,8 +513,6 @@
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor>
-                                    <f:facet name="footer">
-                                    </f:facet>
                                 </p:column>
                                 <p:column>                            
                                     <p:cellEditor>
@@ -566,9 +522,7 @@
                                                 <p:ajax event="select" listener="#{controlAusentismos.cambiarIndice(indice, 18)}" process="@this"/>
                                             </p:inputText>
                                         </f:facet>
-                                    </p:cellEditor>
-                                    <f:facet name="footer">
-                                    </f:facet>
+                                    </p:cellEditor> 
                                 </p:column>
                                 <!-- Aca va el CheckBox ese ficti -->
                                 <p:column>
@@ -588,8 +542,6 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>  
-                                    <f:facet name="footer">
-                                    </f:facet>
                                 </p:column>
                                 <!-- Observacion -->
                                 <p:column >                                  
@@ -602,10 +554,6 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>  
-                                    <f:facet name="footer">
-                                    </f:facet>
-                                </p:column>
-
                             </p:dataTable>
                         </fieldset>
 

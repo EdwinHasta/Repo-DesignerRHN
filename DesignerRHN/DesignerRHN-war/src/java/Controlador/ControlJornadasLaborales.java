@@ -85,6 +85,8 @@ public class ControlJornadasLaborales implements Serializable {
     private int k;
     private String mensajeValidacion;
     private String mensajeValidacionhoras;
+    private String mensajeValidacionhora;
+    private String mensajeValidacionminuto;
 
     //Borrar Jornadas Laborales
     private List<JornadasLaborales> listaJornadasLaboralesBorrar;
@@ -127,6 +129,9 @@ public class ControlJornadasLaborales implements Serializable {
     ///////////PRUEBAS UNITARIAS COMPONENTES///////
     ///////////////////////////////////////////////
     public String buscarNombre;
+    public String diarecuperado, diita, descrecuperado;
+    public Short codiguin, hirecuperado, mirecuperado, hiarecuperado, miarecuperado,
+            hfarecuperado, mfarecuperado, hfrecuperado, mfrecuperado;
     public boolean buscador;
     public String paginaAnterior;
 
@@ -214,11 +219,15 @@ public class ControlJornadasLaborales implements Serializable {
             context.update("form:exportarXML");
             if (tipoLista == 0) {
                 secRegistro = listaJornadasLaborales.get(index).getSecuencia();
+                descrecuperado = listaJornadasLaborales.get(index).getDescripcion();
+                codiguin = listaJornadasLaborales.get(index).getCodigo();
                 if (cualCelda == 7) {
                     jornada = listaJornadasLaborales.get(index).getJornada().getDescripcion();
                 }
             } else {
                 secRegistro = filtradoListaJornadasLaborales.get(index).getSecuencia();
+                descrecuperado = filtradoListaJornadasLaborales.get(index).getDescripcion();
+                codiguin = filtradoListaJornadasLaborales.get(index).getCodigo();
                 if (cualCelda == 7) {
                     jornada = filtradoListaJornadasLaborales.get(index).getJornada().getDescripcion();
                 }
@@ -347,10 +356,30 @@ public class ControlJornadasLaborales implements Serializable {
             nombreArchivo = "JornadasSemanalesXML";
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:exportarXML");
-
+            System.out.println("entre cambiar indice");
             if (tipoListaJS == 0) {
+                diarecuperado = listaJornadasSemanales.get(indexJS).getDia();
+                diita = listaJornadasSemanales.get(indexJS).getEstadoDia();
+                hirecuperado = listaJornadasSemanales.get(indexJS).getHorainicial();
+                mirecuperado = listaJornadasSemanales.get(indexJS).getMinutoinicial();
+                hiarecuperado = listaJornadasSemanales.get(indexJS).getHorainicialalimentacion();
+                miarecuperado = listaJornadasSemanales.get(indexJS).getMinutoinicialalimentacion();
+                hfarecuperado = listaJornadasSemanales.get(indexJS).getHorafinalalimentacion();
+                mfarecuperado = listaJornadasSemanales.get(indexJS).getMinutofinalalimentacion();
+                hfrecuperado = listaJornadasSemanales.get(indexJS).getHorafinal();
+                mfrecuperado = listaJornadasSemanales.get(indexJS).getMinutofinal();
                 secRegistro = listaJornadasSemanales.get(indexJS).getSecuencia();
             } else {
+                diarecuperado = filtradoListaJornadasSemanales.get(indexJS).getDia();
+                diita = filtradoListaJornadasSemanales.get(indexJS).getEstadoDia();
+                hirecuperado = filtradoListaJornadasSemanales.get(indexJS).getHorainicial();
+                mirecuperado = filtradoListaJornadasSemanales.get(indexJS).getMinutoinicial();
+                hiarecuperado = filtradoListaJornadasSemanales.get(indexJS).getHorainicialalimentacion();
+                miarecuperado = filtradoListaJornadasSemanales.get(indexJS).getMinutoinicialalimentacion();
+                hfarecuperado = filtradoListaJornadasSemanales.get(indexJS).getHorafinalalimentacion();
+                mfarecuperado = filtradoListaJornadasSemanales.get(indexJS).getMinutofinalalimentacion();
+                hfrecuperado = filtradoListaJornadasSemanales.get(indexJS).getHorafinal();
+                mfrecuperado = filtradoListaJornadasSemanales.get(indexJS).getMinutofinal();
                 secRegistro = filtradoListaJornadasSemanales.get(indexJS).getSecuencia();
             }
         }
@@ -359,6 +388,8 @@ public class ControlJornadasLaborales implements Serializable {
     //AUTOCOMPLETAR
     public void modificarJornadasLaborales(int indice, String confirmarCambio, String valorConfirmar) {
         index = indice;
+        int pasa = 0;
+        int pasas = 0;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -392,6 +423,138 @@ public class ControlJornadasLaborales implements Serializable {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
+                    }
+                }
+                index = -1;
+                secRegistro = null;
+            }
+            context.update("form:datosJornadasLaborales");
+        } else if (confirmarCambio.equalsIgnoreCase("D")) {
+            if (tipoLista == 0) {
+                if (!listaJornadasLaboralesCrear.contains(listaJornadasLaborales.get(indice))) {
+
+                    if (listaJornadasLaborales.get(indice).getDescripcion() == null || listaJornadasLaborales.get(indice).getDescripcion().equals("")) {
+                        pasa++;
+                    }
+
+                    if (pasa != 0) {
+                        listaJornadasLaborales.get(indice).setDescripcion(descrecuperado);
+                        context.update("formularioDialogos:validacionDescripcion");
+                        context.execute("validacionDescripcion.show()");
+                    }
+
+                    if (pasa == 0) {
+
+                        if (listaJornadasLaboralesModificar.isEmpty()) {
+                            listaJornadasLaboralesModificar.add(listaJornadasLaborales.get(indice));
+                        } else if (!listaJornadasLaboralesModificar.contains(listaJornadasLaborales.get(indice))) {
+                            listaJornadasLaboralesModificar.add(listaJornadasLaborales.get(indice));
+                        }
+                        if (guardado == true) {
+                            guardado = false;
+                            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
+                        }
+                    }
+                }
+                index = -1;
+                secRegistro = null;
+
+            } else {
+                if (!listaJornadasLaboralesCrear.contains(filtradoListaJornadasLaborales.get(indice))) {
+
+                    if (filtradoListaJornadasLaborales.get(indice).getDescripcion() == null || filtradoListaJornadasLaborales.get(indice).getDescripcion().equals("")) {
+                        pasa++;
+                    }
+
+                    if (pasa != 0) {
+                        filtradoListaJornadasLaborales.get(indice).setDescripcion(descrecuperado);
+                        context.update("formularioDialogos:validacionDescripcion");
+                        context.execute("validacionDescripcion.show()");
+                    }
+
+                    if (pasa == 0) {
+
+                        if (listaJornadasLaboralesModificar.isEmpty()) {
+                            listaJornadasLaboralesModificar.add(filtradoListaJornadasLaborales.get(indice));
+                        } else if (!listaJornadasLaboralesModificar.contains(filtradoListaJornadasLaborales.get(indice))) {
+                            listaJornadasLaboralesModificar.add(filtradoListaJornadasLaborales.get(indice));
+                        }
+                        if (guardado == true) {
+                            guardado = false;
+                            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
+                        }
+                    }
+                }
+                index = -1;
+                secRegistro = null;
+            }
+            context.update("form:datosJornadasLaborales");
+        } else if (confirmarCambio.equalsIgnoreCase("C")) {
+            if (tipoLista == 0) {
+                if (!listaJornadasLaboralesCrear.contains(listaJornadasLaborales.get(indice))) {
+
+                    if (listaJornadasLaborales.get(indice).getCodigo() != null) {
+                        System.out.println("codiguin 1 " + codiguin);
+                        System.out.println("codiguin 1.2 " + listaJornadasLaborales.get(indice).getCodigo());
+
+                        for (int i = 0; i < listaJornadasLaborales.size(); i++) {
+                            if (listaJornadasLaborales.get(indice).getCodigo().compareTo(listaJornadasLaborales.get(i).getCodigo()) == 0) {
+                                pasas++;
+                                System.out.println("codiguin 2" + codiguin);
+                            }
+                        }
+                    }
+                   
+                    if (pasas == 1) {
+
+                        if (listaJornadasLaboralesModificar.isEmpty()) {
+                            listaJornadasLaboralesModificar.add(listaJornadasLaborales.get(indice));
+                        } else if (!listaJornadasLaboralesModificar.contains(listaJornadasLaborales.get(indice))) {
+                            listaJornadasLaboralesModificar.add(listaJornadasLaborales.get(indice));
+                        }
+                        if (guardado == true) {
+                            guardado = false;
+                            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
+                        }
+                    } else {
+                        listaJornadasLaborales.get(indice).setCodigo(codiguin);
+                        context.update("formularioDialogos:validacionCodigo");
+                        context.execute("validacionCodigo.show()");
+                    }
+                }
+                index = -1;
+                secRegistro = null;
+
+            } else {
+                if (!listaJornadasLaboralesCrear.contains(filtradoListaJornadasLaborales.get(indice))) {
+
+                    if (filtradoListaJornadasLaborales.get(indice).getCodigo() != null) {
+                        for (int i = 0; i < listaJornadasLaborales.size(); i++) {
+                            if (filtradoListaJornadasLaborales.get(indice).getCodigo().compareTo(filtradoListaJornadasLaborales.get(i).getCodigo()) == 0) {
+                                pasas++;
+                            }
+                        }
+                    }
+                    
+                    if (pasas == 1) {
+
+                        if (listaJornadasLaboralesModificar.isEmpty()) {
+                            listaJornadasLaboralesModificar.add(filtradoListaJornadasLaborales.get(indice));
+                        } else if (!listaJornadasLaboralesModificar.contains(filtradoListaJornadasLaborales.get(indice))) {
+                            listaJornadasLaboralesModificar.add(filtradoListaJornadasLaborales.get(indice));
+                        }
+                        if (guardado == true) {
+                            guardado = false;
+                            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
+                        }
+                    } else {
+                        filtradoListaJornadasLaborales.get(indice).setCodigo(codiguin);
+                        context.update("formularioDialogos:validacionCodigo");
+                        context.execute("validacionCodigo.show()");
                     }
                 }
                 index = -1;
@@ -466,21 +629,134 @@ public class ControlJornadasLaborales implements Serializable {
     public void modificarJornadasSemanales(int indiceJS, String confirmarCambio, String valorConfirmar) {
         indexJS = indiceJS;
         int coincidencias = 0;
-        int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("N")) {
+
+            int pasa = 0;
+            int pasas = 0;
+            mensajeValidacion = " ";
+            mensajeValidacionhora = " ";
+            mensajeValidacionminuto = " ";
+            JornadasSemanales aux = null;
+            JornadasSemanales aux2 = null;
+            if (tipoListaJS == 0) {
+                aux = listaJornadasSemanales.get(indiceJS);
+            } else {
+                aux2 = filtradoListaJornadasSemanales.get(indiceJS);
+            }
             if (tipoListaJS == 0) {
                 if (!listaJornadasSemanalesCrear.contains(listaJornadasSemanales.get(indiceJS))) {
 
-                    if (listaJornadasSemanalesModificar.isEmpty()) {
-                        listaJornadasSemanalesModificar.add(listaJornadasSemanales.get(indiceJS));
-                    } else if (!listaJornadasSemanalesModificar.contains(listaJornadasSemanales.get(indiceJS))) {
-                        listaJornadasSemanalesModificar.add(listaJornadasSemanales.get(indiceJS));
+                    if (aux.getHorainicial() == null) {
+                        System.out.println("Entro a Hora Inicial");
+                        mensajeValidacion = mensajeValidacion + " * Hora Inicial\n ";
+                        pasa++;
                     }
-                    if (guardado == true) {
-                        guardado = false;
-                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                    if (aux.getHorainicial() != null && (aux.getHorainicial() > 23 || aux.getHorainicial() < 0)) {
+                        aux.setHorainicial(hirecuperado);
+                        pasas++;
+                        context.update("formularioDialogos:validacionHorasSL");
+                        context.execute("validacionHorasSL.show()");
+                    }
+                    if (aux.getMinutoinicial() == null) {
+                        System.out.println("Entro a Minuto Inicial");
+                        pasa++;
+                    }
+                    if (aux.getMinutoinicial() != null && (aux.getMinutoinicial() > 59 || aux.getMinutoinicial() < 0)) {
+                        aux.setMinutoinicial(mirecuperado);
+                        pasas++;
+                        context.update("formularioDialogos:validacionMinutosSL");
+                        context.execute("validacionMinutosSL.show()");
+                    }
+                    if (aux.getHorainicialalimentacion() == null) {
+                        System.out.println("Entro a Hora Inicial Alimentación");
+                        mensajeValidacion = mensajeValidacion + " * Hora Inicial Alimentacion\n ";
+                        pasa++;
+                    }
+                    if (aux.getHorainicialalimentacion() != null && (aux.getHorainicialalimentacion() > 23 || aux.getHorainicialalimentacion() < 0)) {
+                        aux.setHorainicialalimentacion(hiarecuperado);
+                        pasas++;
+                        context.update("formularioDialogos:validacionHorasSL");
+                        context.execute("validacionHorasSL.show()");
+                    }
+                    if (aux.getMinutoinicialalimentacion() == null) {
+                        System.out.println("Entro a Minuto Inicial Alimentación");
+                        mensajeValidacion = mensajeValidacion + " * Minuto Inicial Alimentacion\n ";
+                        pasa++;
+                    }
+                    if (aux.getMinutoinicialalimentacion() != null && (aux.getMinutoinicialalimentacion() > 59 || aux.getMinutoinicialalimentacion() < 0)) {
+                        aux.setMinutoinicialalimentacion(miarecuperado);
+                        pasas++;
+                        context.update("formularioDialogos:validacionMinutosSL");
+                        context.execute("validacionMinutosSL.show()");
+                    }
+                    if (aux.getHorafinalalimentacion() == null) {
+                        System.out.println("Entro a Hora Final Alimentación");
+                        mensajeValidacion = mensajeValidacion + " * Hora Final Alimentacion\n ";
+                        pasa++;
+                    }
+                    if (aux.getHorafinalalimentacion() != null && (aux.getHorafinalalimentacion() > 23 || aux.getHorafinalalimentacion() < 0)) {
+                        aux.setHorafinalalimentacion(hfarecuperado);
+                        pasas++;
+                        context.update("formularioDialogos:validacionHorasSL");
+                        context.execute("validacionHorasSL.show()");
+                    }
+                    if (aux.getMinutofinalalimentacion() == null) {
+                        System.out.println("Entro a Minuto Final Alimentación");
+                        mensajeValidacion = mensajeValidacion + " * Minuto Final Alimentacion\n ";
+                        pasa++;
+                    }
+                    if (aux.getMinutofinalalimentacion() != null && (aux.getMinutofinalalimentacion() > 59 || aux.getMinutofinalalimentacion() < 0)) {
+                        aux.setMinutofinalalimentacion(mfarecuperado);
+                        pasas++;
+                        context.update("formularioDialogos:validacionMinutosSL");
+                        context.execute("validacionMinutosSL.show()");
+                    }
+                    if (aux.getHorafinal() == null) {
+                        System.out.println("Entro a Hora Final");
+                        mensajeValidacion = mensajeValidacion + " * Hora Final\n ";
+                        pasa++;
+                    }
+                    if (aux.getHorafinal() != null && (aux.getHorafinal() > 23 || aux.getHorafinal() < 0)) {
+                        aux.setHorafinal(hfrecuperado);
+                        pasas++;
+                        context.update("formularioDialogos:validacionHorasSL");
+                        context.execute("validacionHorasSL.show()");
+                    }
+                    if (aux.getMinutofinal() == null) {
+                        System.out.println("Entro a Minuto Final");
+                        mensajeValidacion = mensajeValidacion + " * Minuto Final\n ";
+                        pasa++;
+                    }
+                    if (aux.getMinutofinal() != null && (aux.getMinutofinal() > 59 || aux.getMinutofinal() < 0)) {
+                        aux.setMinutofinal(mfrecuperado);
+                        pasas++;
+                        context.update("formularioDialogos:validacionMinutosSL");
+                        context.execute("validacionMinutosSL.show()");
+                    }
 
+                    if (pasa != 0) {
+                        aux.setHorainicial(hirecuperado);
+                        aux.setMinutoinicial(mirecuperado);
+                        aux.setHorainicialalimentacion(hiarecuperado);
+                        aux.setMinutoinicialalimentacion(miarecuperado);
+                        aux.setHorafinalalimentacion(hfarecuperado);
+                        aux.setMinutofinalalimentacion(mfarecuperado);
+                        aux.setHorafinal(hfrecuperado);
+                        aux.setMinutofinal(mfrecuperado);
+                        context.update("formularioDialogos:validacionNuevaJornadaSemanal");
+                        context.execute("validacionNuevaJornadaSemanal.show()");
+                    }
+                    if (pasa == 0 && pasas == 0) {
+                        if (listaJornadasSemanalesModificar.isEmpty()) {
+                            listaJornadasSemanalesModificar.add(listaJornadasSemanales.get(indiceJS));
+                        } else if (!listaJornadasSemanalesModificar.contains(listaJornadasSemanales.get(indiceJS))) {
+                            listaJornadasSemanalesModificar.add(listaJornadasSemanales.get(indiceJS));
+                        }
+                        if (guardado == true) {
+                            guardado = false;
+                            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                        }
                     }
                 }
                 indexJS = -1;
@@ -489,15 +765,117 @@ public class ControlJornadasLaborales implements Serializable {
             } else {
                 if (!listaJornadasSemanalesCrear.contains(filtradoListaJornadasLaborales.get(indiceJS))) {
 
-                    if (listaJornadasSemanalesModificar.isEmpty()) {
-                        listaJornadasSemanalesModificar.add(filtradoListaJornadasSemanales.get(indiceJS));
-                    } else if (!listaJornadasSemanalesModificar.contains(filtradoListaJornadasSemanales.get(indiceJS))) {
-                        listaJornadasSemanalesModificar.add(filtradoListaJornadasSemanales.get(indiceJS));
+                    if (aux2.getHorainicial() == null) {
+                        System.out.println("Entro a Hora Inicial");
+                        mensajeValidacion = mensajeValidacion + " * Hora Inicial\n ";
+                        pasa++;
                     }
-                    if (guardado == true) {
-                        guardado = false;
-                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                    if (aux2.getHorainicial() != null && (aux2.getHorainicial() > 23 || aux2.getHorainicial() < 0)) {
+                        aux2.setHorainicial(hirecuperado);
+                        pasas++;
+                        context.update("formularioDialogos:validacionHorasSL");
+                        context.execute("validacionHorasSL.show()");
+                    }
+                    if (aux2.getMinutoinicial() == null) {
+                        System.out.println("Entro a Minuto Inicial");
+                        pasa++;
+                    }
+                    if (aux2.getMinutoinicial() != null && (aux2.getMinutoinicial() > 59 || aux2.getMinutoinicial() < 0)) {
+                        aux2.setMinutoinicial(mirecuperado);
+                        pasas++;
+                        context.update("formularioDialogos:validacionMinutosSL");
+                        context.execute("validacionMinutosSL.show()");
+                    }
+                    if (aux2.getHorainicialalimentacion() == null) {
+                        System.out.println("Entro a Hora Inicial Alimentación");
+                        mensajeValidacion = mensajeValidacion + " * Hora Inicial Alimentacion\n ";
+                        pasa++;
+                    }
+                    if (aux2.getHorainicialalimentacion() != null && (aux2.getHorainicialalimentacion() > 23 || aux2.getHorainicialalimentacion() < 0)) {
+                        aux2.setHorainicialalimentacion(hiarecuperado);
+                        pasas++;
+                        context.update("formularioDialogos:validacionHorasSL");
+                        context.execute("validacionHorasSL.show()");
+                    }
+                    if (aux2.getMinutoinicialalimentacion() == null) {
+                        System.out.println("Entro a Minuto Inicial Alimentación");
+                        mensajeValidacion = mensajeValidacion + " * Minuto Inicial Alimentacion\n ";
+                        pasa++;
+                    }
+                    if (aux2.getMinutoinicialalimentacion() != null && (aux2.getMinutoinicialalimentacion() > 59 || aux2.getMinutoinicialalimentacion() < 0)) {
+                        aux2.setMinutoinicialalimentacion(miarecuperado);
+                        pasas++;
+                        context.update("formularioDialogos:validacionMinutosSL");
+                        context.execute("validacionMinutosSL.show()");
+                    }
+                    if (aux2.getHorafinalalimentacion() == null) {
+                        System.out.println("Entro a Hora Final Alimentación");
+                        mensajeValidacion = mensajeValidacion + " * Hora Final Alimentacion\n ";
+                        pasa++;
+                    }
+                    if (aux2.getHorafinalalimentacion() != null && (aux2.getHorafinalalimentacion() > 23 || aux2.getHorafinalalimentacion() < 0)) {
+                        aux2.setHorafinalalimentacion(hfarecuperado);
+                        pasas++;
+                        context.update("formularioDialogos:validacionHorasSL");
+                        context.execute("validacionHorasSL.show()");
+                    }
+                    if (aux2.getMinutofinalalimentacion() == null) {
+                        System.out.println("Entro a Minuto Final Alimentación");
+                        mensajeValidacion = mensajeValidacion + " * Minuto Final Alimentacion\n ";
+                        pasa++;
+                    }
+                    if (aux2.getMinutofinalalimentacion() != null && (aux2.getMinutofinalalimentacion() > 59 || aux2.getMinutofinalalimentacion() < 0)) {
+                        aux2.setMinutofinalalimentacion(mfarecuperado);
+                        pasas++;
+                        context.update("formularioDialogos:validacionMinutosSL");
+                        context.execute("validacionMinutosSL.show()");
+                    }
+                    if (aux2.getHorafinal() == null) {
+                        System.out.println("Entro a Hora Final");
+                        mensajeValidacion = mensajeValidacion + " * Hora Final\n ";
+                        pasa++;
+                    }
+                    if (aux2.getHorafinal() != null && (aux2.getHorafinal() > 23 || aux2.getHorafinal() < 0)) {
+                        aux2.setHorafinal(hfrecuperado);
+                        pasas++;
+                        context.update("formularioDialogos:validacionHorasSL");
+                        context.execute("validacionHorasSL.show()");
+                    }
+                    if (aux2.getMinutofinal() == null) {
+                        System.out.println("Entro a Minuto Final");
+                        mensajeValidacion = mensajeValidacion + " * Minuto Final\n ";
+                        pasa++;
+                    }
+                    if (aux2.getMinutofinal() != null && (aux2.getMinutofinal() > 59 || aux2.getMinutofinal() < 0)) {
+                        aux2.setMinutofinal(mfrecuperado);
+                        pasas++;
+                        context.update("formularioDialogos:validacionMinutosSL");
+                        context.execute("validacionMinutosSL.show()");
+                    }
 
+                    if (pasa != 0) {
+                        aux2.setHorainicial(hirecuperado);
+                        aux2.setMinutoinicial(mirecuperado);
+                        aux2.setHorainicialalimentacion(hiarecuperado);
+                        aux2.setMinutoinicialalimentacion(miarecuperado);
+                        aux2.setHorafinalalimentacion(hfarecuperado);
+                        aux2.setMinutofinalalimentacion(mfarecuperado);
+                        aux2.setHorafinal(hfrecuperado);
+                        aux2.setMinutofinal(mfrecuperado);
+                        context.update("formularioDialogos:validacionNuevaJornadaSemanal");
+                        context.execute("validacionNuevaJornadaSemanal.show()");
+                    }
+                    if (pasa == 0 && pasas == 0) {
+
+                        if (listaJornadasSemanalesModificar.isEmpty()) {
+                            listaJornadasSemanalesModificar.add(filtradoListaJornadasSemanales.get(indiceJS));
+                        } else if (!listaJornadasSemanalesModificar.contains(filtradoListaJornadasSemanales.get(indiceJS))) {
+                            listaJornadasSemanalesModificar.add(filtradoListaJornadasSemanales.get(indiceJS));
+                        }
+                        if (guardado == true) {
+                            guardado = false;
+                            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                        }
                     }
                 }
                 index = -1;
@@ -505,41 +883,7 @@ public class ControlJornadasLaborales implements Serializable {
             }
             context.update("form:datosSemanasLaborales");
         }
-        if (coincidencias == 1) {
-            if (tipoLista == 0) {
-                if (!listaJornadasSemanalesCrear.contains(listaJornadasSemanales.get(indiceJS))) {
-                    if (listaJornadasSemanalesModificar.isEmpty()) {
-                        listaJornadasSemanalesModificar.add(listaJornadasSemanales.get(indiceJS));
-                    } else if (!listaJornadasSemanalesModificar.contains(listaJornadasSemanales.get(indiceJS))) {
-                        listaJornadasSemanalesModificar.add(listaJornadasSemanales.get(indiceJS));
-                    }
-                    if (guardado == true) {
-                        guardado = false;
-                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
-                    }
-                }
-                indexJS = -1;
-                secRegistro = null;
-            } else {
-                if (!listaJornadasSemanalesCrear.contains(filtradoListaJornadasSemanales.get(indiceJS))) {
-
-                    if (listaJornadasLaboralesModificar.isEmpty()) {
-                        listaJornadasLaboralesModificar.add(filtradoListaJornadasLaborales.get(indiceJS));
-                    } else if (!listaJornadasSemanalesModificar.contains(filtradoListaJornadasSemanales.get(indiceJS))) {
-                        listaJornadasSemanalesModificar.add(filtradoListaJornadasSemanales.get(indiceJS));
-                    }
-                    if (guardado == true) {
-                        guardado = false;
-                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
-
-                    }
-                }
-                indexJS = -1;
-                secRegistro = null;
-            }
-        }
-        context.update("form:datosSemanasLaborales");
     }
 
     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LND = LISTA - NUEVO - DUPLICADO)
@@ -625,58 +969,105 @@ public class ControlJornadasLaborales implements Serializable {
     }
 
     public void seleccionarDia(String estadoDia, int indiceJS, int celda) {
+        System.out.println("entre a modificar");
         RequestContext context = RequestContext.getCurrentInstance();
+        int pasas = 0;
+        int coincidencia = 0;
 
         if (tipoListaJS == 0) {
-            if (estadoDia.equals("LUNES")) {
-                listaJornadasSemanales.get(indiceJS).setDia("LUN");
-            } else if (estadoDia.equals("MARTES")) {
-                listaJornadasSemanales.get(indiceJS).setDia("MAR");
-            } else if (estadoDia.equals("MIERCOLES")) {
-                listaJornadasSemanales.get(indiceJS).setDia("MIE");
-            } else if (estadoDia.equals("JUEVES")) {
-                listaJornadasSemanales.get(indiceJS).setDia("JUE");
-            } else if (estadoDia.equals("VIERNES")) {
-                listaJornadasSemanales.get(indiceJS).setDia("VIE");
-            } else if (estadoDia.equals("SABADO")) {
-                listaJornadasSemanales.get(indiceJS).setDia("SAB");
-            } else if (estadoDia.equals("DOMINGO")) {
-                listaJornadasSemanales.get(indiceJS).setDia("DOM");
-            } else if (estadoDia.equals("NADA")) {
-                listaJornadasSemanales.get(indiceJS).setDia(" ");
+            //diarecuperado = listaJornadasSemanales.get(indiceJS).getDia();
+            diita = listaJornadasSemanales.get(indiceJS).getEstadoDia();
+            System.out.println("Diita: " + diita);
+            //  System.out.println("Diarecuperado: " + diarecuperado);
+
+            for (int i = 0; i < listaJornadasSemanales.size(); i++) {
+                System.out.println("listaJornadasSemanales.get(i).getEstadoDia() Posicion : " + i + " " + listaJornadasSemanales.get(i).getEstadoDia());
+                if (listaJornadasSemanales.get(indiceJS).getEstadoDia().equalsIgnoreCase(listaJornadasSemanales.get(i).getEstadoDia())) {
+                    coincidencia++;
+                    //aux.setDia(diarecuperado);                        
+                }
+                if (coincidencia > 1) {
+                    listaJornadasSemanales.get(i).setEstadoDia(diita);
+                    context.update("formularioDialogos:validacionDia");
+                    context.execute("validacionDia.show()");
+                    System.out.println("I find you 2!");
+                    System.out.println("dia 2: " + listaJornadasSemanales.get(i).getDia());
+                    System.out.println("estad dia 2: " + listaJornadasSemanales.get(i).getEstadoDia());
+                    context.update("form:datosSemanasLaborales");
+                }
             }
 
-            if (!listaJornadasSemanalesCrear.contains(listaJornadasSemanales.get(indiceJS))) {
-                if (listaJornadasSemanalesModificar.isEmpty()) {
-                    listaJornadasSemanalesModificar.add(listaJornadasSemanales.get(indiceJS));
-                } else if (!listaJornadasSemanalesModificar.contains(listaJornadasSemanales.get(indiceJS))) {
-                    listaJornadasSemanalesModificar.add(listaJornadasSemanales.get(indiceJS));
+            if (listaJornadasSemanales.get(indiceJS).getDia() != null) {
+                System.out.println("Dia en la Posicion: " + indiceJS + " " + listaJornadasSemanales.get(indiceJS).getDia());
+
+            }
+            if (pasas == 0) {
+                if (estadoDia.equals("LUNES")) {
+                    listaJornadasSemanales.get(indiceJS).setDia("LUN");
+                } else if (estadoDia.equals("MARTES")) {
+                    listaJornadasSemanales.get(indiceJS).setDia("MAR");
+                } else if (estadoDia.equals("MIERCOLES")) {
+                    listaJornadasSemanales.get(indiceJS).setDia("MIE");
+                } else if (estadoDia.equals("JUEVES")) {
+                    listaJornadasSemanales.get(indiceJS).setDia("JUE");
+                } else if (estadoDia.equals("VIERNES")) {
+                    listaJornadasSemanales.get(indiceJS).setDia("VIE");
+                } else if (estadoDia.equals("SABADO")) {
+                    listaJornadasSemanales.get(indiceJS).setDia("SAB");
+                } else if (estadoDia.equals("DOMINGO")) {
+                    listaJornadasSemanales.get(indiceJS).setDia("DOM");
+                }
+
+                if (!listaJornadasSemanalesCrear.contains(listaJornadasSemanales.get(indiceJS))) {
+                    if (listaJornadasSemanalesModificar.isEmpty()) {
+                        listaJornadasSemanalesModificar.add(listaJornadasSemanales.get(indiceJS));
+                    } else if (!listaJornadasSemanalesModificar.contains(listaJornadasSemanales.get(indiceJS))) {
+                        listaJornadasSemanalesModificar.add(listaJornadasSemanales.get(indiceJS));
+                    }
                 }
             }
         } else {
-            if (estadoDia.equals("LUNES")) {
-                filtradoListaJornadasSemanales.get(indiceJS).setDia("LUN");
-            } else if (estadoDia.equals("MARTES")) {
-                filtradoListaJornadasSemanales.get(indiceJS).setDia("MAR");
-            } else if (estadoDia.equals("MIERCOLES")) {
-                filtradoListaJornadasSemanales.get(indiceJS).setDia("MIE");
-            } else if (estadoDia.equals("JUEVES")) {
-                filtradoListaJornadasSemanales.get(indiceJS).setDia("JUE");
-            } else if (estadoDia.equals("VIERNES")) {
-                filtradoListaJornadasSemanales.get(indiceJS).setDia("VIE");
-            } else if (estadoDia.equals("SABADO")) {
-                filtradoListaJornadasSemanales.get(indiceJS).setDia("SAB");
-            } else if (estadoDia.equals("DOMINGO")) {
-                filtradoListaJornadasSemanales.get(indiceJS).setDia("DOM");
-            } else if (estadoDia.equals("NADA")) {
-                filtradoListaJornadasSemanales.get(indiceJS).setDia(" ");
+            diarecuperado = filtradoListaJornadasSemanales.get(indexJS).getDia();
+            diita = filtradoListaJornadasSemanales.get(indexJS).getEstadoDia();
+            if (filtradoListaJornadasSemanales.get(indexJS).getDia() != null) {
+                System.out.println("aux2.getDia() : " + filtradoListaJornadasSemanales.get(indexJS).getDia());
+                for (int i = 0; i < filtradoListaJornadasSemanales.size(); i++) {
+                    System.out.println("listaJornadasSemanales.get(i).getDia() : " + filtradoListaJornadasSemanales.get(i).getDia());
+                    if (filtradoListaJornadasSemanales.get(indexJS).getDia().equalsIgnoreCase(filtradoListaJornadasSemanales.get(i).getDia())) {
+                        pasas++;
+                        filtradoListaJornadasSemanales.get(indexJS).setDia(diarecuperado);
+                        filtradoListaJornadasSemanales.get(indexJS).setEstadoDia(diita);
+                        context.update("formularioDialogos:validacionDia");
+                        context.execute("validacionDia.show()");
+                        System.out.println("I find you !");
+                        // RequestContext.getCurrentInstance().update("form:datosSemanasLaborales");
+                        context.update("form:datosSemanasLaborales");
+                    }
+                }
             }
+            if (pasas == 0) {
+                if (estadoDia.equals("LUNES")) {
+                    filtradoListaJornadasSemanales.get(indiceJS).setDia("LUN");
+                } else if (estadoDia.equals("MARTES")) {
+                    filtradoListaJornadasSemanales.get(indiceJS).setDia("MAR");
+                } else if (estadoDia.equals("MIERCOLES")) {
+                    filtradoListaJornadasSemanales.get(indiceJS).setDia("MIE");
+                } else if (estadoDia.equals("JUEVES")) {
+                    filtradoListaJornadasSemanales.get(indiceJS).setDia("JUE");
+                } else if (estadoDia.equals("VIERNES")) {
+                    filtradoListaJornadasSemanales.get(indiceJS).setDia("VIE");
+                } else if (estadoDia.equals("SABADO")) {
+                    filtradoListaJornadasSemanales.get(indiceJS).setDia("SAB");
+                } else if (estadoDia.equals("DOMINGO")) {
+                    filtradoListaJornadasSemanales.get(indiceJS).setDia("DOM");
+                }
 
-            if (!listaJornadasSemanalesCrear.contains(filtradoListaJornadasSemanales.get(indiceJS))) {
-                if (listaJornadasSemanalesModificar.isEmpty()) {
-                    listaJornadasSemanalesModificar.add(filtradoListaJornadasSemanales.get(indiceJS));
-                } else if (!listaJornadasSemanalesModificar.contains(filtradoListaJornadasSemanales.get(indiceJS))) {
-                    listaJornadasSemanalesModificar.add(filtradoListaJornadasSemanales.get(indiceJS));
+                if (!listaJornadasSemanalesCrear.contains(filtradoListaJornadasSemanales.get(indiceJS))) {
+                    if (listaJornadasSemanalesModificar.isEmpty()) {
+                        listaJornadasSemanalesModificar.add(filtradoListaJornadasSemanales.get(indiceJS));
+                    } else if (!listaJornadasSemanalesModificar.contains(filtradoListaJornadasSemanales.get(indiceJS))) {
+                        listaJornadasSemanalesModificar.add(filtradoListaJornadasSemanales.get(indiceJS));
+                    }
                 }
             }
         }
@@ -685,6 +1076,7 @@ public class ControlJornadasLaborales implements Serializable {
             context.update("form:ACEPTAR");
         }
         RequestContext.getCurrentInstance().update("form:datosSemanasLaborales");
+
     }
 
     public void seleccionarDiaNuevaSemana(String estadoDia, int tipoNuevo) {
@@ -1000,18 +1392,19 @@ public class ControlJornadasLaborales implements Serializable {
 
         RequestContext context = RequestContext.getCurrentInstance();
         int pasa = 0;
+        int pasas = 0;
         mensajeValidacion = " ";
         mensajeValidacionhoras = " ";
 
         if (nuevaJornadaLaboral.getHorasdiarias() != null && (nuevaJornadaLaboral.getHorasdiarias().compareTo(BigDecimal.ONE) == 0 || nuevaJornadaLaboral.getHorasdiarias().compareTo(BigDecimal.ONE) == -1)) {
             mensajeValidacionhoras = mensajeValidacionhoras + " Horas Diarias. ";
-            pasa++;
+            pasas++;
             context.update("formularioDialogos:validacionHorasJL");
             context.execute("validacionHorasJL.show()");
         }
         if (nuevaJornadaLaboral.getHorasmensuales() != null && (nuevaJornadaLaboral.getHorasmensuales().compareTo(Short.valueOf("0")) == 0 || nuevaJornadaLaboral.getHorasmensuales().compareTo(Short.valueOf("0")) < 0)) {
-            mensajeValidacionhoras = mensajeValidacionhoras + " Horas Mensuale. ";
-            pasa++;
+            mensajeValidacionhoras = mensajeValidacionhoras + " Horas Mensuales. ";
+            pasas++;
             context.update("formularioDialogos:validacionHorasJL");
             context.execute("validacionHorasJL.show()");
         }
@@ -1019,7 +1412,7 @@ public class ControlJornadasLaborales implements Serializable {
 
             for (int i = 0; i < listaJornadasLaborales.size(); i++) {
                 if (nuevaJornadaLaboral.getCodigo() == listaJornadasLaborales.get(i).getCodigo()) {
-                    pasa++;
+                    pasas++;
                     context.update("formularioDialogos:validacionCodigo");
                     context.execute("validacionCodigo.show()");
                 }
@@ -1031,7 +1424,12 @@ public class ControlJornadasLaborales implements Serializable {
             pasa++;
         }
 
-        if (pasa == 0) {
+        if (pasa != 0) {
+            context.update("formularioDialogos:validacionNuevaJornadaLaboral");
+            context.execute("validacionNuevaJornadaLaboral.show()");
+        }
+
+        if (pasa == 0 && pasas == 0) {
             if (bandera == 1) {
                 FacesContext c = FacesContext.getCurrentInstance();
 
@@ -1091,9 +1489,6 @@ public class ControlJornadasLaborales implements Serializable {
             context.execute("NuevoRegistroJornadaLaboral.hide()");
             index = -1;
             secRegistro = null;
-        } else if (nuevaJornadaLaboral.getDescripcion() == null || nuevaJornadaLaboral.getDescripcion().equals("")) {
-            context.update("formularioDialogos:validacionNuevaJornadaLaboral");
-            context.execute("validacionNuevaJornadaLaboral.show()");
         }
     }
 
@@ -1102,54 +1497,117 @@ public class ControlJornadasLaborales implements Serializable {
 
         RequestContext context = RequestContext.getCurrentInstance();
         int pasa = 0;
+        int pasas = 0;
         mensajeValidacion = " ";
-        if (nuevaSemanaLaboral.getDia() == null) {
-            System.out.println("Entro a Dia");
-            mensajeValidacion = mensajeValidacion + " * Dia\n";
-            pasa++;
+        mensajeValidacionhora = " ";
+        mensajeValidacionminuto = " ";
+
+        if (nuevaSemanaLaboral.getDia() != null) {
+            System.out.println("nuevaSemanaLaboral.getDia() : " + nuevaSemanaLaboral.getDia());
+            for (int i = 0; i < listaJornadasSemanales.size(); i++) {
+                System.out.println("listaJornadasSemanales.get(i).getDia() : " + listaJornadasSemanales.get(i).getDia());
+                if (nuevaSemanaLaboral.getDia().equalsIgnoreCase(listaJornadasSemanales.get(i).getDia())) {
+                    pasas++;
+                    context.update("formularioDialogos:validacionDia");
+                    context.execute("validacionDia.show()");
+                    System.out.println("I find you !");
+                }
+            }
         }
         if (nuevaSemanaLaboral.getHorainicial() == null) {
             System.out.println("Entro a Hora Inicial");
-            mensajeValidacion = mensajeValidacion + " * Hora Inicial\n";
+            mensajeValidacion = mensajeValidacion + " * Hora Inicial\n ";
             pasa++;
+        }
+        if (nuevaSemanaLaboral.getHorainicial() != null && (nuevaSemanaLaboral.getHorainicial() > 23 || nuevaSemanaLaboral.getHorainicial() < 0)) {
+            mensajeValidacionhora = mensajeValidacionhora + " Hora Inicial Jornada\n ";
+            pasas++;
+            context.update("formularioDialogos:validacionHorasSL");
+            context.execute("validacionHorasSL.show()");
         }
         if (nuevaSemanaLaboral.getMinutoinicial() == null) {
             System.out.println("Entro a Minuto Inicial");
-            mensajeValidacion = mensajeValidacion + " * Minuto Inicial\n";
+            mensajeValidacion = mensajeValidacion + " * Minuto Inicial\n ";
             pasa++;
+        }
+        if (nuevaSemanaLaboral.getMinutoinicial() != null && (nuevaSemanaLaboral.getMinutoinicial() > 59 || nuevaSemanaLaboral.getMinutoinicial() < 0)) {
+            mensajeValidacionminuto = mensajeValidacionminuto + " Minuto Inicial Jornada\n ";
+            pasas++;
+            context.update("formularioDialogos:validacionMinutosSL");
+            context.execute("validacionMinutosSL.show()");
         }
         if (nuevaSemanaLaboral.getHorainicialalimentacion() == null) {
             System.out.println("Entro a Hora Inicial Alimentación");
-            mensajeValidacion = mensajeValidacion + " * Hora Inicial Alimentacion\n";
+            mensajeValidacion = mensajeValidacion + " * Hora Inicial Alimentacion\n ";
             pasa++;
+        }
+        if (nuevaSemanaLaboral.getHorainicialalimentacion() != null && (nuevaSemanaLaboral.getHorainicialalimentacion() > 23 || nuevaSemanaLaboral.getHorainicialalimentacion() < 0)) {
+            mensajeValidacionhora = mensajeValidacionhora + " Hora Inicial Alimentacion\n ";
+            pasas++;
+            context.update("formularioDialogos:validacionHorasSL");
+            context.execute("validacionHorasSL.show()");
         }
         if (nuevaSemanaLaboral.getMinutoinicialalimentacion() == null) {
             System.out.println("Entro a Minuto Inicial Alimentación");
-            mensajeValidacion = mensajeValidacion + " * Minuto Inicial Alimentacion\n";
+            mensajeValidacion = mensajeValidacion + " * Minuto Inicial Alimentacion\n ";
             pasa++;
+        }
+        if (nuevaSemanaLaboral.getMinutoinicialalimentacion() != null && (nuevaSemanaLaboral.getMinutoinicialalimentacion() > 59 || nuevaSemanaLaboral.getMinutoinicialalimentacion() < 0)) {
+            mensajeValidacionminuto = mensajeValidacionminuto + " Minuto Inicial Alimentacion\n ";
+            pasas++;
+            context.update("formularioDialogos:validacionMinutosSL");
+            context.execute("validacionMinutosSL.show()");
         }
         if (nuevaSemanaLaboral.getHorafinalalimentacion() == null) {
             System.out.println("Entro a Hora Final Alimentación");
-            mensajeValidacion = mensajeValidacion + " * Hora Final Alimentacion\n";
+            mensajeValidacion = mensajeValidacion + " * Hora Final Alimentacion\n ";
             pasa++;
+        }
+        if (nuevaSemanaLaboral.getHorafinalalimentacion() != null && (nuevaSemanaLaboral.getHorafinalalimentacion() > 23 || nuevaSemanaLaboral.getHorafinalalimentacion() < 0)) {
+            mensajeValidacionhora = mensajeValidacionhora + " Hora Final Alimentacion\n ";
+            pasas++;
+            context.update("formularioDialogos:validacionHorasSL");
+            context.execute("validacionHorasSL.show()");
         }
         if (nuevaSemanaLaboral.getMinutofinalalimentacion() == null) {
             System.out.println("Entro a Minuto Final Alimentación");
-            mensajeValidacion = mensajeValidacion + " * Minuto Final Alimentacion\n";
+            mensajeValidacion = mensajeValidacion + " * Minuto Final Alimentacion\n ";
             pasa++;
+        }
+        if (nuevaSemanaLaboral.getMinutofinalalimentacion() != null && (nuevaSemanaLaboral.getMinutofinalalimentacion() > 59 || nuevaSemanaLaboral.getMinutofinalalimentacion() < 0)) {
+            mensajeValidacionminuto = mensajeValidacionminuto + " Minuto Final Alimentacion\n ";
+            pasas++;
+            context.update("formularioDialogos:validacionMinutosSL");
+            context.execute("validacionMinutosSL.show()");
         }
         if (nuevaSemanaLaboral.getHorafinal() == null) {
             System.out.println("Entro a Hora Final");
-            mensajeValidacion = mensajeValidacion + " * Hora Final\n";
+            mensajeValidacion = mensajeValidacion + " * Hora Final\n ";
             pasa++;
+        }
+        if (nuevaSemanaLaboral.getHorafinal() != null && (nuevaSemanaLaboral.getHorafinal() > 23 || nuevaSemanaLaboral.getHorafinal() < 0)) {
+            mensajeValidacionhora = mensajeValidacionhora + " Hora Final Jornada\n ";
+            pasas++;
+            context.update("formularioDialogos:validacionHorasSL");
+            context.execute("validacionHorasSL.show()");
         }
         if (nuevaSemanaLaboral.getMinutofinal() == null) {
             System.out.println("Entro a Minuto Final");
-            mensajeValidacion = mensajeValidacion + " * Minuto Final\n";
+            mensajeValidacion = mensajeValidacion + " * Minuto Final\n ";
             pasa++;
         }
+        if (nuevaSemanaLaboral.getMinutofinal() != null && (nuevaSemanaLaboral.getMinutofinal() > 59 || nuevaSemanaLaboral.getMinutofinal() < 0)) {
+            mensajeValidacionminuto = mensajeValidacionminuto + " Minuto Final Jornada\n ";
+            pasas++;
+            context.update("formularioDialogos:validacionMinutosSL");
+            context.execute("validacionMinutosSL.show()");
+        }
 
-        if (pasa == 0) {
+        if (pasa != 0) {
+            context.update("formularioDialogos:validacionNuevaJornadaSemanal");
+            context.execute("validacionNuevaJornadaSemanal.show()");
+        }
+        if (pasa == 0 && pasas == 0) {
             if (banderaJS == 1) {
                 FacesContext c = FacesContext.getCurrentInstance();
 
@@ -1201,9 +1659,6 @@ public class ControlJornadasLaborales implements Serializable {
             context.execute("NuevoRegistroJornadaSemanal.hide()");
             index = -1;
             secRegistro = null;
-        } else {
-            context.update("formularioDialogos:validacionNuevaJornadaSemanal");
-            context.execute("validacionNuevaJornadaSemanal.show()");
         }
     }
 
@@ -1547,46 +2002,163 @@ public class ControlJornadasLaborales implements Serializable {
         l = BigInteger.valueOf(k);
         duplicarSemanaLaboral.setSecuencia(l);
         RequestContext context = RequestContext.getCurrentInstance();
-        listaJornadasSemanales.add(duplicarSemanaLaboral);
-        listaJornadasSemanalesCrear.add(duplicarSemanaLaboral);
-        context.update("form:datosSemanasLaborales");
-        index = -1;
-        secRegistro = null;
-        if (guardado == true) {
-            guardado = false;
-            RequestContext.getCurrentInstance().update("form:ACEPTAR");
-        }
-        if (banderaJS == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
 
-            System.out.println("Desactivar");
-            System.out.println("TipoLista= " + tipoListaJS);
-            SemanaLaboralHI = (Column) c.getViewRoot().findComponent("form:datosSemanasLaborales:SemanaLaboralHI");
-            SemanaLaboralHI.setFilterStyle("display: none; visibility: hidden;");
-            SemanaLaboralMI = (Column) c.getViewRoot().findComponent("form:datosSemanasLaborales:SemanaLaboralMI");
-            SemanaLaboralMI.setFilterStyle("display: none; visibility: hidden;");
-            SemanaLaboralHIA = (Column) c.getViewRoot().findComponent("form:datosSemanasLaborales:SemanaLaboralHIA");
-            SemanaLaboralHIA.setFilterStyle("display: none; visibility: hidden;");
-            SemanaLaboralMIA = (Column) c.getViewRoot().findComponent("form:datosSemanasLaborales:SemanaLaboralMIA");
-            SemanaLaboralMIA.setFilterStyle("display: none; visibility: hidden;");
-            SemanaLaboralHFA = (Column) c.getViewRoot().findComponent("form:datosSemanasLaborales:SemanaLaboralHFA");
-            SemanaLaboralHFA.setFilterStyle("display: none; visibility: hidden;");
-            SemanaLaboralMFA = (Column) c.getViewRoot().findComponent("form:datosSemanasLaborales:SemanaLaboralMFA");
-            SemanaLaboralMFA.setFilterStyle("display: none; visibility: hidden;");
-            SemanaLaboralHoraFinal = (Column) c.getViewRoot().findComponent("form:datosSemanasLaborales:SemanaLaboralHoraFinal");
-            SemanaLaboralHoraFinal.setFilterStyle("display: none; visibility: hidden;");
-            SemanaLaboralMinutoFinal = (Column) c.getViewRoot().findComponent("form:datosSemanasLaborales:SemanaLaboralMinutoFinal");
-            SemanaLaboralMinutoFinal.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla2 = "115";
-            RequestContext.getCurrentInstance().update("form:datosSemanasLaborales");
-            banderaJS = 0;
-            filtradoListaJornadasSemanales = null;
-            tipoListaJS = 0;
+        int pasa = 0;
+        int pasas = 0;
+        mensajeValidacion = " ";
+        mensajeValidacionhora = " ";
+        mensajeValidacionminuto = " ";
 
+        if (duplicarSemanaLaboral.getDia() != null) {
+            System.out.println("duplicarSemanaLaboral.getDia() : " + duplicarSemanaLaboral.getDia());
+            for (int i = 0; i < listaJornadasSemanales.size(); i++) {
+                System.out.println("listaJornadasSemanales.get(i).getDia() : " + listaJornadasSemanales.get(i).getDia());
+                if (duplicarSemanaLaboral.getDia().equalsIgnoreCase(listaJornadasSemanales.get(i).getDia())) {
+                    pasas++;
+                    context.update("formularioDialogos:validacionDia");
+                    context.execute("validacionDia.show()");
+                    System.out.println("I find you !");
+                }
+            }
         }
-        duplicarSemanaLaboral = new JornadasSemanales();
-        infoRegistroSL = "Cantidad de registros: " + listaJornadasSemanales.size();
-        context.update("form:infoRegistroSL");
+        if (duplicarSemanaLaboral.getHorainicial() == null) {
+            System.out.println("Entro a Hora Inicial");
+            mensajeValidacion = mensajeValidacion + " * Hora Inicial\n ";
+            pasa++;
+        }
+        if (duplicarSemanaLaboral.getHorainicial() != null && (duplicarSemanaLaboral.getHorainicial() > 23 || duplicarSemanaLaboral.getHorainicial() < 0)) {
+            mensajeValidacionhora = mensajeValidacionhora + " Hora Inicial Jornada\n ";
+            pasas++;
+            context.update("formularioDialogos:validacionHorasSL");
+            context.execute("validacionHorasSL.show()");
+        }
+        if (duplicarSemanaLaboral.getMinutoinicial() == null) {
+            System.out.println("Entro a Minuto Inicial");
+            mensajeValidacion = mensajeValidacion + " * Minuto Inicial\n ";
+            pasa++;
+        }
+        if (duplicarSemanaLaboral.getMinutoinicial() != null && (duplicarSemanaLaboral.getMinutoinicial() > 59 || duplicarSemanaLaboral.getMinutoinicial() < 0)) {
+            mensajeValidacionminuto = mensajeValidacionminuto + " Minuto Inicial Jornada\n ";
+            pasas++;
+            context.update("formularioDialogos:validacionMinutosSL");
+            context.execute("validacionMinutosSL.show()");
+        }
+        if (duplicarSemanaLaboral.getHorainicialalimentacion() == null) {
+            System.out.println("Entro a Hora Inicial Alimentación");
+            mensajeValidacion = mensajeValidacion + " * Hora Inicial Alimentacion\n ";
+            pasa++;
+        }
+        if (duplicarSemanaLaboral.getHorainicialalimentacion() != null && (duplicarSemanaLaboral.getHorainicialalimentacion() > 23 || duplicarSemanaLaboral.getHorainicialalimentacion() < 0)) {
+            mensajeValidacionhora = mensajeValidacionhora + " Hora Inicial Alimentacion\n ";
+            pasas++;
+            context.update("formularioDialogos:validacionHorasSL");
+            context.execute("validacionHorasSL.show()");
+        }
+        if (duplicarSemanaLaboral.getMinutoinicialalimentacion() == null) {
+            System.out.println("Entro a Minuto Inicial Alimentación");
+            mensajeValidacion = mensajeValidacion + " * Minuto Inicial Alimentacion\n ";
+            pasa++;
+        }
+        if (duplicarSemanaLaboral.getMinutoinicialalimentacion() != null && (duplicarSemanaLaboral.getMinutoinicialalimentacion() > 59 || duplicarSemanaLaboral.getMinutoinicialalimentacion() < 0)) {
+            mensajeValidacionminuto = mensajeValidacionminuto + " Minuto Inicial Alimentacion\n ";
+            pasas++;
+            context.update("formularioDialogos:validacionMinutosSL");
+            context.execute("validacionMinutosSL.show()");
+        }
+        if (duplicarSemanaLaboral.getHorafinalalimentacion() == null) {
+            System.out.println("Entro a Hora Final Alimentación");
+            mensajeValidacion = mensajeValidacion + " * Hora Final Alimentacion\n ";
+            pasa++;
+        }
+        if (duplicarSemanaLaboral.getHorafinalalimentacion() != null && (duplicarSemanaLaboral.getHorafinalalimentacion() > 23 || duplicarSemanaLaboral.getHorafinalalimentacion() < 0)) {
+            mensajeValidacionhora = mensajeValidacionhora + " Hora Final Alimentacion\n ";
+            pasas++;
+            context.update("formularioDialogos:validacionHorasSL");
+            context.execute("validacionHorasSL.show()");
+        }
+        if (duplicarSemanaLaboral.getMinutofinalalimentacion() == null) {
+            System.out.println("Entro a Minuto Final Alimentación");
+            mensajeValidacion = mensajeValidacion + " * Minuto Final Alimentacion\n ";
+            pasa++;
+        }
+        if (duplicarSemanaLaboral.getMinutofinalalimentacion() != null && (duplicarSemanaLaboral.getMinutofinalalimentacion() > 59 || duplicarSemanaLaboral.getMinutofinalalimentacion() < 0)) {
+            mensajeValidacionminuto = mensajeValidacionminuto + " Minuto Final Alimentacion\n ";
+            pasas++;
+            context.update("formularioDialogos:validacionMinutosSL");
+            context.execute("validacionMinutosSL.show()");
+        }
+        if (duplicarSemanaLaboral.getHorafinal() == null) {
+            System.out.println("Entro a Hora Final");
+            mensajeValidacion = mensajeValidacion + " * Hora Final\n ";
+            pasa++;
+        }
+        if (duplicarSemanaLaboral.getHorafinal() != null && (duplicarSemanaLaboral.getHorafinal() > 23 || duplicarSemanaLaboral.getHorafinal() < 0)) {
+            mensajeValidacionhora = mensajeValidacionhora + " Hora Final Jornada\n ";
+            pasas++;
+            context.update("formularioDialogos:validacionHorasSL");
+            context.execute("validacionHorasSL.show()");
+        }
+        if (duplicarSemanaLaboral.getMinutofinal() == null) {
+            System.out.println("Entro a Minuto Final");
+            mensajeValidacion = mensajeValidacion + " * Minuto Final\n ";
+            pasa++;
+        }
+        if (duplicarSemanaLaboral.getMinutofinal() != null && (duplicarSemanaLaboral.getMinutofinal() > 59 || duplicarSemanaLaboral.getMinutofinal() < 0)) {
+            mensajeValidacionminuto = mensajeValidacionminuto + " Minuto Final Jornada\n ";
+            pasas++;
+            context.update("formularioDialogos:validacionMinutosSL");
+            context.execute("validacionMinutosSL.show()");
+        }
+
+        if (pasa != 0) {
+            context.update("formularioDialogos:validacionNuevaJornadaSemanal");
+            context.execute("validacionNuevaJornadaSemanal.show()");
+        }
+        if (pasa == 0 && pasas == 0) {
+            index = -1;
+            secRegistro = null;
+            if (guardado == true) {
+                guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+            }
+            if (banderaJS == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+
+                System.out.println("Desactivar");
+                System.out.println("TipoLista= " + tipoListaJS);
+                SemanaLaboralHI = (Column) c.getViewRoot().findComponent("form:datosSemanasLaborales:SemanaLaboralHI");
+                SemanaLaboralHI.setFilterStyle("display: none; visibility: hidden;");
+                SemanaLaboralMI = (Column) c.getViewRoot().findComponent("form:datosSemanasLaborales:SemanaLaboralMI");
+                SemanaLaboralMI.setFilterStyle("display: none; visibility: hidden;");
+                SemanaLaboralHIA = (Column) c.getViewRoot().findComponent("form:datosSemanasLaborales:SemanaLaboralHIA");
+                SemanaLaboralHIA.setFilterStyle("display: none; visibility: hidden;");
+                SemanaLaboralMIA = (Column) c.getViewRoot().findComponent("form:datosSemanasLaborales:SemanaLaboralMIA");
+                SemanaLaboralMIA.setFilterStyle("display: none; visibility: hidden;");
+                SemanaLaboralHFA = (Column) c.getViewRoot().findComponent("form:datosSemanasLaborales:SemanaLaboralHFA");
+                SemanaLaboralHFA.setFilterStyle("display: none; visibility: hidden;");
+                SemanaLaboralMFA = (Column) c.getViewRoot().findComponent("form:datosSemanasLaborales:SemanaLaboralMFA");
+                SemanaLaboralMFA.setFilterStyle("display: none; visibility: hidden;");
+                SemanaLaboralHoraFinal = (Column) c.getViewRoot().findComponent("form:datosSemanasLaborales:SemanaLaboralHoraFinal");
+                SemanaLaboralHoraFinal.setFilterStyle("display: none; visibility: hidden;");
+                SemanaLaboralMinutoFinal = (Column) c.getViewRoot().findComponent("form:datosSemanasLaborales:SemanaLaboralMinutoFinal");
+                SemanaLaboralMinutoFinal.setFilterStyle("display: none; visibility: hidden;");
+                altoTabla2 = "115";
+                RequestContext.getCurrentInstance().update("form:datosSemanasLaborales");
+                banderaJS = 0;
+                filtradoListaJornadasSemanales = null;
+                tipoListaJS = 0;
+
+            }
+            listaJornadasSemanales.add(duplicarSemanaLaboral);
+            listaJornadasSemanalesCrear.add(duplicarSemanaLaboral);
+            context.update("form:datosSemanasLaborales");
+            duplicarSemanaLaboral = new JornadasSemanales();
+            infoRegistroSL = "Cantidad de registros: " + listaJornadasSemanales.size();
+            context.update("form:infoRegistroSL");
+
+            context.update("formularioDialogos:duplicarSemanaLaboral");
+            context.execute("duplicarRegistroSemanaLaboral.hide()");
+        }
     }
 
     public void autocompletarNuevoyDuplicado(String confirmarCambio, String valorConfirmar, int tipoNuevo) {
@@ -2042,6 +2614,22 @@ public class ControlJornadasLaborales implements Serializable {
 
     public void setMensajeValidacionhoras(String mensajeValidacionhoras) {
         this.mensajeValidacionhoras = mensajeValidacionhoras;
+    }
+
+    public String getMensajeValidacionhora() {
+        return mensajeValidacionhora;
+    }
+
+    public void setMensajeValidacionhora(String mensajeValidacionhora) {
+        this.mensajeValidacionhora = mensajeValidacionhora;
+    }
+
+    public String getMensajeValidacionminuto() {
+        return mensajeValidacionminuto;
+    }
+
+    public void setMensajeValidacionminuto(String mensajeValidacionminuto) {
+        this.mensajeValidacionminuto = mensajeValidacionminuto;
     }
 
     public JornadasLaborales getEditarJornadaLaboral() {

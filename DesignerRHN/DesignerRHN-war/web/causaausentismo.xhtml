@@ -318,6 +318,11 @@ and open the template in the editor.
                         <h:outputText value="#{msg['validacionCodigo']}" style="position: absolute; left: 100px; top: 10px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="validacionCodigo.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
                     </p:dialog>  
+                    <p:dialog id="validacionCodigo2" header="#{msg['atencion']}" widgetVar="validacionCodigo2"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['validacionCodigodos']}" style="position: absolute; left: 100px; top: 10px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionCodigo2.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
+                    </p:dialog>  
 
                     <!-- Nuevo Registro -->                    
 
