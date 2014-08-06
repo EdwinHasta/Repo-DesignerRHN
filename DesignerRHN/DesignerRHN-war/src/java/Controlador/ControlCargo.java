@@ -172,6 +172,9 @@ public class ControlCargo implements Serializable {
     //
     private String infoRegistroCargo, infoRegistroGrupoSalarial, infoRegistroGrupoViatico, infoRegistroProcesoProductivo, infoRegistroTipoEmpresa, infoRegistroEval, infoRegistroEnfoque, infoRegistroEmpresa;
 
+    /**
+     *
+     */
     public ControlCargo() {
         cargoTablaSeleccionado = new Cargos();
         sueldoMercadoTablaSeleccionado = new SueldosMercados();
@@ -312,10 +315,18 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public String valorPaginaAnterior() {
         return paginaAnterior;
     }
 
+    /**
+     *
+     * @param paginaLlamado
+     */
     public void inicializarPagina(String paginaLlamado) {
         paginaAnterior = paginaLlamado;
         listaEmpresas = administrarCargos.listaEmpresas();
@@ -357,6 +368,11 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public boolean validarCamposNulosCargos(int i) {
         boolean retorno = true;
         if (i == 0) {
@@ -417,6 +433,11 @@ public class ControlCargo implements Serializable {
         return retorno;
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public boolean validarCamposNulosSueldosMercados(int i) {
         boolean retorno = true;
         if (i == 1) {
@@ -432,6 +453,11 @@ public class ControlCargo implements Serializable {
         return retorno;
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public boolean validarCamposNulosTiposDetalles(int i) {
         boolean retorno = true;
         if (i == 0) {
@@ -503,6 +529,10 @@ public class ControlCargo implements Serializable {
         return retorno;
     }
 
+    /**
+     *
+     * @param i
+     */
     public void procesoModificacionCargo(int i) {
         index = i;
         boolean respuesta = validarCamposNulosCargos(0);
@@ -525,6 +555,10 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     * @param indice
+     */
     public void modificarCargo(int indice) {
         int tamDes = 0;
         if (tipoLista == 0) {
@@ -592,6 +626,12 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     * @param indice
+     * @param confirmarCambio
+     * @param valorConfirmar
+     */
     public void modificarCargo(int indice, String confirmarCambio, String valorConfirmar) {
         indexSueldoMercado = indice;
         int coincidencias = 0;
@@ -849,6 +889,10 @@ public class ControlCargo implements Serializable {
         context.update("form:datosSueldoMercado");
     }
 
+    /**
+     *
+     * @param indice
+     */
     public void modificarCompetenciaCargo(int indice) {
         if (tipoListaCompetencia == 0) {
             if (!listCompetenciasCargosCrear.contains(listaCompetenciasCargos.get(indice))) {
@@ -883,6 +927,12 @@ public class ControlCargo implements Serializable {
         context.update("form:datosCompetenciaCargo");
     }
 
+    /**
+     *
+     * @param indice
+     * @param confirmarCambio
+     * @param valorConfirmar
+     */
     public void modificarCompetenciaCargo(int indice, String confirmarCambio, String valorConfirmar) {
         indexCompetenciaCargo = indice;
         int coincidencias = 0;
@@ -947,6 +997,10 @@ public class ControlCargo implements Serializable {
         context.update("form:datosCompetenciaCargo");
     }
 
+    /**
+     *
+     * @param i
+     */
     public void procesoModificacionTipoDetalle(int i) {
         indexTipoDetalle = i;
         boolean respuesta = validarCamposNulosTiposDetalles(0);
@@ -969,6 +1023,10 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     * @param indice
+     */
     public void modificarTipoDetalle(int indice) {
         String descrip = "";
         if (tipoListaTipoDetalle == 0) {
@@ -1027,6 +1085,12 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     * @param indice
+     * @param confirmarCambio
+     * @param valorConfirmar
+     */
     public void modificarTipoDetalle(int indice, String confirmarCambio, String valorConfirmar) {
         indexTipoDetalle = indice;
         int coincidencias = 0;
@@ -1101,6 +1165,11 @@ public class ControlCargo implements Serializable {
         cambiarIndice(indice, columna);
     }
 
+    /**
+     *
+     * @param indice
+     * @param celda
+     */
     public void cambiarIndice(int indice, int celda) {
         if (guardadoSueldoMercado == true && guardadoCompetencia == true && guardadoTipoDetalle == true && guardadoDetalleCargo == true) {
             if (permitirIndexCargo == true) {
@@ -1200,6 +1269,11 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     * @param indice
+     * @param celda
+     */
     public void cambiarIndiceCompetenciaCargo(int indice, int celda) {
         if (guardadoDetalleCargo == true) {
             if (permitirCompetencia == true) {
@@ -1269,16 +1343,25 @@ public class ControlCargo implements Serializable {
     }
     //GUARDAR
 
+    /**
+     *
+     */
     public void guardarYSalir() {
         guardarGeneral();
         salir();
     }
 
+    /**
+     *
+     */
     public void cancelarYSalir() {
         cancelarModificacionGeneral();
         salir();
     }
 
+    /**
+     *
+     */
     public void guardarGeneral() {
         if (guardado == false || guardadoSueldoMercado == false || guardadoCompetencia == false || guardadoTipoDetalle == false || guardadoDetalleCargo == false) {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -1312,6 +1395,9 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     */
     public void guardarCambiosCargos() {
         try {
             if (!listCargosBorrar.isEmpty()) {
@@ -1383,6 +1469,9 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     */
     public void guardarCambiosCompetenciasCargos() {
         try {
             if (!listCompetenciasCargosBorrar.isEmpty()) {
@@ -1483,14 +1572,25 @@ public class ControlCargo implements Serializable {
 
     }
 
+    /**
+     *
+     * @param pagina
+     */
     public void recibirPaginaEntrante(String pagina) {
         paginaAnterior = pagina;
     }
 
+    /**
+     *
+     * @return
+     */
     public String redirigir() {
         return paginaAnterior;
     }
 
+    /**
+     *
+     */
     public void cancelarModificacionCargos() {
         if (bandera == 1) {
             altoTablaCargo = "90";
@@ -1533,6 +1633,9 @@ public class ControlCargo implements Serializable {
         context.update("form:datosCargo");
     }
 
+    /**
+     *
+     */
     public void cancelarModificacionSueldosMercados() {
         if (banderaSueldoMercado == 1) {
             altoTablaSueldoMercado = "68";
@@ -1560,6 +1663,9 @@ public class ControlCargo implements Serializable {
         context.update("form:datosSueldoMercado");
     }
 
+    /**
+     *
+     */
     public void cancelarModificacionCompetenciasCargos() {
         if (banderaCompetencia == 1) {
             altoTablaCompetencia = "68";
@@ -1583,6 +1689,9 @@ public class ControlCargo implements Serializable {
         context.update("form:datosCompetenciaCargo");
     }
 
+    /**
+     *
+     */
     public void cancelarModificacionTiposDetalles() {
         if (banderaTipoDetalle == 1) {
             altoTablaTipoDetalle = "68";
@@ -1610,6 +1719,9 @@ public class ControlCargo implements Serializable {
         context.update("form:datosTipoDetalle");
     }
 
+    /**
+     *
+     */
     public void editarCelda() {
         if (index >= 0) {
             if (tipoLista == 0) {
@@ -1732,6 +1844,9 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     */
     public void dialogoNuevoRegistro() {
         if (guardado == false || guardadoSueldoMercado == false || guardadoCompetencia == false || guardadoTipoDetalle == false) {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -1782,6 +1897,9 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     */
     public void dispararDialogoNuevoCargo() {
         RequestContext context = RequestContext.getCurrentInstance();
         codigoNuevoCargo();
@@ -1796,6 +1914,9 @@ public class ControlCargo implements Serializable {
         context.execute("NuevoRegistroTipoDetalle.show()");
     }
 
+    /**
+     *
+     */
     public void codigoNuevoCargo() {
         String code = "";
         int tam = listaCargos.size();
@@ -1821,7 +1942,11 @@ public class ControlCargo implements Serializable {
     }
 
 //CREAR 
-    public void agregarNuevoCargo() {
+
+    /**
+     *
+     */
+        public void agregarNuevoCargo() {
         boolean respueta = validarCamposNulosCargos(1);
         if (respueta == true) {
             int tamDes = 0;
@@ -1944,6 +2069,9 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     */
     public void agregarNuevoCompetenciaCargo() {
         if (nuevoCompetenciaCargo.getEvalcompetencia().getSecuencia() != null) {
             if (banderaCompetencia == 1) {
@@ -1987,6 +2115,9 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     */
     public void agregarNuevoTipoDetalle() {
         boolean respueta = validarCamposNulosTiposDetalles(1);
         if (respueta == true) {
@@ -2048,6 +2179,9 @@ public class ControlCargo implements Serializable {
         secRegistro = null;
     }
 
+    /**
+     *
+     */
     public void limpiarNuevaSueldoMercado() {
         nuevoSueldoMercado = new SueldosMercados();
         nuevoSueldoMercado.setTipoempresa(new TiposEmpresas());
@@ -2055,6 +2189,9 @@ public class ControlCargo implements Serializable {
         secRegistroSueldoMercado = null;
     }
 
+    /**
+     *
+     */
     public void limpiarNuevaCompetenciaCargo() {
         nuevoCompetenciaCargo = new Competenciascargos();
         nuevoCompetenciaCargo.setEvalcompetencia(new EvalCompetencias());
@@ -2062,6 +2199,9 @@ public class ControlCargo implements Serializable {
         secRegistroCompetencia = null;
     }
 
+    /**
+     *
+     */
     public void limpiarNuevaTipoDetalle() {
         nuevoTipoDetalle = new TiposDetalles();
         nuevoTipoDetalle.setEnfoque(new Enfoques());
@@ -2087,6 +2227,9 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     */
     public void duplicarCargoM() {
         duplicarCargo = new Cargos();
         k++;
@@ -2125,6 +2268,9 @@ public class ControlCargo implements Serializable {
 
     }
 
+    /**
+     *
+     */
     public void duplicarSueldoMercadoM() {
         duplicarSueldoMercado = new SueldosMercados();
         k++;
@@ -2169,6 +2315,9 @@ public class ControlCargo implements Serializable {
 
     }
 
+    /**
+     *
+     */
     public void duplicarTipoDetalleM() {
         duplicarTipoDetalle = new TiposDetalles();
 
@@ -2264,6 +2413,9 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     */
     public void confirmarDuplicarSueldoMercado() {
         boolean respueta = validarCamposNulosSueldosMercados(2);
         if (respueta == true) {
@@ -2346,6 +2498,9 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     */
     public void confirmarDuplicarTipoDetalle() {
         boolean respueta = validarCamposNulosTiposDetalles(2);
         if (respueta == true) {
@@ -2399,16 +2554,25 @@ public class ControlCargo implements Serializable {
         duplicarCargo.setProcesoproductivo(new ProcesosProductivos());
     }
 
+    /**
+     *
+     */
     public void limpiarDuplicarSueldoMercado() {
         duplicarSueldoMercado = new SueldosMercados();
         duplicarSueldoMercado.setTipoempresa(new TiposEmpresas());
     }
 
+    /**
+     *
+     */
     public void limpiarDuplicarCompetenciaCargo() {
         duplicarCompetenciaCargo = new Competenciascargos();
         duplicarCompetenciaCargo.setEvalcompetencia(new EvalCompetencias());
     }
 
+    /**
+     *
+     */
     public void limpiarDuplicarTipoDetalle() {
         duplicarTipoDetalle = new TiposDetalles();
         duplicarTipoDetalle.setEnfoque(new Enfoques());
@@ -2422,6 +2586,8 @@ public class ControlCargo implements Serializable {
 
     //BORRAR VC
     /**
+     * @return 
+     * @return  
      */
     public boolean validarExistenciaCargoDetalleCargo() {
         boolean retorno = true;
@@ -2441,6 +2607,9 @@ public class ControlCargo implements Serializable {
         return retorno;
     }
 
+    /**
+     *
+     */
     public void verificarRegistroBorrar() {
         if (index >= 0) {
             int tam = listaSueldosMercados.size();
@@ -2471,6 +2640,9 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     */
     public void borrarDetalleCargoM() {
         borrarDetalleCargo = true;
         guardadoDetalleCargo = false;
@@ -2532,6 +2704,9 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     */
     public void borrarSueldoMercado() {
         if (indexSueldoMercado >= 0) {
             if (tipoListaSueldoMercado == 0) {
@@ -2577,6 +2752,9 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     */
     public void borrarCompetenciaCargo() {
         if (indexCompetenciaCargo >= 0) {
             if (tipoListaCompetencia == 0) {
@@ -2906,6 +3084,9 @@ public class ControlCargo implements Serializable {
         context.update("form:ACEPTAR");
     }
 
+    /**
+     *
+     */
     public void listaValoresBoton() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (index >= 0) {
@@ -2948,6 +3129,13 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     * @param indice
+     * @param dlg
+     * @param LND
+     * @param tabla
+     */
     public void asignarIndex(Integer indice, int dlg, int LND, int tabla) {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tabla == 0) {
@@ -3016,6 +3204,11 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     * @param tipoNuevo
+     * @param Campo
+     */
     public void valoresBackupAutocompletarGeneral(int tipoNuevo, String Campo) {
         if (Campo.equals("GRUPOSALARIAL")) {
             if (tipoNuevo == 1) {
@@ -3204,6 +3397,12 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     * @param confirmarCambio
+     * @param valorConfirmar
+     * @param tipoNuevo
+     */
     public void autocompletarNuevoyDuplicadoSueldoMercado(String confirmarCambio, String valorConfirmar, int tipoNuevo) {
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
@@ -3243,6 +3442,12 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     * @param confirmarCambio
+     * @param valorConfirmar
+     * @param tipoNuevo
+     */
     public void autocompletarNuevoyDuplicadoCompetenciaCargo(String confirmarCambio, String valorConfirmar, int tipoNuevo) {
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
@@ -3282,6 +3487,12 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     * @param confirmarCambio
+     * @param valorConfirmar
+     * @param tipoNuevo
+     */
     public void autocompletarNuevoyDuplicadoTipoDetalle(String confirmarCambio, String valorConfirmar, int tipoNuevo) {
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
@@ -3321,6 +3532,9 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     */
     public void actualizarGrupoSalarial() {
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
@@ -3375,6 +3589,9 @@ public class ControlCargo implements Serializable {
         context.execute("GrupoSalarialDialogo.hide()");
     }
 
+    /**
+     *
+     */
     public void cancelarCambioGrupoSalarial() {
         filtrarLovGruposSalariales = null;
         grupoSalarialSeleccionado = null;
@@ -3385,6 +3602,9 @@ public class ControlCargo implements Serializable {
         permitirIndexCargo = true;
     }
 
+    /**
+     *
+     */
     public void actualizarGrupoViatico() {
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
@@ -3437,6 +3657,9 @@ public class ControlCargo implements Serializable {
         context.execute("GrupoViaticoDialogo.hide()");
     }
 
+    /**
+     *
+     */
     public void cancelarCambioGrupoViatico() {
         filtrarLovGruposViaticos = null;
         grupoViaticoSeleccionado = null;
@@ -3447,6 +3670,9 @@ public class ControlCargo implements Serializable {
         permitirIndexCargo = true;
     }
 
+    /**
+     *
+     */
     public void actualizarProcesoProductivo() {
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
@@ -3499,6 +3725,9 @@ public class ControlCargo implements Serializable {
         context.execute("ProcesoProductivoDialogo.hide()");
     }
 
+    /**
+     *
+     */
     public void cancelarCambioProcesoProductivo() {
         filtrarLovProcesosProductivos = null;
         procesoProductivoSeleccionado = null;
@@ -3509,6 +3738,9 @@ public class ControlCargo implements Serializable {
         permitirIndexCargo = true;
     }
 
+    /**
+     *
+     */
     public void actualizarTipoEmpresa() {
         if (tipoActualizacion == 0) {
             if (tipoListaSueldoMercado == 0) {
@@ -3623,6 +3855,9 @@ public class ControlCargo implements Serializable {
         context.execute("EvalCompetenciaDialogo.hide()");
     }
 
+    /**
+     *
+     */
     public void cancelarCambioEvalCompetencia() {
         filtrarLovProcesosProductivos = null;
         procesoProductivoSeleccionado = null;
@@ -3685,6 +3920,9 @@ public class ControlCargo implements Serializable {
         context.execute("EnfoqueDialogo.hide()");
     }
 
+    /**
+     *
+     */
     public void cancelarCambioEnfoque() {
         lovTiposEmpresas = null;
         tipoEmpresaSeleccionado = null;
@@ -3703,6 +3941,10 @@ public class ControlCargo implements Serializable {
     }
     //EXPORTAR
 
+    /**
+     *
+     * @return
+     */
     public String exportXML() {
         if (index >= 0) {
             nombreTabla = ":formExportarC:datosCargoExportar";
@@ -3763,6 +4005,10 @@ public class ControlCargo implements Serializable {
         secRegistroSueldoMercado = null;
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     public void exportPDF_CC() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportarCC:datosCompetenciaCargoExportar");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -3773,6 +4019,10 @@ public class ControlCargo implements Serializable {
         secRegistroCompetencia = null;
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     public void exportPDF_TD() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportarTD:datosTipoDetalleExportar");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -3803,6 +4053,10 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     public void exportXLS_C() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportarC:datosCargoExportar");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -3813,6 +4067,10 @@ public class ControlCargo implements Serializable {
         secRegistro = null;
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     public void exportXLS_SM() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportarSM:datosSueldoMercadoExportar");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -3833,6 +4091,10 @@ public class ControlCargo implements Serializable {
         secRegistroCompetencia = null;
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     public void exportXLS_TD() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportarTD:datosTipoDetalleExportar");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -3899,6 +4161,9 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     */
     public void verificarRastroCargo() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (listaCargos != null) {
@@ -3937,6 +4202,9 @@ public class ControlCargo implements Serializable {
         index = -1;
     }
 
+    /**
+     *
+     */
     public void verificarRastroSueldoMercado() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (listaSueldosMercados != null) {
@@ -3975,6 +4243,9 @@ public class ControlCargo implements Serializable {
         indexSueldoMercado = -1;
     }
 
+    /**
+     *
+     */
     public void verificarRastroCompetencia() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (listaCompetenciasCargos != null) {
@@ -4013,6 +4284,9 @@ public class ControlCargo implements Serializable {
         indexCompetenciaCargo = -1;
     }
 
+    /**
+     *
+     */
     public void verificarRastroTipoDetalle() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (listaTiposDetalles != null) {
@@ -4051,6 +4325,9 @@ public class ControlCargo implements Serializable {
         indexTipoDetalle = -1;
     }
 
+    /**
+     *
+     */
     public void lovEmpresas() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (cambiosPagina == true) {
@@ -4070,6 +4347,9 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     */
     public void actualizarEmpresa() {
         indexAux = -1;
         indexAuxTipoDetalle = -1;
@@ -4126,6 +4406,9 @@ public class ControlCargo implements Serializable {
         context.update("form:datosTipoDetalle");
     }
 
+    /**
+     *
+     */
     public void cancelarCambioEmpresa() {
         index = -1;
         secRegistro = null;
@@ -4158,6 +4441,9 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     */
     public void crearDetalleCargo() {
         try {
             k++;
@@ -4191,6 +4477,9 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     */
     public void dispararDialogoBuscarCargo() {
         if (guardado == true && guardadoCompetencia == true && guardadoDetalleCargo == true && guardadoSueldoMercado == true && guardadoTipoDetalle == true) {
             lovCargos = null;
@@ -4214,6 +4503,9 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     */
     public void actualizarCargo() {
         listaCargos.clear();
         listaCargos.add(cargoSeleccionado);
@@ -4315,6 +4607,9 @@ public class ControlCargo implements Serializable {
         context.update("form:datosCompetenciaCargo");
     }
 
+    /**
+     *
+     */
     public void cancelarSeleccionCargo() {
         cargoSeleccionado = new Cargos();
         filtrarLovCargos = null;
@@ -4325,6 +4620,9 @@ public class ControlCargo implements Serializable {
         context.execute("BuscarCargoDialogo.show()");
     }
 
+    /**
+     *
+     */
     public void mostrarTodos() {
         if (guardado == true && guardadoCompetencia == true && guardadoDetalleCargo == true && guardadoSueldoMercado == true && guardadoTipoDetalle == true) {
             listaCargos = null;
@@ -4415,6 +4713,9 @@ public class ControlCargo implements Serializable {
 
     }
 
+    /**
+     *
+     */
     public void modificacionesDetalleCargo() {
         if (guardadoDetalleCargo == true) {
             guardadoDetalleCargo = false;
@@ -4456,14 +4757,26 @@ public class ControlCargo implements Serializable {
         }
     }
 
+    /**
+     *
+     * @param setListaTiposSueldos
+     */
     public void setListaCargos(List<Cargos> setListaTiposSueldos) {
         this.listaCargos = setListaTiposSueldos;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Cargos> getFiltrarListaCargos() {
         return filtrarListaCargos;
     }
 
+    /**
+     *
+     * @param setFiltrarListaTiposSueldos
+     */
     public void setFiltrarListaCargos(List<Cargos> setFiltrarListaTiposSueldos) {
         this.filtrarListaCargos = setFiltrarListaTiposSueldos;
     }
@@ -4472,10 +4785,18 @@ public class ControlCargo implements Serializable {
         return nuevoCargo;
     }
 
+    /**
+     *
+     * @param setNuevoTipoSueldo
+     */
     public void setNuevoCargo(Cargos setNuevoTipoSueldo) {
         this.nuevoCargo = setNuevoTipoSueldo;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isAceptar() {
         return aceptar;
     }
@@ -4488,22 +4809,42 @@ public class ControlCargo implements Serializable {
         this.editarCargo = setEditarTipoSueldo;
     }
 
+    /**
+     *
+     * @return
+     */
     public Cargos getDuplicarCargo() {
         return duplicarCargo;
     }
 
+    /**
+     *
+     * @param setDuplicarTipoSueldo
+     */
     public void setDuplicarCargo(Cargos setDuplicarTipoSueldo) {
         this.duplicarCargo = setDuplicarTipoSueldo;
     }
 
+    /**
+     *
+     * @return
+     */
     public BigInteger getSecRegistro() {
         return secRegistro;
     }
 
+    /**
+     *
+     * @param secRegistro
+     */
     public void setSecRegistro(BigInteger secRegistro) {
         this.secRegistro = secRegistro;
     }
 
+    /**
+     *
+     * @return
+     */
     public BigInteger getBackUpSecRegistro() {
         return backUpSecRegistro;
     }
@@ -4512,6 +4853,10 @@ public class ControlCargo implements Serializable {
         this.backUpSecRegistro = BackUpSecRegistro;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<SueldosMercados> getListaSueldosMercados() {
         if (listaSueldosMercados == null) {
             listaSueldosMercados = new ArrayList<SueldosMercados>();
@@ -4538,14 +4883,26 @@ public class ControlCargo implements Serializable {
         return listaSueldosMercados;
     }
 
+    /**
+     *
+     * @param setListaTSFormulasConceptos
+     */
     public void setListaSueldosMercados(List<SueldosMercados> setListaTSFormulasConceptos) {
         this.listaSueldosMercados = setListaTSFormulasConceptos;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<SueldosMercados> getFiltrarListaSueldosMercados() {
         return filtrarListaSueldosMercados;
     }
 
+    /**
+     *
+     * @param setFiltrarListaTSFormulasConceptos
+     */
     public void setFiltrarListaSueldosMercados(List<SueldosMercados> setFiltrarListaTSFormulasConceptos) {
         this.filtrarListaSueldosMercados = setFiltrarListaTSFormulasConceptos;
     }
@@ -4554,38 +4911,74 @@ public class ControlCargo implements Serializable {
         return listCargosModificar;
     }
 
+    /**
+     *
+     * @param setListTiposSueldosModificar
+     */
     public void setListCargosModificar(List<Cargos> setListTiposSueldosModificar) {
         this.listCargosModificar = setListTiposSueldosModificar;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Cargos> getListCargosCrear() {
         return listCargosCrear;
     }
 
+    /**
+     *
+     * @param setListTiposSueldosCrear
+     */
     public void setListCargosCrear(List<Cargos> setListTiposSueldosCrear) {
         this.listCargosCrear = setListTiposSueldosCrear;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Cargos> getListCargosBorrar() {
         return listCargosBorrar;
     }
 
+    /**
+     *
+     * @param setListTiposSueldosBorrar
+     */
     public void setListCargosBorrar(List<Cargos> setListTiposSueldosBorrar) {
         this.listCargosBorrar = setListTiposSueldosBorrar;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<SueldosMercados> getListSueldosMercadosModificar() {
         return listSueldosMercadosModificar;
     }
 
+    /**
+     *
+     * @param setListTSFormulasConceptosModificar
+     */
     public void setListSueldosMercadosModificar(List<SueldosMercados> setListTSFormulasConceptosModificar) {
         this.listSueldosMercadosModificar = setListTSFormulasConceptosModificar;
     }
 
+    /**
+     *
+     * @return
+     */
     public SueldosMercados getNuevoSueldoMercado() {
         return nuevoSueldoMercado;
     }
 
+    /**
+     *
+     * @param setNuevoTSFormulaConcepto
+     */
     public void setNuevoSueldoMercado(SueldosMercados setNuevoTSFormulaConcepto) {
         this.nuevoSueldoMercado = setNuevoTSFormulaConcepto;
     }
@@ -4594,14 +4987,26 @@ public class ControlCargo implements Serializable {
         return listSueldosMercadosCrear;
     }
 
+    /**
+     *
+     * @param setListTSFormulasConceptosCrear
+     */
     public void setListSueldosMercadosCrear(List<SueldosMercados> setListTSFormulasConceptosCrear) {
         this.listSueldosMercadosCrear = setListTSFormulasConceptosCrear;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<SueldosMercados> getListSueldosMercadosBorrar() {
         return listSueldosMercadosBorrar;
     }
 
+    /**
+     *
+     * @param setListTSFormulasConceptosBorrar
+     */
     public void setListSueldosMercadosBorrar(List<SueldosMercados> setListTSFormulasConceptosBorrar) {
         this.listSueldosMercadosBorrar = setListTSFormulasConceptosBorrar;
     }
@@ -4610,14 +5015,26 @@ public class ControlCargo implements Serializable {
         return editarSueldoMercado;
     }
 
+    /**
+     *
+     * @param setEditarTSFormulaConcepto
+     */
     public void setEditarSueldoMercado(SueldosMercados setEditarTSFormulaConcepto) {
         this.editarSueldoMercado = setEditarTSFormulaConcepto;
     }
 
+    /**
+     *
+     * @return
+     */
     public SueldosMercados getDuplicarSueldoMercado() {
         return duplicarSueldoMercado;
     }
 
+    /**
+     *
+     * @param setDuplicarTSFormulaConcepto
+     */
     public void setDuplicarSueldoMercado(SueldosMercados setDuplicarTSFormulaConcepto) {
         this.duplicarSueldoMercado = setDuplicarTSFormulaConcepto;
     }
@@ -4626,6 +5043,10 @@ public class ControlCargo implements Serializable {
         return secRegistroSueldoMercado;
     }
 
+    /**
+     *
+     * @param setSecRegistroTSFormulas
+     */
     public void setSecRegistroSueldoMercado(BigInteger setSecRegistroTSFormulas) {
         this.secRegistroSueldoMercado = setSecRegistroTSFormulas;
     }
@@ -4638,6 +5059,10 @@ public class ControlCargo implements Serializable {
         this.backUpSecRegistroSueldoMercado = setBackUpSecRegistroTSFormulas;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getMsnConfirmarRastro() {
         return msnConfirmarRastro;
     }
@@ -4646,6 +5071,10 @@ public class ControlCargo implements Serializable {
         this.msnConfirmarRastro = msnConfirmarRastro;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getMsnConfirmarRastroHistorico() {
         return msnConfirmarRastroHistorico;
     }
@@ -4658,22 +5087,42 @@ public class ControlCargo implements Serializable {
         return backUp;
     }
 
+    /**
+     *
+     * @param backUp
+     */
     public void setBackUp(BigInteger backUp) {
         this.backUp = backUp;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getNombreTablaRastro() {
         return nombreTablaRastro;
     }
 
+    /**
+     *
+     * @param nombreTablaRastro
+     */
     public void setNombreTablaRastro(String nombreTablaRastro) {
         this.nombreTablaRastro = nombreTablaRastro;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getNombreXML() {
         return nombreXML;
     }
 
+    /**
+     *
+     * @param nombreXML
+     */
     public void setNombreXML(String nombreXML) {
         this.nombreXML = nombreXML;
     }
@@ -4682,10 +5131,18 @@ public class ControlCargo implements Serializable {
         return nombreTabla;
     }
 
+    /**
+     *
+     * @param setNombreTabla
+     */
     public void setNombreTabla(String setNombreTabla) {
         this.nombreTabla = setNombreTabla;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<GruposSalariales> getLovGruposSalariales() {
         lovGruposSalariales = administrarCargos.lovGruposSalariales();
         return lovGruposSalariales;
@@ -4695,14 +5152,26 @@ public class ControlCargo implements Serializable {
         this.lovGruposSalariales = setLovFormulas;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<GruposSalariales> getFiltrarLovGruposSalariales() {
         return filtrarLovGruposSalariales;
     }
 
+    /**
+     *
+     * @param setFiltrarLovFormulas
+     */
     public void setFiltrarLovGruposSalariales(List<GruposSalariales> setFiltrarLovFormulas) {
         this.filtrarLovGruposSalariales = setFiltrarLovFormulas;
     }
 
+    /**
+     *
+     * @return
+     */
     public GruposSalariales getGrupoSalarialSeleccionado() {
         return grupoSalarialSeleccionado;
     }
@@ -4711,6 +5180,10 @@ public class ControlCargo implements Serializable {
         this.grupoSalarialSeleccionado = setFormulaSeleccionado;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isCambiosPagina() {
         return cambiosPagina;
     }
@@ -4719,48 +5192,92 @@ public class ControlCargo implements Serializable {
         this.cambiosPagina = cambiosPagina;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getAltoTablaCargo() {
         return altoTablaCargo;
     }
 
+    /**
+     *
+     * @param setAltoTablaTiposSueldos
+     */
     public void setAltoTablaCargo(String setAltoTablaTiposSueldos) {
         this.altoTablaCargo = setAltoTablaTiposSueldos;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getAltoTablaSueldoMercado() {
         return altoTablaSueldoMercado;
     }
 
+    /**
+     *
+     * @param setAltoTablaTSFormulas
+     */
     public void setAltoTablaSueldoMercado(String setAltoTablaTSFormulas) {
         this.altoTablaSueldoMercado = setAltoTablaTSFormulas;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<GruposViaticos> getLovGruposViaticos() {
         lovGruposViaticos = administrarCargos.lovGruposViaticos();
 
         return lovGruposViaticos;
     }
 
+    /**
+     *
+     * @param lovConceptos
+     */
     public void setLovGruposViaticos(List<GruposViaticos> lovConceptos) {
         this.lovGruposViaticos = lovConceptos;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<GruposViaticos> getFiltrarLovGruposViaticos() {
         return filtrarLovGruposViaticos;
     }
 
+    /**
+     *
+     * @param filtrarLovConceptos
+     */
     public void setFiltrarLovGruposViaticos(List<GruposViaticos> filtrarLovConceptos) {
         this.filtrarLovGruposViaticos = filtrarLovConceptos;
     }
 
+    /**
+     *
+     * @return
+     */
     public GruposViaticos getGrupoViaticoSeleccionado() {
         return grupoViaticoSeleccionado;
     }
 
+    /**
+     *
+     * @param conceptoSeleccionado
+     */
     public void setGrupoViaticoSeleccionado(GruposViaticos conceptoSeleccionado) {
         this.grupoViaticoSeleccionado = conceptoSeleccionado;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Competenciascargos> getListaCompetenciasCargos() {
         if (listaCompetenciasCargos == null) {
             listaCompetenciasCargos = new ArrayList<Competenciascargos>();
@@ -4787,6 +5304,10 @@ public class ControlCargo implements Serializable {
         return listaCompetenciasCargos;
     }
 
+    /**
+     *
+     * @param listaTSGruposTiposEntidades
+     */
     public void setListaCompetenciasCargos(List<Competenciascargos> listaTSGruposTiposEntidades) {
         this.listaCompetenciasCargos = listaTSGruposTiposEntidades;
     }
@@ -4795,6 +5316,10 @@ public class ControlCargo implements Serializable {
         return filtrarListaCompetenciasCargos;
     }
 
+    /**
+     *
+     * @param filtrarListaTSGruposTiposEntidades
+     */
     public void setFiltrarListaCompetenciasCargos(List<Competenciascargos> filtrarListaTSGruposTiposEntidades) {
         this.filtrarListaCompetenciasCargos = filtrarListaTSGruposTiposEntidades;
     }
@@ -4803,14 +5328,26 @@ public class ControlCargo implements Serializable {
         return listCompetenciasCargosModificar;
     }
 
+    /**
+     *
+     * @param listTSGruposTiposEntidadesModificar
+     */
     public void setListCompetenciasCargosModificar(List<Competenciascargos> listTSGruposTiposEntidadesModificar) {
         this.listCompetenciasCargosModificar = listTSGruposTiposEntidadesModificar;
     }
 
+    /**
+     *
+     * @return
+     */
     public Competenciascargos getNuevoCompetenciaCargo() {
         return nuevoCompetenciaCargo;
     }
 
+    /**
+     *
+     * @param nuevoTSGrupoTipoEntidad
+     */
     public void setNuevoCompetenciaCargo(Competenciascargos nuevoTSGrupoTipoEntidad) {
         this.nuevoCompetenciaCargo = nuevoTSGrupoTipoEntidad;
     }
@@ -4819,10 +5356,18 @@ public class ControlCargo implements Serializable {
         return listCompetenciasCargosCrear;
     }
 
+    /**
+     *
+     * @param listTSGruposTiposEntidadessCrear
+     */
     public void setListCompetenciasCargosCrear(List<Competenciascargos> listTSGruposTiposEntidadessCrear) {
         this.listCompetenciasCargosCrear = listTSGruposTiposEntidadessCrear;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Competenciascargos> getListCompetenciasCargosBorrar() {
         return listCompetenciasCargosBorrar;
     }
@@ -4831,14 +5376,26 @@ public class ControlCargo implements Serializable {
         this.listCompetenciasCargosBorrar = listTSGruposTiposEntidadesBorrar;
     }
 
+    /**
+     *
+     * @return
+     */
     public Competenciascargos getEditarCompetenciaCargo() {
         return editarCompetenciaCargo;
     }
 
+    /**
+     *
+     * @param editarTSGrupoTipoEntidad
+     */
     public void setEditarCompetenciaCargo(Competenciascargos editarTSGrupoTipoEntidad) {
         this.editarCompetenciaCargo = editarTSGrupoTipoEntidad;
     }
 
+    /**
+     *
+     * @return
+     */
     public Competenciascargos getDuplicarCompetenciaCargo() {
         return duplicarCompetenciaCargo;
     }
@@ -4847,18 +5404,34 @@ public class ControlCargo implements Serializable {
         this.duplicarCompetenciaCargo = duplicarTSGrupoTipoEntidad;
     }
 
+    /**
+     *
+     * @return
+     */
     public BigInteger getSecRegistroCompetencia() {
         return secRegistroCompetencia;
     }
 
+    /**
+     *
+     * @param secRegistroTSGrupos
+     */
     public void setSecRegistroCompetencia(BigInteger secRegistroTSGrupos) {
         this.secRegistroCompetencia = secRegistroTSGrupos;
     }
 
+    /**
+     *
+     * @return
+     */
     public BigInteger getBackUpSecRegistroCompetencia() {
         return backUpSecRegistroCompetencia;
     }
 
+    /**
+     *
+     * @param backUpSecRegistroTSGrupos
+     */
     public void setBackUpSecRegistroCompetencia(BigInteger backUpSecRegistroTSGrupos) {
         this.backUpSecRegistroCompetencia = backUpSecRegistroTSGrupos;
     }
@@ -4873,18 +5446,34 @@ public class ControlCargo implements Serializable {
         this.lovProcesosProductivos = lovGruposTiposEntidades;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<ProcesosProductivos> getFiltrarLovProcesosProductivos() {
         return filtrarLovProcesosProductivos;
     }
 
+    /**
+     *
+     * @param filtrarLovGruposTiposEntidades
+     */
     public void setFiltrarLovProcesosProductivos(List<ProcesosProductivos> filtrarLovGruposTiposEntidades) {
         this.filtrarLovProcesosProductivos = filtrarLovGruposTiposEntidades;
     }
 
+    /**
+     *
+     * @return
+     */
     public ProcesosProductivos getProcesoProductivoSeleccionado() {
         return procesoProductivoSeleccionado;
     }
 
+    /**
+     *
+     * @param setProcesoProductivoSeleccionado
+     */
     public void setProcesoProductivoSeleccionado(ProcesosProductivos setProcesoProductivoSeleccionado) {
         this.procesoProductivoSeleccionado = setProcesoProductivoSeleccionado;
     }
@@ -4897,6 +5486,10 @@ public class ControlCargo implements Serializable {
         this.altoTablaCompetencia = altoTablaTSGrupos;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<TiposDetalles> getListaTiposDetalles() {
         if (listaTiposDetalles == null) {
             listaTiposDetalles = new ArrayList<TiposDetalles>();
@@ -4912,34 +5505,66 @@ public class ControlCargo implements Serializable {
         return listaTiposDetalles;
     }
 
+    /**
+     *
+     * @param listaTEFormulasConceptos
+     */
     public void setListaTiposDetalles(List<TiposDetalles> listaTEFormulasConceptos) {
         this.listaTiposDetalles = listaTEFormulasConceptos;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<TiposDetalles> getFiltrarListaTiposDetalles() {
         return filtrarListaTiposDetalles;
     }
 
+    /**
+     *
+     * @param filtrarListaTEFormulasConceptos
+     */
     public void setFiltrarListaTiposDetalles(List<TiposDetalles> filtrarListaTEFormulasConceptos) {
         this.filtrarListaTiposDetalles = filtrarListaTEFormulasConceptos;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<TiposDetalles> getListTiposDetallesModificar() {
         return listTiposDetallesModificar;
     }
 
+    /**
+     *
+     * @param listTEFormulasConceptosModificar
+     */
     public void setListTiposDetallesModificar(List<TiposDetalles> listTEFormulasConceptosModificar) {
         this.listTiposDetallesModificar = listTEFormulasConceptosModificar;
     }
 
+    /**
+     *
+     * @return
+     */
     public TiposDetalles getNuevoTipoDetalle() {
         return nuevoTipoDetalle;
     }
 
+    /**
+     *
+     * @param nuevoTEFormulaConcepto
+     */
     public void setNuevoTipoDetalle(TiposDetalles nuevoTEFormulaConcepto) {
         this.nuevoTipoDetalle = nuevoTEFormulaConcepto;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<TiposDetalles> getListTiposDetallesCrear() {
         return listTiposDetallesCrear;
     }
@@ -4948,10 +5573,18 @@ public class ControlCargo implements Serializable {
         this.listTiposDetallesCrear = listTEFormulasConceptosCrear;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<TiposDetalles> getListTiposDetallesBorrar() {
         return listTiposDetallesBorrar;
     }
 
+    /**
+     *
+     * @param listTEFormulasConceptosBorrar
+     */
     public void setListTiposDetallesBorrar(List<TiposDetalles> listTEFormulasConceptosBorrar) {
         this.listTiposDetallesBorrar = listTEFormulasConceptosBorrar;
     }
@@ -4960,18 +5593,34 @@ public class ControlCargo implements Serializable {
         return editarTipoDetalle;
     }
 
+    /**
+     *
+     * @param editarTEFormulaConcepto
+     */
     public void setEditarTipoDetalle(TiposDetalles editarTEFormulaConcepto) {
         this.editarTipoDetalle = editarTEFormulaConcepto;
     }
 
+    /**
+     *
+     * @return
+     */
     public TiposDetalles getDuplicarTipoDetalle() {
         return duplicarTipoDetalle;
     }
 
+    /**
+     *
+     * @param duplicarTEFormulaConcepto
+     */
     public void setDuplicarTipoDetalle(TiposDetalles duplicarTEFormulaConcepto) {
         this.duplicarTipoDetalle = duplicarTEFormulaConcepto;
     }
 
+    /**
+     *
+     * @return
+     */
     public BigInteger getSecRegistroTipoDetalle() {
         return secRegistroTipoDetalle;
     }
@@ -4980,10 +5629,18 @@ public class ControlCargo implements Serializable {
         this.secRegistroTipoDetalle = secRegistroTEFormulas;
     }
 
+    /**
+     *
+     * @return
+     */
     public BigInteger getBackUpSecRegistroTipoDetalle() {
         return backUpSecRegistroTipoDetalle;
     }
 
+    /**
+     *
+     * @param backUpSecRegistroTEFormulas
+     */
     public void setBackUpSecRegistroTipoDetalle(BigInteger backUpSecRegistroTEFormulas) {
         this.backUpSecRegistroTipoDetalle = backUpSecRegistroTEFormulas;
     }
@@ -4994,14 +5651,26 @@ public class ControlCargo implements Serializable {
         return lovTiposEmpresas;
     }
 
+    /**
+     *
+     * @param lovTiposEntidades
+     */
     public void setLoviposEmpresas(List<TiposEmpresas> lovTiposEntidades) {
         this.lovTiposEmpresas = lovTiposEntidades;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<TiposEmpresas> getFiltrarLovTiposEmpresas() {
         return filtrarLovTiposEmpresas;
     }
 
+    /**
+     *
+     * @param filtrarLovTiposEntidades
+     */
     public void setFiltrarLovTiposEmpresas(List<TiposEmpresas> filtrarLovTiposEntidades) {
         this.filtrarLovTiposEmpresas = filtrarLovTiposEntidades;
     }
@@ -5010,18 +5679,34 @@ public class ControlCargo implements Serializable {
         return tipoEmpresaSeleccionado;
     }
 
+    /**
+     *
+     * @param tipoEntidadSeleccionado
+     */
     public void setTipoEmpresaSeleccionado(TiposEmpresas tipoEntidadSeleccionado) {
         this.tipoEmpresaSeleccionado = tipoEntidadSeleccionado;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getAltoTablaTipoDetalle() {
         return altoTablaTipoDetalle;
     }
 
+    /**
+     *
+     * @param altoTablaTEFormulas
+     */
     public void setAltoTablaTipoDetalle(String altoTablaTEFormulas) {
         this.altoTablaTipoDetalle = altoTablaTEFormulas;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getPaginaAnterior() {
         return paginaAnterior;
     }
@@ -5034,6 +5719,10 @@ public class ControlCargo implements Serializable {
         return activoSueldoMercado;
     }
 
+    /**
+     *
+     * @param activoFormulaConcepto
+     */
     public void setActivoSueldoMercado(boolean activoFormulaConcepto) {
         this.activoSueldoMercado = activoFormulaConcepto;
     }
@@ -5046,32 +5735,60 @@ public class ControlCargo implements Serializable {
         this.activoCompetencia = activoGrupoDistribucion;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isActivoTipoDetalle() {
         return activoTipoDetalle;
     }
 
+    /**
+     *
+     * @param activoTipoEntidad
+     */
     public void setActivoTipoDetalle(boolean activoTipoEntidad) {
         this.activoTipoDetalle = activoTipoEntidad;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<EvalCompetencias> getLovEvalCompetencias() {
         lovEvalCompetencias = administrarCargos.lovEvalCompetencias();
 
         return lovEvalCompetencias;
     }
 
+    /**
+     *
+     * @param lovEvalCompetencias
+     */
     public void setLovEvalCompetencias(List<EvalCompetencias> lovEvalCompetencias) {
         this.lovEvalCompetencias = lovEvalCompetencias;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<EvalCompetencias> getFiltrarLovEvalCompetencias() {
         return filtrarLovEvalCompetencias;
     }
 
+    /**
+     *
+     * @param filtrarLovEvalCompetencias
+     */
     public void setFiltrarLovEvalCompetencias(List<EvalCompetencias> filtrarLovEvalCompetencias) {
         this.filtrarLovEvalCompetencias = filtrarLovEvalCompetencias;
     }
 
+    /**
+     *
+     * @return
+     */
     public EvalCompetencias getEvalCompetenciaSeleccionado() {
         return evalCompetenciaSeleccionado;
     }
@@ -5080,6 +5797,10 @@ public class ControlCargo implements Serializable {
         this.evalCompetenciaSeleccionado = evalCompetenciaSeleccionado;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Enfoques> getLovEnfoques() {
         lovEnfoques = administrarCargos.lovEnfoques();
 
@@ -5090,10 +5811,18 @@ public class ControlCargo implements Serializable {
         this.lovEnfoques = lovEnfoques;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Enfoques> getFiltrarLovEnfoques() {
         return filtrarLovEnfoques;
     }
 
+    /**
+     *
+     * @param filtrarLovEnfoques
+     */
     public void setFiltrarLovEnfoques(List<Enfoques> filtrarLovEnfoques) {
         this.filtrarLovEnfoques = filtrarLovEnfoques;
     }
@@ -5102,6 +5831,10 @@ public class ControlCargo implements Serializable {
         return enfoqueSeleccionado;
     }
 
+    /**
+     *
+     * @param enfoqueSeleccionado
+     */
     public void setEnfoqueSeleccionado(Enfoques enfoqueSeleccionado) {
         this.enfoqueSeleccionado = enfoqueSeleccionado;
     }
@@ -5110,10 +5843,18 @@ public class ControlCargo implements Serializable {
         return empresaActual;
     }
 
+    /**
+     *
+     * @param empresaActual
+     */
     public void setEmpresaActual(Empresas empresaActual) {
         this.empresaActual = empresaActual;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Empresas> getListaEmpresas() {
 
         listaEmpresas = administrarCargos.listaEmpresas();
@@ -5125,30 +5866,58 @@ public class ControlCargo implements Serializable {
         this.listaEmpresas = listaEmpresas;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Empresas> getFiltrarListaEmpresas() {
         return filtrarListaEmpresas;
     }
 
+    /**
+     *
+     * @param filtrarListaEmpresas
+     */
     public void setFiltrarListaEmpresas(List<Empresas> filtrarListaEmpresas) {
         this.filtrarListaEmpresas = filtrarListaEmpresas;
     }
 
+    /**
+     *
+     * @return
+     */
     public Empresas getEmpresaSeleccionada() {
         return empresaSeleccionada;
     }
 
+    /**
+     *
+     * @param empresaSeleccionada
+     */
     public void setEmpresaSeleccionada(Empresas empresaSeleccionada) {
         this.empresaSeleccionada = empresaSeleccionada;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getLegendDetalleCargo() {
         return legendDetalleCargo;
     }
 
+    /**
+     *
+     * @param legendDetalleCargo
+     */
     public void setLegendDetalleCargo(String legendDetalleCargo) {
         this.legendDetalleCargo = legendDetalleCargo;
     }
 
+    /**
+     *
+     * @return
+     */
     public DetallesCargos getDetalleCargo() {
         if (detalleCargo == null) {
             detalleCargo = new DetallesCargos();
@@ -5177,42 +5946,82 @@ public class ControlCargo implements Serializable {
         return detalleCargo;
     }
 
+    /**
+     *
+     * @param detalleCargo
+     */
     public void setDetalleCargo(DetallesCargos detalleCargo) {
         this.detalleCargo = detalleCargo;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isActivoDetalleCargo() {
         return activoDetalleCargo;
     }
 
+    /**
+     *
+     * @param activoDetalleCargo
+     */
     public void setActivoDetalleCargo(boolean activoDetalleCargo) {
         this.activoDetalleCargo = activoDetalleCargo;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Cargos> getLovCargos() {
         return lovCargos;
     }
 
+    /**
+     *
+     * @param lovCargos
+     */
     public void setLovCargos(List<Cargos> lovCargos) {
         this.lovCargos = lovCargos;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Cargos> getFiltrarLovCargos() {
         return filtrarLovCargos;
     }
 
+    /**
+     *
+     * @param filtrarLovCargos
+     */
     public void setFiltrarLovCargos(List<Cargos> filtrarLovCargos) {
         this.filtrarLovCargos = filtrarLovCargos;
     }
 
+    /**
+     *
+     * @return
+     */
     public Cargos getCargoSeleccionado() {
         return cargoSeleccionado;
     }
 
+    /**
+     *
+     * @param cargoSeleccionado
+     */
     public void setCargoSeleccionado(Cargos cargoSeleccionado) {
         this.cargoSeleccionado = cargoSeleccionado;
     }
 
+    /**
+     *
+     * @return
+     */
     public Cargos getCargoTablaSeleccionado() {
         getListaCargos();
         if (listaCargos != null) {
@@ -5239,10 +6048,18 @@ public class ControlCargo implements Serializable {
         return sueldoMercadoTablaSeleccionado;
     }
 
+    /**
+     *
+     * @param sueldoMercadoTablaSeleccionado
+     */
     public void setSueldoMercadoTablaSeleccionado(SueldosMercados sueldoMercadoTablaSeleccionado) {
         this.sueldoMercadoTablaSeleccionado = sueldoMercadoTablaSeleccionado;
     }
 
+    /**
+     *
+     * @return
+     */
     public Competenciascargos getCompetenciaCargoTablaSeleccionado() {
         getListaCompetenciasCargos();
         if (listaCompetenciasCargos != null) {
@@ -5254,6 +6071,10 @@ public class ControlCargo implements Serializable {
         return competenciaCargoTablaSeleccionado;
     }
 
+    /**
+     *
+     * @param competenciaCargoTablaSeleccionado
+     */
     public void setCompetenciaCargoTablaSeleccionado(Competenciascargos competenciaCargoTablaSeleccionado) {
         this.competenciaCargoTablaSeleccionado = competenciaCargoTablaSeleccionado;
     }
@@ -5273,6 +6094,10 @@ public class ControlCargo implements Serializable {
         this.tipoDetalleTablaSeleccionado = tipoDetalleTablaSeleccionado;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getInfoRegistroCargo() {
         getLovCargos();
         if (lovCargos != null) {
@@ -5283,6 +6108,10 @@ public class ControlCargo implements Serializable {
         return infoRegistroCargo;
     }
 
+    /**
+     *
+     * @param infoRegistroCargo
+     */
     public void setInfoRegistroCargo(String infoRegistroCargo) {
         this.infoRegistroCargo = infoRegistroCargo;
     }
@@ -5297,10 +6126,18 @@ public class ControlCargo implements Serializable {
         return infoRegistroGrupoSalarial;
     }
 
+    /**
+     *
+     * @param infoRegistroGrupoSalarial
+     */
     public void setInfoRegistroGrupoSalarial(String infoRegistroGrupoSalarial) {
         this.infoRegistroGrupoSalarial = infoRegistroGrupoSalarial;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getInfoRegistroGrupoViatico() {
         getLovGruposViaticos();
         if (lovGruposViaticos != null) {
@@ -5311,6 +6148,10 @@ public class ControlCargo implements Serializable {
         return infoRegistroGrupoViatico;
     }
 
+    /**
+     *
+     * @param infoRegistroGrupoViatico
+     */
     public void setInfoRegistroGrupoViatico(String infoRegistroGrupoViatico) {
         this.infoRegistroGrupoViatico = infoRegistroGrupoViatico;
     }
@@ -5325,10 +6166,18 @@ public class ControlCargo implements Serializable {
         return infoRegistroProcesoProductivo;
     }
 
+    /**
+     *
+     * @param infoRegistroProcesoProductivo
+     */
     public void setInfoRegistroProcesoProductivo(String infoRegistroProcesoProductivo) {
         this.infoRegistroProcesoProductivo = infoRegistroProcesoProductivo;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getInfoRegistroTipoEmpresa() {
         getLovTiposEmpresas();
         if (lovTiposEmpresas != null) {
@@ -5339,6 +6188,10 @@ public class ControlCargo implements Serializable {
         return infoRegistroTipoEmpresa;
     }
 
+    /**
+     *
+     * @param infoRegistroTipoEmpresa
+     */
     public void setInfoRegistroTipoEmpresa(String infoRegistroTipoEmpresa) {
         this.infoRegistroTipoEmpresa = infoRegistroTipoEmpresa;
     }
@@ -5353,6 +6206,10 @@ public class ControlCargo implements Serializable {
         return infoRegistroEval;
     }
 
+    /**
+     *
+     * @param infoRegistroEval
+     */
     public void setInfoRegistroEval(String infoRegistroEval) {
         this.infoRegistroEval = infoRegistroEval;
     }
@@ -5367,10 +6224,18 @@ public class ControlCargo implements Serializable {
         return infoRegistroEnfoque;
     }
 
+    /**
+     *
+     * @param infoRegistroEnfoque
+     */
     public void setInfoRegistroEnfoque(String infoRegistroEnfoque) {
         this.infoRegistroEnfoque = infoRegistroEnfoque;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getInfoRegistroEmpresa() {
         getListaEmpresas();
         if (listaEmpresas != null) {
@@ -5381,6 +6246,10 @@ public class ControlCargo implements Serializable {
         return infoRegistroEmpresa;
     }
 
+    /**
+     *
+     * @param infoRegistroEmpresa
+     */
     public void setInfoRegistroEmpresa(String infoRegistroEmpresa) {
         this.infoRegistroEmpresa = infoRegistroEmpresa;
     }

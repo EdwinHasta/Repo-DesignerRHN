@@ -215,7 +215,6 @@
                                             </f:facet>
                                         </p:column>
 
-
                                         <p:column  filterBy="#{ausentismos.relacionada}" filterMatchMode="contains" id="ARelacionada" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.relacionada}" >
                                             <f:facet name="header">
                                                 <h:outputText id="relacionadaHead" value="..." />
@@ -303,7 +302,7 @@
                                     </p:cellEditor>  
                                 </p:column>
                                 <!-- Dias Ausentismo -->  
-                                <p:column  >                                  
+                                <p:column >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{ausentismos.dias}" /></f:facet>  
                                         <f:facet name="input">
@@ -327,7 +326,7 @@
                                     </p:cellEditor>  
                                 </p:column>
                                 <!--Fecha Inicial Ausentismo-->
-                                <p:column  >  
+                                <p:column  >
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{ausentismos.fecha}" >
@@ -358,7 +357,7 @@
                                                 <p:ajax event="click" listener="#{controlAusentismos.cambiarIndice(indice, 6)}" process="@this" />
                                             </lnk:calendar>
                                         </f:facet>
-                                    </p:cellEditor> 
+                                    </p:cellEditor>                                     
                                 </p:column>
                                 <!-- Fecha Expedicion -->
                                 <p:column >  
@@ -394,7 +393,6 @@
                                         </f:facet>
                                     </p:cellEditor>   
                                 </p:column>
-
                                 <!-- Fecha Pago Final -->
                                 <p:column  >  
                                     <p:cellEditor>  
@@ -423,7 +421,7 @@
                                                 <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 4, 0)}"/>
                                             </p:inputText>
                                         </f:facet>
-                                    </p:cellEditor>  
+                                    </p:cellEditor>                                      
                                 </p:column>
                                 <!-- Base Liquidacion -->
                                 <p:column  >                                  
@@ -487,7 +485,7 @@
                                                 <p:ajax event="select" listener="#{controlAusentismos.cambiarIndice(indice, 15)}" process="@this"/>
                                             </p:inputText>
                                         </f:facet>
-                                    </p:cellEditor>
+                                    </p:cellEditor>                                    
                                 </p:column>
                                 <!-- Diagnosticos Categoria -->
                                 <p:column  >                                  
@@ -503,7 +501,7 @@
                                     </p:cellEditor>
                                 </p:column>
                                 <!-- Prorroga -->
-                                <p:column  >                                  
+                                <p:column >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{ausentismos.prorroga.prorrogaAusentismo}" /></f:facet>  
                                         <f:facet name="input">
@@ -514,19 +512,21 @@
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor>  
+
                                 </p:column>
-                                <p:column  >                                  
-                                    <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{ausentismos.relacion}" /></f:facet>  
+                                <p:column>                            
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{ausentismos.relacion}"  /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText readonly="true" value="#{ausentismos.relacion}" id="editarRelacion" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px" onselect="periodoAusentismo();"> 
                                                 <p:ajax event="select" listener="#{controlAusentismos.cambiarIndice(indice, 18)}" process="@this"/>
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor> 
+
                                 </p:column>
                                 <!-- Aca va el CheckBox ese ficti -->
-                                <p:column>         
+                                <p:column>
                                     <p:selectBooleanCheckbox value="#{ausentismos.relacionadaBool}" id="editarRelacionada" style="border-radius: 0px; width: 93.5%;"> 
                                         <p:ajax event="change" listener="#{controlAusentismos.modificarAusentismos(indice, 'N', ausentismos.relacionadaBool)}"/>
                                     </p:selectBooleanCheckbox>
@@ -555,8 +555,6 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>  
-                                </p:column>
-
                             </p:dataTable>
                         </fieldset>
 

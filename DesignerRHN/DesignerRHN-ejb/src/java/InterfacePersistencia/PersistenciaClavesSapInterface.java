@@ -6,6 +6,7 @@
 package InterfacePersistencia;
 
 import Entidades.ClavesSap;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
 import javax.persistence.EntityManager;
@@ -17,5 +18,15 @@ import javax.persistence.EntityManager;
 @Local
 public interface PersistenciaClavesSapInterface {
 
-     public List<ClavesSap> consultarClavesSap(EntityManager em);
+    public void crear(EntityManager em, ClavesSap clavesap);
+
+    public void editar(EntityManager em, ClavesSap clavesap);
+
+    public void borrar(EntityManager em, ClavesSap clavesap);
+
+    public List<ClavesSap> consultarClavesSap(EntityManager em);
+
+    public BigInteger contarClavesContablesCreditoClaveSap(EntityManager em, BigInteger secuencia);
+
+    public BigInteger contarClavesContablesDebitoClaveSap(EntityManager em, BigInteger secuencia);
 }

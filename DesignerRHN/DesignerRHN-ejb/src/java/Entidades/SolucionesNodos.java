@@ -7,6 +7,7 @@ package Entidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -16,12 +17,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -46,6 +49,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "SolucionesNodos.findByValorincremento", query = "SELECT s FROM SolucionesNodos s WHERE s.valorincremento = :valorincremento"),
     @NamedQuery(name = "SolucionesNodos.findByParametrotesoreria", query = "SELECT s FROM SolucionesNodos s WHERE s.parametrotesoreria = :parametrotesoreria")})
 public class SolucionesNodos implements Serializable {
+    @OneToMany(mappedBy = "solucionnodo")
+    private Collection<Contabilizaciones> contabilizacionesCollection;
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -496,5 +501,14 @@ public class SolucionesNodos implements Serializable {
     @Override
     public String toString() {
         return "Entidades.SolucionesNodos[ secuencia=" + secuencia + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Contabilizaciones> getContabilizacionesCollection() {
+        return contabilizacionesCollection;
+    }
+
+    public void setContabilizacionesCollection(Collection<Contabilizaciones> contabilizacionesCollection) {
+        this.contabilizacionesCollection = contabilizacionesCollection;
     }
 }

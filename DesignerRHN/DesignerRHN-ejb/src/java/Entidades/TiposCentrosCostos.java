@@ -33,6 +33,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TiposCentrosCostos.findAll", query = "SELECT t FROM TiposCentrosCostos t")})
 public class TiposCentrosCostos implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "CODIGO")
     private Integer codigo;
 

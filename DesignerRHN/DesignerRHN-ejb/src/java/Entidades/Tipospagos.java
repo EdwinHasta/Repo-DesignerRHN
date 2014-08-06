@@ -31,7 +31,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Tipospagos.findAll", query = "SELECT t FROM Tipospagos t")})
 public class Tipospagos implements Serializable {
-        @Column(name = "CODIGO")
+        @Basic(optional = false)
+    @NotNull
+    @Column(name = "CODIGO")
     private Integer codigo;
 
     private static final long serialVersionUID = 1L;
