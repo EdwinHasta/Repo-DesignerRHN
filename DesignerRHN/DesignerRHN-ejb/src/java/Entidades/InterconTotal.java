@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Entidades;
 
 import java.io.Serializable;
@@ -21,6 +20,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -47,6 +47,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "InterconTotal.findByProceso", query = "SELECT i FROM InterconTotal i WHERE i.proceso = :proceso"),
     @NamedQuery(name = "InterconTotal.findByConsecutivo", query = "SELECT i FROM InterconTotal i WHERE i.consecutivo = :consecutivo")})
 public class InterconTotal implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Size(max = 20)
     @Column(name = "CODIGOTERCERO")
@@ -97,6 +98,8 @@ public class InterconTotal implements Serializable {
     @JoinColumn(name = "CENTROCOSTO", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private CentrosCostos centrocosto;
+    @Transient
+    private Terceros terceroRegistro;
 
     public InterconTotal() {
     }
@@ -111,6 +114,14 @@ public class InterconTotal implements Serializable {
 
     public void setCodigotercero(String codigotercero) {
         this.codigotercero = codigotercero;
+    }
+
+    public Terceros getTerceroRegistro() {
+        return terceroRegistro;
+    }
+
+    public void setTerceroRegistro(Terceros terceroRegistro) {
+        this.terceroRegistro = terceroRegistro;
     }
 
     public String getFlag() {
@@ -265,5 +276,5 @@ public class InterconTotal implements Serializable {
     public String toString() {
         return "Entidades.InterconTotal[ secuencia=" + secuencia + " ]";
     }
-    
+
 }
