@@ -129,6 +129,7 @@ public class ControlAdminreportes implements Serializable {
 
     //UBICACION CELDA
     public void cambiarIndice(int indice, int celda) {
+        System.out.println("Cambiar Indice");
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;

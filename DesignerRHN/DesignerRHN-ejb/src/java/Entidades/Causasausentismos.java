@@ -43,8 +43,8 @@ public class Causasausentismos implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
+    //@Basic(optional = false)
+    //@NotNull
     @Column(name = "CODIGO")
     private Short codigo;
     @Size(max = 50)

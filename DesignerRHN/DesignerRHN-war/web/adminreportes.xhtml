@@ -120,12 +120,12 @@
                                             </p:selectOneMenu>
                                         </f:facet>  
                                     </p:cellEditor>
-                                    
+
                                     <f:facet name="footer">
                                         <h:outputText value=" " />
                                     </f:facet>
                                 </p:column>
-                                
+
                                 <p:column headerText="#{msg['modulo']}" width="50" sortBy="#{info.modulo.nombre}" filterBy="#{info.modulo.nombre}" filterMatchMode="contains" id="inforeportesModulos" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase;" value="#{info.modulo.nombre}" /></f:facet>  
@@ -201,7 +201,7 @@
                                     </p:selectBooleanCheckbox> 
                                 </p:column>
 
-                                 <p:column headerText="..." style="width:12px" sortBy="#{info.estadoEstado}" filterBy="#{info.estadoEstado}" filterMatchMode="contains" id="inforeportesEstado" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="..." style="width:12px" sortBy="#{info.estadoEstado}" filterBy="#{info.estadoEstado}" filterMatchMode="contains" id="inforeportesEstado" filterStyle="display: none; visibility: hidden;" >                                  
                                     <f:facet name="header">
                                         <h:outputText id="headerEstado" value="..." />
                                         <p:tooltip  for="headerEstado" value="#{msg['estado']}" />
