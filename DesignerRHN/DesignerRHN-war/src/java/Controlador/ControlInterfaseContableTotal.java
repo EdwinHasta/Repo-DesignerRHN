@@ -522,6 +522,11 @@ public class ControlInterfaseContableTotal implements Serializable {
         cualCeldaIntercon = columna;
         indexParametroContable = -1;
         indexGenerado = -1;
+        if (tipoListaIntercon == 0) {
+            secRegistro = listaInterconTotal.get(indexIntercon).getSecuencia();
+        } else {
+            secRegistro = filtrarListaInterconTotal.get(indexIntercon).getSecuencia();
+        }
         if (banderaGenerado == 1) {
             FacesContext c = FacesContext.getCurrentInstance();
             altoTablaGenerada = "75";
@@ -1791,6 +1796,7 @@ public class ControlInterfaseContableTotal implements Serializable {
 
     public void validarRastro() {
         if (indexIntercon >= 0) {
+            System.out.println("validarRastro");
             verificarRastro();
         }
     }
@@ -1798,10 +1804,13 @@ public class ControlInterfaseContableTotal implements Serializable {
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (listaInterconTotal != null) {
+            System.out.println("listaInterconTotal");
             if (secRegistro != null) {
+                System.out.println("secRegistro");
                 int resultado = administrarRastros.obtenerTabla(secRegistro, "INTERCON_TOTAL");
                 backUpSecRegistro = secRegistro;
                 secRegistro = null;
+                System.out.println("resultado");
                 if (resultado == 1) {
                     context.execute("errorObjetosDB.show()");
                 } else if (resultado == 2) {
@@ -1817,6 +1826,7 @@ public class ControlInterfaseContableTotal implements Serializable {
                 context.execute("seleccionarRegistro.show()");
             }
         } else {
+            System.out.println("verificarHistoricosTabla");
             if (administrarRastros.verificarHistoricosTabla("INTERCON_TOTAL")) {
                 context.execute("confirmarRastroHistorico.show()");
             } else {
