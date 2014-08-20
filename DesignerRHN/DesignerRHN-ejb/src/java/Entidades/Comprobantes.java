@@ -232,13 +232,6 @@ public class Comprobantes implements Serializable {
         this.readOnlyNumero = readOnlyNumero;
     }
 
-    public BigInteger getNumero() {
-        return numero;
-    }
-
-    public void setNumero(BigInteger numero) {
-        this.numero = numero;
-    }
 
     @XmlTransient
     public Collection<CortesProcesos> getCortesProcesosCollection() {
@@ -247,6 +240,14 @@ public class Comprobantes implements Serializable {
 
     public void setCortesProcesosCollection(Collection<CortesProcesos> cortesProcesosCollection) {
         this.cortesProcesosCollection = cortesProcesosCollection;
+    }
+
+    public BigInteger getNumero() {
+        return numero;
+    }
+
+    public void setNumero(BigInteger numero) {
+        this.numero = numero;
     }
 
 }

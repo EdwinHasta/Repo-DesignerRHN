@@ -31,6 +31,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Monedas.findAll", query = "SELECT m FROM Monedas m")})
 public class Monedas implements Serializable {
+    @OneToMany(mappedBy = "tipomoneda")
+    private Collection<Proyectos> proyectosCollection;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "moneda")
     private Collection<VigenciasMonedasBases> vigenciasMonedasBasesCollection;
@@ -134,6 +136,15 @@ public class Monedas implements Serializable {
 
     public void setVigenciasMonedasBasesCollection(Collection<VigenciasMonedasBases> vigenciasMonedasBasesCollection) {
         this.vigenciasMonedasBasesCollection = vigenciasMonedasBasesCollection;
+    }
+
+    @XmlTransient
+    public Collection<Proyectos> getProyectosCollection() {
+        return proyectosCollection;
+    }
+
+    public void setProyectosCollection(Collection<Proyectos> proyectosCollection) {
+        this.proyectosCollection = proyectosCollection;
     }
 
 }

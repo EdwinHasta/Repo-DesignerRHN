@@ -293,4 +293,13 @@ public class AdministrarInterfaseContableTotal implements AdministrarInterfaseCo
             return -1;
         }
     }
+    
+    @Override
+    public void cerrarProcesoContabilizacion(Date fechaInicial, Date fechaFinal, Short empresa, BigInteger proceso) {
+        try {
+            persistenciaInterconTotal.cerrarProcesoContabilizacion(em, fechaInicial, fechaFinal,empresa,proceso);
+        } catch (Exception e) {
+            System.out.println("Error cerrarProcesoContabilizacion Admi : " + e.toString());
+        }
+    }
 }

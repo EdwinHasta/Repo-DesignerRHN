@@ -255,7 +255,31 @@ public class PersistenciaInterconTotal implements PersistenciaInterconTotalInter
             query.executeUpdate();
             tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaInterconTotal.ejecutarPKGUbicarnuevointercon_total. " + e.toString());
+            System.out.println("Error PersistenciaInterconTotal.ejecutarCierrePeriodoContableInterconTotal. " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+    
+    public void cerrarProcesoContabilizacion(EntityManager em, Date fechaInicial, Date fechaFinal, Short empresa, BigInteger proceso) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            String sql = "UPDATE INTERCON_TOTAL I SET I.FLAG='ENVIADO' WHERE  \n" +
+                        "     I.FECHACONTABILIZACION BETWEEN :PARAMETROSCONTABLES.FECHAINICIALCONTABILIZACION AND :PARAMETROSCONTABLES.FECHAFINALCONTABILIZACION\n" +
+                        "     and nvl(i.proceso,0) = nvl(:PARAMETROSCONTABLES.proceso,nvl(i.proceso,0))\n" +
+                        "     and i.empresa_codigo=:PARAMETROSCONTABLES.empresa_codigo"
+                        + "   and exists (select 'x' from empleados e where e.secuencia=i.empleado);";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaInicial);
+            query.setParameter(2, fechaFinal);
+            query.setParameter(3, proceso);
+            query.setParameter(4, empresa);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconTotal.cerrarProcesoContabilizacion. " + e.toString());
             if (tx.isActive()) {
                 tx.rollback();
             }

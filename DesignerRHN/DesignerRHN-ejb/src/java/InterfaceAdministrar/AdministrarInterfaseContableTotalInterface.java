@@ -47,7 +47,7 @@ public interface AdministrarInterfaseContableTotalInterface {
     public void actualizarFlagInterconTotal(Date fechaInicial, Date fechaFinal, Short empresa);
 
     public Date buscarFechaHastaVWActualesFechas();
-    
+
     public Date buscarFechaDesdeVWActualesFechas();
 
     public void ejcutarPKGUbicarnuevointercon_total(BigInteger secuencia, Date fechaInicial, Date fechaFinal, BigInteger proceso);
@@ -57,4 +57,6 @@ public interface AdministrarInterfaseContableTotalInterface {
     public void eliminarInterconTotal(Date fechaInicial, Date fechaFinal, Short empresa, BigInteger proceso);
 
     public int contarProcesosContabilizadosInterconTotal(Date fechaInicial, Date fechaFinal);
+
+    public void cerrarProcesoContabilizacion(Date fechaInicial, Date fechaFinal, Short empresa, BigInteger proceso);
 }
