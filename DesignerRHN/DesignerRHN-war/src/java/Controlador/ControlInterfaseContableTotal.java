@@ -111,7 +111,7 @@ public class ControlInterfaseContableTotal implements Serializable {
     private int totalCGenerado, totalDGenerado, totalDInter, totalCInter;
     //
     private String msnPaso1;
-
+    
     public ControlInterfaseContableTotal() {
         msnPaso1 = "";
         totalCGenerado = 0;
@@ -636,6 +636,7 @@ public class ControlInterfaseContableTotal implements Serializable {
     public void finCerrarPeriodoContable() {
         try {
             guardadoGeneral();
+            administrarInterfaseContableTotal.cerrarProcesoContabilizacion(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getEmpresaCodigo(), parametroContableActual.getProceso().getSecuencia());
         } catch (Exception e) {
             System.out.println("Error finCerrarPeriodoContable Controlador : " + e.toString());
         }
