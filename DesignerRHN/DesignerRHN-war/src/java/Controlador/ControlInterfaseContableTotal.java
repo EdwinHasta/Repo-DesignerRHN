@@ -111,7 +111,7 @@ public class ControlInterfaseContableTotal implements Serializable {
     private int totalCGenerado, totalDGenerado, totalDInter, totalCInter;
     //
     private String msnPaso1;
-    
+
     public ControlInterfaseContableTotal() {
         msnPaso1 = "";
         totalCGenerado = 0;
@@ -635,8 +635,95 @@ public class ControlInterfaseContableTotal implements Serializable {
 
     public void finCerrarPeriodoContable() {
         try {
+            RequestContext context = RequestContext.getCurrentInstance();
             guardadoGeneral();
             administrarInterfaseContableTotal.cerrarProcesoContabilizacion(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getEmpresaCodigo(), parametroContableActual.getProceso().getSecuencia());
+            listaGenerados = null;
+            if (listaGenerados == null) {
+                listaGenerados = administrarInterfaseContableTotal.obtenerSolucionesNodosParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                if (listaGenerados != null) {
+                    if (listaGenerados.size() > 0) {
+                        activarEnviar = false;
+                    } else {
+                        activarDeshacer = true;
+                    }
+
+                } else {
+                    activarDeshacer = true;
+                }
+                getTotalCGenerado();
+                getTotalDGenerado();
+            }
+            listaInterconTotal = null;
+            if (listaInterconTotal == null) {
+                listaInterconTotal = administrarInterfaseContableTotal.obtenerInterconTotalParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                if (listaInterconTotal != null) {
+                    if (listaInterconTotal.size() > 0) {
+                        activarDeshacer = false;
+                    } else {
+                        activarDeshacer = true;
+                    }
+                } else {
+                    activarDeshacer = true;
+                }
+                getTotalCInter();
+                getTotalDInter();
+            }
+
+            context.update("form:btnEnviar");
+            context.update("form:btnDeshacer");
+            context.update("form:PLANO");
+
+            context.update("form:totalDGenerado");
+            context.update("form:totalCGenerado");
+            context.update("form:totalDInter");
+            context.update("form:totalCInter");
+            if (banderaGenerado == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+                altoTablaGenerada = "75";
+                genProceso = (Column) c.getViewRoot().findComponent("form:datosGenerados:genProceso");
+                genProceso.setFilterStyle("display: none; visibility: hidden;");
+                genEmpleado = (Column) c.getViewRoot().findComponent("form:datosGenerados:genEmpleado");
+                genEmpleado.setFilterStyle("display: none; visibility: hidden;");
+                genCntCredito = (Column) c.getViewRoot().findComponent("form:datosGenerados:genCntCredito");
+                genCntCredito.setFilterStyle("display: none; visibility: hidden;");
+                genCntDebito = (Column) c.getViewRoot().findComponent("form:datosGenerados:genCntDebito");
+                genCntDebito.setFilterStyle("display: none; visibility: hidden;");
+                genTercero = (Column) c.getViewRoot().findComponent("form:datosGenerados:genTercero");
+                genTercero.setFilterStyle("display: none; visibility: hidden;");
+                genValor = (Column) c.getViewRoot().findComponent("form:datosGenerados:genValor");
+                genValor.setFilterStyle("display: none; visibility: hidden;");
+                genConcepto = (Column) c.getViewRoot().findComponent("form:datosGenerados:genConcepto");
+                genConcepto.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosGenerados");
+                banderaGenerado = 0;
+                filtrarListaGenerados = null;
+                tipoListaGenerada = 0;
+            }
+            if (banderaIntercon == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+                altoTablaIntercon = "75";
+                interEmpleado = (Column) c.getViewRoot().findComponent("form:datosIntercon:interEmpleado");
+                interEmpleado.setFilterStyle("display: none; visibility: hidden;");
+                interTercero = (Column) c.getViewRoot().findComponent("form:datosIntercon:interTercero");
+                interTercero.setFilterStyle("display: none; visibility: hidden;");
+                interCuenta = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCuenta");
+                interCuenta.setFilterStyle("display: none; visibility: hidden;");
+                interDebito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interDebito");
+                interDebito.setFilterStyle("display: none; visibility: hidden;");
+                interCredito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCredito");
+                interCredito.setFilterStyle("display: none; visibility: hidden;");
+                interConcepto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interConcepto");
+                interConcepto.setFilterStyle("display: none; visibility: hidden;");
+                interCentroCosto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCentroCosto");
+                interCentroCosto.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosIntercon");
+                banderaIntercon = 0;
+                filtrarListaInterconTotal = null;
+                tipoListaIntercon = 0;
+            }
+            context.update("form:datosGenerados");
+            context.update("form:datosIntercon");
         } catch (Exception e) {
             System.out.println("Error finCerrarPeriodoContable Controlador : " + e.toString());
         }
@@ -861,23 +948,18 @@ public class ControlInterfaseContableTotal implements Serializable {
         Date fechaContabilizacion = administrarInterfaseContableTotal.obtenerFechaMaxContabilizaciones();
         Date fechaInterconTotal = administrarInterfaseContableTotal.obtenerFechaMaxInterconTotal();
         DateFormat df = DateFormat.getDateInstance(DateFormat.LONG);
-        System.out.println("fechaContabilizacion : " + fechaContabilizacion);
-        System.out.println("fechaInterconTotal : " + fechaInterconTotal);
         RequestContext context = RequestContext.getCurrentInstance();
         if (fechaContabilizacion != null && fechaInterconTotal != null) {
             if (fechaContabilizacion.compareTo(fechaInterconTotal) == 0) {
-                System.out.println("Iguales");
                 String fecha = df.format(fechaContabilizacion);
                 msnFechasActualizar = fecha;
                 context.update("form:anteriorContabilizacion");
                 context.execute("anteriorContabilizacion.show()");
             } else {
-                System.out.println("No son iguales");
                 context.update("form:nuncaContabilizo");
                 context.execute("nuncaContabilizo.show()");
             }
         } else {
-            System.out.println("No son iguales");
             context.update("form:nuncaContabilizo");
             context.execute("nuncaContabilizo.show()");
         }
@@ -1797,7 +1879,6 @@ public class ControlInterfaseContableTotal implements Serializable {
 
     public void validarRastro() {
         if (indexIntercon >= 0) {
-            System.out.println("validarRastro");
             verificarRastro();
         }
     }
@@ -1805,13 +1886,10 @@ public class ControlInterfaseContableTotal implements Serializable {
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (listaInterconTotal != null) {
-            System.out.println("listaInterconTotal");
             if (secRegistro != null) {
-                System.out.println("secRegistro");
                 int resultado = administrarRastros.obtenerTabla(secRegistro, "INTERCON_TOTAL");
                 backUpSecRegistro = secRegistro;
                 secRegistro = null;
-                System.out.println("resultado");
                 if (resultado == 1) {
                     context.execute("errorObjetosDB.show()");
                 } else if (resultado == 2) {
@@ -1827,7 +1905,6 @@ public class ControlInterfaseContableTotal implements Serializable {
                 context.execute("seleccionarRegistro.show()");
             }
         } else {
-            System.out.println("verificarHistoricosTabla");
             if (administrarRastros.verificarHistoricosTabla("INTERCON_TOTAL")) {
                 context.execute("confirmarRastroHistorico.show()");
             } else {

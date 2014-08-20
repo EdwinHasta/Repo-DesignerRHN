@@ -5,6 +5,7 @@ import Entidades.Empresas;
 import Entidades.InterconSapBO;
 import Entidades.InterconTotal;
 import Entidades.ParametrosContables;
+import Entidades.ParametrosEstructuras;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
 import Exportar.ExportarPDF;
@@ -15,6 +16,7 @@ import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -134,7 +136,7 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
         tipoListaIntercon = 0;
         banderaIntercon = 0;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -224,8 +226,6 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
                     estadoBtnAbajo = true;
                 }
 
-                
-                
                 activarEnviar = true;
                 activarDeshacer = true;
                 context.update("form:PanelTotal");
@@ -236,7 +236,350 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
             context.execute("confirmarGuardarSinSalida.show()");
         }
     }
-    
+
+    public boolean validarFechasParametros() {
+        boolean retorno = false;
+        ParametrosEstructuras parametroLiquidacion = administrarInterfaseContableSapBO.parametrosLiquidacion();
+        if ((parametroLiquidacion.getFechadesdecausado().compareTo(parametroContableActual.getFechainicialcontabilizacion()) == 0)
+                && (parametroLiquidacion.getFechahastacausado().compareTo(parametroContableActual.getFechafinalcontabilizacion()) == 0)) {
+            retorno = true;
+        }
+        return retorno;
+    }
+
+    public void actionBtnActualizar() {
+        try {
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (validarFechasParametros() == true) {
+                if (parametroContableActual.getFechafinalcontabilizacion() != null
+                        && parametroContableActual.getFechainicialcontabilizacion() != null
+                        && parametroContableActual.getEmpresaRegistro().getSecuencia() != null) {
+                    guardadoGeneral();
+
+                    listaGenerados = null;
+                    if (listaGenerados == null) {
+                        listaGenerados = administrarInterfaseContableSapBO.obtenerSolucionesNodosParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                        if (listaGenerados != null) {
+                            if (listaGenerados.size() > 0) {
+                                activarEnviar = false;
+                            } else {
+                                activarEnviar = true;
+                            }
+                        } else {
+                            activarEnviar = true;
+                        }
+                        getTotalCGenerado();
+                        getTotalDGenerado();
+                    }
+                    listaInterconSapBO = null;
+                    if (listaInterconSapBO == null) {
+                        listaInterconSapBO = administrarInterfaseContableSapBO.obtenerInterconSapBOParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                        if (listaInterconSapBO != null) {
+                            if (listaInterconSapBO.size() > 0) {
+                                activarDeshacer = false;
+                            } else {
+                                activarDeshacer = true;
+                            }
+                        } else {
+                            activarDeshacer = true;
+                        }
+                        getTotalCInter();
+                        getTotalDInter();
+                    }
+                    context.update("form:totalDGenerado");
+                    context.update("form:totalCGenerado");
+                    context.update("form:totalDInter");
+                    context.update("form:totalCInter");
+
+                    context.update("form:btnEnviar");
+                    context.update("form:btnDeshacer");
+
+                    if (banderaGenerado == 1) {
+                        FacesContext c = FacesContext.getCurrentInstance();
+                        altoTablaGenerada = "75";
+
+                        banderaGenerado = 0;
+                        filtrarListaGenerados = null;
+                        tipoListaGenerada = 0;
+                    }
+                    if (banderaIntercon == 1) {
+                        FacesContext c = FacesContext.getCurrentInstance();
+                        altoTablaIntercon = "75";
+
+                        RequestContext.getCurrentInstance().update("form:datosIntercon");
+                        banderaIntercon = 0;
+                        filtrarListaInterconSapBO = null;
+                        tipoListaIntercon = 0;
+                    }
+                    context.update("form:datosGenerados");
+                    context.update("form:datosIntercon");
+                    int tam1 = 0;
+                    int tam2 = 0;
+                    if (listaGenerados != null) {
+                        tam1 = listaGenerados.size();
+                    }
+                    if (filtrarListaInterconSapBO != null) {
+                        tam2 = filtrarListaInterconSapBO.size();
+                    }
+                    if (tam1 == 0 && tam2 == 0) {
+                        context.execute("procesoSinDatos.show()");
+                    }
+
+                    Date fechaContable = administrarInterfaseContableSapBO.obtenerMaxFechaContabilizaciones();
+                    Date fechaInter = administrarInterfaseContableSapBO.obtenerMaxFechaIntercoSapBO();
+                    if (fechaContable != null && fechaInter != null) {
+                        if (fechaContable.equals(fechaInter)) {
+                            DateFormat df = DateFormat.getDateInstance(DateFormat.LONG);
+                            String fecha = df.format(fechaContable);
+                            msnFechasActualizar = fecha;
+                            context.update("form:anteriorContabilizacion");
+                            context.execute("anteriorContabilizacion.show()");
+                        } else {
+                            context.execute("nuncaContabilizo.show()");
+                        }
+                    } else {
+                        context.execute("nuncaContabilizo.show()");
+                    }
+                } else {
+                    context.execute("errorFechasParametros.show()");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error actionBtnActualizar ControladorInterfaseContableSapBOv8 : " + e.toString());
+        }
+    }
+
+    public void anularComprobantesCerrados() {
+        try {
+            guardadoGeneral();
+            administrarInterfaseContableSapBO.actualizarFlagProcesoAnularInterfaseContableSAPBOV8(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+            FacesMessage msg = new FacesMessage("Información", "Se realizo el proceso con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
+        } catch (Exception e) {
+            System.out.println("Error anularComprobantesCerrados Controlador : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el proceso de anulacion");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
+        }
+    }
+
+    public void actionBtnEnviar() {
+        Date fechaDesde = administrarInterfaseContableSapBO.buscarFechaDesdeVWActualesFechas();
+        Date fechaHasta = administrarInterfaseContableSapBO.buscarFechaHastaVWActualesFechas();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (fechaDesde != null && fechaHasta != null) {
+            if ((fechaDesde.before(parametroContableActual.getFechainicialcontabilizacion()) && fechaHasta.after(parametroContableActual.getFechafinalcontabilizacion()))
+                    || (fechaDesde.before(parametroContableActual.getFechainicialcontabilizacion()) && fechaHasta.after(parametroContableActual.getFechafinalcontabilizacion()))) {
+                context.execute("errorVWActualesFechas.show()");
+            } else {
+                if (parametroContableActual.getEmpresaRegistro().getSecuencia() != null
+                        && parametroContableActual.getFechafinalcontabilizacion() != null
+                        && parametroContableActual.getFechainicialcontabilizacion() != null) {
+                    guardadoGeneral();
+                    administrarInterfaseContableSapBO.ejeuctarPKGUbicarnuevointercon_SAPBOV8(parametroContableActual.getSecuencia(), parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia());
+                    listaGenerados = null;
+                    if (listaGenerados == null) {
+                        listaGenerados = administrarInterfaseContableSapBO.obtenerSolucionesNodosParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                        if (listaGenerados != null) {
+                            if (listaGenerados.size() > 0) {
+                                activarEnviar = false;
+                            } else {
+                                activarDeshacer = true;
+                            }
+                        } else {
+                            activarDeshacer = true;
+                        }
+                        getTotalCGenerado();
+                        getTotalDGenerado();
+                    }
+                    listaInterconSapBO = null;
+                    if (listaInterconSapBO == null) {
+                        listaInterconSapBO = administrarInterfaseContableSapBO.obtenerInterconSapBOParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                        if (listaInterconSapBO != null) {
+                            if (listaInterconSapBO.size() > 0) {
+                                activarDeshacer = false;
+                            } else {
+                                activarDeshacer = true;
+                            }
+                        } else {
+                            activarDeshacer = true;
+                        }
+                        getTotalCInter();
+                        getTotalDInter();
+                    }
+                    context.update("form:totalDGenerado");
+                    context.update("form:totalCGenerado");
+                    context.update("form:totalDInter");
+                    context.update("form:totalCInter");
+
+                    context.update("form:btnEnviar");
+                    context.update("form:btnDeshacer");
+
+                    if (banderaGenerado == 1) {
+                        FacesContext c = FacesContext.getCurrentInstance();
+                        altoTablaGenerada = "75";
+
+                        banderaGenerado = 0;
+                        filtrarListaGenerados = null;
+                        tipoListaGenerada = 0;
+                    }
+                    if (banderaIntercon == 1) {
+                        FacesContext c = FacesContext.getCurrentInstance();
+                        altoTablaIntercon = "75";
+
+                        RequestContext.getCurrentInstance().update("form:datosIntercon");
+                        banderaIntercon = 0;
+                        filtrarListaInterconSapBO = null;
+                        tipoListaIntercon = 0;
+                    }
+                    context.update("form:datosGenerados");
+                    context.update("form:datosIntercon");
+                }
+
+            }
+        }
+    }
+
+    public void actionBtnDeshacer() {
+        try {
+            RequestContext context = RequestContext.getCurrentInstance();
+            guardadoGeneral();
+
+            administrarInterfaseContableSapBO.cambiarFlagInterconContableSAPBOV8(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia());
+            administrarInterfaseContableSapBO.ejecutarDeleteInterconSAP(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia());
+
+            listaGenerados = null;
+            if (listaGenerados == null) {
+                listaGenerados = administrarInterfaseContableSapBO.obtenerSolucionesNodosParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                if (listaGenerados != null) {
+                    if (listaGenerados.size() > 0) {
+                        activarEnviar = false;
+                    } else {
+                        activarDeshacer = true;
+                    }
+                } else {
+                    activarDeshacer = true;
+                }
+                getTotalCGenerado();
+                getTotalDGenerado();
+            }
+            listaInterconSapBO = null;
+            if (listaInterconSapBO == null) {
+                listaInterconSapBO = administrarInterfaseContableSapBO.obtenerInterconSapBOParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                if (listaInterconSapBO != null) {
+                    if (listaInterconSapBO.size() > 0) {
+                        activarDeshacer = false;
+                    } else {
+                        activarDeshacer = true;
+                    }
+                } else {
+                    activarDeshacer = true;
+                }
+                getTotalCInter();
+                getTotalDInter();
+            }
+            context.update("form:totalDGenerado");
+            context.update("form:totalCGenerado");
+            context.update("form:totalDInter");
+            context.update("form:totalCInter");
+
+            context.update("form:btnEnviar");
+            context.update("form:btnDeshacer");
+
+            if (banderaGenerado == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+                altoTablaGenerada = "75";
+
+                banderaGenerado = 0;
+                filtrarListaGenerados = null;
+                tipoListaGenerada = 0;
+            }
+            if (banderaIntercon == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+                altoTablaIntercon = "75";
+
+                RequestContext.getCurrentInstance().update("form:datosIntercon");
+                banderaIntercon = 0;
+                filtrarListaInterconSapBO = null;
+                tipoListaIntercon = 0;
+            }
+            context.update("form:datosGenerados");
+            context.update("form:datosIntercon");
+        } catch (Exception e) {
+            System.out.println("Error actionBtnDeshacer Controlador : " + e.toString());
+        }
+    }
+
+    public void cerrarProcesoLiquidacion() {
+        try {
+
+            RequestContext context = RequestContext.getCurrentInstance();
+            guardadoGeneral();
+            administrarInterfaseContableSapBO.cerrarProcesoLiquidacion(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia());
+
+            listaGenerados = null;
+            if (listaGenerados == null) {
+                listaGenerados = administrarInterfaseContableSapBO.obtenerSolucionesNodosParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                if (listaGenerados != null) {
+                    if (listaGenerados.size() > 0) {
+                        activarEnviar = false;
+                    } else {
+                        activarDeshacer = true;
+                    }
+                } else {
+                    activarDeshacer = true;
+                }
+                getTotalCGenerado();
+                getTotalDGenerado();
+            }
+            listaInterconSapBO = null;
+            if (listaInterconSapBO == null) {
+                listaInterconSapBO = administrarInterfaseContableSapBO.obtenerInterconSapBOParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                if (listaInterconSapBO != null) {
+                    if (listaInterconSapBO.size() > 0) {
+                        activarDeshacer = false;
+                    } else {
+                        activarDeshacer = true;
+                    }
+                } else {
+                    activarDeshacer = true;
+                }
+                getTotalCInter();
+                getTotalDInter();
+            }
+            context.update("form:totalDGenerado");
+            context.update("form:totalCGenerado");
+            context.update("form:totalDInter");
+            context.update("form:totalCInter");
+
+            context.update("form:btnEnviar");
+            context.update("form:btnDeshacer");
+
+            if (banderaGenerado == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+                altoTablaGenerada = "75";
+
+                banderaGenerado = 0;
+                filtrarListaGenerados = null;
+                tipoListaGenerada = 0;
+            }
+            if (banderaIntercon == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+                altoTablaIntercon = "75";
+
+                RequestContext.getCurrentInstance().update("form:datosIntercon");
+                banderaIntercon = 0;
+                filtrarListaInterconSapBO = null;
+                tipoListaIntercon = 0;
+            }
+            context.update("form:datosGenerados");
+            context.update("form:datosIntercon");
+        } catch (Exception e) {
+            System.out.println("Error cerrarProcesoLiquidacion Controlador : " + e.toString());
+        }
+    }
+
     public void modificarParametroContable() {
         if (guardado == true) {
             guardado = false;
@@ -246,7 +589,7 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
         indexParametroContable = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
     }
-    
+
     public void modificarParametroContable(String confirmarCambio, String valorConfirmar) {
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
@@ -368,7 +711,7 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
         }
         return retorno;
     }
-    
+
     public void posicionGenerado() {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> map = context.getExternalContext().getRequestParameterMap();
@@ -411,7 +754,7 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
             auxParametroFechaInicial = parametroContableActual.getFechainicialcontabilizacion();
         }
     }
-    
+
     public void guardarSalir() {
         guardadoGeneral();
         salir();
@@ -460,7 +803,7 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
         }
     }
 
-    public void cancelarModificaciones() {        
+    public void cancelarModificaciones() {
         totalCGenerado = 0;
         totalDGenerado = 0;
         totalDInter = 0;
@@ -591,7 +934,7 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
             indexIntercon = -1;
         }
     }
-    
+
     public void salir() {
         RequestContext context = RequestContext.getCurrentInstance();
         listParametrosContablesBorrar.clear();
@@ -615,7 +958,7 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
         totalCInter = 0;
         context.update("form:ACEPTAR");
     }
-    
+
     public void asignarIndex(Integer indice, int numeroDialogo, int tipoNuevo) {
         tipoActualizacion = tipoNuevo;
         indexParametroContable = indice;
@@ -628,7 +971,7 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
             context.execute("ProcesoDialogo.show()");
         }
     }
-    
+
     public void actualizarEmpresa() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
@@ -701,7 +1044,7 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
         indexParametroContable = -1;
         permitirIndexParametro = true;
     }
-    
+
     public void listaValoresBoton() {
         if (indexParametroContable >= 0) {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -715,7 +1058,7 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
             }
         }
     }
-    
+
     public void valoresBackupAutocompletar() {
         auxParametroEmpresa = nuevoParametroContable.getEmpresaRegistro().getNombre();
         auxParametroProceso = nuevoParametroContable.getProceso().getDescripcion();
@@ -775,7 +1118,7 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
             }
         }
     }
-    
+
     public void borrarParametroContable() {
         if (modificacionParametro == true) {
             modificacionParametro = false;
@@ -988,11 +1331,11 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
             }
         }
     }
-    
+
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
     }
-    
+
     public void validarRastro() {
         if (indexIntercon >= 0) {
             System.out.println("validarRastro");
@@ -1322,6 +1665,13 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
     }
 
     public int getTotalCGenerado() {
+        totalCGenerado = 0;
+        getListaGenerados();
+        if (listaGenerados != null) {
+            for (int i = 0; i < listaGenerados.size(); i++) {
+                totalCGenerado = totalCGenerado + listaGenerados.get(i).getValor().intValue();
+            }
+        }
         return totalCGenerado;
     }
 
@@ -1330,6 +1680,13 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
     }
 
     public int getTotalDGenerado() {
+        totalCGenerado = 0;
+        getListaGenerados();
+        if (listaGenerados != null) {
+            for (int i = 0; i < listaGenerados.size(); i++) {
+                totalCGenerado = totalCGenerado + listaGenerados.get(i).getValor().intValue();
+            }
+        }
         return totalDGenerado;
     }
 
@@ -1338,6 +1695,13 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
     }
 
     public int getTotalDInter() {
+        totalDInter = 0;
+        getListaInterconSapBO();
+        if (listaInterconSapBO != null) {
+            for (int i = 0; i < listaInterconSapBO.size(); i++) {
+                totalDInter = totalDInter + listaInterconSapBO.get(i).getValord().intValue();
+            }
+        }
         return totalDInter;
     }
 
@@ -1346,6 +1710,13 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
     }
 
     public int getTotalCInter() {
+        totalCInter = 0;
+        getListaInterconSapBO();
+        if (listaInterconSapBO != null) {
+            for (int i = 0; i < listaInterconSapBO.size(); i++) {
+                totalCInter = totalCInter + listaInterconSapBO.get(i).getValorc().intValue();
+            }
+        }
         return totalCInter;
     }
 
