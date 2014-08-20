@@ -6,6 +6,7 @@
 package InterfacePersistencia;
 
 import Entidades.Contabilizaciones;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -25,5 +26,9 @@ public interface PersistenciaContabilizacionesInterface {
     public List<Contabilizaciones> buscarContabilizaciones(EntityManager em);
 
     public Date obtenerFechaMaximaContabilizaciones(EntityManager em);
+    
+    public Date obtenerFechaMaximaContabilizacionesSAPBOV8(EntityManager em);
+    
+    public void actualizarFlahInterconContableSAPBOV8(EntityManager em, Date fechaIni, Date fechaFin, BigInteger proceso);
 
 }

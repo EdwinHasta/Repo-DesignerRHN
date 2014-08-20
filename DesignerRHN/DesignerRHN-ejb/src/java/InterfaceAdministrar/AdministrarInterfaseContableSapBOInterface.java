@@ -9,8 +9,10 @@ import Entidades.ActualUsuario;
 import Entidades.Empresas;
 import Entidades.InterconSapBO;
 import Entidades.ParametrosContables;
+import Entidades.ParametrosEstructuras;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
@@ -39,5 +41,25 @@ public interface AdministrarInterfaseContableSapBOInterface {
     public List<Empresas> lovEmpresas();
 
     public ActualUsuario obtenerActualUsuario();
+
+    public Date obtenerMaxFechaContabilizaciones();
+
+    public Date obtenerMaxFechaIntercoSapBO();
+
+    public ParametrosEstructuras parametrosLiquidacion();
+
+    public void actualizarFlagProcesoAnularInterfaseContableSAPBOV8(Date fechaIni, Date fechaFin);
+
+    public Date buscarFechaHastaVWActualesFechas();
+
+    public Date buscarFechaDesdeVWActualesFechas();
+
+    public void ejeuctarPKGUbicarnuevointercon_SAPBOV8(BigInteger secuencia, Date fechaIni, Date fechaFin, BigInteger proceso);
+
+    public void cambiarFlagInterconContableSAPBOV8(Date fechaIni, Date fechaFin, BigInteger proceso);
+
+    public void ejecutarDeleteInterconSAP(Date fechaIni, Date fechaFin, BigInteger proceso);
+
+    public void cerrarProcesoLiquidacion(Date fechaIni, Date fechaFin, BigInteger proceso);
 
 }

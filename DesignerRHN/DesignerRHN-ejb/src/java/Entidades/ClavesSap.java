@@ -32,9 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "ClavesSap.findAll", query = "SELECT c FROM ClavesSap c")})
 public class ClavesSap implements Serializable {
-    @Column(name = "CLAVEAJUSTE")
-    private BigInteger claveajuste;
-
+    
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -50,7 +48,7 @@ public class ClavesSap implements Serializable {
     private String clasificacion;
     @Size(max = 1)
     @Column(name = "NATURALEZA")
-    private String naturaleza;
+    private String naturaleza;    
     @JoinColumn(name = "CLAVEAJUSTE", referencedColumnName = "SECUENCIA")
     private ClavesSap claveAjuste;
     @OneToMany(mappedBy = "clavecontabledebito")
@@ -210,14 +208,6 @@ public class ClavesSap implements Serializable {
             naturaleza = "C";
         }
         this.naturalezaTransient = naturalezaTransient;
-    }
-
-    public BigInteger getClaveajuste() {
-        return claveajuste;
-    }
-
-    public void setClaveajuste(BigInteger claveajuste) {
-        this.claveajuste = claveajuste;
     }
 
 }
