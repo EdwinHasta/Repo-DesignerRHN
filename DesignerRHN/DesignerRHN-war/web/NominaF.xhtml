@@ -578,7 +578,7 @@
                                 <p:dialog id="confirmarProcesoInterfaceContableTotal" header="#{msg['atencion']}" widgetVar="confirmarProcesoInterfaceContableTotal"  resizable="false" draggable="false" modal="true" height="100" width="420px"  closable="false">  
                                     <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 10px; top: 15px;"  />
                                     <h:outputText value="#{msg['confirmarProcesoInterfaceContableTotal']}" style="position: absolute; left: 100px; top: 15px; width: 320px; font-weight:bold;" />
-                                    <p:commandButton value="#{msg['si']}" onclick="confirmarProcesoInterfaceContableTotal.hide();" action="interfasecontabletotal" actionListener="#{controlInterfaseContableTotal.recibirPagina('nomina')}" style="position: absolute; top: 60px; left: 290px " process="@this" icon="ui-icon-check" />
+                                    <p:commandButton value="#{msg['si']}" onclick="confirmarProcesoInterfaceContableTotal.hide();" action="interfasecontablesapbov8" actionListener="#{controlInterfaseContableSapBOV8.recibirPagina('nomina')}" style="position: absolute; top: 60px; left: 290px " process="@this" icon="ui-icon-check" />
                                     <p:commandButton value="#{msg['no']}" onclick="confirmarProcesoInterfaceContableTotal.hide();" style="position: absolute; top: 60px; left: 345px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                                 </p:dialog>
                                 

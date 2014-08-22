@@ -129,6 +129,23 @@
     </navigation-rule>
     
     <navigation-rule>
+        <from-view-id>/interfasecontablesapbov8.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>nomina</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/NominaF.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>interfasecontablesapbov8</from-outcome>
+            <to-view-id>/interfasecontablesapbov8.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
         <from-view-id>/busquedaavanzada.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nominaf</from-outcome>
