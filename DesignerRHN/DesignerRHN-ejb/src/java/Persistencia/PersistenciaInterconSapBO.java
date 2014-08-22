@@ -88,7 +88,7 @@ public class PersistenciaInterconSapBO implements PersistenciaInterconSapBOInter
             em.clear();
             String sql = "select * from INTERCON_SAPBO i where fechacontabilizacion between \n"
                     + " ? and ? and FLAG = 'CONTABILIZADO' AND SALIDA <> 'NETO'\n"
-                    + " and exists (select @'x' from empleados e where e.secuencia=i.empleado)";
+                    + " and exists (select 'x' from empleados e where e.secuencia=i.empleado)";
             Query query = em.createNativeQuery(sql, InterconSapBO.class);
             query.setParameter(1, fechaInicial);
             query.setParameter(2, fechaFinal);
@@ -150,6 +150,25 @@ public class PersistenciaInterconSapBO implements PersistenciaInterconSapBOInter
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaInterconSapBO.ejeuctarPKGUbicarnuevointercon_SAPBOV8 : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+    
+    @Override
+    public void ejecutarPKGRecontabilizacion(EntityManager em, Date fechaIni, Date fechaFin) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            String sql = "call INTERFASESAPBO$PKG.Recontabilizacion(?,?)";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaIni);
+            query.setParameter(2, fechaFin);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconSapBO.ejecutarPKGRecontabilizacion : " + e.toString());
             if (tx.isActive()) {
                 tx.rollback();
             }

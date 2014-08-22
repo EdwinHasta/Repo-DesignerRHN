@@ -36,4 +36,6 @@ public interface PersistenciaInterconSapBOInterface {
     public void ejecutarDeleteInterconSAPBOV8(EntityManager em, Date fechaIni, Date fechaFin, BigInteger proceso);
 
     public void cerrarProcesoLiquidacion(EntityManager em, Date fechaIni, Date fechaFin, BigInteger proceso);
+    
+    public void ejecutarPKGRecontabilizacion(EntityManager em, Date fechaIni, Date fechaFin);
 }

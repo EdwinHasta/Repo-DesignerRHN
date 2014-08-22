@@ -13,6 +13,7 @@ import Entidades.ParametrosEstructuras;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
 import Entidades.Terceros;
+import Entidades.VWMensajeSAPBOV8;
 import InterfaceAdministrar.AdministrarInterfaseContableSapBOInterface;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
@@ -25,6 +26,7 @@ import InterfacePersistencia.PersistenciaProcesosInterface;
 import InterfacePersistencia.PersistenciaSolucionesNodosInterface;
 import InterfacePersistencia.PersistenciaTercerosInterface;
 import InterfacePersistencia.PersistenciaVWActualesFechasInterface;
+import InterfacePersistencia.PersistenciaVWMensajeSAPBOV8Interface;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -61,6 +63,8 @@ public class AdministrarInterfaseContableSapBO implements AdministrarInterfaseCo
     PersistenciaParametrosEstructurasInterface persistenciaParametrosEstructuras;
     @EJB
     PersistenciaVWActualesFechasInterface persistenciaVWActualesFechas;
+    @EJB
+    PersistenciaVWMensajeSAPBOV8Interface persistenciaVWMensajesAPBOV8;
 
     private EntityManager em;
 
@@ -293,6 +297,37 @@ public class AdministrarInterfaseContableSapBO implements AdministrarInterfaseCo
             persistenciaInterconSap.cerrarProcesoLiquidacion(em, fechaIni, fechaFin, proceso);
         } catch (Exception e) {
             System.out.println("Error cerrarProcesoLiquidacion Admi : " + e.toString());
+        }
+    }
+
+    @Override
+    public Integer obtenerContadorFlagGeneradoFechasSAP(Date fechaIni, Date fechaFin) {
+        try {
+            Integer contador = persistenciaContabilizaciones.obtenerContadorFlagGeneradoFechasSAP(em, fechaIni, fechaFin);
+            return contador;
+        } catch (Exception e) {
+            System.out.println("Error obtenerContadorFlagGeneradoFechasSAP Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public void ejecutarPKGRecontabilizacion(Date fechaIni, Date fechaFin) {
+        try {
+            persistenciaInterconSap.ejecutarPKGRecontabilizacion(em, fechaIni, fechaFin);
+        } catch (Exception e) {
+            System.out.println("Error obtenerContadorFlagGeneradoFechasSAP Admi : " + e.toString());
+        }
+    }
+
+    @Override
+    public List<VWMensajeSAPBOV8> obtenerErroresSAPBOV8() {
+        try {
+            List<VWMensajeSAPBOV8> lista = persistenciaVWMensajesAPBOV8.buscarListaErroresSAPBOV8(em);
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error obtenerErroresSAPBOV8 Admi : " + e.toString());
+            return null;
         }
     }
 

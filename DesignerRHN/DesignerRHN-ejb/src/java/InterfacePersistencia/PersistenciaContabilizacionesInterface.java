@@ -26,9 +26,11 @@ public interface PersistenciaContabilizacionesInterface {
     public List<Contabilizaciones> buscarContabilizaciones(EntityManager em);
 
     public Date obtenerFechaMaximaContabilizaciones(EntityManager em);
-    
+
     public Date obtenerFechaMaximaContabilizacionesSAPBOV8(EntityManager em);
-    
+
     public void actualizarFlahInterconContableSAPBOV8(EntityManager em, Date fechaIni, Date fechaFin, BigInteger proceso);
+
+    public Integer obtenerContadorFlagGeneradoFechasSAP(EntityManager em, Date fechaIni, Date fechaFin);
 
 }

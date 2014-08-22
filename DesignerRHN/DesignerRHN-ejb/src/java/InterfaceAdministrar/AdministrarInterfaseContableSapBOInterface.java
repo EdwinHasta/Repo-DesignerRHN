@@ -12,6 +12,7 @@ import Entidades.ParametrosContables;
 import Entidades.ParametrosEstructuras;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
+import Entidades.VWMensajeSAPBOV8;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -61,5 +62,11 @@ public interface AdministrarInterfaseContableSapBOInterface {
     public void ejecutarDeleteInterconSAP(Date fechaIni, Date fechaFin, BigInteger proceso);
 
     public void cerrarProcesoLiquidacion(Date fechaIni, Date fechaFin, BigInteger proceso);
+
+    public Integer obtenerContadorFlagGeneradoFechasSAP(Date fechaIni, Date fechaFin);
+
+    public void ejecutarPKGRecontabilizacion(Date fechaIni, Date fechaFin);
+
+    public List<VWMensajeSAPBOV8> obtenerErroresSAPBOV8();
 
 }
