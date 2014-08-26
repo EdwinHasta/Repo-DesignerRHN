@@ -41,6 +41,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Contabilizaciones.findByFlag", query = "SELECT c FROM Contabilizaciones c WHERE c.flag = :flag"),
     @NamedQuery(name = "Contabilizaciones.findByFechacontabilizacion", query = "SELECT c FROM Contabilizaciones c WHERE c.fechacontabilizacion = :fechacontabilizacion")})
 public class Contabilizaciones implements Serializable {
+    @OneToMany(mappedBy = "contabilizacion")
+    private Collection<InterconSapBO> interconSapBOCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -142,6 +144,15 @@ public class Contabilizaciones implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Contabilizaciones[ secuencia=" + secuencia + " ]";
+    }
+
+    @XmlTransient
+    public Collection<InterconSapBO> getInterconSapBOCollection() {
+        return interconSapBOCollection;
+    }
+
+    public void setInterconSapBOCollection(Collection<InterconSapBO> interconSapBOCollection) {
+        this.interconSapBOCollection = interconSapBOCollection;
     }
 
 }

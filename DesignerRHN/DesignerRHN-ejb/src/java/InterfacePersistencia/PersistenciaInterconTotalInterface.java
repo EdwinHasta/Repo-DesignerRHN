@@ -27,4 +27,19 @@ public interface PersistenciaInterconTotalInterface {
 
     public List<InterconTotal> buscarInterconTotalParaParametroContable(EntityManager em, Date fechaInicial, Date fechaFinal);
 
+    public Date obtenerFechaContabilizacionMaxInterconTotal(EntityManager em);
+
+    public void actualizarFlagInterconTotal(EntityManager em, Date fechaInicial, Date fechaFinal, Short empresa);
+
+    public void ejecutarPKGUbicarnuevointercon_total(EntityManager em, BigInteger secuencia, Date fechaInicial, Date fechaFinal, BigInteger proceso);
+
+    public void actualizarFlagInterconTotalProcesoDeshacer(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso);
+
+    public void eliminarInterconTotal(EntityManager em, Date fechaInicial, Date fechaFinal, Short empresa, BigInteger proceso);
+
+    public int contarProcesosContabilizadosInterconTotal(EntityManager em, Date fechaInicial, Date fechaFinal);
+    
+    public void cerrarProcesoContabilizacion(EntityManager em, Date fechaInicial, Date fechaFinal, Short empresa, BigInteger proceso);
+    
+
 }

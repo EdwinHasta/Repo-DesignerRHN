@@ -3,19 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package InterfacePersistencia;
 
-import Entidades.VWActualesFechas;
-import java.util.Date;
+import Entidades.VWMensajeSAPBOV8;
+import java.util.List;
 import javax.persistence.EntityManager;
 
 /**
  *
  * @author Administrador
  */
-public interface PersistenciaVWActualesFechasInterface {
-
-    public Date actualFechaHasta(EntityManager em);
-
-    public Date actualFechaDesde(EntityManager em);
+public interface PersistenciaVWMensajeSAPBOV8Interface {
+    public List<VWMensajeSAPBOV8> buscarListaErroresSAPBOV8(EntityManager em);
 }

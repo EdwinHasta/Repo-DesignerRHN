@@ -30,23 +30,25 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Administrador
  */
 @Entity
-@Table(name = "INTERCON_TOTAL")
+@Table(name = "INTERCON_SAPBO")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "InterconTotal.findAll", query = "SELECT i FROM InterconTotal i"),
-    @NamedQuery(name = "InterconTotal.findByCodigotercero", query = "SELECT i FROM InterconTotal i WHERE i.codigotercero = :codigotercero"),
-    @NamedQuery(name = "InterconTotal.findByFlag", query = "SELECT i FROM InterconTotal i WHERE i.flag = :flag"),
-    @NamedQuery(name = "InterconTotal.findByFechaultimamodificacion", query = "SELECT i FROM InterconTotal i WHERE i.fechaultimamodificacion = :fechaultimamodificacion"),
-    @NamedQuery(name = "InterconTotal.findByFechacontabilizacion", query = "SELECT i FROM InterconTotal i WHERE i.fechacontabilizacion = :fechacontabilizacion"),
-    @NamedQuery(name = "InterconTotal.findBySalida", query = "SELECT i FROM InterconTotal i WHERE i.salida = :salida"),
-    @NamedQuery(name = "InterconTotal.findByNaturaleza", query = "SELECT i FROM InterconTotal i WHERE i.naturaleza = :naturaleza"),
-    @NamedQuery(name = "InterconTotal.findByValorc", query = "SELECT i FROM InterconTotal i WHERE i.valorc = :valorc"),
-    @NamedQuery(name = "InterconTotal.findByValord", query = "SELECT i FROM InterconTotal i WHERE i.valord = :valord"),
-    @NamedQuery(name = "InterconTotal.findBySecuencia", query = "SELECT i FROM InterconTotal i WHERE i.secuencia = :secuencia"),
-    @NamedQuery(name = "InterconTotal.findByEmpresaCodigo", query = "SELECT i FROM InterconTotal i WHERE i.empresaCodigo = :empresaCodigo"),
-    @NamedQuery(name = "InterconTotal.findByProceso", query = "SELECT i FROM InterconTotal i WHERE i.proceso = :proceso"),
-    @NamedQuery(name = "InterconTotal.findByConsecutivo", query = "SELECT i FROM InterconTotal i WHERE i.consecutivo = :consecutivo")})
-public class InterconTotal implements Serializable {
+    @NamedQuery(name = "InterconSapBO.findAll", query = "SELECT i FROM InterconSapBO i"),
+    @NamedQuery(name = "InterconSapBO.findByCodigotercero", query = "SELECT i FROM InterconSapBO i WHERE i.codigotercero = :codigotercero"),
+    @NamedQuery(name = "InterconSapBO.findByFlag", query = "SELECT i FROM InterconSapBO i WHERE i.flag = :flag"),
+    @NamedQuery(name = "InterconSapBO.findByFechaultimamodificacion", query = "SELECT i FROM InterconSapBO i WHERE i.fechaultimamodificacion = :fechaultimamodificacion"),
+    @NamedQuery(name = "InterconSapBO.findByFechacontabilizacion", query = "SELECT i FROM InterconSapBO i WHERE i.fechacontabilizacion = :fechacontabilizacion"),
+    @NamedQuery(name = "InterconSapBO.findBySalida", query = "SELECT i FROM InterconSapBO i WHERE i.salida = :salida"),
+    @NamedQuery(name = "InterconSapBO.findByNaturaleza", query = "SELECT i FROM InterconSapBO i WHERE i.naturaleza = :naturaleza"),
+    @NamedQuery(name = "InterconSapBO.findByValorc", query = "SELECT i FROM InterconSapBO i WHERE i.valorc = :valorc"),
+    @NamedQuery(name = "InterconSapBO.findByValord", query = "SELECT i FROM InterconSapBO i WHERE i.valord = :valord"),
+    @NamedQuery(name = "InterconSapBO.findBySecuencia", query = "SELECT i FROM InterconSapBO i WHERE i.secuencia = :secuencia"),
+    @NamedQuery(name = "InterconSapBO.findByEmpresaCodigo", query = "SELECT i FROM InterconSapBO i WHERE i.empresaCodigo = :empresaCodigo"),
+    @NamedQuery(name = "InterconSapBO.findByConsecutivo", query = "SELECT i FROM InterconSapBO i WHERE i.consecutivo = :consecutivo"),
+    @NamedQuery(name = "InterconSapBO.findByFechavencimiento", query = "SELECT i FROM InterconSapBO i WHERE i.fechavencimiento = :fechavencimiento"),
+    @NamedQuery(name = "InterconSapBO.findByLote", query = "SELECT i FROM InterconSapBO i WHERE i.lote = :lote"),
+    @NamedQuery(name = "InterconSapBO.findByCodigocuentacontable", query = "SELECT i FROM InterconSapBO i WHERE i.codigocuentacontable = :codigocuentacontable")})
+public class InterconSapBO implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Size(max = 20)
@@ -79,10 +81,22 @@ public class InterconTotal implements Serializable {
     private BigInteger secuencia;
     @Column(name = "EMPRESA_CODIGO")
     private Short empresaCodigo;
-    @Column(name = "PROCESO")
-    private BigInteger proceso;
     @Column(name = "CONSECUTIVO")
     private BigInteger consecutivo;
+    @Column(name = "FECHAVENCIMIENTO")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechavencimiento;
+    @Column(name = "LOTE")
+    private BigInteger lote;
+    @Size(max = 40)
+    @Column(name = "CODIGOCUENTACONTABLE")
+    private String codigocuentacontable;
+    @JoinColumn(name = "PROYECTO", referencedColumnName = "SECUENCIA")
+    @ManyToOne
+    private Proyectos proyecto;
+    @JoinColumn(name = "PROCESO", referencedColumnName = "SECUENCIA")
+    @ManyToOne
+    private Procesos proceso;
     @JoinColumn(name = "EMPLEADO", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Empleados empleado;
@@ -101,10 +115,10 @@ public class InterconTotal implements Serializable {
     @Transient
     private Terceros terceroRegistro;
 
-    public InterconTotal() {
+    public InterconSapBO() {
     }
 
-    public InterconTotal(BigInteger secuencia) {
+    public InterconSapBO(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -196,20 +210,52 @@ public class InterconTotal implements Serializable {
         this.empresaCodigo = empresaCodigo;
     }
 
-    public BigInteger getProceso() {
-        return proceso;
-    }
-
-    public void setProceso(BigInteger proceso) {
-        this.proceso = proceso;
-    }
-
     public BigInteger getConsecutivo() {
         return consecutivo;
     }
 
     public void setConsecutivo(BigInteger consecutivo) {
         this.consecutivo = consecutivo;
+    }
+
+    public Date getFechavencimiento() {
+        return fechavencimiento;
+    }
+
+    public void setFechavencimiento(Date fechavencimiento) {
+        this.fechavencimiento = fechavencimiento;
+    }
+
+    public BigInteger getLote() {
+        return lote;
+    }
+
+    public void setLote(BigInteger lote) {
+        this.lote = lote;
+    }
+
+    public String getCodigocuentacontable() {
+        return codigocuentacontable;
+    }
+
+    public void setCodigocuentacontable(String codigocuentacontable) {
+        this.codigocuentacontable = codigocuentacontable;
+    }
+
+    public Proyectos getProyecto() {
+        return proyecto;
+    }
+
+    public void setProyecto(Proyectos proyecto) {
+        this.proyecto = proyecto;
+    }
+
+    public Procesos getProceso() {
+        return proceso;
+    }
+
+    public void setProceso(Procesos proceso) {
+        this.proceso = proceso;
     }
 
     public Empleados getEmpleado() {
@@ -262,10 +308,10 @@ public class InterconTotal implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof InterconTotal)) {
+        if (!(object instanceof InterconSapBO)) {
             return false;
         }
-        InterconTotal other = (InterconTotal) object;
+        InterconSapBO other = (InterconSapBO) object;
         if ((this.secuencia == null && other.secuencia != null) || (this.secuencia != null && !this.secuencia.equals(other.secuencia))) {
             return false;
         }
@@ -274,7 +320,7 @@ public class InterconTotal implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.InterconTotal[ secuencia=" + secuencia + " ]";
+        return "Entidades.InterconSapBO[ secuencia=" + secuencia + " ]";
     }
 
 }

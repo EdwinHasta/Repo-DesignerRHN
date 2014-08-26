@@ -560,7 +560,7 @@
                                     <p:commandButton id="btnPILA" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 20px; background-image: url(Imagenes/IntPILA.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="parametroautoliq" actionListener="#{controlParametroAutoliq.recibirPagina('nomina')}"/>
                                     <p:commandButton id="btnPresup" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 115px; background-image: url(Imagenes/IntPresupuesto.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
                                     <p:commandButton id="btnTersoreria" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 213px; background-image: url(Imagenes/IntTesoreria.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="ReporteBanco" actionListener="#{controlReportesBancos.iniciarPagina}"/>
-                                    <p:commandButton id="btnContabi" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 310px; background-image: url(Imagenes/IntContabilidad.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="interfasecontabletotal" actionListener="#{controlInterfaseContableTotal.recibirPagina('nomina')}"/>
+                                    <p:commandButton id="btnContabi" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 310px; background-image: url(Imagenes/IntContabilidad.gif); background-repeat: no-repeat; background-size: 100% 100%; " onclick="confirmarProcesoInterfaceContableTotal.show()"/>
                                     <h:outputText value="#{msg['integracionconpila']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 15px; color: blue;  font-weight: bold" />
                                     <h:outputText value="#{msg['textointegracionconpila']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 32px;  text-align: justify" />
                                     <h:outputText value="#{msg['integracionconpresupuesto']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 120px; color: blue;  font-weight: bold"/>
@@ -574,6 +574,15 @@
                                 <em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>
                                 <h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
                                 <h:outputText style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
+                                
+                                <p:dialog id="confirmarProcesoInterfaceContableTotal" header="#{msg['atencion']}" widgetVar="confirmarProcesoInterfaceContableTotal"  resizable="false" draggable="false" modal="true" height="100" width="420px"  closable="false">  
+                                    <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 10px; top: 15px;"  />
+                                    <h:outputText value="#{msg['confirmarProcesoInterfaceContableTotal']}" style="position: absolute; left: 100px; top: 15px; width: 320px; font-weight:bold;" />
+                                    <p:commandButton value="#{msg['si']}" onclick="confirmarProcesoInterfaceContableTotal.hide();" action="interfasecontablesapbov8" actionListener="#{controlInterfaseContableSapBOV8.recibirPagina('nomina')}" style="position: absolute; top: 60px; left: 290px " process="@this" icon="ui-icon-check" />
+                                    <p:commandButton value="#{msg['no']}" onclick="confirmarProcesoInterfaceContableTotal.hide();" style="position: absolute; top: 60px; left: 345px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                                </p:dialog>
+                                
+                                
                             </p:tab> 
 
                             <p:tab title="#{msg['gerencial']}" id="Gerencial" > 
