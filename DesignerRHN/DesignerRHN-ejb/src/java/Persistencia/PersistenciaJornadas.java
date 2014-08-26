@@ -27,7 +27,7 @@ public class PersistenciaJornadas implements PersistenciaJornadasInterface {
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    EntityManager em;
-
+    @Override
     public void crear(EntityManager em, Jornadas jornadas) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
@@ -43,6 +43,7 @@ public class PersistenciaJornadas implements PersistenciaJornadasInterface {
         }
     }
 
+    @Override
     public void editar(EntityManager em, Jornadas jornadas) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
@@ -58,6 +59,7 @@ public class PersistenciaJornadas implements PersistenciaJornadasInterface {
         }
     }
 
+    @Override
     public void borrar(EntityManager em, Jornadas jornadas) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
@@ -77,6 +79,7 @@ public class PersistenciaJornadas implements PersistenciaJornadasInterface {
         }
     }
 
+    @Override
     public Jornadas consultarJornada(EntityManager em, BigInteger secuencia) {
         try {
             em.clear();
@@ -88,6 +91,7 @@ public class PersistenciaJornadas implements PersistenciaJornadasInterface {
         }
     }
 
+    @Override
     public List<Jornadas> consultarJornadas(EntityManager em) {
         try {
             em.clear();
@@ -101,6 +105,7 @@ public class PersistenciaJornadas implements PersistenciaJornadasInterface {
         }
     }
 
+    @Override
     public BigInteger contarTarifasEscalafonesJornada(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
@@ -117,6 +122,7 @@ public class PersistenciaJornadas implements PersistenciaJornadasInterface {
         }
     }
 
+    @Override
     public BigInteger contarJornadasLaboralesJornada(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
