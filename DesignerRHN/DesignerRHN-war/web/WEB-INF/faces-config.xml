@@ -533,7 +533,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/interfacecontabletotal.xhtml</from-view-id>
+        <from-view-id>/interfasecontabletotal.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
             <to-view-id>/Rastro.xhtml</to-view-id>
@@ -544,7 +544,75 @@
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfaseRastro</from-outcome>
-            <to-view-id>/interfacecontabletotal.xhtml</to-view-id>
+            <to-view-id>/interfasecontabletotal.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/interfasecontablesapbovca.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>interfaseSAPBOVCARastro</from-outcome>
+            <to-view-id>/interfasecontablesapbovca.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/interfasecontablesapbov8.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>interfaseBOV8Rastro</from-outcome>
+            <to-view-id>/interfasecontablesapbov8.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/interfasecontablesapbope.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>interfaseSAPBOPERastro</from-outcome>
+            <to-view-id>/interfasecontablesapbope.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/interfasecontablesapbopq.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>interfaseSAPBOPQRastro</from-outcome>
+            <to-view-id>/interfasecontablesapbopq.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>

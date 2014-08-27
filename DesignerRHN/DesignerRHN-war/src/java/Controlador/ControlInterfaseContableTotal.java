@@ -257,6 +257,7 @@ public class ControlInterfaseContableTotal implements Serializable {
                 activarEnviar = true;
                 activarDeshacer = true;
                 context.update("form:PanelTotal");
+                context.update("form:panelParametro");
                 context.update("form:btnArriba");
                 context.update("form:btnAbajo");
             }
@@ -336,6 +337,7 @@ public class ControlInterfaseContableTotal implements Serializable {
                 activarEnviar = true;
                 activarDeshacer = true;
                 context.update("form:PanelTotal");
+                context.update("form:panelParametro");
                 context.update("form:btnArriba");
                 context.update("form:btnAbajo");
             }
@@ -1102,6 +1104,7 @@ public class ControlInterfaseContableTotal implements Serializable {
     }
 
     public void guardarCambiosParametro() {
+        RequestContext context = RequestContext.getCurrentInstance();
         try {
             if (modificacionParametro == true) {
                 administrarInterfaseContableTotal.modificarParametroContable(parametroContableActual);
@@ -1121,6 +1124,7 @@ public class ControlInterfaseContableTotal implements Serializable {
             FacesMessage msg = new FacesMessage("Información", "Se guardarón los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             RequestContext.getCurrentInstance().update("form:growl");
+            context.update("form:PanelTotal");
         } catch (Exception e) {
             System.out.println("Error guardarCambiosParametro Controlador : " + e.toString());
             FacesMessage msg = new FacesMessage("Información", "Un error ha ocurrido en el guardado, intente nuevamente");
@@ -2052,6 +2056,9 @@ public class ControlInterfaseContableTotal implements Serializable {
             }
             if (listaParametrosContables != null) {
                 int tam = listaParametrosContables.size();
+                if (tam > 0) {
+                    registroActual = 0;
+                }
                 if (tam == 0 || tam == 1) {
                     estadoBtnAbajo = true;
                     estadoBtnArriba = true;
