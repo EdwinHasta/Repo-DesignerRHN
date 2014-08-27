@@ -5,6 +5,7 @@ package InterfacePersistencia;
 
 import Entidades.Pantallas;
 import java.math.BigInteger;
+import java.util.List;
 import javax.persistence.EntityManager;
 
 /**
@@ -19,5 +20,6 @@ public interface PersistenciaPantallasInterface {
      * @return Retorna una Pantalla.
      */
     public Pantallas buscarPantalla(EntityManager em, BigInteger secuenciaTab);
+    public List<Pantallas> buscarPantallas(EntityManager em);
 
 }

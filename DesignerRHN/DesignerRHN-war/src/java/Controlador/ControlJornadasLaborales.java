@@ -1128,9 +1128,10 @@ public class ControlJornadasLaborales implements Serializable {
             tipoLista = 1;
         }
         RequestContext context = RequestContext.getCurrentInstance();
-        infoRegistroJL = "Cantidad de registros: " + filtradoListaJornadasSemanales.size();
+        infoRegistroJL = "Cantidad de registros: " + filtradoListaJornadasLaborales.size();
         context.update("form:infoRegistroJL");
     }
+    
 
     //EVENTO FILTRARJS
     public void eventoFiltrarJS() {

@@ -478,8 +478,7 @@ public class ControlUnidad implements Serializable {
             }
         }
 
-        context.update(
-                "form:datosUnidades");
+        context.update("form:datosUnidades");
     }
 
     public void asignarIndex(Integer indice, int dlg, int LND) {

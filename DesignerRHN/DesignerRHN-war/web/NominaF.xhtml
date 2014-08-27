@@ -686,7 +686,7 @@
                                 <fieldset id="contTablas"  style="position:absolute; border-radius: 10px; top: 195px; width: 795px; height: 233px">
                                     <h:outputText value="#{msg['tablasdelsistema']}" styleClass="outputTextFielset" />
                                     <div style="position: absolute; top: 10px;" >
-                                        <p:dataTable id="Tablas"  var="tablas"  value="#{controlRemoto.listTablas}"
+                                        <p:dataTable id="Tablas"  var="tablas"  value="#{controlRemoto.listTablas}" rowIndexVar="indice"
                                                      rowKey="#{tablas.secuencia}" selection="#{controlRemoto.selectTabla}" selectionMode="single"
                                                      scrollable="true" scrollHeight="#{controlRemoto.altoTablas}" emptyMessage="#{msg['noseencontraronregistros']}"
                                                      filteredValue="#{controlRemoto.filterListTablas}" widgetVar="tabl" scrollWidth="795" style="width: 780px">   
@@ -694,7 +694,7 @@
                                             <p:ajax event="rowSelect" listener="#{controlRemoto.exportarTabla}" />
 
                                             <p:column exportable="false"  width="16">
-                                                <p:commandButton id="desplegar"  value=""  actionListener="#{controlRemoto.infoTablas(tablas)}" update="Tablas, :form:VentanaTab"
+                                                <p:commandButton id="desplegar"  value="" action="#{controlRemoto.redireccion(indice)}" actionListener="#{controlUsuarios.recibirPaginaEntrante('nomina')}"  update="Tablas, :form:VentanaTab"
                                                                  style=" width: 16px; height:16px ;background-image: url(Imagenes/revertir.gif); background-repeat: no-repeat; background-size: 100% 100%;" />
                                                 <p:tooltip for="desplegar" value="#{msg['despliegaesteregistro']}"/>
 

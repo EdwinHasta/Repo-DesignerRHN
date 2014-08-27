@@ -682,6 +682,28 @@ public class ControlCausasAusentismos implements Serializable {
         }
         context.update("form:datosCausasAusentismos");
     }
+    
+     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LND = LISTA - NUEVO - DUPLICADO)
+    public void asignarIndex(Integer indice, int dlg, int LND) {
+        index = indice;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (LND == 0) {
+            tipoActualizacion = 0;
+        } else if (LND == 1) {
+            tipoActualizacion = 1;
+            index = -1;
+            secRegistro = null;
+            System.out.println("Tipo Actualizacion: " + tipoActualizacion);
+        } else if (LND == 2) {
+            index = -1;
+            secRegistro = null;
+            tipoActualizacion = 2;
+        }
+        if (dlg == 0) {
+            context.update("form:clasesAusentismosDialogo");
+            context.execute("clasesAusentismosDialogo.show()");
+        }
+    }
 
     //MOSTRAR L.O.V CLASES DE AUSENTISMO   
     public void actualizarClases() {
