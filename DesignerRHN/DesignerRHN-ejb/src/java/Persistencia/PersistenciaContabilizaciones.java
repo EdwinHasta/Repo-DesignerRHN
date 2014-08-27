@@ -119,6 +119,7 @@ public class PersistenciaContabilizaciones implements PersistenciaContabilizacio
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             String sql = "UPDATE CONTABILIZACIONES SET FLAG='GENERADO' WHERE FLAG='CONTABILIZADO'\n"
                     + "		 AND FECHAGENERACION BETWEEN ? AND ? \n"
                     + "		 AND  EXISTS \n"

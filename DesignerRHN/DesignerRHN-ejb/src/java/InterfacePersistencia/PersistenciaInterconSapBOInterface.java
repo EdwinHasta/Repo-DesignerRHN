@@ -36,6 +36,17 @@ public interface PersistenciaInterconSapBOInterface {
     public void ejecutarDeleteInterconSAPBOV8(EntityManager em, Date fechaIni, Date fechaFin, BigInteger proceso);
 
     public void cerrarProcesoLiquidacion(EntityManager em, Date fechaIni, Date fechaFin, BigInteger proceso);
-    
+
     public void ejecutarPKGRecontabilizacion(EntityManager em, Date fechaIni, Date fechaFin);
+
+    public void ejeuctarPKGUbicarnuevointercon_SAPBO_VCA(EntityManager em, BigInteger secuencia, Date fechaIni, Date fechaFin, BigInteger proceso);
+
+    public int contarProcesosContabilizadosInterconSAPBO(EntityManager em, Date fechaInicial, Date fechaFinal);
+
+    public void ejeuctarPKGUbicarnuevointercon_SAPBO_PE(EntityManager em, BigInteger secuencia, Date fechaIni, Date fechaFin, BigInteger proceso);
+
+    public void ejeuctarPKGUbicarnuevointercon_SAPBOPQ(EntityManager em, BigInteger secuencia, Date fechaIni, Date fechaFin, BigInteger proceso);
+
+    public void ejeuctarPKGUbicarnuevointercon_SAPBOVHP(EntityManager em, BigInteger secuencia, Date fechaIni, Date fechaFin, BigInteger proceso);
+
 }

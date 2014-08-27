@@ -241,6 +241,7 @@ public class PersistenciaInterconTotal implements PersistenciaInterconTotalInter
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             String sql = "UPDATE INTERCON_TOTAL I SET I.FLAG='ENVIADO'\n"
                     + " WHERE  \n"
                     + " I.FECHACONTABILIZACION BETWEEN ? AND ?\n"
@@ -266,11 +267,12 @@ public class PersistenciaInterconTotal implements PersistenciaInterconTotalInter
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             String sql = "UPDATE INTERCON_TOTAL I SET I.FLAG='ENVIADO' WHERE  \n" +
                         "     I.FECHACONTABILIZACION BETWEEN :PARAMETROSCONTABLES.FECHAINICIALCONTABILIZACION AND :PARAMETROSCONTABLES.FECHAFINALCONTABILIZACION\n" +
                         "     and nvl(i.proceso,0) = nvl(:PARAMETROSCONTABLES.proceso,nvl(i.proceso,0))\n" +
                         "     and i.empresa_codigo=:PARAMETROSCONTABLES.empresa_codigo"
-                        + "   and exists (select 'x' from empleados e where e.secuencia=i.empleado);";
+                        + "   and exists (select 'x' from empleados e where e.secuencia=i.empleado)";
             Query query = em.createNativeQuery(sql);
             query.setParameter(1, fechaInicial);
             query.setParameter(2, fechaFinal);

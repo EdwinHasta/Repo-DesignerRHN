@@ -12,7 +12,6 @@ import Entidades.ParametrosContables;
 import Entidades.ParametrosEstructuras;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
-import Entidades.VWMensajeSAPBOV8;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -21,9 +20,11 @@ import java.util.List;
  *
  * @author Administrador
  */
-public interface AdministrarInterfaseContableSapBOInterface {
+public interface AdministrarInterfaseContableSapBOVCAInterface {
 
     public void obtenerConexion(String idSesion);
+
+    public int contarProcesosContabilizadosInterconSAPBO(Date fechaInicial, Date fechaFinal);
 
     public List<ParametrosContables> obtenerParametrosContablesUsuarioBD(String usuarioBD);
 
@@ -35,7 +36,7 @@ public interface AdministrarInterfaseContableSapBOInterface {
 
     public List<SolucionesNodos> obtenerSolucionesNodosParametroContable(Date fechaInicial, Date fechaFinal);
 
-    public List<InterconSapBO> obtenerInterconSapBOParametroContable(Date fechaInicial, Date fechaFinal);
+    public List<InterconSapBO> obtenerInterconSapBOVCAParametroContable(Date fechaInicial, Date fechaFinal);
 
     public List<Procesos> lovProcesos();
 
@@ -49,26 +50,22 @@ public interface AdministrarInterfaseContableSapBOInterface {
 
     public ParametrosEstructuras parametrosLiquidacion();
 
-    public void actualizarFlagProcesoAnularInterfaseContableSAPBOV8(Date fechaIni, Date fechaFin);
+    public void actualizarFlagProcesoAnularInterfaseContableSAPBOVCA(Date fechaIni, Date fechaFin);
 
     public Date buscarFechaHastaVWActualesFechas();
 
     public Date buscarFechaDesdeVWActualesFechas();
 
-    public void ejeuctarPKGUbicarnuevointercon_SAPBOV8(BigInteger secuencia, Date fechaIni, Date fechaFin, BigInteger proceso);
+    public void cerrarProcesoLiquidacion(Date fechaIni, Date fechaFin, BigInteger proceso);
 
-    public void cambiarFlagInterconContableSAPBOV8(Date fechaIni, Date fechaFin, BigInteger proceso);
+    public void cambiarFlagInterconContableSAPBOVCA(Date fechaIni, Date fechaFin, BigInteger proceso);
 
     public void ejecutarDeleteInterconSAP(Date fechaIni, Date fechaFin, BigInteger proceso);
 
-    public void cerrarProcesoLiquidacion(Date fechaIni, Date fechaFin, BigInteger proceso);
+    public void ejeuctarPKGUbicarnuevointercon_SAPBO_VCA(BigInteger secuencia, Date fechaIni, Date fechaFin, BigInteger proceso);
 
     public Integer obtenerContadorFlagGeneradoFechasSAP(Date fechaIni, Date fechaFin);
 
     public void ejecutarPKGRecontabilizacion(Date fechaIni, Date fechaFin);
-
-    public List<VWMensajeSAPBOV8> obtenerErroresSAPBOV8();
-    
-    public int contarProcesosContabilizadosInterconSAPBO(Date fechaInicial, Date fechaFinal);
 
 }
