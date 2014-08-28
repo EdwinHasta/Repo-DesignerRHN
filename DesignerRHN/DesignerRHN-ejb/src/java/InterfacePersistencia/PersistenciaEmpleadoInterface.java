@@ -5,6 +5,7 @@ package InterfacePersistencia;
 
 import Entidades.Empleados;
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -169,4 +170,13 @@ public interface PersistenciaEmpleadoInterface {
     public List<Empleados> consultarEmpleadosParametroAutoliq(EntityManager em);
 
     public List<Empleados> consultarEmpleadosParaProyecciones(EntityManager em);
+    
+    public void eliminarEmpleadoNominaF(EntityManager em, BigInteger secuenciaEmpleado, BigInteger secuenciaPersona);
+    
+    public void reingresarEmpleado(EntityManager em, BigInteger codigoEmpleado, BigInteger centroCosto,Date fechaReingreso, BigInteger empresa, Date fechaFinal);
+
+    public List<Empleados> consultarEmpleadosReingreso(EntityManager em);
+    
+    public Date verificarFecha(EntityManager em, BigInteger secuenciaEmpleado);
+
 }

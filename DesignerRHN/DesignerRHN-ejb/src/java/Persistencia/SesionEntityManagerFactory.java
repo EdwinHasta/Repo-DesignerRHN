@@ -51,7 +51,11 @@ public class SesionEntityManagerFactory implements SesionEntityManagerFactoryInt
             //properties.put("hibernate.connection.username", usuario);
             properties.put("javax.persistence.jdbc.password", contraseña);
             //properties.put("hibernate.connection.password", contraseña);
+            System.out.println("Usuario: " + usuario);
+            System.out.println("Contraseña: " + contraseña);
+            System.out.println("Base de Datos: " + baseDatos);
             emf = Persistence.createEntityManagerFactory(baseDatos, properties);
+            System.out.println("emf=Persistence.createEntityManagerFactory(baseDatos, properties)" + emf.getProperties() );
             return true;
         } catch (Exception e) {
             System.out.println("Error crearFactoryUsuario: " + e);

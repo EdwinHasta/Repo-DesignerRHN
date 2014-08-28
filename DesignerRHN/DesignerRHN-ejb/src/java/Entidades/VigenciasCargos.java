@@ -100,6 +100,9 @@ public class VigenciasCargos implements Serializable {
     }
 
     public Date getFechavigencia() {
+        if(fechavigencia == null){
+            fechavigencia = new Date();
+        }
         return fechavigencia;
     }
 

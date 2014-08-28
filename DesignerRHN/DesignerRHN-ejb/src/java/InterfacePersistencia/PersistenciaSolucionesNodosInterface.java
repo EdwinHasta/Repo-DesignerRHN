@@ -145,4 +145,7 @@ public interface PersistenciaSolucionesNodosInterface {
     public boolean solucionesNodosParaConcepto(EntityManager em, BigInteger secuencia);
 
     public List<SolucionesNodos> buscarSolucionesNodosParaParametroContable(EntityManager em, Date fechaInicial, Date fechaFinal);
+
+    public Long activos(EntityManager em, BigInteger secuencia);
+
 }

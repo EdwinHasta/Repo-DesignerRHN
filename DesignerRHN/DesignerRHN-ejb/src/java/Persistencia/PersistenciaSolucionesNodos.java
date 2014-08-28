@@ -178,6 +178,22 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
             return null;
         }
     }
+    
+    @Override
+    public Long activos(EntityManager em, BigInteger secuencia) {
+        try {
+            em.clear();
+            Query query = em.createQuery("SELECT count(sn) FROM SolucionesNodos sn where sn.empleado.secuencia = :secuencia;)");
+            query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            Long r = (Long) query.getSingleResult();
+            System.out.println("Resultado : " + r);
+            return r;
+        } catch (Exception e) {
+            System.out.println("Error activos Persistencia : " + e.toString());
+            return null;
+        }
+    }
 
     @Override
     public List<SolucionesNodos> solucionNodoEmpleado(EntityManager em, BigInteger secuenciaEmpleado) {
