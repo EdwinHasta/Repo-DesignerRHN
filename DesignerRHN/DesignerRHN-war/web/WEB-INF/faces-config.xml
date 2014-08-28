@@ -4635,7 +4635,30 @@
             <redirect />
         </navigation-case>
     </navigation-rule>    
-    
+    <navigation-rule>
+        <from-view-id>/NominaF.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>reintegro</from-outcome>
+            <to-view-id>/reingresarempleado.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>  
+    <navigation-rule>
+        <from-view-id>/reingresarempleado.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>nomina</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/EmplVigenciaTipoContrato.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>cambiofechaingreso</from-outcome>
+            <to-view-id>/cambiofechaingreso.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
     
     
 </faces-config>
