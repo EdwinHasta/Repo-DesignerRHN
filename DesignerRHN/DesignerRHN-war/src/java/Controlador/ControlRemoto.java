@@ -124,6 +124,7 @@ public class ControlRemoto implements Serializable {
     private String actualCargo;
     private String tipoPersonal;
     private String accion;
+    private String redirigir;
 
     public ControlRemoto() {
         accion = null;
@@ -823,8 +824,20 @@ public class ControlRemoto implements Serializable {
         nombreArchivo = "Tablas";
     }
 
+    
+      
+    public String redireccion(Integer indice){
+         if(indice >= 0){
+            if(listTablas.get(indice).getNombre().equalsIgnoreCase("USUARIOS")){
+                redirigir = "usuario";
+                
+            } // Aca vienen un huevo de Else if para el resto de las pantallas
+        }
+        return redirigir;
+    }
+    
     public void infoTablas(Tablas tab) {
-
+        
         selectTabla = tab;
         System.out.println(selectTabla.getSecuencia());
         BigInteger secuenciaTab = selectTabla.getSecuencia();

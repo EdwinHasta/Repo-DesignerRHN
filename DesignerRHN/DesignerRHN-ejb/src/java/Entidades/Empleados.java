@@ -42,6 +42,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empleados.findAll", query = "SELECT e FROM Empleados e"),
     @NamedQuery(name = "Empleados.findBySecuencia", query = "SELECT e FROM Empleados e where e.secuencia = :secuencia")})
 public class Empleados implements Serializable {
+    @OneToMany(mappedBy = "empleado")
+    private Collection<InterconSapBO> interconSapBOCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
     private Collection<SolucionesNodos> solucionesNodosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
@@ -408,6 +410,15 @@ public class Empleados implements Serializable {
 
     public void setInterconTotalCollection(Collection<InterconTotal> interconTotalCollection) {
         this.interconTotalCollection = interconTotalCollection;
+    }
+
+    @XmlTransient
+    public Collection<InterconSapBO> getInterconSapBOCollection() {
+        return interconSapBOCollection;
+    }
+
+    public void setInterconSapBOCollection(Collection<InterconSapBO> interconSapBOCollection) {
+        this.interconSapBOCollection = interconSapBOCollection;
     }
 
    

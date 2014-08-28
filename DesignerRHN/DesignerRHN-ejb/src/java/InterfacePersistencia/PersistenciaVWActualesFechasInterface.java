@@ -5,6 +5,7 @@
  */
 package InterfacePersistencia;
 
+import Entidades.VWActualesFechas;
 import java.util.Date;
 import javax.persistence.EntityManager;
 
@@ -15,4 +16,6 @@ import javax.persistence.EntityManager;
 public interface PersistenciaVWActualesFechasInterface {
 
     public Date actualFechaHasta(EntityManager em);
+
+    public Date actualFechaDesde(EntityManager em);
 }

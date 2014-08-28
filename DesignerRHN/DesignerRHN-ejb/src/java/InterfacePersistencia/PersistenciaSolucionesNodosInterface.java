@@ -148,4 +148,5 @@ public interface PersistenciaSolucionesNodosInterface {
 
     public Long activos(EntityManager em, BigInteger secuencia);
 
+    public List<SolucionesNodos> buscarSolucionesNodosParaParametroContable_SAP(EntityManager em, Date fechaInicial, Date fechaFinal);
 }

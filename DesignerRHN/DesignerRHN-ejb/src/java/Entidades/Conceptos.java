@@ -45,6 +45,8 @@ public class Conceptos implements Serializable {
     @Column(name = "CODIGO")
     private BigInteger codigo;
     @OneToMany(mappedBy = "concepto")
+    private Collection<InterconSapBO> interconSapBOCollection;
+    @OneToMany(mappedBy = "concepto")
     private Collection<InterconTotal> interconTotalCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
     private Collection<ConceptosRedondeos> conceptosRedondeosCollection;
@@ -757,6 +759,16 @@ public class Conceptos implements Serializable {
         this.conceptosRedondeosCollection = conceptosRedondeosCollection;
     }
 
+
+    @XmlTransient
+    public Collection<InterconTotal> getInterconTotalCollection() {
+        return interconTotalCollection;
+    }
+
+    public void setInterconTotalCollection(Collection<InterconTotal> interconTotalCollection) {
+        this.interconTotalCollection = interconTotalCollection;
+    }
+
     public BigInteger getCodigo() {
         return codigo;
     }
@@ -766,11 +778,11 @@ public class Conceptos implements Serializable {
     }
 
     @XmlTransient
-    public Collection<InterconTotal> getInterconTotalCollection() {
-        return interconTotalCollection;
+    public Collection<InterconSapBO> getInterconSapBOCollection() {
+        return interconSapBOCollection;
     }
 
-    public void setInterconTotalCollection(Collection<InterconTotal> interconTotalCollection) {
-        this.interconTotalCollection = interconTotalCollection;
+    public void setInterconSapBOCollection(Collection<InterconSapBO> interconSapBOCollection) {
+        this.interconSapBOCollection = interconSapBOCollection;
     }
 }

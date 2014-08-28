@@ -23,7 +23,7 @@
 
                             <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 30px;  " id="btnBuscarEmpleados" actionListener="#{controlAusentismos.asignarIndex(indice, 0, 0)}" value="#{msg['buscar']}" process="@this"/>
                             <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 60px;  " id="btnMostrarTodos" actionListener="#{controlAusentismos.mostrarTodos()}" value="#{msg['mostrar']}" process="@this"/>
-
+                           
                             <p:dataTable id="datosEmpleados" var="empleados" value="#{controlAusentismos.listaEmpleadosAusentismo}"
                                          rowKey="#{empleados.secuencia}" rowIndexVar="indiceT"  style=" border: 1px; text-align: left; width: 560px"                           
                                          scrollable="true" scrollHeight="80" scrollWidth="575" filteredValue="#{controlAusentismos.filtradosListaEmpleadosAusentismo}" 
@@ -236,7 +236,7 @@
                                         <p:column  rowspan="1" colspan="1"  />                               
                                         <p:column  rowspan="1" colspan="1"  >  
                                             <f:facet name="footer">
-                                                <p:commandButton style="width: 315px; margin: -14px; height: 26px; border: none; color: blue" value=" " id="fooCausaAusentismo" action="causasausentismos" actionListener="#{controlCausasAusentismos.recibirPaginaEntrante('atausentismos')}"/>
+                                                <p:commandButton style="width: 315px; margin: -14px; height: 26px; border: none; color: blue" value=" " id="fooCausaAusentismo" action="causasausentismos" actionListener="#{controlCausasAusentismos.recibirPaginaEntrante('atausentismos')}" process="@this"/>
                                             </f:facet>
                                         </p:column>
                                         <p:column  rowspan="1" colspan="1"  />  
@@ -557,6 +557,23 @@
                                     </p:cellEditor>  
                                     </p:column>
                             </p:dataTable>
+                            <p:dataTable id="datosAusentismosEmpleado" var="ausentismos" value="#{controlAusentismos.listaAusentismos}"
+                                         rowKey="#{ausentismos.secuencia}" rowIndexVar="indice" style="border: 1px;width: 840px"                           
+                                         scrollHeight="#{controlAusentismos.altoTabla}" scrollable="true"
+                                         filteredValue="#{controlAusentismos.filtradosListaAusentismos}" 
+                                         emptyMessage="#{msg['vacio']}" 
+                                         editable="true" editMode="cell"
+                                         selectionMode="single" selection="#{controlAusentismos.ausentismoSeleccionado}">
+                                
+                                <p:column headerText=" " sortBy="#{ausentismos.tipo.descripcion}" filterBy="#{JornadasLaborales.codigo}" filterMatchMode="contains" id="jornadasLaboralesCodigos" width="70" filterStyle="display: none; visibility: hidden;" >
+                                    
+                                    <f:facet name="footer">
+                                    </f:facet>
+                                </p:column>
+                                         
+                                
+                            </p:dataTable>
+                            
                         </fieldset>
 
                     </p:panel>

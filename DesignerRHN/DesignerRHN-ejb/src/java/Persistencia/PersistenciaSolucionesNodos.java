@@ -273,7 +273,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
         }
     }
 
-    @Override 
+    @Override
     public List<SolucionesNodos> buscarSolucionesNodosParaParametroContable(EntityManager em, Date fechaInicial, Date fechaFinal) {
         try {
             em.clear();
@@ -289,6 +289,35 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
             List<SolucionesNodos> soluciones = query.getResultList();
             return soluciones;
         } catch (Exception e) {
+            System.out.println("Error buscarSolucionesNodosParaParametroContable PersistenciaSolucionesNodos : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public List<SolucionesNodos> buscarSolucionesNodosParaParametroContable_SAP(EntityManager em, Date fechaInicial, Date fechaFinal) {
+        try {
+            System.out.println("Entre al metodo solucionesnodos");
+            em.clear();
+            String sql = "select * from SolucionesNodos s WHERE EXISTS (SELECT 'X' FROM contabilizaciones C\n"
+                    + "              where C.flag='GENERADO' and C.fechageneracion \n"
+                    + "               between ? and ?\n"
+                    + "                   and c.solucionnodo = s.secuencia)\n"
+                    + " AND  EXISTS (SELECT 'X' FROM  cortesprocesos cp , procesos p WHERE  cp.secuencia = s.corteproceso\n"
+                    + " AND p.secuencia = cp.proceso AND CONTABILIZACION = 'S')\n"
+                    + " and exists (select 'x' from empleados e where e.secuencia=s.empleado)";
+            Query query = em.createNativeQuery(sql, SolucionesNodos.class);
+            query.setParameter(1, fechaInicial);
+            query.setParameter(2, fechaFinal);
+            List<SolucionesNodos> soluciones = query.getResultList();
+            if (soluciones != null) {
+                System.out.println("Lista Soluciones Nodos soluciones : "+soluciones.size());
+            } else {
+                System.out.println("Lista Nula Soluciones Nodos");
+            }
+            return soluciones;
+        } catch (Exception e) {
+            System.out.println("Error buscarSolucionesNodosParaParametroContable_SAP PersistenciaSolucionesNodos : " + e.toString());
             return null;
         }
     }

@@ -19,6 +19,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -62,6 +63,8 @@ public class Usuarios implements Serializable {
     @JoinColumn(name = "PANTALLAINICIO", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Pantallas pantallainicio;
+    @Transient
+    private boolean estadoActivo;
 
     public Usuarios() {
     }
@@ -87,7 +90,10 @@ public class Usuarios implements Serializable {
     }
 
     public String getAlias() {
-        return alias;
+        if (alias == null) {
+            alias = ("");
+        }
+        return alias.toUpperCase();
     }
 
     public void setAlias(String alias) {
@@ -103,6 +109,9 @@ public class Usuarios implements Serializable {
     }
 
     public Personas getPersona() {
+        if (persona==null){
+            this.persona=new Personas();
+        }
         return persona;
     }
 
@@ -111,6 +120,9 @@ public class Usuarios implements Serializable {
     }
 
     public Perfiles getPerfil() {
+        if (perfil==null){
+            this.perfil=new Perfiles();
+        }
         return perfil;
     }
 
@@ -119,12 +131,39 @@ public class Usuarios implements Serializable {
     }
 
     public Pantallas getPantallainicio() {
+        if (pantallainicio==null){
+            this.pantallainicio=new Pantallas();
+        }
         return pantallainicio;
     }
 
     public void setPantallainicio(Pantallas pantallainicio) {
         this.pantallainicio = pantallainicio;
     }
+
+    public boolean isEstadoActivo() {
+        if (activo != null) {
+            if (activo.equals("S")) {
+                estadoActivo = true;
+            } else {
+                estadoActivo = false;
+            }
+        } else {
+            estadoActivo = false;
+        }        
+        return estadoActivo;
+    }
+
+    public void setEstadoActivo(boolean estadoActivo) {
+        if (estadoActivo == true) {
+            activo = "S";
+        } else {
+            activo = "N";
+        }
+        this.estadoActivo = estadoActivo;
+    }
+    
+    
 
     @Override
     public int hashCode() {

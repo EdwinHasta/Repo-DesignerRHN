@@ -4,16 +4,24 @@ import Entidades.ActualUsuario;
 import Entidades.Empresas;
 import Entidades.InterconTotal;
 import Entidades.ParametrosContables;
+import Entidades.ParametrosEstructuras;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
+import Entidades.Terceros;
+import Entidades.VWActualesFechas;
 import InterfaceAdministrar.AdministrarInterfaseContableTotalInterface;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
+import InterfacePersistencia.PersistenciaContabilizacionesInterface;
 import InterfacePersistencia.PersistenciaEmpresasInterface;
 import InterfacePersistencia.PersistenciaInterconTotalInterface;
 import InterfacePersistencia.PersistenciaParametrosContablesInterface;
+import InterfacePersistencia.PersistenciaParametrosEstructurasInterface;
 import InterfacePersistencia.PersistenciaProcesosInterface;
 import InterfacePersistencia.PersistenciaSolucionesNodosInterface;
+import InterfacePersistencia.PersistenciaTercerosInterface;
+import InterfacePersistencia.PersistenciaVWActualesFechasInterface;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -41,6 +49,14 @@ public class AdministrarInterfaseContableTotal implements AdministrarInterfaseCo
     PersistenciaProcesosInterface persistenciaProcesos;
     @EJB
     AdministrarSesionesInterface administrarSesiones;
+    @EJB
+    PersistenciaTercerosInterface persistenciaTerceros;
+    @EJB
+    PersistenciaContabilizacionesInterface persistenciaContabilizaciones;
+    @EJB
+    PersistenciaParametrosEstructurasInterface persistenciaParametrosEstructuras;
+    @EJB
+    PersistenciaVWActualesFechasInterface persistenciaVWActualesFechas;
 
     private EntityManager em;
 
@@ -126,6 +142,21 @@ public class AdministrarInterfaseContableTotal implements AdministrarInterfaseCo
     public List<InterconTotal> obtenerInterconTotalParametroContable(Date fechaInicial, Date fechaFinal) {
         try {
             List<InterconTotal> lista = persistenciaInterconTotal.buscarInterconTotalParaParametroContable(em, fechaInicial, fechaFinal);
+            if (lista != null) {
+                for (int i = 0; i < lista.size(); i++) {
+                    if (lista.get(i).getCodigotercero() != null && (!lista.get(i).getCodigotercero().isEmpty())) {
+                        Long codigo = new Long(lista.get(i).getCodigotercero());
+                        Terceros tercero = persistenciaTerceros.buscarTerceroPorCodigo(em, codigo);
+                        if (tercero != null) {
+                            lista.get(i).setTerceroRegistro(tercero);
+                        } else {
+                            lista.get(i).setTerceroRegistro(new Terceros());
+                        }
+                    } else {
+                        lista.get(i).setTerceroRegistro(new Terceros());
+                    }
+                }
+            }
             return lista;
         } catch (Exception e) {
             System.out.println("Error obtenerInterconTotalParametroContable Admi : " + e.toString());
@@ -166,4 +197,109 @@ public class AdministrarInterfaseContableTotal implements AdministrarInterfaseCo
         }
     }
 
+    @Override
+    public Date obtenerFechaMaxContabilizaciones() {
+        try {
+            Date fecha = persistenciaContabilizaciones.obtenerFechaMaximaContabilizaciones(em);
+            return fecha;
+        } catch (Exception e) {
+            System.out.println("Error obtenerFechaMaxContabilizaciones Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public Date obtenerFechaMaxInterconTotal() {
+        try {
+            Date fecha = persistenciaInterconTotal.obtenerFechaContabilizacionMaxInterconTotal(em);
+            return fecha;
+        } catch (Exception e) {
+            System.out.println("Error obtenerFechaMaxInterconTotal Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public ParametrosEstructuras parametrosLiquidacion() {
+        String usuarioBD = persistenciaActualUsuario.actualAliasBD(em);
+        return persistenciaParametrosEstructuras.buscarParametro(em, usuarioBD);
+    }
+
+    @Override
+    public void actualizarFlagInterconTotal(Date fechaInicial, Date fechaFinal, Short empresa) {
+        try {
+            persistenciaInterconTotal.actualizarFlagInterconTotal(em, fechaInicial, fechaFinal, empresa);
+        } catch (Exception e) {
+            System.out.println("Error actualizarFlagInterconTotal Admi : " + e.toString());
+        }
+    }
+
+    @Override
+    public void actualizarFlagInterconTotalProcesoDeshacer(Date fechaInicial, Date fechaFinal, BigInteger proceso) {
+        try {
+            persistenciaInterconTotal.actualizarFlagInterconTotalProcesoDeshacer(em, fechaInicial, fechaFinal, proceso);
+        } catch (Exception e) {
+            System.out.println("Error actualizarFlagInterconTotalProcesoDeshacer Admi : " + e.toString());
+        }
+    }
+
+    @Override
+    public Date buscarFechaHastaVWActualesFechas() {
+        try {
+            Date objeto = persistenciaVWActualesFechas.actualFechaHasta(em);
+            return objeto;
+        } catch (Exception e) {
+            System.out.println("Error buscarFechaHastaVWActualesFechas Admi : " + e.toString());
+            return null;
+        }
+    }
+    
+    @Override
+    public Date buscarFechaDesdeVWActualesFechas() {
+        try {
+            Date objeto = persistenciaVWActualesFechas.actualFechaDesde(em);
+            return objeto;
+        } catch (Exception e) {
+            System.out.println("Error buscarFechaDesdeVWActualesFechas Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public void ejcutarPKGUbicarnuevointercon_total(BigInteger secuencia, Date fechaInicial, Date fechaFinal, BigInteger proceso) {
+        try {
+            persistenciaInterconTotal.ejecutarPKGUbicarnuevointercon_total(em, secuencia, fechaInicial, fechaFinal, proceso);
+        } catch (Exception e) {
+            System.out.println("Error ejcutarPKGUbicarnuevointercon_total Admi : " + e.toString());
+        }
+    }
+
+    @Override
+    public void eliminarInterconTotal(Date fechaInicial, Date fechaFinal, Short empresa, BigInteger proceso) {
+        try {
+            persistenciaInterconTotal.eliminarInterconTotal(em, fechaInicial, fechaFinal, empresa, proceso);
+        } catch (Exception e) {
+            System.out.println("Error eliminarInterconTotal Admi : " + e.toString());
+        }
+    }
+
+    @Override
+    public int contarProcesosContabilizadosInterconTotal(Date fechaInicial, Date fechaFinal) {
+        try {
+            int contador = persistenciaInterconTotal.contarProcesosContabilizadosInterconTotal(em, fechaInicial, fechaFinal);
+            return contador;
+        } catch (Exception e) {
+            System.out.println("Error contarProcesosContabilizadosInterconTotal Admi : " + e.toString());
+            return -1;
+        }
+    }
+    
+    @Override
+    public void cerrarProcesoContabilizacion(Date fechaInicial, Date fechaFinal, Short empresa, BigInteger proceso) {
+        try {
+            persistenciaInterconTotal.cerrarProcesoContabilizacion(em, fechaInicial, fechaFinal,empresa,proceso);
+        } catch (Exception e) {
+            System.out.println("Error cerrarProcesoContabilizacion Admi : " + e.toString());
+        }
+    }
 }

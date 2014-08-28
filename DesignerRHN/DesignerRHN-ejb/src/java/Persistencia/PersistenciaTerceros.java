@@ -254,4 +254,19 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
             return null;
         }
     }
+
+    @Override
+    public Terceros buscarTerceroPorCodigo(EntityManager em, Long codigo) {
+        try {
+            em.clear();
+            Query query = em.createQuery("SELECT t FROM Terceros t WHERE t.codigo = :codigo");
+            query.setParameter("codigo", codigo);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            Terceros tercero = (Terceros) query.getSingleResult();
+            return tercero;
+        } catch (Exception e) {
+            System.out.println("Error buscarTerceroPorCodigo PersistenciaTerceros : " + e.toString());
+            return null;
+        }
+    }
 }
