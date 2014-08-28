@@ -521,6 +521,7 @@ public class ControlVigenciasTiposContratos implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
+            vigenciaSeleccionada = vigenciasTiposContratoEmpleado.get(index);
             secRegistro = vigenciasTiposContratoEmpleado.get(index).getSecuencia();
             if (cualCelda == 0) {
                 if (tipoLista == 0) {

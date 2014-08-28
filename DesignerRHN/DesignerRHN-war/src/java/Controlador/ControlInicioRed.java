@@ -89,6 +89,7 @@ public class ControlInicioRed implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             FacesContext contexto = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) contexto.getExternalContext().getSession(false);
+            System.out.println("Ses= " + ses);
             if (estadoInicio == false) {
                 if (!baseDatos.equals("") && !usuario.equals("") && !contraseña.equals("")) {
                     if (administrarInicioRed.conexionInicial(baseDatos)) {
@@ -278,7 +279,7 @@ public class ControlInicioRed implements Serializable {
     }
 
     public void setContraseña(String contraseña) {
-        this.contraseña = contraseña.toLowerCase();
+        this.contraseña = contraseña;
     }
 
     public String getBaseDatos() {

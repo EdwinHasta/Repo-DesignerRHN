@@ -3,6 +3,7 @@ package Controlador;
 import Administrar.AdministrarCarpetaPersonal;
 import Entidades.*;
 import InterfaceAdministrar.*;
+import Persistencia.PersistenciaEmpleados;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -121,8 +122,12 @@ public class ControlRemoto implements Serializable {
     //Visualizar seleccion de tipos trabajadores (StyleClass)
     private String styleActivos, stylePensionados, styleRetirados, styleAspirantes;
     private String actualCargo;
+    private String tipoPersonal;
+    private String accion;
 
     public ControlRemoto() {
+        accion = null;
+        tipoPersonal = "activos";
         vwActualesCargos = new VWActualesCargos();
         vwActualesTiposContratos = new VWActualesTiposContratos();
         vwActualesNormasEmpleados = new VWActualesNormasEmpleados();
@@ -201,6 +206,7 @@ public class ControlRemoto implements Serializable {
         trabajador = vwActualesTiposTrabajadoresesLista.get(name);
         if (trabajador.getEmpleado() != null) {
             secuencia = trabajador.getEmpleado().getSecuencia();
+            System.out.println("secuencia = " + secuencia);
             identificacion = trabajador.getEmpleado().getPersona().getNumerodocumento();
         }
 
@@ -329,6 +335,7 @@ public class ControlRemoto implements Serializable {
     }
 
     public void activos() {
+        tipoPersonal = "activos";
         backup = vwActualesTiposTrabajadoresesLista;
         tipoBk = tipo;
         tipo = "ACTIVO";
@@ -368,7 +375,7 @@ public class ControlRemoto implements Serializable {
     }
 
     public void pensionados() {
-
+        tipoPersonal = "pensionados";
         backup = vwActualesTiposTrabajadoresesLista;
         tipoBk = tipo;
         tipo = "PENSIONADO";
@@ -408,6 +415,7 @@ public class ControlRemoto implements Serializable {
     }
 
     public void retirados() {
+        tipoPersonal = "retirados";
         backup = vwActualesTiposTrabajadoresesLista;
         tipoBk = tipo;
         tipo = "RETIRADO";
@@ -447,6 +455,7 @@ public class ControlRemoto implements Serializable {
     }
 
     public void aspirantes() {
+        tipoPersonal = "aspirantes";
         backup = vwActualesTiposTrabajadoresesLista;
         tipoBk = tipo;
         tipo = "DISPONIBLE";
@@ -483,6 +492,62 @@ public class ControlRemoto implements Serializable {
             context.update("form:tabMenu:Retirados");
             context.update("form:tabMenu:Aspirantes");
         }
+    }
+
+    public String pantallaReintegrar() {
+        System.out.println("accion= "+ accion);
+        return accion;
+    }
+
+    public void pruebita() {
+        Long result = Long.parseLong("-1");
+        RequestContext context = RequestContext.getCurrentInstance();
+        System.out.println("Entro a Pruebita");
+        if (tipoPersonal.equals("activos")) {
+            System.out.println("El personal está activo");
+            result = administrarCarpetaPersonal.borrarActivo(secuencia);
+            if (result == 0) {
+                context.update("formularioDialogos:activoEliminarPaso1");
+                context.execute("activoEliminarPaso1.show()");
+            } else {
+                context.update("formularioDialogos:activoNoEliminar");
+                context.execute("activoNoEliminar.show()");
+            }
+        } else if (tipoPersonal.equals("pensionados")) {
+            System.out.println("El personal está en pensionados");
+
+        } else if (tipoPersonal.equals("retirados")) {
+            System.out.println("El personal esta en retirados");
+            accion = "reintegro";
+        } else if (tipoPersonal.equals("aspirantes")) {
+            System.out.println("El personal esta en aspirantes");
+        }
+    }
+
+    public void paso2() {
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        context.update("formularioDialogos:activoEliminarPaso2");
+        context.execute("activoEliminarPaso2.show()");
+    }
+
+    public void paso3() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("formularioDialogos:activoEliminarPaso3");
+        context.execute("activoEliminarPaso3.show()");
+        System.out.println("trabajador.getEmpleado().getSecuencia() " + trabajador.getEmpleado().getSecuencia() + " trabajador.getEmpleado().getPersona().getSecuencia()" + trabajador.getEmpleado().getPersona().getSecuencia());
+    }
+
+    public void paso4() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        try {
+            administrarCarpetaPersonal.borrarEmpleadoActivo(trabajador.getEmpleado().getSecuencia(), trabajador.getEmpleado().getPersona().getSecuencia());
+            context.update("formularioDialogos:activoEliminarPaso4");
+            context.execute("activoEliminarPaso4.show()");
+        } catch (Exception e) {
+            System.out.println("Error en borrar al empleado");
+        }
+
     }
 
     /* private SelectItem[] createFilterOptions() {
@@ -924,7 +989,7 @@ public class ControlRemoto implements Serializable {
                 bandera = true;
                 hv1 = true;
                 hv2 = true;
-            }else{
+            } else {
                 acumulado = false;
                 novedad = false;
                 evaluacion = false;
@@ -1384,4 +1449,13 @@ public class ControlRemoto implements Serializable {
     public boolean isBandera() {
         return bandera;
     }
+
+    public String getAccion() {
+        return accion;
+    }
+
+    public void setAccion(String accion) {
+        this.accion = accion;
+    }
+    
 }
