@@ -169,7 +169,6 @@
 
                                 <p:column headerText="Centro_Costo" sortBy="#{info.estructura.centrocosto.nombre}" filterBy="#{info.estructura.centrocosto.nombre}" filterMatchMode="contains" id="vcCentrosC" width="150" filterStyle="display: none; visibility: hidden;" >                                                                                              
                                     <f:facet name="header"><h:outputText value="#{msg['centrocosto']}"/></f:facet>
-
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.estructura.centrocosto.nombre}" /></f:facet>  
                                         <f:facet name="input">
@@ -179,12 +178,10 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-                                    
                                     <f:facet name="footer" >
                                         <p:commandButton value="" style="width: 170px; margin: -14px; height: 20px; border: none; color: blue" action="centrocostoemplvigenciacargo" actionListener="#{controlBetaCentrosCostos.recibirPagina('atrascentrocostoemplvigenciacargo')}" id="fooCentrosCostos" />
                                     </f:facet>
-                                    
-                                </p:column>  
+                                </p:column>
 
                                 <p:column headerText="Nombre_Jefe" sortBy="#{info.empleadojefe.persona.nombreCompleto}" filterBy="#{info.empleadojefe.persona.nombreCompleto}" filterMatchMode="contains" id="vcNombreJefe" width="150" filterStyle="display: none; visibility: hidden;" >                                                              
                                     <f:facet name="header"><h:outputText value="#{msg['nombrejefe']}"/></f:facet>
@@ -213,7 +210,7 @@
                                     </p:commandButton>  
                                 </p:column>     
 
-                            </p:dataTable> 
+                            </p:dataTable>
                         </fieldset>
                         <!-- CAMPO DE LOS DIALOGOS -->      
                         <!-- DIALOGO L.O.V DINAMICO PARA ESTRUCTURAS-->
@@ -329,10 +326,7 @@
                                 <p:resetInput target=":form:lOVCargos:globalFilter"/>
                             </p:commandButton>
 
-                            <h:outputText id="informacionLOVC" value="#{controlVigenciasCargos.cantidadRegistrosLOV}" style="position: absolute; top: 395px; left: 20px; font-weight: bold"/>
-
                         </p:dialog>
-
 
                         <!-- DIALOGO DE DETALLES VIGENCIAS CARGOS -->
                         <p:dialog header="#{msg['detallesD']}" widgetVar="datosDialog" resizable="false" id="detallesDlg"  
@@ -387,6 +381,7 @@
                                     <h:outputText value="#{item.empleado.persona.nombre}" />  
                                 </p:column>  
                             </p:dataTable> 
+                            <h:outputText id="informacionLOVEJ" value="#{controlVigenciasCargos.cantidadRegistrosLOV}" style="position: absolute; top: 265px; left: 20px; font-weight: bold"/>
 
                             <p:commandButton id="AceptarEmplJ" value="#{msg['aceptar']}" onclick="lvEmpleadoJefe.clearFilters();" actionListener="#{controlVigenciasCargos.actualizarEmpleadoJefe()}" icon="ui-icon-check"  update="AceptarEmplJ" process="@this" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 260px; left: 560px">
                                 <p:resetInput target=":form:lvEmpleadoJefe:globalFilter" />
@@ -394,10 +389,8 @@
                             <p:commandButton value="#{msg['atras']}" onclick="dialogoEmpleadoJefe.hide(), lvEmpleadoJefe.clearFilters();" actionListener="#{controlVigenciasCargos.cancelarEmpleadoJefe()}" icon="ui-icon-arrowreturnthick-1-w" update="lvEmpleadoJefe, AceptarEmplJ"  style="position: absolute; top: 260px; left: 653px">
                                 <p:resetInput target=":form:lvEmpleadoJefe:globalFilter" />
                             </p:commandButton>
-
-                            <h:outputText id="informacionLOVEJ" value="#{controlVigenciasCargos.cantidadRegistrosLOV}" style="position: absolute; top: 265px; left: 20px; font-weight: bold"/>
-
                         </p:dialog>
+                        
                         <h:outputText id="informacionRegistro" value="#{controlVigenciasCargos.infoRegistro}" style="position: absolute; left: 15px; top: 470px; font-weight: bold"/>
                         <p:commandButton style="position: absolute; left: 683px; top: 470px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVCEmpleado" process="@this" disabled="#{controlVigenciasCargos.guardado}"/>
                         <p:commandButton style="position: absolute; left: 775px; top: 470px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlVigenciasCargos.salir()}" action="nomina" process="@this" />
