@@ -11,13 +11,13 @@
     <h:body>
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
-                <h:form id="form"> 
+                <h:form id="form">
                     <f:loadBundle basename="Recursos.emplvigenciatipocontrato" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left" >  
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlVigenciasTiposContratos.empleado.persona.nombreCompleto}"/>
 
-                        <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">  
+                        <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciasTiposContratos.guardarCambiosVTC()}" process="@this" />
@@ -66,7 +66,7 @@
                                 <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.salir()}" action="nomina" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
                             </p:toolbarGroup>
-                        </p:toolbar> 
+                        </p:toolbar>
 
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>#{msg['contratos']}</strong></legend>
@@ -155,7 +155,7 @@
                                     <f:facet name="footer">
                                         <p:commandButton style="width: 120px; margin: -14px; height: 26px; border: none; color: blue;" id="fooCargos" action="ciudad" actionListener="#{controlCiudades.recibirPaginaEntrante('emplvigenciatipocontrato')}" value=" "/>
                                     </f:facet>
-                                </p:column>  
+                                </p:column>
 
                                 <p:column sortBy="#{info.iniciosustitucion}" filterBy="#{info.iniciosustitucion}" filterMatchMode="contains" id="vtcFechaSP" width="68" filterStyle="display: none; visibility: hidden;" >                                                                                              
                                     <f:facet name="header">
@@ -226,6 +226,8 @@
                         </fieldset>
                         <h:outputText id="informacionRegistro" value="#{controlVigenciasTiposContratos.infoRegistro}" style="position: absolute; left: 15px; top: 470px; font-weight: bold"/>
 
+                        <p:commandButton style="background-image: url(Imagenes/proceso.jpg); background-size: 100% 100%; background-repeat: no-repeat;position: absolute; width: 28px; height: 28px; left: 200px; top: 460px;" id="DETALLES" value="" process="@this" action="cambiofechaingreso" actionListener="#{controlCambioFechaIngreso.recibirEmpleado(controlVigenciasTiposContratos.empleado.secuencia,controlVigenciasTiposContratos.vigenciaSeleccionada)}" />
+                        <p:tooltip  for="DETALLES" value="Ingrese la Fecha " />
                         <p:commandButton style="position: absolute; left: 683px; top: 470px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVTCEmpleado" process="@this" disabled="#{controlVigenciasTiposContratos.guardado}"/>
                         <p:commandButton style="position: absolute; left: 775px; top: 470px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlVigenciasTiposContratos.salir()}" action="nomina" process="@this" />
 

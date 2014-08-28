@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
+    <h:head>        
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">                  
+                <h:form id="form">
+                    <p:growl id="growl" showDetail="true"/>
+
+                    <p:panel  id="PanelTotal" header="Cambio Fecha Ingreso" style="position: absolute; width: 874px; height: 510px; text-align: left">  
+                        <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlCambioFechaIngreso.empleado.persona.nombreCompleto}"/>
+
+                        <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">  
+                            <p:toolbarGroup align="left"> 
+                                <p:commandButton id="guardarRapido" value="" disabled="true" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; "  process="@this" />
+                                <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
+
+                                <p:commandButton id="editar" disabled="true" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " process="@this" />
+                                <p:tooltip  for="editar" value="#{msg['editar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="listaValores" disabled="true" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " process="@this" />
+                                <p:tooltip  for="listaValores" value="#{msg['lista']}" />
+
+                                <p:commandButton id="filtrar" disabled="true" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" process="@this"/>
+                                <p:tooltip  for="filtrar" value="#{msg['filtrar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="exportarXLS" value="" disabled="true" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  />
+                                <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
+
+                                <p:commandButton id="exportarXML" value="" disabled="true" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " >
+                                </p:commandButton> 
+                                <p:tooltip  for="exportarXML" value="#{msg['xmle']}" />
+
+                                <p:commandButton id="exportarPDF" value="" disabled="true" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px"/>
+                                <p:tooltip  for="exportarPDF" value="#{msg['pdf']}"/>
+
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="insertar" value="" disabled="true" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px"/> 
+                                <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
+
+                                <p:commandButton id="eliminar" value="" disabled="true" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  />  
+                                <p:tooltip  for="eliminar" value="#{msg['eliminar']}"/>
+
+                                <p:commandButton id="duplicar" disabled="true" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " />  
+                                <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="rastro" value="" disabled="true" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}"/>
+
+                                <p:separator style="position: relative; top: -9px"/> 
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " process="@this"/>  
+                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " action="emplvigenciatipocontrato"  process="@this"/>  
+                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
+
+                            </p:toolbarGroup>  
+                        </p:toolbar> 
+
+                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
+                            <legend style="font-size: 14px; color: blue"><strong>Ingresar Nueva Fecha</strong></legend>
+
+                            <h:outputText  value="Fecha Antigua: " style="position: absolute; top: 185px; left: 15px;font-weight: bold"/>
+                            <div id="divFechaAntigua" style="position: absolute; top: 225px; left: 15px;">
+                                <lnk:calendar id="fechaAntigua" value="#{controlCambioFechaIngreso.vigenciaTipoContrato.fechavigencia}">
+                                    <p:ajax event="dateSelect"  update="fechaAntigua" process="@this"/>
+                                    <p:ajax event="change" update="fechaAntigua" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+
+                            <h:outputText  value="Fecha Nueva: " style="position: absolute; top: 265px; left: 15px;font-weight: bold"/>
+                            <div id="divFechaNueva" style="position: absolute; top: 305px; left: 15px;">
+                                <lnk:calendar id="fechaNueva" value="#{controlCambioFechaIngreso.fechaNueva}">
+                                    <p:ajax event="dateSelect" update="fechaNueva" process="@this"/>
+                                    <p:ajax event="change" update="fechaNueva" process="@this"/>
+                                </lnk:calendar>
+                            </div>
+                        </fieldset>
+
+                        <p:commandButton style="position: absolute; left: 580px; top: 470px;" icon="ui-icon-check" id="CAMBIAR" value="Cambiar"  process="@this" actionListener="#{controlReingresarEmpleado.reingresarEmpleado}" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 470px;"  icon="ui-icon-closethick" id="ATRAS" action="nomina" value="Cancelar" process="@this" />
+                    </p:panel>
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
