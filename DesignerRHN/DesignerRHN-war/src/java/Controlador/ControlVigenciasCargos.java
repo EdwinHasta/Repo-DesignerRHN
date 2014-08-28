@@ -326,10 +326,8 @@ public class ControlVigenciasCargos implements Serializable {
     public void setInfoRegistroMotivos(String infoRegistroMotivos) {
         this.infoRegistroMotivos = infoRegistroMotivos;
     }
-    
-    
-    //FilterMotivos---------------------------------------
 
+    //FilterMotivos---------------------------------------
     public List<MotivosCambiosCargos> getFilterMotivos() {
         return filterMotivos;
     }
@@ -382,9 +380,8 @@ public class ControlVigenciasCargos implements Serializable {
     public void setInfoRegistroCargos(String infoRegistroCargos) {
         this.infoRegistroCargos = infoRegistroCargos;
     }
-    
-    //CargosFilter------------------------------------------
 
+    //CargosFilter------------------------------------------
     public List<Cargos> getCargosFilter() {
         return cargosFilter;
     }
@@ -1701,11 +1698,14 @@ public class ControlVigenciasCargos implements Serializable {
         }
         if (pasa == 0) {
             int control = 0;
-            for (VigenciasCargos curVigenciasCargosEmpleado : vigenciasCargosEmpleado) {
-                if (curVigenciasCargosEmpleado.getFechavigencia().compareTo(nuevaVigencia.getFechavigencia()) == 0) {
-                    control++;
+            for (int i = 0; i < vigenciasCargosEmpleado.size(); i++) {
+                if (nuevaVigencia.getFechavigencia() != null) {
+                    if(nuevaVigencia.getFechavigencia().compareTo(vigenciasCargosEmpleado.get(i).getFechavigencia())== 0){
+                        control++;
+                    }
                 }
             }
+            
             if (control == 0) {
                 if (bandera == 1) {
                     //CERRAR FILTRADO
