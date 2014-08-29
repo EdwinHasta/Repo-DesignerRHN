@@ -9,7 +9,9 @@ import Entidades.Empleados;
 import InterfaceAdministrar.AdministrarCambiosFechasIngresosInterface;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
+import InterfacePersistencia.PersistenciaVigenciasTiposContratosInterface;
 import java.math.BigInteger;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
@@ -23,6 +25,10 @@ public class AdministrarCambiosFechasIngresos implements AdministrarCambiosFecha
 
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleado;
+    
+    @EJB
+    PersistenciaVigenciasTiposContratosInterface persistenciaVigenciasTiposContratos;
+    
     @EJB
     AdministrarSesionesInterface administrarSesiones;
 
@@ -43,5 +49,10 @@ public class AdministrarCambiosFechasIngresos implements AdministrarCambiosFecha
             empleado = null;
             return empleado;
         }
+    }
+    
+    @Override
+    public void cambiarFechaIngreso(BigInteger secuenciaEmpleado, Date fechaAntigua, Date fechaNueva){
+        persistenciaEmpleado.cambiarFechaIngreso(em, secuenciaEmpleado, fechaAntigua, fechaNueva);
     }
 }

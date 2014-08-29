@@ -105,7 +105,7 @@
                         </fieldset>
 
                         <p:commandButton style="position: absolute; left: 580px; top: 470px;" icon="ui-icon-check" id="REINGRESAR" value="#{msg['reingresarempleado']}"  process="@this" actionListener="#{controlReingresarEmpleado.reingresarEmpleado}" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 470px;"  icon="ui-icon-closethick" id="ATRAS" action="nomina" value="#{msg['cancelar']}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 470px;"  icon="ui-icon-closethick" id="ATRAS" actionListener="#{controlReingresarEmpleado.salir()}" action="nomina"  value="#{msg['cancelar']}" process="@this" />
                     </p:panel>
                 </h:form>
                 <h:form id="formularioDialogos">
@@ -227,27 +227,27 @@
                     </p:dialog>
                     <p:dialog id="exito" header="#{msg['atencion']}" widgetVar="exito"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="El usuario ha sido reingresado exitosamente" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <h:outputText value="#{msg['exito']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" icon="ui-icon-check" onclick="exito.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="paso1" header="#{msg['atencion']}" widgetVar="paso1"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
+                    <p:dialog id="paso1" header="#{msg['titulopaso1']}" widgetVar="paso1"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="En este momento va a reingresar un empleado " style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <h:outputText value="#{msg['paso1']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" icon="ui-icon-check" onclick="paso1.hide(), paso2.show();" style="position: absolute; top: 50px; left: 210px" process="@this" />
                         <p:commandButton value="#{msg['cancelar']}" icon="ui-icon-circle-close" onclick="paso1.hide()" style="position: absolute; top: 50px; left: 300px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="paso2" header="#{msg['atencion']}" widgetVar="paso2"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
+                    <p:dialog id="paso2" header="#{msg['titulopaso2']}" widgetVar="paso2"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="¿Está totalmente seguro?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <h:outputText value="#{msg['paso2']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" icon="ui-icon-check" actionListener="#{controlReingresarEmpleado.irPaso3()}" onclick="paso2.hide(), paso3.show();" style="position: absolute; top: 50px; left: 210px" process="@this" />
                         <p:commandButton value="#{msg['cancelar']}" icon="ui-icon-circle-close" onclick="paso2.hide()" style="position: absolute; top: 50px; left: 300px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="paso3" header="#{msg['atencion']}" widgetVar="paso3"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
+                    <p:dialog id="paso3" header="#{msg['titulopaso3']}" widgetVar="paso3"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="Va a Reingresar al Empleado: #{controlReingresarEmpleado.nombre}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <h:outputText value="#{msg['paso3']} #{controlReingresarEmpleado.nombre}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" actionListener="#{controlReingresarEmpleado.reingresoEmpleado()}" icon="ui-icon-check" onclick="paso3.hide()" style="position: absolute; top: 50px; left: 210px" process="@this" />
                         <p:commandButton value="#{msg['cancelar']}" icon="ui-icon-circle-close" onclick="paso3.hide()" style="position: absolute; top: 50px; left: 300px" process="@this" />
                     </p:dialog>

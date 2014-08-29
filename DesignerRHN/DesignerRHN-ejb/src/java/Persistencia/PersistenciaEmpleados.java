@@ -492,4 +492,28 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             return null;
         }
     }
+    
+    @Override
+    public void cambiarFechaIngreso(EntityManager em, BigInteger secuenciaEmpleado, Date fechaAntigua, Date fechaNueva) {
+        EntityTransaction tx = em.getTransaction();
+        try {
+            em.clear();
+            tx.begin();
+            String sqlQuery = "call ELIMINAREMPLEADO.cambiarfechaingreso(?,?,?)";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuenciaEmpleado);
+            query.setParameter(2, fechaAntigua);
+            query.setParameter(3, fechaNueva);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaEmpleados.cambiarFechaIngreso: " + e);
+            }
+        }
+    }
 }

@@ -1313,11 +1313,8 @@ public class ControlVigenciasTiposContratos implements Serializable {
 
     public List<VigenciasTiposContratos> getVigenciasTiposContratoEmpleado() {
         try {
-            if (vigenciasTiposContratoEmpleado == null) {
-                return vigenciasTiposContratoEmpleado = administrarVigenciasTiposContratos.vigenciasTiposContratosEmpleado(secuenciaEmpleado);
-            } else {
-                return vigenciasTiposContratoEmpleado;
-            }
+            return vigenciasTiposContratoEmpleado = administrarVigenciasTiposContratos.vigenciasTiposContratosEmpleado(secuenciaEmpleado);
+            
         } catch (Exception e) {
             System.out.println("Error...!! getVigenciasTiposContratosEmpleado " + e);
             return null;

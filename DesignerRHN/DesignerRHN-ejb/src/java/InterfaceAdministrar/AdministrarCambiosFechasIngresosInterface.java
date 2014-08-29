@@ -7,6 +7,7 @@ package InterfaceAdministrar;
 
 import Entidades.Empleados;
 import java.math.BigInteger;
+import java.util.Date;
 
 /**
  *
@@ -17,4 +18,7 @@ public interface AdministrarCambiosFechasIngresosInterface {
     public void obtenerConexion(String idSesion);
 
     public Empleados buscarEmpleado(BigInteger secuencia);
+
+    public void cambiarFechaIngreso(BigInteger secuenciaEmpleado, Date fechaAntigua, Date fechaNueva);
+
 }

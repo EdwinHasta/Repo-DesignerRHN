@@ -178,5 +178,8 @@ public interface PersistenciaEmpleadoInterface {
     public List<Empleados> consultarEmpleadosReingreso(EntityManager em);
     
     public Date verificarFecha(EntityManager em, BigInteger secuenciaEmpleado);
+    
+    public void cambiarFechaIngreso(EntityManager em, BigInteger secuenciaEmpleado, Date fechaAntigua, Date fechaNueva);
+
 
 }

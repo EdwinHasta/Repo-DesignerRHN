@@ -573,15 +573,15 @@
                                 <em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>
                                 <h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
                                 <h:outputText style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
-                                
+
                                 <p:dialog id="confirmarProcesoInterfaceContableTotal" header="#{msg['atencion']}" widgetVar="confirmarProcesoInterfaceContableTotal"  resizable="false" draggable="false" modal="true" height="100" width="420px"  closable="false">  
                                     <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 10px; top: 15px;"  />
                                     <h:outputText value="#{msg['confirmarProcesoInterfaceContableTotal']}" style="position: absolute; left: 100px; top: 15px; width: 320px; font-weight:bold;" />
                                     <p:commandButton value="#{msg['si']}" onclick="confirmarProcesoInterfaceContableTotal.hide();" action="interfasecontabletotal" actionListener="#{controlInterfaseContableTotal.recibirPagina('nomina')}" style="position: absolute; top: 60px; left: 290px " process="@this" icon="ui-icon-check" />
                                     <p:commandButton value="#{msg['no']}" onclick="confirmarProcesoInterfaceContableTotal.hide();" style="position: absolute; top: 60px; left: 345px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                                 </p:dialog>
-                                
-                                
+
+
                             </p:tab> 
 
                             <p:tab title="#{msg['gerencial']}" id="Gerencial" > 
@@ -813,6 +813,8 @@
                                 <h:outputText value="#{item.empleado.persona.nombre}" />  
                             </p:column>  
                         </p:dataTable> 
+
+                        <h:outputText id="infoRegistroBuscarEmpleados" value="#{controlRemoto.infoRegistroBuscarEmpleados}" style="position: absolute; left: 15px; top: 270px; font-weight: bold"/>
 
                         <p:commandButton id="buscarEmpl" value="#{msg['aceptar']}" onclick="lvBE.hide(), buscarE.clearFilters();" icon="ui-icon-check" actionListener="#{controlRemoto.buscarEmpleado()}"   update=":form:tabMenu:data, lvBuscarEmpleado, buscarEmpl, form:tabMenu:data:MostrarTodos" disabled="#{controlRemoto.buscar}" style="position: absolute; top: 260px; left: 565px">
                             <p:resetInput target=":form:lvBuscarEmpleado:globalFilter" />

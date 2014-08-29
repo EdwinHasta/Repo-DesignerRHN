@@ -3,7 +3,6 @@ package Controlador;
 import Administrar.AdministrarCarpetaPersonal;
 import Entidades.*;
 import InterfaceAdministrar.*;
-import Persistencia.PersistenciaEmpleados;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,7 +25,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
-import net.sf.jasperreports.engine.util.JRClassLoader;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datagrid.DataGrid;
 import org.primefaces.component.datatable.DataTable;
@@ -125,6 +123,7 @@ public class ControlRemoto implements Serializable {
     private String tipoPersonal;
     private String accion;
     private String redirigir;
+    private String infoRegistroBuscarEmpleados;
 
     public ControlRemoto() {
         accion = null;
@@ -184,6 +183,7 @@ public class ControlRemoto implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarCarpetaPersonal.obtenerConexion(ses.getId());
             administrarCarpetaDesigner.obtenerConexion(ses.getId());
+
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
@@ -496,7 +496,7 @@ public class ControlRemoto implements Serializable {
     }
 
     public String pantallaReintegrar() {
-        System.out.println("accion= "+ accion);
+        System.out.println("accion= " + accion);
         return accion;
     }
 
@@ -824,20 +824,18 @@ public class ControlRemoto implements Serializable {
         nombreArchivo = "Tablas";
     }
 
-    
-      
-    public String redireccion(Integer indice){
-         if(indice >= 0){
-            if(listTablas.get(indice).getNombre().equalsIgnoreCase("USUARIOS")){
+    public String redireccion(Integer indice) {
+        if (indice >= 0) {
+            if (listTablas.get(indice).getNombre().equalsIgnoreCase("USUARIOS")) {
                 redirigir = "usuario";
-                
+
             } // Aca vienen un huevo de Else if para el resto de las pantallas
         }
         return redirigir;
     }
-    
+
     public void infoTablas(Tablas tab) {
-        
+
         selectTabla = tab;
         System.out.println(selectTabla.getSecuencia());
         BigInteger secuenciaTab = selectTabla.getSecuencia();
@@ -1180,6 +1178,14 @@ public class ControlRemoto implements Serializable {
 
     public List<VWActualesTiposTrabajadores> getBuscarEmplTipo() {
         buscarEmplTipo = administrarCarpetaPersonal.consultarEmpleadosTipoTrabajador(tipo);
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (buscarEmplTipo == null || buscarEmplTipo.isEmpty()) {
+            infoRegistroBuscarEmpleados = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroBuscarEmpleados = "Cantidad de registros: " + buscarEmplTipo.size();
+        }
+        context.update("formularioDialogos:infoRegistroBuscarEmpleados");
         return buscarEmplTipo;
     }
 
@@ -1470,5 +1476,13 @@ public class ControlRemoto implements Serializable {
     public void setAccion(String accion) {
         this.accion = accion;
     }
-    
+
+    public String getInfoRegistroBuscarEmpleados() {
+        return infoRegistroBuscarEmpleados;
+    }
+
+    public void setInfoRegistroBuscarEmpleados(String infoRegistroBuscarEmpleados) {
+        this.infoRegistroBuscarEmpleados = infoRegistroBuscarEmpleados;
+    }
+
 }
