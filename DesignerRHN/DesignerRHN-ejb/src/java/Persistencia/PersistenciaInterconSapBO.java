@@ -2,6 +2,7 @@ package Persistencia;
 
 import Entidades.InterconSapBO;
 import InterfacePersistencia.PersistenciaInterconSapBOInterface;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -74,8 +75,8 @@ public class PersistenciaInterconSapBO implements PersistenciaInterconSapBOInter
             Query query = em.createQuery("SELECT i FROM InterconSapBO i WHERE i.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
-            InterconSapBO interconTotal = (InterconSapBO) query.getSingleResult();
-            return interconTotal;
+            InterconSapBO intercon = (InterconSapBO) query.getSingleResult();
+            return intercon;
         } catch (Exception e) {
             System.out.println("Error PersistenciaInterconSapBO.buscarInterconSAPBOSecuencia: " + e.toString());
             return null;
@@ -331,14 +332,14 @@ public class PersistenciaInterconSapBO implements PersistenciaInterconSapBOInter
             Query query = em.createNativeQuery(sql);
             query.setParameter(1, fechaInicial);
             query.setParameter(2, fechaFinal);
-            BigInteger contador = (BigInteger) query.getSingleResult();
+            BigDecimal contador = (BigDecimal) query.getSingleResult();
             if (contador != null) {
                 return contador.intValue();
             } else {
                 return 0;
             }
         } catch (Exception e) {
-            System.out.println("Error PersistenciaInterconTotal.contarProcesosContabilizadosInterconTotal. " + e.toString());
+            System.out.println("Error PersistenciaInterconSapBO.contarProcesosContabilizadosInterconSAPBO. " + e.toString());
             return -1;
         }
     }

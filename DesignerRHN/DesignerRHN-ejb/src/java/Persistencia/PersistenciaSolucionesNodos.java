@@ -270,6 +270,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
             Query query = em.createNativeQuery(sql, SolucionesNodos.class);
             query.setParameter(1, fechaInicial);
             query.setParameter(2, fechaFinal);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<SolucionesNodos> soluciones = query.getResultList();
             return soluciones;
         } catch (Exception e) {
@@ -281,7 +282,6 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
     @Override
     public List<SolucionesNodos> buscarSolucionesNodosParaParametroContable_SAP(EntityManager em, Date fechaInicial, Date fechaFinal) {
         try {
-            System.out.println("Entre al metodo solucionesnodos");
             em.clear();
             String sql = "select * from SolucionesNodos s WHERE EXISTS (SELECT 'X' FROM contabilizaciones C\n"
                     + "              where C.flag='GENERADO' and C.fechageneracion \n"
@@ -294,11 +294,6 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
             query.setParameter(1, fechaInicial);
             query.setParameter(2, fechaFinal);
             List<SolucionesNodos> soluciones = query.getResultList();
-            if (soluciones != null) {
-                System.out.println("Lista Soluciones Nodos soluciones : "+soluciones.size());
-            } else {
-                System.out.println("Lista Nula Soluciones Nodos");
-            }
             return soluciones;
         } catch (Exception e) {
             System.out.println("Error buscarSolucionesNodosParaParametroContable_SAP PersistenciaSolucionesNodos : " + e.toString());

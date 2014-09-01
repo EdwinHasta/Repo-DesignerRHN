@@ -59,4 +59,16 @@ public interface AdministrarInterfaseContableTotalInterface {
     public int contarProcesosContabilizadosInterconTotal(Date fechaInicial, Date fechaFinal);
 
     public void cerrarProcesoContabilizacion(Date fechaInicial, Date fechaFinal, Short empresa, BigInteger proceso);
+
+    public Integer obtenerContadorFlagGeneradoFechasTotal(Date fechaIni, Date fechaFin);
+
+    public void ejecutarPKGRecontabilizacion(Date fechaIni, Date fechaFin);
+
+    public String obtenerDescripcionProcesoArchivo(BigInteger proceso);
+
+    public String obtenerPathServidorWeb();
+
+    public String obtenerPathProceso();
+
+    public void ejecutarPKGCrearArchivoPlano(int tipoArchivo, Date fechaIni, Date fechaFin, BigInteger proceso, String nombreArchivo);
 }

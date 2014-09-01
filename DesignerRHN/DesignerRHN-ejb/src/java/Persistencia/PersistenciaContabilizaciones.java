@@ -167,4 +167,30 @@ public class PersistenciaContabilizaciones implements PersistenciaContabilizacio
             return null;
         }
     }
+
+    @Override
+    public Integer obtenerContadorFlagGeneradoFechasTotal(EntityManager em, Date fechaIni, Date fechaFin) {
+        try {
+            Integer conteo = null;
+            em.clear();
+            String sql = "select count(*) from contabilizaciones c\n"
+                    + "	where  c.flag = 'GENERADO' and \n"
+                    + "	c.fechageneracion  between ? and ?\n"
+                    + "	and exists (select 'x' from solucionesnodos sn, empleados e\n"
+                    + "	where e.secuencia=sn.empleado and c.solucionnodo=sn.secuencia)";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaIni);
+            query.setParameter(2, fechaFin);
+            BigDecimal valor = (BigDecimal) query.getSingleResult();
+            if (valor != null) {
+                conteo = valor.intValue();
+                return conteo;
+            } else {
+                return conteo;
+            }
+        } catch (Exception e) {
+            System.out.println("Error obtenerContadorFlagGeneradoFechasTotal PersistenciaContabilizaciones : " + e.toString());
+            return null;
+        }
+    }
 }

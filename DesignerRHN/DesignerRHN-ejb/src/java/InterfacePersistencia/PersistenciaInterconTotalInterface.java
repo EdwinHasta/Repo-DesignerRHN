@@ -38,8 +38,11 @@ public interface PersistenciaInterconTotalInterface {
     public void eliminarInterconTotal(EntityManager em, Date fechaInicial, Date fechaFinal, Short empresa, BigInteger proceso);
 
     public int contarProcesosContabilizadosInterconTotal(EntityManager em, Date fechaInicial, Date fechaFinal);
-    
+
     public void cerrarProcesoContabilizacion(EntityManager em, Date fechaInicial, Date fechaFinal, Short empresa, BigInteger proceso);
-    
+
+    public void ejecutarPKGRecontabilizacion(EntityManager em, Date fechaIni, Date fechaFin);
+
+    public void ejecutarPKGCrearArchivoPlano(EntityManager em, int tipoTxt, Date fechaIni, Date fechaFin, BigInteger proceso, String nombreArchivo);
 
 }
