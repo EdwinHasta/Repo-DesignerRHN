@@ -40,8 +40,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Personas.findAll", query = "SELECT p FROM Personas p")})
 public class Personas implements Serializable {
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "NUMERODOCUMENTO")
     private BigInteger numerodocumento;
 

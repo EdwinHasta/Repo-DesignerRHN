@@ -99,7 +99,6 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
             tx.begin();
             Query query = em.createQuery("UPDATE Candados c SET c.estado='CANCELAR' WHERE c.usuario.alias = :usuarioBD");
             query.setParameter("usuarioBD", usuarioBD);
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             query.executeUpdate();
             tx.commit();
         } catch (Exception e) {

@@ -28,7 +28,7 @@ public class ControlBarra implements Serializable {
 
     @EJB
     AdministrarBarraInterface administrarBarra;
-    
+
     private Integer totalEmpleadosParaLiquidar;
     private Integer totalEmpleadosLiquidados;
     private boolean permisoParaLiquidar;
@@ -68,7 +68,7 @@ public class ControlBarra implements Serializable {
         altoScrollLiquidacionesCerradas = "139";
         banderaFiltros = 0;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -76,13 +76,14 @@ public class ControlBarra implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarBarra.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
 
     public void contarLiquidados() {
         totalEmpleadosLiquidados = administrarBarra.contarEmpleadosLiquidados();
+        System.out.println("totalEmpleadosLiquidados: " + totalEmpleadosLiquidados);
         RequestContext.getCurrentInstance().update("form:empleadosLiquidados");
     }
 
@@ -126,6 +127,7 @@ public class ControlBarra implements Serializable {
     }
 
     public void liquidacionCompleta() {
+        System.out.println("Liquidación Completada");
         FacesMessage msg = new FacesMessage("Información", "Liquidación terminada con Éxito.");
         FacesContext.getCurrentInstance().addMessage(null, msg);
         mensajeBarra = "Liquidación Completa (" + barra + "%)";
@@ -134,16 +136,20 @@ public class ControlBarra implements Serializable {
         empezar = false;
         botonCancelar = true;
         botonLiquidar = false;
-        contarLiquidados();
+        totalEmpleadosLiquidados = administrarBarra.contarEmpleadosLiquidados();
+        System.out.println("totalEmpleadosLiquidados: " + totalEmpleadosLiquidados);
         Date horaFinal = new Date();
         System.out.println("Hora Final: " + formato.format(horaFinal));
         horaFinalLiquidacion = formato.format(horaFinal);
         RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("barra.stop()");
+        context.update("form:empleadosLiquidados");
         context.update("form:horaF");
         context.update("form:liquidar");
         context.update("form:cancelar");
-        context.update("form:barra");
+        context.update("form:panelLiquidacion");
         context.update("form:estadoLiquidacion");
+        context.update("form:PanelTotal");
         context.update("form:imagen");
         context.update("form:growl");
         consultarEstadoDatos();
@@ -336,9 +342,11 @@ public class ControlBarra implements Serializable {
     }
 
     public Integer getBarra() {
+        System.out.println("Entra GetBarra");
         if (empezar == true) {
             RequestContext context = RequestContext.getCurrentInstance();
             String estado = administrarBarra.consultarEstadoLiquidacion(usuarioBD);
+            System.out.println("Estado: 1" + estado);
             if (preparandoDatos == true) {
                 barra = 101;
                 context.update("form:barra");
@@ -355,11 +363,15 @@ public class ControlBarra implements Serializable {
                 } else {
                     barra = administrarBarra.consultarProgresoLiquidacion(totalEmpleadosParaLiquidar);
                     if (!estado.equalsIgnoreCase("FINALIZADO")) {
+                        System.out.println("NO ES FINALIZADO");
                         if (barra >= 100) {
                             barra = 100;
                             bandera = false;
                         }
                         mensajeBarra = "Liquidando... " + barra + "%";
+                        context.update("form:barra");
+                        context.update("form:estadoLiquidacion");
+                        System.out.println("Liquidando... " + barra + "%");
                         if (bandera == true) {
                             if (cambioImagen == true) {
                                 cambioImagen = false;
@@ -376,7 +388,9 @@ public class ControlBarra implements Serializable {
                             contarLiquidados();
                         }
                     } else {
+                        System.out.println("ES FINALIZADO");
                         if (barra < 100) {
+                            System.out.println("Liquidacion Terminada Parcialmente");
                             context.execute("barra.cancel()");
                             empezar = false;
                             Date horaFinal = new Date();
@@ -395,16 +409,21 @@ public class ControlBarra implements Serializable {
                             context.update("form:imagen");
                             context.execute("barra.setValue(" + barra + ")");
                             context.update("form:barra");
+                            context.update("form:estadoLiquidacion");
                             context.update("form:growl");
                             consultarEstadoDatos();
                         } else {
                             if (barra >= 100) {
                                 barra = 100;
+                                System.out.println("Esta en teoría completa...Barra: " + barra);
+                                liquidacionCompleta();
+
                             }
                         }
                     }
                 }
             }
+            System.out.println("Estado: 2" + estado);
         }
         return barra;
     }
