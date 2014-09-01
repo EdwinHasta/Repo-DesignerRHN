@@ -1,7 +1,5 @@
 package Controlador;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import Entidades.Cargos;
 import Entidades.CentrosCostos;
 import Entidades.Ciudades;
@@ -61,6 +59,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -1941,6 +1942,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void cambiarIndiceInformacionPersonal(int i) {
+        System.out.println("cambiarIndiceInformacionPersonal : "+i);
         if (permitirIndexInformacionPersonal == true) {
             indexCargoDesempeñado = -1;
             indexCentroCosto = -1;
@@ -2660,24 +2662,25 @@ public class ControlPersonaIndividual implements Serializable {
             nuevaPersona.setNumerodocumento(null);
             context.update("form:numeroDocumentoModPersonal");
             context.execute("errorEmpleadoRegistrado.show()");
-        }
-        if (persona != null && empleado == null) {
-            nuevaPersona.setNumerodocumento(null);
-            context.update("form:numeroDocumentoModPersonal");
-            context.execute("errorPersonaRepetida.show()");
-        }
-        String contabilidad = administrarPersonaIndividual.obtenerPreValidadContabilidad();
-        String bloqueAIngreso = administrarPersonaIndividual.obtenerPreValidaBloqueAIngreso();
-        if (contabilidad != null) {
-            if (contabilidad.equalsIgnoreCase("S")) {
-                VWValidaBancos valida = administrarPersonaIndividual.validarCodigoPrimarioVWValidaBancos(nuevaPersona.getNumerodocumento());
-                if (valida == null) {
-                    //¡Esta ingresando un codigo de Tercero (nit de empleado) que no existe en el sistema contable. Por favor, antes de ingresar este registro en nómina, valide primero con contabilidad!.
-                    context.execute("errorCodigoTerceroPersona.show()");
-                }
-                if (bloqueAIngreso.equalsIgnoreCase("S")) {
-                    //¡¡¡No se puede ingresar el registro en Designer.RHN!!! Por favor salga de esta pantalla.
-                    context.execute("errorIngresoTotalRegistro.show()");
+        } else {
+            if (persona != null && empleado == null) {
+                nuevaPersona.setNumerodocumento(null);
+                context.update("form:numeroDocumentoModPersonal");
+                context.execute("errorPersonaRepetida.show()");
+            }
+            String contabilidad = administrarPersonaIndividual.obtenerPreValidadContabilidad();
+            String bloqueAIngreso = administrarPersonaIndividual.obtenerPreValidaBloqueAIngreso();
+            if (contabilidad != null) {
+                if (contabilidad.equalsIgnoreCase("S")) {
+                    VWValidaBancos valida = administrarPersonaIndividual.validarCodigoPrimarioVWValidaBancos(nuevaPersona.getNumerodocumento());
+                    if (valida == null) {
+                        //¡Esta ingresando un codigo de Tercero (nit de empleado) que no existe en el sistema contable. Por favor, antes de ingresar este registro en nómina, valide primero con contabilidad!.
+                        context.execute("errorCodigoTerceroPersona.show()");
+                    }
+                    if (bloqueAIngreso.equalsIgnoreCase("S")) {
+                        //¡¡¡No se puede ingresar el registro en Designer.RHN!!! Por favor salga de esta pantalla.
+                        context.execute("errorIngresoTotalRegistro.show()");
+                    }
                 }
             }
         }
@@ -2777,6 +2780,15 @@ public class ControlPersonaIndividual implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("errorFechas.show()");
         }
+    }
+    
+    public void posicionFechas() {
+        System.out.println("posicionFechas");
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+        String name = map.get("n"); // name attribute of node
+        int posicion = Integer.parseInt(name);
+        cambiarIndiceInformacionPersonal(posicion);
     }
 
     public void modificarFechaFechaVigenciaTipoContrato(int i) {

@@ -130,7 +130,7 @@
                                 <p:commandButton id="btnArriba" style="position: absolute; left: 670px; top: 22px; width: 20px; height: 20px; background-image: url(Imagenes/arriba.JPG); background-size: 100% 100%; background-repeat: no-repeat; " actionListener="#{controlInterfaseContableSapBOPE.anteriorParametro()}" value="" disabled="#{controlInterfaseContableSapBOPE.estadoBtnArriba}" process="@this" update=":form:panelParametro"/>
                                 <p:commandButton id="btnAbajo" style="position: absolute; left: 670px; top: 43px; width: 20px; height: 20px; background-image: url(Imagenes/abajo.JPG); background-size: 100% 100%; background-repeat: no-repeat; " value="" actionListener="#{controlInterfaseContableSapBOPE.siguienteParametro()}" disabled="#{controlInterfaseContableSapBOPE.estadoBtnAbajo}" process="@this" update=":form:panelParametro"/>
 
-                                <p:commandButton value="#{msg['actualizar']}" style="position: absolute; top: 25px; left: 710px;" icon="ui-icon-refresh"  process="@this" actionListener="#{controlInterfaseContableSapBOPE.actionBtnActualizar()}"/>
+                                <p:commandButton value="#{msg['actualizar']}" style="position: absolute; top: 25px; left: 710px;" icon="ui-icon-refresh"  process="@this" actionListener="#{controlInterfaseContableSapBOPE.actionBtnActualizar()}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()"/>
                                 <p:commandButton id="btnAnular" value="." style="position: absolute; top: 25px; left: 811px;width: 10px; text-align: left" actionListener="#{controlInterfaseContableSapBOPE.anularComprobantesCerrados()}" />
                                 <p:tooltip  for="btnAnular" value="#{msg['btnAnular']}" />
 
@@ -142,7 +142,7 @@
                             <p:dataTable id="datosGenerados" var="infoG" rowKey="#{infoG.secuencia}" rowIndexVar="indiceG" style="width: 814px; border: 1px;"                           
                                          value="#{controlInterfaseContableSapBOPE.listaGenerados}" scrollable="true" scrollHeight="#{controlInterfaseContableSapBOPE.altoTablaGenerada}" scrollWidth="830"
                                          filteredValue="#{controlInterfaseContableSapBOPE.filtrarListaGenerados}" emptyMessage="#{msg['vacio']}"
-                                         editable="true" editMode="cell"
+                                         editable="true" editMode="cell" liveScroll="true" scrollRows="25"
                                          selection="#{controlInterfaseContableSapBOPE.generadoTablaSeleccionado}" selectionMode="single">
 
                                 <p:ajax event="filter" listener="#{controlInterfaseContableSapBOPE.eventoFiltrar()}"/>
@@ -266,8 +266,8 @@
 
                             </p:dataTable> 
 
-                            <p:commandButton id="btnEnviar" disabled="#{controlInterfaseContableSapBOPE.activarEnviar}" value="#{msg['enviar']}"  style="position: absolute; top: 135px; left: 10px" actionListener="#{controlInterfaseContableSapBOPE.actionBtnEnviar()}"/>
-                            <p:commandButton id="btnDeshacer" disabled="#{controlInterfaseContableSapBOPE.activarDeshacer}" value="#{msg['deshacer']}"  style="position: absolute; top: 135px; left: 100px" actionListener="#{controlInterfaseContableSapBOPE.actionBtnDeshacer()}"/>
+                            <p:commandButton id="btnEnviar" disabled="#{controlInterfaseContableSapBOPE.activarEnviar}" value="#{msg['enviar']}"  style="position: absolute; top: 135px; left: 10px" actionListener="#{controlInterfaseContableSapBOPE.actionBtnEnviar()}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()"/>
+                            <p:commandButton id="btnDeshacer" disabled="#{controlInterfaseContableSapBOPE.activarDeshacer}" value="#{msg['deshacer']}"  style="position: absolute; top: 135px; left: 100px"  onclick="procesoDeshacer.show()"/>
                             <p:commandButton value="#{msg['reportecontrol']}"  style="position: absolute; top: 135px; left: 215px"/>
 
                             <strong><h:outputText value="#{msg['totalC']}" style="position: absolute; top: 145px; left: 465px"/></strong>
@@ -291,7 +291,7 @@
                             <p:dataTable id="datosIntercon" var="infoI" rowKey="#{infoI.secuencia}" rowIndexVar="indiceI" style="width: 814px; border: 1px;"                           
                                          value="#{controlInterfaseContableSapBOPE.listaInterconSapBO}" scrollable="true" scrollHeight="#{controlInterfaseContableSapBOPE.altoTablaGenerada}" scrollWidth="830"
                                          filteredValue="#{controlInterfaseContableSapBOPE.filtrarListaInterconSapBO}" emptyMessage="#{msg['vacio']}"
-                                         editable="true" editMode="cell"
+                                         editable="true" editMode="cell" liveScroll="true" scrollRows="25"
                                          selection="#{controlInterfaseContableSapBOPE.interconTablaSeleccionada}" selectionMode="single">
 
                                 <p:ajax event="filter" listener="#{controlInterfaseContableSapBOPE.eventoFiltrar()}"/>
@@ -690,6 +690,14 @@
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRecon']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
+                    
+                    <p:dialog id="procesoDeshacer" header="#{msg['atencion']}" widgetVar="procesoDeshacer"  resizable="false" draggable="false" modal="true" height="100" width="350px"  closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['procesoDeshacer']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; " />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="procesoDeshacer.hide();
+                                operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlInterfaseContableSapBOVCA.actionBtnDeshacer()}" style="position: absolute; top: 63px; left: 180px"  process="@this" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="procesoDeshacer.hide();" style="position: absolute; top: 63px; left: 255px" process="@this" />
+                    </p:dialog>
 
                 </h:form>
                 <h:form id="formularioDialogos" >
@@ -850,6 +858,11 @@
                     
                     <p:dialog id="editarProyectoIntercon" header="#{msg['editarProyectoIntercon']}" widgetVar="editarProyectoIntercon" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlInterfaseContableSapBOPE.editarIntercon.proyecto.nombreproyecto}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="operacionEnProceso" header="#{msg['atencion']}" widgetVar="operacionEnProceso"  resizable="false" draggable="false" modal="true" height="65" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/cargando.gif" width="50" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['operacionEnProceso']}" style="font-size: 12px; position: absolute; left: 95px; top: 20px; width: 240px; font-weight:bold;" />
                     </p:dialog>
 
                 </h:form>

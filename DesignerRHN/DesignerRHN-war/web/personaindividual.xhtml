@@ -93,9 +93,8 @@
                                     <h:outputText  value="#{msg['fechaNacimiento']}*" style="position: absolute; top: 115px; left: 290px;font-weight: bold"/>
                                     <div id="divFechaNacimientoModPersonal" style="position: absolute; top: 110px; left: 430px;">
                                         <lnk:calendar value="#{controlPersonaIndividual.nuevaPersona.fechanacimiento}" id="fechaNacimientoModPersonal" >
-                                            <p:ajax event="dateSelect" listener="#{controlPersonaIndividual.modificarFechaNacimientoInformacionPersonal(8)}" update="fechaNacimientoModPersonal" process="@this"/>
-                                            <p:ajax event="change" listener="#{controlPersonaIndividual.modificarFechaNacimientoInformacionPersonal(8)}" update="fechaNacimientoModPersonal" process="@this"/>
-                                            <p:ajax event="click" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(8)}" process="@this"/>
+                                            <p:ajax event="dateSelect" listener="#{controlPersonaIndividual.modificarFechaNacimientoInformacionPersonal(8)}" update="@this" process="@this"/>
+                                            <p:ajax event="change" listener="#{controlPersonaIndividual.modificarFechaNacimientoInformacionPersonal(8)}" update="@this" process="@this"/>
                                         </lnk:calendar>
                                     </div>
 
@@ -134,14 +133,14 @@
                                     <h:outputText  value="#{msg['fechaUltimoPago']}" style="position: absolute; top: 115px; left: 580px;font-weight: bold"/>
                                     <div id="divFechaUltimoPagoModPersonal" style="position: absolute; top: 110px; left: 705px;">
                                         <lnk:calendar value="#{controlPersonaIndividual.fechaCorte}" id="fechaUltimoPagoModPersonal" >
-                                            <p:ajax event="dateSelect" listener="#{controlPersonaIndividual.modificarFechaUltimoPagoInformacionPersonal(13)}" update="fechaUltimoPagoModPersonal" process="@this"/>
-                                            <p:ajax event="change" listener="#{controlPersonaIndividual.modificarFechaUltimoPagoInformacionPersonal(13)}" update="fechaUltimoPagoModPersonal" process="@this"/>
-                                            <p:ajax event="click" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(13)}" process="@this"/>
+                                            <p:ajax event="dateSelect" listener="#{controlPersonaIndividual.modificarFechaUltimoPagoInformacionPersonal(13)}" update="@this" process="@this"/>
+                                            <p:ajax event="change" listener="#{controlPersonaIndividual.modificarFechaUltimoPagoInformacionPersonal(13)}" update="@this" process="@this"/>
                                         </lnk:calendar>
                                     </div>
 
                                 </fieldset>
 
+                                <p:remoteCommand name="posicionFechas" actionListener="#{controlPersonaIndividual.posicionFechas()}"/>
 
                                 <fieldset style="position: absolute; font-size: 12px;top: 210px; width: 380px; height: 170px; border-radius: 10px; text-align: left">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['modCargo']}</strong></legend>
@@ -300,7 +299,6 @@
                                         <lnk:calendar value="#{controlPersonaIndividual.nuevaVigenciaTipoContrato.fechavigencia}" id="fechaFinalContratoModTipoContrato" >
                                             <p:ajax event="dateSelect" listener="#{controlPersonaIndividual.modificarFechaFechaVigenciaTipoContrato(2)}" update="fechaFinalContratoModTipoContrato" process="@this"/>
                                             <p:ajax event="change" listener="#{controlPersonaIndividual.modificarFechaFechaVigenciaTipoContrato(2)}" update="fechaFinalContratoModTipoContrato" process="@this"/>
-                                            <p:ajax event="click" listener="#{controlPersonaIndividual.cambiarIndiceTipoContrato(2)}" process="@this"/>
                                         </lnk:calendar>
                                     </div>
 
@@ -1778,7 +1776,7 @@
                     <p:dialog id="advertenciaFechaIngreso" header="#{msg['atencion']}" widgetVar="advertenciaFechaIngreso"  resizable="false" draggable="false" modal="true" height="90" width="425px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['advertenciaFechaIngreso']}" style="position: absolute; left: 70px; top: 10px; width: 285px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="advertenciaFechaIngreso.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="advertenciaFechaIngreso.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="errorEmailPersona" header="#{msg['atencion']}" widgetVar="errorEmailPersona"  resizable="false" draggable="false" modal="true" height="80" width="300px" style="font-size: 12px" closable="true">  
