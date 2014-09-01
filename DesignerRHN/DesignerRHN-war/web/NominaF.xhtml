@@ -14,7 +14,7 @@
                 <h:form id="form"> 
                     <f:loadBundle basename="Recursos.nominaf" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
-                    <p:panel id="PanelTotal" header="#{msg['titulo']}" style=" ; position: absolute; width: 874px; height: 530px;">  
+                    <p:panel id="PanelTotal" header="#{msg['titulo']}" style=" ; position: absolute; width: 874px; height: 530px;"> 
 
                         <p:tabView  id="tabMenu"  dynamic="true" style=" height: 485px;" widgetVar="tabMenu" activeIndex="#{controlRemoto.numPestaña}">  
                             <p:ajax event="tabChange" listener="#{controlRemoto.pestañaActual}"/> 
@@ -47,7 +47,7 @@
                                 <fieldset style="height: 107px; width: 185px; display: block; position: absolute; border-radius: 10px; top: 46px; left: 15px;">
                                     <h:outputText value="#{msg['tipopersonal']}" styleClass="outputTextFielset" />
 
-                                    <p:commandButton  style="background-image: url(Imagenes/#{controlRemoto.imagen}); width: 80px; height: 110px; position: absolute; top: 7px; left: 5px; background-repeat: no-repeat; background-size: 100% 100%;" id="TipoPersonal" value="" />
+                                    <p:commandButton style="background-image: url(Imagenes/#{controlRemoto.imagen}); width: 80px; height: 110px; position: absolute; top: 7px; left: 5px; background-repeat: no-repeat; background-size: 100% 100%;" id="TipoPersonal" value="" update=":formularioDialogos" actionListener="#{controlRemoto.pruebita()}"  action="#{controlRemoto.pantallaReintegrar()}" process="@this"/>
                                     <p:tooltip  for="TipoPersonal">
                                         #{msg['cargosdesempeñados1']} <br/> #{msg['cargosdesempeñados2']}
                                     </p:tooltip>
@@ -63,7 +63,6 @@
                                     <p:commandButton id="Aspirantes" value="#{msg['aspirantes']}"  style="position: absolute; left: 87px; top: 88px; width: 110px; font-size: 11px;" styleClass="#{controlRemoto.styleAspirantes}" actionListener="#{controlRemoto.aspirantes()}" update="data , :form:alerta, TipoPersonal, data:panelInf"/>
                                     <p:tooltip  for="Aspirantes" value="#{msg['informacionaspirantes']}"  />
                                 </fieldset>
-
 
                                 <!-- Panel Derecho - Superior -->
 
@@ -574,15 +573,15 @@
                                 <em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>
                                 <h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
                                 <h:outputText style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
-                                
+
                                 <p:dialog id="confirmarProcesoInterfaceContableTotal" header="#{msg['atencion']}" widgetVar="confirmarProcesoInterfaceContableTotal"  resizable="false" draggable="false" modal="true" height="100" width="420px"  closable="false">  
                                     <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 10px; top: 15px;"  />
                                     <h:outputText value="#{msg['confirmarProcesoInterfaceContableTotal']}" style="position: absolute; left: 100px; top: 15px; width: 320px; font-weight:bold;" />
                                     <p:commandButton value="#{msg['si']}" onclick="confirmarProcesoInterfaceContableTotal.hide();" action="interfasecontabletotal" actionListener="#{controlInterfaseContableTotal.recibirPagina('nomina')}" style="position: absolute; top: 60px; left: 290px " process="@this" icon="ui-icon-check" />
                                     <p:commandButton value="#{msg['no']}" onclick="confirmarProcesoInterfaceContableTotal.hide();" style="position: absolute; top: 60px; left: 345px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                                 </p:dialog>
-                                
-                                
+
+
                             </p:tab> 
 
                             <p:tab title="#{msg['gerencial']}" id="Gerencial" > 
@@ -815,6 +814,8 @@
                             </p:column>  
                         </p:dataTable> 
 
+                        <h:outputText id="infoRegistroBuscarEmpleados" value="#{controlRemoto.infoRegistroBuscarEmpleados}" style="position: absolute; left: 15px; top: 270px; font-weight: bold"/>
+
                         <p:commandButton id="buscarEmpl" value="#{msg['aceptar']}" onclick="lvBE.hide(), buscarE.clearFilters();" icon="ui-icon-check" actionListener="#{controlRemoto.buscarEmpleado()}"   update=":form:tabMenu:data, lvBuscarEmpleado, buscarEmpl, form:tabMenu:data:MostrarTodos" disabled="#{controlRemoto.buscar}" style="position: absolute; top: 260px; left: 565px">
                             <p:resetInput target=":form:lvBuscarEmpleado:globalFilter" />
                         </p:commandButton>
@@ -858,6 +859,40 @@
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlRemoto.lab()}"/> 
                     <p:hotkey bind="ctrl+f12" actionListener="#{controlRemoto.lab2()}"/> 
                 </h:form>
+                <h:form id="formularioDialogos">
+                    <p:dialog id="activoNoEliminar" header="#{msg['atencion']}" widgetVar="activoNoEliminar"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['noeliminar']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="activoNoEliminar.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
+                    </p:dialog>
+                    <p:dialog id="activoEliminarPaso1" header="#{msg['titulopaso1']}" widgetVar="activoEliminarPaso1"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['paso1']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}" icon="ui-icon-check" actionListener="#{controlRemoto.paso2()}" onclick="activoEliminarPaso1.hide();" style="position: absolute; top: 50px; left: 210px" process="@this" />
+                        <p:commandButton value="#{msg['cancelar']}" icon="ui-icon-circle-close" onclick="activoEliminarPaso1.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
+                    </p:dialog>
+                    <p:dialog id="activoEliminarPaso2" header="#{msg['titulopaso2']}" widgetVar="activoEliminarPaso2"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['paso2']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="#{msg['si']}" icon="ui-icon-check" actionListener="#{controlRemoto.paso3()}" onclick="activoEliminarPaso2.hide();" style="position: absolute; top: 50px; left: 210px" process="@this" />
+                        <p:commandButton value="#{msg['no']}" icon="ui-icon-circle-close" onclick="activoEliminarPaso2.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
+                    </p:dialog>
+                    <p:dialog id="activoEliminarPaso3" header="#{msg['titulopaso3']}" widgetVar="activoEliminarPaso3"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['paso3']}  #{controlRemoto.trabajador.empleado.persona.nombreCompleto}" style="position: absolute; left: 100px; top: 20px; width: 210px;" />
+                        <p:commandButton value="#{msg['aceptar']}" actionListener="#{controlRemoto.paso4()}" onclick="activoEliminarPaso3.hide();" icon="ui-icon-check" style="position: absolute; top: 50px; left: 210px" process="@this" />
+                        <p:commandButton value="#{msg['cancelar']}" icon="ui-icon-circle-close" onclick="activoEliminarPaso3.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
+                    </p:dialog>
+                    <p:dialog id="activoEliminarPaso4" header="#{msg['titulopaso4']}" widgetVar="activoEliminarPaso4"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['paso4']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}" actionListener="#{controlRemoto.activos()}" icon="ui-icon-check" onclick="activoEliminarPaso4.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
+                    </p:dialog>
+                    <!-- <p:dialog id="reingresarEmpleado" widgetVar="reingresarEmpleado" draggable="false" resizable="false" closable="false"  
+                              showEffect="fade" hideEffect="fade" width="380" height="350" modal="true" dynamic="true">
+                        <ui:include src="resources/Ciudades.xhtml"/>
+                    </p:dialog> -->
+                </h:form>
                 <h:form id="formExportar">
                     <p:dataTable id="empleadosExportar" var="empleadoVW" style="visibility: hidden; display: none;"                           
                                  value="#{controlRemoto.vwActualesTiposTrabajadoresesLista}">
@@ -882,7 +917,7 @@
                                 <h:outputText value="#{msg['nombreX']}"/>
                             </f:facet>
                             <h:outputText value="#{empleadoVW.empleado.persona.nombre}" />
-                        </p:column>  
+                        </p:column>
                     </p:dataTable>
                 </h:form>
             </ui:define>

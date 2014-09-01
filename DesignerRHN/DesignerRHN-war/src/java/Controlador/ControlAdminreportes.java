@@ -164,7 +164,7 @@ public class ControlAdminreportes implements Serializable {
             if (tipoLista == 0) {
                 if (!listaInforeportesCrear.contains(listaInforeportes.get(indice))) {
                     for (int i = 0; i < listaInforeportes.size(); i++) {
-                        if (listaInforeportes.get(indice).getCodigo().equals(listaInforeportes.get(i).getCodigo())) {
+                        if (listaInforeportes.get(indice).getCodigo().compareTo(listaInforeportes.get(i).getCodigo()) == 0) {
                             System.out.println("MODIFICACIONES El Codigo ya está ahora revisamos modulo en: " + i);
                             if (listaInforeportes.get(indice).getModulo().getNombre().equals(listaInforeportes.get(i).getModulo().getNombre())) {
                                 System.out.println("MODIFICACIONES El codigo y el módulo ya existen en: " + i);

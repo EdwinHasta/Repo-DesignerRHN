@@ -39,8 +39,11 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
             System.out.println("vigenciasCargos Persona Secuencia: " + vigenciasCargos.getEmpleado().getPersona().getSecuencia());
             System.out.println("vigenciasCargos Empleado Secuencia: " + vigenciasCargos.getEmpleado().getSecuencia());
             tx.begin();
-            em.persist(vigenciasCargos);
+            System.out.println("TX Begin");
+            em.merge(vigenciasCargos);
+            System.out.println("Persist");
             tx.commit();
+            System.out.println("commitea");
         } catch (Exception e) {
             System.out.println("Error PersistenciaVigenciasCargos.crear: " + e.toString());
             if (tx.isActive()) {

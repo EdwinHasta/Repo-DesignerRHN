@@ -76,10 +76,16 @@ public class AdministrarInicioRed implements AdministrarInicioRedInterface, Seri
 
     public boolean conexionUsuario(String baseDatos, String usuario, String contraseña) {
         try {
+            System.out.println("conexionUsuario 1");
             secPerfil = persistenciaConexionInicial.usuarioLogin(sessionEMF.getEmf().createEntityManager(), usuario);
+            System.out.println("conexionUsuario 2");
             perfilUsuario = persistenciaConexionInicial.perfilUsuario(sessionEMF.getEmf().createEntityManager(), secPerfil);
+            System.out.println("conexionUsuario 3");
             sessionEMF.getEmf().close();
+            System.out.println("conexionUsuario 4");
             boolean resultado = sessionEMF.crearFactoryUsuario(usuario, contraseña, baseDatos);
+            System.out.println("conexionUsuario 5");
+            System.out.println("RESULTADO: " + resultado);
             return resultado;
         } catch (Exception e) {
             System.out.println("Error creando EMF AdministrarLogin.conexionUsuario: " + e);
@@ -100,11 +106,18 @@ public class AdministrarInicioRed implements AdministrarInicioRedInterface, Seri
     public boolean validarConexionUsuario(String idSesion) {
         try {
             em = persistenciaConexionInicial.validarConexionUsuario(sessionEMF.getEmf());
+            System.out.println("2");
+            
             if (em != null) {
+                System.out.println("3");
                 if (em.isOpen()) {
+                    System.out.println("4");
                     persistenciaConexionInicial.setearUsuario(em, perfilUsuario.getDescripcion(), perfilUsuario.getPwd());
+                    System.out.println("5");
                     SessionEntityManager sem = new SessionEntityManager(idSesion, sessionEMF.getEmf());
+                    System.out.println("6");
                     administrarSessiones.adicionarSesion(sem);
+                    System.out.println("7");
                     return true;
                 }
             }

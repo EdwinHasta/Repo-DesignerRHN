@@ -22,7 +22,7 @@ public interface PersistenciaEstructurasInterface {
      *
      * @param estructuras Estructura que se quiere crear.
      */
-    public void crear(EntityManager em,Estructuras estructuras);
+    public void crear(EntityManager em, Estructuras estructuras);
 
     /**
      * Método encargado de modificar una Estructura de la base de datos. Este
@@ -31,7 +31,7 @@ public interface PersistenciaEstructurasInterface {
      *
      * @param estructuras Estructura con los cambios que se van a realizar.
      */
-    public void editar(EntityManager em,Estructuras estructuras);
+    public void editar(EntityManager em, Estructuras estructuras);
 
     /**
      * Método encargado de eliminar de la base de datos el Estructura que entra
@@ -39,7 +39,7 @@ public interface PersistenciaEstructurasInterface {
      *
      * @param estructuras Estructura que se quiere eliminar.
      */
-    public void borrar(EntityManager em,Estructuras estructuras);
+    public void borrar(EntityManager em, Estructuras estructuras);
 
     /**
      * Método encargado de buscar todas las Estructuras existentes, ordenadas
@@ -58,7 +58,7 @@ public interface PersistenciaEstructurasInterface {
      * @return Retorna la Estructura identificada con el secuencia dado por
      * parámetro.
      */
-    public Estructuras buscarEstructura(EntityManager em,BigInteger secuencia);
+    public Estructuras buscarEstructura(EntityManager em, BigInteger secuencia);
 
     /**
      * Método encargado de buscar las Estructuras de un organigrama.
@@ -66,7 +66,7 @@ public interface PersistenciaEstructurasInterface {
      * @param secOrganigrama Secuencia del organigrama.
      * @return Retorna una lista de Estructuras.
      */
-    public List<Estructuras> buscarEstructurasPorOrganigrama(EntityManager em,BigInteger secOrganigrama);
+    public List<Estructuras> buscarEstructurasPorOrganigrama(EntityManager em, BigInteger secOrganigrama);
 
     /**
      * Método encargado de recuperar las estructuras que se mostraran en la
@@ -78,7 +78,7 @@ public interface PersistenciaEstructurasInterface {
      * @return Retorna una lista de Estructuras habilitadas para la empresa a la
      * fecha dada por parámetro.
      */
-    public List<Estructuras> buscarlistaValores(EntityManager em,String fechaVigencia);
+    public List<Estructuras> buscarlistaValores(EntityManager em, String fechaVigencia);
 
     /**
      * Método encargado de traer todas las estructuras padre (no tienen padre)
@@ -89,7 +89,7 @@ public interface PersistenciaEstructurasInterface {
      * @return Retorna una lista de Estructuras asociadas a un organigrama y con
      * el atributo estructurapadre = IS NULL.
      */
-    public List<Estructuras> estructuraPadre(EntityManager em,BigInteger secOrg);
+    public List<Estructuras> estructuraPadre(EntityManager em, BigInteger secOrg);
 
     /**
      * Método encargado de recuperar las estructuras hijas de una estructura
@@ -100,7 +100,7 @@ public interface PersistenciaEstructurasInterface {
      * @param codigoEmpresa Código de la empresa.
      * @return Retorna una lista de Estructuras.
      */
-    public List<Estructuras> estructurasHijas(EntityManager em,BigInteger secEstructuraPadre, Short codigoEmpresa);
+    public List<Estructuras> estructurasHijas(EntityManager em, BigInteger secEstructuraPadre, Short codigoEmpresa);
 
     /**
      * Método encargado de buscar todas las Estructuras existentes en la base de
@@ -118,7 +118,7 @@ public interface PersistenciaEstructurasInterface {
      * @return Retorna la Estructura identificada con la secuencia dada por
      * parámetro.
      */
-    public Estructuras buscarEstructuraSecuencia(EntityManager em,BigInteger secuencia);
+    public Estructuras buscarEstructuraSecuencia(EntityManager em, BigInteger secuencia);
 
     /**
      * Método encargado de recuperar las Estructuras que se encuentran
@@ -129,7 +129,7 @@ public interface PersistenciaEstructurasInterface {
      * @param secEstructura Secuencia Estructura
      * @return Retorna una lista de Estructuras.
      */
-    public List<Estructuras> buscarEstructurasPadres(EntityManager em,BigInteger secOrganigrama, BigInteger secEstructura);
+    public List<Estructuras> buscarEstructurasPadres(EntityManager em, BigInteger secOrganigrama, BigInteger secEstructura);
 
     /**
      * Método encargado de obtener la lista de Estructuras que corresponden a la
@@ -138,10 +138,12 @@ public interface PersistenciaEstructurasInterface {
      * @param secOrganigrama
      * @return Retorna una lista de Estructuras.
      */
-    public List<Estructuras> buscarEstructurasPorSecuenciaOrganigrama(EntityManager em,BigInteger secOrganigrama);
-    
-    
+    public List<Estructuras> buscarEstructurasPorSecuenciaOrganigrama(EntityManager em, BigInteger secOrganigrama);
+
     public List<Estructuras> buscarEstructurasPorEmpresaFechaIngreso(EntityManager em, BigInteger secEmpresa, Date fechaIngreso);
-    
+
     public List<Estructuras> buscarEstructurasPorEmpresa(EntityManager em, BigInteger secEmpresa);
+
+    public List<Estructuras> consultarEstructurasReingreso(EntityManager em);
+
 }

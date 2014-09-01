@@ -133,8 +133,10 @@
                                     <h:outputText  value="#{msg['fechaUltimoPago']}" style="position: absolute; top: 115px; left: 580px;font-weight: bold"/>
                                     <div id="divFechaUltimoPagoModPersonal" style="position: absolute; top: 110px; left: 705px;">
                                         <lnk:calendar value="#{controlPersonaIndividual.fechaCorte}" id="fechaUltimoPagoModPersonal" >
+
                                             <p:ajax event="dateSelect" listener="#{controlPersonaIndividual.modificarFechaUltimoPagoInformacionPersonal(13)}" update="@this" process="@this"/>
                                             <p:ajax event="change" listener="#{controlPersonaIndividual.modificarFechaUltimoPagoInformacionPersonal(13)}" update="@this" process="@this"/>
+
                                         </lnk:calendar>
                                     </div>
 

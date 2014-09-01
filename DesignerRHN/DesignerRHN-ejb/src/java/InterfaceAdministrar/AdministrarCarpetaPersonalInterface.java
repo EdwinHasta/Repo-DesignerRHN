@@ -204,4 +204,6 @@ public interface AdministrarCarpetaPersonalInterface {
     public String actualIBC(BigInteger secEmpleado, String RETENCIONYSEGSOCXPERSONA);
     public String consultarActualSet(BigInteger secEmpleado);
     public String consultarActualComprobante(BigInteger secEmpleado);
+    public Long borrarActivo(BigInteger secuencia);
+    public void borrarEmpleadoActivo(BigInteger secuenciaEmpleado, BigInteger secuenciaPersona);
 }
