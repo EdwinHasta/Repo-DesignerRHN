@@ -81,6 +81,7 @@
                                     <p:inputText onclick="select();" value="#{controlPersonaIndividual.nuevaPersona.numerodocumento}" id="numeroDocumentoModPersonal" style="position: absolute; top: 50px; left: 430px;width: 130px;text-transform: uppercase">
                                         <p:ajax event="focus" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(6)}" process="@this"/>
                                         <p:ajax event="change" listener="#{controlPersonaIndividual.modificarNumeroDocumentoPersona()}" process="@this" update="@this"/>
+                                        <pe:keyFilter for="numeroDocumentoModPersonal" mask="num"/>
                                     </p:inputText>
 
 
@@ -122,6 +123,8 @@
                                     <p:inputText onclick="select();" value="#{controlPersonaIndividual.nuevoEmpleado.codigoempleado}" id="codigoEmpleadoModPersonal" style="position: absolute; top: 50px; left: 705px;width: 105px;text-transform: uppercase">
                                         <p:ajax event="focus" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(11)}" process="@this"/>
                                         <p:ajax event="change" listener="#{controlPersonaIndividual.modificarCodigoEmpleado()}" process="@this" update="@this" />
+                                        <pe:keyFilter for="codigoEmpleadoModPersonal" mask="num"/>
+
                                     </p:inputText>
 
 
@@ -249,7 +252,7 @@
                                     <h:outputText value="" style="position: absolute; background-image: url(Imagenes/Iconos/sueldo.png); width: 50px; height: 50px; top: 25px; left: 5px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 2px; border-width: 2px;" />
 
                                     <h:outputText  value="#{msg['valorSueldo']}*" style="position: absolute; top: 25px; left: 65px;font-weight: bold">
-                                                   <f:convertNumber currencyCode="COP"/>
+                                        <f:convertNumber currencyCode="COP"/>
                                     </h:outputText>
                                     <p:inputText  id="valorSueldoModSueldo" onclick="select();" value="#{controlPersonaIndividual.valorSueldo}" style="position: absolute; top: 20px; left: 230px;width: 150px;text-transform: uppercase">
                                         <p:ajax event="focus" listener="#{controlPersonaIndividual.cambiarIndiceSueldo(0)}" process="@this"/>
