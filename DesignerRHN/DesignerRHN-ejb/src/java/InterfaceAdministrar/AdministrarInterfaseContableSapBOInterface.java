@@ -68,5 +68,7 @@ public interface AdministrarInterfaseContableSapBOInterface {
     public void ejecutarPKGRecontabilizacion(Date fechaIni, Date fechaFin);
 
     public List<VWMensajeSAPBOV8> obtenerErroresSAPBOV8();
+    
+    public int contarProcesosContabilizadosInterconSAPBO(Date fechaInicial, Date fechaFinal);
 
 }

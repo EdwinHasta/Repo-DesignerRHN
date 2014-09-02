@@ -521,6 +521,7 @@ public class ControlVigenciasTiposContratos implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
+            vigenciaSeleccionada = vigenciasTiposContratoEmpleado.get(index);
             secRegistro = vigenciasTiposContratoEmpleado.get(index).getSecuencia();
             if (cualCelda == 0) {
                 if (tipoLista == 0) {
@@ -1312,11 +1313,8 @@ public class ControlVigenciasTiposContratos implements Serializable {
 
     public List<VigenciasTiposContratos> getVigenciasTiposContratoEmpleado() {
         try {
-            if (vigenciasTiposContratoEmpleado == null) {
-                return vigenciasTiposContratoEmpleado = administrarVigenciasTiposContratos.vigenciasTiposContratosEmpleado(secuenciaEmpleado);
-            } else {
-                return vigenciasTiposContratoEmpleado;
-            }
+            return vigenciasTiposContratoEmpleado = administrarVigenciasTiposContratos.vigenciasTiposContratosEmpleado(secuenciaEmpleado);
+            
         } catch (Exception e) {
             System.out.println("Error...!! getVigenciasTiposContratosEmpleado " + e);
             return null;

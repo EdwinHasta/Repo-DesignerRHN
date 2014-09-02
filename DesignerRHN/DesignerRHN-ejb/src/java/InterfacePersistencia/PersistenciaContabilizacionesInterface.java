@@ -32,5 +32,7 @@ public interface PersistenciaContabilizacionesInterface {
     public void actualizarFlahInterconContableSAPBOV8(EntityManager em, Date fechaIni, Date fechaFin, BigInteger proceso);
 
     public Integer obtenerContadorFlagGeneradoFechasSAP(EntityManager em, Date fechaIni, Date fechaFin);
+    
+    public Integer obtenerContadorFlagGeneradoFechasTotal(EntityManager em, Date fechaIni, Date fechaFin);
 
 }

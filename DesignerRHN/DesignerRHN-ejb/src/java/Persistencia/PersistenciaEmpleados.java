@@ -6,6 +6,7 @@ package Persistencia;
 import Entidades.Empleados;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -395,7 +396,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             return null;
         }
     }
-    
+
     public List<Empleados> consultarEmpleadosParaProyecciones(EntityManager em) {
         try {
             em.clear();
@@ -406,6 +407,113 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
         } catch (Exception e) {
             System.err.println("Error consultarEmpleadosParaProyecciones PersistenciaEmpleados : " + e.toString());
             return null;
+        }
+    }
+
+    @Override
+    public void eliminarEmpleadoNominaF(EntityManager em, BigInteger secuenciaEmpleado, BigInteger secuenciaPersona) {
+        EntityTransaction tx = em.getTransaction();
+        try {
+            em.clear();
+            tx.begin();
+            String sqlQuery = "call ELIMINAREMPLEADO.eli_emple_no_liqui(?,?)";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuenciaEmpleado);
+            query.setParameter(2, secuenciaPersona);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaEmpleados.eliminarEmpleadoNominaF: " + e);
+            }
+        }
+    }
+
+    @Override
+    public void reingresarEmpleado(EntityManager em, BigInteger codigoEmpleado, BigInteger centroCosto, Date fechaReingreso, BigInteger empresa, Date fechaFinal) {
+        EntityTransaction tx = em.getTransaction();
+        try {
+            em.clear();
+            tx.begin();
+            String sqlQuery = "call ELIMINAREMPLEADO.reingresar_empleado(?,?,?,?,?)";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, codigoEmpleado);
+            query.setParameter(2, centroCosto);
+            query.setParameter(3, fechaReingreso);
+            query.setParameter(4, empresa);
+            query.setParameter(5, fechaFinal);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaEmpleados.reingresarEmpleado: " + e);
+            }
+        }
+    }
+
+    @Override
+    public List<Empleados> consultarEmpleadosReingreso(EntityManager em) {
+        try {
+            em.clear();
+            String sql = "select e.* ,p.* from empleados e,personas p where e.persona = p.secuencia and exists (select 'x' from vigenciastipostrabajadores vt,tipostrabajadores tt where vt.empleado = e.secuencia and vt.tipotrabajador = tt.secuencia and tt.tipo = 'RETIRADO' AND   VT.FECHAVIGENCIA = (SELECT MAX(FECHAVIGENCIA) FROM VIGENCIASTIPOSTRABAJADORES VTTI WHERE FECHAVIGENCIA<= (SELECT  FECHAHASTACAUSADO  FROM VWACTUALESFECHAS) AND VTTI.EMPLEADO = VT.EMPLEADO ))";
+            Query query = em.createNativeQuery(sql, Empleados.class);
+            List<Empleados> lista = query.getResultList();
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error consultarEmpleadosReingreso PersistenciaEmpleados : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public Date verificarFecha(EntityManager em, BigInteger secuenciaEmpleado) {
+        Date fechaRetiro;
+        try {
+            em.clear();
+            String sql = "select max(r.fecharetiro)\n"
+                    + "      from vigenciastipostrabajadores vtt, retirados r, tipostrabajadores tt\n"
+                    + "      where vtt.empleado = ?\n"
+                    + "      and vtt.secuencia=r.vigenciatipotrabajador\n"
+                    + "      and tt.secuencia = vtt.tipotrabajador";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, secuenciaEmpleado);
+            fechaRetiro = (Date) query.getSingleResult();
+            return fechaRetiro;
+        } catch (Exception e) {
+            System.out.println("Error verificarFecha PersistenciaEmpleados : " + e.toString());
+            return null;
+        }
+    }
+    
+    @Override
+    public void cambiarFechaIngreso(EntityManager em, BigInteger secuenciaEmpleado, Date fechaAntigua, Date fechaNueva) {
+        EntityTransaction tx = em.getTransaction();
+        try {
+            em.clear();
+            tx.begin();
+            String sqlQuery = "call ELIMINAREMPLEADO.cambiarfechaingreso(?,?,?)";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuenciaEmpleado);
+            query.setParameter(2, fechaAntigua);
+            query.setParameter(3, fechaNueva);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaEmpleados.cambiarFechaIngreso: " + e);
+            }
         }
     }
 }

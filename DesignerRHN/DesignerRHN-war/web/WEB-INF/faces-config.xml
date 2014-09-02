@@ -533,7 +533,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/interfacecontabletotal.xhtml</from-view-id>
+        <from-view-id>/interfasecontabletotal.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
             <to-view-id>/Rastro.xhtml</to-view-id>
@@ -544,7 +544,75 @@
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfaseRastro</from-outcome>
-            <to-view-id>/interfacecontabletotal.xhtml</to-view-id>
+            <to-view-id>/interfasecontabletotal.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/interfasecontablesapbovca.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>interfaseSAPBOVCARastro</from-outcome>
+            <to-view-id>/interfasecontablesapbovca.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/interfasecontablesapbov8.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>interfaseBOV8Rastro</from-outcome>
+            <to-view-id>/interfasecontablesapbov8.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/interfasecontablesapbope.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>interfaseSAPBOPERastro</from-outcome>
+            <to-view-id>/interfasecontablesapbope.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/interfasecontablesapbopq.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>interfaseSAPBOPQRastro</from-outcome>
+            <to-view-id>/interfasecontablesapbopq.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -4686,7 +4754,31 @@
             <redirect />
         </navigation-case>
     </navigation-rule>    
-    
+    <navigation-rule>
+        <from-view-id>/NominaF.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>reintegro</from-outcome>
+            <to-view-id>/reingresarempleado.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>  
+    <navigation-rule>
+        <from-view-id>/reingresarempleado.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>nomina</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/EmplVigenciaTipoContrato.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>cambiofechaingreso</from-outcome>
+            <to-view-id>/cambiofechaingreso.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+        
     <navigation-rule>
         <from-view-id>/usuario.xhtml</from-view-id>
         <navigation-case>
@@ -4702,9 +4794,10 @@
             <to-view-id>/usuario.xhtml</to-view-id>
             <redirect />
         </navigation-case>
-    </navigation-rule>  
+    </navigation-rule>
     
     <navigation-rule>
+<<<<<<< HEAD
         <from-view-id>/usuariovista.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
@@ -4738,4 +4831,13 @@
         </navigation-case>
     </navigation-rule>
     
+=======
+        <from-view-id>/cambiofechaingreso.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>emplvigenciatipocontrato</from-outcome>
+            <to-view-id>/EmplVigenciaTipoContrato.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+>>>>>>> origin/master
 </faces-config>

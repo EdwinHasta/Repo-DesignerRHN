@@ -7,6 +7,7 @@ package Persistencia;
 
 import Entidades.InterconTotal;
 import InterfacePersistencia.PersistenciaInterconTotalInterface;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -203,7 +204,7 @@ public class PersistenciaInterconTotal implements PersistenciaInterconTotalInter
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
             query.setParameter(2, fechaInicial);
-            query.setParameter(3, fechaFinal);           
+            query.setParameter(3, fechaFinal);
             query.setParameter(4, proceso);
             query.executeUpdate();
             tx.commit();
@@ -225,7 +226,7 @@ public class PersistenciaInterconTotal implements PersistenciaInterconTotalInter
             Query query = em.createNativeQuery(sql);
             query.setParameter(1, fechaInicial);
             query.setParameter(2, fechaFinal);
-            BigInteger contador = (BigInteger) query.getSingleResult();
+            BigDecimal contador = (BigDecimal) query.getSingleResult();
             if (contador != null) {
                 return contador.intValue();
             } else {
@@ -241,6 +242,7 @@ public class PersistenciaInterconTotal implements PersistenciaInterconTotalInter
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             String sql = "UPDATE INTERCON_TOTAL I SET I.FLAG='ENVIADO'\n"
                     + " WHERE  \n"
                     + " I.FECHACONTABILIZACION BETWEEN ? AND ?\n"
@@ -261,16 +263,17 @@ public class PersistenciaInterconTotal implements PersistenciaInterconTotalInter
             }
         }
     }
-    
+
     public void cerrarProcesoContabilizacion(EntityManager em, Date fechaInicial, Date fechaFinal, Short empresa, BigInteger proceso) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
-            String sql = "UPDATE INTERCON_TOTAL I SET I.FLAG='ENVIADO' WHERE  \n" +
-                        "     I.FECHACONTABILIZACION BETWEEN :PARAMETROSCONTABLES.FECHAINICIALCONTABILIZACION AND :PARAMETROSCONTABLES.FECHAFINALCONTABILIZACION\n" +
-                        "     and nvl(i.proceso,0) = nvl(:PARAMETROSCONTABLES.proceso,nvl(i.proceso,0))\n" +
-                        "     and i.empresa_codigo=:PARAMETROSCONTABLES.empresa_codigo"
-                        + "   and exists (select 'x' from empleados e where e.secuencia=i.empleado);";
+            tx.begin();
+            String sql = "UPDATE INTERCON_TOTAL I SET I.FLAG='ENVIADO' WHERE  \n"
+                    + "     I.FECHACONTABILIZACION BETWEEN ? AND ?\n"
+                    + "     and nvl(i.proceso,0) = nvl(?,nvl(i.proceso,0))\n"
+                    + "     and i.empresa_codigo=?"
+                    + "   and exists (select 'x' from empleados e where e.secuencia=i.empleado)";
             Query query = em.createNativeQuery(sql);
             query.setParameter(1, fechaInicial);
             query.setParameter(2, fechaFinal);
@@ -280,6 +283,62 @@ public class PersistenciaInterconTotal implements PersistenciaInterconTotalInter
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaInterconTotal.cerrarProcesoContabilizacion. " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void ejecutarPKGRecontabilizacion(EntityManager em, Date fechaIni, Date fechaFin) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            String sql = "call INTERFASETOTAL$PKG.Recontabilizacion(?,?)";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaIni);
+            query.setParameter(2, fechaFin);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconTotal.ejecutarPKGRecontabilizacion : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void ejecutarPKGCrearArchivoPlano(EntityManager em, int tipoTxt, Date fechaIni, Date fechaFin, BigInteger proceso, String nombreArchivo) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            /*
+            INTERFASETOTAL$PKG.archivo_plano(:PARAMETROSCONTABLES.FECHAINICIALCONTABILIZACION,:PARAMETROSCONTABLES.FECHAFINALCONTABILIZACION,:PARAMETROSCONTABLES.PROCESO,v_vcname);
+	ELSIF :CONTROLBOTONES.OPCIONESPLANO = 2 THEN    
+    INTERFASETOTAL$PKG.archivoplanosemidetallado(:PARAMETROSCONTABLES.FECHAINICIALCONTABILIZACION,:PARAMETROSCONTABLES.FECHAFINALCONTABILIZACION,:PARAMETROSCONTABLES.PROCESO,v_vcname);
+	ELSIF :CONTROLBOTONES.OPCIONESPLANO = 3 THEN    
+    INTERFASETOTAL$PKG.archivoplanoresumido(:PARAMETROSCONTABLES.FECHAINICIALCONTABILIZACION,:PARAMETROSCONTABLES.FECHAFINALCONTABILIZACION,:PARAMETROSCONTABLES.PROCESO,v_vcname);
+            */
+            tx.begin();
+            String sql = "";
+            if (tipoTxt == 1) {
+                sql = "call INTERFASETOTAL$PKG.archivo_plano(?,?,?,?)";
+            } else if (tipoTxt == 2) {
+                sql = "call INTERFASETOTAL$PKG.archivoplanosemidetallado(?,?,?,?)";
+            } else if (tipoTxt == 3) {
+                sql = "call INTERFASETOTAL$PKG.archivoplanoresumido(?,?,?,?)";
+            }
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaIni);
+            query.setParameter(2, fechaFin);
+            query.setParameter(3, proceso);
+            query.setParameter(4, nombreArchivo);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconTotal.ejecutarPKGCrearArchivoPlano : " + e.toString());
             if (tx.isActive()) {
                 tx.rollback();
             }

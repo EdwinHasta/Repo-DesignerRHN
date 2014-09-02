@@ -274,4 +274,18 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
         return estructura;
     }
 
+    @Override
+    public List<Estructuras> consultarEstructurasReingreso(EntityManager em) {
+        try {
+            em.clear();
+            String sql = "select e.* from estructuras e,centroscostos cc, organigramas org, empresas emp where e.centrocosto = cc.secuencia and e.organigrama=org.secuencia and org.empresa= emp.secuencia and org.fecha=(select max(orgi.fecha) from organigramas orgi where orgi.empresa=org.empresa)";
+            Query query = em.createNativeQuery(sql, Estructuras.class);
+            List<Estructuras> lista = query.getResultList();
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error consultarEstructurasReingreso PersistenciaEstructuras: " + e.toString());
+            return null;
+        }
+    }
+
 }

@@ -20,4 +20,9 @@ public interface PersistenciaGeneralesInterface {
     public String obtenerPreValidadContabilidad(EntityManager em);
 
     public String obtenerPreValidaBloqueAIngreso(EntityManager em);
+
+    public String obtenerPathServidorWeb(EntityManager em);
+
+    public String obtenerPathProceso(EntityManager em);
+
 }

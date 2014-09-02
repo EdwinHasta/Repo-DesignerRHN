@@ -2895,6 +2895,7 @@ public class ControlBusquedaAvanzada implements Serializable {
     public void botonListaValores() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (numeroTipoBusqueda == 0) {
+            System.out.println("casillaVigenciaCargo : "+casillaVigenciaCargo);
             if (casillaVigenciaCargo >= 0) {
                 if (casillaVigenciaCargo == 0) {
                     context.update("form:CargoCargoDialogo");
@@ -2922,6 +2923,7 @@ public class ControlBusquedaAvanzada implements Serializable {
                     casillaVigenciaCargo = -1;
                 }
             }
+            System.out.println("casillaVigenciaLocalizacion : "+casillaVigenciaLocalizacion);
             if (casillaVigenciaLocalizacion >= 0) {
                 if (casillaVigenciaLocalizacion == 0) {
                     context.update("form:LocalizacionCentroCostoDialogo");
@@ -2934,6 +2936,7 @@ public class ControlBusquedaAvanzada implements Serializable {
                     casillaVigenciaLocalizacion = -1;
                 }
             }
+            System.out.println("casillaVigenciaSueldo : "+casillaVigenciaSueldo);
             if (casillaVigenciaSueldo >= 0) {
                 if (casillaVigenciaSueldo == 0) {
                     context.update("form:TipoSueldoSueldoDialogo");
@@ -2946,6 +2949,7 @@ public class ControlBusquedaAvanzada implements Serializable {
                     casillaVigenciaSueldo = -1;
                 }
             }
+            System.out.println("casillaVigenciaTipoContrato : "+casillaVigenciaTipoContrato);
             if (casillaVigenciaTipoContrato >= 0) {
                 if (casillaVigenciaTipoContrato == 0) {
                     context.update("form:TipoContratoFechaContratoDialogo");
@@ -2958,6 +2962,7 @@ public class ControlBusquedaAvanzada implements Serializable {
                     casillaVigenciaTipoContrato = -1;
                 }
             }
+            System.out.println("casillaVigenciaTipoTrabajador : "+casillaVigenciaTipoTrabajador);
             if (casillaVigenciaTipoTrabajador >= 0) {
                 if (casillaVigenciaTipoTrabajador == 0) {
                     context.update("form:TipoTrabajadorTipoTrabajadorDialogo");
@@ -2965,6 +2970,7 @@ public class ControlBusquedaAvanzada implements Serializable {
                     casillaVigenciaTipoTrabajador = -1;
                 }
             }
+            System.out.println("casillaVigenciaReformaLaboral : "+casillaVigenciaReformaLaboral);
             if (casillaVigenciaReformaLaboral >= 0) {
                 if (casillaVigenciaReformaLaboral == 0) {
                     context.update("form:ReformaLaboralTipoSalarioDialogo");
@@ -2972,6 +2978,7 @@ public class ControlBusquedaAvanzada implements Serializable {
                     casillaVigenciaReformaLaboral = -1;
                 }
             }
+            System.out.println("casillaVigenciaNormaLaboral : "+casillaVigenciaNormaLaboral);
             if (casillaVigenciaNormaLaboral >= 0) {
                 if (casillaVigenciaNormaLaboral == 0) {
                     context.update("form:NormaLaboralNormaLaboralDialogo");
@@ -2979,6 +2986,7 @@ public class ControlBusquedaAvanzada implements Serializable {
                     casillaVigenciaNormaLaboral = -1;
                 }
             }
+            System.out.println("casillaVigenciaContrato : "+casillaVigenciaContrato);
             if (casillaVigenciaContrato >= 0) {
                 if (casillaVigenciaContrato == 0) {
                     context.update("form:LegislacionLegislacionLaboralDialogo");
@@ -2986,6 +2994,7 @@ public class ControlBusquedaAvanzada implements Serializable {
                     casillaVigenciaContrato = -1;
                 }
             }
+            System.out.println("casillaVigenciaUbicacion : "+casillaVigenciaUbicacion);
             if (casillaVigenciaUbicacion >= 0) {
                 if (casillaVigenciaUbicacion == 0) {
                     context.update("form:UbicacionUbicacionDialogo");
@@ -2993,6 +3002,7 @@ public class ControlBusquedaAvanzada implements Serializable {
                     casillaVigenciaUbicacion = -1;
                 }
             }
+            System.out.println("casillaVigenciaAfiliacion : "+casillaVigenciaAfiliacion);
             if (casillaVigenciaAfiliacion >= 0) {
                 if (casillaVigenciaAfiliacion == 0) {
                     context.update("form:TerceroAfiliacionDialogo");
@@ -3010,6 +3020,7 @@ public class ControlBusquedaAvanzada implements Serializable {
                     casillaVigenciaAfiliacion = -1;
                 }
             }
+            System.out.println("casillaVigenciaFormaPago : "+casillaVigenciaFormaPago);
             if (casillaVigenciaFormaPago >= 0) {
                 if (casillaVigenciaFormaPago == 0) {
                     context.update("form:PeriodicidadFormaPagoDialogo");
@@ -3022,6 +3033,7 @@ public class ControlBusquedaAvanzada implements Serializable {
                     casillaVigenciaFormaPago = -1;
                 }
             }
+            System.out.println("casillaMvrs : "+casillaMvrs);
             if (casillaMvrs >= 0) {
                 if (casillaMvrs == 0) {
                     context.update("form:MotivoMvrsDialogo");
@@ -3029,6 +3041,7 @@ public class ControlBusquedaAvanzada implements Serializable {
                     casillaMvrs = -1;
                 }
             }
+            System.out.println("casillaVigenciaJornadaLaboral : "+casillaVigenciaJornadaLaboral);
             if (casillaVigenciaJornadaLaboral >= 0) {
                 if (casillaVigenciaJornadaLaboral == 0) {
                     context.update("form:JornadaJornadaLaboralDialogo");
@@ -3036,6 +3049,7 @@ public class ControlBusquedaAvanzada implements Serializable {
                     casillaVigenciaJornadaLaboral = -1;
                 }
             }
+            System.out.println("casillaMotivoRetiro : "+casillaMotivoRetiro);
             if (casillaMotivoRetiro >= 0) {
                 if (casillaMotivoRetiro == 0) {
                     context.update("form:MotivoFechaRetiroDialogo");
@@ -3158,6 +3172,7 @@ public class ControlBusquedaAvanzada implements Serializable {
     }
 
     public void cambiarIndiceCargo(int i) {
+        System.out.println("entre");
         if (permitirIndexVigenciaCargo == true) {
             indice = -1;
             casillaVigenciaTipoContrato = -1;
@@ -3176,6 +3191,25 @@ public class ControlBusquedaAvanzada implements Serializable {
             casillaVigenciaJornadaLaboral = -1;
             casillaMotivoRetiro = -1;
             casillaVigenciaCargo = i;
+            
+            System.out.println("casillaVigenciaTipoContrato : "+casillaVigenciaTipoContrato);
+            System.out.println("casillaVigenciaLocalizacion : "+casillaVigenciaTipoContrato);
+            System.out.println("casillaVigenciaTipoTrabajador : "+casillaVigenciaTipoContrato);
+            System.out.println("casillaVigenciaSueldo : "+casillaVigenciaTipoContrato);
+            System.out.println("casillaVigenciaReformaLaboral : "+casillaVigenciaTipoContrato);
+            System.out.println("casillaVigenciaNormaLaboral : "+casillaVigenciaTipoContrato);
+            System.out.println("casillaVigenciaContrato : "+casillaVigenciaTipoContrato);
+            System.out.println("casillaVigenciaUbicacion : "+casillaVigenciaTipoContrato);
+            System.out.println("casillaVigenciaAfiliacion : "+casillaVigenciaTipoContrato);
+            System.out.println("casillaVigenciaFormaPago : "+casillaVigenciaTipoContrato);
+            System.out.println("casillaMvrs : "+casillaVigenciaTipoContrato);
+            System.out.println("casillaSets : "+casillaVigenciaTipoContrato);
+            System.out.println("casillaVacacion : "+casillaVigenciaTipoContrato);
+            System.out.println("casillaVigenciaJornadaLaboral : "+casillaVigenciaTipoContrato);
+            System.out.println("casillaMotivoRetiro : "+casillaVigenciaTipoContrato);
+            System.out.println("casillaVigenciaCargo : "+casillaVigenciaTipoContrato);
+            
+            
             auxEstructuraVigenciaCargo = vigenciaCargoBA.getEstructura().getNombre();
             auxCargoVigenciaCargo = vigenciaCargoBA.getCargo().getNombre();
             auxJefeVigenciaCargo = vigenciaCargoBA.getEmpleadojefe().getPersona().getNombreCompleto();

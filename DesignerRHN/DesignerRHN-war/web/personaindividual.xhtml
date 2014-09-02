@@ -5,7 +5,9 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
+      xmlns:lnk="http://java.sun.com/jsf/composite/linkare"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
     <h:head>
     </h:head>
     <h:body>
@@ -14,7 +16,7 @@
                 <h:form id="form"> 
                     <f:loadBundle basename="Recursos.personaindividual" var="msg" />
                     <p:growl id="growl" showDetail="true" />
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="font-size: 13px; position: absolute; width: 874px; height: 535px; text-align: left;" >  
+                    <p:panel id="PanelTotal" header="#{msg['titulo']}" style="font-size: 13px; position: absolute; width: 874px; height: 535px; text-align: left;" >  
 
                         <h:outputText value="#{msg['infoBasica']}" style="position: absolute;left: 10px; top: 70px;color: #14388B;font-weight: bold"/>
 
@@ -79,6 +81,7 @@
                                     <p:inputText onclick="select();" value="#{controlPersonaIndividual.nuevaPersona.numerodocumento}" id="numeroDocumentoModPersonal" style="position: absolute; top: 50px; left: 430px;width: 130px;text-transform: uppercase">
                                         <p:ajax event="focus" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(6)}" process="@this"/>
                                         <p:ajax event="change" listener="#{controlPersonaIndividual.modificarNumeroDocumentoPersona()}" process="@this" update="@this"/>
+                                        <pe:keyFilter for="numeroDocumentoModPersonal" mask="num"/>
                                     </p:inputText>
 
 
@@ -93,9 +96,8 @@
                                     <h:outputText  value="#{msg['fechaNacimiento']}*" style="position: absolute; top: 115px; left: 290px;font-weight: bold"/>
                                     <div id="divFechaNacimientoModPersonal" style="position: absolute; top: 110px; left: 430px;">
                                         <lnk:calendar value="#{controlPersonaIndividual.nuevaPersona.fechanacimiento}" id="fechaNacimientoModPersonal" >
-                                            <p:ajax event="dateSelect" listener="#{controlPersonaIndividual.modificarFechaNacimientoInformacionPersonal(8)}" update="fechaNacimientoModPersonal" process="@this"/>
-                                            <p:ajax event="change" listener="#{controlPersonaIndividual.modificarFechaNacimientoInformacionPersonal(8)}" update="fechaNacimientoModPersonal" process="@this"/>
-                                            <p:ajax event="click" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(8)}" process="@this"/>
+                                            <p:ajax event="dateSelect" listener="#{controlPersonaIndividual.modificarFechaNacimientoInformacionPersonal(8)}" update="@this" process="@this"/>
+                                            <p:ajax event="change" listener="#{controlPersonaIndividual.modificarFechaNacimientoInformacionPersonal(8)}" update="@this" process="@this"/>
                                         </lnk:calendar>
                                     </div>
 
@@ -121,6 +123,8 @@
                                     <p:inputText onclick="select();" value="#{controlPersonaIndividual.nuevoEmpleado.codigoempleado}" id="codigoEmpleadoModPersonal" style="position: absolute; top: 50px; left: 705px;width: 105px;text-transform: uppercase">
                                         <p:ajax event="focus" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(11)}" process="@this"/>
                                         <p:ajax event="change" listener="#{controlPersonaIndividual.modificarCodigoEmpleado()}" process="@this" update="@this" />
+                                        <pe:keyFilter for="codigoEmpleadoModPersonal" mask="num"/>
+
                                     </p:inputText>
 
 
@@ -134,14 +138,16 @@
                                     <h:outputText  value="#{msg['fechaUltimoPago']}" style="position: absolute; top: 115px; left: 580px;font-weight: bold"/>
                                     <div id="divFechaUltimoPagoModPersonal" style="position: absolute; top: 110px; left: 705px;">
                                         <lnk:calendar value="#{controlPersonaIndividual.fechaCorte}" id="fechaUltimoPagoModPersonal" >
-                                            <p:ajax event="dateSelect" listener="#{controlPersonaIndividual.modificarFechaUltimoPagoInformacionPersonal(13)}" update="fechaUltimoPagoModPersonal" process="@this"/>
-                                            <p:ajax event="change" listener="#{controlPersonaIndividual.modificarFechaUltimoPagoInformacionPersonal(13)}" update="fechaUltimoPagoModPersonal" process="@this"/>
-                                            <p:ajax event="click" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(13)}" process="@this"/>
+
+                                            <p:ajax event="dateSelect" listener="#{controlPersonaIndividual.modificarFechaUltimoPagoInformacionPersonal(13)}" update="@this" process="@this"/>
+                                            <p:ajax event="change" listener="#{controlPersonaIndividual.modificarFechaUltimoPagoInformacionPersonal(13)}" update="@this" process="@this"/>
+
                                         </lnk:calendar>
                                     </div>
 
                                 </fieldset>
 
+                                <p:remoteCommand name="posicionFechas" actionListener="#{controlPersonaIndividual.posicionFechas()}"/>
 
                                 <fieldset style="position: absolute; font-size: 12px;top: 210px; width: 380px; height: 170px; border-radius: 10px; text-align: left">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['modCargo']}</strong></legend>
@@ -245,10 +251,14 @@
 
                                     <h:outputText value="" style="position: absolute; background-image: url(Imagenes/Iconos/sueldo.png); width: 50px; height: 50px; top: 25px; left: 5px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 2px; border-width: 2px;" />
 
-                                    <h:outputText  value="#{msg['valorSueldo']}*" style="position: absolute; top: 25px; left: 65px;font-weight: bold"/>
-                                    <p:inputText id="valorSueldoModSueldo" onclick="select();" value="#{controlPersonaIndividual.valorSueldo}" style="position: absolute; top: 20px; left: 230px;width: 150px;text-transform: uppercase">
+                                    <h:outputText  value="#{msg['valorSueldo']}*" style="position: absolute; top: 25px; left: 65px;font-weight: bold">
+                                        <f:convertNumber currencyCode="COP"/>
+                                    </h:outputText>
+                                    <p:inputText  id="valorSueldoModSueldo" onclick="select();" value="#{controlPersonaIndividual.valorSueldo}" style="position: absolute; top: 20px; left: 230px;width: 150px;text-transform: uppercase">
                                         <p:ajax event="focus" listener="#{controlPersonaIndividual.cambiarIndiceSueldo(0)}" process="@this"/>
                                         <p:ajax event="change" listener="#{controlPersonaIndividual.modificacionValorSueldo(controlPersonaIndividual.valorSueldo)}" process="@this" update="valorSueldoModSueldo"/>
+                                        <pe:keyFilter for="valorSueldoModSueldo" mask="num"/>
+                                        <f:convertNumber currencyCode="COP"/>
                                     </p:inputText>
 
                                     <h:outputText  value="#{msg['motivoSueldo']}*" style="position: absolute; top: 55px; left: 65px;font-weight: bold"/>
@@ -291,16 +301,15 @@
                                     <p:inputText id="tipoContratoModTipoContrato" disabled="#{controlPersonaIndividual.disableCamposDependientesTipoTrabajador}" onclick="select();" value="#{controlPersonaIndividual.nuevaVigenciaTipoContrato.tipocontrato.nombre}" style="position: absolute; top: 50px; left: 245px;width: 155px;text-transform: uppercase">
                                         <p:ajax event="focus" listener="#{controlPersonaIndividual.cambiarIndiceTipoContrato(1)}" process="@this"/>
                                         <p:ajax event="change" listener="#{controlPersonaIndividual.modificarTipoContrato(1,'TIPO', controlPersonaIndividual.nuevaVigenciaTipoContrato.tipocontrato.nombre)}" process="@this" update="tipoContratoModTipoContrato"/>
-                                        <p:ajax event="dblclick" listener="#{controlPersonaIndividual.listaValoresTipoContrato()}" process="@this"/>
+                                        <p:ajax  event="dblclick" listener="#{controlPersonaIndividual.listaValoresTipoContrato()}" process="@this"/>
                                     </p:inputText>
                                     <p:tooltip style="font-size: 12px" for="infoContratoTipoContrato" value="#{msg['infoContratoTipoContrato']}" />
 
                                     <h:outputText  value="#{msg['fechaFinalContrato']}" style="position: absolute; top: 85px; left: 65px;font-weight: bold"/>
                                     <div id="divFechaFinalContratoModTipoContrato" style="position: absolute; top: 80px; left: 245px;">
                                         <lnk:calendar value="#{controlPersonaIndividual.nuevaVigenciaTipoContrato.fechavigencia}" id="fechaFinalContratoModTipoContrato" >
-                                            <p:ajax event="dateSelect" listener="#{controlPersonaIndividual.modificarFechaFechaVigenciaTipoContrato(2)}" update="fechaFinalContratoModTipoContrato" process="@this"/>
-                                            <p:ajax event="change" listener="#{controlPersonaIndividual.modificarFechaFechaVigenciaTipoContrato(2)}" update="fechaFinalContratoModTipoContrato" process="@this"/>
-                                            <p:ajax event="click" listener="#{controlPersonaIndividual.cambiarIndiceTipoContrato(2)}" process="@this"/>
+                                            <p:ajax  event="dateSelect" listener="#{controlPersonaIndividual.modificarFechaFechaVigenciaTipoContrato(2)}" process="@this"/>
+                                            <p:ajax event="change" listener="#{controlPersonaIndividual.modificarFechaFechaVigenciaTipoContrato(2)}" update="@this" process="@this"/>
                                         </lnk:calendar>
                                     </div>
 
@@ -654,7 +663,7 @@
                                 <p:resetInput target=":formLovs:formDInformacionPersonal:lovEmpresaInformacionPersonalVisible:globalFilter"/>
                             </p:commandButton>
                         </p:dialog>
-                        
+
                         <p:dialog header="#{msg['empresaM']}" widgetVar="EmpresaInformacionPersonalDialogo" draggable="false" resizable="false" closable="false" id="EmpresaInformacionPersonalDialogo"  
                                   showEffect="fade" hideEffect="fade" width="410" modal="true" >
                             <p:dataTable id="lovEmpresaInformacionPersonal" style=" width: 370px" var="empresaIP" value="#{controlPersonaIndividual.lovEmpresas}" rowKey="#{empresaIP.secuencia}"
@@ -719,9 +728,9 @@
                                     <h:outputText value="#{tipoDIP.nombrelargo}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroTipoDocumentoInformacionPersonal" value="#{controlPersonaIndividual.infoRegistroTipoDocumentoInformacionPersonal}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarTDIP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="TipoDocumentoInformacionPersonalDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroTipoDocumentoInformacionPersonal()}" update="lovTipoDocumentoInformacionPersonal, aceptarTDIP" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDInformacionPersonal:lovTipoDocumentoInformacionPersonal:globalFilter"/>
@@ -758,9 +767,9 @@
                                     <h:outputText value="#{ciudadDIP.departamento.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroCiudadDocumentoInformacionPersonal" value="#{controlPersonaIndividual.infoRegistroCiudadDocumentoInformacionPersonal}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarCDIP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="CiudadDocumentoInformacionPersonalDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroCiudadDocumentoInformacionPersonal()}" update="lovCiudadDocumentoInformacionPersonal, aceptarCDIP" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDInformacionPersonal:lovCiudadDocumentoInformacionPersonal:globalFilter"/>
@@ -797,9 +806,9 @@
                                     <h:outputText value="#{ciudadDIP.departamento.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroCiudadNacimientoInformacionPersonal" value="#{controlPersonaIndividual.infoRegistroCiudadNacimientoInformacionPersonal}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarCNIP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="CiudadNacimientoInformacionPersonalDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroCiudadNacimientoInformacionPersonal()}" update="lovCiudadNacimientoInformacionPersonal, aceptarCNIP" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDInformacionPersonal:lovCiudadNacimientoInformacionPersonal:globalFilter"/>
@@ -832,9 +841,9 @@
                                     <h:outputText  value="#{cargoCD.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroCargoCargoDesempenado" value="#{controlPersonaIndividual.infoRegistroCargoCargoDesempenado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarCCD" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="CargoCargoDesempeñadoDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroCargoCargoDesempeñado()}" update="lovCargoCargoDesempeñado, aceptarCCD" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDCargoDesempenado:lovCargoCargoDesempeñado:globalFilter"/>
@@ -864,9 +873,9 @@
                                     <h:outputText  value="#{motivoCambioCD.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroMotivoCargoCargoDesempenado" value="#{controlPersonaIndividual.infoRegistroMotivoCargoCargoDesempenado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarMCCCD" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="MotivoCambioCargoCargoDesempeñadoDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroMotivoCambioCargoCargoDesempeñado()}" update="lovMotivoCambioCargoCargoDesempeñado, aceptarMCCCD" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDCargoDesempenado:lovMotivoCambioCargoCargoDesempeñado:globalFilter"/>
@@ -896,9 +905,9 @@
                                     <h:outputText  value="#{estructuraCD.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroEstructuraCargoDesempenado" value="#{controlPersonaIndividual.infoRegistroEstructuraCargoDesempenado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarECD" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="EstructuraCargoDesempeñadoDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroEstructuraCargoDesempeñado()}" update="lovEstructuraCargoDesempeñado, aceptarECD" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDCargoDesempenado:lovEstructuraCargoDesempeñado:globalFilter"/>
@@ -928,9 +937,9 @@
                                     <h:outputText  value="#{papelCD.descripcion}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroPapelCargoDesempenado" value="#{controlPersonaIndividual.infoRegistroPapelCargoDesempenado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarPCD" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="PapelCargoDesempeñadoDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroPapelCargoDesempeñado}" update="lovPapelCargoDesempeñado, aceptarPCD" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDCargoDesempenado:lovPapelCargoDesempeñado:globalFilter"/>
@@ -960,9 +969,9 @@
                                     <h:outputText  value="#{jefeCD.persona.nombreCompleto}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroJefeCargoDesempenado" value="#{controlPersonaIndividual.infoRegistroJefeCargoDesempenado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarEJCD" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="EmpleadoJefeCargoDesempeñadoDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroJefeCargoDesempeñado}" update="lovEmpleadoJefeCargoDesempeñado, aceptarEJCD" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDCargoDesempenado:lovEmpleadoJefeCargoDesempeñado:globalFilter"/>
@@ -974,7 +983,7 @@
                         </p:dialog>
 
                     </h:form>
-                    
+
                     <h:form id="formDCentroCosto">
                         <p:dialog header="#{msg['estructuraM2']}" widgetVar="EstructuraCentroCostoDialogo" draggable="false" resizable="false" closable="false" id="EstructuraCentroCostoDialogo"  
                                   showEffect="fade" hideEffect="fade" width="510" modal="true" >
@@ -1007,9 +1016,9 @@
                                     <h:outputText  value="#{estructuraCC.centrocosto.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroEstructuraCentroCosto" value="#{controlPersonaIndividual.infoRegistroEstructuraCentroCosto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarECC" style="position: relative; left: 320px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="EstructuraCentroCostoDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroEstructuraCentroCosto()}" update="lovEstructuraCentroCosto, aceptarECC" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDCentroCosto:lovEstructuraCentroCosto:globalFilter"/>
@@ -1039,9 +1048,9 @@
                                     <h:outputText  value="#{motivoLCC.descripcion}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroMotivoCentroCosto" value="#{controlPersonaIndividual.infoRegistroMotivoCentroCosto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarMLCC" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="MotivoLocalizacionCentroCostoDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroMotivoCentroCosto()}" update="lovMotivoLocalizacionCentroCosto, aceptarMLCC" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDCentroCosto:lovMotivoLocalizacionCentroCosto:globalFilter"/>
@@ -1075,9 +1084,9 @@
                                     <h:outputText  value="#{reformaLTS.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroReformaTipoSalario" value="#{controlPersonaIndividual.infoRegistroReformaTipoSalario}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarRLTS" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="ReformaLaboralTipoSalarioDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroReformaLaboralTipoSalario()}" update="lovReformaLaboralTipoSalario, aceptarRLTS" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDTipoSalario:lovReformaLaboralTipoSalario:globalFilter"/>
@@ -1112,9 +1121,9 @@
                                     <h:outputText  value="#{tipoTTT.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroTipoTrabajadorTipoTrabajador" value="#{controlPersonaIndividual.infoRegistroTipoTrabajadorTipoTrabajador}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarTTTT" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="TipoTrabajadorTipoTrabajadorDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroTipoTrabajadorTipoTrabajador()}" update="lovTipoTrabajadorTipoTrabajador, aceptarTTTT" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDTipoTrabajador:lovTipoTrabajadorTipoTrabajador:globalFilter"/>
@@ -1148,9 +1157,9 @@
                                     <h:outputText  value="#{motivoCambioSS.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroMotivoSueldo" value="#{controlPersonaIndividual.infoRegistroMotivoSueldo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarMCSS" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="MotivoCambioSueldoSueldoDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroMotivoCambioSueldoSueldo()}" update="lovMotivoCambioSueldoSueldo, aceptarMCSS" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDSueldo:lovMotivoCambioSueldoSueldo:globalFilter"/>
@@ -1180,9 +1189,9 @@
                                     <h:outputText  value="#{tipoSueldoS.descripcion}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroTipoSueldoSueldo" value="#{controlPersonaIndividual.infoRegistroTipoSueldoSueldo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarTSS" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="TipoSueldoSueldoDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroTipoSueldoSueldo()}" update="lovTipoSueldoSueldo, aceptarTSS" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDSueldo:lovTipoSueldoSueldo:globalFilter"/>
@@ -1212,9 +1221,9 @@
                                     <h:outputText  value="#{unidadS.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroUnidadSueldo" value="#{controlPersonaIndividual.infoRegistroUnidadSueldo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarUS" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="UnidadSueldoDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroUnidadSueldo()}" update="lovUnidadSueldo, aceptarUS" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDSueldo:lovUnidadSueldo:globalFilter"/>
@@ -1248,9 +1257,9 @@
                                     <h:outputText  value="#{motivoContratoTC.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroMotivoTipoContrato" value="#{controlPersonaIndividual.infoRegistroMotivoTipoContrato}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarMCTC" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="MotivoContratoTipoContratoDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroMotivoContratoTipoContrato()}" update="lovMotivoContratoTipoContrato, aceptarMCTC" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDTipoContrato:lovMotivoContratoTipoContrato:globalFilter"/>
@@ -1280,9 +1289,9 @@
                                     <h:outputText  value="#{tipoContratoTC.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroTipoTipoContrato" value="#{controlPersonaIndividual.infoRegistroTipoTipoContrato}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarTCTC" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="TipoContratoTipoContratoDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroTipoContratoTipoContrato()}" update="lovTipoContratoTipoContrato, aceptarTCTC" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDTipoContrato:lovTipoContratoTipoContrato:globalFilter"/>
@@ -1316,9 +1325,9 @@
                                     <h:outputText  value="#{contratoLL.descripcion}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroContratoLegislacionLaboral" value="#{controlPersonaIndividual.infoRegistroContratoLegislacionLaboral}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarCLL" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="ContratoLegislacionLaboralDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroContratoLegislacionLaboral()}" update="lovContratoLegislacionLaboral, aceptarCLL" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDLegislacionLaboral:lovContratoLegislacionLaboral:globalFilter"/>
@@ -1352,9 +1361,9 @@
                                     <h:outputText  value="#{normaLaboralNL.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroNormaNormaLaboral" value="#{controlPersonaIndividual.infoRegistroNormaNormaLaboral}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarNLNL" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="NormaLaboralNormaLaboralDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroNormaNormaLaboral()}" update="lovNormaLaboralNormaLaboral, aceptarNLNL" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDNormaLaboral:lovNormaLaboralNormaLaboral:globalFilter"/>
@@ -1418,9 +1427,9 @@
                                     <h:outputText  value="#{ubicacionGUG.zona}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroUbicacionUbicacion" value="#{controlPersonaIndividual.infoRegistroUbicacionUbicacion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarUGUGL" style="position: relative; left: 620px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="UbicacionUbicacionGeograficaDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroUbicacionUbicacionGeografica()}" update="lovUbicacionUbicacionGeografica, aceptarUGUGL" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDUbicacion:lovUbicacionUbicacionGeografica:globalFilter"/>
@@ -1454,9 +1463,9 @@
                                     <h:outputText  value="#{jornadaLJL.descripcion}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroJornadaJornadaLaboral" value="#{controlPersonaIndividual.infoRegistroJornadaJornadaLaboral}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarJLJL" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="JornadaJornadaLaboralDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroJornadaJornadaLaboral()}" update="lovJornadaJornadaLaboral, aceptarJLJL" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDJornadaLaboral:lovJornadaJornadaLaboral:globalFilter"/>
@@ -1489,9 +1498,9 @@
                                     <h:outputText  value="#{metodoPFP.descripcion}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroMetodoFormaPago" value="#{controlPersonaIndividual.infoRegistroMetodoFormaPago}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarMPFP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="MetodoPagoFormaPagoDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroMetodoFormaPago()}" update="lovMetodoPagoFormaPago, aceptarMPFP" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDFormaPago:lovMetodoPagoFormaPago:globalFilter"/>
@@ -1521,9 +1530,9 @@
                                     <h:outputText  value="#{sucursalFP.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroSucursalFormaPago" value="#{controlPersonaIndividual.infoRegistroSucursalFormaPago}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarSFP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="SucursalFormaPagoDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroSucursalFormaPago()}" update="lovSucursalPagoFormaPago, aceptarSFP" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDFormaPago:lovSucursalPagoFormaPago:globalFilter"/>
@@ -1553,9 +1562,9 @@
                                     <h:outputText  value="#{periodicidadFP.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroFormaFormaPago" value="#{controlPersonaIndividual.infoRegistroFormaFormaPago}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarPFP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="PeriodicidadFormaPagoDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroPeriodicidadFormaPago()}" update="lovPeriodicidadFormaPago, aceptarPFP" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDFormaPago:lovPeriodicidadFormaPago:globalFilter"/>
@@ -1600,11 +1609,11 @@
                                     </f:facet>
                                     <h:outputText  value="#{terceroSA.tercero.empresa.nombre}" />
                                 </p:column>
-                               
+
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroTerceroAfiliacion" value="#{controlPersonaIndividual.infoRegistroTerceroAfiliacion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarTSA" style="position: relative; left: 420px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="TerceroAfiliacionDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroTerceroAfiliacion()}" update="lovTerceroAfiliacion, aceptarTSA" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDAfiliacion:lovTerceroAfiliacion:globalFilter"/>
@@ -1638,9 +1647,9 @@
                                     <h:outputText  value="#{tipoTT.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroTipoTelefonoTelefono" value="#{controlPersonaIndividual.infoRegistroTipoTelefonoTelefono}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarTTT" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="TipoTelefonoTelefonoDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroTipoTelefonoTelefono()}" update="lovTipoTelefonoTelefono, aceptarTTT" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDTelefono:lovTipoTelefonoTelefono:globalFilter"/>
@@ -1677,9 +1686,9 @@
                                     <h:outputText value="#{ciudadT.departamento.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroCiudadTelefono" value="#{controlPersonaIndividual.infoRegistroCiudadTelefono}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarCT" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="CiudadTelefonoDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroCiudadTelefono()}" update="lovCiudadTelefono, aceptarCT" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDTelefono:lovCiudadTelefono:globalFilter"/>
@@ -1720,9 +1729,9 @@
                                     <h:outputText value="#{ciudadD.departamento.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroCiudadDireccion" value="#{controlPersonaIndividual.infoRegistroCiudadDireccion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarCD" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="CiudadDireccionDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroCiudadDireccion()}" update="lovCiudadDireccion, aceptarCD" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDDireccion:lovCiudadDireccion:globalFilter"/>
@@ -1755,9 +1764,9 @@
                                     <h:outputText  value="#{estadoCivilEC.descripcion}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroEstadoCivilEstadoCivil" value="#{controlPersonaIndividual.infoRegistroEstadoCivilEstadoCivil}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarECEC" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="EstadoCivilEstadoCivilDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroEstadoEstadoCivil()}" update="lovEstadoCivilEstadoCivil, aceptarECEC" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDEstadoCivil:lovEstadoCivilEstadoCivil:globalFilter"/>
@@ -1775,154 +1784,154 @@
 
                 <h:form id="formDialogos">
 
-                    <p:dialog id="advertenciaFechaIngreso" header="#{msg['atencion']}" widgetVar="advertenciaFechaIngreso"  resizable="false" draggable="false" modal="true" height="90" width="425px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="advertenciaFechaIngreso" header="#{msg['atencion']}" widgetVar="advertenciaFechaIngreso"  resizable="false" draggable="false" modal="true" height="98" width="433px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['advertenciaFechaIngreso']}" style="position: absolute; left: 70px; top: 10px; width: 285px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="advertenciaFechaIngreso.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="advertenciaFechaIngreso.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorEmailPersona" header="#{msg['atencion']}" widgetVar="errorEmailPersona"  resizable="false" draggable="false" modal="true" height="80" width="300px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorEmailPersona" header="#{msg['atencion']}" widgetVar="errorEmailPersona"  resizable="false" draggable="false" modal="true" height="88" width="308px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorEmailPersona']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="errorEmailPersona.hide();" style="position: absolute; top: 50px; left: 205px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="errorEmailPersona.hide();" style="position: absolute; top: 50px; left: 205px" process="@this" />
                     </p:dialog>
-                    
-                    <p:dialog id="errorFechas" header="#{msg['atencion']}" widgetVar="errorFechas"  resizable="false" draggable="false" modal="true" height="80" width="300px" style="font-size: 12px" closable="true">  
+
+                    <p:dialog id="errorFechas" header="#{msg['atencion']}" widgetVar="errorFechas"  resizable="false" draggable="false" modal="true" height="88" width="308px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFechas']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="errorFechas.hide();" style="position: absolute; top: 50px; left: 205px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="errorFechas.hide();" style="position: absolute; top: 50px; left: 205px" process="@this" />
                     </p:dialog>
-                    
-                    <p:dialog id="errorFechaContratoFechaIngreso" header="#{msg['atencion']}" widgetVar="errorFechaContratoFechaIngreso"  resizable="false" draggable="false" modal="true" height="90" width="350px" style="font-size: 12px" closable="true">  
+
+                    <p:dialog id="errorFechaContratoFechaIngreso" header="#{msg['atencion']}" widgetVar="errorFechaContratoFechaIngreso"  resizable="false" draggable="false" modal="true" height="98" width="358px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFechaContratoFechaIngreso']}" style="position: absolute; left: 70px; top: 10px; width: 275px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="errorFechaContratoFechaIngreso.hide();" style="position: absolute; top: 50px; left: 255px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="errorFechaContratoFechaIngreso.hide();" style="position: absolute; top: 50px; left: 255px" process="@this" />
                     </p:dialog>
-                    
-                    <p:dialog id="errorFechasEmpleado" header="#{msg['atencion']}" widgetVar="errorFechasEmpleado"  resizable="false" draggable="false" modal="true" height="90" width="425px" style="font-size: 12px" closable="true">  
+
+                    <p:dialog id="errorFechasEmpleado" header="#{msg['atencion']}" widgetVar="errorFechasEmpleado"  resizable="false" draggable="false" modal="true" height="98" width="433px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{controlPersonaIndividual.mensajeErrorFechasEmpleado}" style="position: absolute; left: 70px; top: 10px; width: 285px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="errorFechasEmpleado.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="errorFechasEmpleado.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
                     </p:dialog>
-                    
-                    <p:dialog id="errorValorSueldo" header="#{msg['atencion']}" widgetVar="errorValorSueldo"  resizable="false" draggable="false" modal="true" height="80" width="300px" style="font-size: 12px" closable="true">  
+
+                    <p:dialog id="errorValorSueldo" header="#{msg['atencion']}" widgetVar="errorValorSueldo"  resizable="false" draggable="false" modal="true" height="88" width="308px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorValorSueldo']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="errorValorSueldo.hide();" style="position: absolute; top: 50px; left: 205px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="errorValorSueldo.hide();" style="position: absolute; top: 50px; left: 205px" process="@this" />
                     </p:dialog>
-                    
-                    <p:dialog id="errorFormatoValorSueldo" header="#{msg['atencion']}" widgetVar="errorFormatoValorSueldo"  resizable="false" draggable="false" modal="true" height="80" width="300px" style="font-size: 12px" closable="true">  
+
+                    <p:dialog id="errorFormatoValorSueldo" header="#{msg['atencion']}" widgetVar="errorFormatoValorSueldo"  resizable="false" draggable="false" modal="true" height="88" width="308px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFormatoValorSueldo']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="errorFormatoValorSueldo.hide();" style="position: absolute; top: 50px; left: 205px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="errorFormatoValorSueldo.hide();" style="position: absolute; top: 50px; left: 205px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorNumeroTelefonico" header="#{msg['atencion']}" widgetVar="errorNumeroTelefonico"  resizable="false" draggable="false" modal="true" height="80" width="300px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorNumeroTelefonico" header="#{msg['atencion']}" widgetVar="errorNumeroTelefonico"  resizable="false" draggable="false" modal="true" height="88" width="308px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorNumeroTelefonico']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="errorNumeroTelefonico.hide();" style="position: absolute; top: 50px; left: 205px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="errorNumeroTelefonico.hide();" style="position: absolute; top: 50px; left: 205px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="advertenciaEPS" header="#{msg['atencion']}" widgetVar="advertenciaEPS"  resizable="false" draggable="false" modal="true" height="80" width="300px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="advertenciaEPS" header="#{msg['atencion']}" widgetVar="advertenciaEPS"  resizable="false" draggable="false" modal="true" height="88" width="308px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['advertenciaEPS']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="advertenciaEPS.hide();" style="position: absolute; top: 50px; left: 205px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="advertenciaEPS.hide();" style="position: absolute; top: 50px; left: 205px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="advertenciaAFP" header="#{msg['atencion']}" widgetVar="advertenciaAFP"  resizable="false" draggable="false" modal="true" height="80" width="300px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="advertenciaAFP" header="#{msg['atencion']}" widgetVar="advertenciaAFP"  resizable="false" draggable="false" modal="true" height="88" width="308px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['advertenciaAFP']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="advertenciaAFP.hide();" style="position: absolute; top: 50px; left: 205px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="advertenciaAFP.hide();" style="position: absolute; top: 50px; left: 205px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="advertenciaARP" header="#{msg['atencion']}" widgetVar="advertenciaARP"  resizable="false" draggable="false" modal="true" height="80" width="300px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="advertenciaARP" header="#{msg['atencion']}" widgetVar="advertenciaARP"  resizable="false" draggable="false" modal="true" height="88" width="308px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['advertenciaARP']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="advertenciaARP.hide();" style="position: absolute; top: 50px; left: 205px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="advertenciaARP.hide();" style="position: absolute; top: 50px; left: 205px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorTopeEmpleadosEmpresa" header="#{msg['atencion']}" widgetVar="errorTopeEmpleadosEmpresa"  resizable="false" draggable="false" modal="true" height="90" width="425px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorTopeEmpleadosEmpresa" header="#{msg['atencion']}" widgetVar="errorTopeEmpleadosEmpresa"  resizable="false" draggable="false" modal="true" height="98" width="433px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTopeEmpleadosEmpresa']}" style="position: absolute; left: 70px; top: 10px; width: 285px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="advertenciaFechaIngreso.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="advertenciaFechaIngreso.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorEmpleadoRegistrado" header="#{msg['atencion']}" widgetVar="errorEmpleadoRegistrado"  resizable="false" draggable="false" modal="true" height="80" width="300px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorEmpleadoRegistrado" header="#{msg['atencion']}" widgetVar="errorEmpleadoRegistrado"  resizable="false" draggable="false" modal="true" height="88" width="308px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorEmpleadoRegistrado']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="errorEmpleadoRegistrado.hide();" style="position: absolute; top: 50px; left: 205px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="errorEmpleadoRegistrado.hide();" style="position: absolute; top: 50px; left: 205px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorPersonaRepetida" header="#{msg['atencion']}" widgetVar="errorPersonaRepetida"  resizable="false" draggable="false" modal="true" height="80" width="300px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorPersonaRepetida" header="#{msg['atencion']}" widgetVar="errorPersonaRepetida"  resizable="false" draggable="false" modal="true" height="88" width="308px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorPersonaRepetida']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="errorPersonaRepetida.hide();" style="position: absolute; top: 50px; left: 205px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="errorPersonaRepetida.hide();" style="position: absolute; top: 50px; left: 205px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorCodigoTerceroPersona" header="#{msg['atencion']}" widgetVar="errorCodigoTerceroPersona"  resizable="false" draggable="false" modal="true" height="90" width="425px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorCodigoTerceroPersona" header="#{msg['atencion']}" widgetVar="errorCodigoTerceroPersona"  resizable="false" draggable="false" modal="true" height="98" width="433px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorCodigoTerceroPersona']}" style="position: absolute; left: 70px; top: 10px; width: 285px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="errorCodigoTerceroPersona.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="errorCodigoTerceroPersona.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorIngresoTotalRegistro" header="#{msg['atencion']}" widgetVar="errorIngresoTotalRegistro"  resizable="false" draggable="false" modal="true" height="90" width="425px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="errorIngresoTotalRegistro" header="#{msg['atencion']}" widgetVar="errorIngresoTotalRegistro"  resizable="false" draggable="false" modal="true" height="98" width="433px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorIngresoTotalRegistro']}" style="position: absolute; left: 70px; top: 10px; width: 285px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" action="nomina" actionListener="#{controlPersonaIndividual.cancelarModificaciones()}" onclick="errorIngresoTotalRegistro.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" action="nomina" actionListener="#{controlPersonaIndividual.cancelarModificaciones()}" onclick="errorIngresoTotalRegistro.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorEmpleadoDuplicado" header="#{msg['atencion']}" widgetVar="errorEmpleadoDuplicado"  resizable="false" draggable="false" modal="true" height="90" width="425px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorEmpleadoDuplicado" header="#{msg['atencion']}" widgetVar="errorEmpleadoDuplicado"  resizable="false" draggable="false" modal="true" height="98" width="433px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorEmpleadoDuplicado']}" style="position: absolute; left: 70px; top: 10px; width: 285px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="errorEmpleadoDuplicado.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="errorEmpleadoDuplicado.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
                     </p:dialog>                    
-                    
-                    <p:dialog id="aletarTiposTrabajadoresRL" header="#{msg['atencion']}" widgetVar="aletarTiposTrabajadoresRL"  resizable="false" draggable="false" modal="true" height="90" width="425px" style="font-size: 12px" closable="true">  
+
+                    <p:dialog id="aletarTiposTrabajadoresRL" header="#{msg['atencion']}" widgetVar="aletarTiposTrabajadoresRL"  resizable="false" draggable="false" modal="true" height="98" width="433px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['aletarTiposTrabajadoresRL']}" style="position: absolute; left: 70px; top: 10px; width: 285px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="aletarTiposTrabajadoresRL.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="aletarTiposTrabajadoresRL.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
                     </p:dialog>   
 
-                    <p:dialog id="aletarTiposTrabajadoresTS" header="#{msg['atencion']}" widgetVar="aletarTiposTrabajadoresTS"  resizable="false" draggable="false" modal="true" height="90" width="425px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="aletarTiposTrabajadoresTS" header="#{msg['atencion']}" widgetVar="aletarTiposTrabajadoresTS"  resizable="false" draggable="false" modal="true" height="98" width="433px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['aletarTiposTrabajadoresTS']}" style="position: absolute; left: 70px; top: 10px; width: 285px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="aletarTiposTrabajadoresTS.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="aletarTiposTrabajadoresTS.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
                     </p:dialog>  
 
-                    <p:dialog id="aletarTiposTrabajadoresTC" header="#{msg['atencion']}" widgetVar="aletarTiposTrabajadoresTC"  resizable="false" draggable="false" modal="true" height="90" width="425px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="aletarTiposTrabajadoresTC" header="#{msg['atencion']}" widgetVar="aletarTiposTrabajadoresTC"  resizable="false" draggable="false" modal="true" height="98" width="433px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['aletarTiposTrabajadoresTC']}" style="position: absolute; left: 70px; top: 10px; width: 285px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="aletarTiposTrabajadoresTC.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="aletarTiposTrabajadoresTC.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
                     </p:dialog>  
 
-                    <p:dialog id="aletarTiposTrabajadoresNL" header="#{msg['atencion']}" widgetVar="aletarTiposTrabajadoresNL"  resizable="false" draggable="false" modal="true" height="90" width="425px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="aletarTiposTrabajadoresNL" header="#{msg['atencion']}" widgetVar="aletarTiposTrabajadoresNL"  resizable="false" draggable="false" modal="true" height="98" width="433px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['aletarTiposTrabajadoresNL']}" style="position: absolute; left: 70px; top: 10px; width: 285px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="aletarTiposTrabajadoresNL.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="aletarTiposTrabajadoresNL.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
                     </p:dialog>  
 
-                    <p:dialog id="aletarTiposTrabajadoresC" header="#{msg['atencion']}" widgetVar="aletarTiposTrabajadoresC"  resizable="false" draggable="false" modal="true" height="90" width="425px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="aletarTiposTrabajadoresC" header="#{msg['atencion']}" widgetVar="aletarTiposTrabajadoresC"  resizable="false" draggable="false" modal="true" height="98" width="433px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['aletarTiposTrabajadoresC']}" style="position: absolute; left: 70px; top: 10px; width: 285px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="aletarTiposTrabajadoresC.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="aletarTiposTrabajadoresC.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
                     </p:dialog>  
 
-                    <p:dialog id="errorCamposObligatorios" header="#{msg['atencion']}" widgetVar="errorCamposObligatorios"  resizable="false" draggable="false" modal="true" height="80" width="380px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorCamposObligatorios" header="#{msg['atencion']}" widgetVar="errorCamposObligatorios"  resizable="false" draggable="false" modal="true" height="88" width="388px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorCamposObligatorios']}" style="position: absolute; left: 70px; top: 10px; width: 235px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="errorCamposObligatorios.hide();" style="position: absolute; top: 50px; left: 285px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="errorCamposObligatorios.hide();" style="position: absolute; top: 50px; left: 285px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorCamposAlternativos" header="#{msg['atencion']}" widgetVar="errorCamposAlternativos"  resizable="false" draggable="false" modal="true" height="80" width="380px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorCamposAlternativos" header="#{msg['atencion']}" widgetVar="errorCamposAlternativos"  resizable="false" draggable="false" modal="true" height="88" width="388px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorCamposAlternativos']}" style="position: absolute; left: 70px; top: 10px; width: 235px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="errorCamposAlternativos.hide();" style="position: absolute; top: 50px; left: 285px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="errorCamposAlternativos.hide();" style="position: absolute; top: 50px; left: 285px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="procesoGuardadoOK" header="#{msg['atencion']}" widgetVar="procesoGuardadoOK"   resizable="false" draggable="false" modal="true" height="80" width="380px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="procesoGuardadoOK" header="#{msg['atencion']}" widgetVar="procesoGuardadoOK"   resizable="false" draggable="false" modal="true" height="88" width="388px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/bien.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['procesoGuardadoOK']}" style="position: absolute; left: 70px; top: 10px; width: 235px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="procesoGuardadoOK.hide();" action="nomina" actionListener="#{controlPersonaIndividual.cancelarModificaciones()}" style="position: absolute; top: 50px; left: 285px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="procesoGuardadoOK.hide();" action="nomina" actionListener="#{controlPersonaIndividual.cancelarModificaciones()}" style="position: absolute; top: 50px; left: 285px" process="@this" />
                     </p:dialog>
 
                     <!-- EDITAR CELDA INFORMACION PERSONAL -->

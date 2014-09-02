@@ -178,6 +178,22 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
             return null;
         }
     }
+    
+    @Override
+    public Long activos(EntityManager em, BigInteger secuencia) {
+        try {
+            em.clear();
+            Query query = em.createQuery("SELECT count(sn) FROM SolucionesNodos sn where sn.empleado.secuencia = :secuencia;)");
+            query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            Long r = (Long) query.getSingleResult();
+            System.out.println("Resultado : " + r);
+            return r;
+        } catch (Exception e) {
+            System.out.println("Error activos Persistencia : " + e.toString());
+            return null;
+        }
+    }
 
     @Override
     public List<SolucionesNodos> solucionNodoEmpleado(EntityManager em, BigInteger secuenciaEmpleado) {
@@ -270,6 +286,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
             Query query = em.createNativeQuery(sql, SolucionesNodos.class);
             query.setParameter(1, fechaInicial);
             query.setParameter(2, fechaFinal);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<SolucionesNodos> soluciones = query.getResultList();
             return soluciones;
         } catch (Exception e) {
@@ -277,18 +294,18 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
             return null;
         }
     }
-    
+
     @Override
     public List<SolucionesNodos> buscarSolucionesNodosParaParametroContable_SAP(EntityManager em, Date fechaInicial, Date fechaFinal) {
         try {
             em.clear();
-            String sql = "select * from SolucionesNodos s WHERE EXISTS (SELECT 'X' FROM contabilizaciones C\n" +
-            "              where C.flag='GENERADO' and C.fechageneracion \n" +
-            "               between ? and ?\n" +
-            "                   and c.solucionnodo = s.secuencia)\n" +
-            " AND  EXISTS (SELECT 'X' FROM  cortesprocesos cp , procesos p WHERE  cp.secuencia = s.corteproceso\n" +
-            " AND p.secuencia = cp.proceso AND CONTABILIZACION = 'S')\n" +
-            " and exists (select 'x' from empleados e where e.secuencia=s.empleado)";
+            String sql = "select * from SolucionesNodos s WHERE EXISTS (SELECT 'X' FROM contabilizaciones C\n"
+                    + "              where C.flag='GENERADO' and C.fechageneracion \n"
+                    + "               between ? and ?\n"
+                    + "                   and c.solucionnodo = s.secuencia)\n"
+                    + " AND  EXISTS (SELECT 'X' FROM  cortesprocesos cp , procesos p WHERE  cp.secuencia = s.corteproceso\n"
+                    + " AND p.secuencia = cp.proceso AND CONTABILIZACION = 'S')\n"
+                    + " and exists (select 'x' from empleados e where e.secuencia=s.empleado)";
             Query query = em.createNativeQuery(sql, SolucionesNodos.class);
             query.setParameter(1, fechaInicial);
             query.setParameter(2, fechaFinal);

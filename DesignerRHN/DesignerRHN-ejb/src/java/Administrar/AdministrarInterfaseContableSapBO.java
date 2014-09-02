@@ -150,21 +150,6 @@ public class AdministrarInterfaseContableSapBO implements AdministrarInterfaseCo
     public List<InterconSapBO> obtenerInterconSapBOParametroContable(Date fechaInicial, Date fechaFinal) {
         try {
             List<InterconSapBO> lista = persistenciaInterconSap.buscarInterconSAPBOParametroContable(em, fechaInicial, fechaFinal);
-            if (lista != null) {
-                for (int i = 0; i < lista.size(); i++) {
-                    if (lista.get(i).getCodigotercero() != null && (!lista.get(i).getCodigotercero().isEmpty())) {
-                        Long codigo = new Long(lista.get(i).getCodigotercero());
-                        Terceros tercero = persistenciaTerceros.buscarTerceroPorCodigo(em, codigo);
-                        if (tercero != null) {
-                            lista.get(i).setTerceroRegistro(tercero);
-                        } else {
-                            lista.get(i).setTerceroRegistro(new Terceros());
-                        }
-                    } else {
-                        lista.get(i).setTerceroRegistro(new Terceros());
-                    }
-                }
-            }
             return lista;
         } catch (Exception e) {
             System.out.println("Error obtenerInterconSapBOParametroContable Admi : " + e.toString());
@@ -328,6 +313,17 @@ public class AdministrarInterfaseContableSapBO implements AdministrarInterfaseCo
         } catch (Exception e) {
             System.out.println("Error obtenerErroresSAPBOV8 Admi : " + e.toString());
             return null;
+        }
+    }
+    
+    @Override
+    public int contarProcesosContabilizadosInterconSAPBO(Date fechaInicial, Date fechaFinal) {
+        try {
+            int contador = persistenciaInterconSap.contarProcesosContabilizadosInterconSAPBO(em, fechaInicial, fechaFinal);
+            return contador;
+        } catch (Exception e) {
+            System.out.println("Error contarProcesosContabilizadosInterconTotal Admi : " + e.toString());
+            return -1;
         }
     }
 

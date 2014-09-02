@@ -12,14 +12,17 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
+
 /**
- * Clase Stateless. <br> 
+ * Clase Stateless. <br>
  * Clase encargada de realizar operaciones referentes al ingreso al aplicativo
  * de la base de datos
+ *
  * @author Andrés Pineda
  */
 @Stateless
 public class PersistenciaConexionInicial implements PersistenciaConexionInicialInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
@@ -52,15 +55,19 @@ public class PersistenciaConexionInicial implements PersistenciaConexionInicialI
             return false;
         }
     }
-    
+
     @Override
     public EntityManager validarConexionUsuario(EntityManagerFactory emf) {
         try {
+            System.out.println("EMFFFFFFFFFF: " + emf + "Esta abierto?: " + emf.isOpen());
+            System.out.println("Entro al metodo validarConexionUsuario");
             em = emf.createEntityManager();
+            System.out.println("EM: " + em);
             if (em.isOpen()) {
                 return em;
             }
         } catch (Exception e) {
+            System.out.println("Error validarConexionUsuario PersistenciaConexionInicial : " + e.toString());
             emf.close();
         }
         return null;
@@ -75,10 +82,12 @@ public class PersistenciaConexionInicial implements PersistenciaConexionInicialI
         query.executeUpdate();
         em.getTransaction().commit();
     }
-        
+
     /**
-     * Metodo encargado de retornar el ultimo error que se capturo en los try - catch.
-     * @param e Exception 
+     * Metodo encargado de retornar el ultimo error que se capturo en los try -
+     * catch.
+     *
+     * @param e Exception
      * @return Retorna el ultimo error capturado.
      */
     private Throwable getLastThrowable(Exception e) {

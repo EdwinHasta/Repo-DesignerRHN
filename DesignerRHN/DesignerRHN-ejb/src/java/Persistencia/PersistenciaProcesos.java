@@ -105,7 +105,7 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface {
             return procesos;
         }
     }
-    
+
     @Override
     public Procesos buscarProcesosPorCodigo(EntityManager em, short codigo) {
         try {
@@ -151,6 +151,26 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface {
             return listaProcesosParametros;
         } catch (Exception e) {
             System.out.println("Error en PersistenciaProcesos.procesosParametros: " + e);
+            return null;
+        }
+    }
+
+    @Override
+    public String obtenerDescripcionProcesoPorSecuencia(EntityManager em, BigInteger proceso) {
+        try {
+            em.clear();
+            String desripcion = "";
+            if (proceso != null) {
+                String sql = "SELECT nvl(descripcion,'TODOS') FROM  procesos  WHERE secuencia =?";
+                Query query = em.createNativeQuery(sql);
+                query.setParameter(1, proceso);
+                desripcion = (String) query.getSingleResult();
+            } else {
+                desripcion = "TODOS";
+            }
+            return desripcion;
+        } catch (Exception e) {
+            System.out.println("Error  PersistenciaProcesos  obtenerDescripcionProcesoPorSecuencia : " + e.toString());
             return null;
         }
     }

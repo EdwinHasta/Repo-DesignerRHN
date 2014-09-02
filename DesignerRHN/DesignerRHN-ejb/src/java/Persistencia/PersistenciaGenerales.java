@@ -44,7 +44,7 @@ public class PersistenciaGenerales implements PersistenciaGeneralesInterface {
             return null;
         }
     }
-    
+
     public String obtenerPreValidaBloqueAIngreso(EntityManager em) {
         try {
             em.clear();
@@ -54,6 +54,37 @@ public class PersistenciaGenerales implements PersistenciaGeneralesInterface {
             return variable;
         } catch (Exception e) {
             System.out.println("Error obtenerPreValidaBloqueAIngreso PersistenciaGenerales : " + e.toString());
+            return null;
+        }
+    }
+
+    public String obtenerPathServidorWeb(EntityManager em) {
+        try {
+            em.clear();
+            String sql = "select pathservidorweb \n"
+                    + "  from  generales\n"
+                    + "  group by pathservidorweb";
+            Query query = em.createNativeQuery(sql);
+            String path = (String) query.getSingleResult();
+            path = path + "\\";
+            return path;
+        } catch (Exception e) {
+            System.out.println("Error obtenerPathServidorWeb PersistenciaGenerales : " + e.toString());
+            return null;
+        }
+    }
+
+    public String obtenerPathProceso(EntityManager em) {
+        try {
+            em.clear();
+            String sql = "select pathproceso\n"
+                    + "  from  generales\n"
+                    + "  group by pathproceso";
+            Query query = em.createNativeQuery(sql);
+            String path = (String) query.getSingleResult();
+            return path;
+        } catch (Exception e) {
+            System.out.println("Error obtenerPathProceso PersistenciaGenerales : " + e.toString());
             return null;
         }
     }

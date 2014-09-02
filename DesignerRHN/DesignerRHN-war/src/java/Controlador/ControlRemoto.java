@@ -22,10 +22,10 @@ import java.util.List;
 import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
-import net.sf.jasperreports.engine.util.JRClassLoader;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datagrid.DataGrid;
 import org.primefaces.component.datatable.DataTable;
@@ -121,9 +121,14 @@ public class ControlRemoto implements Serializable {
     //Visualizar seleccion de tipos trabajadores (StyleClass)
     private String styleActivos, stylePensionados, styleRetirados, styleAspirantes;
     private String actualCargo;
+    private String tipoPersonal;
+    private String accion;
     private String redirigir;
+    private String infoRegistroBuscarEmpleados;
 
     public ControlRemoto() {
+        accion = null;
+        tipoPersonal = "activos";
         vwActualesCargos = new VWActualesCargos();
         vwActualesTiposContratos = new VWActualesTiposContratos();
         vwActualesNormasEmpleados = new VWActualesNormasEmpleados();
@@ -179,6 +184,7 @@ public class ControlRemoto implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarCarpetaPersonal.obtenerConexion(ses.getId());
             administrarCarpetaDesigner.obtenerConexion(ses.getId());
+
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
@@ -202,6 +208,7 @@ public class ControlRemoto implements Serializable {
         trabajador = vwActualesTiposTrabajadoresesLista.get(name);
         if (trabajador.getEmpleado() != null) {
             secuencia = trabajador.getEmpleado().getSecuencia();
+            System.out.println("secuencia = " + secuencia);
             identificacion = trabajador.getEmpleado().getPersona().getNumerodocumento();
         }
 
@@ -330,6 +337,7 @@ public class ControlRemoto implements Serializable {
     }
 
     public void activos() {
+        tipoPersonal = "activos";
         backup = vwActualesTiposTrabajadoresesLista;
         tipoBk = tipo;
         tipo = "ACTIVO";
@@ -369,7 +377,7 @@ public class ControlRemoto implements Serializable {
     }
 
     public void pensionados() {
-
+        tipoPersonal = "pensionados";
         backup = vwActualesTiposTrabajadoresesLista;
         tipoBk = tipo;
         tipo = "PENSIONADO";
@@ -409,6 +417,7 @@ public class ControlRemoto implements Serializable {
     }
 
     public void retirados() {
+        tipoPersonal = "retirados";
         backup = vwActualesTiposTrabajadoresesLista;
         tipoBk = tipo;
         tipo = "RETIRADO";
@@ -448,6 +457,7 @@ public class ControlRemoto implements Serializable {
     }
 
     public void aspirantes() {
+        tipoPersonal = "aspirantes";
         backup = vwActualesTiposTrabajadoresesLista;
         tipoBk = tipo;
         tipo = "DISPONIBLE";
@@ -484,6 +494,62 @@ public class ControlRemoto implements Serializable {
             context.update("form:tabMenu:Retirados");
             context.update("form:tabMenu:Aspirantes");
         }
+    }
+
+    public String pantallaReintegrar() {
+        System.out.println("accion= " + accion);
+        return accion;
+    }
+
+    public void pruebita() {
+        Long result = Long.parseLong("-1");
+        RequestContext context = RequestContext.getCurrentInstance();
+        System.out.println("Entro a Pruebita");
+        if (tipoPersonal.equals("activos")) {
+            System.out.println("El personal está activo");
+            result = administrarCarpetaPersonal.borrarActivo(secuencia);
+            if (result == 0) {
+                context.update("formularioDialogos:activoEliminarPaso1");
+                context.execute("activoEliminarPaso1.show()");
+            } else {
+                context.update("formularioDialogos:activoNoEliminar");
+                context.execute("activoNoEliminar.show()");
+            }
+        } else if (tipoPersonal.equals("pensionados")) {
+            System.out.println("El personal está en pensionados");
+
+        } else if (tipoPersonal.equals("retirados")) {
+            System.out.println("El personal esta en retirados");
+            accion = "reintegro";
+        } else if (tipoPersonal.equals("aspirantes")) {
+            System.out.println("El personal esta en aspirantes");
+        }
+    }
+
+    public void paso2() {
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        context.update("formularioDialogos:activoEliminarPaso2");
+        context.execute("activoEliminarPaso2.show()");
+    }
+
+    public void paso3() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("formularioDialogos:activoEliminarPaso3");
+        context.execute("activoEliminarPaso3.show()");
+        System.out.println("trabajador.getEmpleado().getSecuencia() " + trabajador.getEmpleado().getSecuencia() + " trabajador.getEmpleado().getPersona().getSecuencia()" + trabajador.getEmpleado().getPersona().getSecuencia());
+    }
+
+    public void paso4() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        try {
+            administrarCarpetaPersonal.borrarEmpleadoActivo(trabajador.getEmpleado().getSecuencia(), trabajador.getEmpleado().getPersona().getSecuencia());
+            context.update("formularioDialogos:activoEliminarPaso4");
+            context.execute("activoEliminarPaso4.show()");
+        } catch (Exception e) {
+            System.out.println("Error en borrar al empleado");
+        }
+
     }
 
     /* private SelectItem[] createFilterOptions() {
@@ -759,8 +825,7 @@ public class ControlRemoto implements Serializable {
         nombreArchivo = "Tablas";
     }
 
-    
-      
+          
     public void redireccion(Integer indice){
          if(indice >= 0){
             if(listTablas.get(indice).getNombre().equalsIgnoreCase("USUARIOS")){
@@ -772,11 +837,20 @@ public class ControlRemoto implements Serializable {
                 context.execute("dirigirUsuarioVista()");
                 
             }// Aca vienen un huevo de Else if para el resto de las pantallas
-        }
+         }
     }
-    
+
+    /*public String redireccion(Integer indice) {
+        if (indice >= 0) {
+            if (listTablas.get(indice).getNombre().equalsIgnoreCase("USUARIOS")) {
+                redirigir = "usuario";
+
+            } // Aca vienen un huevo de Else if para el resto de las pantallas
+        }
+    }*/
+
     public void infoTablas(Tablas tab) {
-        
+
         selectTabla = tab;
         System.out.println(selectTabla.getSecuencia());
         BigInteger secuenciaTab = selectTabla.getSecuencia();
@@ -941,7 +1015,7 @@ public class ControlRemoto implements Serializable {
                 bandera = true;
                 hv1 = true;
                 hv2 = true;
-            }else{
+            } else {
                 acumulado = false;
                 novedad = false;
                 evaluacion = false;
@@ -1119,6 +1193,14 @@ public class ControlRemoto implements Serializable {
 
     public List<VWActualesTiposTrabajadores> getBuscarEmplTipo() {
         buscarEmplTipo = administrarCarpetaPersonal.consultarEmpleadosTipoTrabajador(tipo);
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (buscarEmplTipo == null || buscarEmplTipo.isEmpty()) {
+            infoRegistroBuscarEmpleados = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroBuscarEmpleados = "Cantidad de registros: " + buscarEmplTipo.size();
+        }
+        context.update("formularioDialogos:infoRegistroBuscarEmpleados");
         return buscarEmplTipo;
     }
 
@@ -1401,4 +1483,21 @@ public class ControlRemoto implements Serializable {
     public boolean isBandera() {
         return bandera;
     }
+
+    public String getAccion() {
+        return accion;
+    }
+
+    public void setAccion(String accion) {
+        this.accion = accion;
+    }
+
+    public String getInfoRegistroBuscarEmpleados() {
+        return infoRegistroBuscarEmpleados;
+    }
+
+    public void setInfoRegistroBuscarEmpleados(String infoRegistroBuscarEmpleados) {
+        this.infoRegistroBuscarEmpleados = infoRegistroBuscarEmpleados;
+    }
+
 }

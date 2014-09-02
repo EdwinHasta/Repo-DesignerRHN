@@ -12,25 +12,39 @@ import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarInterfaseContableTotalInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import javax.activation.MimetypesFileTypeMap;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -111,6 +125,12 @@ public class ControlInterfaseContableTotal implements Serializable {
     private int totalCGenerado, totalDGenerado, totalDInter, totalCInter;
     //
     private String msnPaso1;
+    //
+    private String fechaIniRecon, fechaFinRecon;
+    //
+    private String rutaArchivo, nombreArchivo;
+    //
+    private StreamedContent archivoDescargaUsuario;
 
     public ControlInterfaseContableTotal() {
         msnPaso1 = "";
@@ -257,6 +277,7 @@ public class ControlInterfaseContableTotal implements Serializable {
                 activarEnviar = true;
                 activarDeshacer = true;
                 context.update("form:PanelTotal");
+                context.update("form:panelParametro");
                 context.update("form:btnArriba");
                 context.update("form:btnAbajo");
             }
@@ -336,6 +357,7 @@ public class ControlInterfaseContableTotal implements Serializable {
                 activarEnviar = true;
                 activarDeshacer = true;
                 context.update("form:PanelTotal");
+                context.update("form:panelParametro");
                 context.update("form:btnArriba");
                 context.update("form:btnAbajo");
             }
@@ -729,6 +751,161 @@ public class ControlInterfaseContableTotal implements Serializable {
         }
     }
 
+    public void actionBtnGenerarPlano() {
+        try {
+            String descripcionProceso = administrarInterfaseContableTotal.obtenerDescripcionProcesoArchivo(parametroContableActual.getProceso().getSecuencia());
+            nombreArchivo = "Interfase_Total_" + descripcionProceso;
+            String pathServidorWeb = administrarInterfaseContableTotal.obtenerPathServidorWeb();
+            String pathProceso = administrarInterfaseContableTotal.obtenerPathProceso();
+            administrarInterfaseContableTotal.ejecutarPKGCrearArchivoPlano(tipoPlano, parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), descripcionProceso);
+            System.out.println("nombreArchivo : " + nombreArchivo);
+            System.out.println("pathServidorWeb : " + pathServidorWeb);
+            System.out.println("pathProceso : " + pathProceso);
+            rutaArchivo = "";
+            rutaArchivo = pathProceso + nombreArchivo + ".txt";
+            System.out.println("rutaArchivo : " + rutaArchivo);
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("formularioDialogos:planoGeneradoOK");
+            context.execute("planoGeneradoOK.show()");
+        } catch (Exception e) {
+            System.out.println("Error actionBtnGenerarPlano Control : " + e.toString());
+        }
+    }
+
+    public void cbDescargar() throws IOException {
+        try {
+
+            URL url = new URL("ftp://ADMINISTRADOR:Soporte9@8080/" + nombreArchivo+".txt");
+            URLConnection urlc = url.openConnection();
+            System.out.println("urlc : " + urlc);
+            InputStream is = urlc.getInputStream(); // To download 
+            System.out.println("is : " + is);
+//OutputStream os = urlc.getOutputStream(); // To upload 
+//System.out.println("ENTRO al TRY y esta buscando ESPERATE"); 
+            BufferedInputStream in = new BufferedInputStream(is);
+            System.out.println("in : " + in);
+            FileOutputStream out = new FileOutputStream("C:\\" + nombreArchivo + ".txt");
+            System.out.println("out : " + out);
+            int i = 0;
+            byte[] bytesIn = new byte[1024];
+            while ((i = in.read(bytesIn)) >= 0) {
+                System.out.println("Write ?");
+                out.write(bytesIn, 0, i);
+            }
+            out.close();
+            in.close();
+            /*
+             FacesContext ctx;
+             ctx = FacesContext.getCurrentInstance();
+             FileInputStream archivo = new FileInputStream(rutaArchivo);
+             int longitud = archivo.available();
+             byte[] datos = new byte[longitud];
+             archivo.read(datos);
+             archivo.close();
+             HttpServletResponse response = (HttpServletResponse) ctx.getExternalContext().getResponse();
+             response.setContentType("text/plain");
+             response.setHeader("Content-Disposition", "attachment;filename=" + nombreArchivo);
+             ServletOutputStream ouputStream = response.getOutputStream();
+             ouputStream.write(datos);
+             ouputStream.flush();
+             ouputStream.close();
+             } catch (Exception e) {
+             e.printStackTrace();
+             }*/
+            /*
+             FacesContext ctx;
+             ServletContext request;
+             File archCSV;
+             FileInputStream fisArch;
+             byte[] bytes;
+             int leer = 0;
+             String nombreArchivo;
+             ctx = FacesContext.getCurrentInstance();
+             request = (ServletContext) ctx.getExternalContext().getContext();
+             archCSV = new File(rutaArchivo);
+             fisArch = new FileInputStream(archCSV);
+             bytes = new byte[1000];
+             boolean responseComplete = ctx.getResponseComplete();
+             System.out.println("responseComplete : " + responseComplete);
+             if (!responseComplete) {
+             nombreArchivo = archCSV.getName();
+             String contentType = "text/plain";
+             HttpServletResponse response = (HttpServletResponse) ctx.getExternalContext().getResponse();
+             response.setContentType(contentType);
+             response.setHeader("Content-Disposition", "attachment;filename=\"" + nombreArchivo + "\"");
+             ServletOutputStream out = response.getOutputStream();
+             System.out.println("leer " + leer);
+             while ((leer = fisArch.read(bytes)) != -1) {
+             out.write(bytes, 0, leer);
+             }
+             out.flush();
+             out.close();
+             System.out.println("\nDescargado...\n");
+             ctx.responseComplete();
+             }*/
+        } catch (Exception e) {
+            System.out.println("Error !! : " + e.toString());
+        }
+
+    }
+    /*
+     private StreamedContent dFile;
+
+     public StreamedContent getdFile() {
+     return dFile;
+     }
+
+     public void setdFile(StreamedContent dFile) {
+     this.dFile = dFile;
+     }
+
+    
+     public void downloadAction() {
+     File tempFile = new File(rutaArchivo);
+     try {
+     InputStream stream = ((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream(nombreArchivo);
+     dFile = new DefaultStreamedContent(stream, "text/plain", "downloaded_primefaces.txt");
+     } catch (Exception e) {
+     System.out.println("Error downloadAction !!! ");
+     e.printStackTrace();
+     }
+     }
+     */
+
+    public void actionBtnRecontabilizar() {
+        Integer contador = administrarInterfaseContableTotal.obtenerContadorFlagGeneradoFechasTotal(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+        if (contador != null) {
+            if (contador != 0) {
+                RequestContext.getCurrentInstance().execute("paso1Recon.show()");
+            } else {
+                RequestContext.getCurrentInstance().execute("errorRecon.show()");
+            }
+        }
+    }
+
+    public void ejecutarPaso3Recon() {
+        if (parametroContableActual.getFechafinalcontabilizacion() != null && parametroContableActual.getFechainicialcontabilizacion() != null) {
+            DateFormat df = DateFormat.getDateInstance(DateFormat.LONG);
+            String fechaI = df.format(parametroContableActual.getFechainicialcontabilizacion());
+            String fechaF = df.format(parametroContableActual.getFechafinalcontabilizacion());
+            fechaFinRecon = fechaF;
+            fechaIniRecon = fechaI;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:paso3Recon");
+            context.execute("paso3Recon.show()");
+        }
+    }
+
+    public void finalizarProcesoRecontabilizacion() {
+        try {
+            guardadoGeneral();
+            administrarInterfaseContableTotal.ejecutarPKGRecontabilizacion(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+        } catch (Exception e) {
+            System.out.println("Error finalizarProcesoRecontabilizacion Controlador : " + e.toString());
+        }
+
+    }
+
     public void actionBtnDeshacer() {
         try {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -959,10 +1136,8 @@ public class ControlInterfaseContableTotal implements Serializable {
                 context.update("form:nuncaContabilizo");
                 context.execute("nuncaContabilizo.show()");
             }
-        } else {
-            context.update("form:nuncaContabilizo");
-            context.execute("nuncaContabilizo.show()");
         }
+
     }
 
     public boolean validarFechasParametros() {
@@ -979,7 +1154,8 @@ public class ControlInterfaseContableTotal implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         boolean validar = validarFechasParametros();
         if (validar == true) {
-            guardadoGeneral();
+            //guardadoGeneral();
+
             listaGenerados = null;
             if (listaGenerados == null) {
                 listaGenerados = administrarInterfaseContableTotal.obtenerSolucionesNodosParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
@@ -995,6 +1171,10 @@ public class ControlInterfaseContableTotal implements Serializable {
                 getTotalCGenerado();
                 getTotalDGenerado();
             }
+            /*
+           
+            
+             */
             listaInterconTotal = null;
             if (listaInterconTotal == null) {
                 listaInterconTotal = administrarInterfaseContableTotal.obtenerInterconTotalParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
@@ -1010,60 +1190,8 @@ public class ControlInterfaseContableTotal implements Serializable {
                 getTotalCInter();
                 getTotalDInter();
             }
-            context.update("form:totalDGenerado");
-            context.update("form:totalCGenerado");
-            context.update("form:totalDInter");
-            context.update("form:totalCInter");
 
-            context.update("form:btnEnviar");
-            context.update("form:btnDeshacer");
-            context.update("form:PLANO");
-            if (banderaGenerado == 1) {
-                FacesContext c = FacesContext.getCurrentInstance();
-                altoTablaGenerada = "75";
-                genProceso = (Column) c.getViewRoot().findComponent("form:datosGenerados:genProceso");
-                genProceso.setFilterStyle("display: none; visibility: hidden;");
-                genEmpleado = (Column) c.getViewRoot().findComponent("form:datosGenerados:genEmpleado");
-                genEmpleado.setFilterStyle("display: none; visibility: hidden;");
-                genCntCredito = (Column) c.getViewRoot().findComponent("form:datosGenerados:genCntCredito");
-                genCntCredito.setFilterStyle("display: none; visibility: hidden;");
-                genCntDebito = (Column) c.getViewRoot().findComponent("form:datosGenerados:genCntDebito");
-                genCntDebito.setFilterStyle("display: none; visibility: hidden;");
-                genTercero = (Column) c.getViewRoot().findComponent("form:datosGenerados:genTercero");
-                genTercero.setFilterStyle("display: none; visibility: hidden;");
-                genValor = (Column) c.getViewRoot().findComponent("form:datosGenerados:genValor");
-                genValor.setFilterStyle("display: none; visibility: hidden;");
-                genConcepto = (Column) c.getViewRoot().findComponent("form:datosGenerados:genConcepto");
-                genConcepto.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosGenerados");
-                banderaGenerado = 0;
-                filtrarListaGenerados = null;
-                tipoListaGenerada = 0;
-            }
-            if (banderaIntercon == 1) {
-                FacesContext c = FacesContext.getCurrentInstance();
-                altoTablaIntercon = "75";
-                interEmpleado = (Column) c.getViewRoot().findComponent("form:datosIntercon:interEmpleado");
-                interEmpleado.setFilterStyle("display: none; visibility: hidden;");
-                interTercero = (Column) c.getViewRoot().findComponent("form:datosIntercon:interTercero");
-                interTercero.setFilterStyle("display: none; visibility: hidden;");
-                interCuenta = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCuenta");
-                interCuenta.setFilterStyle("display: none; visibility: hidden;");
-                interDebito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interDebito");
-                interDebito.setFilterStyle("display: none; visibility: hidden;");
-                interCredito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCredito");
-                interCredito.setFilterStyle("display: none; visibility: hidden;");
-                interConcepto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interConcepto");
-                interConcepto.setFilterStyle("display: none; visibility: hidden;");
-                interCentroCosto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCentroCosto");
-                interCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosIntercon");
-                banderaIntercon = 0;
-                filtrarListaInterconTotal = null;
-                tipoListaIntercon = 0;
-            }
-            context.update("form:datosGenerados");
-            context.update("form:datosIntercon");
+            context.update("form:PanelTotal");
             int tam1 = 0;
             int tam2 = 0;
             if (listaGenerados != null) {
@@ -1075,7 +1203,9 @@ public class ControlInterfaseContableTotal implements Serializable {
             if (tam1 == 0 && tam2 == 0) {
                 context.execute("procesoSinDatos.show()");
             }
-            validarFechasProcesoActualizar();
+            //validarFechasProcesoActualizar();
+
+            System.out.println("I finish");
         } else {
             context.execute("errorFechasParametros.show()");
         }
@@ -1102,6 +1232,7 @@ public class ControlInterfaseContableTotal implements Serializable {
     }
 
     public void guardarCambiosParametro() {
+        RequestContext context = RequestContext.getCurrentInstance();
         try {
             if (modificacionParametro == true) {
                 administrarInterfaseContableTotal.modificarParametroContable(parametroContableActual);
@@ -1121,6 +1252,7 @@ public class ControlInterfaseContableTotal implements Serializable {
             FacesMessage msg = new FacesMessage("Información", "Se guardarón los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             RequestContext.getCurrentInstance().update("form:growl");
+            context.update("form:PanelTotal");
         } catch (Exception e) {
             System.out.println("Error guardarCambiosParametro Controlador : " + e.toString());
             FacesMessage msg = new FacesMessage("Información", "Un error ha ocurrido en el guardado, intente nuevamente");
@@ -2052,6 +2184,9 @@ public class ControlInterfaseContableTotal implements Serializable {
             }
             if (listaParametrosContables != null) {
                 int tam = listaParametrosContables.size();
+                if (tam > 0) {
+                    registroActual = 0;
+                }
                 if (tam == 0 || tam == 1) {
                     estadoBtnAbajo = true;
                     estadoBtnArriba = true;
@@ -2326,6 +2461,38 @@ public class ControlInterfaseContableTotal implements Serializable {
 
     public void setTotalCInter(int totalCInter) {
         this.totalCInter = totalCInter;
+    }
+
+    public String getFechaIniRecon() {
+        return fechaIniRecon;
+    }
+
+    public void setFechaIniRecon(String fechaIniRecon) {
+        this.fechaIniRecon = fechaIniRecon;
+    }
+
+    public String getFechaFinRecon() {
+        return fechaFinRecon;
+    }
+
+    public void setFechaFinRecon(String fechaFinRecon) {
+        this.fechaFinRecon = fechaFinRecon;
+    }
+
+    public String getRutaArchivo() {
+        return rutaArchivo;
+    }
+
+    public void setRutaArchivo(String rutaArchivo) {
+        this.rutaArchivo = rutaArchivo;
+    }
+
+    public StreamedContent getArchivoDescargaUsuario() {
+        return archivoDescargaUsuario;
+    }
+
+    public void setArchivoDescargaUsuario(StreamedContent archivoDescargaUsuario) {
+        this.archivoDescargaUsuario = archivoDescargaUsuario;
     }
 
 }
