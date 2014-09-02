@@ -21,16 +21,18 @@ public interface AdministrarUsuariosInterface {
     
     public void obtenerConexion(String idSesion);
     public List<Usuarios> consultarUsuarios();
-    public void crearUsuariosBD(String alias, String perfil);
+    public Integer crearUsuariosBD(String alias);
+    public Integer CrearUsuarioPerfilBD(String alias, String perfil);
     public List<Personas> consultarPersonas();
     public List<Perfiles> consultarPerfiles();
     public List<Pantallas> consultarPantallas();
     public void modificarUsuarios(List<Usuarios> listaUsuarios);
     public void borrarUsuarios(List<Usuarios> listaUsuarios);
     public void crearUsuarios(List<Usuarios> listaUsuarios);
-    public void eliminarUsuariosBD(String alias);
-    public void clonarUsuariosBD(String alias, String aliasclonado, BigInteger secuencia);
-    public void desbloquearUsuariosBD(String alias);
-    public void restaurarUsuariosBD(String alias, String fecha);
+    public Integer eliminarUsuariosBD(String alias);
+    public Integer eliminarUsuarioTotalBD(String alias);
+    public Integer clonarUsuariosBD(String alias, String aliasclonado, BigInteger secuencia);
+    public Integer desbloquearUsuariosBD(String alias);
+    public Integer restaurarUsuariosBD(String alias, String fecha);
     
 }

@@ -761,14 +761,18 @@ public class ControlRemoto implements Serializable {
 
     
       
-    public String redireccion(Integer indice){
+    public void redireccion(Integer indice){
          if(indice >= 0){
             if(listTablas.get(indice).getNombre().equalsIgnoreCase("USUARIOS")){
-                redirigir = "usuario";
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("dirigirUsuario()");
                 
-            } // Aca vienen un huevo de Else if para el resto de las pantallas
+            } else if(listTablas.get(indice).getNombre().equalsIgnoreCase("USUARIOSVISTAS")){
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("dirigirUsuarioVista()");
+                
+            }// Aca vienen un huevo de Else if para el resto de las pantallas
         }
-        return redirigir;
     }
     
     public void infoTablas(Tablas tab) {

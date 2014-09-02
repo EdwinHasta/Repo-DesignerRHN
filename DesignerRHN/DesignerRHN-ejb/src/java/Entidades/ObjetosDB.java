@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -32,6 +33,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "ObjetosDB.findAll", query = "SELECT o FROM ObjetosDB o")})
 public class ObjetosDB implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "objetodb")
+    private Collection<UsuariosVistas> usuariosVistasCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -44,9 +47,9 @@ public class ObjetosDB implements Serializable {
     @Size(min = 1, max = 30)
     @Column(name = "TIPO")
     private String tipo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    //@Basic(optional = false)
+    //@NotNull
+    //@Size(min = 1, max = 50)
     @Column(name = "NOMBRE")
     private String nombre;
     @Size(max = 80)
@@ -97,6 +100,9 @@ public class ObjetosDB implements Serializable {
     }
 
     public String getNombre() {
+        if(nombre == null){
+            nombre = "";
+        }
         return nombre;
     }
 
@@ -176,6 +182,15 @@ public class ObjetosDB implements Serializable {
     @Override
     public String toString() {
         return "Entidades.ObjetosDB[ secuencia=" + secuencia + " ]";
+    }
+
+    @XmlTransient
+    public Collection<UsuariosVistas> getUsuariosVistasCollection() {
+        return usuariosVistasCollection;
+    }
+
+    public void setUsuariosVistasCollection(Collection<UsuariosVistas> usuariosVistasCollection) {
+        this.usuariosVistasCollection = usuariosVistasCollection;
     }
     
 }

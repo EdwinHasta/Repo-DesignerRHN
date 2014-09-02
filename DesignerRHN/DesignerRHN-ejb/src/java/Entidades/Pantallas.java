@@ -43,9 +43,9 @@ public class Pantallas implements Serializable {
     private BigDecimal secuencia;
     @Column(name = "CODIGO")
     private Short codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 40)
+    //@Basic(optional = false)
+    //@NotNull
+    //@Size(min = 1, max = 40)
     @Column(name = "NOMBRE")
     private String nombre;
     @JoinColumn(name = "TABLA", referencedColumnName = "SECUENCIA")

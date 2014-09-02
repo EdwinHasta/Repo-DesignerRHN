@@ -79,64 +79,47 @@ public class PersistenciaUsuarios implements PersistenciaUsuariosInterface {
     }
 
     @Override
-    public void crearUsuario(EntityManager em, String alias) {
+    public Integer crearUsuario(EntityManager em, String alias) {
+        Integer exeC = null;
         em.clear();
         EntityTransaction tx = em.getTransaction();
-        RequestContext context = RequestContext.getCurrentInstance();
-        int i = -100;
-        String mensaje = null;
         try {
             tx.begin();
             String sqlQuery = "call USUARIOS_PKG.CrearUsuario(?)";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, alias);
-            i = query.executeUpdate();
+            exeC = query.executeUpdate();
             tx.commit();
-            mensaje = "Creando el nuevo Usuario...";            
-            FacesMessage msg = new FacesMessage("Información", mensaje);
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            context.update("form:growl");
+            return exeC;            
         } catch (Exception e) {
             System.out.println("Error PersistenciaUsuarios.crearUsuario. " + e);
             if (tx.isActive()) {
                 tx.rollback();
             }
-            mensaje = "Excepción no tratada";            
-            FacesMessage msg = new FacesMessage("Información", mensaje);
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            context.update("form:growl");
+            return null;            
         }
     }
 
     @Override
-    public void crearUsuarioPerfil(EntityManager em, String alias, String perfil) {
+    public Integer crearUsuarioPerfil(EntityManager em, String alias, String perfil) {
+        Integer exeC2 = null;
         em.clear();
         EntityTransaction tx = em.getTransaction();
-        RequestContext context = RequestContext.getCurrentInstance();
-        int i = -100;
-        String mensaje = null;
         try {
             tx.begin();
             String sqlQuery = "call USUARIOS_PKG.AsignarPerfil(?, ?)";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, alias);
             query.setParameter(2, perfil);
-            i = query.executeUpdate();
+            exeC2 = query.executeUpdate();
             tx.commit();
-            mensaje = "Creando el nuevo Perfil...";
-            FacesMessage msg = new FacesMessage("Información", mensaje);
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            context.update("form:growl");
-
+            return exeC2;
         } catch (Exception e) {
             System.out.println("Error PersistenciaUsuarios.crearUsuarioPerfil. " + e);
             if (tx.isActive()) {
                 tx.rollback();
             }
-            mensaje = "Excepción no tratada";
-            FacesMessage msg = new FacesMessage("Información", mensaje);
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            context.update("form:growl");
+            return null;
         }
     }
 
@@ -177,52 +160,54 @@ public class PersistenciaUsuarios implements PersistenciaUsuariosInterface {
     }
     
     @Override
-    public void borrarUsuario(EntityManager em, String alias) {
+    public Integer borrarUsuario(EntityManager em, String alias) {
         em.clear();
-        EntityTransaction tx = em.getTransaction();        
-        int i = -100;
+        EntityTransaction tx = em.getTransaction();
+        Integer exeE = null;
         try {
             tx.begin();
             String sqlQuery = "call USUARIOS_PKG.EliminarUsuario(?)";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, alias);
-            i = query.executeUpdate();
+            exeE = query.executeUpdate();
             tx.commit();
-            System.out.println("algo1");
+            return exeE;
            
         } catch (Exception e) {
             System.out.println("Error PersistenciaUsuarios.borrarUsuario. " + e);
             if (tx.isActive()) {
                 tx.rollback();
             }
+            return null;
         }
     }
     @Override
-    public void borrarUsuarioTotal(EntityManager em, String alias) {
+    public Integer borrarUsuarioTotal(EntityManager em, String alias) {
         em.clear();
         EntityTransaction tx = em.getTransaction();        
-        int i = -100;
+        Integer exeE2 = null;
         try {
             tx.begin();
             String sqlQuery = "call USUARIOS_PKG.EliminarRegistrosUsuario(?)";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, alias);
-            i = query.executeUpdate();
+            exeE2 = query.executeUpdate();
             tx.commit();
-            System.out.println("algo2");
+            return exeE2;
            
         } catch (Exception e) {
             System.out.println("Error PersistenciaUsuarios.borrarUsuarioTotal. " + e);
             if (tx.isActive()) {
                 tx.rollback();
             }
+            return null;
         }
     }
     @Override
-    public void clonarUsuario(EntityManager em, String alias, String aliasclonado, BigInteger secuencia) {
+    public Integer clonarUsuario(EntityManager em, String alias, String aliasclonado, BigInteger secuencia) {
+        Integer exeA = null;
         em.clear();
-        EntityTransaction tx = em.getTransaction();        
-        int i = -100;
+        EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
             String sqlQuery = "call USUARIOS_PKG.ClonarRegistrosUsuario(?, ?, ?)";
@@ -230,44 +215,47 @@ public class PersistenciaUsuarios implements PersistenciaUsuariosInterface {
             query.setParameter(1, alias);
             query.setParameter(2, aliasclonado);
             query.setParameter(3, secuencia);
-            i = query.executeUpdate();
+            exeA = query.executeUpdate();
             tx.commit();
             System.out.println("clonando o algo parecido");
-           
+            return exeA;
         } catch (Exception e) {
             System.out.println("Error PersistenciaUsuarios.clonarUsuario. " + e);
             if (tx.isActive()) {
                 tx.rollback();
             }
+            return null;
         }
     }
     @Override
-    public void desbloquearUsuario(EntityManager em, String alias) {
+    public Integer desbloquearUsuario(EntityManager em, String alias) {
+        Integer exeD = null;
         em.clear();
-        EntityTransaction tx = em.getTransaction();        
-        int i = -100;
+        EntityTransaction tx = em.getTransaction(); 
         try {
             tx.begin();
             String sentencia = "ALTER USER "+alias+" ACCOUNT UNLOCK";
             String sqlQuery = "call PERFILES_PKG.AsignaDDL(?)";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, sentencia);
-            i = query.executeUpdate();
+            exeD = query.executeUpdate();
             tx.commit();
             System.out.println("desbloqueando o algo parecido");
+            return exeD;
            
         } catch (Exception e) {
             System.out.println("Error PersistenciaUsuarios.clonarUsuario. " + e);
             if (tx.isActive()) {
                 tx.rollback();
             }
+            return null;
         }
     }
     @Override
-    public void restaurarUsuario(EntityManager em, String alias, String fecha) {
+    public Integer restaurarUsuario(EntityManager em, String alias, String fecha) {
+        Integer exeR = null;
         em.clear();
-        EntityTransaction tx = em.getTransaction();        
-        int i = -100;
+        EntityTransaction tx = em.getTransaction(); 
         try {
             tx.begin();
             String contra = alias+"_"+fecha;
@@ -275,15 +263,16 @@ public class PersistenciaUsuarios implements PersistenciaUsuariosInterface {
             String sqlQuery = "call PERFILES_PKG.AsignaDDL(?)";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, sentencia);
-            i = query.executeUpdate();
+            exeR = query.executeUpdate();
             tx.commit();
             System.out.println("restaurando o algo parecido");
-           
+            return exeR;
         } catch (Exception e) {
             System.out.println("Error PersistenciaUsuarios.restaurarUsuario. " + e);
             if (tx.isActive()) {
                 tx.rollback();
             }
+            return null;
         }
     }
 }

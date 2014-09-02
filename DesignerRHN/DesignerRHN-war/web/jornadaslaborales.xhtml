@@ -203,7 +203,7 @@
                                         <f:facet name="output">
                                             <h:outputText value="#{JornadasLaborales.jornada.descripcion}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{JornadasLaborales.jornada.descripcion}" id="editarDescripcion" style=" border-radius: 0px; width: 95.5%;text-transform: uppercase;height: 12px"> 
+                                            <p:inputText value="#{JornadasLaborales.jornada.descripcion}" id="editarJornada" style=" border-radius: 0px; width: 95.5%;text-transform: uppercase;height: 12px"> 
                                                 <p:ajax event="change" listener="#{controlJornadasLaborales.modificarJornadasLaborales(indice, 'JORNADAS', JornadasLaborales.jornada.descripcion)}"/>
                                                 <p:ajax event="select" listener="#{controlJornadasLaborales.cambiarIndice(indice, 7)}" />
                                                 <p:ajax event="dblclick" listener="#{controlJornadasLaborales.asignarIndex(indice, 0, 0)}"/>

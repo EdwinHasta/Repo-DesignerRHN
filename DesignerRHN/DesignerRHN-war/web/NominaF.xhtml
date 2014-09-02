@@ -574,15 +574,15 @@
                                 <em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>
                                 <h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
                                 <h:outputText style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
-                                
+
                                 <p:dialog id="confirmarProcesoInterfaceContableTotal" header="#{msg['atencion']}" widgetVar="confirmarProcesoInterfaceContableTotal"  resizable="false" draggable="false" modal="true" height="100" width="420px"  closable="false">  
                                     <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 10px; top: 15px;"  />
                                     <h:outputText value="#{msg['confirmarProcesoInterfaceContableTotal']}" style="position: absolute; left: 100px; top: 15px; width: 320px; font-weight:bold;" />
                                     <p:commandButton value="#{msg['si']}" onclick="confirmarProcesoInterfaceContableTotal.hide();" action="interfasecontablesapbov8" actionListener="#{controlInterfaseContableSapBOV8.recibirPagina('nomina')}" style="position: absolute; top: 60px; left: 290px " process="@this" icon="ui-icon-check" />
                                     <p:commandButton value="#{msg['no']}" onclick="confirmarProcesoInterfaceContableTotal.hide();" style="position: absolute; top: 60px; left: 345px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                                 </p:dialog>
-                                
-                                
+
+
                             </p:tab> 
 
                             <p:tab title="#{msg['gerencial']}" id="Gerencial" > 
@@ -682,6 +682,7 @@
                                     </div>
                                 </fieldset>
 
+                                
 
                                 <fieldset id="contTablas"  style="position:absolute; border-radius: 10px; top: 195px; width: 795px; height: 233px">
                                     <h:outputText value="#{msg['tablasdelsistema']}" styleClass="outputTextFielset" />
@@ -694,7 +695,7 @@
                                             <p:ajax event="rowSelect" listener="#{controlRemoto.exportarTabla}" />
 
                                             <p:column exportable="false"  width="16">
-                                                <p:commandButton id="desplegar"  value="" action="#{controlRemoto.redireccion(indice)}" actionListener="#{controlUsuarios.recibirPaginaEntrante('nomina')}"  update="Tablas, :form:VentanaTab"
+                                                <p:commandButton id="desplegar"  value="" actionListener="#{controlRemoto.redireccion(indice)}" update="Tablas, :form:VentanaTab"
                                                                  style=" width: 16px; height:16px ;background-image: url(Imagenes/revertir.gif); background-repeat: no-repeat; background-size: 100% 100%;" />
                                                 <p:tooltip for="desplegar" value="#{msg['despliegaesteregistro']}"/>
 
@@ -725,7 +726,10 @@
                                 <h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
                                 <h:outputText style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
                             </p:tab>
-                        </p:tabView>  
+                        </p:tabView> 
+                        <p:remoteCommand name="dirigirUsuario" actionListener="#{controlUsuarios.recibirPaginaEntrante('nomina')}" action="usuario" process="@this"/>
+                        <p:remoteCommand name="dirigirUsuarioVista" actionListener="#{controlUsuariosVistas.recibirPaginaEntrante('nomina')}" action="usuariovista" process="@this"/>
+
                     </p:panel>
 
                     <p:dialog id="alerta" header="#{msg['nohaydatos']}" widgetVar="alerta"  resizable="false" draggable="false" modal="true" height="94" width="305px"  closable="false">  

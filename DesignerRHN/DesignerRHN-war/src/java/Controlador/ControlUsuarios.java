@@ -221,6 +221,7 @@ public class ControlUsuarios implements Serializable {
     public void cambiarIndice(int indice, int celda) {
         if (permitirIndex == true) {
             index = indice;
+            usuariosSeleccionado = listaUsuarios.get(index);
             cualCelda = celda;
             tablaImprimir = ":formExportar:datosUsuarioExportar";
             nombreArchivo = "UsuariosXML";
@@ -683,7 +684,7 @@ public class ControlUsuarios implements Serializable {
                 if (lovPerfiles.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
-                } 
+                }
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
@@ -809,7 +810,7 @@ public class ControlUsuarios implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         try {
             if (guardado == false) {
-                System.out.println("Realizando Operaciones Unidades");
+                System.out.println("Realizando Operaciones Usuarios");
                 if (!listaUsuariosBorrar.isEmpty()) {
                     administrarUsuario.borrarUsuarios(listaUsuariosBorrar);
                     System.out.println("Entra");
@@ -1405,30 +1406,95 @@ public class ControlUsuarios implements Serializable {
     }
 
     public void crearUsuario() {
-
+        RequestContext context = RequestContext.getCurrentInstance();
+        String mensaje = "";
+        String mensaje2 = "";
+        Integer exeC = null;
+        Integer exeC2 = null;
         if (index >= 0) {
             if (tipoLista == 0) {
-                listaUsuarios.get(index).getPersona();
-                listaUsuarios.get(index).getPerfil();
-                listaUsuarios.get(index).getAlias();
-                listaUsuarios.get(index).getPantallainicio();
-                listaUsuarios.get(index).getActivo();
-                System.out.println("alias: " + listaUsuarios.get(index).getAlias());
-                System.out.println("perfil1: " + listaUsuarios.get(index).getPerfil().getDescripcion());
-                System.out.println("perfil2: " + listaUsuarios.get(index).getPerfil());
-                administrarUsuario.crearUsuariosBD(listaUsuarios.get(index).getAlias(), listaUsuarios.get(index).getPerfil().getDescripcion());
+                System.out.println("alias: " + usuariosSeleccionado.getAlias());
+                System.out.println("perfil1: " + usuariosSeleccionado.getPerfil().getDescripcion());
+                System.out.println("perfil2: " + usuariosSeleccionado.getPerfil());
+                exeC = administrarUsuario.crearUsuariosBD(usuariosSeleccionado.getAlias());
+                exeC2 = administrarUsuario.CrearUsuarioPerfilBD(usuariosSeleccionado.getAlias(), usuariosSeleccionado.getPerfil().getDescripcion());
+
+                if (exeC != null) {
+                    mensaje = "Creando el nuevo Usuario...";
+                    FacesMessage msg = new FacesMessage("Información", mensaje);
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                    context.update("form:growl");
+                    exeC = null;
+                    if (exeC2 != null) {
+                        mensaje2 = "Creando el nuevo Perfil...";
+                        FacesMessage msg2 = new FacesMessage("Información", mensaje);
+                        FacesContext.getCurrentInstance().addMessage(null, msg);
+                        context.update("form:growl");
+                        exeC2 = null;
+                    } else {
+                        mensaje2 = "Excepción no tratada... "
+                                + "Error al crear el Perfil";
+                        FacesMessage msg2 = new FacesMessage("Información", mensaje);
+                        FacesContext.getCurrentInstance().addMessage(null, msg);
+                        context.update("form:growl");
+                    }
+                } else {
+                    mensaje = "Excepción no tratada... "
+                            + "Error al crear el Usuario";
+                    FacesMessage msg = new FacesMessage("Información", mensaje);
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                    context.update("form:growl");
+                    if (exeC2 == null) {
+                        mensaje2 = "Excepción no tratada... "
+                                + "Error al crear el Perfil";
+                        FacesMessage msg2 = new FacesMessage("Información", mensaje);
+                        FacesContext.getCurrentInstance().addMessage(null, msg);
+                        context.update("form:growl");
+                    }
+                }
+
             }
             if (tipoLista == 1) {
-                filtrarUsuarios.get(index).getPersona();
-                filtrarUsuarios.get(index).getPerfil();
-                filtrarUsuarios.get(index).getAlias();
-                filtrarUsuarios.get(index).getPantallainicio();
-                filtrarUsuarios.get(index).getActivo();
-                administrarUsuario.crearUsuariosBD(filtrarUsuarios.get(index).getAlias(), filtrarUsuarios.get(index).getPerfil().getDescripcion());
+                exeC = administrarUsuario.crearUsuariosBD(usuariosSeleccionado.getAlias());
+                exeC2 = administrarUsuario.CrearUsuarioPerfilBD(usuariosSeleccionado.getAlias(), usuariosSeleccionado.getPerfil().getDescripcion());
+
+                if (exeC != null) {
+                    mensaje = "Creando el nuevo Usuario...";
+                    FacesMessage msg = new FacesMessage("Información", mensaje);
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                    context.update("form:growl");
+                    exeC = null;
+                    if (exeC2 != null) {
+                        mensaje2 = "Creando el nuevo Perfil...";
+                        FacesMessage msg2 = new FacesMessage("Información", mensaje);
+                        FacesContext.getCurrentInstance().addMessage(null, msg);
+                        context.update("form:growl");
+                        exeC2 = null;
+                    } else {
+                        mensaje2 = "Excepción no tratada... "
+                                + "Error al crear el Perfil";
+                        FacesMessage msg2 = new FacesMessage("Información", mensaje);
+                        FacesContext.getCurrentInstance().addMessage(null, msg);
+                        context.update("form:growl");
+                    }
+                } else {
+                    mensaje = "Excepción no tratada... "
+                            + "Error al crear el Usuario";
+                    FacesMessage msg = new FacesMessage("Información", mensaje);
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                    context.update("form:growl");
+                    if (exeC2 == null) {
+                        mensaje2 = "Excepción no tratada... "
+                                + "Error al crear el Perfil";
+                        FacesMessage msg2 = new FacesMessage("Información", mensaje);
+                        FacesContext.getCurrentInstance().addMessage(null, msg);
+                        context.update("form:growl");
+                        exeC2 = null;
+                    }
+                }
             }
             index = -1;
             secRegistro = null;
-
         }
 
     }
@@ -1437,20 +1503,20 @@ public class ControlUsuarios implements Serializable {
 
         if (index >= 0) {
             if (tipoLista == 0) {
-                eliminarUsuarios.setPersona(listaUsuarios.get(index).getPersona());
-                eliminarUsuarios.setPerfil(listaUsuarios.get(index).getPerfil());
-                eliminarUsuarios.setAlias(listaUsuarios.get(index).getAlias());
-                eliminarUsuarios.setPantallainicio(listaUsuarios.get(index).getPantallainicio());
-                eliminarUsuarios.setActivo(listaUsuarios.get(index).getActivo());
-                mensajeV = listaUsuarios.get(index).getAlias();
+                eliminarUsuarios.setPersona(usuariosSeleccionado.getPersona());
+                eliminarUsuarios.setPerfil(usuariosSeleccionado.getPerfil());
+                eliminarUsuarios.setAlias(usuariosSeleccionado.getAlias());
+                eliminarUsuarios.setPantallainicio(usuariosSeleccionado.getPantallainicio());
+                eliminarUsuarios.setActivo(usuariosSeleccionado.getActivo());
+                mensajeV = usuariosSeleccionado.getAlias();
             }
             if (tipoLista == 1) {
-                eliminarUsuarios.setPersona(filtrarUsuarios.get(index).getPersona());
-                eliminarUsuarios.setPerfil(filtrarUsuarios.get(index).getPerfil());
-                eliminarUsuarios.setAlias(filtrarUsuarios.get(index).getAlias());
-                eliminarUsuarios.setPantallainicio(filtrarUsuarios.get(index).getPantallainicio());
-                eliminarUsuarios.setActivo(filtrarUsuarios.get(index).getActivo());
-                mensajeV = filtrarUsuarios.get(index).getAlias();
+                eliminarUsuarios.setPersona(usuariosSeleccionado.getPersona());
+                eliminarUsuarios.setPerfil(usuariosSeleccionado.getPerfil());
+                eliminarUsuarios.setAlias(usuariosSeleccionado.getAlias());
+                eliminarUsuarios.setPantallainicio(usuariosSeleccionado.getPantallainicio());
+                eliminarUsuarios.setActivo(usuariosSeleccionado.getActivo());
+                mensajeV = usuariosSeleccionado.getAlias();
             }
             RequestContext context = RequestContext.getCurrentInstance();
             System.out.println("entro aqui");
@@ -1463,15 +1529,45 @@ public class ControlUsuarios implements Serializable {
 
     public void eliminarUsuarioBD() {
         System.out.println("aksjdhaksjbdkas");
-
-        eliminarUsuarios.getPersona().getNombreCompleto();
-        eliminarUsuarios.getPerfil().getDescripcion();
-        eliminarUsuarios.getAlias();
-        eliminarUsuarios.getPantallainicio().getNombre();
-        eliminarUsuarios.getActivo();
+        RequestContext context = RequestContext.getCurrentInstance();
+        String mensaje = "";
+        String mensaje2 = "";
+        Integer exeE = null;
+        Integer exeE2 = null;
+        /*eliminarUsuarios.getPersona().getNombreCompleto();
+         eliminarUsuarios.getPerfil().getDescripcion();
+         eliminarUsuarios.getAlias();
+         eliminarUsuarios.getPantallainicio().getNombre();
+         eliminarUsuarios.getActivo();*/
         System.out.println("alias: " + eliminarUsuarios.getAlias());
-        administrarUsuario.eliminarUsuariosBD(eliminarUsuarios.getAlias());
-        System.out.println("si está haciendo algo");
+        exeE = administrarUsuario.eliminarUsuariosBD(eliminarUsuarios.getAlias());
+        exeE2 = administrarUsuario.eliminarUsuarioTotalBD(eliminarUsuarios.getAlias());
+        System.out.println("si está haciendo algo");        
+        if (exeE != null) {
+            mensaje = "Borrando el Usuario...";
+            FacesMessage msg = new FacesMessage("Información", mensaje);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+            exeE = null;
+        } else {
+            mensaje = "Excepción no tratada... Error al borrar el Usuario";
+            FacesMessage msg = new FacesMessage("Información", mensaje);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+        }
+        if (exeE2 != null) {
+            mensaje2 = "Usuario Borrado";
+            FacesMessage msg = new FacesMessage("Información", mensaje);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+            exeE2 = null;
+        } else {
+            mensaje2 = "Excepción no tratada... "
+                    + "No se puedo suprimir el registro maestro al existir registros detalle coincidentes";
+            FacesMessage msg = new FacesMessage("Información", mensaje);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+        }
 
         index = -1;
         secRegistro = null;
@@ -1494,6 +1590,7 @@ public class ControlUsuarios implements Serializable {
     }
 
     public void usuarioClonarBD() {
+        Integer exeA = null;
         System.out.println("prueba 1 auxclon: " + getAuxClon());
         System.out.println("esto deberia cogerlo pero no: " + auxClon);
         //getAuxClon();
@@ -1509,28 +1606,31 @@ public class ControlUsuarios implements Serializable {
             System.out.println("alias a clonar: " + auxClon);
             if (index >= 0) {
                 if (tipoLista == 0) {
-                    listaUsuarios.get(index).getPersona();
-                    listaUsuarios.get(index).getPerfil();
-                    listaUsuarios.get(index).getAlias();
-                    listaUsuarios.get(index).getPantallainicio();
-                    listaUsuarios.get(index).getActivo();
-                    System.out.println("alias: " + listaUsuarios.get(index).getAlias());
+                    System.out.println("alias: " + usuariosSeleccionado.getAlias());
                     System.out.println("aliasclon: " + auxClon);
-                    administrarUsuario.clonarUsuariosBD(listaUsuarios.get(index).getAlias(), auxClon, listaUsuarios.get(index).getSecuencia());
-                    FacesMessage msg = new FacesMessage("Información", "Reportes Clonados");
-                    FacesContext.getCurrentInstance().addMessage(null, msg);
-                    context.update("form:growl");
+                    exeA = administrarUsuario.clonarUsuariosBD(usuariosSeleccionado.getAlias(), auxClon, usuariosSeleccionado.getSecuencia());
+                    if (exeA != null) {
+                        FacesMessage msg = new FacesMessage("Información", "Reportes Clonados");
+                        FacesContext.getCurrentInstance().addMessage(null, msg);
+                        context.update("form:growl");
+                        exeA = null;
+                    } else {
+                        FacesMessage msg = new FacesMessage("Información", "Excepción no tratada");
+                        FacesContext.getCurrentInstance().addMessage(null, msg);
+                        context.update("form:growl");
+                    }
                 }
                 if (tipoLista == 1) {
-                    filtrarUsuarios.get(index).getPersona();
-                    filtrarUsuarios.get(index).getPerfil();
-                    filtrarUsuarios.get(index).getAlias();
-                    filtrarUsuarios.get(index).getPantallainicio();
-                    filtrarUsuarios.get(index).getActivo();
-                    administrarUsuario.clonarUsuariosBD(filtrarUsuarios.get(index).getAlias(), auxClon, filtrarUsuarios.get(index).getSecuencia());
-                    FacesMessage msg = new FacesMessage("Información", "Reportes Clonados");
-                    FacesContext.getCurrentInstance().addMessage(null, msg);
-                    context.update("form:growl");
+                    exeA = administrarUsuario.clonarUsuariosBD(usuariosSeleccionado.getAlias(), auxClon, usuariosSeleccionado.getSecuencia());
+                    if (exeA != null) {
+                        FacesMessage msg = new FacesMessage("Información", "Reportes Clonados");
+                        FacesContext.getCurrentInstance().addMessage(null, msg);
+                        context.update("form:growl");
+                    } else {
+                        FacesMessage msg = new FacesMessage("Información", "Excepción no tratada");
+                        FacesContext.getCurrentInstance().addMessage(null, msg);
+                        context.update("form:growl");
+                    }
                 }
                 index = -1;
                 secRegistro = null;
@@ -1540,32 +1640,35 @@ public class ControlUsuarios implements Serializable {
     }
 
     public void desbloquearUsuario() {
-
+        Integer exeD = null;
+        RequestContext context = RequestContext.getCurrentInstance();
         if (index >= 0) {
             if (tipoLista == 0) {
-                listaUsuarios.get(index).getPersona();
-                listaUsuarios.get(index).getPerfil();
-                listaUsuarios.get(index).getAlias();
-                listaUsuarios.get(index).getPantallainicio();
-                listaUsuarios.get(index).getActivo();
-                System.out.println("alias para desbloquear: " + listaUsuarios.get(index).getAlias());
-                administrarUsuario.desbloquearUsuariosBD(listaUsuarios.get(index).getAlias());
-                RequestContext context = RequestContext.getCurrentInstance();
-                FacesMessage msg = new FacesMessage("Información", "Usuario Desbloqueado");
-                FacesContext.getCurrentInstance().addMessage(null, msg);
-                context.update("form:growl");
+                System.out.println("alias para desbloquear: " + usuariosSeleccionado.getAlias());
+                exeD = administrarUsuario.desbloquearUsuariosBD(usuariosSeleccionado.getAlias());
+                if (exeD != null) {
+                    FacesMessage msg = new FacesMessage("Información", "Usuario Desbloqueado");
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                    context.update("form:growl");
+                    exeD = null;
+                } else {
+                    FacesMessage msg = new FacesMessage("Información", "Excepción no tratada");
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                    context.update("form:growl");
+                }
             }
             if (tipoLista == 1) {
-                filtrarUsuarios.get(index).getPersona();
-                filtrarUsuarios.get(index).getPerfil();
-                filtrarUsuarios.get(index).getAlias();
-                filtrarUsuarios.get(index).getPantallainicio();
-                filtrarUsuarios.get(index).getActivo();
-                administrarUsuario.desbloquearUsuariosBD(filtrarUsuarios.get(index).getAlias());
-                RequestContext context = RequestContext.getCurrentInstance();
-                FacesMessage msg = new FacesMessage("Información", "Usuario Desbloqueado");
-                FacesContext.getCurrentInstance().addMessage(null, msg);
-                context.update("form:growl");
+                exeD = administrarUsuario.desbloquearUsuariosBD(usuariosSeleccionado.getAlias());
+                if (exeD != null) {
+                    FacesMessage msg = new FacesMessage("Información", "Usuario Desbloqueado");
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                    context.update("form:growl");
+                    exeD = null;
+                } else {
+                    FacesMessage msg = new FacesMessage("Información", "Excepción no tratada");
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                    context.update("form:growl");
+                }
             }
             index = -1;
             secRegistro = null;
@@ -1576,43 +1679,82 @@ public class ControlUsuarios implements Serializable {
 
     public void resetearUsuario() {
         String fecha = "";
+        String ayuda = "";
+        Integer exeR = null;
         Calendar cal = Calendar.getInstance();
-        if (cal.get(cal.MONTH) < 10) {
-            fecha = cal.get(cal.DATE) + "0" + cal.get(cal.MONTH) + cal.get(cal.HOUR_OF_DAY) + cal.get(cal.MINUTE);
-            System.out.println("esta es la fecha de hoy: " + fecha);
-        } else {
-            fecha = cal.get(cal.DATE) + "" + cal.get(cal.MONTH) + cal.get(cal.HOUR_OF_DAY) + cal.get(cal.MINUTE);
-            System.out.println("esta es la fecha de hoy: " + fecha);
+        if (cal.get(cal.MONTH) == 0){
+            ayuda = "01";
         }
+        if (cal.get(cal.MONTH) == 1){
+            ayuda = "02";
+        }
+        if (cal.get(cal.MONTH) == 2){
+            ayuda = "03";
+        }
+        if (cal.get(cal.MONTH) == 3){
+            ayuda = "04";
+        }
+        if (cal.get(cal.MONTH) == 4){
+            ayuda = "05";
+        }
+        if (cal.get(cal.MONTH) == 5){
+            ayuda = "06";
+        }
+        if (cal.get(cal.MONTH) == 6){
+            ayuda = "07";
+        }
+        if (cal.get(cal.MONTH) == 7){
+            ayuda = "08";
+        }
+        if (cal.get(cal.MONTH) == 8){
+            ayuda = "09";
+        }
+        if (cal.get(cal.MONTH) == 9){
+            ayuda = "10";
+        }
+        if (cal.get(cal.MONTH) == 10){
+            ayuda = "11";
+        }
+        if (cal.get(cal.MONTH) == 11){
+            ayuda = "12";
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (cal.get(cal.DATE) < 10) {
+            fecha = "0" + cal.get(cal.DATE) + ayuda + cal.get(cal.HOUR_OF_DAY) + cal.get(cal.MINUTE);
+            System.out.println("esta es la fecha de hoy1: " + fecha);            
+        } else if (cal.get(cal.DATE) > 10) {
+            fecha = cal.get(cal.DATE) + ayuda + cal.get(cal.HOUR_OF_DAY) + cal.get(cal.MINUTE);
+            System.out.println("esta es la fecha de hoy2: " + fecha);
+        } 
         if (index >= 0) {
             if (tipoLista == 0) {
-                listaUsuarios.get(index).getPersona();
-                listaUsuarios.get(index).getPerfil();
-                listaUsuarios.get(index).getAlias();
-                listaUsuarios.get(index).getPantallainicio();
-                listaUsuarios.get(index).getActivo();
-                System.out.println("alias para desbloquear: " + listaUsuarios.get(index).getAlias());
+                System.out.println("alias para desbloquear: " + usuariosSeleccionado.getAlias());
                 System.out.println("esta es la fecha de hoy22222: " + fecha);
-                administrarUsuario.restaurarUsuariosBD(listaUsuarios.get(index).getAlias(), fecha);
-                mensajeContra = listaUsuarios.get(index).getAlias() + "_" + fecha;
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.update("formularioDialogos:contrasenaNueva");
-                context.execute("contrasenaNueva.show()");
+                exeR = administrarUsuario.restaurarUsuariosBD(usuariosSeleccionado.getAlias(), fecha);
+                if (exeR != null) {
+                    mensajeContra = usuariosSeleccionado.getAlias() + "_" + fecha;
+                    context.update("formularioDialogos:contrasenaNueva");
+                    context.execute("contrasenaNueva.show()");
+                    exeR = null;
+                } else {
+                    FacesMessage msg = new FacesMessage("Información", "Excepción no tratada");
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                    context.update("form:growl");
+                }
             }
             if (tipoLista == 1) {
-                filtrarUsuarios.get(index).getPersona();
-                filtrarUsuarios.get(index).getPerfil();
-                filtrarUsuarios.get(index).getAlias();
-                filtrarUsuarios.get(index).getPantallainicio();
-                filtrarUsuarios.get(index).getActivo();
-                administrarUsuario.restaurarUsuariosBD(listaUsuarios.get(index).getAlias(), fecha);
-                mensajeContra = filtrarUsuarios.get(index).getAlias() + "_" + fecha;
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.update("formularioDialogos:contrasenaNueva");
-                context.execute("contrasenaNueva.show()");
-
+                exeR = administrarUsuario.restaurarUsuariosBD(usuariosSeleccionado.getAlias(), fecha);
+                if (exeR != null) {
+                    mensajeContra = usuariosSeleccionado.getAlias() + "_" + fecha;
+                    context.update("formularioDialogos:contrasenaNueva");
+                    context.execute("contrasenaNueva.show()");
+                    exeR = null;
+                } else {
+                    FacesMessage msg = new FacesMessage("Información", "Excepción no tratada");
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                    context.update("form:growl");
+                }
             }
-
             index = -1;
             secRegistro = null;
 
