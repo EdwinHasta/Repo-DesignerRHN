@@ -824,7 +824,6 @@ public class ControlRemoto implements Serializable {
         tablaExportar = "Tablas";
         nombreArchivo = "Tablas";
     }
-
           
     public void redireccion(Integer indice){
          if(indice >= 0){
@@ -839,15 +838,6 @@ public class ControlRemoto implements Serializable {
             }// Aca vienen un huevo de Else if para el resto de las pantallas
          }
     }
-
-    /*public String redireccion(Integer indice) {
-        if (indice >= 0) {
-            if (listTablas.get(indice).getNombre().equalsIgnoreCase("USUARIOS")) {
-                redirigir = "usuario";
-
-            } // Aca vienen un huevo de Else if para el resto de las pantallas
-        }
-    }*/
 
     public void infoTablas(Tablas tab) {
 

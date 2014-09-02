@@ -4798,6 +4798,7 @@
     
     <navigation-rule>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <from-view-id>/usuariovista.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
@@ -4831,6 +4832,15 @@
         </navigation-case>
     </navigation-rule>
     
+=======
+        <from-view-id>/cambiofechaingreso.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>emplvigenciatipocontrato</from-outcome>
+            <to-view-id>/EmplVigenciaTipoContrato.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+>>>>>>> origin/master
 =======
         <from-view-id>/cambiofechaingreso.xhtml</from-view-id>
         <navigation-case>
