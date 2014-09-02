@@ -2,6 +2,7 @@ var Calendar = (function() {
     return {
         maskedCalendar: function() {
             $('.masked_calendar').datepicker({
+                yearRange: 'c-70:c+70',
                 closeText: 'Cerrar',
                 prevText: 'Anterior',
                 nextText: 'Siguiente',

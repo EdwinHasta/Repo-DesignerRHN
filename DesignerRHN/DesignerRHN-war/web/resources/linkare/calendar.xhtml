@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:cc="http://java.sun.com/jsf/composite">
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:linkare="http://java.sun.com/jsf/composite/linkare">
 
 
 
@@ -28,7 +29,7 @@
         <cc:attribute name="onclick" default="" shortDescription="Llamado a una funcion js al dar click en el componente."/>
         <cc:attribute name="onselect" default="" shortDescription="Llamado a una funcion js al dar click en el componente."/>
         <cc:attribute name="onchange" default="" shortDescription="Onchange event lnkcalendar"/>
-        <cc:clientBehavior name="dateSelect" targets="calendar" event="dateSelect" />
+        <cc:clientBehavior name="dateSelect" targets="calendar"  event="dateSelect" />
         <cc:clientBehavior name="select" targets="calendar" event="select" />
         <cc:clientBehavior name="change" targets="calendar" event="change" />
         <cc:clientBehavior name="click" targets="calendar" event="click"/>
@@ -40,10 +41,10 @@
     <cc:implementation>
         <!-- This component has been simplified but it could include any attribute of the inputMask 
          component that we wish our developer clients to be able to specify -->
-        <p:inputMask onclick="select();#{cc.attrs.onclick}" onselect="#{cc.attrs.onselect}" onchange="#{cc.attrs.onchange}" readonly="#{cc.attrs.readonly}" disabled="#{cc.attrs.disabled}" style="height: #{cc.attrs.height}px; width: #{cc.attrs.width}%;color: #{cc.attrs.color};text-decoration: #{cc.attrs.decoration}" id="calendar" styleClass="masked_calendar" mask="#{cc.attrs.mask}" 
+        <p:inputMask onclick="select();#{cc.attrs.onclick}"  onselect="#{cc.attrs.onselect}" onchange="#{cc.attrs.onchange}" readonly="#{cc.attrs.readonly}" disabled="#{cc.attrs.disabled}" style="height: #{cc.attrs.height}px; width: #{cc.attrs.width}%;color: #{cc.attrs.color};text-decoration: #{cc.attrs.decoration}" id="calendar" styleClass="masked_calendar" mask="#{cc.attrs.mask}" 
                      value="#{cc.attrs.value}" >
             <f:convertDateTime pattern="#{cc.attrs.pattern}" timeZone="America/Bogota" locale="es" />
         </p:inputMask>
-        <h:outputScript target="head" library="js" name="calendar.js" />
+        <h:outputScript target="head" library="js" name="calendar.js"  />
     </cc:implementation>
 </html>
