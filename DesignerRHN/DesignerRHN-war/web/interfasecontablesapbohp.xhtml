@@ -536,7 +536,7 @@
                             </p:commandButton>
                         </p:dialog> 
                         
-                        <p:commandButton style="position: absolute; left: 15px; top: 482px;" id="enviarSAPBO" value="#{msg['enviarSAPBO']}"  process="@this" />
+                        <p:commandButton style="position: absolute; left: 15px; top: 482px;" id="PLANO" disabled="#{controlInterfaseContableSapBOHP.activarDeshacer}" actionListener="#{controlInterfaseContableSapBOHP.actionBtnGenerarPlano()}" value="#{msg['enviarSAPBO']}"  process="@this" />
                         <p:commandButton style="position: absolute; left: 210px; top: 482px;" id="HISTORICO" value="#{msg['HISTORICO']}"  process="@this" />
                         <p:separator style="position: absolute; left: 320px; top: 481px;width: 3px; height: 20px"/>
                         <p:commandButton style="position: absolute; left: 325px; top: 482px; color: red;" id="CERRAR" value="#{msg['cerrarPeriodo']}" actionListener="#{controlInterfaseContableSapBOHP.inicioCerrarPeriodoContable()}" process="@this"/>
@@ -865,6 +865,22 @@
                         <h:outputText value="#{msg['operacionEnProceso']}" style="font-size: 12px; position: absolute; left: 95px; top: 20px; width: 240px; font-weight:bold;" />
                     </p:dialog>
 
+                    <p:dialog id="planoGeneradoOK" header="#{msg['reporteExito']}" widgetVar="planoGeneradoOK"  resizable="false" draggable="false" modal="true" height="140" width="350"  closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['planoGeneradoOK']}" style="position: absolute; left: 70px; top: 15px; font-weight:bold;width: 250px;"  />
+                        <h:outputText value="#{msg['deseaGuardarTxt']}" style="position: absolute; left: 10px; top: 80px; font-weight:bold;width: 230px;"  />
+                        <p:inputText value="#{controlInterfaseContableSapBOHP.rutaArchivo}" style="position: absolute; left: 70px; top: 50px;text-transform: uppercase;width: 230px;" readonly="true"/>
+
+                        <p:commandButton id="downloadLink" value="#{msg['descargar']}" ajax="false" style="position: absolute; top: 80px; left: 240px" onclick="cerrarPaginaDescarga()" actionListener="#{controlInterfaseContableSapBOHP.descargarArchivoFTP()}">
+                            <p:fileDownload value="#{controlInterfaseContableSapBOHP.download}" />
+                        </p:commandButton>
+
+                        <p:commandButton icon="ui-icon-closethick" value="#{msg['salir']}" onclick="planoGeneradoOK.hide();" style="position: absolute; top: 110px; left: 255px" process="@this" />
+                    </p:dialog>
+                    
+                    <p:remoteCommand name="cerrarPaginaDescarga" actionListener="#{controlInterfaseContableSapBOHP.cerrarPaginaDescarga()}"/>
+
+                    
                 </h:form>
                 <h:form id="formExportar">
                     <p:dataTable id="datosParametroExportar" var="infoEXP" style="visibility: hidden; display: none;"                           

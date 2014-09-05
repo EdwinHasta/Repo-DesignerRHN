@@ -7,38 +7,34 @@ import Entidades.ParametrosContables;
 import Entidades.ParametrosEstructuras;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
-import Entidades.VWActualesFechas;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarInterfaseContableTotalInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
-import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import javax.activation.MimetypesFileTypeMap;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -128,11 +124,18 @@ public class ControlInterfaseContableTotal implements Serializable {
     //
     private String fechaIniRecon, fechaFinRecon;
     //
-    private String rutaArchivo, nombreArchivo;
+    private String rutaArchivo, nombreArchivo, pathProceso;
     //
-    private StreamedContent archivoDescargaUsuario;
+    private final String server = "192.168.0.16";
+    private final int port = 21;
+    private final String user = "Administrador";
+    private final String pass = "Soporte9";
+
+    private FTPClient ftpClient;
+    private DefaultStreamedContent download;
 
     public ControlInterfaseContableTotal() {
+        ftpClient = new FTPClient();
         msnPaso1 = "";
         totalCGenerado = 0;
         totalDGenerado = 0;
@@ -755,15 +758,12 @@ public class ControlInterfaseContableTotal implements Serializable {
         try {
             String descripcionProceso = administrarInterfaseContableTotal.obtenerDescripcionProcesoArchivo(parametroContableActual.getProceso().getSecuencia());
             nombreArchivo = "Interfase_Total_" + descripcionProceso;
-            String pathServidorWeb = administrarInterfaseContableTotal.obtenerPathServidorWeb();
-            String pathProceso = administrarInterfaseContableTotal.obtenerPathProceso();
+            //String pathServidorWeb = administrarInterfaseContableTotal.obtenerPathServidorWeb();
+            //System.out.println("pathServidorWeb : " + pathServidorWeb);
+            pathProceso = administrarInterfaseContableTotal.obtenerPathProceso();
             administrarInterfaseContableTotal.ejecutarPKGCrearArchivoPlano(tipoPlano, parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), descripcionProceso);
-            System.out.println("nombreArchivo : " + nombreArchivo);
-            System.out.println("pathServidorWeb : " + pathServidorWeb);
-            System.out.println("pathProceso : " + pathProceso);
             rutaArchivo = "";
             rutaArchivo = pathProceso + nombreArchivo + ".txt";
-            System.out.println("rutaArchivo : " + rutaArchivo);
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:planoGeneradoOK");
             context.execute("planoGeneradoOK.show()");
@@ -772,105 +772,49 @@ public class ControlInterfaseContableTotal implements Serializable {
         }
     }
 
-    public void cbDescargar() throws IOException {
+    public void conectarAlFTP() {
         try {
-
-            URL url = new URL("ftp://ADMINISTRADOR:Soporte9@8080/" + nombreArchivo+".txt");
-            URLConnection urlc = url.openConnection();
-            System.out.println("urlc : " + urlc);
-            InputStream is = urlc.getInputStream(); // To download 
-            System.out.println("is : " + is);
-//OutputStream os = urlc.getOutputStream(); // To upload 
-//System.out.println("ENTRO al TRY y esta buscando ESPERATE"); 
-            BufferedInputStream in = new BufferedInputStream(is);
-            System.out.println("in : " + in);
-            FileOutputStream out = new FileOutputStream("C:\\" + nombreArchivo + ".txt");
-            System.out.println("out : " + out);
-            int i = 0;
-            byte[] bytesIn = new byte[1024];
-            while ((i = in.read(bytesIn)) >= 0) {
-                System.out.println("Write ?");
-                out.write(bytesIn, 0, i);
-            }
-            out.close();
-            in.close();
-            /*
-             FacesContext ctx;
-             ctx = FacesContext.getCurrentInstance();
-             FileInputStream archivo = new FileInputStream(rutaArchivo);
-             int longitud = archivo.available();
-             byte[] datos = new byte[longitud];
-             archivo.read(datos);
-             archivo.close();
-             HttpServletResponse response = (HttpServletResponse) ctx.getExternalContext().getResponse();
-             response.setContentType("text/plain");
-             response.setHeader("Content-Disposition", "attachment;filename=" + nombreArchivo);
-             ServletOutputStream ouputStream = response.getOutputStream();
-             ouputStream.write(datos);
-             ouputStream.flush();
-             ouputStream.close();
-             } catch (Exception e) {
-             e.printStackTrace();
-             }*/
-            /*
-             FacesContext ctx;
-             ServletContext request;
-             File archCSV;
-             FileInputStream fisArch;
-             byte[] bytes;
-             int leer = 0;
-             String nombreArchivo;
-             ctx = FacesContext.getCurrentInstance();
-             request = (ServletContext) ctx.getExternalContext().getContext();
-             archCSV = new File(rutaArchivo);
-             fisArch = new FileInputStream(archCSV);
-             bytes = new byte[1000];
-             boolean responseComplete = ctx.getResponseComplete();
-             System.out.println("responseComplete : " + responseComplete);
-             if (!responseComplete) {
-             nombreArchivo = archCSV.getName();
-             String contentType = "text/plain";
-             HttpServletResponse response = (HttpServletResponse) ctx.getExternalContext().getResponse();
-             response.setContentType(contentType);
-             response.setHeader("Content-Disposition", "attachment;filename=\"" + nombreArchivo + "\"");
-             ServletOutputStream out = response.getOutputStream();
-             System.out.println("leer " + leer);
-             while ((leer = fisArch.read(bytes)) != -1) {
-             out.write(bytes, 0, leer);
-             }
-             out.flush();
-             out.close();
-             System.out.println("\nDescargado...\n");
-             ctx.responseComplete();
-             }*/
+            ftpClient.connect(server);
+            ftpClient.login(user, pass);
+            ftpClient.enterLocalPassiveMode();
+            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
         } catch (Exception e) {
-            System.out.println("Error !! : " + e.toString());
+            System.out.println("Error en conexion : " + e.toString());
         }
-
     }
-    /*
-     private StreamedContent dFile;
 
-     public StreamedContent getdFile() {
-     return dFile;
-     }
-
-     public void setdFile(StreamedContent dFile) {
-     this.dFile = dFile;
-     }
-
+    public void descargarArchivoFTP() throws IOException {
+        try {
+            conectarAlFTP();
+            int tamPath = pathProceso.length();
+            String rutaX = "";
+            for (int i = 2; i < tamPath; i++) {
+                rutaX = rutaX + pathProceso.charAt(i) + "";
+            }
+            String remoteFile1 = rutaX + nombreArchivo + ".txt";
+            File downloadFile1 = new File(pathProceso + nombreArchivo + ".txt");
+            OutputStream outputStream1 = new BufferedOutputStream(new FileOutputStream(downloadFile1));
+            boolean success = ftpClient.retrieveFile(remoteFile1, outputStream1);
+            outputStream1.close();
+            if (success) {
+                System.out.println("File #1 has been downloaded successfully.");
+            } else {
+                System.out.println("Ni mierda !");
+            }
+            ftpClient.logout();
+            File file = new File(pathProceso + nombreArchivo + ".txt");
+            InputStream input = new FileInputStream(file);
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            setDownload(new DefaultStreamedContent(input, externalContext.getMimeType(file.getName()), file.getName()));
+            RequestContext.getCurrentInstance().execute("planoGeneradoOK.hide()");
+        } catch (Exception e) {
+            System.out.println("Error descarga : " + e.toString());
+        }
+    }
     
-     public void downloadAction() {
-     File tempFile = new File(rutaArchivo);
-     try {
-     InputStream stream = ((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream(nombreArchivo);
-     dFile = new DefaultStreamedContent(stream, "text/plain", "downloaded_primefaces.txt");
-     } catch (Exception e) {
-     System.out.println("Error downloadAction !!! ");
-     e.printStackTrace();
-     }
-     }
-     */
+    public void cerrarPaginaDescarga(){
+        RequestContext.getCurrentInstance().execute("planoGeneradoOK.hide()");
+    }
 
     public void actionBtnRecontabilizar() {
         Integer contador = administrarInterfaseContableTotal.obtenerContadorFlagGeneradoFechasTotal(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
@@ -2487,12 +2431,12 @@ public class ControlInterfaseContableTotal implements Serializable {
         this.rutaArchivo = rutaArchivo;
     }
 
-    public StreamedContent getArchivoDescargaUsuario() {
-        return archivoDescargaUsuario;
+    public void setDownload(DefaultStreamedContent download) {
+        this.download = download;
     }
 
-    public void setArchivoDescargaUsuario(StreamedContent archivoDescargaUsuario) {
-        this.archivoDescargaUsuario = archivoDescargaUsuario;
+    public DefaultStreamedContent getDownload() throws Exception {
+        return download;
     }
 
 }

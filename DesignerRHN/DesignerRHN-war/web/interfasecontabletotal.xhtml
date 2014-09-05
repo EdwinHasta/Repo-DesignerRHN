@@ -674,7 +674,7 @@
                         <p:commandButton value="#{msg['aceptar']}" onclick="paso2CerrarPeriodo.hide();" actionListener="#{controlInterfaseContableTotal.finCerrarPeriodoContable()}" style="position: absolute; top: 63px; left: 180px"  process="@this" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="paso2CerrarPeriodo.hide();" style="position: absolute; top: 63px; left: 255px" process="@this" />
                     </p:dialog>
-
+                    
                 </h:form>
                 <h:form id="formularioDialogos" >
 
@@ -829,11 +829,14 @@
                         <h:outputText value="#{msg['deseaGuardarTxt']}" style="position: absolute; left: 10px; top: 80px; font-weight:bold;width: 230px;"  />
                         <p:inputText value="#{controlInterfaseContableTotal.rutaArchivo}" style="position: absolute; left: 70px; top: 50px;text-transform: uppercase;width: 230px;" readonly="true"/>
 
-                        <h:commandLink value="Download" style="position: absolute; top: 80px; left: 255px" action="#{controlInterfaseContableTotal.cbDescargar}">
-                        </h:commandLink>
+                        <p:commandButton id="downloadLink" value="#{msg['descargar']}" ajax="false" style="position: absolute; top: 80px; left: 240px" onclick="cerrarPaginaDescarga()" actionListener="#{controlInterfaseContableTotal.descargarArchivoFTP()}">
+                            <p:fileDownload value="#{controlInterfaseContableTotal.download}" />
+                        </p:commandButton>
 
                         <p:commandButton icon="ui-icon-closethick" value="#{msg['salir']}" onclick="planoGeneradoOK.hide();" style="position: absolute; top: 110px; left: 255px" process="@this" />
                     </p:dialog>
+                    
+                    <p:remoteCommand name="cerrarPaginaDescarga" actionListener="#{controlInterfaseContableTotal.cerrarPaginaDescarga()}"/>
 
 
                 </h:form>

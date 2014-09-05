@@ -1,4 +1,3 @@
-
 package Controlador;
 
 import Entidades.ActualUsuario;
@@ -12,7 +11,13 @@ import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarInterfaseContableSapBOPEInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.text.DateFormat;
@@ -25,12 +30,16 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.DefaultStreamedContent;
 
 /**
  *
@@ -115,7 +124,19 @@ public class ControlInterfaseContableSapBOPE implements Serializable {
     private Column interEmpleado, interTercero, interCuenta, interDebito, interCredito, interConcepto, interCentroCosto, interProceso, interProyecto;
     //
     private String fechaFinRecon, fechaIniRecon;
+    //
+    private String rutaArchivo, nombreArchivo, pathProceso;
+    //
+    private final String server = "192.168.0.16";
+    private final int port = 21;
+    private final String user = "Administrador";
+    private final String pass = "Soporte9";
+
+    private FTPClient ftpClient;
+    private DefaultStreamedContent download;
+
     public ControlInterfaseContableSapBOPE() {
+        ftpClient = new FTPClient();
         guardado = true;
         nuevoParametroContable = new ParametrosContables();
         indexParametroContable = -1;
@@ -147,7 +168,7 @@ public class ControlInterfaseContableSapBOPE implements Serializable {
         activarDeshacer = true;
         msnFechasActualizar = "";
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -357,7 +378,6 @@ public class ControlInterfaseContableSapBOPE implements Serializable {
                         interProyecto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interProyecto");
                         interProyecto.setFilterStyle("display: none; visibility: hidden;");
 
-                        
                         RequestContext.getCurrentInstance().update("form:datosIntercon");
                         banderaIntercon = 0;
                         filtrarListaInterconSapBO = null;
@@ -543,8 +563,7 @@ public class ControlInterfaseContableSapBOPE implements Serializable {
                         interProceso.setFilterStyle("display: none; visibility: hidden;");
                         interProyecto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interProyecto");
                         interProyecto.setFilterStyle("display: none; visibility: hidden;");
-             
-                        
+
                         RequestContext.getCurrentInstance().update("form:datosIntercon");
                         banderaIntercon = 0;
                         filtrarListaInterconSapBO = null;
@@ -648,7 +667,6 @@ public class ControlInterfaseContableSapBOPE implements Serializable {
                 interProyecto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interProyecto");
                 interProyecto.setFilterStyle("display: none; visibility: hidden;");
 
-                
                 RequestContext.getCurrentInstance().update("form:datosIntercon");
                 banderaIntercon = 0;
                 filtrarListaInterconSapBO = null;
@@ -749,8 +767,7 @@ public class ControlInterfaseContableSapBOPE implements Serializable {
                 interProceso.setFilterStyle("display: none; visibility: hidden;");
                 interProyecto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interProyecto");
                 interProyecto.setFilterStyle("display: none; visibility: hidden;");
-     
-                
+
                 RequestContext.getCurrentInstance().update("form:datosIntercon");
                 banderaIntercon = 0;
                 filtrarListaInterconSapBO = null;
@@ -927,8 +944,7 @@ public class ControlInterfaseContableSapBOPE implements Serializable {
             interProceso.setFilterStyle("display: none; visibility: hidden;");
             interProyecto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interProyecto");
             interProyecto.setFilterStyle("display: none; visibility: hidden;");
-            
-            
+
             RequestContext.getCurrentInstance().update("form:datosIntercon");
             banderaIntercon = 0;
             filtrarListaInterconSapBO = null;
@@ -1096,7 +1112,7 @@ public class ControlInterfaseContableSapBOPE implements Serializable {
                 context.update("formularioDialogos:editarDocumentoParametro");
                 context.execute("editarDocumentoParametro.show()");
                 indexParametroContable = -1;
-            } 
+            }
         }
         if (indexGenerado >= 0) {
             if (tipoListaGenerada == 0) {
@@ -1643,8 +1659,7 @@ public class ControlInterfaseContableSapBOPE implements Serializable {
                 interProceso.setFilterStyle("width: 60px");
                 interProyecto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interProyecto");
                 interProyecto.setFilterStyle("width: 60px");
-                
-                
+
                 RequestContext.getCurrentInstance().update("form:datosIntercon");
                 banderaIntercon = 1;
             } else if (banderaIntercon == 1) {
@@ -1667,8 +1682,7 @@ public class ControlInterfaseContableSapBOPE implements Serializable {
                 interProceso.setFilterStyle("display: none; visibility: hidden;");
                 interProyecto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interProyecto");
                 interProyecto.setFilterStyle("display: none; visibility: hidden;");
-                
-                
+
                 RequestContext.getCurrentInstance().update("form:datosIntercon");
                 banderaIntercon = 0;
                 filtrarListaInterconSapBO = null;
@@ -1743,6 +1757,68 @@ public class ControlInterfaseContableSapBOPE implements Serializable {
         } catch (Exception e) {
             System.out.println("Error cerrarPeriodoContable Controlador : " + e.toString());
         }
+    }
+
+    public void actionBtnGenerarPlano() {
+        try {
+            String descripcionProceso = administrarInterfaseContableSapBOPE.obtenerDescripcionProcesoArchivo(parametroContableActual.getProceso().getSecuencia());
+            nombreArchivo = "Interfase_SAPBO_" + descripcionProceso;
+            //String pathServidorWeb = administrarInterfaseContableTotal.obtenerPathServidorWeb();
+            //System.out.println("pathServidorWeb : " + pathServidorWeb);
+            pathProceso = administrarInterfaseContableSapBOPE.obtenerPathProceso();
+            administrarInterfaseContableSapBOPE.ejecutarPKGCrearArchivoPlano(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), descripcionProceso, nombreArchivo);
+            rutaArchivo = "";
+            rutaArchivo = pathProceso + nombreArchivo + ".txt";
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("formularioDialogos:planoGeneradoOK");
+            context.execute("planoGeneradoOK.show()");
+        } catch (Exception e) {
+            System.out.println("Error actionBtnGenerarPlano Control : " + e.toString());
+        }
+    }
+
+    public void conectarAlFTP() {
+        try {
+            ftpClient.connect(server);
+            ftpClient.login(user, pass);
+            ftpClient.enterLocalPassiveMode();
+            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+        } catch (Exception e) {
+            System.out.println("Error en conexion : " + e.toString());
+        }
+    }
+
+    public void descargarArchivoFTP() throws IOException {
+        try {
+            conectarAlFTP();
+            int tamPath = pathProceso.length();
+            String rutaX = "";
+            for (int i = 2; i < tamPath; i++) {
+                rutaX = rutaX + pathProceso.charAt(i) + "";
+            }
+            String remoteFile1 = rutaX + nombreArchivo + ".txt";
+            File downloadFile1 = new File(pathProceso + nombreArchivo + ".txt");
+            OutputStream outputStream1 = new BufferedOutputStream(new FileOutputStream(downloadFile1));
+            boolean success = ftpClient.retrieveFile(remoteFile1, outputStream1);
+            outputStream1.close();
+            if (success) {
+                System.out.println("File #1 has been downloaded successfully.");
+            } else {
+                System.out.println("Ni mierda !");
+            }
+            ftpClient.logout();
+            File file = new File(pathProceso + nombreArchivo + ".txt");
+            InputStream input = new FileInputStream(file);
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            setDownload(new DefaultStreamedContent(input, externalContext.getMimeType(file.getName()), file.getName()));
+            RequestContext.getCurrentInstance().execute("planoGeneradoOK.hide()");
+        } catch (Exception e) {
+            System.out.println("Error descarga : " + e.toString());
+        }
+    }
+
+    public void cerrarPaginaDescarga() {
+        RequestContext.getCurrentInstance().execute("planoGeneradoOK.hide()");
     }
 
     public ActualUsuario getActualUsuarioBD() {
@@ -2191,5 +2267,20 @@ public class ControlInterfaseContableSapBOPE implements Serializable {
         this.fechaIniRecon = fechaIniRecon;
     }
 
-    
+    public String getRutaArchivo() {
+        return rutaArchivo;
+    }
+
+    public void setRutaArchivo(String rutaArchivo) {
+        this.rutaArchivo = rutaArchivo;
+    }
+
+    public void setDownload(DefaultStreamedContent download) {
+        this.download = download;
+    }
+
+    public DefaultStreamedContent getDownload() throws Exception {
+        return download;
+    }
+
 }
