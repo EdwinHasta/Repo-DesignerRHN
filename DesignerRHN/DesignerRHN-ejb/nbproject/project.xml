@@ -22,6 +22,7 @@
             <included-library dirs="200">file.reference.jxl.jar</included-library>
             <included-library dirs="200">file.reference.jfreechart-1.0.17.jar</included-library>
             <included-library dirs="200">file.reference.primefaces-3.5.jar</included-library>
+            <included-library dirs="200">file.reference.commons-net-3.3.jar</included-library>
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>

@@ -12,6 +12,7 @@ import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaContabilizacionesInterface;
 import InterfacePersistencia.PersistenciaEmpresasInterface;
+import InterfacePersistencia.PersistenciaGeneralesInterface;
 import InterfacePersistencia.PersistenciaInterconSapBOInterface;
 import InterfacePersistencia.PersistenciaParametrosContablesInterface;
 import InterfacePersistencia.PersistenciaParametrosEstructurasInterface;
@@ -55,6 +56,8 @@ public class AdministrarInterfaseContableSapBOPE implements AdministrarInterfase
     PersistenciaParametrosEstructurasInterface persistenciaParametrosEstructuras;
     @EJB
     PersistenciaVWActualesFechasInterface persistenciaVWActualesFechas;
+    @EJB
+    PersistenciaGeneralesInterface persistenciaGenerales;
 
     private EntityManager em;
 
@@ -303,6 +306,48 @@ public class AdministrarInterfaseContableSapBOPE implements AdministrarInterfase
             persistenciaInterconSap.ejecutarPKGRecontabilizacion(em, fechaIni, fechaFin);
         } catch (Exception e) {
             System.out.println("Error ejecutarPKGRecontabilizacion Admi : " + e.toString());
+        }
+    }
+    
+    //@Override
+    public String obtenerDescripcionProcesoArchivo(BigInteger proceso) {
+        try {
+            String valor = persistenciaProcesos.obtenerDescripcionProcesoPorSecuencia(em, proceso);
+            return valor;
+        } catch (Exception e) {
+            System.out.println("Error obtenerDescripcionProcesoArchivo Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public String obtenerPathServidorWeb() {
+        try {
+            String path = persistenciaGenerales.obtenerPathServidorWeb(em);
+            return path;
+        } catch (Exception e) {
+            System.out.println("Error obtenerPathServidorWeb Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public String obtenerPathProceso() {
+        try {
+            String path = persistenciaGenerales.obtenerPathProceso(em);
+            return path;
+        } catch (Exception e) {
+            System.out.println("Error obtenerPathProceso Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public void ejecutarPKGCrearArchivoPlano(Date fechaIni, Date fechaFin, BigInteger proceso,String descripcion,  String nombreArchivo) {
+        try {
+            persistenciaInterconSap.ejecutarPKGCrearArchivoPlanoSAPPE(em, fechaIni, fechaFin, proceso, descripcion, nombreArchivo);
+        } catch (Exception e) {
+            System.out.println("Error ejecutarPKGCrearArchivoPlano Admi : " + e.toString());
         }
     }
 }

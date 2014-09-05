@@ -68,4 +68,12 @@ public interface AdministrarInterfaseContableSapBOVCAInterface {
 
     public void ejecutarPKGRecontabilizacion(Date fechaIni, Date fechaFin);
 
+    public String obtenerPathServidorWeb();
+
+    public String obtenerDescripcionProcesoArchivo(BigInteger proceso);
+
+    public String obtenerPathProceso();
+
+    public void ejecutarPKGCrearArchivoPlano(Date fechaIni, Date fechaFin, BigInteger proceso, String descripcionProceso, String nombreArchivo);
+
 }

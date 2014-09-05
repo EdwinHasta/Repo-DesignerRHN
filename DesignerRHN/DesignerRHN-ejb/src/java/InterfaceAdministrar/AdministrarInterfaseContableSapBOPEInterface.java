@@ -68,4 +68,12 @@ public interface AdministrarInterfaseContableSapBOPEInterface {
 
     public void ejecutarPKGRecontabilizacion(Date fechaIni, Date fechaFin);
 
+    public String obtenerDescripcionProcesoArchivo(BigInteger proceso);
+
+    public String obtenerPathServidorWeb();
+
+    public void ejecutarPKGCrearArchivoPlano(Date fechaIni, Date fechaFin, BigInteger proceso, String descripcion, String nombreArchivo);
+
+    public String obtenerPathProceso();
+
 }

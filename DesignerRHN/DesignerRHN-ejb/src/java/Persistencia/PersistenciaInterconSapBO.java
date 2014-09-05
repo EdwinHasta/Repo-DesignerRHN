@@ -323,6 +323,120 @@ public class PersistenciaInterconSapBO implements PersistenciaInterconSapBOInter
     }
     
     @Override
+    public void ejecutarPKGCrearArchivoPlanoSAPV8(EntityManager em, Date fechaIni, Date fechaFin, BigInteger proceso, String descripcionProceso, String nombreArchivo) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            String sql = "call INTERFASESAPBO$PKG.archivo_planoV8(?,?,?,?,?)";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaIni);
+            query.setParameter(2, fechaFin);
+            query.setParameter(3, proceso);
+            query.setParameter(4, descripcionProceso);
+            query.setParameter(5, nombreArchivo);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconSapBO.ejecutarPKGCrearArchivoPlanoSAPV8 : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+    
+    @Override
+    public void ejecutarPKGCrearArchivoPlanoSAPVCA(EntityManager em, Date fechaIni, Date fechaFin, BigInteger proceso, String descripcionProceso, String nombreArchivo) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            String sql = "call INTERFASESAPBO$PKG.archivo_plano_VCA(?,?,?,?,?)";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaIni);
+            query.setParameter(2, fechaFin);
+            query.setParameter(3, proceso);
+            query.setParameter(4, descripcionProceso);
+            query.setParameter(5, nombreArchivo);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconSapBO.ejecutarPKGCrearArchivoPlanoSAPVCA : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+    
+    @Override
+    public void ejecutarPKGCrearArchivoPlanoSAPPE(EntityManager em, Date fechaIni, Date fechaFin, BigInteger proceso, String descripcionProceso, String nombreArchivo) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            String sql = "call INTERFASESAPBO$PKG.archivo_plano_PE(?,?,?,?,?)";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaIni);
+            query.setParameter(2, fechaFin);
+            query.setParameter(3, proceso);
+            query.setParameter(4, descripcionProceso);
+            query.setParameter(5, nombreArchivo);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconSapBO.ejecutarPKGCrearArchivoPlanoSAPPE : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+    
+    @Override
+    public void ejecutarPKGCrearArchivoPlanoSAPPQ(EntityManager em, Date fechaIni, Date fechaFin, BigInteger proceso, String descripcionProceso, String nombreArchivo) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            String sql = "call INTERFASESAPBO$PKG.archivo_plano_PERMAQUIM(?,?,?,?,?)";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaIni);
+            query.setParameter(2, fechaFin);
+            query.setParameter(3, proceso);
+            query.setParameter(4, descripcionProceso);
+            query.setParameter(5, nombreArchivo);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconSapBO.ejecutarPKGCrearArchivoPlanoSAPPQ : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+    @Override
+    public void ejecutarPKGCrearArchivoPlanoSAPHP(EntityManager em, Date fechaIni, Date fechaFin, BigInteger proceso, String descripcionProceso, String nombreArchivo) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            String sql = "call INTERFASESAPBO$PKG.archivo_planoVHP(?,?,?,?,?)";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaIni);
+            query.setParameter(2, fechaFin);
+            query.setParameter(3, proceso);
+            query.setParameter(4, descripcionProceso);
+            query.setParameter(5, nombreArchivo);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconSapBO.ejecutarPKGCrearArchivoPlanoSAPHP : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+    
+    @Override
     public int contarProcesosContabilizadosInterconSAPBO(EntityManager em, Date fechaInicial, Date fechaFinal) {
         try {
             em.clear();

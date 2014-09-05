@@ -310,4 +310,17 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
             return null;
         }
     }
+
+    public String obtenerEnvioInterfaseContabilidadEmpresa(EntityManager em, short codigoEmpresa) {
+        try {
+            em.clear();
+            String sql = "select ENVIOINTERFASECONTABILIDAD from empresas where codigo=?";
+            Query query = em.createNativeQuery(sql);
+            String retorno = (String) query.getSingleResult();
+            return retorno;
+        } catch (Exception e) {
+            System.out.println("Error obtenerEnvioInterfaseContabilidadEmpresa PersistenciaEmpresas : " + e.toString());
+            return null;
+        }
+    }
 }

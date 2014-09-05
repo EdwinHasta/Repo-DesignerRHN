@@ -103,6 +103,8 @@ public interface PersistenciaEmpresasInterface {
     public BigInteger obtenerMaximoEmpleadosEmpresa(EntityManager em, BigInteger secuencia);
 
     public List<Empresas> buscarEmpresasLista(EntityManager em, BigInteger secuencia);
-    
+
     public Empresas consultarEmpresaPorCodigo(EntityManager em, short codigo);
+
+    public String obtenerEnvioInterfaseContabilidadEmpresa(EntityManager em, short codigoEmpresa);
 }

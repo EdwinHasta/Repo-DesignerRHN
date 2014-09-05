@@ -68,7 +68,17 @@ public interface AdministrarInterfaseContableSapBOInterface {
     public void ejecutarPKGRecontabilizacion(Date fechaIni, Date fechaFin);
 
     public List<VWMensajeSAPBOV8> obtenerErroresSAPBOV8();
-    
+
     public int contarProcesosContabilizadosInterconSAPBO(Date fechaInicial, Date fechaFinal);
+
+    public String obtenerPathServidorWeb();
+
+    public String obtenerPathProceso();
+
+    public String obtenerDescripcionProcesoArchivo(BigInteger proceso);
+
+    public void ejecutarPKGCrearArchivoPlano(Date fechaIni, Date fechaFin, BigInteger proceso, String descripcionProceso, String nombreArchivo);
+
+    public String obtenerEnvioInterfaseContabilidadEmpresa(short codigoEmpresa);
 
 }
