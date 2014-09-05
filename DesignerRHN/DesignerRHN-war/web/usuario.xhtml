@@ -192,8 +192,8 @@
                                 </p:column>
 
                                 <p:column style="width:40px">
-                                    <p:commandButton id="eliminar" style="font-size: 8px; height :15px; position: relative;top: 0px; left:-3px" value="#{msg['eliminar']}"  process="@this" actionListener="#{controlUsuarios.eliminarUsuarioValidacion()}"/>
-                                    <p:tooltip for="eliminar" value="#{msg['eliminartt']}"/>
+                                    <p:commandButton id="eliminarR" style="font-size: 8px; height :15px; position: relative;top: 0px; left:-3px" value="#{msg['eliminarR']}"  process="@this" actionListener="#{controlUsuarios.eliminarUsuarioValidacion()}"/>
+                                    <p:tooltip for="eliminarR" value="#{msg['eliminartt']}"/>
                                 </p:column>
 
                                 <p:column style="width:60px">
@@ -502,8 +502,8 @@
                     <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlCausasAusentismos.guardarCambiosCausaAusentismo()}" action="#{controlCausasAusentismos.redirigir()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlCausasAusentismos.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlUsuarios.guardarCambiosUsuario()}" action="#{controlUsuarios.redirigir()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlUsuarios.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
 

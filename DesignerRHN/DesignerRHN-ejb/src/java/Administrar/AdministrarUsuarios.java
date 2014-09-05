@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Administrar;
 
 import Entidades.Pantallas;
@@ -28,7 +27,7 @@ import javax.persistence.EntityManager;
  * @author Administrador
  */
 @Stateful
-public class AdministrarUsuarios implements AdministrarUsuariosInterface{
+public class AdministrarUsuarios implements AdministrarUsuariosInterface {
 
     @EJB
     PersistenciaUsuariosInterface persistenciaUsuarios;
@@ -42,7 +41,7 @@ public class AdministrarUsuarios implements AdministrarUsuariosInterface{
     AdministrarSesionesInterface administrarSesiones;
 
     private EntityManager em;
-    
+
     // Metodos
     @Override
     public void obtenerConexion(String idSesion) {
@@ -54,31 +53,92 @@ public class AdministrarUsuarios implements AdministrarUsuariosInterface{
         listaUsuarios = persistenciaUsuarios.buscarUsuarios(em);
         return listaUsuarios;
     }
-    @Override
-    public void crearUsuariosBD(String alias, String perfil) {        
-        persistenciaUsuarios.crearUsuario(em, alias);        
-        persistenciaUsuarios.crearUsuarioPerfil(em, alias, perfil);  
+
+    public Integer crearUsuariosBD(String alias) {
+        Integer exeC = null;
+        try {
+            exeC = persistenciaUsuarios.crearUsuario(em, alias);
+            return exeC;
+        } catch (Exception e) {
+            System.out.println("Error crearUsuarioDB Admi : " + e.toString());
+            return null;
+        }
     }
+
     @Override
-    public void eliminarUsuariosBD(String alias) {        
-        persistenciaUsuarios.borrarUsuario(em, alias);         
-        persistenciaUsuarios.borrarUsuarioTotal(em, alias);
-        System.out.println("algo estará haciendo de eliminar");          
+    public Integer CrearUsuarioPerfilBD(String alias, String perfil) {
+        Integer exeC2 = null;
+        try {
+        exeC2 = persistenciaUsuarios.crearUsuarioPerfil(em, alias, perfil);
+        return exeC2;
+        } catch (Exception e){
+            System.out.println("Error crearUsuarioPerfilDB Admi : " + e.toString());
+            return null;
+        } 
     }
+
     @Override
-    public void clonarUsuariosBD(String alias, String aliasclonado, BigInteger secuencia) {        
-        persistenciaUsuarios.clonarUsuario(em, alias, aliasclonado, secuencia);
-        System.out.println("está haciendo algo de clonar");          
+    public Integer eliminarUsuariosBD(String alias) {
+        Integer exeE = null;
+        try {
+        persistenciaUsuarios.borrarUsuario(em, alias);
+        return exeE;
+        } catch (Exception e){
+            System.out.println("Error eliminarUsuariosBD Admi : " + e.toString());
+            return null;
+        }      
+        
     }
-    @Override
-    public void desbloquearUsuariosBD(String alias) {        
-        persistenciaUsuarios.desbloquearUsuario(em, alias);
-        System.out.println("está haciendo algo de desbloquear");   
+    
+    @Override 
+    public Integer eliminarUsuarioTotalBD(String alias){
+        Integer exeE2 = null;
+        try {
+        exeE2 = persistenciaUsuarios.borrarUsuarioTotal(em, alias);
+        return exeE2;
+        } catch (Exception e){
+            System.out.println("Error eliminarUsuarioTotalBD Admi : " + e.toString());
+            return null;
+        }
     }
+
     @Override
-    public void restaurarUsuariosBD(String alias, String fecha) {        
-        persistenciaUsuarios.restaurarUsuario(em, alias, fecha);
-        System.out.println("está haciendo algo de restaurar");   
+    public Integer clonarUsuariosBD(String alias, String aliasclonado, BigInteger secuencia) {
+        Integer exeA = null;
+        try {
+        exeA = persistenciaUsuarios.clonarUsuario(em, alias, aliasclonado, secuencia);
+        System.out.println("está haciendo algo de clonar");
+        return exeA;
+        } catch (Exception e){
+            System.out.println("Error clonarUsuariosBD Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public Integer desbloquearUsuariosBD(String alias) {
+        Integer exeD = null;
+        try {
+        exeD = persistenciaUsuarios.desbloquearUsuario(em, alias);
+        System.out.println("está haciendo algo de desbloquear");
+        return exeD;
+        } catch (Exception e){
+            System.out.println("Error desbloquearUsuariosBD Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public Integer restaurarUsuariosBD(String alias, String fecha) {
+        Integer exeR = null;
+        try {
+        exeR = persistenciaUsuarios.restaurarUsuario(em, alias, fecha);
+        System.out.println("está haciendo algo de restaurar");
+        return exeR;
+        } catch (Exception e){
+            System.out.println("Error restaurarUsuariosBD Admi : " + e.toString());
+            return null;
+        }
     }
 
     public List<Personas> consultarPersonas() {
@@ -86,19 +146,19 @@ public class AdministrarUsuarios implements AdministrarUsuariosInterface{
         listaPersonas = persistenciaPersonas.consultarPersonas(em);
         return listaPersonas;
     }
-    
+
     public List<Perfiles> consultarPerfiles() {
         List<Perfiles> listaPerfiles;
         listaPerfiles = persistenciaPerfiles.consultarPerfiles(em);
         return listaPerfiles;
-    }    
-    
+    }
+
     public List<Pantallas> consultarPantallas() {
         List<Pantallas> listaPantallas;
         listaPantallas = persistenciaPantallas.buscarPantallas(em);
         return listaPantallas;
-    }    
-    
+    }
+
     @Override
     public void modificarUsuarios(List<Usuarios> listaUsuarios) {
         for (int i = 0; i < listaUsuarios.size(); i++) {
@@ -154,6 +214,5 @@ public class AdministrarUsuarios implements AdministrarUsuariosInterface{
             }
         }
     }
-    
-    
+
 }

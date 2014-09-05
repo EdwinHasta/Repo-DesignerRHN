@@ -4797,6 +4797,39 @@
     </navigation-rule>
     
     <navigation-rule>
+        <from-view-id>/usuariovista.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>nomina</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/NominaF.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>usuariovista</from-outcome>
+            <to-view-id>/usuariovista.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>    
+    
+    <navigation-rule>
+        <from-view-id>/usuariovista.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>    
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>usuariovista</from-outcome>
+            <to-view-id>/usuariovista.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
         <from-view-id>/cambiofechaingreso.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>emplvigenciatipocontrato</from-outcome>

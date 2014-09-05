@@ -824,15 +824,19 @@ public class ControlRemoto implements Serializable {
         tablaExportar = "Tablas";
         nombreArchivo = "Tablas";
     }
-
-    public String redireccion(Integer indice) {
-        if (indice >= 0) {
-            if (listTablas.get(indice).getNombre().equalsIgnoreCase("USUARIOS")) {
-                redirigir = "usuario";
-
-            } // Aca vienen un huevo de Else if para el resto de las pantallas
-        }
-        return redirigir;
+          
+    public void redireccion(Integer indice){
+         if(indice >= 0){
+            if(listTablas.get(indice).getNombre().equalsIgnoreCase("USUARIOS")){
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("dirigirUsuario()");
+                
+            } else if(listTablas.get(indice).getNombre().equalsIgnoreCase("USUARIOSVISTAS")){
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("dirigirUsuarioVista()");
+                
+            }// Aca vienen un huevo de Else if para el resto de las pantallas
+         }
     }
 
     public void infoTablas(Tablas tab) {

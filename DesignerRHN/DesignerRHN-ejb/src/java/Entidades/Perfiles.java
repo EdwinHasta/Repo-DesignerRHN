@@ -45,9 +45,9 @@ public class Perfiles implements Serializable {
     @NotNull
     @Column(name = "CODIGO")
     private short codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
+    //@Basic(optional = false)
+    //@NotNull
+    //@Size(min = 1, max = 30)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Size(max = 50)

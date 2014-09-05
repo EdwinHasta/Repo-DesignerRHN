@@ -4,7 +4,9 @@
 package Persistencia;
 
 import Entidades.ObjetosDB;
+import Entidades.Personas;
 import InterfacePersistencia.PersistenciaObjetosDBInterface;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -46,4 +48,26 @@ public class PersistenciaObjetosDB implements PersistenciaObjetosDBInterface{
             return null;
         }
     }
+    
+    @Override
+    public List<ObjetosDB> consultarObjetoDB(EntityManager em) {
+        /*em.clear();
+        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(ObjetosDB.class));
+        return em.createQuery(cq).getResultList();
+        */        
+        try {
+            em.clear();
+            Query query = em.createQuery("SELECT ob FROM ObjetosDB ob ORDER BY ob.tipo ASC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<ObjetosDB> todosObjetos = query.getResultList();
+            return todosObjetos;
+        } catch (Exception e) {
+            System.err.println("Error: PersistenciaObjetosDB consultarObjetoDB ERROR " + e);
+            return null;
+        }
+        
+        
+    }
+    
 }
