@@ -12,6 +12,7 @@ import Entidades.ParametrosContables;
 import Entidades.ParametrosEstructuras;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
+import Entidades.UsuariosInterfases;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -75,5 +76,7 @@ public interface AdministrarInterfaseContableSapBOPEInterface {
     public void ejecutarPKGCrearArchivoPlano(Date fechaIni, Date fechaFin, BigInteger proceso, String descripcion, String nombreArchivo);
 
     public String obtenerPathProceso();
+
+    public UsuariosInterfases obtenerUsuarioInterfaseContabilizacion();
 
 }

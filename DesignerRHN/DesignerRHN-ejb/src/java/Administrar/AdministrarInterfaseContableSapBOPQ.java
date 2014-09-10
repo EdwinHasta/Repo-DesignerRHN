@@ -1,5 +1,3 @@
-
-
 package Administrar;
 
 import Entidades.ActualUsuario;
@@ -9,6 +7,7 @@ import Entidades.ParametrosContables;
 import Entidades.ParametrosEstructuras;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
+import Entidades.UsuariosInterfases;
 import InterfaceAdministrar.AdministrarInterfaseContableSapBOPQInterface;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
@@ -21,6 +20,7 @@ import InterfacePersistencia.PersistenciaParametrosEstructurasInterface;
 import InterfacePersistencia.PersistenciaProcesosInterface;
 import InterfacePersistencia.PersistenciaSolucionesNodosInterface;
 import InterfacePersistencia.PersistenciaTercerosInterface;
+import InterfacePersistencia.PersistenciaUsuariosInterfasesInterface;
 import InterfacePersistencia.PersistenciaVWActualesFechasInterface;
 import java.math.BigInteger;
 import java.util.Date;
@@ -34,7 +34,7 @@ import javax.persistence.EntityManager;
  * @author Administrador
  */
 @Stateful
-public class AdministrarInterfaseContableSapBOPQ implements AdministrarInterfaseContableSapBOPQInterface{
+public class AdministrarInterfaseContableSapBOPQ implements AdministrarInterfaseContableSapBOPQInterface {
 
     @EJB
     AdministrarSesionesInterface administrarSesiones;
@@ -58,6 +58,8 @@ public class AdministrarInterfaseContableSapBOPQ implements AdministrarInterfase
     PersistenciaParametrosEstructurasInterface persistenciaParametrosEstructuras;
     @EJB
     PersistenciaVWActualesFechasInterface persistenciaVWActualesFechas;
+    @EJB
+    PersistenciaUsuariosInterfasesInterface persistenciaUsuariosInterfases;
     @EJB
     PersistenciaGeneralesInterface persistenciaGenerales;
 
@@ -310,7 +312,7 @@ public class AdministrarInterfaseContableSapBOPQ implements AdministrarInterfase
             System.out.println("Error ejecutarPKGRecontabilizacion Admi : " + e.toString());
         }
     }
-    
+
     //@Override
     public String obtenerDescripcionProcesoArchivo(BigInteger proceso) {
         try {
@@ -345,11 +347,23 @@ public class AdministrarInterfaseContableSapBOPQ implements AdministrarInterfase
     }
 
     @Override
-    public void ejecutarPKGCrearArchivoPlano(Date fechaIni, Date fechaFin, BigInteger proceso,String descripcion,  String nombreArchivo) {
+    public void ejecutarPKGCrearArchivoPlano(Date fechaIni, Date fechaFin, BigInteger proceso, String descripcion, String nombreArchivo) {
         try {
-            persistenciaInterconSap.ejecutarPKGCrearArchivoPlanoSAPPQ(em, fechaIni, fechaFin, proceso,descripcion, nombreArchivo);
+            persistenciaInterconSap.ejecutarPKGCrearArchivoPlanoSAPPQ(em, fechaIni, fechaFin, proceso, descripcion, nombreArchivo);
         } catch (Exception e) {
             System.out.println("Error ejecutarPKGCrearArchivoPlano Admi : " + e.toString());
         }
     }
+
+    @Override
+    public UsuariosInterfases obtenerUsuarioInterfaseContabilizacion() {
+        try {
+            UsuariosInterfases usuario = persistenciaUsuariosInterfases.obtenerUsuarioInterfaseContabilidad(em);
+            return usuario;
+        } catch (Exception e) {
+            System.out.println("Error obtenerUsuarioInterfaseContabilizacion Admi : " + e.toString());
+            return null;
+        }
+    }
+
 }

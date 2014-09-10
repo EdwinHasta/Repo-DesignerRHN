@@ -42,6 +42,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Contabilizaciones.findByFechacontabilizacion", query = "SELECT c FROM Contabilizaciones c WHERE c.fechacontabilizacion = :fechacontabilizacion")})
 public class Contabilizaciones implements Serializable {
     @OneToMany(mappedBy = "contabilizacion")
+    private Collection<InterconDynamics> interconDynamicsCollection;
+    @OneToMany(mappedBy = "contabilizacion")
     private Collection<InterconSapBO> interconSapBOCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -153,6 +155,15 @@ public class Contabilizaciones implements Serializable {
 
     public void setInterconSapBOCollection(Collection<InterconSapBO> interconSapBOCollection) {
         this.interconSapBOCollection = interconSapBOCollection;
+    }
+
+    @XmlTransient
+    public Collection<InterconDynamics> getInterconDynamicsCollection() {
+        return interconDynamicsCollection;
+    }
+
+    public void setInterconDynamicsCollection(Collection<InterconDynamics> interconDynamicsCollection) {
+        this.interconDynamicsCollection = interconDynamicsCollection;
     }
 
 }

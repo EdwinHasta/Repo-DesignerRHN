@@ -7,6 +7,7 @@ import Entidades.ParametrosContables;
 import Entidades.ParametrosEstructuras;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
+import Entidades.UsuariosInterfases;
 import Entidades.VWActualesFechas;
 import java.math.BigInteger;
 import java.util.Date;
@@ -71,4 +72,6 @@ public interface AdministrarInterfaseContableTotalInterface {
     public String obtenerPathProceso();
 
     public void ejecutarPKGCrearArchivoPlano(int tipoArchivo, Date fechaIni, Date fechaFin, BigInteger proceso, String nombreArchivo);
+
+    public UsuariosInterfases obtenerUsuarioInterfaseContabilizacion();
 }

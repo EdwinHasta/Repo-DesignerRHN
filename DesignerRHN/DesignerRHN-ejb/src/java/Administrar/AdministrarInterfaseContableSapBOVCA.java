@@ -8,6 +8,7 @@ import Entidades.ParametrosEstructuras;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
 import Entidades.Terceros;
+import Entidades.UsuariosInterfases;
 import InterfaceAdministrar.AdministrarInterfaseContableSapBOVCAInterface;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
@@ -20,6 +21,7 @@ import InterfacePersistencia.PersistenciaParametrosEstructurasInterface;
 import InterfacePersistencia.PersistenciaProcesosInterface;
 import InterfacePersistencia.PersistenciaSolucionesNodosInterface;
 import InterfacePersistencia.PersistenciaTercerosInterface;
+import InterfacePersistencia.PersistenciaUsuariosInterfasesInterface;
 import InterfacePersistencia.PersistenciaVWActualesFechasInterface;
 import java.math.BigInteger;
 import java.util.Date;
@@ -57,6 +59,8 @@ public class AdministrarInterfaseContableSapBOVCA implements AdministrarInterfas
     PersistenciaParametrosEstructurasInterface persistenciaParametrosEstructuras;
     @EJB
     PersistenciaVWActualesFechasInterface persistenciaVWActualesFechas;
+    @EJB
+    PersistenciaUsuariosInterfasesInterface persistenciaUsuariosInterfases;
     @EJB
     PersistenciaGeneralesInterface persistenciaGenerales;
 
@@ -349,6 +353,18 @@ public class AdministrarInterfaseContableSapBOVCA implements AdministrarInterfas
             persistenciaInterconSap.ejecutarPKGCrearArchivoPlanoSAPVCA(em, fechaIni, fechaFin, proceso, descripcionProceso, nombreArchivo);
         } catch (Exception e) {
             System.out.println("Error ejecutarPKGCrearArchivoPlano Admi : " + e.toString());
+        }
+    }
+
+    @Override
+    public UsuariosInterfases obtenerUsuarioInterfaseContabilizacion() {
+        try {
+
+            UsuariosInterfases usuario = persistenciaUsuariosInterfases.obtenerUsuarioInterfaseContabilidad(em);
+            return usuario;
+        } catch (Exception e) {
+            System.out.println("Error obtenerUsuarioInterfaseContabilizacion Admi : " + e.toString());
+            return null;
         }
     }
 }

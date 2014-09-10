@@ -120,6 +120,10 @@ public class ParametrosContables implements Serializable {
     private Procesos proceso;
     @Transient
     private Empresas empresaRegistro;
+    @Transient
+    private String strCodigoEmpleadoDesde;
+    @Transient
+    private String strCodigoEmpleadoHasta;
 
     public ParametrosContables() {
     }
@@ -252,6 +256,34 @@ public class ParametrosContables implements Serializable {
 
     public void setCodigoempleadodesde(BigInteger codigoempleadodesde) {
         this.codigoempleadodesde = codigoempleadodesde;
+    }
+
+    public String getStrCodigoEmpleadoDesde() {
+        getCodigoempleadodesde();
+        if(codigoempleadodesde != null){
+            strCodigoEmpleadoDesde = codigoempleadodesde.toString();
+        } else{
+            strCodigoEmpleadoDesde = "";
+        }
+        return strCodigoEmpleadoDesde;
+    }
+
+    public void setStrCodigoEmpleadoDesde(String strCodigoEmpleadoDesde) {
+        this.strCodigoEmpleadoDesde = strCodigoEmpleadoDesde;
+    }
+
+    public String getStrCodigoEmpleadoHasta() {
+        getCodigoempleadohasta();
+        if(codigoempleadohasta != null){
+            strCodigoEmpleadoHasta = codigoempleadohasta.toString();
+        } else{
+            strCodigoEmpleadoHasta = "";
+        }
+        return strCodigoEmpleadoHasta;
+    }
+
+    public void setStrCodigoEmpleadoHasta(String strCodigoEmpleadoHasta) {
+        this.strCodigoEmpleadoHasta = strCodigoEmpleadoHasta;
     }
 
     public BigInteger getCodigoempleadohasta() {

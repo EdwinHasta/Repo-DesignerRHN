@@ -193,4 +193,28 @@ public class PersistenciaContabilizaciones implements PersistenciaContabilizacio
             return null;
         }
     }
+    
+    @Override
+    public Integer obtenerContadorFlagGeneradoFechasDynamics(EntityManager em, Date fechaIni, Date fechaFin) {
+        try {
+            Integer conteo = null;
+            em.clear();
+            String sql = "select count(*) from contabilizaciones c where \n"
+                    + "	c.flag = 'GENERADO' and \n"
+                    + "	c.fechageneracion  between ? and ?";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaIni);
+            query.setParameter(2, fechaFin);
+            BigDecimal valor = (BigDecimal) query.getSingleResult();
+            if (valor != null) {
+                conteo = valor.intValue();
+                return conteo;
+            } else {
+                return conteo;
+            }
+        } catch (Exception e) {
+            System.out.println("Error obtenerContadorFlagCerradosFechasSAP PersistenciaContabilizaciones : " + e.toString());
+            return null;
+        }
+    }
 }
