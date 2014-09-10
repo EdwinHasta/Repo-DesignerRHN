@@ -300,7 +300,7 @@
                             <legend style=" color: blue;text-align:left"><strong>#{msg['contabilizadosSAP']}</strong></legend>
 
                             <p:dataTable id="datosIntercon" var="infoI" rowKey="#{infoI.secuencia}" rowIndexVar="indiceI" style="width: 814px; border: 1px;"                           
-                                         value="#{controlInterfaseContableSapBOV8.listaInterconSapBO}" scrollable="true" scrollHeight="#{controlInterfaseContableSapBOV8.altoTablaGenerada}" scrollWidth="830"
+                                         value="#{controlInterfaseContableSapBOV8.listaInterconSapBO}" scrollable="true" scrollHeight="#{controlInterfaseContableSapBOV8.altoTablaIntercon}" scrollWidth="830"
                                          filteredValue="#{controlInterfaseContableSapBOV8.filtrarListaInterconSapBO}" emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell" liveScroll="true" scrollRows="25"
                                          selection="#{controlInterfaseContableSapBOV8.interconTablaSeleccionada}" selectionMode="single">

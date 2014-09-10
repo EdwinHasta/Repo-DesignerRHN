@@ -7,6 +7,7 @@ import Entidades.ParametrosContables;
 import Entidades.ParametrosEstructuras;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
+import Entidades.UsuariosInterfases;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarInterfaseContableSapBOHPInterface;
@@ -128,12 +129,12 @@ public class ControlInterfaseContableSapBOHP implements Serializable {
     private String rutaArchivo, nombreArchivo, pathProceso;
     //
     private final String server = "192.168.0.16";
-    private final int port = 21;
     private final String user = "Administrador";
     private final String pass = "Soporte9";
 
     private FTPClient ftpClient;
     private DefaultStreamedContent download;
+    private UsuariosInterfases usuarioInterfaseContabilizacion;
 
     public ControlInterfaseContableSapBOHP() {
         ftpClient = new FTPClient();
@@ -1367,7 +1368,7 @@ public class ControlInterfaseContableSapBOHP implements Serializable {
                     getLovProcesos();
                     context.update("formularioDialogos:nuevaProcesoParametro");
                 } else {
-                    nuevoParametroContable.getEmpresaRegistro().setNombre(auxParametroEmpresa);
+                    nuevoParametroContable.getProceso().setDescripcion(auxParametroProceso);
                     context.update("formularioDialogos:nuevaProcesoParametro");
                     permitirIndexParametro = false;
                     context.update("form:ProcesoDialogo");
@@ -1601,19 +1602,19 @@ public class ControlInterfaseContableSapBOHP implements Serializable {
             if (banderaGenerado == 0) {
                 altoTablaGenerada = "53";
                 genProceso = (Column) c.getViewRoot().findComponent("form:datosGenerados:genProceso");
-                genProceso.setFilterStyle("width: 60px");
+                genProceso.setFilterStyle("width: 90px");
                 genEmpleado = (Column) c.getViewRoot().findComponent("form:datosGenerados:genEmpleado");
-                genEmpleado.setFilterStyle("width: 60px");
+                genEmpleado.setFilterStyle("width: 90px");
                 genCntCredito = (Column) c.getViewRoot().findComponent("form:datosGenerados:genCntCredito");
-                genCntCredito.setFilterStyle("width: 60px");
+                genCntCredito.setFilterStyle("width: 90px");
                 genCntDebito = (Column) c.getViewRoot().findComponent("form:datosGenerados:genCntDebito");
-                genCntDebito.setFilterStyle("width: 60px");
+                genCntDebito.setFilterStyle("width: 90px");
                 genTercero = (Column) c.getViewRoot().findComponent("form:datosGenerados:genTercero");
-                genTercero.setFilterStyle("width: 60px");
+                genTercero.setFilterStyle("width: 90px");
                 genValor = (Column) c.getViewRoot().findComponent("form:datosGenerados:genValor");
-                genValor.setFilterStyle("width: 60px");
+                genValor.setFilterStyle("width: 90px");
                 genConcepto = (Column) c.getViewRoot().findComponent("form:datosGenerados:genConcepto");
-                genConcepto.setFilterStyle("width: 60px");
+                genConcepto.setFilterStyle("width: 90px");
                 RequestContext.getCurrentInstance().update("form:datosGenerados");
                 banderaGenerado = 1;
             } else if (banderaGenerado == 1) {
@@ -1642,23 +1643,23 @@ public class ControlInterfaseContableSapBOHP implements Serializable {
             if (banderaIntercon == 0) {
                 altoTablaIntercon = "53";
                 interEmpleado = (Column) c.getViewRoot().findComponent("form:datosIntercon:interEmpleado");
-                interEmpleado.setFilterStyle("width: 60px");
+                interEmpleado.setFilterStyle("width: 90px");
                 interTercero = (Column) c.getViewRoot().findComponent("form:datosIntercon:interTercero");
-                interTercero.setFilterStyle("width: 60px");
+                interTercero.setFilterStyle("width: 90px");
                 interCuenta = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCuenta");
-                interCuenta.setFilterStyle("width: 60px");
+                interCuenta.setFilterStyle("width: 90px");
                 interDebito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interDebito");
-                interDebito.setFilterStyle("width: 60px");
+                interDebito.setFilterStyle("width: 90px");
                 interCredito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCredito");
-                interCredito.setFilterStyle("width: 60px");
+                interCredito.setFilterStyle("width: 90px");
                 interConcepto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interConcepto");
-                interConcepto.setFilterStyle("width: 60px");
+                interConcepto.setFilterStyle("width: 90px");
                 interCentroCosto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCentroCosto");
-                interCentroCosto.setFilterStyle("width: 60px");
+                interCentroCosto.setFilterStyle("width: 90px");
                 interProceso = (Column) c.getViewRoot().findComponent("form:datosIntercon:interProceso");
-                interProceso.setFilterStyle("width: 60px");
+                interProceso.setFilterStyle("width: 90px");
                 interProyecto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interProyecto");
-                interProyecto.setFilterStyle("width: 60px");
+                interProyecto.setFilterStyle("width: 90px");
 
                 RequestContext.getCurrentInstance().update("form:datosIntercon");
                 banderaIntercon = 1;
@@ -1786,8 +1787,8 @@ public class ControlInterfaseContableSapBOHP implements Serializable {
 
     public void conectarAlFTP() {
         try {
-            ftpClient.connect(server);
-            ftpClient.login(user, pass);
+            ftpClient.connect(usuarioInterfaseContabilizacion.getSidremoto());
+            ftpClient.login(usuarioInterfaseContabilizacion.getUsuarioremoto(), usuarioInterfaseContabilizacion.getPasswordremoto());
             ftpClient.enterLocalPassiveMode();
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
         } catch (Exception e) {
@@ -1797,6 +1798,7 @@ public class ControlInterfaseContableSapBOHP implements Serializable {
 
     public void descargarArchivoFTP() throws IOException {
         try {
+            usuarioInterfaseContabilizacion = administrarInterfaseContableSapBOHP.obtenerUsuarioInterfaseContabilizacion();
             conectarAlFTP();
             int tamPath = pathProceso.length();
             String rutaX = "";

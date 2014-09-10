@@ -289,7 +289,7 @@
                             <legend style=" color: blue;text-align:left"><strong>#{msg['contabilizadosSAP']}</strong></legend>
 
                             <p:dataTable id="datosIntercon" var="infoI" rowKey="#{infoI.secuencia}" rowIndexVar="indiceI" style="width: 814px; border: 1px;"                           
-                                         value="#{controlInterfaseContableSapBOPE.listaInterconSapBO}" scrollable="true" scrollHeight="#{controlInterfaseContableSapBOPE.altoTablaGenerada}" scrollWidth="830"
+                                         value="#{controlInterfaseContableSapBOPE.listaInterconSapBO}" scrollable="true" scrollHeight="#{controlInterfaseContableSapBOPE.altoTablaIntercon}" scrollWidth="830"
                                          filteredValue="#{controlInterfaseContableSapBOPE.filtrarListaInterconSapBO}" emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell" liveScroll="true" scrollRows="25"
                                          selection="#{controlInterfaseContableSapBOPE.interconTablaSeleccionada}" selectionMode="single">
