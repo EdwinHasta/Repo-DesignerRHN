@@ -111,6 +111,8 @@ public class ControlATExtraRecargo implements Serializable {
     private String infoRegistroTipoDia, infoRegistroTipoJornada, infoRegistroLegislacion, infoRegistroConcepto;
     //
     private boolean cambiosPagina;
+    //
+    private String paginaAnterior;
 
     public ControlATExtraRecargo() {
         altoTablaDetalle = "135";
@@ -183,6 +185,14 @@ public class ControlATExtraRecargo implements Serializable {
         }
     }
 
+    public void recibirPagina(String page){
+        paginaAnterior = page;
+    }
+    
+    public String redirigir(){
+        return paginaAnterior;
+    }
+    
     public boolean validarCamposNulosExtraRecargo(int i) {
         boolean retorno = true;
         if (i == 0) {

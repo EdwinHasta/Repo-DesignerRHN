@@ -24,47 +24,20 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 public class ControlPruebasUnitarias implements Serializable {
 
-    private final String server = "192.168.0.16";
-    private final int port = 21;
-    private final String user = "Administrador";
-    private final String pass = "Soporte9";
+   
 
-    private FTPClient ftpClient;
+    private Date fechaPrueba;
 
     public ControlPruebasUnitarias() {
-        ftpClient = new FTPClient();
+        
     }
 
-    public void conectarAlFTP() {
-        try {
-            ftpClient.connect(server);
-            ftpClient.login(user, pass);
-            ftpClient.enterLocalPassiveMode();
-            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-        } catch (Exception e) {
-            System.out.println("Error en conexion : " + e.toString());
-        }
+    public Date getFechaPrueba() {
+        return fechaPrueba;
     }
 
-    public void descargarArchivoFTP() throws IOException {
-        try {
-            conectarAlFTP();
-            String remoteFile1 = "/DesignerRHN/SalidasUTL/DESARROLLO/Interfase_Total_TODOS.txt";
-            File downloadFile1 = new File("C:/Interfase_Total_TODOS.txt");
-            OutputStream outputStream1 = new BufferedOutputStream(new FileOutputStream(downloadFile1));
-            boolean success = ftpClient.retrieveFile(remoteFile1, outputStream1);
-            outputStream1.close();
-            if (success) {
-                System.out.println("File #1 has been downloaded successfully.");
-            } else {
-                System.out.println("Ni mierda !");
-            }
-            ftpClient.logout();
-        } catch (Exception e) {
-            System.out.println("Error descarga : " + e.toString());
-        } finally {
-            
-        }
+    public void setFechaPrueba(Date fechaPrueba) {
+        this.fechaPrueba = fechaPrueba;
     }
 
 }

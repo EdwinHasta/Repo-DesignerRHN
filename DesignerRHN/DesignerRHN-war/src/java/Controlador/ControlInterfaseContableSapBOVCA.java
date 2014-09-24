@@ -1763,6 +1763,7 @@ public class ControlInterfaseContableSapBOVCA implements Serializable {
     
     public void actionBtnGenerarPlano() {
         try {
+            guardadoGeneral();
             String descripcionProceso = administrarInterfaseContableSapBOVCA.obtenerDescripcionProcesoArchivo(parametroContableActual.getProceso().getSecuencia());
             nombreArchivo = "Interfase_SAP_" + descripcionProceso;
             //String pathServidorWeb = administrarInterfaseContableTotal.obtenerPathServidorWeb();
@@ -1781,7 +1782,7 @@ public class ControlInterfaseContableSapBOVCA implements Serializable {
 
     public void conectarAlFTP() {
         try {
-            ftpClient.connect(usuarioInterfaseContabilizacion.getSidremoto());
+            ftpClient.connect(usuarioInterfaseContabilizacion.getServernameremoto());
             ftpClient.login(usuarioInterfaseContabilizacion.getUsuarioremoto(), usuarioInterfaseContabilizacion.getPasswordremoto());
             ftpClient.enterLocalPassiveMode();
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);

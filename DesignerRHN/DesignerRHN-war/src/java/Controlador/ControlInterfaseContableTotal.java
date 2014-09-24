@@ -758,6 +758,7 @@ public class ControlInterfaseContableTotal implements Serializable {
 
     public void actionBtnGenerarPlano() {
         try {
+            guardadoGeneral();
             String descripcionProceso = administrarInterfaseContableTotal.obtenerDescripcionProcesoArchivo(parametroContableActual.getProceso().getSecuencia());
             nombreArchivo = "Interfase_Total_" + descripcionProceso;
             //String pathServidorWeb = administrarInterfaseContableTotal.obtenerPathServidorWeb();
@@ -777,7 +778,7 @@ public class ControlInterfaseContableTotal implements Serializable {
     public void conectarAlFTP() {
         try {
             ftpClient.connect(usuarioInterfaseContabilizacion.getServernameremoto());
-            ftpClient.login(usuarioInterfaseContabilizacion.getSidremoto(), usuarioInterfaseContabilizacion.getPasswordremoto());
+            ftpClient.login(usuarioInterfaseContabilizacion.getUsuarioremoto(), usuarioInterfaseContabilizacion.getPasswordremoto());
             ftpClient.enterLocalPassiveMode();
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
         } catch (Exception e) {
@@ -814,8 +815,8 @@ public class ControlInterfaseContableTotal implements Serializable {
             System.out.println("Error descarga : " + e.toString());
         }
     }
-    
-    public void cerrarPaginaDescarga(){
+
+    public void cerrarPaginaDescarga() {
         RequestContext.getCurrentInstance().execute("planoGeneradoOK.hide()");
     }
 

@@ -224,7 +224,7 @@
                             </p:toolbarGroup>  
                         </p:toolbar>
                         <p:commandButton style="position: absolute; left: 688px; top: 478px;" icon="ui-icon-check" id="ACEPTAR" disabled="#{controlProverbio.guardado}" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosProverbios, :form:datosMensajesUsuarios" process="@this" />
-                        <p:commandButton style="position: absolute; left: 785px; top: 478px;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlProverbio.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 785px; top: 478px;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlProverbio.salir()}" action="#{controlProverbio.redirigir()}" process="@this" />
                         <p:commandButton style="position: absolute; left: 15px; top: 478px;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlProverbio.cancelarModificacion()}" process="@this" />
                     </p:panel>
 

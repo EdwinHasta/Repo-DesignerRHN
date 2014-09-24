@@ -1,3 +1,4 @@
+
 package Controlador;
 
 import Entidades.ActualUsuario;
@@ -10,7 +11,7 @@ import Entidades.Procesos;
 import Entidades.SolucionesNodos;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
-import InterfaceAdministrar.AdministrarInterfaseContableDynamicsROInterface;
+import InterfaceAdministrar.AdministrarInterfaseContableDynamicsSXInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
@@ -38,10 +39,10 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean
 @SessionScoped
-public class ControlInterfaseContableDynamicsRO implements Serializable {
+public class ControlInterfaseContableDynamicsSX implements Serializable {
 
     @EJB
-    AdministrarInterfaseContableDynamicsROInterface administrarInterfaseDynamicsRO;
+    AdministrarInterfaseContableDynamicsSXInterface administrarInterfaseDynamicsSX;
     @EJB
     AdministrarRastrosInterface administrarRastros;
 
@@ -120,7 +121,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
     //
     private String fechaIniRecon, fechaFinRecon;
 
-    public ControlInterfaseContableDynamicsRO() {
+    public ControlInterfaseContableDynamicsSX() {
         msnPaso1 = "";
         totalCGenerado = 0;
         totalDGenerado = 0;
@@ -168,7 +169,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
         try {
             FacesContext x = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
-            administrarInterfaseDynamicsRO.obtenerConexion(ses.getId());
+            administrarInterfaseDynamicsSX.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
             System.out.println("Error postconstruct ControlVigenciasCargos: " + e);
@@ -746,7 +747,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
     public void inicioCerrarPeriodoContable() {
         try {
             RequestContext context = RequestContext.getCurrentInstance();
-            int contador = administrarInterfaseDynamicsRO.contarProcesosContabilizadosInterconDynamics(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+            int contador = administrarInterfaseDynamicsSX.contarProcesosContabilizadosInterconDynamics(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
             if (contador != -1) {
                 if (contador == 0) {
                     context.execute("contadoCeroPerContable.show()");
@@ -764,10 +765,10 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
         try {
             RequestContext context = RequestContext.getCurrentInstance();
             guardadoGeneral();
-            administrarInterfaseDynamicsRO.cerrarProcesoContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
+            administrarInterfaseDynamicsSX.cerrarProcesoContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
             listaGenerados = null;
             if (listaGenerados == null) {
-                listaGenerados = administrarInterfaseDynamicsRO.obtenerSolucionesNodosParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                listaGenerados = administrarInterfaseDynamicsSX.obtenerSolucionesNodosParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
                 if (listaGenerados != null) {
                     if (listaGenerados.size() > 0) {
                         activarEnviar = false;
@@ -783,7 +784,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
             }
             listaInterconDynamics = null;
             if (listaInterconDynamics == null) {
-                listaInterconDynamics = administrarInterfaseDynamicsRO.obtenerInterconDynamicsParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                listaInterconDynamics = administrarInterfaseDynamicsSX.obtenerInterconDynamicsParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
                 if (listaInterconDynamics != null) {
                     if (listaInterconDynamics.size() > 0) {
                         activarDeshacer = false;
@@ -869,13 +870,13 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
     public void actionBtnGenerarPlano() {
         try {
             guardadoGeneral();
-            String descripcionProceso = administrarInterfaseDynamicsRO.obtenerDescripcionProcesoArchivo(parametroContableActual.getProceso().getSecuencia());
+            String descripcionProceso = administrarInterfaseDynamicsSX.obtenerDescripcionProcesoArchivo(parametroContableActual.getProceso().getSecuencia());
             String nombreArchivo = "Interfase_DYNAMICS_" + descripcionProceso;
-            administrarInterfaseDynamicsRO.ejecutarPKGCrearArchivoPlano(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), descripcionProceso, nombreArchivo, parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
-            
+            administrarInterfaseDynamicsSX.ejecutarPKGCrearArchivoPlano(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), descripcionProceso, nombreArchivo, parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
+           
         } catch (Exception e) {
             System.out.println("Error actionBtnGenerarPlano Control : " + e.toString());
-            
+           
         } finally {
             actualUsuarioBD = null;
             getActualUsuarioBD();
@@ -889,7 +890,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
     }
 
     public void actionBtnRecontabilizar() {
-        Integer contador = administrarInterfaseDynamicsRO.conteoContabilizacionesDynamics(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+        Integer contador = administrarInterfaseDynamicsSX.conteoContabilizacionesDynamics(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
         if (contador != null) {
             if (contador != 0) {
                 RequestContext.getCurrentInstance().execute("paso1Recon.show()");
@@ -915,7 +916,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
     public void finalizarProcesoRecontabilizacion() {
         try {
             guardadoGeneral();
-            administrarInterfaseDynamicsRO.ejecutarPKGRecontabilizar(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+            administrarInterfaseDynamicsSX.ejecutarPKGRecontabilizar(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
         } catch (Exception e) {
             System.out.println("Error finalizarProcesoRecontabilizacion Controlador : " + e.toString());
         }
@@ -926,12 +927,12 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
         try {
             RequestContext context = RequestContext.getCurrentInstance();
             guardadoGeneral();
-            administrarInterfaseDynamicsRO.actualizarFlagContabilizacionDeshacerDynamics(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
-            administrarInterfaseDynamicsRO.deleteInterconDynamics(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
-            administrarInterfaseDynamicsRO.actualizarFlagContabilizacionDeshacerDynamics_NOT_EXITS(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
+            administrarInterfaseDynamicsSX.actualizarFlagContabilizacionDeshacerDynamics(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
+            administrarInterfaseDynamicsSX.deleteInterconDynamics(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
+            administrarInterfaseDynamicsSX.actualizarFlagContabilizacionDeshacerDynamics_NOT_EXITS(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
             listaGenerados = null;
             if (listaGenerados == null) {
-                listaGenerados = administrarInterfaseDynamicsRO.obtenerSolucionesNodosParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                listaGenerados = administrarInterfaseDynamicsSX.obtenerSolucionesNodosParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
                 if (listaGenerados != null) {
                     if (listaGenerados.size() > 0) {
                         activarEnviar = false;
@@ -947,7 +948,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
             }
             listaInterconDynamics = null;
             if (listaInterconDynamics == null) {
-                listaInterconDynamics = administrarInterfaseDynamicsRO.obtenerInterconDynamicsParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                listaInterconDynamics = administrarInterfaseDynamicsSX.obtenerInterconDynamicsParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
                 if (listaInterconDynamics != null) {
                     if (listaInterconDynamics.size() > 0) {
                         activarDeshacer = false;
@@ -1031,8 +1032,8 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
     }
 
     public void actionBtnEnviar() {
-        Date fechaDesde = administrarInterfaseDynamicsRO.buscarFechaDesdeVWActualesFechas();
-        Date fechaHasta = administrarInterfaseDynamicsRO.buscarFechaHastaVWActualesFechas();
+        Date fechaDesde = administrarInterfaseDynamicsSX.buscarFechaDesdeVWActualesFechas();
+        Date fechaHasta = administrarInterfaseDynamicsSX.buscarFechaHastaVWActualesFechas();
         RequestContext context = RequestContext.getCurrentInstance();
         if (fechaDesde != null && fechaHasta != null) {
             if ((fechaDesde.before(parametroContableActual.getFechainicialcontabilizacion()) && fechaHasta.after(parametroContableActual.getFechafinalcontabilizacion()))
@@ -1043,10 +1044,10 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
                         && parametroContableActual.getFechafinalcontabilizacion() != null
                         && parametroContableActual.getFechainicialcontabilizacion() != null) {
                     guardadoGeneral();
-                    administrarInterfaseDynamicsRO.ejecutarPKGUbicarnuevointercon_DYNAMICS(parametroContableActual.getSecuencia(), parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
+                    administrarInterfaseDynamicsSX.ejecutarPKGUbicarnuevointercon_DYNAMICS(parametroContableActual.getSecuencia(), parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
                     listaGenerados = null;
                     if (listaGenerados == null) {
-                        listaGenerados = administrarInterfaseDynamicsRO.obtenerSolucionesNodosParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                        listaGenerados = administrarInterfaseDynamicsSX.obtenerSolucionesNodosParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
                         if (listaGenerados != null) {
                             if (listaGenerados.size() > 0) {
                                 activarEnviar = false;
@@ -1061,7 +1062,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
                     }
                     listaInterconDynamics = null;
                     if (listaInterconDynamics == null) {
-                        listaInterconDynamics = administrarInterfaseDynamicsRO.obtenerInterconDynamicsParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                        listaInterconDynamics = administrarInterfaseDynamicsSX.obtenerInterconDynamicsParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
                         if (listaInterconDynamics != null) {
                             if (listaInterconDynamics.size() > 0) {
                                 activarDeshacer = false;
@@ -1146,7 +1147,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
     public void anularComprobantesCerrados() {
         try {
             guardadoGeneral();
-            administrarInterfaseDynamicsRO.anularComprobantesCerrados(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia());
+            administrarInterfaseDynamicsSX.anularComprobantesCerrados(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia());
             FacesMessage msg = new FacesMessage("Información", "Se realizo el proceso con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             RequestContext.getCurrentInstance().update("form:growl");
@@ -1159,8 +1160,8 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
     }
 
     public void validarFechasProcesoActualizar() {
-        Date fechaContabilizacion = administrarInterfaseDynamicsRO.obtenerFechaMaxContabilizaciones();
-        Date fechaInterconTotal = administrarInterfaseDynamicsRO.obtenerFechaMaxInterconDynamics();
+        Date fechaContabilizacion = administrarInterfaseDynamicsSX.obtenerFechaMaxContabilizaciones();
+        Date fechaInterconTotal = administrarInterfaseDynamicsSX.obtenerFechaMaxInterconDynamics();
         DateFormat df = DateFormat.getDateInstance(DateFormat.LONG);
         RequestContext context = RequestContext.getCurrentInstance();
         if (fechaContabilizacion != null && fechaInterconTotal != null) {
@@ -1179,7 +1180,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
 
     public boolean validarFechasParametros() {
         boolean retorno = false;
-        ParametrosEstructuras parametroLiquidacion = administrarInterfaseDynamicsRO.parametrosLiquidacion();
+        ParametrosEstructuras parametroLiquidacion = administrarInterfaseDynamicsSX.parametrosLiquidacion();
         if ((parametroLiquidacion.getFechadesdecausado().compareTo(parametroContableActual.getFechainicialcontabilizacion()) == 0)
                 && (parametroLiquidacion.getFechahastacausado().compareTo(parametroContableActual.getFechafinalcontabilizacion()) == 0)) {
             retorno = true;
@@ -1195,7 +1196,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
 
             listaGenerados = null;
             if (listaGenerados == null) {
-                listaGenerados = administrarInterfaseDynamicsRO.obtenerSolucionesNodosParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                listaGenerados = administrarInterfaseDynamicsSX.obtenerSolucionesNodosParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
                 if (listaGenerados != null) {
                     if (listaGenerados.size() > 0) {
                         activarEnviar = false;
@@ -1214,7 +1215,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
              */
             listaInterconDynamics = null;
             if (listaInterconDynamics == null) {
-                listaInterconDynamics = administrarInterfaseDynamicsRO.obtenerInterconDynamicsParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                listaInterconDynamics = administrarInterfaseDynamicsSX.obtenerInterconDynamicsParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
                 if (listaInterconDynamics != null) {
                     if (listaInterconDynamics.size() > 0) {
                         activarDeshacer = false;
@@ -1272,12 +1273,12 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         try {
             if (modificacionParametro == true) {
-                administrarInterfaseDynamicsRO.modificarParametroContable(parametroContableActual);
+                administrarInterfaseDynamicsSX.modificarParametroContable(parametroContableActual);
                 modificacionParametro = false;
             }
             if (!listParametrosContablesBorrar.isEmpty()) {
                 for (int i = 0; i < listParametrosContablesBorrar.size(); i++) {
-                    administrarInterfaseDynamicsRO.borrarParametroContable(listParametrosContablesBorrar);
+                    administrarInterfaseDynamicsSX.borrarParametroContable(listParametrosContablesBorrar);
                 }
                 listParametrosContablesBorrar.clear();
             }
@@ -1459,7 +1460,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
                 context.update("formularioDialogos:editarConceptoGenerado");
                 context.execute("editarConceptoGenerado.show()");
                 cualCeldaGenerado = -1;
-            } 
+            }
             indexGenerado = -1;
         }
         if (indexIntercon >= 0) {
@@ -1950,7 +1951,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
                     if (nuevoParametroContable.getProceso().getSecuencia() == null) {
                         nuevoParametroContable.setProceso(new Procesos());
                     }
-                    administrarInterfaseDynamicsRO.crearParametroContable(nuevoParametroContable);
+                    administrarInterfaseDynamicsSX.crearParametroContable(nuevoParametroContable);
                     nuevoParametroContable = new ParametrosContables();
                     activarAgregar = true;
                     activarOtros = false;
@@ -2319,7 +2320,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
 
     public ActualUsuario getActualUsuarioBD() {
         if (actualUsuarioBD == null) {
-            actualUsuarioBD = administrarInterfaseDynamicsRO.obtenerActualUsuario();
+            actualUsuarioBD = administrarInterfaseDynamicsSX.obtenerActualUsuario();
         }
         return actualUsuarioBD;
     }
@@ -2345,7 +2346,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
     }
 
     public List<Empresas> getLovEmpresas() {
-        lovEmpresas = administrarInterfaseDynamicsRO.lovEmpresas();
+        lovEmpresas = administrarInterfaseDynamicsSX.lovEmpresas();
         return lovEmpresas;
     }
 
@@ -2370,7 +2371,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
     }
 
     public List<Procesos> getLovProcesos() {
-        lovProcesos = administrarInterfaseDynamicsRO.lovProcesos();
+        lovProcesos = administrarInterfaseDynamicsSX.lovProcesos();
         return lovProcesos;
     }
 
@@ -2450,7 +2451,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
         if (listaParametrosContables == null) {
             getActualUsuarioBD();
             if (actualUsuarioBD.getSecuencia() != null) {
-                listaParametrosContables = administrarInterfaseDynamicsRO.obtenerParametrosContablesUsuarioBD(actualUsuarioBD.getAlias());
+                listaParametrosContables = administrarInterfaseDynamicsSX.obtenerParametrosContablesUsuarioBD(actualUsuarioBD.getAlias());
             }
             if (listaParametrosContables != null) {
                 int tam = listaParametrosContables.size();
@@ -2750,7 +2751,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
     }
 
     public List<Empleados> getLovEmpleados() {
-        lovEmpleados = administrarInterfaseDynamicsRO.buscarEmpleadosEmpresa();
+        lovEmpleados = administrarInterfaseDynamicsSX.buscarEmpleadosEmpresa();
         return lovEmpleados;
     }
 

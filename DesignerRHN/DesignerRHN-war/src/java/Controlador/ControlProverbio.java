@@ -99,6 +99,7 @@ public class ControlProverbio implements Serializable {
     //Modificar Detalles Tipos Cotizantes
     private List<Recordatorios> listaMensajesUsuariosModificar;
     private List<Recordatorios> listaMensajesUsuariosBorrar;
+    private String paginaAnterior;
 
     public ControlProverbio() {
         cambiosPagina = true;
@@ -151,6 +152,14 @@ public class ControlProverbio implements Serializable {
         }
     }
     
+    public void recibirPagina(String pagina){
+        paginaAnterior = pagina;
+    }
+    
+    public String redirigir(){
+        return paginaAnterior;
+    }
+    
     //GUARDAR
     public void guardarCambiosProverbios() {
 
@@ -159,7 +168,6 @@ public class ControlProverbio implements Serializable {
                 for (int i = 0; i < listaProverbiosBorrar.size(); i++) {
                     administrarRecordatorios.borrar(listaProverbiosBorrar.get(i));
                 }
-
                 listaProverbiosBorrar.clear();
             }
         }
@@ -169,15 +177,11 @@ public class ControlProverbio implements Serializable {
             }
 
         }
-
         listaProverbiosCrear.clear();
-
         if (!listaProverbiosModificar.isEmpty()) {
             administrarRecordatorios.modificar(listaProverbiosModificar);
             listaProverbiosModificar.clear();
         }
-//  k = 0;
-
         if (guardado == false) {
             if (!listaMensajesUsuariosBorrar.isEmpty()) {
                 for (int i = 0; i < listaMensajesUsuariosBorrar.size(); i++) {
@@ -190,14 +194,12 @@ public class ControlProverbio implements Serializable {
                     administrarRecordatorios.crearMU(listaMensajesUsuariosCrear.get(i));
                 }
             }
-
             listaMensajesUsuariosCrear.clear();
         }
         if (!listaMensajesUsuariosModificar.isEmpty()) {
             administrarRecordatorios.modificarMU(listaMensajesUsuariosModificar);
             listaMensajesUsuariosModificar.clear();
         }
-
         listaMensajesUsuario = null;
         listaProverbios = null;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -222,13 +224,11 @@ public class ControlProverbio implements Serializable {
             cualCelda = celda;
             CualTabla = 0;
             indexNF = -1;
-
             if (tipoLista == 0) {
                 secRegistro = listaProverbios.get(index).getSecuencia();
 
             } else {
                 secRegistro = filtradosListaProverbios.get(index).getSecuencia();
-
             }
         }
     }
@@ -250,7 +250,6 @@ public class ControlProverbio implements Serializable {
                 secRegistro = listaMensajesUsuario.get(indexNF).getSecuencia();
             } else {
                 secRegistro = filtradosListaMensajesUsuario.get(indexNF).getSecuencia();
-
             }
         }
     }
@@ -278,10 +277,8 @@ public class ControlProverbio implements Serializable {
             altoTabla = "91";
             pMensaje = (Column) c.getViewRoot().findComponent("form:datosProverbios:pMensaje");
             pMensaje.setFilterStyle("width: 60px");
-
             RequestContext.getCurrentInstance().update("form:datosProverbios");
             bandera = 1;
-
         } else if (bandera == 1 && CualTabla == 0) {
             altoTabla = "115";
             pMensaje = (Column) c.getViewRoot().findComponent("form:datosProverbios:pMensaje");
@@ -302,7 +299,6 @@ public class ControlProverbio implements Serializable {
             mMensaje.setFilterStyle("width: 60px");
             RequestContext.getCurrentInstance().update("form:datosMensajesUsuarios");
             banderaNF = 1;
-
         } else if (banderaNF == 1 && CualTabla == 1) {
             altoTablaNF = "115";
             mAno = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mAno");
@@ -363,7 +359,6 @@ public class ControlProverbio implements Serializable {
 
     public void tablaNuevoRegistro() {
         RequestContext context = RequestContext.getCurrentInstance();
-
         if ((listaProverbios.isEmpty() || listaMensajesUsuario.isEmpty())) {
             context.update("formularioDialogos:elegirTabla");
             context.execute("elegirTabla.show()");
@@ -375,14 +370,12 @@ public class ControlProverbio implements Serializable {
             context.execute("NuevoRegistroMensajeUsuario.show()");
         }
     }
-
     //EVENTO FILTRARNF
     public void eventoFiltrarNF() {
         if (tipoListaNF == 0) {
             tipoListaNF = 1;
         }
     }
-
     //AUTOCOMPLETAR
     public void modificarProverbio(int indice, String confirmarCambio, String valorConfirmar) {
         index = indice;
@@ -418,7 +411,6 @@ public class ControlProverbio implements Serializable {
                     if (guardado == true) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
-
                     }
                 }
                 index = -1;
@@ -446,7 +438,6 @@ public class ControlProverbio implements Serializable {
                     if (guardado == true) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
-
                     }
                 }
                 indexNF = -1;
@@ -463,7 +454,6 @@ public class ControlProverbio implements Serializable {
                     if (guardado == true) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
-
                     }
                 }
                 indexNF = -1;
@@ -497,9 +487,7 @@ public class ControlProverbio implements Serializable {
             if (tipoListaNF == 1) {
                 editarProverbios = filtradosListaMensajesUsuario.get(indexNF);
             }
-
             RequestContext context = RequestContext.getCurrentInstance();
-
             if (cualCelda == 0) {
                 context.update("formularioDialogos:editarAños");
                 context.execute("editarAños.show()");
@@ -519,7 +507,6 @@ public class ControlProverbio implements Serializable {
             }
             indexNF = -1;
         }
-
         secRegistro = null;
     }
 
@@ -533,7 +520,6 @@ public class ControlProverbio implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosMensajesUsuarios");
         context.execute("NuevoRegistroMensajeUsuario.show()");
-
     }
 
     //CREAR NUEVO PROVERBIO
@@ -560,9 +546,7 @@ public class ControlProverbio implements Serializable {
 
             listaProverbiosCrear.add(nuevoProverbio);
             listaProverbios.add(nuevoProverbio);
-
             nuevoProverbio = new Recordatorios();
-
             context.update("form:datosProverbios");
             if (guardado == true) {
                 guardado = false;
@@ -582,9 +566,7 @@ public class ControlProverbio implements Serializable {
     //CREAR NUEVO PROVERBIO
     public void agregarNuevoMensajeUsuario() {
         int pasa = 0;
-
         RequestContext context = RequestContext.getCurrentInstance();
-
         if (pasa == 0) {
             if (bandera == 1 && CualTabla == 0) {
                 FacesContext c = FacesContext.getCurrentInstance();
@@ -607,12 +589,9 @@ public class ControlProverbio implements Serializable {
             l = BigInteger.valueOf(k);
             nuevoRegistroMensajesUsuarios.setSecuencia(l);
             nuevoRegistroMensajesUsuarios.setTipo("RECORDATORIO");
-
             listaMensajesUsuariosCrear.add(nuevoRegistroMensajesUsuarios);
             listaMensajesUsuario.add(nuevoRegistroMensajesUsuarios);
-
             nuevoRegistroMensajesUsuarios = new Recordatorios();
-
             context.update("form:datosMensajesUsuarios");
             if (guardado == true) {
                 guardado = false;
@@ -646,18 +625,15 @@ public class ControlProverbio implements Serializable {
                 duplicarProverbio.setMensaje(filtradosListaProverbios.get(index).getMensaje());
                 duplicarProverbio.setTipo(filtradosListaProverbios.get(index).getTipo());
             }
-
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:DuplicarRegistroProverbio");
             context.execute("DuplicarRegistroProverbio.show()");
             index = -1;
             secRegistro = null;
         } else if (indexNF >= 0 && CualTabla == 1) {
-
             duplicarRegistroMensajesUsuarios = new Recordatorios();
             m++;
             n = BigInteger.valueOf(m);
-
             if (tipoListaNF == 0) {
                 duplicarRegistroMensajesUsuarios.setSecuencia(n);
                 duplicarRegistroMensajesUsuarios.setAno(listaMensajesUsuario.get(indexNF).getAno());
@@ -674,7 +650,6 @@ public class ControlProverbio implements Serializable {
                 duplicarRegistroMensajesUsuarios.setTipo(filtradosListaMensajesUsuario.get(indexNF).getTipo());
                 duplicarRegistroMensajesUsuarios.setMensaje(filtradosListaMensajesUsuario.get(indexNF).getMensaje());
             }
-
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:DuplicarRegistroMensajeUsuario");
             context.execute("DuplicarRegistroMensajeUsuario.show()");
@@ -687,7 +662,6 @@ public class ControlProverbio implements Serializable {
     public void seleccionarAno(String estadoAno, int indice, int celda) {
         if (tipoLista == 0) {
             if (estadoAno != null) {
-
                 if (estadoAno.equals("2005")) {
                     listaMensajesUsuario.get(indice).setAno(new Short("2005"));
                 } else if (estadoAno.equals("2006")) {
@@ -745,7 +719,6 @@ public class ControlProverbio implements Serializable {
             }
         } else {
             if (estadoAno != null) {
-
                 if (estadoAno.equals("2005")) {
                     filtradosListaMensajesUsuario.get(indice).setAno(new Short("2005"));
                 } else if (estadoAno.equals("2006")) {
@@ -805,7 +778,6 @@ public class ControlProverbio implements Serializable {
         if (guardado == true) {
             guardado = false;
             RequestContext.getCurrentInstance().update("form:ACEPTAR");
-
         }
         RequestContext context = RequestContext.getCurrentInstance();
         cambiosPagina = false;
@@ -817,7 +789,6 @@ public class ControlProverbio implements Serializable {
     public void seleccionarMes(String estadoMes, int indice, int celda) {
         if (tipoLista == 0) {
             if (estadoMes != null) {
-
                 if (estadoMes.equalsIgnoreCase("ENERO")) {
                     listaMensajesUsuario.get(indice).setMes(new Short("1"));
                 } else if (estadoMes.equalsIgnoreCase("FEBRERO")) {
@@ -857,7 +828,6 @@ public class ControlProverbio implements Serializable {
             }
         } else {
             if (estadoMes != null) {
-
                 if (estadoMes.equalsIgnoreCase("ENERO")) {
                     filtradosListaMensajesUsuario.get(indice).setMes(new Short("1"));
                 } else if (estadoMes.equalsIgnoreCase("FEBRERO")) {
@@ -911,7 +881,6 @@ public class ControlProverbio implements Serializable {
     public void seleccionarDia(String estadoDia, int indice, int celda) {
         if (tipoLista == 0) {
             if (estadoDia != null) {
-
                 if (estadoDia.equalsIgnoreCase("01")) {
                     listaMensajesUsuario.get(indice).setDia(new Short("1"));
                 } else if (estadoDia.equalsIgnoreCase("02")) {
@@ -989,7 +958,6 @@ public class ControlProverbio implements Serializable {
             }
         } else {
             if (estadoDia != null) {
-
                 if (estadoDia.equalsIgnoreCase("01")) {
                     filtradosListaMensajesUsuario.get(indice).setDia(new Short("1"));
                 } else if (estadoDia.equalsIgnoreCase("02")) {
@@ -1069,7 +1037,6 @@ public class ControlProverbio implements Serializable {
         if (guardado == true) {
             guardado = false;
             RequestContext.getCurrentInstance().update("form:ACEPTAR");
-
         }
         RequestContext context = RequestContext.getCurrentInstance();
         cambiosPagina = false;
@@ -1082,7 +1049,6 @@ public class ControlProverbio implements Serializable {
 
         if (tipoNuevo == 1) {
             if (estadoAno != null) {
-
                 if (estadoAno.equals("2005")) {
                     nuevoRegistroMensajesUsuarios.setAno(new Short("2005"));
                 } else if (estadoAno.equals("2006")) {
@@ -1129,7 +1095,6 @@ public class ControlProverbio implements Serializable {
                     nuevoRegistroMensajesUsuarios.setAno(new Short("0"));
                 }
             } else {
-
                 nuevoRegistroMensajesUsuarios.setAno(null);
             }
             RequestContext.getCurrentInstance().update("formularioDialogos:nuevoAno");
@@ -1181,7 +1146,6 @@ public class ControlProverbio implements Serializable {
                     duplicarRegistroMensajesUsuarios.setAno(new Short("0"));
                 }
             } else {
-
                 duplicarRegistroMensajesUsuarios.setAno(null);
             }
             RequestContext context = RequestContext.getCurrentInstance();
@@ -1196,7 +1160,6 @@ public class ControlProverbio implements Serializable {
 
         if (tipoNuevo == 1) {
             if (estadoMes != null) {
-
                 if (estadoMes.equalsIgnoreCase("ENERO")) {
                     nuevoRegistroMensajesUsuarios.setMes(new Short("1"));
                 } else if (estadoMes.equalsIgnoreCase("FEBRERO")) {
@@ -1272,7 +1235,6 @@ public class ControlProverbio implements Serializable {
 
         if (tipoNuevo == 1) {
             if (estadoDia != null) {
-
                 if (estadoDia.equalsIgnoreCase("01")) {
                     nuevoRegistroMensajesUsuarios.setDia(new Short("1"));
                 } else if (estadoDia.equalsIgnoreCase("02")) {
@@ -1437,7 +1399,6 @@ public class ControlProverbio implements Serializable {
                 }
                 listaProverbios.remove(index);
             }
-
             if (tipoLista == 1) {
                 if (!listaProverbiosModificar.isEmpty() && listaProverbiosModificar.contains(filtradosListaProverbios.get(index))) {
                     int modIndex = listaProverbiosModificar.indexOf(filtradosListaProverbios.get(index));
@@ -1452,9 +1413,7 @@ public class ControlProverbio implements Serializable {
                 int CIndex = listaProverbios.indexOf(filtradosListaProverbios.get(index));
                 listaProverbios.remove(CIndex);
                 filtradosListaProverbios.remove(index);
-
             }
-
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosProverbios");
             index = -1;
@@ -1467,7 +1426,6 @@ public class ControlProverbio implements Serializable {
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         } else if (indexNF >= 0 && CualTabla == 1) {
-
             if (tipoListaNF == 0) {
                 if (!listaMensajesUsuariosModificar.isEmpty() && listaMensajesUsuariosModificar.contains(listaMensajesUsuariosModificar.get(indexNF))) {
                     int modIndex = listaMensajesUsuariosModificar.indexOf(listaMensajesUsuario.get(indexNF));
@@ -1481,7 +1439,6 @@ public class ControlProverbio implements Serializable {
                 }
                 listaMensajesUsuario.remove(indexNF);
             }
-
             if (tipoListaNF == 1) {
                 if (!listaMensajesUsuariosModificar.isEmpty() && listaMensajesUsuariosModificar.contains(filtradosListaMensajesUsuario.get(indexNF))) {
                     int modIndex = listaMensajesUsuariosModificar.indexOf(filtradosListaMensajesUsuario.get(indexNF));
@@ -1497,14 +1454,12 @@ public class ControlProverbio implements Serializable {
                 listaMensajesUsuario.remove(CIndex);
                 filtradosListaMensajesUsuario.remove(indexNF);
             }
-
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosMensajesUsuarios");
             cambiosPagina = false;
             context.update("form:ACEPTAR");
             indexNF = -1;
             secRegistro = null;
-
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -1538,7 +1493,6 @@ public class ControlProverbio implements Serializable {
                 } else {
                     context.execute("errorRastroHistorico.show()");
                 }
-
             }
             index = -1;
         } else {
@@ -1566,7 +1520,6 @@ public class ControlProverbio implements Serializable {
                 } else {
                     context.execute("errorRastroHistoricoNF.show()");
                 }
-
             }
             index = -1;
         }
@@ -1577,7 +1530,6 @@ public class ControlProverbio implements Serializable {
     public void limpiarNuevoMensajeUsuario() {
         nuevoRegistroMensajesUsuarios = new Recordatorios();
         nuevoRegistroMensajesUsuarios.setTipo("RECORDATORIO");
-
         index = -1;
         secRegistro = null;
 
@@ -1594,7 +1546,6 @@ public class ControlProverbio implements Serializable {
     }
 
     public void confirmarDuplicar() {
-
         listaProverbios.add(duplicarProverbio);
         listaProverbiosCrear.add(duplicarProverbio);
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1615,17 +1566,14 @@ public class ControlProverbio implements Serializable {
             bandera = 0;
             filtradosListaProverbios = null;
             tipoLista = 0;
-
         }
         context.update("form:datosProverbios");
         duplicarProverbio = new Recordatorios();
         context.update("formularioDialogos:DuplicarRegistroProverbio");
         context.execute("DuplicarRegistroProverbio.hide()");
-
     }
 
     public void confirmarDuplicarNF() {
-
         listaMensajesUsuario.add(duplicarRegistroMensajesUsuarios);
         listaMensajesUsuariosCrear.add(duplicarRegistroMensajesUsuarios);
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1651,7 +1599,6 @@ public class ControlProverbio implements Serializable {
             banderaNF = 0;
             filtradosListaMensajesUsuario = null;
             tipoListaNF = 0;
-
         }
         context.update("form:DuplicarRegistroMensajeUsuario");
         duplicarRegistroMensajesUsuarios = new Recordatorios();
@@ -1662,7 +1609,6 @@ public class ControlProverbio implements Serializable {
 
     //CANCELAR MODIFICACIONES
     public void cancelarModificacion() {
-
         if (bandera == 1) {
             FacesContext c = FacesContext.getCurrentInstance();
             altoTabla = "115";
@@ -1673,7 +1619,6 @@ public class ControlProverbio implements Serializable {
             filtradosListaProverbios = null;
             tipoLista = 0;
         }
-
         if (banderaNF == 1) {
             FacesContext c = FacesContext.getCurrentInstance();
             altoTablaNF = "115";
@@ -1714,7 +1659,6 @@ public class ControlProverbio implements Serializable {
     }
 
     public void salir() {
-
         if (bandera == 1) {
             FacesContext c = FacesContext.getCurrentInstance();
             altoTabla = "115";
@@ -1725,7 +1669,6 @@ public class ControlProverbio implements Serializable {
             filtradosListaProverbios = null;
             tipoLista = 0;
         }
-
         if (banderaNF == 1) {
             FacesContext c = FacesContext.getCurrentInstance();
             altoTablaNF = "115";
@@ -1742,20 +1685,16 @@ public class ControlProverbio implements Serializable {
             filtradosListaMensajesUsuario = null;
             tipoListaNF = 0;
         }
-
         listaProverbiosBorrar.clear();
         listaProverbiosCrear.clear();
         listaProverbiosModificar.clear();
         index = -1;
         secRegistro = null;
-
         listaProverbios = null;
-
         listaMensajesUsuariosBorrar.clear();
         listaMensajesUsuariosCrear.clear();
         listaMensajesUsuariosModificar.clear();
         indexNF = -1;
-
         listaMensajesUsuario = null;
         guardado = true;
         permitirIndex = true;

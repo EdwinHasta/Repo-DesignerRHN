@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Controlador;
 
 import Entidades.ActualUsuario;
@@ -10,7 +15,7 @@ import Entidades.Procesos;
 import Entidades.SolucionesNodos;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
-import InterfaceAdministrar.AdministrarInterfaseContableDynamicsROInterface;
+import InterfaceAdministrar.AdministrarInterfaseContableDynamicsVTInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
@@ -38,10 +43,10 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean
 @SessionScoped
-public class ControlInterfaseContableDynamicsRO implements Serializable {
+public class ControlInterfaseContableDynamicsVT implements Serializable {
 
     @EJB
-    AdministrarInterfaseContableDynamicsROInterface administrarInterfaseDynamicsRO;
+    AdministrarInterfaseContableDynamicsVTInterface administrarInterfaseDynamicsVT;
     @EJB
     AdministrarRastrosInterface administrarRastros;
 
@@ -105,7 +110,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
     //
     private Column genConcepto, genValor, genTercero, genCntDebito, genCntCredito, genEmpleado, genProceso;
     private String altoTablaGenerada;
-    private Column interEmpleado, interTercero, interCuenta, interDebito, interCredito, interConcepto, interCentroCosto, interFechaVencimiento, interOriginalDebito, interOriginalCredito, interPreradicacion, interCodAlternativo;
+    private Column interEmpleado, interTercero, interCuenta, interDebito, interCredito, interConcepto, interCentroCosto, interCargo;
     private String altoTablaIntercon;
     //
     private BigInteger secRegistro, backUpSecRegistro;
@@ -120,7 +125,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
     //
     private String fechaIniRecon, fechaFinRecon;
 
-    public ControlInterfaseContableDynamicsRO() {
+    public ControlInterfaseContableDynamicsVT() {
         msnPaso1 = "";
         totalCGenerado = 0;
         totalDGenerado = 0;
@@ -168,10 +173,10 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
         try {
             FacesContext x = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
-            administrarInterfaseDynamicsRO.obtenerConexion(ses.getId());
+            administrarInterfaseDynamicsVT.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct ControlVigenciasCargos: " + e);
+            System.out.println("Error postconstruct ControlInterfaseContableDynamicsVT: " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -257,16 +262,8 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
                     interConcepto.setFilterStyle("display: none; visibility: hidden;");
                     interCentroCosto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCentroCosto");
                     interCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                    interFechaVencimiento = (Column) c.getViewRoot().findComponent("form:datosIntercon:interFechaVencimiento");
-                    interFechaVencimiento.setFilterStyle("display: none; visibility: hidden;");
-                    interOriginalDebito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalDebito");
-                    interOriginalDebito.setFilterStyle("display: none; visibility: hidden;");
-                    interOriginalCredito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalCredito");
-                    interOriginalCredito.setFilterStyle("display: none; visibility: hidden;");
-                    interPreradicacion = (Column) c.getViewRoot().findComponent("form:datosIntercon:interPreradicacion");
-                    interPreradicacion.setFilterStyle("display: none; visibility: hidden;");
-                    interCodAlternativo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCodAlternativo");
-                    interCodAlternativo.setFilterStyle("display: none; visibility: hidden;");
+                    interCargo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCargo");
+                    interCargo.setFilterStyle("display: none; visibility: hidden;");
                     RequestContext.getCurrentInstance().update("form:datosIntercon");
                     banderaIntercon = 0;
                     filtrarListaInterconDynamics = null;
@@ -347,16 +344,8 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
                     interConcepto.setFilterStyle("display: none; visibility: hidden;");
                     interCentroCosto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCentroCosto");
                     interCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                    interFechaVencimiento = (Column) c.getViewRoot().findComponent("form:datosIntercon:interFechaVencimiento");
-                    interFechaVencimiento.setFilterStyle("display: none; visibility: hidden;");
-                    interOriginalDebito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalDebito");
-                    interOriginalDebito.setFilterStyle("display: none; visibility: hidden;");
-                    interOriginalCredito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalCredito");
-                    interOriginalCredito.setFilterStyle("display: none; visibility: hidden;");
-                    interPreradicacion = (Column) c.getViewRoot().findComponent("form:datosIntercon:interPreradicacion");
-                    interPreradicacion.setFilterStyle("display: none; visibility: hidden;");
-                    interCodAlternativo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCodAlternativo");
-                    interCodAlternativo.setFilterStyle("display: none; visibility: hidden;");
+                    interCargo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCargo");
+                    interCargo.setFilterStyle("display: none; visibility: hidden;");
                     RequestContext.getCurrentInstance().update("form:datosIntercon");
                     banderaIntercon = 0;
                     filtrarListaInterconDynamics = null;
@@ -527,16 +516,12 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
             boolean validacion = validarFechaParametro(0);
             if (validacion == true) {
                 cambiarIndiceParametro(i);
-                parametroContableActual.setFechacontabilizacion(parametroContableActual.getFechafinalcontabilizacion());
                 modificarParametroContable();
-                context.update("form:panelParametro");
             } else {
                 parametroContableActual.setFechafinalcontabilizacion(auxParametroFechaFinal);
                 parametroContableActual.setFechainicialcontabilizacion(auxParametroFechaInicial);
                 context.update("form:panelParametro:parametroFechaFinal");
                 context.update("form:panelParametro:parametroFechaInicial");
-                parametroContableActual.setFechacontabilizacion(parametroContableActual.getFechafinalcontabilizacion());
-                context.update("form:panelParametro");
                 context.execute("errorFechasParametro.show()");
             }
         } else {
@@ -607,16 +592,8 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
             interConcepto.setFilterStyle("display: none; visibility: hidden;");
             interCentroCosto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCentroCosto");
             interCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-            interFechaVencimiento = (Column) c.getViewRoot().findComponent("form:datosIntercon:interFechaVencimiento");
-            interFechaVencimiento.setFilterStyle("display: none; visibility: hidden;");
-            interOriginalDebito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalDebito");
-            interOriginalDebito.setFilterStyle("display: none; visibility: hidden;");
-            interOriginalCredito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalCredito");
-            interOriginalCredito.setFilterStyle("display: none; visibility: hidden;");
-            interPreradicacion = (Column) c.getViewRoot().findComponent("form:datosIntercon:interPreradicacion");
-            interPreradicacion.setFilterStyle("display: none; visibility: hidden;");
-            interCodAlternativo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCodAlternativo");
-            interCodAlternativo.setFilterStyle("display: none; visibility: hidden;");
+            interCargo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCargo");
+            interCargo.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosIntercon");
             banderaIntercon = 0;
             filtrarListaInterconDynamics = null;
@@ -715,16 +692,8 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
                 interConcepto.setFilterStyle("display: none; visibility: hidden;");
                 interCentroCosto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCentroCosto");
                 interCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                interFechaVencimiento = (Column) c.getViewRoot().findComponent("form:datosIntercon:interFechaVencimiento");
-                interFechaVencimiento.setFilterStyle("display: none; visibility: hidden;");
-                interOriginalDebito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalDebito");
-                interOriginalDebito.setFilterStyle("display: none; visibility: hidden;");
-                interOriginalCredito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalCredito");
-                interOriginalCredito.setFilterStyle("display: none; visibility: hidden;");
-                interPreradicacion = (Column) c.getViewRoot().findComponent("form:datosIntercon:interPreradicacion");
-                interPreradicacion.setFilterStyle("display: none; visibility: hidden;");
-                interCodAlternativo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCodAlternativo");
-                interCodAlternativo.setFilterStyle("display: none; visibility: hidden;");
+                interCargo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCargo");
+                interCargo.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosIntercon");
                 banderaIntercon = 0;
                 filtrarListaInterconDynamics = null;
@@ -746,7 +715,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
     public void inicioCerrarPeriodoContable() {
         try {
             RequestContext context = RequestContext.getCurrentInstance();
-            int contador = administrarInterfaseDynamicsRO.contarProcesosContabilizadosInterconDynamics(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+            int contador = administrarInterfaseDynamicsVT.contarProcesosContabilizadosInterconDynamics(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
             if (contador != -1) {
                 if (contador == 0) {
                     context.execute("contadoCeroPerContable.show()");
@@ -764,10 +733,10 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
         try {
             RequestContext context = RequestContext.getCurrentInstance();
             guardadoGeneral();
-            administrarInterfaseDynamicsRO.cerrarProcesoContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
+            administrarInterfaseDynamicsVT.cerrarProcesoContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
             listaGenerados = null;
             if (listaGenerados == null) {
-                listaGenerados = administrarInterfaseDynamicsRO.obtenerSolucionesNodosParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                listaGenerados = administrarInterfaseDynamicsVT.obtenerSolucionesNodosParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
                 if (listaGenerados != null) {
                     if (listaGenerados.size() > 0) {
                         activarEnviar = false;
@@ -783,7 +752,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
             }
             listaInterconDynamics = null;
             if (listaInterconDynamics == null) {
-                listaInterconDynamics = administrarInterfaseDynamicsRO.obtenerInterconDynamicsParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                listaInterconDynamics = administrarInterfaseDynamicsVT.obtenerInterconDynamicsParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
                 if (listaInterconDynamics != null) {
                     if (listaInterconDynamics.size() > 0) {
                         activarDeshacer = false;
@@ -844,16 +813,8 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
                 interConcepto.setFilterStyle("display: none; visibility: hidden;");
                 interCentroCosto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCentroCosto");
                 interCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                interFechaVencimiento = (Column) c.getViewRoot().findComponent("form:datosIntercon:interFechaVencimiento");
-                interFechaVencimiento.setFilterStyle("display: none; visibility: hidden;");
-                interOriginalDebito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalDebito");
-                interOriginalDebito.setFilterStyle("display: none; visibility: hidden;");
-                interOriginalCredito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalCredito");
-                interOriginalCredito.setFilterStyle("display: none; visibility: hidden;");
-                interPreradicacion = (Column) c.getViewRoot().findComponent("form:datosIntercon:interPreradicacion");
-                interPreradicacion.setFilterStyle("display: none; visibility: hidden;");
-                interCodAlternativo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCodAlternativo");
-                interCodAlternativo.setFilterStyle("display: none; visibility: hidden;");
+                interCargo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCargo");
+                interCargo.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosIntercon");
                 banderaIntercon = 0;
                 filtrarListaInterconDynamics = null;
@@ -868,14 +829,11 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
 
     public void actionBtnGenerarPlano() {
         try {
-            guardadoGeneral();
-            String descripcionProceso = administrarInterfaseDynamicsRO.obtenerDescripcionProcesoArchivo(parametroContableActual.getProceso().getSecuencia());
+            String descripcionProceso = administrarInterfaseDynamicsVT.obtenerDescripcionProcesoArchivo(parametroContableActual.getProceso().getSecuencia());
             String nombreArchivo = "Interfase_DYNAMICS_" + descripcionProceso;
-            administrarInterfaseDynamicsRO.ejecutarPKGCrearArchivoPlano(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), descripcionProceso, nombreArchivo, parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
-            
+            administrarInterfaseDynamicsVT.ejecutarPKGCrearArchivoPlano(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), descripcionProceso, nombreArchivo, parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());            
         } catch (Exception e) {
             System.out.println("Error actionBtnGenerarPlano Control : " + e.toString());
-            
         } finally {
             actualUsuarioBD = null;
             getActualUsuarioBD();
@@ -889,7 +847,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
     }
 
     public void actionBtnRecontabilizar() {
-        Integer contador = administrarInterfaseDynamicsRO.conteoContabilizacionesDynamics(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+        Integer contador = administrarInterfaseDynamicsVT.conteoContabilizacionesDynamics(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
         if (contador != null) {
             if (contador != 0) {
                 RequestContext.getCurrentInstance().execute("paso1Recon.show()");
@@ -915,7 +873,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
     public void finalizarProcesoRecontabilizacion() {
         try {
             guardadoGeneral();
-            administrarInterfaseDynamicsRO.ejecutarPKGRecontabilizar(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+            administrarInterfaseDynamicsVT.ejecutarPKGRecontabilizar(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
         } catch (Exception e) {
             System.out.println("Error finalizarProcesoRecontabilizacion Controlador : " + e.toString());
         }
@@ -926,12 +884,12 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
         try {
             RequestContext context = RequestContext.getCurrentInstance();
             guardadoGeneral();
-            administrarInterfaseDynamicsRO.actualizarFlagContabilizacionDeshacerDynamics(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
-            administrarInterfaseDynamicsRO.deleteInterconDynamics(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
-            administrarInterfaseDynamicsRO.actualizarFlagContabilizacionDeshacerDynamics_NOT_EXITS(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
+            administrarInterfaseDynamicsVT.actualizarFlagContabilizacionDeshacerDynamics(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
+            administrarInterfaseDynamicsVT.deleteInterconDynamics(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
+            administrarInterfaseDynamicsVT.actualizarFlagContabilizacionDeshacerDynamics_NOT_EXITS(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
             listaGenerados = null;
             if (listaGenerados == null) {
-                listaGenerados = administrarInterfaseDynamicsRO.obtenerSolucionesNodosParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                listaGenerados = administrarInterfaseDynamicsVT.obtenerSolucionesNodosParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
                 if (listaGenerados != null) {
                     if (listaGenerados.size() > 0) {
                         activarEnviar = false;
@@ -947,7 +905,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
             }
             listaInterconDynamics = null;
             if (listaInterconDynamics == null) {
-                listaInterconDynamics = administrarInterfaseDynamicsRO.obtenerInterconDynamicsParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                listaInterconDynamics = administrarInterfaseDynamicsVT.obtenerInterconDynamicsParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
                 if (listaInterconDynamics != null) {
                     if (listaInterconDynamics.size() > 0) {
                         activarDeshacer = false;
@@ -1008,16 +966,8 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
                 interConcepto.setFilterStyle("display: none; visibility: hidden;");
                 interCentroCosto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCentroCosto");
                 interCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                interFechaVencimiento = (Column) c.getViewRoot().findComponent("form:datosIntercon:interFechaVencimiento");
-                interFechaVencimiento.setFilterStyle("display: none; visibility: hidden;");
-                interOriginalDebito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalDebito");
-                interOriginalDebito.setFilterStyle("display: none; visibility: hidden;");
-                interOriginalCredito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalCredito");
-                interOriginalCredito.setFilterStyle("display: none; visibility: hidden;");
-                interPreradicacion = (Column) c.getViewRoot().findComponent("form:datosIntercon:interPreradicacion");
-                interPreradicacion.setFilterStyle("display: none; visibility: hidden;");
-                interCodAlternativo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCodAlternativo");
-                interCodAlternativo.setFilterStyle("display: none; visibility: hidden;");
+                interCargo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCargo");
+                interCargo.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosIntercon");
                 banderaIntercon = 0;
                 filtrarListaInterconDynamics = null;
@@ -1031,8 +981,8 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
     }
 
     public void actionBtnEnviar() {
-        Date fechaDesde = administrarInterfaseDynamicsRO.buscarFechaDesdeVWActualesFechas();
-        Date fechaHasta = administrarInterfaseDynamicsRO.buscarFechaHastaVWActualesFechas();
+        Date fechaDesde = administrarInterfaseDynamicsVT.buscarFechaDesdeVWActualesFechas();
+        Date fechaHasta = administrarInterfaseDynamicsVT.buscarFechaHastaVWActualesFechas();
         RequestContext context = RequestContext.getCurrentInstance();
         if (fechaDesde != null && fechaHasta != null) {
             if ((fechaDesde.before(parametroContableActual.getFechainicialcontabilizacion()) && fechaHasta.after(parametroContableActual.getFechafinalcontabilizacion()))
@@ -1043,10 +993,10 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
                         && parametroContableActual.getFechafinalcontabilizacion() != null
                         && parametroContableActual.getFechainicialcontabilizacion() != null) {
                     guardadoGeneral();
-                    administrarInterfaseDynamicsRO.ejecutarPKGUbicarnuevointercon_DYNAMICS(parametroContableActual.getSecuencia(), parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
+                    administrarInterfaseDynamicsVT.ejecutarPKGUbicarnuevointercon_DYNAMICS(parametroContableActual.getSecuencia(), parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
                     listaGenerados = null;
                     if (listaGenerados == null) {
-                        listaGenerados = administrarInterfaseDynamicsRO.obtenerSolucionesNodosParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                        listaGenerados = administrarInterfaseDynamicsVT.obtenerSolucionesNodosParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
                         if (listaGenerados != null) {
                             if (listaGenerados.size() > 0) {
                                 activarEnviar = false;
@@ -1061,7 +1011,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
                     }
                     listaInterconDynamics = null;
                     if (listaInterconDynamics == null) {
-                        listaInterconDynamics = administrarInterfaseDynamicsRO.obtenerInterconDynamicsParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                        listaInterconDynamics = administrarInterfaseDynamicsVT.obtenerInterconDynamicsParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
                         if (listaInterconDynamics != null) {
                             if (listaInterconDynamics.size() > 0) {
                                 activarDeshacer = false;
@@ -1121,16 +1071,8 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
                         interConcepto.setFilterStyle("display: none; visibility: hidden;");
                         interCentroCosto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCentroCosto");
                         interCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                        interFechaVencimiento = (Column) c.getViewRoot().findComponent("form:datosIntercon:interFechaVencimiento");
-                        interFechaVencimiento.setFilterStyle("display: none; visibility: hidden;");
-                        interOriginalDebito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalDebito");
-                        interOriginalDebito.setFilterStyle("display: none; visibility: hidden;");
-                        interOriginalCredito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalCredito");
-                        interOriginalCredito.setFilterStyle("display: none; visibility: hidden;");
-                        interPreradicacion = (Column) c.getViewRoot().findComponent("form:datosIntercon:interPreradicacion");
-                        interPreradicacion.setFilterStyle("display: none; visibility: hidden;");
-                        interCodAlternativo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCodAlternativo");
-                        interCodAlternativo.setFilterStyle("display: none; visibility: hidden;");
+                        interCargo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCargo");
+                        interCargo.setFilterStyle("display: none; visibility: hidden;");
                         RequestContext.getCurrentInstance().update("form:datosIntercon");
                         banderaIntercon = 0;
                         filtrarListaInterconDynamics = null;
@@ -1146,7 +1088,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
     public void anularComprobantesCerrados() {
         try {
             guardadoGeneral();
-            administrarInterfaseDynamicsRO.anularComprobantesCerrados(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia());
+            administrarInterfaseDynamicsVT.anularComprobantesCerrados(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia());
             FacesMessage msg = new FacesMessage("Información", "Se realizo el proceso con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             RequestContext.getCurrentInstance().update("form:growl");
@@ -1159,8 +1101,8 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
     }
 
     public void validarFechasProcesoActualizar() {
-        Date fechaContabilizacion = administrarInterfaseDynamicsRO.obtenerFechaMaxContabilizaciones();
-        Date fechaInterconTotal = administrarInterfaseDynamicsRO.obtenerFechaMaxInterconDynamics();
+        Date fechaContabilizacion = administrarInterfaseDynamicsVT.obtenerFechaMaxContabilizaciones();
+        Date fechaInterconTotal = administrarInterfaseDynamicsVT.obtenerFechaMaxInterconDynamics();
         DateFormat df = DateFormat.getDateInstance(DateFormat.LONG);
         RequestContext context = RequestContext.getCurrentInstance();
         if (fechaContabilizacion != null && fechaInterconTotal != null) {
@@ -1179,7 +1121,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
 
     public boolean validarFechasParametros() {
         boolean retorno = false;
-        ParametrosEstructuras parametroLiquidacion = administrarInterfaseDynamicsRO.parametrosLiquidacion();
+        ParametrosEstructuras parametroLiquidacion = administrarInterfaseDynamicsVT.parametrosLiquidacion();
         if ((parametroLiquidacion.getFechadesdecausado().compareTo(parametroContableActual.getFechainicialcontabilizacion()) == 0)
                 && (parametroLiquidacion.getFechahastacausado().compareTo(parametroContableActual.getFechafinalcontabilizacion()) == 0)) {
             retorno = true;
@@ -1195,7 +1137,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
 
             listaGenerados = null;
             if (listaGenerados == null) {
-                listaGenerados = administrarInterfaseDynamicsRO.obtenerSolucionesNodosParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                listaGenerados = administrarInterfaseDynamicsVT.obtenerSolucionesNodosParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
                 if (listaGenerados != null) {
                     if (listaGenerados.size() > 0) {
                         activarEnviar = false;
@@ -1214,7 +1156,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
              */
             listaInterconDynamics = null;
             if (listaInterconDynamics == null) {
-                listaInterconDynamics = administrarInterfaseDynamicsRO.obtenerInterconDynamicsParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+                listaInterconDynamics = administrarInterfaseDynamicsVT.obtenerInterconDynamicsParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
                 if (listaInterconDynamics != null) {
                     if (listaInterconDynamics.size() > 0) {
                         activarDeshacer = false;
@@ -1272,12 +1214,12 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         try {
             if (modificacionParametro == true) {
-                administrarInterfaseDynamicsRO.modificarParametroContable(parametroContableActual);
+                administrarInterfaseDynamicsVT.modificarParametroContable(parametroContableActual);
                 modificacionParametro = false;
             }
             if (!listParametrosContablesBorrar.isEmpty()) {
                 for (int i = 0; i < listParametrosContablesBorrar.size(); i++) {
-                    administrarInterfaseDynamicsRO.borrarParametroContable(listParametrosContablesBorrar);
+                    administrarInterfaseDynamicsVT.borrarParametroContable(listParametrosContablesBorrar);
                 }
                 listParametrosContablesBorrar.clear();
             }
@@ -1338,16 +1280,8 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
             interConcepto.setFilterStyle("display: none; visibility: hidden;");
             interCentroCosto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCentroCosto");
             interCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-            interFechaVencimiento = (Column) c.getViewRoot().findComponent("form:datosIntercon:interFechaVencimiento");
-            interFechaVencimiento.setFilterStyle("display: none; visibility: hidden;");
-            interOriginalDebito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalDebito");
-            interOriginalDebito.setFilterStyle("display: none; visibility: hidden;");
-            interOriginalCredito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalCredito");
-            interOriginalCredito.setFilterStyle("display: none; visibility: hidden;");
-            interPreradicacion = (Column) c.getViewRoot().findComponent("form:datosIntercon:interPreradicacion");
-            interPreradicacion.setFilterStyle("display: none; visibility: hidden;");
-            interCodAlternativo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCodAlternativo");
-            interCodAlternativo.setFilterStyle("display: none; visibility: hidden;");
+            interCargo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCargo");
+            interCargo.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosIntercon");
             banderaIntercon = 0;
             filtrarListaInterconDynamics = null;
@@ -1403,8 +1337,8 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
                 context.execute("editarFechaFinalParametro.show()");
                 indexParametroContable = -1;
             } else if (indexParametroContable == 4) {
-                context.update("formularioDialogos:editarFechaContaParametro");
-                context.execute("editarFechaContaParametro.show()");
+                context.update("formularioDialogos:editarDocAlternativoParametro");
+                context.execute("editarDocAlternativoParametro.show()");
                 indexParametroContable = -1;
             } else if (indexParametroContable == 5) {
                 context.update("formularioDialogos:editarEmplDesdeParametro");
@@ -1415,12 +1349,8 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
                 context.execute("editarEmplHastaParametro.show()");
                 indexParametroContable = -1;
             } else if (indexParametroContable == 7) {
-                context.update("formularioDialogos:editarChequeraParametro");
-                context.execute("editarChequeraParametro.show()");
-                indexParametroContable = -1;
-            } else if (indexParametroContable == 8) {
-                context.update("formularioDialogos:editarRespuestaParametro");
-                context.execute("editarRespuestaParametro.show()");
+                context.update("formularioDialogos:editarDocContableParametro");
+                context.execute("editarDocContableParametro.show()");
                 indexParametroContable = -1;
             }
 
@@ -1459,7 +1389,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
                 context.update("formularioDialogos:editarConceptoGenerado");
                 context.execute("editarConceptoGenerado.show()");
                 cualCeldaGenerado = -1;
-            } 
+            }
             indexGenerado = -1;
         }
         if (indexIntercon >= 0) {
@@ -1497,24 +1427,8 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
                 context.execute("editarCentroCostoIntercon.show()");
                 cualCeldaIntercon = -1;
             } else if (cualCeldaIntercon == 7) {
-                context.update("formularioDialogos:editarFechaVencimientoIntercon");
-                context.execute("editarFechaVencimientoIntercon.show()");
-                cualCeldaIntercon = -1;
-            } else if (cualCeldaIntercon == 8) {
-                context.update("formularioDialogos:editarValorOriginalDebitoIntercon");
-                context.execute("editarValorOriginalDebitoIntercon.show()");
-                cualCeldaIntercon = -1;
-            } else if (cualCeldaIntercon == 9) {
-                context.update("formularioDialogos:editarValorOriginalCreditoIntercon");
-                context.execute("editarValorOriginalCreditoIntercon.show()");
-                cualCeldaIntercon = -1;
-            } else if (cualCeldaIntercon == 10) {
-                context.update("formularioDialogos:editarPreRadicacionIntercon");
-                context.execute("editarPreRadicacionIntercon.show()");
-                cualCeldaIntercon = -1;
-            } else if (cualCeldaIntercon == 11) {
-                context.update("formularioDialogos:editarCodAlternativoIntercon");
-                context.execute("editarCodAlternativoIntercon.show()");
+                context.update("formularioDialogos:editarCargoIntercon");
+                context.execute("editarCargoIntercon.show()");
                 cualCeldaIntercon = -1;
             }
             indexIntercon = -1;
@@ -1561,16 +1475,8 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
             interConcepto.setFilterStyle("display: none; visibility: hidden;");
             interCentroCosto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCentroCosto");
             interCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-            interFechaVencimiento = (Column) c.getViewRoot().findComponent("form:datosIntercon:interFechaVencimiento");
-            interFechaVencimiento.setFilterStyle("display: none; visibility: hidden;");
-            interOriginalDebito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalDebito");
-            interOriginalDebito.setFilterStyle("display: none; visibility: hidden;");
-            interOriginalCredito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalCredito");
-            interOriginalCredito.setFilterStyle("display: none; visibility: hidden;");
-            interPreradicacion = (Column) c.getViewRoot().findComponent("form:datosIntercon:interPreradicacion");
-            interPreradicacion.setFilterStyle("display: none; visibility: hidden;");
-            interCodAlternativo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCodAlternativo");
-            interCodAlternativo.setFilterStyle("display: none; visibility: hidden;");
+            interCargo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCargo");
+            interCargo.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosIntercon");
             banderaIntercon = 0;
             filtrarListaInterconDynamics = null;
@@ -1931,12 +1837,6 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
         context.update("form:PLANO");
     }
 
-    public void modificarFechaFinalNuevoRegistro() {
-        RequestContext context = RequestContext.getCurrentInstance();
-        nuevoParametroContable.setFechacontabilizacion(nuevoParametroContable.getFechafinalcontabilizacion());
-        context.update("formularioDialogos:nuevaFechaContaParametro");
-    }
-
     public void agregarNuevoParametro() {
         RequestContext context = RequestContext.getCurrentInstance();
         try {
@@ -1950,7 +1850,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
                     if (nuevoParametroContable.getProceso().getSecuencia() == null) {
                         nuevoParametroContable.setProceso(new Procesos());
                     }
-                    administrarInterfaseDynamicsRO.crearParametroContable(nuevoParametroContable);
+                    administrarInterfaseDynamicsVT.crearParametroContable(nuevoParametroContable);
                     nuevoParametroContable = new ParametrosContables();
                     activarAgregar = true;
                     activarOtros = false;
@@ -2008,16 +1908,8 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
                         interConcepto.setFilterStyle("display: none; visibility: hidden;");
                         interCentroCosto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCentroCosto");
                         interCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                        interFechaVencimiento = (Column) c.getViewRoot().findComponent("form:datosIntercon:interFechaVencimiento");
-                        interFechaVencimiento.setFilterStyle("display: none; visibility: hidden;");
-                        interOriginalDebito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalDebito");
-                        interOriginalDebito.setFilterStyle("display: none; visibility: hidden;");
-                        interOriginalCredito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalCredito");
-                        interOriginalCredito.setFilterStyle("display: none; visibility: hidden;");
-                        interPreradicacion = (Column) c.getViewRoot().findComponent("form:datosIntercon:interPreradicacion");
-                        interPreradicacion.setFilterStyle("display: none; visibility: hidden;");
-                        interCodAlternativo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCodAlternativo");
-                        interCodAlternativo.setFilterStyle("display: none; visibility: hidden;");
+                        interCargo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCargo");
+                        interCargo.setFilterStyle("display: none; visibility: hidden;");
                         RequestContext.getCurrentInstance().update("form:datosIntercon");
                         banderaIntercon = 0;
                         filtrarListaInterconDynamics = null;
@@ -2232,16 +2124,8 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
                 interConcepto.setFilterStyle("width: 90px");
                 interCentroCosto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCentroCosto");
                 interCentroCosto.setFilterStyle("width: 90px");
-                interFechaVencimiento = (Column) c.getViewRoot().findComponent("form:datosIntercon:interFechaVencimiento");
-                interFechaVencimiento.setFilterStyle("width: 90px");
-                interOriginalDebito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalDebito");
-                interOriginalDebito.setFilterStyle("width: 90px");
-                interOriginalCredito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalCredito");
-                interOriginalCredito.setFilterStyle("width: 90px");
-                interPreradicacion = (Column) c.getViewRoot().findComponent("form:datosIntercon:interPreradicacion");
-                interPreradicacion.setFilterStyle("width: 90px");
-                interCodAlternativo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCodAlternativo");
-                interCodAlternativo.setFilterStyle("width: 90px");
+                interCargo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCargo");
+                interCargo.setFilterStyle("width: 90px");
                 RequestContext.getCurrentInstance().update("form:datosIntercon");
                 banderaIntercon = 1;
             } else if (banderaIntercon == 1) {
@@ -2260,16 +2144,8 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
                 interConcepto.setFilterStyle("display: none; visibility: hidden;");
                 interCentroCosto = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCentroCosto");
                 interCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                interFechaVencimiento = (Column) c.getViewRoot().findComponent("form:datosIntercon:interFechaVencimiento");
-                interFechaVencimiento.setFilterStyle("display: none; visibility: hidden;");
-                interOriginalDebito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalDebito");
-                interOriginalDebito.setFilterStyle("display: none; visibility: hidden;");
-                interOriginalCredito = (Column) c.getViewRoot().findComponent("form:datosIntercon:interOriginalCredito");
-                interOriginalCredito.setFilterStyle("display: none; visibility: hidden;");
-                interPreradicacion = (Column) c.getViewRoot().findComponent("form:datosIntercon:interPreradicacion");
-                interPreradicacion.setFilterStyle("display: none; visibility: hidden;");
-                interCodAlternativo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCodAlternativo");
-                interCodAlternativo.setFilterStyle("display: none; visibility: hidden;");
+                interCargo = (Column) c.getViewRoot().findComponent("form:datosIntercon:interCargo");
+                interCargo.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosIntercon");
                 banderaIntercon = 0;
                 filtrarListaInterconDynamics = null;
@@ -2319,7 +2195,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
 
     public ActualUsuario getActualUsuarioBD() {
         if (actualUsuarioBD == null) {
-            actualUsuarioBD = administrarInterfaseDynamicsRO.obtenerActualUsuario();
+            actualUsuarioBD = administrarInterfaseDynamicsVT.obtenerActualUsuario();
         }
         return actualUsuarioBD;
     }
@@ -2345,7 +2221,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
     }
 
     public List<Empresas> getLovEmpresas() {
-        lovEmpresas = administrarInterfaseDynamicsRO.lovEmpresas();
+        lovEmpresas = administrarInterfaseDynamicsVT.lovEmpresas();
         return lovEmpresas;
     }
 
@@ -2370,7 +2246,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
     }
 
     public List<Procesos> getLovProcesos() {
-        lovProcesos = administrarInterfaseDynamicsRO.lovProcesos();
+        lovProcesos = administrarInterfaseDynamicsVT.lovProcesos();
         return lovProcesos;
     }
 
@@ -2450,7 +2326,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
         if (listaParametrosContables == null) {
             getActualUsuarioBD();
             if (actualUsuarioBD.getSecuencia() != null) {
-                listaParametrosContables = administrarInterfaseDynamicsRO.obtenerParametrosContablesUsuarioBD(actualUsuarioBD.getAlias());
+                listaParametrosContables = administrarInterfaseDynamicsVT.obtenerParametrosContablesUsuarioBD(actualUsuarioBD.getAlias());
             }
             if (listaParametrosContables != null) {
                 int tam = listaParametrosContables.size();
@@ -2750,7 +2626,7 @@ public class ControlInterfaseContableDynamicsRO implements Serializable {
     }
 
     public List<Empleados> getLovEmpleados() {
-        lovEmpleados = administrarInterfaseDynamicsRO.buscarEmpleadosEmpresa();
+        lovEmpleados = administrarInterfaseDynamicsVT.buscarEmpleadosEmpresa();
         return lovEmpleados;
     }
 

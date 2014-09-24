@@ -96,7 +96,7 @@
                     <h:outputText value="Designer.RHN (C) 1998 - #{controlInicioRed.añoActual} / Visitenos: " style="position: absolute; top: 80px; left: 10px;"/>
                     <a href="http://www.nomina.com.co/" target="_blank" style="position: absolute; top: 80px; left: 295px; font-size: 15px; color: white">www.nomina.com.co</a>
                 </strong>
-                <p:commandButton style="position: absolute; left: 20px; top: 5px; width: 60px; height: 70px; background-image: url(Imagenes/bombillo1.gif); background-size: 100% 100%; background-repeat: no-repeat; "  value=""  process="@this" />
+                <p:commandButton style="position: absolute; left: 20px; top: 5px; width: 60px; height: 70px; background-image: url(Imagenes/bombillo1.gif); background-size: 100% 100%; background-repeat: no-repeat; "  value="" action="proverbio" actionListener="#{controlProverbio.recibirPagina('nomina')}" process="@this" />
                 <p:commandButton style="position: absolute; left: 820px; top: 22px; width: 20px; height: 20px; background-image: url(Imagenes/arriba.JPG); background-size: 100% 100%; background-repeat: no-repeat; "  value="" actionListener="#{controlInicioRed.nuevoRecordatorio()}"  process="@this" />
                 <p:commandButton style="position: absolute; left: 820px; top: 43px; width: 20px; height: 20px; background-image: url(Imagenes/abajo.JPG); background-size: 100% 100%; background-repeat: no-repeat; " value="" actionListener="#{controlInicioRed.nuevoRecordatorio()}" process="@this" />
             </fieldset>

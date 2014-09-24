@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Controlador;
 
 import Entidades.ActualUsuario;
@@ -10,7 +15,7 @@ import Entidades.SolucionesNodos;
 import Entidades.UsuariosInterfases;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
-import InterfaceAdministrar.AdministrarInterfaseContableSapBOV8Interface;
+import InterfaceAdministrar.AdministrarInterfaseContableSapBOInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -19,7 +24,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.math.BigInteger;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -41,7 +45,6 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -49,10 +52,10 @@ import org.primefaces.model.StreamedContent;
  */
 @ManagedBean
 @SessionScoped
-public class ControlInterfaseContableSapBOV8 implements Serializable {
+public class ControlInterfaseContableSapBO {
 
     @EJB
-    AdministrarInterfaseContableSapBOV8Interface administrarInterfaseContableSapBO;
+    AdministrarInterfaseContableSapBOInterface administrarInterfaseContableSapBO;
     @EJB
     AdministrarRastrosInterface administrarRastros;
 
@@ -137,7 +140,7 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
     private DefaultStreamedContent download;
     private UsuariosInterfases usuarioInterfaseContabilizacion;
 
-    public ControlInterfaseContableSapBOV8() {
+    public ControlInterfaseContableSapBO() {
         ftpClient = new FTPClient();
         guardado = true;
         nuevoParametroContable = new ParametrosContables();
@@ -572,7 +575,7 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
     public void anularComprobantesCerrados() {
         try {
             guardadoGeneral();
-            administrarInterfaseContableSapBO.actualizarFlagProcesoAnularInterfaseContableSAPBOV8(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
+            administrarInterfaseContableSapBO.actualizarFlagProcesoAnularInterfaseContableSAPBO(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
             FacesMessage msg = new FacesMessage("Información", "Se realizo el proceso con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             RequestContext.getCurrentInstance().update("form:growl");
@@ -597,7 +600,7 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
                         && parametroContableActual.getFechafinalcontabilizacion() != null
                         && parametroContableActual.getFechainicialcontabilizacion() != null) {
                     guardadoGeneral();
-                    administrarInterfaseContableSapBO.ejeuctarPKGUbicarnuevointercon_SAPBOV8(parametroContableActual.getSecuencia(), parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia());
+                    administrarInterfaseContableSapBO.ejeuctarPKGUbicarnuevointercon_SAPBO(parametroContableActual.getSecuencia(), parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia());
                     listaGenerados = null;
                     if (listaGenerados == null) {
                         listaGenerados = administrarInterfaseContableSapBO.obtenerSolucionesNodosParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
@@ -702,7 +705,7 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             guardadoGeneral();
 
-            administrarInterfaseContableSapBO.cambiarFlagInterconContableSAPBOV8(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia());
+            administrarInterfaseContableSapBO.cambiarFlagInterconContableSAPBO(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia());
             administrarInterfaseContableSapBO.ejecutarDeleteInterconSAP(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia());
 
             listaGenerados = null;
@@ -1969,15 +1972,13 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
             String descripcionProceso = administrarInterfaseContableSapBO.obtenerDescripcionProcesoArchivo(parametroContableActual.getProceso().getSecuencia());
             nombreArchivo = "Interfase_SAPBO_" + descripcionProceso;
             pathProceso = administrarInterfaseContableSapBO.obtenerPathProceso();
-            String envioInterfaseContable = administrarInterfaseContableSapBO.obtenerEnvioInterfaseContabilidadEmpresa(parametroContableActual.getEmpresaCodigo());
             administrarInterfaseContableSapBO.ejecutarPKGCrearArchivoPlano(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), descripcionProceso, nombreArchivo);
             RequestContext context = RequestContext.getCurrentInstance();
-            if (envioInterfaseContable != "S") {
-                rutaArchivo = "";
-                rutaArchivo = pathProceso + nombreArchivo + ".txt";
-                context.update("formularioDialogos:planoGeneradoOK");
-                context.execute("planoGeneradoOK.show()");
-            }
+            rutaArchivo = "";
+            rutaArchivo = pathProceso + nombreArchivo + ".txt";
+            context.update("formularioDialogos:planoGeneradoOK");
+            context.execute("planoGeneradoOK.show()");
+
         } catch (Exception e) {
             System.out.println("Error actionBtnGenerarPlano Control : " + e.toString());
         }
@@ -2489,4 +2490,5 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
     public void setRutaArchivo(String rutaArchivo) {
         this.rutaArchivo = rutaArchivo;
     }
+
 }

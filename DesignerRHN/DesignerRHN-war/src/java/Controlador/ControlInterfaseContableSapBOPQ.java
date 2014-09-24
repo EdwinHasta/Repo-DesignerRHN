@@ -1762,6 +1762,7 @@ public class ControlInterfaseContableSapBOPQ implements Serializable {
 
     public void actionBtnGenerarPlano() {
         try {
+            guardadoGeneral();
             String descripcionProceso = administrarInterfaseContableSapBOPQ.obtenerDescripcionProcesoArchivo(parametroContableActual.getProceso().getSecuencia());
             nombreArchivo = "Interfase_SAPBO_" + descripcionProceso;
             //String pathServidorWeb = administrarInterfaseContableTotal.obtenerPathServidorWeb();
@@ -1780,7 +1781,7 @@ public class ControlInterfaseContableSapBOPQ implements Serializable {
 
     public void conectarAlFTP() {
         try {
-            ftpClient.connect(usuarioInterfaseContabilizacion.getSidremoto());
+            ftpClient.connect(usuarioInterfaseContabilizacion.getServernameremoto());
             ftpClient.login(usuarioInterfaseContabilizacion.getUsuarioremoto(), usuarioInterfaseContabilizacion.getPasswordremoto());
             ftpClient.enterLocalPassiveMode();
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
