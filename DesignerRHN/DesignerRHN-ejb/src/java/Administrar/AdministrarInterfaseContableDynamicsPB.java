@@ -8,7 +8,7 @@ import Entidades.ParametrosContables;
 import Entidades.ParametrosEstructuras;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
-import InterfaceAdministrar.AdministrarInterfaseContableDynamicsROInterface;
+import InterfaceAdministrar.AdministrarInterfaseContableDynamicsPBInterface;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaContabilizacionesInterface;
@@ -34,7 +34,7 @@ import javax.persistence.EntityManager;
  * @author Administrador
  */
 @Stateful
-public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterfaseContableDynamicsROInterface {
+public class AdministrarInterfaseContableDynamicsPB implements AdministrarInterfaseContableDynamicsPBInterface{
 
     @EJB
     PersistenciaParametrosContablesInterface persistenciaParametrosContables;
@@ -65,7 +65,7 @@ public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterf
 
     private EntityManager em;
 
-    @Override
+    //@Override
     public void obtenerConexion(String idSesion) {
         em = administrarSesiones.obtenerConexionSesion(idSesion);
     }
@@ -282,7 +282,7 @@ public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterf
     @Override
     public void ejecutarPKGCrearArchivoPlano(Date fechaIni, Date fechaFin, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger emplDesde, BigInteger emplHasta) {
         try {
-            persistenciaInterconDynamics.ejecutarPKGCrearArchivoPlano(em, fechaIni, fechaFin, proceso, descripcionProceso, nombreArchivo, emplDesde, emplHasta);
+            persistenciaInterconDynamics.ejecutarPKGCrearArchivoPlano_PROLUB(em, fechaIni, fechaFin, proceso, descripcionProceso, nombreArchivo, emplDesde, emplHasta);
         } catch (Exception e) {
             System.out.println("Error ejecutarPKGCrearArchivoPlano Admi : " + e.toString());
         }
@@ -338,7 +338,7 @@ public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterf
     @Override
     public void ejecutarPKGUbicarnuevointercon_DYNAMICS(BigInteger secuencia, Date fechaIni, Date fechaFin, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
         try {
-            persistenciaInterconDynamics.ejecutarPKGUbicarnuevointercon_DYNAMICS(em, secuencia, fechaIni, fechaFin, proceso, emplDesde, emplHasta);
+            persistenciaInterconDynamics.ejecutarPKGUbicarnuevointercon_PROLUB(em, secuencia, fechaIni, fechaFin, proceso, emplDesde, emplHasta);
         } catch (Exception e) {
             System.out.println("Error ejecutarPKGUbicarnuevointercon_DYNAMICS Admi : " + e.toString());
         }
@@ -375,5 +375,4 @@ public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterf
             return null;
         }
     }
-
 }

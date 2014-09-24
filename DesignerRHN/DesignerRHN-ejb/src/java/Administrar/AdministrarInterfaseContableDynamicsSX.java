@@ -1,3 +1,9 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package Administrar;
 
 import Entidades.ActualUsuario;
@@ -8,7 +14,7 @@ import Entidades.ParametrosContables;
 import Entidades.ParametrosEstructuras;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
-import InterfaceAdministrar.AdministrarInterfaseContableDynamicsROInterface;
+import InterfaceAdministrar.AdministrarInterfaseContableDynamicsSXInterface;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaContabilizacionesInterface;
@@ -34,7 +40,7 @@ import javax.persistence.EntityManager;
  * @author Administrador
  */
 @Stateful
-public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterfaseContableDynamicsROInterface {
+public class AdministrarInterfaseContableDynamicsSX implements AdministrarInterfaseContableDynamicsSXInterface{
 
     @EJB
     PersistenciaParametrosContablesInterface persistenciaParametrosContables;
@@ -282,7 +288,7 @@ public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterf
     @Override
     public void ejecutarPKGCrearArchivoPlano(Date fechaIni, Date fechaFin, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger emplDesde, BigInteger emplHasta) {
         try {
-            persistenciaInterconDynamics.ejecutarPKGCrearArchivoPlano(em, fechaIni, fechaFin, proceso, descripcionProceso, nombreArchivo, emplDesde, emplHasta);
+            persistenciaInterconDynamics.ejecutarPKGCrearArchivoPlano_SX(em, fechaIni, fechaFin, proceso, descripcionProceso, nombreArchivo, emplDesde, emplHasta);
         } catch (Exception e) {
             System.out.println("Error ejecutarPKGCrearArchivoPlano Admi : " + e.toString());
         }
@@ -326,7 +332,7 @@ public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterf
         }
     }
     
-    @Override
+    @Override 
     public void actualizarFlagContabilizacionDeshacerDynamics_NOT_EXITS(Date fechaIni, Date fechaFin, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
         try {
             persistenciaInterconDynamics.actualizarFlagContabilizacionDeshacerDynamics_NOT_EXITS(em, fechaIni, fechaFin, proceso, emplDesde, emplHasta);
@@ -375,5 +381,4 @@ public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterf
             return null;
         }
     }
-
 }

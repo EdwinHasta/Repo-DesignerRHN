@@ -22,7 +22,7 @@ import java.util.List;
  *
  * @author Administrador
  */
-public interface AdministrarInterfaseContableSapBOInterface {
+public interface AdministrarInterfaseContableSapBOV8Interface {
 
     public void obtenerConexion(String idSesion);
 
@@ -50,15 +50,15 @@ public interface AdministrarInterfaseContableSapBOInterface {
 
     public ParametrosEstructuras parametrosLiquidacion();
 
-    public void actualizarFlagProcesoAnularInterfaseContableSAPBO(Date fechaIni, Date fechaFin);
+    public void actualizarFlagProcesoAnularInterfaseContableSAPBOV8(Date fechaIni, Date fechaFin);
 
     public Date buscarFechaHastaVWActualesFechas();
 
     public Date buscarFechaDesdeVWActualesFechas();
 
-    public void ejeuctarPKGUbicarnuevointercon_SAPBO(BigInteger secuencia, Date fechaIni, Date fechaFin, BigInteger proceso);
+    public void ejeuctarPKGUbicarnuevointercon_SAPBOV8(BigInteger secuencia, Date fechaIni, Date fechaFin, BigInteger proceso);
 
-    public void cambiarFlagInterconContableSAPBO(Date fechaIni, Date fechaFin, BigInteger proceso);
+    public void cambiarFlagInterconContableSAPBOV8(Date fechaIni, Date fechaFin, BigInteger proceso);
 
     public void ejecutarDeleteInterconSAP(Date fechaIni, Date fechaFin, BigInteger proceso);
 
@@ -67,6 +67,8 @@ public interface AdministrarInterfaseContableSapBOInterface {
     public Integer obtenerContadorFlagGeneradoFechasSAP(Date fechaIni, Date fechaFin);
 
     public void ejecutarPKGRecontabilizacion(Date fechaIni, Date fechaFin);
+
+    public List<VWMensajeSAPBOV8> obtenerErroresSAPBOV8();
 
     public int contarProcesosContabilizadosInterconSAPBO(Date fechaInicial, Date fechaFinal);
 
@@ -77,6 +79,8 @@ public interface AdministrarInterfaseContableSapBOInterface {
     public String obtenerDescripcionProcesoArchivo(BigInteger proceso);
 
     public void ejecutarPKGCrearArchivoPlano(Date fechaIni, Date fechaFin, BigInteger proceso, String descripcionProceso, String nombreArchivo);
+
+    public String obtenerEnvioInterfaseContabilidadEmpresa(short codigoEmpresa);
 
     public UsuariosInterfases obtenerUsuarioInterfaseContabilizacion();
 

@@ -39,6 +39,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Estructuras.findByOrganigrama", query = "SELECT e FROM Estructuras e where e.organigrama = :Organigrama")})
 
 public class Estructuras implements Serializable {
+    @OneToMany(mappedBy = "estructuraaprueba")
+    private Collection<TurnosEmpleados> turnosEmpleadosCollection;
+    @OneToMany(mappedBy = "estructura")
+    private Collection<ParametrosTiempos> parametrosTiemposCollection;
     @OneToMany(mappedBy = "estructura")
     private Collection<SolucionesNodos> solucionesNodosCollection;
     @OneToMany(mappedBy = "localizacion")
@@ -245,5 +249,23 @@ public class Estructuras implements Serializable {
 
     public void setSolucionesNodosCollection1(Collection<SolucionesNodos> solucionesNodosCollection1) {
         this.solucionesNodosCollection1 = solucionesNodosCollection1;
+    }
+
+    @XmlTransient
+    public Collection<ParametrosTiempos> getParametrosTiemposCollection() {
+        return parametrosTiemposCollection;
+    }
+
+    public void setParametrosTiemposCollection(Collection<ParametrosTiempos> parametrosTiemposCollection) {
+        this.parametrosTiemposCollection = parametrosTiemposCollection;
+    }
+
+    @XmlTransient
+    public Collection<TurnosEmpleados> getTurnosEmpleadosCollection() {
+        return turnosEmpleadosCollection;
+    }
+
+    public void setTurnosEmpleadosCollection(Collection<TurnosEmpleados> turnosEmpleadosCollection) {
+        this.turnosEmpleadosCollection = turnosEmpleadosCollection;
     }
 }

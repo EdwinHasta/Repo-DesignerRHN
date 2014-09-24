@@ -37,4 +37,6 @@ public interface PersistenciaContabilizacionesInterface {
 
     public Integer obtenerContadorFlagGeneradoFechasDynamics(EntityManager em, Date fechaIni, Date fechaFin);
 
+    public void actualizarFlahInterconContableSAPBO(EntityManager em, Date fechaIni, Date fechaFin, BigInteger proceso);
+
 }

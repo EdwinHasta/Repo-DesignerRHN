@@ -314,13 +314,6 @@ public class PersistenciaInterconTotal implements PersistenciaInterconTotalInter
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
-            /*
-            INTERFASETOTAL$PKG.archivo_plano(:PARAMETROSCONTABLES.FECHAINICIALCONTABILIZACION,:PARAMETROSCONTABLES.FECHAFINALCONTABILIZACION,:PARAMETROSCONTABLES.PROCESO,v_vcname);
-	ELSIF :CONTROLBOTONES.OPCIONESPLANO = 2 THEN    
-    INTERFASETOTAL$PKG.archivoplanosemidetallado(:PARAMETROSCONTABLES.FECHAINICIALCONTABILIZACION,:PARAMETROSCONTABLES.FECHAFINALCONTABILIZACION,:PARAMETROSCONTABLES.PROCESO,v_vcname);
-	ELSIF :CONTROLBOTONES.OPCIONESPLANO = 3 THEN    
-    INTERFASETOTAL$PKG.archivoplanoresumido(:PARAMETROSCONTABLES.FECHAINICIALCONTABILIZACION,:PARAMETROSCONTABLES.FECHAFINALCONTABILIZACION,:PARAMETROSCONTABLES.PROCESO,v_vcname);
-            */
             tx.begin();
             String sql = "";
             if (tipoTxt == 1) {
@@ -339,6 +332,36 @@ public class PersistenciaInterconTotal implements PersistenciaInterconTotalInter
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaInterconTotal.ejecutarPKGCrearArchivoPlano : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    
+    @Override
+    public void ejecutarPKGCrearArchivoPlano_GEO(EntityManager em, int tipoTxt, Date fechaIni, Date fechaFin, BigInteger proceso, String nombreArchivo) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            String sql = "";
+            if (tipoTxt == 1) {
+                sql = "call INTERFASETOTAL$PKG.archivo_planoGEO(?,?,?,?)";
+            } else if (tipoTxt == 2) {
+                sql = "call INTERFASETOTAL$PKG.archivoplanosemidetalladoGEO(?,?,?,?)";
+            } else if (tipoTxt == 3) {
+                sql = "call INTERFASETOTAL$PKG.archivoplanoresumidoGEO(?,?,?,?)";
+            }
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaIni);
+            query.setParameter(2, fechaFin);
+            query.setParameter(3, proceso);
+            query.setParameter(4, nombreArchivo);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconTotal.ejecutarPKGCrearArchivoPlano_GEO : " + e.toString());
             if (tx.isActive()) {
                 tx.rollback();
             }

@@ -170,16 +170,17 @@ public interface PersistenciaEmpleadoInterface {
     public List<Empleados> consultarEmpleadosParametroAutoliq(EntityManager em);
 
     public List<Empleados> consultarEmpleadosParaProyecciones(EntityManager em);
-    
+
     public void eliminarEmpleadoNominaF(EntityManager em, BigInteger secuenciaEmpleado, BigInteger secuenciaPersona);
-    
-    public void reingresarEmpleado(EntityManager em, BigInteger codigoEmpleado, BigInteger centroCosto,Date fechaReingreso, BigInteger empresa, Date fechaFinal);
+
+    public void reingresarEmpleado(EntityManager em, BigInteger codigoEmpleado, BigInteger centroCosto, Date fechaReingreso, BigInteger empresa, Date fechaFinal);
 
     public List<Empleados> consultarEmpleadosReingreso(EntityManager em);
-    
+
     public Date verificarFecha(EntityManager em, BigInteger secuenciaEmpleado);
-    
+
     public void cambiarFechaIngreso(EntityManager em, BigInteger secuenciaEmpleado, Date fechaAntigua, Date fechaNueva);
 
+    public List<Empleados> consultarEmpleadosCuadrillas(EntityManager em);
 
 }

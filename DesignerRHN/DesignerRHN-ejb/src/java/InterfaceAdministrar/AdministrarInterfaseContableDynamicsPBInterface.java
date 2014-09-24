@@ -13,17 +13,15 @@ import Entidades.ParametrosContables;
 import Entidades.ParametrosEstructuras;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
-import Entidades.UsuariosInterfases;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.EntityManager;
 
 /**
  *
  * @author Administrador
  */
-public interface AdministrarInterfaseContableDynamicsROInterface {
+public interface AdministrarInterfaseContableDynamicsPBInterface {
 
     public void obtenerConexion(String idSesion);
 
@@ -59,9 +57,9 @@ public interface AdministrarInterfaseContableDynamicsROInterface {
 
     public int contarProcesosContabilizadosInterconDynamics(Date fechaInicial, Date fechaFinal);
 
-    public List<Empleados> buscarEmpleadosEmpresa();
-
     public void cerrarProcesoContable(Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta);
+
+    public List<Empleados> buscarEmpleadosEmpresa();
 
     public void ejecutarPKGCrearArchivoPlano(Date fechaIni, Date fechaFin, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger emplDesde, BigInteger emplHasta);
 

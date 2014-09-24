@@ -11,19 +11,19 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 /**
- * Clase Stateless. <br> 
- * Clase encargada de realizar operaciones sobre la tabla 'Recordatorios'
- * de la base de datos.
+ * Clase Stateless. <br>
+ * Clase encargada de realizar operaciones sobre la tabla 'Recordatorios' de la
+ * base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInterface {
 
-    
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-    
     @Override
     public void crear(EntityManager em, Recordatorios recordatorios) {
         em.clear();
@@ -33,7 +33,7 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
             em.merge(recordatorios);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaRecordatorios.crear: " + e);
+            System.out.println("Error PersistenciaRecordatorios.crear: " + e.toString());
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -49,7 +49,7 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
             em.merge(recordatorios);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaRecordatorios.editar: " + e);
+            System.out.println("Error PersistenciaRecordatorios.editar: " + e.toString());
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -65,13 +65,13 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
             em.remove(em.merge(recordatorios));
             tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaRecordatorios.borrar: " + e);
+            System.out.println("Error PersistenciaRecordatorios.borrar: " + e.toString());
             if (tx.isActive()) {
                 tx.rollback();
             }
         }
     }
-    
+
     @Override
     public Recordatorios recordatorioRandom(EntityManager entity) {
         try {
@@ -85,7 +85,7 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
             Recordatorios recordatorio = (Recordatorios) query.getSingleResult();
             return recordatorio;
         } catch (Exception e) {
-            System.out.println("Error: PersistenciaRecordatorios.recordatorioRandom");
+            System.out.println("Error: PersistenciaRecordatorios.recordatorioRandom : " + e.toString());
             return null;
         }
     }
@@ -104,7 +104,7 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
             List<String> listaRecordatorios = query.getResultList();
             return listaRecordatorios;
         } catch (Exception e) {
-            System.out.println("Error: PersistenciaRecordatorios.recordatoriosInicio");
+            System.out.println("Error: PersistenciaRecordatorios.recordatoriosInicio : " + e.toString());
             return null;
         }
     }
@@ -123,11 +123,11 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
             List<Recordatorios> listaConsultas = query.getResultList();
             return listaConsultas;
         } catch (Exception e) {
-            System.out.println("Error: PersistenciaRecordatorios.consultasInicio. " + e);
+            System.out.println("Error: PersistenciaRecordatorios.consultasInicio : " + e.toString());
             return null;
         }
     }
-    
+
     @Override
     public List<Recordatorios> proverbiosRecordatorios(EntityManager em) {
         try {
@@ -137,10 +137,11 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
             List<Recordatorios> recordatorios = query.getResultList();
             return recordatorios;
         } catch (Exception e) {
+            System.out.println("Error: PersistenciaRecordatorios.proverbiosRecordatorios : " + e.toString());
             return null;
         }
     }
-    
+
     @Override
     public List<Recordatorios> mensajesRecordatorios(EntityManager em) {
         try {
@@ -151,9 +152,9 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
             List<Recordatorios> listaConsultas = query.getResultList();
             return listaConsultas;
         } catch (Exception e) {
-            System.out.println("Error: PersistenciaRecordatorios.mensajesRecordatorios");
+            System.out.println("Error: PersistenciaRecordatorios.mensajesRecordatorios : " + e.toString());
             return null;
         }
     }
-    
+
 }

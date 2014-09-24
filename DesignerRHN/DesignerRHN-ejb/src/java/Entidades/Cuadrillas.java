@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -38,20 +39,22 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Cuadrillas.findByDiasciclo", query = "SELECT c FROM Cuadrillas c WHERE c.diasciclo = :diasciclo"),
     @NamedQuery(name = "Cuadrillas.findByEstado", query = "SELECT c FROM Cuadrillas c WHERE c.estado = :estado")})
 public class Cuadrillas implements Serializable {
+    @OneToMany(mappedBy = "cuadrilla")
+    private Collection<ParametrosTiempos> parametrosTiemposCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
+    private BigInteger secuencia;
+    //@Basic(optional = false)
+    //@NotNull
     @Column(name = "CODIGO")
     private short codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 40)
+    //@Basic(optional = false)
+    //@NotNull
+    //@Size(min = 1, max = 40)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Column(name = "MODULO")
@@ -70,21 +73,21 @@ public class Cuadrillas implements Serializable {
     public Cuadrillas() {
     }
 
-    public Cuadrillas(BigDecimal secuencia) {
+    public Cuadrillas(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Cuadrillas(BigDecimal secuencia, short codigo, String descripcion) {
+    public Cuadrillas(BigInteger secuencia, short codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -168,6 +171,15 @@ public class Cuadrillas implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Cuadrillas[ secuencia=" + secuencia + " ]";
+    }
+
+    @XmlTransient
+    public Collection<ParametrosTiempos> getParametrosTiemposCollection() {
+        return parametrosTiemposCollection;
+    }
+
+    public void setParametrosTiemposCollection(Collection<ParametrosTiempos> parametrosTiemposCollection) {
+        this.parametrosTiemposCollection = parametrosTiemposCollection;
     }
     
 }

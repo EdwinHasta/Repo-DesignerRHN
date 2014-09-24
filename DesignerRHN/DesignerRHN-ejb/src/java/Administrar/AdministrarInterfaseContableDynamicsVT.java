@@ -8,7 +8,7 @@ import Entidades.ParametrosContables;
 import Entidades.ParametrosEstructuras;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
-import InterfaceAdministrar.AdministrarInterfaseContableDynamicsROInterface;
+import InterfaceAdministrar.AdministrarInterfaseContableDynamicsVTInterface;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaContabilizacionesInterface;
@@ -34,7 +34,7 @@ import javax.persistence.EntityManager;
  * @author Administrador
  */
 @Stateful
-public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterfaseContableDynamicsROInterface {
+public class AdministrarInterfaseContableDynamicsVT implements AdministrarInterfaseContableDynamicsVTInterface {
 
     @EJB
     PersistenciaParametrosContablesInterface persistenciaParametrosContables;
@@ -65,7 +65,7 @@ public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterf
 
     private EntityManager em;
 
-    @Override
+    //@Override
     public void obtenerConexion(String idSesion) {
         em = administrarSesiones.obtenerConexionSesion(idSesion);
     }
@@ -147,6 +147,16 @@ public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterf
     public List<InterconDynamics> obtenerInterconDynamicsParametroContable(Date fechaInicial, Date fechaFinal) {
         try {
             List<InterconDynamics> lista = persistenciaInterconDynamics.buscarInterconDynamicParametroContable(em, fechaInicial, fechaFinal);
+            if (lista != null) {
+                for (int i = 0; i < lista.size(); i++) {
+                    String cargo = persistenciaInterconDynamics.obtenerCargoDYNAMICSVT(em, lista.get(i).getEmpleado().getSecuencia(), lista.get(i).getFechacontabilizacion());
+                    if (cargo != null) {
+                        lista.get(i).setCargo(cargo);
+                    } else {
+                        lista.get(i).setCargo("");
+                    }
+                }
+            }
             return lista;
         } catch (Exception e) {
             System.out.println("Error obtenerInterconDynamicsParametroContable Admi : " + e.toString());
@@ -282,7 +292,7 @@ public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterf
     @Override
     public void ejecutarPKGCrearArchivoPlano(Date fechaIni, Date fechaFin, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger emplDesde, BigInteger emplHasta) {
         try {
-            persistenciaInterconDynamics.ejecutarPKGCrearArchivoPlano(em, fechaIni, fechaFin, proceso, descripcionProceso, nombreArchivo, emplDesde, emplHasta);
+            persistenciaInterconDynamics.ejecutarPKGCrearArchivoPlano_VT(em, fechaIni, fechaFin, proceso, descripcionProceso, nombreArchivo, emplDesde, emplHasta);
         } catch (Exception e) {
             System.out.println("Error ejecutarPKGCrearArchivoPlano Admi : " + e.toString());
         }
@@ -375,5 +385,4 @@ public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterf
             return null;
         }
     }
-
 }

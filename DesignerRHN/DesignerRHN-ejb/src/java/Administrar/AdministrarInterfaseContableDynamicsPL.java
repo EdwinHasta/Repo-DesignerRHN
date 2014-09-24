@@ -8,7 +8,7 @@ import Entidades.ParametrosContables;
 import Entidades.ParametrosEstructuras;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
-import InterfaceAdministrar.AdministrarInterfaseContableDynamicsROInterface;
+import InterfaceAdministrar.AdministrarInterfaseContableDynamicsPLInterface;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaContabilizacionesInterface;
@@ -34,7 +34,7 @@ import javax.persistence.EntityManager;
  * @author Administrador
  */
 @Stateful
-public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterfaseContableDynamicsROInterface {
+public class AdministrarInterfaseContableDynamicsPL implements AdministrarInterfaseContableDynamicsPLInterface {
 
     @EJB
     PersistenciaParametrosContablesInterface persistenciaParametrosContables;
@@ -262,7 +262,7 @@ public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterf
     @Override
     public void cerrarProcesoContable(Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
         try {
-            persistenciaInterconDynamics.cerrarProcesoContabilizacion(em, fechaInicial, fechaFinal, proceso, emplDesde, emplHasta);
+            persistenciaInterconDynamics.cerrarProcesoContabilizacion_PL(em, fechaInicial, fechaFinal, proceso, emplDesde, emplHasta);
         } catch (Exception e) {
             System.out.println("Error cerrarProcesoContable Admi : " + e.toString());
         }
@@ -282,7 +282,7 @@ public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterf
     @Override
     public void ejecutarPKGCrearArchivoPlano(Date fechaIni, Date fechaFin, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger emplDesde, BigInteger emplHasta) {
         try {
-            persistenciaInterconDynamics.ejecutarPKGCrearArchivoPlano(em, fechaIni, fechaFin, proceso, descripcionProceso, nombreArchivo, emplDesde, emplHasta);
+            persistenciaInterconDynamics.ejecutarPKGCrearArchivoPlano_PL(em, fechaIni, fechaFin, proceso, descripcionProceso, nombreArchivo, emplDesde, emplHasta);
         } catch (Exception e) {
             System.out.println("Error ejecutarPKGCrearArchivoPlano Admi : " + e.toString());
         }
@@ -338,7 +338,7 @@ public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterf
     @Override
     public void ejecutarPKGUbicarnuevointercon_DYNAMICS(BigInteger secuencia, Date fechaIni, Date fechaFin, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
         try {
-            persistenciaInterconDynamics.ejecutarPKGUbicarnuevointercon_DYNAMICS(em, secuencia, fechaIni, fechaFin, proceso, emplDesde, emplHasta);
+            persistenciaInterconDynamics.ejecutarPKGUbicarnuevointercon_PLIN(em, secuencia, fechaIni, fechaFin, proceso, emplDesde, emplHasta);
         } catch (Exception e) {
             System.out.println("Error ejecutarPKGUbicarnuevointercon_DYNAMICS Admi : " + e.toString());
         }
@@ -347,7 +347,7 @@ public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterf
     @Override
     public void anularComprobantesCerrados(Date fechaIni, Date fechaFin, BigInteger proceso) {
         try {
-            persistenciaInterconDynamics.anularComprobantesCerrados(em, fechaIni, fechaFin, proceso);
+            persistenciaInterconDynamics.anularComprobantesCerrados_PL(em, fechaIni, fechaFin, proceso);
         } catch (Exception e) {
             System.out.println("Error anularComprobantesCerrados Admi : " + e.toString());
 
@@ -376,4 +376,21 @@ public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterf
         }
     }
 
+    @Override
+    public void actionProcesarDatosDYNAMICSPL(short codigoEmpresa) {
+        try {
+            persistenciaInterconDynamics.actionProcesarDatosDYNAMICSPL(em, codigoEmpresa);
+        } catch (Exception e) {
+            System.out.println("Error actionProcesarDatosDYNAMICSPL Admi : " + e.toString());
+        }
+    }
+    
+    @Override
+    public void actionRespuestaDYNAMICSPL(short codigoEmpresa) {
+        try {
+            persistenciaInterconDynamics.actionRespuestaDYNAMICSPL(em, codigoEmpresa);
+        } catch (Exception e) {
+            System.out.println("Error actionProcesarDatosDYNAMICSPL Admi : " + e.toString());
+        }
+    }
 }

@@ -113,6 +113,36 @@ public class PersistenciaContabilizaciones implements PersistenciaContabilizacio
             return null;
         }
     }
+    
+    @Override
+    public void actualizarFlahInterconContableSAPBO(EntityManager em, Date fechaIni, Date fechaFin, BigInteger proceso) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            String sql = "UPDATE CONTABILIZACIONES SET FLAG='GENERADO' WHERE FLAG='CONTABILIZADO'\n"
+                    + "		 AND FECHAGENERACION BETWEEN ? AND ? \n"
+                    + "		 AND  EXISTS \n"
+                    + "         (SELECT 'X'  FROM INTERCON_SAPBO IT \n"
+                    + "         WHERE IT.CONTABILIZACION = CONTABILIZACIONES.SECUENCIA \n"
+                    + "         and FECHACONTABILIZACION BETWEEN ? AND ?\n"
+                    + "         AND FLAG = 'CONTABILIZADO' AND nvl(IT.PROCESO,0) = NVL(?,nvl(IT.PROCESO,0))\n"
+                    + "         and exists (select 'x' from empleados e where e.secuencia=it.empleado))";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaIni);
+            query.setParameter(2, fechaFin);
+            query.setParameter(3, fechaIni);
+            query.setParameter(4, fechaFin);
+            query.setParameter(5, proceso);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error actualizarFlahInterconContableSAPBOV8 PersistenciaContabilizaciones : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
 
     @Override
     public void actualizarFlahInterconContableSAPBOV8(EntityManager em, Date fechaIni, Date fechaFin, BigInteger proceso) {

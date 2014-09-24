@@ -8,7 +8,7 @@ import Entidades.ParametrosContables;
 import Entidades.ParametrosEstructuras;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
-import InterfaceAdministrar.AdministrarInterfaseContableDynamicsROInterface;
+import InterfaceAdministrar.AdministrarInterfaseContableDynamicsCPSInterface;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaContabilizacionesInterface;
@@ -34,7 +34,7 @@ import javax.persistence.EntityManager;
  * @author Administrador
  */
 @Stateful
-public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterfaseContableDynamicsROInterface {
+public class AdministrarInterfaseContableDynamicsCPS implements AdministrarInterfaseContableDynamicsCPSInterface{
 
     @EJB
     PersistenciaParametrosContablesInterface persistenciaParametrosContables;
@@ -282,7 +282,7 @@ public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterf
     @Override
     public void ejecutarPKGCrearArchivoPlano(Date fechaIni, Date fechaFin, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger emplDesde, BigInteger emplHasta) {
         try {
-            persistenciaInterconDynamics.ejecutarPKGCrearArchivoPlano(em, fechaIni, fechaFin, proceso, descripcionProceso, nombreArchivo, emplDesde, emplHasta);
+            persistenciaInterconDynamics.ejecutarPKGCrearArchivoPlano_CPS(em, fechaIni, fechaFin, proceso, descripcionProceso, nombreArchivo, emplDesde, emplHasta);
         } catch (Exception e) {
             System.out.println("Error ejecutarPKGCrearArchivoPlano Admi : " + e.toString());
         }
@@ -326,7 +326,7 @@ public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterf
         }
     }
     
-    @Override
+    @Override 
     public void actualizarFlagContabilizacionDeshacerDynamics_NOT_EXITS(Date fechaIni, Date fechaFin, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
         try {
             persistenciaInterconDynamics.actualizarFlagContabilizacionDeshacerDynamics_NOT_EXITS(em, fechaIni, fechaFin, proceso, emplDesde, emplHasta);
@@ -375,5 +375,4 @@ public class AdministrarInterfaseContableDynamicsRO implements AdministrarInterf
             return null;
         }
     }
-
 }

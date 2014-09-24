@@ -36,7 +36,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             em.merge(empleados);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaEmpleados.crear: " + e);
+            System.out.println("Error PersistenciaEmpleados.crear: " + e.toString());
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -53,7 +53,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             em.merge(empleados);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaEmpleados.editar: " + e);
+            System.out.println("Error PersistenciaEmpleados.editar: " + e.toString());
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -75,7 +75,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
                     tx.rollback();
                 }
             } catch (Exception ex) {
-                System.out.println("Error PersistenciaEmpleados.borrar: " + e);
+                System.out.println("Error PersistenciaEmpleados.borrar: " + e.toString());
             }
         }
     }
@@ -107,7 +107,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<Empleados> listaEmpleados = query.getResultList();
             return listaEmpleados;
         } catch (Exception e) {
-            System.out.println("Error PersistenciaEmpleados.todosEmpleados" + e);
+            System.out.println("Error PersistenciaEmpleados.todosEmpleados" + e.toString());
             return null;
         }
 
@@ -122,7 +122,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<Empleados> listaEmpleados = query.getResultList();
             return listaEmpleados;
         } catch (Exception e) {
-            System.out.println("Error PersistenciaEmpleados.todosEmpleados" + e);
+            System.out.println("Error PersistenciaEmpleados.todosEmpleados" + e.toString());
             return null;
         }
 
@@ -138,7 +138,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             Empleados empleado = (Empleados) query.getSingleResult();
             return empleado;
         } catch (Exception e) {
-            System.err.println("Error PersistenciaEmpleados.buscarEmpleadoSecuencia " + e);
+            System.err.println("Error PersistenciaEmpleados.buscarEmpleadoSecuencia " + e.toString());
             return null;
         }
     }
@@ -152,7 +152,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             Empleados empleado = (Empleados) query.getSingleResult();
             return empleado;
         } catch (Exception e) {
-            System.err.println("Error PersistenciaEmpleados.buscarEmpleadoSecuenciaPersona " + e);
+            System.err.println("Error PersistenciaEmpleados.buscarEmpleadoSecuenciaPersona " + e.toString());
             return null;
         }
     }
@@ -168,7 +168,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             Long resultado = (Long) query.getSingleResult();
             return resultado > 0;
         } catch (Exception e) {
-            System.out.println("Exepcion: " + e);
+            System.out.println("Exepcion: " + e.toString());
             return false;
         }
     }
@@ -229,7 +229,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<Empleados> listaEmpleados = query.getResultList();
             return listaEmpleados;
         } catch (Exception e) {
-            System.out.println("Exepcion en PersistenciaEmpleados.empleadosComprobantes" + e);
+            System.out.println("Exepcion en PersistenciaEmpleados.empleadosComprobantes" + e.toString());
             return null;
         }
     }
@@ -246,7 +246,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<Empleados> listaEmpleados = query.getResultList();
             return listaEmpleados;
         } catch (Exception e) {
-            System.out.println("Exepcion en PersistenciaEmpleados.empleadosNovedad" + e);
+            System.out.println("Exepcion en PersistenciaEmpleados.empleadosNovedad" + e.toString());
             return null;
         }
     }
@@ -263,7 +263,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<Empleados> listaEmpleados = query.getResultList();
             return listaEmpleados;
         } catch (Exception e) {
-            System.out.println("Exepcion en PersistenciaEmpleados.empleadosVacaciones" + e);
+            System.out.println("Exepcion en PersistenciaEmpleados.empleadosVacaciones" + e.toString());
             return null;
         }
     }
@@ -276,7 +276,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<Empleados> listaEmpleados = query.getResultList();
             return listaEmpleados;
         } catch (Exception e) {
-            System.out.println("Exepcion en PersistenciaEmpleados.lovEmpleadosParametros" + e);
+            System.out.println("Exepcion en PersistenciaEmpleados.lovEmpleadosParametros" + e.toString());
             return null;
         }
     }
@@ -294,7 +294,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<Empleados> listaEmpleados = query.getResultList();
             return listaEmpleados;
         } catch (Exception e) {
-            System.out.println("Exepcion en PersistenciaEmpleados.empleadosAuxilios" + e);
+            System.out.println("Exepcion en PersistenciaEmpleados.empleadosAuxilios" + e.toString());
             return null;
         }
     }
@@ -312,7 +312,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<Empleados> listaEmpleados = query.getResultList();
             return listaEmpleados;
         } catch (Exception e) {
-            System.out.println("Exepcion en PersistenciaEmpleados.empleadosNovedad" + e);
+            System.out.println("Exepcion en PersistenciaEmpleados.empleadosNovedad" + e.toString());
             return null;
         }
     }
@@ -428,7 +428,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
                     tx.rollback();
                 }
             } catch (Exception ex) {
-                System.out.println("Error PersistenciaEmpleados.eliminarEmpleadoNominaF: " + e);
+                System.out.println("Error PersistenciaEmpleados.eliminarEmpleadoNominaF: " + e.toString());
             }
         }
     }
@@ -454,7 +454,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
                     tx.rollback();
                 }
             } catch (Exception ex) {
-                System.out.println("Error PersistenciaEmpleados.reingresarEmpleado: " + e);
+                System.out.println("Error PersistenciaEmpleados.reingresarEmpleado: " + e.toString());
             }
         }
     }
@@ -492,7 +492,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             return null;
         }
     }
-    
+
     @Override
     public void cambiarFechaIngreso(EntityManager em, BigInteger secuenciaEmpleado, Date fechaAntigua, Date fechaNueva) {
         EntityTransaction tx = em.getTransaction();
@@ -512,8 +512,32 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
                     tx.rollback();
                 }
             } catch (Exception ex) {
-                System.out.println("Error PersistenciaEmpleados.cambiarFechaIngreso: " + e);
+                System.out.println("Error PersistenciaEmpleados.cambiarFechaIngreso: " + e.toString());
             }
+        }
+    }
+
+    @Override
+    public List<Empleados> consultarEmpleadosCuadrillas(EntityManager em) {
+        try {
+            em.clear();
+            String sql = "SELECT E. *\n"
+                    + " FROM PERSONAS P, EMPLEADOS E \n"
+                    + " WHERE E.PERSONA = P.SECUENCIA \n"
+                    + " AND EXISTS (SELECT 1 \n"
+                    + "            FROM DETALLESTURNOSROTATIVOS DTR \n"
+                    + "            WHERE DTR.EMPLEADO=E.SECUENCIA) \n"
+                    + "AND EXISTS (SELECT 1 \n"
+                    + "            FROM VWACTUALESTIPOSTRABAJADORES VTT,   TIPOSTRABAJADORES TT \n"
+                    + "            WHERE VTT.TIPOTRABAJADOR = TT.SECUENCIA \n"
+                    + "            AND   VTT.EMPLEADO = E.SECUENCIA    \n"
+                    + "            AND   TT.TIPO IN ('ACTIVO','PENSIONADO','RETIRADO'))";
+            Query query = em.createNativeQuery(sql, Empleados.class);
+            List<Empleados> lista = query.getResultList();
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error consultarEmpleadosCuadrillas PersistenciaEmpleados : " + e.toString());
+            return null;
         }
     }
 }

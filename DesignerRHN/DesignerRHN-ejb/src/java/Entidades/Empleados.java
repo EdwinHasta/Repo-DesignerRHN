@@ -21,6 +21,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -42,6 +43,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empleados.findAll", query = "SELECT e FROM Empleados e"),
     @NamedQuery(name = "Empleados.findBySecuencia", query = "SELECT e FROM Empleados e where e.secuencia = :secuencia")})
 public class Empleados implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
+    private Collection<TurnosEmpleados> turnosEmpleadosCollection;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "empleado")
+    private DetallesTurnosRotativos detallesTurnosRotativos;
     @OneToMany(mappedBy = "empleado")
     private Collection<InterconDynamics> interconDynamicsCollection;
     @OneToMany(mappedBy = "empleado")
@@ -346,6 +351,7 @@ public class Empleados implements Serializable {
     }
 
     public String getCodigoempleadoSTR() {
+        getCodigoempleado();
         if (codigoempleado != null) {
             codigoempleadoSTR = codigoempleado.toString();
         } else {
@@ -430,6 +436,23 @@ public class Empleados implements Serializable {
 
     public void setInterconDynamicsCollection(Collection<InterconDynamics> interconDynamicsCollection) {
         this.interconDynamicsCollection = interconDynamicsCollection;
+    }
+
+    public DetallesTurnosRotativos getDetallesTurnosRotativos() {
+        return detallesTurnosRotativos;
+    }
+
+    public void setDetallesTurnosRotativos(DetallesTurnosRotativos detallesTurnosRotativos) {
+        this.detallesTurnosRotativos = detallesTurnosRotativos;
+    }
+
+    @XmlTransient
+    public Collection<TurnosEmpleados> getTurnosEmpleadosCollection() {
+        return turnosEmpleadosCollection;
+    }
+
+    public void setTurnosEmpleadosCollection(Collection<TurnosEmpleados> turnosEmpleadosCollection) {
+        this.turnosEmpleadosCollection = turnosEmpleadosCollection;
     }
 
    

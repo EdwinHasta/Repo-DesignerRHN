@@ -17,13 +17,12 @@ import Entidades.UsuariosInterfases;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.EntityManager;
 
 /**
  *
  * @author Administrador
  */
-public interface AdministrarInterfaseContableDynamicsROInterface {
+public interface AdministrarInterfaseContableDynamicsYVInterface {
 
     public void obtenerConexion(String idSesion);
 
@@ -59,9 +58,9 @@ public interface AdministrarInterfaseContableDynamicsROInterface {
 
     public int contarProcesosContabilizadosInterconDynamics(Date fechaInicial, Date fechaFinal);
 
-    public List<Empleados> buscarEmpleadosEmpresa();
-
     public void cerrarProcesoContable(Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta);
+
+    public List<Empleados> buscarEmpleadosEmpresa();
 
     public void ejecutarPKGCrearArchivoPlano(Date fechaIni, Date fechaFin, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger emplDesde, BigInteger emplHasta);
 
@@ -73,6 +72,8 @@ public interface AdministrarInterfaseContableDynamicsROInterface {
 
     public void deleteInterconDynamics(Date fechaIni, Date fechaFin, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta);
 
+    public void actualizarFlagContabilizacionDeshacerDynamics_NOT_EXITS(Date fechaIni, Date fechaFin, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta);
+
     public void ejecutarPKGUbicarnuevointercon_DYNAMICS(BigInteger secuencia, Date fechaIni, Date fechaFin, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta);
 
     public void anularComprobantesCerrados(Date fechaIni, Date fechaFin, BigInteger proceso);
@@ -80,6 +81,6 @@ public interface AdministrarInterfaseContableDynamicsROInterface {
     public Date obtenerFechaMaxContabilizaciones();
 
     public Date obtenerFechaMaxInterconDynamics();
-    
-    public void actualizarFlagContabilizacionDeshacerDynamics_NOT_EXITS(Date fechaIni, Date fechaFin, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta);
+
+    public UsuariosInterfases obtenerUsuarioInterfaseContabilizacion();
 }

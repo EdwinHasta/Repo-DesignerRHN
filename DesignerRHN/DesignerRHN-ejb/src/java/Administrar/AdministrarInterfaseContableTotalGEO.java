@@ -1,21 +1,21 @@
+
 package Administrar;
 
 import Entidades.ActualUsuario;
 import Entidades.Empresas;
-import Entidades.InterconSapBO;
+import Entidades.InterconTotal;
 import Entidades.ParametrosContables;
 import Entidades.ParametrosEstructuras;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
 import Entidades.UsuariosInterfases;
-import Entidades.VWMensajeSAPBOV8;
-import InterfaceAdministrar.AdministrarInterfaseContableSapBOInterface;
+import InterfaceAdministrar.AdministrarInterfaseContableTotalGEOInterface;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaContabilizacionesInterface;
 import InterfacePersistencia.PersistenciaEmpresasInterface;
 import InterfacePersistencia.PersistenciaGeneralesInterface;
-import InterfacePersistencia.PersistenciaInterconSapBOInterface;
+import InterfacePersistencia.PersistenciaInterconTotalInterface;
 import InterfacePersistencia.PersistenciaParametrosContablesInterface;
 import InterfacePersistencia.PersistenciaParametrosEstructurasInterface;
 import InterfacePersistencia.PersistenciaProcesosInterface;
@@ -23,7 +23,6 @@ import InterfacePersistencia.PersistenciaSolucionesNodosInterface;
 import InterfacePersistencia.PersistenciaTercerosInterface;
 import InterfacePersistencia.PersistenciaUsuariosInterfasesInterface;
 import InterfacePersistencia.PersistenciaVWActualesFechasInterface;
-import InterfacePersistencia.PersistenciaVWMensajeSAPBOV8Interface;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -36,22 +35,22 @@ import javax.persistence.EntityManager;
  * @author Administrador
  */
 @Stateful
-public class AdministrarInterfaseContableSapBO implements AdministrarInterfaseContableSapBOInterface {
+public class AdministrarInterfaseContableTotalGEO implements AdministrarInterfaseContableTotalGEOInterface{
 
-    @EJB
-    AdministrarSesionesInterface administrarSesiones;
     @EJB
     PersistenciaParametrosContablesInterface persistenciaParametrosContables;
     @EJB
-    PersistenciaActualUsuarioInterface persistenciaActualUsuario;
-    @EJB
-    PersistenciaProcesosInterface persistenciaProcesos;
-    @EJB
-    PersistenciaEmpresasInterface persistenciaEmpresas;
+    PersistenciaInterconTotalInterface persistenciaInterconTotal;
     @EJB
     PersistenciaSolucionesNodosInterface persistenciaSolucionesNodos;
     @EJB
-    PersistenciaInterconSapBOInterface persistenciaInterconSap;
+    PersistenciaActualUsuarioInterface persistenciaActualUsuario;
+    @EJB
+    PersistenciaEmpresasInterface persistenciaEmpresas;
+    @EJB
+    PersistenciaProcesosInterface persistenciaProcesos;
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
     @EJB
     PersistenciaTercerosInterface persistenciaTerceros;
     @EJB
@@ -89,7 +88,7 @@ public class AdministrarInterfaseContableSapBO implements AdministrarInterfaseCo
             }
             return parametro;
         } catch (Exception e) {
-            System.out.println("Error obtenerParametrosContablesUsuarioBD Admi : " + e.toString());
+            System.out.println("Error obtenerParametroContableUsuarioBD Admi : " + e.toString());
             return null;
         }
     }
@@ -137,7 +136,7 @@ public class AdministrarInterfaseContableSapBO implements AdministrarInterfaseCo
     @Override
     public List<SolucionesNodos> obtenerSolucionesNodosParametroContable(Date fechaInicial, Date fechaFinal) {
         try {
-            List<SolucionesNodos> lista = persistenciaSolucionesNodos.buscarSolucionesNodosParaParametroContable_SAP(em, fechaInicial, fechaFinal);
+            List<SolucionesNodos> lista = persistenciaSolucionesNodos.buscarSolucionesNodosParaParametroContable(em, fechaInicial, fechaFinal);
             return lista;
         } catch (Exception e) {
             System.out.println("Error obtenerSolucionesNodosParametroContable Admi : " + e.toString());
@@ -146,12 +145,12 @@ public class AdministrarInterfaseContableSapBO implements AdministrarInterfaseCo
     }
 
     @Override
-    public List<InterconSapBO> obtenerInterconSapBOParametroContable(Date fechaInicial, Date fechaFinal) {
+    public List<InterconTotal> obtenerInterconTotalParametroContable(Date fechaInicial, Date fechaFinal) {
         try {
-            List<InterconSapBO> lista = persistenciaInterconSap.buscarInterconSAPBOParametroContable(em, fechaInicial, fechaFinal);
+            List<InterconTotal> lista = persistenciaInterconTotal.buscarInterconTotalParaParametroContable(em, fechaInicial, fechaFinal);
             return lista;
         } catch (Exception e) {
-            System.out.println("Error obtenerInterconSapBOParametroContable Admi : " + e.toString());
+            System.out.println("Error obtenerInterconTotalParametroContable Admi : " + e.toString());
             return null;
         }
     }
@@ -190,23 +189,23 @@ public class AdministrarInterfaseContableSapBO implements AdministrarInterfaseCo
     }
 
     @Override
-    public Date obtenerMaxFechaContabilizaciones() {
+    public Date obtenerFechaMaxContabilizaciones() {
         try {
-            Date fecha = persistenciaContabilizaciones.obtenerFechaMaximaContabilizacionesSAPBOV8(em);
+            Date fecha = persistenciaContabilizaciones.obtenerFechaMaximaContabilizaciones(em);
             return fecha;
         } catch (Exception e) {
-            System.out.println("Error obtenerMaxFechaContabilizaciones Admi : " + e.toString());
+            System.out.println("Error obtenerFechaMaxContabilizaciones Admi : " + e.toString());
             return null;
         }
     }
 
     @Override
-    public Date obtenerMaxFechaIntercoSapBO() {
+    public Date obtenerFechaMaxInterconTotal() {
         try {
-            Date fecha = persistenciaInterconSap.obtenerFechaMaxInterconSAPBO(em);
+            Date fecha = persistenciaInterconTotal.obtenerFechaContabilizacionMaxInterconTotal(em);
             return fecha;
         } catch (Exception e) {
-            System.out.println("Error obtenerMaxFechaIntercoSapBO Admi : " + e.toString());
+            System.out.println("Error obtenerFechaMaxInterconTotal Admi : " + e.toString());
             return null;
         }
     }
@@ -218,11 +217,20 @@ public class AdministrarInterfaseContableSapBO implements AdministrarInterfaseCo
     }
 
     @Override
-    public void actualizarFlagProcesoAnularInterfaseContableSAPBO(Date fechaIni, Date fechaFin) {
+    public void actualizarFlagInterconTotal(Date fechaInicial, Date fechaFinal, Short empresa) {
         try {
-            persistenciaInterconSap.actualizarFlagProcesoAnularInterfaseContableSAPBO(em, fechaIni, fechaFin);
+            persistenciaInterconTotal.actualizarFlagInterconTotal(em, fechaInicial, fechaFinal, empresa);
         } catch (Exception e) {
-            System.out.println("Error actualizarFlagProcesoAnularInterfaseContableSAPBO Admi : " + e.toString());
+            System.out.println("Error actualizarFlagInterconTotal Admi : " + e.toString());
+        }
+    }
+
+    @Override
+    public void actualizarFlagInterconTotalProcesoDeshacer(Date fechaInicial, Date fechaFinal, BigInteger proceso) {
+        try {
+            persistenciaInterconTotal.actualizarFlagInterconTotalProcesoDeshacer(em, fechaInicial, fechaFinal, proceso);
+        } catch (Exception e) {
+            System.out.println("Error actualizarFlagInterconTotalProcesoDeshacer Admi : " + e.toString());
         }
     }
 
@@ -249,65 +257,27 @@ public class AdministrarInterfaseContableSapBO implements AdministrarInterfaseCo
     }
 
     @Override
-    public void ejeuctarPKGUbicarnuevointercon_SAPBO(BigInteger secuencia, Date fechaIni, Date fechaFin, BigInteger proceso) {
+    public void ejcutarPKGUbicarnuevointercon_total(BigInteger secuencia, Date fechaInicial, Date fechaFinal, BigInteger proceso) {
         try {
-            persistenciaInterconSap.ejeuctarPKGUbicarnuevointercon_SAPBO(em, secuencia, fechaIni, fechaFin, proceso);
+            persistenciaInterconTotal.ejecutarPKGUbicarnuevointercon_total(em, secuencia, fechaInicial, fechaFinal, proceso);
         } catch (Exception e) {
-            System.out.println("Error ejeuctarPKGUbicarnuevointercon_SAPBOV8 Admi : " + e.toString());
+            System.out.println("Error ejcutarPKGUbicarnuevointercon_total Admi : " + e.toString());
         }
     }
 
     @Override
-    public void cambiarFlagInterconContableSAPBO(Date fechaIni, Date fechaFin, BigInteger proceso) {
+    public void eliminarInterconTotal(Date fechaInicial, Date fechaFinal, Short empresa, BigInteger proceso) {
         try {
-            persistenciaContabilizaciones.actualizarFlahInterconContableSAPBO(em, fechaIni, fechaFin, proceso);
+            persistenciaInterconTotal.eliminarInterconTotal(em, fechaInicial, fechaFinal, empresa, proceso);
         } catch (Exception e) {
-            System.out.println("Error cambiarFlagInterconContableSAPBO Admi : " + e.toString());
+            System.out.println("Error eliminarInterconTotal Admi : " + e.toString());
         }
     }
 
     @Override
-    public void ejecutarDeleteInterconSAP(Date fechaIni, Date fechaFin, BigInteger proceso) {
+    public int contarProcesosContabilizadosInterconTotal(Date fechaInicial, Date fechaFinal) {
         try {
-            persistenciaInterconSap.ejecutarDeleteInterconSAPBOV8(em, fechaIni, fechaFin, proceso);
-        } catch (Exception e) {
-            System.out.println("Error ejecutarDeleteInterconSAP Admi : " + e.toString());
-        }
-    }
-
-    @Override
-    public void cerrarProcesoLiquidacion(Date fechaIni, Date fechaFin, BigInteger proceso) {
-        try {
-            persistenciaInterconSap.cerrarProcesoLiquidacion(em, fechaIni, fechaFin, proceso);
-        } catch (Exception e) {
-            System.out.println("Error cerrarProcesoLiquidacion Admi : " + e.toString());
-        }
-    }
-
-    @Override
-    public Integer obtenerContadorFlagGeneradoFechasSAP(Date fechaIni, Date fechaFin) {
-        try {
-            Integer contador = persistenciaContabilizaciones.obtenerContadorFlagGeneradoFechasSAP(em, fechaIni, fechaFin);
-            return contador;
-        } catch (Exception e) {
-            System.out.println("Error obtenerContadorFlagGeneradoFechasSAP Admi : " + e.toString());
-            return null;
-        }
-    }
-
-    @Override
-    public void ejecutarPKGRecontabilizacion(Date fechaIni, Date fechaFin) {
-        try {
-            persistenciaInterconSap.ejecutarPKGRecontabilizacion(em, fechaIni, fechaFin);
-        } catch (Exception e) {
-            System.out.println("Error obtenerContadorFlagGeneradoFechasSAP Admi : " + e.toString());
-        }
-    }
-    
-    @Override
-    public int contarProcesosContabilizadosInterconSAPBO(Date fechaInicial, Date fechaFinal) {
-        try {
-            int contador = persistenciaInterconSap.contarProcesosContabilizadosInterconSAPBO(em, fechaInicial, fechaFinal);
+            int contador = persistenciaInterconTotal.contarProcesosContabilizadosInterconTotal(em, fechaInicial, fechaFinal);
             return contador;
         } catch (Exception e) {
             System.out.println("Error contarProcesosContabilizadosInterconTotal Admi : " + e.toString());
@@ -316,6 +286,35 @@ public class AdministrarInterfaseContableSapBO implements AdministrarInterfaseCo
     }
 
     @Override
+    public void cerrarProcesoContabilizacion(Date fechaInicial, Date fechaFinal, Short empresa, BigInteger proceso) {
+        try {
+            persistenciaInterconTotal.cerrarProcesoContabilizacion(em, fechaInicial, fechaFinal, empresa, proceso);
+        } catch (Exception e) {
+            System.out.println("Error cerrarProcesoContabilizacion Admi : " + e.toString());
+        }
+    }
+
+    @Override
+    public Integer obtenerContadorFlagGeneradoFechasTotal(Date fechaIni, Date fechaFin) {
+        try {
+            Integer contador = persistenciaContabilizaciones.obtenerContadorFlagGeneradoFechasTotal(em, fechaIni, fechaFin);
+            return contador;
+        } catch (Exception e) {
+            System.out.println("Error obtenerContadorFlagGeneradoFechasTotal Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public void ejecutarPKGRecontabilizacion(Date fechaIni, Date fechaFin) {
+        try {
+            persistenciaInterconTotal.ejecutarPKGRecontabilizacion(em, fechaIni, fechaFin);
+        } catch (Exception e) {
+            System.out.println("Error ejecutarPKGRecontabilizacion Admi : " + e.toString());
+        }
+    }
+
+    //@Override
     public String obtenerDescripcionProcesoArchivo(BigInteger proceso) {
         try {
             String valor = persistenciaProcesos.obtenerDescripcionProcesoPorSecuencia(em, proceso);
@@ -349,9 +348,9 @@ public class AdministrarInterfaseContableSapBO implements AdministrarInterfaseCo
     }
 
     @Override
-    public void ejecutarPKGCrearArchivoPlano(Date fechaIni, Date fechaFin, BigInteger proceso, String descripcionProceso, String nombreArchivo) {
+    public void ejecutarPKGCrearArchivoPlano(int tipoArchivo, Date fechaIni, Date fechaFin, BigInteger proceso, String nombreArchivo) {
         try {
-            persistenciaInterconSap.ejecutarPKGCrearArchivoPlanoSAPBO(em, fechaIni, fechaFin, proceso, descripcionProceso, nombreArchivo);
+            persistenciaInterconTotal.ejecutarPKGCrearArchivoPlano_GEO(em, tipoArchivo, fechaIni, fechaFin, proceso, nombreArchivo);
         } catch (Exception e) {
             System.out.println("Error ejecutarPKGCrearArchivoPlano Admi : " + e.toString());
         }

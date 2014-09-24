@@ -165,7 +165,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
                 return "SIN REGISTRAR";
             }
         } catch (Exception e) {
-            System.out.println("Exepcion en PersistenciaEmpleados.nombreEmpresa" + e);
+            System.out.println("Exepcion en PersistenciaEmpleados.nombreEmpresa" + e.toString());
             return null;
         }
     }

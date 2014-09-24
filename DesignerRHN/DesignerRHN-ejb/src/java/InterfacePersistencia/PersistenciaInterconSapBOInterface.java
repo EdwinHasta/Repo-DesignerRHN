@@ -58,4 +58,10 @@ public interface PersistenciaInterconSapBOInterface {
     public void ejecutarPKGCrearArchivoPlanoSAPPQ(EntityManager em, Date fechaIni, Date fechaFin, BigInteger proceso, String descripcionProceso, String nombreArchivo);
 
     public void ejecutarPKGCrearArchivoPlanoSAPHP(EntityManager em, Date fechaIni, Date fechaFin, BigInteger proceso, String descripcionProceso, String nombreArchivo);
+
+    public void actualizarFlagProcesoAnularInterfaseContableSAPBO(EntityManager em, Date fechaIni, Date fechaFin);
+
+    public void ejeuctarPKGUbicarnuevointercon_SAPBO(EntityManager em, BigInteger secuencia, Date fechaIni, Date fechaFin, BigInteger proceso);
+
+    public void ejecutarPKGCrearArchivoPlanoSAPBO(EntityManager em, Date fechaIni, Date fechaFin, BigInteger proceso, String descripcionProceso, String nombreArchivo);
 }

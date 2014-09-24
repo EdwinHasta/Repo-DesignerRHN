@@ -151,6 +151,35 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
     }
 
     @Override
+    public void cerrarProcesoContabilizacion_PL(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger empleadoDesde, BigInteger empleadoHasta) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            String sql = "UPDATE INTERCON_DYNAMICS I SET I.FLAG='ENVIADO'\n"
+                    + "     WHERE  \n"
+                    + "     I.FECHACONTABILIZACION BETWEEN ? AND ?\n"
+                    + "     and nvl(i.proceso,0) = nvl(?,nvl(i.proceso,0))\n"
+                    + "     AND FLAG='CONTABILIZADO'\n"
+                    + "     and exists (select 'x' from empleados e where e.secuencia=i.empleado\n"
+                    + "                 and e.codigoempleado between nvl(?,0)\n"
+                    + "                                          and nvl(?,99999999999999))";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaInicial);
+            query.setParameter(2, fechaFinal);
+            query.setParameter(3, proceso);
+            query.setParameter(4, empleadoDesde);
+            query.setParameter(5, empleadoHasta);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconDynamics.cerrarProcesoContabilizacion_PL : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
     public void ejecutarPKGCrearArchivoPlano(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger empleadoDesde, BigInteger empleadoHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
@@ -168,6 +197,198 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaInterconDynamics.ejecutarPKGCrearArchivoPlano : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void ejecutarPKGCrearArchivoPlano_PACIFIC(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger empleadoDesde, BigInteger empleadoHasta) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            String sql = "call INTERFASEDYNAMICS$PKG.enviarPACIFIC(?,?,?,?, ?,nvl(?,0), nvl(?,999999999999999))";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaInicial);
+            query.setParameter(2, fechaFinal);
+            query.setParameter(3, proceso);
+            query.setParameter(4, descripcionProceso);
+            query.setParameter(5, nombreArchivo);
+            query.setParameter(6, empleadoDesde);
+            query.setParameter(7, empleadoHasta);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconDynamics.ejecutarPKGCrearArchivoPlano_PACIFIC : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void ejecutarPKGCrearArchivoPlano_PROLUB(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger empleadoDesde, BigInteger empleadoHasta) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            String sql = "call INTERFASEDYNAMICS$PKG.enviarPROLUB(?,?,?,?, ?,nvl(?,0), nvl(?,999999999999999))";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaInicial);
+            query.setParameter(2, fechaFinal);
+            query.setParameter(3, proceso);
+            query.setParameter(4, descripcionProceso);
+            query.setParameter(5, nombreArchivo);
+            query.setParameter(6, empleadoDesde);
+            query.setParameter(7, empleadoHasta);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconDynamics.ejecutarPKGCrearArchivoPlano_PROLUB : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void ejecutarPKGCrearArchivoPlano_VT(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger empleadoDesde, BigInteger empleadoHasta) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            String sql = "call INTERFASEDYNAMICS$PKG.enviarvt(?,?,?,?, ?,nvl(?,0), nvl(?,999999999999999))";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaInicial);
+            query.setParameter(2, fechaFinal);
+            query.setParameter(3, proceso);
+            query.setParameter(4, descripcionProceso);
+            query.setParameter(5, nombreArchivo);
+            query.setParameter(6, empleadoDesde);
+            query.setParameter(7, empleadoHasta);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconDynamics.ejecutarPKGCrearArchivoPlano_VT : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void ejecutarPKGCrearArchivoPlano_MAMUT(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger empleadoDesde, BigInteger empleadoHasta) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            String sql = "call INTERFASEDYNAMICS$PKG.enviarMAMUT(?,?,?,?, ?,nvl(?,0), nvl(?,999999999999999))";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaInicial);
+            query.setParameter(2, fechaFinal);
+            query.setParameter(3, proceso);
+            query.setParameter(4, descripcionProceso);
+            query.setParameter(5, nombreArchivo);
+            query.setParameter(6, empleadoDesde);
+            query.setParameter(7, empleadoHasta);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconDynamics.ejecutarPKGCrearArchivoPlano_MAMUT : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+    
+    @Override
+    public void ejecutarPKGCrearArchivoPlano_SX(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger empleadoDesde, BigInteger empleadoHasta) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            String sql = "call INTERFASEDYNAMICS$PKG.enviar(?,?,?,?, ?,nvl(?,0), nvl(?,999999999999999))";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaInicial);
+            query.setParameter(2, fechaFinal);
+            query.setParameter(3, proceso);
+            query.setParameter(4, descripcionProceso);
+            query.setParameter(5, nombreArchivo);
+            query.setParameter(6, empleadoDesde);
+            query.setParameter(7, empleadoHasta);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconDynamics.ejecutarPKGCrearArchivoPlano_SX : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+    
+    @Override
+    public void ejecutarPKGCrearArchivoPlano_CPS(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger empleadoDesde, BigInteger empleadoHasta) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            String sql = "call INTERFASEDYNAMICS$PKG.enviarCPS(?,?,?,?, ?,nvl(?,0), nvl(?,999999999999999))";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaInicial);
+            query.setParameter(2, fechaFinal);
+            query.setParameter(3, proceso);
+            query.setParameter(4, descripcionProceso);
+            query.setParameter(5, nombreArchivo);
+            query.setParameter(6, empleadoDesde);
+            query.setParameter(7, empleadoHasta);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconDynamics.ejecutarPKGCrearArchivoPlano_MAMUT : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+    
+    @Override
+    public void ejecutarPKGCrearArchivoPlano_YV(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger empleadoDesde, BigInteger empleadoHasta) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            String sql = "call INTERFASEDYNAMICS$PKG.enviarYV(?,?,?,?, ?,nvl(?,0), nvl(?,999999999999999))";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaInicial);
+            query.setParameter(2, fechaFinal);
+            query.setParameter(3, proceso);
+            query.setParameter(4, descripcionProceso);
+            query.setParameter(5, nombreArchivo);
+            query.setParameter(6, empleadoDesde);
+            query.setParameter(7, empleadoHasta);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconDynamics.ejecutarPKGCrearArchivoPlano_MAMUT : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void ejecutarPKGCrearArchivoPlano_PL(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger empleadoDesde, BigInteger empleadoHasta) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            String sql = "call  INTERFASEDYNAMICS$PKG.enviarPLINGW(?,?,?,?, ?,nvl(?,0), nvl(?,999999999999999))";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaInicial);
+            query.setParameter(2, fechaFinal);
+            query.setParameter(3, proceso);
+            query.setParameter(4, descripcionProceso);
+            query.setParameter(5, nombreArchivo);
+            query.setParameter(6, empleadoDesde);
+            query.setParameter(7, empleadoHasta);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconDynamics.ejecutarPKGCrearArchivoPlano_PL : " + e.toString());
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -216,9 +437,9 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
             Query query = em.createNativeQuery(sql);
             query.setParameter(1, fechaInicial);
             query.setParameter(2, fechaFinal);
-            query.setParameter(3, proceso);
-            query.setParameter(4, fechaInicial);
-            query.setParameter(5, fechaFinal);
+            query.setParameter(3, fechaInicial);
+            query.setParameter(4, fechaFinal);
+            query.setParameter(5, proceso);
             query.setParameter(6, emplDesde);
             query.setParameter(7, emplHasta);
             query.executeUpdate();
@@ -260,6 +481,45 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
     }
 
     @Override
+    public void actualizarFlagContabilizacionDeshacerDynamics_NOT_EXITS(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            String sql = "UPDATE \n"
+                    + "   CONTABILIZACIONES\n"
+                    + "		 SET FLAG='GENERADO'\n"
+                    + "		 WHERE FLAG='CONTABILIZADO'\n"
+                    + "		 AND FECHAGENERACION BETWEEN ? AND ? \n"
+                    + "		 AND \n"
+                    + "       NOT  EXISTS \n"
+                    + "         (SELECT 'X' \n"
+                    + "         FROM INTERCON_DYNAMICS IT \n"
+                    + "         WHERE IT.CONTABILIZACION = CONTABILIZACIONES.SECUENCIA \n"
+                    + "		     and FECHACONTABILIZACION BETWEEN ? AND ?\n"
+                    + "         AND FLAG = 'CONTABILIZADO'\n"
+                    + "         AND nvl(IT.PROCESO,0) = NVL(?,nvl(IT.PROCESO,0))\n"
+                    + "         and exists (select 'x' from empleados e where e.secuencia=it.empleado\n"
+                    + "                     and e.codigoempleado between nvl(?,0)\n"
+                    + "                                          and nvl(?,99999999999999)))";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaInicial);
+            query.setParameter(2, fechaFinal);
+            query.setParameter(3, fechaInicial);
+            query.setParameter(4, fechaFinal);
+            query.setParameter(5, proceso);
+            query.setParameter(6, emplDesde);
+            query.setParameter(7, emplHasta);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconDynamics.deleteInterconDynamics : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
     public void ejecutarPKGUbicarnuevointercon_DYNAMICS(EntityManager em, BigInteger secuencia, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
@@ -276,6 +536,121 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaInterconDynamics.ejecutarPKGUbicarnuevointercon_DYNAMICS : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void ejecutarPKGUbicarnuevointercon_DYNAMICS_PACIFIC(EntityManager em, BigInteger secuencia, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            String sql = "call INTERFASEDYNAMICS$PKG.Ubicarnuevointercon_PACIFIC(?,?,?,?, nvl(?,0), nvl(?,999999999999999))";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, secuencia);
+            query.setParameter(2, fechaInicial);
+            query.setParameter(3, fechaFinal);
+            query.setParameter(4, proceso);
+            query.setParameter(5, emplDesde);
+            query.setParameter(6, emplHasta);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconDynamics.ejecutarPKGUbicarnuevointercon_DYNAMICS_PACIFIC : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void ejecutarPKGUbicarnuevointercon_PLIN(EntityManager em, BigInteger secuencia, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            String sql = "call INTERFASEDYNAMICS$PKG.Ubicarnuevointercon_PLIN(?,?,?,?, nvl(?,0), nvl(?,999999999999999))";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, secuencia);
+            query.setParameter(2, fechaInicial);
+            query.setParameter(3, fechaFinal);
+            query.setParameter(4, proceso);
+            query.setParameter(5, emplDesde);
+            query.setParameter(6, emplHasta);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconDynamics.ejecutarPKGUbicarnuevointercon_PLIN : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void ejecutarPKGUbicarnuevointercon_MAMUT(EntityManager em, BigInteger secuencia, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            String sql = "call INTERFASEDYNAMICS$PKG.Ubicarnuevointercon_MAMUT(?,?,?,?, nvl(?,0), nvl(?,999999999999999))";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, secuencia);
+            query.setParameter(2, fechaInicial);
+            query.setParameter(3, fechaFinal);
+            query.setParameter(4, proceso);
+            query.setParameter(5, emplDesde);
+            query.setParameter(6, emplHasta);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconDynamics.ejecutarPKGUbicarnuevointercon_PLIN : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+    
+    @Override
+    public void ejecutarPKGUbicarnuevointercon_YV(EntityManager em, BigInteger secuencia, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            String sql = "call INTERFASEDYNAMICS$PKG.Ubicarnuevointercon_YV(?,?,?,?, nvl(?,0), nvl(?,999999999999999))";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, secuencia);
+            query.setParameter(2, fechaInicial);
+            query.setParameter(3, fechaFinal);
+            query.setParameter(4, proceso);
+            query.setParameter(5, emplDesde);
+            query.setParameter(6, emplHasta);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconDynamics.ejecutarPKGUbicarnuevointercon_YV : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void ejecutarPKGUbicarnuevointercon_PROLUB(EntityManager em, BigInteger secuencia, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            String sql = "call INTERFASEDYNAMICS$PKG.ejecutarPKGUbicarnuevointercon_PROLUB(?,?,?,?, nvl(?,0), nvl(?,999999999999999))";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, secuencia);
+            query.setParameter(2, fechaInicial);
+            query.setParameter(3, fechaFinal);
+            query.setParameter(4, proceso);
+            query.setParameter(5, emplDesde);
+            query.setParameter(6, emplHasta);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconDynamics.ejecutarPKGUbicarnuevointercon_PROLUB : " + e.toString());
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -307,6 +682,30 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
     }
 
     @Override
+    public void anularComprobantesCerrados_PL(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            String sql = "UPDATE intercon_DYNAMICS IT SET FLAG = 'CONTABILIZADO'\n"
+                    + "		  WHERE FECHACONTABILIZACION BETWEEN ? AND ?\n"
+                    + "		  AND FLAG IN ( 'ENVIADO','PROCESANDO')\n"
+                    + "		  and exists (select 'x' from empleados e where e.secuencia=IT.empleado)\n"
+                    + "         AND nvl(IT.PROCESO,0) = NVL(?,nvl(IT.PROCESO,0))";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, fechaInicial);
+            query.setParameter(2, fechaFinal);
+            query.setParameter(3, proceso);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconDynamics.anularComprobantesCerrados_PL : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
     public Date obtenerFechaContabilizacionMaxInterconDynamics(EntityManager em) {
         try {
             em.clear();
@@ -317,6 +716,73 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
             return fecha;
         } catch (Exception e) {
             System.out.println("Error PersistenciaInterconDynamics.obtenerFechaContabilizacionMaxInterconDynamics : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public void actionProcesarDatosDYNAMICSPL(EntityManager em, short codigoEmpresa) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            String sql = "";
+            if (codigoEmpresa == 1) {
+                sql = "call 	PRCBIT_EXE1()";
+            }
+            if (codigoEmpresa == 2) {
+                sql = "call 	PRCBIT_EXE2()";
+            }
+            Query query = em.createNativeQuery(sql);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconDynamics.actionProcesarDatosDYNAMICSPL : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void actionRespuestaDYNAMICSPL(EntityManager em, short codigoEmpresa) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            String sql = "";
+            if (codigoEmpresa == 1) {
+                sql = "call 	PRCBIT_RES1()";
+            }
+            if (codigoEmpresa == 2) {
+                sql = "call 	PRCBIT_RES2()";
+            }
+            Query query = em.createNativeQuery(sql);
+            query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconDynamics.actionProcesarDatosDYNAMICSPL : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public String obtenerCargoDYNAMICSVT(EntityManager em, BigInteger empleado, Date fechaContabilizacion) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            String sql = "call EMPLEADOCURRENT_PKG.CODIGOALTERNOCARGO(?,?)";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, empleado);
+            query.setParameter(2, fechaContabilizacion);
+            String cargo = (String) query.getSingleResult();
+            tx.commit();
+            return cargo;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaInterconDynamics.obtenerCargoDYNAMICSVT : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
             return null;
         }
     }

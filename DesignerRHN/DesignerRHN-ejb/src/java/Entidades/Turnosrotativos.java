@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -45,41 +46,45 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Turnosrotativos.findByMinutofinal", query = "SELECT t FROM Turnosrotativos t WHERE t.minutofinal = :minutofinal"),
     @NamedQuery(name = "Turnosrotativos.findByFinsemilla", query = "SELECT t FROM Turnosrotativos t WHERE t.finsemilla = :finsemilla")})
 public class Turnosrotativos implements Serializable {
+    @OneToMany(mappedBy = "turnorotativo")
+    private Collection<TurnosEmpleados> turnosEmpleadosCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "turnorotativo")
+    private Collection<DetallesTurnosRotativos> detallesTurnosRotativosCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
-    @Basic(optional = false)
-    @NotNull
+    private BigInteger secuencia;
+    //@Basic(optional = false)
+    //@NotNull
     @Column(name = "CODIGO")
     private short codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 40)
+    //@Basic(optional = false)
+    //@NotNull
+    //@Size(min = 1, max = 40)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @Basic(optional = false)
-    @NotNull
+    //@Basic(optional = false)
+    //@NotNull
     @Column(name = "FECHASEMILLA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechasemilla;
-    @Basic(optional = false)
-    @NotNull
+    //@Basic(optional = false)
+    //@NotNull
     @Column(name = "HORAINICIAL")
     private short horainicial;
-    @Basic(optional = false)
-    @NotNull
+    //@Basic(optional = false)
+    //@NotNull
     @Column(name = "HORAFINAL")
     private short horafinal;
-    @Basic(optional = false)
-    @NotNull
+    //@Basic(optional = false)
+    //@NotNull
     @Column(name = "MINUTOINICIAL")
     private short minutoinicial;
-    @Basic(optional = false)
-    @NotNull
+    //@Basic(optional = false)
+    //@NotNull
     @Column(name = "MINUTOFINAL")
     private short minutofinal;
     @Column(name = "FINSEMILLA")
@@ -94,11 +99,11 @@ public class Turnosrotativos implements Serializable {
     public Turnosrotativos() {
     }
 
-    public Turnosrotativos(BigDecimal secuencia) {
+    public Turnosrotativos(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public Turnosrotativos(BigDecimal secuencia, short codigo, String descripcion, Date fechasemilla, short horainicial, short horafinal, short minutoinicial, short minutofinal) {
+    public Turnosrotativos(BigInteger secuencia, short codigo, String descripcion, Date fechasemilla, short horainicial, short horafinal, short minutoinicial, short minutofinal) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
@@ -109,11 +114,11 @@ public class Turnosrotativos implements Serializable {
         this.minutofinal = minutofinal;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
@@ -221,6 +226,24 @@ public class Turnosrotativos implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Turnosrotativos[ secuencia=" + secuencia + " ]";
+    }
+
+    @XmlTransient
+    public Collection<DetallesTurnosRotativos> getDetallesTurnosRotativosCollection() {
+        return detallesTurnosRotativosCollection;
+    }
+
+    public void setDetallesTurnosRotativosCollection(Collection<DetallesTurnosRotativos> detallesTurnosRotativosCollection) {
+        this.detallesTurnosRotativosCollection = detallesTurnosRotativosCollection;
+    }
+
+    @XmlTransient
+    public Collection<TurnosEmpleados> getTurnosEmpleadosCollection() {
+        return turnosEmpleadosCollection;
+    }
+
+    public void setTurnosEmpleadosCollection(Collection<TurnosEmpleados> turnosEmpleadosCollection) {
+        this.turnosEmpleadosCollection = turnosEmpleadosCollection;
     }
     
 }

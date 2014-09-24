@@ -146,6 +146,7 @@ public class AdministrarInicioRed implements AdministrarInicioRedInterface, Seri
 
     @Override
     public String nombreEmpresaPrincipal() {
+        System.out.println("Admi Nombre Empresa Principal");
         if (sessionEMF.getEmf() != null && sessionEMF.getEmf().isOpen()) {
             return persistenciaEmpresas.nombreEmpresa(sessionEMF.getEmf().createEntityManager());
         } else {
