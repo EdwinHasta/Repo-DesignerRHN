@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Entidades;
 
 import java.io.Serializable;
@@ -21,6 +20,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -43,6 +43,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ParametrosTiempos.findByFormaliquidacion", query = "SELECT p FROM ParametrosTiempos p WHERE p.formaliquidacion = :formaliquidacion"),
     @NamedQuery(name = "ParametrosTiempos.findByUsuariobd", query = "SELECT p FROM ParametrosTiempos p WHERE p.usuariobd = :usuariobd")})
 public class ParametrosTiempos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -79,6 +80,10 @@ public class ParametrosTiempos implements Serializable {
     @JoinColumn(name = "CUADRILLA", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Cuadrillas cuadrilla;
+    @Transient
+    private String horaFechaDesde;
+    @Transient
+    private String horaFechaHasta;
 
     public ParametrosTiempos() {
     }
@@ -173,6 +178,22 @@ public class ParametrosTiempos implements Serializable {
         this.cuadrilla = cuadrilla;
     }
 
+    public String getHoraFechaDesde() {
+        return horaFechaDesde;
+    }
+
+    public void setHoraFechaDesde(String horaFechaDesde) {
+        this.horaFechaDesde = horaFechaDesde;
+    }
+
+    public String getHoraFechaHasta() {
+        return horaFechaHasta;
+    }
+
+    public void setHoraFechaHasta(String horaFechaHasta) {
+        this.horaFechaHasta = horaFechaHasta;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -197,5 +218,5 @@ public class ParametrosTiempos implements Serializable {
     public String toString() {
         return "Entidades.ParametrosTiempos[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

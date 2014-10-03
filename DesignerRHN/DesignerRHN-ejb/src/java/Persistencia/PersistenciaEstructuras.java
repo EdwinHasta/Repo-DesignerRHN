@@ -288,4 +288,63 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
         }
     }
 
+    @Override
+    public List<Estructuras> consultarEstructurasTurnoEmpleado(EntityManager em) {
+        try {
+            em.clear();
+            String sql = "SELECT ES.*\n"
+                    + " FROM EERSAUTORIZACIONES EA, ESTRUCTURAS ES, USUARIOS U, PERSONAS P, EERSESTADOS EE, organigramas org\n"
+                    + " WHERE P.secuencia=U.persona\n"
+                    + " AND ES.secuencia=EA.estructura\n"
+                    + " AND ES.organigrama =  org.secuencia\n"
+                    + " and org.fecha = (select max(fecha) from organigramas, empresas empre\n"
+                    + " where empre.secuencia=organigramas.empresa\n"
+                    + " and org.empresa=organigramas.empresa\n"
+                    + " and fecha <= sysdate)\n"
+                    + " AND EA.usuario=U.secuencia\n"
+                    + " AND EE.secuencia=EA.eerestado\n"
+                    + " AND EA.tipoeer='TURNO'\n"
+                    + " AND EA.EERESTADO=\n"
+                    + "    (SELECT SECUENCIA FROM EERSESTADOS WHERE TIPOEER='TURNO' AND CODIGO=\n"
+                    + "        (SELECT MIN(CODIGO) FROM EERSESTADOS WHERE TIPOEER='TURNO'))";
+            Query query = em.createNativeQuery(sql, Estructuras.class);
+            List<Estructuras> lista = query.getResultList();
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error consultarEstructurasTurnoEmpleado PersistenciaEstructuras: " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public List<Estructuras> consultarEstructurasEersCabeceras(EntityManager em, BigInteger secuencia) {
+        try {
+            em.clear();
+            String sql = "SELECT ES.*\n"
+                    + " FROM EERSAUTORIZACIONES EA, ESTRUCTURAS ES, USUARIOS U, PERSONAS P, EERSESTADOS EE, organigramas org\n"
+                    + " WHERE P.secuencia=U.persona\n"
+                    + " AND ES.secuencia=EA.estructura\n"
+                    + " AND ES.organigrama =  org.secuencia\n"
+                    + " and org.fecha = (select max(fecha) from organigramas, empresas empre\n"
+                    + " where empre.secuencia=organigramas.empresa\n"
+                    + " and org.empresa=organigramas.empresa\n"
+                    + " and fecha <= sysdate)\n"
+                    + " AND EA.usuario=U.secuencia\n"
+                    + " AND EE.secuencia=EA.eerestado\n"
+                    + " AND EA.tipoeer='TURNO'\n"
+                    + " AND EA.EERESTADO=\n"
+                    + "    (SELECT SECUENCIA FROM EERSESTADOS WHERE TIPOEER='TURNO' AND CODIGO=\n"
+                    + "        (SELECT MIN(CODIGO) FROM EERSESTADOS WHERE TIPOEER='TURNO'\n"
+                    + "         AND CODIGO>(SELECT CODIGO FROM EERSESTADOS WHERE \n"
+                    + "         SECUENCIA=?)))";
+            Query query = em.createNativeQuery(sql, Estructuras.class);
+            query.setParameter(1, secuencia);
+            List<Estructuras> lista = query.getResultList();
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error consultarEstructurasEersCabeceras PersistenciaEstructuras: " + e.toString());
+            return null;
+        }
+    }
+
 }

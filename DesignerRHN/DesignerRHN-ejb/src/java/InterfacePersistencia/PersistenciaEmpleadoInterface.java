@@ -183,4 +183,8 @@ public interface PersistenciaEmpleadoInterface {
 
     public List<Empleados> consultarEmpleadosCuadrillas(EntityManager em);
 
+    public List<Empleados> buscarEmpleadosATHoraExtra(EntityManager em);
+    
+    public List<Empleados> consultarEmpleadosParaAprobarHorasExtras(EntityManager em);
+
 }

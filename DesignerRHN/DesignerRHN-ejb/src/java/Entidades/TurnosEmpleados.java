@@ -8,6 +8,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -51,7 +52,7 @@ public class TurnosEmpleados implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHAINICIAL")
@@ -100,21 +101,21 @@ public class TurnosEmpleados implements Serializable {
     public TurnosEmpleados() {
     }
 
-    public TurnosEmpleados(BigDecimal secuencia) {
+    public TurnosEmpleados(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 
-    public TurnosEmpleados(BigDecimal secuencia, Date fechainicial, Date fechafinal) {
+    public TurnosEmpleados(BigInteger secuencia, Date fechainicial, Date fechafinal) {
         this.secuencia = secuencia;
         this.fechainicial = fechainicial;
         this.fechafinal = fechafinal;
     }
 
-    public BigDecimal getSecuencia() {
+    public BigInteger getSecuencia() {
         return secuencia;
     }
 
-    public void setSecuencia(BigDecimal secuencia) {
+    public void setSecuencia(BigInteger secuencia) {
         this.secuencia = secuencia;
     }
 

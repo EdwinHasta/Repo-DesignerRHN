@@ -5,9 +5,11 @@
  */
 package Persistencia;
 
+import Entidades.TurnosEmpleados;
 import InterfacePersistencia.PersistenciaTurnosEmpleadosInterface;
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -47,9 +49,9 @@ public class PersistenciaTurnosEmpleados implements PersistenciaTurnosEmpleadosI
             return null;
         }
     }
-    
+
     @Override
-    public int ejecutarPKG_CONTARNOVEDADESLIQ(EntityManager em,Date fechaDesde, Date fechaHasta, BigInteger emplDesde, BigInteger emplHasta) {
+    public int ejecutarPKG_CONTARNOVEDADESLIQ(EntityManager em, Date fechaDesde, Date fechaHasta, BigInteger emplDesde, BigInteger emplHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -63,16 +65,16 @@ public class PersistenciaTurnosEmpleados implements PersistenciaTurnosEmpleadosI
             tx.commit();
             return dato;
         } catch (Exception e) {
-            System.out.println("Error PersistenciaParametrosTiempos.EjecutarPKG_CONTARNOVEDADESLIQ : " + e.toString());
+            System.out.println("Error PersistenciaTurnosEmpleados.EjecutarPKG_CONTARNOVEDADESLIQ : " + e.toString());
             if (tx.isActive()) {
                 tx.rollback();
             }
             return -1;
         }
     }
-    
+
     @Override
-    public void ejecutarPKG_ELIMINARLIQUIDACION(EntityManager em,Date fechaDesde, Date fechaHasta, BigInteger emplDesde, BigInteger emplHasta) {
+    public void ejecutarPKG_ELIMINARLIQUIDACION(EntityManager em, Date fechaDesde, Date fechaHasta, BigInteger emplDesde, BigInteger emplHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -85,10 +87,75 @@ public class PersistenciaTurnosEmpleados implements PersistenciaTurnosEmpleadosI
             query.executeUpdate();
             tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaParametrosTiempos.EjecutarPKG_ELIMINARLIQUIDACION : " + e.toString());
+            System.out.println("Error PersistenciaTurnosEmpleados.EjecutarPKG_ELIMINARLIQUIDACION : " + e.toString());
             if (tx.isActive()) {
                 tx.rollback();
             }
+        }
+    }
+
+    @Override
+    public void crear(EntityManager em, TurnosEmpleados turnosEmpleados) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.persist(turnosEmpleados);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTurnosEmpleados.crear: " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void editar(EntityManager em, TurnosEmpleados turnosEmpleados) {
+
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(turnosEmpleados);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTurnosEmpleados.editar: " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void borrar(EntityManager em, TurnosEmpleados turnosEmpleados) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(turnosEmpleados));
+            tx.commit();
+
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            System.out.println("Error PersistenciaTurnosEmpleados.borrar: " + e.toString());
+        }
+    }
+
+    @Override
+    public List<TurnosEmpleados> buscarTurnosEmpleadosPorEmpleado(EntityManager em, BigInteger secuencia) {
+        try {
+            em.clear();
+            Query query = em.createQuery("SELECT t FROM TurnosEmpleados t WHERE t.empleado.secuencia =:secuencia");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            query.setParameter("secuencia", secuencia);
+            List<TurnosEmpleados> lista = query.getResultList();
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTurnosEmpleados PersistenciaEmpleados : " + e.toString());
+            return null;
         }
     }
 }

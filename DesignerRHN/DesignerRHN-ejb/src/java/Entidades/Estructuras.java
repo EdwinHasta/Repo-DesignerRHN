@@ -40,6 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 public class Estructuras implements Serializable {
     @OneToMany(mappedBy = "estructuraaprueba")
+    private Collection<EersCabeceras> eersCabecerasCollection;
+    @OneToMany(mappedBy = "estructuraaprueba")
     private Collection<TurnosEmpleados> turnosEmpleadosCollection;
     @OneToMany(mappedBy = "estructura")
     private Collection<ParametrosTiempos> parametrosTiemposCollection;
@@ -267,5 +269,14 @@ public class Estructuras implements Serializable {
 
     public void setTurnosEmpleadosCollection(Collection<TurnosEmpleados> turnosEmpleadosCollection) {
         this.turnosEmpleadosCollection = turnosEmpleadosCollection;
+    }
+
+    @XmlTransient
+    public Collection<EersCabeceras> getEersCabecerasCollection() {
+        return eersCabecerasCollection;
+    }
+
+    public void setEersCabecerasCollection(Collection<EersCabeceras> eersCabecerasCollection) {
+        this.eersCabecerasCollection = eersCabecerasCollection;
     }
 }

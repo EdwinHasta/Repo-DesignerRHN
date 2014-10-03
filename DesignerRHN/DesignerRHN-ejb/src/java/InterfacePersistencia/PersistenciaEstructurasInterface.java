@@ -146,4 +146,8 @@ public interface PersistenciaEstructurasInterface {
 
     public List<Estructuras> consultarEstructurasReingreso(EntityManager em);
 
+    public List<Estructuras> consultarEstructurasTurnoEmpleado(EntityManager em);
+    
+    public List<Estructuras> consultarEstructurasEersCabeceras(EntityManager em, BigInteger secuencia);
+
 }

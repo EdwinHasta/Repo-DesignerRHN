@@ -31,8 +31,6 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            System.out.println("Empleado Persona Nombre : " + empleados.getPersona().getNombre());
-            System.out.println("Empleado Persona Secuencia : " + empleados.getPersona().getSecuencia());
             em.merge(empleados);
             tx.commit();
         } catch (Exception e) {
@@ -537,6 +535,58 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             return lista;
         } catch (Exception e) {
             System.out.println("Error consultarEmpleadosCuadrillas PersistenciaEmpleados : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public List<Empleados> buscarEmpleadosATHoraExtra(EntityManager em) {
+        try {
+            em.clear();
+            String sql = "SELECT *\n"
+                    + " FROM EMPLEADOS V \n"
+                    + " WHERE (EXISTS (\n"
+                    + "     SELECT 'X' FROM VWACTUALESCARGOS VWC \n"
+                    + "       WHERE VWC.empleado=V.SECUENCIA\n"
+                    + "       AND   ESTRUCTURA IN \n"
+                    + "         (select e1.secuencia from estructuras e1\n"
+                    + "          start with e1.estructurapadre = \n"
+                    + "            (SELECT ESTRUCTURA FROM EERSAUTORIZACIONES EA, USUARIOS U \n"
+                    + "		     WHERE U.secuencia=EA.usuario\n"
+                    + "		  	 AND   U.alias=USER\n"
+                    + "			 AND EA.eerestado=(SELECT SECUENCIA FROM EERSESTADOS WHERE TIPOEER='TURNO' \n"
+                    + "			 AND CODIGO=(SELECT MIN(CODIGO) FROM EERSESTADOS WHERE TIPOEER='TURNO')))\n"
+                    + "          connect by prior e1.secuencia = e1.estructurapadre))\n"
+                    + " AND EXISTS (SELECT 'X'\n"
+                    + "      FROM VWACTUALESTIPOSTRABAJADORES vtt, tipostrabajadores  tt\n"
+                    + "      WHERE tt.secuencia = vtt.tipotrabajador\n"
+                    + "      AND   vtt.empleado = V.secuencia\n"
+                    + "      AND   tt.tipo='ACTIVO'))";
+            Query query = em.createNativeQuery(sql, Empleados.class);
+            List<Empleados> lista = query.getResultList();
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error buscarEmpleadosATHoraExtra PersistenciaEmpleados : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public List<Empleados> consultarEmpleadosParaAprobarHorasExtras(EntityManager em) {
+        try {
+            em.clear();
+            String sql = "SELECT E.*\n"
+                    + " FROM PERSONAS P, EMPLEADOS E \n"
+                    + " WHERE E.PERSONA = P.SECUENCIA\n"
+                    + "  AND EXISTS (SELECT 1 FROM VWACTUALESTIPOSTRABAJADORES VTT,   TIPOSTRABAJADORES TT \n"
+                    + "   WHERE VTT.TIPOTRABAJADOR = TT.SECUENCIA \n"
+                    + "   AND   VTT.EMPLEADO = E.SECUENCIA \n"
+                    + "   AND   TT.TIPO IN ('ACTIVO','PENSIONADO')";
+            Query query = em.createNativeQuery(sql, Empleados.class);
+            List<Empleados> lista = query.getResultList();
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error consultarEmpleadosParaAprobarHorasExtras PersistenciaEmpleados : " + e.toString());
             return null;
         }
     }

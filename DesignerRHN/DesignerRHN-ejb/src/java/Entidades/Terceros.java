@@ -48,6 +48,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Terceros.findByTiponit", query = "SELECT t FROM Terceros t WHERE t.tiponit = :tiponit"),
     @NamedQuery(name = "Terceros.findByCodigotercerosap", query = "SELECT t FROM Terceros t WHERE t.codigotercerosap = :codigotercerosap")})
 public class Terceros implements Serializable {
+    @OneToMany(mappedBy = "tercero")
+    private Collection<EersDetalles> eersDetallesCollection;
 
     @Basic(optional = false)
     @NotNull
@@ -433,5 +435,14 @@ public class Terceros implements Serializable {
 
     public void setNit(long nit) {
         this.nit = nit;
+    }
+
+    @XmlTransient
+    public Collection<EersDetalles> getEersDetallesCollection() {
+        return eersDetallesCollection;
+    }
+
+    public void setEersDetallesCollection(Collection<EersDetalles> eersDetallesCollection) {
+        this.eersDetallesCollection = eersDetallesCollection;
     }
 }

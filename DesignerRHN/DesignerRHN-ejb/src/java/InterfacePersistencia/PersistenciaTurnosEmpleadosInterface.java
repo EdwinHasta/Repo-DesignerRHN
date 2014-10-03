@@ -5,8 +5,10 @@
  */
 package InterfacePersistencia;
 
+import Entidades.TurnosEmpleados;
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.EntityManager;
 
 /**
@@ -19,8 +21,16 @@ public interface PersistenciaTurnosEmpleadosInterface {
 
     public Date obtenerFechaFinalMaximaTurnosEmpleados(EntityManager em);
 
-    public int ejecutarPKG_CONTARNOVEDADESLIQ(EntityManager em,Date fechaDesde, Date fechaHasta, BigInteger emplDesde, BigInteger emplHasta);
+    public int ejecutarPKG_CONTARNOVEDADESLIQ(EntityManager em, Date fechaDesde, Date fechaHasta, BigInteger emplDesde, BigInteger emplHasta);
 
-    public void ejecutarPKG_ELIMINARLIQUIDACION(EntityManager em,Date fechaDesde, Date fechaHasta, BigInteger emplDesde, BigInteger emplHasta);
+    public void ejecutarPKG_ELIMINARLIQUIDACION(EntityManager em, Date fechaDesde, Date fechaHasta, BigInteger emplDesde, BigInteger emplHasta);
+
+    public void crear(EntityManager em, TurnosEmpleados turnosEmpleados);
+
+    public void editar(EntityManager em, TurnosEmpleados turnosEmpleados);
+
+    public void borrar(EntityManager em, TurnosEmpleados turnosEmpleados);
+
+    public List<TurnosEmpleados> buscarTurnosEmpleadosPorEmpleado(EntityManager em, BigInteger secuencia);
 
 }
