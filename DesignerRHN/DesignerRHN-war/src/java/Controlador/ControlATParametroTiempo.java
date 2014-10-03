@@ -46,6 +46,7 @@ public class ControlATParametroTiempo implements Serializable {
     private String auxParametroCuadrilla;
     private BigInteger auxParametroEmplDesde, auxParametroEmplHasta;
     private Date auxParametroFechaDesde, auxParametroFechaHasta;
+    private String auxParametroHoraDesde, auxParametroHoraHasta;
     private int posicionParametroTiempo;
     private boolean permitirIndex;
     private BigInteger secRegistro;
@@ -69,6 +70,9 @@ public class ControlATParametroTiempo implements Serializable {
     private boolean aceptar, guardado;
     //
     private String mensajeBtnLiquidarTiempos;
+    //
+    private String fechaHastaTiempo, fechaDesdeTiempo;
+    private String editarFechaHastaTiempo, editarFechaDesdeTiempo;
 
     public ControlATParametroTiempo() {
         aceptar = true;
@@ -137,6 +141,16 @@ public class ControlATParametroTiempo implements Serializable {
             context.update("formularioDialogos:editarParametroEmplHasta");
             context.execute("editarParametroEmplHasta.show()");
         }
+        if (posicionParametroTiempo == 6) {
+            editarFechaDesdeTiempo = fechaDesdeTiempo;
+            context.update("formularioDialogos:editarParametroHoraDesde");
+            context.execute("editarParametroHoraDesde.show()");
+        }
+        if (posicionParametroTiempo == 7) {
+            editarFechaHastaTiempo = fechaHastaTiempo;
+            context.update("formularioDialogos:editarParametroHoraHasta");
+            context.execute("editarParametroHoraHasta.show()");
+        }
         posicionParametroTiempo = -1;
     }
 
@@ -181,6 +195,8 @@ public class ControlATParametroTiempo implements Serializable {
             auxParametroEmplHasta = parametroTiempoUsuarioBD.getCodigoempleadohasta();
             auxParametroFechaDesde = parametroTiempoUsuarioBD.getFechadesde();
             auxParametroFechaHasta = parametroTiempoUsuarioBD.getFechahasta();
+            auxParametroHoraDesde = fechaDesdeTiempo;
+            auxParametroHoraHasta = fechaHastaTiempo;
         }
     }
 
@@ -225,63 +241,144 @@ public class ControlATParametroTiempo implements Serializable {
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
     }
 
+    public void pruebaMask(String dato, int tipoFecha) {
+        int valorHora, valorMin;
+        char[] aCaracteres = dato.toCharArray();
+        String var1, var2, var3, var4;
+        var1 = aCaracteres[0] + "";
+        var2 = aCaracteres[1] + "";
+        var3 = aCaracteres[3] + "";
+        var4 = aCaracteres[4] + "";
+        String hora = "", min = "";
+        hora = var1 + var2;
+        min = var3 + var4;
+        valorHora = Integer.parseInt(hora);
+        valorMin = Integer.parseInt(min);
+        RequestContext context = RequestContext.getCurrentInstance();
+        if ((valorHora >= 0 && valorHora <= 23) && (valorMin >= 0 && valorMin <= 59)) {
+            if (tipoFecha == 1) {
+                if (guardado == true) {
+                    guardado = false;
+                }
+                parametroTiempoUsuarioBD.getFechadesde().setHours(valorHora);
+                parametroTiempoUsuarioBD.getFechadesde().setMinutes(valorMin);
+                context.update("form:editarTiempoFechaDesdeParametro");
+            }
+            if (tipoFecha == 2) {
+                if (guardado == true) {
+                    guardado = false;
+                }
+                parametroTiempoUsuarioBD.getFechahasta().setHours(valorHora);
+                parametroTiempoUsuarioBD.getFechahasta().setMinutes(valorMin);
+                context.update("form:editarTiempoFechaHastaParametro");
+            }
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+        } else {
+            if (tipoFecha == 1) {
+                fechaDesdeTiempo = auxParametroHoraDesde;
+                context.update("form:editarTiempoFechaDesdeParametro");
+            }
+            if (tipoFecha == 2) {
+                fechaHastaTiempo = auxParametroHoraHasta;
+                context.update("form:editarTiempoFechaHastaParametro");
+            }
+            context.execute("errorHorasFechas.show()");
+        }
+    }
+
     public void modificarParametroTiempo(int indice, String confirmarCambio, String valorConfirmar) {
         posicionParametroTiempo = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equals("CUADRILLA")) {
-            parametroTiempoUsuarioBD.getCuadrilla().setDescripcion(auxParametroCuadrilla);
-            for (int i = 0; i < lovCuadrillas.size(); i++) {
-                if (lovCuadrillas.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
+            if (!valorConfirmar.isEmpty()) {
+                parametroTiempoUsuarioBD.getCuadrilla().setDescripcion(auxParametroCuadrilla);
+                for (int i = 0; i < lovCuadrillas.size(); i++) {
+                    if (lovCuadrillas.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
                 }
-            }
-            if (coincidencias == 1) {
-                parametroTiempoUsuarioBD.setCuadrilla(lovCuadrillas.get(indiceUnicoElemento));
-                lovCuadrillas.clear();
-                getLovCuadrillas();
+                if (coincidencias == 1) {
+                    parametroTiempoUsuarioBD.setCuadrilla(lovCuadrillas.get(indiceUnicoElemento));
+                    lovCuadrillas.clear();
+                    getLovCuadrillas();
+                    if (guardado == true) {
+                        guardado = false;
+                    }
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                } else {
+                    permitirIndex = false;
+                    context.update("formCuadrilla:CuadrillaDialogo");
+                    context.execute("CuadrillaDialogo.show()");
+                }
             } else {
-                permitirIndex = false;
-                context.update("formCuadrilla:CuadrillaDialogo");
-                context.execute("CuadrillaDialogo.show()");
+                parametroTiempoUsuarioBD.setCuadrilla(new Cuadrillas());
+                if (guardado == true) {
+                    guardado = false;
+                }
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.update("form:editarCuadrillaParametro");
         } else if (confirmarCambio.equals("EMPLDESDE")) {
-            parametroTiempoUsuarioBD.setCodigoempleadodesde(auxParametroEmplDesde);
-            for (int i = 0; i < lovEmpleados.size(); i++) {
-                if (lovEmpleados.get(i).getCodigoempleadoSTR().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
+            if (!valorConfirmar.isEmpty()) {
+                parametroTiempoUsuarioBD.setCodigoempleadodesde(auxParametroEmplDesde);
+                for (int i = 0; i < lovEmpleados.size(); i++) {
+                    if (lovEmpleados.get(i).getCodigoempleadoSTR().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
                 }
-            }
-            if (coincidencias == 1) {
-                parametroTiempoUsuarioBD.setCodigoempleadodesde(lovEmpleados.get(indiceUnicoElemento).getCodigoempleado());
-                lovEmpleados.clear();
-                getLovEmpleados();
+                if (coincidencias == 1) {
+                    parametroTiempoUsuarioBD.setCodigoempleadodesde(lovEmpleados.get(indiceUnicoElemento).getCodigoempleado());
+                    lovEmpleados.clear();
+                    getLovEmpleados();
+                    if (guardado == true) {
+                        guardado = false;
+                    }
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                } else {
+                    permitirIndex = false;
+                    context.update("formEmpleado:EmpleadoDialogo");
+                    context.execute("EmpleadoDialogo.show()");
+                }
             } else {
-                permitirIndex = false;
-                context.update("formEmpleado:EmpleadoDialogo");
-                context.execute("EmpleadoDialogo.show()");
+                parametroTiempoUsuarioBD.setCodigoempleadodesde(new BigInteger("0"));
+                if (guardado == true) {
+                    guardado = false;
+                }
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.update("form:editarEmplDesdeParametro");
         } else if (confirmarCambio.equals("EMPLHASTA")) {
-            parametroTiempoUsuarioBD.setCodigoempleadohasta(auxParametroEmplHasta);
-            for (int i = 0; i < lovEmpleados.size(); i++) {
-                if (lovEmpleados.get(i).getCodigoempleadoSTR().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
+            if (!valorConfirmar.isEmpty()) {
+                parametroTiempoUsuarioBD.setCodigoempleadohasta(auxParametroEmplHasta);
+                for (int i = 0; i < lovEmpleados.size(); i++) {
+                    if (lovEmpleados.get(i).getCodigoempleadoSTR().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
                 }
-            }
-            if (coincidencias == 1) {
-                parametroTiempoUsuarioBD.setCodigoempleadohasta(lovEmpleados.get(indiceUnicoElemento).getCodigoempleado());
-                lovEmpleados.clear();
-                getLovEmpleados();
+                if (coincidencias == 1) {
+                    parametroTiempoUsuarioBD.setCodigoempleadohasta(lovEmpleados.get(indiceUnicoElemento).getCodigoempleado());
+                    lovEmpleados.clear();
+                    getLovEmpleados();
+                    if (guardado == true) {
+                        guardado = false;
+                    }
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                } else {
+                    permitirIndex = false;
+                    context.update("formEmpleado:EmpleadoDialogo");
+                    context.execute("EmpleadoDialogo.show()");
+                }
             } else {
-                permitirIndex = false;
-                context.update("formEmpleado:EmpleadoDialogo");
-                context.execute("EmpleadoDialogo.show()");
+                parametroTiempoUsuarioBD.setCodigoempleadohasta(new BigInteger("9999999999999999999999999999999"));
+                if (guardado == true) {
+                    guardado = false;
+                }
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.update("form:editarEmplHastaParametro");
         }
@@ -294,17 +391,59 @@ public class ControlATParametroTiempo implements Serializable {
             if (validar == true) {
                 cambiarIndiceParametro(i);
                 modificarParametroTiempo();
+                int horaDesde = parametroTiempoUsuarioBD.getFechadesde().getHours();
+                int minDesde = parametroTiempoUsuarioBD.getFechadesde().getMinutes();
+                String txtHoraDesde = "";
+                String txtMinDesde = "";
+                if (horaDesde >= 0 && horaDesde <= 9) {
+                    txtHoraDesde = "0" + String.valueOf(horaDesde);
+                } else {
+                    txtHoraDesde = String.valueOf(horaDesde);
+                }
+                if (minDesde >= 0 && minDesde <= 9) {
+                    txtMinDesde = "0" + String.valueOf(minDesde);
+                } else {
+                    txtMinDesde = String.valueOf(minDesde);
+                }
+                fechaDesdeTiempo = "";
+                fechaDesdeTiempo = txtHoraDesde + txtMinDesde;
+                ////////////
+                int horaHasta = parametroTiempoUsuarioBD.getFechahasta().getHours();
+                int minHasta = parametroTiempoUsuarioBD.getFechahasta().getMinutes();
+                String txtHoraHasta = "";
+                String txtMinHasta = "";
+                if (horaHasta >= 0 && horaHasta <= 9) {
+                    txtHoraHasta = "0" + String.valueOf(horaHasta);
+                } else {
+                    txtHoraHasta = String.valueOf(horaHasta);
+                }
+                if (minHasta >= 0 && minHasta <= 9) {
+                    txtMinHasta = "0" + String.valueOf(minHasta);
+                } else {
+                    txtMinHasta = String.valueOf(minHasta);
+                }
+                fechaHastaTiempo = "";
+                fechaHastaTiempo = txtHoraHasta + txtMinHasta;
+                context.update("form:editarFechaHastaParametro");
+                context.update("form:editarTiempoFechaHastaParametro");
+                context.update("form:editarFechaDesdeParametro");
+                context.update("form:editarTiempoFechaDesdeParametro");
             } else {
                 parametroTiempoUsuarioBD.setFechadesde(auxParametroFechaDesde);
                 parametroTiempoUsuarioBD.setFechahasta(auxParametroFechaHasta);
                 context.update("form:editarFechaHastaParametro");
+                context.update("form:editarTiempoFechaHastaParametro");
                 context.update("form:editarFechaDesdeParametro");
+                context.update("form:editarTiempoFechaDesdeParametro");
                 context.execute("errorFechasParametro.show()");
             }
         } else {
             parametroTiempoUsuarioBD.setFechadesde(auxParametroFechaDesde);
             parametroTiempoUsuarioBD.setFechahasta(auxParametroFechaHasta);
             context.update("form:editarFechaHastaParametro");
+            context.update("form:editarTiempoFechaHastaParametro");
+            context.update("form:editarFechaDesdeParametro");
+            context.update("form:editarTiempoFechaDesdeParametro");
             context.execute("errorFechasPKG.show()");
         }
     }
@@ -315,8 +454,8 @@ public class ControlATParametroTiempo implements Serializable {
         fechaParametro.setMonth(1);
         fechaParametro.setDate(1);
         boolean retorno = true;
-        if (parametroTiempoUsuarioBD.getFechadesde().after(fechaParametro) && parametroTiempoUsuarioBD.getFechahasta().before(fechaParametro)) {
-            if (parametroTiempoUsuarioBD.getFechahasta().after(parametroTiempoUsuarioBD.getFechahasta())) {
+        if (parametroTiempoUsuarioBD.getFechadesde().after(fechaParametro) && parametroTiempoUsuarioBD.getFechahasta().after(fechaParametro)) {
+            if (parametroTiempoUsuarioBD.getFechahasta().after(parametroTiempoUsuarioBD.getFechadesde())) {
                 retorno = true;
             } else {
                 retorno = false;
@@ -601,7 +740,41 @@ public class ControlATParametroTiempo implements Serializable {
                     if (parametroTiempoUsuarioBD.getCuadrilla() == null) {
                         parametroTiempoUsuarioBD.setCuadrilla(new Cuadrillas());
                     }
+                    int horaDesde = parametroTiempoUsuarioBD.getFechadesde().getHours();
+                    int minDesde = parametroTiempoUsuarioBD.getFechadesde().getMinutes();
+                    String txtHoraDesde = "";
+                    String txtMinDesde = "";
+                    if (horaDesde >= 0 && horaDesde <= 9) {
+                        txtHoraDesde = "0" + String.valueOf(horaDesde);
+                    } else {
+                        txtHoraDesde = String.valueOf(horaDesde);
+                    }
+                    if (minDesde >= 0 && minDesde <= 9) {
+                        txtMinDesde = "0" + String.valueOf(minDesde);
+                    } else {
+                        txtMinDesde = String.valueOf(minDesde);
+                    }
+                    fechaDesdeTiempo = "";
+                    fechaDesdeTiempo = txtHoraDesde + txtMinDesde;
+                    ////////////
+                    int horaHasta = parametroTiempoUsuarioBD.getFechahasta().getHours();
+                    int minHasta = parametroTiempoUsuarioBD.getFechahasta().getMinutes();
+                    String txtHoraHasta = "";
+                    String txtMinHasta = "";
+                    if (horaHasta >= 0 && horaHasta <= 9) {
+                        txtHoraHasta = "0" + String.valueOf(horaHasta);
+                    } else {
+                        txtHoraHasta = String.valueOf(horaHasta);
+                    }
+                    if (minHasta >= 0 && minHasta <= 9) {
+                        txtMinHasta = "0" + String.valueOf(minHasta);
+                    } else {
+                        txtMinHasta = String.valueOf(minHasta);
+                    }
+                    fechaHastaTiempo = "";
+                    fechaHastaTiempo = txtHoraHasta + txtMinHasta;
                 }
+
             }
         }
         return parametroTiempoUsuarioBD;
@@ -704,6 +877,8 @@ public class ControlATParametroTiempo implements Serializable {
     public List<ParametrosTiempos> getListaParametrosTiemposExport() {
         listaParametrosTiemposExport = null;
         listaParametrosTiemposExport = new ArrayList<ParametrosTiempos>();
+        parametroTiempoUsuarioBD.setHoraFechaDesde(fechaDesdeTiempo);
+        parametroTiempoUsuarioBD.setHoraFechaHasta(fechaHastaTiempo);
         listaParametrosTiemposExport.add(parametroTiempoUsuarioBD);
         return listaParametrosTiemposExport;
     }
@@ -718,6 +893,46 @@ public class ControlATParametroTiempo implements Serializable {
 
     public void setMensajeBtnLiquidarTiempos(String mensajeBtnLiquidarTiempos) {
         this.mensajeBtnLiquidarTiempos = mensajeBtnLiquidarTiempos;
+    }
+
+    public String getFechaHastaTiempo() {
+        return fechaHastaTiempo;
+    }
+
+    public void setFechaHastaTiempo(String pruebaTiempo) {
+        this.fechaHastaTiempo = pruebaTiempo;
+    }
+
+    public String getFechaDesdeTiempo() {
+        return fechaDesdeTiempo;
+    }
+
+    public void setFechaDesdeTiempo(String fechaDesdeTiempo) {
+        this.fechaDesdeTiempo = fechaDesdeTiempo;
+    }
+
+    public BigInteger getBackUpSecRegistro() {
+        return backUpSecRegistro;
+    }
+
+    public void setBackUpSecRegistro(BigInteger backUpSecRegistro) {
+        this.backUpSecRegistro = backUpSecRegistro;
+    }
+
+    public String getEditarFechaHastaTiempo() {
+        return editarFechaHastaTiempo;
+    }
+
+    public void setEditarFechaHastaTiempo(String editarFechaHastaTiempo) {
+        this.editarFechaHastaTiempo = editarFechaHastaTiempo;
+    }
+
+    public String getEditarFechaDesdeTiempo() {
+        return editarFechaDesdeTiempo;
+    }
+
+    public void setEditarFechaDesdeTiempo(String editarFechaDesdeTiempo) {
+        this.editarFechaDesdeTiempo = editarFechaDesdeTiempo;
     }
 
 }

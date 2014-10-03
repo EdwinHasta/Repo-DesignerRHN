@@ -37,7 +37,7 @@
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlATParametroTiempo.exportPDF()}" ajax="false"  />
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlATParametroTiempo.exportXLS()}" ajax="false"  />
                                 <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  ajax="false">
@@ -45,7 +45,7 @@
                                 </p:commandButton> 
                                 <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
 
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlATParametroTiempo.exportXLS()}" ajax="false"/>
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlATParametroTiempo.exportPDF()}" ajax="false"/>
                                 <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
@@ -83,15 +83,15 @@
 
                             <h:outputText value="" style="position: absolute; background-image: url(Imagenes/Iconos/logoArrobaDesigner.jpg); width: 50px; height: 50px; top: 55px; left: 5px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 2px; border-width: 2px;" />
 
-                            <strong><h:outputText value="#{msg['cuadrilla']}" style="position: absolute; top: 45px; left: 70px;"/></strong>
-                            <p:inputText onclick="select();" value="#{controlATParametroTiempo.parametroTiempoUsuarioBD.cuadrilla.descripcion}" id="editarCuadrillaParametro" style="position: absolute; top: 40px; left: 150px; width: 200px" >
+                            <strong><h:outputText value="#{msg['cuadrilla']}" style="position: absolute; top: 40px; left: 70px;"/></strong>
+                            <p:inputText onclick="select();" value="#{controlATParametroTiempo.parametroTiempoUsuarioBD.cuadrilla.descripcion}" id="editarCuadrillaParametro" style="position: absolute; top: 35px; left: 150px; width: 200px; text-transform: uppercase" >
                                 <p:ajax event="change" listener="#{controlATParametroTiempo.modificarParametroTiempo(0, 'CUADRILLA', controlATParametroTiempo.parametroTiempoUsuarioBD.cuadrilla.descripcion)}" process="@this" update="editarCuadrillaParametro"/>
                                 <p:ajax event="dblclick" listener="#{controlATParametroTiempo.asignarIndex(0, 0)}"/>
                                 <p:ajax event="select" listener="#{controlATParametroTiempo.cambiarIndiceParametro(0)}" />
                             </p:inputText> 
 
-                            <strong><h:outputText value="#{msg['tipoArchivoReporte']}" style="position: absolute; top: 75px; left: 70px;"/></strong>
-                            <p:selectOneMenu id="editarTipoReporteParametro" value="#{controlATParametroTiempo.tipoArchivoReporte}" style="width: 128px; font-weight: bold;text-transform: uppercase;position: absolute; top: 70px; left: 230px">  
+                            <strong><h:outputText value="#{msg['tipoArchivoReporte']}" style="position: absolute; top: 65px; left: 70px;"/></strong>
+                            <p:selectOneMenu id="editarTipoReporteParametro" value="#{controlATParametroTiempo.tipoArchivoReporte}" style="width: 128px; font-weight: bold;text-transform: uppercase;position: absolute; top: 60px; left: 230px">  
                                 <f:selectItem itemLabel="#{msg['tipe_pdf']}" itemValue="1" />  
                                 <f:selectItem itemLabel="#{msg['tipe_html']}" itemValue="2" />  
                                 <f:selectItem itemLabel="#{msg['tipe_excel']}" itemValue="3" />  
@@ -100,8 +100,8 @@
                                 <p:ajax event="change" listener="#{controlATParametroTiempo.modificarParametroTiempo()}" process="@this" update="@this"/>
                             </p:selectOneMenu>
 
-                            <strong><h:outputText value="#{msg['fechaDesde']}" style="position: absolute; top: 105px; left: 70px;"/></strong>
-                            <div  style=" position: absolute; top: 100px; left: 230px">
+                            <strong><h:outputText value="#{msg['fechaDesde']}" style="position: absolute; top: 90px; left: 70px;"/></strong>
+                            <div  style=" position: absolute; top: 85px; left: 230px">
                                 <lnk:calendar id="editarFechaDesdeParametro" value="#{controlATParametroTiempo.parametroTiempoUsuarioBD.fechadesde}" >
                                     <p:ajax event="dateSelect" listener="#{controlATParametroTiempo.modificarFechasParametro(2)}" update="editarFechaDesdeParametro" process="@this"/>
                                     <p:ajax event="change" listener="#{controlATParametroTiempo.modificarFechasParametro(2)}" update="editarFechaDesdeParametro" process="@this"/>
@@ -109,26 +109,38 @@
                                 </lnk:calendar>
                             </div>
 
+                            <strong><h:outputText value="#{msg['tiempoFechaDesde']}" style="position: absolute; top: 115px; left: 70px;"/></strong>
+                            <p:inputMask id="editarTiempoFechaDesdeParametro"   onclick="select();" style="position: absolute; top: 110px; left: 230px; " mask="99:99" value="#{controlATParametroTiempo.fechaDesdeTiempo}">
+                                <p:ajax event="change"  listener="#{controlATParametroTiempo.pruebaMask(controlATParametroTiempo.fechaDesdeTiempo, 1)}" process="@this" update="@this"/>
+                                <p:ajax event="select" listener="#{controlATParametroTiempo.cambiarIndiceParametro(6)}" />
+                            </p:inputMask>
+
                             <p:separator style="position: absolute; top: 25px; left: 430px; width: 3px; height: 100px"/>
 
-                            <strong><h:outputText value="#{msg['fechaHasta']}" style="position: absolute; top: 45px; left: 500px;"/></strong>
-                            <div style=" position: absolute; top: 40px; left: 670px">
+                            <strong><h:outputText value="#{msg['fechaHasta']}" style="position: absolute; top: 40px; left: 500px;"/></strong>
+                            <div style=" position: absolute; top: 35px; left: 670px">
                                 <lnk:calendar id="editarFechaHastaParametro" value="#{controlATParametroTiempo.parametroTiempoUsuarioBD.fechahasta}" >
                                     <p:ajax event="dateSelect" listener="#{controlATParametroTiempo.modificarFechasParametro(3)}" update="editarFechaHastaParametro" process="@this"/>
                                     <p:ajax event="change" listener="#{controlATParametroTiempo.modificarFechasParametro(3)}" process="@this" update="editarFechaHastaParametro"/>
                                     <p:ajax event="select" listener="#{controlATParametroTiempo.cambiarIndiceParametro(3)}" />
                                 </lnk:calendar>
                             </div>
+                            
+                            <strong><h:outputText value="#{msg['tiempoFechaHasta']}" style="position: absolute; top: 65px; left: 500px;"/></strong>
+                            <p:inputMask id="editarTiempoFechaHastaParametro"   onclick="select();" style="position: absolute; top: 60px; left: 670px; " mask="99:99" value="#{controlATParametroTiempo.fechaHastaTiempo}">
+                                <p:ajax event="change"  listener="#{controlATParametroTiempo.pruebaMask(controlATParametroTiempo.fechaHastaTiempo, 2)}" process="@this" update="@this"/>
+                                <p:ajax event="select" listener="#{controlATParametroTiempo.cambiarIndiceParametro(7)}" />
+                            </p:inputMask>		
 
-                            <strong><h:outputText value="#{msg['codEmplDesde']}" style="position: absolute; top: 75px; left: 500px;"/></strong>
-                            <p:inputText onclick="select();" value="#{controlATParametroTiempo.parametroTiempoUsuarioBD.codigoempleadodesde}" id="editarEmplDesdeParametro" style="position: absolute; top: 70px; left: 670px; width: 100px" >
+                            <strong><h:outputText value="#{msg['codEmplDesde']}" style="position: absolute; top: 90px; left: 500px;"/></strong>
+                            <p:inputText onclick="select();" value="#{controlATParametroTiempo.parametroTiempoUsuarioBD.codigoempleadodesde}" id="editarEmplDesdeParametro" style="position: absolute; top: 85px; left: 670px;" >
                                 <p:ajax event="change" listener="#{controlATParametroTiempo.modificarParametroTiempo(4, 'EMPLDESDE', ccontrolATParametroTiempo.parametroTiempoUsuarioBD.codigoempleadodesde)}" process="@this" update="editarCuadrillaParametro"/>
                                 <p:ajax event="dblclick" listener="#{controlATParametroTiempo.asignarIndex(4, 1)}"/>
                                 <p:ajax event="select" listener="#{controlATParametroTiempo.cambiarIndiceParametro(4)}" />
                             </p:inputText> 
 
-                            <strong><h:outputText value="#{msg['codEmplHasta']}" style="position: absolute; top: 105px; left: 500px;"/></strong>
-                            <p:inputText onclick="select();" value="#{controlATParametroTiempo.parametroTiempoUsuarioBD.codigoempleadohasta}" id="editarEmplHastaParametro" style="position: absolute; top: 100px; left: 670px; width: 100px" >
+                            <strong><h:outputText value="#{msg['codEmplHasta']}" style="position: absolute; top: 115px; left: 500px;"/></strong>
+                            <p:inputText onclick="select();" value="#{controlATParametroTiempo.parametroTiempoUsuarioBD.codigoempleadohasta}" id="editarEmplHastaParametro" style="position: absolute; top: 110px; left: 670px;" >
                                 <p:ajax event="change" listener="#{controlATParametroTiempo.modificarParametroTiempo(5, 'EMPLHASTA', controlATParametroTiempo.parametroTiempoUsuarioBD.codigoempleadohasta)}" process="@this" update="editarCuadrillaParametro"/>
                                 <p:ajax event="dblclick" listener="#{controlATParametroTiempo.asignarIndex(5, 2)}"/>
                                 <p:ajax event="select" listener="#{controlATParametroTiempo.cambiarIndiceParametro(5)}" />
@@ -168,8 +180,8 @@
                         </fieldset> 
 
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 480px;  " id="ACEPTAR" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlATParametroTiempo.guardado}" onclick="confirmarGuardar.show()" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 480px;  " id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick"  action="#{controlATParametroTiempo.redirigir()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 683px; top: 480px;" id="ACEPTAR" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlATParametroTiempo.guardado}" onclick="confirmarGuardar.show()" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 480px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick"  action="#{controlATParametroTiempo.redirigir()}" process="@this" />
 
                     </p:panel>
 
@@ -236,50 +248,55 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFechasParametro']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
-                    
+
                     <p:dialog id="errorDesliquidar" header="#{msg['atencion']}" widgetVar="errorDesliquidar"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorDesliquidar']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
                     
-                    
+                    <p:dialog id="errorHorasFechas" header="#{msg['atencion']}" widgetVar="errorHorasFechas"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorHorasFechas']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+
                     <!-- -->
-                    
+
                     <p:dialog id="mensajeProgramarTurno" header="#{msg['atencion']}" widgetVar="mensajeProgramarTurno"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 25px; top: 10px;"  />
                         <h:outputText value="#{msg['mensajeProgramarTurno']}" style="position: absolute; left: 100px; top: 10px; width: 280px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="mensajeProgramarTurno.hide();" actionListener="#{controlATParametroTiempo.actionBtnProgramarTurno()}" style="position: absolute; top: 55px; left: 215px" process="@this" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="mensajeProgramarTurno.hide();" style="position: absolute; top: 55px; left: 300px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="mensajeDesprogramarTurno" header="#{msg['atencion']}" widgetVar="mensajeDesprogramarTurno"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 25px; top: 10px;"  />
                         <h:outputText value="#{msg['mensajeDesprogramarTurno']}" style="position: absolute; left: 100px; top: 10px; width: 280px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="mensajeDesprogramarTurno.hide();" actionListener="#{controlATParametroTiempo.actionBtnDesprogramarTurno()}" style="position: absolute; top: 55px; left: 215px" process="@this" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="mensajeDesprogramarTurno.hide();" style="position: absolute; top: 55px; left: 300px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="mensajeSimularMarcacion" header="#{msg['atencion']}" widgetVar="mensajeSimularMarcacion"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 25px; top: 10px;"  />
                         <h:outputText value="#{msg['mensajeSimularMarcacion']}" style="position: absolute; left: 100px; top: 10px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="mensajeSimularMarcacion.hide();" actionListener="#{controlATParametroTiempo.actionBtnSimularMarcacion()}" style="position: absolute; top: 55px; left: 215px" process="@this" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="mensajeSimularMarcacion.hide();" style="position: absolute; top: 55px; left: 300px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="mensajeEliminarSimulacion" header="#{msg['atencion']}" widgetVar="mensajeEliminarSimulacion"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 25px; top: 10px;"  />
                         <h:outputText value="#{msg['mensajeEliminarSimulacion']}" style="position: absolute; left: 100px; top: 10px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="mensajeEliminarSimulacion.hide();" actionListener="#{controlATParametroTiempo.actionBtnEliminarSimulacion()}" style="position: absolute; top: 55px; left: 215px" process="@this" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="mensajeEliminarSimulacion.hide();" style="position: absolute; top: 55px; left: 300px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="mensajeLiquidarTiempos" header="#{msg['atencion']}" widgetVar="mensajeLiquidarTiempos"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 25px; top: 10px;"  />
                         <h:outputText value="#{controlATParametroTiempo.mensajeBtnLiquidarTiempos}" style="position: absolute; left: 100px; top: 10px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="mensajeLiquidarTiempos.hide();" actionListener="#{controlATParametroTiempo.actionFinalizarLiquidarTiempos()}" style="position: absolute; top: 55px; left: 215px" process="@this" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="mensajeLiquidarTiempos.hide();" style="position: absolute; top: 55px; left: 300px" process="@this" />
                     </p:dialog>
-                    
+
                 </h:form>
 
                 <h:form id="formEmpleado">
@@ -387,6 +404,14 @@
                     <p:dialog id="editarParametroEmplHasta" header="#{msg['editarParametroEmplHasta']}" widgetVar="editarParametroEmplHasta" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlATParametroTiempo.parametroTiempoUsuarioBD.codigoempleadohasta}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>
+                    
+                    <p:dialog id="editarParametroHoraDesde" header="#{msg['editarParametroHoraDesde']}" widgetVar="editarParametroHoraDesde" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                        <p:inputTextarea value="#{controlATParametroTiempo.editarFechaDesdeTiempo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarParametroHoraHasta" header="#{msg['editarParametroHoraHasta']}" widgetVar="editarParametroHoraHasta" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                        <p:inputTextarea value="#{controlATParametroTiempo.editarFechaHastaTiempo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
 
                 </h:form>
                 <h:form id="formExportar">
@@ -407,6 +432,11 @@
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
+                        
+                        <p:column headerText="#{msg['horaFechaDesdeXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['horaFechaDesdeX']}"/> </f:facet> 
+                            <h:outputText value="#{infoExpPT.horaFechaDesde}" />
+                        </p:column>  
 
                         <p:column>  
                             <f:facet name="header">
@@ -416,6 +446,12 @@
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
+                        
+                        <p:column headerText="#{msg['horaFechaHastaXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['horaFechaHastaX']}"/> </f:facet> 
+                            <h:outputText value="#{infoExpPT.horaFechaHasta}" />
+                        </p:column>  
+                        
                         <p:column headerText="#{msg['emplHastaXX']}">                                  
                             <f:facet name="header"><h:outputText value="#{msg['emplHastaX']}"/> </f:facet> 
                             <h:outputText value="#{infoExpPT.codigoempleadohasta}" />

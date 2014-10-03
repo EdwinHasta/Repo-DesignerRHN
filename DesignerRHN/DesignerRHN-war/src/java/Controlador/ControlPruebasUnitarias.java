@@ -31,6 +31,12 @@ public class ControlPruebasUnitarias implements Serializable {
     public ControlPruebasUnitarias() {
         
     }
+    
+    public void modificarParametroInforme(){
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:fechaDesdeParametroL");
+        context.update("form:prueba");
+    }
 
     public Date getFechaPrueba() {
         return fechaPrueba;

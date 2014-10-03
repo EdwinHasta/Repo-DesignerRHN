@@ -464,9 +464,9 @@ public class ControlATCuadrilla implements Serializable {
         if (i == 0) {
             Turnosrotativos auxiliar = null;
             if (tipoListaTurno == 0) {
-                auxiliar = listaTurnosRotativos.get(i);
+                auxiliar = listaTurnosRotativos.get(indexTurno);
             } else {
-                auxiliar = filtrarListaTurnosRotativos.get(i);
+                auxiliar = filtrarListaTurnosRotativos.get(indexTurno);
             }
             if (auxiliar.getFechasemilla().after(fechaParametro)) {
                 retorno = true;
@@ -2061,7 +2061,7 @@ public class ControlATCuadrilla implements Serializable {
     public void actualizarEmpleado() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
-            if (tipoListaCuadrilla == 0) {
+            if (tipoListaDetalle == 0) {
                 listaDetallesTurnosRotativos.get(indexDetalle).setEmpleado(empleadoSeleccionado);
                 if (!listDetallesTurnosRotativosCrear.contains(listaDetallesTurnosRotativos.get(indexDetalle))) {
                     if (listDetallesTurnosRotativosModificar.isEmpty()) {
