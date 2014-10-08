@@ -1,5 +1,6 @@
 package Administrar;
 
+import Entidades.ActualUsuario;
 import Entidades.EersCabeceras;
 import Entidades.EersDetalles;
 import Entidades.EersFlujos;
@@ -7,6 +8,7 @@ import Entidades.Empleados;
 import Entidades.Estructuras;
 import InterfaceAdministrar.AdministrarATAprobacionHEInterface;
 import InterfaceAdministrar.AdministrarSesionesInterface;
+import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaEersCabecerasInterface;
 import InterfacePersistencia.PersistenciaEersDetallesInterface;
 import InterfacePersistencia.PersistenciaEersFlujosInterface;
@@ -23,7 +25,7 @@ import javax.persistence.EntityManager;
  * @author Administrador
  */
 @Stateful
-public class AdministrarATAprobacionHE implements AdministrarATAprobacionHEInterface{
+public class AdministrarATAprobacionHE implements AdministrarATAprobacionHEInterface {
 
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleado;
@@ -35,6 +37,8 @@ public class AdministrarATAprobacionHE implements AdministrarATAprobacionHEInter
     PersistenciaEersDetallesInterface persistenciaEersDetalles;
     @EJB
     PersistenciaEersFlujosInterface persistenciaEersFlujos;
+    @EJB
+    PersistenciaActualUsuarioInterface persistenciaActualUsuario;
     @EJB
     AdministrarSesionesInterface administrarSesiones;
 
@@ -143,6 +147,17 @@ public class AdministrarATAprobacionHE implements AdministrarATAprobacionHEInter
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovEmpleados Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public ActualUsuario obtenerActualUsuarioSistema() {
+        try {
+            ActualUsuario usuario = persistenciaActualUsuario.actualUsuarioBD(em);
+            return usuario;
+        } catch (Exception e) {
+            System.out.println("Error obtenerActualUsuarioSistema Admi : " + e.toString());
             return null;
         }
     }

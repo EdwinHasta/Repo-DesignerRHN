@@ -5,6 +5,7 @@
  */
 package InterfaceAdministrar;
 
+import Entidades.ActualUsuario;
 import Entidades.EersCabeceras;
 import Entidades.EersDetalles;
 import Entidades.EersFlujos;
@@ -38,5 +39,7 @@ public interface AdministrarATAprobacionHEInterface {
     public List<Estructuras> lovEstructuras(BigInteger secuenciaEstado);
 
     public List<Empleados> lovEmpleados();
+
+    public ActualUsuario obtenerActualUsuarioSistema();
 
 }

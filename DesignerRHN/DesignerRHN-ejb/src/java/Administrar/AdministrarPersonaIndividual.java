@@ -662,7 +662,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
             return validar;
         } catch (Exception e) {
             System.out.println("Error validarTipoTrabajadorReformaLaboral Admi : " + e.toString());
-            return "N";
+            return null;
         }
     }
 
@@ -673,7 +673,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
             return validar;
         } catch (Exception e) {
             System.out.println("Error validarTipoTrabajadorTipoSueldo Admi : " + e.toString());
-            return "N";
+            return null;
         }
     }
 
@@ -684,7 +684,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
             return validar;
         } catch (Exception e) {
             System.out.println("Error validarTipoTrabajadorTipoContrato Admi : " + e.toString());
-            return "N";
+            return null;
         }
     }
 
@@ -695,7 +695,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
             return validar;
         } catch (Exception e) {
             System.out.println("Error validarTipoTrabajadorNormaLaboral Admi : " + e.toString());
-            return "N";
+            return null;
         }
     }
 
@@ -706,7 +706,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
             return validar;
         } catch (Exception e) {
             System.out.println("Error validarTipoTrabajadorContrato Admi : " + e.toString());
-            return "N";
+            return null;
         }
     }
 

@@ -123,9 +123,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             query.setParameter(1, tipoTrabajador);
             query.setParameter(2, reformaLaboral);
             String retorno = (String) query.getSingleResult();
-            if (retorno == null) {
-                retorno = "S";
-            }
+            System.out.println("retorno : "+retorno);
             return retorno;
         } catch (Exception e) {
             System.out.println("Error plantillaValidarTipoTrabajadorReformaLaboral PersistenciaTiposTrabajadores : " + e.toString());
@@ -142,9 +140,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             query.setParameter(1, tipoTrabajador);
             query.setParameter(2, tipoSueldo);
             String retorno = (String) query.getSingleResult();
-            if (retorno == null) {
-                retorno = "S";
-            }
+            System.out.println("retorno : "+retorno);
             return retorno;
         } catch (Exception e) {
             System.out.println("Error plantillaValidarTipoTrabajadorTipoSueldo PersistenciaTiposTrabajadores : " + e.toString());
@@ -161,9 +157,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             query.setParameter(1, tipoTrabajador);
             query.setParameter(2, tipoContrato);
             String retorno = (String) query.getSingleResult();
-            if (retorno == null) {
-                retorno = "S";
-            }
+            System.out.println("retorno : "+retorno);
             return retorno;
         } catch (Exception e) {
             System.out.println("Error plantillaValidarTipoTrabajadorTipoContrato PersistenciaTiposTrabajadores : " + e.toString());
@@ -180,9 +174,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             query.setParameter(1, tipoTrabajador);
             query.setParameter(2, contrato);
             String retorno = (String) query.getSingleResult();
-            if (retorno == null) {
-                retorno = "S";
-            }
+            System.out.println("retorno : "+retorno);
             return retorno;
         } catch (Exception e) {
             System.out.println("Error plantillaValidarTipoTrabajadorContrato PersistenciaTiposTrabajadores : " + e.toString());
@@ -199,9 +191,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             query.setParameter(1, tipoTrabajador);
             query.setParameter(2, normaLaboral);
             String retorno = (String) query.getSingleResult();
-            if (retorno == null) {
-                retorno = "S";
-            }
+            System.out.println("retorno : "+retorno);
             return retorno;
         } catch (Exception e) {
             System.out.println("Error plantillaValidarTipoTrabajadorNormaLaboral PersistenciaTiposTrabajadores : " + e.toString());
