@@ -4789,9 +4789,7 @@ public class ControlPersonaIndividual implements Serializable {
                 if (validar.equalsIgnoreCase("N")) {
                     RequestContext context = RequestContext.getCurrentInstance();
                     context.execute("aletarTiposTrabajadoresRL.show()");
-                } else {
-
-                }
+                } 
             }
         }
     }

@@ -75,7 +75,7 @@
 
                             <p:dataTable id="datosVRLEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style=" border: 1px; text-align: left"                           
                                          value="#{controlVigenciasReformasLaborales.vigenciasReformasLaboralesEmpleado}" scrollable="true" scrollHeight="#{controlVigenciasReformasLaborales.altoTabla}" 
-                                         filteredValue="#{controlVigenciasReformasLaborales.filtrarVRL}" emptyMessage="#{msg['vacio']}"
+                                         filteredValue="#{controlVigenciasReformasLaborales.filtrarVRL}" emptyMessage="#{msg['vacio']}" 
                                          editable="true" editMode="cell" selection="#{controlVigenciasReformasLaborales.vigenciaSeleccionada}" selectionMode="single">
 
                                 <p:ajax event="filter" listener="#{controlVigenciasReformasLaborales.eventoFiltrar()}"/>
@@ -146,17 +146,16 @@
                                     <h:outputText value="#{reformasLaborales.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroReformaLaboral" value="#{controlVigenciasReformasLaborales.infoRegistroReformaLaboral}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarRL" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlVigenciasReformasLaborales.aceptar}" onclick="ReformasLaboralesDialogo.hide(), lovReformasLaborales.clearFilters();" actionListener="#{controlVigenciasReformasLaborales.actualizarReformaLaboral()}" update="lovReformasLaborales, aceptarRL, datosVRLEmpleado" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovReformasLaborales:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasRL" style="position: relative; left: 265px" value="#{msg['atras']}" onclick="ReformasLaboralesDialogo.hide(), lovReformasLaborales.clearFilters();" actionListener="#{controlVigenciasReformasLaborales.cancelarCambioReformaLaboral()}" update="lovReformasLaborales" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovReformasLaborales:globalFilter"/>
+                            <p:commandButton id="atrasRL" style="position: relative; left: 265px" value="#{msg['atras']}" onclick="ReformasLaboralesDialogo.hide(), lovReformasLaborales.clearFilters();" actionListener="#{controlVigenciasReformasLaborales.cancelarCambioReformaLaboral()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" >
+                                
                             </p:commandButton>
                         </p:dialog> 
-                        
+
                         <h:outputText id="informacionRegistro" value="#{controlVigenciasReformasLaborales.infoRegistro}" style="position: absolute; left: 15px; top: 470px; font-weight: bold"/>
                         <p:commandButton style="position: absolute; left: 683px; top: 470px;  " id="ACEPTAR" icon="ui-icon-check" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosVRLEmpleado" process="@this" disabled="#{controlVigenciasReformasLaborales.guardado}"/>
                         <p:commandButton style="position: absolute; left: 775px; top: 470px;  " id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlVigenciasReformasLaborales.salir()}" action="nomina" process="@this" />

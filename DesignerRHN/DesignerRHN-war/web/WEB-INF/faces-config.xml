@@ -737,6 +737,23 @@
     </navigation-rule>
     
     <navigation-rule>
+        <from-view-id>/ataprobacionhe.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastroATAprocacionHE</from-outcome>
+            <to-view-id>/ataprobacionhe.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
         <from-view-id>/interfasecontabletotal.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
@@ -1314,6 +1331,23 @@
         <navigation-case>
             <from-outcome>rastroProceso</from-outcome>
             <to-view-id>/proceso.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/novedad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>ataprobacionhe</from-outcome>
+            <to-view-id>/ataprobacionhe.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/ataprobacionhe.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedad</from-outcome>
+            <to-view-id>/novedad.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>

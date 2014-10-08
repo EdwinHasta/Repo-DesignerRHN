@@ -357,9 +357,6 @@ and open the template in the editor.
 .ui-datatable{
     border: none;
 }
-.ui-datatable-odd {
-    background: none repeat scroll 0 0 #F2F5F9;
-}
 .ui-tooltip {
     background: white !important;
 }

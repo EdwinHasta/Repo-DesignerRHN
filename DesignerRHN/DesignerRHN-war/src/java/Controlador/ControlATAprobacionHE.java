@@ -1,6 +1,9 @@
 package Controlador;
 
+import Entidades.ActualUsuario;
 import Entidades.EersCabeceras;
+import Entidades.EersDetalles;
+import Entidades.EersFlujos; 
 import Entidades.Empleados;
 import Entidades.Estructuras;
 import Exportar.ExportarPDF;
@@ -9,15 +12,16 @@ import InterfaceAdministrar.AdministrarATAprobacionHEInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Date;
+import java.math.BigInteger;  
+import java.util.ArrayList; 
+import java.util.Date;  
 import java.util.List;
+import java.util.Map; 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.application.FacesMessage; 
+import javax.faces.bean.ManagedBean;  
+import javax.faces.bean.SessionScoped; 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
@@ -25,15 +29,15 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
 import org.primefaces.context.RequestContext;
 
-/**
+/**  
  *
  * @author Administrador
- */
+ */ 
 @ManagedBean
 @SessionScoped
 public class ControlATAprobacionHE implements Serializable {
 
-    @EJB
+    @EJB 
     AdministrarATAprobacionHEInterface administrarATAprobacionHE;
     @EJB
     AdministrarRastrosInterface administrarRastros;
@@ -47,52 +51,80 @@ public class ControlATAprobacionHE implements Serializable {
     private List<EersCabeceras> listaEersCabeceras;
     private List<EersCabeceras> filtrarListaEersCabeceras;
     private EersCabeceras cabeceraSeleccionada;
-    private String auxCabeceraEstructura, auxCabeceraEmpleado, auxCabeceraDocumentoEmpl;
+    private String auxCabeceraEstructura;
     private Date auxCabeceraFechaPago;
+
+    private List<EersFlujos> listaFlujos;
+    private List<EersFlujos> filtrarListaFlujos;
+    private EersFlujos flujoSeleccionado;
+
+    private List<EersDetalles> listaDetalles;
+    private List<EersDetalles> filtrarListaDetalles;
+    private EersDetalles detalleSeleccionado;
 
     private List<Estructuras> lovEstructuras;
     private List<Estructuras> filtrarLovEstructuras;
     private Estructuras estructuraSeleccionada;
     private String infoRegistroEstructura;
 
+    private ActualUsuario actualUsuario;
+
     private int indexCabecera, cualCeldaCabecera;
+    private int indexFlujo, cualCeldaFlujo;
+    private int indexDetalle, cualCeldaDetalle;
     private int banderaCabecera, tipoListaCabecera;
+    private int banderaFlujo, tipoListaFlujo;
+    private int banderaDetalle, tipoListaDetalle;
     private String altoTablaCabecera;
+    private String altoTablaFlujo;
+    private String altoTablaDetalle;
 
     private List<EersCabeceras> listEersCabecerasModificar;
 
     private EersCabeceras editarCabecera;
+    private EersFlujos editarFlujo;
+    private EersDetalles editarDetalle;
 
     private boolean guardado;
-    private boolean permitirIndexCabecera;
-    private BigInteger secRegistro;
-    private BigInteger backUpSecRegistro;
+    private boolean permitirIndexCabecera; 
+    private BigInteger secRegistro; 
+    private BigInteger backUpSecRegistro; 
     private Date fechaParametro;
-    private boolean aceptar;
-    private String paginaAnterior;
-    private String nombreTablaXML, nombreArchivoXML;
+    private boolean aceptar; 
+    private String paginaAnterior; 
+    private String nombreTablaXML, nombreArchivoXML;   
     private boolean activarBuscar, activarMostrarTodos;
-
+ 
     //
-    private int numeroScrollAporte;
-    private int rowsAporteEntidad;
-    //
+    private int numeroScrollCabecera;
+    private int rowsCabecera;
+    // 
     private String altoDivTablaInferiorIzquierda, altoDivTablaInferiorDerecha;
     private String topDivTablaInferiorIzquierda, topDivTablaInferiorDerecha;
+    //
+    private Column cabeceraAprobado, cabeceraEstructura, cabeceraNumDocumento, cabeceraNombreEmpleado, cabeceraHoras, cabeceraMinutos, cabeceraNovedad, cabeceraEstado, cabeceraPaso, cabeceraFechaPago, cabeceraObservaciones;
+    private Column flujoProceso, flujoFecha;
+    private Column detalleConcepto, detalleFecha, detalleObservaciones;
 
     public ControlATAprobacionHE() {
-        altoDivTablaInferiorIzquierda = "195px";
-        topDivTablaInferiorIzquierda = "37px";
+        actualUsuario = null;
 
-        altoDivTablaInferiorDerecha = "195px";
-        topDivTablaInferiorDerecha = "37px";
+        altoDivTablaInferiorIzquierda = "95px";
+        topDivTablaInferiorIzquierda = "37px";
+ 
+        altoDivTablaInferiorDerecha = "95px";
+        topDivTablaInferiorDerecha = "37px"; 
 
         activarBuscar = false;
-        activarMostrarTodos = true;
+        activarMostrarTodos = true; 
 
-        listaEersCabeceras = null;
+        listaEersCabeceras = null; 
         cabeceraSeleccionada = new EersCabeceras();
         empleadoActualProceso = null;
+        listaEersCabeceras = null;
+        flujoSeleccionado = new EersFlujos();
+        listaDetalles = null;
+        detalleSeleccionado = new EersDetalles();
 
         listEersCabecerasModificar = new ArrayList<EersCabeceras>();
 
@@ -102,16 +134,31 @@ public class ControlATAprobacionHE implements Serializable {
         estructuraSeleccionada = new Estructuras();
 
         editarCabecera = new EersCabeceras();
+        editarFlujo = new EersFlujos();
+        editarDetalle = new EersDetalles();
 
         indexCabecera = -1;
+        indexFlujo = -1;
+        indexDetalle = -1;
         cualCeldaCabecera = -1;
+        cualCeldaFlujo = -1;
+        cualCeldaDetalle = -1;
         banderaCabecera = 0;
+        banderaFlujo = 0;
+        banderaDetalle = 0;
         tipoListaCabecera = 0;
+        tipoListaFlujo = 0;
+        tipoListaDetalle = 0;
         altoTablaCabecera = "80";
+        altoTablaFlujo = "110";
+        altoTablaDetalle = "85";
 
         guardado = true;
         permitirIndexCabecera = true;
         aceptar = true;
+
+        numeroScrollCabecera = 505;
+        rowsCabecera = 20;
 
     }
 
@@ -122,8 +169,8 @@ public class ControlATAprobacionHE implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarATAprobacionHE.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
-            numeroScrollAporte = 505;
-            rowsAporteEntidad = 20;
+            numeroScrollCabecera = 505;
+            rowsCabecera = 20;
         } catch (Exception e) {
             System.out.println("Error postconstruct ControlATAprobacionHE: " + e);
             System.out.println("Causa: " + e.getCause());
@@ -138,8 +185,8 @@ public class ControlATAprobacionHE implements Serializable {
         return paginaAnterior;
     }
 
-    public int obtenerNumeroScrollAporte() {
-        return numeroScrollAporte;
+    public int obtenerNumeroScrollCabecera() {
+        return numeroScrollCabecera;
     }
 
     public void pruebaRemota() {
@@ -150,9 +197,9 @@ public class ControlATAprobacionHE implements Serializable {
         } else {
             tam = filtrarListaEersCabeceras.size();
         }
-        if (rowsAporteEntidad < tam) {
-            rowsAporteEntidad = rowsAporteEntidad + 20;
-            numeroScrollAporte = numeroScrollAporte + 500;
+        if (rowsCabecera < tam) {
+            rowsCabecera = rowsCabecera + 20;
+            numeroScrollCabecera = numeroScrollCabecera + 500;
             context.execute("operacionEnProceso.hide()");
             context.update("form:PanelTotal");
         }
@@ -186,7 +233,8 @@ public class ControlATAprobacionHE implements Serializable {
             indexCabecera = -1;
             secRegistro = null;
         }
-        context.update("form:datosCabecera");
+        context.update("form:tablaInferiorIzquierda");
+        context.update("form:tablaInferiorDerecha");
     }
 
     public void modificarCabecera(int indice, String confirmarCambio, String valorConfirmar) {
@@ -220,58 +268,6 @@ public class ControlATAprobacionHE implements Serializable {
                 context.execute("EstructuraDialogo.show()");
             }
         }
-        if (confirmarCambio.equalsIgnoreCase("CODIGO")) {
-            if (tipoListaCabecera == 0) {
-                listaEersCabeceras.get(indice).getEmpleado().getPersona().setStrNumeroDocumento(auxCabeceraDocumentoEmpl);
-            } else {
-                filtrarListaEersCabeceras.get(indice).getEmpleado().getPersona().setStrNumeroDocumento(auxCabeceraDocumentoEmpl);
-            }
-            for (int i = 0; i < lovEmpleados.size(); i++) {
-                if (lovEmpleados.get(i).getPersona().getStrNumeroDocumento().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                if (tipoListaCabecera == 0) {
-                    listaEersCabeceras.get(indice).setEmpleado(lovEmpleados.get(indiceUnicoElemento));
-                } else {
-                    filtrarListaEersCabeceras.get(indice).setEmpleado(lovEmpleados.get(indiceUnicoElemento));
-                }
-                lovEmpleados.clear();
-                getLovEmpleados();
-            } else {
-                permitirIndexCabecera = false;
-                context.update("formLovEmpleado:LovEmpleadoDialogo");
-                context.execute("LovEmpleadoDialogo.show()");
-            }
-        }
-        if (confirmarCambio.equalsIgnoreCase("NOMBRE")) {
-            if (tipoListaCabecera == 0) {
-                listaEersCabeceras.get(indice).getEmpleado().getPersona().setNombreCompleto(auxCabeceraEmpleado);
-            } else {
-                filtrarListaEersCabeceras.get(indice).getEmpleado().getPersona().setNombreCompleto(auxCabeceraEmpleado);
-            }
-            for (int i = 0; i < lovEmpleados.size(); i++) {
-                if (lovEmpleados.get(i).getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                if (tipoListaCabecera == 0) {
-                    listaEersCabeceras.get(indice).setEmpleado(lovEmpleados.get(indiceUnicoElemento));
-                } else {
-                    filtrarListaEersCabeceras.get(indice).setEmpleado(lovEmpleados.get(indiceUnicoElemento));
-                }
-                lovEmpleados.clear();
-                getLovEmpleados();
-            } else {
-                permitirIndexCabecera = false;
-                context.update("formLovEmpleado:LovEmpleadoDialogo");
-                context.execute("LovEmpleadoDialogo.show()");
-            }
-        }
         if (coincidencias == 1) {
             if (tipoListaCabecera == 0) {
                 if (listEersCabecerasModificar.isEmpty()) {
@@ -299,7 +295,8 @@ public class ControlATAprobacionHE implements Serializable {
                 secRegistro = null;
             }
         }
-        context.update("form:datosCabecera");
+        context.update("form:tablaInferiorIzquierda");
+        context.update("form:tablaInferiorDerecha");
     }
 
     public boolean validarFechasRegistroCabecera(int i) {
@@ -340,95 +337,247 @@ public class ControlATAprobacionHE implements Serializable {
             } else {
                 filtrarListaEersCabeceras.get(i).setFechapago(auxCabeceraFechaPago);
             }
-            context.update("form:datosCabecera");
+            context.update("form:tablaInferiorIzquierda");
+            context.update("form:tablaInferiorDerecha");
             context.execute("errorFechaCabecera.show()");
         }
     }
 
+    public void posicionCabecera() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+        String name = map.get("n"); // name attribute of node
+        String type = map.get("t"); // type attribute of node
+        int indice = Integer.parseInt(type);
+        int columna = Integer.parseInt(name);
+        cambiarIndiceCabecera(indice, columna);
+    }
+
     public void cambiarIndiceCabecera(int i, int celda) {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (permitirIndexCabecera == true) {
             indexCabecera = i;
             cualCeldaCabecera = celda;
             lovEstructuras = null;
+            indexFlujo = -1;
+            indexDetalle = -1;
+
+            listaFlujos = null;
+            listaDetalles = null;
+
             if (tipoListaCabecera == 0) {
                 secRegistro = listaEersCabeceras.get(indexCabecera).getSecuencia();
                 auxCabeceraEstructura = listaEersCabeceras.get(indexCabecera).getEstructuraaprueba().getNombre();
                 auxCabeceraFechaPago = listaEersCabeceras.get(indexCabecera).getFechapago();
-                auxCabeceraDocumentoEmpl = listaEersCabeceras.get(indexCabecera).getEmpleado().getPersona().getStrNumeroDocumento();
-                auxCabeceraEmpleado = listaEersCabeceras.get(indexCabecera).getEmpleado().getPersona().getNombreCompleto();
+                //
+                if (cualCeldaCabecera >= 0 && cualCeldaCabecera <= 3) {
+                    cabeceraSeleccionada = listaEersCabeceras.get(indexCabecera);
+                    context.update("form:tablaInferiorDerecha");
+                } else if (cualCeldaCabecera >= 4) {
+                    cabeceraSeleccionada = listaEersCabeceras.get(indexCabecera);
+                    context.update("form:tablaInferiorIzquierda");
+                }
                 //
                 lovEstructuras = administrarATAprobacionHE.lovEstructuras(listaEersCabeceras.get(indexCabecera).getEerestado().getSecuencia());
             } else {
                 secRegistro = filtrarListaEersCabeceras.get(indexCabecera).getSecuencia();
                 auxCabeceraEstructura = filtrarListaEersCabeceras.get(indexCabecera).getEstructuraaprueba().getNombre();
                 auxCabeceraFechaPago = filtrarListaEersCabeceras.get(indexCabecera).getFechapago();
-                auxCabeceraDocumentoEmpl = filtrarListaEersCabeceras.get(indexCabecera).getEmpleado().getPersona().getStrNumeroDocumento();
-                auxCabeceraEmpleado = filtrarListaEersCabeceras.get(indexCabecera).getEmpleado().getPersona().getNombreCompleto();
+                //
+                if (cualCeldaCabecera >= 0 && cualCeldaCabecera <= 3) {
+                    cabeceraSeleccionada = filtrarListaEersCabeceras.get(indexCabecera);
+                    context.update("form:tablaInferiorDerecha");
+                } else if (cualCeldaCabecera >= 4) {
+                    cabeceraSeleccionada = filtrarListaEersCabeceras.get(indexCabecera);
+                    context.update("form:tablaInferiorIzquierda");
+                }
                 //
                 lovEstructuras = administrarATAprobacionHE.lovEstructuras(filtrarListaEersCabeceras.get(indexCabecera).getEerestado().getSecuencia());
             }
+
+            if (banderaFlujo == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+                flujoFecha = (Column) c.getViewRoot().findComponent("form:datosFlujo:flujoFecha");
+                flujoFecha.setFilterStyle("display: none; visibility: hidden;");
+                flujoProceso = (Column) c.getViewRoot().findComponent("form:datosFlujo:flujoProceso");
+                flujoProceso.setFilterStyle("display: none; visibility: hidden;");
+                altoTablaFlujo = "110";
+                RequestContext.getCurrentInstance().update("form:datosFlujo");
+                banderaFlujo = 0;
+                filtrarListaFlujos = null;
+                tipoListaFlujo = 0;
+            }
+            if (banderaDetalle == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+                detalleConcepto = (Column) c.getViewRoot().findComponent("form:datosDetalle:detalleConcepto");
+                detalleConcepto.setFilterStyle("display: none; visibility: hidden;");
+                detalleFecha = (Column) c.getViewRoot().findComponent("form:datosDetalle:detalleFecha");
+                detalleFecha.setFilterStyle("display: none; visibility: hidden;");
+                detalleObservaciones = (Column) c.getViewRoot().findComponent("form:datosDetalle:detalleObservaciones");
+                detalleObservaciones.setFilterStyle("display: none; visibility: hidden;");
+                altoTablaDetalle = "85";
+                RequestContext.getCurrentInstance().update("form:datosDetalle");
+                banderaDetalle = 0;
+                filtrarListaDetalles = null;
+                tipoListaDetalle = 0;
+            }
+            getListaFlujos();
+            getListaDetalles();
+            context.update("form:datosFlujo");
+        }
+    }
+
+    public void posicionFlujo() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+        String name = map.get("n"); // name attribute of node
+        String type = map.get("t"); // type attribute of node
+        int indice = Integer.parseInt(type);
+        int columna = Integer.parseInt(name);
+        cambiarIndiceFlujo(indice, columna);
+    }
+
+    public void cambiarIndiceFlujo(int i, int celda) {
+        indexCabecera = -1;
+        indexFlujo = i;
+        cualCeldaFlujo = celda;
+        indexDetalle = -1;
+        if (tipoListaFlujo == 0) {
+            secRegistro = listaFlujos.get(indexFlujo).getSecuencia();
+        } else {
+            secRegistro = filtrarListaFlujos.get(indexFlujo).getSecuencia();
+        }
+    }
+
+    public void posicionDetalle() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+        String name = map.get("n"); // name attribute of node
+        String type = map.get("t"); // type attribute of node
+        int indice = Integer.parseInt(type);
+        int columna = Integer.parseInt(name);
+        cambiarIndiceDetalle(indice, columna);
+    }
+
+    public void cambiarIndiceDetalle(int i, int celda) {
+        indexCabecera = -1;
+        indexFlujo = -1;
+        indexDetalle = i;
+        cualCeldaDetalle = celda;
+        if (tipoListaDetalle == 0) {
+            secRegistro = listaDetalles.get(indexDetalle).getSecuencia();
+        } else {
+            secRegistro = filtrarListaDetalles.get(indexDetalle).getSecuencia();
         }
     }
 
     public void editarCelda() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (indexCabecera >= 0) {
+            if (tipoListaCabecera == 0) {
+                editarCabecera = listaEersCabeceras.get(indexCabecera);
+            } else {
+                editarCabecera = filtrarListaEersCabeceras.get(indexCabecera);
+            }
             if (cualCeldaCabecera == 0) {
-                context.update("");
-                context.execute("");
+                context.update("formularioDialogos:editarCabeceraAprobado");
+                context.execute("editarCabeceraAprobado.show()");
                 cualCeldaCabecera = -1;
             }
             if (cualCeldaCabecera == 1) {
-                context.update("");
-                context.execute("");
+                context.update("formularioDialogos:editarCabeceraSiguiente");
+                context.execute("editarCabeceraSiguiente.show()");
                 cualCeldaCabecera = -1;
             }
             if (cualCeldaCabecera == 2) {
-                context.update("");
-                context.execute("");
+                context.update("formularioDialogos:editarCabeceraNumDocumento");
+                context.execute("editarCabeceraNumDocumento.show()");
                 cualCeldaCabecera = -1;
             }
             if (cualCeldaCabecera == 3) {
-                context.update("");
-                context.execute("");
+                context.update("formularioDialogos:editarEmplNombre");
+                context.execute("editarEmplNombre.show()");
                 cualCeldaCabecera = -1;
             }
             if (cualCeldaCabecera == 4) {
-                context.update("");
-                context.execute("");
+                context.update("formularioDialogos:editarCabeceraHoras");
+                context.execute("editarCabeceraHoras.show()");
                 cualCeldaCabecera = -1;
             }
             if (cualCeldaCabecera == 5) {
-                context.update("");
-                context.execute("");
+                context.update("formularioDialogos:editarCabeceraMinuto");
+                context.execute("editarCabeceraMinuto.show()");
                 cualCeldaCabecera = -1;
             }
             if (cualCeldaCabecera == 6) {
-                context.update("");
-                context.execute("");
+                context.update("formularioDialogos:editarCabeceraNovedad");
+                context.execute("editarCabeceraNovedad.show()");
                 cualCeldaCabecera = -1;
             }
             if (cualCeldaCabecera == 7) {
-                context.update("");
-                context.execute("");
+                context.update("formularioDialogos:editarCabeceraEstado");
+                context.execute("editarCabeceraEstado.show()");
                 cualCeldaCabecera = -1;
             }
             if (cualCeldaCabecera == 8) {
-                context.update("");
-                context.execute("");
+                context.update("formularioDialogos:editarCabeceraPaso");
+                context.execute("editarCabeceraPaso.show()");
                 cualCeldaCabecera = -1;
             }
             if (cualCeldaCabecera == 9) {
-                context.update("");
-                context.execute("");
+                context.update("formularioDialogos:editarCabeceraFechaPago");
+                context.execute("editarCabeceraFechaPago.show()");
                 cualCeldaCabecera = -1;
             }
             if (cualCeldaCabecera == 10) {
-                context.update("");
-                context.execute("");
+                context.update("formularioDialogos:editarCabeceraObservacion");
+                context.execute("editarCabeceraObservacion.show()");
                 cualCeldaCabecera = -1;
             }
             indexCabecera = -1;
+            secRegistro = null;
+        }
+        if (indexFlujo >= 0) {
+            if (tipoListaFlujo == 0) {
+                editarFlujo = listaFlujos.get(indexFlujo);
+            } else {
+                editarFlujo = filtrarListaFlujos.get(indexFlujo);
+            }
+            if (cualCeldaFlujo == 0) {
+                context.update("formularioDialogos:editarFlujoProceso");
+                context.execute("editarFlujoProceso.show()");
+                cualCeldaFlujo = -1;
+            }
+            if (cualCeldaFlujo == 1) {
+                context.update("formularioDialogos:editarFlujoFecha");
+                context.execute("editarFlujoFecha.show()");
+                cualCeldaFlujo = -1;
+            }
+            indexFlujo = -1;
+            secRegistro = null;
+        }
+        if (indexDetalle >= 0) {
+            if (tipoListaDetalle == 0) {
+                editarDetalle = listaDetalles.get(indexDetalle);
+            } else {
+                editarDetalle = filtrarListaDetalles.get(indexDetalle);
+            }
+            if (cualCeldaDetalle == 0) {
+                context.update("formularioDialogos:editarDetalleConcepto");
+                context.execute("editarDetalleConcepto.show()");
+                cualCeldaDetalle = -1;
+            }
+            if (cualCeldaDetalle == 1) {
+                context.update("formularioDialogos:editarDetalleFecha");
+                context.execute("editarDetalleFecha.show()");
+                cualCeldaDetalle = -1;
+            }
+            if (cualCeldaDetalle == 2) {
+                context.update("formularioDialogos:editarDetalleObservacion");
+                context.execute("editarDetalleObservacion.show()");
+                cualCeldaDetalle = -1;
+            }
+            indexDetalle = -1;
             secRegistro = null;
         }
     }
@@ -457,14 +606,98 @@ public class ControlATAprobacionHE implements Serializable {
     }
 
     public void cancelarModificacion() {
+
+        if (banderaCabecera == 1) {
+            //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
+            cabeceraAprobado = (Column) c.getViewRoot().findComponent("form:tablaSuperiorIzquierda:cabeceraAprobado");
+            cabeceraAprobado.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraEstructura = (Column) c.getViewRoot().findComponent("form:tablaSuperiorIzquierda:cabeceraEstructura");
+            cabeceraEstructura.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraNumDocumento = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraNumDocumento");
+            cabeceraNumDocumento.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraNombreEmpleado = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraNombreEmpleado");
+            cabeceraNombreEmpleado.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraHoras = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraHoras");
+            cabeceraHoras.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraMinutos = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraMinutos");
+            cabeceraMinutos.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraNovedad = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraNovedad");
+            cabeceraNovedad.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraEstado = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraEstado");
+            cabeceraEstado.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraPaso = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraPaso");
+            cabeceraPaso.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraFechaPago = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraFechaPago");
+            cabeceraFechaPago.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraObservaciones = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraObservaciones");
+            cabeceraObservaciones.setFilterStyle("display: none; visibility: hidden;");
+            altoTablaCabecera = "80";
+            banderaCabecera = 0;
+            filtrarListaEersCabeceras = null;
+            tipoListaCabecera = 0;
+
+            RequestContext.getCurrentInstance().update("form:tablaSuperiorIzquierda");
+            RequestContext.getCurrentInstance().update("form:tablaSuperiorDerecha");
+
+            altoDivTablaInferiorIzquierda = "95px";
+            topDivTablaInferiorIzquierda = "37px";
+
+            altoDivTablaInferiorDerecha = "95px";
+            topDivTablaInferiorDerecha = "37px";
+
+            RequestContext.getCurrentInstance().update("form:PanelTotal");
+        }
+
+        if (banderaFlujo == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            flujoFecha = (Column) c.getViewRoot().findComponent("form:datosFlujo:flujoFecha");
+            flujoFecha.setFilterStyle("display: none; visibility: hidden;");
+            flujoProceso = (Column) c.getViewRoot().findComponent("form:datosFlujo:flujoProceso");
+            flujoProceso.setFilterStyle("display: none; visibility: hidden;");
+            altoTablaFlujo = "110";
+            RequestContext.getCurrentInstance().update("form:datosFlujo");
+            banderaFlujo = 0;
+            filtrarListaFlujos = null;
+            tipoListaFlujo = 0;
+        }
+
+        if (banderaDetalle == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            detalleConcepto = (Column) c.getViewRoot().findComponent("form:datosDetalle:detalleConcepto");
+            detalleConcepto.setFilterStyle("display: none; visibility: hidden;");
+            detalleFecha = (Column) c.getViewRoot().findComponent("form:datosDetalle:detalleFecha");
+            detalleFecha.setFilterStyle("display: none; visibility: hidden;");
+            detalleObservaciones = (Column) c.getViewRoot().findComponent("form:datosDetalle:detalleObservaciones");
+            detalleObservaciones.setFilterStyle("display: none; visibility: hidden;");
+            altoTablaDetalle = "85";
+            RequestContext.getCurrentInstance().update("form:datosDetalle");
+            banderaDetalle = 0;
+            filtrarListaDetalles = null;
+            tipoListaDetalle = 0;
+        }
+
         listaEersCabeceras = null;
-        getListaEersCabeceras();
+        cargarDatosNuevosCabecera(1);
+
+        listaFlujos = null;
+        listaDetalles = null;
 
         indexCabecera = -1;
+        indexFlujo = -1;
+        indexDetalle = -1;
         cualCeldaCabecera = -1;
+        cualCeldaFlujo = -1;
+        cualCeldaDetalle = -1;
         banderaCabecera = 0;
+        banderaFlujo = 0;
+        banderaDetalle = 0;
         tipoListaCabecera = 0;
+        tipoListaFlujo = 0;
+        tipoListaDetalle = 0;
         altoTablaCabecera = "80";
+        altoTablaFlujo = "110";
+        altoTablaDetalle = "85";
 
         guardado = true;
         secRegistro = null;
@@ -473,21 +706,104 @@ public class ControlATAprobacionHE implements Serializable {
         activarBuscar = false;
         activarMostrarTodos = true;
 
-        numeroScrollAporte = 505;
-        rowsAporteEntidad = 20;
+        numeroScrollCabecera = 505;
+        rowsCabecera = 20;
 
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:PanelTotal");
     }
 
     public void salir() {
+
+        if (banderaCabecera == 1) {
+            //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
+            cabeceraAprobado = (Column) c.getViewRoot().findComponent("form:tablaSuperiorIzquierda:cabeceraAprobado");
+            cabeceraAprobado.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraEstructura = (Column) c.getViewRoot().findComponent("form:tablaSuperiorIzquierda:cabeceraEstructura");
+            cabeceraEstructura.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraNumDocumento = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraNumDocumento");
+            cabeceraNumDocumento.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraNombreEmpleado = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraNombreEmpleado");
+            cabeceraNombreEmpleado.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraHoras = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraHoras");
+            cabeceraHoras.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraMinutos = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraMinutos");
+            cabeceraMinutos.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraNovedad = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraNovedad");
+            cabeceraNovedad.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraEstado = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraEstado");
+            cabeceraEstado.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraPaso = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraPaso");
+            cabeceraPaso.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraFechaPago = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraFechaPago");
+            cabeceraFechaPago.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraObservaciones = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraObservaciones");
+            cabeceraObservaciones.setFilterStyle("display: none; visibility: hidden;");
+            altoTablaCabecera = "80";
+            banderaCabecera = 0;
+            filtrarListaEersCabeceras = null;
+            tipoListaCabecera = 0;
+
+            RequestContext.getCurrentInstance().update("form:tablaSuperiorIzquierda");
+            RequestContext.getCurrentInstance().update("form:tablaSuperiorDerecha");
+
+            altoDivTablaInferiorIzquierda = "95px";
+            topDivTablaInferiorIzquierda = "37px";
+
+            altoDivTablaInferiorDerecha = "95px";
+            topDivTablaInferiorDerecha = "37px";
+
+            RequestContext.getCurrentInstance().update("form:PanelTotal");
+        }
+
+        if (banderaFlujo == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            flujoFecha = (Column) c.getViewRoot().findComponent("form:datosFlujo:flujoFecha");
+            flujoFecha.setFilterStyle("display: none; visibility: hidden;");
+            flujoProceso = (Column) c.getViewRoot().findComponent("form:datosFlujo:flujoProceso");
+            flujoProceso.setFilterStyle("display: none; visibility: hidden;");
+            altoTablaFlujo = "110";
+            RequestContext.getCurrentInstance().update("form:datosFlujo");
+            banderaFlujo = 0;
+            filtrarListaFlujos = null;
+            tipoListaFlujo = 0;
+        }
+
+        if (banderaDetalle == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            detalleConcepto = (Column) c.getViewRoot().findComponent("form:datosDetalle:detalleConcepto");
+            detalleConcepto.setFilterStyle("display: none; visibility: hidden;");
+            detalleFecha = (Column) c.getViewRoot().findComponent("form:datosDetalle:detalleFecha");
+            detalleFecha.setFilterStyle("display: none; visibility: hidden;");
+            detalleObservaciones = (Column) c.getViewRoot().findComponent("form:datosDetalle:detalleObservaciones");
+            detalleObservaciones.setFilterStyle("display: none; visibility: hidden;");
+            altoTablaDetalle = "85";
+            RequestContext.getCurrentInstance().update("form:datosDetalle");
+            banderaDetalle = 0;
+            filtrarListaDetalles = null;
+            tipoListaDetalle = 0;
+        }
+
         listaEersCabeceras = null;
+        listaFlujos = null;
+        listaDetalles = null;
 
         indexCabecera = -1;
+        indexFlujo = -1;
+        indexDetalle = -1;
         cualCeldaCabecera = -1;
+        cualCeldaFlujo = -1;
+        cualCeldaDetalle = -1;
         banderaCabecera = 0;
+        banderaFlujo = 0;
+        banderaDetalle = 0;
         tipoListaCabecera = 0;
+        tipoListaFlujo = 0;
+        tipoListaDetalle = 0;
         altoTablaCabecera = "80";
+        altoTablaFlujo = "110";
+        altoTablaDetalle = "85";
 
         guardado = true;
         secRegistro = null;
@@ -496,8 +812,8 @@ public class ControlATAprobacionHE implements Serializable {
         activarBuscar = false;
         activarMostrarTodos = true;
 
-        numeroScrollAporte = 505;
-        rowsAporteEntidad = 20;
+        numeroScrollCabecera = 505;
+        rowsCabecera = 20;
     }
 
     public void guardadoGeneral() {
@@ -514,16 +830,11 @@ public class ControlATAprobacionHE implements Serializable {
                 listEersCabecerasModificar.clear();
             }
             listaEersCabeceras = null;
-            if (activarBuscar == true) {
-                listaEersCabeceras = administrarATAprobacionHE.obtenerEersCabecerasPorEmpleado(empleadoActualProceso.getSecuencia());
-            } else {
-                listaEersCabeceras = administrarATAprobacionHE.obtenerTotalesEersCabeceras();
-            }
-            context.update("form:datosHoraExtra");
             guardado = true;
             context.update("form:ACEPTAR");
             indexCabecera = -1;
             secRegistro = null;
+            cancelarModificacion();
             FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos de Conceptos A Aprobar con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
@@ -549,8 +860,8 @@ public class ControlATAprobacionHE implements Serializable {
     public void mostrarTodosEmpleados() {
         if (guardado == true) {
             cancelarModificacion();
-            numeroScrollAporte = 505;
-            rowsAporteEntidad = 20;
+            numeroScrollCabecera = 505;
+            rowsCabecera = 20;
             cargarDatosNuevosCabecera(1);
         } else {
             RequestContext.getCurrentInstance().execute("confirmarGuardar.show()");
@@ -560,7 +871,78 @@ public class ControlATAprobacionHE implements Serializable {
     public void actualizarEmpleado() {
         RequestContext context = RequestContext.getCurrentInstance();
 
+        if (banderaCabecera == 1) {
+            //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
+            cabeceraAprobado = (Column) c.getViewRoot().findComponent("form:tablaSuperiorIzquierda:cabeceraAprobado");
+            cabeceraAprobado.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraEstructura = (Column) c.getViewRoot().findComponent("form:tablaSuperiorIzquierda:cabeceraEstructura");
+            cabeceraEstructura.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraNumDocumento = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraNumDocumento");
+            cabeceraNumDocumento.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraNombreEmpleado = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraNombreEmpleado");
+            cabeceraNombreEmpleado.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraHoras = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraHoras");
+            cabeceraHoras.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraMinutos = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraMinutos");
+            cabeceraMinutos.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraNovedad = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraNovedad");
+            cabeceraNovedad.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraEstado = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraEstado");
+            cabeceraEstado.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraPaso = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraPaso");
+            cabeceraPaso.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraFechaPago = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraFechaPago");
+            cabeceraFechaPago.setFilterStyle("display: none; visibility: hidden;");
+            cabeceraObservaciones = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraObservaciones");
+            cabeceraObservaciones.setFilterStyle("display: none; visibility: hidden;");
+            altoTablaCabecera = "80";
+            banderaCabecera = 0;
+            filtrarListaEersCabeceras = null;
+            tipoListaCabecera = 0;
+
+            RequestContext.getCurrentInstance().update("form:tablaSuperiorIzquierda");
+            RequestContext.getCurrentInstance().update("form:tablaSuperiorDerecha");
+
+            altoDivTablaInferiorIzquierda = "95px";
+            topDivTablaInferiorIzquierda = "37px";
+
+            altoDivTablaInferiorDerecha = "95px";
+            topDivTablaInferiorDerecha = "37px";
+
+            RequestContext.getCurrentInstance().update("form:PanelTotal");
+        }
+
+        if (banderaFlujo == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            flujoFecha = (Column) c.getViewRoot().findComponent("form:datosFlujo:flujoFecha");
+            flujoFecha.setFilterStyle("display: none; visibility: hidden;");
+            flujoProceso = (Column) c.getViewRoot().findComponent("form:datosFlujo:flujoProceso");
+            flujoProceso.setFilterStyle("display: none; visibility: hidden;");
+            altoTablaFlujo = "110";
+            RequestContext.getCurrentInstance().update("form:datosFlujo");
+            banderaFlujo = 0;
+            filtrarListaFlujos = null;
+            tipoListaFlujo = 0;
+        }
+
+        if (banderaDetalle == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            detalleConcepto = (Column) c.getViewRoot().findComponent("form:datosDetalle:detalleConcepto");
+            detalleConcepto.setFilterStyle("display: none; visibility: hidden;");
+            detalleFecha = (Column) c.getViewRoot().findComponent("form:datosDetalle:detalleFecha");
+            detalleFecha.setFilterStyle("display: none; visibility: hidden;");
+            detalleObservaciones = (Column) c.getViewRoot().findComponent("form:datosDetalle:detalleObservaciones");
+            detalleObservaciones.setFilterStyle("display: none; visibility: hidden;");
+            altoTablaDetalle = "85";
+            RequestContext.getCurrentInstance().update("form:datosDetalle");
+            banderaDetalle = 0;
+            filtrarListaDetalles = null;
+            tipoListaDetalle = 0;
+        }
+
         listaEersCabeceras = null;
+        listaFlujos = null;
         empleadoActualProceso = empleadoSeleccionado;
         filtrarLovEmpleados = null;
         empleadoSeleccionado = null;
@@ -571,15 +953,16 @@ public class ControlATAprobacionHE implements Serializable {
         activarBuscar = true;
         activarMostrarTodos = false;
 
-        numeroScrollAporte = 505;
-        rowsAporteEntidad = 20;
+        numeroScrollCabecera = 505;
+        rowsCabecera = 20;
 
-        context.update("form:panelTotal");
         context.update("formEmpleado:EmpleadoDialogo");
         context.update("formEmpleado:lovEmpleado");
         context.update("formEmpleado:aceptarE");
         context.reset("formEmpleado:lovEmpleado:globalFilter");
         context.execute("EmpleadoDialogo.hide()");
+
+        context.update("form:panelTotal");
 
         cargarDatosNuevosCabecera(2);
     }
@@ -662,88 +1045,191 @@ public class ControlATAprobacionHE implements Serializable {
         permitirIndexCabecera = true;
     }
 
-    public void actualizarEmpleadoTabla() {
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (tipoListaCabecera == 0) {
-            listaEersCabeceras.get(indexCabecera).setEmpleado(empleadoSeleccionado);
-            if (listEersCabecerasModificar.isEmpty()) {
-                listEersCabecerasModificar.add(listaEersCabeceras.get(indexCabecera));
-            } else if (!listEersCabecerasModificar.contains(listaEersCabeceras.get(indexCabecera))) {
-                listEersCabecerasModificar.add(listaEersCabeceras.get(indexCabecera));
-            }
-
-        } else {
-            filtrarListaEersCabeceras.get(indexCabecera).setEmpleado(empleadoSeleccionado);
-            if (listEersCabecerasModificar.isEmpty()) {
-                listEersCabecerasModificar.add(filtrarListaEersCabeceras.get(indexCabecera));
-            } else if (!listEersCabecerasModificar.contains(filtrarListaEersCabeceras.get(indexCabecera))) {
-                listEersCabecerasModificar.add(filtrarListaEersCabeceras.get(indexCabecera));
-            }
-        }
-        if (guardado == true) {
-            guardado = false;
-            context.update("form:ACEPTAR");
-        }
-        context.update("form:datosCabecera");
-        permitirIndexCabecera = true;
-        filtrarLovEmpleados = null;
-        empleadoSeleccionado = null;
-        aceptar = true;
-        indexCabecera = -1;
-        secRegistro = null;
-        context.update("formLovEmpleado:LovEmpleadoDialogo");
-        context.update("formLovEmpleado:lovLovEmpleado");
-        context.update("formLovEmpleado:aceptarEL");
-        context.reset("formLovEmpleado:lovLovEmpleado:globalFilter");
-        context.execute("LovEmpleadoDialogo.hide()");
-    }
-
-    public void cancelarCambioEmpleadoTabla() {
-        filtrarLovEstructuras = null;
-        estructuraSeleccionada = null;
-        aceptar = true;
-        indexCabecera = -1;
-        secRegistro = null;
-        permitirIndexCabecera = true;
-    }
-
     public void eventoFiltrar() {
         if (indexCabecera >= 0) {
             if (tipoListaCabecera == 0) {
                 tipoListaCabecera = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:tablaInferiorIzquierda");
+            context.update("form:tablaInferiorDerecha");
         }
+        if (indexFlujo >= 0) {
+            if (tipoListaFlujo == 0) {
+                tipoListaFlujo = 1;
+            }
+        }
+        if (indexDetalle >= 0) {
+            if (tipoListaDetalle == 0) {
+                tipoListaDetalle = 1;
+            }
+        }
+    }
+
+    public void organizarTablas() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tablaInferiorIzquierda");
+        context.update("form:tablaInferiorDerecha");
     }
 
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (indexCabecera >= 0) {
             if (banderaCabecera == 0) {
-
+                cabeceraAprobado = (Column) c.getViewRoot().findComponent("form:tablaSuperiorIzquierda:cabeceraAprobado");
+                cabeceraAprobado.setFilterStyle("width: 66px");
+                cabeceraEstructura = (Column) c.getViewRoot().findComponent("form:tablaSuperiorIzquierda:cabeceraEstructura");
+                cabeceraEstructura.setFilterStyle("width: 66px");
+                cabeceraNumDocumento = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraNumDocumento");
+                cabeceraNumDocumento.setFilterStyle("width: 66px");
+                cabeceraNombreEmpleado = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraNombreEmpleado");
+                cabeceraNombreEmpleado.setFilterStyle("width: 66px");
+                cabeceraHoras = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraHoras");
+                cabeceraHoras.setFilterStyle("width: 66px");
+                cabeceraMinutos = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraMinutos");
+                cabeceraMinutos.setFilterStyle("width: 66px");
+                cabeceraNovedad = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraNovedad");
+                cabeceraNovedad.setFilterStyle("width: 66px");
+                cabeceraEstado = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraEstado");
+                cabeceraEstado.setFilterStyle("width: 66px");
+                cabeceraPaso = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraPaso");
+                cabeceraPaso.setFilterStyle("width: 66px");
+                cabeceraFechaPago = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraFechaPago");
+                cabeceraFechaPago.setFilterStyle("width: 66px");
+                cabeceraObservaciones = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraObservaciones");
+                cabeceraObservaciones.setFilterStyle("width: 66px");
                 altoTablaCabecera = "58";
-                RequestContext.getCurrentInstance().update("form:datosCabecera");
                 banderaCabecera = 1;
+
+                RequestContext.getCurrentInstance().update("form:tablaSuperiorIzquierda");
+                RequestContext.getCurrentInstance().update("form:tablaSuperiorDerecha");
+
+                altoDivTablaInferiorIzquierda = "73px";
+                altoDivTablaInferiorDerecha = "73px";
+
+                topDivTablaInferiorIzquierda = "59px";
+                topDivTablaInferiorDerecha = "59px";
+
+                RequestContext.getCurrentInstance().update("form:PanelTotal");
+
             } else if (banderaCabecera == 1) {
                 //CERRAR FILTRADO
-
+                cabeceraAprobado = (Column) c.getViewRoot().findComponent("form:tablaSuperiorIzquierda:cabeceraAprobado");
+                cabeceraAprobado.setFilterStyle("display: none; visibility: hidden;");
+                cabeceraEstructura = (Column) c.getViewRoot().findComponent("form:tablaSuperiorIzquierda:cabeceraEstructura");
+                cabeceraEstructura.setFilterStyle("display: none; visibility: hidden;");
+                cabeceraNumDocumento = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraNumDocumento");
+                cabeceraNumDocumento.setFilterStyle("display: none; visibility: hidden;");
+                cabeceraNombreEmpleado = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraNombreEmpleado");
+                cabeceraNombreEmpleado.setFilterStyle("display: none; visibility: hidden;");
+                cabeceraHoras = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraHoras");
+                cabeceraHoras.setFilterStyle("display: none; visibility: hidden;");
+                cabeceraMinutos = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraMinutos");
+                cabeceraMinutos.setFilterStyle("display: none; visibility: hidden;");
+                cabeceraNovedad = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraNovedad");
+                cabeceraNovedad.setFilterStyle("display: none; visibility: hidden;");
+                cabeceraEstado = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraEstado");
+                cabeceraEstado.setFilterStyle("display: none; visibility: hidden;");
+                cabeceraPaso = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraPaso");
+                cabeceraPaso.setFilterStyle("display: none; visibility: hidden;");
+                cabeceraFechaPago = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraFechaPago");
+                cabeceraFechaPago.setFilterStyle("display: none; visibility: hidden;");
+                cabeceraObservaciones = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:cabeceraObservaciones");
+                cabeceraObservaciones.setFilterStyle("display: none; visibility: hidden;");
                 altoTablaCabecera = "80";
-                RequestContext.getCurrentInstance().update("form:datosCabecera");
                 banderaCabecera = 0;
                 filtrarListaEersCabeceras = null;
                 tipoListaCabecera = 0;
+
+                RequestContext.getCurrentInstance().update("form:tablaSuperiorIzquierda");
+                RequestContext.getCurrentInstance().update("form:tablaSuperiorDerecha");
+
+                altoDivTablaInferiorIzquierda = "95px";
+                topDivTablaInferiorIzquierda = "37px";
+
+                altoDivTablaInferiorDerecha = "95px";
+                topDivTablaInferiorDerecha = "37px";
+
+                RequestContext.getCurrentInstance().update("form:PanelTotal");
             }
         }
-    }
-
+        if (indexFlujo >= 0) {
+            if (banderaFlujo == 0) {
+                flujoFecha = (Column) c.getViewRoot().findComponent("form:datosFlujo:flujoFecha");
+                flujoFecha.setFilterStyle("width: 60px");
+                flujoProceso = (Column) c.getViewRoot().findComponent("form:datosFlujo:flujoProceso");
+                flujoProceso.setFilterStyle("width: 90px");
+                altoTablaFlujo = "88";
+                RequestContext.getCurrentInstance().update("form:datosFlujo");
+                banderaFlujo = 1;
+            } else if (banderaFlujo == 1) {
+                flujoFecha = (Column) c.getViewRoot().findComponent("form:datosFlujo:flujoFecha");
+                flujoFecha.setFilterStyle("display: none; visibility: hidden;");
+                flujoProceso = (Column) c.getViewRoot().findComponent("form:datosFlujo:flujoProceso");
+                flujoProceso.setFilterStyle("display: none; visibility: hidden;");
+                altoTablaFlujo = "110";
+                RequestContext.getCurrentInstance().update("form:datosFlujo");
+                banderaFlujo = 0;
+                filtrarListaFlujos = null;
+                tipoListaFlujo = 0;
+            }
+        }  
+        if (indexDetalle >= 0) { 
+            if (banderaDetalle == 0) {
+                detalleConcepto = (Column) c.getViewRoot().findComponent("form:datosDetalle:detalleConcepto");
+                detalleConcepto.setFilterStyle("width: 90px");
+                detalleFecha = (Column) c.getViewRoot().findComponent("form:datosDetalle:detalleFecha");
+                detalleFecha.setFilterStyle("width: 60px");
+                detalleObservaciones = (Column) c.getViewRoot().findComponent("form:datosDetalle:detalleObservaciones");
+                detalleObservaciones.setFilterStyle("width: 90px");
+                altoTablaFlujo = "63";
+                RequestContext.getCurrentInstance().update("form:datosDetalle");
+                banderaDetalle = 1;
+            } else if (banderaDetalle == 1) {
+                detalleConcepto = (Column) c.getViewRoot().findComponent("form:datosDetalle:detalleConcepto");
+                detalleConcepto.setFilterStyle("display: none; visibility: hidden;");
+                detalleFecha = (Column) c.getViewRoot().findComponent("form:datosDetalle:detalleFecha");
+                detalleFecha.setFilterStyle("display: none; visibility: hidden;");
+                detalleObservaciones = (Column) c.getViewRoot().findComponent("form:datosDetalle:detalleObservaciones");
+                detalleObservaciones.setFilterStyle("display: none; visibility: hidden;");
+                altoTablaDetalle = "85";
+                RequestContext.getCurrentInstance().update("form:datosDetalle");
+                banderaDetalle = 0;
+                filtrarListaDetalles = null;
+                tipoListaDetalle = 0;
+            }
+        }  
+    } 
+   
     public void exportPDF() throws IOException {
         if (indexCabecera >= 0) {
             FacesContext c = FacesContext.getCurrentInstance();
             DataTable tabla = (DataTable) c.getViewRoot().findComponent("formExportar:datosCabeceraExportar");
             FacesContext context = c;
             Exporter exporter = new ExportarPDF();
-            exporter.export(context, tabla, "HorasAAprobar_PDF", false, false, "UTF-8", null, null);
+            exporter.export(context, tabla, "Conceptos_A_Aprobar_PDF", false, false, "UTF-8", null, null);
+            context.responseComplete();
+            indexCabecera = -1; 
+            secRegistro = null; 
+        }
+        if (indexFlujo >= 0) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            DataTable tabla = (DataTable) c.getViewRoot().findComponent("formExportar:datosFlujoExportar");
+            FacesContext context = c;
+            Exporter exporter = new ExportarPDF();
+            exporter.export(context, tabla, "FlujosAprobados_PDF", false, false, "UTF-8", null, null);
             context.responseComplete();
             indexCabecera = -1;
+            secRegistro = null;
+        }
+        if (indexDetalle >= 0) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            DataTable tabla = (DataTable) c.getViewRoot().findComponent("formExportar:datosDetalleExportar");
+            FacesContext context = c;
+            Exporter exporter = new ExportarPDF();
+            exporter.export(context, tabla, "Detalles_PDF", false, false, "UTF-8", null, null);
+            context.responseComplete();
+            indexDetalle = -1;
             secRegistro = null;
         }
     }
@@ -751,26 +1237,58 @@ public class ControlATAprobacionHE implements Serializable {
     public void exportXLS() throws IOException {
         if (indexCabecera >= 0) {
             FacesContext c = FacesContext.getCurrentInstance();
-            DataTable tabla = (DataTable) c.getViewRoot().findComponent("formExportar:datosEmpleadoExportar");
+            DataTable tabla = (DataTable) c.getViewRoot().findComponent("formExportar:datosCabeceraExportar");
             FacesContext context = c;
             Exporter exporter = new ExportarXLS();
-            exporter.export(context, tabla, "HorasAAprobar_XLS", false, false, "UTF-8", null, null);
+            exporter.export(context, tabla, "Conceptos_A_Aprobar_XLS", false, false, "UTF-8", null, null);
             context.responseComplete();
             indexCabecera = -1;
+            secRegistro = null;
+        }
+        if (indexFlujo >= 0) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            DataTable tabla = (DataTable) c.getViewRoot().findComponent("formExportar:datosFlujoExportar");
+            FacesContext context = c;
+            Exporter exporter = new ExportarXLS();
+            exporter.export(context, tabla, "FlujosAprobados_XLS", false, false, "UTF-8", null, null);
+            context.responseComplete();
+            indexFlujo = -1;
+            secRegistro = null;
+        }
+        if (indexDetalle >= 0) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            DataTable tabla = (DataTable) c.getViewRoot().findComponent("formExportar:datosDetalleExportar");
+            FacesContext context = c;
+            Exporter exporter = new ExportarXLS();
+            exporter.export(context, tabla, "Detalles_XLS", false, false, "UTF-8", null, null);
+            context.responseComplete();
+            indexDetalle = -1;
             secRegistro = null;
         }
     }
 
     public String obtenerTablaXML() {
         if (indexCabecera >= 0) {
-            nombreTablaXML = ":formExportar:datosEmpleadoExportar";
+            nombreTablaXML = ":formExportar:datosCabeceraExportar";
+        }
+        if (indexFlujo >= 0) {
+            nombreTablaXML = ":formExportar:datosFlujoExportar";
+        }
+        if (indexDetalle >= 0) {
+            nombreTablaXML = ":formExportar:datosDetalleExportar";
         }
         return nombreTablaXML;
     }
 
     public String obtenerNombreArchivoXML() {
         if (indexCabecera >= 0) {
-            nombreArchivoXML = "HorasAAproba_XML";
+            nombreArchivoXML = "Conceptos_A_Aprobar_XML";
+        }
+        if (indexFlujo >= 0) {
+            nombreArchivoXML = "FlujosAprobados_XML";
+        }
+        if (indexDetalle >= 0) {
+            nombreArchivoXML = "Detalles_XML";
         }
         return nombreArchivoXML;
     }
@@ -1019,20 +1537,20 @@ public class ControlATAprobacionHE implements Serializable {
         this.infoRegistroEstructura = infoRegistroEstructura;
     }
 
-    public int getNumeroScrollAporte() {
-        return numeroScrollAporte;
+    public int getNumeroScrollCabecera() {
+        return numeroScrollCabecera;
     }
 
-    public void setNumeroScrollAporte(int numeroPrueba) {
-        this.numeroScrollAporte = numeroPrueba;
+    public void setNumeroScrollCabecera(int numeroPrueba) {
+        this.numeroScrollCabecera = numeroPrueba;
     }
 
-    public int getRowsAporteEntidad() {
-        return rowsAporteEntidad;
+    public int getRowsCabecera() {
+        return rowsCabecera;
     }
 
-    public void setRowsAporteEntidad(int rowsAporteEntidad) {
-        this.rowsAporteEntidad = rowsAporteEntidad;
+    public void setRowsCabecera(int rowsCabecera) {
+        this.rowsCabecera = rowsCabecera;
     }
 
     public String getAltoDivTablaInferiorIzquierda() {
@@ -1065,6 +1583,123 @@ public class ControlATAprobacionHE implements Serializable {
 
     public void setTopDivTablaInferiorDerecha(String topDivTablaInferiorDerecha) {
         this.topDivTablaInferiorDerecha = topDivTablaInferiorDerecha;
+    }
+
+    public ActualUsuario getActualUsuario() {
+        if (actualUsuario == null) {
+            actualUsuario = administrarATAprobacionHE.obtenerActualUsuarioSistema();
+        }
+        return actualUsuario;
+    }
+
+    public void setActualUsuario(ActualUsuario actualUsuario) {
+        this.actualUsuario = actualUsuario;
+    }
+
+    public List<EersFlujos> getListaFlujos() {
+        if (listaFlujos == null) {
+            if (indexCabecera >= 0) {
+                if (tipoListaCabecera == 0) {
+                    listaFlujos = administrarATAprobacionHE.obtenerFlujosEersCabecera(listaEersCabeceras.get(indexCabecera).getSecuencia());
+                } else {
+                    listaFlujos = administrarATAprobacionHE.obtenerFlujosEersCabecera(filtrarListaEersCabeceras.get(indexCabecera).getSecuencia());
+                }
+            }
+        }
+        return listaFlujos;
+    }
+
+    public void setListaFlujos(List<EersFlujos> listaFlujos) {
+        this.listaFlujos = listaFlujos;
+    }
+
+    public List<EersFlujos> getFiltrarListaFlujos() {
+        return filtrarListaFlujos;
+    }
+
+    public void setFiltrarListaFlujos(List<EersFlujos> filtrarListaFlujos) {
+        this.filtrarListaFlujos = filtrarListaFlujos;
+    }
+
+    public EersFlujos getFlujoSeleccionado() {
+        return flujoSeleccionado;
+    }
+
+    public void setFlujoSeleccionado(EersFlujos flujoSeleccionado) {
+        this.flujoSeleccionado = flujoSeleccionado;
+    }
+
+    public String getAltoTablaFlujo() {
+        return altoTablaFlujo;
+    }
+
+    public void setAltoTablaFlujo(String altoTablaFlujo) {
+        this.altoTablaFlujo = altoTablaFlujo;
+    }
+
+    public List<EersCabeceras> getListEersCabecerasModificar() {
+        return listEersCabecerasModificar;
+    }
+
+    public void setListEersCabecerasModificar(List<EersCabeceras> listEersCabecerasModificar) {
+        this.listEersCabecerasModificar = listEersCabecerasModificar;
+    }
+
+    public EersFlujos getEditarFlujo() {
+        return editarFlujo;
+    }
+
+    public void setEditarFlujo(EersFlujos editarFlujo) {
+        this.editarFlujo = editarFlujo;
+    }
+
+    public List<EersDetalles> getListaDetalles() {
+        if (listaDetalles == null) {
+            if (indexCabecera >= 0) {
+                if (tipoListaCabecera == 0) {
+                    listaDetalles = administrarATAprobacionHE.obtenerDetallesEersCabecera(listaEersCabeceras.get(indexCabecera).getSecuencia());
+                } else {
+                    listaDetalles = administrarATAprobacionHE.obtenerDetallesEersCabecera(filtrarListaEersCabeceras.get(indexCabecera).getSecuencia());
+                }
+            }
+        }
+        return listaDetalles;
+    }
+
+    public void setListaDetalles(List<EersDetalles> listaDetalles) {
+        this.listaDetalles = listaDetalles;
+    }
+
+    public List<EersDetalles> getFiltrarListaDetalles() {
+        return filtrarListaDetalles;
+    }
+
+    public void setFiltrarListaDetalles(List<EersDetalles> filtrarListaDetalles) {
+        this.filtrarListaDetalles = filtrarListaDetalles;
+    }
+
+    public EersDetalles getDetalleSeleccionado() {
+        return detalleSeleccionado;
+    }
+
+    public void setDetalleSeleccionado(EersDetalles detalleSeleccionado) {
+        this.detalleSeleccionado = detalleSeleccionado;
+    }
+
+    public String getAltoTablaDetalle() {
+        return altoTablaDetalle;
+    }
+
+    public void setAltoTablaDetalle(String altoTablaDetalle) {
+        this.altoTablaDetalle = altoTablaDetalle;
+    }
+
+    public EersDetalles getEditarDetalle() {
+        return editarDetalle;
+    }
+
+    public void setEditarDetalle(EersDetalles editarDetalle) {
+        this.editarDetalle = editarDetalle;
     }
 
 }
