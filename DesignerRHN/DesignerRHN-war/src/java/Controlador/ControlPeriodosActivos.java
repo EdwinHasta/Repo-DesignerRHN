@@ -618,14 +618,13 @@ public class ControlPeriodosActivos implements Serializable {
             filtradoListaEmpresas = null;
             listEmpresa = null;
             aceptar = true;
-            context.execute("EmpresasDialogo.hide()");
             context.reset("formularioDialogos:lovEmpresas:globalFilter");
-            context.update(":lovEmpresas");
+            context.execute("lovEmpresas.clearFilters()");
+            context.execute("EmpresasDialogo.hide()");
+            //context.update(":lovEmpresas");
             backUpEmpresaActual = empresaSeleccionada;
             banderaModificacionEmpresa = 0;
             context.update("form:datosEmpresas");
-            context.update("formularioDialogos:aceptarE");
-            context.update("formularioDialogos:lovEmpresas");
 
         } else {
             banderaModificacionEmpresa = 0;
@@ -637,6 +636,10 @@ public class ControlPeriodosActivos implements Serializable {
         filtradoListaEmpresas = null;
         banderaModificacionEmpresa = 0;
         index = -1;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:lovEmpresas:globalFilter");
+        context.execute("lovEmpresas.clearFilters()");
+        context.execute("EmpresasDialogo.hide()");
     }
 //-----------------------------------------------------------------------------**
 

@@ -1427,10 +1427,12 @@ public class ControlEstructuraPlanta implements Serializable {
         secRegistroEstructura = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:CentroCostoDialogo");
-        context.update("form:lovCentroCosto");
-        context.update("form:aceptarCC");
+        /*
+         context.update("form:CentroCostoDialogo");
+         context.update("form:lovCentroCosto");
+         context.update("form:aceptarCC");*/
         context.reset("form:lovCentroCosto:globalFilter");
+        context.execute("lovCentroCosto.clearFilters()");
         context.execute("CentroCostoDialogo.hide()");
     }
 
@@ -1442,6 +1444,10 @@ public class ControlEstructuraPlanta implements Serializable {
         secRegistroEstructura = null;
         tipoActualizacion = -1;
         permitirIndexEstructura = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovCentroCosto:globalFilter");
+        context.execute("lovCentroCosto.clearFilters()");
+        context.execute("CentroCostoDialogo.hide()");
     }
 
     public void actualizarEstructuraPadre() {
@@ -1489,10 +1495,12 @@ public class ControlEstructuraPlanta implements Serializable {
         secRegistroEstructura = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:EstructuraPadreDialogo");
-        context.update("form:lovEstructuraPadre");
-        context.update("form:aceptarEP");
+        /*
+         context.update("form:EstructuraPadreDialogo");
+         context.update("form:lovEstructuraPadre");
+         context.update("form:aceptarEP");*/
         context.reset("form:lovEstructuraPadre:globalFilter");
+        context.execute("lovEstructuraPadre.clearFilters()");
         context.execute("EstructuraPadreDialogo.hide()");
     }
 
@@ -1504,6 +1512,10 @@ public class ControlEstructuraPlanta implements Serializable {
         secRegistroEstructura = null;
         tipoActualizacion = -1;
         permitirIndexEstructura = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovEstructuraPadre:globalFilter");
+        context.execute("lovEstructuraPadre.clearFilters()");
+        context.execute("EstructuraPadreDialogo.hide()");
     }
 
     /**

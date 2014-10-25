@@ -99,7 +99,7 @@ public class ControlJuzgados implements Serializable {
         listaJuzgadosPorCiudadBoton = null;
         mostrarTodos = true;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -447,6 +447,10 @@ public class ControlJuzgados implements Serializable {
             index = -1;
             tipoActualizacion = -1;
             permitirIndex = true;
+
+            context.reset("form:lovTipoCentrosCostos:globalFilter");
+            context.execute("lovTipoCentrosCostos.clearFilters()");
+            context.execute("tiposCentrosCostosDialogo.hide()");
         } catch (Exception e) {
             System.out.println("ERROR BETA .CONTROLJUZGADOS ERROR " + e);
         }
@@ -460,7 +464,10 @@ public class ControlJuzgados implements Serializable {
             index = -1;
             tipoActualizacion = -1;
             permitirIndex = true;
-
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.reset("form:lovTipoCentrosCostos:globalFilter");
+            context.execute("lovTipoCentrosCostos.clearFilters()");
+            context.execute("tiposCentrosCostosDialogo.hide()");
         } catch (Exception e) {
             System.out.println("ERROR CONTROLJUZGADOS CANCELARCAMBIOCIUDADES ERROR=====" + e.getMessage());
         }
@@ -531,12 +538,12 @@ public class ControlJuzgados implements Serializable {
             getListaJuzgadosPorCiudadBoton();
             filtradoCiudades = null;
             aceptar = true;
-            context.execute("EmpresasDialogo.hide()");
             context.reset("formularioDialogos:lovEmpresas:globalFilter");
-            context.update("formularioDialogos:lovEmpresas");
+            context.execute("lovEmpresas.clearFilters()");
+            context.execute("EmpresasDialogo.hide()");
+            //context.update("formularioDialogos:lovEmpresas");
             banderaModificacionEmpresa = 1;
             context.update("form:datosJuzgados");
-            context.update("formularioDialogos:lovCentrosCostos");
             mostrarTodos = false;
             context.update("form:MOSTRARTODOS");
 
@@ -554,6 +561,9 @@ public class ControlJuzgados implements Serializable {
         index = -1;
         mostrarTodos = true;
         context.update("form:MOSTRARTODOS");
+        context.reset("formularioDialogos:lovEmpresas:globalFilter");
+        context.execute("lovEmpresas.clearFilters()");
+        context.execute("EmpresasDialogo.hide()");
     }
 
     public void guardarCambiosJuzgados() {

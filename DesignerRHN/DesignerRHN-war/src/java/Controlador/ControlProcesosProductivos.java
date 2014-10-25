@@ -353,9 +353,10 @@ public class ControlProcesosProductivos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("personasDialogo.hide()");
         context.reset("form:lovCentrosCostos:globalFilter");
-        context.update("form:lovCentrosCostos");
+        context.execute("lovCentrosCostos.clearFilters()");
+        context.execute("personasDialogo.hide()");
+        //context.update("form:lovCentrosCostos");
         //context.update("form:datosHvEntrevista");
     }
 
@@ -368,6 +369,10 @@ public class ControlProcesosProductivos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovCentrosCostos:globalFilter");
+        context.execute("lovCentrosCostos.clearFilters()");
+        context.execute("personasDialogo.hide()");
     }
 
     public void modificarProcesosProductivos(int indice, String confirmarCambio, String valorConfirmar) {

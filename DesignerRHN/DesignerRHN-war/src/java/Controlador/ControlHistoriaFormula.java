@@ -1682,11 +1682,13 @@ public class ControlHistoriaFormula implements Serializable {
 
     public void dialogoNuevoOperando() {
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("formularioDialogos:OperandoDialogo");
         context.execute("OperandoDialogo.show()");
     }
 
     public void dialogoNuevoOperandor() {
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("formularioDialogos:OperadorDialogo");
         context.execute("OperadorDialogo.show()");
     }
 
@@ -1750,7 +1752,10 @@ public class ControlHistoriaFormula implements Serializable {
         operandoSeleccionado = new Operandos();
         aceptar = true;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("formularioDialogos:OperandoDialogo");
+        //context.update("formularioDialogos:OperandoDialogo");
+        context.reset("formularioDialogos:lovOperando:globalFilter");
+        context.update("lovOperando.clearFilters()");
+        context.update("OperandoDialogo.hide()");
         indexNodoSeleecionado = -1;
     }
 
@@ -1758,9 +1763,11 @@ public class ControlHistoriaFormula implements Serializable {
         filtrarListOperandos = null;
         operandoSeleccionado = new Operandos();
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("formularioDialogos:OperandoDialogo");
         aceptar = true;
         indexNodoSeleecionado = -1;
+        context.reset("formularioDialogos:lovOperando:globalFilter");
+        context.update("lovOperando.clearFilters()");
+        context.update("OperandoDialogo.hide()");
     }
 
     public void actualizarOperador() {
@@ -1822,7 +1829,9 @@ public class ControlHistoriaFormula implements Serializable {
         operadorSeleccionado = new Operadores();
         aceptar = true;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("formularioDialogos:OperadorDialogo");
+        context.reset("formularioDialogos:lovOperador:globalFilter");
+        context.update("lovOperador.clearFilters()");
+        context.update("OperadorDialogo.hide()");
         indexNodoSeleecionado = -1;
     }
 
@@ -1830,7 +1839,9 @@ public class ControlHistoriaFormula implements Serializable {
         filtrarListOperadores = null;
         operadorSeleccionado = new Operadores();
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("formularioDialogos:OperadorDialogo");
+        context.reset("formularioDialogos:lovOperador:globalFilter");
+        context.update("lovOperador.clearFilters()");
+        context.update("OperadorDialogo.hide()");
         aceptar = true;
         indexNodoSeleecionado = -1;
     }

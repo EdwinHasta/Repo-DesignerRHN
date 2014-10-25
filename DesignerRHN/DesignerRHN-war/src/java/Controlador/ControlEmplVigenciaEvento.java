@@ -886,11 +886,12 @@ public class ControlEmplVigenciaEvento implements Serializable {
         aceptar = true;
         index = -1;
         secRegistro = null;
-        tipoActualizacion = -1;
+        tipoActualizacion = -1;/*
         context.update("form:EventosDialogo");
         context.update("form:lovEventos");
-        context.update("form:aceptarE");
+        context.update("form:aceptarE");*/
         context.reset("form:lovEventos:globalFilter");
+        context.execute("lovEventos.clearFilters()");
         context.execute("EventosDialogo.hide()");
     }
 
@@ -902,6 +903,10 @@ public class ControlEmplVigenciaEvento implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovEventos:globalFilter");
+        context.execute("lovEventos.clearFilters()");
+        context.execute("EventosDialogo.hide()");
     }
 
     public void listaValoresBoton() {

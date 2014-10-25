@@ -82,8 +82,9 @@ public class ControlAcercaDe implements Serializable {
         correo1 = "gerencia@nomina.com.co";
         correo2 = "www.nomina.com.co/wiki";
         derechos = "1998 - 2014 Todos los Derechos Reservados";
-        nuevoEmpresas = new Empresas(); 
+        nuevoEmpresas = new Empresas();
     }
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -91,7 +92,7 @@ public class ControlAcercaDe implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarPapeles.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -111,17 +112,22 @@ public class ControlAcercaDe implements Serializable {
         context.update("form:nombreEmpresa");
         filtradoListaEmpresas = null;
         aceptar = true;
-        context.execute("EmpresasDialogo.hide()");
         context.reset("formularioDialogos:lovEmpresas:globalFilter");
-        context.update("formularioDialogos:lovEmpresas");
+        context.execute("lovEmpresas.clearFilters()");
+        context.execute("EmpresasDialogo.hide()");
+        //context.update("formularioDialogos:lovEmpresas");
         context.update("form:PanelTotal");
     }
 
     public void cancelarCambioEmpresa() {
         filtradoListaEmpresas = null;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:lovEmpresas:globalFilter");
+        context.execute("lovEmpresas.clearFilters()");
+        context.execute("EmpresasDialogo.hide()");
     }
 
-        public void limpiarNuevoEmpresas() {
+    public void limpiarNuevoEmpresas() {
         nuevoEmpresas = new Empresas();
     }
 
@@ -142,6 +148,7 @@ public class ControlAcercaDe implements Serializable {
         context.responseComplete();
 
     }
+
     public List<Empresas> getListaEmpresas() {
         try {
             RequestContext context = RequestContext.getCurrentInstance();

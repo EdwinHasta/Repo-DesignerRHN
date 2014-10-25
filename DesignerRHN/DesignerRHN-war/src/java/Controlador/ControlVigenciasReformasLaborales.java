@@ -870,10 +870,11 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
-        context.update("form:ReformasLaboralesDialogo");
-        context.update("form:lovReformasLaborales");
-        context.update("form:aceptarRL");
+        //context.update("form:ReformasLaboralesDialogo");
+        //context.update("form:lovReformasLaborales");
+        //context.update("form:aceptarRL");
         context.reset("form:lovReformasLaborales:globalFilter");
+        context.execute("lovReformasLaborales.clearFilters()");
         context.execute("ReformasLaboralesDialogo.hide()");
     }
 
@@ -888,6 +889,13 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        //context.update("form:ReformasLaboralesDialogo");
+        //context.update("form:lovReformasLaborales");
+        //context.update("form:aceptarRL");
+        context.reset("form:lovReformasLaborales:globalFilter");
+        context.execute("lovReformasLaborales.clearFilters()");
+        context.execute("ReformasLaboralesDialogo.hide()");
     }
 
     //LISTA DE VALORES DINAMICA

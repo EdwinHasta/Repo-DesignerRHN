@@ -355,9 +355,10 @@ public class ControlConceptosProyecciones implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("conceptosDialogo.hide()");
         context.reset("form:lovCiudades:globalFilter");
-        context.update("form:lovCiudades");
+        context.execute("lovCiudades.clearFilters()");
+        context.execute("conceptosDialogo.hide()");
+        //context.update("form:lovCiudades");
         //context.update("form:datosHvEntrevista");
     }
 
@@ -369,6 +370,10 @@ public class ControlConceptosProyecciones implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovCiudades:globalFilter");
+        context.execute("lovCiudades.clearFilters()");
+        context.execute("conceptosDialogo.hide()");
     }
 
     public void modificarConceptosProyecciones(int indice, String confirmarCambio, String valorConfirmar) {

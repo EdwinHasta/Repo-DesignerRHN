@@ -1245,11 +1245,12 @@ public class ControlPerExperienciaLaboral implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
-
+        /*
         context.update("form:SectorDialogo");
         context.update("form:lovSector");
-        context.update("form:aceptarS");
+        context.update("form:aceptarS");*/
         context.reset("form:lovSector:globalFilter");
+        context.execute("lovSector.clearFilters()");
         context.execute("SectorDialogo.hide()");
     }
 
@@ -1261,6 +1262,10 @@ public class ControlPerExperienciaLaboral implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovSector:globalFilter");
+        context.execute("lovSector.clearFilters()");
+        context.execute("SectorDialogo.hide()");
     }
 
     public void actualizarMotivo() {
@@ -1304,11 +1309,12 @@ public class ControlPerExperienciaLaboral implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
-
-        context.update("form:MotivosDialogo");
-        context.update("form:lovMotivos");
-        context.update("form:aceptarM");
+        /*
+         context.update("form:MotivosDialogo");
+         context.update("form:lovMotivos");
+         context.update("form:aceptarM");*/
         context.reset("form:lovMotivos:globalFilter");
+        context.execute("lovMotivos.clearFilters()");
         context.execute("MotivosDialogo.hide()");
     }
 
@@ -1320,6 +1326,10 @@ public class ControlPerExperienciaLaboral implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovMotivos:globalFilter");
+        context.execute("lovMotivos.clearFilters()");
+        context.execute("MotivosDialogo.hide()");
     }
 
     public void listaValoresBoton() {

@@ -204,11 +204,12 @@ public class ControlParametro implements Serializable {
         aceptar = true;
         guardado = false;
         cambiosParametros = true;
-        context.update("form:ACEPTAR");
+        context.update("form:ACEPTAR");/*
         context.update("formularioDialogos:estructurasDialogo");
         context.update("formularioDialogos:lOVEstructuras");
-        context.update("formularioDialogos:aceptarE");
+        context.update("formularioDialogos:aceptarE");*/
         context.reset("formularioDialogos:lOVEstructuras:globalFilter");
+        context.execute("lOVEstructuras.clearFilters()");
         context.execute("estructurasDialogo.hide()");
     }
 
@@ -216,6 +217,10 @@ public class ControlParametro implements Serializable {
         filtradoLovEstructuras = null;
         seleccionEstructura = null;
         aceptar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:lOVEstructuras:globalFilter");
+        context.execute("lOVEstructuras.clearFilters()");
+        context.execute("estructurasDialogo.hide()");
     }
 
     public void actualizarTipoTrabajador() {
@@ -227,11 +232,12 @@ public class ControlParametro implements Serializable {
         aceptar = true;
         guardado = false;
         cambiosParametros = true;
-        context.update("form:ACEPTAR");
+        context.update("form:ACEPTAR");/*
         context.update("formularioDialogos:TipoTrabajadorDialogo");
         context.update("formularioDialogos:lovTipoTrabajador");
-        context.update("formularioDialogos:aceptarTT");
+        context.update("formularioDialogos:aceptarTT");*/
         context.reset("formularioDialogos:lovTipoTrabajador:globalFilter");
+        context.execute("lovTipoTrabajador.clearFilters()");
         context.execute("TipoTrabajadorDialogo.hide()");
     }
 
@@ -239,6 +245,10 @@ public class ControlParametro implements Serializable {
         filtradoLovTiposTrabajadores = null;
         seleccionTipoTrabajador = null;
         aceptar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:lovTipoTrabajador:globalFilter");
+        context.execute("lovTipoTrabajador.clearFilters()");
+        context.execute("TipoTrabajadorDialogo.hide()");
     }
 
     public void actualizarProceso() {
@@ -251,10 +261,12 @@ public class ControlParametro implements Serializable {
         guardado = false;
         cambiosParametros = true;
         context.update("form:ACEPTAR");
+        /*
         context.update("formularioDialogos:ProcesosDialogo");
         context.update("formularioDialogos:lovProcesos");
-        context.update("formularioDialogos:aceptarP");
+        context.update("formularioDialogos:aceptarP");*/
         context.reset("formularioDialogos:lovProcesos:globalFilter");
+        context.execute("lovProcesos.clearFilters()");
         context.execute("ProcesosDialogo.hide()");
     }
 
@@ -262,6 +274,10 @@ public class ControlParametro implements Serializable {
         filtradoLovProcesos = null;
         seleccionProcesos = null;
         aceptar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:lovProcesos:globalFilter");
+        context.execute("lovProcesos.clearFilters()");
+        context.execute("ProcesosDialogo.hide()");
     }
 
     public void seleccionarEmpleado() {
@@ -297,10 +313,12 @@ public class ControlParametro implements Serializable {
         guardado = false;
         context.update("form:ACEPTAR");
         context.update("form:quitarTodos");
+        /*
         context.update("formularioDialogos:buscarEmpleadoDialogo");
         context.update("formularioDialogos:lovEmpleados");
-        context.update("formularioDialogos:aceptarEm");
+        context.update("formularioDialogos:aceptarEm");*/
         context.reset("formularioDialogos:lovEmpleados:globalFilter");
+        context.execute("lovEmpleados.clearFilters()");
         context.execute("buscarEmpleadoDialogo.hide()");
     }
 
@@ -328,6 +346,10 @@ public class ControlParametro implements Serializable {
         filtradoLovEmpleados = null;
         seleccionEmpleado = null;
         aceptar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:lovEmpleados:globalFilter");
+        context.execute("lovEmpleados.clearFilters()");
+        context.execute("buscarEmpleadoDialogo.hide()");
     }
 
     public void valoresBackupAutocompletar(String Campo) {

@@ -350,9 +350,10 @@ public class ControlEmpleadoIndividual implements Serializable {
                 context.update("form:ACEPTAR");
             }
             context.update("form:tipo");
-            context.execute("TiposDocumentosDialogo.hide()");
             context.reset("formDialogos:lovTiposDocumentos:globalFilter");
-            context.update("formDialogos:lovTiposDocumentos");
+            context.execute("lovTiposDocumentos.clearFilters()");
+            context.execute("TiposDocumentosDialogo.hide()");
+            //context.update("formDialogos:lovTiposDocumentos");
         }
     }
 
@@ -361,6 +362,10 @@ public class ControlEmpleadoIndividual implements Serializable {
         seleccionTipoDocumento = null;
         aceptar = true;
         dialogo = -1;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formDialogos:lovTiposDocumentos:globalFilter");
+        context.execute("lovTiposDocumentos.clearFilters()");
+        context.execute("TiposDocumentosDialogo.hide()");
     }
 
     public void dialogoCiudad(int modificacion) {
@@ -395,9 +400,10 @@ public class ControlEmpleadoIndividual implements Serializable {
             seleccionCiudad = null;
             filtradoListaCiudades = null;
             aceptar = true;
-            context.execute("CiudadesDialogo.hide()");
             context.reset("formDialogos:lovCiudades:globalFilter");
-            context.update("formDialogos:lovCiudades");
+            context.execute("lovCiudades.clearFilters()");
+            context.execute("CiudadesDialogo.hide()");
+            //context.update("formDialogos:lovCiudades");
             modificacionCiudad = -1;
             dialogo = -1;
         }
@@ -409,6 +415,10 @@ public class ControlEmpleadoIndividual implements Serializable {
         aceptar = true;
         modificacionCiudad = -1;
         dialogo = -1;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formDialogos:lovCiudades:globalFilter");
+        context.execute("lovCiudades.clearFilters()");
+        context.execute("CiudadesDialogo.hide()");
     }
 
     public void seleccionarCargo() {
@@ -427,9 +437,10 @@ public class ControlEmpleadoIndividual implements Serializable {
                 context.update("form:ACEPTAR");
             }
             context.update("form:cargoPostulado");
-            context.execute("CargosDialogo.hide()");
             context.reset("formDialogos:lovCargos:globalFilter");
-            context.update("formDialogos:lovCargos");
+            context.execute("lovCargos.clearFilters()");
+            context.execute("CargosDialogo.hide()");
+            //context.update("formDialogos:lovCargos");
         }
     }
 
@@ -438,6 +449,10 @@ public class ControlEmpleadoIndividual implements Serializable {
         seleccionCargo = null;
         aceptar = true;
         dialogo = -1;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formDialogos:lovCargos:globalFilter");
+        context.execute("lovCargos.clearFilters()");
+        context.execute("CargosDialogo.hide()");
     }
 
     //AUTOCOMPLETAR
@@ -746,42 +761,42 @@ public class ControlEmpleadoIndividual implements Serializable {
 
     public void guardarCambios() {
         RequestContext context = RequestContext.getCurrentInstance();
-        try{
-        if (guardado == false) {
-            if (modificacionPersona == true) {
-                administrarEmpleadoIndividual.modificarPersona(persona);
-                modificacionPersona = false;
-            }
-            if (modificacionEmpleado == true) {
-                administrarEmpleadoIndividual.modificarEmpleado(empleado);
-                modificacionEmpleado = false;
-            }
-            if (modificacionHV == true) {
-                if (hojaDeVidaPersona.getCargo().getSecuencia() == null) {
-                    hojaDeVidaPersona.setCargo(null);
+        try {
+            if (guardado == false) {
+                if (modificacionPersona == true) {
+                    administrarEmpleadoIndividual.modificarPersona(persona);
+                    modificacionPersona = false;
                 }
-                if (hojaDeVidaPersona.getSecuencia() == null) {
-                    hojaDeVidaPersona.setSecuencia(BigInteger.valueOf(0));
-                    hojaDeVidaPersona.setPersona(persona);
-                    administrarEmpleadoIndividual.modificarHojaDeVida(hojaDeVidaPersona);
-                } else {
-                    administrarEmpleadoIndividual.modificarHojaDeVida(hojaDeVidaPersona);
+                if (modificacionEmpleado == true) {
+                    administrarEmpleadoIndividual.modificarEmpleado(empleado);
+                    modificacionEmpleado = false;
                 }
-                modificacionHV = false;
+                if (modificacionHV == true) {
+                    if (hojaDeVidaPersona.getCargo().getSecuencia() == null) {
+                        hojaDeVidaPersona.setCargo(null);
+                    }
+                    if (hojaDeVidaPersona.getSecuencia() == null) {
+                        hojaDeVidaPersona.setSecuencia(BigInteger.valueOf(0));
+                        hojaDeVidaPersona.setPersona(persona);
+                        administrarEmpleadoIndividual.modificarHojaDeVida(hojaDeVidaPersona);
+                    } else {
+                        administrarEmpleadoIndividual.modificarHojaDeVida(hojaDeVidaPersona);
+                    }
+                    modificacionHV = false;
+                }
+                empleado = null;
+                persona = null;
+                getEmpleado();
+                datosEmpleado();
+                guardado = true;
+                context.update("form");
+                context.update("form:aceptar");
+                FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                context.update("form:growl");
             }
-            empleado = null;
-            persona = null;
-            getEmpleado();
-            datosEmpleado();
-            guardado = true;
-            context.update("form");
-            context.update("form:aceptar");
-            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            context.update("form:growl");
-        }
-        } catch(Exception e){
-        FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado, intente nuevamente");
+        } catch (Exception e) {
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado, intente nuevamente");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
         }

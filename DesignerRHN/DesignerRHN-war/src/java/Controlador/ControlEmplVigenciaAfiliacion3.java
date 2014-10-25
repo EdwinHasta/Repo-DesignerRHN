@@ -2093,11 +2093,12 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
         aceptar = true;
         indexVA = -1;
         secRegistro = null;
-        tipoActualizacion = -1;
+        tipoActualizacion = -1;/*
         context.update("form:TipoEntidadDialogo");
         context.update("form:lovTipoEntidad");
-        context.update("form:aceptarTE");
+        context.update("form:aceptarTE");*/
         context.reset("form:lovTipoEntidad:globalFilter");
+        context.execute("lovTipoEntidad.clearFilters()");
         context.execute("TipoEntidadDialogo.hide()");
     }
 
@@ -2113,6 +2114,10 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndexVA = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTipoEntidad:globalFilter");
+        context.execute("lovTipoEntidad.clearFilters()");
+        context.execute("TipoEntidadDialogo.hide()");
     }
 
     public void actualizarTerceros() {
@@ -2217,10 +2222,12 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
         indexVA = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        /*
         context.update("form:TerceroDialogo");
         context.update("form:lovTercero");
-        context.update("form:aceptarT");
+        context.update("form:aceptarT");*/
         context.reset("form:lovTercero:globalFilter");
+        context.execute("lovTercero.clearFilters()");
         context.execute("TerceroDialogo.hide()");
     }
 
@@ -2235,6 +2242,10 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndexVA = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTercero:globalFilter");
+        context.execute("lovTercero.clearFilters()");
+        context.execute("TerceroDialogo.hide()");
     }
 
     public void actualizarEstadoAfiliacion() {
@@ -2278,11 +2289,12 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
         aceptar = true;
         indexVA = -1;
         secRegistro = null;
-        tipoActualizacion = -1;
+        tipoActualizacion = -1;/*
         context.update("form:EstadoAfiliacionDialogo");
         context.update("form:lovEstadoAfiliacion");
-        context.update("form:aceptarEA");
+        context.update("form:aceptarEA");*/
         context.reset("form:lovEstadoAfiliacion:globalFilter");
+        context.execute("lovEstadoAfiliacion.clearFilters()");
         context.execute("EstadoAfiliacionDialogo.hide()");
     }
 
@@ -2298,6 +2310,10 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndexVA = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovEstadoAfiliacion:globalFilter");
+        context.execute("lovEstadoAfiliacion.clearFilters()");
+        context.execute("EstadoAfiliacionDialogo.hide()");
     }
 
     ///////////////////////////////////////////////////////////////////////

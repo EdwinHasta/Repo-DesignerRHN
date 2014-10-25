@@ -255,7 +255,7 @@
                                          selection="#{controlVigenciaTipoTrabajador.tipoTrabajadorSeleccionado}" scrollWidth="588" selectionMode="single" widgetVar="lovTipoTrabajador" scrollable="true" scrollHeight="250"
                                          filteredValue="#{controlVigenciaTipoTrabajador.filtradoTiposTrabajadores}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaTipoTrabajador.activarAceptar()}" update=":form:aceptarTT"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaTipoTrabajador.actualizarTipoTrabajador()}"  process="@this" onstart="lovTipoTrabajador.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaTipoTrabajador.actualizarTipoTrabajador()}"  process="@this"  />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarT']}: "  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTipoTrabajador.filter();" style="width:150px; position: relative; left: -35px;" />  
@@ -282,12 +282,10 @@
 
                             <h:outputText id="infoRegistroTipoTrabajador" value="#{controlVigenciaTipoTrabajador.infoRegistroTipoTrabajador}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>                            
 
-                            <p:commandButton id="aceptarTT" style="position: relative; left: 410px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaTipoTrabajador.aceptar}" onclick="TipoTrabajadorDialogo.hide(), lovTipoTrabajador.clearFilters();" actionListener="#{controlVigenciaTipoTrabajador.actualizarTipoTrabajador()}" update="lovTipoTrabajador, aceptarTT, datosVTTEmpleado" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovTipoTrabajador:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasTT" style="position: relative; left: 410px; top: 5px" value="#{msg['atras']}" onclick="TipoTrabajadorDialogo.hide(), lovTipoTrabajador.clearFilters();" actionListener="#{controlVigenciaTipoTrabajador.cancelarCambioTipoTrabajador()}" update="lovTipoTrabajador" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovTipoTrabajador:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarTT" style="position: relative; left: 410px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaTipoTrabajador.aceptar}" actionListener="#{controlVigenciaTipoTrabajador.actualizarTipoTrabajador()}"  process="@this" icon="ui-icon-check" />
+                                
+                            <p:commandButton id="atrasTT" style="position: relative; left: 410px; top: 5px" value="#{msg['atras']}" actionListener="#{controlVigenciaTipoTrabajador.cancelarCambioTipoTrabajador()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                                
                         </p:dialog> 
 
 
@@ -298,7 +296,7 @@
                             <p:dataTable id="lovMotivosRetiros" style=" width: 370px" var="motivosRetiros" value="#{controlVigenciaTipoTrabajador.motivosRetiros}" rowKey="#{motivosRetiros.secuencia}"
                                          selection="#{controlVigenciaTipoTrabajador.motivoRetiroSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovMotivosRetiros" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlVigenciaTipoTrabajador.filtradoMotivosRetiros}">
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaTipoTrabajador.actualizarMotivoRetiro()}"  process="@this" onstart="lovMotivosRetiros.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaTipoTrabajador.actualizarMotivoRetiro()}"  process="@this" />
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaTipoTrabajador.activarAceptar()}" update=":form:aceptarMR"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarM']}: "  style="position: absolute; left: 27px; top: 14px"/>  
@@ -320,12 +318,10 @@
 
                             <h:outputText id="infoRegistroMotivoRetiros" value="#{controlVigenciaTipoTrabajador.infoRegistroMotivoRetiros}" style="position: absolute; left: 20px; top: 330px; font-weight: bold"/>                            
 
-                            <p:commandButton id="aceptarMR" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaTipoTrabajador.aceptar}" onclick="RetirosDialogo.hide();" actionListener="#{controlVigenciaTipoTrabajador.actualizarMotivoRetiro()}" update="lovMotivosRetiros, aceptarMR, panelRetiradosInput" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovMotivosRetiros:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasMR" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="RetirosDialogo.hide();" actionListener="#{controlVigenciaTipoTrabajador.cancelarMotivoRetiro()}" update="lovMotivosRetiros" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovMotivosRetiros:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarMR" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaTipoTrabajador.aceptar}"  actionListener="#{controlVigenciaTipoTrabajador.actualizarMotivoRetiro()}" process="@this" icon="ui-icon-check" />
+                                
+                            <p:commandButton id="atrasMR" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}"  actionListener="#{controlVigenciaTipoTrabajador.cancelarMotivoRetiro()}"  process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                                
                         </p:dialog>
 
 
@@ -336,7 +332,7 @@
                                          selection="#{controlVigenciaTipoTrabajador.clasesPensionesSeleccionada}" selectionMode="single" widgetVar="lovClasePension" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlVigenciaTipoTrabajador.clasesPensionesFiltrado}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaTipoTrabajador.activarAceptar()}" update=":form:aceptarCP"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaTipoTrabajador.actualizarClasePension()}"  process="@this" onstart="lovClasePension.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaTipoTrabajador.actualizarClasePension()}"  process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarCP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovClasePension.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -357,12 +353,10 @@
 
                             <h:outputText id="infoRegistroClasePension" value="#{controlVigenciaTipoTrabajador.infoRegistroClasePension}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>                            
 
-                            <p:commandButton id="aceptarCP" style="position: relative; left: 260px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaTipoTrabajador.aceptar}" onclick="clasePensionDialogo.hide(), lovClasePension.clearFilters();" actionListener="#{controlVigenciaTipoTrabajador.actualizarClasePension()}" update="lovClasePension, aceptarCP, panelPensionadosInput" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovClasePension:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasCP" style="position: relative; left: 260px; top: 5px" value="#{msg['atras']}" onclick="clasePensionDialogo.hide(), lovClasePension.clearFilters();" actionListener="#{controlVigenciaTipoTrabajador.cancelarClasePension()}" update="lovClasePension" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovClasePension:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarCP" style="position: relative; left: 260px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaTipoTrabajador.aceptar}" actionListener="#{controlVigenciaTipoTrabajador.actualizarClasePension()}" icon="ui-icon-check" />
+                                
+                            <p:commandButton id="atrasCP" style="position: relative; left: 260px; top: 5px" value="#{msg['atras']}"  actionListener="#{controlVigenciaTipoTrabajador.cancelarClasePension()}"  process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                                
                         </p:dialog>
 
                         <!-- DIALOGO TIPO PENSIONADO -->
@@ -372,7 +366,7 @@
                                          selection="#{controlVigenciaTipoTrabajador.tiposPensionadosSeleccionada}" selectionMode="single" widgetVar="lovTipoPensionado" scrollable="true" scrollWidth="358" scrollHeight="250"
                                          filteredValue="#{controlVigenciaTipoTrabajador.tiposPensionadosFiltrado}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaTipoTrabajador.activarAceptar()}" update=":form:aceptarTP"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaTipoTrabajador.actualizarTipoPensionado()}"  process="@this" onstart="lovTipoPensionado.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaTipoTrabajador.actualizarTipoPensionado()}"  process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarTP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTipoPensionado.filter();" style="width:150px; position: relative; left: 80px;" />  
@@ -393,12 +387,10 @@
 
                             <h:outputText id="infoRegistroTipoPension" value="#{controlVigenciaTipoTrabajador.infoRegistroTipoPension}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>                            
 
-                            <p:commandButton id="aceptarTP" style="position: relative; left: 180px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaTipoTrabajador.aceptar}" onclick="tipoPensionadoDialogo.hide(), lovTipoPensionado.clearFilters();" actionListener="#{controlVigenciaTipoTrabajador.actualizarTipoPensionado()}" update="lovTipoPensionado, aceptarTP, panelPensionadosInput" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovTipoPensionado:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasTP" style="position: relative; left: 180px; top : 5px" value="#{msg['atras']}" onclick="tipoPensionadoDialogo.hide(), lovTipoPensionado.clearFilters();" actionListener="#{controlVigenciaTipoTrabajador.cancelarTipoPensionado()}" update="lovTipoPensionado" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovTipoPensionado:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarTP" style="position: relative; left: 180px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaTipoTrabajador.aceptar}"  actionListener="#{controlVigenciaTipoTrabajador.actualizarTipoPensionado()}" process="@this" icon="ui-icon-check" />
+                                
+                            <p:commandButton id="atrasTP" style="position: relative; left: 180px; top : 5px" value="#{msg['atras']}"  actionListener="#{controlVigenciaTipoTrabajador.cancelarTipoPensionado()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                                
                         </p:dialog>
 
                         <!-- DIALOGO CAUSABIENTES -->
@@ -408,7 +400,7 @@
                                          selection="#{controlVigenciaTipoTrabajador.pensionadoSeleccionado}" selectionMode="single" widgetVar="lovCausaBientes" scrollable="true" scrollWidth="438" scrollHeight="250"
                                          filteredValue="#{controlVigenciaTipoTrabajador.tiposPensionadosFiltrado}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaTipoTrabajador.activarAceptar()}" update=":form:aceptarCB"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaTipoTrabajador.actualizarCausaBiente()}"  process="@this" onstart="lovCausaBientes.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaTipoTrabajador.actualizarCausaBiente()}"  process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarCB']}"  style="position: absolute; left: 27px; top: 14px; text-align: left"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovCausaBientes.filter();" style="width:150px; position: relative; left: 20px;" />  
@@ -429,12 +421,10 @@
 
                             <h:outputText id="infoRegistroEmpleado" value="#{controlVigenciaTipoTrabajador.infoRegistroEmpleado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>                            
 
-                            <p:commandButton id="aceptarCB" style="position: relative; left: 260px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaTipoTrabajador.aceptar}" onclick="causaBientesDialogo.hide(), lovCausaBientes.clearFilters();" actionListener="#{controlVigenciaTipoTrabajador.actualizarCausaBiente()}" update="lovCausaBientes, aceptarCB, panelPensionadosInput" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovCausaBientes:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasCB" style="position: relative; left: 260px; top: 5px" value="#{msg['atras']}" onclick="causaBientesDialogo.hide(), lovCausaBientes.clearFilters();" actionListener="#{controlVigenciaTipoTrabajador.cancelarCausaBiente()}" update="lovCausaBientes" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovCausaBientes:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarCB" style="position: relative; left: 260px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaTipoTrabajador.aceptar}" actionListener="#{controlVigenciaTipoTrabajador.actualizarCausaBiente()}" process="@this" icon="ui-icon-check" />
+                                
+                            <p:commandButton id="atrasCB" style="position: relative; left: 260px; top: 5px" value="#{msg['atras']}" actionListener="#{controlVigenciaTipoTrabajador.cancelarCausaBiente()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                                
                         </p:dialog>
 
                         <!-- DIALOGO TUTOR -->
@@ -444,7 +434,7 @@
                                          selection="#{controlVigenciaTipoTrabajador.personaSeleccionada}" selectionMode="single" widgetVar="lovTutor" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlVigenciaTipoTrabajador.personasFiltrado}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaTipoTrabajador.activarAceptar()}" update=":form:aceptarT"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaTipoTrabajador.actualizarTutor()}"  process="@this" onstart="lovTutor.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaTipoTrabajador.actualizarTutor()}"  process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarTU']}" style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTutor.filter();" style="width:150px; position: relative; left: 10px;" />  
@@ -459,12 +449,10 @@
 
                             <h:outputText id="infoRegistroPersona" value="#{controlVigenciaTipoTrabajador.infoRegistroPersona}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>                            
 
-                            <p:commandButton id="aceptarT" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlVigenciaTipoTrabajador.aceptar}" onclick="tutorDialogo.hide(), lovTutor.clearFilters();" actionListener="#{controlVigenciaTipoTrabajador.actualizarTutor()}" update="lovTutor, aceptarT, panelPensionadosInput" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovTutor:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasT" style="position: relative; left: 260px" value="#{msg['atras']}" onclick="tutorDialogo.hide(), lovTutor.clearFilters();" actionListener="#{controlVigenciaTipoTrabajador.cancelarTutor()}" update="lovTutor" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovTutor:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarT" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlVigenciaTipoTrabajador.aceptar}" actionListener="#{controlVigenciaTipoTrabajador.actualizarTutor()}"  process="@this" icon="ui-icon-check" />
+                                
+                            <p:commandButton id="atrasT" style="position: relative; left: 260px" value="#{msg['atras']}" actionListener="#{controlVigenciaTipoTrabajador.cancelarTutor()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                                
                         </p:dialog>
 
                         <p:commandButton style="position: absolute; left: 683px; top: 483px;  " id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVTTEmpleado" process="@this" disabled="#{controlVigenciaTipoTrabajador.cambiosPagina}"  />

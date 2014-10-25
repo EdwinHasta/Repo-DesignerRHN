@@ -412,7 +412,7 @@
                                      selection="#{controlProyecciones.empleadoSeleccionado}" selectionMode="single" widgetVar="lovEmpleados" scrollable="true" scrollWidth="350" scrollHeight="250"
                                      filteredValue="#{controlProyecciones.filtradoListaEmpleados}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlProyecciones.activarAceptar()}" update=":formularioDialogos:aceptarE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlProyecciones.cambiarEmpleado()}" process="@this" onstart="lovEmpleados.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlProyecciones.cambiarEmpleado()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Empleados :"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpleados.filter();" style="width:100px; position: relative; left: 10px;" />  
@@ -432,12 +432,8 @@
                         </p:dataTable>
                         <h:outputText id="infoRegistroEmpleados" value="#{controlProyecciones.infoRegistroEmpleados}" style="position: absolute; left: 5px; top: 350px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarE" icon="u-iicon-check" style="position: relative; left: 165px" value="Aceptar" disabled="#{controlProyecciones.aceptar}" actionListener="#{controlProyecciones.cambiarEmpleado()}" update="aceptarE" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovEmpleados:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton  icon="ui-icon-arrowreturnthick-1-w" id="atrasE" style="position: relative; left: 165px" value="Cancelar" onclick="EmpleadosDialogo.hide(), lovEmpleados.clearFilters();" actionListener="#{controlProyecciones.cancelarCambioEmpleado()}" update="lovEmpleados" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovEmpleados:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarE" icon="u-iicon-check" style="position: relative; left: 165px" value="Aceptar" disabled="#{controlProyecciones.aceptar}" actionListener="#{controlProyecciones.cambiarEmpleado()}" process="@this"/>
+                        <p:commandButton  icon="ui-icon-arrowreturnthick-1-w" id="atrasE" style="position: relative; left: 165px" value="Cancelar" actionListener="#{controlProyecciones.cancelarCambioEmpleado()}" process="@this"/>
                     </p:dialog>
 
 

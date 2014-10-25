@@ -749,9 +749,10 @@ public class ControlCausasAusentismos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("clasesAusentismosDialogo.hide()");
         context.reset("formularioDialogos:LOVClasesAusentismos:globalFilter");
-        context.update("formularioDialogos:LOVClasesAusentismos");
+        context.execute("LOVClasesAusentismos.clearFilters()");
+        context.execute("clasesAusentismosDialogo.hide()");
+        //context.update("formularioDialogos:LOVClasesAusentismos");
     }
 
     public void cancelarCambioClase() {
@@ -763,6 +764,10 @@ public class ControlCausasAusentismos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVClasesAusentismos:globalFilter");
+        context.execute("LOVClasesAusentismos.clearFilters()");
+        context.execute("clasesAusentismosDialogo.hide()");
     }
 
     //LISTA DE VALORES DINAMICA

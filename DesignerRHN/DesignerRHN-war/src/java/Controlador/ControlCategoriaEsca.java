@@ -37,7 +37,7 @@ public class ControlCategoriaEsca implements Serializable {
     AdministrarCategoriasInterface administrarCategorias;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     //
     private List<Categorias> listaCategorias;
     private List<Categorias> filtrarListaCategorias;
@@ -113,7 +113,7 @@ public class ControlCategoriaEsca implements Serializable {
         permitirIndex = true;
         backUpSecRegistro = null;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -122,7 +122,7 @@ public class ControlCategoriaEsca implements Serializable {
             administrarCategorias.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -364,7 +364,7 @@ public class ControlCategoriaEsca implements Serializable {
             if (valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
                     nuevaCategoria.getClasecategoria().setDescripcion(claseCategoria);
-                     context.update("formularioDialogos:nuevaClaseCategoria");
+                    context.update("formularioDialogos:nuevaClaseCategoria");
                 } else if (tipoNuevo == 2) {
                     duplicarCategoria.getClasecategoria().setDescripcion(claseCategoria);
                     context.update("formularioDialogos:duplicarClaseCategoria");
@@ -1013,9 +1013,12 @@ public class ControlCategoriaEsca implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:ClaseCategoriaDialogo");
-        context.update("form:lovClaseCategoria");
-        context.update("form:aceptarCCat");
+        /*
+         context.update("form:ClaseCategoriaDialogo");
+         context.update("form:lovClaseCategoria");
+         context.update("form:aceptarCCat");*/
+        context.reset("form:lovClaseCategoria:globalFilter");
+        context.execute("lovClaseCategoria.clearFilters()");
         context.execute("ClaseCategoriaDialogo.hide()");
     }
 
@@ -1027,6 +1030,10 @@ public class ControlCategoriaEsca implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovClaseCategoria:globalFilter");
+        context.execute("lovClaseCategoria.clearFilters()");
+        context.execute("ClaseCategoriaDialogo.hide()");
     }
 
     public void actualizarTipoSueldo() {
@@ -1075,9 +1082,11 @@ public class ControlCategoriaEsca implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:TipoSueldoDialogo");
-        context.update("form:lovTipoSueldo");
-        context.update("form:aceptarT");
+        /*context.update("form:TipoSueldoDialogo");
+         context.update("form:lovTipoSueldo");
+         context.update("form:aceptarT");*/
+        context.reset("form:lovTipoSueldo:globalFilter");
+        context.execute("lovTipoSueldo.clearFilters()");
         context.execute("TipoSueldoDialogo.hide()");
     }
 
@@ -1089,6 +1098,10 @@ public class ControlCategoriaEsca implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTipoSueldo:globalFilter");
+        context.execute("lovTipoSueldo.clearFilters()");
+        context.execute("TipoSueldoDialogo.hide()");
     }
 
     public void actualizarConcepto() {
@@ -1137,9 +1150,12 @@ public class ControlCategoriaEsca implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:ConceptoDialogo");
-        context.update("form:lovConcepto");
-        context.update("form:aceptarC");
+        /*
+         context.update("form:ConceptoDialogo");
+         context.update("form:lovConcepto");
+         context.update("form:aceptarC");*/
+        context.reset("form:lovConcepto:globalFilter");
+        context.execute("lovConcepto.clearFilters()");
         context.execute("ConceptoDialogo.hide()");
     }
 
@@ -1151,6 +1167,10 @@ public class ControlCategoriaEsca implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovConcepto:globalFilter");
+        context.execute("lovConcepto.clearFilters()");
+        context.execute("ConceptoDialogo.hide()");
     }
 
     public void listaValoresBoton() {

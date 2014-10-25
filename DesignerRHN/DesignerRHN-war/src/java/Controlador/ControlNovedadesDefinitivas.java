@@ -114,7 +114,7 @@ public class ControlNovedadesDefinitivas implements Serializable {
         nuevaNovedad.setTipo(" ");
         nuevaNovedad.setSubtipo(" ");
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -290,17 +290,19 @@ public class ControlNovedadesDefinitivas implements Serializable {
             listaEmpleadosNovedad.clear();
             listaEmpleadosNovedad.add(seleccionEmpleados);
             seleccionMostrar = listaEmpleadosNovedad.get(0);
-            context.execute("empleadosDialogo.hide()");
             context.reset("formularioDialogos:LOVEmpleados:globalFilter");
-            context.update("formularioDialogos:LOVEmpleados");
+            context.execute("LOVEmpleados.clearFilters()");
+            context.execute("empleadosDialogo.hide()");
+            //context.update("formularioDialogos:LOVEmpleados");
             context.update("form:datosEmpleados");
             context.update("form:formularioNovedades");
         } else {
             listaEmpleadosNovedad.add(seleccionEmpleados);
             seleccionMostrar = listaEmpleadosNovedad.get(0);
-            context.execute("empleadosDialogo.hide()");
             context.reset("formularioDialogos:LOVEmpleados:globalFilter");
-            context.update("formularioDialogos:LOVEmpleados");
+            context.execute("LOVEmpleados.clearFilters()");
+            context.execute("empleadosDialogo.hide()");
+            //context.update("formularioDialogos:LOVEmpleados");
             context.update("form:datosEmpleados");
             context.update("form:formularioNovedades");
         }
@@ -310,11 +312,12 @@ public class ControlNovedadesDefinitivas implements Serializable {
         getListaNovedades();
         getMostrar();
 
-        context.execute("empleadosDialogo.hide()");
         context.reset("formularioDialogos:LOVEmpleados:globalFilter");
-        context.update("formularioDialogos:LOVEmpleados");
-        context.update("form:datosEmpleados");
-        context.update("form:formularioNovedades");
+        context.execute("LOVEmpleados.clearFilters()");
+        context.execute("empleadosDialogo.hide()");
+        /*context.update("formularioDialogos:LOVEmpleados");
+         context.update("form:datosEmpleados");
+         context.update("form:formularioNovedades");*/
 
         listaEmpleados = null;
         filtradosListaEmpleadosNovedad = null;
@@ -388,9 +391,10 @@ public class ControlNovedadesDefinitivas implements Serializable {
         aceptar = true;
         secRegistro = null;
         tipoActualizacion = -1;
-        context.execute("motivosDialogo.hide()");
         context.reset("formularioDialogos:LOVMotivos:globalFilter");
-        context.update("formularioDialogos:LOVMotivos");
+        context.execute("LOVMotivos.clearFilters()");
+        context.execute("motivosDialogo.hide()");
+        //context.update("formularioDialogos:LOVMotivos");
     }
 
     public void Bool() {
@@ -404,7 +408,6 @@ public class ControlNovedadesDefinitivas implements Serializable {
         int pasa2 = 0;
         mensajeValidacion = new String();
         RequestContext context = RequestContext.getCurrentInstance();
-
 
         if (!listaNovedades.isEmpty()) {
             for (int i = 0; i < listaNovedades.size(); i++) {
@@ -470,7 +473,6 @@ public class ControlNovedadesDefinitivas implements Serializable {
             }
             context.update("form:formularioNovedades");
 
-
             nuevaNovedad = new NovedadesSistema();
             nuevaNovedad.setMotivodefinitiva(new MotivosDefinitivas());
             nuevaNovedad.setMotivoretiro(new MotivosRetiros());
@@ -488,11 +490,11 @@ public class ControlNovedadesDefinitivas implements Serializable {
         } else {
         }
     }
-    
-    public void save(ActionEvent actionEvent) {  
-        FacesContext context = FacesContext.getCurrentInstance();  
-        context.addMessage(null, new FacesMessage("Guardado Exitoso","Los cambios han sido guardados con éxito"));
-    }  
+
+    public void save(ActionEvent actionEvent) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage("Guardado Exitoso", "Los cambios han sido guardados con éxito"));
+    }
 
     //GUARDAR
     public void guardarCambiosNovedades() {
@@ -523,10 +525,10 @@ public class ControlNovedadesDefinitivas implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context2.addMessage(null, new FacesMessage("Guardado Exitoso", "Los cambios han sido guardados exitosamente"));
             context.update("form:growl");
-            
+
             System.out.println("Se guardaron los datos con exito");
             listaNovedades = null;
-            
+
             context.update("form:datosEmpleados");
             guardado = true;
             permitirIndex = true;
@@ -585,7 +587,7 @@ public class ControlNovedadesDefinitivas implements Serializable {
         int pasa = 0;
         int pasa2 = 0;
         RequestContext context = RequestContext.getCurrentInstance();
-        
+
         if (!listaNovedades.isEmpty()) {
             for (int i = 0; i < listaNovedades.size(); i++) {
                 if (nuevaNovedad.getFechainicialdisfrute() != null && (nuevaNovedad.getFechainicialdisfrute().equals(listaNovedades.get(i).getFechainicialdisfrute()))) {
@@ -619,8 +621,6 @@ public class ControlNovedadesDefinitivas implements Serializable {
             context.update("formularioDialogos:validacionNuevaNovedad");
             context.execute("validacionNuevaNovedad.show()");
         }
-
-
 
         if (pasa == 0 && pasa2 == 0) {
             //AGREGAR REGISTRO A LA LISTA NOVEDADES .
@@ -692,9 +692,10 @@ public class ControlNovedadesDefinitivas implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("retirosDialogo.hide()");
         context.reset("formularioDialogos:LOVRetiros:globalFilter");
-        context.update("formularioDialogos:LOVRetiros");
+        context.execute("LOVRetiros.clearFilters()");
+        context.execute("retirosDialogo.hide()");
+        //context.update("formularioDialogos:LOVRetiros");
     }
 
     public void cancelarCambioMotivos() {
@@ -703,6 +704,10 @@ public class ControlNovedadesDefinitivas implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVMotivos:globalFilter");
+        context.execute("LOVMotivos.clearFilters()");
+        context.execute("motivosDialogo.hide()");
     }
 
     public void cancelarCambioRetiros() {
@@ -711,6 +716,10 @@ public class ControlNovedadesDefinitivas implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVRetiros:globalFilter");
+        context.execute("LOVRetiros.clearFilters()");
+        context.execute("retirosDialogo.hide()");
     }
 
     public void eventoFiltrar() {
@@ -732,6 +741,10 @@ public class ControlNovedadesDefinitivas implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVEmpleados:globalFilter");
+        context.execute("LOVEmpleados.clearFilters()");
+        context.execute("empleadosDialogo.hide()");
     }
 
     //RASTROS 

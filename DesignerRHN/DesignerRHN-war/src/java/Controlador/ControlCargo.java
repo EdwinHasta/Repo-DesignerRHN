@@ -1942,11 +1942,10 @@ public class ControlCargo implements Serializable {
     }
 
 //CREAR 
-
     /**
      *
      */
-        public void agregarNuevoCargo() {
+    public void agregarNuevoCargo() {
         boolean respueta = validarCamposNulosCargos(1);
         if (respueta == true) {
             int tamDes = 0;
@@ -2586,8 +2585,7 @@ public class ControlCargo implements Serializable {
 
     //BORRAR VC
     /**
-     * @return 
-     * @return  
+     * @return @return
      */
     public boolean validarExistenciaCargoDetalleCargo() {
         boolean retorno = true;
@@ -3582,10 +3580,12 @@ public class ControlCargo implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:GrupoSalarialDialogo");
-        context.update("form:lovGrupoSalarial");
-        context.update("form:aceptarGS");
+        /*
+         context.update("form:GrupoSalarialDialogo");
+         context.update("form:lovGrupoSalarial");
+         context.update("form:aceptarGS");*/
         context.reset("form:lovGrupoSalarial:globalFilter");
+        context.execute("lovGrupoSalarial.clearFilters()");
         context.execute("GrupoSalarialDialogo.hide()");
     }
 
@@ -3600,6 +3600,10 @@ public class ControlCargo implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndexCargo = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovGrupoSalarial:globalFilter");
+        context.execute("lovGrupoSalarial.clearFilters()");
+        context.execute("GrupoSalarialDialogo.hide()");
     }
 
     /**
@@ -3650,10 +3654,12 @@ public class ControlCargo implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:GrupoViaticoDialogo");
-        context.update("form:lovGrupoViatico");
-        context.update("form:aceptarGV");
+        /*
+         context.update("form:GrupoViaticoDialogo");
+         context.update("form:lovGrupoViatico");
+         context.update("form:aceptarGV");*/
         context.reset("form:lovGrupoViatico:globalFilter");
+        context.execute("lovGrupoViatico.clearFilters()");
         context.execute("GrupoViaticoDialogo.hide()");
     }
 
@@ -3668,6 +3674,10 @@ public class ControlCargo implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndexCargo = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovGrupoViatico:globalFilter");
+        context.execute("lovGrupoViatico.clearFilters()");
+        context.execute("GrupoViaticoDialogo.hide()");
     }
 
     /**
@@ -3718,10 +3728,12 @@ public class ControlCargo implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:ProcesoProductivoDialogo");
-        context.update("form:lovProcesoProductivo");
-        context.update("form:aceptarPP");
+        /*
+         context.update("form:ProcesoProductivoDialogo");
+         context.update("form:lovProcesoProductivo");
+         context.update("form:aceptarPP");*/
         context.reset("form:lovProcesoProductivo:globalFilter");
+        context.execute("lovProcesoProductivo.clearFilters()");
         context.execute("ProcesoProductivoDialogo.hide()");
     }
 
@@ -3736,6 +3748,10 @@ public class ControlCargo implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndexCargo = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovProcesoProductivo:globalFilter");
+        context.execute("lovProcesoProductivo.clearFilters()");
+        context.execute("ProcesoProductivoDialogo.hide()");
     }
 
     /**
@@ -3786,10 +3802,12 @@ public class ControlCargo implements Serializable {
         secRegistroSueldoMercado = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:TipoEmpresaDialogo");
-        context.update("form:lovTipoEmpresa");
-        context.update("form:aceptarTT");
+        /*
+         context.update("form:TipoEmpresaDialogo");
+         context.update("form:lovTipoEmpresa");
+         context.update("form:aceptarTT");*/
         context.reset("form:lovTipoEmpresa:globalFilter");
+        context.execute("lovTipoEmpresa.clearFilters()");
         context.execute("TipoEmpresaDialogo.hide()");
     }
 
@@ -3801,6 +3819,10 @@ public class ControlCargo implements Serializable {
         secRegistroSueldoMercado = null;
         tipoActualizacion = -1;
         permitirCompetencia = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTipoEmpresa:globalFilter");
+        context.execute("lovTipoEmpresa.clearFilters()");
+        context.execute("TipoEmpresaDialogo.hide()");
     }
 
     public void actualizarEvalCompetencia() {
@@ -3848,10 +3870,12 @@ public class ControlCargo implements Serializable {
         secRegistroCompetencia = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:EvalCompetenciaDialogo");
-        context.update("form:lovEvalCompetencia");
-        context.update("form:aceptarEC");
+        /*
+         context.update("form:EvalCompetenciaDialogo");
+         context.update("form:lovEvalCompetencia");
+         context.update("form:aceptarEC");*/
         context.reset("form:lovEvalCompetencia:globalFilter");
+        context.execute("lovEvalCompetencia.clearFilters()");
         context.execute("EvalCompetenciaDialogo.hide()");
     }
 
@@ -3866,6 +3890,10 @@ public class ControlCargo implements Serializable {
         secRegistroCompetencia = null;
         tipoActualizacion = -1;
         permitirCompetencia = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovEvalCompetencia:globalFilter");
+        context.execute("lovEvalCompetencia.clearFilters()");
+        context.execute("EvalCompetenciaDialogo.hide()");
     }
 
     public void actualizarEnfoque() {
@@ -3913,10 +3941,12 @@ public class ControlCargo implements Serializable {
         secRegistroTipoDetalle = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:EnfoqueDialogo");
-        context.update("form:lovEnfoque");
-        context.update("form:aceptarE");
+        /*
+         context.update("form:EnfoqueDialogo");
+         context.update("form:lovEnfoque");
+         context.update("form:aceptarE");*/
         context.reset("form:lovEnfoque:globalFilter");
+        context.execute("lovEnfoque.clearFilters()");
         context.execute("EnfoqueDialogo.hide()");
     }
 
@@ -3931,6 +3961,10 @@ public class ControlCargo implements Serializable {
         secRegistroTipoDetalle = null;
         tipoActualizacion = -1;
         permitirIndexTipoDetalle = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovEnfoque:globalFilter");
+        context.execute("lovEnfoque.clearFilters()");
+        context.execute("EnfoqueDialogo.hide()");
     }
 
     /**
@@ -4358,10 +4392,12 @@ public class ControlCargo implements Serializable {
         context.update("form:nitEmpresa");
         filtrarListaEmpresas = null;
         aceptar = true;
-        context.update("form:EmpresasDialogo");
-        context.update("form:lovEmpresas");
-        context.update("form:aceptarEM");
+        /*
+         context.update("form:EmpresasDialogo");
+         context.update("form:lovEmpresas");
+         context.update("form:aceptarEM");*/
         context.reset("form:lovEmpresas:globalFilter");
+        context.execute("lovEmpresas.clearFilters()");
         context.execute("EmpresasDialogo.hide()");
         empresaActual = empresaSeleccionada;
         index = 0;
@@ -4421,6 +4457,10 @@ public class ControlCargo implements Serializable {
         cualCelda = -1;
         filtrarListaEmpresas = null;
         empresaSeleccionada = new Empresas();
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovEmpresas:globalFilter");
+        context.execute("lovEmpresas.clearFilters()");
+        context.execute("EmpresasDialogo.hide()");
     }
 
     public void validarExistenciaInformacionDetalleCargo() {
@@ -4523,10 +4563,12 @@ public class ControlCargo implements Serializable {
             }
         }
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:BuscarCargoDialogo");
-        context.update("form:lovBuscarCargo");
-        context.update("form:aceptarBC");
+        /*
+         context.update("form:BuscarCargoDialogo");
+         context.update("form:lovBuscarCargo");
+         context.update("form:aceptarBC");*/
         context.reset("form:lovBuscarCargo:globalFilter");
+        context.execute("lovBuscarCargo.clearFilters()");
         context.execute("BuscarCargoDialogo.hide()");
         index = 0;
         indexAux = -1;
@@ -4614,10 +4656,9 @@ public class ControlCargo implements Serializable {
         cargoSeleccionado = new Cargos();
         filtrarLovCargos = null;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:BuscarCargoDialogo");
-        context.update("form:lovBuscarCargo");
-        context.update("form:aceptarBC");
-        context.execute("BuscarCargoDialogo.show()");
+        context.reset("form:lovBuscarCargo:globalFilter");
+        context.execute("lovBuscarCargo.clearFilters()");
+        context.execute("BuscarCargoDialogo.hide()");
     }
 
     /**

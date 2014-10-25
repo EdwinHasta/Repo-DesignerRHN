@@ -171,7 +171,7 @@
                                          selection="#{controlClavesSap.claveAjusteSeleccionada}" selectionMode="single" widgetVar="lovClavesSap" scrollable="true" scrollWidth="450" scrollHeight="250"
                                          filteredValue="#{controlClavesSap.filtradoClavesSap}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlClavesSap.activarAceptar()}" update=":form:aceptarS"/>
-                                <p:ajax event="rowDblselect" listener="#{controlClavesSap.actualizarClaveAjuste()}" process="@this" onstart="lovClavesSap.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlClavesSap.actualizarClaveAjuste()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="Buscar Clave Ajuste :"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovClavesSap.filter();" style="width:150px; position: relative; left: 50px;" />  
@@ -191,13 +191,10 @@
 
                             </p:dataTable>
                             <h:outputText id="infoRegistroParentesco" value="#{controlClavesSap.infoRegistroParentesco}" style="position: absolute;  top: 355px; font-weight: bold"/>
-                            <p:commandButton id="aceptarS" icon="ui-icon-check" style="position: relative; left: 275px" value="Aceptar" disabled="#{controlClavesSap.aceptar}"  onclick="clavesajustesDialogo.hide(), lovClavesSap.clearFilters();"  actionListener="#{controlClavesSap.actualizarClaveAjuste()}" update="lovClavesSap, aceptarS, datosClavesSap" process="@this">
-                                <p:resetInput target=":form:lovClavesSap:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 275px" value="Atras"  actionListener="#{controlClavesSap.cancelarCambioClavesSap()}" onclick="clavesajustesDialogo.hide();
-                                    lovClavesSap.clearFilters();" update="lovClavesSap" process="@this">
-                                <p:resetInput target=":form:lovClavesSap:globalFilter"/>
-                            </p:commandButton>
+                            
+                            <p:commandButton id="aceptarS" icon="ui-icon-check" style="position: relative; left: 275px" value="Aceptar" disabled="#{controlClavesSap.aceptar}"  actionListener="#{controlClavesSap.actualizarClaveAjuste()}" process="@this"/>
+                            
+                            <p:commandButton id="atrasS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 275px" value="Atras"  actionListener="#{controlClavesSap.cancelarCambioClavesSap()}" process="@this"/>
                         </p:dialog>
 
 

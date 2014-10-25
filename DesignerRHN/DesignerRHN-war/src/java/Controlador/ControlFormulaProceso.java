@@ -745,10 +745,12 @@ public class ControlFormulaProceso implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        /*
         context.update("form:ProcesosDialogo");
         context.update("form:lovProceso");
-        context.update("form:aceptarF");
+        context.update("form:aceptarF");*/
         context.reset("form:lovProceso:globalFilter");
+        context.execute("lovProceso.clearFilters()");
         context.execute("ProcesosDialogo.hide()");
     }
 
@@ -760,6 +762,10 @@ public class ControlFormulaProceso implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovProceso:globalFilter");
+        context.execute("lovProceso.clearFilters()");
+        context.execute("ProcesosDialogo.hide()");
     }
 
     /**

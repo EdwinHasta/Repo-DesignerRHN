@@ -2423,11 +2423,12 @@ public class ControlParametroAutoliq implements Serializable {
         context.update("form:btn5");
         context.update("form:btn7");
         secRegistro = null;
-        tipoActualizacion = -1;
+        tipoActualizacion = -1;/*
         context.update("formularioLovTipoTrabajador:TipoTrabajadorDialogo");
         context.update("formularioLovTipoTrabajador:lovTipoTrabajador");
-        context.update("formularioLovTipoTrabajador:aceptarTT");
+        context.update("formularioLovTipoTrabajador:aceptarTT");*/
         context.reset("formularioLovTipoTrabajador:lovTipoTrabajador:globalFilter");
+        context.execute("lovTipoTrabajador.clearFilters()");
         context.execute("TipoTrabajadorDialogo.hide()");
     }
 
@@ -2446,6 +2447,9 @@ public class ControlParametroAutoliq implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        context.reset("formularioLovTipoTrabajador:lovTipoTrabajador:globalFilter");
+        context.execute("lovTipoTrabajador.clearFilters()");
+        context.execute("TipoTrabajadorDialogo.hide()");
     }
 
     public void actualizarEmpresa() {
@@ -2468,11 +2472,12 @@ public class ControlParametroAutoliq implements Serializable {
         context.update("form:btn5");
         context.update("form:btn7");
         secRegistro = null;
-        tipoActualizacion = -1;
+        tipoActualizacion = -1;/*
         context.update("formularioLovEmpresa:EmpresaDialogo");
         context.update("formularioLovEmpresa:lovEmpresa");
-        context.update("formularioLovEmpresa:aceptarE");
+        context.update("formularioLovEmpresa:aceptarE");*/
         context.reset("formularioLovEmpresa:lovEmpresa:globalFilter");
+        context.execute("lovEmpresa.clearFilters()");
         context.execute("EmpresaDialogo.hide()");
     }
 
@@ -2491,6 +2496,9 @@ public class ControlParametroAutoliq implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        context.reset("formularioLovEmpresa:lovEmpresa:globalFilter");
+        context.execute("lovEmpresa.clearFilters()");
+        context.execute("EmpresaDialogo.hide()");
     }
 
     public void actualizarEmpleado() {
@@ -2525,11 +2533,12 @@ public class ControlParametroAutoliq implements Serializable {
         aceptar = true;
         indexAporte = -1;
         secRegistroAporte = null;
-        tipoActualizacion = -1;
+        tipoActualizacion = -1;/*
         context.update("formularioLovEmpleado:EmpleadoDialogo");
         context.update("formularioLovEmpleado:lovEmpleado");
-        context.update("formularioLovEmpleado:aceptarEMPL");
+        context.update("formularioLovEmpleado:aceptarEMPL");*/
         context.reset("formularioLovEmpleado:lovEmpleado:globalFilter");
+        context.execute("lovEmpleado.clearFilters()");
         context.execute("EmpleadoDialogo.hide()");
     }
 
@@ -2542,6 +2551,10 @@ public class ControlParametroAutoliq implements Serializable {
         secRegistroAporte = null;
         tipoActualizacion = -1;
         permitirIndexAporte = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioLovEmpleado:lovEmpleado:globalFilter");
+        context.execute("lovEmpleado.clearFilters()");
+        context.execute("EmpleadoDialogo.hide()");
     }
 
     public void actualizarTercero() {
@@ -2575,11 +2588,12 @@ public class ControlParametroAutoliq implements Serializable {
         aceptar = true;
         indexAporte = -1;
         secRegistroAporte = null;
-        tipoActualizacion = -1;
+        tipoActualizacion = -1;/*
         context.update("formularioLovTercero:TerceroDialogo");
         context.update("formularioLovTercero:lovTercero");
-        context.update("formularioLovTercero:aceptarT");
+        context.update("formularioLovTercero:aceptarT");*/
         context.reset("formularioLovTercero:lovTercero:globalFilter");
+        context.execute("lovTercero.clearFilters()");
         context.execute("TerceroDialogo.hide()");
     }
 
@@ -2591,6 +2605,10 @@ public class ControlParametroAutoliq implements Serializable {
         secRegistroAporte = null;
         tipoActualizacion = -1;
         permitirIndexAporte = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioLovTercero:lovTercero:globalFilter");
+        context.execute("lovTercero.clearFilters()");
+        context.execute("TerceroDialogo.hide()");
     }
 
     public void actualizarTipoEntidad() {
@@ -2624,11 +2642,12 @@ public class ControlParametroAutoliq implements Serializable {
         aceptar = true;
         indexAporte = -1;
         secRegistroAporte = null;
-        tipoActualizacion = -1;
+        tipoActualizacion = -1;/*
         context.update("formularioLovTipoEntidad:TipoEntidadDialogo");
         context.update("formularioLovTipoEntidad:lovTipoEntidad");
-        context.update("formularioLovTipoEntidad:aceptarTE");
+        context.update("formularioLovTipoEntidad:aceptarTE");*/
         context.reset("formularioLovTipoEntidad:lovTipoEntidad:globalFilter");
+        context.execute("lovTipoEntidad.clearFilters()");
         context.execute("TipoEntidadDialogo.hide()");
     }
 
@@ -2640,6 +2659,10 @@ public class ControlParametroAutoliq implements Serializable {
         secRegistroAporte = null;
         tipoActualizacion = -1;
         permitirIndexAporte = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioLovTipoEntidad:lovTipoEntidad:globalFilter");
+        context.execute("lovTipoEntidad.clearFilters()");
+        context.execute("TipoEntidadDialogo.hide()");
     }
 
     public void dispararDialogoBuscar() {
@@ -2682,11 +2705,12 @@ public class ControlParametroAutoliq implements Serializable {
 
         context.update("form:infoRegistroAporte");
         context.update("form:PanelTotal");
-
+/*
         context.update("formularioLovAporteEntidad:BuscarAporteDialogo");
         context.update("formularioLovAporteEntidad:lovBuscarAporte");
-        context.update("formularioLovAporteEntidad:aceptarBA");
+        context.update("formularioLovAporteEntidad:aceptarBA");*/
         context.reset("formularioLovAporteEntidad:lovBuscarAporte:globalFilter");
+        context.execute("lovBuscarAporte.clearFilters()");
         context.execute("BuscarAporteDialogo.hide()");
     }
 
@@ -2705,6 +2729,9 @@ public class ControlParametroAutoliq implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        context.reset("formularioLovAporteEntidad:lovBuscarAporte:globalFilter");
+        context.execute("lovBuscarAporte.clearFilters()");
+        context.execute("BuscarAporteDialogo.hide()");
     }
 
     public void mostrarTodosAporteEntidad() {

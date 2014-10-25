@@ -3066,11 +3066,12 @@ public class ControlVigenciaLocalizacion implements Serializable {
         aceptar = true;
         index = -1;
         secRegistroVL = null;
-        tipoActualizacion = -1;
+        tipoActualizacion = -1;/*
         context.update("form:LocalizacionDialogo");
         context.update("form:lovLocalizacion");
-        context.update("form:aceptarL");
+        context.update("form:aceptarL");*/
         context.reset("form:lovLocalizacion:globalFilter");
+        context.execute("lovLocalizacion.clearFilters()");
         context.execute("LocalizacionDialogo.hide()");
     }
 
@@ -3085,6 +3086,10 @@ public class ControlVigenciaLocalizacion implements Serializable {
         secRegistroVL = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovLocalizacion:globalFilter");
+        context.execute("lovLocalizacion.clearFilters()");
+        context.execute("LocalizacionDialogo.hide()");
     }
 
     //Motivo Localizacion
@@ -3133,11 +3138,12 @@ public class ControlVigenciaLocalizacion implements Serializable {
         aceptar = true;
         index = -1;
         secRegistroVL = null;
-        tipoActualizacion = -1;
+        tipoActualizacion = -1;/*
         context.update("form:MotivoDialogo");
         context.update("form:lovMotivo");
-        context.update("form:aceptarM");
+        context.update("form:aceptarM");*/
         context.reset("form:lovMotivo:globalFilter");
+        context.execute("lovMotivo.clearFilters()");
         context.execute("MotivoDialogo.hide()");
     }
 
@@ -3153,6 +3159,10 @@ public class ControlVigenciaLocalizacion implements Serializable {
         secRegistroVL = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovMotivo:globalFilter");
+        context.execute("lovMotivo.clearFilters()");
+        context.execute("MotivoDialogo.hide()");
     }
 
     //Motivo Localizacion
@@ -3200,11 +3210,12 @@ public class ControlVigenciaLocalizacion implements Serializable {
         aceptar = true;
         index = -1;
         secRegistroVL = null;
-        tipoActualizacion = -1;
+        tipoActualizacion = -1;/*
         context.update("form:ProyectosDialogo");
         context.update("form:lovProyectos");
-        context.update("form:aceptarP");
+        context.update("form:aceptarP");*/
         context.reset("form:lovProyectos:globalFilter");
+        context.execute("lovProyectos.clearFilters()");
         context.execute("ProyectosDialogo.hide()");
     }
 
@@ -3219,6 +3230,10 @@ public class ControlVigenciaLocalizacion implements Serializable {
         secRegistroVL = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovProyectos:globalFilter");
+        context.execute("lovProyectos.clearFilters()");
+        context.execute("ProyectosDialogo.hide()");
     }
 
     ///////////////////////////////////////////////////////////////////////
@@ -3266,11 +3281,12 @@ public class ControlVigenciaLocalizacion implements Serializable {
         aceptar = true;
         indexVP = -1;
         secRegistroVP = null;
-        tipoActualizacion = -1;
+        tipoActualizacion = -1;/*
         context.update("form:CentroCostosDialogo");
         context.update("form:lovCentroCostos");
-        context.update("form:aceptarCC");
+        context.update("form:aceptarCC");*/
         context.reset("form:lovCentroCostos:globalFilter");
+        context.execute("lovCentroCostos.clearFilters()");
         context.execute("CentroCostosDialogo.hide()");
     }
 
@@ -3285,6 +3301,10 @@ public class ControlVigenciaLocalizacion implements Serializable {
         secRegistroVP = null;
         tipoActualizacion = -1;
         permitirIndexVP = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovCentroCostos:globalFilter");
+        context.execute("lovCentroCostos.clearFilters()");
+        context.execute("CentroCostosDialogo.hide()");
     }
 
     ///////////////////////////////////////////////////////////////////////
@@ -3332,11 +3352,12 @@ public class ControlVigenciaLocalizacion implements Serializable {
         aceptar = true;
         indexVP = -1;
         secRegistroVP = null;
-        tipoActualizacion = -1;
+        tipoActualizacion = -1;/*
         context.update("form:ProyectosDialogoVP");
         context.update("form:lovProyectosVP");
-        context.update("form:aceptarPVP");
+        context.update("form:aceptarPVP");*/
         context.reset("form:lovProyectosVP:globalFilter");
+        context.execute("lovProyectosVP.clearFilters()");
         context.execute("ProyectosDialogoVP.hide()");
     }
 
@@ -3351,6 +3372,10 @@ public class ControlVigenciaLocalizacion implements Serializable {
         secRegistroVP = null;
         tipoActualizacion = -1;
         permitirIndexVP = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovProyectosVP:globalFilter");
+        context.execute("lovProyectosVP.clearFilters()");
+        context.execute("ProyectosDialogoVP.hide()");
     }
 
     ///////////////////////////////////////////////////////////////////////
@@ -3398,11 +3423,12 @@ public class ControlVigenciaLocalizacion implements Serializable {
         aceptar = true;
         indexVPP = -1;
         secRegistroVPP = null;
-        tipoActualizacion = -1;
+        tipoActualizacion = -1;/*
         context.update("form:ProyectosDialogoVPP");
         context.update("form:lovProyectosVPP");
-        context.update("form:aceptarPVPP");
+        context.update("form:aceptarPVPP");*/
         context.reset("form:lovProyectosVPP:globalFilter");
+        context.execute("lovProyectosVPP.clearFilters()");
         context.execute("ProyectosDialogoVPP.hide()");
     }
 
@@ -3417,6 +3443,10 @@ public class ControlVigenciaLocalizacion implements Serializable {
         secRegistroVPP = null;
         tipoActualizacion = -1;
         permitirIndexVPP = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovProyectosVPP:globalFilter");
+        context.execute("lovProyectosVPP.clearFilters()");
+        context.execute("ProyectosDialogoVPP.hide()");
     }
     //LISTA DE VALORES DINAMICA
 

@@ -662,9 +662,10 @@ public class ControlNovedadesVacaciones implements Serializable {
             diasTotales = BigInteger.valueOf(0);
             diasAplazadosTotal = 0;
         }
-        context.execute("empleadosDialogo.hide()");
         context.reset("formularioDialogos:LOVEmpleados:globalFilter");
-        context.update("formularioDialogos:LOVEmpleados");
+        context.execute("LOVEmpleados.clearFilters()");
+        context.execute("empleadosDialogo.hide()");
+        //context.update("formularioDialogos:LOVEmpleados");
         context.update("form:datosEmpleados");
         context.update("form:datosNovedadesEmpleado");
 
@@ -725,9 +726,10 @@ public class ControlNovedadesVacaciones implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("periodosDialogo.hide()");
         context.reset("formularioDialogos:LOVPeriodos:globalFilter");
-        context.update("formularioDialogos:LOVPeriodos");
+        context.execute("LOVPeriodos.clearFilters()");
+        context.execute("periodosDialogo.hide()");
+        //context.update("formularioDialogos:LOVPeriodos");
     }
 
     //BORRAR NOVEDADES
@@ -859,6 +861,10 @@ public class ControlNovedadesVacaciones implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVPeriodos:globalFilter");
+        context.execute("LOVPeriodos.clearFilters()");
+        context.execute("periodosDialogo.hide()");
     }
 
     //Sumarle dias a una fecha determinada
@@ -981,6 +987,10 @@ public class ControlNovedadesVacaciones implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVEmpleados:globalFilter");
+        context.execute("LOVEmpleados.clearFilters()");
+        context.execute("empleadosDialogo.hide()");
     }
 
     public void ubicacionCampo() {

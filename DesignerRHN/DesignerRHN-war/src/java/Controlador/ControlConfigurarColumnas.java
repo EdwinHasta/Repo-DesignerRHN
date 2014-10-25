@@ -343,9 +343,12 @@ public class ControlConfigurarColumnas implements Serializable {
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosConfigurarColumna");
-        context.update("form:ColumnaEscenarioDialogo");
-        context.update("form:lovColumnaEscenario");
-        context.update("form:aceptarCE");
+        /*
+         context.update("form:ColumnaEscenarioDialogo");
+         context.update("form:lovColumnaEscenario");
+         context.update("form:aceptarCE");*/
+        context.reset("form:lovColumnaEscenario:globalFilter");
+        context.execute("lovColumnaEscenario.clearFilters()");
         context.execute("ColumnaEscenarioDialogo.hide()");
         //eliminarColumnasCargadas();
     }
@@ -360,6 +363,10 @@ public class ControlConfigurarColumnas implements Serializable {
         index = -1;
         permitirIndex = true;
         tipoActualizacion = -1;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovColumnaEscenario:globalFilter");
+        context.execute("lovColumnaEscenario.clearFilters()");
+        context.execute("ColumnaEscenarioDialogo.hide()");
     }
 
     //LISTA DE VALORES DINAMICA

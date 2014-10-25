@@ -167,7 +167,7 @@
                                          selection="#{controlIdiomaPersona.idiomaSeleccionado}" selectionMode="single" widgetVar="lovIdiomas" scrollable="true" scrollWidth="415" scrollHeight="250"
                                          filteredValue="#{controlIdiomaPersona.filtrarListIdiomas}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlIdiomaPersona.activarAceptar()}" update=":form:aceptarI"/>
-                                <p:ajax event="rowDblselect" listener="#{controlIdiomaPersona.actualizarIdioma()}" process="@this" onstart="lovIdiomas.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlIdiomaPersona.actualizarIdioma()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarI']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovIdiomas.filter();" style="width:250px; position: relative; left: 50px;" />  
@@ -183,12 +183,10 @@
                             
                             <h:outputText id="infoRegistroIdioma" value="#{controlIdiomaPersona.infoRegistroIdioma}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarI" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlIdiomaPersona.aceptar}" onclick="IdiomasDialogo.hide(), lovIdiomas.clearFilters();" actionListener="#{controlIdiomaPersona.actualizarIdioma()}" update="lovIdiomas, aceptarI, datosIdiomas" process="@this">
-                                <p:resetInput target=":form:lovIdiomas:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasI" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="IdiomasDialogo.hide(), lovIdiomas.clearFilters();" actionListener="#{controlIdiomaPersona.cancelarCambioIdioma()}" update="lovIdiomas" process="@this">
-                                <p:resetInput target=":form:lovIdiomas:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarI" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlIdiomaPersona.aceptar}" actionListener="#{controlIdiomaPersona.actualizarIdioma()}" process="@this" />
+                                
+                            <p:commandButton id="atrasI" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlIdiomaPersona.cancelarCambioIdioma()}" process="@this" />
+                                
                         </p:dialog> 
                     </p:panel>
 

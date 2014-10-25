@@ -191,7 +191,7 @@
                                      selection="#{controlFormulaProceso.procesoSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovProceso" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlFormulaProceso.filtrarLovProcesos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlFormulaProceso.activarAceptar()}" update=":form:aceptarF"/>
-                            <p:ajax event="rowDblselect" listener="#{controlFormulaProceso.actualizarProceso()}" process="@this" onstart="lovProceso.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlFormulaProceso.actualizarProceso()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovProceso.filter();" style="width:140px; position: relative; left: 5px;" />  
@@ -206,12 +206,10 @@
                         
                         <h:outputText id="infoRegistroProceso" value="#{controlFormulaProceso.infoRegistroProceso}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton icon="ui-icon-check" id="aceptarF" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlFormulaProceso.aceptar}" onclick="ProcesosDialogo.hide(), lovProceso.clearFilters();" actionListener="#{controlFormulaProceso.actualizarProceso()}" update="lovProceso, aceptarF, datosFormulaProceso" process="@this">
-                            <p:resetInput target=":form:lovProceso:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasF" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="ProcesosDialogo.hide(), lovProceso.clearFilters();" actionListener="#{controlFormulaProceso.cancelarCambioProceso()}" update="lovProceso" process="@this">
-                            <p:resetInput target=":form:lovProceso:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check" id="aceptarF" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlFormulaProceso.aceptar}"  actionListener="#{controlFormulaProceso.actualizarProceso()}"  process="@this"/>
+                        
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasF" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlFormulaProceso.cancelarCambioProceso()}" process="@this"/>
+                        
                     </p:dialog>
 
 

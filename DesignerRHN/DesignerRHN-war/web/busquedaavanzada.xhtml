@@ -1934,7 +1934,7 @@
                                      selection="#{controlBusquedaAvanzada.cargoSeleccionado}" selectionMode="single" widgetVar="lovCargoCargoPostularse" scrollable="true" scrollWidth="505" scrollHeight="250"
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovCargos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarCCP"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroCargoCargoPostularse()}"  process="@this" onstart="lovCargoCargoPostularse.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroCargoCargoPostularse()}"  process="@this" onstart="" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCCP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCargoCargoPostularse.filter();" style="width:150px; position: relative; left: -50px;" />  
@@ -1952,12 +1952,8 @@
                                 <h:outputText value="#{cargoCP.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarCCP" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroCargoCargoPostularse()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="CargoCargoPostularseDialogo.hide(), lovCargoCargoPostularse.clearFilters();" update="lovCargoCargoPostularse, aceptarCCP" process="@this">
-                            <p:resetInput target=":form:lovCargoCargoPostularse:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasCCP" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroCargoCargoPostularse()}" onclick="CargoCargoPostularseDialogo.hide(), lovCargoCargoPostularse.clearFilters();" update="lovCargoCargoPostularse" process="@this">
-                            <p:resetInput target=":form:lovCargoCargoPostularse:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarCCP" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroCargoCargoPostularse()}" disabled="#{controlBusquedaAvanzada.aceptar}" process="@this"/>
+                        <p:commandButton id="atrasCCP" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroCargoCargoPostularse()}" process="@this"/>
                     </p:dialog>
                     
                     <p:dialog header="#{msg['proyectoD']}" widgetVar="ProyectoProyectoDialogo" draggable="false" resizable="false" closable="false" id="ProyectoProyectoDialogo"  
@@ -1966,7 +1962,7 @@
                                      selection="#{controlBusquedaAvanzada.proyectoSeleccionado}" selectionMode="single" widgetVar="lovProyectoProyecto" scrollable="true" scrollWidth="505" scrollHeight="250"
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovProyectos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarPP"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroProyectoProyecto()}"  process="@this" onstart="lovProyectoProyecto.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroProyectoProyecto()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarPP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovProyectoProyecto.filter();" style="width:150px; position: relative; left: -50px;" />  
@@ -1984,12 +1980,8 @@
                                 <h:outputText value="#{proyectoP.nombreproyecto}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarPP" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroProyectoProyecto()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="ProyectoProyectoDialogo.hide(), lovProyectoProyecto.clearFilters();" update="lovProyectoProyecto, aceptarPP" process="@this">
-                            <p:resetInput target=":form:lovProyectoProyecto:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasPP" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroProyectoProyecto()}" onclick="ProyectoProyectoDialogo.hide(), lovProyectoProyecto.clearFilters();" update="lovProyectoProyecto" process="@this">
-                            <p:resetInput target=":form:lovProyectoProyecto:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarPP" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroProyectoProyecto()}" disabled="#{controlBusquedaAvanzada.aceptar}"  process="@this"/>
+                        <p:commandButton id="atrasPP" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroProyectoProyecto()}"  process="@this"/>
                     </p:dialog>
                     
                     <p:dialog header="#{msg['pryRolD']}" widgetVar="PryRolProyectoDialogo" draggable="false" resizable="false" closable="false" id="PryRolProyectoDialogo"  
@@ -1998,7 +1990,7 @@
                                      selection="#{controlBusquedaAvanzada.pryRolSeleccionado}" selectionMode="single" widgetVar="lovPryRolProyecto" scrollable="true" scrollWidth="505" scrollHeight="250"
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovPryRoles}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarPRYP"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroPryRolProyecto()}"  process="@this" onstart="lovPryRolProyecto.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroPryRolProyecto()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarPRYP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovPryRolProyecto.filter();" style="width:150px; position: relative; left: -60px;" />  
@@ -2016,12 +2008,8 @@
                                 <h:outputText value="#{pryRP.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarPRYP" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroPryRolProyecto()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="PryRolProyectoDialogo.hide(), lovPryRolProyecto.clearFilters();" update="lovPryRolProyecto, aceptarPRYP" process="@this">
-                            <p:resetInput target=":form:lovPryRolProyecto:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasPRYP" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroPryRolProyecto()}" onclick="PryRolProyectoDialogo.hide(), lovPryRolProyecto.clearFilters();" update="lovPryRolProyecto" process="@this">
-                            <p:resetInput target=":form:lovPryRolProyecto:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarPRYP" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroPryRolProyecto()}" disabled="#{controlBusquedaAvanzada.aceptar}"  process="@this"/>
+                        <p:commandButton id="atrasPRYP" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroPryRolProyecto()}"  process="@this"/>
                     </p:dialog>
                     
                     <p:dialog header="#{msg['motivoRetiroD']}" widgetVar="MotivoRetiroExperienciaLaboralDialogo" draggable="false" resizable="false" closable="false" id="MotivoRetiroExperienciaLaboralDialogo"  
@@ -2030,7 +2018,7 @@
                                      selection="#{controlBusquedaAvanzada.motivoRetiroSeleccionado}" selectionMode="single" widgetVar="lovMotivoRetiroExperienciaLaboral" scrollable="true" scrollWidth="505" scrollHeight="250"
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovMotivosRetiros}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarMREL"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroMotivoRetiroExperienciaLaboral()}"  process="@this" onstart="lovMotivoRetiroExperienciaLaboral.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroMotivoRetiroExperienciaLaboral()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarMREL']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovMotivoRetiroExperienciaLaboral.filter();" style="width:150px; position: relative; left: -20px;" />  
@@ -2048,12 +2036,8 @@
                                 <h:outputText value="#{motivoREL.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarMREL" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroMotivoRetiroExperienciaLaboral()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="MotivoRetiroExperienciaLaboralDialogo.hide(), lovMotivoRetiroExperienciaLaboral.clearFilters();" update="lovMotivoRetiroExperienciaLaboral, aceptarMREL" process="@this">
-                            <p:resetInput target=":form:lovMotivoRetiroExperienciaLaboral:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasMREL" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroMotivoRetiroExperienciaLaboral()}" onclick="MotivoRetiroExperienciaLaboralDialogo.hide(), lovMotivoRetiroExperienciaLaboral.clearFilters();" update="lovMotivoRetiroExperienciaLaboral" process="@this">
-                            <p:resetInput target=":form:lovMotivoRetiroExperienciaLaboral:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarMREL" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroMotivoRetiroExperienciaLaboral()}" disabled="#{controlBusquedaAvanzada.aceptar}"  process="@this"/>
+                        <p:commandButton id="atrasMREL" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroMotivoRetiroExperienciaLaboral()}"  process="@this"/>
                     </p:dialog>
                     
                     <p:dialog header="#{msg['sectorEconomicoD']}" widgetVar="SectorEconomicoExperienciaLaboralDialogo" draggable="false" resizable="false" closable="false" id="SectorEconomicoExperienciaLaboralDialogo"  
@@ -2062,7 +2046,7 @@
                                      selection="#{controlBusquedaAvanzada.sectorEconomicoSeleccionado}" selectionMode="single" widgetVar="lovSectorEconomicoExperienciaLaboral" scrollable="true" scrollWidth="505" scrollHeight="250"
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovSectoresEconomicos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarSEEL"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroSectorEconomicoExperienciaLaboral()}"  process="@this" onstart="lovSectorEconomicoExperienciaLaboral.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroSectorEconomicoExperienciaLaboral()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarSEEL']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovSectorEconomicoExperienciaLaboral.filter();" style="width:150px; position: relative; left: 5px;" />  
@@ -2080,12 +2064,8 @@
                                 <h:outputText value="#{sectorEEL.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarSEEL" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroSectorEconomicoExperienciaLaboral()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="SectorEconomicoExperienciaLaboralDialogo.hide(), lovSectorEconomicoExperienciaLaboral.clearFilters();" update="lovSectorEconomicoExperienciaLaboral, aceptarSEEL" process="@this">
-                            <p:resetInput target=":form:lovSectorEconomicoExperienciaLaboral:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasSEEL" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroSectorEconomicoExperienciaLaboral()}" onclick="SectorEconomicoExperienciaLaboralDialogo.hide(), lovSectorEconomicoExperienciaLaboral.clearFilters();" update="lovSectorEconomicoExperienciaLaboral" process="@this">
-                            <p:resetInput target=":form:lovSectorEconomicoExperienciaLaboral:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarSEEL" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroSectorEconomicoExperienciaLaboral()}" disabled="#{controlBusquedaAvanzada.aceptar}"  process="@this"/>
+                        <p:commandButton id="atrasSEEL" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroSectorEconomicoExperienciaLaboral()}"  process="@this"/>
                     </p:dialog>
                     
                     
@@ -2095,7 +2075,7 @@
                                      selection="#{controlBusquedaAvanzada.cursoSeleccionado}" selectionMode="single" widgetVar="lovCursoEducacionNoFormal" scrollable="true" scrollWidth="505" scrollHeight="250"
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovCursos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarCENF"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroCursoEducacionNoFormal()}"  process="@this" onstart="lovCursoEducacionNoFormal.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroCursoEducacionNoFormal()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCENF']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCursoEducacionNoFormal.filter();" style="width:150px; position: relative; left: -50px;" />  
@@ -2113,12 +2093,8 @@
                                 <h:outputText value="#{cursoENF.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarCENF" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroCursoEducacionNoFormal()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="CursoEducacionNoFormalDialogo.hide(), lovCursoEducacionNoFormal.clearFilters();" update="lovCursoEducacionNoFormal, aceptarCENF" process="@this">
-                            <p:resetInput target=":form:lovCursoEducacionNoFormal:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasCENF" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroCursoEducacionNoFormal()}" onclick="CursoEducacionNoFormalDialogo.hide(), lovCursoEducacionNoFormal.clearFilters();" update="lovCursoEducacionNoFormal" process="@this">
-                            <p:resetInput target=":form:lovCursoEducacionNoFormal:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarCENF" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroCursoEducacionNoFormal()}" disabled="#{controlBusquedaAvanzada.aceptar}" process="@this"/>
+                        <p:commandButton id="atrasCENF" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroCursoEducacionNoFormal()}" process="@this"/>
                     </p:dialog>
                     
                     
@@ -2128,7 +2104,7 @@
                                      selection="#{controlBusquedaAvanzada.institucionSeleccionada}" selectionMode="single" widgetVar="lovInstitucionEducacionNoFormal" scrollable="true" scrollWidth="505" scrollHeight="250"
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovInstituciones}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarIENF"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroInstitucionEducacionNoFormal()}"  process="@this" onstart="lovInstitucionEducacionNoFormal.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroInstitucionEducacionNoFormal()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarIENF']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovInstitucionEducacionNoFormal.filter();" style="width:150px; position: relative; left: -25px;" />  
@@ -2146,12 +2122,8 @@
                                 <h:outputText value="#{institucionENF.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarIENF" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroInstitucionEducacionNoFormal()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="InstitucionEducacionNoFormalDialogo.hide(), lovInstitucionEducacionNoFormal.clearFilters();" update="lovInstitucionEducacionNoFormal, aceptarIENF" process="@this">
-                            <p:resetInput target=":form:lovInstitucionEducacionNoFormal:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasIENF" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroInstitucionEducacionNoFormal()}" onclick="InstitucionEducacionNoFormalDialogo.hide(), lovInstitucionEducacionNoFormal.clearFilters();" update="lovInstitucionEducacionNoFormal" process="@this">
-                            <p:resetInput target=":form:lovInstitucionEducacionNoFormal:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarIENF" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroInstitucionEducacionNoFormal()}" disabled="#{controlBusquedaAvanzada.aceptar}"  process="@this"/>
+                        <p:commandButton id="atrasIENF" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroInstitucionEducacionNoFormal()}"  process="@this"/>
                     </p:dialog>
                     
                        <p:dialog header="#{msg['institucionD']}" widgetVar="InstitucionEducacionFormalDialogo" draggable="false" resizable="false" closable="false" id="InstitucionEducacionFormalDialogo"  
@@ -2160,7 +2132,7 @@
                                      selection="#{controlBusquedaAvanzada.institucionSeleccionada}" selectionMode="single" widgetVar="lovInstitucionEducacionFormal" scrollable="true" scrollWidth="505" scrollHeight="250"
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovInstituciones}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarIEF"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroInstitucionEducacionFormal()}"  process="@this" onstart="lovInstitucionEducacionFormal.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroInstitucionEducacionFormal()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarIEF']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovInstitucionEducacionFormal.filter();" style="width:150px; position: relative; left: -25px;" />  
@@ -2178,12 +2150,8 @@
                                 <h:outputText value="#{institucionEF.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarIEF" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroInstitucionEducacionFormal()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="InstitucionEducacionFormalDialogo.hide(), lovInstitucionEducacionFormal.clearFilters();" update="lovInstitucionEducacionFormal, aceptarIEF" process="@this">
-                            <p:resetInput target=":form:lovInstitucionEducacionFormal:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasIEF" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroInstitucionEducacionFormal()}" onclick="InstitucionEducacionFormalDialogo.hide(), lovInstitucionEducacionFormal.clearFilters();" update="lovInstitucionEducacionFormal" process="@this">
-                            <p:resetInput target=":form:lovInstitucionEducacionFormal:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarIEF" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroInstitucionEducacionFormal()}" disabled="#{controlBusquedaAvanzada.aceptar}"  process="@this"/>
+                        <p:commandButton id="atrasIEF" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroInstitucionEducacionFormal()}"  process="@this"/>
                     </p:dialog>
                     
                        <p:dialog header="#{msg['profesionD']}" widgetVar="ProfesionEducacionFormalDialogo" draggable="false" resizable="false" closable="false" id="ProfesionEducacionFormalDialogo"  
@@ -2192,7 +2160,7 @@
                                      selection="#{controlBusquedaAvanzada.profesionSeleccionada}" selectionMode="single" widgetVar="lovProfesionEducacionFormal" scrollable="true" scrollWidth="505" scrollHeight="250"
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovProfesiones}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarPEF"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroProfesionEducacionFormal()}"  process="@this" onstart="lovProfesionEducacionFormal.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroProfesionEducacionFormal()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarPEF']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovProfesionEducacionFormal.filter();" style="width:150px; position: relative; left: -25px;" />  
@@ -2210,12 +2178,8 @@
                                 <h:outputText value="#{profesionEF.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarPEF" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroProfesionEducacionFormal()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="ProfesionEducacionFormalDialogo.hide(), lovProfesionEducacionFormal.clearFilters();" update="lovProfesionEducacionFormal, aceptarPEF" process="@this">
-                            <p:resetInput target=":form:lovProfesionEducacionFormal:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasPEF" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroProfesionEducacionFormal()}" onclick="ProfesionEducacionFormalDialogo.hide(), lovProfesionEducacionFormal.clearFilters();" update="lovProfesionEducacionFormal" process="@this">
-                            <p:resetInput target=":form:lovProfesionEducacionFormal:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarPEF" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroProfesionEducacionFormal()}" disabled="#{controlBusquedaAvanzada.aceptar}" process="@this"/>
+                        <p:commandButton id="atrasPEF" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroProfesionEducacionFormal()}" process="@this"/>
                     </p:dialog>
                     
                        <p:dialog header="#{msg['tipoIndicadorD']}" widgetVar="TipoIndicadorCensoDialogo" draggable="false" resizable="false" closable="false" id="TipoIndicadorCensoDialogo"  
@@ -2224,7 +2188,7 @@
                                      selection="#{controlBusquedaAvanzada.tipoIndicadorSeleccionado}" selectionMode="single" widgetVar="lovTipoIndicadorCenso" scrollable="true" scrollWidth="505" scrollHeight="250"
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovTiposIndicadores}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarTIC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroTipoIndicadorCenso()}"  process="@this" onstart="lovTipoIndicadorCenso.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroTipoIndicadorCenso()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTIC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTipoIndicadorCenso.filter();" style="width:150px; position: relative; left: 5px;" />  
@@ -2242,12 +2206,8 @@
                                 <h:outputText value="#{tipoIndicadorC.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarTIC" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroTipoIndicadorCenso()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="TipoIndicadorCensoDialogo.hide(), lovTipoIndicadorCenso.clearFilters();" update="lovTipoIndicadorCenso, aceptarTIC" process="@this">
-                            <p:resetInput target=":form:lovTipoIndicadorCenso:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasTIC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroTipoIndicadorCenso()}" onclick="TipoIndicadorCensoDialogo.hide(), lovTipoIndicadorCenso.clearFilters();" update="lovTipoIndicadorCenso" process="@this">
-                            <p:resetInput target=":form:lovTipoIndicadorCenso:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarTIC" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroTipoIndicadorCenso()}" disabled="#{controlBusquedaAvanzada.aceptar}" process="@this"/>
+                        <p:commandButton id="atrasTIC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroTipoIndicadorCenso()}" process="@this"/>
                     </p:dialog>
                     
                     
@@ -2257,7 +2217,7 @@
                                      selection="#{controlBusquedaAvanzada.indicadorSeleccionado}" selectionMode="single" widgetVar="lovIndicadorCenso" scrollable="true" scrollWidth="505" scrollHeight="250"
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovIndicadores}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarIC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroIndicadorCenso()}"  process="@this" onstart="lovIndicadorCenso.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroIndicadorCenso()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarIC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovIndicadorCenso.filter();" style="width:150px; position: relative; left: -25px;" />  
@@ -2275,12 +2235,8 @@
                                 <h:outputText value="#{indicadorC.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarIC" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroIndicadorCenso()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="IndicadorCensoDialogo.hide(), lovIndicadorCenso.clearFilters();" update="lovIndicadorCenso, aceptarIC" process="@this">
-                            <p:resetInput target=":form:lovIndicadorCenso:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasIC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroIndicadorCenso()}" onclick="IndicadorCensoDialogo.hide(), lovIndicadorCenso.clearFilters();" update="lovIndicadorCenso" process="@this">
-                            <p:resetInput target=":form:lovIndicadorCenso:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarIC" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroIndicadorCenso()}" disabled="#{controlBusquedaAvanzada.aceptar}"  process="@this"/>
+                        <p:commandButton id="atrasIC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroIndicadorCenso()}"  process="@this"/>
                     </p:dialog>
                     
                     
@@ -2290,7 +2246,7 @@
                                      selection="#{controlBusquedaAvanzada.idiomaSeleccionado}" selectionMode="single" widgetVar="lovIdiomaIdioma" scrollable="true" scrollWidth="505" scrollHeight="250"
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovIdiomas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarII"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroIdiomaIdioma()}"  process="@this" onstart="lovIdiomaIdioma.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroIdiomaIdioma()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarII']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovIdiomaIdioma.filter();" style="width:150px; position: relative; left: -35px;" />  
@@ -2308,12 +2264,8 @@
                                 <h:outputText value="#{idiomaI.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarII" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroIdiomaIdioma()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="IdiomaIdiomaDialogo.hide(), lovIdiomaIdioma.clearFilters();" update="lovIdiomaIdioma, aceptarII" process="@this">
-                            <p:resetInput target=":form:lovIdiomaIdioma:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasII" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroIdiomaIdioma()}" onclick="IdiomaIdiomaDialogo.hide(), lovIdiomaIdioma.clearFilters();" update="lovIdiomaIdioma" process="@this">
-                            <p:resetInput target=":form:lovIdiomaIdioma:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarII" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroIdiomaIdioma()}" disabled="#{controlBusquedaAvanzada.aceptar}" process="@this"/>
+                        <p:commandButton id="atrasII" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroIdiomaIdioma()}"  process="@this"/>
                     </p:dialog>
                     
                        <p:dialog header="#{msg['estadosCivilesD']}" widgetVar="EstadoCivilEstadoCivilDialogo" draggable="false" resizable="false" closable="false" id="EstadoCivilEstadoCivilDialogo"  
@@ -2322,7 +2274,7 @@
                                      selection="#{controlBusquedaAvanzada.estadoCivilSeleccionado}" selectionMode="single" widgetVar="lovEstadoCivilEstadoCivil" scrollable="true" scrollWidth="505" scrollHeight="250"
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovEstadosCiviles}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarECEC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroEstadoCivilEstadoCivil()}"  process="@this" onstart="lovEstadoCivilEstadoCivil.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroEstadoCivilEstadoCivil()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarECEC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEstadoCivilEstadoCivil.filter();" style="width:150px; position: relative; left: -15px;" />  
@@ -2340,12 +2292,8 @@
                                 <h:outputText value="#{estadoCivilEC.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarECEC" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroEstadoCivilEstadoCivil()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="EstadoCivilEstadoCivilDialogo.hide(), lovEstadoCivilEstadoCivil.clearFilters();" update="lovEstadoCivilEstadoCivil, aceptarECEC" process="@this">
-                            <p:resetInput target=":form:lovEstadoCivilEstadoCivil:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasECEC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroEstadoCivilEstadoCivil()}" onclick="EstadoCivilEstadoCivilDialogo.hide(), lovEstadoCivilEstadoCivil.clearFilters();" update="lovEstadoCivilEstadoCivil" process="@this">
-                            <p:resetInput target=":form:lovEstadoCivilEstadoCivil:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarECEC" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroEstadoCivilEstadoCivil()}" disabled="#{controlBusquedaAvanzada.aceptar}"  process="@this"/>
+                        <p:commandButton id="atrasECEC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroEstadoCivilEstadoCivil()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['ciudadesD']}" widgetVar="CiudadDocumentoDatosPersonalesDialogo" draggable="false" resizable="false" closable="false" id="CiudadDocumentoDatosPersonalesDialogo"  
@@ -2354,7 +2302,7 @@
                                      selection="#{controlBusquedaAvanzada.ciudadSeleccionada}" selectionMode="single" widgetVar="lovCiudadDocumentoDatosPersonales" scrollable="true" scrollWidth="505" scrollHeight="250"
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovCiudades}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarCDDP"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroCiudadDocumentoDatosPersonales()}"  process="@this" onstart="lovCiudadDocumentoDatosPersonales.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroCiudadDocumentoDatosPersonales()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCDP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCiudadDocumentoDatosPersonales.filter();" style="width:150px; position: relative; left: -50px;" />  
@@ -2372,12 +2320,8 @@
                                 <h:outputText value="#{documentoDP.departamento.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarCDDP" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroCiudadDocumentoDatosPersonales()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="CiudadDocumentoDatosPersonalesDialogo.hide(), lovCiudadDocumentoDatosPersonales.clearFilters();" update="lovCiudadDocumentoDatosPersonales, aceptarCDDP" process="@this">
-                            <p:resetInput target=":form:lovCiudadDocumentoDatosPersonales:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasCDDP" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroCiudadDocumentoDatosPersonales()}" onclick="CiudadDocumentoDatosPersonalesDialogo.hide(), lovCiudadDocumentoDatosPersonales.clearFilters();" update="lovCiudadDocumentoDatosPersonales" process="@this">
-                            <p:resetInput target=":form:lovCiudadDocumentoDatosPersonales:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarCDDP" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroCiudadDocumentoDatosPersonales()}" disabled="#{controlBusquedaAvanzada.aceptar}" process="@this"/>
+                        <p:commandButton id="atrasCDDP" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroCiudadDocumentoDatosPersonales()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['ciudadesD']}" widgetVar="CiudadNacimientoDatosPersonalesDialogo" draggable="false" resizable="false" closable="false" id="CiudadNacimientoDatosPersonalesDialogo"  
@@ -2386,7 +2330,7 @@
                                      selection="#{controlBusquedaAvanzada.ciudadSeleccionada}" selectionMode="single" widgetVar="lovCiudadNacimientoDatosPersonales" scrollable="true" scrollWidth="505" scrollHeight="250"
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovCiudades}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarCNDP"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroCiudadNacimientoDatosPersonales()}"  process="@this" onstart="lovCiudadNacimientoDatosPersonales.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroCiudadNacimientoDatosPersonales()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCDP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCiudadNacimientoDatosPersonales.filter();" style="width:150px; position: relative; left: -50px;" />  
@@ -2404,12 +2348,8 @@
                                 <h:outputText value="#{nacimientoDP.departamento.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarCNDP" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroCiudadNacimientoDatosPersonales()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="CiudadNacimientoDatosPersonalesDialogo.hide(), lovCiudadNacimientoDatosPersonales.clearFilters();" update="lovCiudadNacimientoDatosPersonales, aceptarCNDP" process="@this">
-                            <p:resetInput target=":form:lovCiudadNacimientoDatosPersonales:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasCNDP" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroCiudadNacimientoDatosPersonales()}" onclick="CiudadNacimientoDatosPersonalesDialogo.hide(), lovCiudadNacimientoDatosPersonales.clearFilters();" update="lovCiudadNacimientoDatosPersonales" process="@this">
-                            <p:resetInput target=":form:lovCiudadNacimientoDatosPersonales:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarCNDP" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroCiudadNacimientoDatosPersonales()}" disabled="#{controlBusquedaAvanzada.aceptar}"  process="@this"/>
+                        <p:commandButton id="atrasCNDP" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroCiudadNacimientoDatosPersonales()}"  process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['motivoRetiroD']}" widgetVar="MotivoFechaRetiroDialogo" draggable="false" resizable="false" closable="false" id="MotivoFechaRetiroDialogo"  
@@ -2418,7 +2358,7 @@
                                      selection="#{controlBusquedaAvanzada.motivoRetiroSeleccionado}" selectionMode="single" widgetVar="lovMotivoFechaRetiro" scrollable="true" scrollWidth="505" scrollHeight="250"
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovMotivosRetiros}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarMRFR"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroMotivoFechaRetiro()}"  process="@this" onstart="lovMotivoFechaRetiro.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroMotivoFechaRetiro()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarMRFR']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovMotivoFechaRetiro.filter();" style="width:150px; position: relative; left: -10px;" />  
@@ -2436,12 +2376,8 @@
                                 <h:outputText value="#{motivoFR.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarMRFR" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroMotivoFechaRetiro()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="MotivoFechaRetiroDialogo.hide(), lovMotivoFechaRetiro.clearFilters();" update="lovMotivoFechaRetiro, aceptarMRFR" process="@this">
-                            <p:resetInput target=":form:lovMotivoFechaRetiro:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasMRFR" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroMotivoFechaRetiro()}" onclick="MotivoFechaRetiroDialogo.hide(), lovMotivoFechaRetiro.clearFilters();" update="lovMotivoFechaRetiro" process="@this">
-                            <p:resetInput target=":form:lovMotivoFechaRetiro:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarMRFR" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroMotivoFechaRetiro()}" disabled="#{controlBusquedaAvanzada.aceptar}"  process="@this"/>
+                        <p:commandButton id="atrasMRFR" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroMotivoFechaRetiro()}"  process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['jornadaLaboralD']}" widgetVar="JornadaJornadaLaboralDialogo" draggable="false" resizable="false" closable="false" id="JornadaJornadaLaboralDialogo"  
@@ -2450,7 +2386,7 @@
                                      selection="#{controlBusquedaAvanzada.jornadaLaboralSeleccionada}" selectionMode="single" widgetVar="lovJornadaJornadaLaboral" scrollable="true" scrollWidth="505" scrollHeight="250"
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovJornadasLaborales}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarJLJL"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroJornadaJornadaLaboral()}"  process="@this" onstart="lovJornadaJornadaLaboral.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroJornadaJornadaLaboral()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarJLJL']}:"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovJornadaJornadaLaboral.filter();" style="width:150px; position: relative; left: 5px;" />  
@@ -2468,12 +2404,8 @@
                                 <h:outputText value="#{jornadaJL.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarJLJL" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroJornadaJornadaLaboral()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="JornadaJornadaLaboralDialogo.hide(), lovJornadaJornadaLaboral.clearFilters();" update="lovJornadaJornadaLaboral, aceptarJLJL" process="@this">
-                            <p:resetInput target=":form:lovJornadaJornadaLaboral:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasJLJL" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroJornadaJornadaLaboral()}" onclick="JornadaJornadaLaboralDialogo.hide(), lovJornadaJornadaLaboral.clearFilters();" update="lovJornadaJornadaLaboral" process="@this">
-                            <p:resetInput target=":form:lovJornadaJornadaLaboral:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarJLJL" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroJornadaJornadaLaboral()}" disabled="#{controlBusquedaAvanzada.aceptar}"  process="@this"/>
+                        <p:commandButton id="atrasJLJL" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroJornadaJornadaLaboral()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['motivoMVRD']}" widgetVar="MotivoMvrsDialogo" draggable="false" resizable="false" closable="false" id="MotivoMvrsDialogo"  
@@ -2482,7 +2414,7 @@
                                      selection="#{controlBusquedaAvanzada.motivoMvrsSeleccionado}" selectionMode="single" widgetVar="lovMotivoMvrs" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovMotivosMvrs}" emptyMessage="#{msg['lovvacio']}" >              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarMMVR"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroMotivoMvrs()}"  process="@this" onstart="lovMotivoMvrs.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroMotivoMvrs()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarMMVR']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovMotivoMvrs.filter();" style="width:140px; position: relative; left: -20px;" />  
@@ -2494,12 +2426,8 @@
                                 <h:outputText value="#{motivoMVR.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarMMVR" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="MotivoMvrsDialogo.hide(), lovMotivoMvrs.clearFilters();" actionListener="#{controlBusquedaAvanzada.actualizarParametroMotivoMvrs()}" update="lovMotivoMvrs, aceptarMMVR" process="@this">
-                            <p:resetInput target=":form:lovMotivoMvrs:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasMMVR" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" onclick="MotivoMvrsDialogo.hide(), lovMotivoMvrs.clearFilters();" actionListener="#{controlBusquedaAvanzada.cancelarParametroMotivoMvrs()}" update="lovMotivoMvrs" process="@this">
-                            <p:resetInput target=":form:lovMotivoMvrs:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarMMVR" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" actionListener="#{controlBusquedaAvanzada.actualizarParametroMotivoMvrs()}" process="@this"/>
+                        <p:commandButton id="atrasMMVR" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}"  actionListener="#{controlBusquedaAvanzada.cancelarParametroMotivoMvrs()}"  process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['formaPagoD']}" widgetVar="PeriodicidadFormaPagoDialogo" draggable="false" resizable="false" closable="false" id="PeriodicidadFormaPagoDialogo"  
@@ -2508,7 +2436,7 @@
                                      selection="#{controlBusquedaAvanzada.periodicidadSeleccionada}" selectionMode="single" widgetVar="lovPeriodicidadFormaPago" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovPeriodicidades}" emptyMessage="#{msg['lovvacio']}" >              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarPFP"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroPeriodicidadFormaPago()}"  process="@this" onstart="lovPeriodicidadFormaPago.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroPeriodicidadFormaPago()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarPFP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovPeriodicidadFormaPago.filter();" style="width:140px; position: relative; left: 40px;" />  
@@ -2520,12 +2448,8 @@
                                 <h:outputText value="#{periodicidadFP.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarPFP" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="PeriodicidadFormaPagoDialogo.hide(), lovPeriodicidadFormaPago.clearFilters();" actionListener="#{controlBusquedaAvanzada.actualizarParametroPeriodicidadFormaPago()}" update="lovPeriodicidadFormaPago, aceptarPFP" process="@this">
-                            <p:resetInput target=":form:lovPeriodicidadFormaPago:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasPFP" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" onclick="PeriodicidadFormaPagoDialogo.hide(), lovPeriodicidadFormaPago.clearFilters();" actionListener="#{controlBusquedaAvanzada.cancelarParametroPeriodicidadFormaPago()}" update="lovPeriodicidadFormaPago" process="@this">
-                            <p:resetInput target=":form:lovPeriodicidadFormaPago:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarPFP" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}"  actionListener="#{controlBusquedaAvanzada.actualizarParametroPeriodicidadFormaPago()}"  process="@this"/>
+                        <p:commandButton id="atrasPFP" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}"  actionListener="#{controlBusquedaAvanzada.cancelarParametroPeriodicidadFormaPago()}"  process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['sucursalD']}" widgetVar="SucursalFormaPagoDialogo" draggable="false" resizable="false" closable="false" id="SucursalFormaPagoDialogo"  
@@ -2534,7 +2458,7 @@
                                      selection="#{controlBusquedaAvanzada.sucursalSeleccionada}" selectionMode="single" widgetVar="lovSucursalFormaPago" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovSucursales}" emptyMessage="#{msg['lovvacio']}" >              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarSFP"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroSucursalFormaPago()}"  process="@this" onstart="lovSucursalFormaPago.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroSucursalFormaPago()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarSFP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovSucursalFormaPago.filter();" style="width:140px; position: relative; left: 0px;" />  
@@ -2546,12 +2470,8 @@
                                 <h:outputText value="#{sucursalFP.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarSFP" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="SucursalFormaPagoDialogo.hide(), lovSucursalFormaPago.clearFilters();" actionListener="#{controlBusquedaAvanzada.actualizarParametroSucursalFormaPago()}" update="lovSucursalFormaPago, aceptarSFP" process="@this">
-                            <p:resetInput target=":form:lovSucursalFormaPago:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasSFP" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" onclick="SucursalFormaPagoDialogo.hide(), lovSucursalFormaPago.clearFilters();" actionListener="#{controlBusquedaAvanzada.cancelarParametroSucursalFormaPago()}" update="lovSucursalFormaPago" process="@this">
-                            <p:resetInput target=":form:lovSucursalFormaPago:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarSFP" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}"  actionListener="#{controlBusquedaAvanzada.actualizarParametroSucursalFormaPago()}"  process="@this"/>
+                        <p:commandButton id="atrasSFP" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}"  actionListener="#{controlBusquedaAvanzada.cancelarParametroSucursalFormaPago()}"  process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['terceroD']}" widgetVar="TerceroAfiliacionDialogo" draggable="false" resizable="false" closable="false" id="TerceroAfiliacionDialogo"  
@@ -2560,7 +2480,7 @@
                                      selection="#{controlBusquedaAvanzada.terceroSucursalSeleccionado}" selectionMode="single" widgetVar="lovTerceroAfiliacion" scrollable="true" scrollWidth="505" scrollHeight="250"
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovTercerosSucursales}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarTSA"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroTerceroAfiliacion()}"  process="@this" onstart="lovTerceroAfiliacion.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroTerceroAfiliacion()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTSA']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTerceroAfiliacion.filter();" style="width:150px; position: relative; left: -20px;" />  
@@ -2584,12 +2504,8 @@
                                 <h:outputText value="#{terceroA.tercero.empresa.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarTSA" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroTerceroAfiliacion()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="TerceroAfiliacionDialogo.hide(), lovTerceroAfiliacion.clearFilters();" update="lovTerceroAfiliacion, aceptarTSA" process="@this">
-                            <p:resetInput target=":form:lovTerceroAfiliacion:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasTSA" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroTerceroAfiliacion()}" onclick="TerceroAfiliacionDialogo.hide(), lovTerceroAfiliacion.clearFilters();" update="lovTerceroAfiliacion" process="@this">
-                            <p:resetInput target=":form:lovTerceroAfiliacion:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarTSA" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroTerceroAfiliacion()}" disabled="#{controlBusquedaAvanzada.aceptar}"  process="@this"/>
+                        <p:commandButton id="atrasTSA" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroTerceroAfiliacion()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['tipoEntidadD']}" widgetVar="TipoEntidadAfiliacionDialogo" draggable="false" resizable="false" closable="false" id="TipoEntidadAfiliacionDialogo"  
@@ -2598,7 +2514,7 @@
                                      selection="#{controlBusquedaAvanzada.tipoEntidadSeleccionado}" selectionMode="single" widgetVar="lovTipoEntidadAfiliacion" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovTiposEntidades}" emptyMessage="#{msg['lovvacio']}" >              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarTEA"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroTipoEntidadAfiliacion()}"  process="@this" onstart="lovTipoEntidadAfiliacion.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroTipoEntidadAfiliacion()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTEA']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTipoEntidadAfiliacion.filter();" style="width:140px; position: relative; left: 40px;" />  
@@ -2610,12 +2526,8 @@
                                 <h:outputText value="#{tipoEA.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarTEA" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="TipoEntidadAfiliacionDialogo.hide(), lovTipoEntidadAfiliacion.clearFilters();" actionListener="#{controlBusquedaAvanzada.actualizarParametroTipoEntidadAfiliacion()}" update="lovTipoEntidadAfiliacion, aceptarTEA" process="@this">
-                            <p:resetInput target=":form:lovTipoEntidadAfiliacion:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasTEA" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" onclick="TipoEntidadAfiliacionDialogo.hide(), lovTipoEntidadAfiliacion.clearFilters();" actionListener="#{controlBusquedaAvanzada.cancelarParametroTipoEntidadAfiliacion()}" update="lovTipoEntidadAfiliacion" process="@this">
-                            <p:resetInput target=":form:lovTipoEntidadAfiliacion:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarTEA" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}"  actionListener="#{controlBusquedaAvanzada.actualizarParametroTipoEntidadAfiliacion()}"  process="@this"/>
+                        <p:commandButton id="atrasTEA" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}"  actionListener="#{controlBusquedaAvanzada.cancelarParametroTipoEntidadAfiliacion()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['estadoAfiliacionD']}" widgetVar="EstadoAfiliacionDialogo" draggable="false" resizable="false" closable="false" id="EstadoAfiliacionDialogo"  
@@ -2624,7 +2536,7 @@
                                      selection="#{controlBusquedaAvanzada.estadoAfiliacionSeleccionado}" selectionMode="single" widgetVar="lovEstadoAfiliacion" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovEstadosAfiliaciones}" emptyMessage="#{msg['lovvacio']}" >              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarEA"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroEstadoAfiliacion()}"  process="@this" onstart="lovEstadoAfiliacion.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroEstadoAfiliacion()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEA']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEstadoAfiliacion.filter();" style="width:140px; position: relative; left: 45px;" />  
@@ -2636,12 +2548,8 @@
                                 <h:outputText value="#{estadoA.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarEA" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="EstadoAfiliacionDialogo.hide(), lovEstadoAfiliacion.clearFilters();" actionListener="#{controlBusquedaAvanzada.actualizarParametroEstadoAfiliacion()}" update="lovEstadoAfiliacion, aceptarEA" process="@this">
-                            <p:resetInput target=":form:lovEstadoAfiliacion:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasEA" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" onclick="EstadoAfiliacionDialogo.hide(), lovEstadoAfiliacion.clearFilters();" actionListener="#{controlBusquedaAvanzada.cancelarParametroEstadoAfiliacion()}" update="lovEstadoAfiliacion" process="@this">
-                            <p:resetInput target=":form:lovEstadoAfiliacion:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarEA" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}"  actionListener="#{controlBusquedaAvanzada.actualizarParametroEstadoAfiliacion()}" process="@this"/>
+                        <p:commandButton id="atrasEA" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}"  actionListener="#{controlBusquedaAvanzada.cancelarParametroEstadoAfiliacion()}"  process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['ubicacionGeograrficaD']}" widgetVar="UbicacionUbicacionDialogo" draggable="false" resizable="false" closable="false" id="UbicacionUbicacionDialogo"  
@@ -2650,7 +2558,7 @@
                                      selection="#{controlBusquedaAvanzada.ubicacionGeograficaSeleccionada}" selectionMode="single" widgetVar="lovUbicacionUbicacion" scrollable="true" scrollWidth="505" scrollHeight="250"
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovUbicacionesGeograficas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarUUG"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroUbicacionUbicacion()}"  process="@this" onstart="lovUbicacionUbicacion.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroUbicacionUbicacion()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarUUG']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovUbicacionUbicacion.filter();" style="width:150px; position: relative; left: -5px;" />  
@@ -2668,12 +2576,8 @@
                                 <h:outputText value="#{ubicacionUG.ciudad.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarUUG" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroUbicacionUbicacion()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="UbicacionUbicacionDialogo.hide(), lovUbicacionUbicacion.clearFilters();" update="lovUbicacionUbicacion, aceptarUUG" process="@this">
-                            <p:resetInput target=":form:lovUbicacionUbicacion:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasUUG" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroUbicacionUbicacion()}" onclick="UbicacionUbicacionDialogo.hide(), lovUbicacionUbicacion.clearFilters();" update="lovUbicacionUbicacion" process="@this">
-                            <p:resetInput target=":form:lovUbicacionUbicacion:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarUUG" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroUbicacionUbicacion()}" disabled="#{controlBusquedaAvanzada.aceptar}"  process="@this"/>
+                        <p:commandButton id="atrasUUG" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroUbicacionUbicacion()}"  process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['legislacionLaboralD']}" widgetVar="LegislacionLegislacionLaboralDialogo" draggable="false" resizable="false" closable="false" id="LegislacionLegislacionLaboralDialogo"  
@@ -2682,7 +2586,7 @@
                                      selection="#{controlBusquedaAvanzada.contratoSeleccionado}" selectionMode="single" widgetVar="lovLegislacionLegislacionLaboral" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovContratos}" emptyMessage="#{msg['lovvacio']}" >              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarLLL"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroContratoLegislacionLaboral()}"  process="@this" onstart="lovLegislacionLegislacionLaboral.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroContratoLegislacionLaboral()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarLLL']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovLegislacionLegislacionLaboral.filter();" style="width:140px; position: relative; left: 65px;" />  
@@ -2694,12 +2598,8 @@
                                 <h:outputText value="#{legislacionLL.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarLLL" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="LegislacionLegislacionLaboralDialogo.hide(), lovLegislacionLegislacionLaboral.clearFilters();" actionListener="#{controlBusquedaAvanzada.actualizarParametroContratoLegislacionLaboral()}" update="lovLegislacionLegislacionLaboral, aceptarLLL" process="@this">
-                            <p:resetInput target=":form:lovLegislacionLegislacionLaboral:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasLLL" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" onclick="LegislacionLegislacionLaboralDialogo.hide(), lovLegislacionLegislacionLaboral.clearFilters();" actionListener="#{controlBusquedaAvanzada.cancelarParametroContratoLegislacionLaboral()}" update="lovLegislacionLegislacionLaboral" process="@this">
-                            <p:resetInput target=":form:lovLegislacionLegislacionLaboral:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarLLL" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}"  actionListener="#{controlBusquedaAvanzada.actualizarParametroContratoLegislacionLaboral()}" process="@this"/>
+                        <p:commandButton id="atrasLLL" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}"  actionListener="#{controlBusquedaAvanzada.cancelarParametroContratoLegislacionLaboral()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['normaLaboralD']}" widgetVar="NormaLaboralNormaLaboralDialogo" draggable="false" resizable="false" closable="false" id="NormaLaboralNormaLaboralDialogo"  
@@ -2708,7 +2608,7 @@
                                      selection="#{controlBusquedaAvanzada.normaLaboralSeleccionada}" selectionMode="single" widgetVar="lovNormaLaboralNormaLaboral" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovNormasLaborales}" emptyMessage="#{msg['lovvacio']}" >              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarNLNL"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroNormaLaboralNormaLaboral()}"  process="@this" onstart="lovNormaLaboralNormaLaboral.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroNormaLaboralNormaLaboral()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarNLNL']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovNormaLaboralNormaLaboral.filter();" style="width:140px; position: relative; left: 50px;" />  
@@ -2720,12 +2620,8 @@
                                 <h:outputText value="#{normaLNL.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarNLNL" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="NormaLaboralNormaLaboralDialogo.hide(), lovNormaLaboralNormaLaboral.clearFilters();" actionListener="#{controlBusquedaAvanzada.actualizarParametroNormaLaboralNormaLaboral()}" update="lovNormaLaboralNormaLaboral, aceptarNLNL" process="@this">
-                            <p:resetInput target=":form:lovNormaLaboralNormaLaboral:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasNLNL" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" onclick="NormaLaboralNormaLaboralDialogo.hide(), lovNormaLaboralNormaLaboral.clearFilters();" actionListener="#{controlBusquedaAvanzada.cancelarParametroNormaLaboralNormaLaboral()}" update="lovNormaLaboralNormaLaboral" process="@this">
-                            <p:resetInput target=":form:lovNormaLaboralNormaLaboral:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarNLNL" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" actionListener="#{controlBusquedaAvanzada.actualizarParametroNormaLaboralNormaLaboral()}" process="@this"/>
+                        <p:commandButton id="atrasNLNL" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroNormaLaboralNormaLaboral()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['reformaLaboralD']}" widgetVar="ReformaLaboralTipoSalarioDialogo" draggable="false" resizable="false" closable="false" id="ReformaLaboralTipoSalarioDialogo"  
@@ -2734,7 +2630,7 @@
                                      selection="#{controlBusquedaAvanzada.reformaLaboralSeleccionada}" selectionMode="single" widgetVar="lovReformaLaboralTipoSalario" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovReformasLaborales}" emptyMessage="#{msg['lovvacio']}" >              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarRLTS"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroReformaLaboralTipoSalario()}"  process="@this" onstart="lovReformaLaboralTipoSalario.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroReformaLaboralTipoSalario()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarRLTS']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovReformaLaboralTipoSalario.filter();" style="width:140px; position: relative; left: 60px;" />  
@@ -2746,12 +2642,8 @@
                                 <h:outputText value="#{reformaLTS.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarRLTS" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="ReformaLaboralTipoSalarioDialogo.hide(), lovReformaLaboralTipoSalario.clearFilters();" actionListener="#{controlBusquedaAvanzada.actualizarParametroReformaLaboralTipoSalario()}" update="lovReformaLaboralTipoSalario, aceptarRLTS" process="@this">
-                            <p:resetInput target=":form:lovReformaLaboralTipoSalario:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasRLTS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" onclick="ReformaLaboralTipoSalarioDialogo.hide(), lovReformaLaboralTipoSalario.clearFilters();" actionListener="#{controlBusquedaAvanzada.cancelarParametroReformaLaboralTipoSalario()}" update="lovReformaLaboralTipoSalario" process="@this">
-                            <p:resetInput target=":form:lovReformaLaboralTipoSalario:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarRLTS" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" actionListener="#{controlBusquedaAvanzada.actualizarParametroReformaLaboralTipoSalario()}" process="@this"/>
+                        <p:commandButton id="atrasRLTS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroReformaLaboralTipoSalario()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['tipoTrabajadorD']}" widgetVar="TipoTrabajadorTipoTrabajadorDialogo" draggable="false" resizable="false" closable="false" id="TipoTrabajadorTipoTrabajadorDialogo"  
@@ -2760,7 +2652,7 @@
                                      selection="#{controlBusquedaAvanzada.tipoTrabajadorSeleccionado}" selectionMode="single" widgetVar="lovTipoTrabajadorTipoTrabajador" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovTiposTrabajadores}" emptyMessage="#{msg['lovvacio']}" >              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarTTTT"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroTipoTrabajadorTipoTrabajador()}"  process="@this" onstart="lovTipoTrabajadorTipoTrabajador.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroTipoTrabajadorTipoTrabajador()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTTTT']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTipoTrabajadorTipoTrabajador.filter();" style="width:140px; position: relative; left: 50px;" />  
@@ -2772,12 +2664,8 @@
                                 <h:outputText value="#{tipoTTT.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarTTTT" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="TipoTrabajadorTipoTrabajadorDialogo.hide(), lovTipoTrabajadorTipoTrabajador.clearFilters();" actionListener="#{controlBusquedaAvanzada.actualizarParametroTipoTrabajadorTipoTrabajador()}" update="lovTipoTrabajadorTipoTrabajador, aceptarTTTT" process="@this">
-                            <p:resetInput target=":form:lovTipoTrabajadorTipoTrabajador:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasTTTT" icon="ui-icon-arrowreturnthick-1-w"  style="position: relative; left: 260px" value="#{msg['atras']}" onclick="TipoTrabajadorTipoTrabajadorDialogo.hide(), lovTipoTrabajadorTipoTrabajador.clearFilters();" actionListener="#{controlBusquedaAvanzada.cancelarParametroTipoTrabajadorTipoTrabajador()}" update="lovTipoTrabajadorTipoTrabajador" process="@this">
-                            <p:resetInput target=":form:lovTipoTrabajadorTipoTrabajador:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarTTTT" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" actionListener="#{controlBusquedaAvanzada.actualizarParametroTipoTrabajadorTipoTrabajador()}" process="@this"/>
+                        <p:commandButton id="atrasTTTT" icon="ui-icon-arrowreturnthick-1-w"  style="position: relative; left: 260px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroTipoTrabajadorTipoTrabajador()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['tipoContratoD']}" widgetVar="TipoContratoFechaContratoDialogo" draggable="false" resizable="false" closable="false" id="TipoContratoFechaContratoDialogo"  
@@ -2786,7 +2674,7 @@
                                      selection="#{controlBusquedaAvanzada.tipoContratoSeleccionado}" selectionMode="single" widgetVar="lovTipoContratoFechaContrato" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovTiposContratos}" emptyMessage="#{msg['lovvacio']}" >              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarTCFC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroTipoContratoFechaContrato()}"  process="@this" onstart="lovTipoContratoFechaContrato.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroTipoContratoFechaContrato()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTCFC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTipoContratoFechaContrato.filter();" style="width:140px; position: relative; left: 50px;" />  
@@ -2798,12 +2686,8 @@
                                 <h:outputText value="#{tipoCFC.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarTCFC" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="TipoContratoFechaContratoDialogo.hide(), lovTipoContratoFechaContrato.clearFilters();" actionListener="#{controlBusquedaAvanzada.actualizarParametroTipoContratoFechaContrato()}" update="lovTipoContratoFechaContrato, aceptarTCFC" process="@this">
-                            <p:resetInput target=":form:lovTipoContratoFechaContrato:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasTCFC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" onclick="TipoContratoFechaContratoDialogo.hide(), lovTipoContratoFechaContrato.clearFilters();" actionListener="#{controlBusquedaAvanzada.cancelarParametroTipoContratoFechaContrato()}" update="lovTipoContratoFechaContrato" process="@this">
-                            <p:resetInput target=":form:lovTipoContratoFechaContrato:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarTCFC" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}"  actionListener="#{controlBusquedaAvanzada.actualizarParametroTipoContratoFechaContrato()}" process="@this"/>
+                        <p:commandButton id="atrasTCFC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}"  actionListener="#{controlBusquedaAvanzada.cancelarParametroTipoContratoFechaContrato()}"  process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['motivoContratoD']}" widgetVar="MotivoFechaContratoDialogo" draggable="false" resizable="false" closable="false" id="MotivoFechaContratoDialogo"  
@@ -2812,7 +2696,7 @@
                                      selection="#{controlBusquedaAvanzada.motivoContratoSeleccionado}" selectionMode="single" widgetVar="lovMotivoFechaContrato" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovMotivosContratos}" emptyMessage="#{msg['lovvacio']}" >              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarMFC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroMotivoFechaContrato()}"  process="@this" onstart="lovMotivoFechaContrato.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroMotivoFechaContrato()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarMFC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovMotivoFechaContrato.filter();" style="width:140px; position: relative; left: 65px;" />  
@@ -2824,12 +2708,8 @@
                                 <h:outputText value="#{motivoFC.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarMFC" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="MotivoFechaContratoDialogo.hide(), lovMotivoFechaContrato.clearFilters();" actionListener="#{controlBusquedaAvanzada.actualizarParametroMotivoFechaContrato()}" update="lovMotivoFechaContrato, aceptarMFC" process="@this">
-                            <p:resetInput target=":form:lovMotivoFechaContrato:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasMFC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" onclick="MotivoFechaContratoDialogo.hide(), lovMotivoFechaContrato.clearFilters();" actionListener="#{controlBusquedaAvanzada.cancelarParametroMotivoFechaContrato()}" update="lovMotivoFechaContrato" process="@this">
-                            <p:resetInput target=":form:lovMotivoFechaContrato:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarMFC" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" actionListener="#{controlBusquedaAvanzada.actualizarParametroMotivoFechaContrato()}" process="@this"/>
+                        <p:commandButton id="atrasMFC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroMotivoFechaContrato()}" process="@this"/>
                     </p:dialog>
 
 
@@ -2840,7 +2720,7 @@
                                      selection="#{controlBusquedaAvanzada.tipoSueldoSeleccionado}" selectionMode="single" widgetVar="lovTipoSueldoSueldo" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovTiposSueldos}" emptyMessage="#{msg['lovvacio']}" >              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarTSS"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroTipoSueldoSueldo()}"  process="@this" onstart="lovTipoSueldoSueldo.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroTipoSueldoSueldo()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTSS']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTipoSueldoSueldo.filter();" style="width:140px; position: relative; left: 40px;" />  
@@ -2852,12 +2732,8 @@
                                 <h:outputText value="#{sueldoS.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarTSS" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="TipoSueldoSueldoDialogo.hide(), lovTipoSueldoSueldo.clearFilters();" actionListener="#{controlBusquedaAvanzada.actualizarParametroTipoSueldoSueldo()}" update="lovTipoSueldoSueldo, aceptarTSS" process="@this">
-                            <p:resetInput target=":form:lovTipoSueldoSueldo:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasTSS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" onclick="TipoSueldoSueldoDialogo.hide(), lovTipoSueldoSueldo.clearFilters();" actionListener="#{controlBusquedaAvanzada.cancelarParametroTipoSueldoSueldo()}" update="lovTipoSueldoSueldo" process="@this">
-                            <p:resetInput target=":form:lovTipoSueldoSueldo:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarTSS" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" actionListener="#{controlBusquedaAvanzada.actualizarParametroTipoSueldoSueldo()}"  process="@this"/>
+                        <p:commandButton id="atrasTSS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroTipoSueldoSueldo()}"  process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['motivoCambioSD']}" widgetVar="MotivoSueldoDialogo" draggable="false" resizable="false" closable="false" id="MotivoSueldoDialogo"  
@@ -2866,7 +2742,7 @@
                                      selection="#{controlBusquedaAvanzada.motivoSueldoSeleccionado}" selectionMode="single" widgetVar="lovMotivoSueldo" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovMotivosCambiosSueldos}" emptyMessage="#{msg['lovvacio']}" >              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarMSS"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroMotivoSueldo()}"  process="@this" onstart="lovMotivoSueldo.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroMotivoSueldo()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarMSS']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovMotivoSueldo.filter();" style="width:140px; position: relative; left: 20px;" />  
@@ -2878,12 +2754,8 @@
                                 <h:outputText value="#{motivoS.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarMSS" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="MotivoSueldoDialogo.hide(), lovMotivoSueldo.clearFilters();" actionListener="#{controlBusquedaAvanzada.actualizarParametroMotivoSueldo()}" update="lovMotivoSueldo, aceptarMSS" process="@this">
-                            <p:resetInput target=":form:lovMotivoSueldo:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasMSS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" onclick="MotivoSueldoDialogo.hide(), lovMotivoSueldo.clearFilters();" actionListener="#{controlBusquedaAvanzada.cancelarParametroMotivoSueldo()}" update="lovMotivoSueldo" process="@this">
-                            <p:resetInput target=":form:lovMotivoSueldo:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarMSS" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" actionListener="#{controlBusquedaAvanzada.actualizarParametroMotivoSueldo()}" process="@this"/>
+                        <p:commandButton id="atrasMSS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroMotivoSueldo()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['localizacionD']}" widgetVar="LocalizacionCentroCostoDialogo" draggable="false" resizable="false" closable="false" id="LocalizacionCentroCostoDialogo"  
@@ -2892,7 +2764,7 @@
                                      selection="#{controlBusquedaAvanzada.estructuraSeleccionada}" selectionMode="single" widgetVar="lovLocalizacionCentroCosto" scrollable="true" scrollWidth="505" scrollHeight="250"
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovEstructuras}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarECC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroLocalizacionCentroCosto()}"  process="@this" onstart="lovLocalizacionCentroCosto.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroLocalizacionCentroCosto()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarECC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovLocalizacionCentroCosto.filter();" style="width:150px; position: relative; left: -5px;" />  
@@ -2910,12 +2782,8 @@
                                 <h:outputText value="#{localizacionCentroCosto.centrocosto.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarECC" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroLocalizacionCentroCosto()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="LocalizacionCentroCostoDialogo.hide(), lovLocalizacionCentroCosto.clearFilters();" update="lovLocalizacionCentroCosto, aceptarECC" process="@this">
-                            <p:resetInput target=":form:lovLocalizacionCentroCosto:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasECC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroLocalizacionCentroCosto()}" onclick="LocalizacionCentroCostoDialogo.hide(), lovLocalizacionCentroCosto.clearFilters();" update="lovLocalizacionCentroCosto" process="@this">
-                            <p:resetInput target=":form:lovLocalizacionCentroCosto:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarECC" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroLocalizacionCentroCosto()}" disabled="#{controlBusquedaAvanzada.aceptar}" process="@this"/>
+                        <p:commandButton id="atrasECC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroLocalizacionCentroCosto()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['motivoLocalizacionD']}" widgetVar="MotivoCentroCostoDialogo" draggable="false" resizable="false" closable="false" id="MotivoCentroCostoDialogo"  
@@ -2924,7 +2792,7 @@
                                      selection="#{controlBusquedaAvanzada.motivoLocalizacionSeleccionado}" selectionMode="single" widgetVar="lovMotivoCentroCosto" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovMotivosLocalizaciones}" emptyMessage="#{msg['lovvacio']}" >              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarMCC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroMotivoCentroCosto()}"  process="@this" onstart="lovMotivoCentroCosto.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroMotivoCentroCosto()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarMCC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovMotivoCentroCosto.filter();" style="width:140px; position: relative; left: 35px;" />  
@@ -2936,12 +2804,8 @@
                                 <h:outputText value="#{motivoCC.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarMCC" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="MotivoCentroCostoDialogo.hide(), lovMotivoCentroCosto.clearFilters();" actionListener="#{controlBusquedaAvanzada.actualizarParametroMotivoCentroCosto()}" update="lovMotivoCentroCosto, aceptarMCC" process="@this">
-                            <p:resetInput target=":form:lovMotivoCentroCosto:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasMCC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" onclick="MotivoCentroCostoDialogo.hide(), lovMotivoCentroCosto.clearFilters();" actionListener="#{controlBusquedaAvanzada.cancelarParametroMotivoCentroCosto()}" update="lovMotivoCentroCosto" process="@this">
-                            <p:resetInput target=":form:lovMotivoCentroCosto:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarMCC" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" actionListener="#{controlBusquedaAvanzada.actualizarParametroMotivoCentroCosto()}" process="@this"/>
+                        <p:commandButton id="atrasMCC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroMotivoCentroCosto()}" process="@this"/>
                     </p:dialog>
 
 
@@ -2953,7 +2817,7 @@
                                      selection="#{controlBusquedaAvanzada.cargoSeleccionado}" selectionMode="single" widgetVar="lovCargoCargo" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovCargos}" emptyMessage="#{msg['lovvacio']}" >              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarCC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroCargoCargo()}"  process="@this" onstart="lovCargoCargo.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroCargoCargo()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCargoCargo.filter();" style="width:140px; position: relative; left: -20px;" />  
@@ -2965,12 +2829,8 @@
                                 <h:outputText value="#{cargoC.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarCC" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="CargoCargoDialogo.hide(), lovCargoCargo.clearFilters();" actionListener="#{controlBusquedaAvanzada.actualizarParametroCargoCargo()}" update="lovCargoCargo, aceptarCC" process="@this">
-                            <p:resetInput target=":form:lovCargoCargo:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasCC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" onclick="CargoCargoDialogo.hide(), lovCargoCargo.clearFilters();" actionListener="#{controlBusquedaAvanzada.cancelarParametroCargoCargo()}" update="lovCargoCargo" process="@this">
-                            <p:resetInput target=":form:lovCargoCargo:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarCC" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" actionListener="#{controlBusquedaAvanzada.actualizarParametroCargoCargo()}"  process="@this"/>
+                        <p:commandButton id="atrasCC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroCargoCargo()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['estructuraD']}" widgetVar="EstructuraCargoDialogo" draggable="false" resizable="false" closable="false" id="EstructuraCargoDialogo"  
@@ -2979,7 +2839,7 @@
                                      selection="#{controlBusquedaAvanzada.estructuraSeleccionada}" selectionMode="single" widgetVar="lovEstructuraCargo" scrollable="true" scrollWidth="505" scrollHeight="250"
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovEstructuras}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarEC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroEstructuraCargo()}"  process="@this" onstart="lovEstructuraCargo.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroEstructuraCargo()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEstructuraCargo.filter();" style="width:150px; position: relative; left: -20px;" />  
@@ -2997,12 +2857,8 @@
                                 <h:outputText value="#{estructuraCargo.centrocosto.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarEC" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroEstructuraCargo()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="EstructuraCargoDialogo.hide(), lovEstructuraCargo.clearFilters();" update="lovEstructuraCargo, aceptarEC" process="@this">
-                            <p:resetInput target=":form:lovEstructuraCargo:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasEC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroEstructuraCargo()}" onclick="EstructuraCargoDialogo.hide(), lovEstructuraCargo.clearFilters();" update="lovEstructuraCargo" process="@this">
-                            <p:resetInput target=":form:lovEstructuraCargo:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarEC" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroEstructuraCargo()}" disabled="#{controlBusquedaAvanzada.aceptar}"  process="@this"/>
+                        <p:commandButton id="atrasEC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroEstructuraCargo()}" process="@this"/>
                     </p:dialog>
 
 
@@ -3012,7 +2868,7 @@
                                      selection="#{controlBusquedaAvanzada.empleadoSeleccionado}" selectionMode="single" widgetVar="lovJefeCargo" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovEmpleados}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarJC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroJefeCargo()}"  process="@this" onstart="lovJefeCargo.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroJefeCargo()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarJC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovJefeCargo.filter();" style="width:140px; position: relative; left: 20px;" />  
@@ -3024,12 +2880,8 @@
                                 <h:outputText value="#{jefeC.persona.nombreCompleto}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarJC" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="JefeCargoDialogo.hide(), lovJefeCargo.clearFilters();" actionListener="#{controlBusquedaAvanzada.actualizarParametroJefeCargo()}" update="lovJefeCargo, aceptarJC" process="@this">
-                            <p:resetInput target=":form:lovJefeCargo:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasJC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" onclick="JefeCargoDialogo.hide(), lovJefeCargo.clearFilters();" actionListener="#{controlBusquedaAvanzada.cancelarParametroJefeCargo()}" update="lovJefeCargo" process="@this">
-                            <p:resetInput target=":form:lovJefeCargo:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarJC" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" actionListener="#{controlBusquedaAvanzada.actualizarParametroJefeCargo()}" process="@this"/>
+                        <p:commandButton id="atrasJC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroJefeCargo()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['motivoCargoD']}" widgetVar="MotivoCargoDialogo" draggable="false" resizable="false" closable="false" id="MotivoCargoDialogo"  
@@ -3038,7 +2890,7 @@
                                      selection="#{controlBusquedaAvanzada.motivoCambioSeleccionado}" selectionMode="single" widgetVar="lovMotivoCargo" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovMotivosCambiosCargos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarMC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroMotivoCargo()}"  process="@this" onstart="lovMotivoCargo.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroMotivoCargo()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarMC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovMotivoCargo.filter();" style="width:140px; position: relative; left: 10px;" />  
@@ -3050,12 +2902,8 @@
                                 <h:outputText value="#{motivoC.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarMC" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="MotivoCargoDialogo.hide(), lovMotivoCargo.clearFilters();" actionListener="#{controlBusquedaAvanzada.actualizarParametroMotivoCargo()}" update="lovMotivoCargo, aceptarMC" process="@this">
-                            <p:resetInput target=":form:lovMotivoCargo:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasMC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" onclick="MotivoCargoDialogo.hide(), lovMotivoCargo.clearFilters();" actionListener="#{controlBusquedaAvanzada.cancelarParametroMotivoCargo()}" update="lovMotivoCargo" process="@this">
-                            <p:resetInput target=":form:lovMotivoCargo:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarMC" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}"  actionListener="#{controlBusquedaAvanzada.actualizarParametroMotivoCargo()}" process="@this"/>
+                        <p:commandButton id="atrasMC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroMotivoCargo()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['papelesD']}" widgetVar="PapelCargoDialogo" draggable="false" resizable="false" closable="false" id="PapelCargoDialogo"  
@@ -3064,7 +2912,7 @@
                                      selection="#{controlBusquedaAvanzada.papelSeleccionado}" selectionMode="single" widgetVar="lovPapelCargo" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlBusquedaAvanzada.filtrarLovPapeles}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarPC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroPapelCargo()}"  process="@this" onstart="lovPapelCargo.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroPapelCargo()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarPC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovPapelCargo.filter();" style="width:140px; position: relative; left: -5px;" />  
@@ -3076,12 +2924,8 @@
                                 <h:outputText value="#{papelC.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarPC" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="PapelCargoDialogo.hide(), lovPapelCargo.clearFilters();" actionListener="#{controlBusquedaAvanzada.actualizarParametroPapelCargo()}" update="lovPapelCargo, aceptarPC" process="@this">
-                            <p:resetInput target=":form:lovPapelCargo:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasPC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" onclick="PapelCargoDialogo.hide(), lovPapelCargo.clearFilters();" actionListener="#{controlBusquedaAvanzada.cancelarParametroPapelCargo()}" update="lovPapelCargo" process="@this">
-                            <p:resetInput target=":form:lovPapelCargo:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarPC" icon="ui-icon-check" style="position: relative; left: 260px" value="#{msg['aceptar']}" disabled="#{controlBusquedaAvanzada.aceptar}"  actionListener="#{controlBusquedaAvanzada.actualizarParametroPapelCargo()}" process="@this"/>
+                        <p:commandButton id="atrasPC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroPapelCargo()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="errorFechasIngresadas" header="#{msg['atencion']}" widgetVar="errorFechasIngresadas"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  

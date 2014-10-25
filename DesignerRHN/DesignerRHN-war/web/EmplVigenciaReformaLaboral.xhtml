@@ -127,7 +127,7 @@
                                          selection="#{controlVigenciasReformasLaborales.reformaLaboralSelecionada}" selectionMode="single" widgetVar="lovReformasLaborales" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlVigenciasReformasLaborales.filtradoReformasLaborales}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasReformasLaborales.activarAceptar()}" update=":form:aceptarRL"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciasReformasLaborales.actualizarReformaLaboral()}" process="@this" onstart="lovReformasLaborales.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciasReformasLaborales.actualizarReformaLaboral()}" process="@this" />
 
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarRL']}" style="position: absolute; left: 27px; top: 14px"/>  
@@ -149,9 +149,9 @@
 
                             <h:outputText id="infoRegistroReformaLaboral" value="#{controlVigenciasReformasLaborales.infoRegistroReformaLaboral}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarRL" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlVigenciasReformasLaborales.aceptar}" onclick="ReformasLaboralesDialogo.hide(), lovReformasLaborales.clearFilters();" actionListener="#{controlVigenciasReformasLaborales.actualizarReformaLaboral()}" update="lovReformasLaborales, aceptarRL, datosVRLEmpleado" process="@this" icon="ui-icon-check">
-                            </p:commandButton>
-                            <p:commandButton id="atrasRL" style="position: relative; left: 265px" value="#{msg['atras']}" onclick="ReformasLaboralesDialogo.hide(), lovReformasLaborales.clearFilters();" actionListener="#{controlVigenciasReformasLaborales.cancelarCambioReformaLaboral()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" >
+                            <p:commandButton id="aceptarRL" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlVigenciasReformasLaborales.aceptar}" actionListener="#{controlVigenciasReformasLaborales.actualizarReformaLaboral()}" process="@this" icon="ui-icon-check"/>
+                            
+                            <p:commandButton id="atrasRL" style="position: relative; left: 265px" value="#{msg['atras']}" actionListener="#{controlVigenciasReformasLaborales.cancelarCambioReformaLaboral()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" >
                                 
                             </p:commandButton>
                         </p:dialog> 

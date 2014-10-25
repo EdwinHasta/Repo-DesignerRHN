@@ -489,7 +489,7 @@
                                      selection="#{cargarArchivoPlano.formulaSelecionada}" selectionMode="single" widgetVar="lovFormulas" scrollable="true" scrollWidth="415" scrollHeight="225"
                                      filteredValue="#{cargarArchivoPlano.filtradoFormulas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{cargarArchivoPlano.activarAceptar()}" update=":formDialogos:aceptarF"/>
-                            <p:ajax event="rowDblselect" process="@this" listener="#{cargarArchivoPlano.formulaParaUsar()}" onstart="lovFormulas.clearFilters()"/>
+                            <p:ajax event="rowDblselect" process="@this" listener="#{cargarArchivoPlano.formulaParaUsar()}" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarF']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovFormulas.filter();" style="width:150px; position: relative; left: 5px;" />  
@@ -510,12 +510,9 @@
 
                         <h:outputText id="infoRegistroFormula" value="#{cargarArchivoPlano.infoRegistroFormula}" style="position: absolute; left: 20px; top: 325px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarF" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{cargarArchivoPlano.aceptar}" actionListener="#{cargarArchivoPlano.formulaParaUsar()}"  onclick="lovFormulas.clearFilters();" update="aceptarF" process="@this">
-                            <p:resetInput target=":formDialogos:lovFormulas:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasF" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="formulasDialogo.hide(), lovFormulas.clearFilters();" actionListener="#{cargarArchivoPlano.cancelarSeleccionFormula()}" update="aceptarF, lovFormulas" process="@this">
-                            <p:resetInput target=":formDialogos:lovFormulas:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarF" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{cargarArchivoPlano.aceptar}" actionListener="#{cargarArchivoPlano.formulaParaUsar()}"  process="@this"/>
+                        
+                        <p:commandButton id="atrasF" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{cargarArchivoPlano.cancelarSeleccionFormula()}"  process="@this"/>
                     </p:dialog> 
 
                     <p:dialog header="#{msg['documentosDS']}" widgetVar="documentoSoporteDialogo" draggable="false" resizable="false" closable="false" id="documentoSoporteDialogo"  
@@ -524,7 +521,7 @@
                                      selection="#{cargarArchivoPlano.seleccionDocumentosSoporteCargado}" selectionMode="single" widgetVar="lovDocumentoSoporte" scrollable="true" scrollWidth="415" scrollHeight="225"
                                      filteredValue="#{cargarArchivoPlano.filtradoDocumentosSoporteCargados}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{cargarArchivoPlano.activarAceptar()}" update=":formDialogos:aceptarDS"/>
-                            <p:ajax event="rowDblselect" process="@this" listener="#{cargarArchivoPlano.seleccionarDocumentoSoporte()}" onstart="lovDocumentoSoporte.clearFilters()"/>
+                            <p:ajax event="rowDblselect" process="@this" listener="#{cargarArchivoPlano.seleccionarDocumentoSoporte()}" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarDS']}"  style="position: absolute; left: 27px; top: 16px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovDocumentoSoporte.filter();" style="width: 100px; position: relative; left: 60px;" />  
@@ -539,12 +536,10 @@
 
                         <h:outputText id="infoRegistroDocumento" value="#{cargarArchivoPlano.infoRegistroDocumento}" style="position: absolute; left: 20px; top: 325px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarDS" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{cargarArchivoPlano.aceptar}" actionListener="#{cargarArchivoPlano.seleccionarDocumentoSoporte()}"  onclick="lovDocumentoSoporte.clearFilters();" update="aceptarDS" process="@this">
-                            <p:resetInput target=":formDialogos:lovDocumentoSoporte:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasDS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="documentoSoporteDialogo.hide(), lovDocumentoSoporte.clearFilters();" actionListener="#{cargarArchivoPlano.cancelarSeleccionDocumentoSoporte()}" update="aceptarDS, lovDocumentoSoporte" process="@this">
-                            <p:resetInput target=":formDialogos:lovDocumentoSoporte:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarDS" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{cargarArchivoPlano.aceptar}" actionListener="#{cargarArchivoPlano.seleccionarDocumentoSoporte()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasDS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{cargarArchivoPlano.cancelarSeleccionDocumentoSoporte()}" process="@this"/>
+                        
                     </p:dialog> 
 
 

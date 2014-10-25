@@ -224,7 +224,7 @@
                                      selection="#{controlPeriodosActivos.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresas" scrollable="true" scrollWidth="350" scrollHeight="250"
                                      filteredValue="#{controlPeriodosActivos.filtradoListaEmpresas}" emptyMessage="No se encontrarón resultados para la búsqueda">              
                             <p:ajax event="rowSelect" listener="#{controlPeriodosActivos.activarAceptar()}" update=":formularioDialogos:aceptarE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlPeriodosActivos.cambiarEmpresa()}" process="@this" onstart="lovEmpresas.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlPeriodosActivos.cambiarEmpresa()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Empresa :"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpresas.filter();" style="width:100px; position: relative; left: 10px;" />  
@@ -244,12 +244,10 @@
                         </p:dataTable>
                         <h:outputText id="infoRegistroEmpresas" value="#{controlPeriodosActivos.infoRegistroEmpresas}" style="position: absolute; left: 5px; top: 350px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarE" icon="u-iicon-check" style="position: relative; left: 165px" value="Aceptar" disabled="#{controlPeriodosActivos.aceptar}" actionListener="#{controlPeriodosActivos.cambiarEmpresa()}" update="aceptarE" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton  icon="ui-icon-arrowreturnthick-1-w" id="atrasE" style="position: relative; left: 165px" value="Cancelar" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlPeriodosActivos.cancelarCambioEmpresa()}" update="lovEmpresas" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarE" icon="u-iicon-check" style="position: relative; left: 165px" value="Aceptar" disabled="#{controlPeriodosActivos.aceptar}" actionListener="#{controlPeriodosActivos.cambiarEmpresa()}" process="@this"/>
+                        
+                        <p:commandButton  icon="ui-icon-arrowreturnthick-1-w" id="atrasE" style="position: relative; left: 165px" value="Cancelar" actionListener="#{controlPeriodosActivos.cancelarCambioEmpresa()}" process="@this"/>
+                        
                     </p:dialog>
 
 

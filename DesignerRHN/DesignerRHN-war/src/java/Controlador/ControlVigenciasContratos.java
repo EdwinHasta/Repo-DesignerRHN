@@ -1060,10 +1060,12 @@ public class ControlVigenciasContratos implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        /*
         context.update("form:ContratosDialogo");
         context.update("form:lovContratos");
-        context.update("form:aceptarC");
+        context.update("form:aceptarC");*/
         context.reset("form:lovContratos:globalFilter");
+        context.execute("lovContratos.clearFilters()");
         context.execute("ContratosDialogo.hide()");
     }
 
@@ -1078,6 +1080,10 @@ public class ControlVigenciasContratos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovContratos:globalFilter");
+        context.execute("lovContratos.clearFilters()");
+        context.execute("ContratosDialogo.hide()");
     }
 
     //TIPO CONTRATO
@@ -1124,11 +1130,12 @@ public class ControlVigenciasContratos implements Serializable {
         aceptar = true;
         index = -1;
         secRegistro = null;
-        tipoActualizacion = -1;
+        tipoActualizacion = -1;/*
         context.update("form:TiposContratoDialogo");
         context.update("form:lovTiposContratos");
-        context.update("form:aceptarTC");
+        context.update("form:aceptarTC");*/
         context.reset("form:lovTiposContratos:globalFilter");
+        context.execute("lovTiposContratos.clearFilters()");
         context.execute("TiposContratoDialogo.hide()");
     }
 
@@ -1143,6 +1150,10 @@ public class ControlVigenciasContratos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTiposContratos:globalFilter");
+        context.execute("lovTiposContratos.clearFilters()");
+        context.execute("TiposContratoDialogo.hide()");
     }
 
     //LISTA DE VALORES DINAMICA

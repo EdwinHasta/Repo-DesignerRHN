@@ -144,7 +144,7 @@
                                          selection="#{controlFormulasAseguradas.formulaSeleccionado}" selectionMode="single" widgetVar="lovFormulas" scrollable="true" scrollWidth="430" scrollHeight="280"
                                          filteredValue="#{controlFormulasAseguradas.filtradoFormulas}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlFormulasAseguradas.activarAceptar()}" update=":form:aceptarPer"/>
-                                <p:ajax event="rowDblselect" listener="#{controlFormulasAseguradas.actualizarFormulas()}" process="@this" onstart="lovFormulas.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlFormulasAseguradas.actualizarFormulas()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarFormulas']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovFormulas.filter();" style="width:150px; position: relative; left: 50px;" />  
@@ -166,21 +166,18 @@
 
                             <h:outputText id="infoRegistroFormulas" value="#{controlFormulasAseguradas.infoRegistroFormulas}" style="position: relative; left: 5px;font-weight: bold"/>
 
-                            <p:commandButton id="aceptarPer" icon="ui-icon-check" style="position: relative; left: 100px" value="#{msg['aceptar']}"  disabled="#{controlFormulasAseguradas.aceptar}" onclick="personasDialogo.hide(), lovFormulas.clearFilters();"  actionListener="#{controlFormulasAseguradas.actualizarFormulas()}" update="lovFormulas, aceptarPer" process="@this">
-                                <p:resetInput target=":form:lovFormulas:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasPer"  icon="ui-icon-arrowreturnthick-1-w"  style="position: relative; left: 100px" value="#{msg['atras']}"  actionListener="#{controlFormulasAseguradas.cancelarCambioFormulas()}" onclick="personasDialogo.hide();
-                                    lovFormulas.clearFilters();" update="lovFormulas" process="@this">
-                                <p:resetInput target=":form:lovFormulas:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarPer" icon="ui-icon-check" style="position: relative; left: 100px" value="#{msg['aceptar']}"  disabled="#{controlFormulasAseguradas.aceptar}"  actionListener="#{controlFormulasAseguradas.actualizarFormulas()}" process="@this"/>
+                            
+                            <p:commandButton id="atrasPer"  icon="ui-icon-arrowreturnthick-1-w"  style="position: relative; left: 100px" value="#{msg['atras']}"  actionListener="#{controlFormulasAseguradas.cancelarCambioFormulas()}" process="@this"/>
                         </p:dialog>
+                        
                         <p:dialog header="#{msg['procesoD']}" widgetVar="procesosDialogo" draggable="false" resizable="false" closable="false" id="procesosDialogo"  
                                   showEffect="fade" hideEffect="fade" width="470" modal="true" style="">
                             <p:dataTable id="lovProcesos" style=" width: 430px" var="procesosdi" value="#{controlFormulasAseguradas.listaProcesos}" rowKey="#{procesosdi.secuencia}"
                                          selection="#{controlFormulasAseguradas.procesoSeleccionado}" selectionMode="single" widgetVar="lovProcesos" scrollable="true" scrollWidth="450" scrollHeight="280"
                                          filteredValue="#{controlFormulasAseguradas.filtradoProcesos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlFormulasAseguradas.activarAceptar()}" update=":form:aceptarProce"/>
-                                <p:ajax event="rowDblselect" listener="#{controlFormulasAseguradas.actualizarProcesos()}" process="@this" onstart="lovProcesos.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlFormulasAseguradas.actualizarProcesos()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarProcesos']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovProcesos.filter();" style="width:150px; position: relative; left: 50px;" />  
@@ -201,13 +198,9 @@
                             </p:dataTable>
                             <h:outputText id="infoRegistroProcesos" value="#{controlFormulasAseguradas.infoRegistroProcesos}" style="position: relative; left: 5px;font-weight: bold"/>
 
-                            <p:commandButton id="aceptarProce" icon="ui-icon-check" style="position: relative; left: 100px" value="#{msg['aceptar']}" disabled="#{controlFormulasAseguradas.aceptar}"  onclick="procesosDialogo.hide(), lovProcesos.clearFilters();"  actionListener="#{controlFormulasAseguradas.actualizarProcesos()}" update="lovProcesos, aceptarProce" process="@this">
-                                <p:resetInput target=":form:lovProcesos:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasPRoce"  icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 100px" value="#{msg['atras']}"  actionListener="#{controlFormulasAseguradas.cancelarCambioProcesos()}" onclick="procesosDialogo.hide();
-                                    lovProcesos.clearFilters();" update="lovProcesos" process="@this">
-                                <p:resetInput target=":form:lovProcesos:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarProce" icon="ui-icon-check" style="position: relative; left: 100px" value="#{msg['aceptar']}" disabled="#{controlFormulasAseguradas.aceptar}"  actionListener="#{controlFormulasAseguradas.actualizarProcesos()}" process="@this"/>
+                            
+                            <p:commandButton id="atrasPRoce"  icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 100px" value="#{msg['atras']}"  actionListener="#{controlFormulasAseguradas.cancelarCambioProcesos()}" process="@this"/>
                         </p:dialog>
 
 
@@ -218,7 +211,7 @@
                                          selection="#{controlFormulasAseguradas.periodicidadSeleccionado}" selectionMode="single" widgetVar="lovPeriodicidades" scrollable="true" scrollWidth="430" scrollHeight="280"
                                          filteredValue="#{controlFormulasAseguradas.filtradoPeriodicidades}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlFormulasAseguradas.activarAceptar()}" update=":form:aceptarPerio"/>
-                                <p:ajax event="rowDblselect" listener="#{controlFormulasAseguradas.actualizarPeriocidades()}" process="@this" onstart="lovPeriodicidades.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlFormulasAseguradas.actualizarPeriocidades()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarPeriodicidades']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovPeriodicidades.filter();" style="width:150px; position: relative; left: 50px;" />  
@@ -239,13 +232,10 @@
                             </p:dataTable>
                             <h:outputText id="infoRegistroPeriocididades" value="#{controlFormulasAseguradas.infoRegistroPeriocididades}" style="position: relative; left: 5px;font-weight: bold"/>
 
-                            <p:commandButton id="aceptarPerio" icon="ui-icon-check" style="position: relative; left: 100px" value="#{msg['aceptar']}" disabled="#{controlFormulasAseguradas.aceptar}"  onclick="periodicidadesDialogo.hide(), lovPeriodicidades.clearFilters();"  actionListener="#{controlFormulasAseguradas.actualizarPeriocidades()}" update="lovPeriodicidades, aceptarPerio" process="@this">
-                                <p:resetInput target=":form:lovPeriodicidades:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasPerio" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 100px" value="#{msg['atras']}"  actionListener="#{controlFormulasAseguradas.cancelarCambioPeriodicidades()}" onclick="periodicidadesDialogo.hide();
-                                    lovPeriodicidades.clearFilters();" update="lovPeriodicidades" process="@this">
-                                <p:resetInput target=":form:lovPeriodicidades:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarPerio" icon="ui-icon-check" style="position: relative; left: 100px" value="#{msg['aceptar']}" disabled="#{controlFormulasAseguradas.aceptar}" actionListener="#{controlFormulasAseguradas.actualizarPeriocidades()}" process="@this"/>
+                            
+                            <p:commandButton id="atrasPerio" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 100px" value="#{msg['atras']}"  actionListener="#{controlFormulasAseguradas.cancelarCambioPeriodicidades()}" process="@this"/>
+                            
                         </p:dialog>
 
 

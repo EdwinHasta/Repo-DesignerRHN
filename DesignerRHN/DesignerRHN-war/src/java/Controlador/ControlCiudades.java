@@ -813,9 +813,10 @@ public class ControlCiudades implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("departamentosDialogo.hide()");
         context.reset("formularioDialogos:LOVDepartamentos:globalFilter");
-        context.update("formularioDialogos:LOVDepartamentos");
+        context.execute("LOVDepartamentos.clearFilters()");
+        context.execute("departamentosDialogo.hide()");
+        //context.update("formularioDialogos:LOVDepartamentos");
     }
 
     public void activarAceptar() {
@@ -823,6 +824,7 @@ public class ControlCiudades implements Serializable {
     }
 
     public void cancelarCambioDepartamentos() {
+        RequestContext context = RequestContext.getCurrentInstance();
         filtradoListaDepatartamentos = null;
         seleccionDepartamento = null;
         aceptar = true;
@@ -831,6 +833,9 @@ public class ControlCiudades implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        context.reset("formularioDialogos:LOVDepartamentos:globalFilter");
+        context.execute("LOVDepartamentos.clearFilters()");
+        context.execute("departamentosDialogo.hide()");
     }
 
     //BORRAR CIUDADES

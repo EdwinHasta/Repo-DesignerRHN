@@ -187,9 +187,10 @@ public class ControlDeclarantes implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("minimasDialogo.hide()");
         context.reset("formularioDialogos:LOVMinimas:globalFilter");
-        context.update("formularioDialogos:LOVMinimas");
+        context.execute("LOVMinimas.clearFilters()");
+        context.execute("minimasDialogo.hide()");
+        //context.update("formularioDialogos:LOVMinimas");
     }
 
     //LISTA DE VALORES DINAMICA
@@ -565,6 +566,10 @@ public class ControlDeclarantes implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVMinimas:globalFilter");
+        context.execute("LOVMinimas.clearFilters()");
+        context.execute("minimasDialogo.hide()");
     }
 
     //MOSTRAR DATOS CELDA

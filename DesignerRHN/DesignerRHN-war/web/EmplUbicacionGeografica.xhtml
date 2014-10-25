@@ -143,7 +143,7 @@
                                          selection="#{controlVigenciasUbicaciones.ubicacionSelecionada}" selectionMode="single" widgetVar="lovUbicaciones" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlVigenciasUbicaciones.filtradoUbicaciones}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasUbicaciones.activarAceptar()}" update=":form:aceptarU"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciasUbicaciones.actualizarUbicacion()}" process="@this" onstart="lovUbicaciones.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciasUbicaciones.actualizarUbicacion()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarU']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovUbicaciones.filter();" style="width:150px; position: relative; left: -10px;" />  
@@ -170,12 +170,10 @@
 
                             <h:outputText id="infoRegistroUbicacion" value="#{controlVigenciasUbicaciones.infoRegistroUbicacion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarU" style="position: relative; left: 270px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlVigenciasUbicaciones.aceptar}" onclick="lovUbicaciones.clearFilters();" actionListener="#{controlVigenciasUbicaciones.actualizarUbicacion()}" update="aceptarU" process="@this">
-                                <p:resetInput target=":form:lovUbicaciones:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasU" style="position: relative; left: 270px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="UbicacionesGeograficasDialogo.hide(), lovUbicaciones.clearFilters();" actionListener="#{controlVigenciasUbicaciones.cancelarCambioUbicacion()}" update="lovUbicaciones" process="@this">
-                                <p:resetInput target=":form:lovUbicaciones:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarU" style="position: relative; left: 270px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlVigenciasUbicaciones.aceptar}"  actionListener="#{controlVigenciasUbicaciones.actualizarUbicacion()}"  process="@this"/>
+                                
+                            <p:commandButton id="atrasU" style="position: relative; left: 270px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}"  actionListener="#{controlVigenciasUbicaciones.cancelarCambioUbicacion()}"  process="@this"/>
+                                
                         </p:dialog>
 
                         <h:outputText id="informacionRegistro" value="#{controlVigenciasUbicaciones.infoRegistro}" style="position: absolute; left: 15px; top: 470px; font-weight: bold"/>

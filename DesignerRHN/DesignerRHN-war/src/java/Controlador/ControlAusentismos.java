@@ -372,11 +372,12 @@ public class ControlAusentismos implements Serializable {
         cambiosPagina = false;
         secuenciaEmpleado = seleccionEmpleados.getSecuencia();
         listaAusentismos = null;
-        context.execute("empleadosDialogo.hide()");
         context.reset("formularioDialogos:LOVEmpleados:globalFilter");
-        context.update("formularioDialogos:LOVEmpleados");
-        context.update("form:datosEmpleados");
-        context.update("form:datosAusentismosEmpleado");
+        context.execute("LOVEmpleados.clearFilters()");
+        context.execute("empleadosDialogo.hide()");
+        //context.update("formularioDialogos:LOVEmpleados");
+        //context.update("form:datosEmpleados");
+        //context.update("form:datosAusentismosEmpleado");
         filtradosListaAusentismos = null;
         seleccionEmpleados = null;
         aceptar = true;
@@ -389,10 +390,11 @@ public class ControlAusentismos implements Serializable {
     public void actualizarProrrogas() {
         RequestContext context = RequestContext.getCurrentInstance();
         listaAusentismos.get(index).setProrroga(seleccionProrrogas);
-        context.execute("prorrogasDialogo.hide()");
         context.reset("formularioDialogos:LOVProrrogas:globalFilter");
-        context.update("formularioDialogos:LOVProrrogas");
-        context.update("form:datosAusentismosEmpleado");
+        context.execute("LOVProrrogas.clearFilters()");
+        context.execute("prorrogasDialogo.hide()");
+        ///context.update("formularioDialogos:LOVProrrogas");
+        //context.update("form:datosAusentismosEmpleado");
         cambiosPagina = false;
         filtradosListaAusentismos = null;
         seleccionProrrogas = null;
@@ -449,9 +451,10 @@ public class ControlAusentismos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("tiposAusentismosDialogo.hide()");
+//        context.update("formularioDialogos:LOVTiposAusentismos");
         context.reset("formularioDialogos:LOVTiposAusentismos:globalFilter");
-        context.update("formularioDialogos:LOVTiposAusentismos");
+        context.execute("LOVTiposAusentismos.clearFilters()");
+        context.execute("tiposAusentismosDialogo.hide()");
     }
 
     public void actualizarClasesAusentismos() {
@@ -499,9 +502,10 @@ public class ControlAusentismos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("clasesAusentismosDialogo.hide()");
         context.reset("formularioDialogos:LOVClasesAusentismos:globalFilter");
-        context.update("formularioDialogos:LOVClasesAusentismos");
+        context.execute("LOVClasesAusentismos.clearFilters()");
+        context.execute("clasesAusentismosDialogo.hide()");
+        //context.update("formularioDialogos:LOVClasesAusentismos");
     }
 
     public void actualizarCausasAusentismos() {
@@ -548,9 +552,10 @@ public class ControlAusentismos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("causasAusentismosDialogo.hide()");
         context.reset("formularioDialogos:LOVCausasAusentismos:globalFilter");
-        context.update("formularioDialogos:LOVCausasAusentismos");
+        context.execute("LOVCausasAusentismos.clearFilters()");
+        context.execute("causasAusentismosDialogo.hide()");
+        //context.update("formularioDialogos:LOVCausasAusentismos");
     }
 
     public void actualizarPorcentajes() {
@@ -598,9 +603,10 @@ public class ControlAusentismos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("porcentajesDialogo.hide()");
         context.reset("formularioDialogos:LOVPorcentajes:globalFilter");
-        context.update("formularioDialogos:LOVPorcentajes");
+        context.execute("LOVPorcentajes.clearFilters()");
+        context.execute("porcentajesDialogo.hide()");
+        //context.update("formularioDialogos:LOVPorcentajes");
     }
 
     public void actualizarIBCS() {
@@ -648,9 +654,10 @@ public class ControlAusentismos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("ibcsDialogo.hide()");
         context.reset("formularioDialogos:LOVIbcs:globalFilter");
-        context.update("formularioDialogos:LOVIbcs");
+        context.execute("LOVIbcs.clearFilters()");
+        context.execute("ibcsDialogo.hide()");
+        //context.update("formularioDialogos:LOVIbcs");
     }
 
     public void actualizarEnfermedades() {
@@ -698,9 +705,10 @@ public class ControlAusentismos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("enfermedadesDialogo.hide()");
         context.reset("formularioDialogos:LOVEnfermedades:globalFilter");
-        context.update("formularioDialogos:LOVEnfermedades");
+        context.execute("LOVEnfermedades.clearFilters()");
+        context.execute("enfermedadesDialogo.hide()");
+        //context.update("formularioDialogos:LOVEnfermedades");
     }
 
     public void actualizarFormas() {
@@ -748,9 +756,10 @@ public class ControlAusentismos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("formasDialogo.hide()");
         context.reset("formularioDialogos:LOVFormas:globalFilter");
-        context.update("formularioDialogos:LOVFormas");
+        context.execute("LOVFormas.clearFilters()");
+        context.execute("formasDialogo.hide()");
+        //context.update("formularioDialogos:LOVFormas");
     }
 
     public void actualizarAD() {
@@ -798,9 +807,10 @@ public class ControlAusentismos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("accidentesDialogo.hide()");
         context.reset("formularioDialogos:LOVAccidentes:globalFilter");
-        context.update("formularioDialogos:LOVAccidentes");
+        context.execute("LOVAccidentes.clearFilters()");
+        context.execute("accidentesDialogo.hide()");
+        //context.update("formularioDialogos:LOVAccidentes");
     }
 
     public void actualizarTerceros() {
@@ -848,9 +858,10 @@ public class ControlAusentismos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("tercerosDialogo.hide()");
         context.reset("formularioDialogos:LOVTerceros:globalFilter");
-        context.update("formularioDialogos:LOVTerceros");
+        context.execute("LOVTerceros.clearFilters()");
+        context.execute("tercerosDialogo.hide()");
+        //context.update("formularioDialogos:LOVTerceros");
     }
 
     public void actualizarDiagnosticos() {
@@ -898,12 +909,14 @@ public class ControlAusentismos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("diagnosticosDialogo.hide()");
         context.reset("formularioDialogos:LOVDiagnosticos:globalFilter");
-        context.update("formularioDialogos:LOVDiagnosticos");
+        context.execute("LOVDiagnosticos.clearFilters()");
+        context.execute("diagnosticosDialogo.hide()");
+        //context.update("formularioDialogos:LOVDiagnosticos");
     }
 
     public void cancelarCambioDiagnosticos() {
+        RequestContext context = RequestContext.getCurrentInstance();
         filtradoslistaDiagnosticos = null;
         seleccionDiagnosticos = null;
         aceptar = true;
@@ -912,9 +925,13 @@ public class ControlAusentismos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        context.reset("formularioDialogos:LOVDiagnosticos:globalFilter");
+        context.execute("LOVDiagnosticos.clearFilters()");
+        context.execute("diagnosticosDialogo.hide()");
     }
 
     public void cancelarCambioEmpleados() {
+        RequestContext context = RequestContext.getCurrentInstance();
         filtradoslistaEmpleados = null;
         seleccionEmpleados = null;
         aceptar = true;
@@ -923,6 +940,9 @@ public class ControlAusentismos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        context.reset("formularioDialogos:LOVEmpleados:globalFilter");
+        context.execute("LOVEmpleados.clearFilters()");
+        context.execute("empleadosDialogo.hide()");
     }
 
     public void cancelarCambioTiposAusentismos() {
@@ -934,9 +954,14 @@ public class ControlAusentismos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVTiposAusentismos:globalFilter");
+        context.execute("LOVTiposAusentismos.clearFilters()");
+        context.execute("tiposAusentismosDialogo.hide()");
     }
 
     public void cancelarCambioClasesAusentismos() {
+        RequestContext context = RequestContext.getCurrentInstance();
         filtradoslistaClasesAusentismos = null;
         seleccionClasesAusentismos = null;
         aceptar = true;
@@ -945,9 +970,13 @@ public class ControlAusentismos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        context.reset("formularioDialogos:LOVClasesAusentismos:globalFilter");
+        context.execute("LOVClasesAusentismos.clearFilters()");
+        context.execute("clasesAusentismosDialogo.hide()");
     }
 
     public void cancelarCambioCausasAusentismos() {
+        RequestContext context = RequestContext.getCurrentInstance();
         filtradoslistaCausasAusentismos = null;
         seleccionCausasAusentismos = null;
         aceptar = true;
@@ -956,9 +985,13 @@ public class ControlAusentismos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        context.reset("formularioDialogos:LOVCausasAusentismos:globalFilter");
+        context.execute("LOVCausasAusentismos.clearFilters()");
+        context.execute("causasAusentismosDialogo.hide()");
     }
 
     public void cancelarCambioPorcentajes() {
+        RequestContext context = RequestContext.getCurrentInstance();
         filtradosListaPorcentajes = null;
         seleccionPorcentajes = null;
         aceptar = true;
@@ -967,9 +1000,13 @@ public class ControlAusentismos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        context.reset("formularioDialogos:LOVPorcentajes:globalFilter");
+        context.execute("LOVPorcentajes.clearFilters()");
+        context.execute("porcentajesDialogo.hide()");
     }
 
     public void cancelarCambioFormas() {
+        RequestContext context = RequestContext.getCurrentInstance();
         filtradosListaForma = null;
         seleccionForma = null;
         aceptar = true;
@@ -978,9 +1015,13 @@ public class ControlAusentismos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        context.reset("formularioDialogos:LOVFormas:globalFilter");
+        context.execute("LOVFormas.clearFilters()");
+        context.execute("formasDialogo.hide()");
     }
 
     public void cancelarCambioIBCS() {
+        RequestContext context = RequestContext.getCurrentInstance();
         filtradosListaIBCS = null;
         seleccionIBCS = null;
         aceptar = true;
@@ -989,9 +1030,13 @@ public class ControlAusentismos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        context.reset("formularioDialogos:LOVIbcs:globalFilter");
+        context.execute("LOVIbcs.clearFilters()");
+        context.execute("ibcsDialogo.hide()");
     }
 
     public void cancelarCambioEnfermedades() {
+        RequestContext context = RequestContext.getCurrentInstance();
         filtradoslistaEnfermeadadesProfesionales = null;
         seleccionEnfermeadadesProfesionales = null;
         aceptar = true;
@@ -1000,9 +1045,13 @@ public class ControlAusentismos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        context.reset("formularioDialogos:LOVEnfermedades:globalFilter");
+        context.execute("LOVEnfermedades.clearFilters()");
+        context.execute("enfermedadesDialogo.hide()");
     }
 
     public void cancelarCambioProrrogas() {
+        RequestContext context = RequestContext.getCurrentInstance();
         filtradoslistaProrrogas = null;
         seleccionProrrogas = null;
         aceptar = true;
@@ -1011,9 +1060,13 @@ public class ControlAusentismos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        context.reset("formularioDialogos:LOVProrrogas:globalFilter");
+        context.execute("LOVProrrogas.clearFilters()");
+        context.execute("prorrogasDialogo.hide()");
     }
 
     public void cancelarCambioAD() {
+        RequestContext context = RequestContext.getCurrentInstance();
         filtradoslistaAccidentes = null;
         seleccionAccidentes = null;
         aceptar = true;
@@ -1022,9 +1075,13 @@ public class ControlAusentismos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        context.reset("formularioDialogos:LOVAccidentes:globalFilter");
+        context.execute("LOVAccidentes.clearFilters()");
+        context.execute("accidentesDialogo.hide()");
     }
 
     public void cancelarCambioTerceros() {
+        RequestContext context = RequestContext.getCurrentInstance();
         filtradoslistaTerceros = null;
         seleccionTerceros = null;
         aceptar = true;
@@ -1033,6 +1090,9 @@ public class ControlAusentismos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        context.reset("formularioDialogos:LOVTerceros:globalFilter");
+        context.execute("LOVTerceros.clearFilters()");
+        context.execute("tercerosDialogo.hide()");
     }
 
     //RASTROS 

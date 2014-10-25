@@ -126,8 +126,15 @@ public class ControlBetaCentrosCostos implements Serializable {
     }
 
     private String paginaAnterior;
-public void recibirPagina(String pagina){paginaAnterior = pagina;}
-public String redirigirPaginaAnterior(){return paginaAnterior;}
+
+    public void recibirPagina(String pagina) {
+        paginaAnterior = pagina;
+    }
+
+    public String redirigirPaginaAnterior() {
+        return paginaAnterior;
+    }
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A CONTROLBETACENTROSCOSTOS.eventoFiltrar \n");
@@ -565,6 +572,10 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
             index = -1;
             tipoActualizacion = -1;
             permitirIndex = true;
+
+            context.reset("form:lovTipoCentrosCostos:globalFilter");
+            context.execute("lovTipoCentrosCostos.clearFilters()");
+            context.execute("tiposCentrosCostosDialogo.hide()");
         } catch (Exception e) {
             System.out.println("ERROR BETA .actualizarCentroCosto ERROR============" + e.getMessage());
         }
@@ -577,7 +588,10 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
             aceptar = true;
             index = -1;
             tipoActualizacion = -1;
-
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.reset("form:lovTipoCentrosCostos:globalFilter");
+            context.execute("lovTipoCentrosCostos.clearFilters()");
+            context.execute("tiposCentrosCostosDialogo.hide()");
         } catch (Exception e) {
             System.out.println("ERROR CONTROLBETACENTROSCOSTOS.cancelarCambioCentroCosto ERROR=====" + e.getMessage());
         }
@@ -634,6 +648,11 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
                 context.update("form:informacionRegistro");
                 context.update("form:BUSCARCENTROCOSTO");
                 context.update("form:MOSTRARTODOS");
+
+                context.reset("form:lovCentrosCostos:globalFilter");
+                context.execute("lovCentrosCostos.clearFilters()");
+                context.execute("buscarCentrosCostosDialogo.hide()");
+
             } /*else {
              System.err.println("listCentrosCostosPorEmpresa tamaño " + listCentrosCostosPorEmpresa.size());
              System.err.println("listCentrosCostosPorEmpresa nombre " + listCentrosCostosPorEmpresa.get(0).getNombre());
@@ -665,7 +684,9 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
             index = -1;
             tipoActualizacion = -1;
             context.update("form:aceptarNCC");
-
+            context.reset("form:lovCentrosCostos:globalFilter");
+            context.execute("lovCentrosCostos.clearFilters()");
+            context.execute("buscarCentrosCostosDialogo.hide()");
         } catch (Exception e) {
             System.out.println("ERROR CONTROLBETACENTROSCOSTOS.cancelarSeleccionVigencia ERROR====" + e.getMessage());
         }
@@ -1705,13 +1726,13 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
             filtradoListaEmpresas = null;
             listCentrosCostosPorEmpresa = null;
             aceptar = true;
-            context.execute("EmpresasDialogo.hide()");
             context.reset("formularioDialogos:lovEmpresas:globalFilter");
-            context.update("formularioDialogos:lovEmpresas");
+            context.execute("lovEmpresas.clearFilters()");
+            context.execute("EmpresasDialogo.hide()");
+            //context.update("formularioDialogos:lovEmpresas");
             backUpEmpresaActual = empresaSeleccionada;
             banderaModificacionEmpresa = 0;
             context.update("form:datosCentrosCostos");
-            context.update("formularioDialogos:lovCentrosCostos");
 
         } else {
             banderaModificacionEmpresa = 0;
@@ -1720,9 +1741,13 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
     }
 
     public void cancelarCambioEmpresa() {
+        RequestContext context = RequestContext.getCurrentInstance();
         filtradoListaEmpresas = null;
         banderaModificacionEmpresa = 0;
         index = -1;
+        context.reset("formularioDialogos:lovEmpresas:globalFilter");
+        context.execute("lovEmpresas.clearFilters()");
+        context.execute("EmpresasDialogo.hide()");
     }
 //-----------------------------------------------------------------------------**
 

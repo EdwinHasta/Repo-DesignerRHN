@@ -269,7 +269,7 @@
                                       filteredValue="#{controlParametro.filtradoLovEstructuras}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{estructura.secuencia}" selection="#{controlParametro.seleccionEstructura}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlParametro.activarAceptar()}" update=":formularioDialogos:aceptarE"/> 
-                            <p:ajax event="rowDblselect" listener="#{controlParametro.actualizarEstructura()}" process="@this" onstart="lOVEstructuras.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlParametro.actualizarEstructura()}" process="@this" />
 
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarE']}"  style="position: absolute; left: 27px; top: 15px"/>  
@@ -288,12 +288,10 @@
                         
                         <h:outputText id="infoRegistroEstructura" value="#{controlParametro.infoRegistroEstructura}" style="position: absolute; left: 20px; top: 405px; font-weight: bold"/>
                         
-                        <p:commandButton id="aceptarE" value="#{msg['aceptar']}" disabled="#{controlParametro.aceptar}" style="position: absolute; top: 390px; left: 555px; " onclick="lOVEstructuras.clearFilters();" actionListener="#{controlParametro.actualizarEstructura()}" update="aceptarE" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":formularioDialogos:lOVEstructuras:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasE" value="#{msg['atras']}" style="position: absolute; top: 390px; left: 644px; " onclick="estructurasDialogo.hide(), lOVEstructuras.clearFilters();" actionListener="#{controlParametro.cancelarCambioEstructura()}" update="lOVEstructuras" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":formularioDialogos:lOVEstructuras:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarE" value="#{msg['aceptar']}" disabled="#{controlParametro.aceptar}" style="position: absolute; top: 390px; left: 555px; " actionListener="#{controlParametro.actualizarEstructura()}" process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasE" value="#{msg['atras']}" style="position: absolute; top: 390px; left: 644px; " actionListener="#{controlParametro.cancelarCambioEstructura()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                        
                     </p:dialog>
 
                     <p:dialog header="#{msg['tipostrabajadoresTT']}" widgetVar="TipoTrabajadorDialogo" draggable="false" resizable="false" closable="false" id="TipoTrabajadorDialogo"  
@@ -303,7 +301,7 @@
                                      filteredValue="#{controlParametro.filtradoLovTiposTrabajadores}" emptyMessage="#{msg['lovvacio']}">              
 
                             <p:ajax event="rowSelect" listener="#{controlParametro.activarAceptar()}" update=":formularioDialogos:aceptarTT"/>
-                            <p:ajax event="rowDblselect" listener="#{controlParametro.actualizarTipoTrabajador()}" process="@this" onstart="lovTipoTrabajador.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlParametro.actualizarTipoTrabajador()}" process="@this" />
 
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTT']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -325,12 +323,10 @@
                         
                         <h:outputText id="infoRegistroTipoTrabajador" value="#{controlParametro.infoRegistroTipoTrabajador}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton id="aceptarTT" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlParametro.aceptar}" onclick="ovTipoTrabajador.clearFilters();" actionListener="#{controlParametro.actualizarTipoTrabajador()}" update="aceptarTT" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":formularioDialogos:lovTipoTrabajador:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasTT" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="TipoTrabajadorDialogo.hide(), lovTipoTrabajador.clearFilters();" actionListener="#{controlParametro.cancelarCambioTipoTrabajador()}" update="lovTipoTrabajador" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":formularioDialogos:lovTipoTrabajador:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarTT" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlParametro.aceptar}" actionListener="#{controlParametro.actualizarTipoTrabajador()}" process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasTT" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlParametro.cancelarCambioTipoTrabajador()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                        
                     </p:dialog> 
 
                     <p:dialog header="#{msg['procesosP']}" widgetVar="ProcesosDialogo" draggable="false" resizable="false" closable="false" id="ProcesosDialogo"  
@@ -339,7 +335,7 @@
                                      selection="#{controlParametro.seleccionProcesos}" selectionMode="single" widgetVar="lovProcesos" scrollable="true" scrollWidth="415" scrollHeight="255"
                                      filteredValue="#{controlParametro.filtradoLovProcesos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlParametro.activarAceptar()}" update=":formularioDialogos:aceptarP"/>
-                            <p:ajax event="rowDblselect" listener="#{controlParametro.actualizarProceso()}" process="@this" onstart="lovProcesos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlParametro.actualizarProceso()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovProcesos.filter();" style="width:100px; position: relative; left: -10px;" />  
@@ -354,12 +350,10 @@
                         
                         <h:outputText id="infoRegistroProceso" value="#{controlParametro.infoRegistroProceso}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton id="aceptarP" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlParametro.aceptar}" actionListener="#{controlParametro.actualizarProceso()}" update="aceptarP" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":formularioDialogos:lovProcesos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasP" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="ProcesosDialogo.hide(), lovProcesos.clearFilters();" actionListener="#{controlParametro.cancelarCambioProceso()}" update="lovProcesos" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":formularioDialogos:lovProcesos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarP" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlParametro.aceptar}" actionListener="#{controlParametro.actualizarProceso()}" process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasP" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlParametro.cancelarCambioProceso()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                        
                     </p:dialog>
 
                     <p:dialog id="buscarEmpleadoDialogo" header="#{msg['empleadosEM']}" widgetVar="buscarEmpleadoDialogo"  resizable="false" draggable="false" modal="true"  width="740"  closable="false" >  
@@ -369,7 +363,7 @@
                                       rowKey="#{empleado.secuencia}" selection="#{controlParametro.seleccionEmpleado}" selectionMode="single" >
 
                             <p:ajax event="rowSelect" listener="#{controlParametro.activarAceptar()}" update=":formularioDialogos:aceptarEm"/>
-                            <p:ajax event="rowDblselect" listener="#{controlParametro.seleccionarEmpleado()}" process="@this" onstart="lovEmpleados.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlParametro.seleccionarEmpleado()}" process="@this" />
 
                             <f:facet name="header" >  
                                 <h:outputText value="#{msg['buscarEM']}"  style="position: absolute; left: 22px; top: 18px;"/>  
@@ -396,12 +390,9 @@
 
                         <h:outputText id="infoRegistroEmpleado" value="#{controlParametro.infoRegistroEmpleado}" style="position: absolute; left: 20px; top: 325px; font-weight: bold"/>
                         
-                        <p:commandButton id="aceptarEm" style="position: relative; left: 550px" value="#{msg['aceptar']}" disabled="#{controlParametro.aceptar}" actionListener="#{controlParametro.seleccionarEmpleado()}" update="aceptarEm" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":formularioDialogos:lovEmpleados:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atras" style="position: relative; left: 550px" value="#{msg['atras']}" onclick="buscarEmpleadoDialogo.hide(), lovEmpleados.clearFilters();" actionListener="#{controlParametro.cancelarSeleccionEmpleado()}" update="lovEmpleados, aceptarEm" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":formularioDialogos:lovEmpleados:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarEm" style="position: relative; left: 550px" value="#{msg['aceptar']}" disabled="#{controlParametro.aceptar}" actionListener="#{controlParametro.seleccionarEmpleado()}" process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atras" style="position: relative; left: 550px" value="#{msg['atras']}"  actionListener="#{controlParametro.cancelarSeleccionEmpleado()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                     </p:dialog>
 
                     <p:dialog id="editarFechaDesde" header="#{msg['editarFechaDesde']}" widgetVar="editarFechaDesde" resizable="false" closable="true" draggable="false" modal="true" height="55" width="240" style=" padding: 0px">  

@@ -412,9 +412,10 @@ public class ControlPerDirecciones implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("ciudadesDialogo.hide()");
         context.reset("formularioDialogos:LOVCiudades:globalFilter");
-        context.update("formularioDialogos:LOVCiudades");
+        context.execute("LOVCiudades.clearFilters()");
+        context.execute("ciudadesDialogo.hide()");
+        //context.update("formularioDialogos:LOVCiudades");
     }
 
     public void activarCtrlF11() {
@@ -698,6 +699,10 @@ public class ControlPerDirecciones implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVCiudades:globalFilter");
+        context.execute("LOVCiudades.clearFilters()");
+        context.execute("ciudadesDialogo.hide()");
     }
 
     public void cancelarModificacion() {

@@ -1123,9 +1123,10 @@ public class ControlPapeles implements Serializable {
             filtradoListaEmpresas = null;
             listPapelesPorEmpresa = null;
             aceptar = true;
-            context.execute("EmpresasDialogo.hide()");
             context.reset("formularioDialogos:lovEmpresas:globalFilter");
-            context.update("formularioDialogos:lovEmpresas");
+            context.execute("lovEmpresas.clearFilters()");
+            context.execute("EmpresasDialogo.hide()");
+            //context.update("formularioDialogos:lovEmpresas");
             backUpEmpresaActual = empresaSeleccionada;
             banderaModificacionEmpresa = 0;
             context.update("form:datosPapeles");
@@ -1140,7 +1141,11 @@ public class ControlPapeles implements Serializable {
     public void cancelarCambioEmpresa() {
         filtradoListaEmpresas = null;
         banderaModificacionEmpresa = 0;
+        RequestContext context = RequestContext.getCurrentInstance();
         index = -1;
+        context.reset("formularioDialogos:lovEmpresas:globalFilter");
+        context.execute("lovEmpresas.clearFilters()");
+        context.execute("EmpresasDialogo.hide()");
     }
 //-----------------------------------------------------------------------------**
 

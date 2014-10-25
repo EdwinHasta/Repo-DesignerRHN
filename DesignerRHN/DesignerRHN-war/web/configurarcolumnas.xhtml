@@ -119,7 +119,7 @@
                                          selection="#{controlConfigurarColumnas.columnaEscenarioSeleccionada}" selectionMode="single" widgetVar="lovColumnaEscenario" scrollable="true" scrollWidth="448" scrollHeight="250"
                                          filteredValue="#{controlConfigurarColumnas.filtrarLovColumnasEscenarios}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlConfigurarColumnas.activarAceptar()}" update=":form:aceptarCE"/>
-                                <p:ajax event="rowDblselect" listener="#{controlConfigurarColumnas.agregarColumnaEscenario()}"  process="@this" onstart="lovColumnaEscenario.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlConfigurarColumnas.agregarColumnaEscenario()}"  process="@this"  />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarCE']}" style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovColumnaEscenario.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -137,12 +137,11 @@
                                     <h:outputText value="#{columna.descripcion}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarCE" icon="ui-icon-check"  style="position: relative; left: 290px" value="#{msg['aceptar']}" disabled="#{controlConfigurarColumnas.aceptar}" onclick="ColumnaEscenarioDialogo.hide(), lovColumnaEscenario.clearFilters();" actionListener="#{controlConfigurarColumnas.agregarColumnaEscenario()}" update="lovColumnaEscenario, aceptarCE, datosConfigurarColumna" process="@this">
-                                <p:resetInput target=":form:lovColumnaEscenario:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasCE" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 290px" value="#{msg['atras']}" onclick="ColumnaEscenarioDialogo.hide(), lovColumnaEscenario.clearFilters();" actionListener="#{controlConfigurarColumnas.cancelarCambioColumnaEscenario()}" update="lovColumnaEscenario" process="@this">
-                                <p:resetInput target=":form:lovColumnaEscenario:globalFilter"/>
-                            </p:commandButton>
+                            
+                            <p:commandButton id="aceptarCE" icon="ui-icon-check"  style="position: relative; left: 290px" value="#{msg['aceptar']}" disabled="#{controlConfigurarColumnas.aceptar}"  actionListener="#{controlConfigurarColumnas.agregarColumnaEscenario()}" process="@this"/>
+                            
+                            <p:commandButton id="atrasCE" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 290px" value="#{msg['atras']}"  actionListener="#{controlConfigurarColumnas.cancelarCambioColumnaEscenario()}"  process="@this"/>
+                            
                         </p:dialog> 
 
                         <p:commandButton style="position: absolute; left: 775px; top: 470px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlBusquedaAvanzada.obtenerListaColumnasEscenarios(controlConfigurarColumnas.listaColumnasEscenarios)}" action="busquedaAvanzada" process="@this" />

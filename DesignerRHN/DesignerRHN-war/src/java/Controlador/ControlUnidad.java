@@ -546,9 +546,10 @@ public class ControlUnidad implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("tiposUnidadesDialogo.hide()");
         context.reset("formularioDialogos:LOVTiposUnidades:globalFilter");
-        context.update("formularioDialogos:LOVTiposUnidades");
+        context.execute("LOVTiposUnidades.clearFilters()");
+        context.execute("tiposUnidadesDialogo.hide()");
+        //context.update("formularioDialogos:LOVTiposUnidades");
     }
 
     public void cancelarCambioTiposUnidades() {

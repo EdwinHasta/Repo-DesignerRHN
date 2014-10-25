@@ -274,7 +274,7 @@
                                      selection="#{controlSucursalesPila.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresas" scrollable="true" scrollWidth="350" scrollHeight="250"
                                      filteredValue="#{controlSucursalesPila.filtradoListaEmpresas}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                             <p:ajax event="rowSelect" listener="#{controlSucursalesPila.activarAceptar()}" update=":formularioDialogos:aceptarE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlSucursalesPila.cambiarEmpresa()}" process="@this" onstart="lovEmpresas.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlSucursalesPila.cambiarEmpresa()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="Empresas:"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpresas.filter();" style="width:100px; position: relative; left: 10px;" />  
@@ -295,12 +295,9 @@
                         <h:outputText id="infoRegistroEmpresas" value="#{controlSucursalesPila.infoRegistroEmpresas}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
 
 
-                        <p:commandButton id="aceptarE" icon="ui-icon-check" style="position: relative; left: 170px" value="Aceptar" disabled="#{controlSucursalesPila.aceptar}" actionListener="#{controlSucursalesPila.cambiarEmpresa()}" update="aceptarE" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasE" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 170px" value="Cancelar" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlSucursalesPila.cancelarCambioEmpresa()}" update="lovEmpresas" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarE" icon="ui-icon-check" style="position: relative; left: 170px" value="Aceptar" disabled="#{controlSucursalesPila.aceptar}" actionListener="#{controlSucursalesPila.cambiarEmpresa()}"  process="@this"/>
+                        
+                        <p:commandButton id="atrasE" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 170px" value="Cancelar" actionListener="#{controlSucursalesPila.cancelarCambioEmpresa()}" process="@this"/>
                     </p:dialog>
 
 

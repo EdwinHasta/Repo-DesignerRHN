@@ -470,7 +470,7 @@
                                          selection="#{controlInterfaseContableSapBOVCA.procesoSeleccionado}" selectionMode="single" widgetVar="lovProceso" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlInterfaseContableSapBOVCA.filtrarLovProcesos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlInterfaseContableSapBOVCA.activarAceptar()}" update=":form:aceptarP"/>
-                                <p:ajax event="rowDblselect" listener="#{controlInterfaseContableSapBOVCA.actualizarProceso()}" process="@this" onstart="lovProceso.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlInterfaseContableSapBOVCA.actualizarProceso()}" process="@this" />
 
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarP']}" style="position: absolute; left: 27px; top: 14px"/>  
@@ -492,12 +492,10 @@
 
                             <h:outputText id="infoRegistroProceso" value="#{controlInterfaseContableSapBOVCA.infoRegistroProceso}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarP" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlInterfaseContableSapBOVCA.aceptar}" onclick="ProcesoDialogo.hide(), lovProceso.clearFilters();" actionListener="#{controlInterfaseContableSapBOVCA.actualizarProceso()}" update="lovProceso, aceptarP" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovProceso:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasP" style="position: relative; left: 265px" value="#{msg['atras']}" onclick="ProcesoDialogo.hide(), lovProceso.clearFilters();" actionListener="#{controlInterfaseContableSapBOVCA.cancelarProceso()}" update="lovProceso" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovProceso:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarP" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlInterfaseContableSapBOVCA.aceptar}" actionListener="#{controlInterfaseContableSapBOVCA.actualizarProceso()}" process="@this" icon="ui-icon-check"/>
+                            
+                            <p:commandButton id="atrasP" style="position: relative; left: 265px" value="#{msg['atras']}" actionListener="#{controlInterfaseContableSapBOVCA.cancelarProceso()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                            
                         </p:dialog> 
 
                         <p:dialog header="#{msg['empresaM']}" widgetVar="EmpresaDialogo" draggable="false" resizable="false" closable="false" id="EmpresaDialogo"  
@@ -506,7 +504,7 @@
                                          selection="#{controlInterfaseContableSapBOVCA.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresa" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlInterfaseContableSapBOVCA.filtrarLovEmpresas}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlInterfaseContableSapBOVCA.activarAceptar()}" update=":form:aceptarE"/>
-                                <p:ajax event="rowDblselect" listener="#{controlInterfaseContableSapBOVCA.actualizarEmpresa()}" process="@this" onstart="lovEmpresa.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlInterfaseContableSapBOVCA.actualizarEmpresa()}" process="@this" />
 
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarE']}" style="position: absolute; left: 27px; top: 14px"/>  
@@ -528,12 +526,10 @@
 
                             <h:outputText id="infoRegistroEmpresa" value="#{controlInterfaseContableSapBOVCA.infoRegistroEmpresa}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarE" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlInterfaseContableSapBOVCA.aceptar}" onclick="EmpresaDialogo.hide(), lovEmpresa.clearFilters();" actionListener="#{controlInterfaseContableSapBOVCA.actualizarEmpresa()}" update="lovEmpresa, aceptarE" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovEmpresa:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasE" style="position: relative; left: 265px" value="#{msg['atras']}" onclick="EmpresaDialogo.hide(), lovEmpresa.clearFilters();" actionListener="#{controlInterfaseContableSapBOVCA.cancelarEmpresa()}" update="lovEmpresa" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovEmpresa:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarE" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlInterfaseContableSapBOVCA.aceptar}" actionListener="#{controlInterfaseContableSapBOVCA.actualizarEmpresa()}" process="@this" icon="ui-icon-check"/>
+                            
+                            <p:commandButton id="atrasE" style="position: relative; left: 265px" value="#{msg['atras']}" actionListener="#{controlInterfaseContableSapBOVCA.cancelarEmpresa()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                            
                         </p:dialog> 
 
                         <p:commandButton style="position: absolute; left: 15px; top: 482px;" id="PLANO" value="#{msg['enviarSAPBO']}" disabled="#{controlInterfaseContableTotal.activarDeshacer}" actionListener="#{controlInterfaseContableTotal.actionBtnGenerarPlano()}" process="@this" />

@@ -523,9 +523,10 @@ public class ControlPersonaEducacion implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("tiposEducacionesDialogo.hide()");
         context.reset("formularioDialogos:LOVTiposEducaciones:globalFilter");
-        context.update("formularioDialogos:LOVTiposEducaciones");
+        context.execute("LOVTiposEducaciones.clearFilters()");
+        context.execute("tiposEducacionesDialogo.hide()");
+        //context.update("formularioDialogos:LOVTiposEducaciones");
     }
 
     public void actualizarProfesiones() {
@@ -571,9 +572,10 @@ public class ControlPersonaEducacion implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("profesionesDialogo.hide()");
         context.reset("formularioDialogos:LOVProfesiones:globalFilter");
-        context.update("formularioDialogos:LOVProfesiones");
+        context.execute("LOVProfesiones.clearFilters()");
+        context.execute("profesionesDialogo.hide()");
+        //context.update("formularioDialogos:LOVProfesiones");
     }
 
     public void actualizarInstituciones() {
@@ -619,9 +621,10 @@ public class ControlPersonaEducacion implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("institucionesDialogo.hide()");
         context.reset("formularioDialogos:LOVInstituciones:globalFilter");
-        context.update("formularioDialogos:LOVInstituciones");
+        context.execute("LOVInstituciones.clearFilters()");
+        context.execute("institucionesDialogo.hide()");
+        //context.update("formularioDialogos:LOVInstituciones");
     }
 
     public void actualizarAdiestramientoF() {
@@ -667,9 +670,10 @@ public class ControlPersonaEducacion implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("adiestramientosFDialogo.hide()");
         context.reset("formularioDialogos:LOVAdiestramientosF:globalFilter");
-        context.update("formularioDialogos:LOVAdiestramientosF");
+        context.execute("LOVAdiestramientosF.clearFilters()");
+        context.execute("adiestramientosFDialogo.hide()");
+        //context.update("formularioDialogos:LOVAdiestramientosF");
     }
 
     public void cancelarCambioTiposEducaciones() {
@@ -681,6 +685,10 @@ public class ControlPersonaEducacion implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVTiposEducaciones:globalFilter");
+        context.execute("LOVTiposEducaciones.clearFilters()");
+        context.execute("tiposEducacionesDialogo.hide()");
     }
 
     public void cancelarCambioProfesiones() {
@@ -692,6 +700,10 @@ public class ControlPersonaEducacion implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVProfesiones:globalFilter");
+        context.execute("LOVProfesiones.clearFilters()");
+        context.execute("profesionesDialogo.hide()");
     }
 
     public void cancelarCambioInstituciones() {
@@ -703,6 +715,10 @@ public class ControlPersonaEducacion implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVInstituciones:globalFilter");
+        context.execute("LOVInstituciones.clearFilters()");
+        context.execute("institucionesDialogo.hide()");
     }
 
     public void cancelarCambioAdiestramientoF() {
@@ -714,6 +730,10 @@ public class ControlPersonaEducacion implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVAdiestramientosF:globalFilter");
+        context.execute("LOVAdiestramientosF.clearFilters()");
+        context.execute("adiestramientosFDialogo.hide()");
     }
 
     public void activarAceptar() {
@@ -2090,9 +2110,10 @@ public class ControlPersonaEducacion implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("cursosDialogo.hide()");
         context.reset("formularioDialogos:LOVCursos:globalFilter");
-        context.update("formularioDialogos:LOVCursos");
+        context.execute("LOVCursos.clearFilters()");
+        context.execute("cursosDialogo.hide()");
+        //context.update("formularioDialogos:LOVCursos");
     }
 
     public void actualizarInstitucionesNF() {
@@ -2138,9 +2159,10 @@ public class ControlPersonaEducacion implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("institucionesNFDialogo.hide()");
         context.reset("formularioDialogos:LOVInstitucionesNF:globalFilter");
-        context.update("formularioDialogos:LOVInstitucionesNF");
+        context.execute("LOVInstitucionesNF.clearFilters()");
+        context.execute("institucionesNFDialogo.hide()");
+        //context.update("formularioDialogos:LOVInstitucionesNF");
     }
 
     public void actualizarAdiestramientoNF() {
@@ -2186,9 +2208,10 @@ public class ControlPersonaEducacion implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("adiestramientosNFDialogo.hide()");
         context.reset("formularioDialogos:LOVAdiestramientosNF:globalFilter");
-        context.update("formularioDialogos:LOVAdiestramientosNF");
+        context.execute("LOVAdiestramientosNF.clearFilters()");
+        context.execute("adiestramientosNFDialogo.hide()");
+        //context.update("formularioDialogos:LOVAdiestramientosNF");
     }
 
     public void cancelarCambioInstitucionesNF() {
@@ -2200,6 +2223,10 @@ public class ControlPersonaEducacion implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVInstitucionesNF:globalFilter");
+        context.execute("LOVInstitucionesNF.clearFilters()");
+        context.execute("institucionesNFDialogo.hide()");
     }
 
     public void cancelarCambioCursoNF() {
@@ -2211,6 +2238,10 @@ public class ControlPersonaEducacion implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVCursos:globalFilter");
+        context.execute("LOVCursos.clearFilters()");
+        context.execute("cursosDialogo.hide()");
     }
 
     public void cancelarCambioAdiestramientoNF() {
@@ -2222,6 +2253,10 @@ public class ControlPersonaEducacion implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVAdiestramientosNF:globalFilter");
+        context.execute("LOVAdiestramientosNF.clearFilters()");
+        context.execute("adiestramientosNFDialogo.hide()");
     }
 
     public void autocompletarNuevoyDuplicadoNF(String confirmarCambio, String valorConfirmar, int tipoNuevo) {

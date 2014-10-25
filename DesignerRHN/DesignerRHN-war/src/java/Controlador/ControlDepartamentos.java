@@ -330,9 +330,9 @@ public class ControlDepartamentos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("sucursalesDialogo.hide()");
         context.reset("form:lovTiposFamiliares:globalFilter");
-        context.update("form:lovTiposFamiliares");
+        context.execute("lovTiposFamiliares.clearFilters()");
+        context.execute("sucursalesDialogo.hide()");
     }
 
     public void cancelarCambioPais() {
@@ -343,6 +343,10 @@ public class ControlDepartamentos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTiposFamiliares:globalFilter");
+        context.execute("lovTiposFamiliares.clearFilters()");
+        context.execute("sucursalesDialogo.hide()");
     }
 
     public void modificarDepartamentos(int indice, String confirmarCambio, String valorConfirmar) {

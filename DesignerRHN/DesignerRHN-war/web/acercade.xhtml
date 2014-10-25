@@ -126,7 +126,7 @@
                                      selection="#{controlAcercaDe.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresas" scrollable="true" scrollWidth="330" scrollHeight="250"
                                      filteredValue="#{controlAcercaDe.filtradoListaEmpresas}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                             <p:ajax event="rowSelect" listener="#{controlAcercaDe.activarAceptar()}" update=":formularioDialogos:aceptarE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlAcercaDe.cambiarEmpresa()}" process="@this" onstart="lovEmpresas.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlAcercaDe.cambiarEmpresa()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Empresa"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpresas.filter();" style="width:100px; position: relative; left: 11px;" />  
@@ -144,12 +144,9 @@
                                 <h:outputText  value="#{empresa.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarE" style="position: relative; left: 180px" value="Aceptar" disabled="#{controlAcercaDe.aceptar}" actionListener="#{controlAcercaDe.cambiarEmpresa()}" update="aceptarE" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasE" style="position: relative; left: 180px" value="Cancelar" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlAcercaDe.cancelarCambioEmpresa()}" update="lovEmpresas" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarE" style="position: relative; left: 180px" value="Aceptar" disabled="#{controlAcercaDe.aceptar}" actionListener="#{controlAcercaDe.cambiarEmpresa()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasE" style="position: relative; left: 180px" value="Cancelar"  actionListener="#{controlAcercaDe.cancelarCambioEmpresa()}"  process="@this"/>
                     </p:dialog>
                 </h:form>
                 <h:form id="formExportar">

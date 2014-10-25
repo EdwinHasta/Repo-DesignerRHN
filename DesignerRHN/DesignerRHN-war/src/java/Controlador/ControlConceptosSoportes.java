@@ -455,9 +455,10 @@ public class ControlConceptosSoportes implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         cambioConceptosSoportes = true;
-        context.execute("personasDialogo.hide()");
         context.reset("form:lovConceptos:globalFilter");
-        context.update("form:lovConceptos");
+        context.execute("lovConceptos.clearFilters()");
+        context.execute("personasDialogo.hide()");
+        //context.update("form:lovConceptos");
     }
 
     public void actualizarOperandos() {
@@ -512,9 +513,10 @@ public class ControlConceptosSoportes implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         cambioConceptosSoportes = true;
-        context.execute("cargosDialogo.hide()");
         context.reset("form:lovOperandos:globalFilter");
-        context.update("form:lovOperandos");
+        context.execute("lovOperandos.clearFilters()");
+        context.execute("cargosDialogo.hide()");
+        //context.update("form:lovOperandos");
         //context.update("form:datosHvEntrevista");
     }
 
@@ -530,6 +532,10 @@ public class ControlConceptosSoportes implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovConceptos:globalFilter");
+        context.execute("lovConceptos.clearFilters()");
+        context.execute("personasDialogo.hide()");
     }
 
     public void cancelarCambioOperandos() {
@@ -540,6 +546,10 @@ public class ControlConceptosSoportes implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovOperandos:globalFilter");
+        context.execute("lovOperandos.clearFilters()");
+        context.execute("cargosDialogo.hide()");
     }
 
     public void modificarConceptosSoportes(int indice, String confirmarCambio, String valorConfirmar) {

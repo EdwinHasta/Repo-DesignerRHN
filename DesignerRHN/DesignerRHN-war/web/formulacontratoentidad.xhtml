@@ -113,7 +113,7 @@
                                          selection="#{controlFormulasContratosEntidades.tipoentidadSeleccionado}" selectionMode="single" widgetVar="lovFormulas" scrollable="true" scrollWidth="450" scrollHeight="280"
                                          filteredValue="#{controlFormulasContratosEntidades.filtradoTiposEntidades}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlFormulasContratosEntidades.activarAceptar()}" update=":form:aceptarPer"/>
-                                <p:ajax event="rowDblselect" listener="#{controlFormulasContratosEntidades.actualizarTiposEntidades() }" process="@this" onstart="lovFormulas.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlFormulasContratosEntidades.actualizarTiposEntidades() }" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarTipoEntidad']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovFormulas.filter();" style="width:150px; position: relative; left: 50px;" />  
@@ -135,13 +135,10 @@
 
 
                             <h:outputText id="infoRegistroLOVTipoEntidad" value="#{controlFormulasContratosEntidades.infoRegistroLOVTipoEntidad}" style="position: absolute; left: 15px;  top: 380px; font-weight: bold"/>
-                            <p:commandButton id="aceptarPer" icon="ui-icon-check" style="position: relative;left: 285px" value="#{msg['aceptar']}"  disabled="#{controlFormulasContratosEntidades.aceptar}" onclick="personasDialogo.hide(), lovFormulas.clearFilters();"  actionListener="#{controlFormulasContratosEntidades.actualizarTiposEntidades()}" update="lovFormulas, aceptarPer" process="@this">
-                                <p:resetInput target=":form:lovFormulas:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasPer" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 285px" value="#{msg['atras']}"  actionListener="#{controlFormulasContratosEntidades.cancelarCambioTiposEntidades()}" onclick="personasDialogo.hide();
-                                    lovFormulas.clearFilters();" update="lovFormulas" process="@this">
-                                <p:resetInput target=":form:lovFormulas:globalFilter"/>
-                            </p:commandButton>
+                            
+                            <p:commandButton id="aceptarPer" icon="ui-icon-check" style="position: relative;left: 285px" value="#{msg['aceptar']}"  disabled="#{controlFormulasContratosEntidades.aceptar}"   actionListener="#{controlFormulasContratosEntidades.actualizarTiposEntidades()}" process="@this"/>
+                            
+                            <p:commandButton id="atrasPer" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 285px" value="#{msg['atras']}"  actionListener="#{controlFormulasContratosEntidades.cancelarCambioTiposEntidades()}" process="@this"/>
                         </p:dialog>
 
 

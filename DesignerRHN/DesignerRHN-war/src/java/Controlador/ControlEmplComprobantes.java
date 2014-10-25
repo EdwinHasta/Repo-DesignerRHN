@@ -210,8 +210,7 @@ public class ControlEmplComprobantes implements Serializable {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
-    } 
-    
+    }
 
     public void recibirEmpleado(BigInteger sec) {
         subtotalPago = new BigDecimal(0);
@@ -267,7 +266,7 @@ public class ControlEmplComprobantes implements Serializable {
             }
         }
     }
-    
+
     public void posicionComprobante() {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> map = context.getExternalContext().getRequestParameterMap();
@@ -1140,10 +1139,12 @@ public class ControlEmplComprobantes implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         tipoTabla = -1;
-        context.update("formularioDialogos:ProcesosDialogo");
-        context.update("formularioDialogos:lovProcesos");
-        context.update("formularioDialogos:aceptarP");
+        /*
+         context.update("formularioDialogos:ProcesosDialogo");
+         context.update("formularioDialogos:lovProcesos");
+         context.update("formularioDialogos:aceptarP");*/
         context.reset("formularioDialogos:lovProcesos:globalFilter");
+        context.execute("lovProcesos.clearFilters()");
         context.execute("ProcesosDialogo.hide()");
     }
 
@@ -1156,6 +1157,10 @@ public class ControlEmplComprobantes implements Serializable {
         tipoActualizacion = -1;
         permitirIndex = true;
         tipoTabla = -1;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:lovProcesos:globalFilter");
+        context.execute("lovProcesos.clearFilters()");
+        context.execute("ProcesosDialogo.hide()");
     }
 
     //ACTUALIZAR TERCERO
@@ -1217,10 +1222,11 @@ public class ControlEmplComprobantes implements Serializable {
         secRegistro = null;
         cualCelda = -1;
         tipoTabla = -1;
-        context.update("formularioDialogos:TercerosDialogo");
-        context.update("formularioDialogos:lovTerceros");
-        context.update("formularioDialogos:aceptarT");
+        /*context.update("formularioDialogos:TercerosDialogo");
+         context.update("formularioDialogos:lovTerceros");
+         context.update("formularioDialogos:aceptarT");*/
         context.reset("formularioDialogos:lovTerceros:globalFilter");
+        context.execute("lovTerceros.clearFilters()");
         context.execute("TercerosDialogo.hide()");
     }
 
@@ -1233,6 +1239,10 @@ public class ControlEmplComprobantes implements Serializable {
         secRegistro = null;
         permitirIndex = true;
         tipoTabla = -1;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:lovTerceros:globalFilter");
+        context.execute("lovTerceros.clearFilters()");
+        context.execute("TercerosDialogo.hide()");
     }
 
     public void actualizarCuentaDebito() {
@@ -1293,10 +1303,12 @@ public class ControlEmplComprobantes implements Serializable {
         secRegistro = null;
         cualCelda = -1;
         tipoTabla = -1;
-        context.update("formularioDialogos:CuentaDebitoDialogo");
-        context.update("formularioDialogos:lovCuentaDebito");
-        context.update("formularioDialogos:aceptarCD");
+        /*
+         context.update("formularioDialogos:CuentaDebitoDialogo");
+         context.update("formularioDialogos:lovCuentaDebito");
+         context.update("formularioDialogos:aceptarCD");*/
         context.reset("formularioDialogos:lovCuentaDebito:globalFilter");
+        context.execute("lovCuentaDebito.clearFilters()");
         context.execute("CuentaDebitoDialogo.hide()");
     }
 
@@ -1309,6 +1321,10 @@ public class ControlEmplComprobantes implements Serializable {
         secRegistro = null;
         permitirIndex = true;
         tipoTabla = -1;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:lovCuentaDebito:globalFilter");
+        context.execute("lovCuentaDebito.clearFilters()");
+        context.execute("CuentaDebitoDialogo.hide()");
     }
 
     public void actualizarCuentaCredito() {
@@ -1369,10 +1385,12 @@ public class ControlEmplComprobantes implements Serializable {
         secRegistro = null;
         cualCelda = -1;
         tipoTabla = -1;
-        context.update("formularioDialogos:CuentaCreditoDialogo");
-        context.update("formularioDialogos:lovCuentaCredito");
-        context.update("formularioDialogos:aceptarCC");
+        /*
+         context.update("formularioDialogos:CuentaCreditoDialogo");
+         context.update("formularioDialogos:lovCuentaCredito");
+         context.update("formularioDialogos:aceptarCC");*/
         context.reset("formularioDialogos:lovCuentaCredito:globalFilter");
+        context.execute("lovCuentaCredito.clearFilters()");
         context.execute("CuentaCreditoDialogo.hide()");
     }
 
@@ -1385,6 +1403,10 @@ public class ControlEmplComprobantes implements Serializable {
         secRegistro = null;
         permitirIndex = true;
         tipoTabla = -1;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:lovCuentaCredito:globalFilter");
+        context.execute("lovCuentaCredito.clearFilters()");
+        context.execute("CuentaCreditoDialogo.hide()");
     }
 
     public void actualizarCentroCostoCredito() {
@@ -1445,10 +1467,12 @@ public class ControlEmplComprobantes implements Serializable {
         secRegistro = null;
         cualCelda = -1;
         tipoTabla = -1;
-        context.update("formularioDialogos:CentroCostoCreditoDialogo");
-        context.update("formularioDialogos:lovCentroCostoCredito");
-        context.update("formularioDialogos:aceptarCCC");
+        /*
+         context.update("formularioDialogos:CentroCostoCreditoDialogo");
+         context.update("formularioDialogos:lovCentroCostoCredito");
+         context.update("formularioDialogos:aceptarCCC");*/
         context.reset("formularioDialogos:lovCentroCostoCredito:globalFilter");
+        context.execute("lovCentroCostoCredito.clearFilters()");
         context.execute("CentroCostoCreditoDialogo.hide()");
     }
 
@@ -1461,6 +1485,10 @@ public class ControlEmplComprobantes implements Serializable {
         secRegistro = null;
         permitirIndex = true;
         tipoTabla = -1;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:lovCentroCostoCredito:globalFilter");
+        context.execute("lovCentroCostoCredito.clearFilters()");
+        context.execute("CentroCostoCreditoDialogo.hide()");
     }
 
     public void actualizarCentroCostoDebito() {
@@ -1521,10 +1549,13 @@ public class ControlEmplComprobantes implements Serializable {
         secRegistro = null;
         cualCelda = -1;
         tipoTabla = -1;
-        context.update("formularioDialogos:CentroCostoDebitoDialogo");
-        context.update("formularioDialogos:lovCentroCostoDebito");
-        context.update("formularioDialogos:aceptarCCD");
+        /*
+         context.update("formularioDialogos:CentroCostoDebitoDialogo");
+         context.update("formularioDialogos:lovCentroCostoDebito");
+         context.update("formularioDialogos:aceptarCCD");*/
+        
         context.reset("formularioDialogos:lovCentroCostoDebito:globalFilter");
+        context.execute("lovCentroCostoDebito.clearFilters()");
         context.execute("CentroCostoDebitoDialogo.hide()");
     }
 
@@ -1537,6 +1568,10 @@ public class ControlEmplComprobantes implements Serializable {
         secRegistro = null;
         permitirIndex = true;
         tipoTabla = -1;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:lovCentroCostoDebito:globalFilter");
+        context.execute("lovCentroCostoDebito.clearFilters()");
+        context.execute("CentroCostoDebitoDialogo.hide()");
     }
 
     //BORRAR VC

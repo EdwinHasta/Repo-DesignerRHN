@@ -1781,10 +1781,12 @@ public class ControlEmplMvr implements Serializable {
         indexMvrs = -1;
         secRegistroMvrs = null;
         tipoActualizacion = -1;
+        /*
         context.update("form:MotivoDialogo");
         context.update("form:lovMotivo");
-        context.update("form:aceptarM");
+        context.update("form:aceptarM");*/
         context.reset("form:lovMotivo:globalFilter");
+        context.execute("lovMotivo.clearFilters()");
         context.execute("MotivoDialogo.hide()");
     }
 
@@ -1799,6 +1801,10 @@ public class ControlEmplMvr implements Serializable {
         secRegistroMvrs = null;
         tipoActualizacion = -1;
         permitirIndexMvrs = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovMotivo:globalFilter");
+        context.execute("lovMotivo.clearFilters()");
+        context.execute("MotivoDialogo.hide()");
     }
 
     //Motivo Localizacion
@@ -1847,10 +1853,12 @@ public class ControlEmplMvr implements Serializable {
         indexOtrosCertificados = -1;
         secRegistroOtrosCertificados = null;
         tipoActualizacion = -1;
+        /*
         context.update("form:CertificadosDialogo");
         context.update("form:lovCertificado");
-        context.update("form:aceptarTC");
+        context.update("form:aceptarTC");*/
         context.reset("form:lovCertificado:globalFilter");
+        context.execute("lovCertificado.clearFilters()");
         context.execute("CertificadosDialogo.hide()");
     }
 
@@ -1865,6 +1873,10 @@ public class ControlEmplMvr implements Serializable {
         secRegistroOtrosCertificados = null;
         tipoActualizacion = -1;
         permitirIndexOtrosCertificados = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovCertificado:globalFilter");
+        context.execute("lovCertificado.clearFilters()");
+        context.execute("CertificadosDialogo.hide()");
     }
 
     //LISTA DE VALORES DINAMICA

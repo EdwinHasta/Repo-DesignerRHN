@@ -145,7 +145,7 @@
                                          selection="#{controlEscalafon.categoriaSelecionada}" selectionMode="single" widgetVar="lovCategoria" scrollable="true" scrollWidth="415" scrollHeight="250"
                                          filteredValue="#{controlEscalafon.filtrarLovCategorias}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlEscalafon.activarAceptar()}" update=":form:aceptarCat"/>
-                                <p:ajax event="rowDblselect" listener="#{controlEscalafon.actualizarCategoria()}" process="@this" onstart="lovCategoria.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlEscalafon.actualizarCategoria()}" process="@this"  />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarCat']}" style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovCategoria.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -160,12 +160,10 @@
                             
                             <h:outputText id="infoRegistroCategoria" value="#{controlEscalafon.infoRegistroCategoria}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton icon="ui-icon-check" id="aceptarCat" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEscalafon.aceptar}" onclick="lovCategoria.clearFilters();" actionListener="#{controlEscalafon.actualizarCategoria()}" update="lovCategoria, aceptarCat, datosEscalafon" process="@this">
-                                <p:resetInput target=":form:lovCategoria:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasCat" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="CategoriaDialogo.hide(), lovCategoria.clearFilters();" actionListener="#{controlEscalafon.cancelarCambioCategoria()}" update="lovCategoria" process="@this">
-                                <p:resetInput target=":form:lovCategoria:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton icon="ui-icon-check" id="aceptarCat" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEscalafon.aceptar}" actionListener="#{controlEscalafon.actualizarCategoria()}" process="@this"/>
+                            
+                            <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasCat" style="position: relative; left: 230px" value="#{msg['atras']}"  actionListener="#{controlEscalafon.cancelarCambioCategoria()}"  process="@this"/>
+                            
                         </p:dialog> 
                         
                         <p:dialog header="#{msg['nombreSCat']}" widgetVar="SubCategoriaDialogo" draggable="false" resizable="false" closable="false" id="SubCategoriaDialogo"  
@@ -174,7 +172,7 @@
                                          selection="#{controlEscalafon.subCategoriaSelecionada}" selectionMode="single" widgetVar="lovSubCategoria" scrollable="true" scrollWidth="415" scrollHeight="250"
                                          filteredValue="#{controlEscalafon.filtrarLovSubCategorias}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlEscalafon.activarAceptar()}" update=":form:aceptarSCat"/>
-                                <p:ajax event="rowDblselect" listener="#{controlEscalafon.actualizarSubCategoria()}"  process="@this" onstart="lovSubCategoria.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlEscalafon.actualizarSubCategoria()}"  process="@this"  />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarSCat']}" style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovSubCategoria.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -189,12 +187,10 @@
                             
                             <h:outputText id="infoRegistroSubCategoria" value="#{controlEscalafon.infoRegistroSubCategoria}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton icon="ui-icon-check" id="aceptarSCat" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEscalafon.aceptar}" onclick="lovSubCategoria.clearFilters();" actionListener="#{controlEscalafon.actualizarSubCategoria()}" update="lovSubCategoria, aceptarSCat, datosEscalafon" process="@this">
-                                <p:resetInput target=":form:lovSubCategoria:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasSCat" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="SubCategoriaDialogo.hide(), lovSubCategoria.clearFilters();" actionListener="#{controlEscalafon.cancelarCambioSubCategoria()}" update="lovSubCategoria" process="@this">
-                                <p:resetInput target=":form:lovSubCategoria:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton icon="ui-icon-check" id="aceptarSCat" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEscalafon.aceptar}"  actionListener="#{controlEscalafon.actualizarSubCategoria()}"  process="@this"/>
+                            
+                            <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasSCat" style="position: relative; left: 230px" value="#{msg['atras']}"  actionListener="#{controlEscalafon.cancelarCambioSubCategoria()}"  process="@this"/>
+                            
                         </p:dialog> 
 
                         <h:outputText id="informacionRegistro" value="#{controlEscalafon.infoRegistro}" style="position: absolute; left: 15px; top: 480px; font-weight: bold"/>

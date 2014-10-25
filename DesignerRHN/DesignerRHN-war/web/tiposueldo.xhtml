@@ -472,7 +472,7 @@
                                      selection="#{controlTipoSueldo.formulaSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovFormula" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlTipoSueldo.filtrarLovFormulas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlTipoSueldo.activarAceptar()}" update=":form:aceptarF"/>
-                            <p:ajax event="rowDblselect" listener="#{controlTipoSueldo.actualizarFormula()}"  process="@this" onstart="lovFormula.clearFilters()"  />
+                            <p:ajax event="rowDblselect" listener="#{controlTipoSueldo.actualizarFormula()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarF']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovFormula.filter();" style="width:140px; position: relative; left: -10px;" />  
@@ -487,12 +487,9 @@
 
                         <h:outputText id="infoRegistroFormula" value="#{controlTipoSueldo.infoRegistroFormula}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarF" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlTipoSueldo.aceptar}" onclick="FormulaDialogo.hide(), lovFormula.clearFilters();" actionListener="#{controlTipoSueldo.actualizarFormula()}" update="lovFormula, aceptarF, datosTSFormula" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":form:lovFormula:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasF" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="FormulaDialogo.hide(), lovFormula.clearFilters();" actionListener="#{controlTipoSueldo.cancelarCambioFormula()}" update="lovFormula" process="@this" icon="ui-icon-arrowreturnthick-1-w"> 
-                            <p:resetInput target=":form:lovFormula:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarF" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlTipoSueldo.aceptar}"  actionListener="#{controlTipoSueldo.actualizarFormula()}"  process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasF" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlTipoSueldo.cancelarCambioFormula()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/> 
                     </p:dialog>
 
                     <p:dialog header="#{msg['conceptoD']}" widgetVar="ConceptoDialogo" draggable="false" resizable="false" closable="false" id="ConceptoDialogo"  
@@ -501,7 +498,7 @@
                                      selection="#{controlTipoSueldo.conceptoSeleccionado}" scrollWidth="515" selectionMode="single" widgetVar="lovConcepto" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlTipoSueldo.filtrarLovConceptos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlTipoSueldo.activarAceptar()}" update=":form:aceptarC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlTipoSueldo.actualizarConcepto()}"  process="@this" onstart="lovConcepto.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlTipoSueldo.actualizarConcepto()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovConcepto.filter();" style="width:140px; position: relative; left: -40px;" />  
@@ -528,12 +525,9 @@
 
                         <h:outputText id="infoRegistroConcepto" value="#{controlTipoSueldo.infoRegistroConcepto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarC" style="position: relative; left: 330px" value="#{msg['aceptar']}" disabled="#{controlTipoSueldo.aceptar}" onclick="ConceptoDialogo.hide(), lovConcepto.clearFilters();"  actionListener="#{controlTipoSueldo.actualizarConcepto()}" update="lovConcepto, aceptarC, datosTSFormula" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":form:lovConcepto:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasC" style="position: relative; left: 330px" value="#{msg['atras']}" onclick="ConceptoDialogo.hide(), lovConcepto.clearFilters();" actionListener="#{controlTipoSueldo.cancelarCambioConcepto()}" update="lovConcepto" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":form:lovConcepto:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarC" style="position: relative; left: 330px" value="#{msg['aceptar']}" disabled="#{controlTipoSueldo.aceptar}" actionListener="#{controlTipoSueldo.actualizarConcepto()}" process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasC" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlTipoSueldo.cancelarCambioConcepto()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['grupoD']}" widgetVar="GrupoDialogo" draggable="false" resizable="false" closable="false" id="GrupoDialogo"  
@@ -542,7 +536,7 @@
                                      selection="#{controlTipoSueldo.grupoTipoEntidadSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovGrupo" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlTipoSueldo.filtrarLovGruposTiposEntidades}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlTipoSueldo.activarAceptar()}" update=":form:aceptarG"/>
-                            <p:ajax event="rowDblselect" listener="#{controlTipoSueldo.actualizarGrupo()}"  process="@this" onstart="lovGrupo.clearFilters()"  />
+                            <p:ajax event="rowDblselect" listener="#{controlTipoSueldo.actualizarGrupo()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarG']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovGrupo.filter();" style="width:140px; position: relative; left: -5px;" />  
@@ -563,12 +557,9 @@
 
                         <h:outputText id="infoRegistroGrupo" value="#{controlTipoSueldo.infoRegistroGrupo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarG" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlTipoSueldo.aceptar}" onclick="GrupoDialogo.hide(), lovGrupo.clearFilters();" actionListener="#{controlTipoSueldo.actualizarGrupo()}" update="lovGrupo, aceptarG, datosTSGrupo" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":form:lovGrupo:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasG" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="GrupoDialogo.hide(), lovGrupo.clearFilters();" actionListener="#{controlTipoSueldo.cancelarCambioGrupo()}" update="lovGrupo" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":form:lovGrupo:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarG" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlTipoSueldo.aceptar}" actionListener="#{controlTipoSueldo.actualizarGrupo()}" process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasG" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlTipoSueldo.cancelarCambioGrupo()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['tipoEntidadD']}" widgetVar="TipoEntidadDialogo" draggable="false" resizable="false" closable="false" id="TipoEntidadDialogo"  
@@ -577,7 +568,7 @@
                                      selection="#{controlTipoSueldo.tipoEntidadSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovTipoEntidad" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlTipoSueldo.filtrarLovTiposEntidades}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlTipoSueldo.activarAceptar()}" update=":form:aceptarTE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlTipoSueldo.actualizarTipoEntidad()}"  process="@this" onstart="lovTipoEntidad.clearFilters()"  />
+                            <p:ajax event="rowDblselect" listener="#{controlTipoSueldo.actualizarTipoEntidad()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTE']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTipoEntidad.filter();" style="width:140px; position: relative; left: 30px;" />  
@@ -598,12 +589,9 @@
 
                         <h:outputText id="infoRegistroTipoEntidad" value="#{controlTipoSueldo.infoRegistroTipoEntidad}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarTE" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlTipoSueldo.aceptar}" onclick="TipoEntidadDialogo.hide(), lovTipoEntidad.clearFilters();" actionListener="#{controlTipoSueldo.actualizarTipoEntidad()}" update="lovTipoEntidad, aceptarTE, datosTEFormula" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":form:lovTipoEntidad:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasTE" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="TipoEntidadDialogo.hide(), lovTipoEntidad.clearFilters();" actionListener="#{controlTipoSueldo.cancelarCambioFormulaTE()}" update="lovTipoEntidad" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":form:lovTipoEntidad:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarTE" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlTipoSueldo.aceptar}" actionListener="#{controlTipoSueldo.actualizarTipoEntidad()}" process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasTE" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlTipoSueldo.cancelarCambioFormulaTE()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['formulaD']}" widgetVar="FormulaTEDialogo" draggable="false" resizable="false" closable="false" id="FormulaTEDialogo"  
@@ -612,7 +600,7 @@
                                      selection="#{controlTipoSueldo.formulaSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovFormulaTE" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlTipoSueldo.filtrarLovFormulas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlTipoSueldo.activarAceptar()}" update=":form:aceptarFTE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlTipoSueldo.actualizarFormulaTE()}"  process="@this" onstart="lovFormulaTE.clearFilters()"  />
+                            <p:ajax event="rowDblselect" listener="#{controlTipoSueldo.actualizarFormulaTE()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarF']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovFormula.filter();" style="width:140px; position: relative; left: -10px;" />  
@@ -627,12 +615,9 @@
 
                         <h:outputText id="infoRegistroFormulaTE" value="#{controlTipoSueldo.infoRegistroFormulaTE}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarFTE" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlTipoSueldo.aceptar}" onclick="FormulaTEDialogo.hide(), lovFormulaTE.clearFilters();" actionListener="#{controlTipoSueldo.actualizarFormulaTE()}" update="lovFormulaTE, aceptarFTE, datosTEFormula" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":form:lovFormulaTE:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasFTE" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="FormulaTEDialogo.hide(), lovFormulaTE.clearFilters();" actionListener="#{controlTipoSueldo.cancelarCambioFormulaTE()}" update="lovFormulaTE" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":form:lovFormulaTE:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarFTE" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlTipoSueldo.aceptar}"  actionListener="#{controlTipoSueldo.actualizarFormulaTE()}" process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasFTE" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlTipoSueldo.cancelarCambioFormulaTE()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['conceptoD']}" widgetVar="ConceptoTEDialogo" draggable="false" resizable="false" closable="false" id="ConceptoTEDialogo"  
@@ -641,7 +626,7 @@
                                      selection="#{controlTipoSueldo.conceptoSeleccionado}" scrollWidth="515" selectionMode="single" widgetVar="lovConceptoTE" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlTipoSueldo.filtrarLovConceptos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlTipoSueldo.activarAceptar()}" update=":form:aceptarCTE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlTipoSueldo.actualizarConceptoTE()}"  process="@this" onstart="lovConceptoTE.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlTipoSueldo.actualizarConceptoTE()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovConceptoTE.filter();" style="width:140px; position: relative; left: -40px;" />  
@@ -668,12 +653,9 @@
 
                         <h:outputText id="infoRegistroConceptoTE" value="#{controlTipoSueldo.infoRegistroConceptoTE}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarCTE" style="position: relative; left: 330px" value="#{msg['aceptar']}" disabled="#{controlTipoSueldo.aceptar}" onclick="ConceptoTEDialogo.hide(), lovConceptoTE.clearFilters();"  actionListener="#{controlTipoSueldo.actualizarConceptoTE()}" update="lovConceptoTE, aceptarCTE, datosTEFormula" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":form:lovConceptoTE:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasCTE" style="position: relative; left: 330px" value="#{msg['atras']}" onclick="ConceptoTEDialogo.hide(), lovConceptoTE.clearFilters();" actionListener="#{controlTipoSueldo.cancelarCambioConceptoTE()}" update="lovConceptoTE" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":form:lovConceptoTE:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarCTE" style="position: relative; left: 330px" value="#{msg['aceptar']}" disabled="#{controlTipoSueldo.aceptar}"   actionListener="#{controlTipoSueldo.actualizarConceptoTE()}" process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasCTE" style="position: relative; left: 330px" value="#{msg['atras']}" actionListener="#{controlTipoSueldo.cancelarCambioConceptoTE()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                     </p:dialog>
 
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlTipoSueldo.activarCtrlF11()}"/> 

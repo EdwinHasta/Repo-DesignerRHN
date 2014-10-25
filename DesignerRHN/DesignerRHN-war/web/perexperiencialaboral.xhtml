@@ -252,7 +252,7 @@
                                          selection="#{controlPerExperienciaLaboral.sectorSeleccionada}" selectionMode="single" widgetVar="lovSector" scrollable="true" scrollHeight="250"
                                          filteredValue="#{controlPerExperienciaLaboral.filtrarListSectoresEconomicos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlPerExperienciaLaboral.activarAceptar()}" update=":form:aceptarS"/>
-                                <p:ajax event="rowDblselect" listener="#{controlPerExperienciaLaboral.actualizarSector()}" process="@this" onstart="lovSector.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlPerExperienciaLaboral.actualizarSector()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarS']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovSector.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -268,12 +268,9 @@
                             
                             <h:outputText id="infoRegistroSector" value="#{controlPerExperienciaLaboral.infoRegistroSector}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton icon="ui-icon-check" id="aceptarS" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlPerExperienciaLaboral.aceptar}" onclick="SectorDialogo.hide(), lovSector.clearFilters();" actionListener="#{controlPerExperienciaLaboral.actualizarSector()}" update="lovSector, aceptarS, datosExperiencia" process="@this">
-                                <p:resetInput target=":form:lovSector:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasS" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="SectorDialogo.hide(), lovSector.clearFilters();" actionListener="#{controlPerExperienciaLaboral.cancelarCambioSector()}" update="lovSector" process="@this">
-                                <p:resetInput target=":form:lovSector:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton icon="ui-icon-check" id="aceptarS" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlPerExperienciaLaboral.aceptar}" actionListener="#{controlPerExperienciaLaboral.actualizarSector()}" process="@this"/>
+                            
+                            <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasS" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlPerExperienciaLaboral.cancelarCambioSector()}" process="@this"/>
                         </p:dialog>
 
 
@@ -283,7 +280,7 @@
                                          selection="#{controlPerExperienciaLaboral.motivoSeleccionado}" selectionMode="single" widgetVar="lovMotivos" scrollable="true"  scrollHeight="250"
                                          filteredValue="#{controlPerExperienciaLaboral.filtrarListMotivosRetiros}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlPerExperienciaLaboral.activarAceptar()}" update=":form:aceptarM"/>
-                                <p:ajax event="rowDblselect" listener="#{controlPerExperienciaLaboral.actualizarMotivo()}" process="@this" onstart="lovMotivos.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlPerExperienciaLaboral.actualizarMotivo()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarM']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovMotivos.filter();" style="width:150px; position: relative; left: 20px;" />  
@@ -299,12 +296,9 @@
                             
                             <h:outputText id="infoRegistroMotivo" value="#{controlPerExperienciaLaboral.infoRegistroMotivo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton icon="ui-icon-check" id="aceptarM" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlPerExperienciaLaboral.actualizarMotivo()}" disabled="#{controlPerExperienciaLaboral.aceptar}" onclick="MotivosDialogo.hide(), lovMotivos.clearFilters();" update="lovMotivos, aceptarM, datosExperiencia" process="@this">
-                                <p:resetInput target=":form:lovMotivos:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasM" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlPerExperienciaLaboral.cancelarCambioMotivo()}" onclick="MotivosDialogo.hide(), lovMotivos.clearFilters();" update="lovMotivos" process="@this">
-                                <p:resetInput target=":form:lovMotivos:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton icon="ui-icon-check" id="aceptarM" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlPerExperienciaLaboral.actualizarMotivo()}" disabled="#{controlPerExperienciaLaboral.aceptar}" process="@this"/>
+                            
+                            <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasM" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlPerExperienciaLaboral.cancelarCambioMotivo()}" process="@this"/>
                         </p:dialog>
 
                     </p:panel>

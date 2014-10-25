@@ -140,7 +140,7 @@
                                          selection="#{controlProcesosProductivos.centrocostoSeleccionado}" selectionMode="single" widgetVar="lovCentrosCostos" scrollable="true" scrollWidth="450" scrollHeight="280"
                                          filteredValue="#{controlProcesosProductivos.filtradoCentrosCostos}" emptyMessage="#{msg['lovvacioD']}">              
                                 <p:ajax event="rowSelect" listener="#{controlProcesosProductivos.activarAceptar()}" update=":form:aceptarPer"/>
-                                <p:ajax event="rowDblselect" listener="#{controlProcesosProductivos.actualizarCentrosCostos()}" process="@this" onstart="lovCentrosCostos.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlProcesosProductivos.actualizarCentrosCostos()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="Buscar Centro Costo:"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovCentrosCostos.filter();" style="width:150px; position: relative; left: 20px;" />  
@@ -163,13 +163,8 @@
 
                             <h:outputText id="infoRegistroCentroCostos" value="#{controlProcesosProductivos.infoRegistroCentroCostos}" style="position: absolute; left: 15px; top: 380px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarPer" style="position: relative; left: 283px" value="#{msg['aceptar']}"  onclick="personasDialogo.hide(), lovCentrosCostos.clearFilters();" disabled="#{controlProcesosProductivos.aceptar}" actionListener="#{controlProcesosProductivos.actualizarCentrosCostos()}" update="lovCentrosCostos, aceptarPer" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovCentrosCostos:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasPer" style="position: relative; left: 283px" value="#{msg['atras']}"  actionListener="#{controlProcesosProductivos.cancelarCambioCentrosCostos()}" onclick="personasDialogo.hide();
-                                    lovCentrosCostos.clearFilters();" update="lovCentrosCostos" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovCentrosCostos:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarPer" style="position: relative; left: 283px" value="#{msg['aceptar']}" disabled="#{controlProcesosProductivos.aceptar}" actionListener="#{controlProcesosProductivos.actualizarCentrosCostos()}"  process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                            <p:commandButton id="atrasPer" style="position: relative; left: 283px" value="#{msg['atras']}"  actionListener="#{controlProcesosProductivos.cancelarCambioCentrosCostos()}" process="@this" icon="ui-icon-check"/>
                         </p:dialog>
 
 

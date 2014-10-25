@@ -140,7 +140,7 @@
                                      selection="#{controlNReporteContabilidad.procesoSeleccionado}" selectionMode="single" widgetVar="lovProceso" scrollable="true" scrollWidth="416" scrollHeight="250"
                                      filteredValue="#{controlNReporteContabilidad.filtrarListProcesos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteContabilidad.activarAceptar()}" update=":form:aceptarPro"/>
-                            <p:ajax event="rowDblselect" listener="#{controlNReporteContabilidad.actualizarProceso()}"  process="@this" onstart="lovProceso.clearFilters()"  />
+                            <p:ajax event="rowDblselect" listener="#{controlNReporteContabilidad.actualizarProceso()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovProceso.filter();" style="width:150px; position: relative; left: -5px;" />  
@@ -159,12 +159,10 @@
                             </p:column>
                         </p:dataTable>
                         <h:outputText id="infoRegistroProceso" value="#{controlNReporteContabilidad.infoRegistroProceso}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        <p:commandButton id="aceptarPro" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlNReporteContabilidad.aceptar}" onclick="ProcesoDialogo.hide(), lovProceso.clearFilters();" actionListener="#{controlNReporteContabilidad.actualizarProceso()}" update="lovProceso, aceptarPro" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":form:lovProceso:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasPro" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="ProcesoDialogo.hide(), lovProceso.clearFilters();" actionListener="#{controlNReporteContabilidad.cancelarCambioProceso()}" update="lovProceso" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":form:lovProceso:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarPro" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlNReporteContabilidad.aceptar}"  actionListener="#{controlNReporteContabilidad.actualizarProceso()}"  process="@this" icon="ui-icon-check"/>
+                            
+                        <p:commandButton id="atrasPro" style="position: relative; left: 230px" value="#{msg['atras']}"  actionListener="#{controlNReporteContabilidad.cancelarCambioProceso()}"  process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                            
                     </p:dialog>
 
 
@@ -175,7 +173,7 @@
                                      selection="#{controlNReporteContabilidad.empleadoSeleccionado}" selectionMode="single" widgetVar="lovEmpleadoDesde" scrollable="true" scrollWidth="416" scrollHeight="250"
                                      filteredValue="#{controlNReporteContabilidad.filtrarListEmpleados}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteContabilidad.activarAceptar()}" update=":form:aceptarED"/>
-                            <p:ajax event="rowDblselect" listener="#{controlNReporteContabilidad.actualizarEmplDesde()}"  process="@this" onstart="lovEmpleadoDesde.clearFilters()"  />
+                            <p:ajax event="rowDblselect" listener="#{controlNReporteContabilidad.actualizarEmplDesde()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEMP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpleadoDesde.filter();" style="width:150px; position: relative; left: -5px;" />  
@@ -194,12 +192,10 @@
                             </p:column>
                         </p:dataTable>
                         <h:outputText id="infoRegistroEmpleadoDesde" value="#{controlNReporteContabilidad.infoRegistroEmpleadoDesde}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        <p:commandButton id="aceptarED" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlNReporteContabilidad.aceptar}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReporteContabilidad.actualizarEmplDesde()}" update="lovEmpleadoDesde, aceptarED" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":form:lovEmpleadoDesde:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasED" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReporteContabilidad.cancelarCambioEmplDesde()}" update="lovEmpleadoDesde" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":form:lovEmpleadoDesde:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarED" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlNReporteContabilidad.aceptar}"  actionListener="#{controlNReporteContabilidad.actualizarEmplDesde()}"  process="@this" icon="ui-icon-check"/>
+                            
+                        <p:commandButton id="atrasED" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlNReporteContabilidad.cancelarCambioEmplDesde()}"  process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                            
                     </p:dialog>
 
                     <p:dialog header="#{msg['codigoEMPH']}" widgetVar="EmpleadoHastaDialogo" draggable="false" resizable="false" closable="false" id="EmpleadoHastaDialogo"  
@@ -208,7 +204,7 @@
                                      selection="#{controlNReporteContabilidad.empleadoSeleccionado}" selectionMode="single" widgetVar="lovEmpleadoHasta" scrollable="true" scrollWidth="416" scrollHeight="250"
                                      filteredValue="#{controlNReporteContabilidad.filtrarListEmpleados}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteContabilidad.activarAceptar()}" update=":form:aceptarEH"/>
-                            <p:ajax event="rowDblselect" listener="#{controlNReporteContabilidad.actualizarEmplHasta()}"  process="@this" onstart="lovEmpleadoHasta.clearFilters()"  />
+                            <p:ajax event="rowDblselect" listener="#{controlNReporteContabilidad.actualizarEmplHasta()}"  process="@this"   />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEMPH']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpleadoHasta.filter();" style="width:150px; position: relative; left: -5px;" />  
@@ -228,12 +224,10 @@
                         </p:dataTable>
                         
                         <h:outputText id="infoRegistroEmpleadoHasta" value="#{controlNReporteContabilidad.infoRegistroEmpleadoHasta}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        <p:commandButton id="aceptarEH" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlNReporteContabilidad.aceptar}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReporteContabilidad.actualizarEmplHasta()}" update="lovEmpleadoHasta, aceptarEH" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":form:lovEmpleadoHasta:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasEH" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReporteContabilidad.cancelarCambioEmplHasta()}" update="lovEmpleadoHasta" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":form:lovEmpleadoHasta:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarEH" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlNReporteContabilidad.aceptar}"  actionListener="#{controlNReporteContabilidad.actualizarEmplHasta()}"  process="@this" icon="ui-icon-check"/>
+                            
+                        <p:commandButton id="atrasEH" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlNReporteContabilidad.cancelarCambioEmplHasta()}"  process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                            
                     </p:dialog>
 
 

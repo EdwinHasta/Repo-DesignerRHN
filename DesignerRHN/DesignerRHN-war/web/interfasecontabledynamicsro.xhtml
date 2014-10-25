@@ -568,7 +568,7 @@
                                          selection="#{controlInterfaseContableDynamicsRO.procesoSeleccionado}" selectionMode="single" widgetVar="lovProceso" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlInterfaseContableDynamicsRO.filtrarLovProcesos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlInterfaseContableDynamicsRO.activarAceptar()}" update=":form:aceptarP"/>
-                                <p:ajax event="rowDblselect" listener="#{controlInterfaseContableDynamicsRO.actualizarProceso()}" process="@this" onstart="lovProceso.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlInterfaseContableDynamicsRO.actualizarProceso()}" process="@this" />
 
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarP']}" style="position: absolute; left: 27px; top: 14px"/>  
@@ -590,12 +590,8 @@
 
                             <h:outputText id="infoRegistroProceso" value="#{controlInterfaseContableDynamicsRO.infoRegistroProceso}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarP" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlInterfaseContableDynamicsRO.aceptar}" onclick="ProcesoDialogo.hide(), lovProceso.clearFilters();" actionListener="#{controlInterfaseContableDynamicsRO.actualizarProceso()}" update="lovProceso, aceptarP" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovProceso:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasP" style="position: relative; left: 265px" value="#{msg['atras']}" onclick="ProcesoDialogo.hide(), lovProceso.clearFilters();" actionListener="#{controlInterfaseContableDynamicsRO.cancelarProceso()}" update="lovProceso" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovProceso:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarP" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlInterfaseContableDynamicsRO.aceptar}"  actionListener="#{controlInterfaseContableDynamicsRO.actualizarProceso()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasP" style="position: relative; left: 265px" value="#{msg['atras']}" actionListener="#{controlInterfaseContableDynamicsRO.cancelarProceso()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog> 
 
                         <p:dialog header="#{msg['empresaM']}" widgetVar="EmpresaDialogo" draggable="false" resizable="false" closable="false" id="EmpresaDialogo"  
@@ -604,7 +600,7 @@
                                          selection="#{controlInterfaseContableDynamicsRO.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresa" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlInterfaseContableDynamicsRO.filtrarLovEmpresas}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlInterfaseContableDynamicsRO.activarAceptar()}" update=":form:aceptarE"/>
-                                <p:ajax event="rowDblselect" listener="#{controlInterfaseContableDynamicsRO.actualizarEmpresa()}" process="@this" onstart="lovEmpresa.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlInterfaseContableDynamicsRO.actualizarEmpresa()}" process="@this" />
 
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarE']}" style="position: absolute; left: 27px; top: 14px"/>  
@@ -626,12 +622,8 @@
 
                             <h:outputText id="infoRegistroEmpresa" value="#{controlInterfaseContableDynamicsRO.infoRegistroEmpresa}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarE" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlInterfaseContableDynamicsRO.aceptar}" onclick="EmpresaDialogo.hide(), lovEmpresa.clearFilters();" actionListener="#{controlInterfaseContableDynamicsRO.actualizarEmpresa()}" update="lovEmpresa, aceptarE" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovEmpresa:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasE" style="position: relative; left: 265px" value="#{msg['atras']}" onclick="EmpresaDialogo.hide(), lovEmpresa.clearFilters();" actionListener="#{controlInterfaseContableDynamicsRO.cancelarEmpresa()}" update="lovEmpresa" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovEmpresa:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarE" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlInterfaseContableDynamicsRO.aceptar}" actionListener="#{controlInterfaseContableDynamicsRO.actualizarEmpresa()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasE" style="position: relative; left: 265px" value="#{msg['atras']}"  actionListener="#{controlInterfaseContableDynamicsRO.cancelarEmpresa()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog> 
 
                         <p:commandButton style="position: absolute; left: 20px; top: 482px;" id="PLANO" value="#{msg['generarPlano']}" disabled="#{controlInterfaseContableDynamicsRO.activarDeshacer}" actionListener="#{controlInterfaseContableDynamicsRO.actionBtnGenerarPlano()}" process="@this" />
@@ -816,7 +808,7 @@
                                          liveScroll="true" scrollRows="25"
                                          >              
                                 <p:ajax event="rowSelect" listener="#{controlInterfaseContableDynamicsRO.activarAceptar()}" update=":formEmplDialogo:aceptarED"/>
-                                <p:ajax event="rowDblselect" listener="#{controlInterfaseContableDynamicsRO.actualizarEmpleadoDesde()}" process="@this" onstart="lovEmpleadoDesde.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlInterfaseContableDynamicsRO.actualizarEmpleadoDesde()}" process="@this" />
 
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarED']}" style="position: absolute; left: 27px; top: 14px"/>  
@@ -838,12 +830,8 @@
 
                             <h:outputText id="infoRegistroEmpleadoDesde" value="#{controlInterfaseContableDynamicsRO.infoRegistroEmpleado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarED" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlInterfaseContableDynamicsRO.aceptar}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlInterfaseContableDynamicsRO.actualizarEmpleadoDesde()}" update="lovEmpleadoDesde, aceptarED" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formEmplDialogo:lovEmpleadoDesde:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasED" style="position: relative; left: 265px" value="#{msg['atras']}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlInterfaseContableDynamicsRO.cancelarEmpleadoDesde()}" update="lovEmpleadoDesde" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formEmplDialogo:lovEmpleadoDesde:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarED" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlInterfaseContableDynamicsRO.aceptar}" actionListener="#{controlInterfaseContableDynamicsRO.actualizarEmpleadoDesde()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasED" style="position: relative; left: 265px" value="#{msg['atras']}" actionListener="#{controlInterfaseContableDynamicsRO.cancelarEmpleadoDesde()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog> 
                         
                         <p:dialog header="#{msg['empleadoM']}" widgetVar="EmpleadoHastaDialogo" draggable="false" resizable="false" closable="false" id="EmpleadoHastaDialogo"  
@@ -854,7 +842,7 @@
                                          liveScroll="true" scrollRows="25"
                                          >              
                                 <p:ajax event="rowSelect" listener="#{controlInterfaseContableDynamicsRO.activarAceptar()}" update=":formEmplDialogo:aceptarEH"/>
-                                <p:ajax event="rowDblselect" listener="#{controlInterfaseContableDynamicsRO.actualizarEmpleadoDesde()}" process="@this" onstart="lovEmpleadoHasta.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlInterfaseContableDynamicsRO.actualizarEmpleadoHasta()}" process="@this" />
 
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarEH']}" style="position: absolute; left: 27px; top: 14px"/>  
@@ -876,12 +864,8 @@
 
                             <h:outputText id="infoRegistroEmpleadoHasta" value="#{controlInterfaseContableDynamicsRO.infoRegistroEmpleado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarEH" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlInterfaseContableDynamicsRO.aceptar}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlInterfaseContableDynamicsRO.actualizarEmpleadoDesde()}" update="lovEmpleadoHasta, aceptarEH" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formEmplDialogo:lovEmpleadoHasta:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasEH" style="position: relative; left: 265px" value="#{msg['atras']}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlInterfaseContableDynamicsRO.cancelarEmpleadoDesde()}" update="lovEmpleadoHasta" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formEmplDialogo:lovEmpleadoHasta:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarEH" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlInterfaseContableDynamicsRO.aceptar}" actionListener="#{controlInterfaseContableDynamicsRO.actualizarEmpleadoHasta()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasEH" style="position: relative; left: 265px" value="#{msg['atras']}" actionListener="#{controlInterfaseContableDynamicsRO.cancelarEmpleadoHasta()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog> 
                     
                 </h:form>

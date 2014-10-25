@@ -328,7 +328,7 @@
                                          selection="#{controlEmplMvr.motivoMvrSeleccionado}" selectionMode="single" widgetVar="lovMotivo" scrollable="true" scrollHeight="250" scrollWidth="435"
                                          filteredValue="#{controlEmplMvr.filtrarListMotivosMvrs}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlEmplMvr.activarAceptar()}" update=":form:aceptarM"/>
-                                <p:ajax event="rowDblselect" listener="#{controlEmplMvr.actualizarMotivo()}"  process="@this" onstart="lovMotivo.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlEmplMvr.actualizarMotivo()}"  process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarM']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovMotivo.filter();" style="width:140px; position: relative; left: -5px;" />  
@@ -349,12 +349,10 @@
                             
                             <h:outputText id="infoRegistroMotivoMVR" value="#{controlEmplMvr.infoRegistroMotivoMVR}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarM" icon="ui-icon-check" style="position: relative; left: 260px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlEmplMvr.aceptar}" onclick="MotivoDialogo.hide(), lovMotivo.clearFilters();" actionListener="#{controlEmplMvr.actualizarMotivo()}" update="lovMotivo, aceptarM, datosMvrEmpleado" process="@this">
-                                <p:resetInput target=":form:lovMotivo:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasM" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px;top: 5px" value="#{msg['atras']}" onclick="MotivoDialogo.hide(), lovMotivo.clearFilters();" actionListener="#{controlEmplMvr.cancelarCambioMotivo()}" update="lovMotivo" process="@this">
-                                <p:resetInput target=":form:lovMotivo:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarM" icon="ui-icon-check" style="position: relative; left: 260px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlEmplMvr.aceptar}" actionListener="#{controlEmplMvr.actualizarMotivo()}" process="@this"/>
+                                
+                            <p:commandButton id="atrasM" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px;top: 5px" value="#{msg['atras']}"  actionListener="#{controlEmplMvr.cancelarCambioMotivo()}" process="@this"/>
+                                
                         </p:dialog>
 
                         <!-- DIALOGO L.O.V CERTIFICADOS-->
@@ -364,7 +362,7 @@
                                          selection="#{controlEmplMvr.tipoCertificadoSeleccionado}" selectionMode="single" widgetVar="lovCertificado" scrollable="true" scrollWidth="435" scrollHeight="250"
                                          filteredValue="#{controlEmplMvr.filtrarListTiposCertificados}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlEmplMvr.activarAceptar()}" update=":form:aceptarTC"/>
-                                <p:ajax event="rowDblselect" listener="#{controlEmplMvr.actualizarTipo()}"  process="@this" onstart="lovCertificado.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlEmplMvr.actualizarTipo()}"  process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovCertificado.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -385,12 +383,10 @@
                             
                             <h:outputText id="infoRegistroCertificado" value="#{controlEmplMvr.infoRegistroCertificado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarTC" icon="ui-icon-check" style="position: relative; left: 260px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlEmplMvr.aceptar}" onclick="CertificadosDialogo.hide(), lovCertificado.clearFilters();" actionListener="#{controlEmplMvr.actualizarTipo()}" update="lovCertificado, aceptarTC, datosOCEmpleado" process="@this">
-                                <p:resetInput target=":form:lovCertificado:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasTC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px;top: 5px" value="#{msg['atras']}" onclick="CertificadosDialogo.hide(), lovCertificado.clearFilters();" actionListener="#{controlEmplMvr.cancelarCambioTipo()}" update="lovCertificado" process="@this">
-                                <p:resetInput target=":form:lovCertificado:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarTC" icon="ui-icon-check" style="position: relative; left: 260px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlEmplMvr.aceptar}"  actionListener="#{controlEmplMvr.actualizarTipo()}" process="@this"/>
+                                
+                            <p:commandButton id="atrasTC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px;top: 5px" value="#{msg['atras']}" actionListener="#{controlEmplMvr.cancelarCambioTipo()}" process="@this"/>
+                                
                         </p:dialog>
                         
                         <p:commandButton style="position: absolute; left: 683px; top: 478px;  " id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" process="@this"  disabled="#{controlEmplMvr.guardado}" />

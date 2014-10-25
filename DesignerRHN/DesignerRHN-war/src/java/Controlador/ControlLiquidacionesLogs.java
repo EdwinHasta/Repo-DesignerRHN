@@ -556,6 +556,8 @@ public class ControlLiquidacionesLogs implements Serializable {
         aceptar = true;
         context.update("form:datosLiquidacionesLogs");
         context.update("form:nombreEmpleado");
+        context.reset("form:lovTipoCentrosCostos:globalFilter");
+        context.execute("lovTipoCentrosCostos.clearFilters()");
         context.execute("tiposCentrosCostosDialogo.hide()");
     }
 
@@ -565,6 +567,10 @@ public class ControlLiquidacionesLogs implements Serializable {
         aceptar = true;
         index = -1;
         tipoActualizacion = -1;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTipoCentrosCostos:globalFilter");
+        context.execute("lovTipoCentrosCostos.clearFilters()");
+        context.execute("tiposCentrosCostosDialogo.hide()");
 
     }
 

@@ -371,7 +371,7 @@
                                      selection="#{controlUsuariosClon.usuariosSeleccionado}" selectionMode="single" widgetVar="LOVUsuariosAlias" scrollable="true" scrollHeight="200" scrollWidth="345"
                                      filteredValue="#{controlUsuariosClon.lovfiltrarUsuarioAlias}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlUsuariosClon.activarAceptar()}" update=":formularioDialogos:aceptarAU"/>
-                            <p:ajax event="rowDblselect" listener="#{controlUsuariosClon.asignarAliasClon()}" process="@this" onstart="LOVUsuariosAlias.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlUsuariosClon.asignarAliasClon()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarAU']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVUsuariosAlias.filter();" style="width:120px; position: relative; left: 80px;" />  
@@ -386,12 +386,10 @@
 
                         <h:outputText id="infoRegistroAlias" value="#{controlUsuariosClon.infoRegistro}" style="position: absolute; left: 15px; top: 315px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarAU" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlUsuariosClon.aceptar}" style="position: absolute; top: 305px; left: 180px;" actionListener="#{controlUsuariosClon.asignarAliasClon()}" onclick="LOVUsuariosAlias.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVUsuariosAlias:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="cancelarAU" style="position: absolute; top: 305px; left: 275px; " icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlUsuariosClon.cancelarCambioAlias()}" onclick="aliasDialogo.hide(), LOVUsuariosAlias.clearFilters();"  update="LOVUsuariosAlias, aceptarAU" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVUsuariosAlias:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarAU" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlUsuariosClon.aceptar}" style="position: absolute; top: 305px; left: 180px;" actionListener="#{controlUsuariosClon.asignarAliasClon()}" process="@this"/>
+                        
+                        <p:commandButton id="cancelarAU" style="position: absolute; top: 305px; left: 275px; " icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlUsuariosClon.cancelarCambioAlias()}"  process="@this"/>
+                        
                     </p:dialog>
                     <!-- DIALOGO L.O.V ESTATICO DE PERSONAS -->
                     <p:dialog header="#{msg['personaPS']}" widgetVar="personasDialogo" draggable="false" resizable="false" closable="false" id="personasDialogo"  
@@ -400,7 +398,7 @@
                                      selection="#{controlUsuariosClon.personasSeleccionado}" selectionMode="single" widgetVar="LOVPersonas" scrollable="true" scrollHeight="200" scrollWidth="345"
                                      filteredValue="#{controlUsuariosClon.lovFiltradoPersonas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlUsuariosClon.activarAceptar()}" update=":formularioDialogos:aceptarPS"/>
-                            <p:ajax event="rowDblselect" listener="#{controlUsuariosClon.actualizarPersonas()}" process="@this" onstart="LOVPersonas.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlUsuariosClon.actualizarPersonas()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarPS']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVPersonas.filter();" style="width:120px; position: relative; left: 80px;" />  
@@ -415,12 +413,9 @@
 
                         <h:outputText id="infoRegistroPersonas" value="#{controlUsuariosClon.infoRegistroPersonas}" style="position: absolute; left: 15px; top: 315px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarPS" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlUsuariosClon.aceptar}" style="position: absolute; top: 305px; left: 180px;" actionListener="#{controlUsuariosClon.actualizarPersonas()}" onclick="LOVPersonas.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVPersonas:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="cancelarPS" style="position: absolute; top: 305px; left: 275px; " icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlUsuariosClon.cancelarCambioPersona()}" onclick="personasDialogo.hide(), LOVPersonas.clearFilters();"  update="LOVPersonas, aceptarPS" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVPersonas:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarPS" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlUsuariosClon.aceptar}" style="position: absolute; top: 305px; left: 180px;" actionListener="#{controlUsuariosClon.actualizarPersonas()}" process="@this"/>
+                        
+                        <p:commandButton id="cancelarPS" style="position: absolute; top: 305px; left: 275px; " icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlUsuariosClon.cancelarCambioPersona()}"  process="@this"/>
                     </p:dialog>
 
                     <!-- DIALOGO L.O.V ESTATICO DE PERFILES -->
@@ -430,7 +425,7 @@
                                      selection="#{controlUsuariosClon.perfilesSeleccionado}" selectionMode="single" widgetVar="LOVPerfiles" scrollable="true" scrollHeight="200" scrollWidth="345"
                                      filteredValue="#{controlUsuariosClon.lovFiltradoPerfiles}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlUsuariosClon.activarAceptar()}" update=":formularioDialogos:aceptarPF"/>
-                            <p:ajax event="rowDblselect" listener="#{controlUsuariosClon.actualizarPerfiles()}" process="@this" onstart="LOVPerfiles.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlUsuariosClon.actualizarPerfiles()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarPF']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVPerfiles.filter();" style="width:120px; position: relative; left: 80px;" />  
@@ -445,12 +440,9 @@
 
                         <h:outputText id="infoRegistroPerfiles" value="#{controlUsuariosClon.infoRegistroPerfiles}" style="position: absolute; left: 15px; top: 315px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarPF" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlUsuariosClon.aceptar}" style="position: absolute; top: 305px; left: 180px;" actionListener="#{controlUsuariosClon.actualizarPerfiles()}" onclick="LOVPerfiles.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVPerfiles:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="cancelarPF" style="position: absolute; top: 305px; left: 275px; " icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlUsuariosClon.cancelarCambioPerfil()}" onclick="perfilesDialogo.hide(), LOVPerfiles.clearFilters();"  update="LOVPerfiles, aceptarPF" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVPerfiles:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarPF" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlUsuariosClon.aceptar}" style="position: absolute; top: 305px; left: 180px;" actionListener="#{controlUsuariosClon.actualizarPerfiles()}" process="@this"/>
+                        
+                        <p:commandButton id="cancelarPF" style="position: absolute; top: 305px; left: 275px; " icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlUsuariosClon.cancelarCambioPerfil()}" process="@this"/>
                     </p:dialog>
 
                     <!-- DIALOGO L.O.V ESTATICO DE PANTALLAS -->
@@ -460,7 +452,7 @@
                                      selection="#{controlUsuariosClon.pantallasSeleccionado}" selectionMode="single" widgetVar="LOVPantallas" scrollable="true" scrollHeight="200" scrollWidth="345"
                                      filteredValue="#{controlUsuariosClon.lovFiltradoPantallas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlUsuariosClon.activarAceptar()}" update=":formularioDialogos:aceptarPT"/>
-                            <p:ajax event="rowDblselect" listener="#{controlUsuariosClon.actualizarPantallas()}" process="@this" onstart="LOVPantallas.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlUsuariosClon.actualizarPantallas()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarPT']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVPantallas.filter();" style="width:120px; position: relative; left: 80px;" />  
@@ -481,12 +473,9 @@
 
                         <h:outputText id="infoRegistroPantallas" value="#{controlUsuariosClon.infoRegistroPantallas}" style="position: absolute; left: 15px; top: 315px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarPT" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlUsuariosClon.aceptar}" style="position: absolute; top: 305px; left: 180px;" actionListener="#{controlUsuariosClon.actualizarPantallas()}" onclick="LOVPantallas.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVPantallas:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="cancelarPT" style="position: absolute; top: 305px; left: 275px; " icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlUsuariosClon.cancelarCambioPantalla()}" onclick="pantallasDialogo.hide(), LOVPantallas.clearFilters();"  update="LOVPantallas, aceptarPT" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVPantallas:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarPT" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlUsuariosClon.aceptar}" style="position: absolute; top: 305px; left: 180px;" actionListener="#{controlUsuariosClon.actualizarPantallas()}"  process="@this"/>
+                        
+                        <p:commandButton id="cancelarPT" style="position: absolute; top: 305px; left: 275px; " icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlUsuariosClon.cancelarCambioPantalla()}" process="@this"/>
                     </p:dialog>  
 
                     <!--CONFIRMAR GUARDAR-->

@@ -208,7 +208,7 @@
                                      selection="#{controlFormulaContrato.contratoSeleccionado}" selectionMode="single" widgetVar="lovContrato" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlFormulaContrato.filtrarListContratos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                             <p:ajax event="rowSelect" listener="#{controlFormulaContrato.activarAceptar()}" update=":form:aceptarC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlFormulaContrato.actualizarContrato()}" process="@this" onstart="lovContrato.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlFormulaContrato.actualizarContrato()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovContrato.filter();" style="width:140px; position: relative; left: 30px;" />  
@@ -223,12 +223,9 @@
                         
                         <h:outputText id="infoRegistroContrato" value="#{controlFormulaContrato.infoRegistroContrato}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton id="aceptarC" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlFormulaContrato.aceptar}" onclick="ContratoDialogo.hide(), lovContrato.clearFilters();" actionListener="#{controlFormulaContrato.actualizarContrato()}" update="lovContrato, aceptarC, datosFormulaContrato" process="@this">
-                            <p:resetInput target=":form:lovContrato:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="ContratoDialogo.hide(), lovContrato.clearFilters();" actionListener="#{controlFormulaContrato.cancelarCambioContrato()}" update="lovContrato" process="@this">
-                            <p:resetInput target=":form:lovContrato:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarC" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlFormulaContrato.aceptar}"  actionListener="#{controlFormulaContrato.actualizarContrato()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}"  actionListener="#{controlFormulaContrato.cancelarCambioContrato()}" process="@this"/>
                     </p:dialog>
 
 
@@ -239,7 +236,7 @@
                                      selection="#{controlFormulaContrato.periodicidadSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovPeriodicidad" scrollable="true" scrollHeight="250"
                                      filteredValue="#{controlFormulaContrato.filtrarListPeriodicidades}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                             <p:ajax event="rowSelect" listener="#{controlFormulaContrato.activarAceptar()}" update=":form:aceptarP"/>
-                            <p:ajax event="rowDblselect" listener="#{controlFormulaContrato.actualizarPeriodicidad()}" process="@this" onstart="lovPeriodicidad.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlFormulaContrato.actualizarPeriodicidad()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovPeriodicidad.filter();" style="width:140px; position: relative; left: 45px;" />  
@@ -254,12 +251,9 @@
                         
                         <h:outputText id="infoRegistroPeriodicidad" value="#{controlFormulaContrato.infoRegistroPeriodicidad}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton id="aceptarP" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlFormulaContrato.aceptar}" onclick="PeriodicidadDialogo.hide(), lovPeriodicidad.clearFilters();" actionListener="#{controlFormulaContrato.actualizarPeriodicidad()}" update="lovPeriodicidad, aceptarP, datosFormulaContrato" process="@this">
-                            <p:resetInput target=":form:lovPeriodicidad:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasP" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="PeriodicidadDialogo.hide(), lovPeriodicidad.clearFilters();" actionListener="#{controlFormulaContrato.cancelarCambioPeriodicidad()}" update="lovPeriodicidad" process="@this">
-                            <p:resetInput target=":form:lovPeriodicidad:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarP" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlFormulaContrato.aceptar}"  actionListener="#{controlFormulaContrato.actualizarPeriodicidad()}"  process="@this"/>
+                        
+                        <p:commandButton id="atrasP" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlFormulaContrato.cancelarCambioPeriodicidad()}"  process="@this"/>
                     </p:dialog>
 
 
@@ -270,7 +264,7 @@
                                      selection="#{controlFormulaContrato.terceroSeleccionada}" scrollWidth="415" selectionMode="single" widgetVar="lovTercero" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlFormulaContrato.filtrarListTerceros}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                             <p:ajax event="rowSelect" listener="#{controlFormulaContrato.activarAceptar()}" update=":form:aceptarT"/>
-                            <p:ajax event="rowDblselect" listener="#{controlFormulaContrato.actualizarTercero()}" process="@this" onstart="lovTercero.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlFormulaContrato.actualizarTercero()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarT']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTercero.filter();" style="width:140px; position: relative; left: -5px;" />  
@@ -291,12 +285,10 @@
                         
                         <h:outputText id="infoRegistroTercero" value="#{controlFormulaContrato.infoRegistroTercero}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton id="aceptarT" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlFormulaContrato.aceptar}" onclick="TerceroDialogo.hide(), lovTercero.clearFilters();" actionListener="#{controlFormulaContrato.actualizarTercero()}" update="lovTercero, aceptarT, datosFormulaContrato" process="@this">
-                            <p:resetInput target=":form:lovTercero:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasT" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="TerceroDialogo.hide(), lovTercero.clearFilters();" actionListener="#{controlFormulaContrato.cancelarCambioTercero()}" update="lovTercero" process="@this">
-                            <p:resetInput target=":form:lovTercero:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarT" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlFormulaContrato.aceptar}"  actionListener="#{controlFormulaContrato.actualizarTercero()}"  process="@this"/>
+                        
+                        <p:commandButton id="atrasT" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}"  actionListener="#{controlFormulaContrato.cancelarCambioTercero()}"  process="@this"/>
+                        
                     </p:dialog>
 
                 </h:form>

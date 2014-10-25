@@ -292,7 +292,7 @@
                                      selection="#{controlUnidad.tiposUnidadSeleccionado}" selectionMode="single" widgetVar="LOVTiposUnidades" scrollable="true" scrollHeight="200" scrollWidth="345"
                                      filteredValue="#{controlUnidad.lovFiltradoTiposUnidades}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlUnidad.activarAceptar()}" update=":formularioDialogos:aceptarTU"/>
-                            <p:ajax event="rowDblselect" listener="#{controlUnidad.actualizarTiposUnidades()}" process="@this" onstart="LOVTiposUnidades.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlUnidad.actualizarTiposUnidades()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarT']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVTiposUnidades.filter();" style="width:120px; position: relative; left: 55px;" />  
@@ -313,12 +313,9 @@
 
                         <h:outputText id="infoRegistroTiposUnidades" value="#{controlUnidad.infoRegistroTiposUnidades}" style="position: absolute; left: 15px; top: 315px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarTU" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlUnidad.aceptar}" style="position: absolute; top: 305px; left: 180px;" actionListener="#{controlUnidad.actualizarTiposUnidades()}" onclick="LOVTiposUnidades.clearFilters();" update="aceptarTU" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVTiposUnidades:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasTU" style="position: absolute; top: 305px; left: 275px; " icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlUnidad.cancelarCambioTiposUnidades()}" onclick="tiposUnidadesDialogo.hide(), LOVTiposUnidades.clearFilters();"  update="LOVTiposUnidades" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVTiposUnidades:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarTU" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlUnidad.aceptar}" style="position: absolute; top: 305px; left: 180px;" actionListener="#{controlUnidad.actualizarTiposUnidades()}"  process="@this"/>
+                        
+                        <p:commandButton id="atrasTU" style="position: absolute; top: 305px; left: 275px; " icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlUnidad.cancelarCambioTiposUnidades()}"  process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="validacionNuevaUnidad" header="#{msg['atencion']}" widgetVar="validacionNuevaUnidad"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  

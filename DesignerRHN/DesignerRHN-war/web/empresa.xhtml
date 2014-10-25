@@ -481,7 +481,7 @@
                                      selection="#{controlEmpresa.empresaSeleccionada}" scrollWidth="415" selectionMode="single" widgetVar="lovEmpresa" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlEmpresa.filtrarLovEmpresas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlEmpresa.activarAceptar()}" update=":form:aceptarEmp"/>
-                            <p:ajax event="rowDblselect" listener="#{controlEmpresa.actualizarEmpresasClonado()}"  process="@this" onstart="lovEmpresa.clearFilters()"  />
+                            <p:ajax event="rowDblselect" listener="#{controlEmpresa.actualizarEmpresasClonado()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEmp']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpresa.filter();" style="width:140px; position: relative; left: 10px;" />  
@@ -502,12 +502,9 @@
                         
                         <h:outputText id="infoRegistroEmpresa" value="#{controlEmpresa.infoRegistroEmpresa}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton icon="ui-icon-check" id="aceptarEmp" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEmpresa.aceptar}" onclick="EmpresaDialogo.hide(), lovEmpresa.clearFilters();" actionListener="#{controlEmpresa.actualizarEmpresasClonado()}" update="lovEmpresa, aceptarEmp" process="@this">
-                            <p:resetInput target=":form:lovEmpresa:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasEmp" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="EmpresaDialogo.hide(), lovEmpresa.clearFilters();" actionListener="#{controlEmpresa.cancelarSeleccionEmpresa()}" update="lovEmpresa" process="@this">
-                            <p:resetInput target=":form:lovEmpresa:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check" id="aceptarEmp" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEmpresa.aceptar}" actionListener="#{controlEmpresa.actualizarEmpresasClonado()}" process="@this"/>
+                        
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasEmp" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlEmpresa.cancelarSeleccionEmpresa()}" process="@this"/>
                     </p:dialog>
                     
                     
@@ -517,7 +514,7 @@
                                      selection="#{controlEmpresa.monedaSeleccionado}" scrollWidth="416" selectionMode="single" widgetVar="lovMoneda" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlEmpresa.filtrarLovMonedas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlEmpresa.activarAceptar()}" update=":form:aceptarM"/>
-                            <p:ajax event="rowDblselect" listener="#{controlEmpresa.actualizarMoneda()}"  process="@this" onstart="lovMoneda.clearFilters()"  />
+                            <p:ajax event="rowDblselect" listener="#{controlEmpresa.actualizarMoneda()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarM']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovMoneda.filter();" style="width:140px; position: relative; left: 10px;" />  
@@ -538,12 +535,9 @@
                         
                         <h:outputText id="infoRegistroMoneda" value="#{controlEmpresa.infoRegistroMoneda}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton icon="ui-icon-check" id="aceptarM" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEmpresa.aceptar}" onclick="MonedaDialogo.hide(), lovMoneda.clearFilters();" actionListener="#{controlEmpresa.actualizarMoneda()}" update="lovMoneda, aceptarM" process="@this">
-                            <p:resetInput target=":form:lovMoneda:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasM" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="MonedaDialogo.hide(), lovMoneda.clearFilters();" actionListener="#{controlEmpresa.cancelarCambioMoneda()}" update="lovMoneda" process="@this">
-                            <p:resetInput target=":form:lovMoneda:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check" id="aceptarM" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEmpresa.aceptar}" actionListener="#{controlEmpresa.actualizarMoneda()}" process="@this"/>
+                        
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasM" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlEmpresa.cancelarCambioMoneda()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['centroCostoD']}" widgetVar="CentroCostoDialogo" draggable="false" resizable="false" closable="false" id="CentroCostoDialogo"  
@@ -552,7 +546,7 @@
                                      selection="#{controlEmpresa.centroCostoSeleccionado}" scrollWidth="416" selectionMode="single" widgetVar="lovCentroCosto" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlEmpresa.filtrarLovCentrosCostos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlEmpresa.activarAceptar()}" update=":form:aceptarCC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlEmpresa.actualizarCentroCosto()}"  process="@this" onstart="lovCentroCosto.clearFilters()"  />
+                            <p:ajax event="rowDblselect" listener="#{controlEmpresa.actualizarCentroCosto()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovFormula.filter();" style="width:140px; position: relative; left: 45px;" />  
@@ -567,12 +561,9 @@
                         
                         <h:outputText id="infoRegistroCentro" value="#{controlEmpresa.infoRegistroCentro}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton icon="ui-icon-check" id="aceptarCC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEmpresa.aceptar}" onclick="CentroCostoDialogo.hide(), lovCentroCosto.clearFilters();" actionListener="#{controlEmpresa.actualizarCentroCosto()}" update="lovCentroCosto, aceptarCC" process="@this">
-                            <p:resetInput target=":form:lovCentroCosto:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasCC" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="CentroCostoDialogo.hide(), lovCentroCosto.clearFilters();" actionListener="#{controlEmpresa.cancelarCambioCentroCosto()}" update="lovCentroCosto" process="@this">
-                            <p:resetInput target=":form:lovCentroCosto:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check" id="aceptarCC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEmpresa.aceptar}" actionListener="#{controlEmpresa.actualizarCentroCosto()}" process="@this"/>
+                        
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasCC" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlEmpresa.cancelarCambioCentroCosto()}" process="@this"/>
                     </p:dialog>
 
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlEmpresa.activarCtrlF11()}"/> 

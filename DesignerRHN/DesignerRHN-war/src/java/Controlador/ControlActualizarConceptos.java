@@ -848,9 +848,10 @@ public class ControlActualizarConceptos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("clavesSapDebitoDialgo.hide()");
         context.reset("form:lovClavesSap:globalFilter");
-        context.update("form:lovClavesSap");
+        context.execute("lovClavesSap.clearFilters()");
+        context.execute("clavesSapDebitoDialgo.hide()");
+        //context.update("form:lovClavesSap");
         context.update("form:datosActualizarConceptos");
     }
 
@@ -903,9 +904,10 @@ public class ControlActualizarConceptos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("claveSapCreditoDialogo.hide()");
         context.reset("form:lovClavesSapCredito:globalFilter");
-        context.update("form:lovClavesSapCredito");
+        context.execute("ovClavesSapCredito.clearFilters()");
+        context.execute("claveSapCreditoDialogo.hide()");
+        //context.update("form:lovClavesSapCredito");
         context.update("form:datosActualizarConceptos");
     }
 
@@ -918,6 +920,10 @@ public class ControlActualizarConceptos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovClavesSapCredito:globalFilter");
+        context.execute("ovClavesSapCredito.clearFilters()");
+        context.execute("claveSapCreditoDialogo.hide()");
     }
 
     public void revisarDialogoGuardar() {
@@ -1119,10 +1125,11 @@ public class ControlActualizarConceptos implements Serializable {
             aceptar = true;
             System.err.println("2 Cambiar empresa empresaSeleccionada  GUARDADO = " + empresaSeleccionada.getNombre());
             getListConceptos();
-            context.update("formularioDialogos:lovEmpresas");
-            context.reset("formularioDialogos:lovEmpresas:globalFilter");
+            //context.update("formularioDialogos:lovEmpresas");
             context.update("form:nombreEmpresa");
             context.update("form:nitEmpresa");
+            context.reset("formularioDialogos:lovEmpresas:globalFilter");
+            context.execute("lovEmpresas.clearFilters()");
             context.execute("EmpresasDialogo.hide()");
         }
         context.update("form:datosActualizarConceptos");
@@ -1133,6 +1140,10 @@ public class ControlActualizarConceptos implements Serializable {
         filtradoEmpresas = null;
         listaEmpresas = null;
         index = -1;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:lovEmpresas:globalFilter");
+        context.execute("lovEmpresas.clearFilters()");
+        context.execute("EmpresasDialogo.hide()");
     }
 
     public void llamadoDialogoBuscarConceptos() {
@@ -1171,8 +1182,9 @@ public class ControlActualizarConceptos implements Serializable {
                 filtrarLOVConceptos = null;
                 aceptar = true;
                 context.update("form:datosActualizarConceptos");
-                context.execute("buscarConceptosPorEmpresaDialogo.hide()");
                 context.reset("formularioDialogos:lovConceptosPorEmpresa:globalFilter");
+                context.execute("lovConceptosPorEmpresa.clearFilters()");
+                context.execute("buscarConceptosPorEmpresaDialogo.hide()");
                 buscarConceptos = true;
                 mostrartodos = false;
                 listLOVConceptos = null;
@@ -1200,7 +1212,9 @@ public class ControlActualizarConceptos implements Serializable {
             index = -1;
             tipoActualizacion = -1;
             context.update("form:aceptarNCC");
-
+            context.reset("formularioDialogos:lovConceptosPorEmpresa:globalFilter");
+            context.execute("lovConceptosPorEmpresa.clearFilters()");
+            context.execute("buscarConceptosPorEmpresaDialogo.hide()");
         } catch (Exception e) {
             System.out.println("ERROR CONTROLACTUALIZARCONCEPTOS.cancelarSeleccionConceptosPorEmpresa ERROR : " + e.getMessage());
         }

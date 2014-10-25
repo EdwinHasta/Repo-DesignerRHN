@@ -356,9 +356,10 @@ public class ControlClasesAusentismos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("personasDialogo.hide()");
         context.reset("form:lovTiposausentismos:globalFilter");
-        context.update("form:lovTiposausentismos");
+        context.execute("lovTiposausentismos.clearFilters()");
+        context.execute("personasDialogo.hide()");
+        //context.update("form:lovTiposausentismos");
     }
 
     public void cancelarCambioTiposausentismos() {
@@ -374,6 +375,10 @@ public class ControlClasesAusentismos implements Serializable {
         permitirIndex = true;
         listaTiposausentismos = null;
         aceptar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTiposausentismos:globalFilter");
+        context.execute("lovTiposausentismos.clearFilters()");
+        context.execute("personasDialogo.hide()");
     }
 
     public void modificarClasesAusentismos(int indice, String confirmarCambio, String valorConfirmar) {

@@ -896,10 +896,12 @@ public class CargarArchivoPlano implements Serializable {
         aceptar = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:formula");
+        /*
         context.update("formDialogos:formulasDialogo");
         context.update("formDialogos:lovFormulas");
-        context.update("formDialogos:aceptarF");
+        context.update("formDialogos:aceptarF");*/
         context.reset("formDialogos:lovFormulas:globalFilter");
+        context.execute("lovFormulas.clearFilters()");
         context.execute("formulasDialogo.hide()");
     }
 
@@ -907,6 +909,10 @@ public class CargarArchivoPlano implements Serializable {
         filtradoFormulas = null;
         formulaSelecionada = new Formulas();
         aceptar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formDialogos:lovFormulas:globalFilter");
+        context.execute("lovFormulas.clearFilters()");
+        context.execute("formulasDialogo.hide()");
     }
 
     //AUTOCOMPLETAR FORMULAS
@@ -1037,9 +1043,10 @@ public class CargarArchivoPlano implements Serializable {
         seleccionDocumentosSoporteCargado = null;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:documentoR");
-        context.execute("documentoSoporteDialogo.hide()");
         context.reset("formDialogos:lovDocumentoSoporte:globalFilter");
-        context.update("formDialogos:lovDocumentoSoporte");
+        context.execute("lovDocumentoSoporte.clearFilters()");
+        context.execute("documentoSoporteDialogo.hide()");
+        //context.update("formDialogos:lovDocumentoSoporte");
     }
 
     public void cancelarSeleccionDocumentoSoporte() {
@@ -1047,6 +1054,10 @@ public class CargarArchivoPlano implements Serializable {
         documentosSoporteCargados = null;
         seleccionDocumentosSoporteCargado = null;
         aceptar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formDialogos:lovDocumentoSoporte:globalFilter");
+        context.execute("lovDocumentoSoporte.clearFilters()");
+        context.execute("documentoSoporteDialogo.hide()");
     }
 
     public void llamarDialogoDocumentoSoporte() {

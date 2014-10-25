@@ -152,11 +152,11 @@ public class ControlGrupoConcepto implements Serializable {
             administrarGruposConceptos.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void seleccionarTipoNuevoFundamental(String estadoTipo, int tipoNuevo) {
         if (tipoNuevo == 1) {
             if (estadoTipo.equals("SI ES PERSONALIZABLE")) {
@@ -225,9 +225,10 @@ public class ControlGrupoConcepto implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("conceptosDialogo.hide()");
         context.reset("formularioDialogos:LOVConceptos:globalFilter");
-        context.update("formularioDialogos:LOVConceptos");
+        context.execute("LOVConceptos.clearFilters()");
+        context.execute("conceptosDialogo.hide()");
+        //context.update("formularioDialogos:LOVConceptos");
     }
 
     public void cancelarCambioConceptos() {
@@ -239,6 +240,10 @@ public class ControlGrupoConcepto implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVConceptos:globalFilter");
+        context.execute("LOVConceptos.clearFilters()");
+        context.execute("conceptosDialogo.hide()");
     }
 
     //CREAR Grupo Concepto
@@ -1435,9 +1440,10 @@ public class ControlGrupoConcepto implements Serializable {
         secuenciaGrupoConcepto = grupoConceptoSeleccionado.getSecuencia();
         listaVigenciasGruposConceptos = null;
         getListaVigenciasGruposConceptos();
-        context.execute("gruposConceptosDialogo.hide()");
         context.reset("formularioDialogos:LOVGrupos:globalFilter");
-        context.update("formularioDialogos:LOVGrupos");
+        context.execute("LOVGrupos.clearFilters()");
+        context.execute("gruposConceptosDialogo.hide()");
+        //context.update("formularioDialogos:LOVGrupos");
         context.update("form:datosGruposConceptos");
         context.update("form:datosVigenciasGruposConceptos");
         filtradoListaGruposConceptos = null;
@@ -1458,6 +1464,10 @@ public class ControlGrupoConcepto implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVGrupos:globalFilter");
+        context.execute("LOVGrupos.clearFilters()");
+        context.execute("gruposConceptosDialogo.hide()");
     }
 
     //AUTOCOMPLETAR Vigencias

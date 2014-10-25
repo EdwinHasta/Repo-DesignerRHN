@@ -2350,10 +2350,12 @@ public class ControlDetalleEmpresa implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        /*
         context.update("form:EmpresasDialogo");
         context.update("form:lovEmpresas");
-        context.update("form:aceptarE");
-        context.update("form:lovEmpresas:globalFilter");
+        context.update("form:aceptarE");*/
+        context.reset("form:lovEmpresas:globalFilter");
+        context.execute("lovEmpresas.clearFilters()");
         context.execute("EmpresasDialogo.hide()");
     }
 
@@ -2365,6 +2367,10 @@ public class ControlDetalleEmpresa implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovEmpresas:globalFilter");
+        context.execute("lovEmpresas.clearFilters()");
+        context.execute("EmpresasDialogo.hide()");
     }
 
     public void actualizarCiudad() {
@@ -2409,10 +2415,12 @@ public class ControlDetalleEmpresa implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        /*
         context.update("form:CiudadDialogo");
         context.update("form:lovCiudad");
-        context.update("form:aceptarC");
-        context.update("form:lovCiudad:globalFilter");
+        context.update("form:aceptarC");*/
+        context.reset("form:lovCiudad:globalFilter");
+        context.execute("lovCiudad.clearFilters()");
         context.execute("CiudadDialogo.hide()");
     }
 
@@ -2424,6 +2432,10 @@ public class ControlDetalleEmpresa implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovCiudad:globalFilter");
+        context.execute("lovCiudad.clearFilters()");
+        context.execute("CiudadDialogo.hide()");
     }
 
     public void actualizarCiudadDocumento() {
@@ -2469,10 +2481,12 @@ public class ControlDetalleEmpresa implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        /*
         context.update("form:CiudadDocumentoDialogo");
         context.update("form:lovCiudadDocumento");
-        context.update("form:aceptarCD");
-        context.update("form:lovCiudadDocumento:globalFilter");
+        context.update("form:aceptarCD");*/
+        context.reset("form:lovCiudadDocumento:globalFilter");
+        context.execute("lovCiudadDocumento.clearFilters()");
         context.execute("CiudadDocumentoDialogo.hide()");
     }
 
@@ -2484,6 +2498,10 @@ public class ControlDetalleEmpresa implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovCiudadDocumento:globalFilter");
+        context.execute("lovCiudadDocumento.clearFilters()");
+        context.execute("CiudadDocumentoDialogo.hide()");
     }
 
     public void actualizarGerente() {
@@ -2528,10 +2546,12 @@ public class ControlDetalleEmpresa implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        /*
         context.update("form:GerenteDialogo");
         context.update("form:lovGerente");
-        context.update("form:aceptarG");
-        context.update("form:lovGerente:globalFilter");
+        context.update("form:aceptarG");*/
+        context.reset("form:lovGerente:globalFilter");
+        context.execute("lovGerente.clearFilters()");
         context.execute("GerenteDialogo.hide()");
     }
 
@@ -2543,6 +2563,10 @@ public class ControlDetalleEmpresa implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovGerente:globalFilter");
+        context.execute("lovGerente.clearFilters()");
+        context.execute("GerenteDialogo.hide()");
     }
 
     public void actualizarSubGerente() {
@@ -2587,10 +2611,12 @@ public class ControlDetalleEmpresa implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        /*
         context.update("form:SubGerenteDialogo");
         context.update("form:lovSubGerente");
-        context.update("form:aceptarSG");
-        context.update("form:lovRepresentante:globalFilter");
+        context.update("form:aceptarSG");*/
+        context.reset("form:lovRepresentante:globalFilter");
+        context.execute("lovSubGerente.clearFilters()");
         context.execute("SubGerenteDialogo.hide()");
     }
 
@@ -2602,6 +2628,10 @@ public class ControlDetalleEmpresa implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovRepresentante:globalFilter");
+        context.execute("lovSubGerente.clearFilters()");
+        context.execute("SubGerenteDialogo.hide()");
     }
 
     public void actualizarRepresentante() {
@@ -2646,10 +2676,12 @@ public class ControlDetalleEmpresa implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        /*
         context.update("form:RepresentanteDialogo");
         context.update("form:lovRepresentante");
-        context.update("form:aceptarR");
-        context.update("form:lovRepresentante:globalFilter");
+        context.update("form:aceptarR");*/
+        context.reset("form:lovRepresentante:globalFilter");
+        context.execute("lovRepresentante.clearFilters()");
         context.execute("RepresentanteDialogo.hide()");
     }
 
@@ -2661,6 +2693,10 @@ public class ControlDetalleEmpresa implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovRepresentante:globalFilter");
+        context.execute("lovRepresentante.clearFilters()");
+        context.execute("RepresentanteDialogo.hide()");
     }
 
     public void actualizarPersona() {
@@ -2705,10 +2741,12 @@ public class ControlDetalleEmpresa implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        /*
         context.update("form:PersonaFirmaDialogo");
         context.update("form:lovPersona");
-        context.update("form:aceptarPF");
-        context.update("form:lovPersona:globalFilter");
+        context.update("form:aceptarPF");*/
+        context.reset("form:lovPersona:globalFilter");
+        context.execute("lovPersona.clearFilters()");
         context.execute("PersonaFirmaDialogo.hide()");
     }
 
@@ -2720,6 +2758,10 @@ public class ControlDetalleEmpresa implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovPersona:globalFilter");
+        context.execute("lovPersona.clearFilters()");
+        context.execute("PersonaFirmaDialogo.hide()");
     }
 
     public void actualizarCargo() {
@@ -2764,10 +2806,12 @@ public class ControlDetalleEmpresa implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        /*
         context.update("form:CargoFirmaDialogo");
         context.update("form:lovCargoFirma");
-        context.update("form:aceptarCF");
-        context.update("form:lovCargoFirma:globalFilter");
+        context.update("form:aceptarCF");*/
+        context.reset("form:lovCargoFirma:globalFilter");
+        context.execute("lovCargoFirma.clearFilters()");
         context.execute("CargoFirmaDialogo.hide()");
     }
 
@@ -2779,6 +2823,10 @@ public class ControlDetalleEmpresa implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovCargoFirma:globalFilter");
+        context.execute("lovCargoFirma.clearFilters()");
+        context.execute("CargoFirmaDialogo.hide()");
     }
 
     public void listaValoresBoton() {

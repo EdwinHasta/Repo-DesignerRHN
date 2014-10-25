@@ -157,9 +157,10 @@ public class ControlReingresarEmpleado implements Serializable {
         empleado = empleadoSeleccionado;
         empleadoSeleccionado = null;
         aceptar = true;
-        context.execute("empleadosDialogo.hide()");
         context.reset("formularioDialogos:LOVEmpleados:globalFilter");
-        context.update("formularioDialogos:LOVEmpleados");
+        context.execute("LOVEmpleados.clearFilters()");
+        context.execute("empleadosDialogo.hide()");
+        //context.update("formularioDialogos:LOVEmpleados");
         context.update("form:nombreEmpleado");
     }
 
@@ -168,9 +169,10 @@ public class ControlReingresarEmpleado implements Serializable {
         estructura = estructuraSeleccionada;
         estructuraSeleccionada = null;
         aceptar = true;
-        context.execute("estructurasDialogo.hide()");
         context.reset("formularioDialogos:LOVEstructuras:globalFilter");
-        context.update("formularioDialogos:LOVEstructuras");
+        context.execute("LOVEstructuras.clearFilters()");
+        context.execute("estructurasDialogo.hide()");
+        //context.update("formularioDialogos:LOVEstructuras");
         context.update("form:estructura");
     }
 
@@ -292,11 +294,19 @@ public class ControlReingresarEmpleado implements Serializable {
     public void cancelarCambioEmpleados() {
         empleadoSeleccionado = null;
         aceptar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVEmpleados:globalFilter");
+        context.execute("LOVEmpleados.clearFilters()");
+        context.execute("empleadosDialogo.hide()");
     }
 
     public void cancelarCambioEstructuras() {
         estructuraSeleccionada = null;
         aceptar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVEstructuras:globalFilter");
+        context.execute("LOVEstructuras.clearFilters()");
+        context.execute("estructurasDialogo.hide()");
     }
 
     public void activarAceptar() {

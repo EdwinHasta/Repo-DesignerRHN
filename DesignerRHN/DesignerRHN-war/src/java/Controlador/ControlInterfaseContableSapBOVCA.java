@@ -213,7 +213,7 @@ public class ControlInterfaseContableSapBOVCA implements Serializable {
                 activarDeshacer = true;
                 context.update("form:btnEnviar");
                 context.update("form:btnDeshacer");
-                
+
                 context.update("form:PLANO");
                 totalCGenerado = 0;
                 totalDGenerado = 0;
@@ -1258,11 +1258,13 @@ public class ControlInterfaseContableSapBOVCA implements Serializable {
         }
         empresaSeleccionada = new Empresas();
         filtrarLovEmpresas = null;
-        aceptar = true;
-        context.update("form:EmpresaDialogo");
-        context.update("form:lovEmpresa");
-        context.update("form:aceptarE");
+        aceptar = true;/*
+         context.update("form:EmpresaDialogo");
+         context.update("form:lovEmpresa");
+         context.update("form:aceptarE");*/
+
         context.reset("form:lovEmpresa:globalFilter");
+        context.execute("lovEmpresa.clearFilters()");
         context.execute("EmpresaDialogo.hide()");
     }
 
@@ -1273,6 +1275,10 @@ public class ControlInterfaseContableSapBOVCA implements Serializable {
         permitirIndexParametro = true;
         aceptar = true;
         tipoActualizacion = -1;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovEmpresa:globalFilter");
+        context.execute("lovEmpresa.clearFilters()");
+        context.execute("EmpresaDialogo.hide()");
     }
 
     public void actualizarProceso() {
@@ -1294,11 +1300,13 @@ public class ControlInterfaseContableSapBOVCA implements Serializable {
         }
         procesoSeleccionado = new Procesos();
         filtrarLovProcesos = null;
-        aceptar = true;
-        context.update("form:ProcesoDialogo");
-        context.update("form:lovProceso");
-        context.update("form:aceptarP");
+        aceptar = true;/*
+         context.update("form:ProcesoDialogo");
+         context.update("form:lovProceso");
+         context.update("form:aceptarP");*/
+
         context.reset("form:lovProceso:globalFilter");
+        context.execute("lovProceso.clearFilters()");
         context.execute("ProcesoDialogo.hide()");
     }
 
@@ -1308,6 +1316,10 @@ public class ControlInterfaseContableSapBOVCA implements Serializable {
         filtrarLovProcesos = null;
         indexParametroContable = -1;
         permitirIndexParametro = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovProceso:globalFilter");
+        context.execute("lovProceso.clearFilters()");
+        context.execute("ProcesoDialogo.hide()");
     }
 
     public void listaValoresBoton() {
@@ -1760,7 +1772,7 @@ public class ControlInterfaseContableSapBOVCA implements Serializable {
             System.out.println("Error cerrarPeriodoContable Controlador : " + e.toString());
         }
     }
-    
+
     public void actionBtnGenerarPlano() {
         try {
             guardadoGeneral();
@@ -1820,8 +1832,8 @@ public class ControlInterfaseContableSapBOVCA implements Serializable {
             System.out.println("Error descarga : " + e.toString());
         }
     }
-    
-    public void cerrarPaginaDescarga(){
+
+    public void cerrarPaginaDescarga() {
         RequestContext.getCurrentInstance().execute("planoGeneradoOK.hide()");
     }
 

@@ -1,4 +1,3 @@
-
 package Controlador;
 
 import Entidades.ActualUsuario;
@@ -873,10 +872,10 @@ public class ControlInterfaseContableDynamicsSX implements Serializable {
             String descripcionProceso = administrarInterfaseDynamicsSX.obtenerDescripcionProcesoArchivo(parametroContableActual.getProceso().getSecuencia());
             String nombreArchivo = "Interfase_DYNAMICS_" + descripcionProceso;
             administrarInterfaseDynamicsSX.ejecutarPKGCrearArchivoPlano(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), descripcionProceso, nombreArchivo, parametroContableActual.getCodigoempleadodesde(), parametroContableActual.getCodigoempleadohasta());
-           
+
         } catch (Exception e) {
             System.out.println("Error actionBtnGenerarPlano Control : " + e.toString());
-           
+
         } finally {
             actualUsuarioBD = null;
             getActualUsuarioBD();
@@ -1640,11 +1639,12 @@ public class ControlInterfaseContableDynamicsSX implements Serializable {
         }
         empresaSeleccionada = new Empresas();
         filtrarLovEmpresas = null;
-        aceptar = true;
+        aceptar = true;/*
         context.update("form:EmpresaDialogo");
         context.update("form:lovEmpresa");
-        context.update("form:aceptarE");
+        context.update("form:aceptarE");*/
         context.reset("form:lovEmpresa:globalFilter");
+        context.execute("lovEmpresa.clearFilters()");
         context.execute("EmpresaDialogo.hide()");
     }
 
@@ -1655,6 +1655,10 @@ public class ControlInterfaseContableDynamicsSX implements Serializable {
         permitirIndexParametro = true;
         aceptar = true;
         tipoActualizacion = -1;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovEmpresa:globalFilter");
+        context.execute("lovEmpresa.clearFilters()");
+        context.execute("EmpresaDialogo.hide()");
     }
 
     public void actualizarProceso() {
@@ -1676,11 +1680,13 @@ public class ControlInterfaseContableDynamicsSX implements Serializable {
         }
         procesoSeleccionado = new Procesos();
         filtrarLovProcesos = null;
-        aceptar = true;
-        context.update("form:ProcesoDialogo");
-        context.update("form:lovProceso");
-        context.update("form:aceptarP");
+        aceptar = true;/*
+         context.update("form:ProcesoDialogo");
+         context.update("form:lovProceso");
+         context.update("form:aceptarP");*/
+
         context.reset("form:lovProceso:globalFilter");
+        context.execute("lovProceso.clearFilters()");
         context.execute("ProcesoDialogo.hide()");
     }
 
@@ -1690,6 +1696,10 @@ public class ControlInterfaseContableDynamicsSX implements Serializable {
         filtrarLovProcesos = null;
         indexParametroContable = -1;
         permitirIndexParametro = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovProceso:globalFilter");
+        context.execute("lovProceso.clearFilters()");
+        context.execute("ProcesoDialogo.hide()");
     }
 
     public void actualizarEmpleadoDesde() {
@@ -1711,11 +1721,12 @@ public class ControlInterfaseContableDynamicsSX implements Serializable {
         }
         empleadoSeleccionado = new Empleados();
         filtrarLovEmpleados = null;
-        aceptar = true;
+        aceptar = true;/*
         context.update("formEmplDialogo:EmpleadoDesdeDialogo");
         context.update("formEmplDialogo:lovEmpleadoDesde");
-        context.update("formEmplDialogo:aceptarED");
+        context.update("formEmplDialogo:aceptarED");*/
         context.reset("formEmplDialogo:lovEmpleadoDesde:globalFilter");
+        context.execute("lovEmpleadoDesde.clearFilters()");
         context.execute("EmpleadoDesdeDialogo.hide()");
     }
 
@@ -1725,6 +1736,10 @@ public class ControlInterfaseContableDynamicsSX implements Serializable {
         filtrarLovEmpleados = null;
         indexParametroContable = -1;
         permitirIndexParametro = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formEmplDialogo:lovEmpleadoDesde:globalFilter");
+        context.execute("lovEmpleadoDesde.clearFilters()");
+        context.execute("EmpleadoDesdeDialogo.hide()");
     }
 
     public void actualizarEmpleadoHasta() {
@@ -1746,11 +1761,12 @@ public class ControlInterfaseContableDynamicsSX implements Serializable {
         }
         empleadoSeleccionado = new Empleados();
         filtrarLovEmpleados = null;
-        aceptar = true;
+        aceptar = true;/*
         context.update("formEmplDialogo:EmpleadoHastaDialogo");
         context.update("formEmplDialogo:lovEmpleadoHasta");
-        context.update("formEmplDialogo:aceptarEH");
+        context.update("formEmplDialogo:aceptarEH");*/
         context.reset("formEmplDialogo:lovEmpleadoHasta:globalFilter");
+        context.execute("lovEmpleadoHasta.clearFilters()");
         context.execute("EmpleadoHastaDialogo.hide()");
     }
 
@@ -1760,6 +1776,10 @@ public class ControlInterfaseContableDynamicsSX implements Serializable {
         filtrarLovEmpleados = null;
         indexParametroContable = -1;
         permitirIndexParametro = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formEmplDialogo:lovEmpleadoHasta:globalFilter");
+        context.execute("lovEmpleadoHasta.clearFilters()");
+        context.execute("EmpleadoHastaDialogo.hide()");
     }
 
     public void listaValoresBoton() {

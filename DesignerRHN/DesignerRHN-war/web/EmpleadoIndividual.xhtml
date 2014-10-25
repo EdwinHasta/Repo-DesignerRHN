@@ -415,7 +415,7 @@
                                      selection="#{controlEmpleadoIndividual.seleccionTipoDocumento}" selectionMode="single" widgetVar="lovTiposDocumentos" scrollable="true" scrollWidth="416" scrollHeight="250"
                                      filteredValue="#{controlEmpleadoIndividual.filtradoListaTiposDocumentos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlEmpleadoIndividual.activarAceptar()}" update=":formDialogos:aceptarTD"/>
-                            <p:ajax event="rowDblselect" process="@this" listener="#{controlEmpleadoIndividual.seleccionarTipoDocumento()}" onstart="lovTiposDocumentos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" process="@this" listener="#{controlEmpleadoIndividual.seleccionarTipoDocumento()}" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTD']}"  style="position: absolute; left: 27px; top: 16px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTiposDocumentos.filter();" style="width:150px; position: relative; left: 15px;" />  
@@ -436,12 +436,9 @@
 
                         <h:outputText id="infoRegistroTipoDocumento" value="#{controlEmpleadoIndividual.infoRegistroTipoDocumento}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton icon="ui-icon-check" id="aceptarTD" style="position: relative; left: 303px" value="#{msg['aceptar']}" disabled="#{controlEmpleadoIndividual.aceptar}" actionListener="#{controlEmpleadoIndividual.seleccionarTipoDocumento()}"  onclick="lovTiposDocumentos.clearFilters();" update="aceptarTD" process="@this">
-                            <p:resetInput target=":formDialogos:lovTiposDocumentos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasTD" style="position: relative; left: 303px" value="#{msg['atras']}" onclick="TiposDocumentosDialogo.hide(), lovTiposDocumentos.clearFilters();" actionListener="#{controlEmpleadoIndividual.cancelarSeleccionTipoDocumento()}" update="aceptarTD, lovTiposDocumentos" process="@this">
-                            <p:resetInput target=":formDialogos:lovTiposDocumentos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check" id="aceptarTD" style="position: relative; left: 303px" value="#{msg['aceptar']}" disabled="#{controlEmpleadoIndividual.aceptar}" actionListener="#{controlEmpleadoIndividual.seleccionarTipoDocumento()}"   process="@this"/>
+                        
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasTD" style="position: relative; left: 303px" value="#{msg['atras']}"  actionListener="#{controlEmpleadoIndividual.cancelarSeleccionTipoDocumento()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{controlEmpleadoIndividual.cabezeraDialogoCiudad}" widgetVar="CiudadesDialogo" draggable="false" resizable="false" closable="false" id="CiudadesDialogo"  
@@ -451,7 +448,7 @@
                                      filteredValue="#{controlEmpleadoIndividual.filtradoListaCiudades}" emptyMessage="#{msg['lovvacio']}" liveScroll="true"
                                      scrollRows="15">              
                             <p:ajax event="rowSelect" listener="#{controlEmpleadoIndividual.activarAceptar()}" update=":formDialogos:aceptarC" />
-                            <p:ajax event="rowDblselect" process="@this" listener="#{controlEmpleadoIndividual.seleccionarCiudad()}" onstart="lovCiudades.clearFilters()"/>
+                            <p:ajax event="rowDblselect" process="@this" listener="#{controlEmpleadoIndividual.seleccionarCiudad()}" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 16px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCiudades.filter();" style="width:150px; position: relative; left: -10px;" />  
@@ -472,12 +469,8 @@
 
                         <h:outputText id="infoRegistroCiudad" value="#{controlEmpleadoIndividual.infoRegistroCiudad}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton icon="ui-icon-check" id="aceptarC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEmpleadoIndividual.aceptar}" actionListener="#{controlEmpleadoIndividual.seleccionarCiudad()}"  onclick="lovCiudades.clearFilters();" update="aceptarC" process="@this">
-                            <p:resetInput target=":formDialogos:lovCiudades:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasC" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="CiudadesDialogo.hide(), lovCiudades.clearFilters();" actionListener="#{controlEmpleadoIndividual.cancelarSeleccionCiudad()}" update="aceptarC, lovCiudades" process="@this">
-                            <p:resetInput target=":formDialogos:lovCiudades:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check" id="aceptarC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEmpleadoIndividual.aceptar}" actionListener="#{controlEmpleadoIndividual.seleccionarCiudad()}"  process="@this"/>
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasC" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlEmpleadoIndividual.cancelarSeleccionCiudad()}" process="@this"/>
                     </p:dialog> 
 
                     <p:dialog header="#{msg['cargopostuladoCP']}" widgetVar="CargosDialogo" draggable="false" resizable="false" closable="false" id="CargosDialogo"  
@@ -486,7 +479,7 @@
                                      selection="#{controlEmpleadoIndividual.seleccionCargo}" selectionMode="single" widgetVar="lovCargos" scrollable="true" scrollWidth="416" scrollHeight="250"
                                      filteredValue="#{controlEmpleadoIndividual.filtradoListaCargos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlEmpleadoIndividual.activarAceptar()}" update=":formDialogos:aceptarCA"/>
-                            <p:ajax event="rowDblselect" process="@this" listener="#{controlEmpleadoIndividual.seleccionarCargo()}" onstart="lovCargos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" process="@this" listener="#{controlEmpleadoIndividual.seleccionarCargo()}" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCP']}"  style="position: absolute; left: 27px; top: 16px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCargos.filter();" style="width:150px; position: relative; left: -10px;" />  
@@ -501,12 +494,8 @@
 
                         <h:outputText id="infoRegistroCargo" value="#{controlEmpleadoIndividual.infoRegistroCargo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton icon="ui-icon-check" id="aceptarCA" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEmpleadoIndividual.aceptar}" actionListener="#{controlEmpleadoIndividual.seleccionarCargo()}"  onclick="lovCargos.clearFilters();" update="aceptarCA" process="@this">
-                            <p:resetInput target=":formDialogos:lovCargos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasCA" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="CargosDialogo.hide(), lovCargos.clearFilters();" actionListener="#{controlEmpleadoIndividual.cancelarSeleccionCargo()}" update="aceptarCA, lovCargos" process="@this">
-                            <p:resetInput target=":formDialogos:lovCargos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check" id="aceptarCA" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEmpleadoIndividual.aceptar}" actionListener="#{controlEmpleadoIndividual.seleccionarCargo()}"   process="@this"/>
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasCA" style="position: relative; left: 230px" value="#{msg['atras']}"  actionListener="#{controlEmpleadoIndividual.cancelarSeleccionCargo()}"  process="@this"/>
                     </p:dialog> 
 
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  

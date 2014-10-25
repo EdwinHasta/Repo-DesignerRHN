@@ -1418,10 +1418,12 @@ public class ControlTipoContrato implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
+        /*
         context.update("form:TipoDiaDialogo");
         context.update("form:lovTipoDia");
-        context.update("form:aceptarTD");
+        context.update("form:aceptarTD");*/
         context.reset("form:lovTipoDia:globalFilter");
+        context.execute("lovTipoDia.clearFilters()");
         context.execute("TipoDiaDialogo.hide()");
     }
 
@@ -1433,6 +1435,10 @@ public class ControlTipoContrato implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndexDias = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTipoDia:globalFilter");
+        context.execute("lovTipoDia.clearFilters()");
+        context.execute("TipoDiaDialogo.hide()");
     }
 
     /**
@@ -1688,16 +1694,22 @@ public class ControlTipoContrato implements Serializable {
         context.update("form:nombreTipoCClonarBase");
         tipoContratoSeleccionado = new TiposContratos();
         filtrarLovTiposContratos = null;
+        /*
         context.update("form:TipoContratoDialogo");
         context.update("form:lovTipoContrato");
-        context.update("form:aceptarTC");
+        context.update("form:aceptarTC");*/
         context.reset("form:lovTipoContrato:globalFilter");
+        context.execute("lovTipoContrato.clearFilters()");
         context.execute("TipoContratoDialogo.hide()");
     }
 
     public void cancelarTipoContratoClonar() {
         tipoContratoSeleccionado = new TiposContratos();
         filtrarLovTiposContratos = null;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTipoContrato:globalFilter");
+        context.execute("lovTipoContrato.clearFilters()");
+        context.execute("TipoContratoDialogo.hide()");
     }
 
     public void autoCompletarSeleccionarTipoContratoClonar(String valorConfirmar, int tipoAutoCompletar) {

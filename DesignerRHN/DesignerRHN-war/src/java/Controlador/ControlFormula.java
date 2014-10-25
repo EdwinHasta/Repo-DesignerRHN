@@ -453,11 +453,12 @@ public class ControlFormula implements Serializable {
         }
         filtradoListaFormulasLOV = null;
         formulaSeleccionada = null;
-        aceptar = true;
+        aceptar = true;/*
         context.update("formularioDialogos:FormulasDialogo");
         context.update("formularioDialogos:lovFormulas");
-        context.update("formularioDialogos:aceptarF");
+        context.update("formularioDialogos:aceptarF");*/
         context.reset("formularioDialogos:lovFormulas:globalFilter");
+        context.execute("lovFormulas.clearFilters()");
         context.execute("FormulasDialogo.hide()");
     }
 
@@ -465,6 +466,10 @@ public class ControlFormula implements Serializable {
         filtradoListaFormulasLOV = null;
         formulaSeleccionada = null;
         aceptar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:lovFormulas:globalFilter");
+        context.execute("lovFormulas.clearFilters()");
+        context.execute("FormulasDialogo.hide()");
     }
 
     public void borrarFormula() {

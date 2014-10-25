@@ -220,7 +220,8 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         try {
             if (tipoLista == 0) {
                 tipoLista = 1;
-            } RequestContext context = RequestContext.getCurrentInstance();
+            }
+            RequestContext context = RequestContext.getCurrentInstance();
             infoRegistro = "Cantidad de registros: " + filtrarEmplVigenciaNormaLaboralPorEmplado.size();
             context.update("form:informacionRegistro");
         } catch (Exception e) {
@@ -588,11 +589,13 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
-        cualCelda = -1;
-        context.update("form:sucursalesDialogo");
-        context.update("form:lovTiposFamiliares");
-        context.update("form:aceptarS");
+        cualCelda = -1;/*
+         context.update("form:sucursalesDialogo");
+         context.update("form:lovTiposFamiliares");
+         context.update("form:aceptarS");*/
+
         context.reset("form:lovTiposFamiliares:globalFilter");
+        context.execute("lovTiposFamiliares.clearFilters()");
         context.execute("sucursalesDialogo.hide()");
         //context.update("form:datosHvEntrevista");
     }
@@ -605,6 +608,10 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTiposFamiliares:globalFilter");
+        context.execute("lovTiposFamiliares.clearFilters()");
+        context.execute("sucursalesDialogo.hide()");
     }
 
     public void valoresBackupAutocompletar(int tipoNuevo) {

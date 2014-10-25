@@ -1181,11 +1181,12 @@ public class ControlFormulaContrato implements Serializable {
         activoDetalle = true;
         RequestContext.getCurrentInstance().update("form:detalleFormula");
         secRegistroFormulaContrato = null;
-        tipoActualizacion = -1;
+        tipoActualizacion = -1;/*
         context.update("form:ContratoDialogo");
         context.update("form:lovContrato");
-        context.update("form:aceptarC");
+        context.update("form:aceptarC");*/
         context.reset("form:lovContrato:globalFilter");
+        context.execute("lovContrato.clearFilters()");
         context.execute("ContratoDialogo.hide()");
     }
 
@@ -1199,6 +1200,10 @@ public class ControlFormulaContrato implements Serializable {
         secRegistroFormulaContrato = null;
         tipoActualizacion = -1;
         permitirIndexFormulaContrato = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovContrato:globalFilter");
+        context.execute("lovContrato.clearFilters()");
+        context.execute("ContratoDialogo.hide()");
     }
 
     public void actualizarTercero() {
@@ -1244,11 +1249,12 @@ public class ControlFormulaContrato implements Serializable {
         activoDetalle = true;
         RequestContext.getCurrentInstance().update("form:detalleFormula");
         secRegistroFormulaContrato = null;
-        tipoActualizacion = -1;
+        tipoActualizacion = -1;/*
         context.update("form:TerceroDialogo");
         context.update("form:lovTercero");
-        context.update("form:aceptarT");
+        context.update("form:aceptarT");*/
         context.reset("form:lovTercero:globalFilter");
+        context.execute("lovTercero.clearFilters()");
         context.execute("TerceroDialogo.hide()");
     }
 
@@ -1262,6 +1268,10 @@ public class ControlFormulaContrato implements Serializable {
         secRegistroFormulaContrato = null;
         tipoActualizacion = -1;
         permitirIndexFormulaContrato = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTercero:globalFilter");
+        context.execute("lovTercero.clearFilters()");
+        context.execute("TerceroDialogo.hide()");
     }
 
     public void actualizarPeriodicidad() {
@@ -1307,11 +1317,12 @@ public class ControlFormulaContrato implements Serializable {
         activoDetalle = true;
         RequestContext.getCurrentInstance().update("form:detalleFormula");
         secRegistroFormulaContrato = null;
-        tipoActualizacion = -1;
+        tipoActualizacion = -1;/*
         context.update("form:PeriodicidadDialogo");
         context.update("form:lovPeriodicidad");
-        context.update("form:aceptarP");
+        context.update("form:aceptarP");*/
         context.reset("form:lovPeriodicidad:globalFilter");
+        context.execute("lovPeriodicidad.clearFilters()");
         context.execute("PeriodicidadDialogo.hide()");
     }
 
@@ -1325,6 +1336,10 @@ public class ControlFormulaContrato implements Serializable {
         secRegistroFormulaContrato = null;
         tipoActualizacion = -1;
         permitirIndexFormulaContrato = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovPeriodicidad:globalFilter");
+        context.execute("lovPeriodicidad.clearFilters()");
+        context.execute("PeriodicidadDialogo.hide()");
     }
 
     public void activarAceptar() {

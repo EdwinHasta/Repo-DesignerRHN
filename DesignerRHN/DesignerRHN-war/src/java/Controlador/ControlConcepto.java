@@ -129,7 +129,7 @@ public class ControlConcepto implements Serializable {
         aceptarEditar = true;
         mostrarTodos = true;
         cualCelda = -1;
-        tipoLista = 0; 
+        tipoLista = 0;
         //guardar
         guardado = true;
         //Crear VC
@@ -820,11 +820,13 @@ public class ControlConcepto implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         activoDetalle = true;
-        context.update("form:DETALLES");
-        context.update("formularioDialogos:unidadesDialogo");
-        context.update("formularioDialogos:lovUnidades");
-        context.update("formularioDialogos:aceptarU");
+        context.update("form:DETALLES");/*
+         context.update("formularioDialogos:unidadesDialogo");
+         context.update("formularioDialogos:lovUnidades");
+         context.update("formularioDialogos:aceptarU");*/
+
         context.reset("formularioDialogos:lovUnidades:globalFilter");
+        context.execute("lovUnidades.clearFilters()");
         context.execute("unidadesDialogo.hide()");
     }
 
@@ -837,7 +839,11 @@ public class ControlConcepto implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         activoDetalle = true;
-        RequestContext.getCurrentInstance().update("form:DETALLES");
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:DETALLES");
+        context.reset("formularioDialogos:lovUnidades:globalFilter");
+        context.execute("lovUnidades.clearFilters()");
+        context.execute("unidadesDialogo.hide()");
     }
 
     public void actualizarTercero() {
@@ -883,11 +889,14 @@ public class ControlConcepto implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         activoDetalle = true;
-        RequestContext.getCurrentInstance().update("form:DETALLES");
-        context.update("formularioDialogos:TercerosDialogo");
-        context.update("formularioDialogos:lovTerceros");
-        context.update("formularioDialogos:aceptarT");
+        context.update("form:DETALLES");
+        /*
+         context.update("formularioDialogos:TercerosDialogo");
+         context.update("formularioDialogos:lovTerceros");
+         context.update("formularioDialogos:aceptarT");
+         */
         context.reset("formularioDialogos:lovTerceros:globalFilter");
+        context.execute("lovTerceros.clearFilters()");
         context.execute("TercerosDialogo.hide()");
     }
 
@@ -900,7 +909,11 @@ public class ControlConcepto implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         activoDetalle = true;
-        RequestContext.getCurrentInstance().update("form:DETALLES");
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:DETALLES");
+        context.reset("formularioDialogos:lovTerceros:globalFilter");
+        context.execute("lovTerceros.clearFilters()");
+        context.execute("TercerosDialogo.hide()");
     }
 
     public void lovEmpresas() {
@@ -922,11 +935,13 @@ public class ControlConcepto implements Serializable {
             context.update("form:nitEmpresa");
             filtradoListaEmpresas = null;
             aceptar = true;
-
-            context.update("formularioDialogos:EmpresasDialogo");
-            context.update("formularioDialogos:lovEmpresas");
-            context.update("formularioDialogos:aceptarE");
+            /*
+             context.update("formularioDialogos:EmpresasDialogo");
+             context.update("formularioDialogos:lovEmpresas");
+             context.update("formularioDialogos:aceptarE");
+             */
             context.reset("formularioDialogos:lovEmpresas:globalFilter");
+            context.execute("lovEmpresas.clearFilters()");
             context.execute("EmpresasDialogo.hide()");
             backUpEmpresaActual = empresaActual;
             verCambioEmpresa = false;
@@ -942,7 +957,11 @@ public class ControlConcepto implements Serializable {
         empresaActual = backUpEmpresaActual;
         index = -1;
         activoDetalle = true;
-        RequestContext.getCurrentInstance().update("form:DETALLES");
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:DETALLES");
+        context.reset("formularioDialogos:lovEmpresas:globalFilter");
+        context.execute("lovEmpresas.clearFilters()");
+        context.execute("EmpresasDialogo.hide()");
     }
 
     public void lovConcepto(int quien) {
@@ -1079,10 +1098,12 @@ public class ControlConcepto implements Serializable {
         filtradoConceptosEmpresa_Estado = null;
         conceptoSeleccionado = null;
         aceptar = true;
+        /*
         context.update("formularioDialogos:ConceptosDialogo");
         context.update("formularioDialogos:lovConceptos");
-        context.update("formularioDialogos:aceptarC");
+        context.update("formularioDialogos:aceptarC");*/
         context.reset("formularioDialogos:lovConceptos:globalFilter");
+        context.execute("lovConceptos.clearFilters()");
         context.execute("ConceptosDialogo.hide()");
     }
 
@@ -1090,6 +1111,10 @@ public class ControlConcepto implements Serializable {
         filtradoConceptosEmpresa_Estado = null;
         conceptoSeleccionado = null;
         aceptar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:lovConceptos:globalFilter");
+        context.execute("lovConceptos.clearFilters()");
+        context.execute("ConceptosDialogo.hide()");
     }
 
     public void borrarConcepto() {

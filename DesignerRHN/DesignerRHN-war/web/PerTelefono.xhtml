@@ -279,7 +279,7 @@
                                       filteredValue="#{controlPerTelefonos.filtradoslistaTiposTelefonos}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{tipoTelefono.secuencia}" selection="#{controlPerTelefonos.seleccionTipoTelefono}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlPerTelefonos.activarAceptar()}" update=":formularioDialogos:aceptarTT"/>
-                            <p:ajax event="rowDblselect" listener="#{controlPerTelefonos.actualizarTiposTelefonos()}" process="@this" onstart="LOVTiposTelefonos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlPerTelefonos.actualizarTiposTelefonos()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarT']}"  style="position: absolute; left: 27px; top: 15px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVTiposTelefonos.filter();" style="width:100px; position: relative; left: 80px;" />  
@@ -299,12 +299,10 @@
                                 <h:outputText value="#{tipoTelefono.nombre}" />  
                             </p:column>
                         </p:dataTable>                         
-                        <p:commandButton id="aceptarTT" value="#{msg['aceptar']}" disabled="#{controlPerTelefonos.aceptar}" style="position: absolute; top: 215px; left: 142px;" icon="ui-icon-check" actionListener="#{controlPerTelefonos.actualizarTiposTelefonos()}" onclick="LOVTiposTelefonos.clearFilters();" update="aceptarTT" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVTiposTelefonos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasTT" value="#{msg['atras']}" style="position: absolute; top: 215px; left: 235px; " icon="ui-icon-arrowreturnthick-1-w" onclick="tiposTelefonosDialogo.hide(), LOVTiposTelefonos.clearFilters();" actionListener="#{controlPerTelefonos.cancelarCambioTiposTelefonos()}" update="LOVTiposTelefonos, aceptarTT" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVTiposTelefonos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarTT" value="#{msg['aceptar']}" disabled="#{controlPerTelefonos.aceptar}" style="position: absolute; top: 215px; left: 142px;" icon="ui-icon-check" actionListener="#{controlPerTelefonos.actualizarTiposTelefonos()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasTT" value="#{msg['atras']}" style="position: absolute; top: 215px; left: 235px; " icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlPerTelefonos.cancelarCambioTiposTelefonos()}" process="@this"/>
+                        
                     </p:dialog>
 
                     <!--DIALOGO CIUDADES-->    
@@ -316,7 +314,7 @@
                                       filteredValue="#{controlPerTelefonos.filtradoslistaCiudades}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{ciudad.secuencia}" selection="#{controlPerTelefonos.seleccionCiudades}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlPerTelefonos.activarAceptar()}" update=":formularioDialogos:aceptarC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlPerTelefonos.actualizarCiudad()}" process="@this" onstart="LOVCiudades.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlPerTelefonos.actualizarCiudad()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left:27px; top: 15px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVCiudades.filter();" style="width:150px; position: relative; left: 60px;" />  
@@ -329,12 +327,9 @@
                                 <h:outputText value="#{ciudad.nombre}" />  
                             </p:column>  
                         </p:dataTable>                         
-                        <p:commandButton id="aceptarC" value="#{msg['aceptar']}" disabled="#{controlPerTelefonos.aceptar}" style="position: absolute; top: 215px; left: 142px;" icon="ui-icon-check" actionListener="#{controlPerTelefonos.actualizarCiudad()}" onclick="LOVCiudades.clearFilters();" update="aceptarC" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVCiudades:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasC" value="#{msg['atras']}" style="position: absolute; top: 215px; left: 235px; " icon="ui-icon-arrowreturnthick-1-w" onclick="ciudadesDialogo.hide(), LOVCiudades.clearFilters();" actionListener="#{controlPerTelefonos.cancelarCambioCiudad()}" update="LOVCiudades, aceptarC" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVCiudades:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarC" value="#{msg['aceptar']}" disabled="#{controlPerTelefonos.aceptar}" style="position: absolute; top: 215px; left: 142px;" icon="ui-icon-check" actionListener="#{controlPerTelefonos.actualizarCiudad()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasC" value="#{msg['atras']}" style="position: absolute; top: 215px; left: 235px; " icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlPerTelefonos.cancelarCambioCiudad()}" process="@this"/>
                     </p:dialog>
                     <!-- DIALOGOS EDITAR -->
 

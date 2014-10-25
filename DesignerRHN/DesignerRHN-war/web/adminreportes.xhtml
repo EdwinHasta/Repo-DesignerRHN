@@ -450,7 +450,7 @@
                                      scrollable="true" scrollHeight="200" scrollWidth="345"
                                      filteredValue="#{controlAdminreportes.lovfiltradoslistaInforeportes}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlAdminreportes.activarAceptar()}" update=":formularioDialogos:aceptarI"/>
-                            <p:ajax event="rowDblselect" listener="#{controlAdminreportes.actualizarInforeportes()}" process="@this" onstart="LOVInforeportes.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlAdminreportes.actualizarInforeportes()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarR']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVInforeportes.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -471,12 +471,9 @@
                         </p:dataTable>
                         <h:outputText id="infoRegistroInfoReporte" value="#{controlAdminreportes.infoRegistroInfoReporte}" style="position: relative; top: 15px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarI" value="#{msg['aceptar']}"  disabled="#{controlAdminreportes.aceptar}" icon="ui-icon-check" style="position: absolute; top: 305px; left: 185px;" actionListener="#{controlAdminreportes.actualizarInforeportes()}" onclick="LOVInforeportes.clearFilters();" update="aceptarI" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVInforeportes:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasI" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 280px; " icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlAdminreportes.cancelarCambioInforeportes()}" onclick="inforeportesDialogo.hide(), LOVInforeportes.clearFilters();"  update="LOVInforeportes" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVInforeportes:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarI" value="#{msg['aceptar']}"  disabled="#{controlAdminreportes.aceptar}" icon="ui-icon-check" style="position: absolute; top: 305px; left: 185px;" actionListener="#{controlAdminreportes.actualizarInforeportes()}"  process="@this"/>
+                        
+                        <p:commandButton id="atrasI" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 280px; " icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlAdminreportes.cancelarCambioInforeportes()}" process="@this"/>
                     </p:dialog>
 
                     <!-- DIALOGO L.O.V MODULOS-->
@@ -487,7 +484,7 @@
                                      scrollable="true" scrollHeight="200" scrollWidth="345"
                                      filteredValue="#{controlAdminreportes.lovFiltradoslistaModulos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlAdminreportes.activarAceptar()}" update=":formularioDialogos:aceptarM"/>
-                            <p:ajax event="rowDblselect" listener="#{controlAdminreportes.actualizarModulos()}" process="@this" onstart="LOVModulos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlAdminreportes.actualizarModulos()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarM']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVModulos.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -502,12 +499,9 @@
 
                         <h:outputText id="infoRegistroModulos" value="#{controlAdminreportes.infoRegistroModulo}" style="position: relative; top: 15px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarM" value="#{msg['aceptar']}" disabled="#{controlAdminreportes.aceptar}" icon="ui-icon-check" style="position: absolute; top: 305px; left: 185px;" actionListener="#{controlAdminreportes.actualizarModulos()}" onclick="LOVModulos.clearFilters();" update="aceptarM" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVModulos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasM" style="position: absolute; top: 305px; left: 280px; " icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlAdminreportes.cancelarCambioModulos()}" onclick="modulosDialogo.hide(), LOVModulos.clearFilters();"  update="LOVModulos" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVModulos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarM" value="#{msg['aceptar']}" disabled="#{controlAdminreportes.aceptar}" icon="ui-icon-check" style="position: absolute; top: 305px; left: 185px;" actionListener="#{controlAdminreportes.actualizarModulos()}"  process="@this"/>
+                        
+                        <p:commandButton id="atrasM" style="position: absolute; top: 305px; left: 280px; " icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlAdminreportes.cancelarCambioModulos()}" process="@this"/>
                     </p:dialog>
 
                     <!-- DIALOGOS EDITAR -->

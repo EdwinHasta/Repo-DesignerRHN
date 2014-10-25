@@ -307,7 +307,7 @@
                                      selection="#{controlCuenta.cuentaSeleccionada}" selectionMode="single" widgetVar="lovContracuenta" scrollable="true" scrollWidth="700" scrollHeight="225"
                                      filteredValue="#{controlCuenta.filtrarListCuentasTesoreria}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlCuenta.activarAceptar()}" update=":form:aceptarCC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlCuenta.actualizarCuenta()}" process="@this" onstart="lovContracuenta.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlCuenta.actualizarCuenta()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCT']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovContracuenta.filter();" style="width:150px; position: relative; left: 20px;" />  
@@ -334,12 +334,10 @@
                         
                         <h:outputText id="infoRegistroContraCuenta" value="#{controlCuenta.infoRegistroContraCuenta}" style="position: absolute; left: 20px; top: 325px; font-weight: bold"/>
                         
-                        <p:commandButton id="aceptarCC" icon="ui-icon-check" style="position: relative; left: 510px" value="#{msg['aceptar']}" actionListener="#{controlCuenta.actualizarCuenta()}" disabled="#{controlCuenta.aceptar}" onclick="ContracuentaDialogo.hide(), lovContracuenta.clearFilters();" update="lovContracuenta, aceptarCC, datosCuenta" process="@this">
-                            <p:resetInput target=":form:lovContracuenta:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasCC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 510px" value="#{msg['atras']}" actionListener="#{controlCuenta.cancelarCambioCuenta()}" onclick="ContracuentaDialogo.hide(), lovContracuenta.clearFilters();" update="lovContracuenta" process="@this">
-                            <p:resetInput target=":form:lovContracuenta:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarCC" icon="ui-icon-check" style="position: relative; left: 510px" value="#{msg['aceptar']}" actionListener="#{controlCuenta.actualizarCuenta()}" disabled="#{controlCuenta.aceptar}"  process="@this"/>
+                           
+                        <p:commandButton id="atrasCC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 510px" value="#{msg['atras']}" actionListener="#{controlCuenta.cancelarCambioCuenta()}"  process="@this"/>
+                            
                     </p:dialog>
 
                     <p:dialog header="#{msg['rubrosRP']}" widgetVar="RubrosDialogo" draggable="false" resizable="false" closable="false" id="RubrosDialogo"  
@@ -348,7 +346,7 @@
                                      selection="#{controlCuenta.rubroSeleccionado}" selectionMode="single" widgetVar="lovRubros" scrollable="true" scrollWidth="416" scrollHeight="225"
                                      filteredValue="#{controlCuenta.filtrarListRubros}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlCuenta.activarAceptar()}" update=":form:aceptarRP"/>
-                            <p:ajax event="rowDblselect" listener="#{controlCuenta.actualizarRubro()}" process="@this" onstart="lovRubros.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlCuenta.actualizarRubro()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarRP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovRubros.filter();" style="width:150px; position: relative; left: 20px;" />  
@@ -369,12 +367,10 @@
                         
                         <h:outputText id="infoRegistroRubro" value="#{controlCuenta.infoRegistroRubro}" style="position: absolute; left: 20px; top: 325px; font-weight: bold"/>
                         
-                        <p:commandButton id="aceptarRP" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlCuenta.actualizarRubro()}" disabled="#{controlCuenta.aceptar}" onclick="RubrosDialogo.hide(), lovRubros.clearFilters();" update="lovRubros, aceptarRP, datosCuenta" process="@this">
-                            <p:resetInput target=":form:lovRubros:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasRP" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlCuenta.cancelarCambioRubro()}" onclick="RubrosDialogo.hide(), lovRubros.clearFilters();" update="lovRubros" process="@this">
-                            <p:resetInput target=":form:lovRubros:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarRP" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlCuenta.actualizarRubro()}" disabled="#{controlCuenta.aceptar}"  process="@this"/>
+                            
+                        <p:commandButton id="atrasRP" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlCuenta.cancelarCambioRubro()}" process="@this"/>
+                            
                     </p:dialog>
 
                     <p:dialog header="#{msg['cuentasC']}" widgetVar="BuscarCuentasDialogo" draggable="false" resizable="false" closable="false" id="BuscarCuentasDialogo"  
@@ -383,7 +379,7 @@
                                      selection="#{controlCuenta.cuentaSeleccionada}" selectionMode="single" widgetVar="lovCuentas" scrollable="true" scrollWidth="416" scrollHeight="225"
                                      filteredValue="#{controlCuenta.filtrarListCuentasTesoreria}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlCuenta.activarAceptar()}" update=":form:aceptarBC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlCuenta.validarSeleccionCuenta()}" process="@this" onstart="lovCuentas.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlCuenta.validarSeleccionCuenta()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCuentas.filter();" style="width:150px; position: relative; left: 20px;" />  
@@ -404,12 +400,10 @@
                         
                         <h:outputText id="infoRegistroBuscarCuenta" value="#{controlCuenta.infoRegistroBuscarCuenta}" style="position: absolute; left: 20px; top: 325px; font-weight: bold"/>
                         
-                        <p:commandButton id="aceptarBC" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlCuenta.validarSeleccionCuenta()}" disabled="#{controlCuenta.aceptar}" onclick="BuscarCuentasDialogo.hide(), lovCuentas.clearFilters();" update="lovCuentas, aceptarBC, datosCuenta" process="@this">
-                            <p:resetInput target=":form:lovCuentas:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasBC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlCuenta.cancelarSeleccionCuenta()}" onclick="BuscarCuentasDialogo.hide(), lovCuentas.clearFilters();" update="lovCuentas" process="@this">
-                            <p:resetInput target=":form:lovCuentas:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarBC" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlCuenta.validarSeleccionCuenta()}" disabled="#{controlCuenta.aceptar}" process="@this"/>
+                            
+                        <p:commandButton id="atrasBC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlCuenta.cancelarSeleccionCuenta()}" process="@this"/>
+                            
                     </p:dialog>
 
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350"  closable="false">  

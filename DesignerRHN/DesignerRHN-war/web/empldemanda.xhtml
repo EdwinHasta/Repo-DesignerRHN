@@ -147,7 +147,7 @@
                                          selection="#{controlEmplDemanda.motivoDemandaSeleccionado}" selectionMode="single" widgetVar="lovDemanda" scrollable="true" scrollWidth="415" scrollHeight="250"
                                          filteredValue="#{controlEmplDemanda.filtrarListMotivosDemandas}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlEmplDemanda.activarAceptar()}" update=":form:aceptarD"/>
-                                <p:ajax event="rowDblselect" listener="#{controlEmplDemanda.actualizarMotivo()}" process="@this" onstart="lovDemanda.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlEmplDemanda.actualizarMotivo()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarMD']}"  style="position: absolute; left: 17px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovDemanda.filter();" style="width:150px; position: relative; left: 60px;" />  
@@ -162,12 +162,9 @@
 
                             <h:outputText id="infoRegistroMotivo" value="#{controlEmplDemanda.infoRegistroMotivo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarD" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEmplDemanda.aceptar}" onclick="DemandaDialogo.hide(), lovDemanda.clearFilters();" actionListener="#{controlEmplDemanda.actualizarMotivo()}" update="lovDemanda, aceptarD, datosDemanda" process="@this">
-                                <p:resetInput target=":form:lovDemanda:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasD" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="DemandaDialogo.hide(), lovDemanda.clearFilters();" actionListener="#{controlEmplDemanda.cancelarCambioMotivo()}" update="lovDemanda" process="@this">
-                                <p:resetInput target=":form:lovDemanda:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarD" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEmplDemanda.aceptar}" actionListener="#{controlEmplDemanda.actualizarMotivo()}" process="@this"/>
+                            
+                            <p:commandButton id="atrasD" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlEmplDemanda.cancelarCambioMotivo()}" process="@this"/>
                         </p:dialog>
 
                         <p:commandButton style="position: absolute; left: 683px; top: 475px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" disabled="#{controlEmplDemanda.guardado}" update=":form:datosDemanda" process="@this" />

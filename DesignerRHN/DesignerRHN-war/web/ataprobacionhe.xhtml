@@ -553,7 +553,7 @@
                                      selection="#{controlATAprobacionHE.estructuraSeleccionada}" selectionMode="single" widgetVar="lovEstructura" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlATAprobacionHE.filtrarLovEstructuras}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlATAprobacionHE.activarAceptar()}" update=":formEstructura:aceptarEA"/>
-                            <p:ajax event="rowDblselect" listener="#{controlATAprobacionHE.actualizarEstructura()}" process="@this" onstart="lovEstructura.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlATAprobacionHE.actualizarEstructura()}" process="@this" />
 
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEA']}" style="position: absolute; left: 27px; top: 14px"/>  
@@ -575,12 +575,9 @@
 
                         <h:outputText id="infoRegistroEstructura" value="#{controlATAprobacionHE.infoRegistroEstructura}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarEA" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlATAprobacionHE.aceptar}" onclick="EstructuraDialogo.hide(), lovEstructura.clearFilters();" actionListener="#{controlATAprobacionHE.actualizarEstructura()}" update="lovEstructura, aceptarEA" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":formEstructura:lovEstructura:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasEA" style="position: relative; left: 265px" value="#{msg['atras']}" onclick="EstructuraDialogo.hide(), lovEstructura.clearFilters();" actionListener="#{controlATAprobacionHE.cancelarCambioEstructura()}" update="lovEstructura" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":formEstructura:lovEstructura:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarEA" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlATAprobacionHE.aceptar}" actionListener="#{controlATAprobacionHE.actualizarEstructura()}" process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasEA" style="position: relative; left: 265px" value="#{msg['atras']}" actionListener="#{controlATAprobacionHE.cancelarCambioEstructura()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                     </p:dialog> 
 
                 </h:form>
@@ -593,7 +590,7 @@
                                      selection="#{controlATAprobacionHE.empleadoSeleccionado}" selectionMode="single" widgetVar="lovEmpleado" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlATAprobacionHE.filtrarLovEmpleados}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlATAprobacionHE.activarAceptar()}" update=":formEmpleado:aceptarE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlATAprobacionHE.actualizarEmpleado()}" process="@this" onstart="lovEmpleado.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlATAprobacionHE.actualizarEmpleado()}" process="@this" />
 
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarE']}" style="position: absolute; left: 27px; top: 14px"/>  
@@ -615,12 +612,9 @@
 
                         <h:outputText id="infoRegistroEmpleado" value="#{controlATAprobacionHE.infoRegistroEmpleado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarE" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlATAprobacionHE.aceptar}" onclick="EmpleadoDialogo.hide(), lovEmpleado.clearFilters();" actionListener="#{controlATAprobacionHE.actualizarEmpleado()}" update="lovEmpleado, aceptarE" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":formEmpleado:lovEmpleado:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasE" style="position: relative; left: 265px" value="#{msg['atras']}" onclick="EmpleadoDialogo.hide(), lovEmpleado.clearFilters();" actionListener="#{controlATAprobacionHE.cancelarCambioEmpleado()}" update="lovEmpleado" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":formEmpleado:lovEmpleado:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarE" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlATAprobacionHE.aceptar}" actionListener="#{controlATAprobacionHE.actualizarEmpleado()}" process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasE" style="position: relative; left: 265px" value="#{msg['atras']}" actionListener="#{controlATAprobacionHE.cancelarCambioEmpleado()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                     </p:dialog> 
 
                 </h:form>

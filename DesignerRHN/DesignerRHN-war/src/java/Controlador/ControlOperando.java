@@ -453,9 +453,10 @@ public class ControlOperando implements Serializable {
         }
         cambiosPagina = false;
         context.update("form:ACEPTAR");
-        context.execute("operandosDialogo.hide()");
         context.reset("formularioDialogos:LOVOperandos:globalFilter");
-        context.update("formularioDialogos:LOVOperandos");
+        context.execute("LOVOperandos.clearFilters()");
+        context.execute("operandosDialogo.hide()");
+        //context.update("formularioDialogos:LOVOperandos");
         context.update("form:datosOperandos");
         filtradosListaOperandos = null;
         operandosSeleccionado = null;
@@ -554,6 +555,10 @@ public class ControlOperando implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVOperandos:globalFilter");
+        context.execute("LOVOperandos.clearFilters()");
+        context.execute("operandosDialogo.hide()");
     }
 
     public void cancelarCambioModulos() {

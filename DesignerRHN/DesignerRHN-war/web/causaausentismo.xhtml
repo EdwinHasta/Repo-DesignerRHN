@@ -551,7 +551,7 @@ and open the template in the editor.
                                      selection="#{controlCausasAusentismos.clasesAusentismosSeleccionado}" selectionMode="single" widgetVar="LOVClasesAusentismos" scrollable="true" scrollHeight="200" scrollWidth="345"
                                      filteredValue="#{controlCausasAusentismos.lovFiltradoClasesAusentismos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlCausasAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarCLA"/>
-                            <p:ajax event="rowDblselect" listener="#{controlCausasAusentismos.actualizarClases()}" process="@this" onstart="LOVClasesAusentismos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlCausasAusentismos.actualizarClases()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCLA']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVClasesAusentismos.filter();" style="width:120px; position: relative; left: 80px;" />  
@@ -572,12 +572,9 @@ and open the template in the editor.
 
                         <h:outputText id="infoRegistroClasesausentismos" value="#{controlCausasAusentismos.infoRegistroCausasausentismos}" style="position: absolute; left: 15px; top: 315px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarCLA" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlCausasAusentismos.aceptar}" style="position: absolute; top: 305px; left: 180px;" actionListener="#{controlCausasAusentismos.actualizarClases()}" onclick="LOVClasesAusentismos.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVClasesAusentismos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="cancelarCLA" style="position: absolute; top: 305px; left: 275px; " icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlCausasAusentismos.cancelarCambioClase()}" onclick="clasesAusentismosDialogo.hide(), LOVClasesAusentismos.clearFilters();"  update="LOVClasesAusentismos, aceptarCLA" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVClasesAusentismos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarCLA" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlCausasAusentismos.aceptar}" style="position: absolute; top: 305px; left: 180px;" actionListener="#{controlCausasAusentismos.actualizarClases()}"  process="@this"/>
+                        
+                        <p:commandButton id="cancelarCLA" style="position: absolute; top: 305px; left: 275px; " icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlCausasAusentismos.cancelarCambioClase()}" process="@this"/>
                     </p:dialog>                    
 
                     <!-- DIALOGOS EDITAR -->

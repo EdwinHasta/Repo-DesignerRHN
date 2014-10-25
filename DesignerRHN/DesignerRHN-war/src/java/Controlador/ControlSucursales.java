@@ -388,9 +388,10 @@ public class ControlSucursales implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("personasDialogo.hide()");
         context.reset("form:lovBancos:globalFilter");
-        context.update("form:lovBancos");
+        context.execute("lovBancos.clearFilters()");
+        context.execute("personasDialogo.hide()");
+        //context.update("form:lovBancos");
         //context.update("form:datosHvEntrevista");
     }
 
@@ -445,9 +446,10 @@ public class ControlSucursales implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("cargosDialogo.hide()");
         context.reset("form:lovCiudades:globalFilter");
-        context.update("form:lovCiudades");
+        context.execute("lovCiudades.clearFilters()");
+        context.execute("cargosDialogo.hide()");
+        //context.update("form:lovCiudades");
         //context.update("form:datosHvEntrevista");
     }
 
@@ -460,6 +462,10 @@ public class ControlSucursales implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovBancos:globalFilter");
+        context.execute("lovBancos.clearFilters()");
+        context.execute("personasDialogo.hide()");
     }
 
     public void cancelarCambioCiudades() {
@@ -470,6 +476,10 @@ public class ControlSucursales implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovCiudades:globalFilter");
+        context.execute("lovCiudades.clearFilters()");
+        context.execute("cargosDialogo.hide()");
     }
 
     public void modificarSucursales(int indice, String confirmarCambio, String valorConfirmar) {

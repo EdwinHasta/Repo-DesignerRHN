@@ -2959,10 +2959,11 @@ public class ControlTipoSueldo implements Serializable {
         secRegistroTSFormulas = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:FormulaDialogo");
+        /*context.update("form:FormulaDialogo");
         context.update("form:lovFormula");
-        context.update("form:aceptarF");
+        context.update("form:aceptarF");*/
         context.reset("form:lovFormula:globalFilter");
+        context.execute("lovFormula.clearFilters()");
         context.execute("FormulaDialogo.hide()");
     }
 
@@ -2974,6 +2975,10 @@ public class ControlTipoSueldo implements Serializable {
         secRegistroTSFormulas = null;
         tipoActualizacion = -1;
         permitirIndexTSFormulas = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovFormula:globalFilter");
+        context.execute("lovFormula.clearFilters()");
+        context.execute("FormulaDialogo.hide()");
     }
 
     public void actualizarConcepto() {
@@ -3023,10 +3028,11 @@ public class ControlTipoSueldo implements Serializable {
         secRegistroTSFormulas = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:ConceptoDialogo");
+        /*context.update("form:ConceptoDialogo");
         context.update("form:lovConcepto");
-        context.update("form:aceptarC");
+        context.update("form:aceptarC");*/
         context.reset("form:lovConcepto:globalFilter");
+        context.execute("lovConcepto.clearFilters()");
         context.execute("ConceptoDialogo.hide()");
     }
 
@@ -3038,6 +3044,10 @@ public class ControlTipoSueldo implements Serializable {
         secRegistroTSFormulas = null;
         tipoActualizacion = -1;
         permitirIndexTSFormulas = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovConcepto:globalFilter");
+        context.execute("lovConcepto.clearFilters()");
+        context.execute("ConceptoDialogo.hide()");
     }
 
     public void actualizarGrupo() {
@@ -3085,10 +3095,11 @@ public class ControlTipoSueldo implements Serializable {
         secRegistroTSGrupos = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:GrupoDialogo");
-        context.update("form:lovGrupo");
-        context.update("form:aceptarG");
+        /*context.update("form:GrupoDialogo");
+         context.update("form:lovGrupo");
+         context.update("form:aceptarG");*/
         context.reset("form:lovGrupo:globalFilter");
+        context.execute("lovGrupo.clearFilters()");
         context.execute("GrupoDialogo.hide()");
     }
 
@@ -3100,6 +3111,10 @@ public class ControlTipoSueldo implements Serializable {
         secRegistroTSGrupos = null;
         tipoActualizacion = -1;
         permitirIndexTSGrupos = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovGrupo:globalFilter");
+        context.execute("lovGrupo.clearFilters()");
+        context.execute("GrupoDialogo.hide()");
     }
 
     public void actualizarTipoEntidad() {
@@ -3147,10 +3162,11 @@ public class ControlTipoSueldo implements Serializable {
         secRegistroTEFormulas = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:TipoEntidadDialogo");
-        context.update("form:lovTipoEntidad");
-        context.update("form:aceptarTE");
+        /*context.update("form:TipoEntidadDialogo");
+         context.update("form:lovTipoEntidad");
+         context.update("form:aceptarTE");*/
         context.reset("form:lovTipoEntidad:globalFilter");
+        context.execute("lovTipoEntidad.clearFilters()");
         context.execute("TipoEntidadDialogo.hide()");
     }
 
@@ -3162,6 +3178,10 @@ public class ControlTipoSueldo implements Serializable {
         secRegistroTEFormulas = null;
         tipoActualizacion = -1;
         permitirIndexTEFormulas = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTipoEntidad:globalFilter");
+        context.execute("lovTipoEntidad.clearFilters()");
+        context.execute("TipoEntidadDialogo.hide()");
     }
 
     public void actualizarFormulaTE() {
@@ -3209,10 +3229,11 @@ public class ControlTipoSueldo implements Serializable {
         secRegistroTEFormulas = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:FormulaTEDialogo");
-        context.update("form:lovFormulaTE");
-        context.update("form:aceptarFTE");
+        /*context.update("form:FormulaTEDialogo");
+         context.update("form:lovFormulaTE");
+         context.update("form:aceptarFTE");*/
         context.reset("form:lovFormulaTE:globalFilter");
+        context.execute("lovFormulaTE.clearFilters()");
         context.execute("FormulaTEDialogo.hide()");
     }
 
@@ -3224,6 +3245,10 @@ public class ControlTipoSueldo implements Serializable {
         secRegistroTEFormulas = null;
         tipoActualizacion = -1;
         permitirIndexTEFormulas = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovFormulaTE:globalFilter");
+        context.execute("lovFormulaTE.clearFilters()");
+        context.execute("FormulaTEDialogo.hide()");
     }
 
     public void actualizarConceptoTE() {
@@ -3273,10 +3298,12 @@ public class ControlTipoSueldo implements Serializable {
         secRegistroTEFormulas = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:ConceptoTEDialogo");
-        context.update("form:lovConceptoTE");
-        context.update("form:aceptarCTE");
+        /*
+         context.update("form:ConceptoTEDialogo");
+         context.update("form:lovConceptoTE");
+         context.update("form:aceptarCTE");*/
         context.reset("form:lovConceptoTE:globalFilter");
+        context.execute("lovConceptoTE.clearFilters()");
         context.execute("ConceptoTEDialogo.hide()");
     }
 
@@ -3288,6 +3315,10 @@ public class ControlTipoSueldo implements Serializable {
         secRegistroTEFormulas = null;
         tipoActualizacion = -1;
         permitirIndexTEFormulas = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovConceptoTE:globalFilter");
+        context.execute("lovConceptoTE.clearFilters()");
+        context.execute("ConceptoTEDialogo.hide()");
     }
 
     /**

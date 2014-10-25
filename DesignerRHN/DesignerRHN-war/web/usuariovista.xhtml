@@ -409,7 +409,7 @@
                                      selection="#{controlUsuariosVistas.objetosDBSeleccionado}" selectionMode="single" widgetVar="LOVObjetosDB" scrollable="true" scrollHeight="200" scrollWidth="345"
                                      filteredValue="#{controlUsuariosVistas.lovFiltradoObjetosDB}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlUsuariosVistas.activarAceptar()}" update=":formularioDialogos:aceptarOB"/>
-                            <p:ajax event="rowDblselect" listener="#{controlUsuariosVistas.actualizarObjetosDB()}" process="@this" onstart="LOVObjetosDB.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlUsuariosVistas.actualizarObjetosDB()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarOB']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVObjetosDB.filter();" style="width:120px; position: relative; left: 80px;" />  
@@ -430,12 +430,10 @@
 
                         <h:outputText id="infoRegistroObjetosDB" value="#{controlUsuariosVistas.infoRegistroObjetosDB}" style="position: absolute; left: 15px; top: 315px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarOB" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlUsuariosVistas.aceptar}" style="position: absolute; top: 305px; left: 180px;" actionListener="#{controlUsuariosVistas.actualizarObjetosDB()}" onclick="LOVObjetosDB.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVObjetosDB:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="cancelarOB" style="position: absolute; top: 305px; left: 275px; " icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlUsuariosVistas.cancelarCambioObjetoDB()}" onclick="objetosDBDialogo.hide(), LOVObjetosDB.clearFilters();"  update="LOVObjetosDB, aceptarOB" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVObjetosDB:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarOB" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlUsuariosVistas.aceptar}" style="position: absolute; top: 305px; left: 180px;" actionListener="#{controlUsuariosVistas.actualizarObjetosDB()}"  process="@this"/>
+                        
+                        <p:commandButton id="cancelarOB" style="position: absolute; top: 305px; left: 275px; " icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlUsuariosVistas.cancelarCambioObjetoDB()}" process="@this"/>
+                        
                     </p:dialog>               
 
                     <!-- DIALOGOS RASTROS -->

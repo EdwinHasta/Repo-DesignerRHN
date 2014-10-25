@@ -442,9 +442,10 @@ public class ControlFirmasReportes implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("sucursalesDialogo.hide()");
         context.reset("form:lovTiposFamiliares:globalFilter");
-        context.update("form:lovTiposFamiliares");
+        context.execute("lovTiposFamiliares.clearFilters()");
+        context.execute("sucursalesDialogo.hide()");
+        //context.update("form:lovTiposFamiliares");
         //context.update("form:datosHvEntrevista");
     }
 
@@ -499,9 +500,10 @@ public class ControlFirmasReportes implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("personasDialogo.hide()");
         context.reset("form:lovPersonas:globalFilter");
-        context.update("form:lovPersonas");
+        context.execute("lovPersonas.clearFilters()");
+        context.execute("personasDialogo.hide()");
+        //context.update("form:lovPersonas");
         //context.update("form:datosHvEntrevista");
     }
 
@@ -556,9 +558,10 @@ public class ControlFirmasReportes implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("cargosDialogo.hide()");
         context.reset("form:lovCargos:globalFilter");
-        context.update("form:lovCargos");
+        context.execute("lovCargos.clearFilters()");
+        context.execute("cargosDialogo.hide()");
+        //context.update("form:lovCargos");
         //context.update("form:datosHvEntrevista");
     }
 
@@ -570,6 +573,10 @@ public class ControlFirmasReportes implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTiposFamiliares:globalFilter");
+        context.execute("lovTiposFamiliares.clearFilters()");
+        context.execute("sucursalesDialogo.hide()");
     }
 
     public void cancelarCambioPersonas() {
@@ -580,6 +587,10 @@ public class ControlFirmasReportes implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovPersonas:globalFilter");
+        context.execute("lovPersonas.clearFilters()");
+        context.execute("personasDialogo.hide()");
     }
 
     public void cancelarCambioCargos() {
@@ -590,6 +601,10 @@ public class ControlFirmasReportes implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovCargos:globalFilter");
+        context.execute("lovCargos.clearFilters()");
+        context.execute("cargosDialogo.hide()");
     }
 
     public void modificarFirmasReportes(int indice, String confirmarCambio, String valorConfirmar) {

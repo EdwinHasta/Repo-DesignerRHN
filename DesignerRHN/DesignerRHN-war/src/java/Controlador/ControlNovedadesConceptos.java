@@ -222,6 +222,10 @@ public class ControlNovedadesConceptos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVEmpleados:globalFilter");
+        context.execute("LOVEmpleados.clearFilters()");
+        context.execute("empleadosDialogo.hide()");
     }
 
     public void cancelarCambioPeriodicidades() {
@@ -233,6 +237,10 @@ public class ControlNovedadesConceptos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVPeriodicidades:globalFilter");
+        context.execute("LOVPeriodicidades.clearFilters()");
+        context.execute("periodicidadesDialogo.hide()");
     }
 
     public void cancelarCambioFormulas() {
@@ -244,6 +252,10 @@ public class ControlNovedadesConceptos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVFormulas:globalFilter");
+        context.execute("LOVFormulas.clearFilters()");
+        context.execute("formulasDialogo.hide()");
     }
 
     public void cancelarCambioConceptos() {
@@ -255,6 +267,10 @@ public class ControlNovedadesConceptos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVConceptos:globalFilter");
+        context.execute("LOVConceptos.clearFilters()");
+        context.execute("conceptosDialogo.hide()");
     }
 
     public void cancelarCambioTerceros() {
@@ -266,6 +282,10 @@ public class ControlNovedadesConceptos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVTerceros:globalFilter");
+        context.execute("LOVTerceros.clearFilters()");
+        context.execute("tercerosDialogo.hide()");
     }
 
     public void seleccionarTipoNuevaNovedad(String tipo, int tipoNuevo) {
@@ -404,9 +424,10 @@ public class ControlNovedadesConceptos implements Serializable {
         }
         secuenciaConcepto = seleccionConceptos.getSecuencia();
         listaNovedades = null;
-        context.execute("conceptosDialogo.hide()");
         context.reset("formularioDialogos:LOVConceptos:globalFilter");
-        context.update("formularioDialogos:LOVConceptos");
+        context.execute("LOVConceptos.clearFilters()");
+        context.execute("conceptosDialogo.hide()");
+        //context.update("formularioDialogos:LOVConceptos");
         context.update("form:datosConceptos");
         context.update("form:datosNovedadesConcepto");
         filtradosListaConceptosNovedad = null;
@@ -657,9 +678,10 @@ public class ControlNovedadesConceptos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("empleadosDialogo.hide()");
         context.reset("formularioDialogos:LOVEmpleados:globalFilter");
-        context.update("formularioDialogos:LOVEmpleados");
+        context.execute("LOVEmpleados.clearFilters()");
+        context.execute("empleadosDialogo.hide()");
+        //context.update("formularioDialogos:LOVEmpleados");
     }
 
     public void actualizarFormulas() {
@@ -704,9 +726,10 @@ public class ControlNovedadesConceptos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("formulasDialogo.hide()");
         context.reset("formularioDialogos:LOVFormulas:globalFilter");
-        context.update("formularioDialogos:LOVFormulas");
+        context.execute("LOVFormulas.clearFilters()");
+        context.execute("formulasDialogo.hide()");
+        //context.update("formularioDialogos:LOVFormulas");
     }
 
     public void actualizarPeriodicidades() {
@@ -751,9 +774,10 @@ public class ControlNovedadesConceptos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("periodicidadesDialogo.hide()");
         context.reset("formularioDialogos:LOVPeriodicidades:globalFilter");
-        context.update("formularioDialogos:LOVPeriodicidades");
+        context.execute("LOVPeriodicidades.clearFilters()");
+        context.execute("periodicidadesDialogo.hide()");
+        //context.update("formularioDialogos:LOVPeriodicidades");
     }
 
     public void actualizarTerceros() {
@@ -798,9 +822,10 @@ public class ControlNovedadesConceptos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("tercerosDialogo.hide()");
         context.reset("formularioDialogos:LOVTerceros:globalFilter");
-        context.update("formularioDialogos:LOVTerceros");
+        context.execute("LOVTerceros.clearFilters()");
+        context.execute("tercerosDialogo.hide()");
+        //context.update("formularioDialogos:LOVTerceros");
     }
 
     //Ubicacion Celda Indice Abajo. //Van los que no son NOT NULL.

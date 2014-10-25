@@ -459,10 +459,11 @@ public class ControlLegislacion implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.update("formularioDialogos:tiposCotizantesDialogo");
-        context.update("formularioDialogos:lovContratos");
-        context.update("formularioDialogos:aceptarTC");
-        context.reset("formularioDialogos:lovContratos:globalFilter");
+        /*context.update("formularioDialogos:tiposCotizantesDialogo");
+        context.update("formularioDialogos:lovTiposCotizantes");
+        context.update("formularioDialogos:aceptarTC");*/
+        context.reset("formularioDialogos:lovTiposCotizantes:globalFilter");
+        context.execute("lovTiposCotizantes.clearFilters()");
         context.execute("tiposCotizantesDialogo.hide()");
     }
 
@@ -474,6 +475,10 @@ public class ControlLegislacion implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:lovTiposCotizantes:globalFilter");
+        context.execute("lovTiposCotizantes.clearFilters()");
+        context.execute("tiposCotizantesDialogo.hide()");
     }
 
     public void lovContratos(int quien) {
@@ -589,11 +594,12 @@ public class ControlLegislacion implements Serializable {
         }
         filtradoListaContratosLOV = null;
         contratoSeleccionado = null;
-        aceptar = true;
+        aceptar = true;/*
         context.update("formularioDialogos:ContratosDialogo");
         context.update("formularioDialogos:lovContratos");
-        context.update("formularioDialogos:aceptarC");
+        context.update("formularioDialogos:aceptarC");*/
         context.reset("formularioDialogos:lovContratos:globalFilter");
+        context.execute("lovContratos.clearFilters()");
         context.execute("ContratosDialogo.hide()");
     }
 
@@ -601,6 +607,10 @@ public class ControlLegislacion implements Serializable {
         filtradoListaContratosLOV = null;
         contratoSeleccionado = null;
         aceptar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:lovContratos:globalFilter");
+        context.execute("lovContratos.clearFilters()");
+        context.execute("ContratosDialogo.hide()");
     }
 
     public void borrarContrato() {

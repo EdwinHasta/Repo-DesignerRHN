@@ -2152,10 +2152,12 @@ public class ControlProceso implements Serializable {
         secRegistroFormulaProceso = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:FormulaDialogo");
-        context.update("form:lovFormula");
-        context.update("form:aceptarF");
+        /*
+         context.update("form:FormulaDialogo");
+         context.update("form:lovFormula");
+         context.update("form:aceptarF");*/
         context.reset("form:lovFormula:globalFilter");
+        context.execute("lovFormula.clearFilters()");
         context.execute("FormulaDialogo.hide()");
     }
 
@@ -2167,6 +2169,10 @@ public class ControlProceso implements Serializable {
         secRegistroFormulaProceso = null;
         tipoActualizacion = -1;
         permitirIndexFormulasProcesos = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovFormula:globalFilter");
+        context.execute("lovFormula.clearFilters()");
+        context.execute("FormulaDialogo.hide()");
     }
 
     public void actualizarTipoPago() {
@@ -2214,10 +2220,12 @@ public class ControlProceso implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:TipoPagoDialogo");
-        context.update("form:lovTipoPago");
-        context.update("form:aceptarTP");
+        /*
+         context.update("form:TipoPagoDialogo");
+         context.update("form:lovTipoPago");
+         context.update("form:aceptarTP");*/
         context.reset("form:lovTipoPago:globalFilter");
+        context.execute("lovTipoPago.clearFilters()");
         context.execute("TipoPagoDialogo.hide()");
     }
 
@@ -2229,6 +2237,10 @@ public class ControlProceso implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTipoPago:globalFilter");
+        context.execute("lovTipoPago.clearFilters()");
+        context.execute("TipoPagoDialogo.hide()");
     }
 
     public void actualizarOperando() {
@@ -2278,10 +2290,12 @@ public class ControlProceso implements Serializable {
         secRegistroOperandoLog = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:OperandoDialogo");
-        context.update("form:lovOperando");
-        context.update("form:aceptarO");
+        /*
+         context.update("form:OperandoDialogo");
+         context.update("form:lovOperando");
+         context.update("form:aceptarO")*/
         context.reset("form:lovOperando:globalFilter");
+        context.execute("lovOperando.clearFilters()");
         context.execute("OperandoDialogo.hide()");
     }
 
@@ -2293,6 +2307,10 @@ public class ControlProceso implements Serializable {
         secRegistroOperandoLog = null;
         tipoActualizacion = -1;
         permitirIndexOperandosLogs = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovOperando:globalFilter");
+        context.execute("lovOperando.clearFilters()");
+        context.execute("OperandoDialogo.hide()");
     }
 
     /**
@@ -2644,17 +2662,23 @@ public class ControlProceso implements Serializable {
         context.update("form:CodigoBaseClonado");
         context.update("form:DescripcionBaseClonado");
         procesoSeleccionado = new Procesos();
-        filtrarLovProcesos = null;
-        context.update("form:ProcesoDialogo");
-        context.update("form:lovProceso");
-        context.update("form:aceptarP");
+        filtrarLovProcesos = null;/*
+         context.update("form:ProcesoDialogo");
+         context.update("form:lovProceso");
+         context.update("form:aceptarP");*/
+
         context.reset("form:lovProceso:globalFilter");
         context.execute("ProcesoDialogo.hide()");
+        context.execute("lovProceso.clearFilters()");
     }
 
     public void cancelarProcesoClonado() {
+        RequestContext context = RequestContext.getCurrentInstance();
         procesoSeleccionado = new Procesos();
         filtrarLovProcesos = null;
+        context.reset("form:lovProceso:globalFilter");
+        context.execute("ProcesoDialogo.hide()");
+        context.execute("lovProceso.clearFilters()");
     }
 
     public boolean validarNuevoProcesoClon() {

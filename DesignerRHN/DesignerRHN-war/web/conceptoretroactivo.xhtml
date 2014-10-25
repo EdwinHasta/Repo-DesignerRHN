@@ -126,7 +126,7 @@
                                          selection="#{controlConceptosRetroactivos.conceptoSeleccionado}" selectionMode="single" widgetVar="lovConceptos" scrollable="true" scrollWidth="450" scrollHeight="300"
                                          filteredValue="#{controlConceptosRetroactivos.filtradoConceptos}" emptyMessage="No se encontrarón resultados para la búsqueda">              
                                 <p:ajax event="rowSelect" listener="#{controlConceptosRetroactivos.activarAceptar()}" update=":form:aceptarPer"/>
-                                <p:ajax event="rowDblselect" listener="#{controlConceptosRetroactivos.actualizarConceptos()}" process="@this" onstart="lovConceptos.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlConceptosRetroactivos.actualizarConceptos()}" process="@this" />
                                 <f:facet name="header">
                                     <h:outputText value="Buscar Conceptos:"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovConceptos.filter();" style="width:200px; position: relative; left: 20px;" />  
@@ -142,13 +142,10 @@
 
                             <h:outputText id="infoRegistroBancos" value="#{controlConceptosRetroactivos.infoRegistroConceptos}" style="position: absolute; left: 15px; top: 400px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarPer" style="position: relative; left: 283px" value="Aceptar" disabled="#{controlConceptosRetroactivos.aceptar}" onclick="conceptosDialogo.hide(), lovConceptos.clearFilters();"  actionListener="#{controlConceptosRetroactivos.actualizarConceptos()}" update="lovConceptos, aceptarPer" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovConceptos:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasPer" style="position: relative; left: 283px" value="Atras"  actionListener="#{controlConceptosRetroactivos.cancelarCambioConceptos()}" onclick="conceptosDialogo.hide();
-                                    lovConceptos.clearFilters();" update="lovConceptos" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovConceptos:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarPer" style="position: relative; left: 283px" value="Aceptar" disabled="#{controlConceptosRetroactivos.aceptar}"  actionListener="#{controlConceptosRetroactivos.actualizarConceptos()}"  process="@this" icon="ui-icon-check"/>
+                            
+                            <p:commandButton id="atrasPer" style="position: relative; left: 283px" value="Atras"  actionListener="#{controlConceptosRetroactivos.cancelarCambioConceptos()}"  process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                            
                         </p:dialog>
 
 
@@ -158,7 +155,7 @@
                                          selection="#{controlConceptosRetroactivos.conceptoRetroActivoSeleccionado}" selectionMode="single" widgetVar="lovConceptosRetro" scrollable="true" scrollWidth="450" scrollHeight="280"
                                          filteredValue="#{controlConceptosRetroactivos.filtradoConceptosRetro}" emptyMessage="No se encontrarón resultados para la búsqueda">              
                                 <p:ajax event="rowSelect" listener="#{controlConceptosRetroactivos.activarAceptar()}" update=":form:aceptarCar"/>
-                                <p:ajax event="rowDblselect" listener="#{controlConceptosRetroactivos.actualizarConceptosRetro()}" process="@this" onstart="lovConceptosRetro.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlConceptosRetroactivos.actualizarConceptosRetro()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="Buscar Concepto Retroactivo: "  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovConceptosRetro.filter();" style="width:150px; position: relative; left: 85px;" />  
@@ -174,13 +171,10 @@
 
                             <h:outputText id="infoRegistroCiudades" value="#{controlConceptosRetroactivos.infoRegistroConceptosRetro}" style="position: absolute; left: 15px; top: 380px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarCar" style="position: relative; left: 283px" value="Aceptar" disabled="#{controlConceptosRetroactivos.aceptar}"  onclick="conceptosRetroDialogo.hide(), lovConceptosRetro.clearFilters();"  actionListener="#{controlConceptosRetroactivos.actualizarConceptosRetro()}" update="lovConceptosRetro, aceptarCar" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovConceptosRetro:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasCar" style="position: relative; left: 283px" value="Atras"  actionListener="#{controlConceptosRetroactivos.cancelarCambioConceptosRetro()}" onclick="conceptosRetroDialogo.hide();
-                                    lovConceptosRetro.clearFilters();" update="lovConceptosRetro" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovConceptosRetro:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarCar" style="position: relative; left: 283px" value="Aceptar" disabled="#{controlConceptosRetroactivos.aceptar}"  actionListener="#{controlConceptosRetroactivos.actualizarConceptosRetro()}" process="@this" icon="ui-icon-check"/>
+                            
+                            <p:commandButton id="atrasCar" style="position: relative; left: 283px" value="Atras"  actionListener="#{controlConceptosRetroactivos.cancelarCambioConceptosRetro()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                            
                         </p:dialog>
 
                         <p:dialog id="confirmarGuardar" header="ATENCION...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  

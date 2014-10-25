@@ -740,7 +740,7 @@
                                      selection="#{controlDetalleConcepto.tipoCentroCostoSeleccionado}" selectionMode="single" widgetVar="lovTiposCC" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlDetalleConcepto.filtrarListTiposCentrosCostos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlDetalleConcepto.activarAceptar()}" update=":form:aceptarTCC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlDetalleConcepto.actualizarTipoCentroCosto()}" process="@this" onstart="lovTiposCC.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlDetalleConcepto.actualizarTipoCentroCosto()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTCC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTiposCC.filter();" style="width:140px; position: relative; left: 70px;" />  
@@ -755,12 +755,8 @@
 
                         <h:outputText id="infoRegistroTipoCentroCosto" value="#{controlDetalleConcepto.infoRegistroTipoCentroCosto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton icon="ui-icon-check"  id="aceptarTCC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" onclick="TipoCCDialogo.hide(), lovTiposCC.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarTipoCentroCosto()}" update="lovTiposCC, aceptarTCC, datosVigenciaCuenta" process="@this">
-                            <p:resetInput target=":form:lovTiposCC:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasTCC" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="TipoCCDialogo.hide(), lovTiposCC.clearFilters();" actionListener="#{controlDetalleConcepto.cancelarCambioTipoCentroCosto()}" update="lovTiposCC" process="@this">
-                            <p:resetInput target=":form:lovTiposCC:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check"  id="aceptarTCC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" actionListener="#{controlDetalleConcepto.actualizarTipoCentroCosto()}" process="@this"/>
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasTCC" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlDetalleConcepto.cancelarCambioTipoCentroCosto()}" process="@this"/>
                     </p:dialog>
 
 
@@ -771,7 +767,7 @@
                                      selection="#{controlDetalleConcepto.cuentaSeleccionada}" selectionMode="single" widgetVar="lovDebito" scrollable="true" scrollHeight="250" scrollWidth="416"
                                      filteredValue="#{controlDetalleConcepto.filtrarListCuentas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlDetalleConcepto.activarAceptar()}" update=":form:aceptarCD"/>
-                            <p:ajax event="rowDblselect" listener="#{controlDetalleConcepto.actualizarCuentaDebito()}" process="@this" onstart="lovDebito.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlDetalleConcepto.actualizarCuentaDebito()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCD']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovDebito.filter();" style="width:140px; position: relative; left: 70px;" />  
@@ -792,12 +788,8 @@
 
                         <h:outputText id="infoRegistroCuentaDebito" value="#{controlDetalleConcepto.infoRegistroCuentaDebito}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton icon="ui-icon-check"  id="aceptarCD" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" onclick="DebitoDialogo.hide(), lovDebito.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarCuentaDebito()}" update="lovDebito, aceptarCD, datosVigenciaCuenta" process="@this">
-                            <p:resetInput target=":form:lovDebito:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasCD" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="DebitoDialogo.hide(), lovDebito.clearFilters();" actionListener="#{controlDetalleConcepto.cancelarCambioCuentaDebito()}" update="lovDebito" process="@this">
-                            <p:resetInput target=":form:lovDebito:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check"  id="aceptarCD" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" actionListener="#{controlDetalleConcepto.actualizarCuentaDebito()}" process="@this"/>
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasCD" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlDetalleConcepto.cancelarCambioCuentaDebito()}" process="@this"/>
                     </p:dialog>
 
 
@@ -808,7 +800,7 @@
                                      selection="#{controlDetalleConcepto.cuentaSeleccionada}" selectionMode="single" widgetVar="lovCredito" scrollable="true" scrollHeight="250" scrollWidth="416"
                                      filteredValue="#{controlDetalleConcepto.filtrarListCuentas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlDetalleConcepto.activarAceptar()}" update=":form:aceptarCC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlDetalleConcepto.actualizarCuentaCredito()}" process="@this" onstart="lovCredito.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlDetalleConcepto.actualizarCuentaCredito()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCredito.filter();" style="width:140px; position: relative; left: 70px;" />  
@@ -829,12 +821,8 @@
 
                         <h:outputText id="infoRegistroCuentaCredito" value="#{controlDetalleConcepto.infoRegistroCuentaCredito}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton icon="ui-icon-check"  id="aceptarCC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" onclick="CreditoDialogo.hide(), lovCredito.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarCuentaCredito()}" update="lovCredito, aceptarCC, datosVigenciaCuenta" process="@this">
-                            <p:resetInput target=":form:lovCredito:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasCC" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="CreditoDialogo.hide(), lovCredito.clearFilters();" actionListener="#{controlDetalleConcepto.cancelarCambioCuentaCredito()}" update="lovCredito" process="@this">
-                            <p:resetInput target=":form:lovCredito:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check"  id="aceptarCC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" actionListener="#{controlDetalleConcepto.actualizarCuentaCredito()}" process="@this"/>
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasCC" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlDetalleConcepto.cancelarCambioCuentaCredito()}"  process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['centrocostoconsolidadorCCC']}" widgetVar="CentroCostoDDialogo" draggable="false" resizable="false" closable="false" 
@@ -844,7 +832,7 @@
                                      selection="#{controlDetalleConcepto.centroCostoSeleccionado}" selectionMode="single" widgetVar="lovCentroCostoD" scrollable="true" scrollHeight="250" scrollWidth="416"
                                      filteredValue="#{controlDetalleConcepto.filtrarListCentrosCostos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlDetalleConcepto.activarAceptar()}" update=":form:aceptarCCD"/>
-                            <p:ajax event="rowDblselect" listener="#{controlDetalleConcepto.actualizarCentroCostoDebito()}" process="@this" onstart="lovCentroCostoD.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlDetalleConcepto.actualizarCentroCostoDebito()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCCC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCentroCostoD.filter();" style="width:140px; position: relative; left: 70px;" />  
@@ -865,12 +853,8 @@
 
                         <h:outputText id="infoRegistroCentroCostoDebito" value="#{controlDetalleConcepto.infoRegistroCentroCostoDebito}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton icon="ui-icon-check"  id="aceptarCCD" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" onclick="CentroCostoDDialogo.hide(), lovCentroCostoD.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarCentroCostoDebito()}" update="lovCentroCostoD, aceptarCCD, datosVigenciaCuenta" process="@this">
-                            <p:resetInput target=":form:lovCentroCostoD:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasCCD" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="CentroCostoDDialogo.hide(), lovCentroCostoD.clearFilters();" actionListener="#{controlDetalleConcepto.cancelarCambioCentroCostoDebito()}" update="lovCentroCostoD" process="@this">
-                            <p:resetInput target=":form:lovCentroCostoD:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check"  id="aceptarCCD" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" actionListener="#{controlDetalleConcepto.actualizarCentroCostoDebito()}" process="@this"/>
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasCCD" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlDetalleConcepto.cancelarCambioCentroCostoDebito()}" process="@this"/>
                     </p:dialog>
 
 
@@ -881,7 +865,7 @@
                                      selection="#{controlDetalleConcepto.centroCostoSeleccionado}" selectionMode="single" widgetVar="lovCentroCostoC" scrollable="true" scrollHeight="250" scrollWidth="416"
                                      filteredValue="#{controlDetalleConcepto.filtrarListCentrosCostos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlDetalleConcepto.activarAceptar()}" update=":form:aceptarCCC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlDetalleConcepto.actualizarCentroCostoCredito()}" process="@this" onstart="lovCentroCostoC.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlDetalleConcepto.actualizarCentroCostoCredito()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCCC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCentroCostoC.filter();" style="width:140px; position: relative; left: 70px;" />  
@@ -902,12 +886,8 @@
 
                         <h:outputText id="infoRegistroCentroCostoCredito" value="#{controlDetalleConcepto.infoRegistroCentroCostoCredito}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton icon="ui-icon-check"  id="aceptarCCC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" onclick="CentroCostoCDialogo.hide(), lovCentroCostoC.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarCentroCostoCredito()}" update="lovCentroCostoC, aceptarCCC, datosVigenciaCuenta" process="@this">
-                            <p:resetInput target=":form:lovCentroCostoC:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasCCC" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="CentroCostoCDialogo.hide(), lovCentroCostoC.clearFilters();" actionListener="#{controlDetalleConcepto.cancelarCambioCentroCostoCredito()}" update="lovCentroCostoC" process="@this">
-                            <p:resetInput target=":form:lovCentroCostoC:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check"  id="aceptarCCC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" actionListener="#{controlDetalleConcepto.actualizarCentroCostoCredito()}" process="@this"/>
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasCCC" style="position: relative; left: 230px" value="#{msg['atras']}"  actionListener="#{controlDetalleConcepto.cancelarCambioCentroCostoCredito()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['gruposconceptosGC']}" widgetVar="GruposConceptosDialogo" draggable="false" resizable="false" closable="false" 
@@ -917,7 +897,7 @@
                                      selection="#{controlDetalleConcepto.grupoConceptoSeleccionado}" selectionMode="single" widgetVar="lovGrupoConcepto" scrollable="true" scrollHeight="250" scrollWidth="416"
                                      filteredValue="#{controlDetalleConcepto.filtrarListGruposConceptos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlDetalleConcepto.activarAceptar()}" update=":form:aceptarGC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlDetalleConcepto.actualizarGrupoConcepto()}" process="@this" onstart="lovGrupoConcepto.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlDetalleConcepto.actualizarGrupoConcepto()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarGC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovGrupoConcepto.filter();" style="width:140px; position: relative; left: 70px;" />  
@@ -938,12 +918,8 @@
 
                         <h:outputText id="infoRegistroGrupoConcepto" value="#{controlDetalleConcepto.infoRegistroGrupoConcepto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton icon="ui-icon-check"  id="aceptarGC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" onclick="GruposConceptosDialogo.hide(), lovGrupoConcepto.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarGrupoConcepto()}" update="lovGrupoConcepto, aceptarGC,datosVigenciaGrupoConcepto" process="@this">
-                            <p:resetInput target=":form:lovGrupoConcepto:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasGC" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="GruposConceptosDialogo.hide(), lovGrupoConcepto.clearFilters();" actionListener="#{controlDetalleConcepto.cancelarCambioGrupoConcepto()}" update="lovGrupoConcepto" process="@this">
-                            <p:resetInput target=":form:lovGrupoConcepto:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check"  id="aceptarGC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" actionListener="#{controlDetalleConcepto.actualizarGrupoConcepto()}"  process="@this"/>
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasGC" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlDetalleConcepto.cancelarCambioGrupoConcepto()}"  process="@this"/>
                     </p:dialog>
 
 
@@ -953,7 +929,7 @@
                                      selection="#{controlDetalleConcepto.tipoTrabajadorSeleccionado}" selectionMode="single" widgetVar="lovTipoTrabajador" scrollable="true" scrollHeight="250" scrollWidth="416"
                                      filteredValue="#{controlDetalleConcepto.filtrarListTiposTrabajadores}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlDetalleConcepto.activarAceptar()}" update=":form:aceptarTTr"/>
-                            <p:ajax event="rowDblselect" listener="#{controlDetalleConcepto.actualizarTipoTrabajador()}" process="@this" onstart="lovTipoTrabajador.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlDetalleConcepto.actualizarTipoTrabajador()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTT']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTipoTrabajador.filter();" style="width:140px; position: relative; left: 70px;" />  
@@ -968,12 +944,8 @@
 
                         <h:outputText id="infoRegistroTipoTrabajador" value="#{controlDetalleConcepto.infoRegistroTipoTrabajador}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton icon="ui-icon-check"  id="aceptarTTr" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" onclick="TipoTrabajadorDialogo.hide(), lovTipoTrabajador.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarTipoTrabajador()}" update="lovTipoTrabajador, aceptarTTr, datosVigenciaConceptoTT" process="@this">
-                            <p:resetInput target=":form:lovTipoTrabajador:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasTTr" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="TipoTrabajadorDialogo.hide(), lovTipoTrabajador.clearFilters();" actionListener="#{controlDetalleConcepto.cancelarCambioTipoTrabajador()}" update="lovTipoTrabajador" process="@this">
-                            <p:resetInput target=":form:lovTipoTrabajador:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check"  id="aceptarTTr" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" actionListener="#{controlDetalleConcepto.actualizarTipoTrabajador()}" process="@this"/>
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasTTr" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlDetalleConcepto.cancelarCambioTipoTrabajador()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['tiposcontratosTC']}" widgetVar="TipoContratosDialogo" draggable="false" resizable="false" closable="false" id="TipoContratosDialogo"  
@@ -982,7 +954,7 @@
                                      selection="#{controlDetalleConcepto.tipoContratoSeleccionado}" selectionMode="single" widgetVar="lovTipoContrato" scrollable="true" scrollHeight="250" scrollWidth="416"
                                      filteredValue="#{controlDetalleConcepto.filtrarListTiposContratos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlDetalleConcepto.activarAceptar()}" update=":form:aceptarTCt"/>
-                            <p:ajax event="rowDblselect" listener="#{controlDetalleConcepto.actualizarTipoContrato()}" process="@this" onstart="lovTipoContrato.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlDetalleConcepto.actualizarTipoContrato()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTipoContrato.filter();" style="width:140px; position: relative; left: 70px;" />  
@@ -997,10 +969,8 @@
 
                         <h:outputText id="infoRegistroTipoContrato" value="#{controlDetalleConcepto.infoRegistroTipoContrato}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton icon="ui-icon-check"  id="aceptarTCt" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" onclick="TipoContratosDialogo.hide(), lovTipoContrato.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarTipoContrato()}" update="lovTipoContrato, aceptarTCt, datosVigenciaConceptoTC" process="@this">
-                            <p:resetInput target=":form:lovTipoContrato:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasTCt" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="TipoContratosDialogo.hide(), lovTipoContrato.clearFilters();" actionListener="#{controlDetalleConcepto.cancelarCambioTipoContrato()}" update="lovTipoContrato" process="@this">
+                        <p:commandButton icon="ui-icon-check"  id="aceptarTCt" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" actionListener="#{controlDetalleConcepto.actualizarTipoContrato()}" process="@this"/>
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasTCt" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlDetalleConcepto.cancelarCambioTipoContrato()}" process="@this">
                             <p:resetInput target=":form:lovTipoContrato:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -1011,7 +981,7 @@
                                      selection="#{controlDetalleConcepto.reformaLaboralSeleccionado}" selectionMode="single" widgetVar="lovReformaLaboral" scrollable="true" scrollHeight="250" scrollWidth="416"
                                      filteredValue="#{controlDetalleConcepto.filtrarListReformasLaborales}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlDetalleConcepto.activarAceptar()}" update=":form:aceptarRL"/>
-                            <p:ajax event="rowDblselect" listener="#{controlDetalleConcepto.actualizarReformaLaboral()}" process="@this" onstart="lovReformaLaboral.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlDetalleConcepto.actualizarReformaLaboral()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarRL']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovReformaLaboral.filter();" style="width:140px; position: relative; left: 70px;" />  
@@ -1026,12 +996,8 @@
 
                         <h:outputText id="infoRegistroReformaLaboral" value="#{controlDetalleConcepto.infoRegistroReformaLaboral}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton icon="ui-icon-check"  id="aceptarRL" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" onclick="ReformaLaboralDialogo.hide(), lovReformaLaboral.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarReformaLaboral()}" update="lovReformaLaboral, aceptarRL, datosVigenciaConceptoRL" process="@this">
-                            <p:resetInput target=":form:lovReformaLaboral:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasRL" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="ReformaLaboralDialogo.hide(), lovReformaLaboral.clearFilters();" actionListener="#{controlDetalleConcepto.cancelarCambioReformaLaboral()}" update="lovReformaLaboral" process="@this">
-                            <p:resetInput target=":form:lovReformaLaboral:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check"  id="aceptarRL" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}"  actionListener="#{controlDetalleConcepto.actualizarReformaLaboral()}"  process="@this"/>
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasRL" style="position: relative; left: 230px" value="#{msg['atras']}"  actionListener="#{controlDetalleConcepto.cancelarCambioReformaLaboral()}"  process="@this"/>
                     </p:dialog>
 
 
@@ -1041,7 +1007,7 @@
                                      selection="#{controlDetalleConcepto.formulaSeleccionado}" selectionMode="single" widgetVar="lovFormula" scrollable="true" scrollHeight="250" scrollWidth="416"
                                      filteredValue="#{controlDetalleConcepto.filtrarListFormulas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlDetalleConcepto.activarAceptar()}" update=":form:aceptarF"/>
-                            <p:ajax event="rowDblselect" listener="#{controlDetalleConcepto.actualizarFormula()}" process="@this" onstart="lovFormula.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlDetalleConcepto.actualizarFormula()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarF']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovFormula.filter();" style="width:140px; position: relative; left: 70px;" />  
@@ -1062,12 +1028,8 @@
 
                         <h:outputText id="infoRegistroFormula" value="#{controlDetalleConcepto.infoRegistroFormula}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton  icon="ui-icon-check" id="aceptarF" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" onclick="FormulasDialogo.hide(), lovFormula.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarFormula()}" update="lovFormula, aceptarF, datosFormulaConcepto" process="@this">
-                            <p:resetInput target=":form:lovFormula:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasF" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="FormulasDialogo.hide(), lovFormula.clearFilters();" actionListener="#{controlDetalleConcepto.cancelarCambioFormula()}" update="lovFormula" process="@this">
-                            <p:resetInput target=":form:lovFormula:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton  icon="ui-icon-check" id="aceptarF" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" actionListener="#{controlDetalleConcepto.actualizarFormula()}" process="@this"/>
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasF" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlDetalleConcepto.cancelarCambioFormula()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['ordendeliquidacionOL']}" widgetVar="FormulaConceptoDialogo" draggable="false" resizable="false" closable="false" id="FormulaConceptoDialogo"  
@@ -1076,7 +1038,7 @@
                                      selection="#{controlDetalleConcepto.formulaConceptoSeleccionado}" selectionMode="single" widgetVar="lovFormulaC" scrollable="true" scrollHeight="250" scrollWidth="420"
                                      filteredValue="#{controlDetalleConcepto.filtrarListFormulasConceptos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlDetalleConcepto.activarAceptar()}" update=":form:aceptarFC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlDetalleConcepto.actualizarOrden()}" process="@this" onstart="lovFormulaC.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlDetalleConcepto.actualizarOrden()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarOL']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovFormulaC.filter();" style="width:140px; position: relative; left: 70px;" />  
@@ -1097,12 +1059,8 @@
 
                         <h:outputText id="infoRegistroOrden" value="#{controlDetalleConcepto.infoRegistroOrden}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton icon="ui-icon-check" id="aceptarFC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" onclick="FormulaConceptoDialogo.hide(), lovFormulaC.clearFilters();" actionListener="#{controlDetalleConcepto.actualizarOrden()}" update="lovFormulaC, aceptarFC, datosFormulaConcepto" process="@this">
-                            <p:resetInput target=":form:lovFormulaC:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasFC" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="FormulaConceptoDialogo.hide(), lovFormulaC.clearFilters();" actionListener="#{controlDetalleConcepto.cancelarCambioOrden()}" update="lovFormulaC" process="@this">
-                            <p:resetInput target=":form:lovFormulaC:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check" id="aceptarFC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlDetalleConcepto.aceptar}" actionListener="#{controlDetalleConcepto.actualizarOrden()}" process="@this"/>
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasFC" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlDetalleConcepto.cancelarCambioOrden()}" process="@this"/>
                     </p:dialog>
 
                 </h:form>

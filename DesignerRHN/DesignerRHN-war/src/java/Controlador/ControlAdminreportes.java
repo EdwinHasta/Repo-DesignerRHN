@@ -590,9 +590,10 @@ public class ControlAdminreportes implements Serializable {
         }
         cambiosPagina = false;
         context.update("form:ACEPTAR");
-        context.execute("inforeportesDialogo.hide()");
         context.reset("formularioDialogos:LOVInforeportes:globalFilter");
-        context.update("formularioDialogos:LOVInforeportes");
+        context.execute("LOVInforeportes.clearFilters()");
+        context.execute("inforeportesDialogo.hide()");
+        //context.update("formularioDialogos:LOVInforeportes");
         context.update("form:datosInforeportes");
         filtradosListaInforeportes = null;
         inforeportesSeleccionado = null;
@@ -649,9 +650,10 @@ public class ControlAdminreportes implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("modulosDialogo.hide()");
         context.reset("formularioDialogos:LOVModulos:globalFilter");
-        context.update("formularioDialogos:LOVModulos");
+        context.execute("LOVModulos.clearFilters()");
+        context.execute("modulosDialogo.hide()");
+        //context.update("formularioDialogos:LOVModulos");
     }
 
     public void valoresBackupAutocompletar(int tipoNuevo, String Campo) {
@@ -794,7 +796,7 @@ public class ControlAdminreportes implements Serializable {
         k = 0;
         listaInforeportes = null;
         getListaInforeportes();
-        
+
         if (listaInforeportes != null && !listaInforeportes.isEmpty()) {
             inforeporteSeleccionado = listaInforeportes.get(0);
             infoRegistro = "Cantidad de registros: " + listaInforeportes.size();
@@ -806,7 +808,7 @@ public class ControlAdminreportes implements Serializable {
 
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:PanelTotal");
-        
+
     }
 
     public void cancelarCambioInforeportes() {
@@ -818,6 +820,10 @@ public class ControlAdminreportes implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVInforeportes:globalFilter");
+        context.execute("LOVInforeportes.clearFilters()");
+        context.execute("inforeportesDialogo.hide()");
     }
 
     public void cancelarCambioModulos() {
@@ -829,6 +835,10 @@ public class ControlAdminreportes implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVModulos:globalFilter");
+        context.execute("LOVModulos.clearFilters()");
+        context.execute("modulosDialogo.hide()");
     }
 
     //MOSTRAR DATOS CELDA

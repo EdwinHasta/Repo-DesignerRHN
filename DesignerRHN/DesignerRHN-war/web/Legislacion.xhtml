@@ -233,7 +233,7 @@
                                      selection="#{controlLegislacion.tipoCotizanteSeleccionado}" selectionMode="single" widgetVar="lovTiposCotizantes" scrollable="true" scrollWidth="485" scrollHeight="231"
                                      filteredValue="#{controlLegislacion.filtradoListaTiposCotizantes}" emptyMessage="#{msg['lovvacio']}" >              
                             <p:ajax event="rowSelect" listener="#{controlLegislacion.activarAceptar()}" update=":formularioDialogos:aceptarTC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlLegislacion.actualizarTipoCotizante()}" process="@this" onstart="lovTiposCotizantes.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlLegislacion.actualizarTipoCotizante()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTC']}"   style="position: absolute; left: 27px; top: 16px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTiposCotizantes.filter();" style="width:200px; position: relative; left: 30px;" />  
@@ -254,12 +254,10 @@
                         
                         <h:outputText id="infoRegistroTipo" value="#{controlLegislacion.infoRegistroTipo}" style="position: absolute; left: 20px; top: 330px; font-weight: bold"/>
                         
-                        <p:commandButton icon="ui-icon-check" id="aceptarTC" style="position: relative; left: 305px" value="#{msg['aceptar']}"  disabled="#{controlLegislacion.aceptar}" actionListener="#{controlLegislacion.actualizarTipoCotizante()}" update="aceptarTC" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovTiposCotizantes:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasTC" style="position: relative; left: 305px" value="#{msg['atras']}"  onclick="tiposCotizantesDialogo.hide(), lovTiposCotizantes.clearFilters();" actionListener="#{controlLegislacion.cancelarTipoCotizante()}" update="lovTiposCotizantes" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovTiposCotizantes:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check" id="aceptarTC" style="position: relative; left: 305px" value="#{msg['aceptar']}"  disabled="#{controlLegislacion.aceptar}" actionListener="#{controlLegislacion.actualizarTipoCotizante()}" process="@this" />
+                            
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasTC" style="position: relative; left: 305px" value="#{msg['atras']}"  actionListener="#{controlLegislacion.cancelarTipoCotizante()}" process="@this" />
+                           
                     </p:dialog>
 
 
@@ -270,7 +268,7 @@
                                      selection="#{controlLegislacion.contratoSeleccionado}" selectionMode="single" widgetVar="lovContratos" scrollable="true" scrollWidth="525" scrollHeight="250"
                                      filteredValue="#{controlLegislacion.filtradoListaContratosLOV}" emptyMessage="#{msg['lovvacio']}" >              
                             <p:ajax event="rowSelect" listener="#{controlLegislacion.activarAceptar()}" update=":formularioDialogos:aceptarC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlLegislacion.seleccionContrato()}" process="@this" onstart="lovContratos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlLegislacion.seleccionContrato()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarC']}"   style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovContratos.filter();" style="width:200px; position: relative; left: -15px;" />  
@@ -291,12 +289,10 @@
                         
                         <h:outputText id="infoRegistroContrato" value="#{controlLegislacion.infoRegistroContrato}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton icon="ui-icon-check" id="aceptarC" style="position: relative; left: 350px" value="#{msg['aceptar']}"  disabled="#{controlLegislacion.aceptar}" actionListener="#{controlLegislacion.seleccionContrato()}" update="aceptarC" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovContratos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasC" style="position: relative; left: 350px" value="#{msg['atras']}"  onclick="ContratosDialogo.hide(), lovContratos.clearFilters();" actionListener="#{controlLegislacion.cancelarSeleccionContrato()}" update="lovContratos, aceptarC" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovContratos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check" id="aceptarC" style="position: relative; left: 350px" value="#{msg['aceptar']}"  disabled="#{controlLegislacion.aceptar}" actionListener="#{controlLegislacion.seleccionContrato()}" process="@this" />
+                            
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasC" style="position: relative; left: 350px" value="#{msg['atras']}"  actionListener="#{controlLegislacion.cancelarSeleccionContrato()}"  process="@this" />
+                            
                     </p:dialog>
 
                     <p:dialog id="validacioNuevoContrato" header="#{msg['atencion']}"  widgetVar="validacioNuevoContrato"  resizable="false" draggable="false" modal="true" height="95" width="400px" closable="false">  

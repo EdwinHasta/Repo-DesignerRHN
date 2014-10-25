@@ -965,11 +965,12 @@ public class ControlVigenciaAficion implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
-
-        context.update("form:AficionesDialogo");
-        context.update("form:lovAficiones");
-        context.update("form:aceptarA");
+        /*
+         context.update("form:AficionesDialogo");
+         context.update("form:lovAficiones");
+         context.update("form:aceptarA");*/
         context.reset("form:lovAficiones:globalFilter");
+        context.execute("lovAficiones.clearFilters()");
         context.execute("AficionesDialogo.hide()");
 
     }
@@ -985,6 +986,11 @@ public class ControlVigenciaAficion implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        context.reset("form:lovAficiones:globalFilter");
+        context.execute("lovAficiones.clearFilters()");
+        context.execute("AficionesDialogo.hide()");
     }
 
     //LISTA DE VALORES DINAMICA
@@ -1241,7 +1247,5 @@ public class ControlVigenciaAficion implements Serializable {
     public void setAltoTabla(String altoTabla) {
         this.altoTabla = altoTabla;
     }
-    
-    
 
 }

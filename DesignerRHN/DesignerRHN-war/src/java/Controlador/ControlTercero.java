@@ -2021,11 +2021,12 @@ public class ControlTercero implements Serializable {
         index = -1;
         secRegistroTercero = null;
         tipoActualizacion = -1;
-
+        /*
         context.update("form:TerceroDialogo");
         context.update("form:lovTercero");
-        context.update("form:aceptarT");
+        context.update("form:aceptarT");*/
         context.reset("form:lovTercero:globalFilter");
+        context.execute("lovTercero.clearFilters()");
         context.execute("TerceroDialogo.hide()");
 
     }
@@ -2038,6 +2039,10 @@ public class ControlTercero implements Serializable {
         secRegistroTercero = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTercero:globalFilter");
+        context.execute("lovTercero.clearFilters()");
+        context.execute("TerceroDialogo.hide()");
     }
 
     public void actualizarCiudad() {
@@ -2083,11 +2088,12 @@ public class ControlTercero implements Serializable {
         index = -1;
         secRegistroTercero = null;
         tipoActualizacion = -1;
-
+        /*
         context.update("form:CiudadDialogo");
         context.update("form:lovCiudad");
-        context.update("form:aceptarC");
+        context.update("form:aceptarC");*/
         context.reset("form:lovCiudad:globalFilter");
+        context.execute("lovCiudad.clearFilters()");
         context.execute("CiudadDialogo.hide()");
     }
 
@@ -2099,6 +2105,10 @@ public class ControlTercero implements Serializable {
         secRegistroTercero = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovCiudad:globalFilter");
+        context.execute("lovCiudad.clearFilters()");
+        context.execute("CiudadDialogo.hide()");
     }
 
     public void actualizarCiudadTS() {
@@ -2143,11 +2153,12 @@ public class ControlTercero implements Serializable {
         indexTS = -1;
         secRegistroTerceroSucursal = null;
         tipoActualizacion = -1;
-
+        /*
         context.update("form:CiudadTSDialogo");
         context.update("form:lovCiudadTS");
-        context.update("form:aceptarCTS");
+        context.update("form:aceptarCTS");*/
         context.reset("form:lovCiudadTS:globalFilter");
+        context.execute("lovCiudadTS.clearFilters()");
         context.execute("CiudadTSDialogo.hide()");
     }
 
@@ -2159,6 +2170,10 @@ public class ControlTercero implements Serializable {
         secRegistroTerceroSucursal = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovCiudadTS:globalFilter");
+        context.execute("lovCiudadTS.clearFilters()");
+        context.execute("CiudadTSDialogo.hide()");
     }
 
     /**
@@ -2292,6 +2307,10 @@ public class ControlTercero implements Serializable {
     public void cancelarSeleccionTercero() {
         terceroCSeleccionado = new Terceros();
         filtrarListTerceroConsolidador = null;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovBuscarTercero:globalFilter");
+        context.execute("lovBuscarTercero.clearFilters()");
+        context.execute("BuscarTerceroDialogo.hide()");
     }
 
     public void validarSeleccionTercero() {
@@ -2313,11 +2332,11 @@ public class ControlTercero implements Serializable {
             context.update("form:datosTerceros");
             getListTercerosSucursales();
             context.update("form:datosTercerosSucursales");
-
-            context.update("form:BuscarTerceroDialogo");
-            context.update("form:aceptarBT");
-            context.update("form:datosTerceros");
+            /*
+             context.update("form:BuscarTerceroDialogo");
+             context.update("form:aceptarBT");*/
             context.reset("form:lovBuscarTercero:globalFilter");
+            context.execute("lovBuscarTercero.clearFilters()");
             context.execute("BuscarTerceroDialogo.hide()");
         } else {
             terceroLOVSeleccionado = new Terceros();

@@ -749,7 +749,7 @@
                                       rowKey="#{item.empleado.secuencia}" selection="#{controlRemoto.emplSeleccionado}" selectionMode="single" >
 
                             <p:ajax event="rowSelect" listener="#{controlRemoto.activarBuscar()}"  update=":form:buscarRap"/>
-                            <p:ajax event="rowDblselect" listener="#{controlRemoto.busquedaRapida()}" update=":form:tabMenu:data, lvBusquedaRapida, :form:tabMenu:TipoPersonal, :form:tabMenu:data:panelInf, :form:buscarRap, :form:tabMenu:data:MostrarTodos" process="@this" onstart="lvBr.hide(); busquedaR.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlRemoto.busquedaRapida()}" process="@this" />
 
 
                             <f:facet name="header" >  
@@ -779,12 +779,8 @@
                             </p:column>
                         </p:dataTable> 
 
-                        <p:commandButton id="buscarRap" value="#{msg['aceptar']}" actionListener="#{controlRemoto.busquedaRapida}" icon="ui-icon-check"   update=":form:tabMenu:data, lvBusquedaRapida, :form:tabMenu:TipoPersonal, :form:tabMenu:data:panelInf, buscarRap, :form:tabMenu:data:MostrarTodos" onclick="lvBr.hide(), busquedaR.clearFilters();"  style="position: absolute; top: 260px; left: 565px"  disabled="#{controlRemoto.buscar}">
-                            <p:resetInput target=":form:lvBusquedaRapida:globalFilter" />
-                        </p:commandButton>
-                        <p:commandButton value="#{msg['atras']}" onclick="lvBr.hide(), busquedaR.clearFilters();" icon="ui-icon-arrowreturnthick-1-w"  style="position: absolute; top: 260px; left: 653px" actionListener="#{controlRemoto.busquedaRapidaAtras()}" update="buscarRap, lvBusquedaRapida">
-                            <p:resetInput target=":form:lvBusquedaRapida:globalFilter" />
-                        </p:commandButton>
+                        <p:commandButton id="buscarRap" value="#{msg['aceptar']}" actionListener="#{controlRemoto.busquedaRapida}" icon="ui-icon-check"  style="position: absolute; top: 260px; left: 565px"  disabled="#{controlRemoto.buscar}"/>
+                        <p:commandButton value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w"  style="position: absolute; top: 260px; left: 653px" actionListener="#{controlRemoto.busquedaRapidaAtras()}" />
                     </p:dialog>
 
                     <p:dialog id="lvBE" header="#{msg['empleadosE']}" widgetVar="lvBE"  resizable="false" draggable="false" modal="true" height="300"  width="735"  closable="false">  
@@ -794,7 +790,7 @@
                                       rowKey="#{item.empleado.secuencia}" selection="#{controlRemoto.emplSeleccionadoBE}" selectionMode="single" >
 
                             <p:ajax event="rowSelect" listener="#{controlRemoto.activarBuscar()}"  update=":form:buscarEmpl"/>
-                            <p:ajax event="rowDblselect" listener="#{controlRemoto.buscarEmpleado()}" update=":form:tabMenu:data, lvBuscarEmpleado, :form:buscarEmpl, :form:tabMenu:data:MostrarTodos" process="@this" onstart="lvBE.hide(); buscarE.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlRemoto.buscarEmpleado()}" process="@this" />
                             <f:facet name="header" >  
                                 <h:outputText value="#{msg['buscarE']}"  style="position: absolute; left: 22px; top: 18px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="buscarE.filter();" style="width:150px; position: relative; left: -150px;"/>
@@ -820,12 +816,8 @@
 
                         <h:outputText id="infoRegistroBuscarEmpleados" value="#{controlRemoto.infoRegistroBuscarEmpleados}" style="position: absolute; left: 15px; top: 270px; font-weight: bold"/>
 
-                        <p:commandButton id="buscarEmpl" value="#{msg['aceptar']}" onclick="lvBE.hide(), buscarE.clearFilters();" icon="ui-icon-check" actionListener="#{controlRemoto.buscarEmpleado()}"   update=":form:tabMenu:data, lvBuscarEmpleado, buscarEmpl, form:tabMenu:data:MostrarTodos" disabled="#{controlRemoto.buscar}" style="position: absolute; top: 260px; left: 565px">
-                            <p:resetInput target=":form:lvBuscarEmpleado:globalFilter" />
-                        </p:commandButton>
-                        <p:commandButton value="#{msg['atras']}" onclick="lvBE.hide(), buscarE.clearFilters();" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlRemoto.busquedaEmpleadoAtras()}" update="buscarEmpl, lvBuscarEmpleado"  style="position: absolute; top: 260px; left: 653px">
-                            <p:resetInput target=":form:lvBuscarEmpleado:globalFilter" />
-                        </p:commandButton>
+                        <p:commandButton id="buscarEmpl" value="#{msg['aceptar']}" icon="ui-icon-check" actionListener="#{controlRemoto.buscarEmpleado()}"   disabled="#{controlRemoto.buscar}" style="position: absolute; top: 260px; left: 565px"/>
+                        <p:commandButton value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlRemoto.busquedaEmpleadoAtras()}" style="position: absolute; top: 260px; left: 653px"/>
                     </p:dialog>
 
                     <!-- LOV TABLAS-->
@@ -835,7 +827,7 @@
                                      selection="#{controlRemoto.seleccionTablaLOV}" selectionMode="single" widgetVar="lovTablas" scrollable="true" scrollWidth="527" scrollHeight="250"
                                      filteredValue="#{controlRemoto.filtradoListTablasLOV}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlRemoto.activarBuscar()}" update=":form:aceptarT"/>
-                            <p:ajax event="rowDblselect" listener="#{controlRemoto.seleccionTabla()}" process="@this" onstart="lovTablas.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlRemoto.seleccionTabla()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarT']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTablas.filter();" style="width:200px; position: relative; left: -50px;" />  
@@ -853,12 +845,8 @@
                                 <h:outputText  value="#{tabla.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarT" style="position: relative; left: 365px" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlRemoto.buscar}" actionListener="#{controlRemoto.seleccionTabla()}" update="aceptarT" process="@this">
-                            <p:resetInput target=":form:lovTablas:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasF" style="position: relative; left: 365px" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" onclick="buscarTablasDialogo.hide(), lovTablas.clearFilters();" actionListener="#{controlRemoto.cancelarSeleccionTabla()}" update="lovTablas, aceptarT" process="@this">
-                            <p:resetInput target=":form:lovTablas:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarT" style="position: relative; left: 365px" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlRemoto.buscar}" actionListener="#{controlRemoto.seleccionTabla()}"  process="@this"/>
+                        <p:commandButton id="atrasF" style="position: relative; left: 365px" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlRemoto.cancelarSeleccionTabla()}"  process="@this"/>
                     </p:dialog>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlRemoto.lab()}"/> 
                     <p:hotkey bind="ctrl+f12" actionListener="#{controlRemoto.lab2()}"/> 

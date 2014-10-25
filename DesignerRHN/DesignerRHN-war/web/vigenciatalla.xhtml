@@ -167,7 +167,7 @@
                                          selection="#{controlVigenciasTallas.tipoFamiliarSeleccionado}" selectionMode="single" widgetVar="lovTiposTallas" scrollable="true" scrollWidth="450" scrollHeight="250"
                                          filteredValue="#{controlVigenciasTallas.filtradoTiposTallas}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasTallas.activarAceptar()}" update=":form:aceptarS"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciasTallas.actualizarTipoFamiliar()}" process="@this" onstart="lovTiposTallas.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciasTallas.actualizarTipoFamiliar()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="Buscar Parentesco"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTiposTallas.filter();" style="width:150px; position: relative; left: 50px;" />  
@@ -175,7 +175,7 @@
                                 <p:column filterBy="#{tipotallita.codigo}" width="60" filterStyle="width:50px;" filterMatchMode="contains">
                                     <f:facet name="header">
                                         <h:outputText value="Codigo" />
-                                    </f:facet>
+                                    </f:facet> 
                                     <h:outputText value="#{tipotallita.codigo}" />
                                 </p:column>
                                 <p:column filterBy="#{tipotallita.descripcion}" width="160px" filterStyle="width:140px;" filterMatchMode="contains">
@@ -187,13 +187,8 @@
 
                             </p:dataTable>
                             <h:outputText id="infoRegistroTiposFamiliares" value="#{controlVigenciasTallas.infoRegistroTiposFamiliares}" style="position: absolute;  top: 355px; font-weight: bold"/>
-                            <p:commandButton id="aceptarS" icon="ui-icon-check" style="position: relative; left: 275px" value="Aceptar" disabled="#{controlVigenciasTallas.aceptar}"  onclick="tipostallasDialogo.hide(), lovTiposTallas.clearFilters();"  actionListener="#{controlVigenciasTallas.actualizarTipoFamiliar()}" update="lovTiposTallas, aceptarS, datosVigenciasTallas" process="@this">
-                                <p:resetInput target=":form:lovTiposTallas:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 275px" value="Atras"  actionListener="#{controlVigenciasTallas.cancelarCambioTiposTallas()}" onclick="tipostallasDialogo.hide();
-                                    lovTiposTallas.clearFilters();" update="lovTiposTallas" process="@this">
-                                <p:resetInput target=":form:lovTiposTallas:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarS" icon="ui-icon-check" style="position: relative; left: 275px" value="Aceptar" disabled="#{controlVigenciasTallas.aceptar}"  actionListener="#{controlVigenciasTallas.actualizarTipoFamiliar()}" process="@this"/>
+                            <p:commandButton id="atrasS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 275px" value="Atras"  actionListener="#{controlVigenciasTallas.cancelarCambioTiposTallas()}" process="@this"/>
                         </p:dialog>
 
 

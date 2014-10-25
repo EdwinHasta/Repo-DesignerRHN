@@ -228,7 +228,7 @@
                                                 <p:ajax event="select" listener="#{controlCargo.cambiarIndice(indice, 10)}" process="@this"/>
                                             </p:inputText>
                                         </f:facet>  
-                                    </p:cellEditor>
+                                    </p:cellEditor> 
                                     <f:facet name="footer">
                                         <h:outputText value="" />
                                     </f:facet>
@@ -602,7 +602,7 @@
                                      selection="#{controlCargo.cargoSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovBuscarCargo" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlCargo.filtrarLovCargos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlCargo.activarAceptar()}" update=":form:aceptarBC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarCargo()}"  process="@this" onstart="lovBuscarCargo.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarCargo()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarBC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovBuscarCargo.filter();" style="width:140px; position: relative; left: 5px;" />  
@@ -624,12 +624,9 @@
 
                         <h:outputText id="infoRegistroCargo" value="#{controlCargo.infoRegistroCargo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarBC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="BuscarCargoDialogo.hide(), lovBuscarCargo.clearFilters();"  actionListener="#{controlCargo.actualizarCargo()}" update="lovBuscarCargo, aceptarBC, datosCargo" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":form:lovBuscarCargo:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasBC" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="BuscarCargoDialogo.hide(), lovBuscarCargo.clearFilters();" actionListener="#{controlCargo.cancelarCambioGrupoViatico()}" update="lovBuscarCargo" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":form:lovBuscarCargo:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarBC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}"  actionListener="#{controlCargo.actualizarCargo()}" process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasBC" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlCargo.cancelarCambioCargo()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                     </p:dialog>
 
 
@@ -639,7 +636,7 @@
                                      selection="#{controlCargo.grupoSalarialSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovGrupoSalarial" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlCargo.filtrarLovGruposSalariales}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlCargo.activarAceptar()}" update=":form:aceptarGS"/>
-                            <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarGrupoSalarial()}"  process="@this" onstart="lovGrupoSalarial.clearFilters()"  />
+                            <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarGrupoSalarial()}"  process="@this"   />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarGS']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovGrupoSalarial.filter();" style="width:140px; position: relative; left: 30px;" />  
@@ -663,12 +660,9 @@
 
                         <h:outputText id="infoRegistroGrupoSalarial" value="#{controlCargo.infoRegistroGrupoSalarial}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarGS" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="GrupoSalarialDialogo.hide(), lovGrupoSalarial.clearFilters();" actionListener="#{controlCargo.actualizarGrupoSalarial()}" update="lovGrupoSalarial, aceptarGS, datosCargo" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":form:lovGrupoSalarial:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasGS" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="GrupoSalarialDialogo.hide(), lovGrupoSalarial.clearFilters();" actionListener="#{controlCargo.cancelarCambioGrupoSalarial()}" update="lovGrupoSalarial" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":form:lovGrupoSalarial:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarGS" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" actionListener="#{controlCargo.actualizarGrupoSalarial()}" process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasGS" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlCargo.cancelarCambioGrupoSalarial()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['grupoViaticoD']}" widgetVar="GrupoViaticoDialogo" draggable="false" resizable="false" closable="false" id="GrupoViaticoDialogo"  
@@ -677,7 +671,7 @@
                                      selection="#{controlCargo.grupoViaticoSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovGrupoViatico" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlCargo.filtrarLovGruposViaticos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlCargo.activarAceptar()}" update=":form:aceptarGV"/>
-                            <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarGrupoViatico()}"  process="@this" onstart="lovGrupoViatico.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarGrupoViatico()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarGV']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovGrupoViatico.filter();" style="width:140px; position: relative; left: 70px;" />  
@@ -698,12 +692,9 @@
                         </p:dataTable>
                         <h:outputText id="infoRegistroGrupoViatico" value="#{controlCargo.infoRegistroGrupoViatico}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarGV" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="GrupoViaticoDialogo.hide(), lovGrupoViatico.clearFilters();"  actionListener="#{controlCargo.actualizarGrupoViatico()}" update="lovGrupoViatico, aceptarGV, datosCargo" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":form:lovGrupoViatico:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasGV" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="GrupoViaticoDialogo.hide(), lovGrupoViatico.clearFilters();" actionListener="#{controlCargo.cancelarCambioGrupoViatico()}" update="lovGrupoViatico" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":form:lovGrupoViatico:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarGV" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}"  actionListener="#{controlCargo.actualizarGrupoViatico()}" process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasGV" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlCargo.cancelarCambioGrupoViatico()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['procesoProductivoD']}" widgetVar="ProcesoProductivoDialogo" draggable="false" resizable="false" closable="false" id="ProcesoProductivoDialogo"  
@@ -712,7 +703,7 @@
                                      selection="#{controlCargo.procesoProductivoSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovProcesoProductivo" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlCargo.filtrarLovProcesosProductivos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlCargo.activarAceptar()}" update=":form:aceptarPP"/>
-                            <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarProcesoProductivo()}"  process="@this" onstart="lovProcesoProductivo.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarProcesoProductivo()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarPP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovProcesoProductivo.filter();" style="width:140px; position: relative; left: 20px;" />  
@@ -734,12 +725,9 @@
 
                         <h:outputText id="infoRegistroProcesoProductivo" value="#{controlCargo.infoRegistroProcesoProductivo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarPP" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="ProcesoProductivoDialogo.hide(), lovProcesoProductivo.clearFilters();"  actionListener="#{controlCargo.actualizarProcesoProductivo()}" update="lovProcesoProductivo, aceptarPP, datosCargo" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":form:lovProcesoProductivo:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasPP" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="ProcesoProductivoDialogo.hide(), lovProcesoProductivo.clearFilters();" actionListener="#{controlCargo.cancelarCambioProcesoProductivo()}" update="lovProcesoProductivo" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":form:lovProcesoProductivo:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarPP" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}"  actionListener="#{controlCargo.actualizarProcesoProductivo()}" process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasPP" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlCargo.cancelarCambioProcesoProductivo()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['tipoEmpresaD']}" widgetVar="TipoEmpresaDialogo" draggable="false" resizable="false" closable="false" id="TipoEmpresaDialogo"  
@@ -748,7 +736,7 @@
                                      selection="#{controlCargo.tipoEmpresaSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovTipoEmpresa" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlCargo.filtrarLovTiposEmpresas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlCargo.activarAceptar()}" update=":form:aceptarTE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarTipoEmpresa()}"  process="@this" onstart="lovTipoEmpresa.clearFilters()"  />
+                            <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarTipoEmpresa()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTE']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTipoEmpresa.filter();" style="width:140px; position: relative; left: 30px;" />  
@@ -769,12 +757,9 @@
 
                         <h:outputText id="infoRegistroTipoEmpresa" value="#{controlCargo.infoRegistroTipoEmpresa}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarTE" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="TipoEmpresaDialogo.hide(), lovTipoEmpresa.clearFilters();" actionListener="#{controlCargo.actualizarTipoEmpresa()}" update="lovTipoEmpresa, aceptarTE, datosSueldoMercado" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":form:lovTipoEmpresa:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasTE" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="TipoEmpresaDialogo.hide(), lovTipoEmpresa.clearFilters();" actionListener="#{controlCargo.cancelarCambioTipoEmpresa()}" update="lovTipoEmpresa" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":form:lovTipoEmpresa:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarTE" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" actionListener="#{controlCargo.actualizarTipoEmpresa()}" process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasTE" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlCargo.cancelarCambioTipoEmpresa()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['evalCompetenciantidadD']}" widgetVar="EvalCompetenciaDialogo" draggable="false" resizable="false" closable="false" id="EvalCompetenciaDialogo"  
@@ -783,7 +768,7 @@
                                      selection="#{controlCargo.evalCompetenciaSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovEvalCompetencia" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlCargo.filtrarLovEvalCompetencias}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlCargo.activarAceptar()}" update=":form:aceptarEC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarEvalCompetencia()}"  process="@this" onstart="lovEvalCompetencia.clearFilters()"  />
+                            <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarEvalCompetencia()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEvalCompetencia.filter();" style="width:140px; position: relative; left: 30px;" />  
@@ -804,12 +789,9 @@
 
                         <h:outputText id="infoRegistroEval" value="#{controlCargo.infoRegistroEval}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarEC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="EvalCompetenciaDialogo.hide(), lovEvalCompetencia.clearFilters();" actionListener="#{controlCargo.actualizarEvalCompetencia()}" update="lovEvalCompetencia, aceptarEC, datosCompetenciaCargo" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":form:lovEvalCompetencia:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasEC" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="EvalCompetenciaDialogo.hide(), lovEvalCompetencia.clearFilters();" actionListener="#{controlCargo.cancelarCambioEvalCompetencia()}" update="lovEvalCompetencia" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":form:lovEvalCompetencia:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarEC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}"  actionListener="#{controlCargo.actualizarEvalCompetencia()}" process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasEC" style="position: relative; left: 230px" value="#{msg['atras']}"  actionListener="#{controlCargo.cancelarCambioEvalCompetencia()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['enfoqueD']}" widgetVar="EnfoqueDialogo" draggable="false" resizable="false" closable="false" id="EnfoqueDialogo"  
@@ -818,7 +800,7 @@
                                      selection="#{controlCargo.enfoqueSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovEnfoque" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlCargo.filtrarLovEnfoques}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlCargo.activarAceptar()}" update=":form:aceptarE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarEnfoque()}"  process="@this" onstart="lovEnfoque.clearFilters()"  />
+                            <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarEnfoque()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarE']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovFormula.filter();" style="width:140px; position: relative; left: 10px;" />  
@@ -839,12 +821,9 @@
 
                         <h:outputText id="infoRegistroEnfoque" value="#{controlCargo.infoRegistroEnfoque}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarE" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="EnfoqueDialogo.hide(), lovEnfoque.clearFilters();" actionListener="#{controlCargo.actualizarEnfoque()}" update="lovEnfoque, aceptarE, datosTipoDetalle" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":form:lovEnfoque:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasE" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="EnfoqueDialogo.hide(), lovEnfoque.clearFilters();" actionListener="#{controlCargo.cancelarCambioEnfoque()}" update="lovEnfoque" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":form:lovEnfoque:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarE" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" actionListener="#{controlCargo.actualizarEnfoque()}" process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasE" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlCargo.cancelarCambioEnfoque()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                     </p:dialog>
 
 
@@ -854,7 +833,7 @@
                                      selection="#{controlCargo.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresas" scrollable="true" scrollWidth="425" scrollHeight="250"
                                      filteredValue="#{controlCargo.filtrarListaEmpresas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlCargo.activarAceptar()}" update=":form:aceptarEM"/>
-                            <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarEmpresa()}"  process="@this" onstart="lovEmpresas.clearFilters()"  />
+                            <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarEmpresa()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEM']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpresas.filter();" style="width:100px; position: relative; left: 30px;" />  
@@ -875,12 +854,9 @@
 
                         <h:outputText id="infoRegistroEmpresa" value="#{controlCargo.infoRegistroEmpresa}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarEM" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" actionListener="#{controlCargo.actualizarEmpresa()}" update="aceptarEM" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":form:lovEmpresas:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasEM" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlCargo.cancelarCambioEmpresa()}" update="lovEmpresas" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":form:lovEmpresas:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarEM" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" actionListener="#{controlCargo.actualizarEmpresa()}" process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasEM" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlCargo.cancelarCambioEmpresa()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                     </p:dialog>
 
                 </h:form>

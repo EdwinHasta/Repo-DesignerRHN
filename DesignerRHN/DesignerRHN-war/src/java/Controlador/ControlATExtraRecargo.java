@@ -185,14 +185,14 @@ public class ControlATExtraRecargo implements Serializable {
         }
     }
 
-    public void recibirPagina(String page){
+    public void recibirPagina(String page) {
         paginaAnterior = page;
     }
-    
-    public String redirigir(){
+
+    public String redirigir() {
         return paginaAnterior;
     }
-    
+
     public boolean validarCamposNulosExtraRecargo(int i) {
         boolean retorno = true;
         if (i == 0) {
@@ -2025,11 +2025,12 @@ public class ControlATExtraRecargo implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
-
-        context.update("form:TipoDiaDialogo");
-        context.update("form:lovTipoDia");
-        context.update("form:aceptarTD");
+        /*
+         context.update("form:TipoDiaDialogo");
+         context.update("form:lovTipoDia");
+         context.update("form:aceptarTD");*/
         context.reset("form:lovTipoDia:globalFilter");
+        context.execute("lovTipoDia.clearFilters()");
         context.execute("TipoDiaDialogo.hide()");
     }
 
@@ -2041,6 +2042,10 @@ public class ControlATExtraRecargo implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTipoDia:globalFilter");
+        context.execute("lovTipoDia.clearFilters()");
+        context.execute("TipoDiaDialogo.hide()");
     }
 
     public void actualizarTipoJornada() {
@@ -2085,11 +2090,12 @@ public class ControlATExtraRecargo implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
-
-        context.update("form:TipoJornadaDialogo");
-        context.update("form:lovTipoJornada");
-        context.update("form:aceptarTJ");
+        /*
+         context.update("form:TipoJornadaDialogo");
+         context.update("form:lovTipoJornada");
+         context.update("form:aceptarTJ");*/
         context.reset("form:lovTipoJornada:globalFilter");
+        context.execute("lovTipoJornada.clearFilters()");
         context.execute("TipoJornadaDialogo.hide()");
     }
 
@@ -2101,6 +2107,10 @@ public class ControlATExtraRecargo implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTipoJornada:globalFilter");
+        context.execute("lovTipoJornada.clearFilters()");
+        context.execute("TipoJornadaDialogo.hide()");
     }
 
     public void actualizarLegislacion() {
@@ -2145,11 +2155,12 @@ public class ControlATExtraRecargo implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
-
-        context.update("form:LegislacionDialogo");
-        context.update("form:lovLegislacion");
-        context.update("form:aceptarLeg");
+        /*
+         context.update("form:LegislacionDialogo");
+         context.update("form:lovLegislacion");
+         context.update("form:aceptarLeg");*/
         context.reset("form:lovLegislacion:globalFilter");
+        context.execute("lovLegislacion.clearFilters()");
         context.execute("LegislacionDialogo.hide()");
     }
 
@@ -2161,6 +2172,10 @@ public class ControlATExtraRecargo implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovLegislacion:globalFilter");
+        context.execute("lovLegislacion.clearFilters()");
+        context.execute("LegislacionDialogo.hide()");
     }
 
     public void actualizarConcepto() {
@@ -2207,11 +2222,12 @@ public class ControlATExtraRecargo implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
-
+        /*
         context.update("form:ConceptoDialogo");
         context.update("form:lovConcepto");
-        context.update("form:aceptarCon");
+        context.update("form:aceptarCon");*/
         context.reset("form:lovConcepto:globalFilter");
+        context.execute("lovConcepto.clearFilters()");
         context.execute("ConceptoDialogo.hide()");
     }
 
@@ -2223,6 +2239,10 @@ public class ControlATExtraRecargo implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovConcepto:globalFilter");
+        context.execute("lovConcepto.clearFilters()");
+        context.execute("ConceptoDialogo.hide()");
     }
 
     public void activarAceptar() {

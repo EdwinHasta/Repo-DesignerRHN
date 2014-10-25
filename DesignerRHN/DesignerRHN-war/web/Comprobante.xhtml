@@ -550,7 +550,7 @@
                                       rowKey="#{parametro.empleado.secuencia}" selection="#{controlComprobantes.parametroSeleccionado}" selectionMode="single" >
 
                             <p:ajax event="rowSelect" listener="#{controlComprobantes.activarAceptar()}" update=":formularioDialogos:aceptarP"/>
-                            <p:ajax event="rowDblselect" listener="#{controlComprobantes.seleccionarEmpleado()}" process="@this" onstart="lovEmpleados.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlComprobantes.seleccionarEmpleado()}" process="@this" />
 
                             <f:facet name="header" >  
                                 <h:outputText value="#{msg['buscar']}"  style="position: absolute; left: 22px; top: 18px;"/>  
@@ -577,12 +577,10 @@
 
                         <h:outputText id="infoRegistroEmpleado" value="#{controlComprobantes.infoRegistroEmpleado}" style="position: absolute; left: 20px; top: 325px; font-weight: bold"/>
                         
-                        <p:commandButton icon="ui-icon-check" id="aceptarP" style="position: relative; left: 545px" value="#{msg['aceptar']}" disabled="#{controlComprobantes.aceptar}" actionListener="#{controlComprobantes.seleccionarEmpleado()}" update="aceptarP" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovEmpleados:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasP" style="position: relative; left: 545px" value="#{msg['atras']}" onclick="buscarEmpleadoDialogo.hide(), lovEmpleados.clearFilters();" actionListener="#{controlComprobantes.cancelarSeleccionEmpleado()}" update="lovEmpleados, aceptarP" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovEmpleados:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check" id="aceptarP" style="position: relative; left: 545px" value="#{msg['aceptar']}" disabled="#{controlComprobantes.aceptar}" actionListener="#{controlComprobantes.seleccionarEmpleado()}"  process="@this"/>
+                            
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasP" style="position: relative; left: 545px" value="#{msg['atras']}" actionListener="#{controlComprobantes.cancelarSeleccionEmpleado()}"  process="@this"/>
+                            
                     </p:dialog>
 
                     <p:dialog id="parcialesConcepto" header="#{msg['parciales']}" widgetVar="parcialesConcepto"  resizable="false" draggable="false" modal="true" height="182" width="345"  closable="false">  

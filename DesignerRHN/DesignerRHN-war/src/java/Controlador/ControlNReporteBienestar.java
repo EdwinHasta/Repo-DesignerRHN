@@ -397,10 +397,12 @@ public class ControlNReporteBienestar implements Serializable {
 
         context.update("form:informacionRegistro");
         context.update("form:MOSTRARTODOS");
-        context.update("form:BUSCARREPORTE");
+        context.update("form:BUSCARREPORTE");/*
         context.update("form:ReportesDialogo");
         context.update("form:lovReportesDialogo");
-        context.update("form:aceptarR");
+        context.update("form:aceptarR");*/
+        context.reset("form:lovReportesDialogo:globalFilter");
+        context.execute("lovReportesDialogo.clearFilters()");
         context.execute("ReportesDialogo.hide()");
         context.update(":form:reportesBienestar");
     }
@@ -409,6 +411,10 @@ public class ControlNReporteBienestar implements Serializable {
         filtrarListInforeportesUsuario = null;
         inforreporteSeleccionado = new Inforeportes();
         aceptar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovReportesDialogo:globalFilter");
+        context.execute("lovReportesDialogo.clearFilters()");
+        context.execute("ReportesDialogo.hide()");
     }
 
     public void salir() {
@@ -541,10 +547,12 @@ public class ControlNReporteBienestar implements Serializable {
         filtrarListActividades = null;
         cambiosReporte = false;
         RequestContext context = RequestContext.getCurrentInstance();
+        /*
         context.update("form:ActividadDialogo");
         context.update("form:lovActividad");
-        context.update("form:aceptarAct");
+        context.update("form:aceptarAct");*/
         context.reset("form:lovActividad:globalFilter");
+        context.execute("lovActividad.clearFilters()");
         context.execute("ActividadDialogo.hide()");
         context.update("form:ACEPTAR");
         context.update("formParametros:actividadParametroL");
@@ -555,6 +563,10 @@ public class ControlNReporteBienestar implements Serializable {
         aceptar = true;
         filtrarListActividades = null;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovActividad:globalFilter");
+        context.execute("lovActividad.clearFilters()");
+        context.execute("ActividadDialogo.hide()");
     }
 
     public void actualizarEmplDesde() {
@@ -566,10 +578,13 @@ public class ControlNReporteBienestar implements Serializable {
         filtrarListEmpleados = null;
         cambiosReporte = false;
         RequestContext context = RequestContext.getCurrentInstance();
+        /*
         context.update("form:EmpleadoDesdeDialogo");
         context.update("form:lovEmpleadoDesde");
         context.update("form:aceptarED");
+                */
         context.reset("form:lovEmpleadoDesde:globalFilter");
+        context.execute("lovEmpleadoDesde.clearFilters()");
         context.execute("EmpleadoDesdeDialogo.hide()");
         context.update("form:ACEPTAR");
         context.update("formParametros:empleadoDesdeParametroL");
@@ -580,6 +595,10 @@ public class ControlNReporteBienestar implements Serializable {
         aceptar = true;
         filtrarListEmpleados = null;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovEmpleadoDesde:globalFilter");
+        context.execute("lovEmpleadoDesde.clearFilters()");
+        context.execute("EmpleadoDesdeDialogo.hide()");
     }
 
     public void actualizarEmplHasta() {
@@ -591,10 +610,12 @@ public class ControlNReporteBienestar implements Serializable {
         filtrarListEmpleados = null;
         cambiosReporte = false;
         RequestContext context = RequestContext.getCurrentInstance();
+        /*
         context.update("form:EmpleadoHastaDialogo");
         context.update("form:lovEmpleadoHasta");
-        context.update("form:aceptarEH");
+        context.update("form:aceptarEH");*/
         context.reset("form:lovEmpleadoHasta:globalFilter");
+        context.execute("lovEmpleadoHasta.clearFilters()");
         context.execute("EmpleadoHastaDialogo.hide()");
         context.update("form:ACEPTAR");
         context.update("formParametros:empleadoHastaParametroL");
@@ -605,6 +626,10 @@ public class ControlNReporteBienestar implements Serializable {
         aceptar = true;
         filtrarListEmpleados = null;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovEmpleadoHasta:globalFilter");
+        context.execute("lovEmpleadoHasta.clearFilters()");
+        context.execute("EmpleadoHastaDialogo.hide()");
     }
 
     public void autocompletarGeneral(String campoConfirmar, String valorConfirmar) {

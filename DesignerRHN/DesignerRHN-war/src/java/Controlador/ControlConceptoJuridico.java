@@ -915,10 +915,12 @@ public class ControlConceptoJuridico implements Serializable {
             context.update("formTexto:editarTexto");
             filtrarListEmpresas = null;
             aceptar = true;
-            context.update("form:EmpresasDialogo");
-            context.update("form:lovEmpresas");
-            context.update("form:aceptarE");
+            /*
+             context.update("form:EmpresasDialogo");
+             context.update("form:lovEmpresas");
+             context.update("form:aceptarE");*/
             context.reset("form:lovEmpresas:globalFilter");
+            context.execute("lovEmpresas.clearFilters()");
             context.execute("EmpresasDialogo.hide()");
             backUpEmpresaActual = empresaActual;
             getListConceptosJuridicos();
@@ -938,6 +940,10 @@ public class ControlConceptoJuridico implements Serializable {
         index = -1;
         indexAux = -1;
         filtrarListEmpresas = null;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovEmpresas:globalFilter");
+        context.execute("lovEmpresas.clearFilters()");
+        context.execute("EmpresasDialogo.hide()");
     }
 
     public void limpiarMSNRastros() {

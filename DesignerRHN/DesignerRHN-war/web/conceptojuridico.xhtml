@@ -168,7 +168,7 @@
                                      filteredValue="#{controlConceptoJuridico.filtrarListEmpresas}" emptyMessage="#{msg['lovvacio']}"
                                      selection="#{controlConceptoJuridico.empresita}" >              
                             <p:ajax event="rowSelect" listener="#{controlConceptoJuridico.activarAceptar()}" update=":form:aceptarE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlConceptoJuridico.actualizarEmpresa()}" process="@this" onstart="lovEmpresas.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlConceptoJuridico.actualizarEmpresa()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarE']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpresas.filter();" style="width:100px; position: relative; left: 30px;" />  
@@ -189,12 +189,9 @@
                         
                         <h:outputText id="infoRegistroEmpresa" value="#{controlConceptoJuridico.infoRegistroEmpresa}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarE" style="position: relative; left: 210px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlConceptoJuridico.aceptar}" actionListener="#{controlConceptoJuridico.actualizarEmpresa()}" update="aceptarE" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":form:lovEmpresas:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasE" style="position: relative; left: 210px;top: 5px" value="#{msg['atras']}" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlConceptoJuridico.cancelarCambioEmpresa()}" update="lovEmpresas" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":form:lovEmpresas:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarE" style="position: relative; left: 210px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlConceptoJuridico.aceptar}" actionListener="#{controlConceptoJuridico.actualizarEmpresa()}"  process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasE" style="position: relative; left: 210px;top: 5px" value="#{msg['atras']}" actionListener="#{controlConceptoJuridico.cancelarCambioEmpresa()}"  process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
 
                     </p:dialog>
 

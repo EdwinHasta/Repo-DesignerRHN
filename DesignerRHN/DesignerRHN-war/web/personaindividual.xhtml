@@ -632,8 +632,8 @@
                                          selection="#{controlPersonaIndividual.empresaSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovEmpresaInformacionPersonalVisible" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovEmpresas}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonalVisible()}"  process="@this" onstart="lovEmpresaInformacionPersonalVisible.clearFilters()" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDInformacionPersonal:aceptarEIPV"/>
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonalVisible()}"  process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarEIP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovEmpresaInformacionPersonalVisible.filter();" style="width:150px; position: relative; left: 40px;" />  
@@ -654,14 +654,8 @@
 
                             <h:outputText id="infoRegistroEmpresaInformacionPersonalV" value="#{controlPersonaIndividual.infoRegistroEmpresaInformacionPersonal}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarEIPV" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="EmpresaInformacionPersonalDialogoVisible.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonalVisible()}" update="lovEmpresaInformacionPersonalVisible, aceptarEIPV" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDInformacionPersonal:lovEmpresaInformacionPersonalVisible:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasEIPV" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="EmpresaInformacionPersonalDialogoVisible.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroEmpresaInformacionPersonalVisible()}" update="lovEmpresaInformacionPersonalVisible" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDInformacionPersonal:lovEmpresaInformacionPersonalVisible:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarEIPV" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonalVisible()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasEIPV" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroEmpresaInformacionPersonalVisible()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                         <p:dialog header="#{msg['empresaM']}" widgetVar="EmpresaInformacionPersonalDialogo" draggable="false" resizable="false" closable="false" id="EmpresaInformacionPersonalDialogo"  
@@ -670,7 +664,7 @@
                                          selection="#{controlPersonaIndividual.empresaSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovEmpresaInformacionPersonal" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovEmpresas}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonal()}"  process="@this" onstart="lovEmpresaInformacionPersonal.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonal()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDInformacionPersonal:aceptarEIP"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarEIP']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -692,14 +686,9 @@
 
                             <h:outputText id="infoRegistroEmpresaInformacionPersonal" value="#{controlPersonaIndividual.infoRegistroEmpresaInformacionPersonal}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarEIP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="EmpresaInformacionPersonalDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonal()}" update="lovEmpresaInformacionPersonal, aceptarEIP" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDInformacionPersonal:lovEmpresaInformacionPersonal:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasEIP" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="EmpresaInformacionPersonalDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroEmpresaInformacionPersonal()}" update="lovEmpresaInformacionPersonal" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDInformacionPersonal:lovEmpresaInformacionPersonal:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarEIP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonal()}" process="@this" icon="ui-icon-check"/>
+                            
+                            <p:commandButton id="atrasEIP" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroEmpresaInformacionPersonal()}"  process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
 
@@ -709,7 +698,7 @@
                                          selection="#{controlPersonaIndividual.tipoDocumentoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovTipoDocumentoInformacionPersonal" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovTiposDocumentos}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroTipoDocumentoInformacionPersonal()}"  process="@this" onstart="lovTipoDocumentoInformacionPersonal.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroTipoDocumentoInformacionPersonal()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDInformacionPersonal:aceptarTDIP"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarTDIP']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -731,14 +720,8 @@
 
                             <h:outputText id="infoRegistroTipoDocumentoInformacionPersonal" value="#{controlPersonaIndividual.infoRegistroTipoDocumentoInformacionPersonal}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarTDIP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="TipoDocumentoInformacionPersonalDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroTipoDocumentoInformacionPersonal()}" update="lovTipoDocumentoInformacionPersonal, aceptarTDIP" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDInformacionPersonal:lovTipoDocumentoInformacionPersonal:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasTDIP" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="TipoDocumentoInformacionPersonalDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroTipoDocumentoInformacionPersonal()}" update="lovTipoDocumentoInformacionPersonal" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDInformacionPersonal:lovTipoDocumentoInformacionPersonal:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarTDIP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroTipoDocumentoInformacionPersonal()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasTDIP" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroTipoDocumentoInformacionPersonal()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                         <p:dialog header="#{msg['ciudadDocumentoM']}" widgetVar="CiudadDocumentoInformacionPersonalDialogo" draggable="false" resizable="false" closable="false" id="CiudadDocumentoInformacionPersonalDialogo"  
@@ -748,7 +731,7 @@
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovCiudades}"
                                          liveScroll="true" scrollRows="250" 
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroCiudadDocumentoInformacionPersonal()}" immediate="true" process="@this" onstart="lovCiudadDocumentoInformacionPersonal.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroCiudadDocumentoInformacionPersonal()}" process="@this"  />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDInformacionPersonal:aceptarCDIP" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarCDIP']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -770,14 +753,8 @@
 
                             <h:outputText id="infoRegistroCiudadDocumentoInformacionPersonal" value="#{controlPersonaIndividual.infoRegistroCiudadDocumentoInformacionPersonal}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarCDIP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="CiudadDocumentoInformacionPersonalDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroCiudadDocumentoInformacionPersonal()}" update="lovCiudadDocumentoInformacionPersonal, aceptarCDIP" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDInformacionPersonal:lovCiudadDocumentoInformacionPersonal:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasCDIP" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="CiudadDocumentoInformacionPersonalDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroCiudadDocumentoInformacionPersonal()}" update="lovCiudadDocumentoInformacionPersonal" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDInformacionPersonal:lovCiudadDocumentoInformacionPersonal:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarCDIP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroCiudadDocumentoInformacionPersonal()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasCDIP" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroCiudadDocumentoInformacionPersonal()}"  process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                         <p:dialog header="#{msg['ciudadNacimientoM']}" widgetVar="CiudadNacimientoInformacionPersonalDialogo" draggable="false" resizable="false" closable="false" id="CiudadNacimientoInformacionPersonalDialogo"  
@@ -787,7 +764,7 @@
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovCiudades}"
                                          liveScroll="true" scrollRows="250"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroCiudadNacimientoInformacionPersonal()}"  process="@this" onstart="lovCiudadNacimientoInformacionPersonal.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroCiudadNacimientoInformacionPersonal()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDInformacionPersonal:aceptarCNIP"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarCNIP']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -809,14 +786,8 @@
 
                             <h:outputText id="infoRegistroCiudadNacimientoInformacionPersonal" value="#{controlPersonaIndividual.infoRegistroCiudadNacimientoInformacionPersonal}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarCNIP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="CiudadNacimientoInformacionPersonalDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroCiudadNacimientoInformacionPersonal()}" update="lovCiudadNacimientoInformacionPersonal, aceptarCNIP" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDInformacionPersonal:lovCiudadNacimientoInformacionPersonal:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasCNIP" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="CiudadNacimientoInformacionPersonalDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroCiudadNacimientoInformacionPersonal()}" update="lovCiudadNacimientoInformacionPersonal" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDInformacionPersonal:lovCiudadNacimientoInformacionPersonal:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarCNIP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroCiudadNacimientoInformacionPersonal()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasCNIP" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroCiudadNacimientoInformacionPersonal()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
                     </h:form>
 
@@ -828,7 +799,7 @@
                                          selection="#{controlPersonaIndividual.cargoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovCargoCargoDesempeñado" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovCargos}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroCargoCargoDesempeñado()}"  process="@this" onstart="lovCargoCargoDesempeñado.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroCargoCargoDesempeñado()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDCargoDesempenado:aceptarCCD"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarCCD']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -844,14 +815,8 @@
 
                             <h:outputText id="infoRegistroCargoCargoDesempenado" value="#{controlPersonaIndividual.infoRegistroCargoCargoDesempenado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarCCD" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="CargoCargoDesempeñadoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroCargoCargoDesempeñado()}" update="lovCargoCargoDesempeñado, aceptarCCD" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDCargoDesempenado:lovCargoCargoDesempeñado:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasCCD" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="CargoCargoDesempeñadoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroCargoCargoDesempeñado()}" update="lovCargoCargoDesempeñado" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDCargoDesempenado:lovCargoCargoDesempeñado:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarCCD" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroCargoCargoDesempeñado()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasCCD" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroCargoCargoDesempeñado()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                         <p:dialog header="#{msg['motivoCambioCargoM']}" widgetVar="MotivoCambioCargoCargoDesempeñadoDialogo" draggable="false" resizable="false" closable="false" id="MotivoCambioCargoCargoDesempeñadoDialogo"  
@@ -860,7 +825,7 @@
                                          selection="#{controlPersonaIndividual.motivoCambioCargoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovMotivoCambioCargoCargoDesempeñado" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovMotivosCambiosCargos}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroMotivoCambioCargoCargoDesempeñado()}"  process="@this" onstart="lovMotivoCambioCargoCargoDesempeñado.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroMotivoCambioCargoCargoDesempeñado()}"  process="@this"  />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDCargoDesempenado:aceptarMCCCD"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarMCCCD']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -876,14 +841,8 @@
 
                             <h:outputText id="infoRegistroMotivoCargoCargoDesempenado" value="#{controlPersonaIndividual.infoRegistroMotivoCargoCargoDesempenado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarMCCCD" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="MotivoCambioCargoCargoDesempeñadoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroMotivoCambioCargoCargoDesempeñado()}" update="lovMotivoCambioCargoCargoDesempeñado, aceptarMCCCD" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDCargoDesempenado:lovMotivoCambioCargoCargoDesempeñado:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasMCCCD" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="MotivoCambioCargoCargoDesempeñadoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroMotivoCambioCargoCargoDesempeñado()}" update="lovMotivoCambioCargoCargoDesempeñado" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDCargoDesempenado:lovMotivoCambioCargoCargoDesempeñado:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarMCCCD" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroMotivoCambioCargoCargoDesempeñado()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasMCCCD" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroMotivoCambioCargoCargoDesempeñado()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                         <p:dialog header="#{msg['estructuraM']}" widgetVar="EstructuraCargoDesempeñadoDialogo" draggable="false" resizable="false" closable="false" id="EstructuraCargoDesempeñadoDialogo"  
@@ -892,7 +851,7 @@
                                          selection="#{controlPersonaIndividual.estructuraSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovEstructuraCargoDesempeñado" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovEstructuras}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroEstructuraCargoDesempeñado()}"  process="@this" onstart="lovEstructuraCargoDesempeñado.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroEstructuraCargoDesempeñado()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDCargoDesempenado:aceptarECD"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarECD']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -908,14 +867,8 @@
 
                             <h:outputText id="infoRegistroEstructuraCargoDesempenado" value="#{controlPersonaIndividual.infoRegistroEstructuraCargoDesempenado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarECD" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="EstructuraCargoDesempeñadoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroEstructuraCargoDesempeñado()}" update="lovEstructuraCargoDesempeñado, aceptarECD" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDCargoDesempenado:lovEstructuraCargoDesempeñado:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasECD" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="EstructuraCargoDesempeñadoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroEstructuraCargoDesempeñado()}" update="lovEstructuraCargoDesempeñado" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDCargoDesempenado:lovEstructuraCargoDesempeñado:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarECD" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroEstructuraCargoDesempeñado()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasECD" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroEstructuraCargoDesempeñado()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                         <p:dialog header="#{msg['papelM']}" widgetVar="PapelCargoDesempeñadoDialogo" draggable="false" resizable="false" closable="false" id="PapelCargoDesempeñadoDialogo"  
@@ -924,7 +877,7 @@
                                          selection="#{controlPersonaIndividual.papelSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovPapelCargoDesempeñado" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovPapeles}" 
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroPapelCargoDesempeñado()}"  process="@this" onstart="lovPapelCargoDesempeñado.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroPapelCargoDesempeñado()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDCargoDesempenado:aceptarPCD"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarPCD']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -940,14 +893,8 @@
 
                             <h:outputText id="infoRegistroPapelCargoDesempenado" value="#{controlPersonaIndividual.infoRegistroPapelCargoDesempenado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarPCD" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="PapelCargoDesempeñadoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroPapelCargoDesempeñado}" update="lovPapelCargoDesempeñado, aceptarPCD" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDCargoDesempenado:lovPapelCargoDesempeñado:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasPCD" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="PapelCargoDesempeñadoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroPapelCargoDesempeñado()}" update="lovPapelCargoDesempeñado" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDCargoDesempenado:lovPapelCargoDesempeñado:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarPCD" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroPapelCargoDesempeñado}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasPCD" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroPapelCargoDesempeñado()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                         <p:dialog header="#{msg['jefeM']}" widgetVar="EmpleadoJefeCargoDesempeñadoDialogo" draggable="false" resizable="false" closable="false" id="EmpleadoJefeCargoDesempeñadoDialogo"  
@@ -956,7 +903,7 @@
                                          selection="#{controlPersonaIndividual.empleadoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovEmpleadoJefeCargoDesempeñado" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovEmpleados}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroJefeCargoDesempeñado()}"  process="@this" onstart="lovEmpleadoJefeCargoDesempeñado.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroJefeCargoDesempeñado()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDCargoDesempenado:aceptarEJCD"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarEJCD']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -972,14 +919,8 @@
 
                             <h:outputText id="infoRegistroJefeCargoDesempenado" value="#{controlPersonaIndividual.infoRegistroJefeCargoDesempenado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarEJCD" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="EmpleadoJefeCargoDesempeñadoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroJefeCargoDesempeñado}" update="lovEmpleadoJefeCargoDesempeñado, aceptarEJCD" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDCargoDesempenado:lovEmpleadoJefeCargoDesempeñado:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasEJCD" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="EmpleadoJefeCargoDesempeñadoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroJefeCargoDesempeñado()}" update="lovEmpleadoJefeCargoDesempeñado" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDCargoDesempenado:lovEmpleadoJefeCargoDesempeñado:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarEJCD" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroJefeCargoDesempeñado}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasEJCD" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroJefeCargoDesempeñado()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                     </h:form>
@@ -991,7 +932,7 @@
                                          selection="#{controlPersonaIndividual.estructuraCentroCostoSeleccionada}" scrollWidth="488" selectionMode="single" widgetVar="lovEstructuraCentroCosto" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovEstructurasCentroCosto}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroEstructuraCentroCosto()}"  process="@this" onstart="lovEstructuraCentroCosto.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroEstructuraCentroCosto()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDCentroCosto:aceptarECC"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarECC']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1019,14 +960,8 @@
 
                             <h:outputText id="infoRegistroEstructuraCentroCosto" value="#{controlPersonaIndividual.infoRegistroEstructuraCentroCosto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarECC" style="position: relative; left: 320px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="EstructuraCentroCostoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroEstructuraCentroCosto()}" update="lovEstructuraCentroCosto, aceptarECC" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDCentroCosto:lovEstructuraCentroCosto:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasECC" style="position: relative; left: 320px; top: 5px" value="#{msg['atras']}" onclick="EstructuraCentroCostoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroEstructuraCentroCosto()}" update="lovEstructuraCentroCosto" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDCentroCosto:lovEstructuraCentroCosto:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarECC" style="position: relative; left: 320px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroEstructuraCentroCosto()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasECC" style="position: relative; left: 320px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroEstructuraCentroCosto()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                         <p:dialog header="#{msg['motivoLocalizacionM']}" widgetVar="MotivoLocalizacionCentroCostoDialogo" draggable="false" resizable="false" closable="false" id="MotivoLocalizacionCentroCostoDialogo"  
@@ -1035,7 +970,7 @@
                                          selection="#{controlPersonaIndividual.motivoLocalizacionSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovMotivoLocalizacionCentroCosto" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovMotivosLocalizaciones}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroMotivoCentroCosto()}"  process="@this" onstart="lovMotivoLocalizacionCentroCosto.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroMotivoCentroCosto()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDCentroCosto:aceptarMLCC"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarMLCC']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1051,14 +986,8 @@
 
                             <h:outputText id="infoRegistroMotivoCentroCosto" value="#{controlPersonaIndividual.infoRegistroMotivoCentroCosto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarMLCC" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="MotivoLocalizacionCentroCostoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroMotivoCentroCosto()}" update="lovMotivoLocalizacionCentroCosto, aceptarMLCC" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDCentroCosto:lovMotivoLocalizacionCentroCosto:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasMLCC" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="MotivoLocalizacionCentroCostoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroMotivoCentroCosto()}" update="lovMotivoLocalizacionCentroCosto" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDCentroCosto:lovMotivoLocalizacionCentroCosto:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarMLCC" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroMotivoCentroCosto()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasMLCC" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroMotivoCentroCosto()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                     </h:form>
@@ -1071,7 +1000,7 @@
                                          selection="#{controlPersonaIndividual.reformaLaboralSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovReformaLaboralTipoSalario" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovReformasLaborales}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroReformaLaboralTipoSalario()}"  process="@this" onstart="lovReformaLaboralTipoSalario.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroReformaLaboralTipoSalario()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDTipoSalario:aceptarRLTS"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarRLTS']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1087,14 +1016,8 @@
 
                             <h:outputText id="infoRegistroReformaTipoSalario" value="#{controlPersonaIndividual.infoRegistroReformaTipoSalario}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarRLTS" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="ReformaLaboralTipoSalarioDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroReformaLaboralTipoSalario()}" update="lovReformaLaboralTipoSalario, aceptarRLTS" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDTipoSalario:lovReformaLaboralTipoSalario:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasRLTS" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="ReformaLaboralTipoSalarioDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroReformaLaboralTipoSalario()}" update="lovReformaLaboralTipoSalario" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDTipoSalario:lovReformaLaboralTipoSalario:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarRLTS" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroReformaLaboralTipoSalario()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasRLTS" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroReformaLaboralTipoSalario()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                     </h:form>
@@ -1108,7 +1031,7 @@
                                          selection="#{controlPersonaIndividual.tipoTrabajadorSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovTipoTrabajadorTipoTrabajador" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovTiposTrabajadores}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroTipoTrabajadorTipoTrabajador()}"  process="@this" onstart="lovTipoTrabajadorTipoTrabajador.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroTipoTrabajadorTipoTrabajador()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDTipoTrabajador:aceptarTTTT"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarTTTT']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1124,14 +1047,8 @@
 
                             <h:outputText id="infoRegistroTipoTrabajadorTipoTrabajador" value="#{controlPersonaIndividual.infoRegistroTipoTrabajadorTipoTrabajador}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarTTTT" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="TipoTrabajadorTipoTrabajadorDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroTipoTrabajadorTipoTrabajador()}" update="lovTipoTrabajadorTipoTrabajador, aceptarTTTT" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDTipoTrabajador:lovTipoTrabajadorTipoTrabajador:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasTTTT" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="TipoTrabajadorTipoTrabajadorDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroTipoTrabajadorTipoTrabajador()}" update="lovTipoTrabajadorTipoTrabajador" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDTipoTrabajador:lovTipoTrabajadorTipoTrabajador:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarTTTT" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroTipoTrabajadorTipoTrabajador()}"  process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasTTTT" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroTipoTrabajadorTipoTrabajador()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                     </h:form>
@@ -1144,7 +1061,7 @@
                                          selection="#{controlPersonaIndividual.motivoCambioSueldoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovMotivoCambioSueldoSueldo" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovMotivosCambiosSueldos}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroMotivoCambioSueldoSueldo()}"  process="@this" onstart="lovMotivoCambioSueldoSueldo.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroMotivoCambioSueldoSueldo()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDSueldo:aceptarMCSS"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarMCSS']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1160,14 +1077,8 @@
 
                             <h:outputText id="infoRegistroMotivoSueldo" value="#{controlPersonaIndividual.infoRegistroMotivoSueldo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarMCSS" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="MotivoCambioSueldoSueldoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroMotivoCambioSueldoSueldo()}" update="lovMotivoCambioSueldoSueldo, aceptarMCSS" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDSueldo:lovMotivoCambioSueldoSueldo:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasMCSS" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="MotivoCambioSueldoSueldoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroMotivoCambioSueldoSueldo()}" update="lovMotivoCambioSueldoSueldo" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDSueldo:lovMotivoCambioSueldoSueldo:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarMCSS" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroMotivoCambioSueldoSueldo()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasMCSS" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroMotivoCambioSueldoSueldo()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                         <p:dialog header="#{msg['tipoSueldoM']}" widgetVar="TipoSueldoSueldoDialogo" draggable="false" resizable="false" closable="false" id="TipoSueldoSueldoDialogo"  
@@ -1176,7 +1087,7 @@
                                          selection="#{controlPersonaIndividual.tipoSueldoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovTipoSueldoSueldo" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovTiposSueldos}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroTipoSueldoSueldo()}"  process="@this" onstart="lovTipoSueldoSueldo.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroTipoSueldoSueldo()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDSueldo:aceptarTSS"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarTSS']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1192,14 +1103,8 @@
 
                             <h:outputText id="infoRegistroTipoSueldoSueldo" value="#{controlPersonaIndividual.infoRegistroTipoSueldoSueldo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarTSS" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="TipoSueldoSueldoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroTipoSueldoSueldo()}" update="lovTipoSueldoSueldo, aceptarTSS" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDSueldo:lovTipoSueldoSueldo:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasTSS" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="TipoSueldoSueldoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroTipoSueldoSueldo()}" update="lovTipoSueldoSueldo" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDSueldo:lovTipoSueldoSueldo:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarTSS" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroTipoSueldoSueldo()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasTSS" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroTipoSueldoSueldo()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                         <p:dialog header="#{msg['unidadM']}" widgetVar="UnidadSueldoDialogo" draggable="false" resizable="false" closable="false" id="UnidadSueldoDialogo"  
@@ -1208,7 +1113,7 @@
                                          selection="#{controlPersonaIndividual.unidadSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovUnidadSueldo" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovUnidades}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroUnidadSueldo()}"  process="@this" onstart="lovUnidadSueldo.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroUnidadSueldo()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDSueldo:aceptarUS"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarUS']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1224,14 +1129,8 @@
 
                             <h:outputText id="infoRegistroUnidadSueldo" value="#{controlPersonaIndividual.infoRegistroUnidadSueldo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarUS" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="UnidadSueldoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroUnidadSueldo()}" update="lovUnidadSueldo, aceptarUS" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDSueldo:lovUnidadSueldo:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasUS" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="UnidadSueldoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroUnidadSueldo()}" update="lovUnidadSueldo" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDSueldo:lovUnidadSueldo:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarUS" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="UnidadSueldoDialogo.hide();operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroUnidadSueldo()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasUS" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="UnidadSueldoDialogo.hide();operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroUnidadSueldo()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                     </h:form>
@@ -1244,7 +1143,7 @@
                                          selection="#{controlPersonaIndividual.motivoContratoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovMotivoContratoTipoContrato" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovMotivosContratos}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroMotivoContratoTipoContrato()}"  process="@this" onstart="lovMotivoContratoTipoContrato.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroMotivoContratoTipoContrato()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDTipoContrato:aceptarMCTC"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarMCTC']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1260,14 +1159,8 @@
 
                             <h:outputText id="infoRegistroMotivoTipoContrato" value="#{controlPersonaIndividual.infoRegistroMotivoTipoContrato}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarMCTC" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="MotivoContratoTipoContratoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroMotivoContratoTipoContrato()}" update="lovMotivoContratoTipoContrato, aceptarMCTC" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDTipoContrato:lovMotivoContratoTipoContrato:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasMCTC" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="MotivoContratoTipoContratoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroMotivoContratoTipoContrato()}" update="lovMotivoContratoTipoContrato" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDTipoContrato:lovMotivoContratoTipoContrato:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarMCTC" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroMotivoContratoTipoContrato()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasMCTC" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroMotivoContratoTipoContrato()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                         <p:dialog header="#{msg['tipoContratoM']}" widgetVar="TipoContratoTipoContratoDialogo" draggable="false" resizable="false" closable="false" id="TipoContratoTipoContratoDialogo"  
@@ -1276,7 +1169,7 @@
                                          selection="#{controlPersonaIndividual.tipoContratoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovTipoContratoTipoContrato" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovTiposContratos}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroTipoContratoTipoContrato()}"  process="@this" onstart="lovTipoContratoTipoContrato.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroTipoContratoTipoContrato()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDTipoContrato:aceptarTCTC"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarTCTC']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1292,14 +1185,8 @@
 
                             <h:outputText id="infoRegistroTipoTipoContrato" value="#{controlPersonaIndividual.infoRegistroTipoTipoContrato}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarTCTC" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="TipoContratoTipoContratoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroTipoContratoTipoContrato()}" update="lovTipoContratoTipoContrato, aceptarTCTC" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDTipoContrato:lovTipoContratoTipoContrato:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasTCTC" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="TipoContratoTipoContratoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroTipoContratoTipoContrato()}" update="lovTipoContratoTipoContrato" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDTipoContrato:lovTipoContratoTipoContrato:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarTCTC" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroTipoContratoTipoContrato()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasTCTC" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroTipoContratoTipoContrato()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                     </h:form>
@@ -1312,7 +1199,7 @@
                                          selection="#{controlPersonaIndividual.contratoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovContratoLegislacionLaboral" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovContratos}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroContratoLegislacionLaboral()}"  process="@this" onstart="lovContratoLegislacionLaboral.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroContratoLegislacionLaboral()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDLegislacionLaboral:aceptarCLL"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarCLL']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1328,14 +1215,8 @@
 
                             <h:outputText id="infoRegistroContratoLegislacionLaboral" value="#{controlPersonaIndividual.infoRegistroContratoLegislacionLaboral}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarCLL" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="ContratoLegislacionLaboralDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroContratoLegislacionLaboral()}" update="lovContratoLegislacionLaboral, aceptarCLL" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDLegislacionLaboral:lovContratoLegislacionLaboral:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasCLL" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="ContratoLegislacionLaboralDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroContratoLegislacionLaboral()}" update="lovContratoLegislacionLaboral" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDLegislacionLaboral:lovContratoLegislacionLaboral:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarCLL" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroContratoLegislacionLaboral()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasCLL" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroContratoLegislacionLaboral()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                     </h:form>
@@ -1348,7 +1229,7 @@
                                          selection="#{controlPersonaIndividual.normaLaboralSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovNormaLaboralNormaLaboral" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovNormasLaborales}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroNormaNormaLaboral()}"  process="@this" onstart="lovNormaLaboralNormaLaboral.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroNormaNormaLaboral()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDNormaLaboral:aceptarNLNL"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarNLNL']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1364,14 +1245,8 @@
 
                             <h:outputText id="infoRegistroNormaNormaLaboral" value="#{controlPersonaIndividual.infoRegistroNormaNormaLaboral}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarNLNL" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="NormaLaboralNormaLaboralDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroNormaNormaLaboral()}" update="lovNormaLaboralNormaLaboral, aceptarNLNL" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDNormaLaboral:lovNormaLaboralNormaLaboral:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasNLNL" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="NormaLaboralNormaLaboralDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroNormaNormaLaboral()}" update="lovNormaLaboralNormaLaboral" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDNormaLaboral:lovNormaLaboralNormaLaboral:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarNLNL" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroNormaNormaLaboral()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasNLNL" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroNormaNormaLaboral()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                     </h:form>
@@ -1430,14 +1305,8 @@
 
                             <h:outputText id="infoRegistroUbicacionUbicacion" value="#{controlPersonaIndividual.infoRegistroUbicacionUbicacion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarUGUGL" style="position: relative; left: 620px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="UbicacionUbicacionGeograficaDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroUbicacionUbicacionGeografica()}" update="lovUbicacionUbicacionGeografica, aceptarUGUGL" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDUbicacion:lovUbicacionUbicacionGeografica:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasUGUGL" style="position: relative; left: 620px; top: 5px" value="#{msg['atras']}" onclick="UbicacionUbicacionGeograficaDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroUbicacionUbicacionGeografica()}" update="lovUbicacionUbicacionGeografica" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDUbicacion:lovUbicacionUbicacionGeografica:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarUGUGL" style="position: relative; left: 620px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroUbicacionUbicacionGeografica()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasUGUGL" style="position: relative; left: 620px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroUbicacionUbicacionGeografica()}"  process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                     </h:form>
@@ -1450,7 +1319,7 @@
                                          selection="#{controlPersonaIndividual.jornadaLaboralSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovJornadaJornadaLaboral" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovJornadasLaborales}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroJornadaJornadaLaboral()}"  process="@this" onstart="lovJornadaJornadaLaboral.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroJornadaJornadaLaboral()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}"  update=":formLovs:formDJornadaLaboral:aceptarJLJL"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarJLJL']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1466,14 +1335,9 @@
 
                             <h:outputText id="infoRegistroJornadaJornadaLaboral" value="#{controlPersonaIndividual.infoRegistroJornadaJornadaLaboral}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarJLJL" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="JornadaJornadaLaboralDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroJornadaJornadaLaboral()}" update="lovJornadaJornadaLaboral, aceptarJLJL" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDJornadaLaboral:lovJornadaJornadaLaboral:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasJLJL" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="JornadaJornadaLaboralDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroJornadaJornadaLaboral()}" update="lovJornadaJornadaLaboral" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDJornadaLaboral:lovJornadaJornadaLaboral:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarJLJL" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroJornadaJornadaLaboral()}" process="@this" icon="ui-icon-check"/>
+                            
+                            <p:commandButton id="atrasJLJL" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroJornadaJornadaLaboral()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                     </h:form>
@@ -1485,7 +1349,7 @@
                                          selection="#{controlPersonaIndividual.metodoPagoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovMetodoPagoFormaPago" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovMetodosPagos}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroMetodoFormaPago()}"  process="@this" onstart="lovMetodoPagoFormaPago.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroMetodoFormaPago()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDFormaPago:aceptarMPFP"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarMPFP']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1501,14 +1365,8 @@
 
                             <h:outputText id="infoRegistroMetodoFormaPago" value="#{controlPersonaIndividual.infoRegistroMetodoFormaPago}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarMPFP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="MetodoPagoFormaPagoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroMetodoFormaPago()}" update="lovMetodoPagoFormaPago, aceptarMPFP" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDFormaPago:lovMetodoPagoFormaPago:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasMPFP" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="MetodoPagoFormaPagoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroMetodoFormaPago()}" update="lovMetodoPagoFormaPago" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDFormaPago:lovMetodoPagoFormaPago:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarMPFP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroMetodoFormaPago()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasMPFP" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroMetodoFormaPago()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                         <p:dialog header="#{msg['sucursalM']}" widgetVar="SucursalFormaPagoDialogo" draggable="false" resizable="false" closable="false" id="SucursalFormaPagoDialogo"  
@@ -1517,7 +1375,7 @@
                                          selection="#{controlPersonaIndividual.sucursalSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovSucursalPagoFormaPago" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovSucursales}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroSucursalFormaPago()}"  process="@this" onstart="lovSucursalPagoFormaPago.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroSucursalFormaPago()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDFormaPago:aceptarSFP"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarSFP']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1533,14 +1391,8 @@
 
                             <h:outputText id="infoRegistroSucursalFormaPago" value="#{controlPersonaIndividual.infoRegistroSucursalFormaPago}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarSFP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="SucursalFormaPagoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroSucursalFormaPago()}" update="lovSucursalPagoFormaPago, aceptarSFP" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDFormaPago:lovSucursalPagoFormaPago:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasSFP" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="SucursalFormaPagoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroSucursalFormaPago()}" update="lovSucursalPagoFormaPago" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDFormaPago:lovSucursalPagoFormaPago:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarSFP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroSucursalFormaPago()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasSFP" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroSucursalFormaPago()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                         <p:dialog header="#{msg['periodicidadM']}" widgetVar="PeriodicidadFormaPagoDialogo" draggable="false" resizable="false" closable="false" id="PeriodicidadFormaPagoDialogo"  
@@ -1549,7 +1401,7 @@
                                          selection="#{controlPersonaIndividual.periodicidadSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovPeriodicidadFormaPago" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovPeriodicidades}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroPeriodicidadFormaPago()}"  process="@this" onstart="lovPeriodicidadFormaPago.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroPeriodicidadFormaPago()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDFormaPago:aceptarPFP"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarPFP']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1565,14 +1417,8 @@
 
                             <h:outputText id="infoRegistroFormaFormaPago" value="#{controlPersonaIndividual.infoRegistroFormaFormaPago}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarPFP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="PeriodicidadFormaPagoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroPeriodicidadFormaPago()}" update="lovPeriodicidadFormaPago, aceptarPFP" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDFormaPago:lovPeriodicidadFormaPago:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasPFP" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="PeriodicidadFormaPagoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroPeriodicidadFormaPago()}" update="lovPeriodicidadFormaPago" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDFormaPago:lovPeriodicidadFormaPago:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarPFP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroPeriodicidadFormaPago()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasPFP" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroPeriodicidadFormaPago()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                     </h:form>
@@ -1585,7 +1431,7 @@
                                          selection="#{controlPersonaIndividual.terceroSucursalSeleccionado}" scrollWidth="588" selectionMode="single" widgetVar="lovTerceroAfiliacion" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovTercerosSucursales}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroTerceroAfiliacion()}"  process="@this" onstart="lovTerceroAfiliacion.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroTerceroAfiliacion()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDAfiliacion:aceptarTSA"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarTA']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1614,14 +1460,8 @@
 
                             <h:outputText id="infoRegistroTerceroAfiliacion" value="#{controlPersonaIndividual.infoRegistroTerceroAfiliacion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarTSA" style="position: relative; left: 420px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="TerceroAfiliacionDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroTerceroAfiliacion()}" update="lovTerceroAfiliacion, aceptarTSA" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDAfiliacion:lovTerceroAfiliacion:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasTA" style="position: relative; left: 420px; top: 5px" value="#{msg['atras']}" onclick="TerceroAfiliacionDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroTerceroAfiliacion()}" update="lovTerceroAfiliacion" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDAfiliacion:lovTerceroAfiliacion:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarTSA" style="position: relative; left: 420px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroTerceroAfiliacion()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasTA" style="position: relative; left: 420px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroTerceroAfiliacion()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                     </h:form>
@@ -1634,7 +1474,7 @@
                                          selection="#{controlPersonaIndividual.tipoTelefonoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovTipoTelefonoTelefono" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovTiposTelefonos}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroTipoTelefonoTelefono()}"  process="@this" onstart="lovTipoTelefonoTelefono.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroTipoTelefonoTelefono()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDTelefono:aceptarTTT"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarTTT']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1650,14 +1490,8 @@
 
                             <h:outputText id="infoRegistroTipoTelefonoTelefono" value="#{controlPersonaIndividual.infoRegistroTipoTelefonoTelefono}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarTTT" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="TipoTelefonoTelefonoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroTipoTelefonoTelefono()}" update="lovTipoTelefonoTelefono, aceptarTTT" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDTelefono:lovTipoTelefonoTelefono:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasTTT" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="TipoTelefonoTelefonoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroTipoTelefonoTelefono()}" update="lovTipoTelefonoTelefono" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDTelefono:lovTipoTelefonoTelefono:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarTTT" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroTipoTelefonoTelefono()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasTTT" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroTipoTelefonoTelefono()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                         <p:dialog header="#{msg['ciudadTelefonoM']}" widgetVar="CiudadTelefonoDialogo" draggable="false" resizable="false" closable="false" id="CiudadTelefonoDialogo"  
@@ -1667,7 +1501,7 @@
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovCiudades}"
                                          liveScroll="true" scrollRows="50"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroCiudadTelefono()}"  process="@this" onstart="lovCiudadTelefono.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroCiudadTelefono()}"  process="@this"  />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDTelefono:aceptarCT"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarCT']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1689,14 +1523,8 @@
 
                             <h:outputText id="infoRegistroCiudadTelefono" value="#{controlPersonaIndividual.infoRegistroCiudadTelefono}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarCT" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="CiudadTelefonoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroCiudadTelefono()}" update="lovCiudadTelefono, aceptarCT" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDTelefono:lovCiudadTelefono:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasCT" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="CiudadTelefonoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroCiudadTelefono()}" update="lovCiudadTelefono" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDTelefono:lovCiudadTelefono:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarCT" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroCiudadTelefono()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasCT" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroCiudadTelefono()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                     </h:form>
@@ -1710,7 +1538,7 @@
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovCiudades}"
                                          liveScroll="true" scrollRows="50"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroCiudadDireccion()}"  process="@this" onstart="lovCiudadDireccion.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroCiudadDireccion()}"  process="@this"  />
                                 <p:ajax event="rowSelect" process="@this" immediate="true" listener="#{controlPersonaIndividual.activarAceptar()}"  update=":formLovs:formDDireccion:aceptarCD"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarCD']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1732,14 +1560,8 @@
 
                             <h:outputText id="infoRegistroCiudadDireccion" value="#{controlPersonaIndividual.infoRegistroCiudadDireccion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarCD" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="CiudadDireccionDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroCiudadDireccion()}" update="lovCiudadDireccion, aceptarCD" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDDireccion:lovCiudadDireccion:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasCD" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="CiudadDireccionDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroCiudadDireccion()}" update="lovCiudadDireccion" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDDireccion:lovCiudadDireccion:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarCD" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroCiudadDireccion()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasCD" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroCiudadDireccion()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
                     </h:form>
 
@@ -1751,7 +1573,7 @@
                                          selection="#{controlPersonaIndividual.estadoCivilSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovEstadoCivilEstadoCivil" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovEstadosCiviles}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroEstadoEstadoCivil()}"  process="@this" onstart="lovEstadoCivilEstadoCivil.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroEstadoEstadoCivil()}"  process="@this" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDEstadoCivil:aceptarECEC"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarECEC']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1767,14 +1589,8 @@
 
                             <h:outputText id="infoRegistroEstadoCivilEstadoCivil" value="#{controlPersonaIndividual.infoRegistroEstadoCivilEstadoCivil}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarECEC" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="EstadoCivilEstadoCivilDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroEstadoEstadoCivil()}" update="lovEstadoCivilEstadoCivil, aceptarECEC" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":formLovs:formDEstadoCivil:lovEstadoCivilEstadoCivil:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasECEC" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="EstadoCivilEstadoCivilDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroEstadoEstadoCivil()}" update="lovEstadoCivilEstadoCivil" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":formLovs:formDEstadoCivil:lovEstadoCivilEstadoCivil:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarECEC" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroEstadoEstadoCivil()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasECEC" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroEstadoEstadoCivil()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                     </h:form>

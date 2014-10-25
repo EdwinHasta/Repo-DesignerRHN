@@ -567,9 +567,10 @@ public class ControlNovedadOperando implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("operandosDialogo.hide()");
         context.reset("formularioDialogos:LOVOperandos:globalFilter");
-        context.update("formularioDialogos:LOVOperandos");
+        context.execute("LOVOperandos.clearFilters()");
+        context.execute("operandosDialogo.hide()");
+        //context.update("formularioDialogos:LOVOperandos");
     }
 
     public void cancelarCambioOperandos() {
@@ -581,6 +582,10 @@ public class ControlNovedadOperando implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVOperandos:globalFilter");
+        context.execute("LOVOperandos.clearFilters()");
+        context.execute("operandosDialogo.hide()");
     }
 
     public void agregarNuevoNovedadOperando() {

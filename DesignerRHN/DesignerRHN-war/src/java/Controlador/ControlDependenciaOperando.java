@@ -35,7 +35,6 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 public class ControlDependenciaOperando implements Serializable {
 
-    
     @EJB
     AdministrarDependenciasOperandosInterface administrarDependenciasOperandos;
     @EJB
@@ -105,7 +104,7 @@ public class ControlDependenciaOperando implements Serializable {
         duplicarDependenciaOperando = new DependenciasOperandos();
         lovListaOperandos = null;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -114,7 +113,7 @@ public class ControlDependenciaOperando implements Serializable {
             administrarDependenciasOperandos.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -341,11 +340,11 @@ public class ControlDependenciaOperando implements Serializable {
                 context.update("formularioDialogos:editarNombre");
                 context.execute("editarNombre.show()");
                 cualCelda = -1;
-            } else if (cualCelda == 2){
+            } else if (cualCelda == 2) {
                 context.update("formularioDialogos:editarConsecutivo");
                 context.execute("editarConsecutivo.show()");
             }
-            
+
         }
         index = -1;
         secRegistro = null;
@@ -384,8 +383,8 @@ public class ControlDependenciaOperando implements Serializable {
         index = -1;
         secRegistro = null;
     }
-    
-     public void valoresBackupAutocompletar(int tipoNuevo, String Campo) {
+
+    public void valoresBackupAutocompletar(int tipoNuevo, String Campo) {
         if (Campo.equals("OPERANDO")) {
             if (tipoNuevo == 1) {
                 Operando = nuevoDependenciaOperando.getOperando().getNombre();
@@ -602,9 +601,10 @@ public class ControlDependenciaOperando implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("operandosDialogo.hide()");
         context.reset("formularioDialogos:LOVOperandos:globalFilter");
-        context.update("formularioDialogos:LOVOperandos");
+        context.execute("LOVOperandos.clearFilters()");
+        context.execute("operandosDialogo.hide()");
+        //context.update("formularioDialogos:LOVOperandos");
     }
 
     public void cancelarCambioOperandos() {
@@ -616,6 +616,10 @@ public class ControlDependenciaOperando implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVOperandos:globalFilter");
+        context.execute("LOVOperandos.clearFilters()");
+        context.execute("operandosDialogo.hide()");
     }
 
     public void agregarNuevoDependenciaOperando() {
@@ -629,8 +633,8 @@ public class ControlDependenciaOperando implements Serializable {
             mensajeValidacion = mensajeValidacion + " * Codigo\n";
             pasa++;
         }
-        
-        if (nuevoDependenciaOperando.getDescripcion().equals(" ") || nuevoDependenciaOperando.getDescripcion() == null ) {
+
+        if (nuevoDependenciaOperando.getDescripcion().equals(" ") || nuevoDependenciaOperando.getDescripcion() == null) {
             mensajeValidacion = mensajeValidacion + " * Nombre\n";
             pasa++;
         }
@@ -766,8 +770,8 @@ public class ControlDependenciaOperando implements Serializable {
             mensajeValidacion = mensajeValidacion + " * Codigo\n";
             pasa++;
         }
-        
-        if (duplicarDependenciaOperando.getDescripcion().equals(" ") || duplicarDependenciaOperando.getDescripcion() == null ) {
+
+        if (duplicarDependenciaOperando.getDescripcion().equals(" ") || duplicarDependenciaOperando.getDescripcion() == null) {
             mensajeValidacion = mensajeValidacion + " * Nombre\n";
             pasa++;
         }
@@ -810,8 +814,7 @@ public class ControlDependenciaOperando implements Serializable {
             context.execute("DuplicarDependenciaOperando.hide()");
         }
     }
-    
-   
+
     //Getter & Setter
     public List<DependenciasOperandos> getListaDependenciasOperandos() {
         if (listaDependenciasOperandos == null) {
@@ -821,9 +824,9 @@ public class ControlDependenciaOperando implements Serializable {
             for (int i = 0; i < listaDependenciasOperandos.size(); i++) {
                 nombre = administrarDependenciasOperandos.nombreOperandos(listaDependenciasOperandos.get(i).getCodigo());
                 listaDependenciasOperandos.get(i).setDescripcion(nombre);
-                System.out.println("Nombre: "+ nombre);
+                System.out.println("Nombre: " + nombre);
             }
-            
+
         }
         return listaDependenciasOperandos;
     }
@@ -849,14 +852,14 @@ public class ControlDependenciaOperando implements Serializable {
     }
 
     public String getNombre() {
-        
+
         return nombre;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
+
     public boolean isAceptarEditar() {
         return aceptarEditar;
     }

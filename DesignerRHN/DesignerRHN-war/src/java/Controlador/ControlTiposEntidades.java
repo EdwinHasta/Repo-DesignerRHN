@@ -249,9 +249,10 @@ public class ControlTiposEntidades implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("gruposTiposEntidadesDialogo.hide()");
         context.reset("form:lovGruposTiposEntidades:globalFilter");
-        context.update("form:lovGruposTiposEntidades");
+        context.execute("lovGruposTiposEntidades.clearFilters()");
+        context.execute("gruposTiposEntidadesDialogo.hide()");
+        //context.update("form:lovGruposTiposEntidades");
     }
 
     public void cancelarCambioGrupoTipoEntidad() {
@@ -262,6 +263,10 @@ public class ControlTiposEntidades implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovGruposTiposEntidades:globalFilter");
+        context.execute("lovGruposTiposEntidades.clearFilters()");
+        context.execute("gruposTiposEntidadesDialogo.hide()");
     }
 //------------------------------------------------------------------------------
 

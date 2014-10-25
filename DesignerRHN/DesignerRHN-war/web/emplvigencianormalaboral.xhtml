@@ -129,7 +129,7 @@
                                          selection="#{controlBetaEmplVigenciaNormaLaboral.normaLaboralSeleccionada}" selectionMode="single" widgetVar="lovTiposFamiliares" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlBetaEmplVigenciaNormaLaboral.filtradoNormasLaborales}" emptyMessage="#{msg['lovvacio']}">
                                 <p:ajax event="rowSelect" listener="#{controlBetaEmplVigenciaNormaLaboral.activarAceptar()}" update=":form:aceptarS"/>
-                                <p:ajax event="rowDblselect" listener="#{controlBetaEmplVigenciaNormaLaboral.actualizarNormaLaboral()}" process="@this" onstart="lovTiposFamiliares.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlBetaEmplVigenciaNormaLaboral.actualizarNormaLaboral()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarNM']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTiposFamiliares.filter();" style="width:150px; position: relative; left: 10px;" />  
@@ -150,13 +150,10 @@
                             </p:dataTable>
                             <h:outputText id="infoRecursoNormasLaborales" value="#{controlBetaEmplVigenciaNormaLaboral.infoRecursoNormasLaborales}" style="position: absolute; left: 15px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarS" style="position: relative; left: 278px" disabled="#{controlBetaEmplVigenciaNormaLaboral.aceptar}" value="#{msg['aceptar']}"  onclick="sucursalesDialogo.hide(), lovTiposFamiliares.clearFilters();"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.actualizarNormaLaboral()}" update="lovTiposFamiliares, aceptarS" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovTiposFamiliares:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasS" style="position: relative; left: 278px" value="#{msg['atras']}"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.cancelarCambioNormaLaboral()}" onclick="sucursalesDialogo.hide();
-                                    lovTiposFamiliares.clearFilters();" update="lovTiposFamiliares" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovTiposFamiliares:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarS" style="position: relative; left: 278px" disabled="#{controlBetaEmplVigenciaNormaLaboral.aceptar}" value="#{msg['aceptar']}" actionListener="#{controlBetaEmplVigenciaNormaLaboral.actualizarNormaLaboral()}" process="@this" icon="ui-icon-check"/>
+                            
+                            <p:commandButton id="atrasS" style="position: relative; left: 278px" value="#{msg['atras']}"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.cancelarCambioNormaLaboral()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                            
                         </p:dialog>
 
                         <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  

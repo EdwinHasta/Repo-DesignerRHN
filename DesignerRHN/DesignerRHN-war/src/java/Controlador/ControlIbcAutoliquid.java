@@ -1053,11 +1053,12 @@ public class ControlIbcAutoliquid implements Serializable {
         aceptar = true;
         index = -1;
         secRegistroIBC = null;
-        tipoActualizacion = -1;
+        tipoActualizacion = -1;/*
         context.update("form:ProcesosDialogo");
         context.update("form:lovProcesos");
-        context.update("form:aceptarP");
+        context.update("form:aceptarP");*/
         context.reset("form:lovProcesos:globalFilter");
+        context.execute("lovProcesos.clearFilters()");
         context.execute("ProcesosDialogo.hide()");
     }
 
@@ -1069,6 +1070,10 @@ public class ControlIbcAutoliquid implements Serializable {
         secRegistroIBC = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovProcesos:globalFilter");
+        context.execute("lovProcesos.clearFilters()");
+        context.execute("ProcesosDialogo.hide()");
     }
 
     public void posicionTipoEntidad() {

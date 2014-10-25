@@ -952,9 +952,10 @@ public class ControlJornadasLaborales implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("jornadasDialogo.hide()");
         context.reset("formularioDialogos:LOVJornadas:globalFilter");
-        context.update("formularioDialogos:LOVJornadas");
+        context.execute("LOVJornadas.clearFilters()");
+        context.execute("jornadasDialogo.hide()");
+        //context.update("formularioDialogos:LOVJornadas");
     }
 
     public void cancelarCambioJornadas() {
@@ -966,6 +967,10 @@ public class ControlJornadasLaborales implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVJornadas:globalFilter");
+        context.execute("LOVJornadas.clearFilters()");
+        context.execute("jornadasDialogo.hide()");
     }
 
     public void seleccionarDia(String estadoDia, int indiceJS, int celda) {

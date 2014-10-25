@@ -1402,9 +1402,12 @@ public class ControlEscalafonSalarial implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
+        /*
         context.update("form:TipoTrabajadorDialogo");
         context.update("form:lovTipoTrabajador");
-        context.update("form:aceptarTT");
+        context.update("form:aceptarTT");*/
+        context.reset("form:lovTipoTrabajador:globalFilter");
+        context.execute("lovTipoTrabajador.clearFilters()");
         context.execute("TipoTrabajadorDialogo.hide()");
     }
 

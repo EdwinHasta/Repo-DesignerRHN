@@ -835,7 +835,6 @@ public class ControlPeriodicidades implements Serializable {
 
                 }
                 context.update("form:datosPeriodicidades");
-                context.execute("tiposPeriodicidadesDialogo.hide()");
             } else if (tipoActualizacion == 1) {
                 System.out.println("ENTRO A ACTUALIZAR EL NOMBRE DE UNIDAD ");
                 nuevaPeriodicidad.setUnidad(unidadSeleccionada);
@@ -843,13 +842,11 @@ public class ControlPeriodicidades implements Serializable {
                 context.update("formularioDialogos:nuevaTipoUnidads");
                 context.update("formularioDialogos:nuevaTipoUnidadsCodigo");
                 context.update("form:datosPeriodicidades");
-                context.execute("tiposPeriodicidadesDialogo.hide()");
             } else if (tipoActualizacion == 2) {
                 duplicarPeriodicidad.setUnidad(unidadSeleccionada);
                 context.update("formularioDialogos:duplicarCodigoUnidades");
                 context.update("formularioDialogos:duplicarTipoUnidads");
                 context.update("form:datosPeriodicidades");
-                context.execute("tiposPeriodicidadesDialogo.hide()");
             }
             filtradoUnidades = null;
             unidadSeleccionada = null;
@@ -857,6 +854,9 @@ public class ControlPeriodicidades implements Serializable {
             index = -1;
             tipoActualizacion = -1;
             permitirIndex = true;
+            context.reset("form:lovTipoPeriodicidades:globalFilter");
+            context.execute("lovTipoPeriodicidades.clearFilters()");
+            context.execute("tiposPeriodicidadesDialogo.hide()");
         } catch (Exception e) {
             System.out.println("ERROR BETA .actualizarUnidad ERROR============" + e.getMessage());
         }
@@ -882,7 +882,6 @@ public class ControlPeriodicidades implements Serializable {
 
                 }
                 context.update("form:datosPeriodicidades");
-                context.execute("unidadesBaseDialogo.hide()");
             } else if (tipoActualizacion == 1) {
                 // context.reset("formularioDialogos:nuevaTipoPeriodicidades");
                 System.out.println("Entro actualizar centro costo nuevo rgistro");
@@ -890,12 +889,10 @@ public class ControlPeriodicidades implements Serializable {
                 System.out.println("Nuevo Unidad Base Seleccionado: " + nuevaPeriodicidad.getUnidadbase().getNombre());
                 context.update("formularioDialogos:nuevaCodigoBase");
                 context.update("formularioDialogos:nuevaNombreBase");
-                context.execute("unidadesBaseDialogo.hide()");
             } else if (tipoActualizacion == 2) {
                 duplicarPeriodicidad.setUnidadbase(unidadSeleccionada);
                 context.update("formularioDialogos:duplicarCodigoUnidadesBase");
                 context.update("formularioDialogos:duplicarDescripcionUnidadesBase");
-                context.execute("unidadesBaseDialogo.hide()");
             }
             filtradoUnidades = null;
             unidadSeleccionada = null;
@@ -903,6 +900,9 @@ public class ControlPeriodicidades implements Serializable {
             index = -1;
             tipoActualizacion = -1;
             permitirIndex = true;
+            context.reset("form:lovUnidadesBase:globalFilter");
+            context.execute("lovUnidadesBase.clearFilters()");
+            context.execute("unidadesBaseDialogo.hide()");
         } catch (Exception e) {
             System.out.println("ERROR BETA .actualizarUnidad ERROR============" + e.getMessage());
         }
@@ -916,9 +916,26 @@ public class ControlPeriodicidades implements Serializable {
             index = -1;
             tipoActualizacion = -1;
             permitirIndex = true;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.reset("form:lovTipoPeriodicidades:globalFilter");
+            context.execute("lovTipoPeriodicidades.clearFilters()");
+            context.execute("tiposPeriodicidadesDialogo.hide()");
         } catch (Exception e) {
             System.out.println("ERROR CONTROLPERIODICIDADES.cancelarCambioUnidad ERROR=====" + e.getMessage());
         }
+    }
+
+    public void cancelarCambioUnidadBase() {
+        filtradoUnidades = null;
+        unidadSeleccionada = null;
+        aceptar = true;
+        index = -1;
+        tipoActualizacion = -1;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovUnidadesBase:globalFilter");
+        context.execute("lovUnidadesBase.clearFilters()");
+        context.execute("unidadesBaseDialogo.hide()");
     }
 
     public void llamadoDialogoBuscarPeriodicidades() {
@@ -957,8 +974,9 @@ public class ControlPeriodicidades implements Serializable {
                 filterPericiodidades = null;
                 aceptar = true;
                 context.update("form:datosPeriodicidades");
-                context.execute("buscarPeriodicidadesDialogo.hide()");
                 context.reset("formularioDialogos:lovPeriodicidades:globalFilter");
+                context.execute("lovPeriodicidades.clearFilters()");
+                context.execute("buscarPeriodicidadesDialogo.hide()");
                 mostrarTodos = false;
                 if (listPeriodicidades == null || listPeriodicidades.isEmpty()) {
                     infoRegistro = "Cantidad de registros: 0 ";
@@ -990,19 +1008,18 @@ public class ControlPeriodicidades implements Serializable {
     }
 
     public void cancelarSeleccionUnidadPorEmpresa() {
-        try {
-            RequestContext context = RequestContext.getCurrentInstance();
-            PericiodidadesSeleccionado = null;
-            filterPericiodidades = null;
-            aceptar = true;
-            index = -1;
-            tipoActualizacion = -1;
-            context.update("form:aceptarNCC");
-
-        } catch (Exception e) {
-            System.out.println("ERROR CONTROLPERIODICIDADES.cancelarSeleccionVigencia ERROR====" + e.getMessage());
-        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        PericiodidadesSeleccionado = null;
+        filterPericiodidades = null;
+        aceptar = true;
+        index = -1;
+        tipoActualizacion = -1;
+        context.update("form:aceptarNCC");
+        context.reset("formularioDialogos:lovPeriodicidades:globalFilter");
+        context.execute("lovPeriodicidades.clearFilters()");
+        context.execute("buscarPeriodicidadesDialogo.hide()");
     }
+    
     private String nuevoUnidadCodigo;
     private String nuevoUnidadBaseCodigo;
     private String nuevoUnidadBaseNombre;

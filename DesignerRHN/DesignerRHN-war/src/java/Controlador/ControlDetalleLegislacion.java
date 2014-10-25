@@ -35,7 +35,6 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 public class ControlDetalleLegislacion implements Serializable {
 
-    
     @EJB
     AdministrarDetalleLegislacionInterface administrarDetalleLegislacion;
     @EJB
@@ -141,9 +140,9 @@ public class ControlDetalleLegislacion implements Serializable {
         nombreXML = "CuentasXML";
         duplicarFormulaContrato = new Formulascontratos();
         cambiosFormulaContrato = false;
-        
+
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -152,7 +151,7 @@ public class ControlDetalleLegislacion implements Serializable {
             administrarDetalleLegislacion.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -1489,6 +1488,7 @@ public class ControlDetalleLegislacion implements Serializable {
     }
 
     public void actualizarFormula() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (!formulaSeleccionada.getObservaciones().isEmpty()) {
                 String aux = formulaSeleccionada.getObservaciones().toUpperCase();
@@ -1520,18 +1520,15 @@ public class ControlDetalleLegislacion implements Serializable {
             }
             cambiosFormulaContrato = true;
             permitirIndex = true;
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update(":form:datosFormulaContrato");
         } else if (tipoActualizacion == 1) {
             nuevoFormulaContrato.setFormula(formulaSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaFormulaNombreLargo");
             context.update("formularioDialogos:nuevaFormulaNombreCorto");
             context.update("formularioDialogos:nuevaFormulaEstado");
             context.update("formularioDialogos:nuevaFormulaObservacion");
         } else if (tipoActualizacion == 2) {
             duplicarFormulaContrato.setFormula(formulaSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicaFormulaNombreLargo");
             context.update("formularioDialogos:duplicaFormulaNombreCorto");
             context.update("formularioDialogos:duplicaFormulaEstado");
@@ -1543,6 +1540,11 @@ public class ControlDetalleLegislacion implements Serializable {
         index = -1;
         secRegistroFormulaContrato = null;
         tipoActualizacion = -1;
+
+        context.reset("form:lovFormula:globalFilter");
+        context.execute("lovFormula.clearFilters()");
+        context.execute("FormulaDialogo.hide()");
+
     }
 
     public void cancelarCambioFormula() {
@@ -1553,9 +1555,14 @@ public class ControlDetalleLegislacion implements Serializable {
         secRegistroFormulaContrato = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovFormula:globalFilter");
+        context.execute("lovFormula.clearFilters()");
+        context.execute("FormulaDialogo.hide()");
     }
 
     public void actualizarTercero() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 listFormulasContratosDetalle.get(index).setTercero(terceroSeleccionado);
@@ -1581,16 +1588,14 @@ public class ControlDetalleLegislacion implements Serializable {
             }
             cambiosFormulaContrato = true;
             permitirIndex = true;
-            RequestContext context = RequestContext.getCurrentInstance();
+
             context.update(":form:datosFormulaContrato");
         } else if (tipoActualizacion == 1) {
             nuevoFormulaContrato.setTercero(terceroSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaFormulaNit");
             context.update("formularioDialogos:nuevaFormulaTercero");
         } else if (tipoActualizacion == 2) {
             duplicarFormulaContrato.setTercero(terceroSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicaFormulaNit");
             context.update("formularioDialogos:duplicaFormulaTercero");
         }
@@ -1600,6 +1605,10 @@ public class ControlDetalleLegislacion implements Serializable {
         index = -1;
         secRegistroFormulaContrato = null;
         tipoActualizacion = -1;
+
+        context.reset("form:lovTercero:globalFilter");
+        context.execute("lovTercero.clearFilters()");
+        context.execute("TerceroDialogo.hide()");
     }
 
     public void cancelarCambioTercero() {
@@ -1610,9 +1619,14 @@ public class ControlDetalleLegislacion implements Serializable {
         secRegistroFormulaContrato = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTercero:globalFilter");
+        context.execute("lovTercero.clearFilters()");
+        context.execute("TerceroDialogo.hide()");
     }
 
     public void actualizarPeriodicidad() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 listFormulasContratosDetalle.get(index).setPeriodicidad(periodicidadSeleccionada);
@@ -1638,15 +1652,12 @@ public class ControlDetalleLegislacion implements Serializable {
             }
             cambiosFormulaContrato = true;
             permitirIndex = true;
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update(":form:datosFormulaContrato");
         } else if (tipoActualizacion == 1) {
             nuevoFormulaContrato.setPeriodicidad(periodicidadSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaFormulaPeriodicidad");
         } else if (tipoActualizacion == 2) {
             duplicarFormulaContrato.setPeriodicidad(periodicidadSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicaFormulaPeriodicidad");
         }
         filtrarListPeriodicidades = null;
@@ -1655,6 +1666,10 @@ public class ControlDetalleLegislacion implements Serializable {
         index = -1;
         secRegistroFormulaContrato = null;
         tipoActualizacion = -1;
+
+        context.reset("form:lovPeriodicidad:globalFilter");
+        context.execute("lovPeriodicidad.clearFilters()");
+        context.execute("PeriodicidadDialogo.hide()");
     }
 
     public void cancelarCambioPeriodicidad() {
@@ -1665,6 +1680,10 @@ public class ControlDetalleLegislacion implements Serializable {
         secRegistroFormulaContrato = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovPeriodicidad:globalFilter");
+        context.execute("lovPeriodicidad.clearFilters()");
+        context.execute("PeriodicidadDialogo.hide()");
     }
 
     /**

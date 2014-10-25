@@ -720,7 +720,7 @@
                                       filteredValue="#{controlJornadasLaborales.lovFiltradoJornadas}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{jornadas.secuencia}" selection="#{controlJornadasLaborales.jornadaSeleccionada}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlJornadasLaborales.activarAceptar()}" update=":formularioDialogos:aceptarJ"/>
-                            <p:ajax event="rowDblselect" listener="#{controlJornadasLaborales.actualizarJornadas()}" process="@this" onstart="LOVJornadas.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlJornadasLaborales.actualizarJornadas()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarj']}"  style="position: absolute; left: 27px; top: 15px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVJornadas.filter();" style="width:100px; position: relative; left: 60px;" />  
@@ -735,12 +735,10 @@
                         </p:dataTable>
 
                         <h:outputText id="infoRegistroJornadas" value="#{controlJornadasLaborales.infoRegistroJornadas}" style="position: absolute; left: 20px; top: 205px; font-weight: bold"/>
-                        <p:commandButton id="aceptarJ" value="#{msg['aceptar']}" disabled="#{controlJornadasLaborales.aceptar}" style="position: absolute; top: 195px; left: 190px; " icon="ui-icon-check"  actionListener="#{controlJornadasLaborales.actualizarJornadas()}" onclick="LOVJornadas.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVJornadas:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasJ" value="#{msg['atras']}" style="position: absolute; top: 195px; left: 285px; " icon="ui-icon-arrowreturnthick-1-w" onclick="jornadasDialogo.hide(), LOVJornadas.clearFilters();" actionListener="#{controlJornadasLaborales.cancelarCambioJornadas()}" update="LOVJornadas, aceptarJ" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVJornadas:globalFilter"/>
-                        </p:commandButton>                       
+                        
+                        <p:commandButton id="aceptarJ" value="#{msg['aceptar']}" disabled="#{controlJornadasLaborales.aceptar}" style="position: absolute; top: 195px; left: 190px; " icon="ui-icon-check"  actionListener="#{controlJornadasLaborales.actualizarJornadas()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasJ" value="#{msg['atras']}" style="position: absolute; top: 195px; left: 285px; " icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlJornadasLaborales.cancelarCambioJornadas()}" process="@this"/>                     
 
                     </p:dialog>
                     <!-- Dialogo para ver en qué tabla se quiere insertar -->

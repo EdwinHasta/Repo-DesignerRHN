@@ -206,7 +206,7 @@
                                          selection="#{controlBetaCentrosCostos.tipoCentroCostoSeleccionado}" selectionMode="single" widgetVar="lovTipoCentrosCostos" scrollable="true" scrollWidth="420" scrollHeight="250"
                                          filteredValue="#{controlBetaCentrosCostos.filtradoTiposCentrosCostos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlBetaCentrosCostos.activarAceptar()}" update=":form:aceptarTCC"/>
-                                <p:ajax event="rowDblselect" listener="#{controlBetaCentrosCostos.actualizarCentroCosto()}" process="@this" onstart="lovTipoCentrosCostos.clearFilters()" update="lovTipoCentrosCostos, :form:datosCentrosCostos"/>
+                                <p:ajax event="rowDblselect" listener="#{controlBetaCentrosCostos.actualizarCentroCosto()}" process="@this"  />
 
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarTCC']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -228,12 +228,9 @@
 
                             <h:outputText id="infoRegistroTiposEmpresas" value="#{controlBetaCentrosCostos.infoRegistroTiposEmpresas}" style="position: absolute; left: 5px; top: 350px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarTCC" style="position: relative; left: 260px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlBetaCentrosCostos.aceptar}" onclick="tiposCentrosCostosDialogo.hide(), lovTipoCentrosCostos.clearFilters();" actionListener="#{controlBetaCentrosCostos.actualizarCentroCosto()}" update="lovTipoCentrosCostos, aceptarTCC, datosCentrosCostos" process="@this">
-                                <p:resetInput target=":form:lovTipoCentrosCostos:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasTCC" style="position: relative; left: 260px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="tiposCentrosCostosDialogo.hide(), lovTipoCentrosCostos.clearFilters();" actionListener="#{controlBetaCentrosCostos.cancelarCambioTiposCentroCosto()}" update="lovTipoCentrosCostos" process="@this">
-                                <p:resetInput target=":form:lovTipoCentrosCostos:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarTCC" style="position: relative; left: 260px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlBetaCentrosCostos.aceptar}" actionListener="#{controlBetaCentrosCostos.actualizarCentroCosto()}" process="@this"/>
+
+                            <p:commandButton id="atrasTCC" style="position: relative; left: 260px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlBetaCentrosCostos.cancelarCambioTiposCentroCosto()}" process="@this"/>
                         </p:dialog> 
 
 
@@ -419,8 +416,6 @@
 
                     <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                     <!-- muestra el dialogo del boton de buscar centros costos-->
-                    <!-- DIALOGO L.O.V ESTATICO UBICACIONES -->
-
 
 
                     <p:dialog header="#{msg['centroscostosC']}" widgetVar="buscarCentrosCostosDialogo" draggable="false" resizable="false" closable="false" id="buscarCentrosCostosDialogo"  
@@ -429,7 +424,7 @@
                                       selection="#{controlBetaCentrosCostos.centrosCostosPorEmpresaSeleccionado}" selectionMode="single" widgetVar="lovCentrosCostos" scrollable="true" scrollWidth="360" scrollHeight="250"
                                       filteredValue="#{controlBetaCentrosCostos.filterCentrosCostosPorEmpresa}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBetaCentrosCostos.activarAceptar()}" update=":formularioDialogos:aceptarNCC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBetaCentrosCostos.seleccionCentrosCostosPorEmpresa()}" process="@this" onstart="lovCentrosCostos.clearFilters()" update="lovCentrosCostos, :form:datosCentrosCostos"/>
+                            <p:ajax event="rowDblselect" listener="#{controlBetaCentrosCostos.seleccionCentrosCostosPorEmpresa()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCentrosCostos.filter();" style="width:150px; position: relative; left: 65px;" />  
@@ -448,12 +443,10 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarNCC" style="position: relative; left: 190px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlBetaCentrosCostos.aceptar}" actionListener="#{controlBetaCentrosCostos.seleccionCentrosCostosPorEmpresa()}" update="lovCentrosCostos, aceptarNCC, :form:datosCentrosCostos" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovCentrosCostos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasTCC" style="position: relative; left: 190px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="buscarCentrosCostosDialogo.hide(), lovCentrosCostos.clearFilters();" actionListener="#{controlBetaCentrosCostos.cancelarSeleccionCentroCostoPorEmpresa()}" update="lovCentrosCostos" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovCentrosCostos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarNCC" style="position: relative; left: 190px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlBetaCentrosCostos.aceptar}" actionListener="#{controlBetaCentrosCostos.seleccionCentrosCostosPorEmpresa()}" process="@this"/>
+
+                        <p:commandButton id="atrasTCC" style="position: relative; left: 190px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlBetaCentrosCostos.cancelarSeleccionCentroCostoPorEmpresa()}" process="@this"/>
+
                     </p:dialog> 
 
                     <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->                    
@@ -541,7 +534,7 @@
                                      selection="#{controlBetaCentrosCostos.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresas" scrollable="true" scrollWidth="350" scrollHeight="250"
                                      filteredValue="#{controlBetaCentrosCostos.filtradoListaEmpresas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlBetaCentrosCostos.activarAceptar()}" update=":formularioDialogos:aceptarE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlBetaCentrosCostos.cambiarEmpresa()}" process="@this" onstart="lovEmpresas.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlBetaCentrosCostos.cambiarEmpresa()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarE']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpresas.filter();" style="width:100px; position: relative; left: 10px;" />  
@@ -561,12 +554,9 @@
                         </p:dataTable>
                         <h:outputText id="infoRegistroEmpresas" value="#{controlBetaCentrosCostos.infoRegistroEmpresas}" style="position: absolute; left: 5px; top: 350px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarE" icon="u-iicon-check" style="position: relative; left: 165px" value="#{msg['aceptar']}" disabled="#{controlBetaCentrosCostos.aceptar}" actionListener="#{controlBetaCentrosCostos.cambiarEmpresa()}" update="aceptarE" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton  icon="ui-icon-arrowreturnthick-1-w" id="atrasE" style="position: relative; left: 165px" value="#{msg['cancelar']}" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlBetaCentrosCostos.cancelarCambioEmpresa()}" update="lovEmpresas" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarE" icon="u-iicon-check" style="position: relative; left: 165px" value="#{msg['aceptar']}" disabled="#{controlBetaCentrosCostos.aceptar}" actionListener="#{controlBetaCentrosCostos.cambiarEmpresa()}"  process="@this"/>
+                        
+                        <p:commandButton  icon="ui-icon-arrowreturnthick-1-w" id="atrasE" style="position: relative; left: 165px" value="#{msg['cancelar']}" actionListener="#{controlBetaCentrosCostos.cancelarCambioEmpresa()}" process="@this"/>
                     </p:dialog>
 
 

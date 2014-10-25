@@ -259,7 +259,7 @@
                                      selection="#{controlFormulaNovedad.formulaSeleccionada}" scrollWidth="415" selectionMode="single" widgetVar="lovFormula" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlFormulaNovedad.filtrarLovFormulas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlFormulaNovedad.activarAceptar()}" update=":form:aceptarF"/>
-                            <p:ajax event="rowDblselect" listener="#{controlFormulaNovedad.actualizarFormula()}" process="@this" onstart="lovFormula.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlFormulaNovedad.actualizarFormula()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarF']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovFormula.filter();" style="width:140px; position: relative; left: 70px;" />  
@@ -280,12 +280,10 @@
 
                         <h:outputText id="infoRegistroFormula" value="#{controlFormulaNovedad.infoRegistroFormula}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarF" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlFormulaNovedad.aceptar}" onclick="FormulaDialogo.hide(), lovFormula.clearFilters();" actionListener="#{controlFormulaNovedad.actualizarFormula()}" update="lovFormula, aceptarF, datosFormulaNovedad" process="@this">
-                            <p:resetInput target=":form:lovFormula:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasF" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="FormulaDialogo.hide(), lovFormula.clearFilters();" actionListener="#{controlFormulaNovedad.cancelarCambioFormula()}" update="lovFormula" process="@this">
-                            <p:resetInput target=":form:lovFormula:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarF" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlFormulaNovedad.aceptar}"  actionListener="#{controlFormulaNovedad.actualizarFormula()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasF" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlFormulaNovedad.cancelarCambioFormula()}" process="@this"/>
+                        
                     </p:dialog>
 
 

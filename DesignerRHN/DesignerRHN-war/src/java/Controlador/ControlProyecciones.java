@@ -810,10 +810,11 @@ public class ControlProyecciones implements Serializable {
             aceptar = true;
             mostrartodos = false;
             buscarCentrocosto = true;
-            context.execute("EmpleadosDialogo.hide()");
             context.reset("formularioDialogos:lovEmpleados:globalFilter");
-            context.update("formularioDialogos:lovEmpleados");
-            context.update("formularioDialogos:aceptarE");
+            context.execute("lovEmpleados.clearFilters()");
+            context.execute("EmpleadosDialogo.hide()");
+            //context.update("formularioDialogos:lovEmpleados");
+            //context.update("formularioDialogos:aceptarE");
             context.update("form:BUSCARCENTROCOSTO");
             context.update("form:MOSTRARTODOS");
             banderaModificacionEmpresa = 0;
@@ -830,6 +831,10 @@ public class ControlProyecciones implements Serializable {
         filtradoListaEmpleados = null;
         banderaModificacionEmpresa = 0;
         index = -1;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:lovEmpleados:globalFilter");
+        context.execute("lovEmpleados.clearFilters()");
+        context.execute("EmpleadosDialogo.hide()");
     }
 //-----------------------------------------------------------------------------**
 

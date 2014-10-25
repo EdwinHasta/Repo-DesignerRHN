@@ -489,9 +489,10 @@ public class ControlFormulasAseguradas implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         cambioFormulasAseguradas = true;
-        context.execute("personasDialogo.hide()");
         context.reset("form:lovFormulas:globalFilter");
-        context.update("form:lovFormulas");
+        context.execute("lovFormulas.clearFilters()");
+        context.execute("personasDialogo.hide()");
+        //context.update("form:lovFormulas");
     }
 
     public void cancelarCambioFormulas() {
@@ -502,6 +503,10 @@ public class ControlFormulasAseguradas implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovFormulas:globalFilter");
+        context.execute("lovFormulas.clearFilters()");
+        context.execute("personasDialogo.hide()");
     }
 
     public void actualizarProcesos() {
@@ -555,9 +560,10 @@ public class ControlFormulasAseguradas implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         cambioFormulasAseguradas = true;
-        context.execute("procesosDialogo.hide()");
         context.reset("form:lovProcesos:globalFilter");
-        context.update("form:lovProcesos");
+        context.execute("lovProcesos.clearFilters()");
+        context.execute("procesosDialogo.hide()");
+        //context.update("form:lovProcesos");
     }
 
     public void cancelarCambioProcesos() {
@@ -568,6 +574,10 @@ public class ControlFormulasAseguradas implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovProcesos:globalFilter");
+        context.execute("lovProcesos.clearFilters()");
+        context.execute("procesosDialogo.hide()");
     }
 
     public void actualizarPeriocidades() {
@@ -621,9 +631,10 @@ public class ControlFormulasAseguradas implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         cambioFormulasAseguradas = true;
-        context.execute("periodicidadesDialogo.hide()");
         context.reset("form:lovPeriodicidades:globalFilter");
-        context.update("form:lovPeriodicidades");
+        context.execute("lovPeriodicidades.clearFilters()");
+        context.execute("periodicidadesDialogo.hide()");
+        //context.update("form:lovPeriodicidades");
     }
 
     public void cancelarCambioPeriodicidades() {
@@ -634,6 +645,10 @@ public class ControlFormulasAseguradas implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovPeriodicidades:globalFilter");
+        context.execute("lovPeriodicidades.clearFilters()");
+        context.execute("periodicidadesDialogo.hide()");
     }
 
     public void modificarFormulasAseguradas(int indice, String confirmarCambio, String valorConfirmar) {

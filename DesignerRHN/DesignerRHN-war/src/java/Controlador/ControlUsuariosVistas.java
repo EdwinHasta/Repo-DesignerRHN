@@ -260,11 +260,10 @@ public class ControlUsuariosVistas implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("objetosDBDialogo.hide()");
         context.reset("formularioDialogos:LOVObjetosDB:globalFilter");
+        context.execute("LOVObjetosDB.clearFilters()");
+        context.execute("objetosDBDialogo.hide()");
         infoRegistroObjetosDB = "Cantidad de registros: " + lovObjetosDB.size();
-        context.update("formularioDialogos:infoRegistroObjetosDB");
-        context.update("formularioDialogos:LOVObjetosDB");
     }
 
     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LND = LISTA - NUEVO - DUPLICADO)
@@ -300,6 +299,10 @@ public class ControlUsuariosVistas implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVObjetosDB:globalFilter");
+        context.execute("LOVObjetosDB.clearFilters()");
+        context.execute("objetosDBDialogo.hide()");
     }
 
     //LISTA DE VALORES DINAMICA

@@ -169,7 +169,7 @@
                                          selection="#{controlCategoriaEsca.claseCategoriaSelecionada}" selectionMode="single" widgetVar="lovClaseCategoria" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlCategoriaEsca.filtrarLovClasesCategorias}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlCategoriaEsca.activarAceptar()}" update=":form:aceptarCCat"/>
-                                <p:ajax event="rowDblselect" listener="#{controlCategoriaEsca.actualizarClaseCategoria()}" process="@this" onstart="lovClaseCategoria.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlCategoriaEsca.actualizarClaseCategoria()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarCCat']}" style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovClaseCategoria.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -181,12 +181,9 @@
                                     <h:outputText value="#{clase.descripcion}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarCCat" style="position: relative; left: 300px" value="#{msg['aceptar']}" disabled="#{controlCategoriaEsca.aceptar}" onclick="lovClaseCategoria.clearFilters();" actionListener="#{controlCategoriaEsca.actualizarClaseCategoria()}" update="lovClaseCategoria, aceptarCCat, datosCategoria" process="@this">
-                                <p:resetInput target=":form:lovClaseCategoria:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasCCat" style="position: relative; left: 300px" value="#{msg['atras']}" onclick="ClaseCategoriaDialogo.hide(), lovClaseCategoria.clearFilters();" actionListener="#{controlCategoriaEsca.cancelarCambioClaseCategoria()}" update="lovClaseCategoria" process="@this">
-                                <p:resetInput target=":form:lovClaseCategoria:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarCCat" style="position: relative; left: 300px" value="#{msg['aceptar']}" disabled="#{controlCategoriaEsca.aceptar}" actionListener="#{controlCategoriaEsca.actualizarClaseCategoria()}" process="@this"/>
+                            
+                            <p:commandButton id="atrasCCat" style="position: relative; left: 300px" value="#{msg['atras']}"  actionListener="#{controlCategoriaEsca.cancelarCambioClaseCategoria()}" process="@this"/>
                         </p:dialog> 
 
                         <p:dialog header="#{msg['nombreT']}" widgetVar="TipoSueldoDialogo" draggable="false" resizable="false" closable="false" id="TipoSueldoDialogo"  
@@ -195,7 +192,7 @@
                                          selection="#{controlCategoriaEsca.tipoSueldoSelecionada}" selectionMode="single" widgetVar="lovTipoSueldo" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlCategoriaEsca.filtrarLovTiposSueldos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlCategoriaEsca.activarAceptar()}" update=":form:aceptarT"/>
-                                <p:ajax event="rowDblselect" listener="#{controlCategoriaEsca.actualizarTipoSueldo()}"  process="@this" onstart="lovTipoSueldo.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlCategoriaEsca.actualizarTipoSueldo()}"  process="@this"  />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarT']}" style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTipoSueldo.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -208,12 +205,9 @@
                                 </p:column>
 
                             </p:dataTable>
-                            <p:commandButton id="aceptarT" style="position: relative; left: 300px" value="#{msg['aceptar']}" disabled="#{controlCategoriaEsca.aceptar}" onclick="lovTipoSueldo.clearFilters();" actionListener="#{controlCategoriaEsca.actualizarTipoSueldo()}" update="lovTipoSueldo, aceptarT, datosCategoria" process="@this">
-                                <p:resetInput target=":form:lovTipoSueldo:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasT" style="position: relative; left: 300px" value="#{msg['atras']}" onclick="TipoSueldoDialogo.hide(), lovTipoSueldo.clearFilters();" actionListener="#{controlCategoriaEsca.cancelarCambioTipoSueldo()}" update="lovTipoSueldo" process="@this">
-                                <p:resetInput target=":form:lovTipoSueldo:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarT" style="position: relative; left: 300px" value="#{msg['aceptar']}" disabled="#{controlCategoriaEsca.aceptar}" actionListener="#{controlCategoriaEsca.actualizarTipoSueldo()}" process="@this"/>
+                            
+                            <p:commandButton id="atrasT" style="position: relative; left: 300px" value="#{msg['atras']}" actionListener="#{controlCategoriaEsca.cancelarCambioTipoSueldo()}" process="@this"/>
                         </p:dialog> 
 
                         <p:dialog header="#{msg['nombreC']}" widgetVar="ConceptoDialogo" draggable="false" resizable="false" closable="false" id="ConceptoDialogo"  
@@ -222,7 +216,7 @@
                                          selection="#{controlCategoriaEsca.conceptoSelecionada}" selectionMode="single" widgetVar="lovConcepto" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlCategoriaEsca.filtrarLovConceptos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlCategoriaEsca.activarAceptar()}" update=":form:aceptarC"/>
-                                <p:ajax event="rowDblselect" listener="#{controlCategoriaEsca.actualizarConcepto()}"  process="@this" onstart="lovConcepto.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlCategoriaEsca.actualizarConcepto()}"  process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarC']}" style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovConcepto.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -240,12 +234,10 @@
                                     <h:outputText value="#{concepto.empresa.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarC" style="position: relative; left: 300px" value="#{msg['aceptar']}" disabled="#{controlCategoriaEsca.aceptar}" onclick="lovConcepto.clearFilters();" actionListener="#{controlCategoriaEsca.actualizarConcepto()}" update="lovConcepto, aceptarC, datosCategoria" process="@this">
-                                <p:resetInput target=":form:lovConcepto:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasC" style="position: relative; left: 300px" value="#{msg['atras']}" onclick="ConceptoDialogo.hide(), lovConcepto.clearFilters();" actionListener="#{controlCategoriaEsca.cancelarCambioConcepto()}" update="lovConcepto" process="@this">
-                                <p:resetInput target=":form:lovConcepto:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarC" style="position: relative; left: 300px" value="#{msg['aceptar']}" disabled="#{controlCategoriaEsca.aceptar}" actionListener="#{controlCategoriaEsca.actualizarConcepto()}"  process="@this"/>
+                            
+                            <p:commandButton id="atrasC" style="position: relative; left: 300px" value="#{msg['atras']}" actionListener="#{controlCategoriaEsca.cancelarCambioConcepto()}" process="@this"/>
+                            
                         </p:dialog> 
 
                         <p:commandButton style="position: absolute; left: 685px; top: 435px; " id="ACEPTAR" icon="ui-icon-check" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" disabled="#{controlCategoriaEsca.cambiosPagina}" update=":form:datosCategoria" process="@this" />

@@ -334,11 +334,11 @@ public class ControlUsuarios implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("personasDialogo.hide()");
         context.reset("formularioDialogos:LOVPersonas:globalFilter");
+        context.execute("LOVPersonas.clearFilters()");
+        context.execute("personasDialogo.hide()");
         infoRegistroPersonas = "Cantidad de registros: " + lovPersonas.size();
-        context.update("formularioDialogos:infoRegistroPersonas");
-        context.update("formularioDialogos:LOVPersonas");
+        
     }
 
     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LND = LISTA - NUEVO - DUPLICADO)
@@ -374,6 +374,10 @@ public class ControlUsuarios implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVPersonas:globalFilter");
+        context.execute("LOVPersonas.clearFilters()");
+        context.execute("personasDialogo.hide()");
     }
 
     //MOSTRAR L.O.V PERFILES
@@ -420,11 +424,10 @@ public class ControlUsuarios implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("perfilesDialogo.hide()");
         context.reset("formularioDialogos:LOVPerfiles:globalFilter");
+        context.execute("LOVPerfiles.clearFilters()");
+        context.execute("perfilesDialogo.hide()");
         infoRegistroPerfiles = "Cantidad de registros: " + lovPerfiles.size();
-        context.update("formularioDialogos:infoRegistroPerfiles");
-        context.update("formularioDialogos:LOVPerfiles");
     }
 
     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LND = LISTA - NUEVO - DUPLICADO)
@@ -461,7 +464,10 @@ public class ControlUsuarios implements Serializable {
     public void cancelarCambioAlias() {
         lovFiltradoPantallas = null;
         usuariosSeleccionado = null;
-
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVUsuariosAlias:globalFilter");
+        context.execute("LOVUsuariosAlias.clearFilters()");
+        context.execute("aliasDialogo.hide()");
     }
 
     public void cancelarCambioPerfil() {
@@ -472,7 +478,10 @@ public class ControlUsuarios implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        permitirIndex = true;
+        permitirIndex = true;RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVPerfiles:globalFilter");
+        context.execute("LOVPerfiles.clearFilters()");
+        context.execute("perfilesDialogo.hide()");
     }
 
     //MOSTRAR L.O.V PANTALLAS
@@ -519,11 +528,10 @@ public class ControlUsuarios implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("pantallasDialogo.hide()");
         context.reset("formularioDialogos:LOVPantallas:globalFilter");
+        context.execute("LOVPantallas.clearFilters()");
+        context.execute("pantallasDialogo.hide()");
         infoRegistroPantallas = "Cantidad de registros: " + lovPantallas.size();
-        context.update("formularioDialogos:infoRegistroPantallas");
-        context.update("formularioDialogos:LOVPantallas");
     }
 
     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LND = LISTA - NUEVO - DUPLICADO)
@@ -558,7 +566,10 @@ public class ControlUsuarios implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        permitirIndex = true;
+        permitirIndex = true;RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVPantallas:globalFilter");
+        context.execute("LOVPantallas.clearFilters()");
+        context.execute("pantallasDialogo.hide()");
     }
 
     //LISTA DE VALORES DINAMICA
@@ -1580,7 +1591,7 @@ public class ControlUsuarios implements Serializable {
         System.out.println("estos es2: " + getAuxClon());
         RequestContext context = RequestContext.getCurrentInstance();
         context.reset("formularioDialogos:LOVUsuariosAlias:globalFilter");
-        context.update("formularioDialogos:LOVUsuariosAlias");
+        context.execute("LOVUsuariosAlias.clearFilters()");
         context.execute("aliasDialogo.hide()");
         context.update("form:aliasNombreClon");
     }

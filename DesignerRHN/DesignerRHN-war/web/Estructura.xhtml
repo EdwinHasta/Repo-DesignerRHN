@@ -200,7 +200,7 @@
                                      selection="#{controlEstructura.selecionEmpresa}" selectionMode="single" widgetVar="lovEmpresas" scrollable="true" scrollWidth="416" scrollHeight="250"
                                      filteredValue="#{controlEstructura.filtradoEmpresas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlEstructura.activarAceptar()}" update=":form:aceptarE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlEstructura.actualizarEmpresa()}" process="@this" onstart="lovEmpresas.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlEstructura.actualizarEmpresa()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEM']}"  style="position: absolute; left: 27px; top: 16px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpresas.filter();" style="width:100px; position: relative; left: -25px;" />  
@@ -221,12 +221,10 @@
                         
                         <h:outputText id="infoRegistroEmpresa" value="#{controlEstructura.infoRegistroEmpresa}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton icon="ui-icon-check" id="aceptarE" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEstructura.aceptar}" actionListener="#{controlEstructura.actualizarEmpresa()}" update="aceptarE" process="@this">
-                            <p:resetInput target=":form:lovEmpresas:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasE" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlEstructura.cancelarEmpresa()}" update="lovEmpresas" process="@this">
-                            <p:resetInput target=":form:lovEmpresas:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check" id="aceptarE" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEstructura.aceptar}" actionListener="#{controlEstructura.actualizarEmpresa()}"  process="@this" />
+                            
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasE" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlEstructura.cancelarEmpresa()}" process="@this" />
+                            
                     </p:dialog>
                     
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  

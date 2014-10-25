@@ -117,7 +117,7 @@ public class ControlVigenciasProyectos implements Serializable {
         index = 0;
         altoTabla = "115";
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -131,7 +131,7 @@ public class ControlVigenciasProyectos implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void recibirEmpleado(BigInteger secEmpleado) {
         secuenciaEmpleado = secEmpleado;
         empleado = null;
@@ -1047,9 +1047,10 @@ public class ControlVigenciasProyectos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("proyectosDialogo.hide()");
         context.reset("formularioDialogos:LOVProyectos:globalFilter");
-        context.update("formularioDialogos:LOVProyectos");
+        context.execute("LOVProyectos.clearFilters()");
+        context.execute("proyectosDialogo.hide()");
+        //context.update("formularioDialogos:LOVProyectos");
     }
 
     public void actualizarPryRoles() {
@@ -1096,9 +1097,10 @@ public class ControlVigenciasProyectos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("pryRolesDialogo.hide()");
         context.reset("formularioDialogos:LOVPryRoles:globalFilter");
-        context.update("formularioDialogos:LOVPryRoles");
+        context.execute("LOVPryRoles.clearFilters()");
+        context.execute("pryRolesDialogo.hide()");
+        //context.update("formularioDialogos:LOVPryRoles");
     }
 
     public void actualizarCargos() {
@@ -1145,9 +1147,10 @@ public class ControlVigenciasProyectos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("cargosDialogo.hide()");
         context.reset("formularioDialogos:LOVCargos:globalFilter");
-        context.update("formularioDialogos:LOVCargos");
+        context.execute("LOVCargos.clearFilters()");
+        context.execute("cargosDialogo.hide()");
+        //context.update("formularioDialogos:LOVCargos");
     }
 
     public void cancelarCambioProyectos() {
@@ -1159,6 +1162,10 @@ public class ControlVigenciasProyectos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVProyectos:globalFilter");
+        context.execute("LOVProyectos.clearFilters()");
+        context.execute("proyectosDialogo.hide()");
     }
 
     public void cancelarCambioPryRoles() {
@@ -1170,6 +1177,10 @@ public class ControlVigenciasProyectos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVPryRoles:globalFilter");
+        context.execute("LOVPryRoles.clearFilters()");
+        context.execute("pryRolesDialogo.hide()");
     }
 
     public void cancelarCambioCargo() {
@@ -1181,6 +1192,10 @@ public class ControlVigenciasProyectos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVCargos:globalFilter");
+        context.execute("LOVCargos.clearFilters()");
+        context.execute("cargosDialogo.hide()");
     }
 
     public void verificarRastro() {

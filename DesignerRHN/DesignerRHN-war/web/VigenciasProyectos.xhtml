@@ -289,7 +289,7 @@
                                       filteredValue="#{controlVigenciasProyectos.filtradoslistaProyectos}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{proyectos.secuencia}" selection="#{controlVigenciasProyectos.seleccionProyectos}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlVigenciasProyectos.activarAceptar()}" update=":formularioDialogos:aceptarPr"/>
-                            <p:ajax event="rowDblselect" listener="#{controlVigenciasProyectos.actualizarProyectos()}" process="@this" onstart="LOVProyectos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlVigenciasProyectos.actualizarProyectos()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarP']}" style="position: absolute; left: 27px; top: 15px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVProyectos.filter();" style="width:100px; position: relative; left: 65px;" />  
@@ -303,12 +303,9 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarPr" value="#{msg['aceptar']}" disabled="#{controlVigenciasProyectos.aceptar}" style="position: absolute; top: 215px; left: 162px;" icon="ui-icon-check" actionListener="#{controlVigenciasProyectos.actualizarProyectos()}" onclick="LOVProyectos.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVProyectos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasPr" value="#{msg['atras']}" style="position: absolute; top: 215px; left: 255px;" onclick="proyectosDialogo.hide(), LOVProyectos.clearFilters();" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasProyectos.cancelarCambioProyectos()}" update="LOVProyectos, aceptarPr" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVProyectos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarPr" value="#{msg['aceptar']}" disabled="#{controlVigenciasProyectos.aceptar}" style="position: absolute; top: 215px; left: 162px;" icon="ui-icon-check" actionListener="#{controlVigenciasProyectos.actualizarProyectos()}"  process="@this"/>
+                        
+                        <p:commandButton id="atrasPr" value="#{msg['atras']}" style="position: absolute; top: 215px; left: 255px;" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasProyectos.cancelarCambioProyectos()}" process="@this"/>
 
                     </p:dialog>
 
@@ -322,7 +319,7 @@
                                       filteredValue="#{controlVigenciasProyectos.filtradoslistaPryRoles}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{pryroles.secuencia}" selection="#{controlVigenciasProyectos.seleccionPryRoles}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlVigenciasProyectos.activarAceptar()}" update=":formularioDialogos:aceptarR"/>
-                            <p:ajax event="rowDblselect" listener="#{controlVigenciasProyectos.actualizarPryRoles()}" process="@this" onstart="LOVPryRoles.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlVigenciasProyectos.actualizarPryRoles()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarR']}"  style="position: absolute; left: 27px; top: 15px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVPryRoles.filter();" style="width:100px; position: relative; left: 60px;" />  
@@ -336,12 +333,9 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarR" value="#{msg['aceptar']}" disabled="#{controlVigenciasProyectos.aceptar}" style="position: absolute; top: 215px; left: 162px;" icon="ui-icon-check" actionListener="#{controlVigenciasProyectos.actualizarPryRoles()}" onclick="LOVPryRoles.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVPryRoles:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasR" value="#{msg['atras']}" style="position: absolute; top: 215px; left: 255px; " onclick="pryRolesDialogo.hide(), LOVPryRoles.clearFilters();" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasProyectos.cancelarCambioPryRoles()}" update="LOVPryRoles, aceptarR" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVPryRoles:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarR" value="#{msg['aceptar']}" disabled="#{controlVigenciasProyectos.aceptar}" style="position: absolute; top: 215px; left: 162px;" icon="ui-icon-check" actionListener="#{controlVigenciasProyectos.actualizarPryRoles()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasR" value="#{msg['atras']}" style="position: absolute; top: 215px; left: 255px; " icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasProyectos.cancelarCambioPryRoles()}" process="@this"/>
 
                     </p:dialog>
 
@@ -355,7 +349,7 @@
                                       filteredValue="#{controlVigenciasProyectos.filtradoslistaCargos}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{cargos.secuencia}" selection="#{controlVigenciasProyectos.seleccionCargos}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlVigenciasProyectos.activarAceptar()}" update=":formularioDialogos:aceptarC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlVigenciasProyectos.actualizarCargos()}" process="@this" onstart="LOVCargos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlVigenciasProyectos.actualizarCargos()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 15px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVCargos.filter();" style="width:100px; position: relative; left: 60px;" />  
@@ -369,12 +363,9 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarC" value="#{msg['aceptar']}" disabled="#{controlVigenciasProyectos.aceptar}" style="position: absolute; top: 215px; left: 162px; " icon="ui-icon-check" actionListener="#{controlVigenciasProyectos.actualizarCargos()}" onclick="LOVCargos.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVCargos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasC" value="#{msg['atras']}" style="position: absolute; top: 215px; left: 255px; " onclick="cargosDialogo.hide(), LOVCargos.clearFilters();" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasProyectos.cancelarCambioCargo()}" update="LOVCargos, aceptarC" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVCargos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarC" value="#{msg['aceptar']}" disabled="#{controlVigenciasProyectos.aceptar}" style="position: absolute; top: 215px; left: 162px; " icon="ui-icon-check" actionListener="#{controlVigenciasProyectos.actualizarCargos()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasC" value="#{msg['atras']}" style="position: absolute; top: 215px; left: 255px; " icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasProyectos.cancelarCambioCargo()}" process="@this"/>
 
                     </p:dialog>
                     

@@ -224,7 +224,7 @@
                                          selection="#{controlVigenciaAficion.aficionSeleccionada}" selectionMode="single" widgetVar="lovAficiones" scrollable="true" scrollWidth="415" scrollHeight="250"
                                          filteredValue="#{controlVigenciaAficion.filtrarListAficiones}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaAficion.activarAceptar()}" update=":form:aceptarA"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaAficion.actualizarAficion()}" process="@this" onstart="lovAficiones.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaAficion.actualizarAficion()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarA']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovAficiones.filter();" style="width:150px; position: relative; left: 5px;" />  
@@ -240,12 +240,9 @@
                             
                             <h:outputText id="infoRegistroAficion" value="#{controlVigenciaAficion.infoRegistroAficion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarA" style="position: relative; left: 230px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlVigenciaAficion.aceptar}" onclick="AficionesDialogo.hide(), lovAficiones.clearFilters();" actionListener="#{controlVigenciaAficion.actualizarAficion()}" update="lovAficiones, aceptarA, datosVigenciasAficiones" process="@this">
-                                <p:resetInput target=":form:lovAficiones:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasA" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="AficionesDialogo.hide(), lovAficiones.clearFilters();" actionListener="#{controlVigenciaAficion.cancelarCambioAficion()}" update="lovAficiones" process="@this">
-                                <p:resetInput target=":form:lovAficiones:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarA" style="position: relative; left: 230px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlVigenciaAficion.aceptar}"  actionListener="#{controlVigenciaAficion.actualizarAficion()}"  process="@this"/>
+                            
+                            <p:commandButton id="atrasA" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlVigenciaAficion.cancelarCambioAficion()}"  process="@this"/>
                         </p:dialog> 
 
                     </p:panel>

@@ -173,7 +173,7 @@
                                          selection="#{controlEmplVigenciaIndicador.tipoIndicadorSeleccionado}" selectionMode="single" widgetVar="lovTipos" scrollable="true" scrollWidth="416" scrollHeight="250"
                                          filteredValue="#{controlEmplVigenciaIndicador.filtrarListTiposIndicadores}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlEmplVigenciaIndicador.activarAceptar()}" update=":form:aceptarT"/>
-                                <p:ajax event="rowDblselect" listener="#{controlEmplVigenciaIndicador.actualizarTipoIndicador()}" process="@this" onstart="lovTipos.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlEmplVigenciaIndicador.actualizarTipoIndicador()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarTI']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTipos.filter();" style="width:150px; position: relative; left: 40px;" />  
@@ -188,12 +188,10 @@
                             
                             <h:outputText id="infoRegistroTipo" value="#{controlEmplVigenciaIndicador.infoRegistroTipo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarT" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEmplVigenciaIndicador.aceptar}" onclick="TiposDialogo.hide(), lovTipos.clearFilters();" actionListener="#{controlEmplVigenciaIndicador.actualizarTipoIndicador()}" update="lovTipos, aceptarT, datosVigencia" process="@this">
-                                <p:resetInput target=":form:lovTipos:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasT" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="TiposDialogo.hide(), lovTipos.clearFilters();" actionListener="#{controlEmplVigenciaIndicador.cancelarCambioTipoIndicador()}" update="lovTipos" process="@this">
-                                <p:resetInput target=":form:lovTipos:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarT" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEmplVigenciaIndicador.aceptar}" actionListener="#{controlEmplVigenciaIndicador.actualizarTipoIndicador()}" process="@this"/>
+                            
+                            <p:commandButton id="atrasT" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlEmplVigenciaIndicador.cancelarCambioTipoIndicador()}" process="@this"/>
+                            
                         </p:dialog>
 
 
@@ -203,7 +201,7 @@
                                          selection="#{controlEmplVigenciaIndicador.indicadorSeleccionado}" selectionMode="single" widgetVar="lovIndicador" scrollable="true" scrollWidth="416" scrollHeight="250"
                                          filteredValue="#{controlEmplVigenciaIndicador.filtrarListIndicadores}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlEmplVigenciaIndicador.activarAceptar()}" update=":form:aceptarI"/>
-                                <p:ajax event="rowDblselect" listener="#{controlEmplVigenciaIndicador.actualizarIndicador()}" process="@this" onstart="lovIndicador.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlEmplVigenciaIndicador.actualizarIndicador()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarI']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovIndicador.filter();" style="width:150px; position: relative; left: 20px;" />  
@@ -219,12 +217,10 @@
                             
                             <h:outputText id="infoRegistroIndicador" value="#{controlEmplVigenciaIndicador.infoRegistroIndicador}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarI" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlEmplVigenciaIndicador.actualizarIndicador()}" disabled="#{controlEmplVigenciaIndicador.aceptar}" onclick="IndicadorDialogo.hide(), lovIndicador.clearFilters();" update="lovIndicador, aceptarI, datosVigencia" process="@this">
-                                <p:resetInput target=":form:lovIndicador:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasI" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlEmplVigenciaIndicador.cancelarCambioIndicador()}" onclick="IndicadorDialogo.hide(), lovIndicador.clearFilters();" update="lovIndicador" process="@this">
-                                <p:resetInput target=":form:lovIndicador:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarI" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlEmplVigenciaIndicador.actualizarIndicador()}" disabled="#{controlEmplVigenciaIndicador.aceptar}" process="@this"/>
+                            
+                            <p:commandButton id="atrasI" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlEmplVigenciaIndicador.cancelarCambioIndicador()}" process="@this"/>
+                            
                         </p:dialog>
 
                         <p:commandButton style="position: absolute; left: 683px; top: 475px" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" disabled="#{controlEmplVigenciaIndicador.guardado}" update=":form:datosVigencia" process="@this" />

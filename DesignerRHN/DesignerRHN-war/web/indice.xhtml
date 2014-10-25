@@ -135,10 +135,6 @@
                                     </p:cellEditor>
                                 </p:column>
 
-
-
-
-
                             </p:dataTable>
 
                         </fieldset>
@@ -208,7 +204,7 @@
                                          selection="#{controlIndices.tipoIndiceSeleccionado}" selectionMode="single" widgetVar="lovTiposIndices" scrollable="true" scrollWidth="450" scrollHeight="250"
                                          filteredValue="#{controlIndices.filtradoTiposIndices}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlIndices.activarAceptar()}" update=":form:aceptarS"/>
-                                <p:ajax event="rowDblselect" listener="#{controlIndices.actualizarTipoIndice()}" process="@this" onstart="lovTiposIndices.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlIndices.actualizarTipoIndice()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="Buscar Tipo Indice"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTiposIndices.filter();" style="width:150px; position: relative; left: 50px;" />  
@@ -227,14 +223,13 @@
                                 </p:column>
 
                             </p:dataTable>
+                            
                             <h:outputText id="infoRegistroParentesco" value="#{controlIndices.infoRegistroParentesco}" style="position: absolute;  top: 355px; font-weight: bold"/>
-                            <p:commandButton id="aceptarS" icon="ui-icon-check" style="position: relative; left: 275px" value="Aceptar" disabled="#{controlIndices.aceptar}"  onclick="tiposindicesDialogo.hide(), lovTiposIndices.clearFilters();"  actionListener="#{controlIndices.actualizarTipoIndice()}" update="lovTiposIndices, aceptarS, datosIndices" process="@this">
-                                <p:resetInput target=":form:lovTiposIndices:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 275px" value="Atras"  actionListener="#{controlIndices.cancelarCambioTiposIndices()}" onclick="tiposindicesDialogo.hide();
-                                    lovTiposIndices.clearFilters();" update="lovTiposIndices" process="@this">
-                                <p:resetInput target=":form:lovTiposIndices:globalFilter"/>
-                            </p:commandButton>
+                            
+                            <p:commandButton id="aceptarS" icon="ui-icon-check" style="position: relative; left: 275px" value="Aceptar" disabled="#{controlIndices.aceptar}"   actionListener="#{controlIndices.actualizarTipoIndice()}" process="@this"/>
+                            
+                            <p:commandButton id="atrasS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 275px" value="Atras"  actionListener="#{controlIndices.cancelarCambioTiposIndices()}"  process="@this"/>
+                            
                         </p:dialog>
 
 

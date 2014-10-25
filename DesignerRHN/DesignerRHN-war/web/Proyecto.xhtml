@@ -268,7 +268,7 @@
                                          selection="#{controlProyecto.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresas" scrollable="true" scrollWidth="416" scrollHeight="250"
                                          filteredValue="#{controlProyecto.filtrarListEmpresas}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlProyecto.activarAceptar()}" update=":form:aceptarE"/>
-                                <p:ajax event="rowDblselect" listener="#{controlProyecto.actualizarEmpresa()}" process="@this" onstart="lovEmpresas.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlProyecto.actualizarEmpresa()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarE']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovEmpresas.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -289,12 +289,9 @@
 
                             <h:outputText id="infoRegistroEmpresa" value="#{controlProyecto.infoRegistroEmpresa}" style="position: absolute; left: 20px; top: 350px; font-weight: bold"/>
 
-                            <p:commandButton icon="ui-icon-check" id="aceptarE" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlProyecto.aceptar}" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlProyecto.actualizarEmpresa()}" update="lovEmpresas, aceptarE, datosProyectos" process="@this">
-                                <p:resetInput target=":form:lovEmpresas:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasE" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlProyecto.cancelarCambioEmpresa()}" update="lovEmpresas" process="@this">
-                                <p:resetInput target=":form:lovEmpresas:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton icon="ui-icon-check" id="aceptarE" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlProyecto.aceptar}" actionListener="#{controlProyecto.actualizarEmpresa()}" process="@this"/>
+                            
+                            <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasE" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlProyecto.cancelarCambioEmpresa()}" process="@this"/>
                         </p:dialog>
 
 
@@ -304,7 +301,7 @@
                                          selection="#{controlProyecto.clienteSeleccionado}" selectionMode="single" widgetVar="lovClientes" scrollable="true" scrollWidth="656" scrollHeight="250"
                                          filteredValue="#{controlProyecto.filtrarListPryClientes}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlProyecto.activarAceptar()}" update=":form:aceptarC"/>
-                                <p:ajax event="rowDblselect" listener="#{controlProyecto.actualizarCliente()}" process="@this" onstart="lovClientes.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlProyecto.actualizarCliente()}" process="@this" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovClientes.filter();" style="width:150px; position: relative; left: -90px;" />  
@@ -337,12 +334,9 @@
 
                             <h:outputText id="infoRegistroCliente" value="#{controlProyecto.infoRegistroCliente}" style="position: absolute; left: 20px; top: 350px; font-weight: bold"/>
 
-                            <p:commandButton icon="ui-icon-check" id="aceptarC" style="position: relative; left: 470px" value="#{msg['aceptar']}" actionListener="#{controlProyecto.actualizarCliente()}" disabled="#{controlProyecto.aceptar}" onclick="ClientesDialogo.hide(), lovClientes.clearFilters();" update="lovClientes, aceptarC, datosProyectos" process="@this">
-                                <p:resetInput target=":form:lovClientes:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasC" style="position: relative; left: 470px" value="#{msg['atras']}" actionListener="#{controlProyecto.cancelarCambioCliente()}" onclick="ClientesDialogo.hide(), lovClientes.clearFilters();" update="lovClientes" process="@this">
-                                <p:resetInput target=":form:lovClientes:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton icon="ui-icon-check" id="aceptarC" style="position: relative; left: 470px" value="#{msg['aceptar']}" actionListener="#{controlProyecto.actualizarCliente()}" disabled="#{controlProyecto.aceptar}" process="@this"/>
+                            
+                            <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasC" style="position: relative; left: 470px" value="#{msg['atras']}" actionListener="#{controlProyecto.cancelarCambioCliente()}" process="@this"/>
                         </p:dialog>
 
                         <p:dialog header="#{msg['plataformastecnologicasP']}" widgetVar="PlataformasDialogo" draggable="false" resizable="false" closable="false" id="PlataformasDialogo"  
@@ -351,7 +345,7 @@
                                          selection="#{controlProyecto.plataformaSeleccionada}" selectionMode="single" widgetVar="lovPlataforma" scrollable="true" scrollWidth="575" scrollHeight="250"
                                          filteredValue="#{controlProyecto.filtrarListPryPlataformas}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlProyecto.activarAceptar()}" update=":form:aceptarP"/>
-                                <p:ajax event="rowDblselect" listener="#{controlProyecto.actualizarPlataforma()}" process="@this" onstart="lovPlataforma.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlProyecto.actualizarPlataforma()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovPlataforma.filter();" style="width:150px; position: relative; left: -60px;" />  
@@ -378,12 +372,9 @@
 
                             <h:outputText id="infoRegistroPlataforma" value="#{controlProyecto.infoRegistroPlataforma}" style="position: absolute; left: 20px; top: 350px; font-weight: bold"/>
 
-                            <p:commandButton icon="ui-icon-check" id="aceptarP" style="position: relative; left: 400px" value="#{msg['aceptar']}" actionListener="#{controlProyecto.actualizarPlataforma()}" disabled="#{controlProyecto.aceptar}" onclick="PlataformasDialogo.hide(), lovPlataforma.clearFilters();" update="lovPlataforma, aceptarP, datosProyectos" process="@this">
-                                <p:resetInput target=":form:lovPlataforma:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasP" style="position: relative; left: 400px" value="#{msg['atras']}" actionListener="#{controlProyecto.cancelarCambioPlataforma()}" onclick="PlataformasDialogo.hide(), lovPlataforma.clearFilters();" update="lovPlataforma" process="@this">
-                                <p:resetInput target=":form:lovPlataforma:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton icon="ui-icon-check" id="aceptarP" style="position: relative; left: 400px" value="#{msg['aceptar']}" actionListener="#{controlProyecto.actualizarPlataforma()}" disabled="#{controlProyecto.aceptar}"  process="@this"/>
+                            
+                            <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasP" style="position: relative; left: 400px" value="#{msg['atras']}" actionListener="#{controlProyecto.cancelarCambioPlataforma()}" process="@this"/>
                         </p:dialog>
 
                         <p:dialog header="#{msg['tiposmonedasM']}" widgetVar="MonedasDialogo" draggable="false" resizable="false" closable="false" id="MonedasDialogo"  
@@ -392,7 +383,7 @@
                                          selection="#{controlProyecto.monedaSeleccionada}" selectionMode="single" widgetVar="lovMoneda" scrollable="true" scrollWidth="416" scrollHeight="250"
                                          filteredValue="#{controlProyecto.filtrarListMonedas}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlProyecto.activarAceptar()}" update=":form:aceptarM"/>
-                                <p:ajax event="rowDblselect" listener="#{controlProyecto.actualizarMoneda()}" process="@this" onstart="lovMoneda.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlProyecto.actualizarMoneda()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarM']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovMoneda.filter();" style="width:150px; position: relative; left: 20px;" />  
@@ -413,12 +404,9 @@
 
                             <h:outputText id="infoRegistroTipoMoneda" value="#{controlProyecto.infoRegistroTipoMoneda}" style="position: absolute; left: 20px; top: 350px; font-weight: bold"/>
 
-                            <p:commandButton icon="ui-icon-check" id="aceptarM" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlProyecto.actualizarMoneda()}" disabled="#{controlProyecto.aceptar}" onclick="MonedasDialogo.hide(), lovMoneda.clearFilters();" update="lovMoneda, aceptarM, datosProyectos" process="@this">
-                                <p:resetInput target=":form:lovMoneda:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasM" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlProyecto.cancelarCambioMoneda()}" onclick="MonedasDialogo.hide(), lovMoneda.clearFilters();" update="lovMoneda" process="@this">
-                                <p:resetInput target=":form:lovMoneda:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton icon="ui-icon-check" id="aceptarM" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlProyecto.actualizarMoneda()}" disabled="#{controlProyecto.aceptar}"  process="@this"/>
+                            
+                            <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasM" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlProyecto.cancelarCambioMoneda()}" process="@this"/>
                         </p:dialog>
 
                         <p:dialog header="#{msg['proyectosPR']}" widgetVar="BuscarProyectoDialogo" draggable="false" resizable="false" closable="false" id="BuscarProyectoDialogo"  
@@ -448,12 +436,9 @@
 
                             <h:outputText id="infoRegistroProyecto" value="#{controlProyecto.infoRegistroProyecto}" style="position: absolute; left: 20px; top: 350px; font-weight: bold"/>
 
-                            <p:commandButton icon="ui-icon-check" id="aceptarPro" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlProyecto.actualizarProyecto()}" disabled="#{controlProyecto.aceptar}" onclick="BuscarProyectoDialogo.hide(), lovProyecto.clearFilters();" update="lovProyecto, aceptarPro, datosProyectos" process="@this">
-                                <p:resetInput target=":form:lovProyecto:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasPro" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlProyecto.cancelarActualizarProyecto()}" onclick="BuscarProyectoDialogo.hide(), lovProyecto.clearFilters();" update="lovProyecto" process="@this">
-                                <p:resetInput target=":form:lovProyecto:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton icon="ui-icon-check" id="aceptarPro" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlProyecto.actualizarProyecto()}" disabled="#{controlProyecto.aceptar}"  process="@this"/>
+                            
+                            <p:commandButton id="atrasPro" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlProyecto.cancelarActualizarProyecto()}"  process="@this"/>
                         </p:dialog>
 
                         <p:commandButton style="position: absolute;left: 20px;top: 475px;" id="BUSCARPROYECTO" process="@this" value="#{msg['buscar']}" actionListener="#{controlProyecto.dialogoProyecto()}"/> 

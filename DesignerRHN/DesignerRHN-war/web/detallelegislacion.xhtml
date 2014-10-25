@@ -256,6 +256,7 @@
                                      selection="#{controlDetalleLegislacion.formulaSeleccionada}" selectionMode="single" widgetVar="lovFormula" scrollable="true" scrollWidth="700" scrollHeight="250"
                                      filteredValue="#{controlDetalleLegislacion.filtrarListFormulas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlDetalleLegislacion.activarAceptar()}" update=":form:aceptarF"/>
+                            <p:ajax event="rowDblselect" listener="#{controlDetalleLegislacion.actualizarFormula()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['lovBuscarFormula']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovFormula.filter();" style="width:150px; position: relative; left: 20px;" />  
@@ -285,12 +286,10 @@
                                 <h:outputText value="#{formula.observaciones}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarF" style="position: relative; left: 450px" value="#{msg['aceptar']}" actionListener="#{controlDetalleLegislacion.actualizarFormula()}" disabled="#{controlDetalleLegislacion.aceptar}" onclick="FormulaDialogo.hide(), lovFormula.clearFilters();" update="lovFormula, aceptarF, datosFormulaContrato" process="@this">
-                            <p:resetInput target=":form:lovFormula:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasF" style="position: relative; left: 500px" value="#{msg['atras']}" actionListener="#{controlDetalleLegislacion.cancelarCambioFormula()}" onclick="FormulaDialogo.hide(), lovFormula.clearFilters();" update="lovFormula" process="@this">
-                            <p:resetInput target=":form:lovFormula:globalFilter"/>
-                        </p:commandButton>
+                        
+                        <p:commandButton id="aceptarF" style="position: relative; left: 450px" value="#{msg['aceptar']}" actionListener="#{controlDetalleLegislacion.actualizarFormula()}" disabled="#{controlDetalleLegislacion.aceptar}" process="@this"/>
+                        
+                        <p:commandButton id="atrasF" style="position: relative; left: 500px" value="#{msg['atras']}" actionListener="#{controlDetalleLegislacion.cancelarCambioFormula()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['tituloLovPeriodicidad']}" widgetVar="PeriodicidadDialogo" draggable="false" resizable="false" closable="false" id="PeriodicidadDialogo"  
@@ -299,6 +298,7 @@
                                      selection="#{controlDetalleLegislacion.periodicidadSeleccionada}" selectionMode="single" widgetVar="lovPeriodicidad" scrollable="true" scrollWidth="495" scrollHeight="250"
                                      filteredValue="#{controlDetalleLegislacion.filtrarListPeriodicidades}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlDetalleLegislacion.activarAceptar()}" update=":form:aceptarP"/>
+                            <p:ajax event="rowDblselect" listener="#{controlDetalleLegislacion.actualizarPeriodicidad()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarPeriodicidad']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovPeriodicidad.filter();" style="width:150px; position: relative; left: 20px;" />  
@@ -310,12 +310,10 @@
                                 <h:outputText  value="#{periodicidad.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarP" style="position: relative; left: 320px" value="#{msg['aceptar']}" actionListener="#{controlDetalleLegislacion.actualizarPeriodicidad()}" disabled="#{controlDetalleLegislacion.aceptar}" onclick="PeriodicidadDialogo.hide(), lovPeriodicidad.clearFilters();" update="lovPeriodicidad, aceptarP, datosFormulaContrato" process="@this">
-                            <p:resetInput target=":form:lovPeriodicidad:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasP" style="position: relative; left: 320px" value="#{msg['atras']}" actionListener="#{controlDetalleLegislacion.cancelarCambioPeriodicidad()}" onclick="PeriodicidadDialogo.hide(), lovPeriodicidad.clearFilters();" update="lovPeriodicidad" process="@this">
-                            <p:resetInput target=":form:lovPeriodicidad:globalFilter"/>
-                        </p:commandButton>
+                        
+                        <p:commandButton id="aceptarP" style="position: relative; left: 320px" value="#{msg['aceptar']}" actionListener="#{controlDetalleLegislacion.actualizarPeriodicidad()}" disabled="#{controlDetalleLegislacion.aceptar}"  process="@this"/>
+                        
+                        <p:commandButton id="atrasP" style="position: relative; left: 320px" value="#{msg['atras']}" actionListener="#{controlDetalleLegislacion.cancelarCambioPeriodicidad()}"  process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['tituloLovTercero']}" widgetVar="TerceroDialogo" draggable="false" resizable="false" closable="false" id="TerceroDialogo"  
@@ -324,6 +322,7 @@
                                      selection="#{controlDetalleLegislacion.terceroSeleccionado}" selectionMode="single" widgetVar="lovTercero" scrollable="true" scrollWidth="510" scrollHeight="250"
                                      filteredValue="#{controlDetalleLegislacion.filtrarListTerceros}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlDetalleLegislacion.activarAceptar()}" update=":form:aceptarT"/>
+                            <p:ajax event="rowDblselect" listener="#{controlDetalleLegislacion.actualizarTercero()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['lovBuscarTercero']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTercero.filter();" style="width:150px; position: relative; left: 20px;" />  
@@ -341,12 +340,10 @@
                                 <h:outputText  value="#{tercero.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarT" style="position: relative; left: 320px" value="#{msg['aceptar']}" actionListener="#{controlDetalleLegislacion.actualizarTercero()}" disabled="#{controlDetalleLegislacion.aceptar}" onclick="TerceroDialogo.hide(), lovTercero.clearFilters();" update="lovTercero, aceptarT, datosFormulaContrato" process="@this">
-                            <p:resetInput target=":form:lovTercero:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasT" style="position: relative; left: 320px" value="#{msg['atras']}" actionListener="#{controlDetalleLegislacion.cancelarCambioTercero()}" onclick="TerceroDialogo.hide(), lovTercero.clearFilters();" update="lovTercero" process="@this">
-                            <p:resetInput target=":form:lovTercero:globalFilter"/>
-                        </p:commandButton>
+                        
+                        <p:commandButton id="aceptarT" style="position: relative; left: 320px" value="#{msg['aceptar']}" actionListener="#{controlDetalleLegislacion.actualizarTercero()}" disabled="#{controlDetalleLegislacion.aceptar}" process="@this"/>
+                        
+                        <p:commandButton id="atrasT" style="position: relative; left: 320px" value="#{msg['atras']}" actionListener="#{controlDetalleLegislacion.cancelarCambioTercero()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['tituloLovFormula']}" widgetVar="BuscarFormulaDialogo" draggable="false" resizable="false" closable="false" id="BuscarFormulaDialogo"  
@@ -355,6 +352,7 @@
                                      selection="#{controlDetalleLegislacion.formulaContratosSeleccionado}" selectionMode="single" widgetVar="lovBuscarFormula" scrollable="true" scrollWidth="705" scrollHeight="250"
                                      filteredValue="#{controlDetalleLegislacion.filtrarListFormulasContratos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlDetalleLegislacion.activarAceptar()}" update=":form:aceptarBF"/>
+                            <p:ajax event="rowDblselect" listener="#{controlDetalleLegislacion.actualizarFormula()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['lovBuscarFormula']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovBuscarFormula.filter();" style="width:150px; position: relative; left: 20px;" />  
@@ -384,12 +382,10 @@
                                 <h:outputText  value="#{buscarF.formula.nombrecorto}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarBF" style="position: relative; left: 250px" value="#{msg['aceptar']}" actionListener="#{controlDetalleLegislacion.validarSeleccionFormula()}" disabled="#{controlDetalleLegislacion.aceptar}" onclick="BuscarFormulaDialogo.hide(), lovBuscarFormula.clearFilters();" update="lovBuscarFormula, aceptarBF, datosFormulaContrato" process="@this">
-                            <p:resetInput target=":form:lovBuscarFormula:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasBF" style="position: relative; left: 300px" value="#{msg['atras']}" actionListener="#{controlDetalleLegislacion.cancelarSeleccionFormula()}" onclick="BuscarFormulaDialogo.hide(), lovBuscarFormula.clearFilters();" update="lovBuscarFormula" process="@this">
-                            <p:resetInput target=":form:lovBuscarFormula:globalFilter"/>
-                        </p:commandButton>
+                        
+                        <p:commandButton id="aceptarBF" style="position: relative; left: 250px" value="#{msg['aceptar']}" actionListener="#{controlDetalleLegislacion.validarSeleccionFormula()}" disabled="#{controlDetalleLegislacion.aceptar}" onclick="BuscarFormulaDialogo.hide(), lovBuscarFormula.clearFilters();" update="lovBuscarFormula, aceptarBF, datosFormulaContrato" process="@this"/>
+                        
+                        <p:commandButton id="atrasBF" style="position: relative; left: 300px" value="#{msg['atras']}" actionListener="#{controlDetalleLegislacion.cancelarSeleccionFormula()}" onclick="BuscarFormulaDialogo.hide(), lovBuscarFormula.clearFilters();" update="lovBuscarFormula" process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  

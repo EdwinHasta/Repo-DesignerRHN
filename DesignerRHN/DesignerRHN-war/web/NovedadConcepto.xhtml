@@ -737,7 +737,7 @@
                                       filteredValue="#{controlNovedadesConceptos.filtradoslistaConceptos}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{conceptos.secuencia}" selection="#{controlNovedadesConceptos.seleccionConceptos}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlNovedadesConceptos.activarAceptar()}" update=":formularioDialogos:aceptarC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlNovedadesConceptos.actualizarConceptosNovedad()}" process="@this" onstart="LOVConceptos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNovedadesConceptos.actualizarConceptosNovedad()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVConceptos.filter();" style="width: 400px; position: relative; left: 60px;" />  
@@ -768,13 +768,10 @@
 
                         <h:outputText id="infoRegistroConceptos" value="#{controlNovedadesConceptos.infoRegistroConceptos}" style="position: relative; top: 15px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarC" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlNovedadesConceptos.aceptar}" style="position: absolute; top: 305px; left: 450px; " actionListener="#{controlNovedadesConceptos.actualizarConceptosNovedad()}" onclick="LOVConceptos.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVConceptos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasC" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 540px; " onclick="conceptosDialogo.hide(), LOVConceptos.clearFilters();" actionListener="#{controlNovedadesConceptos.cancelarCambioConceptos()}" update="LOVConceptos, aceptarC" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVConceptos:globalFilter"/>
-                        </p:commandButton>
-
+                        <p:commandButton id="aceptarC" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlNovedadesConceptos.aceptar}" style="position: absolute; top: 305px; left: 450px; " actionListener="#{controlNovedadesConceptos.actualizarConceptosNovedad()}"  process="@this"/>
+                            
+                        <p:commandButton id="atrasC" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 540px; "  actionListener="#{controlNovedadesConceptos.cancelarCambioConceptos()}"  process="@this"/>
+                           
                     </p:dialog> 
 
                     <!-- L.O.V FORMULAS-->
@@ -786,7 +783,7 @@
                                       filteredValue="#{controlNovedadesConceptos.filtradoslistaFormulas}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{formulas.secuencia}" selection="#{controlNovedadesConceptos.seleccionFormulas}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlNovedadesConceptos.activarAceptar()}" update=":formularioDialogos:aceptarF"/>
-                            <p:ajax event="rowDblselect" listener="#{controlNovedadesConceptos.actualizarFormulas()}" process="@this" onstart="LOVFormulas.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNovedadesConceptos.actualizarFormulas()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarF']}"  style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVFormulas.filter();" style="width: 150px; position: relative; left: 60px;" />  
@@ -802,12 +799,10 @@
                         </p:dataTable>
                         <h:outputText id="infoRegistroFormulas" value="#{controlNovedadesConceptos.infoRegistroFormulas}" style="position: relative; top: 15px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarF" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlNovedadesConceptos.aceptar}" style="position: absolute; top: 305px; left: 200px;" actionListener="#{controlNovedadesConceptos.actualizarFormulas()}" onclick="LOVFormulas.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVFormulas:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasF" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 290px; " onclick="formulasDialogo.hide(), LOVFormulas.clearFilters();" actionListener="#{controlNovedadesConceptos.cancelarCambioFormulas()}" update="LOVFormulas, aceptarF" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVFormulas:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarF" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlNovedadesConceptos.aceptar}" style="position: absolute; top: 305px; left: 200px;" actionListener="#{controlNovedadesConceptos.actualizarFormulas()}" process="@this" />
+                            
+                        <p:commandButton id="atrasF" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 290px; " actionListener="#{controlNovedadesConceptos.cancelarCambioFormulas()}" process="@this" />
+                            
 
                     </p:dialog>
 
@@ -820,7 +815,7 @@
                                       filteredValue="#{controlNovedadesConceptos.filtradoslistaEmpleados}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{emp.secuencia}" selection="#{controlNovedadesConceptos.seleccionEmpleados}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlNovedadesConceptos.activarAceptar()}" update=":formularioDialogos:aceptarE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlNovedadesConceptos.actualizarEmpleados()}" process="@this" onstart="LOVEmpleados.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNovedadesConceptos.actualizarEmpleados()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarE']}"  style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVEmpleados.filter();" style="width: 100px; position: relative; left: 60px;" />  
@@ -843,12 +838,10 @@
                         </p:dataTable>
                         <h:outputText id="infoRegistroEmpleados" value="#{controlNovedadesConceptos.infoRegistroEmpleados}" style="position: relative; top: 15px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarE" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlNovedadesConceptos.aceptar}" style="position: absolute; top: 305px; left: 200px; " actionListener="#{controlNovedadesConceptos.actualizarEmpleados}" onclick="LOVEmpleados.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVEmpleados:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasE" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 290px;" onclick="empleadosDialogo.hide(), LOVEmpleados.clearFilters();" actionListener="#{controlNovedadesConceptos.cancelarCambioEmpleados()}" update="LOVEmpleados, aceptarE" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVEmpleados:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarE" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlNovedadesConceptos.aceptar}" style="position: absolute; top: 305px; left: 200px; " actionListener="#{controlNovedadesConceptos.actualizarEmpleados()}"  process="@this"/>
+                            
+                        <p:commandButton id="atrasE" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 290px;" actionListener="#{controlNovedadesConceptos.cancelarCambioEmpleados()}"  process="@this"/>
+                            
                     </p:dialog>
 
                     <!-- L.O.V PERIODICIDAD-->
@@ -860,7 +853,7 @@
                                       filteredValue="#{controlNovedadesConceptos.filtradoslistaPeriodicidades}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{periodicidades.secuencia}" selection="#{controlNovedadesConceptos.seleccionPeriodicidades}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlNovedadesConceptos.activarAceptar()}" update=":formularioDialogos:aceptarP"/>
-                            <p:ajax event="rowDblselect" listener="#{controlNovedadesConceptos.actualizarPeriodicidades()}" process="@this" onstart="LOVPeriodicidades.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNovedadesConceptos.actualizarPeriodicidades()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarP']}"  style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVPeriodicidades.filter();" style="width: 150px; position: relative; left: 60px;" />  
@@ -882,12 +875,10 @@
                         </p:dataTable>
                         <h:outputText id="infoRegistroPeriodicidades" value="#{controlNovedadesConceptos.infoRegistroPeriodicidades}" style="position: relative; top: 15px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarP" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlNovedadesConceptos.aceptar}" style="position: absolute; top: 305px; left: 200px; " actionListener="#{controlNovedadesConceptos.actualizarPeriodicidades()}" onclick="LOVPeriodicidades.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVPeriodicidades:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasP" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 290px;" onclick="periodicidadesDialogo.hide(), LOVPeriodicidades.clearFilters();" actionListener="#{controlNovedadesConceptos.cancelarCambioPeriodicidades()}" update="LOVPeriodicidades, aceptarP" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVPeriodicidades:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarP" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlNovedadesConceptos.aceptar}" style="position: absolute; top: 305px; left: 200px; " actionListener="#{controlNovedadesConceptos.actualizarPeriodicidades()}" process="@this"/>
+                            
+                        <p:commandButton id="atrasP" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 290px;"  actionListener="#{controlNovedadesConceptos.cancelarCambioPeriodicidades()}"  process="@this"/>
+                            
 
                     </p:dialog>
 
@@ -900,7 +891,7 @@
                                       filteredValue="#{controlNovedadesConceptos.filtradoslistaTerceros}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{terceros.secuencia}" selection="#{controlNovedadesConceptos.seleccionTerceros}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlNovedadesConceptos.activarAceptar()}" update=":formularioDialogos:aceptarT"/>
-                            <p:ajax event="rowDblselect" listener="#{controlNovedadesConceptos.actualizarPeriodicidades()}" process="@this" onstart="LOVTerceros.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNovedadesConceptos.actualizarPeriodicidades()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarT']}"  style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVTerceros.filter();" style="width: 150px; position: relative; left: 60px;" />  
@@ -924,12 +915,10 @@
                         <h:outputText id="infoRegistroTerceros" value="#{controlNovedadesConceptos.infoRegistroTerceros}" style="position: relative; top: 15px; font-weight: bold"/>
 
 
-                        <p:commandButton id="aceptarT" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlNovedadesConceptos.aceptar}" style="position: absolute; top: 305px; left: 200px;" actionListener="#{controlNovedadesConceptos.actualizarTerceros()}" onclick="LOVTerceros.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVTerceros:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasT" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 290px;" onclick="tercerosDialogo.hide(), LOVTerceros.clearFilters();" actionListener="#{controlNovedadesConceptos.cancelarCambioConceptos()}" update="LOVTerceros, aceptarT" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVTerceros:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarT" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlNovedadesConceptos.aceptar}" style="position: absolute; top: 305px; left: 200px;" actionListener="#{controlNovedadesConceptos.actualizarTerceros()}"   process="@this" />
+                            
+                        <p:commandButton id="atrasT" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 290px;" actionListener="#{controlNovedadesConceptos.cancelarCambioConceptos()}" process="@this" />
+                            
 
                     </p:dialog>
 

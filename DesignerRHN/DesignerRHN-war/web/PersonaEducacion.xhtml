@@ -754,7 +754,7 @@
                                       filteredValue="#{controlPersonaEducacion.filtradoslistaTiposEducaciones}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{tiposEducaciones.secuencia}" selection="#{controlPersonaEducacion.seleccionTiposEducaciones}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlPersonaEducacion.activarAceptar()}" update=":formularioDialogos:aceptarTE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlPersonaEducacion.actualizarTiposEducaciones()}" process="@this" onstart="LOVTiposEducaciones.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaEducacion.actualizarTiposEducaciones()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTE']}"  style="position: absolute; left: 27px; top: 15px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVTiposEducaciones.filter();" style="width:100px; position: relative; left: 65px;" />  
@@ -768,12 +768,10 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarTE" value="#{msg['aceptar']}" style="position: absolute; top: 305px; left: 155px; " icon="ui-icon-check" disabled="#{controlPersonaEducacion.aceptar}"  actionListener="#{controlPersonaEducacion.actualizarTiposEducaciones()}" onclick="LOVTiposEducaciones.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVTiposEducaciones:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasTE" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 250px; " icon="ui-icon-arrowreturnthick-1-w"  onclick="tiposEducacionesDialogo.hide(), LOVTiposEducaciones.clearFilters();" actionListener="#{controlPersonaEducacion.cancelarCambioTiposEducaciones()}" update="LOVTiposEducaciones, aceptarTE" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVTiposEducaciones:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarTE" value="#{msg['aceptar']}" style="position: absolute; top: 305px; left: 155px; " icon="ui-icon-check" disabled="#{controlPersonaEducacion.aceptar}"  actionListener="#{controlPersonaEducacion.actualizarTiposEducaciones()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasTE" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 250px; " icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlPersonaEducacion.cancelarCambioTiposEducaciones()}" process="@this"/>
+                        
 
                     </p:dialog>
 
@@ -787,7 +785,7 @@
                                       filteredValue="#{controlPersonaEducacion.filtradoslistaProfesiones}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{profesiones.secuencia}" selection="#{controlPersonaEducacion.seleccionProfesiones}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlPersonaEducacion.activarAceptar()}" update=":formularioDialogos:aceptarP"/>
-                            <p:ajax event="rowDblselect" listener="#{controlPersonaEducacion.actualizarProfesiones()}" process="@this" onstart="LOVProfesiones.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaEducacion.actualizarProfesiones()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarP']}"  style="position: absolute; left: 27px; top: 15px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVProfesiones.filter();" style="width:100px; position: relative; left: 60px;" />  
@@ -801,12 +799,9 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarP" value="#{msg['aceptar']}" disabled="#{controlPersonaEducacion.aceptar}" style="position: absolute; top: 305px; left: 155px; " icon="ui-icon-check"  actionListener="#{controlPersonaEducacion.actualizarProfesiones()}" onclick="LOVProfesiones.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVProfesiones:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasP" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 250px; " icon="ui-icon-arrowreturnthick-1-w" onclick="profesionesDialogo.hide(), LOVProfesiones.clearFilters();" actionListener="#{controlPersonaEducacion.cancelarCambioProfesiones()}" update="LOVProfesiones, aceptarP" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVProfesiones:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarP" value="#{msg['aceptar']}" disabled="#{controlPersonaEducacion.aceptar}" style="position: absolute; top: 305px; left: 155px; " icon="ui-icon-check"  actionListener="#{controlPersonaEducacion.actualizarProfesiones()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasP" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 250px; " icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlPersonaEducacion.cancelarCambioProfesiones()}" process="@this"/>
 
                     </p:dialog>
 
@@ -820,7 +815,7 @@
                                       filteredValue="#{controlPersonaEducacion.filtradoslistaInstituciones}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{instituciones.secuencia}" selection="#{controlPersonaEducacion.seleccionInstituciones}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlPersonaEducacion.activarAceptar()}" update=":formularioDialogos:aceptarI"/>
-                            <p:ajax event="rowDblselect" listener="#{controlPersonaEducacion.actualizarInstituciones()}" process="@this" onstart="LOVInstituciones.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaEducacion.actualizarInstituciones()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarI']}"  style="position: absolute; left: 27px; top: 15px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVInstituciones.filter();" style="width:100px; position: relative; left: 60px;" />  
@@ -834,12 +829,9 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarI" value="#{msg['aceptar']}" style="position: absolute; top: 305px; left: 155px; " icon="ui-icon-check" disabled="#{controlPersonaEducacion.aceptar}" actionListener="#{controlPersonaEducacion.actualizarInstituciones()}" onclick="LOVInstituciones.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVInstituciones:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasI" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 250px; " icon="ui-icon-arrowreturnthick-1-w" onclick="institucionesDialogo.hide(), LOVInstituciones.clearFilters();" actionListener="#{controlPersonaEducacion.cancelarCambioInstituciones()}" update="LOVInstituciones, aceptarI" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVInstituciones:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarI" value="#{msg['aceptar']}" style="position: absolute; top: 305px; left: 155px; " icon="ui-icon-check" disabled="#{controlPersonaEducacion.aceptar}" actionListener="#{controlPersonaEducacion.actualizarInstituciones()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasI" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 250px; " icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlPersonaEducacion.cancelarCambioInstituciones()}" process="@this"/>
 
                     </p:dialog>
 
@@ -853,7 +845,7 @@
                                       filteredValue="#{controlPersonaEducacion.filtradoslistaAdiestramientosFormales}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
                                       rowKey="#{adiestramientosF.secuencia}" selection="#{controlPersonaEducacion.seleccionAdiestramientosFormales}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlPersonaEducacion.activarAceptar()}" update=":formularioDialogos:aceptarAF"/>
-                            <p:ajax event="rowDblselect" listener="#{controlPersonaEducacion.actualizarAdiestramientoF()}" process="@this" onstart="LOVInstituciones.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaEducacion.actualizarAdiestramientoF()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarA']}"  style="position: absolute; left: 27px; top: 15px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVAdiestramientosF.filter();" style="width:100px; position: relative; left: 60px;" />  
@@ -867,12 +859,9 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarAF" value="#{msg['aceptar']}" style="position: absolute; top: 305px; left: 155px; " icon="ui-icon-check" disabled="#{controlPersonaEducacion.aceptar}" actionListener="#{controlPersonaEducacion.actualizarAdiestramientoF()}" onclick="LOVAdiestramientosF.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVAdiestramientosF:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasAF" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 250px; " icon="ui-icon-arrowreturnthick-1-w" onclick="adiestramientosFDialogo.hide(), LOVAdiestramientosF.clearFilters();" actionListener="#{controlPersonaEducacion.cancelarCambioAdiestramientoF()}" update="LOVAdiestramientosF, aceptarAF" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVAdiestramientosF:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarAF" value="#{msg['aceptar']}" style="position: absolute; top: 305px; left: 155px; " icon="ui-icon-check" disabled="#{controlPersonaEducacion.aceptar}" actionListener="#{controlPersonaEducacion.actualizarAdiestramientoF()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasAF" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 250px; " icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlPersonaEducacion.cancelarCambioAdiestramientoF()}" process="@this"/>
 
                     </p:dialog>
 
@@ -886,7 +875,7 @@
                                       filteredValue="#{controlPersonaEducacion.filtradoslistaCursos}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{cursos.secuencia}" selection="#{controlPersonaEducacion.seleccionCursos}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlPersonaEducacion.activarAceptar()}" update=":formularioDialogos:aceptarC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlPersonaEducacion.actualizarCursos()}" process="@this" onstart="LOVCursos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaEducacion.actualizarCursos()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 15px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVCursos.filter();" style="width:100px; position: relative; left: 10px;" />  
@@ -900,12 +889,9 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarC" value="#{msg['aceptar']}" style="position: absolute; top: 305px; left: 155px;" icon="ui-icon-check" disabled="#{controlPersonaEducacion.aceptar}" actionListener="#{controlPersonaEducacion.actualizarCursos()}" onclick="LOVCursos.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVCursos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasC" value="#{msg['atras']}"  style="position: absolute; top: 305px; left: 250px;" icon="ui-icon-arrowreturnthick-1-w" onclick="cursosDialogo.hide(), LOVCursos.clearFilters();" actionListener="#{controlPersonaEducacion.cancelarCambioCursoNF()}" update="LOVCursos, aceptarC" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVCursos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarC" value="#{msg['aceptar']}" style="position: absolute; top: 305px; left: 155px;" icon="ui-icon-check" disabled="#{controlPersonaEducacion.aceptar}" actionListener="#{controlPersonaEducacion.actualizarCursos()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasC" value="#{msg['atras']}"  style="position: absolute; top: 305px; left: 250px;" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlPersonaEducacion.cancelarCambioCursoNF()}" process="@this"/>
 
                     </p:dialog>
 
@@ -919,7 +905,7 @@
                                       filteredValue="#{controlPersonaEducacion.filtradoslistaInstituciones}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{institucionesNF.secuencia}" selection="#{controlPersonaEducacion.seleccionInstituciones}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlPersonaEducacion.activarAceptar()}" update=":formularioDialogos:aceptarINF"/>
-                            <p:ajax event="rowDblselect" listener="#{controlPersonaEducacion.actualizarInstituciones()}" process="@this" onstart="LOVInstitucionesNF.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaEducacion.actualizarInstituciones()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarI']}"  style="position: absolute; left: 27px; top: 15px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVInstitucionesNF.filter();" style="width:100px; position: relative; left: 60px;" />  
@@ -933,12 +919,9 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarINF" value="#{msg['aceptar']}" style="position: absolute; top: 305px; left: 155px;" icon="ui-icon-check" disabled="#{controlPersonaEducacion.aceptar}" actionListener="#{controlPersonaEducacion.actualizarInstitucionesNF()}" onclick="LOVInstitucionesNF.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVInstitucionesNF:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasINF" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 250px;" icon="ui-icon-arrowreturnthick-1-w" onclick="institucionesNFDialogo.hide(), LOVInstitucionesNF.clearFilters();" actionListener="#{controlPersonaEducacion.cancelarCambioInstitucionesNF()}" update="LOVInstitucionesNF, aceptarINF" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVInstitucionesNF:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarINF" value="#{msg['aceptar']}" style="position: absolute; top: 305px; left: 155px;" icon="ui-icon-check" disabled="#{controlPersonaEducacion.aceptar}" actionListener="#{controlPersonaEducacion.actualizarInstitucionesNF()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasINF" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 250px;" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlPersonaEducacion.cancelarCambioInstitucionesNF()}" process="@this"/>
 
                     </p:dialog>
 
@@ -952,7 +935,7 @@
                                       filteredValue="#{controlPersonaEducacion.filtradoslistaAdiestramientosNoFormales}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{adiestramientosNF.secuencia}" selection="#{controlPersonaEducacion.seleccionAdiestramientosNoFormales}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlPersonaEducacion.activarAceptar()}" update=":formularioDialogos:aceptarANF"/>
-                            <p:ajax event="rowDblselect" listener="#{controlPersonaEducacion.actualizarAdiestramientoNF()}" process="@this" onstart="LOVAdiestramientosNF.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaEducacion.actualizarAdiestramientoNF()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarA']}"  style="position: absolute; left: 27px; top: 15px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVAdiestramientosNF.filter();" style="width:100px; position: relative; left: 60px;" />  
@@ -966,12 +949,9 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarANF" value="#{msg['aceptar']}" style="position: absolute; top: 305px; left: 155px;" icon="ui-icon-check" disabled="#{controlPersonaEducacion.aceptar}" actionListener="#{controlPersonaEducacion.actualizarAdiestramientoNF()}" onclick="LOVAdiestramientosNF.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVAdiestramientosNF:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasANF" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 250px;" icon="ui-icon-arrowreturnthick-1-w" onclick="adiestramientosNFDialogo.hide(), LOVAdiestramientosNF.clearFilters();" actionListener="#{controlPersonaEducacion.cancelarCambioAdiestramientoNF()}" update="LOVAdiestramientosNF, aceptarANF" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVAdiestramientosNF:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarANF" value="#{msg['aceptar']}" style="position: absolute; top: 305px; left: 155px;" icon="ui-icon-check" disabled="#{controlPersonaEducacion.aceptar}" actionListener="#{controlPersonaEducacion.actualizarAdiestramientoNF()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasANF" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 250px;" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlPersonaEducacion.cancelarCambioAdiestramientoNF()}" process="@this"/>
 
                     </p:dialog>
 

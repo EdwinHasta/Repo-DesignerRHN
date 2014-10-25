@@ -222,7 +222,7 @@
                                      selection="#{controlIbcAutoliquid.procesoSeleccionado}" selectionMode="single" widgetVar="lovProcesos" scrollable="true" scrollWidth="416" scrollHeight="250"
                                      filteredValue="#{controlIbcAutoliquid.filtrarListProcesos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlIbcAutoliquid.activarAceptar()}" update=":form:aceptarP"/>
-                            <p:ajax event="rowDblselect" listener="#{controlIbcAutoliquid.actualizarProceso()}" process="@this" onstart="lovProcesos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlIbcAutoliquid.actualizarProceso()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovProcesos.filter();" style="width:150px; position: relative; left: 20px;" />  
@@ -244,12 +244,10 @@
                         
                         <h:outputText id="infoRegistroProceso" value="#{controlIbcAutoliquid.infoRegistroProceso}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton id="aceptarP" style="position: relative; left: 230px;top: 5px" icon="ui-icon-check" value="#{msg['aceptar']}" actionListener="#{controlIbcAutoliquid.actualizarProceso()}" disabled="#{controlIbcAutoliquid.aceptar}" onclick="ProcesosDialogo.hide(), lovProcesos.clearFilters();" update="lovProcesos, aceptarP" process="@this">
-                            <p:resetInput target=":form:lovProcesos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasP" style="position: relative; left: 230px;top: 5px" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlIbcAutoliquid.cancelarCambioProceso()}" onclick="ProcesosDialogo.hide(), lovProcesos.clearFilters();" update="lovProcesos" process="@this">
-                            <p:resetInput target=":form:lovProcesos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarP" style="position: relative; left: 230px;top: 5px" icon="ui-icon-check" value="#{msg['aceptar']}" actionListener="#{controlIbcAutoliquid.actualizarProceso()}" disabled="#{controlIbcAutoliquid.aceptar}" process="@this" />
+                            
+                        <p:commandButton id="atrasP" style="position: relative; left: 230px;top: 5px" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlIbcAutoliquid.cancelarCambioProceso()}"   process="@this" />
+                            
                     </p:dialog>
 
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  

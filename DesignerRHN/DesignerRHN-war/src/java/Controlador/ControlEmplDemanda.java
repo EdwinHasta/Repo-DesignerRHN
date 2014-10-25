@@ -976,11 +976,12 @@ public class ControlEmplDemanda implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
-
-        context.update("form:DemandaDialogo");
-        context.update("form:lovDemanda");
-        context.update("form:aceptarD");
+        /*
+         context.update("form:DemandaDialogo");
+         context.update("form:lovDemanda");
+         context.update("form:aceptarD");*/
         context.reset("form:lovDemanda:globalFilter");
+        context.execute("lovDemanda.clearFilters()");
         context.execute("DemandaDialogo.hide()");
     }
 
@@ -996,6 +997,10 @@ public class ControlEmplDemanda implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndexD = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovDemanda:globalFilter");
+        context.execute("lovDemanda.clearFilters()");
+        context.execute("DemandaDialogo.hide()");
     }
 
     public void listaValoresBoton() {

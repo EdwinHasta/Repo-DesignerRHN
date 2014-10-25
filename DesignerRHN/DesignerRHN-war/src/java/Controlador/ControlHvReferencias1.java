@@ -161,7 +161,8 @@ public class ControlHvReferencias1 implements Serializable {
             System.out.println("\n ENTRE A ControlHvReferencias.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
-            }  RequestContext context = RequestContext.getCurrentInstance();
+            }
+            RequestContext context = RequestContext.getCurrentInstance();
             infoRegistro = "Cantidad de registros: " + filtrarHvReferencias1.size();
             context.update("form:informacionRegistro");
         } catch (Exception e) {
@@ -714,9 +715,10 @@ public class ControlHvReferencias1 implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("sucursalesDialogo.hide()");
         context.reset("form:lovTiposFamiliares:globalFilter");
-        context.update("form:lovTiposFamiliares");
+        context.execute("lovTiposFamiliares.clearFilters()");
+        context.execute("sucursalesDialogo.hide()");
+        //context.update("form:lovTiposFamiliares");
         context.update("form:datosHvReferencia");
     }
 
@@ -729,6 +731,10 @@ public class ControlHvReferencias1 implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTiposFamiliares:globalFilter");
+        context.execute("lovTiposFamiliares.clearFilters()");
+        context.execute("sucursalesDialogo.hide()");
     }
 
     public void borrandoHvReferencias() {

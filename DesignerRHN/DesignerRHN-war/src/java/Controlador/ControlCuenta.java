@@ -1170,11 +1170,12 @@ public class ControlCuenta implements Serializable {
         RequestContext.getCurrentInstance().update("form:DETALLES");
         secRegistroCuentas = null;
         tipoActualizacion = -1;
-
-        context.update("form:ContracuentaDialogo");
-        context.update("form:lovContracuenta");
-        context.update("form:aceptarCC");
+        /*
+         context.update("form:ContracuentaDialogo");
+         context.update("form:lovContracuenta");
+         context.update("form:aceptarCC");*/
         context.reset("form:lovContracuenta:globalFilter");
+        context.execute("lovContracuenta.clearFilters()");
         context.execute("ContracuentaDialogo.hide()");
     }
 
@@ -1184,10 +1185,14 @@ public class ControlCuenta implements Serializable {
         aceptar = true;
         index = -1;
         activoDetalle = true;
-        RequestContext.getCurrentInstance().update("form:DETALLES");
         secRegistroCuentas = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:DETALLES");
+        context.reset("form:lovContracuenta:globalFilter");
+        context.execute("lovContracuenta.clearFilters()");
+        context.execute("ContracuentaDialogo.hide()");
     }
 
     public void actualizarRubro() {
@@ -1235,11 +1240,12 @@ public class ControlCuenta implements Serializable {
         RequestContext.getCurrentInstance().update("form:DETALLES");
         secRegistroCuentas = null;
         tipoActualizacion = -1;
-
-        context.update("form:RubrosDialogo");
-        context.update("form:lovRubros");
-        context.update("form:aceptarRP");
+        /*
+         context.update("form:RubrosDialogo");
+         context.update("form:lovRubros");
+         context.update("form:aceptarRP");*/
         context.reset("form:lovRubros:globalFilter");
+        context.execute("lovRubros.clearFilters()");
         context.execute("RubrosDialogo.hide()");
     }
 
@@ -1249,10 +1255,14 @@ public class ControlCuenta implements Serializable {
         aceptar = true;
         index = -1;
         activoDetalle = true;
-        RequestContext.getCurrentInstance().update("form:DETALLES");
         secRegistroCuentas = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:DETALLES");
+        context.reset("form:lovRubros:globalFilter");
+        context.execute("lovRubros.clearFilters()");
+        context.execute("RubrosDialogo.hide()");
     }
 
     public String exportXML() {
@@ -1301,9 +1311,9 @@ public class ControlCuenta implements Serializable {
     }
 
     public void eventoFiltrar() {
-            if (tipoLista == 0) {
-                tipoLista = 1;
-            }
+        if (tipoLista == 0) {
+            tipoLista = 1;
+        }
         RequestContext context = RequestContext.getCurrentInstance();
         infoRegistro = "Cantidad de Registros: " + filtrarListCuentas.size();
         context.update("form:informacionRegistro");
@@ -1317,11 +1327,6 @@ public class ControlCuenta implements Serializable {
         context.execute("BuscarCuentasDialogo.show()");
     }
 
-    public void cancelarSeleccionCuenta() {
-        cuentaSeleccionada = new Cuentas();
-        filtrarListCuentasTesoreria = null;
-    }
-
     public void validarSeleccionCuenta() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (cambiosCuentas == false) {
@@ -1331,17 +1336,27 @@ public class ControlCuenta implements Serializable {
             cuentaSeleccionada = new Cuentas();
             filtrarListCuentasTesoreria = null;
             context.update("form:datosCuenta");
-
-            context.update("form:BuscarCuentasDialogo");
-            context.update("form:lovCuentas");
-            context.update("form:aceptarBC");
+            /*
+             context.update("form:BuscarCuentasDialogo");
+             context.update("form:lovCuentas");
+             context.update("form:aceptarBC");*/
             context.reset("form:lovCuentas:globalFilter");
+            context.execute("lovCuentas.clearFilters()");
             context.execute("BuscarCuentasDialogo.hide()");
         } else {
             cuentaSeleccionada = new Cuentas();
             filtrarListCuentasTesoreria = null;
             context.execute("confirmarGuardar.show()");
         }
+    }
+
+    public void cancelarSeleccionCuenta() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        cuentaSeleccionada = new Cuentas();
+        filtrarListCuentasTesoreria = null;
+        context.reset("form:lovCuentas:globalFilter");
+        context.execute("lovCuentas.clearFilters()");
+        context.execute("BuscarCuentasDialogo.hide()");
     }
 
     public void mostrarTodos() {

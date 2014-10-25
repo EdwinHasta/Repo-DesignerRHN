@@ -1118,7 +1118,7 @@
                                       filteredValue="#{controlAusentismos.filtradoslistaTiposAusentismos}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
                                       rowKey="#{tipo.secuencia}" selection="#{controlAusentismos.seleccionTiposAusentismos}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarTA"/>
-                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarTiposAusentismos()}" process="@this" onstart="LOVTiposAusentismos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarTiposAusentismos()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTA']}"  style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVTiposAusentismos.filter();" style="width: 150px; position: relative; left: 60px;" />  
@@ -1142,12 +1142,9 @@
                         <h:outputText id="infoRegistroTipos" value="#{controlAusentismos.infoRegistroTipo}" style="position: relative; top: 15px; font-weight: bold"/>
 
 
-                        <p:commandButton id="aceptarTA" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 300px; left: 180px; " actionListener="#{controlAusentismos.actualizarTiposAusentismos()}" onclick="LOVTiposAusentismos.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVTiposAusentismos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasTA" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 300px; left:270px; " onclick="tiposAusentismosDialogo.hide(), LOVTiposAusentismos.clearFilters();" actionListener="#{controlAusentismos.cancelarCambioTiposAusentismos()}" update="LOVTiposAusentismos, aceptarTA" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVTiposAusentismos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarTA" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 300px; left: 180px; " actionListener="#{controlAusentismos.actualizarTiposAusentismos()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasTA" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 300px; left:270px; " actionListener="#{controlAusentismos.cancelarCambioTiposAusentismos()}"  process="@this"/>
                     </p:dialog>
 
                     <!-- L.O.V CLASES AUSENTISMOS-->
@@ -1159,7 +1156,7 @@
                                       filteredValue="#{controlAusentismos.filtradoslistaClasesAusentismos}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{clase.secuencia}" selection="#{controlAusentismos.seleccionClasesAusentismos}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarCA"/>
-                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarClasesAusentismos()}" process="@this" onstart="LOVClasesAusentismos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarClasesAusentismos()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCL']}"  style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVClasesAusentismos.filter();" style="width: 150px; position: relative; left: 60px;" />  
@@ -1183,12 +1180,9 @@
                         <h:outputText id="infoRegistroClases" value="#{controlAusentismos.infoRegistroClase}" style="position: relative; top: 15px; font-weight: bold"/>
 
 
-                        <p:commandButton id="aceptarCA" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 310px; left: 170px; " actionListener="#{controlAusentismos.actualizarClasesAusentismos()}" onclick="LOVClasesAusentismos.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVClasesAusentismos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasCA" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 310px; left: 260px; " onclick="clasesAusentismosDialogo.hide(), LOVClasesAusentismos.clearFilters();" actionListener="#{controlAusentismos.cancelarCambioClasesAusentismos()}" update="LOVClasesAusentismos, aceptarCA" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVClasesAusentismos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarCA" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 310px; left: 170px; " actionListener="#{controlAusentismos.actualizarClasesAusentismos()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasCA" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 310px; left: 260px; " actionListener="#{controlAusentismos.cancelarCambioClasesAusentismos()}"  process="@this"/>
                     </p:dialog>
 
 
@@ -1201,7 +1195,7 @@
                                       filteredValue="#{controlAusentismos.filtradoslistaCausasAusentismos}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{causa.secuencia}" selection="#{controlAusentismos.seleccionCausasAusentismos}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarCAS"/>
-                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarCausasAusentismos()}" process="@this" onstart="LOVCausasAusentismos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarCausasAusentismos()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCA']}"  style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVCausasAusentismos.filter();" style="width: 150px; position: relative; left: 60px;" />  
@@ -1225,12 +1219,9 @@
                         <h:outputText id="infoRegistroCausas" value="#{controlAusentismos.infoRegistroCausa}" style="position: relative; top: 15px; font-weight: bold"/>
 
 
-                        <p:commandButton id="aceptarCAS" value="#{msg['aceptar']}" disabled="#{controlAusentismos.aceptar}" icon="ui-icon-check" style="position: absolute; top: 300px; left: 180px; " actionListener="#{controlAusentismos.actualizarCausasAusentismos()}" onclick="LOVCausasAusentismos.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVCausasAusentismos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasCAS" value="#{msg['atras']}" style="position: absolute; top: 300px; left: 270px; " icon="ui-icon-arrowreturnthick-1-w" onclick="causasAusentismosDialogo.hide(), LOVCausasAusentismos.clearFilters();" actionListener="#{controlAusentismos.cancelarCambioClasesAusentismos()}" update="LOVCausasAusentismos, aceptarCAS" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVCausasAusentismos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarCAS" value="#{msg['aceptar']}" disabled="#{controlAusentismos.aceptar}" icon="ui-icon-check" style="position: absolute; top: 300px; left: 180px; " actionListener="#{controlAusentismos.actualizarCausasAusentismos()}"  process="@this"/>
+                            
+                        <p:commandButton id="atrasCAS" value="#{msg['atras']}" style="position: absolute; top: 300px; left: 270px; " icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlAusentismos.cancelarCambioClasesAusentismos()}"  process="@this"/>
                     </p:dialog>
 
                     <!-- L.O.V Empleado-->
@@ -1242,7 +1233,7 @@
                                       filteredValue="#{controlAusentismos.filtradoslistaEmpleados}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{emp.secuencia}" selection="#{controlAusentismos.seleccionEmpleados}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarEmpleados()}" process="@this" onstart="LOVEmpleados.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarEmpleados()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarE']}"  style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVEmpleados.filter();" style="position: relative; left: 20px;" />  
@@ -1266,12 +1257,10 @@
 
                         <h:outputText id="infoRegistroEmpleado" value="#{controlAusentismos.infoRegistroEmpleado}" style="position: relative; top: 15px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarE" value="#{msg['aceptar']}" disabled="#{controlAusentismos.aceptar}" icon="ui-icon-check" style="position: absolute; top: 305px; left: 250px; " actionListener="#{controlAusentismos.actualizarEmpleados}" onclick="LOVEmpleados.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVEmpleados:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasE" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 340px; " onclick="empleadosDialogo.hide(), LOVEmpleados.clearFilters();" actionListener="#{controlAusentismos.cancelarCambioEmpleados()}" update="LOVEmpleados, aceptarE" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVEmpleados:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarE" value="#{msg['aceptar']}" disabled="#{controlAusentismos.aceptar}" icon="ui-icon-check" style="position: absolute; top: 305px; left: 250px; " actionListener="#{controlAusentismos.actualizarEmpleados()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasE" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 340px; " actionListener="#{controlAusentismos.cancelarCambioEmpleados()}" process="@this"/>
+                        
                     </p:dialog>
 
                     <!-- L.O.V Porcentajes-->
@@ -1283,7 +1272,7 @@
                                       filteredValue="#{controlAusentismos.filtradosListaPorcentajes}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{por}" selection="#{controlAusentismos.seleccionPorcentajes}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarP"/>
-                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarPorcentajes()}" process="@this" onstart="LOVPorcentajes.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarPorcentajes()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarP']}"  style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVPorcentajes.filter();" style="width: 150px; position: relative; left: 60px;" />  
@@ -1301,12 +1290,10 @@
                         <h:outputText id="infoRegistroPorcentaje" value="#{controlAusentismos.infoRegistroPorcentaje}" style="position: absolute; top: 190px; font-weight: bold"/>
 
 
-                        <p:commandButton id="aceptarP" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 185px; left: 170px; " actionListener="#{controlAusentismos.actualizarPorcentajes()}" onclick="LOVPorcentajes.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVPorcentajes:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasP" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 185px; left: 260px; " onclick="porcentajesDialogo.hide(), LOVPorcentajes.clearFilters();" actionListener="#{controlAusentismos.cancelarCambioEmpleados()}" update="LOVPorcentajes, aceptarP" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVPorcentajes:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarP" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 185px; left: 170px; " actionListener="#{controlAusentismos.actualizarPorcentajes()}"  process="@this"/>
+                            
+                        <p:commandButton id="atrasP" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 185px; left: 260px; " actionListener="#{controlAusentismos.cancelarCambioEmpleados()}" process="@this"/>
+                            
                     </p:dialog>
 
                     <!-- L.O.V IBCS-->
@@ -1318,7 +1305,7 @@
                                       filteredValue="#{controlAusentismos.filtradosListaIBCS}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{ibcs.secuencia}" selection="#{controlAusentismos.seleccionIBCS}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarI"/>
-                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarIBCS()}" process="@this" onstart="LOVIbcs.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarIBCS()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarI']}"  style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVIbcs.filter();" style="width: 400px; position: relative; left: 60px;" />  
@@ -1355,12 +1342,10 @@
 
                         <h:outputText id="infoRegistroIBCS" value="#{controlAusentismos.infoRegistroBase}" style="position: relative; top: 15px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarI" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 305px; left: 450px; " actionListener="#{controlAusentismos.actualizarIBCS()}" onclick="LOVIbcs.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVIbcs:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasI" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 540px; " onclick="ibcsDialogo.hide(), LOVIbcs.clearFilters();" actionListener="#{controlAusentismos.cancelarCambioIBCS()}" update="LOVIbcs, aceptarI" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVIbcs:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarI" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 305px; left: 450px; " actionListener="#{controlAusentismos.actualizarIBCS()}"  process="@this"/>
+                            
+                        <p:commandButton id="atrasI" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 540px; "  actionListener="#{controlAusentismos.cancelarCambioIBCS()}"  process="@this"/>
+                            
                     </p:dialog>
 
                     <!-- L.O.V Formas-->
@@ -1372,7 +1357,7 @@
                                       filteredValue="#{controlAusentismos.filtradosListaForma}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{for}" selection="#{controlAusentismos.seleccionForma}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarFP"/>
-                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarPorcentajes()}" process="@this" onstart="LOVFormas.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarPorcentajes()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarF']}"  style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVFormas.filter();" style="width: 150px; position: relative; left: 60px;" />  
@@ -1389,12 +1374,10 @@
                         <h:outputText id="infoRegistroForma" value="#{controlAusentismos.infoRegistroForma}" style="position: absolute; top: 275px; font-weight: bold"/>
 
 
-                        <p:commandButton id="aceptarFP" value="#{msg['aceptar']}" disabled="#{controlAusentismos.aceptar}" icon="ui-icon-check" style="position: absolute; top: 270px; left: 180px; " actionListener="#{controlAusentismos.actualizarFormas()}" onclick="LOVFormas.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVFormas:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasFP" value="#{msg['atras']}" style="position: absolute; top: 270px; left: 270px; " icon="ui-icon-arrowreturnthick-1-w" onclick="formasDialogo.hide(), LOVFormas.clearFilters();" actionListener="#{controlAusentismos.cancelarCambioFormas()}" update="LOVFormas, aceptarFP" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVFormas:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarFP" value="#{msg['aceptar']}" disabled="#{controlAusentismos.aceptar}" icon="ui-icon-check" style="position: absolute; top: 270px; left: 180px; " actionListener="#{controlAusentismos.actualizarFormas()}"  process="@this"/>
+                            
+                        <p:commandButton id="atrasFP" value="#{msg['atras']}" style="position: absolute; top: 270px; left: 270px; " icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlAusentismos.cancelarCambioFormas()}"  process="@this"/>
+                            
                     </p:dialog>
 
                     <!-- L.O.V ACCIDENTES-->
@@ -1406,7 +1389,7 @@
                                       filteredValue="#{controlAusentismos.filtradoslistaAccidentes}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{accidentes.secuencia}" selection="#{controlAusentismos.seleccionAccidentes}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarAD"/>
-                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarAD()}" process="@this" onstart="LOVAccidentes.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarAD()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarA']}"  style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVAccidentes.filter();" style="width: 400px; position: relative; left: 60px;" />  
@@ -1446,12 +1429,10 @@
 
                         <h:outputText id="infoRegistroAccidente" value="#{controlAusentismos.infoRegistroAccidente}" style="position: absolute; top: 315px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarAD" value="#{msg['aceptar']}" disabled="#{controlAusentismos.aceptar}" icon="ui-icon-check" style="position: absolute; top: 305px; left: 550px; " actionListener="#{controlAusentismos.actualizarAD()}" onclick="LOVAccidentes.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVAccidentes:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasAD" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 640px; " icon="ui-icon-arrowreturnthick-1-w" onclick="accidentesDialogo.hide(), LOVAccidentes.clearFilters();" actionListener="#{controlAusentismos.cancelarCambioAD()}" update="LOVAccidentes, aceptarAD" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVAccidentes:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarAD" value="#{msg['aceptar']}" disabled="#{controlAusentismos.aceptar}" icon="ui-icon-check" style="position: absolute; top: 305px; left: 550px; " actionListener="#{controlAusentismos.actualizarAD()}" process="@this"/>
+                            
+                        <p:commandButton id="atrasAD" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 640px; " icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlAusentismos.cancelarCambioAD()}"  process="@this"/>
+                           
                     </p:dialog>
 
                     <!-- L.O.V DIAGNOSTICOS-->
@@ -1463,7 +1444,7 @@
                                       filteredValue="#{controlAusentismos.filtradoslistaDiagnosticos}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{diagnosticos.secuencia}" selection="#{controlAusentismos.seleccionDiagnosticos}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarD"/>
-                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarDiagnosticos()}" process="@this" onstart="LOVDiagnosticos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarDiagnosticos()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarD']}"  style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVDiagnosticos.filter();" style="width: 400px; position: relative; left: 60px;" />  
@@ -1487,12 +1468,10 @@
 
                         <h:outputText id="infoRegistroDiagnostico" value="#{controlAusentismos.infoRegistroDiagnostico}" style="position: absolute; top: 315px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarD" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 305px; left: 450px; " actionListener="#{controlAusentismos.actualizarDiagnosticos()}" onclick="LOVDiagnosticos.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVDiagnosticos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasD" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 540px; " onclick="diagnosticosDialogo.hide(), LOVDiagnosticos.clearFilters();" actionListener="#{controlAusentismos.cancelarCambioDiagnosticos()}" update="LOVDiagnosticos, aceptarD" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVDiagnosticos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarD" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 305px; left: 450px; " actionListener="#{controlAusentismos.actualizarDiagnosticos()}"  process="@this"/>
+                            
+                        <p:commandButton id="atrasD" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 540px; "  actionListener="#{controlAusentismos.cancelarCambioDiagnosticos()}"  process="@this"/>
+                            
                     </p:dialog>
 
                     <!-- ACA ESTA LO DE LA PRORROGA -->
@@ -1505,7 +1484,7 @@
                                       filteredValue="#{controlAusentismos.filtradoslistaProrrogas}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{prorrogas.secuencia}" selection="#{controlAusentismos.seleccionProrrogas}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarPR"/>
-                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarProrrogas()}" process="@this" onstart="LOVProrrogas.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarProrrogas()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarPR']}" style="width: 120px; position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVProrrogas.filter();" style="width: 400px; position: relative; left: 60px;" />  
@@ -1574,12 +1553,10 @@
 
                         <h:outputText id="infoRegistroProrroga" value="#{controlAusentismos.infoRegistroProrroga}" style="position: absolute; top: 315px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarPR" value="#{msg['aceptar']}" icon="ui-icon-check"  disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 305px; left: 450px; " actionListener="#{controlAusentismos.actualizarProrrogas()}" onclick="LOVProrrogas.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVProrrogas:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasPR" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 540px; " onclick="prorrogasDialogo.hide(), LOVProrrogas.clearFilters();" actionListener="#{controlAusentismos.cancelarCambioProrrogas()}" update="LOVProrrogas, aceptarPR" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVProrrogas:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarPR" value="#{msg['aceptar']}" icon="ui-icon-check"  disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 305px; left: 450px; " actionListener="#{controlAusentismos.actualizarProrrogas()}"  process="@this"/>
+                            
+                        <p:commandButton id="atrasPR" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 540px; " actionListener="#{controlAusentismos.cancelarCambioProrrogas()}"  process="@this"/>
+                            
                     </p:dialog>
 
                     <!-- L.O.V TERCEROS-->
@@ -1591,7 +1568,7 @@
                                       filteredValue="#{controlAusentismos.filtradoslistaTerceros}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{terceros.secuencia}" selection="#{controlAusentismos.seleccionTerceros}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarTER"/>
-                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarAD()}" process="@this" onstart="LOVTerceros.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarAD()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarT']}" style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVTerceros.filter();" style="width: 150px; position: relative; left: 60px;" />  
@@ -1605,12 +1582,10 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarTER" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 300px; left: 160px; " actionListener="#{controlAusentismos.actualizarTerceros()}" onclick="LOVTerceros.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVTerceros:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasTER" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 300px; left: 250px; " onclick="tercerosDialogo.hide(), LOVTerceros.clearFilters();" actionListener="#{controlAusentismos.cancelarCambioTerceros()}" update="LOVTerceros, aceptarTER" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVTerceros:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarTER" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 300px; left: 160px; " actionListener="#{controlAusentismos.actualizarTerceros()}" process="@this"/>
+                            
+                        <p:commandButton id="atrasTER" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 300px; left: 250px; " actionListener="#{controlAusentismos.cancelarCambioTerceros()}"  process="@this"/>
+                            
                     </p:dialog>
 
                     <!-- L.O.V ENFERMEDADES-->
@@ -1622,7 +1597,7 @@
                                       filteredValue="#{controlAusentismos.filtradoslistaEnfermeadadesProfesionales}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{enfermedades.secuencia}" selection="#{controlAusentismos.seleccionEnfermeadadesProfesionales}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarEP"/>
-                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarEnfermedades()}" process="@this" onstart="LOVEnfermedades.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarEnfermedades()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEN']}"  style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVEnfermedades.filter();" style="width: 400px; position: relative; left: 60px;" />  
@@ -1656,12 +1631,10 @@
                         <h:outputText id="infoRegistroEnfermedad" value="#{controlAusentismos.infoRegistroEnfermedad}" style="position: absolute; top: 315px; font-weight: bold"/>
 
 
-                        <p:commandButton id="aceptarEP" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 305px; left: 450px; " actionListener="#{controlAusentismos.actualizarEnfermedades()}" onclick="LOVEnfermedades.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVEnfermedades:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasEP" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 540px; " onclick="enfermedadesDialogo.hide(), LOVEnfermedades.clearFilters();" actionListener="#{controlAusentismos.cancelarCambioEnfermedades()}" update="LOVEnfermedades, aceptarEP" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVEnfermedades:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarEP" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlAusentismos.aceptar}" style="position: absolute; top: 305px; left: 450px; " actionListener="#{controlAusentismos.actualizarEnfermedades()}"  process="@this"/>
+                            
+                        <p:commandButton id="atrasEP" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 540px; " actionListener="#{controlAusentismos.cancelarCambioEnfermedades()}"  process="@this"/>
+                            
                     </p:dialog>
                 </h:form>
 

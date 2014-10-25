@@ -190,7 +190,7 @@
                                          selection="#{controlLiquidacionesLogs.empleadoSeleccionado}" selectionMode="single" widgetVar="lovTipoCentrosCostos" scrollable="true" scrollWidth="420" scrollHeight="250"
                                          filteredValue="#{controlLiquidacionesLogs.filtrarEmpleados}" emptyMessage="No se encontrarón resultados para la búsqueda">             
                                 <p:ajax event="rowSelect" listener="#{controlLiquidacionesLogs.activarAceptar()}" update=":form:aceptarTCC"/>
-                                <p:ajax event="rowDblselect" listener="#{controlLiquidacionesLogs.seleccionarEmpleado()}" process="@this" onstart="lovTipoCentrosCostos.clearFilters()" update="lovTipoCentrosCostos, :form:datosLiquidacionesLogs"/>
+                                <p:ajax event="rowDblselect" listener="#{controlLiquidacionesLogs.seleccionarEmpleado()}" process="@this" />
 
                                 <f:facet name="header">  
                                     <h:outputText value="Buscar Empleado"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -212,12 +212,9 @@
 
                             <h:outputText id="infoRegistroEmpleados" value="#{controlLiquidacionesLogs.infoRegistroEmpleados}" style="position: absolute; left: 5px; top: 350px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarTCC" style="position: relative; left: 260px" icon="ui-icon-check" value="Aceptar" disabled="#{controlLiquidacionesLogs.aceptar}" onclick="tiposCentrosCostosDialogo.hide(), lovTipoCentrosCostos.clearFilters();" actionListener="#{controlLiquidacionesLogs.seleccionarEmpleado()}" update="lovTipoCentrosCostos, aceptarTCC, datosLiquidacionesLogs" process="@this">
-                                <p:resetInput target=":form:lovTipoCentrosCostos:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasTCC" style="position: relative; left: 260px" icon="ui-icon-arrowreturnthick-1-w" value="Atras" onclick="tiposCentrosCostosDialogo.hide(), lovTipoCentrosCostos.clearFilters();" actionListener="#{controlLiquidacionesLogs.cancelarCambioEmpleado()}" update="lovTipoCentrosCostos" process="@this">
-                                <p:resetInput target=":form:lovTipoCentrosCostos:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarTCC" style="position: relative; left: 260px" icon="ui-icon-check" value="Aceptar" disabled="#{controlLiquidacionesLogs.aceptar}" actionListener="#{controlLiquidacionesLogs.seleccionarEmpleado()}" process="@this"/>
+                            
+                            <p:commandButton id="atrasTCC" style="position: relative; left: 260px" icon="ui-icon-arrowreturnthick-1-w" value="Atras" actionListener="#{controlLiquidacionesLogs.cancelarCambioEmpleado()}" process="@this"/>
                         </p:dialog> 
 
 

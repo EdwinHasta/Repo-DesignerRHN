@@ -368,7 +368,7 @@
                                      selection="#{controlTipoContrato.tipoDiaSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovTipoDia" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlTipoContrato.filtrarLovTiposDias}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlTipoContrato.activarAceptar()}" update=":form:aceptarTD"/>
-                            <p:ajax event="rowDblselect" listener="#{controlTipoContrato.actualizarTipoDia()}"  process="@this" onstart="lovTipoDia.clearFilters()"  />
+                            <p:ajax event="rowDblselect" listener="#{controlTipoContrato.actualizarTipoDia()}"  process="@this"   />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTD']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTipoDia.filter();" style="width:140px; position: relative; left: -5px;" />  
@@ -383,12 +383,9 @@
                         
                         <h:outputText id="infoRegistroTipoDia" value="#{controlTipoContrato.infoRegistroTipoDia}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton id="aceptarTD" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlTipoContrato.aceptar}" onclick="TipoDiaDialogo.hide(), lovTipoDia.clearFilters();" actionListener="#{controlTipoContrato.actualizarTipoDia()}" update="lovTipoDia, aceptarTD, datosDiasLaborables" process="@this">
-                            <p:resetInput target=":form:lovTipoDia:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasTD" icon="ui-icon-arrowreturnthick-1-w"  style="position: relative; left: 230px" value="#{msg['atras']}" onclick="TipoDiaDialogo.hide(), lovTipoDia.clearFilters();" actionListener="#{controlTipoContrato.cancelarCambioTipoDia()}" update="lovTipoDia" process="@this">
-                            <p:resetInput target=":form:lovTipoDia:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarTD" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlTipoContrato.aceptar}"  actionListener="#{controlTipoContrato.actualizarTipoDia()}"  process="@this"/>
+                        
+                        <p:commandButton id="atrasTD" icon="ui-icon-arrowreturnthick-1-w"  style="position: relative; left: 230px" value="#{msg['atras']}"  actionListener="#{controlTipoContrato.cancelarCambioTipoDia()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['tipoContratoD']}" widgetVar="TipoContratoDialogo" draggable="false" resizable="false" closable="false" id="TipoContratoDialogo"  
@@ -397,7 +394,7 @@
                                      selection="#{controlTipoContrato.tipoContratoSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovTipoContrato" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlTipoContrato.filtrarLovTiposContratos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlTipoContrato.activarAceptar()}" update=":form:aceptarTC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlTipoContrato.seleccionarTipoContratoClonar()}"  process="@this" onstart="lovTipoContrato.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlTipoContrato.seleccionarTipoContratoClonar()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTipoContrato.filter();" style="width:140px; position: relative; left: 50px;" />  
@@ -418,12 +415,9 @@
                         
                         <h:outputText id="infoRegistoTipoContrato" value="#{controlTipoContrato.infoRegistoTipoContrato}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton id="aceptarTC" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlTipoContrato.aceptar}" onclick="TipoContratoDialogo.hide(), lovTipoContrato.clearFilters();"  actionListener="#{controlTipoContrato.seleccionarTipoContratoClonar()}" update="lovTipoContrato, aceptarTC" process="@this">
-                            <p:resetInput target=":form:lovTipoContrato:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasTC" icon="ui-icon-arrowreturnthick-1-w"  style="position: relative; left: 230px" value="#{msg['atras']}" onclick="TipoContratoDialogo.hide(), lovTipoContrato.clearFilters();" actionListener="#{controlTipoContrato.cancelarTipoContratoClonar()}" update="lovTipoContrato" process="@this">
-                            <p:resetInput target=":form:lovTipoContrato:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarTC" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlTipoContrato.aceptar}" actionListener="#{controlTipoContrato.seleccionarTipoContratoClonar()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasTC" icon="ui-icon-arrowreturnthick-1-w"  style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlTipoContrato.cancelarTipoContratoClonar()}" process="@this"/>
                     </p:dialog>
 
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlTipoContrato.activarCtrlF11()}"/> 

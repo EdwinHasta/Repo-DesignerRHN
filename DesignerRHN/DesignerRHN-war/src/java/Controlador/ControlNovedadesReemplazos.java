@@ -518,9 +518,10 @@ public class ControlNovedadesReemplazos implements Serializable {
             System.out.println("En la lista está:" + listaFalsaEmpleados.get(i).getPersona().getNombre());
         }
         // listaEncargaturas = null;
-        context.execute("empleadosDialogo.hide()");
         context.reset("formularioDialogos:LOVEmpleados:globalFilter");
-        context.update("formularioDialogos:LOVEmpleados");
+        context.execute("LOVEmpleados.clearFilters()");
+        context.execute("empleadosDialogo.hide()");
+        //context.update("formularioDialogos:LOVEmpleados");
         context.update("form:datosEmpleados");
         context.update("form:datosEncargaturasEmpleado");
         filtradosListaFalsaEmpleados = null;
@@ -581,9 +582,10 @@ public class ControlNovedadesReemplazos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("empleadosAbajoDialogo.hide()");
         context.reset("formularioDialogos:LOVEmpleadosAbajo:globalFilter");
-        context.update("formularioDialogos:LOVEmpleadosAbajo");
+        context.execute("LOVEmpleadosAbajo.clearFilters()");
+        context.execute("empleadosAbajoDialogo.hide()");
+        //context.update("formularioDialogos:LOVEmpleadosAbajo");
     }
 
     public void actualizarTiposReemplazos() {
@@ -629,9 +631,10 @@ public class ControlNovedadesReemplazos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("tiposReemplazosDialogo.hide()");
         context.reset("formularioDialogos:LOVTiposReemplazos:globalFilter");
-        context.update("formularioDialogos:LOVTiposReemplazos");
+        context.execute("LOVTiposReemplazos.clearFilters()");
+        context.execute("tiposReemplazosDialogo.hide()");
+        //context.update("formularioDialogos:LOVTiposReemplazos");
     }
 
     public void actualizarCargos() {
@@ -683,9 +686,10 @@ public class ControlNovedadesReemplazos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("cargosDialogo.hide()");
         context.reset("formularioDialogos:LOVCargos:globalFilter");
-        context.update("formularioDialogos:LOVCargos");
+        context.execute("LOVCargos.clearFilters()");
+        context.execute("cargosDialogo.hide()");
+        //context.update("formularioDialogos:LOVCargos");
     }
 
     public void actualizarMotivosReemplazos() {
@@ -731,9 +735,10 @@ public class ControlNovedadesReemplazos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("motivosReemplazosDialogo.hide()");
         context.reset("formularioDialogos:LOVMotivosReemplazos:globalFilter");
-        context.update("formularioDialogos:LOVMotivosReemplazos");
+        context.execute("LOVMotivosReemplazos.clearFilters()");
+        context.execute("motivosReemplazosDialogo.hide()");
+        //context.update("formularioDialogos:LOVMotivosReemplazos");
     }
 
     public void actualizarEstructuras() {
@@ -779,9 +784,10 @@ public class ControlNovedadesReemplazos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("estructurasDialogo.hide()");
         context.reset("formularioDialogos:LOVEstructuras:globalFilter");
-        context.update("formularioDialogos:LOVEstructuras");
+        context.execute("LOVEstructuras.clearFilters()");
+        context.execute("estructurasDialogo.hide()");
+        //context.update("formularioDialogos:LOVEstructuras");
     }
 
     public void cancelarCambioEstructuras() {
@@ -793,6 +799,10 @@ public class ControlNovedadesReemplazos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVEstructuras:globalFilter");
+        context.execute("LOVEstructuras.clearFilters()");
+        context.execute("estructurasDialogo.hide()");
     }
 
     public void cancelarCambioEmpleados() {
@@ -805,6 +815,26 @@ public class ControlNovedadesReemplazos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVEmpleados:globalFilter");
+        context.execute("LOVEmpleados.clearFilters()");
+        context.execute("empleadosDialogo.hide()");
+    }
+    
+    public void cancelarCambioEmpleadosAbajo() {
+        filtradoslistaEmpleados = null;
+        seleccionEmpleados = null;
+        seleccionEmpleadosReemplazados = null;
+        aceptar = true;
+        index = -1;
+        secRegistro = null;
+        tipoActualizacion = -1;
+        cualCelda = -1;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVEmpleadosAbajo:globalFilter");
+        context.execute("LOVEmpleadosAbajo.clearFilters()");
+        context.execute("empleadosAbajoDialogo.hide()");
     }
 
     public void cancelarCambioCargos() {
@@ -816,6 +846,10 @@ public class ControlNovedadesReemplazos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVCargos:globalFilter");
+        context.execute("LOVCargos.clearFilters()");
+        context.execute("cargosDialogo.hide()");
     }
 
     public void cancelarCambioMotivosReemplazos() {
@@ -827,6 +861,10 @@ public class ControlNovedadesReemplazos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVMotivosReemplazos:globalFilter");
+        context.execute("LOVMotivosReemplazos.clearFilters()");
+        context.execute("motivosReemplazosDialogo.hide()");
     }
 
     public void cancelarCambioTiposReemplazos() {
@@ -838,6 +876,10 @@ public class ControlNovedadesReemplazos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVTiposReemplazos:globalFilter");
+        context.execute("LOVTiposReemplazos.clearFilters()");
+        context.execute("tiposReemplazosDialogo.hide()");
     }
 
     //EVENTO FILTRAR

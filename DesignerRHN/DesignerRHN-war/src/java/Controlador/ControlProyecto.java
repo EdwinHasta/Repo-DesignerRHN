@@ -1428,10 +1428,12 @@ public class ControlProyecto implements Serializable {
         indexP = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        /*
         context.update("form:EmpresasDialogo");
         context.update("form:lovEmpresas");
-        context.update("form:aceptarE");
+        context.update("form:aceptarE");*/
         context.reset("form:lovEmpresas:globalFilter");
+        context.execute("lovEmpresas.clearFilters()");
         context.execute("EmpresasDialogo.hide()");
     }
 
@@ -1443,6 +1445,10 @@ public class ControlProyecto implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndexP = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovEmpresas:globalFilter");
+        context.execute("lovEmpresas.clearFilters()");
+        context.execute("EmpresasDialogo.hide()");
     }
 
     public void actualizarCliente() {
@@ -1487,10 +1493,12 @@ public class ControlProyecto implements Serializable {
         indexP = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        /*
         context.update("form:ClientesDialogo");
         context.update("form:aceptarC");
-        context.update("form:datosProyectos");
+        context.update("form:datosProyectos");*/
         context.reset("form:lovClientes:globalFilter");
+        context.execute("lovClientes.clearFilters()");
         context.execute("form:ClientesDialogo");
     }
 
@@ -1505,6 +1513,10 @@ public class ControlProyecto implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndexP = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovClientes:globalFilter");
+        context.execute("lovClientes.clearFilters()");
+        context.execute("form:ClientesDialogo");
     }
 
     public void actualizarPlataforma() {
@@ -1548,10 +1560,12 @@ public class ControlProyecto implements Serializable {
         indexP = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        /*
         context.update("form:PlataformasDialogo");
         context.update("form:lovPlataforma");
-        context.update("form:aceptarP");
+        context.update("form:aceptarP");*/
         context.reset("form:lovPlataforma:globalFilter");
+        context.execute("lovClientes.clearFilters()");
         context.execute("form:PlataformasDialogo");
     }
 
@@ -1563,6 +1577,10 @@ public class ControlProyecto implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndexP = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovPlataforma:globalFilter");
+        context.execute("lovClientes.clearFilters()");
+        context.execute("form:PlataformasDialogo");
     }
 
     public void actualizarMoneda() {
@@ -1607,10 +1625,12 @@ public class ControlProyecto implements Serializable {
         indexP = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        /*
         context.update("form:MonedasDialogo");
         context.update("form:lovMoneda");
-        context.update("form:aceptarM");
+        context.update("form:aceptarM");*/
         context.reset("form:lovMoneda:globalFilter");
+        context.execute("lovClientes.clearFilters()");
         context.execute("MonedasDialogo.hide()");
     }
 
@@ -1622,6 +1642,10 @@ public class ControlProyecto implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndexP = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovMoneda:globalFilter");
+        context.execute("lovClientes.clearFilters()");
+        context.execute("MonedasDialogo.hide()");
     }
 
     public void listaValoresBoton() {

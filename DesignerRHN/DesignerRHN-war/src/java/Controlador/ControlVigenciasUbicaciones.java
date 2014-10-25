@@ -836,10 +836,12 @@ public class ControlVigenciasUbicaciones implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         secRegistro = null;
+        /*
         context.update("form:UbicacionesGeograficasDialogo");
         context.update("form:lovUbicaciones");
-        context.update("form:aceptarU");
+        context.update("form:aceptarU");*/
         context.reset("form:lovUbicaciones:globalFilter");
+        context.execute("lovUbicaciones.clearFilters()");
         context.execute("UbicacionesGeograficasDialogo.hide()");
     }
 
@@ -852,6 +854,10 @@ public class ControlVigenciasUbicaciones implements Serializable {
         tipoActualizacion = -1;
         permitirIndex = true;
         secRegistro = null;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovUbicaciones:globalFilter");
+        context.execute("lovUbicaciones.clearFilters()");
+        context.execute("UbicacionesGeograficasDialogo.hide()");
     }
 
     //LISTA DE VALORES DINAMICA

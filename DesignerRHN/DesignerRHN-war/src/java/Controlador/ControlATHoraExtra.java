@@ -1128,7 +1128,7 @@ public class ControlATHoraExtra implements Serializable {
         listaEmpleados = null;
         listaEmpleados = new ArrayList<Empleados>();
         listaEmpleados.add(empleadoSeleccionado);
-        
+
         filtrarLovEmpleados = null;
         empleadoSeleccionado = null;
         aceptar = true;
@@ -1142,10 +1142,12 @@ public class ControlATHoraExtra implements Serializable {
         activarMostrarTodos = false;
 
         context.update("form:panelTotal");
+        /*
         context.update("formEmpleado:EmpleadoDialogo");
         context.update("formEmpleado:lovEmpleado");
-        context.update("formEmpleado:aceptarE");
+        context.update("formEmpleado:aceptarE");*/
         context.reset("formEmpleado:lovEmpleado:globalFilter");
+        context.execute("lovEmpleado.clearFilters()");
         context.execute("EmpleadoDialogo.hide()");
 
     }
@@ -1156,6 +1158,10 @@ public class ControlATHoraExtra implements Serializable {
         aceptar = true;
         indexEmpleado = -1;
         secRegistro = null;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formEmpleado:lovEmpleado:globalFilter");
+        context.execute("lovEmpleado.clearFilters()");
+        context.execute("EmpleadoDialogo.hide()");
     }
 
     public void actualizarMotivoTurno() {
@@ -1199,10 +1205,12 @@ public class ControlATHoraExtra implements Serializable {
         indexHorasExtras = -1;
         secRegistro = null;
         tipoActualizacion = -1;
-        context.update("form:MotivoTurnoDialogo");
-        context.update("form:lovMotivoTurno");
-        context.update("form:aceptarMT");
+        /*
+         context.update("form:MotivoTurnoDialogo");
+         context.update("form:lovMotivoTurno");
+         context.update("form:aceptarMT");*/
         context.reset("form:lovMotivoTurno:globalFilter");
+        context.execute("lovMotivoTurno.clearFilters()");
         context.execute("MotivoTurnoDialogo.hide()");
     }
 
@@ -1214,6 +1222,10 @@ public class ControlATHoraExtra implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndexHoraExtra = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovMotivoTurno:globalFilter");
+        context.execute("lovMotivoTurno.clearFilters()");
+        context.execute("MotivoTurnoDialogo.hide()");
     }
 
     public void actualizarEstructura() {
@@ -1257,10 +1269,12 @@ public class ControlATHoraExtra implements Serializable {
         indexHorasExtras = -1;
         secRegistro = null;
         tipoActualizacion = -1;
-        context.update("form:EstructuraDialogo");
-        context.update("form:lovEstructura");
-        context.update("form:aceptarEA");
+        /*
+         context.update("form:EstructuraDialogo");
+         context.update("form:lovEstructura");
+         context.update("form:aceptarEA");*/
         context.reset("form:lovEstructura:globalFilter");
+        context.execute("lovEstructura.clearFilters()");
         context.execute("EstructuraDialogo.hide()");
     }
 
@@ -1272,6 +1286,10 @@ public class ControlATHoraExtra implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndexHoraExtra = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovEstructura:globalFilter");
+        context.execute("lovEstructura.clearFilters()");
+        context.execute("EstructuraDialogo.hide()");
     }
 
     public void eventoFiltrar() {

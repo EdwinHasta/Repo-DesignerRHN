@@ -372,7 +372,7 @@
                                      selection="#{controlTercero.terceroLOVSeleccionado}" selectionMode="single" widgetVar="lovBuscarTercero" scrollable="true" scrollWidth="416" scrollHeight="250"
                                      filteredValue="#{controlTercero.filtrarListTerceroLOV}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlTercero.activarAceptar()}" update=":form:aceptarBT"/>
-                            <p:ajax event="rowDblselect" listener="#{controlTercero.validarSeleccionTercero()}" process="@this" onstart="lovBuscarTercero.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlTercero.validarSeleccionTercero()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarT']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovBuscarTercero.filter();" style="width:150px; position: relative; left: 20px;" />  
@@ -393,12 +393,9 @@
 
                         <h:outputText id="infoRegistroTercero" value="#{controlTercero.infoRegistroTercero}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarBT" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlTercero.validarSeleccionTercero()}" disabled="#{controlTercero.aceptar}" onclick="BuscarTerceroDialogo.hide(), lovBuscarTercero.clearFilters();" update="lovBuscarTercero, aceptarBT" process="@this">
-                            <p:resetInput target=":form:lovBuscarTercero:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasBT" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlTercero.cancelarSeleccionTercero()}" onclick="BuscarTerceroDialogo.hide(), lovBuscarTercero.clearFilters();" update="lovBuscarTercero" process="@this">
-                            <p:resetInput target=":form:lovBuscarTercero:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarBT" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlTercero.validarSeleccionTercero()}" disabled="#{controlTercero.aceptar}" process="@this"/>
+                        
+                        <p:commandButton id="atrasBT" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlTercero.cancelarSeleccionTercero()}"  process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['tercerosT']}" widgetVar="TerceroDialogo" draggable="false" resizable="false" closable="false" id="TerceroDialogo"  
@@ -407,7 +404,7 @@
                                      selection="#{controlTercero.terceroCSeleccionado}" selectionMode="single" widgetVar="lovTercero" scrollable="true" scrollWidth="416" scrollHeight="250"
                                      filteredValue="#{controlTercero.filtrarListTerceroConsolidador}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlTercero.activarAceptar()}" update=":form:aceptarT"/>
-                            <p:ajax event="rowDblselect" listener="#{controlTercero.actualizarTerceros()}" process="@this" onstart="lovTercero.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlTercero.actualizarTerceros()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarT']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTercero.filter();" style="width:150px; position: relative; left: 20px;" />  
@@ -428,12 +425,9 @@
 
                         <h:outputText id="infoRegistroTerceroConsolidador" value="#{controlTercero.infoRegistroTerceroConsolidador}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarT" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlTercero.actualizarTerceros()}" disabled="#{controlTercero.aceptar}" onclick="TerceroDialogo.hide(), lovTercero.clearFilters();" update="lovTercero, aceptarT, datosTerceros" process="@this">
-                            <p:resetInput target=":form:lovTercero:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasT" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlTercero.cancelarCambioTerceros()}" onclick="TerceroDialogo.hide(), lovTercero.clearFilters();" update="lovTercero" process="@this">
-                            <p:resetInput target=":form:lovTercero:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarT" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlTercero.actualizarTerceros()}" disabled="#{controlTercero.aceptar}" process="@this"/>
+                        
+                        <p:commandButton id="atrasT" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlTercero.cancelarCambioTerceros()}"  process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['ciudadesC']}" widgetVar="CiudadDialogo" draggable="false" resizable="false" closable="false" id="CiudadDialogo"  
@@ -442,7 +436,7 @@
                                      selection="#{controlTercero.ciudadSeleccionada}" selectionMode="single" widgetVar="lovCiudad" scrollable="true" scrollWidth="416" scrollHeight="250"
                                      filteredValue="#{controlTercero.filtrarListCiudades}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlTercero.activarAceptar()}" update=":form:aceptarC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlTercero.actualizarCiudad()}" process="@this" onstart="lovCiudad.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlTercero.actualizarCiudad()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCiudad.filter();" style="width:150px; position: relative; left: 20px;" />  
@@ -463,12 +457,9 @@
 
                         <h:outputText id="infoRegistroCiudad1" value="#{controlTercero.infoRegistroCiudad1}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarC" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlTercero.actualizarCiudad()}" disabled="#{controlTercero.aceptar}" onclick="CiudadDialogo.hide(), lovCiudad.clearFilters();" update="lovCiudad, aceptarC, datosTerceros" process="@this">
-                            <p:resetInput target=":form:lovCiudad:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlTercero.cancelarCambioCiudad()}" onclick="CiudadDialogo.hide(), lovCiudad.clearFilters();" update="lovCiudad" process="@this">
-                            <p:resetInput target=":form:lovCiudad:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarC" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlTercero.actualizarCiudad()}" disabled="#{controlTercero.aceptar}"  process="@this"/>
+                        
+                        <p:commandButton id="atrasC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlTercero.cancelarCambioCiudad()}"  process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['ciudadesC']}" widgetVar="CiudadTSDialogo" draggable="false" resizable="false" closable="false" id="CiudadTSDialogo"  
@@ -477,7 +468,7 @@
                                      selection="#{controlTercero.ciudadSeleccionada}" selectionMode="single" widgetVar="lovCiudadTS" scrollable="true" scrollWidth="416" scrollHeight="250"
                                      filteredValue="#{controlTercero.filtrarListCiudades}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlTercero.activarAceptar()}" update=":form:aceptarCTS"/>
-                            <p:ajax event="rowDblselect" listener="#{controlTercero.actualizarCiudadTS()}" process="@this" onstart="lovCiudadTS.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlTercero.actualizarCiudadTS()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCiudadTS.filter();" style="width:150px; position: relative; left: 20px;" />  
@@ -498,12 +489,9 @@
 
                         <h:outputText id="infoRegistroCiudad2" value="#{controlTercero.infoRegistroCiudad2}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarCTS" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlTercero.actualizarCiudadTS()}" disabled="#{controlTercero.aceptar}" onclick="CiudadTSDialogo.hide(), lovCiudadTS.clearFilters();" update="lovCiudadTS, aceptarCTS, datosTercerosSucursales" process="@this">
-                            <p:resetInput target=":form:lovCiudadTS:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasCTS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlTercero.cancelarCambioCiudadTS()}" onclick="CiudadTSDialogo.hide(), lovCiudadTS.clearFilters();" update="lovCiudadTS" process="@this">
-                            <p:resetInput target=":form:lovCiudadTS:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarCTS" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlTercero.actualizarCiudadTS()}" disabled="#{controlTercero.aceptar}"  process="@this"/>
+                        
+                        <p:commandButton id="atrasCTS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlTercero.cancelarCambioCiudadTS()}"  process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="verificarRastrosTablas" widgetVar="verificarRastrosTablas" header="#{msg['rastrospara']}" resizable="false" draggable="false" modal="true" height="95" width="330" >

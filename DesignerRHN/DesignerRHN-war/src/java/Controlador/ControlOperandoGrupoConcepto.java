@@ -141,7 +141,7 @@ public class ControlOperandoGrupoConcepto implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     //EVENTO FILTRAR
     public void eventoFiltrar() {
         if (tipoLista == 0) {
@@ -279,9 +279,10 @@ public class ControlOperandoGrupoConcepto implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("operandosDialogo.hide()");
         context.reset("formularioDialogos:LOVOperandos:globalFilter");
-        context.update("formularioDialogos:LOVOperandos");
+        context.execute("LOVOperandos.clearFilters()");
+        context.execute("operandosDialogo.hide()");
+        //context.update("formularioDialogos:LOVOperandos");
     }
 
     public void actualizarGrupos() {
@@ -326,9 +327,10 @@ public class ControlOperandoGrupoConcepto implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("gruposDialogo.hide()");
         context.reset("formularioDialogos:LOVGrupos:globalFilter");
-        context.update("formularioDialogos:LOVGrupos");
+        context.execute("LOVGrupos.clearFilters()");
+        context.execute("gruposDialogo.hide()");
+        //context.update("formularioDialogos:LOVGrupos");
     }
 
     public void cancelarCambioOperandos() {
@@ -340,6 +342,10 @@ public class ControlOperandoGrupoConcepto implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVOperandos:globalFilter");
+        context.execute("LOVOperandos.clearFilters()");
+        context.execute("operandosDialogo.hide()");
     }
 
     public void cancelarCambioGrupos() {
@@ -351,6 +357,10 @@ public class ControlOperandoGrupoConcepto implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVGrupos:globalFilter");
+        context.execute("LOVGrupos.clearFilters()");
+        context.execute("gruposDialogo.hide()");
     }
 
     public void guardarTodo() {
@@ -664,7 +674,7 @@ public class ControlOperandoGrupoConcepto implements Serializable {
 
         // OBTENER EL TERMINAL 
         duplicarOperando = new OperandosGruposConceptos();
-        
+
         context.update("formularioDialogos:DuplicarRegistroOperandosGruposConceptos");
         context.execute("DuplicarRegistroOperandosGruposConceptos.hide()");
 

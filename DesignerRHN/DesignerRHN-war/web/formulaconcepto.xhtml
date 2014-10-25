@@ -238,7 +238,7 @@
                                      selection="#{controlFormulaConcepto.formulaSeleccionado}" liveScroll="true" scrollRows="50" selectionMode="single" widgetVar="lovOrden" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlFormulaConcepto.filtrarListFormulasConceptos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlFormulaConcepto.activarAceptar()}" update=":form:aceptarO"/>
-                            <p:ajax event="rowDblselect" listener="#{controlFormulaConcepto.actualizarOrden()}" process="@this" onstart="lovOrden.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlFormulaConcepto.actualizarOrden()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarO']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovOrden.filter();" style="width:140px; position: relative; left: -10px;" />  
@@ -259,12 +259,9 @@
                         
                         <h:outputText id="infoRegistroOrden" value="#{controlFormulaConcepto.infoRegistroOrden}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton id="aceptarO" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlFormulaConcepto.aceptar}" onclick="OrdenDialogo.hide(), lovOrden.clearFilters();" actionListener="#{controlFormulaConcepto.actualizarOrden()}" update="lovOrden, aceptarO, datosFormulaConcepto" process="@this">
-                            <p:resetInput target=":form:lovOrden:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasO" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="OrdenDialogo.hide(), lovOrden.clearFilters();" actionListener="#{controlFormulaConcepto.cancelarCambioOrden()}" update="lovOrden" process="@this">
-                            <p:resetInput target=":form:lovOrden:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarO" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlFormulaConcepto.aceptar}"  actionListener="#{controlFormulaConcepto.actualizarOrden()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasO" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlFormulaConcepto.cancelarCambioOrden()}"  process="@this"/>
                     </p:dialog>
 
 
@@ -275,7 +272,7 @@
                                      selection="#{controlFormulaConcepto.conceptoSeleccionada}" liveScroll="true" scrollRows="50" scrollWidth="615" selectionMode="single" widgetVar="lovConcepto" scrollable="true" scrollHeight="250"
                                      filteredValue="#{controlFormulaConcepto.filtrarListConceptos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlFormulaConcepto.activarAceptar()}" update=":form:aceptarC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlFormulaConcepto.actualizarConcepto()}" process="@this" onstart="lovConcepto.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlFormulaConcepto.actualizarConcepto()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovConcepto.filter();" style="width:140px; position: relative; left: -85px;" />  
@@ -308,12 +305,9 @@
                         
                         <h:outputText id="infoRegistroConcepto" value="#{controlFormulaConcepto.infoRegistroConcepto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton id="aceptarC" icon="ui-icon-check" style="position: relative; left: 430px" value="#{msg['aceptar']}" disabled="#{controlFormulaConcepto.aceptar}" onclick="ConceptoDialogo.hide(), lovConcepto.clearFilters();" actionListener="#{controlFormulaConcepto.actualizarConcepto()}" update="lovConcepto, aceptarC, datosFormulaConcepto" process="@this">
-                            <p:resetInput target=":form:lovConcepto:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 430px" value="#{msg['atras']}" onclick="ConceptoDialogo.hide(), lovConcepto.clearFilters();" actionListener="#{controlFormulaConcepto.cancelarCambioConcepto()}" update="lovConcepto" process="@this">
-                            <p:resetInput target=":form:lovConcepto:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarC" icon="ui-icon-check" style="position: relative; left: 430px" value="#{msg['aceptar']}" disabled="#{controlFormulaConcepto.aceptar}" actionListener="#{controlFormulaConcepto.actualizarConcepto()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 430px" value="#{msg['atras']}" actionListener="#{controlFormulaConcepto.cancelarCambioConcepto()}" process="@this"/>
                     </p:dialog>
                 </h:form>
 

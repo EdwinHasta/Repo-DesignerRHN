@@ -517,7 +517,6 @@ public class ControlVigenciasViajeros implements Serializable {
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 listVigenciasViajerosPorEmpleado.get(index).setTipoViajero(normaLaboralSeleccionada);
-
                 if (!crearVigenciasViajerosPorEmplado.contains(listVigenciasViajerosPorEmpleado.get(index))) {
                     if (modificarVigenciasViajerosPorEmplado.isEmpty()) {
                         modificarVigenciasViajerosPorEmplado.add(listVigenciasViajerosPorEmpleado.get(index));
@@ -527,7 +526,6 @@ public class ControlVigenciasViajeros implements Serializable {
                 }
             } else {
                 filtrarVigenciasViajerosPorEmplado.get(index).setTipoViajero(normaLaboralSeleccionada);
-
                 if (!crearVigenciasViajerosPorEmplado.contains(filtrarVigenciasViajerosPorEmplado.get(index))) {
                     if (modificarVigenciasViajerosPorEmplado.isEmpty()) {
                         modificarVigenciasViajerosPorEmplado.add(filtrarVigenciasViajerosPorEmplado.get(index));
@@ -556,9 +554,10 @@ public class ControlVigenciasViajeros implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("sucursalesDialogo.hide()");
         context.reset("form:lovTiposFamiliares:globalFilter");
-        context.update("form:lovTiposFamiliares");
+        context.execute("lovTiposFamiliares.clearFilters()");
+        context.execute("sucursalesDialogo.hide()");
+        //context.update("form:lovTiposFamiliares");
         //context.update("form:datosHvEntrevista");
     }
 
@@ -570,6 +569,10 @@ public class ControlVigenciasViajeros implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTiposFamiliares:globalFilter");
+        context.execute("lovTiposFamiliares.clearFilters()");
+        context.execute("sucursalesDialogo.hide()");
     }
 
     public void valoresBackupAutocompletar(int tipoNuevo) {

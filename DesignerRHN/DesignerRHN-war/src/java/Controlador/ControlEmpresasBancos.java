@@ -417,9 +417,10 @@ public class ControlEmpresasBancos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("sucursalesDialogo.hide()");
         context.reset("form:lovTiposFamiliares:globalFilter");
-        context.update("form:lovTiposFamiliares");
+        context.execute("lovTiposFamiliares.clearFilters()");
+        context.execute("sucursalesDialogo.hide()");
+        //context.update("form:lovTiposFamiliares");
         //context.update("form:datosHvEntrevista");
     }
 
@@ -474,9 +475,10 @@ public class ControlEmpresasBancos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("personasDialogo.hide()");
         context.reset("form:lovBancos:globalFilter");
-        context.update("form:lovBancos");
+        context.execute("lovBancos.clearFilters()");
+        context.execute("personasDialogo.hide()");
+        //context.update("form:lovBancos");
         //context.update("form:datosHvEntrevista");
     }
 
@@ -531,9 +533,10 @@ public class ControlEmpresasBancos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("cargosDialogo.hide()");
         context.reset("form:lovCiudades:globalFilter");
-        context.update("form:lovCiudades");
+        context.execute("lovCiudades.clearFilters()");
+        context.execute("cargosDialogo.hide()");
+        //context.update("form:lovCiudades");
         //context.update("form:datosHvEntrevista");
     }
 
@@ -545,6 +548,10 @@ public class ControlEmpresasBancos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTiposFamiliares:globalFilter");
+        context.execute("lovTiposFamiliares.clearFilters()");
+        context.execute("sucursalesDialogo.hide()");
     }
 
     public void cancelarCambioBancos() {
@@ -556,6 +563,10 @@ public class ControlEmpresasBancos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovBancos:globalFilter");
+        context.execute("lovBancos.clearFilters()");
+        context.execute("personasDialogo.hide()");
     }
 
     public void cancelarCambioCiudades() {
@@ -566,6 +577,10 @@ public class ControlEmpresasBancos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovCiudades:globalFilter");
+        context.execute("lovCiudades.clearFilters()");
+        context.execute("cargosDialogo.hide()");
     }
 
     public void mostrarInfo(int indice, int celda) {

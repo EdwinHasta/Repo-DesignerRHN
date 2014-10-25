@@ -106,14 +106,16 @@ public class ControlTiposCentrosCostos implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     private String paginaAnterior;
-    public void recibirPaginaAnterior(String pagina){
-    paginaAnterior=pagina;
+
+    public void recibirPaginaAnterior(String pagina) {
+        paginaAnterior = pagina;
     }
-    
-    public String redirigirPaginaAnterior(){
-    return paginaAnterior;}
+
+    public String redirigirPaginaAnterior() {
+        return paginaAnterior;
+    }
 
     public void eventoFiltrar() {
         try {
@@ -257,9 +259,10 @@ public class ControlTiposCentrosCostos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("gruposTiposCentrosCostosDialogo.hide()");
         context.reset("form:lovGruposTiposCC:globalFilter");
-        context.update("form:lovGruposTiposCC");
+        context.execute("lovGruposTiposCC.clearFilters()");
+        context.execute("gruposTiposCentrosCostosDialogo.hide()");
+        //context.update("form:lovGruposTiposCC");
     }
 
     public void cancelarCambioGrupoTipoCC() {
@@ -270,6 +273,10 @@ public class ControlTiposCentrosCostos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovGruposTiposCC:globalFilter");
+        context.execute("lovGruposTiposCC.clearFilters()");
+        context.execute("gruposTiposCentrosCostosDialogo.hide()");
     }
 //------------------------------------------------------------------------------
 

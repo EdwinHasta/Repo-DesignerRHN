@@ -2128,11 +2128,12 @@ public class ControlVigenciaJornada implements Serializable {
         aceptar = true;
         index = -1;
         secRegistroVJ = null;
-        tipoActualizacion = -1;
+        tipoActualizacion = -1;/*
         context.update("form:JornadaLaboralDialogo");
         context.update("form:lovJornadaLaboral");
-        context.update("form:aceptarJL");
+        context.update("form:aceptarJL");*/
         context.reset("form:lovJornadaLaboral:globalFilter");
+        context.execute("lovJornadaLaboral.clearFilters()");
         context.execute("JornadaLaboralDialogo.hide()");
     }
 
@@ -2147,6 +2148,10 @@ public class ControlVigenciaJornada implements Serializable {
         secRegistroVJ = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovJornadaLaboral:globalFilter");
+        context.execute("lovJornadaLaboral.clearFilters()");
+        context.execute("JornadaLaboralDialogo.hide()");
     }
 
     //Motivo Localizacion
@@ -2195,11 +2200,13 @@ public class ControlVigenciaJornada implements Serializable {
         aceptar = true;
         index = -1;
         secRegistroVJ = null;
-        tipoActualizacion = -1;
+        tipoActualizacion = -1;/*
         context.update("form:TiposDescansosDialogo");
         context.update("form:lovTipoDescanso");
-        context.update("form:aceptarTD");
+        context.update("form:aceptarTD");*/
+        
         context.reset("form:lovTipoDescanso:globalFilter");
+        context.execute("lovTipoDescanso.clearFilters()");
         context.execute("TiposDescansosDialogo.hide()");
     }
 
@@ -2215,6 +2222,10 @@ public class ControlVigenciaJornada implements Serializable {
         secRegistroVJ = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTipoDescanso:globalFilter");
+        context.execute("lovTipoDescanso.clearFilters()");
+        context.execute("TiposDescansosDialogo.hide()");
     }
     //LISTA DE VALORES DINAMICA
 

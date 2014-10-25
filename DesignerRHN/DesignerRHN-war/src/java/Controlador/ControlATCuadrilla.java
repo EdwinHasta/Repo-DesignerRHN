@@ -2102,10 +2102,12 @@ public class ControlATCuadrilla implements Serializable {
         indexDetalle = -1;
         secRegistro = null;
         tipoActualizacion = -1;
-        context.update("formEmpleado:EmpleadoDialogo");
-        context.update("formEmpleado:lovEmpleado");
-        context.update("formEmpleado:aceptarE");
+        /*
+         context.update("formEmpleado:EmpleadoDialogo");
+         context.update("formEmpleado:lovEmpleado");
+         context.update("formEmpleado:aceptarE");*/
         context.reset("formEmpleado:lovEmpleado:globalFilter");
+        context.execute("lovEmpleado.clearFilters()");
         context.execute("EmpleadoDialogo.hide()");
     }
 
@@ -2117,6 +2119,10 @@ public class ControlATCuadrilla implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndexDetalle = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formEmpleado:lovEmpleado:globalFilter");
+        context.execute("lovEmpleado.clearFilters()");
+        context.execute("EmpleadoDialogo.hide()");
     }
 
     public void listaValoresBoton() {
@@ -2277,11 +2283,12 @@ public class ControlATCuadrilla implements Serializable {
             filtrarLovEmpleadosPorCuadrillas = null;
 
             RequestContext context = RequestContext.getCurrentInstance();
-
-            context.update("formEmpleado:EmpleadoCuadrillaDialogo");
-            context.update("formEmpleado:lovEmpleadoCuadrilla");
-            context.update("formEmpleado:aceptarEC");
+            /*
+             context.update("formEmpleado:EmpleadoCuadrillaDialogo");
+             context.update("formEmpleado:lovEmpleadoCuadrilla");
+             context.update("formEmpleado:aceptarEC");*/
             context.reset("formEmpleado:lovEmpleadoCuadrilla:globalFilter");
+            context.execute("lovEmpleadoCuadrilla.clearFilters()");
             context.execute("EmpleadoCuadrillaDialogo.hide()");
 
             context.update("form:datosCuadrilla");
@@ -2301,6 +2308,10 @@ public class ControlATCuadrilla implements Serializable {
     public void cancelarActualizarEmpleadosCuadrillas() {
         empleadoCuadrillasSeleccionado = null;
         filtrarLovEmpleadosPorCuadrillas = null;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formEmpleado:lovEmpleadoCuadrilla:globalFilter");
+        context.execute("lovEmpleadoCuadrilla.clearFilters()");
+        context.execute("EmpleadoCuadrillaDialogo.hide()");
     }
 
     //EXPORTAR

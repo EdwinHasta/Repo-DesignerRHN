@@ -296,7 +296,7 @@
                                      selection="#{controlPapeles.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresas" scrollable="true" scrollWidth="340" scrollHeight="120"
                                      filteredValue="#{controlPapeles.filtradoListaEmpresas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlPapeles.activarAceptar()}" update=":formularioDialogos:aceptarE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlPapeles.cambiarEmpresa()}" process="@this" onstart="lovEmpresas.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlPapeles.cambiarEmpresa()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Empresa"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpresas.filter();" style="width:100px; position: relative; left: 10px;" />  
@@ -317,12 +317,9 @@
 
                         <h:outputText id="infoRegistroEmpresas" value="#{controlPapeles.infoRegistroEmpresas}" style="position: absolute; left: 15px; top: 220px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarE" style="position: relative; left: 155px" icon="ui-icon-check" value="Aceptar" disabled="#{controlPapeles.aceptar}" actionListener="#{controlPapeles.cambiarEmpresa()}" update="aceptarE" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasE" style="position: relative; left: 155px" icon="ui-icon-arrowreturnthick-1-w" value="Cancelar" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlPapeles.cancelarCambioEmpresa()}" update="lovEmpresas" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarE" style="position: relative; left: 155px" icon="ui-icon-check" value="Aceptar" disabled="#{controlPapeles.aceptar}" actionListener="#{controlPapeles.cambiarEmpresa()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasE" style="position: relative; left: 155px" icon="ui-icon-arrowreturnthick-1-w" value="Cancelar" actionListener="#{controlPapeles.cancelarCambioEmpresa()}" process="@this"/>
                     </p:dialog>
 
 

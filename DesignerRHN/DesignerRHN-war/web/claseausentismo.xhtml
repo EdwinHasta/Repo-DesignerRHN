@@ -138,9 +138,9 @@
                                          selection="#{controlClasesAusentismos.tipoSeleccionado}" selectionMode="single" widgetVar="lovTiposausentismos" scrollable="true" scrollWidth="450" scrollHeight="280"
                                          filteredValue="#{controlClasesAusentismos.filtradoTiposausentismos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlClasesAusentismos.activarAceptar()}" update=":form:aceptarPer"/>
-                                <p:ajax event="rowDblselect" listener="#{controlClasesAusentismos.actualizarTiposausentismos()}" process="@this" onstart="lovTiposausentismos.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlClasesAusentismos.actualizarTiposausentismos()}" process="@this" />
                                 <f:facet name="header">  
-                                    <h:outputText value="Buscar Tiposausentismos"  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <h:outputText value="Buscar Tipos Ausentismos:"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTiposausentismos.filter();" style="width:150px; position: relative; left: 50px;" />  
                                 </f:facet>
 
@@ -160,13 +160,9 @@
 
                             <h:outputText id="infoRegistroTiposAusentismos" value="#{controlClasesAusentismos.infoRegistroTiposAusentismos}" style="position: absolute; left: 10px; top: 385px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarPer" icon="ui-icon-check"   style="position: relative; left: 275px" value="#{msg['aceptar']}" disabled="#{controlClasesAusentismos.aceptar}" onclick="personasDialogo.hide(), lovTiposausentismos.clearFilters();"  actionListener="#{controlClasesAusentismos.actualizarTiposausentismos()}" update="lovTiposausentismos, aceptarPer" process="@this">
-                                <p:resetInput target=":form:lovTiposausentismos:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasPer" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 275px" value="#{msg['atras']}"  actionListener="#{controlClasesAusentismos.cancelarCambioTiposausentismos()}" onclick="personasDialogo.hide();
-                                    lovTiposausentismos.clearFilters();" update="lovTiposausentismos" process="@this">
-                                <p:resetInput target=":form:lovTiposausentismos:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarPer" icon="ui-icon-check"   style="position: relative; left: 275px" value="#{msg['aceptar']}" disabled="#{controlClasesAusentismos.aceptar}" actionListener="#{controlClasesAusentismos.actualizarTiposausentismos()}" process="@this"/>
+                            
+                            <p:commandButton id="atrasPer" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 275px" value="#{msg['atras']}"  actionListener="#{controlClasesAusentismos.cancelarCambioTiposausentismos()}" process="@this"/>
                         </p:dialog>
 
                         <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  

@@ -861,7 +861,7 @@
                                      selection="#{controlEmplComprobantes.procesoSelecionado}" selectionMode="single" widgetVar="lovProcesos" scrollable="true" scrollWidth="416" scrollHeight="225"
                                      filteredValue="#{controlEmplComprobantes.filtradoProcesos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlEmplComprobantes.activarAceptar()}" update=":formularioDialogos:aceptarP"/>
-                            <p:ajax event="rowDblselect" listener="#{controlEmplComprobantes.actualizarProceso()}" process="@this" onstart="lovProcesos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlEmplComprobantes.actualizarProceso()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovProcesos.filter();" style="width:100px; position: relative; left: -20px;" />  
@@ -876,12 +876,10 @@
 
                         <h:outputText id="infoRegistroProceso" value="#{controlEmplComprobantes.infoRegistroProceso}" style="position: absolute; left: 20px; top: 325px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarP" style="position: relative; left: 230px" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlEmplComprobantes.aceptar}" actionListener="#{controlEmplComprobantes.actualizarProceso()}" update="aceptarP" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovProcesos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasP" style="position: relative; left: 230px" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" onclick="ProcesosDialogo.hide(), lovProcesos.clearFilters();" actionListener="#{controlEmplComprobantes.cancelarProceso()}" update="lovProcesos" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovProcesos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarP" style="position: relative; left: 230px" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlEmplComprobantes.aceptar}" actionListener="#{controlEmplComprobantes.actualizarProceso()}"  process="@this"/>
+                            
+                        <p:commandButton id="atrasP" style="position: relative; left: 230px" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlEmplComprobantes.cancelarProceso()}"  process="@this"/>
+                            
                     </p:dialog>
 
 
@@ -892,7 +890,7 @@
                                      selection="#{controlEmplComprobantes.terceroSelecionado}" selectionMode="single" widgetVar="lovTerceros" scrollable="true" scrollWidth="416" scrollHeight="225"
                                      filteredValue="#{controlEmplComprobantes.filtradolistaTerceros}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlEmplComprobantes.activarAceptar()}" update=":formularioDialogos:aceptarT"/>
-                            <p:ajax event="rowDblselect" listener="#{controlEmplComprobantes.actualizarTercero()}" process="@this" onstart="lovTerceros.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlEmplComprobantes.actualizarTercero()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarT']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTerceros.filter();" style="width:150px; position: relative; left: 8px;" />  
@@ -914,12 +912,10 @@
 
                         <h:outputText id="infoRegistroTercero" value="#{controlEmplComprobantes.infoRegistroTercero}" style="position: absolute; left: 20px; top: 325px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarT" style="position: relative; left: 230px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlEmplComprobantes.aceptar}" actionListener="#{controlEmplComprobantes.actualizarTercero()}" update="aceptarT" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovTerceros:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasT" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="TercerosDialogo.hide(), lovTerceros.clearFilters();" actionListener="#{controlEmplComprobantes.cancelarTercero()}" update="lovTerceros" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovTerceros:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarT" style="position: relative; left: 230px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlEmplComprobantes.aceptar}" actionListener="#{controlEmplComprobantes.actualizarTercero()}"  process="@this"/>
+                            
+                        <p:commandButton id="atrasT" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlEmplComprobantes.cancelarTercero()}"  process="@this"/>
+                            
                     </p:dialog>
 
                     <p:dialog header="#{msg['cuentaDebitoM']}" widgetVar="CuentaDebitoDialogo" draggable="false" resizable="false" closable="false" id="CuentaDebitoDialogo"  
@@ -928,7 +924,7 @@
                                      selection="#{controlEmplComprobantes.cuentaSeleccionada}" selectionMode="single" widgetVar="lovCuentaDebito" scrollable="true" scrollWidth="416" scrollHeight="225"
                                      filteredValue="#{controlEmplComprobantes.filtrarLovCuentas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlEmplComprobantes.activarAceptar()}" update=":formularioDialogos:aceptarCD"/>
-                            <p:ajax event="rowDblselect" listener="#{controlEmplComprobantes.actualizarCuentaDebito()}" process="@this" onstart="lovCuentaDebito.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlEmplComprobantes.actualizarCuentaDebito()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCD']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCuentaDebito.filter();" style="width:150px; position: relative; left: 8px;" />  
@@ -950,12 +946,10 @@
 
                         <h:outputText id="infoRegistroCuentaDebito" value="#{controlEmplComprobantes.infoRegistroCuentaDebito}" style="position: absolute; left: 20px; top: 325px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarCD" style="position: relative; left: 230px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlEmplComprobantes.aceptar}" actionListener="#{controlEmplComprobantes.actualizarCuentaDebito()}" update="aceptarCD" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovCuentaDebito:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasCD" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="CuentaDebitoDialogo.hide(), lovCuentaDebito.clearFilters();" actionListener="#{controlEmplComprobantes.cancelarCuentaDebito()}" update="lovCuentaDebito" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovCuentaDebito:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarCD" style="position: relative; left: 230px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlEmplComprobantes.aceptar}" actionListener="#{controlEmplComprobantes.actualizarCuentaDebito()}"  process="@this"/>
+                            
+                        <p:commandButton id="atrasCD" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlEmplComprobantes.cancelarCuentaDebito()}"  process="@this"/>
+                            
                     </p:dialog>
 
                     <p:dialog header="#{msg['cuentaCreditoM']}" widgetVar="CuentaCreditoDialogo" draggable="false" resizable="false" closable="false" id="CuentaCreditoDialogo"  
@@ -964,7 +958,7 @@
                                      selection="#{controlEmplComprobantes.cuentaSeleccionada}" selectionMode="single" widgetVar="lovCuentaCredito" scrollable="true" scrollWidth="416" scrollHeight="225"
                                      filteredValue="#{controlEmplComprobantes.filtrarLovCuentas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlEmplComprobantes.activarAceptar()}" update=":formularioDialogos:aceptarCC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlEmplComprobantes.actualizarCuentaCredito()}" process="@this" onstart="lovCuentaCredito.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlEmplComprobantes.actualizarCuentaCredito()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCuentaCredito.filter();" style="width:150px; position: relative; left: 8px;" />  
@@ -986,12 +980,10 @@
 
                         <h:outputText id="infoRegistroCuentaCredito" value="#{controlEmplComprobantes.infoRegistroCuentaCredito}" style="position: absolute; left: 20px; top: 325px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarCC" style="position: relative; left: 230px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlEmplComprobantes.aceptar}" actionListener="#{controlEmplComprobantes.actualizarCuentaCredito()}" update="aceptarCC" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovCuentaCredito:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasCC" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="CuentaCreditoDialogo.hide(), lovCuentaCredito.clearFilters();" actionListener="#{controlEmplComprobantes.cancelarCuentaCredito()}" update="lovCuentaCredito" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovCuentaCredito:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarCC" style="position: relative; left: 230px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlEmplComprobantes.aceptar}" actionListener="#{controlEmplComprobantes.actualizarCuentaCredito()}"  process="@this"/>
+                            
+                        <p:commandButton id="atrasCC" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}"  actionListener="#{controlEmplComprobantes.cancelarCuentaCredito()}"  process="@this"/>
+                           
                     </p:dialog>
 
                     <p:dialog header="#{msg['centroCostoDebitoM']}" widgetVar="CentroCostoDebitoDialogo" draggable="false" resizable="false" closable="false" id="CentroCostoDebitoDialogo"  
@@ -1000,7 +992,7 @@
                                      selection="#{controlEmplComprobantes.centroCostoSeleccionado}" selectionMode="single" widgetVar="lovCentroCostoDebito" scrollable="true" scrollWidth="416" scrollHeight="225"
                                      filteredValue="#{controlEmplComprobantes.filtrarLovCentrosCostos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlEmplComprobantes.activarAceptar()}" update=":formularioDialogos:aceptarCCD"/>
-                            <p:ajax event="rowDblselect" listener="#{controlEmplComprobantes.actualizarCentroCostoDebito()}" process="@this" onstart="lovCentroCostoDebito.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlEmplComprobantes.actualizarCentroCostoDebito()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCCD']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCentroCostoDebito.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -1022,12 +1014,10 @@
 
                         <h:outputText id="infoRegistroCentroCostoDebito" value="#{controlEmplComprobantes.infoRegistroCentroCostoDebito}" style="position: absolute; left: 20px; top: 325px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarCCD" style="position: relative; left: 230px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlEmplComprobantes.aceptar}" actionListener="#{controlEmplComprobantes.actualizarCentroCostoDebito()}" update="aceptarCCD" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovCentroCostoDebito:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasCCD" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="CentroCostoDebitoDialogo.hide(), lovCentroCostoDebito.clearFilters();" actionListener="#{controlEmplComprobantes.cancelarCentroCostoDebito()}" update="lovCentroCostoDebito" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovCentroCostoDebito:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarCCD" style="position: relative; left: 230px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlEmplComprobantes.aceptar}" actionListener="#{controlEmplComprobantes.actualizarCentroCostoDebito()}"  process="@this"/>
+                            
+                        <p:commandButton id="atrasCCD" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlEmplComprobantes.cancelarCentroCostoDebito()}" process="@this"/>
+                            
                     </p:dialog>
 
                     <p:dialog header="#{msg['centroCostoCreditoM']}" widgetVar="CentroCostoCreditoDialogo" draggable="false" resizable="false" closable="false" id="CentroCostoCreditoDialogo"  
@@ -1036,7 +1026,7 @@
                                      selection="#{controlEmplComprobantes.centroCostoSeleccionado}" selectionMode="single" widgetVar="lovCentroCostoCredito" scrollable="true" scrollWidth="416" scrollHeight="225"
                                      filteredValue="#{controlEmplComprobantes.filtrarLovCentrosCostos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlEmplComprobantes.activarAceptar()}" update=":formularioDialogos:aceptarCCC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlEmplComprobantes.actualizarCentroCostoCredito()}" process="@this" onstart="lovCentroCostoCredito.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlEmplComprobantes.actualizarCentroCostoCredito()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCCC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCentroCostoCredito.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -1058,12 +1048,10 @@
 
                         <h:outputText id="infoRegistroCentroCostoCredito" value="#{controlEmplComprobantes.infoRegistroCentroCostoCredito}" style="position: absolute; left: 20px; top: 325px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarCCC" style="position: relative; left: 230px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlEmplComprobantes.aceptar}" actionListener="#{controlEmplComprobantes.actualizarCentroCostoCredito()}" update="aceptarCCC" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovCentroCostoCredito:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasCCC" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="CentroCostoCreditoDialogo.hide(), lovCentroCostoCredito.clearFilters();" actionListener="#{controlEmplComprobantes.cancelarCentroCostoCredito()}" update="lovCentroCostoCredito" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovCentroCostoCredito:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarCCC" style="position: relative; left: 230px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlEmplComprobantes.aceptar}" actionListener="#{controlEmplComprobantes.actualizarCentroCostoCredito()}" process="@this"/>
+                            
+                        <p:commandButton id="atrasCCC" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlEmplComprobantes.cancelarCentroCostoCredito()}"  process="@this"/>
+                            
                     </p:dialog>
 
                     <p:dialog id="parcialesConcepto" header="#{msg['parciales']}" widgetVar="parcialesConcepto"  resizable="false" draggable="false" modal="true" height="182" width="330"  closable="false">  

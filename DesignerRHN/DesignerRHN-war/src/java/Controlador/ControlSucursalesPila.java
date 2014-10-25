@@ -1190,14 +1190,13 @@ public class ControlSucursalesPila implements Serializable {
             filtradoListaEmpresas = null;
             listSucursalesPilaPorEmpresa = null;
             aceptar = true;
-            context.execute("EmpresasDialogo.hide()");
             context.reset("formularioDialogos:lovEmpresas:globalFilter");
-            context.update("formularioDialogos:lovEmpresas");
+            context.execute("lovEmpresas.clearFilters()");
+            context.execute("EmpresasDialogo.hide()");
+            //context.update("formularioDialogos:lovEmpresas");
             backUpEmpresaActual = empresaSeleccionada;
             banderaModificacionEmpresa = 0;
             context.update("form:datosSucursalesPila");
-            context.update("formularioDialogos:lovSucursalesPila");
-            RequestContext.getCurrentInstance().update("formularioDialogos:aceptarE");
 
         } else {
             banderaModificacionEmpresa = 0;
@@ -1210,7 +1209,10 @@ public class ControlSucursalesPila implements Serializable {
         banderaModificacionEmpresa = 0;
         index = -1;
         aceptar = true;
-        RequestContext.getCurrentInstance().update("formularioDialogos:aceptarE");
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:lovEmpresas:globalFilter");
+        context.execute("lovEmpresas.clearFilters()");
+        context.execute("EmpresasDialogo.hide()");
 
     }
 //-----------------------------------------------------------------------------**

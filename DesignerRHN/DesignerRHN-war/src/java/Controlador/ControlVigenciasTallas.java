@@ -723,9 +723,10 @@ public class ControlVigenciasTallas implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
 
-        context.execute("tipostallasDialogo.hide()");
         context.reset("form:lovTiposTallas:globalFilter");
-        context.update("form:lovTiposTallas");
+        context.execute("lovTiposTallas.clearFilters()");
+        context.execute("tipostallasDialogo.hide()");
+        //context.update("form:lovTiposTallas");
     }
 
     public void cancelarCambioTiposTallas() {
@@ -736,6 +737,10 @@ public class ControlVigenciasTallas implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTiposTallas:globalFilter");
+        context.execute("lovTiposTallas.clearFilters()");
+        context.execute("tipostallasDialogo.hide()");
     }
 
     public void borrandoVigenciasTallas() {

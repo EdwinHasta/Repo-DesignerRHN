@@ -110,7 +110,7 @@ public class ControlTipoFormula implements Serializable {
         altoTabla = "270";
         duplicarTipoFormula = new TiposFormulas();
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -119,11 +119,11 @@ public class ControlTipoFormula implements Serializable {
             administrarTiposFormulas.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     //UBICACION CELDA
     public void cambiarIndice(int indice, int celda) {
         if (permitirIndex == true) {
@@ -675,9 +675,10 @@ public class ControlTipoFormula implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("formulasDialogo.hide()");
         context.reset("formularioDialogos:LOVFormulas:globalFilter");
-        context.update("formularioDialogos:LOVFormulas");
+        context.execute("LOVFormulas.clearFilters()");
+        context.execute("formulasDialogo.hide()");
+        //context.update("formularioDialogos:LOVFormulas");
     }
 
     public void cancelarCambioFormulas() {
@@ -689,6 +690,10 @@ public class ControlTipoFormula implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVFormulas:globalFilter");
+        context.execute("LOVFormulas.clearFilters()");
+        context.execute("formulasDialogo.hide()");
     }
 
     public void agregarNuevoTipoFormula() {

@@ -1421,7 +1421,7 @@
                                      selection="#{controlParametroAutoliq.tipoTrabajadorSeleccionado}" selectionMode="single" widgetVar="lovTipoTrabajador" scrollable="true" scrollWidth="415" scrollHeight="250"
                                      filteredValue="#{controlParametroAutoliq.filtrarLovTiposTrabajadores}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":formularioLovTipoTrabajador:aceptarTT"/>
-                            <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarTipoTrabajador()}" process="@this" onstart="lovTipoTrabajador.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarTipoTrabajador()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTT']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTipoTrabajador.filter();" style="width:150px; position: relative; left: 50px;" />  
@@ -1437,12 +1437,9 @@
 
                         <h:outputText id="infoRegistroTipoTrabajador" value="#{controlParametroAutoliq.infoRegistroTipoTrabajador}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarTT" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}" onclick="TipoTrabajadorDialogo.hide(), lovTipoTrabajador.clearFilters();" actionListener="#{controlParametroAutoliq.actualizarTipoTrabajador()}" update="lovTipoTrabajador, aceptarTT" process="@this">
-                            <p:resetInput target=":formularioLovTipoTrabajador:lovTipoTrabajador:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasTT" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="TipoTrabajadorDialogo.hide(), lovTipoTrabajador.clearFilters();" actionListener="#{controlParametroAutoliq.cancelarCambioTipoTrabajador()}" update="lovTipoTrabajador" process="@this">
-                            <p:resetInput target=":formularioLovTipoTrabajador:lovTipoTrabajador:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarTT" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}" actionListener="#{controlParametroAutoliq.actualizarTipoTrabajador()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasTT" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlParametroAutoliq.cancelarCambioTipoTrabajador()}" process="@this"/>
                     </p:dialog> 
                     
                 </h:form>
@@ -1455,7 +1452,7 @@
                                      selection="#{controlParametroAutoliq.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresa" scrollable="true" scrollWidth="515" scrollHeight="250"
                                      filteredValue="#{controlParametroAutoliq.filtrarLovEmpresas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":formularioLovEmpresa:aceptarE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarEmpresa()}" process="@this" onstart="lovEmpresa.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarEmpresa()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarE']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpresa.filter();" style="width:150px; position: relative; left: -40px;" />  
@@ -1483,12 +1480,9 @@
 
                         <h:outputText id="infoRegistroEmpresa" value="#{controlParametroAutoliq.infoRegistroEmpresa}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarE" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}" onclick="EmpresaDialogo.hide(), lovEmpresa.clearFilters();" actionListener="#{controlParametroAutoliq.actualizarEmpresa()}" update="lovEmpresa, aceptarE" process="@this">
-                            <p:resetInput target=":formularioLovEmpresa:lovEmpresa:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasI" style="position: relative; left: 330px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="EmpresaDialogo.hide(), lovEmpresa.clearFilters();" actionListener="#{controlParametroAutoliq.cancelarCambioEmpresa()}" update="lovEmpresa" process="@this">
-                            <p:resetInput target=":formularioLovEmpresa:lovEmpresa:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarE" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}" actionListener="#{controlParametroAutoliq.actualizarEmpresa()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasI" style="position: relative; left: 330px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlParametroAutoliq.cancelarCambioEmpresa()}" process="@this"/>
                     </p:dialog> 
 
                 </h:form>
@@ -1501,7 +1495,7 @@
                                      selection="#{controlParametroAutoliq.tipoEntidadSeleccionado}" selectionMode="single" widgetVar="lovTipoEntidad" scrollable="true" scrollWidth="415" scrollHeight="250"
                                      filteredValue="#{controlParametroAutoliq.filtrarLovTiposEntidades}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":formularioLovTipoEntidad:aceptarTE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarTipoEntidad()}" process="@this" onstart="lovTipoEntidad.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarTipoEntidad()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTE']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTipoEntidad.filter();" style="width:150px; position: relative; left: 50px;" />  
@@ -1517,12 +1511,9 @@
 
                         <h:outputText id="infoRegistroTipoEntidad" value="#{controlParametroAutoliq.infoRegistroTipoEntidad}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarTE" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}" onclick="TipoEntidadDialogo.hide(), lovTipoEntidad.clearFilters();" actionListener="#{controlParametroAutoliq.actualizarTipoEntidad()}" update="lovTipoEntidad, aceptarTE" process="@this">
-                            <p:resetInput target=":formularioLovTipoEntidad:lovTipoEntidad:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasTE" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="TipoEntidadDialogo.hide(), lovTipoEntidad.clearFilters();" actionListener="#{controlParametroAutoliq.cancelarCambioTipoEntidad()}" update="lovTipoEntidad" process="@this">
-                            <p:resetInput target=":formularioLovTipoEntidad:lovTipoEntidad:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarTE" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}"  actionListener="#{controlParametroAutoliq.actualizarTipoEntidad()}"  process="@this"/>
+                        
+                        <p:commandButton id="atrasTE" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}"  actionListener="#{controlParametroAutoliq.cancelarCambioTipoEntidad()}"  process="@this"/>
                     </p:dialog> 
                     
                 </h:form>
@@ -1535,7 +1526,7 @@
                                      selection="#{controlParametroAutoliq.empleadoSeleccionado}" selectionMode="single" widgetVar="lovEmpleado" scrollable="true" scrollWidth="415" scrollHeight="250"
                                      filteredValue="#{controlParametroAutoliq.filtrarLovEmpleados}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":formularioLovEmpleado:aceptarEMPL"/>
-                            <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarEmpleado()}" process="@this" onstart="lovEmpleado.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarEmpleado()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEMPL']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpleado.filter();" style="width:150px; position: relative; left: 50px;" />  
@@ -1558,12 +1549,9 @@
 
                         <h:outputText id="infoRegistroEmpleado" value="#{controlParametroAutoliq.infoRegistroEmpleado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarEMPL" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}" onclick="EmpleadoDialogo.hide(), lovEmpleado.clearFilters();" actionListener="#{controlParametroAutoliq.actualizarEmpleado()}" update="lovEmpleado, aceptarEMPL" process="@this">
-                            <p:resetInput target=":formularioLovEmpleado:lovEmpleado:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasEMPL" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="EmpleadoDialogo.hide(), lovEmpleado.clearFilters();" actionListener="#{controlParametroAutoliq.cancelarCambioEmpleado()}" update="lovEmpleado" process="@this">
-                            <p:resetInput target=":formularioLovEmpleado:lovEmpleado:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarEMPL" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}"  actionListener="#{controlParametroAutoliq.actualizarEmpleado()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasEMPL" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}"  actionListener="#{controlParametroAutoliq.cancelarCambioEmpleado()}" process="@this"/>
                     </p:dialog> 
                     
                 </h:form>
@@ -1576,7 +1564,7 @@
                                      selection="#{controlParametroAutoliq.terceroSeleccionado}" selectionMode="single" widgetVar="lovTercero" scrollable="true" scrollWidth="515" scrollHeight="250"
                                      filteredValue="#{controlParametroAutoliq.filtrarLovTerceros}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":formularioLovTercero:aceptarT"/>
-                            <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarTercero()}" process="@this" onstart="lovTercero.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarTercero()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarT']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTercero.filter();" style="width:150px; position: relative; left: -40px;" />  
@@ -1604,12 +1592,9 @@
 
                         <h:outputText id="infoRegistroTercero" value="#{controlParametroAutoliq.infoRegistroTercero}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarT" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}" onclick="TerceroDialogo.hide(), lovTercero.clearFilters();" actionListener="#{controlParametroAutoliq.actualizarTercero()}" update="lovTercero, aceptarT" process="@this">
-                            <p:resetInput target=":formularioLovTercero:lovTercero:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasT" style="position: relative; left: 330px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="TerceroDialogo.hide(), lovTercero.clearFilters();" actionListener="#{controlParametroAutoliq.cancelarCambioTercero()}" update="lovTercero" process="@this">
-                            <p:resetInput target=":formularioLovTercero:lovTercero:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarT" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}"  actionListener="#{controlParametroAutoliq.actualizarTercero()}"  process="@this"/>
+                        
+                        <p:commandButton id="atrasT" style="position: relative; left: 330px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}"  actionListener="#{controlParametroAutoliq.cancelarCambioTercero()}"  process="@this"/>
                     </p:dialog> 
                     
                 </h:form>
@@ -1622,7 +1607,7 @@
                                      selection="#{controlParametroAutoliq.aporteEntidadSeleccionado}" selectionMode="single" widgetVar="lovBuscarAporte" scrollable="true" scrollWidth="515" scrollHeight="250"
                                      filteredValue="#{controlParametroAutoliq.filtrarLovAportesEntidades}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":formularioLovAporteEntidad:aceptarBA"/>
-                            <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarAporteEntidad()}" process="@this" onstart="lovBuscarAporte.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarAporteEntidad()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarBA']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovBuscarAporte.filter();" style="width:150px; position: relative; left: -40px;" />  
@@ -1651,12 +1636,9 @@
 
                         <h:outputText id="infoRegistroAporteEntidad" value="#{controlParametroAutoliq.infoRegistroAporteEntidad}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarBA" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}" onclick="BuscarAporteDialogo.hide(), lovBuscarAporte.clearFilters();" actionListener="#{controlParametroAutoliq.actualizarAporteEntidad()}" update="lovBuscarAporte, aceptarBA" process="@this">
-                            <p:resetInput target=":formularioLovAporteEntidad:lovBuscarAporte:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasBA" style="position: relative; left: 330px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="BuscarAporteDialogo.hide(), lovBuscarAporte.clearFilters();" actionListener="#{controlParametroAutoliq.cancelarCambioAporteEntidad()}" update="lovBuscarAporte" process="@this">
-                            <p:resetInput target=":formularioLovAporteEntidad:lovBuscarAporte:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarBA" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}" actionListener="#{controlParametroAutoliq.actualizarAporteEntidad()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasBA" style="position: relative; left: 330px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlParametroAutoliq.cancelarCambioAporteEntidad()}" process="@this"/>
                     </p:dialog> 
                     
                 </h:form>

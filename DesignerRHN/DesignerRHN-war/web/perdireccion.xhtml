@@ -509,7 +509,7 @@
                                       filteredValue="#{controlPerDirecciones.filtradoslistaCiudades}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{ciudad.secuencia}" selection="#{controlPerDirecciones.seleccionCiudades}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlPerDirecciones.activarAceptar()}" update=":formularioDialogos:aceptarC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlPerDirecciones.actualizarCiudades()}" process="@this" onstart="LOVCiudades.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlPerDirecciones.actualizarCiudades()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left:27px; top: 15px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVCiudades.filter();" style="width:150px; position: relative; left: 60px;" />  
@@ -521,13 +521,11 @@
                                 </f:facet>
                                 <h:outputText value="#{ciudad.nombre}" />  
                             </p:column>  
-                        </p:dataTable>                         
-                        <p:commandButton id="aceptarC" value="#{msg['aceptar']}" disabled="#{controlPerDirecciones.aceptar}" style="position: absolute; top: 215px; left: 142px;" icon="ui-icon-check" actionListener="#{controlPerDirecciones.actualizarCiudades()}" onclick="LOVCiudades.clearFilters();" update="aceptarC" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVCiudades:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasC" value="#{msg['atras']}" style="position: absolute; top: 215px; left: 235px; " icon="ui-icon-arrowreturnthick-1-w" onclick="ciudadesDialogo.hide(), LOVCiudades.clearFilters();" actionListener="#{controlPerDirecciones.cancelarCambioCiudades()}" update="LOVCiudades, aceptarC" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVCiudades:globalFilter"/>
-                        </p:commandButton>
+                        </p:dataTable>   
+                        
+                        <p:commandButton id="aceptarC" value="#{msg['aceptar']}" disabled="#{controlPerDirecciones.aceptar}" style="position: absolute; top: 215px; left: 142px;" icon="ui-icon-check" actionListener="#{controlPerDirecciones.actualizarCiudades()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasC" value="#{msg['atras']}" style="position: absolute; top: 215px; left: 235px; " icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlPerDirecciones.cancelarCambioCiudades()}" process="@this"/>
                     </p:dialog>
 
                     <!-- DIALOGOS RASTROS -->

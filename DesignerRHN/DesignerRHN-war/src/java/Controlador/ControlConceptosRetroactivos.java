@@ -147,7 +147,7 @@ public class ControlConceptosRetroactivos implements Serializable {
 
             } else if (tipoLista == 1) {
 
-                if (cualCelda ==0) {
+                if (cualCelda == 0) {
                     backupConcepto = filtrarConceptosRetroactivos.get(index).getConcepto().getDescripcion();
                     System.out.println("BANCO : " + backupConcepto);
 
@@ -376,9 +376,10 @@ public class ControlConceptosRetroactivos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("conceptosDialogo.hide()");
         context.reset("form:lovConceptos:globalFilter");
-        context.update("form:lovConceptos");
+        context.execute("lovConceptos.clearFilters()");
+        context.execute("conceptosDialogo.hide()");
+        //context.update("form:lovConceptos");
         //context.update("form:datosHvEntrevista");
     }
 
@@ -433,9 +434,10 @@ public class ControlConceptosRetroactivos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("conceptosRetroDialogo.hide()");
         context.reset("form:lovConceptosRetro:globalFilter");
-        context.update("form:lovConceptosRetro");
+        context.execute("lovConceptosRetro.clearFilters()");
+        context.execute("conceptosRetroDialogo.hide()");
+        //context.update("form:lovConceptosRetro");
         //context.update("form:datosHvEntrevista");
     }
 
@@ -448,6 +450,10 @@ public class ControlConceptosRetroactivos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovConceptos:globalFilter");
+        context.execute("lovConceptos.clearFilters()");
+        context.execute("conceptosDialogo.hide()");
     }
 
     public void cancelarCambioConceptosRetro() {
@@ -458,16 +464,16 @@ public class ControlConceptosRetroactivos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovConceptosRetro:globalFilter");
+        context.execute("lovConceptosRetro.clearFilters()");
+        context.execute("conceptosRetroDialogo.hide()");
     }
 
     public void modificarConceptosRetroactivos(int indice, String confirmarCambio, String valorConfirmar) {
         System.err.println("ENTRE A MODIFICAR SUB CATEGORIA");
         index = indice;
         int coincidencias = 0;
-        int contador = 0;
-        boolean banderita = false;
-        boolean banderita1 = false;
-        boolean banderita2 = false;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);

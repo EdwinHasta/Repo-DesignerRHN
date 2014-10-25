@@ -546,7 +546,7 @@
                                      selection="#{controlATCuadrilla.empleadoSeleccionado}" selectionMode="single" widgetVar="lovEmpleado" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlATCuadrilla.filtrarLovEmpleados}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlATCuadrilla.activarAceptar()}" update=":formEmpleado:aceptarE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlATCuadrilla.actualizarEmpleado()}" process="@this" onstart="lovEmpleado.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlATCuadrilla.actualizarEmpleado()}" process="@this" />
 
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarE']}" style="position: absolute; left: 27px; top: 14px"/>  
@@ -568,12 +568,10 @@
 
                         <h:outputText id="infoRegistroEmpleado" value="#{controlATCuadrilla.infoRegistroEmpleado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarE" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlATCuadrilla.aceptar}" onclick="EmpleadoDialogo.hide(), lovEmpleado.clearFilters();" actionListener="#{controlATCuadrilla.actualizarEmpleado()}" update="lovEmpleado, aceptarE" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":formEmpleado:lovEmpleado:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasE" style="position: relative; left: 265px" value="#{msg['atras']}" onclick="EmpleadoDialogo.hide(), lovEmpleado.clearFilters();" actionListener="#{controlATCuadrilla.cancelarCambioEmpleado()}" update="lovEmpleado" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":formEmpleado:lovEmpleado:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarE" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlATCuadrilla.aceptar}" actionListener="#{controlATCuadrilla.actualizarEmpleado()}" process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasE" style="position: relative; left: 265px" value="#{msg['atras']}" actionListener="#{controlATCuadrilla.cancelarCambioEmpleado()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                        
                     </p:dialog> 
 
 
@@ -583,7 +581,7 @@
                                      selection="#{controlATCuadrilla.empleadoCuadrillasSeleccionado}" selectionMode="single" widgetVar="lovEmpleadoCuadrilla" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlATCuadrilla.filtrarLovEmpleadosPorCuadrillas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlATCuadrilla.activarAceptar()}" update=":formEmpleado:aceptarEC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlATCuadrilla.actualizarEmpleadosCuadrillas()}" process="@this" onstart="lovEmpleadoCuadrilla.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlATCuadrilla.actualizarEmpleadosCuadrillas()}" process="@this" />
 
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarE']}" style="position: absolute; left: 27px; top: 14px"/>  
@@ -605,12 +603,10 @@
 
                         <h:outputText id="infoRegistroEmpleadoCuadrilla" value="#{controlATCuadrilla.infoRegistroEmpleadoCuadrilla}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarEC" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlATCuadrilla.aceptar}" onclick="EmpleadoCuadrillaDialogo.hide(), lovEmpleadoCuadrilla.clearFilters();" actionListener="#{controlATCuadrilla.actualizarEmpleadosCuadrillas()}" update="lovEmpleadoCuadrilla, aceptarEC" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":formEmpleado:lovEmpleadoCuadrilla:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasEC" style="position: relative; left: 265px" value="#{msg['atras']}" onclick="EmpleadoCuadrillaDialogo.hide(), lovEmpleadoCuadrilla.clearFilters();" actionListener="#{controlATCuadrilla.cancelarActualizarEmpleadosCuadrillas()}" update="lovEmpleadoCuadrilla" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                            <p:resetInput target=":formEmpleado:lovEmpleadoCuadrilla:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarEC" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlATCuadrilla.aceptar}" actionListener="#{controlATCuadrilla.actualizarEmpleadosCuadrillas()}" process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasEC" style="position: relative; left: 265px" value="#{msg['atras']}"  actionListener="#{controlATCuadrilla.cancelarActualizarEmpleadosCuadrillas()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                        
                     </p:dialog> 
 
 

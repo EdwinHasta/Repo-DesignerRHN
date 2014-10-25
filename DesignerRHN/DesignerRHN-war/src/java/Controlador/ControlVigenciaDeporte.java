@@ -973,10 +973,12 @@ public class ControlVigenciaDeporte implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        /*
         context.update("form:DeportesDialogo");
         context.update("form:lovDeportes");
-        context.update("form:aceptarD");
+        context.update("form:aceptarD");*/
         context.reset("form:lovDeportes:globalFilter");
+        context.execute("lovDeportes.clearFilters()");
         context.execute("DeportesDialogo.hide()");
     }
 
@@ -991,6 +993,10 @@ public class ControlVigenciaDeporte implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovDeportes:globalFilter");
+        context.execute("lovDeportes.clearFilters()");
+        context.execute("DeportesDialogo.hide()");
     }
 
     //LISTA DE VALORES DINAMICA

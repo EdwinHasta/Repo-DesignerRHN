@@ -158,7 +158,7 @@
                                          selection="#{controlEmpresasBancos.empresaSeleccionado}" selectionMode="single" widgetVar="lovTiposFamiliares" scrollable="true" scrollWidth="420" scrollHeight="280"
                                          filteredValue="#{controlEmpresasBancos.filtradoEmpresas}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlEmpresasBancos.activarAceptar()}" update=":form:aceptarS"/>
-                                <p:ajax event="rowDblselect" listener="#{controlEmpresasBancos.actualizarPais()}" process="@this" onstart="lovTiposFamiliares.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlEmpresasBancos.actualizarPais()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="Buscar Empresa"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTiposFamiliares.filter();" style="width:150px; position: relative; left: 50px;" />  
@@ -179,13 +179,10 @@
                             </p:dataTable>
                             <h:outputText id="infoRegistroEmpresas" value="#{controlEmpresasBancos.infoRegistroEmpresas}" style="position: absolute; left: 15px; top: 385px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarS" icon="ui-icon-check" style="position: relative; left:240px;" value="Aceptar" disabled="#{controlEmpresasBancos.aceptar}"  onclick="sucursalesDialogo.hide(), lovTiposFamiliares.clearFilters();"  actionListener="#{controlEmpresasBancos.actualizarPais()}" update="lovTiposFamiliares, aceptarS" process="@this">
-                                <p:resetInput target=":form:lovTiposFamiliares:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left:240px;" value="Atras"  actionListener="#{controlEmpresasBancos.cancelarCambioPais()}" onclick="sucursalesDialogo.hide();
-                                    lovTiposFamiliares.clearFilters();" update="lovTiposFamiliares" process="@this">
-                                <p:resetInput target=":form:lovTiposFamiliares:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarS" icon="ui-icon-check" style="position: relative; left:240px;" value="Aceptar" disabled="#{controlEmpresasBancos.aceptar}" actionListener="#{controlEmpresasBancos.actualizarPais()}" process="@this"/>
+                            
+                            <p:commandButton id="atrasS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left:240px;" value="Atras"  actionListener="#{controlEmpresasBancos.cancelarCambioPais()}" process="@this"/>
+                            
                         </p:dialog>
 
                         <p:dialog header="BANCOS" widgetVar="personasDialogo" draggable="false" resizable="false" closable="false" id="personasDialogo"  
@@ -194,7 +191,7 @@
                                          selection="#{controlEmpresasBancos.bancoSeleccionado}" selectionMode="single" widgetVar="lovBancos" scrollable="true" scrollWidth="420" scrollHeight="280"
                                          filteredValue="#{controlEmpresasBancos.filtradoBancos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlEmpresasBancos.activarAceptar()}" update=":form:aceptarPer"/>
-                                <p:ajax event="rowDblselect" listener="#{controlEmpresasBancos.actualizarBancos()}" process="@this" onstart="lovBancos.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlEmpresasBancos.actualizarBancos()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="Buscar Bancos"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovBancos.filter();" style="width:150px; position: relative; left: 50px;" />  
@@ -216,13 +213,10 @@
 
                             <h:outputText id="infoRegistrosBancos" value="#{controlEmpresasBancos.infoRegistrosBancos}" style="position: absolute; left: 15px; top: 385px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarPer" icon="ui-icon-check" style="position: relative; left:240px;" value="Aceptar" disabled="#{controlEmpresasBancos.aceptar}"  onclick="personasDialogo.hide(), lovBancos.clearFilters();"  actionListener="#{controlEmpresasBancos.actualizarBancos()}" update="lovBancos, aceptarPer" process="@this">
-                                <p:resetInput target=":form:lovBancos:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasPer" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left:240px;" value="Atras"  actionListener="#{controlEmpresasBancos.cancelarCambioBancos()}" onclick="personasDialogo.hide();
-                                    lovBancos.clearFilters();" update="lovBancos" process="@this">
-                                <p:resetInput target=":form:lovBancos:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarPer" icon="ui-icon-check" style="position: relative; left:240px;" value="Aceptar" disabled="#{controlEmpresasBancos.aceptar}" actionListener="#{controlEmpresasBancos.actualizarBancos()}"  process="@this"/>
+                            
+                            <p:commandButton id="atrasPer" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left:240px;" value="Atras"  actionListener="#{controlEmpresasBancos.cancelarCambioBancos()}" process="@this"/>
+                            
                         </p:dialog>
 
 
@@ -232,7 +226,7 @@
                                          selection="#{controlEmpresasBancos.ciudadSeleccionado}" selectionMode="single" widgetVar="lovCiudades" scrollable="true" scrollWidth="420" scrollHeight="280"
                                          filteredValue="#{controlEmpresasBancos.filtradoCiudades}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlEmpresasBancos.activarAceptar()}" update=":form:aceptarCar"/>
-                                <p:ajax event="rowDblselect" listener="#{controlEmpresasBancos.actualizarCiudades()}" process="@this" onstart="lovCiudades.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlEmpresasBancos.actualizarCiudades()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="Buscar Ciudad"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovCiudades.filter();" style="width:150px; position: relative; left: 50px;" />  
@@ -254,13 +248,10 @@
 
                             <h:outputText id="infoRegistroCiudades" value="#{controlEmpresasBancos.infoRegistroCiudades}" style="position: absolute; left: 15px; top: 385px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarCar" icon="ui-icon-check" style="position: relative; left:240px;" value="Aceptar" disabled="#{controlEmpresasBancos.aceptar}"  onclick="cargosDialogo.hide(), lovCiudades.clearFilters();"  actionListener="#{controlEmpresasBancos.actualizarCiudades()}" update="lovCiudades, aceptarCar" process="@this">
-                                <p:resetInput target=":form:lovCiudades:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasCar" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left:240px;" value="Atras"  actionListener="#{controlEmpresasBancos.cancelarCambioCiudades()}" onclick="cargosDialogo.hide();
-                                    lovCiudades.clearFilters();" update="lovCiudades" process="@this">
-                                <p:resetInput target=":form:lovCiudades:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarCar" icon="ui-icon-check" style="position: relative; left:240px;" value="Aceptar" disabled="#{controlEmpresasBancos.aceptar}"   actionListener="#{controlEmpresasBancos.actualizarCiudades()}" process="@this"/>
+                            
+                            <p:commandButton id="atrasCar" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left:240px;" value="Atras"  actionListener="#{controlEmpresasBancos.cancelarCambioCiudades()}" process="@this"/>
+                            
                         </p:dialog>
 
 

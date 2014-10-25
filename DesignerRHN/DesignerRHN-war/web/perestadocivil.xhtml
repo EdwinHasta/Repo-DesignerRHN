@@ -128,7 +128,7 @@
                                          selection="#{controlVigenciasEstadosCiviles.vigenciaEstadoCivilSeleccionada}" selectionMode="single" widgetVar="lovTiposFamiliares" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlVigenciasEstadosCiviles.filtradoEstadosCiviles}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasEstadosCiviles.activarAceptar()}" update=":form:aceptarS"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciasEstadosCiviles.actualizarEstadoCivil()}" process="@this" onstart="lovTiposFamiliares.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciasEstadosCiviles.actualizarEstadoCivil()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="Buscar Parentesco: "  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTiposFamiliares.filter();" style="width:150px; position: relative; left: 10px;" />  
@@ -149,13 +149,8 @@
                             </p:dataTable>
                             <h:outputText id="infoRecursoEstadosCiviles" value="#{controlVigenciasEstadosCiviles.infoRecursoEstadosCiviles}" style="position: absolute; left: 15px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarS" style="position: relative; left: 278px" disabled="#{controlVigenciasEstadosCiviles.aceptar}" value="Aceptar"  onclick="sucursalesDialogo.hide(), lovTiposFamiliares.clearFilters();"  actionListener="#{controlVigenciasEstadosCiviles.actualizarEstadoCivil()}" update="lovTiposFamiliares, aceptarS" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovTiposFamiliares:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasS" style="position: relative; left: 278px" value="Atras"  actionListener="#{controlVigenciasEstadosCiviles.cancelarCambioEstadoCivil()}" onclick="sucursalesDialogo.hide();
-                                    lovTiposFamiliares.clearFilters();" update="lovTiposFamiliares" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovTiposFamiliares:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarS" style="position: relative; left: 278px" disabled="#{controlVigenciasEstadosCiviles.aceptar}" value="Aceptar"   actionListener="#{controlVigenciasEstadosCiviles.actualizarEstadoCivil()}"  process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasS" style="position: relative; left: 278px" value="Atras"  actionListener="#{controlVigenciasEstadosCiviles.cancelarCambioEstadoCivil()}"  process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                         <p:dialog id="confirmarGuardar" header="ATENCION...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  

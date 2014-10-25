@@ -325,7 +325,7 @@
                                          selection="#{controlVigenciaSueldo.motivoCambioSueldoSeleccionado}" selectionMode="single" widgetVar="lovMotivoCambioSueldo" scrollable="true" scrollHeight="250" scrollWidth="420"
                                          filteredValue="#{controlVigenciaSueldo.filtrarMotivosCambiosSueldos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaSueldo.activarAceptar()}" update=":form:aceptarMCS"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaSueldo.actualizarMotivoCambioSueldo()}" process="@this" onstart="lovMotivoCambioSueldo.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaSueldo.actualizarMotivoCambioSueldo()}" process="@this" />
 
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarM']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -347,12 +347,10 @@
                             
                             <h:outputText id="infoRegistroMotivoCambioSueldo" value="#{controlVigenciaSueldo.infoRegistroMotivoCambioSueldo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarMCS" style="position: relative; left: 250px" value="#{msg['aceptar']}" disabled="#{controlVigenciaSueldo.aceptar}" onclick="MotivoCambioSueldoDialogo.hide(), lovMotivoCambioSueldo.clearFilters();" actionListener="#{controlVigenciaSueldo.actualizarMotivoCambioSueldo()}" update="lovMotivoCambioSueldo, aceptarMCS, datosVSEmpleado" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovMotivoCambioSueldo:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasMCS" style="position: relative; left: 250px" value="#{msg['atras']}" onclick="MotivoCambioSueldoDialogo.hide(), lovMotivoCambioSueldo.clearFilters();" actionListener="#{controlVigenciaSueldo.cancelarCambioMotivoCambioSueldo()}" update="lovMotivoCambioSueldo" process="@this" icon="ui-icon-arrowreturnthick-1-w" >
-                                <p:resetInput target=":form:lovMotivoCambioSueldo:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarMCS" style="position: relative; left: 250px" value="#{msg['aceptar']}" disabled="#{controlVigenciaSueldo.aceptar}" actionListener="#{controlVigenciaSueldo.actualizarMotivoCambioSueldo()}" process="@this" icon="ui-icon-check"/>
+                                
+                            <p:commandButton id="atrasMCS" style="position: relative; left: 250px" value="#{msg['atras']}" actionListener="#{controlVigenciaSueldo.cancelarCambioMotivoCambioSueldo()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                                
                         </p:dialog>
 
                         <!-- DIALOGO L.O.V ESTATICO TIPO SUELDO -->
@@ -362,7 +360,7 @@
                                          selection="#{controlVigenciaSueldo.tipoSueldoSeleccionado}" selectionMode="single" widgetVar="lovTipoSueldo" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlVigenciaSueldo.filtrarTiposSueldos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaSueldo.activarAceptar()}" update=":form:aceptarTS"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaSueldo.actualizarTipoSueldo()}" process="@this" onstart="lovTipoSueldo.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaSueldo.actualizarTipoSueldo()}" process="@this" />
 
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarT']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -384,12 +382,10 @@
                             
                             <h:outputText id="infoRegistroTipoSueldo" value="#{controlVigenciaSueldo.infoRegistroTipoSueldo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarTS" style="position: relative; left: 250px" value="#{msg['aceptar']}" disabled="#{controlVigenciaSueldo.aceptar}" onclick="TipoSueldoDialogo.hide(), lovTipoSueldo.clearFilters();" actionListener="#{controlVigenciaSueldo.actualizarTipoSueldo()}" update="lovTipoSueldo, aceptarTS, datosVSEmpleado" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovTipoSueldo:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasTS" style="position: relative; left: 250px" value="#{msg['atras']}" onclick="TipoSueldoDialogo.hide(), lovTipoSueldo.clearFilters();" actionListener="#{controlVigenciaSueldo.cancelarCambioTipoSueldo()}" update="lovTipoSueldo" process="@this" icon="ui-icon-arrowreturnthick-1-w" >
-                                <p:resetInput target=":form:lovTipoSueldo:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarTS" style="position: relative; left: 250px" value="#{msg['aceptar']}" disabled="#{controlVigenciaSueldo.aceptar}"  actionListener="#{controlVigenciaSueldo.actualizarTipoSueldo()}" process="@this" icon="ui-icon-check" />
+                                
+                            <p:commandButton id="atrasTS" style="position: relative; left: 250px" value="#{msg['atras']}" actionListener="#{controlVigenciaSueldo.cancelarCambioTipoSueldo()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                                
                         </p:dialog>
 
                         <!-- DIALOGO L.O.V ESTATICO TIPO ENTIDAD -->
@@ -399,7 +395,7 @@
                                          selection="#{controlVigenciaSueldo.tipoEntidadSeleccionado}" selectionMode="single" widgetVar="lovTipoEntidad" scrollable="true" scrollWidth="430" scrollHeight="250"
                                          filteredValue="#{controlVigenciaSueldo.filtrarTiposEntidades}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaSueldo.activarAceptar()}" update=":form:aceptarTE"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaSueldo.actualizarTipoEntidad()}" process="@this" onstart="lovTipoEntidad.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaSueldo.actualizarTipoEntidad()}" process="@this" />
 
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarTE']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -421,12 +417,10 @@
                             
                             <h:outputText id="infoRegistroTipoEntidad" value="#{controlVigenciaSueldo.infoRegistroTipoEntidad}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarTE" style="position: relative; left: 250px" value="#{msg['aceptar']}" disabled="#{controlVigenciaSueldo.aceptar}" onclick="TipoEntidadDialogo.hide(), lovTipoEntidad.clearFilters();" actionListener="#{controlVigenciaSueldo.actualizarTipoEntidad()}" update="lovTipoEntidad, aceptarTE, datosVSEmpleado" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovTipoEntidad:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasTE" style="position: relative; left: 250px" value="#{msg['atras']}" onclick="TipoEntidadDialogo.hide(), lovTipoEntidad.clearFilters();" actionListener="#{controlVigenciaSueldo.cancelarCambioTipoEntidad()}" update="lovTipoEntidad" process="@this" icon="ui-icon-arrowreturnthick-1-w" >
-                                <p:resetInput target=":form:lovTipoEntidad:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarTE" style="position: relative; left: 250px" value="#{msg['aceptar']}" disabled="#{controlVigenciaSueldo.aceptar}" actionListener="#{controlVigenciaSueldo.actualizarTipoEntidad()}" process="@this" icon="ui-icon-check" />
+                                
+                            <p:commandButton id="atrasTE" style="position: relative; left: 250px" value="#{msg['atras']}" actionListener="#{controlVigenciaSueldo.cancelarCambioTipoEntidad()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                                
                         </p:dialog>
 
 
@@ -437,7 +431,7 @@
                                          selection="#{controlVigenciaSueldo.terceroSeleccionado}" selectionMode="single" widgetVar="lovTercero" scrollable="true" scrollWidth="630" scrollHeight="250"
                                          filteredValue="#{controlVigenciaSueldo.filtrarTerceros}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaSueldo.activarAceptar()}" update=":form:aceptarT"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaSueldo.actualizarTerceros()}" process="@this" onstart="lovTipoEntidad.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaSueldo.actualizarTerceros()}" process="@this" />
 
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarTER']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -465,12 +459,10 @@
                             
                             <h:outputText id="infoRegistroTercero" value="#{controlVigenciaSueldo.infoRegistroTercero}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarT" style="position: relative; left: 450px" value="#{msg['aceptar']}" actionListener="#{controlVigenciaSueldo.actualizarTerceros()}" disabled="#{controlVigenciaSueldo.aceptar}" onclick="TerceroDialogo.hide(), lovTercero.clearFilters();" update="lovTercero, aceptarT, datosVAVigencia" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovTercero:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasT" style="position: relative; left: 450px" value="#{msg['atras']}" actionListener="#{controlVigenciaSueldo.cancelarCambioTerceros()}" onclick="TerceroDialogo.hide(), lovTercero.clearFilters();" update="lovTercero" process="@this" icon="ui-icon-arrowreturnthick-1-w" >
-                                <p:resetInput target=":form:lovTercero:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarT" style="position: relative; left: 450px" value="#{msg['aceptar']}" actionListener="#{controlVigenciaSueldo.actualizarTerceros()}" disabled="#{controlVigenciaSueldo.aceptar}" process="@this" icon="ui-icon-check" />
+                                
+                            <p:commandButton id="atrasT" style="position: relative; left: 450px" value="#{msg['atras']}" actionListener="#{controlVigenciaSueldo.cancelarCambioTerceros()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                               
                         </p:dialog>
 
                         <p:commandButton style="position: absolute; top: 478px;left: 20px" value="#{msg['consultar']}" actionListener="#{controlVigenciaSueldo.cambioConsultaActual()}" />

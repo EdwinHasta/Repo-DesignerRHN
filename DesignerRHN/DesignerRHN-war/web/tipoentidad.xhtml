@@ -142,8 +142,8 @@
                         <p:dataTable id="lovGruposTiposEntidades" style="width: 370px" var="grupos" value="#{controlTiposEntidades.listaGruposTiposEntidades}" rowKey="#{grupos.secuencia}"
                                      selection="#{controlTiposEntidades.gruposTiposEntidadesSeleccionada}" selectionMode="single" widgetVar="lovGruposTiposEntidades" scrollable="true" scrollWidth="385" scrollHeight="250"
                                      filteredValue="#{controlTiposEntidades.filtradoGruposTiposEntidades}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
-                            <p:ajax event="rowDblselect" listener="#{controlTiposEntidades.actualizarGrupoTipoEntidad()}" process="@this" onstart="lovGruposTiposEntidades.clearFilters()"/>
                             <p:ajax event="rowSelect" listener="#{controlTiposEntidades.activarAceptar()}" update=":form:aceptarGTE"/>
+                            <p:ajax event="rowDblselect" listener="#{controlTiposEntidades.actualizarGrupoTipoEntidad()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Grupo de Tipo Entidad : "  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovGruposTiposEntidades.filter();" style="width:110px; position: relative; left: 90px;" />  
@@ -165,13 +165,8 @@
 
                         <h:outputText id="infoRegistroGruposTiposEntidades" value="#{controlTiposEntidades.infoRegistroGruposTiposEntidades}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarGTE" icon="ui-icon-check" style="position: relative; left: 210px" value="Aceptar" disabled="#{controlTiposEntidades.aceptar}" onclick="gruposTiposEntidadesDialogo.hide(), lovGruposTiposEntidades.clearFilters();" actionListener="#{controlTiposEntidades.actualizarGrupoTipoEntidad()}" update="lovGruposTiposEntidades, aceptarGTE, datosTipoEntidad" process="@this">
-                            <p:resetInput target=":form:lovGruposTiposEntidades:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasGTE" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 210px" value="Atras" actionListener="#{controlTiposEntidades.cancelarCambioGrupoTipoEntidad()}" onclick="gruposTiposEntidadesDialogo.hide();
-                                lovGruposTiposEntidades.clearFilters();" update="lovGruposTiposEntidades" process="@this">
-                            <p:resetInput target=":form:lovGruposTiposEntidades:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarGTE" icon="ui-icon-check" style="position: relative; left: 210px" value="Aceptar" disabled="#{controlTiposEntidades.aceptar}" actionListener="#{controlTiposEntidades.actualizarGrupoTipoEntidad()}" process="@this"/>
+                        <p:commandButton id="atrasGTE" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 210px" value="Atras" actionListener="#{controlTiposEntidades.cancelarCambioGrupoTipoEntidad()}" process="@this"/>
                     </p:dialog>
 
 

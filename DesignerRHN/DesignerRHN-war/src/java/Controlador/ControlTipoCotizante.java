@@ -155,7 +155,7 @@ public class ControlTipoCotizante implements Serializable {
         cualNuevo = ":formularioDialogos:nuevoRegistroTipoCotizante";
         m = 0;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -165,11 +165,11 @@ public class ControlTipoCotizante implements Serializable {
             administrarDetallesTiposCotizantes.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     //Ubicacion Celda Arriba 
     public void cambiarTipoCotizante() {
         //Si ninguna de las 3 listas (crear,modificar,borrar) tiene algo, hace esto
@@ -238,6 +238,10 @@ public class ControlTipoCotizante implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVTiposCotizantes:globalFilter");
+        context.execute("LOVTiposCotizantes.clearFilters()");
+        context.execute("tiposCotizantesDialogo.hide()");
     }
 
     public void cancelarCambioTipoEntidad() {
@@ -249,6 +253,10 @@ public class ControlTipoCotizante implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVTiposEntidades:globalFilter");
+        context.execute("LOVTiposEntidades.clearFilters()");
+        context.execute("tiposEntidadesDialogo.hide()");
     }
 
     public void modificarTiposCotizantes(int indice, String confirmarCambio, String valorConfirmar) {
@@ -297,7 +305,7 @@ public class ControlTipoCotizante implements Serializable {
 
         if (tipoLista == 0) {
             if (estadoSubTipoCotizante != null) {
-                
+
                 if (estadoSubTipoCotizante.equals(" ")) {
                     listaTiposCotizantes.get(indice).setSubtipocotizante(null);
                 } else if (estadoSubTipoCotizante.equals("1")) {
@@ -1472,9 +1480,10 @@ public class ControlTipoCotizante implements Serializable {
         clonarTipoCotizante = lovTipoCotizanteSeleccionado;
         context.update("form:ClonarTipoCotizante");
         context.update("form:ClonarTipoCotizanteDescripcion");
-        context.execute("tiposCotizantesDialogo.hide()");
         context.reset("formularioDialogos:LOVTiposCotizantes:globalFilter");
-        context.update("formularioDialogos:LOVTiposCotizantes");
+        context.execute("LOVTiposCotizantes.clearFilters()");
+        context.execute("tiposCotizantesDialogo.hide()");
+        //context.update("formularioDialogos:LOVTiposCotizantes");
 
         context.update("form:ACEPTAR");
     }
@@ -1522,9 +1531,10 @@ public class ControlTipoCotizante implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("tiposEntidadesDialogo.hide()");
         context.reset("formularioDialogos:LOVTiposEntidades:globalFilter");
-        context.update("formularioDialogos:LOVTiposEntidades");
+        context.execute("LOVTiposEntidades.clearFilters()");
+        context.execute("tiposEntidadesDialogo.hide()");
+        //context.update("formularioDialogos:LOVTiposEntidades");
     }
 
     public void autocompletarNuevoyDuplicadoNF(String confirmarCambio, String valorConfirmar, int tipoNuevo) {
@@ -1622,7 +1632,7 @@ public class ControlTipoCotizante implements Serializable {
             context.update("form:datosDetallesTiposCotizantes");
             if (guardado == true) {
                 guardado = false;
-            context.update("form:ACEPTAR");
+                context.update("form:ACEPTAR");
             }
 
             context.execute("NuevoRegistroDetalleTipoCotizante.hide()");

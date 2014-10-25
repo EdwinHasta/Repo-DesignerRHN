@@ -862,7 +862,7 @@ public class ControlEmpresa implements Serializable {
                     secRegistro = listaEmpresas.get(index).getSecuencia();
                     auxNombreEmpresa = listaEmpresas.get(index).getNombre();
                     auxNitEmpresa = listaEmpresas.get(index).getNit();
-                    if(listaEmpresas.get(index).getCentrocosto() == null){
+                    if (listaEmpresas.get(index).getCentrocosto() == null) {
                         System.out.println("Centro costo nulo");
                     }
                     centroCosto = listaEmpresas.get(index).getCentrocosto().getNombre();
@@ -2425,10 +2425,12 @@ public class ControlEmpresa implements Serializable {
         secRegistroVigencia = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:MonedaDialogo");
-        context.update("form:lovMoneda");
-        context.update("form:aceptarM");
+        /*
+         context.update("form:MonedaDialogo");
+         context.update("form:lovMoneda");
+         context.update("form:aceptarM");*/
         context.reset("form:lovMoneda:globalFilter");
+        context.execute("lovMoneda.clearFilters()");
         context.execute("MonedaDialogo.hide()");
     }
 
@@ -2440,6 +2442,10 @@ public class ControlEmpresa implements Serializable {
         secRegistroVigencia = null;
         tipoActualizacion = -1;
         permitirIndexVigencia = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovMoneda:globalFilter");
+        context.execute("lovMoneda.clearFilters()");
+        context.execute("MonedaDialogo.hide()");
     }
 
     public void actualizarCentroCosto() {
@@ -2487,10 +2493,12 @@ public class ControlEmpresa implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:CentroCostoDialogo");
-        context.update("form:lovCentroCosto");
-        context.update("form:aceptarCC");
+        /*
+         context.update("form:CentroCostoDialogo");
+         context.update("form:lovCentroCosto");
+         context.update("form:aceptarCC");*/
         context.reset("form:lovCentroCosto:globalFilter");
+        context.execute("lovCentroCosto.clearFilters()");
         context.execute("CentroCostoDialogo.hide()");
     }
 
@@ -2502,6 +2510,10 @@ public class ControlEmpresa implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovCentroCosto:globalFilter");
+        context.execute("lovCentroCosto.clearFilters()");
+        context.execute("CentroCostoDialogo.hide()");
     }
 
     public void activarAceptar() {
@@ -2844,10 +2856,12 @@ public class ControlEmpresa implements Serializable {
         context.update("form:DescripcionNuevoClonado");
         context.update("form:CodigoBaseClonado");
         context.update("form:DescripcionBaseClonado");
-        context.update("form:EmpresaDialogo");
-        context.update("form:lovEmpresa");
-        context.update("form:lovEmpresa:globalFilter");
-        context.update("form:aceptarEmp");
+        /*
+         context.update("form:EmpresaDialogo");
+         context.update("form:aceptarEmp");
+         context.update("form:lovEmpresa");*/
+        context.reset("form:lovEmpresa:globalFilter");
+        context.execute("lovEmpresa.clearFilters()");
         context.execute("EmpresaDialogo.hide()");
     }
 
@@ -2858,16 +2872,22 @@ public class ControlEmpresa implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:CodigoBaseClonado");
         context.update("form:DescripcionBaseClonado");
-        context.update("form:EmpresaDialogo");
-        context.update("form:lovEmpresa");
+        /*
+         context.update("form:EmpresaDialogo");
+         context.update("form:lovEmpresa");
+         context.update("form:aceptarEmp");*/
         context.update("form:lovEmpresa:globalFilter");
-        context.update("form:aceptarEmp");
+        context.execute("lovEmpresa.clearFilters()");
         context.execute("EmpresaDialogo.hide()");
     }
 
     public void cancelarSeleccionEmpresa() {
         filtrarLovEmpresas = null;
         empresaSeleccionada = null;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:lovEmpresa:globalFilter");
+        context.execute("lovEmpresa.clearFilters()");
+        context.execute("EmpresaDialogo.hide()");
     }
 
     public void validarProcesoClonado() {

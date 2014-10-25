@@ -158,7 +158,7 @@
                                          selection="#{controlJuzgados.ciudadSeleccionada}" selectionMode="single" widgetVar="lovTipoCentrosCostos" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlJuzgados.filtradoCiudades}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlJuzgados.activarAceptar()}" update=":form:aceptarTCC"/>
-                                <p:ajax event="rowDblselect" listener="#{controlJuzgados.actualizarCiudades()}" process="@this" onstart="lovTipoCentrosCostos.clearFilters()" update="lovTipoCentrosCostos, :form:datosJuzgados"/>
+                                <p:ajax event="rowDblselect" listener="#{controlJuzgados.actualizarCiudades()}" process="@this" />
 
                                 <f:facet name="header">  
                                     <h:outputText value="Buscar Ciudad "  style="position: absolute; left: 27px; top: 14px"/>  
@@ -183,12 +183,9 @@
                                     <h:outputText  value="#{mostrarCiudad.departamento.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarTCC" style="position: relative; left: 303px" value="Aceptar" disabled="#{controlJuzgados.aceptar}" onclick="tiposCentrosCostosDialogo.hide(), lovTipoCentrosCostos.clearFilters();" actionListener="#{controlJuzgados.actualizarCiudades()}" update="lovTipoCentrosCostos, aceptarTCC, datosJuzgados" process="@this">
-                                <p:resetInput target=":form:lovTipoCentrosCostos:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasTCC" style="position: relative; left: 303px" value="Atras" onclick="tiposCentrosCostosDialogo.hide(), lovTipoCentrosCostos.clearFilters();" actionListener="#{controlJuzgados.cancelarCambioCiudades()}" update="lovTipoCentrosCostos" process="@this">
-                                <p:resetInput target=":form:lovTipoCentrosCostos:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarTCC" style="position: relative; left: 303px" value="Aceptar" disabled="#{controlJuzgados.aceptar}" actionListener="#{controlJuzgados.actualizarCiudades()}" process="@this"/>
+                            
+                            <p:commandButton id="atrasTCC" style="position: relative; left: 303px" value="Atras" actionListener="#{controlJuzgados.cancelarCambioCiudades()}" process="@this"/>
                         </p:dialog> 
 
 
@@ -399,7 +396,7 @@
                                      selection="#{controlJuzgados.ciudadSeleccionada}" selectionMode="single" widgetVar="lovEmpresas" scrollable="true" scrollWidth="360" scrollHeight="360"
                                      filteredValue="#{controlJuzgados.filtradoCiudades}" emptyMessage="No hay datos en la tabla">              
                             <p:ajax event="rowSelect" listener="#{controlJuzgados.activarAceptar()}" update=":formularioDialogos:aceptarE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlJuzgados.cambiarCiudad()}" process="@this" onstart="lovEmpresas.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlJuzgados.cambiarCiudad()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Ciudades"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpresas.filter();" style="width:120px; position: relative; left: 60px;" />  
@@ -423,12 +420,10 @@
                                 <h:outputText  value="#{ciudades.departamento.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarE" style="position: relative; left: 210px" value="Aceptar" disabled="#{controlJuzgados.aceptar}" actionListener="#{controlJuzgados.cambiarCiudad()}" update="aceptarE" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasE" style="position: relative; left: 210px" value="Cancelar" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlJuzgados.cancelarCambioCiudad()}" update="lovEmpresas" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
-                        </p:commandButton>
+                        
+                        <p:commandButton id="aceptarE" style="position: relative; left: 210px" value="Aceptar" disabled="#{controlJuzgados.aceptar}" actionListener="#{controlJuzgados.cambiarCiudad()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasE" style="position: relative; left: 210px" value="Cancelar" actionListener="#{controlJuzgados.cancelarCambioCiudad()}" process="@this"/>
                     </p:dialog>
 
 

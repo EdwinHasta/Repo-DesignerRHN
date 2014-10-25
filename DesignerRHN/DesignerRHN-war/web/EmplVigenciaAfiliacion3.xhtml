@@ -237,7 +237,7 @@
                                          selection="#{controlEmplVigenciaAfiliacion3.tipoEntidadSeleccionado}" selectionMode="single" widgetVar="lovTipoEntidad" scrollable="true" scrollWidth="397" scrollHeight="250"
                                          filteredValue="#{controlEmplVigenciaAfiliacion3.filtrarTiposEntidades}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlEmplVigenciaAfiliacion3.activarAceptar()}" update=":form:aceptarTE"/>
-                                <p:ajax event="rowDblselect" listener="#{controlEmplVigenciaAfiliacion3.actualizarTipoEntidad()}"  process="@this" onstart="lovTipoEntidad.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlEmplVigenciaAfiliacion3.actualizarTipoEntidad()}"  process="@this"  />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarTE']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTipoEntidad.filter();" style="width:150px; position: relative; left: 40px;" />  
@@ -258,12 +258,10 @@
                             
                             <h:outputText id="infoRegistroTipoEntidad" value="#{controlEmplVigenciaAfiliacion3.infoRegistroTipoEntidad}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarTE" style="position: relative; left: 225px" value="#{msg['aceptar']}" disabled="#{controlEmplVigenciaAfiliacion3.aceptar}" onclick="TipoEntidadDialogo.hide(), lovTipoEntidad.clearFilters();" actionListener="#{controlEmplVigenciaAfiliacion3.actualizarTipoEntidad()}" update="lovTipoEntidad, aceptarTE, datosVAVigencia" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovTipoEntidad:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasTE" style="position: relative; left: 225px" value="#{msg['atras']}" onclick="TipoEntidadDialogo.hide(), lovTipoEntidad.clearFilters();" actionListener="#{controlEmplVigenciaAfiliacion3.cancelarCambioTipoEntidad()}" update="lovTipoEntidad" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovTipoEntidad:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarTE" style="position: relative; left: 225px" value="#{msg['aceptar']}" disabled="#{controlEmplVigenciaAfiliacion3.aceptar}"  actionListener="#{controlEmplVigenciaAfiliacion3.actualizarTipoEntidad()}" process="@this" icon="ui-icon-check"/>
+                                
+                            <p:commandButton id="atrasTE" style="position: relative; left: 225px" value="#{msg['atras']}"  actionListener="#{controlEmplVigenciaAfiliacion3.cancelarCambioTipoEntidad()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                                
                         </p:dialog>
 
 
@@ -274,7 +272,7 @@
                                          selection="#{controlEmplVigenciaAfiliacion3.terceroSeleccionado}" selectionMode="single" widgetVar="lovTercero" scrollable="true" scrollWidth="720" scrollHeight="250"
                                          filteredValue="#{controlEmplVigenciaAfiliacion3.filtrarTerceros}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlEmplVigenciaAfiliacion3.activarAceptar()}" update=":form:aceptarT"/>
-                                <p:ajax event="rowDblselect" listener="#{controlEmplVigenciaAfiliacion3.actualizarTerceros()}"  process="@this" onstart="lovTercero.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlEmplVigenciaAfiliacion3.actualizarTerceros()}"  process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarT']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTercero.filter();" style="width:150px; position: relative; left: -150px;" />  
@@ -301,12 +299,10 @@
                             
                             <h:outputText id="infoRegistroTercero" value="#{controlEmplVigenciaAfiliacion3.infoRegistroTercero}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarT" style="position: relative; left: 550px" value="#{msg['aceptar']}" actionListener="#{controlEmplVigenciaAfiliacion3.actualizarTerceros()}" disabled="#{controlEmplVigenciaAfiliacion3.aceptar}" onclick="TerceroDialogo.hide(), lovTercero.clearFilters();" update="lovTercero, aceptarT, datosVAVigencia" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovTercero:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasT" style="position: relative; left: 550px" value="#{msg['atras']}" actionListener="#{controlEmplVigenciaAfiliacion3.cancelarCambioTerceros()}" onclick="TerceroDialogo.hide(), lovTercero.clearFilters();" update="lovTercero" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovTercero:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarT" style="position: relative; left: 550px" value="#{msg['aceptar']}" actionListener="#{controlEmplVigenciaAfiliacion3.actualizarTerceros()}" disabled="#{controlEmplVigenciaAfiliacion3.aceptar}" process="@this" icon="ui-icon-check"/>
+                                
+                            <p:commandButton id="atrasT" style="position: relative; left: 550px" value="#{msg['atras']}" actionListener="#{controlEmplVigenciaAfiliacion3.cancelarCambioTerceros()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                                
                         </p:dialog>
 
                         <!-- DIALOGO L.O.V ESTATICO ESTADO AFILIACION -->
@@ -316,7 +312,7 @@
                                          selection="#{controlEmplVigenciaAfiliacion3.estadoSSeleccionado}" selectionMode="single" widgetVar="lovEstadoAfiliacion" scrollable="true" scrollWidth="380" scrollHeight="250"
                                          filteredValue="#{controlEmplVigenciaAfiliacion3.filtrarEstadosAfiliaciones}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlEmplVigenciaAfiliacion3.activarAceptar()}" update=":form:aceptarEA"/>
-                                <p:ajax event="rowDblselect" listener="#{controlEmplVigenciaAfiliacion3.actualizarEstadoAfiliacion()}"  process="@this" onstart="lovEstadoAfiliacion.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlEmplVigenciaAfiliacion3.actualizarEstadoAfiliacion()}"  process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarEA']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovEstadoAfiliacion.filter();" style="width:150px; position: relative; left: 70px;" />  
@@ -337,12 +333,10 @@
                             
                             <h:outputText id="infoRegistroEstado" value="#{controlEmplVigenciaAfiliacion3.infoRegistroEstado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarEA" style="position: relative; left: 210px" value="#{msg['aceptar']}" actionListener="#{controlEmplVigenciaAfiliacion3.actualizarEstadoAfiliacion()}" disabled="#{controlEmplVigenciaAfiliacion3.aceptar}" onclick="EstadoAfiliacionDialogo.hide(), lovEstadoAfiliacion.clearFilters();" update="lovEstadoAfiliacion, aceptarEA, datosVAVigencia" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovEstadoAfiliacion:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasEA" style="position: relative; left: 210px" value="#{msg['atras']}" actionListener="#{controlEmplVigenciaAfiliacion3.cancelarCambioEstadoAfiliacion()}" onclick="EstadoAfiliacionDialogo.hide(), lovEstadoAfiliacion.clearFilters();" update="lovEstadoAfiliacion" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovEstadoAfiliacion:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarEA" style="position: relative; left: 210px" value="#{msg['aceptar']}" actionListener="#{controlEmplVigenciaAfiliacion3.actualizarEstadoAfiliacion()}" disabled="#{controlEmplVigenciaAfiliacion3.aceptar}" process="@this" icon="ui-icon-check"/>
+                                
+                            <p:commandButton id="atrasEA" style="position: relative; left: 210px" value="#{msg['atras']}" actionListener="#{controlEmplVigenciaAfiliacion3.cancelarCambioEstadoAfiliacion()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                                
                         </p:dialog>
 
                         

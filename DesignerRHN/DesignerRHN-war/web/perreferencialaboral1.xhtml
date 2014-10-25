@@ -177,7 +177,7 @@
                                          selection="#{controlHvReferencias1.tipoFamiliarSeleccionado}" selectionMode="single" widgetVar="lovTiposFamiliares" scrollable="true" scrollWidth="450" scrollHeight="250"
                                          filteredValue="#{controlHvReferencias1.filtradoTiposFamiliares}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlHvReferencias1.activarAceptar()}" update=":form:aceptarS"/>
-                                <p:ajax event="rowDblselect" listener="#{controlHvReferencias1.actualizarTipoFamiliar()}" process="@this" onstart="lovTiposFamiliares.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlHvReferencias1.actualizarTipoFamiliar()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="Buscar Parentesco"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTiposFamiliares.filter();" style="width:150px; position: relative; left: 50px;" />  
@@ -197,13 +197,9 @@
 
                             </p:dataTable>
                             <h:outputText id="infoRegistroParentesco" value="#{controlHvReferencias1.infoRegistroParentesco}" style="position: absolute;  top: 355px; font-weight: bold"/>
-                            <p:commandButton id="aceptarS" icon="ui-icon-check" style="position: relative; left: 275px" value="Aceptar" disabled="#{controlHvReferencias1.aceptar}"  onclick="sucursalesDialogo.hide(), lovTiposFamiliares.clearFilters();"  actionListener="#{controlHvReferencias1.actualizarTipoFamiliar()}" update="lovTiposFamiliares, aceptarS, datosHvReferencia" process="@this">
-                                <p:resetInput target=":form:lovTiposFamiliares:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 275px" value="Atras"  actionListener="#{controlHvReferencias1.cancelarCambioTiposFamiliares()}" onclick="sucursalesDialogo.hide();
-                                    lovTiposFamiliares.clearFilters();" update="lovTiposFamiliares" process="@this">
-                                <p:resetInput target=":form:lovTiposFamiliares:globalFilter"/>
-                            </p:commandButton>
+                            
+                            <p:commandButton id="aceptarS" icon="ui-icon-check" style="position: relative; left: 275px" value="Aceptar" disabled="#{controlHvReferencias1.aceptar}"  actionListener="#{controlHvReferencias1.actualizarTipoFamiliar()}" process="@this"/>
+                            <p:commandButton id="atrasS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 275px" value="Atras"  actionListener="#{controlHvReferencias1.cancelarCambioTiposFamiliares()}"  process="@this"/>
                         </p:dialog>
 
 

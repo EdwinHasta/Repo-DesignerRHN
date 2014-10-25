@@ -735,11 +735,12 @@ public class ControlIdiomaPersona implements Serializable {
         aceptar = true;
         index = -1;
         secRegistro = null;
-        tipoActualizacion = -1;
+        tipoActualizacion = -1;/*
         context.update("form:IdiomasDialogo");
         context.update("form:lovIdiomas");
-        context.update("form:aceptarI");
+        context.update("form:aceptarI");*/
         context.reset("form:lovIdiomas:globalFilter");
+        context.execute("lovIdiomas.clearFilters()");
         context.execute("IdiomasDialogo.hide()");
     }
 
@@ -752,6 +753,10 @@ public class ControlIdiomaPersona implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovIdiomas:globalFilter");
+        context.execute("lovIdiomas.clearFilters()");
+        context.execute("IdiomasDialogo.hide()");
     }
 
     public void eliminarRegistrosIdiomaLov() {

@@ -1290,10 +1290,12 @@ public class ControlFormulaConcepto implements Serializable {
         indexFormulasConceptos = -1;
         secRegistroFormulasConceptos = null;
         tipoActualizacion = -1;
-        context.update("form:OrdenDialogo");
-        context.update("form:lovOrden");
-        context.update("form:aceptarO");
+        /*
+         context.update("form:OrdenDialogo");
+         context.update("form:lovOrden");
+         context.update("form:aceptarO");*/
         context.reset("form:lovOrden:globalFilter");
+        context.execute("lovOrden.clearFilters()");
         context.execute("OrdenDialogo.hide()");
     }
 
@@ -1305,6 +1307,10 @@ public class ControlFormulaConcepto implements Serializable {
         secRegistroFormulasConceptos = null;
         tipoActualizacion = -1;
         permitirIndexFormulasConceptos = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovOrden:globalFilter");
+        context.execute("lovOrden.clearFilters()");
+        context.execute("OrdenDialogo.hide()");
     }
 
     public void actualizarConcepto() {
@@ -1355,10 +1361,12 @@ public class ControlFormulaConcepto implements Serializable {
         indexFormulasConceptos = -1;
         secRegistroFormulasConceptos = null;
         tipoActualizacion = -1;
-        context.update("form:ConceptoDialogo");
-        context.update("form:lovConcepto");
-        context.update("form:aceptarC");
+        /*
+         context.update("form:ConceptoDialogo");
+         context.update("form:lovConcepto");
+         context.update("form:aceptarC");*/
         context.reset("form:lovConcepto:globalFilter");
+        context.execute("lovConcepto.clearFilters()");
         context.execute("ConceptoDialogo.hide()");
     }
 
@@ -1370,6 +1378,10 @@ public class ControlFormulaConcepto implements Serializable {
         secRegistroFormulasConceptos = null;
         tipoActualizacion = -1;
         permitirIndexFormulasConceptos = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovConcepto:globalFilter");
+        context.execute("lovConcepto.clearFilters()");
+        context.execute("ConceptoDialogo.hide()");
     }
 
     public void activarAceptar() {
@@ -1658,9 +1670,8 @@ public class ControlFormulaConcepto implements Serializable {
     }
 
     public List<FormulasConceptos> getListFormulasConceptos() {
-            listFormulasConceptos = administrarFormulaConcepto.listFormulasConceptos();
+        listFormulasConceptos = administrarFormulaConcepto.listFormulasConceptos();
 
-        
         return listFormulasConceptos;
     }
 
@@ -1685,8 +1696,8 @@ public class ControlFormulaConcepto implements Serializable {
     }
 
     public List<Conceptos> getListConceptos() {
-            listConceptos = administrarFormulaConcepto.listConceptos();
-        
+        listConceptos = administrarFormulaConcepto.listConceptos();
+
         return listConceptos;
     }
 

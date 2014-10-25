@@ -142,7 +142,7 @@
                                          selection="#{controlConceptosSoportes.conceptoSeleccionado}" selectionMode="single" widgetVar="lovConceptos" scrollable="true" scrollWidth="420" scrollHeight="280"
                                          filteredValue="#{controlConceptosSoportes.filtradoConceptos}" emptyMessage="#{msg['lovVacioD']}">              
                                 <p:ajax event="rowSelect" listener="#{controlConceptosSoportes.activarAceptar()}" update=":form:aceptarPer"/>
-                                <p:ajax event="rowDblselect" listener="#{controlConceptosSoportes.actualizarConceptos()}" process="@this" onstart="lovConceptos.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlConceptosSoportes.actualizarConceptos()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['conceptoD']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovConceptos.filter();" style="width:150px; position: relative; left: 10px;" />  
@@ -163,13 +163,9 @@
                             </p:dataTable>
                             <h:outputText id="infoRegistroConceptos" value="#{controlConceptosSoportes.infoRegistroConceptos}"  style="position: absolute; left: 10px; top: 380px;font-weight: bold"/>
 
-                            <p:commandButton id="aceptarPer" style="position: relative; left: 253px" disabled="#{controlConceptosSoportes.aceptar}" value="#{msg['aceptar']}"  onclick="personasDialogo.hide(), lovConceptos.clearFilters();"  actionListener="#{controlConceptosSoportes.actualizarConceptos()}" update="lovConceptos, aceptarPer" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovConceptos:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasPer" style="position: relative; left: 253px" value="#{msg['atras']}"  actionListener="#{controlConceptosSoportes.cancelarCambioConceptos()}" onclick="personasDialogo.hide();
-                                    lovConceptos.clearFilters();" update="lovConceptos" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovConceptos:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarPer" style="position: relative; left: 253px" disabled="#{controlConceptosSoportes.aceptar}" value="#{msg['aceptar']}"  actionListener="#{controlConceptosSoportes.actualizarConceptos()}"  process="@this" icon="ui-icon-check"/>
+                            
+                            <p:commandButton id="atrasPer" style="position: relative; left: 253px" value="#{msg['atras']}"  actionListener="#{controlConceptosSoportes.cancelarCambioConceptos()}"  process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
 
@@ -179,7 +175,7 @@
                                          selection="#{controlConceptosSoportes.operandoSeleccionado}" selectionMode="single" widgetVar="lovOperandos" scrollable="true" scrollWidth="380" scrollHeight="280"
                                          filteredValue="#{controlConceptosSoportes.filtradoOperandos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlConceptosSoportes.activarAceptar()}" update=":form:aceptarCar"/>
-                                <p:ajax event="rowDblselect" listener="#{controlConceptosSoportes.actualizarOperandos()}" process="@this" onstart="lovOperandos.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlConceptosSoportes.actualizarOperandos()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarOperando']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovOperandos.filter();" style="width:150px; position: relative; left: 35px;" />  
@@ -200,13 +196,10 @@
                             </p:dataTable>
 
                             <h:outputText id="infoRegistroOperandos" value="#{controlConceptosSoportes.infoRegistroOperandos}"  style="position: absolute; left: 10px; top: 380px;font-weight: bold"/>
-                            <p:commandButton id="aceptarCar" style="position: relative; left: 220px"  disabled="#{controlConceptosSoportes.aceptar}"  value="#{msg['aceptar']}"  onclick="cargosDialogo.hide(), lovOperandos.clearFilters();"  actionListener="#{controlConceptosSoportes.actualizarOperandos()}" update="lovOperandos, aceptarCar" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovOperandos:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasCar" style="position: relative; left: 220px" value="#{msg['atras']}"  actionListener="#{controlConceptosSoportes.cancelarCambioOperandos()}" onclick="cargosDialogo.hide();
-                                    lovOperandos.clearFilters();" update="lovOperandos" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovOperandos:globalFilter"/>
-                            </p:commandButton>
+                            
+                            <p:commandButton id="aceptarCar" style="position: relative; left: 220px"  disabled="#{controlConceptosSoportes.aceptar}"  value="#{msg['aceptar']}"   actionListener="#{controlConceptosSoportes.actualizarOperandos()}" process="@this" icon="ui-icon-check"/>
+                            
+                            <p:commandButton id="atrasCar" style="position: relative; left: 220px" value="#{msg['atras']}"  actionListener="#{controlConceptosSoportes.cancelarCambioOperandos()}"  process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
 

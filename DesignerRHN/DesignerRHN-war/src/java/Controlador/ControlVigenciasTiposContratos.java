@@ -1083,9 +1083,10 @@ public class ControlVigenciasTiposContratos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("ciudadesDialogo.hide()");
         context.reset("formularioDialogos:lovCiudades:globalFilter");
-        context.update("form:lovCiudades");
+        context.execute("lovCiudades.clearFilters()");
+        context.execute("ciudadesDialogo.hide()");
+        //context.update("form:lovCiudades");
     }
 
     public void cancelarCambioCiudad() {
@@ -1096,6 +1097,10 @@ public class ControlVigenciasTiposContratos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:lovCiudades:globalFilter");
+        context.execute("lovCiudades.clearFilters()");
+        context.execute("ciudadesDialogo.hide()");
     }
     //MOTIVO CONTRATO
 
@@ -1143,9 +1148,10 @@ public class ControlVigenciasTiposContratos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("MotivosContratoDialogo.hide()");
         context.reset("formularioDialogos:lovMotivosContrato:globalFilter");
-        context.update("formularioDialogos:lovMotivosContrato");
+        context.execute("lovMotivosContrato.clearFilters()");
+        context.execute("MotivosContratoDialogo.hide()");
+        //context.update("formularioDialogos:lovMotivosContrato");
     }
 
     public void cancelarCambioMotivoContrato() {
@@ -1156,6 +1162,10 @@ public class ControlVigenciasTiposContratos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:lovMotivosContrato:globalFilter");
+        context.execute("lovMotivosContrato.clearFilters()");
+        context.execute("MotivosContratoDialogo.hide()");
     }
 
     //TIPO CONTRATO
@@ -1203,12 +1213,14 @@ public class ControlVigenciasTiposContratos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("TiposContratoDialogo.hide()");
         context.reset("formularioDialogos:lovTiposContrato:globalFilter");
-        context.update("form:lovTiposContrato");
+        context.execute("lovTiposContrato.clearFilters()");
+        context.execute("TiposContratoDialogo.hide()");
+        //context.update("form:lovTiposContrato");
     }
 
     public void cancelarTipoContrato() {
+        RequestContext context = RequestContext.getCurrentInstance();
         filtradoTiposContrato = null;
         TipoContratoSelecionado = null;
         aceptar = true;
@@ -1216,6 +1228,9 @@ public class ControlVigenciasTiposContratos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        context.reset("formularioDialogos:lovTiposContrato:globalFilter");
+        context.execute("lovTiposContrato.clearFilters()");
+        context.execute("TiposContratoDialogo.hide()");
     }
     //LISTA DE VALORES DINAMICA
 
@@ -1314,7 +1329,7 @@ public class ControlVigenciasTiposContratos implements Serializable {
     public List<VigenciasTiposContratos> getVigenciasTiposContratoEmpleado() {
         try {
             return vigenciasTiposContratoEmpleado = administrarVigenciasTiposContratos.vigenciasTiposContratosEmpleado(secuenciaEmpleado);
-            
+
         } catch (Exception e) {
             System.out.println("Error...!! getVigenciasTiposContratosEmpleado " + e);
             return null;
@@ -1516,7 +1531,5 @@ public class ControlVigenciasTiposContratos implements Serializable {
     public void setInfoRegistroTiposContratos(String infoRegistroTiposContratos) {
         this.infoRegistroTiposContratos = infoRegistroTiposContratos;
     }
-    
-    
 
 }

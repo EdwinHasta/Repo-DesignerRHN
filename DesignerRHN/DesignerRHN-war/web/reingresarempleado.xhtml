@@ -137,7 +137,7 @@
                                       filteredValue="#{controlReingresarEmpleado.filtradoLovEmpleados}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{emp.secuencia}" selection="#{controlReingresarEmpleado.empleadoSeleccionado}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlReingresarEmpleado.activarAceptar()}" update=":formularioDialogos:aceptarE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlReingresarEmpleado.actualizarEmpleados()}" process="@this" onstart="LOVEmpleados.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlReingresarEmpleado.actualizarEmpleados()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEM']}"  style="position: absolute; left: 27px; top: 15px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVEmpleados.filter();" style="width:100px; position: relative; left: 80px;" />  
@@ -159,12 +159,9 @@
                         </p:dataTable>      
                         <h:outputText id="infoRegistroEmpleados" value="#{controlReingresarEmpleado.infoRegistroEmpleados}" style="position: relative; left: 15px; top:25px ;font-weight: bold"/>
 
-                        <p:commandButton id="aceptarE" value="#{msg['aceptar']}" disabled="#{controlReingresarEmpleado.aceptar}" style="position: absolute; top: 455px; left: 252px;" icon="ui-icon-check" actionListener="#{controlReingresarEmpleado.actualizarEmpleados()}" onclick="LOVEmpleados.clearFilters();" update="aceptarE" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVEmpleados:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasE" value="#{msg['atras']}" style="position: absolute; top: 455px; left: 345px; " icon="ui-icon-arrowreturnthick-1-w" onclick="empleadosDialogo.hide(), LOVEmpleados.clearFilters();" actionListener="#{controlReingresarEmpleado.cancelarCambioEmpleados()}" update="LOVEmpleados, aceptarE" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVEmpleados:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarE" value="#{msg['aceptar']}" disabled="#{controlReingresarEmpleado.aceptar}" style="position: absolute; top: 455px; left: 252px;" icon="ui-icon-check" actionListener="#{controlReingresarEmpleado.actualizarEmpleados()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasE" value="#{msg['atras']}" style="position: absolute; top: 455px; left: 345px; " icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlReingresarEmpleado.cancelarCambioEmpleados()}" process="@this"/>
                     </p:dialog>
                     <!--DIALOGO ESTRUCTURAS-->    
                     <p:dialog header="#{msg['estructurasE']}" widgetVar="estructurasDialogo" draggable="false" resizable="false" id="estructurasDialogo" closable="false"  
@@ -175,7 +172,7 @@
                                       filteredValue="#{controlReingresarEmpleado.filtradoLovEstructuras}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{es.secuencia}" selection="#{controlReingresarEmpleado.estructuraSeleccionada}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlReingresarEmpleado.activarAceptar()}" update=":formularioDialogos:aceptarES"/>
-                            <p:ajax event="rowDblselect" listener="#{controlReingresarEmpleado.actualizarEstructuras()}" process="@this" onstart="LOVEstructuras.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlReingresarEmpleado.actualizarEstructuras()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarE']}"  style="position: absolute; left: 27px; top: 15px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVEstructuras.filter();" style="width:100px; position: relative; left: 80px;" />  
@@ -218,13 +215,11 @@
                         </p:dataTable>
                         <h:outputText id="infoRegistroEstructuras" value="#{controlReingresarEmpleado.infoRegistroEstructuras}" style="position: relative; left: 15px; top:25px ;font-weight: bold"/>
 
-                        <p:commandButton id="aceptarES" value="#{msg['aceptar']}" disabled="#{controlReingresarEmpleado.aceptar}" style="position: absolute; top: 455px; left: 502px;" icon="ui-icon-check" actionListener="#{controlReingresarEmpleado.actualizarEstructuras()}" onclick="LOVEstructuras.clearFilters();" update="aceptarES" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVEstructuras:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasES" value="#{msg['atras']}" style="position: absolute; top: 455px; left: 595px; " icon="ui-icon-arrowreturnthick-1-w" onclick="estructurasDialogo.hide(), LOVEstructuras.clearFilters();" actionListener="#{controlReingresarEmpleado.cancelarCambioEstructuras()}" update="LOVEstructuras, aceptarES" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVEstructuras:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarES" value="#{msg['aceptar']}" disabled="#{controlReingresarEmpleado.aceptar}" style="position: absolute; top: 455px; left: 502px;" icon="ui-icon-check" actionListener="#{controlReingresarEmpleado.actualizarEstructuras()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasES" value="#{msg['atras']}" style="position: absolute; top: 455px; left: 595px; " icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlReingresarEmpleado.cancelarCambioEstructuras()}" process="@this"/>
                     </p:dialog>
+                    
                     <p:dialog id="exito" header="#{msg['atencion']}" widgetVar="exito"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['exito']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />

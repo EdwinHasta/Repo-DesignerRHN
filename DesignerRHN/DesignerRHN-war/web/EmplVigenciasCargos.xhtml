@@ -222,7 +222,7 @@
                                           filteredValue="#{controlVigenciasCargos.estructurasfilter}" emptyMessage="#{msg['lovvacio']}"
                                           rowKey="#{estr.secuencia}" selection="#{controlVigenciasCargos.estructuraSeleccionada}" selectionMode="single">
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasCargos.activarAceptar()}" update=":form:aceptarE"/> 
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciasCargos.actualizarEstructura()}" process="@this" onstart="estructurasLOV.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciasCargos.actualizarEstructura()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarE']}"  style="position: absolute; left: 27px; top: 15px"/>  
                                     <p:inputText id="globalFilter" onkeyup="estructurasLOV.filter();" style="width:150px; position: relative; left: -130px;" />  
@@ -241,12 +241,10 @@
 
                             <h:outputText id="infoRegistroEstructuras" value="#{controlVigenciasCargos.infoRegistroEstructuras}" style="position: relative; top: 15px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarE" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 390px; left: 552px; " icon="ui-icon-check" onclick="estructurasLOV.clearFilters();" actionListener="#{controlVigenciasCargos.actualizarEstructura()}" update="aceptarE" process="@this">
-                                <p:resetInput target=":form:lOVEstructuras:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasE" value="#{msg['atras']}" style="position: absolute; top: 390px; left: 644px; " onclick="estructurasDialog.hide(), estructurasLOV.clearFilters();" actionListener="#{controlVigenciasCargos.cancelarCambioEstructura()}" icon="ui-icon-arrowreturnthick-1-w" update="lOVEstructuras" process="@this">
-                                <p:resetInput target=":form:lOVEstructuras:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarE" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 390px; left: 552px; " icon="ui-icon-check" actionListener="#{controlVigenciasCargos.actualizarEstructura()}" process="@this" />
+                                
+                            <p:commandButton id="atrasE" value="#{msg['atras']}" style="position: absolute; top: 390px; left: 644px; " actionListener="#{controlVigenciasCargos.cancelarCambioEstructura()}" icon="ui-icon-arrowreturnthick-1-w"  process="@this" />
+                                
                         </p:dialog>
 
                         <!-- DIALOGO L.O.V ESTATICO DE MOTIVOS CAMBIOS CARGOS -->
@@ -256,7 +254,7 @@
                                          selection="#{controlVigenciasCargos.motivoSeleccionado}" selectionMode="single" widgetVar="datosMotivos" scrollable="true" scrollWidth="367" scrollHeight="250"
                                          filteredValue="#{controlVigenciasCargos.filterMotivos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasCargos.activarAceptar()}" update=":form:aceptarM"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciasCargos.actualizarMotivo()}" process="@this" onstart="datosMotivos.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciasCargos.actualizarMotivo()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarM']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="datosMotivos.filter();" style="width:150px; position: relative; left: 15px;" />  
@@ -276,12 +274,10 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <p:commandButton id="aceptarM" style="position: relative; left: 210px" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" icon="ui-icon-check" onclick="datosMotivos.clearFilters();" actionListener="#{controlVigenciasCargos.actualizarMotivo()}" update="aceptarM" process="@this">
-                                <p:resetInput target=":form:motivosCambCargo:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasM" style="position: relative; left: 210px" value="#{msg['atras']}" onclick="motivosDialog.hide(), datosMotivos.clearFilters();" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasCargos.cancelarCambioMotivo()}" update="motivosCambCargo" process="@this">
-                                <p:resetInput target=":form:motivosCambCargo:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarM" style="position: relative; left: 210px" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" icon="ui-icon-check"  actionListener="#{controlVigenciasCargos.actualizarMotivo()}" process="@this"/>
+                                
+                            <p:commandButton id="atrasM" style="position: relative; left: 210px" value="#{msg['atras']}"  icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasCargos.cancelarCambioMotivo()}"  process="@this"/>
+                                
 
                             <h:outputText id="infoRegistroMotivos" value="#{controlVigenciasCargos.infoRegistroMotivos}" style="position: absolute; top: 350px; left: 20px; font-weight: bold"/>
 
@@ -295,7 +291,7 @@
                                           filteredValue="#{controlVigenciasCargos.cargosFilter}" emptyMessage="#{msg['lovvacio']}"
                                           rowKey="#{carg.secuencia}" selection="#{controlVigenciasCargos.cargoSeleccionado}" selectionMode="single">
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasCargos.activarAceptar()}" update=":form:aceptarC"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciasCargos.actualizarCargo()}" process="@this" onstart="cargosLOV.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciasCargos.actualizarCargo()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 15px"/>  
                                     <p:inputText id="globalFilter" onkeyup="cargosLOV.filter();" style="width:150px; position: relative; left: -40px;" />  
@@ -319,12 +315,10 @@
 
                             <h:outputText id="infoRegistroCargos" value="#{controlVigenciasCargos.infoRegistroCargos}" style="position: relative; top: 15px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarC" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 390px; left: 308px; " onclick="cargosLOV.clearFilters();" icon="ui-icon-check" actionListener="#{controlVigenciasCargos.actualizarCargo()}" update="aceptarC" process="@this">
-                                <p:resetInput target=":form:lOVCargos:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasC" value="#{msg['atras']}" style="position: absolute; top: 390px; left: 400px; " onclick="cargosDialog.hide(), cargosLOV.clearFilters();" icon="ui-icon-arrowreturnthick-1-w" update="lOVCargos, aceptarC" actionListener="#{controlVigenciasCargos.cancelarCambioCargo()}" process="@this">
-                                <p:resetInput target=":form:lOVCargos:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarC" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 390px; left: 308px; " icon="ui-icon-check" actionListener="#{controlVigenciasCargos.actualizarCargo()}" process="@this"/>
+                                
+                            <p:commandButton id="atrasC" value="#{msg['atras']}" style="position: absolute; top: 390px; left: 400px; " icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasCargos.cancelarCambioCargo()}" process="@this"/>
+                                
 
                         </p:dialog>
 
@@ -357,7 +351,7 @@
                                           rowKey="#{item.empleado.secuencia}" selection="#{controlVigenciasCargos.seleccionVWActualesTiposTrabajadoreses}" selectionMode="single" >
 
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasCargos.activarAceptar()}"  update=":form:AceptarEmplJ"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciasCargos.actualizarEmpleadoJefe()}" process="@this" onstart="lvEmpleadoJefe.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciasCargos.actualizarEmpleadoJefe()}" process="@this" />
 
                                 <f:facet name="header" >  
                                     <h:outputText value="#{msg['buscarEJ']}"  style="position: absolute; left: 22px; top: 18px;"/>  
@@ -383,12 +377,10 @@
                             </p:dataTable> 
                             <h:outputText id="informacionLOVEJ" value="#{controlVigenciasCargos.cantidadRegistrosLOV}" style="position: absolute; top: 265px; left: 20px; font-weight: bold"/>
 
-                            <p:commandButton id="AceptarEmplJ" value="#{msg['aceptar']}" onclick="lvEmpleadoJefe.clearFilters();" actionListener="#{controlVigenciasCargos.actualizarEmpleadoJefe()}" icon="ui-icon-check"  update="AceptarEmplJ" process="@this" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 260px; left: 560px">
-                                <p:resetInput target=":form:lvEmpleadoJefe:globalFilter" />
-                            </p:commandButton>
-                            <p:commandButton value="#{msg['atras']}" onclick="dialogoEmpleadoJefe.hide(), lvEmpleadoJefe.clearFilters();" actionListener="#{controlVigenciasCargos.cancelarEmpleadoJefe()}" icon="ui-icon-arrowreturnthick-1-w" update="lvEmpleadoJefe, AceptarEmplJ"  style="position: absolute; top: 260px; left: 653px">
-                                <p:resetInput target=":form:lvEmpleadoJefe:globalFilter" />
-                            </p:commandButton>
+                            <p:commandButton id="AceptarEmplJ" value="#{msg['aceptar']}" actionListener="#{controlVigenciasCargos.actualizarEmpleadoJefe()}" icon="ui-icon-check"   process="@this" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 260px; left: 560px"/>
+                                
+                            <p:commandButton value="#{msg['atras']}"  actionListener="#{controlVigenciasCargos.cancelarEmpleadoJefe()}" icon="ui-icon-arrowreturnthick-1-w"  style="position: absolute; top: 260px; left: 653px"/>
+                                
                         </p:dialog>
                         
                         <h:outputText id="informacionRegistro" value="#{controlVigenciasCargos.infoRegistro}" style="position: absolute; left: 15px; top: 470px; font-weight: bold"/>

@@ -630,6 +630,11 @@ public class ControlRemoto implements Serializable {
             hv2 = true;
             tipo = "DISPONIBLE";
         }
+        
+        context.reset(":form:lvBusquedaRapida:globalFilter");
+        context.execute("busquedaR.clearFilters()");
+        context.execute("lvBr.hide()");        
+        
         context.update("form:tabMenu:Activos");
         context.update("form:tabMenu:Pensionados");
         context.update("form:tabMenu:Retirados");
@@ -640,6 +645,12 @@ public class ControlRemoto implements Serializable {
         buscar = true;
         buscarEmp = true;
         mostrarT = false;
+        
+        context.update("form:tabMenu:data");
+        context.update("form:tabMenu:TipoPersonal");
+        context.update("form:tabMenu:data:panelInf");
+        context.update("form:tabMenu:data:MostrarTodos");
+        
         //DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent(":form:lvBusquedaRapida");
         //dataTable.reset();
     }
@@ -648,6 +659,10 @@ public class ControlRemoto implements Serializable {
         buscar = true;
         filterBusquedaRapida = null;
         emplSeleccionado = null;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset(":form:lvBusquedaRapida:globalFilter");
+        context.execute("busquedaR.clearFilters()");
+        context.execute("lvBr.hide()");        
     }
 
     public void activarBuscar() {
@@ -655,6 +670,7 @@ public class ControlRemoto implements Serializable {
     }
 
     public void buscarEmpleado() {
+        RequestContext context = RequestContext.getCurrentInstance();
         filterBuscarEmpleado = null;
         tipo = emplSeleccionadoBE.getTipoTrabajador().getTipo();
         System.out.println(tipo);
@@ -664,12 +680,22 @@ public class ControlRemoto implements Serializable {
         emplSeleccionadoBE = null;
         buscar = true;
         mostrarT = false;
+        context.reset("form:lvBuscarEmpleado:globalFilter");
+        context.execute("buscarE.clearFilters()");
+        context.execute("lvBE.hide()");
+
+        context.update("form:tabMenu:data");
+        context.update("form:tabMenu:data:MostrarTodos");
     }
 
     public void busquedaEmpleadoAtras() {
         buscar = true;
         filterBuscarEmpleado = null;
         emplSeleccionadoBE = null;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lvBuscarEmpleado:globalFilter");
+        context.execute("buscarE.clearFilters()");
+        context.execute("lvBE.hide()");
     }
 
     public void mostrarTodos() {
@@ -824,19 +850,19 @@ public class ControlRemoto implements Serializable {
         tablaExportar = "Tablas";
         nombreArchivo = "Tablas";
     }
-          
-    public void redireccion(Integer indice){
-         if(indice >= 0){
-            if(listTablas.get(indice).getNombre().equalsIgnoreCase("USUARIOS")){
+
+    public void redireccion(Integer indice) {
+        if (indice >= 0) {
+            if (listTablas.get(indice).getNombre().equalsIgnoreCase("USUARIOS")) {
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.execute("dirigirUsuario()");
-                
-            } else if(listTablas.get(indice).getNombre().equalsIgnoreCase("USUARIOSVISTAS")){
+
+            } else if (listTablas.get(indice).getNombre().equalsIgnoreCase("USUARIOSVISTAS")) {
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.execute("dirigirUsuarioVista()");
-                
+
             }// Aca vienen un huevo de Else if para el resto de las pantallas
-         }
+        }
     }
 
     public void infoTablas(Tablas tab) {
@@ -1412,17 +1438,22 @@ public class ControlRemoto implements Serializable {
         seleccionTablaLOV = null;
         buscar = true;
         context.reset("form:lovTablas:globalFilter");
-        context.update("form:lovTablas");
+        context.execute("lovTablas.clearFilters()");
+        context.execute("buscarTablasDialogo.hide()");
+        //context.update("form:lovTablas");
         context.update("form:mostrarTodasTablas");
         context.update("form:tabMenu:Tablas");
         context.update("form:tabMenu:mostrarTodasTablas");
-        context.execute("buscarTablasDialogo.hide()");
     }
 
     public void cancelarSeleccionTabla() {
         filtradoListTablasLOV = null;
         seleccionTablaLOV = null;
         buscar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTablas:globalFilter");
+        context.execute("lovTablas.clearFilters()");
+        context.execute("buscarTablasDialogo.hide()");
     }
 
     public void mostrarTodo_Tablas() {

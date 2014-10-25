@@ -224,7 +224,7 @@
                                          selection="#{controlVigenciaDeporte.deporteSeleccionado}" selectionMode="single" widgetVar="lovDeportes" scrollable="true" scrollWidth="415" scrollHeight="250"
                                          filteredValue="#{controlVigenciaDeporte.filtrarListDeportes}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaDeporte.activarAceptar()}" update=":form:aceptarD"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaDeporte.actualizarDeporte()}" process="@this" onstart="lovDeportes.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaDeporte.actualizarDeporte()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarM']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovDeportes.filter();" style="width:150px; position: relative; left: 5px;" />  
@@ -240,12 +240,9 @@
                             
                             <h:outputText id="infoRegistroDeporte" value="#{controlVigenciaDeporte.infoRegistroDeporte}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarD" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlVigenciaDeporte.aceptar}" onclick="DeportesDialogo.hide(), lovDeportes.clearFilters();" actionListener="#{controlVigenciaDeporte.actualizarDeporte()}" update="lovDeportes, aceptarD, datosVigenciasDeportes" process="@this">
-                                <p:resetInput target=":form:lovDeportes:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasD" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="DeportesDialogo.hide(), lovDeportes.clearFilters();" actionListener="#{controlVigenciaDeporte.cancelarCambioDeporte()}" update="lovDeportes" process="@this">
-                                <p:resetInput target=":form:lovDeportes:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarD" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlVigenciaDeporte.aceptar}"  actionListener="#{controlVigenciaDeporte.actualizarDeporte()}"  process="@this"/>
+                            
+                            <p:commandButton id="atrasD" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlVigenciaDeporte.cancelarCambioDeporte()}" process="@this"/>
                         </p:dialog> 
 
                     </p:panel>

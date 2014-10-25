@@ -865,7 +865,7 @@ public class ControlEmplVigenciaIndicador implements Serializable {
 
             viFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigencia:viFechaFinal");
             viFechaFinal.setFilterStyle("width: 50px");
-            
+
             viTipoIndicador = (Column) c.getViewRoot().findComponent("form:datosVigencia:viTipoIndicador");
             viTipoIndicador.setFilterStyle("width: 150px");
 
@@ -997,10 +997,12 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
-        context.update("form:TiposDialogo");
-        context.update("form:lovTipos");
-        context.update("form:aceptarT");
+        /*
+         context.update("form:TiposDialogo");
+         context.update("form:lovTipos");
+         context.update("form:aceptarT");*/
         context.reset("form:lovTipos:globalFilter");
+        context.execute("lovTipos.clearFilters()");
         context.execute("TiposDialogo.hide()");
     }
 
@@ -1012,6 +1014,10 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndexV = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTipos:globalFilter");
+        context.execute("lovTipos.clearFilters()");
+        context.execute("TiposDialogo.hide()");
     }
 
     public void actualizarIndicador() {
@@ -1055,10 +1061,12 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
-        context.update("form:IndicadorDialogo");
-        context.update("form:lovIndicador");
-        context.update("form:aceptarI");
+        /*
+         context.update("form:IndicadorDialogo");
+         context.update("form:lovIndicador");
+         context.update("form:aceptarI");*/
         context.reset("form:lovIndicador:globalFilter");
+        context.execute("lovIndicador.clearFilters()");
         context.execute("IndicadorDialogo.hide()");
     }
 
@@ -1070,6 +1078,10 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndexV = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovIndicador:globalFilter");
+        context.execute("lovIndicador.clearFilters()");
+        context.execute("IndicadorDialogo.hide()");
     }
 
     public void listaValoresBoton() {

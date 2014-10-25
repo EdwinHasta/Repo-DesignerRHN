@@ -529,7 +529,7 @@
                                       rowKey="#{emp.secuencia}" selection="#{controlNovedadesVacaciones.seleccionEmpleados}" selectionMode="single">
 
                             <p:ajax event="rowSelect" listener="#{controlNovedadesVacaciones.activarAceptar()}" update=":formularioDialogos:aceptarE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlNovedadesVacaciones.actualizarEmpleadosNovedad()}" process="@this" onstart="LOVEmpleados.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNovedadesVacaciones.actualizarEmpleadosNovedad()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="Nombre: "  style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVEmpleados.filter();" style="width: 400px; position: relative; left: 60px;" />  
@@ -558,12 +558,10 @@
 
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarE" value="Aceptar" disabled="#{controlNovedadesVacaciones.aceptar}" style="position: absolute; top: 305px; left: 350px; " actionListener="#{controlNovedadesVacaciones.actualizarEmpleadosNovedad()}" onclick="LOVEmpleados.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVEmpleados:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasE" value="Atras" style="position: absolute; top: 305px; left: 450px; " onclick="empleadosDialogo.hide(), LOVEmpleados.clearFilters();" actionListener="#{controlNovedadesVacaciones.cancelarCambioEmpleados()}" update="LOVEmpleados, aceptarE" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVEmpleados:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarE" value="Aceptar" disabled="#{controlNovedadesVacaciones.aceptar}" style="position: absolute; top: 305px; left: 350px; " actionListener="#{controlNovedadesVacaciones.actualizarEmpleadosNovedad()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasE" value="Atras" style="position: absolute; top: 305px; left: 450px; " actionListener="#{controlNovedadesVacaciones.cancelarCambioEmpleados()}" process="@this"/>
+                        
                     </p:dialog>
 
 
@@ -577,7 +575,7 @@
                                       selection="#{controlNovedadesVacaciones.seleccionPeriodo}" selectionMode="single">
 
                             <p:ajax event="rowSelect" listener="#{controlNovedadesVacaciones.activarAceptar()}" update=":formularioDialogos:aceptarP"/>
-                            <p:ajax event="rowDblselect" listener="#{controlNovedadesVacaciones.actualizarPeriodos()}" process="@this" onstart="LOVPeriodos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlNovedadesVacaciones.actualizarPeriodos()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Periodo: "  style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVPeriodos.filter();" style="width: 400px; position: relative; left: 60px;" />  
@@ -599,12 +597,10 @@
 
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarP" value="Aceptar" disabled="#{controlNovedadesVacaciones.aceptar}" style="position: absolute; top: 305px; left: 350px; " actionListener="#{controlNovedadesVacaciones.actualizarPeriodos()}" onclick="LOVPeriodos.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVPeriodos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasP" value="Atras" style="position: absolute; top: 305px; left: 450px; " onclick="periodosDialogo.hide(), LOVPeriodos.clearFilters();" actionListener="#{controlNovedadesVacaciones.cancelarCambioPeriodos()}" update="LOVPeriodos, aceptarP" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVPeriodos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarP" value="Aceptar" disabled="#{controlNovedadesVacaciones.aceptar}" style="position: absolute; top: 305px; left: 350px; " actionListener="#{controlNovedadesVacaciones.actualizarPeriodos()}"  process="@this"/>
+                        
+                        <p:commandButton id="atrasP" value="Atras" style="position: absolute; top: 305px; left: 450px; "  actionListener="#{controlNovedadesVacaciones.cancelarCambioPeriodos()}"  process="@this"/>
+                        
                     </p:dialog>
 
                     <!-- DIALOGOS RASTROS -->

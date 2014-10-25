@@ -163,10 +163,11 @@ public class ControlComprobantes implements Serializable {
         context.update("form:datosSolucionesNodosEmpleado");
         context.update("form:datosSolucionesNodosEmpleador");
 
-        context.update("formularioDialogos:buscarEmpleadoDialogo");
-        context.update("formularioDialogos:lovEmpleados");
-        context.update("formularioDialogos:aceptarP");
+        //context.update("formularioDialogos:buscarEmpleadoDialogo");
+        //context.update("formularioDialogos:lovEmpleados");
+       // context.update("formularioDialogos:aceptarP");
         context.reset("formularioDialogos:lovEmpleados:globalFilter");
+        context.execute("lovEmpleados.clearFilters()");
         context.execute("buscarEmpleadoDialogo.hide()");
     }
 
@@ -174,6 +175,10 @@ public class ControlComprobantes implements Serializable {
         filtradoListaParametrosLOV = null;
         parametroSeleccionado = null;
         aceptar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:lovEmpleados:globalFilter");
+        context.execute("lovEmpleados.clearFilters()");
+        context.execute("buscarEmpleadoDialogo.hide()");
     }
 
     public void mostarTodosEmpleados() {

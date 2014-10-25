@@ -393,7 +393,7 @@
                                      selection="#{controlOperando.operandosSeleccionado}" selectionMode="single" widgetVar="LOVOperandos" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlOperando.lovfiltradoslistaOperandos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlOperando.activarAceptar()}" update=":formularioDialogos:aceptarO"/>
-                            <p:ajax event="rowDblselect" listener="#{controlOperando.actualizarOperandos()}" process="@this" onstart="LOVOperandos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlOperando.actualizarOperandos()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarO']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVOperandos.filter();" style="width:150px; position: relative; left: 8px;" />  
@@ -423,12 +423,10 @@
                                 <h:outputText value="#{o.codigo}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarO" value="#{msg['aceptar']}" disabled="#{controlOperando.aceptar}" style="position: absolute; top: 336px; left: 232px; " actionListener="#{controlOperando.actualizarOperandos()}" onclick="LOVOperandos.clearFilters();" update="aceptarO" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVOperandos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasO" style="position: relative; left: 303px; " value="#{msg['atras']}" actionListener="#{controlOperando.cancelarCambioOperandos()}" onclick="operandosDialogo.hide(), LOVOperandos.clearFilters();"  update="LOVOperandos" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVOperandos:globalFilter"/>
-                        </p:commandButton>
+                        
+                        <p:commandButton id="aceptarO" value="#{msg['aceptar']}" disabled="#{controlOperando.aceptar}" style="position: absolute; top: 336px; left: 232px; " actionListener="#{controlOperando.actualizarOperandos()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasO" style="position: relative; left: 303px; " value="#{msg['atras']}" actionListener="#{controlOperando.cancelarCambioOperandos()}" process="@this"/>
                     </p:dialog>
                 </h:form>
 

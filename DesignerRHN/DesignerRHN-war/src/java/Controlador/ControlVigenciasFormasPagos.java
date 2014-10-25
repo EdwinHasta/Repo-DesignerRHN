@@ -828,10 +828,12 @@ public class ControlVigenciasFormasPagos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.update("form:sucursalesDialogo");
-        context.update("form:lovSucursales");
-        context.update("form:aceptarS");
+        /*
+         context.update("form:sucursalesDialogo");
+         context.update("form:lovSucursales");
+         context.update("form:aceptarS");*/
         context.reset("form:lovSucursales:globalFilter");
+        context.execute("lovSucursales.clearFilters()");
         context.execute("sucursalesDialogo.hide()");
     }
 
@@ -845,8 +847,11 @@ public class ControlVigenciasFormasPagos implements Serializable {
         tipoActualizacion = -1;
         permitirIndex = true;
 
-        guardado = true;
-        context.update("form:ACEPTAR");
+        //guardado = true;
+        //context.update("form:ACEPTAR");
+        context.reset("form:lovSucursales:globalFilter");
+        context.execute("lovSucursales.clearFilters()");
+        context.execute("sucursalesDialogo.hide()");
 
     }
 
@@ -894,10 +899,12 @@ public class ControlVigenciasFormasPagos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.update("form:periodicidadesDialogo");
-        context.update("form:lovperiodicidades");
-        context.update("form:aceptarP");
+        /*
+         context.update("form:periodicidadesDialogo");
+         context.update("form:lovperiodicidades");
+         context.update("form:aceptarP");*/
         context.reset("form:lovperiodicidades:globalFilter");
+        context.execute("lovperiodicidades.clearFilters()");
         context.execute("periodicidadesDialogo.hide()");
     }
 
@@ -909,6 +916,10 @@ public class ControlVigenciasFormasPagos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovperiodicidades:globalFilter");
+        context.execute("lovperiodicidades.clearFilters()");
+        context.execute("periodicidadesDialogo.hide()");
     }
 
     public void actualizarMetodoPago() {
@@ -983,10 +994,12 @@ public class ControlVigenciasFormasPagos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.update("form:metodosPagosialogo");
-        context.update("form:lovmetodospagos");
-        context.update("form:aceptarMP");
+        /*
+         context.update("form:metodosPagosialogo");
+         context.update("form:lovmetodospagos");
+         context.update("form:aceptarMP");*/
         context.reset("form:lovmetodospagos:globalFilter");
+        context.execute("lovmetodospagos.clearFilters()");
         context.execute("metodosPagosialogo.hide()");
     }
 
@@ -998,6 +1011,10 @@ public class ControlVigenciasFormasPagos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovmetodospagos:globalFilter");
+        context.execute("lovmetodospagos.clearFilters()");
+        context.execute("metodosPagosialogo.hide()");
     }
 
     //CTRL + F11 ACTIVAR/DESACTIVAR

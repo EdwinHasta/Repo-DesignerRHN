@@ -279,7 +279,7 @@
                                      selection="#{controlEscalafonSalarial.tipoTrabajadorSeleccionado}" scrollWidth="486" selectionMode="single" widgetVar="lovTipoTrabajador" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlEscalafonSalarial.filtrarLovTiposTrabajadores}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlEscalafonSalarial.activarAceptar()}" update=":form:aceptarTT"/>
-                            <p:ajax event="rowDblselect" listener="#{controlEscalafonSalarial.actualizarTipoTrabajador()}"  process="@this" onstart="lovFormula.clearFilters()"  />
+                            <p:ajax event="rowDblselect" listener="#{controlEscalafonSalarial.actualizarTipoTrabajador()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTT']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTipoTrabajador.filter();" style="width:140px; position: relative; left: 70px;" />  
@@ -306,12 +306,10 @@
                         
                         <h:outputText id="infoRegistroTipoTrabajador" value="#{controlEscalafonSalarial.infoRegistroTipoTrabajador}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton icon="ui-icon-check" id="aceptarTT" style="position: relative; left: 320px" value="#{msg['aceptar']}" disabled="#{controlEscalafonSalarial.aceptar}" onclick="TipoTrabajadorDialogo.hide(), lovTipoTrabajador.clearFilters();" actionListener="#{controlEscalafonSalarial.actualizarTipoTrabajador()}" update="lovTipoTrabajador, aceptarTT, datosEscalafonSalarial" process="@this">
-                            <p:resetInput target=":form:lovTipoTrabajador:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasTT" style="position: relative; left: 320px" value="#{msg['atras']}" onclick="TipoTrabajadorDialogo.hide(), lovTipoTrabajador.clearFilters();" actionListener="#{controlEscalafonSalarial.cancelarCambioTipoTrabajador()}" update="lovTipoTrabajador" process="@this">
-                            <p:resetInput target=":form:lovTipoTrabajador:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check" id="aceptarTT" style="position: relative; left: 320px" value="#{msg['aceptar']}" disabled="#{controlEscalafonSalarial.aceptar}" actionListener="#{controlEscalafonSalarial.actualizarTipoTrabajador()}"  process="@this"/>
+                        
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasTT" style="position: relative; left: 320px" value="#{msg['atras']}" actionListener="#{controlEscalafonSalarial.cancelarCambioTipoTrabajador()}" process="@this"/>
+                        
                     </p:dialog>
 
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlEscalafonSalarial.activarCtrlF11()}"/> 

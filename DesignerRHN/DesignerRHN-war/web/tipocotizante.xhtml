@@ -341,7 +341,7 @@
                                      selection="#{controlTipoCotizante.seleccionTiposEntidades}" selectionMode="single" widgetVar="LOVTiposEntidades" scrollable="true" scrollHeight="200" scrollWidth="360"
                                      filteredValue="#{controlTipoCotizante.filtradoslovListaTiposEntidades}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlTipoCotizante.activarAceptar()}" update=":formularioDialogos:aceptarTE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlTipoCotizante.actualizarTipoEntidad()}" process="@this" onstart="LOVTiposEntidades.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlTipoCotizante.actualizarTipoEntidad()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTE']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVTiposEntidades.filter();" style="width:150px; position: relative; left: 50px;" />  
@@ -360,12 +360,8 @@
                                 <h:outputText value="#{tiposEntidades.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarTE" value="#{msg['aceptar']}" disabled="#{controlTipoCotizante.aceptar}" icon="ui-icon-check" style="position: absolute; top: 305px; left: 150px; " actionListener="#{controlTipoCotizante.actualizarTipoEntidad()}" onclick="LOVTiposEntidades.clearFilters();" update="aceptarTE" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVTiposEntidades:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasTE" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 250px;" value="#{msg['atras']}" actionListener="#{controlTipoCotizante.cancelarCambioTipoEntidad()}" onclick="tiposEntidadesDialogo.hide(), LOVTiposEntidades.clearFilters();"  update="LOVTiposEntidades" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVTiposEntidades:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarTE" value="#{msg['aceptar']}" disabled="#{controlTipoCotizante.aceptar}" icon="ui-icon-check" style="position: absolute; top: 305px; left: 150px; " actionListener="#{controlTipoCotizante.actualizarTipoEntidad()}"  process="@this"/>
+                        <p:commandButton id="atrasTE" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 250px;" value="#{msg['atras']}" actionListener="#{controlTipoCotizante.cancelarCambioTipoEntidad()}" process="@this"/>
                     </p:dialog>
 
                     <!-- DIALOGO L.O.V TIPOS Cotizantes-->
@@ -375,7 +371,7 @@
                                      selection="#{controlTipoCotizante.lovTipoCotizanteSeleccionado}" selectionMode="single" widgetVar="LOVTiposCotizantes" scrollable="true" scrollHeight="200" scrollWidth="360"
                                      filteredValue="#{controlTipoCotizante.lovFiltradosListaTiposCotizantes}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlTipoCotizante.activarAceptar()}" update=":formularioDialogos:aceptarTC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlTipoCotizante.actualizarTipoEntidad()}" process="@this" onstart="LOVTiposCotizantes.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlTipoCotizante.actualizarTipoCotizante()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVTiposCotizantes.filter();" style="width:150px; position: relative; left: 65px;" />  
@@ -394,12 +390,8 @@
                                 <h:outputText value="#{tiposCotizantes.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarTC" value="#{msg['aceptar']}" disabled="#{controlTipoCotizante.aceptar}" icon="ui-icon-check" style="position: absolute; top: 305px; left: 150px; " actionListener="#{controlTipoCotizante.actualizarTipoCotizante()}" onclick="LOVTiposCotizantes.clearFilters();" update="aceptarTC" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVTiposCotizantes:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasTC" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 250px;" value="#{msg['atras']}" actionListener="#{controlTipoCotizante.cancelarCambioTipoEntidad()}" onclick="tiposCotizantesDialogo.hide(), LOVTiposCotizantes.clearFilters();"  update="LOVTiposCotizantes" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVTiposCotizantes:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarTC" value="#{msg['aceptar']}" disabled="#{controlTipoCotizante.aceptar}" icon="ui-icon-check" style="position: absolute; top: 305px; left: 150px; " actionListener="#{controlTipoCotizante.actualizarTipoCotizante()}"  process="@this"/>
+                        <p:commandButton id="atrasTC" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 250px;" value="#{msg['atras']}" actionListener="#{controlTipoCotizante.cancelarCambioLovTipoCotizante()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="validacionNuevoTipoCotizante" header="#{msg['atencion']}" widgetVar="validacionNuevoTipoCotizante"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  

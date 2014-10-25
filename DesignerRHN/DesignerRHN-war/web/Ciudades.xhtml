@@ -257,7 +257,7 @@
                                      selection="#{controlCiudades.seleccionDepartamento}" selectionMode="single" widgetVar="LOVDepartamentos" scrollable="true" scrollHeight="200" scrollWidth="345"
                                      filteredValue="#{controlCiudades.filtradoListaDepatartamentos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlCiudades.activarAceptar()}" update=":formularioDialogos:aceptarD"/>
-                            <p:ajax event="rowDblselect" listener="#{controlCiudades.actualizarDepartamentos()}" process="@this" onstart="LOVDepartamentos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlCiudades.actualizarDepartamentos()}" process="@this"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarD']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVDepartamentos.filter();" style="width:120px; position: relative; left: 55px;" />  
@@ -272,12 +272,10 @@
 
                         <h:outputText id="infoRegistroDepartamentos" value="#{controlCiudades.infoRegistroDepartamentos}" style="position: absolute; left: 15px; top: 315px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarD" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlCiudades.aceptar}" style="position: absolute; top: 305px; left: 180px;" actionListener="#{controlCiudades.actualizarDepartamentos()}" onclick="LOVDepartamentos.clearFilters();" update="aceptarD" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVDepartamentos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasD" style="position: absolute; top: 305px; left: 275px; " icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlCiudades.cancelarCambioDepartamentos()}" onclick="departamentosDialogo.hide(), LOVDepartamentos.clearFilters();"  update="LOVDepartamentos" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVDepartamentos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarD" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlCiudades.aceptar}" style="position: absolute; top: 305px; left: 180px;" actionListener="#{controlCiudades.actualizarDepartamentos()}"  process="@this"/>
+                            
+                        <p:commandButton id="atrasD" style="position: absolute; top: 305px; left: 275px; " icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlCiudades.cancelarCambioDepartamentos()}" process="@this"/>
+                            
                     </p:dialog> 
 
                     <!-- Ya Existe -->

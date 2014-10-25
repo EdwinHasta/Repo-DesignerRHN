@@ -836,10 +836,12 @@ public class ControlEscalafon implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:CategoriaDialogo");
-        context.update("form:lovCategoria");
-        context.update("form:aceptarCat");
+        /*
+         context.update("form:CategoriaDialogo");
+         context.update("form:lovCategoria");
+         context.update("form:aceptarCat");*/
         context.reset("form:lovCategoria:globalFilter");
+        context.execute("lovCategoria.clearFilters()");
         context.execute("CategoriaDialogo.hide()");
     }
 
@@ -851,6 +853,10 @@ public class ControlEscalafon implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovCategoria:globalFilter");
+        context.execute("lovCategoria.clearFilters()");
+        context.execute("CategoriaDialogo.hide()");
     }
 
     public void actualizarSubCategoria() {
@@ -899,10 +905,12 @@ public class ControlEscalafon implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
+        /*
         context.update("form:SubCategoriaDialogo");
         context.update("form:lovSubCategoria");
-        context.update("form:aceptarSCat");
+        context.update("form:aceptarSCat");*/
         context.reset("form:lovSubCategoria:globalFilter");
+        context.execute("lovSubCategoria.clearFilters()");
         context.execute("SubCategoriaDialogo.hide()");
     }
 
@@ -914,6 +922,10 @@ public class ControlEscalafon implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovSubCategoria:globalFilter");
+        context.execute("lovSubCategoria.clearFilters()");
+        context.execute("SubCategoriaDialogo.hide()");
     }
 
     public void listaValoresBoton() {

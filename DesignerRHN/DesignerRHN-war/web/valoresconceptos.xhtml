@@ -138,7 +138,7 @@
                                          selection="#{controlValoresConceptos.conceptoSeleccionado}" selectionMode="single" widgetVar="lovConceptos" scrollable="true" scrollWidth="420" scrollHeight="280"
                                          filteredValue="#{controlValoresConceptos.filtradoConceptos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlValoresConceptos.activarAceptar()}" update=":form:aceptarPer"/>
-                                <p:ajax event="rowDblselect" listener="#{controlValoresConceptos.actualizarConceptos()}" process="@this" onstart="lovConceptos.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlValoresConceptos.actualizarConceptos()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="Buscar Conceptos:"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovConceptos.filter();" style="width:150px; position: relative; left: 20px;" />  
@@ -159,13 +159,8 @@
                             </p:dataTable>
                             <h:outputText id="infoRegistroConceptos" value="#{controlValoresConceptos.infoRegistroConceptos}" style="position: absolute; left: 15px; top: 380px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarPer" icon="ui-icon-check" style="position: relative; left: 250px" value="Aceptar" disabled="#{controlValoresConceptos.aceptar}" onclick="personasDialogo.hide(), lovConceptos.clearFilters();"  actionListener="#{controlValoresConceptos.actualizarConceptos()}" update="lovConceptos, aceptarPer" process="@this">
-                                <p:resetInput target=":form:lovConceptos:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasPer" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 250px" value="Atras"  actionListener="#{controlValoresConceptos.cancelarCambioConceptos()}" onclick="personasDialogo.hide();
-                                    lovConceptos.clearFilters();" update="lovConceptos" process="@this">
-                                <p:resetInput target=":form:lovConceptos:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarPer" icon="ui-icon-check" style="position: relative; left: 250px" value="Aceptar" disabled="#{controlValoresConceptos.aceptar}" actionListener="#{controlValoresConceptos.actualizarConceptos()}" process="@this"/>
+                            <p:commandButton id="atrasPer" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 250px" value="Atras"  actionListener="#{controlValoresConceptos.cancelarCambioConceptos()}"  process="@this"/>
                         </p:dialog>
 
                         <p:dialog id="confirmarGuardar" header="ATENCION...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  

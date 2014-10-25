@@ -217,7 +217,7 @@
                                 <p:separator style="position: relative; top: -9px"/>
 
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlActualizarConceptos.cancelarModificacion()}" process="@this"/>  
-                                <p:tooltip  for="refrescar" value="refrescar"/>
+                                <p:tooltip  for="refrescar" value="Refrescar"/>
 
                                 <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlActualizarConceptos.salir()}"   action="perReferenciaLaboral1Atras" process="@this"/>  
                                 <p:tooltip  for="salir" value="Salir"/>
@@ -238,7 +238,7 @@
                                          selection="#{controlActualizarConceptos.claveSapDebito}" selectionMode="single" widgetVar="lovClavesSap" scrollable="true" scrollWidth="450" scrollHeight="250"
                                          filteredValue="#{controlActualizarConceptos.filtradoClavesSap}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlActualizarConceptos.activarAceptar()}" update=":form:aceptarS"/>
-                                <p:ajax event="rowDblselect" listener="#{controlActualizarConceptos.actualizarClaveDebito()}" process="@this" onstart="lovClavesSap.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlActualizarConceptos.actualizarClaveDebito()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="Buscar Clave Debito"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovClavesSap.filter();" style="width:150px; position: relative; left: 50px;" />  
@@ -258,13 +258,10 @@
 
                             </p:dataTable>
                             <h:outputText id="infoRegistroClaveSapDebito" value="#{controlActualizarConceptos.infoRegistroClaveSapDebito}" style="position: absolute;  top: 355px; font-weight: bold"/>
-                            <p:commandButton id="aceptarS" icon="ui-icon-check" style="position: relative; left: 275px" value="Aceptar" disabled="#{controlActualizarConceptos.aceptar}"  onclick="clavesSapDebitoDialgo.hide(), lovClavesSap.clearFilters();"  actionListener="#{controlActualizarConceptos.actualizarClaveDebito()}" update="lovClavesSap, aceptarS, datosActualizarConceptos" process="@this">
-                                <p:resetInput target=":form:lovClavesSap:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 275px" value="Atras"  actionListener="#{controlActualizarConceptos.cancelarCambioClavesSapDebito()}" onclick="clavesSapDebitoDialgo.hide();
-                                    lovClavesSap.clearFilters();" update="lovClavesSap" process="@this">
-                                <p:resetInput target=":form:lovClavesSap:globalFilter"/>
-                            </p:commandButton>
+                            
+                            <p:commandButton id="aceptarS" icon="ui-icon-check" style="position: relative; left: 275px" value="Aceptar" disabled="#{controlActualizarConceptos.aceptar}"   actionListener="#{controlActualizarConceptos.actualizarClaveDebito()}" process="@this"/>
+                            
+                            <p:commandButton id="atrasS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 275px" value="Atras"  actionListener="#{controlActualizarConceptos.cancelarCambioClavesSapDebito()}"  process="@this"/>
                         </p:dialog>
 
 
@@ -274,7 +271,7 @@
                                          selection="#{controlActualizarConceptos.claveSapCredito}" selectionMode="single" widgetVar="lovClavesSapCredito" scrollable="true" scrollWidth="450" scrollHeight="250"
                                          filteredValue="#{controlActualizarConceptos.filtradoClavesSap}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlActualizarConceptos.activarAceptar()}" update=":form:aceptarC"/>
-                                <p:ajax event="rowDblselect" listener="#{controlActualizarConceptos.actualizarClaveCredito()}" process="@this" onstart="lovClavesSapCredito.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlActualizarConceptos.actualizarClaveCredito()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="Buscar Clave Credito"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovClavesSapCredito.filter();" style="width:150px; position: relative; left: 50px;" />  
@@ -294,13 +291,10 @@
 
                             </p:dataTable>
                             <h:outputText id="infoRegistroClaveSapCredito" value="#{controlActualizarConceptos.infoRegistroClaveSapCredito}" style="position: absolute;  top: 355px; font-weight: bold"/>
-                            <p:commandButton id="aceptarC" icon="ui-icon-check" style="position: relative; left: 275px" value="Aceptar" disabled="#{controlActualizarConceptos.aceptar}"  onclick="claveSapCreditoDialogo.hide(), lovClavesSapCredito.clearFilters();"  actionListener="#{controlActualizarConceptos.actualizarClaveDebito()}" update="lovClavesSapCredito, aceptarC, datosActualizarConceptos" process="@this">
-                                <p:resetInput target=":form:lovClavesSapCredito:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 275px" value="Atras"  actionListener="#{controlActualizarConceptos.cancelarCambioClavesSapDebito()}" onclick="claveSapCreditoDialogo.hide();
-                                    lovClavesSapCredito.clearFilters();" update="lovClavesSapCredito" process="@this">
-                                <p:resetInput target=":form:lovClavesSapCredito:globalFilter"/>
-                            </p:commandButton>
+                            
+                            <p:commandButton id="aceptarC" icon="ui-icon-check" style="position: relative; left: 275px" value="Aceptar" disabled="#{controlActualizarConceptos.aceptar}"  actionListener="#{controlActualizarConceptos.actualizarClaveCredito()}" process="@this"/>
+                            
+                            <p:commandButton id="atrasC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 275px" value="Atras"  actionListener="#{controlActualizarConceptos.cancelarCambioClavesSapCredito()}" process="@this"/>
                         </p:dialog>
 
 
@@ -437,7 +431,7 @@
                                      selection="#{controlActualizarConceptos.empresaSeleccionadaMostrar}" selectionMode="single" widgetVar="lovEmpresas" scrollable="true" scrollWidth="350" scrollHeight="250"
                                      filteredValue="#{controlActualizarConceptos.filtradoEmpresas}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                             <p:ajax event="rowSelect" listener="#{controlActualizarConceptos.activarAceptar()}" update=":formularioDialogos:aceptarE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlActualizarConceptos.cambiarEmpresa()}" process="@this" onstart="lovEmpresas.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlActualizarConceptos.cambiarEmpresa()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Empresas:"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpresas.filter();" style="width:100px; position: relative; left: 10px;" />  
@@ -457,12 +451,9 @@
                         </p:dataTable>
                         <h:outputText id="infoRegistroEmpresas" value="#{controlActualizarConceptos.infoRegistroEmpresas}" style="position: absolute; left: 5px; top: 350px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarE" icon="u-iicon-check" style="position: relative; left: 165px" value="Aceptar" disabled="#{controlActualizarConceptos.aceptar}" actionListener="#{controlActualizarConceptos.cambiarEmpresa()}" update="aceptarE" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton  icon="ui-icon-arrowreturnthick-1-w" id="atrasE" style="position: relative; left: 165px" value="Cancelar" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlActualizarConceptos.cancelarCambioEmpresa()}" update="lovEmpresas" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarE" icon="u-iicon-check" style="position: relative; left: 165px" value="Aceptar" disabled="#{controlActualizarConceptos.aceptar}" actionListener="#{controlActualizarConceptos.cambiarEmpresa()}" process="@this"/>
+                        
+                        <p:commandButton  icon="ui-icon-arrowreturnthick-1-w" id="atrasE" style="position: relative; left: 165px" value="Cancelar" actionListener="#{controlActualizarConceptos.cancelarCambioEmpresa()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="CONCEPTOS" widgetVar="buscarConceptosPorEmpresaDialogo" draggable="false" resizable="false" closable="false" id="buscarConceptosPorEmpresaDialogo"  
@@ -471,7 +462,7 @@
                                       selection="#{controlActualizarConceptos.conceptoLOVSeleccionado}" selectionMode="single" widgetVar="lovConceptosPorEmpresa" scrollable="true" scrollWidth="360" scrollHeight="250"
                                       filteredValue="#{controlActualizarConceptos.filtrarLOVConceptos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                             <p:ajax event="rowSelect" listener="#{controlActualizarConceptos.activarAceptar()}" update=":formularioDialogos:aceptarNCC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlActualizarConceptos.seleccionConceptosPorEmpresa()}" process="@this" onstart="lovConceptosPorEmpresa.clearFilters()" update="lovConceptosPorEmpresa, :form:datosActualizarConceptos"/>
+                            <p:ajax event="rowDblselect" listener="#{controlActualizarConceptos.seleccionConceptosPorEmpresa()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Conceptos"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovConceptosPorEmpresa.filter();" style="width:150px; position: relative; left: 65px;" />  
@@ -490,12 +481,9 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarNCC" style="position: relative; left: 190px" icon="ui-icon-check" value="Aceptar" disabled="#{controlActualizarConceptos.aceptar}" actionListener="#{controlActualizarConceptos.seleccionConceptosPorEmpresa()}" update="lovConceptosPorEmpresa, aceptarNCC, :form:datosActualizarConceptos" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovConceptosPorEmpresa:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasTCC" style="position: relative; left: 190px" icon="ui-icon-arrowreturnthick-1-w" value="Atras" onclick="buscarConceptosPorEmpresaDialogo.hide(), lovConceptosPorEmpresa.clearFilters();" actionListener="#{controlActualizarConceptos.cancelarSeleccionConceptosPorEmpresa()}" update="lovConceptosPorEmpresa" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovConceptosPorEmpresa:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarNCC" style="position: relative; left: 190px" icon="ui-icon-check" value="Aceptar" disabled="#{controlActualizarConceptos.aceptar}" actionListener="#{controlActualizarConceptos.seleccionConceptosPorEmpresa()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasTCC" style="position: relative; left: 190px" icon="ui-icon-arrowreturnthick-1-w" value="Atras" actionListener="#{controlActualizarConceptos.cancelarSeleccionConceptosPorEmpresa()}" process="@this"/>
                     </p:dialog> 
 
 

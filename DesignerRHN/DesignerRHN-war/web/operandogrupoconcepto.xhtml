@@ -211,7 +211,7 @@
                                       filteredValue="#{controlOperandoGrupoConcepto.lovfiltradoslistaOperandos}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{o.secuencia}" selection="#{controlOperandoGrupoConcepto.operandosSeleccionado}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlOperandoGrupoConcepto.activarAceptar()}" update=":formularioDialogos:aceptarO"/>
-                            <p:ajax event="rowDblselect" listener="#{controlOperandoGrupoConcepto.actualizarOperandos()}" process="@this" onstart="LOVOperandos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlOperandoGrupoConcepto.actualizarOperandos()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarO']}" style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVOperandos.filter();" style="width: 150px; position: relative; left: 60px;" />  
@@ -234,12 +234,9 @@
 
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarO" value="#{msg['aceptar']}" disabled="#{controlOperandoGrupoConcepto.aceptar}" style="position: absolute; top: 305px; left: 285px; font-size: 12px" actionListener="#{controlOperandoGrupoConcepto.actualizarOperandos()}" onclick="LOVOperandos.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVOperandos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasO" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 360px; font-size: 12px" onclick="operandosDialogo.hide(), LOVOperandos.clearFilters();" actionListener="#{controlOperandoGrupoConcepto.cancelarCambioOperandos()}" update="LOVOperandos, aceptarO" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVOperandos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarO" value="#{msg['aceptar']}" disabled="#{controlOperandoGrupoConcepto.aceptar}" style="position: absolute; top: 305px; left: 285px; font-size: 12px" actionListener="#{controlOperandoGrupoConcepto.actualizarOperandos()}"  process="@this"/>
+                        
+                        <p:commandButton id="atrasO" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 360px; font-size: 12px"  actionListener="#{controlOperandoGrupoConcepto.cancelarCambioOperandos()}"  process="@this"/>
 
                     </p:dialog>
 
@@ -252,7 +249,7 @@
                                       filteredValue="#{controlOperandoGrupoConcepto.lovfiltradoslistaGruposConceptos}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{g.secuencia}" selection="#{controlOperandoGrupoConcepto.gruposSeleccionado}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlOperandoGrupoConcepto.activarAceptar()}" update=":formularioDialogos:aceptarG"/>
-                            <p:ajax event="rowDblselect" listener="#{controlOperandoGrupoConcepto.actualizarGrupos()}" process="@this" onstart="LOVGrupos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlOperandoGrupoConcepto.actualizarGrupos()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarG']}" style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVGrupos.filter();" style="width: 150px; position: relative; left: 60px;" />  
@@ -267,12 +264,9 @@
 
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarG" value="#{msg['aceptar']}" disabled="#{controlOperandoGrupoConcepto.aceptar}" style="position: absolute; top: 305px; left: 210px; font-size: 12px" actionListener="#{controlOperandoGrupoConcepto.actualizarGrupos()}" onclick="LOVGrupos.clearFilters();" update="@this" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVGrupos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasG" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 285px; font-size: 12px" onclick="gruposDialogo.hide(), LOVGrupos.clearFilters();" actionListener="#{controlOperandoGrupoConcepto.cancelarCambioGrupos()}" update="LOVGrupos, aceptarG" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVGrupos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarG" value="#{msg['aceptar']}" disabled="#{controlOperandoGrupoConcepto.aceptar}" style="position: absolute; top: 305px; left: 210px; font-size: 12px" actionListener="#{controlOperandoGrupoConcepto.actualizarGrupos()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasG" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 285px; font-size: 12px" actionListener="#{controlOperandoGrupoConcepto.cancelarCambioGrupos()}" process="@this"/>
 
                     </p:dialog>
 

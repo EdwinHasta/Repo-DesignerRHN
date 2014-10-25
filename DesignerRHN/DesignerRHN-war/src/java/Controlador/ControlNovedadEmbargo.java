@@ -196,7 +196,7 @@ public class ControlNovedadEmbargo implements Serializable {
         roValor = false;
         cambiosPagina = true;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -1647,7 +1647,7 @@ public class ControlNovedadEmbargo implements Serializable {
         getListaDetallesEmbargos();
         RequestContext context = RequestContext.getCurrentInstance();
         context.reset("formularioDialogos:lovEmpleados:globalFilter");
-        context.update("formularioDialogos:lovEmpleados");
+        context.execute("lovEmpleados.clearFilters()");
         context.execute("buscarEmpleadoDialogo.hide()");
         context.update("form:panelInf");
         context.update("form:datosEmbargos");
@@ -1697,9 +1697,26 @@ public class ControlNovedadEmbargo implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         cualCeldaD = -1;
-        context.execute("formasDescuentosDialogo.hide()");
         context.reset("formularioDialogos:LOVFormas:globalFilter");
-        context.update("formularioDialogos:LOVFormas");
+        context.execute("LOVFormas.clearFilters()");
+        context.execute("formasDescuentosDialogo.hide()");
+        //context.update("formularioDialogos:LOVFormas");
+    }
+
+    public void cancelarCambioDetallesFormasDtos() {
+        lovfiltradoslistaDetallesFormasDtos = null;
+        detallesFormasDtosSeleccionado = null;
+        aceptar = true;
+        indexD = -1;
+        secRegistro = null;
+        tipoActualizacion = -1;
+        cualCelda = -1;
+        cualCeldaD = -1;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVFormas:globalFilter");
+        context.execute("LOVFormas.clearFilters()");
+        context.execute("formasDescuentosDialogo.hide()");
     }
 
     public void actualizarTipoEmbargo() {
@@ -1745,9 +1762,10 @@ public class ControlNovedadEmbargo implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         cualCeldaD = -1;
-        context.execute("tiposEmbargosDialogo.hide()");
         context.reset("formularioDialogos:LOVTiposEmbargos:globalFilter");
-        context.update("formularioDialogos:LOVTiposEmbargos");
+        context.execute("LOVTiposEmbargos.clearFilters()");
+        context.execute("tiposEmbargosDialogo.hide()");
+        //context.update("formularioDialogos:LOVTiposEmbargos");
     }
 
     public void cancelarCambioTiposEmbargos() {
@@ -1760,6 +1778,10 @@ public class ControlNovedadEmbargo implements Serializable {
         cualCelda = -1;
         cualCeldaD = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVTiposEmbargos:globalFilter");
+        context.execute("LOVTiposEmbargos.clearFilters()");
+        context.execute("tiposEmbargosDialogo.hide()");
     }
 
     public void actualizarJuzgado() {
@@ -1805,9 +1827,10 @@ public class ControlNovedadEmbargo implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         cualCeldaD = -1;
-        context.execute("juzgadosDialogo.hide()");
         context.reset("formularioDialogos:LOVJuzgados:globalFilter");
-        context.update("formularioDialogos:LOVJuzgados");
+        context.execute("LOVJuzgados.clearFilters()");
+        context.execute("juzgadosDialogo.hide()");
+        //context.update("formularioDialogos:LOVJuzgados");
     }
 
     public void cancelarCambioJuzgados() {
@@ -1820,6 +1843,10 @@ public class ControlNovedadEmbargo implements Serializable {
         cualCelda = -1;
         cualCeldaD = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVJuzgados:globalFilter");
+        context.execute("LOVJuzgados.clearFilters()");
+        context.execute("juzgadosDialogo.hide()");
     }
 
     public void actualizarPeriodicidades() {
@@ -1865,9 +1892,10 @@ public class ControlNovedadEmbargo implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         cualCeldaD = -1;
-        context.execute("periodicidadesDialogo.hide()");
         context.reset("formularioDialogos:LOVPeriodicidades:globalFilter");
-        context.update("formularioDialogos:LOVPeriodicidades");
+        context.execute("LOVPeriodicidades.clearFilters()");
+        context.execute("periodicidadesDialogo.hide()");
+        //context.update("formularioDialogos:LOVPeriodicidades");
     }
 
     public void cancelarCambioPeriodicidades() {
@@ -1880,18 +1908,10 @@ public class ControlNovedadEmbargo implements Serializable {
         cualCelda = -1;
         cualCeldaD = -1;
         permitirIndex = true;
-    }
-
-    public void cancelarCambioDetallesFormasDtos() {
-        lovfiltradoslistaDetallesFormasDtos = null;
-        detallesFormasDtosSeleccionado = null;
-        aceptar = true;
-        indexD = -1;
-        secRegistro = null;
-        tipoActualizacion = -1;
-        cualCelda = -1;
-        cualCeldaD = -1;
-        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVPeriodicidades:globalFilter");
+        context.execute("LOVPeriodicidades.clearFilters()");
+        context.execute("periodicidadesDialogo.hide()");
     }
 
     public void actualizarMotivoEmbargo() {
@@ -1937,9 +1957,10 @@ public class ControlNovedadEmbargo implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         cualCeldaD = -1;
-        context.execute("motivosDialogo.hide()");
         context.reset("formularioDialogos:LOVTiposEmbargos:globalFilter");
-        context.update("formularioDialogos:LOVTiposEmbargos");
+        context.execute("LOVMotivosEmbargos.clearFilters()");
+        context.execute("motivosDialogo.hide()");
+        //context.update("formularioDialogos:LOVTiposEmbargos");
     }
 
     public void cancelarCambioMotivosEmbargos() {
@@ -1952,6 +1973,10 @@ public class ControlNovedadEmbargo implements Serializable {
         cualCelda = -1;
         cualCeldaD = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVTiposEmbargos:globalFilter");
+        context.execute("LOVMotivosEmbargos.clearFilters()");
+        context.execute("motivosDialogo.hide()");
     }
 
     public void actualizarTerceros() {
@@ -1999,9 +2024,26 @@ public class ControlNovedadEmbargo implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         cualCeldaD = -1;
-        context.execute("tercerosDialogo.hide()");
         context.reset("formularioDialogos:LOVTerceros:globalFilter");
-        context.update("formularioDialogos:LOVTerceros");
+        context.execute("LOVTerceros.clearFilters()");
+        context.execute("tercerosDialogo.hide()");
+        //context.update("formularioDialogos:LOVTerceros");
+    }
+
+    public void cancelarCambioTerceros() {
+        lovfiltradoslistaTerceros = null;
+        tercerosSeleccionado = null;
+        aceptar = true;
+        index = -1;
+        secRegistro = null;
+        tipoActualizacion = -1;
+        cualCelda = -1;
+        cualCeldaD = -1;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVTerceros:globalFilter");
+        context.execute("LOVTerceros.clearFilters()");
+        context.execute("tercerosDialogo.hide()");
     }
 
     public void actualizarFormasDtos() {
@@ -2047,14 +2089,15 @@ public class ControlNovedadEmbargo implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         cualCeldaD = -1;
-        context.execute("formasDtosDialogo.hide()");
         context.reset("formularioDialogos:LOVFormasDtos:globalFilter");
-        context.update("formularioDialogos:LOVFormasDtos");
+        context.execute("LOVFormasDtos.clearFilters()");
+        context.execute("formasDtosDialogo.hide()");
+
     }
 
-    public void cancelarCambioTerceros() {
-        lovfiltradoslistaTerceros = null;
-        tercerosSeleccionado = null;
+    public void cancelarCambioFormasDtos() {
+        lovfiltradoslistaFormasDtos = null;
+        formasDtosSeleccionado = null;
         aceptar = true;
         index = -1;
         secRegistro = null;
@@ -2062,6 +2105,10 @@ public class ControlNovedadEmbargo implements Serializable {
         cualCelda = -1;
         cualCeldaD = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVFormasDtos:globalFilter");
+        context.execute("LOVFormasDtos.clearFilters()");
+        context.execute("formasDtosDialogo.hide()");
     }
 
     public void actualizarDemandantes() {
@@ -2107,9 +2154,10 @@ public class ControlNovedadEmbargo implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         cualCeldaD = -1;
-        context.execute("demandantesDialogo.hide()");
         context.reset("formularioDialogos:LOVDemandantes:globalFilter");
-        context.update("formularioDialogos:LOVDemandantes");
+        context.execute("LOVDemandantes.clearFilters()");
+        context.execute("demandantesDialogo.hide()");
+        //context.update("formularioDialogos:LOVDemandantes");
     }
 
     public void cancelarCambioDemandantes() {
@@ -2122,6 +2170,10 @@ public class ControlNovedadEmbargo implements Serializable {
         cualCelda = -1;
         cualCeldaD = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVDemandantes:globalFilter");
+        context.execute("LOVDemandantes.clearFilters()");
+        context.execute("demandantesDialogo.hide()");
     }
 
     //AUTOCOMPLETAR
@@ -2906,6 +2958,10 @@ public class ControlNovedadEmbargo implements Serializable {
         filtradoListaEmpleadosLOV = null;
         empleadoSeleccionado = null;
         aceptar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:lovEmpleados:globalFilter");
+        context.execute("lovEmpleados.clearFilters()");
+        context.execute("buscarEmpleadoDialogo.hide()");
     }
 
     //EXPORTAR

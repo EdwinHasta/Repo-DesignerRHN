@@ -249,7 +249,7 @@
                                          selection="#{controlUbicacionesGeograficas.ciudadSeleccionada}" selectionMode="single" widgetVar="lovTipoUbicacionesGeograficas" scrollable="true" scrollWidth="420" scrollHeight="250"
                                          filteredValue="#{controlUbicacionesGeograficas.filtradoCiudades}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlUbicacionesGeograficas.activarAceptar()}" update=":form:aceptarTCC"/>
-                                <p:ajax event="rowDblselect" listener="#{controlUbicacionesGeograficas.actualizarCiudad()}" process="@this" onstart="lovTipoUbicacionesGeograficas.clearFilters()" update="lovTipoUbicacionesGeograficas, :form:datosUbicacionesGeograficas"/>
+                                <p:ajax event="rowDblselect" listener="#{controlUbicacionesGeograficas.actualizarCiudad()}" process="@this" />
 
                                 <f:facet name="header">  
                                     <h:outputText value="Buscar Ciudad"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -269,12 +269,9 @@
                                 </p:column>
                             </p:dataTable>
                             <h:outputText id="infoRegistroCiudades" value="#{controlUbicacionesGeograficas.infoRegistroCiudades}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
-                            <p:commandButton id="aceptarTCC" style="position: relative; left: 250px" icon="ui-icon-check" value="Aceptar" disabled="#{controlUbicacionesGeograficas.aceptar}" onclick="tiposCentrosCostosDialogo.hide(), lovTipoUbicacionesGeograficas.clearFilters();" actionListener="#{controlUbicacionesGeograficas.actualizarCiudad()}" update="lovTipoUbicacionesGeograficas, aceptarTCC, datosUbicacionesGeograficas" process="@this">
-                                <p:resetInput target=":form:lovTipoUbicacionesGeograficas:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasTCC" style="position: relative; left: 250px" icon="ui-icon-arrowreturnthick-1-w" value="Atras" onclick="tiposCentrosCostosDialogo.hide(), lovTipoUbicacionesGeograficas.clearFilters();" actionListener="#{controlUbicacionesGeograficas.cancelarCambioCiudad()}" update="lovTipoUbicacionesGeograficas" process="@this">
-                                <p:resetInput target=":form:lovTipoUbicacionesGeograficas:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarTCC" style="position: relative; left: 250px" icon="ui-icon-check" value="Aceptar" disabled="#{controlUbicacionesGeograficas.aceptar}" actionListener="#{controlUbicacionesGeograficas.actualizarCiudad()}" process="@this"/>
+                            
+                            <p:commandButton id="atrasTCC" style="position: relative; left: 250px" icon="ui-icon-arrowreturnthick-1-w" value="Atras" actionListener="#{controlUbicacionesGeograficas.cancelarCambioCiudad()}" process="@this"/>
                         </p:dialog> 
 
                         <p:dialog header="Sucursales Pila" widgetVar="sucursalesPilaDialogo" draggable="false" resizable="false" closable="false" id="sucursalesPilaDialogo"  
@@ -283,7 +280,7 @@
                                          selection="#{controlUbicacionesGeograficas.sucursalesPilasSeleccionada}" selectionMode="single" widgetVar="lovSucursalesPila" scrollable="true" scrollWidth="420" scrollHeight="250"
                                          filteredValue="#{controlUbicacionesGeograficas.filtradoSucursalesPilas}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlUbicacionesGeograficas.activarAceptar()}" update=":form:aceptarSP"/>
-                                <p:ajax event="rowDblselect" listener="#{controlUbicacionesGeograficas.actualizarSucursalPila()}" process="@this" onstart="lovSucursalesPila.clearFilters()" update="lovSucursalesPila, :form:datosUbicacionesGeograficas"/>
+                                <p:ajax event="rowDblselect" listener="#{controlUbicacionesGeograficas.actualizarSucursalPila()}" process="@this"  />
 
                                 <f:facet name="header">  
                                     <h:outputText value="Buscar Sucursal Pila:"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -303,12 +300,9 @@
                                 </p:column>
                             </p:dataTable>
                             <h:outputText id="infoRegistroSucursalesPila" value="#{controlUbicacionesGeograficas.infoRegistroSucursalesPila}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
-                            <p:commandButton id="aceptarSP" style="position: relative; left: 250px" icon="ui-icon-check" value="Aceptar" disabled="#{controlUbicacionesGeograficas.aceptar}" onclick="sucursalesPilaDialogo.hide(), lovSucursalesPila.clearFilters();" actionListener="#{controlUbicacionesGeograficas.actualizarSucursalPila()}" update="lovSucursalesPila, aceptarSP, datosUbicacionesGeograficas" process="@this">
-                                <p:resetInput target="lovSucursalesPila"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasSP" style="position: relative; left: 250px" icon="ui-icon-arrowreturnthick-1-w" value="Atras" onclick="sucursalesPilaDialogo.hide(), lovSucursalesPila.clearFilters();" actionListener="#{controlUbicacionesGeograficas.cancelarCambioSucursalPila()}" update="lovSucursalesPila" process="@this">
-                                <p:resetInput target="lovSucursalesPila"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarSP" style="position: relative; left: 250px" icon="ui-icon-check" value="Aceptar" disabled="#{controlUbicacionesGeograficas.aceptar}" actionListener="#{controlUbicacionesGeograficas.actualizarSucursalPila()}"  process="@this"/>
+                            
+                            <p:commandButton id="atrasSP" style="position: relative; left: 250px" icon="ui-icon-arrowreturnthick-1-w" value="Atras" actionListener="#{controlUbicacionesGeograficas.cancelarCambioSucursalPila()}" process="@this"/>
                         </p:dialog> 
 
 
@@ -606,7 +600,7 @@
                                      selection="#{controlUbicacionesGeograficas.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresas" scrollable="true" scrollWidth="330" scrollHeight="250"
                                      filteredValue="#{controlUbicacionesGeograficas.filtradoListaEmpresas}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                             <p:ajax event="rowSelect" listener="#{controlUbicacionesGeograficas.activarAceptar()}" update=":formularioDialogos:aceptarE"/>
-                            <p:ajax event="rowDblselect" listener="#{controlUbicacionesGeograficas.cambiarEmpresa()}" process="@this" onstart="lovEmpresas.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlUbicacionesGeograficas.cambiarEmpresa()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="buscar empresa :"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpresas.filter();" style="width:120px; position: relative; left: 40px;" />  
@@ -627,12 +621,8 @@
 
                         <h:outputText id="infoRegistroEmpresas" value="#{controlUbicacionesGeograficas.infoRegistroEmpresas}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarE" style="position: relative; left: 155px" icon="ui-icon-check" value="Aceptar" disabled="#{controlUbicacionesGeograficas.aceptar}" actionListener="#{controlUbicacionesGeograficas.cambiarEmpresa()}" update="aceptarE" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasE" style="position: relative; left: 155px" icon="ui-icon-arrowreturnthick-1-w" value="cancelar" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlUbicacionesGeograficas.cancelarCambioEmpresa()}" update="lovEmpresas" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarE" style="position: relative; left: 155px" icon="ui-icon-check" value="Aceptar" disabled="#{controlUbicacionesGeograficas.aceptar}" actionListener="#{controlUbicacionesGeograficas.cambiarEmpresa()}" process="@this"/>
+                        <p:commandButton id="atrasE" style="position: relative; left: 155px" icon="ui-icon-arrowreturnthick-1-w" value="cancelar" actionListener="#{controlUbicacionesGeograficas.cancelarCambioEmpresa()}" process="@this"/>
                     </p:dialog>
 
 

@@ -595,11 +595,12 @@ public class ControlEstructura implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
-        cualCelda = -1;
+        cualCelda = -1;/*
         context.update("form:EmpresasDialogo");
         context.update("form:lovEmpresas");
-        context.update("form:aceptarE");
+        context.update("form:aceptarE");*/
         context.reset("form:lovEmpresas:globalFilter");
+        context.execute("lovEmpresas.clearFilters()");
         context.execute("EmpresasDialogo.hide()");
     }
 
@@ -611,6 +612,10 @@ public class ControlEstructura implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovEmpresas:globalFilter");
+        context.execute("lovEmpresas.clearFilters()");
+        context.execute("EmpresasDialogo.hide()");
     }
 
     //GUARDAR

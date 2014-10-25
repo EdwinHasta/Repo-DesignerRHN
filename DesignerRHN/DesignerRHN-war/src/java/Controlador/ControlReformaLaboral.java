@@ -1514,17 +1514,23 @@ public class ControlReformaLaboral implements Serializable {
         context.update("form:codigoReformaLaboralClonarBase");
         context.update("form:nombreReformaLaboralClonarBase");
         reformaLaboralSeleccionado = new ReformasLaborales();
-        filtrarLovReformasLaborales = null;
-        context.update("form:ReformaLaboralDialogo");
-        context.update("form:lovReformaLaboral");
-        context.update("form:aceptarRL");
+        filtrarLovReformasLaborales = null;/*
+         context.update("form:ReformaLaboralDialogo");
+         context.update("form:lovReformaLaboral");
+         context.update("form:aceptarRL");*/
+
         context.reset("form:lovReformaLaboral:globalFilter");
+        context.execute("lovReformaLaboral.clearFilters()");
         context.execute("ReformaLaboralDialogo.hide()");
     }
 
     public void cancelarReformaLaboralClonar() {
         reformaLaboralSeleccionado = new ReformasLaborales();
         filtrarLovReformasLaborales = null;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovReformaLaboral:globalFilter");
+        context.execute("lovReformaLaboral.clearFilters()");
+        context.execute("ReformaLaboralDialogo.hide()");
     }
 
     public void autoCompletarSeleccionarReformaLaboralClonar(String valorConfirmar, int tipoAutoCompletar) {

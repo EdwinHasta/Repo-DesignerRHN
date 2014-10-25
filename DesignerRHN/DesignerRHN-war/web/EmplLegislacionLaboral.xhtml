@@ -163,7 +163,7 @@
                                          selection="#{controlVigenciasContratos.contratoSelecionado}" selectionMode="single" widgetVar="lovContratos" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlVigenciasContratos.filtradoContratos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasContratos.activarAceptar()}" update=":form:aceptarC"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciasContratos.actualizarContrato()}" process="@this" onstart="lovContratos.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciasContratos.actualizarContrato()}" process="@this" />
 
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarL']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -185,12 +185,10 @@
                             
                             <h:outputText id="infoRegistroContrato" value="#{controlVigenciasContratos.infoRegistroContrato}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarC" icon="ui-icon-check" style="position: relative; left: 260px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciasContratos.aceptar}" onclick="ContratosDialogo.hide(), lovContratos.clearFilters();" actionListener="#{controlVigenciasContratos.actualizarContrato()}" update="lovContratos, aceptarC, datosVCEmpleado" process="@this">
-                                <p:resetInput target=":form:lovContratos:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px;top: 5px" value="#{msg['atras']}" onclick="ContratosDialogo.hide(), lovContratos.clearFilters();" actionListener="#{controlVigenciasContratos.cancelarCambioContrato()}" update="lovContratos" process="@this">
-                                <p:resetInput target=":form:lovContratos:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarC" icon="ui-icon-check" style="position: relative; left: 260px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciasContratos.aceptar}"  actionListener="#{controlVigenciasContratos.actualizarContrato()}"  process="@this"/>
+                                
+                            <p:commandButton id="atrasC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px;top: 5px" value="#{msg['atras']}" actionListener="#{controlVigenciasContratos.cancelarCambioContrato()}" process="@this"/>
+                                
                         </p:dialog> 
 
                         <!-- DIALOGO L.O.V ESTATICO TIPOSCONTRATOS -->
@@ -200,7 +198,7 @@
                                          selection="#{controlVigenciasContratos.tipoContratoSelecionado}" selectionMode="single" widgetVar="lovTiposContratos" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlVigenciasContratos.filtradoTiposContratos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasContratos.activarAceptar()}" update=":form:aceptarTC"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciasContratos.actualizarTipoContrato()}" process="@this" onstart="lovTiposContratos.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciasContratos.actualizarTipoContrato()}" process="@this" />
 
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarT']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -222,12 +220,10 @@
                             
                             <h:outputText id="infoRegistroTipoContrato" value="#{controlVigenciasContratos.infoRegistroTipoContrato}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarTC" icon="ui-icon-check" style="position: relative; left: 260px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciasContratos.aceptar}" onclick="TiposContratoDialogo.hide(), lovTiposContratos.clearFilters();" actionListener="#{controlVigenciasContratos.actualizarTipoContrato()}" update="lovTiposContratos, aceptarTC" process="@this">
-                                <p:resetInput target=":form:lovTiposContratos:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasTC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px;top: 5px" value="#{msg['atras']}" onclick="TiposContratoDialogo.hide(), lovTiposContratos.clearFilters();" actionListener="#{controlVigenciasContratos.cancelarCambioTipoContrato()}" update="lovTiposContratos" process="@this">
-                                <p:resetInput target=":form:lovTiposContratos:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarTC" icon="ui-icon-check" style="position: relative; left: 260px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciasContratos.aceptar}" actionListener="#{controlVigenciasContratos.actualizarTipoContrato()}"  process="@this"/>
+                                
+                            <p:commandButton id="atrasTC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px;top: 5px" value="#{msg['atras']}" actionListener="#{controlVigenciasContratos.cancelarCambioTipoContrato()}"  process="@this"/>
+                                
                         </p:dialog>
                         
                         <h:outputText id="informacionRegistro" value="#{controlVigenciasContratos.infoRegistro}" style="position: absolute; left: 15px; top: 470px; font-weight: bold"/>

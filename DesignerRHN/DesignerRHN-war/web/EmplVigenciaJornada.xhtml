@@ -277,7 +277,7 @@
                                          selection="#{controlVigenciaJornada.jornadaLaboralSeleccionada}" selectionMode="single" widgetVar="lovJornadaLaboral" scrollable="true" scrollWidth="383" scrollHeight="250"
                                          filteredValue="#{controlVigenciaJornada.filtrarJornadasLaborales}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaJornada.activarAceptar()}" update=":form:aceptarJL"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaJornada.actualizarJornadaLaboral()}"  process="@this" onstart="lovJornadaLaboral.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaJornada.actualizarJornadaLaboral()}"  process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarJ']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovJornadaLaboral.filter();" style="width:130px; position: relative; left: 55px;" />  
@@ -298,12 +298,10 @@
 
                             <h:outputText id="infoRegistroJornadaLaboral" value="#{controlVigenciaJornada.infoRegistroJornadaLaboral}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarJL" style="position: relative; left: 210px" value="#{msg['aceptar']}" disabled="#{controlVigenciaJornada.aceptar}" onclick="JornadaLaboralDialogo.hide(), lovJornadaLaboral.clearFilters();" actionListener="#{controlVigenciaJornada.actualizarJornadaLaboral()}" update="lovJornadaLaboral, aceptarJL, datosVJEmpleado" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovJornadaLaboral:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasJL" style="position: relative; left: 210px" value="#{msg['atras']}" onclick="JornadaLaboralDialogo.hide(), lovJornadaLaboral.clearFilters();" actionListener="#{controlVigenciaJornada.cancelarCambioJornadaLaboral()}" update="lovJornadaLaboral" process="@this" icon="ui-icon-arrowreturnthick-1-w" >
-                                <p:resetInput target=":form:lovJornadaLaboral:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarJL" style="position: relative; left: 210px" value="#{msg['aceptar']}" disabled="#{controlVigenciaJornada.aceptar}" actionListener="#{controlVigenciaJornada.actualizarJornadaLaboral()}" process="@this" icon="ui-icon-check" />
+                                
+                            <p:commandButton id="atrasJL" style="position: relative; left: 210px" value="#{msg['atras']}" actionListener="#{controlVigenciaJornada.cancelarCambioJornadaLaboral()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                                
                         </p:dialog>
 
                         <!-- Dialogo Tipo Descanso-->
@@ -313,7 +311,7 @@
                                          selection="#{controlVigenciaJornada.tipoDescansoSeleccionado}" selectionMode="single" widgetVar="lovTipoDescanso" scrollable="true" scrollWidth="383" scrollHeight="250"
                                          filteredValue="#{controlVigenciaJornada.filtradoTiposDescansos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaJornada.activarAceptar()}" update=":form:aceptarTD"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaJornada.actualizarTipoDescanso()}"  process="@this" onstart="lovTipoDescanso.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaJornada.actualizarTipoDescanso()}"  process="@this"  />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarD']}:"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTipoDescanso.filter();" style="width:110px; position: relative; left: 45px;" />  
@@ -334,12 +332,10 @@
 
                             <h:outputText id="infoRegistroTipoDescanso" value="#{controlVigenciaJornada.infoRegistroTipoDescanso}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarTD" style="position: relative; left: 210px" value="#{msg['aceptar']}" disabled="#{controlVigenciaJornada.aceptar}" onclick="TiposDescansosDialogo.hide(), lovTipoDescanso.clearFilters();" actionListener="#{controlVigenciaJornada.actualizarTipoDescanso()}" update="lovTipoDescanso, aceptarTD, datosVJEmpleado" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovTipoDescanso:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasTD" style="position: relative; left: 210px" value="#{msg['atras']}" onclick="TiposDescansosDialogo.hide(), lovTipoDescanso.clearFilters()" actionListener="#{controlVigenciaJornada.cancelarCambioTipoDescanso()}" update="lovTipoDescanso" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovTipoDescanso:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarTD" style="position: relative; left: 210px" value="#{msg['aceptar']}" disabled="#{controlVigenciaJornada.aceptar}"  actionListener="#{controlVigenciaJornada.actualizarTipoDescanso()}"  process="@this" icon="ui-icon-check"/>
+                                
+                            <p:commandButton id="atrasTD" style="position: relative; left: 210px" value="#{msg['atras']}" actionListener="#{controlVigenciaJornada.cancelarCambioTipoDescanso()}"  process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                                
                         </p:dialog>
 
                         <p:commandButton style="position: absolute; left: 683px; top: 478px;  " id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVJEmpleado" process="@this" disabled="#{controlVigenciaJornada.guardado}"/>

@@ -1452,11 +1452,13 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
         }
         empresaSeleccionada = new Empresas();
         filtrarLovEmpresas = null;
-        aceptar = true;
-        context.update("form:EmpresaDialogo");
-        context.update("form:lovEmpresa");
-        context.update("form:aceptarE");
+        aceptar = true;/*
+         context.update("form:EmpresaDialogo");
+         context.update("form:lovEmpresa");
+         context.update("form:aceptarE");*/
+
         context.reset("form:lovEmpresa:globalFilter");
+        context.execute("lovEmpresa.clearFilters()");
         context.execute("EmpresaDialogo.hide()");
     }
 
@@ -1467,6 +1469,10 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
         permitirIndexParametro = true;
         aceptar = true;
         tipoActualizacion = -1;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovEmpresa:globalFilter");
+        context.execute("lovEmpresa.clearFilters()");
+        context.execute("EmpresaDialogo.hide()");
     }
 
     public void actualizarProceso() {
@@ -1488,11 +1494,13 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
         }
         procesoSeleccionado = new Procesos();
         filtrarLovProcesos = null;
-        aceptar = true;
-        context.update("form:ProcesoDialogo");
-        context.update("form:lovProceso");
-        context.update("form:aceptarP");
+        aceptar = true;/*
+         context.update("form:ProcesoDialogo");
+         context.update("form:lovProceso");
+         context.update("form:aceptarP");*/
+
         context.reset("form:lovProceso:globalFilter");
+        context.execute("lovProceso.clearFilters()");
         context.execute("ProcesoDialogo.hide()");
     }
 
@@ -1502,6 +1510,10 @@ public class ControlInterfaseContableSapBOV8 implements Serializable {
         filtrarLovProcesos = null;
         indexParametroContable = -1;
         permitirIndexParametro = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovProceso:globalFilter");
+        context.execute("lovProceso.clearFilters()");
+        context.execute("ProcesoDialogo.hide()");
     }
 
     public void listaValoresBoton() {

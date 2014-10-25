@@ -153,7 +153,7 @@
                                      selection="#{controlTiposCentrosCostos.grupoTipoCCSeleccionada}" selectionMode="single" widgetVar="lovGruposTiposCC" scrollable="true" scrollWidth="450" scrollHeight="250"
                                      filteredValue="#{controlTiposCentrosCostos.filtradoGruposTiposCC }" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                             <p:ajax event="rowSelect" listener="#{controlTiposCentrosCostos.activarAceptar()}" update=":form:aceptarGTCC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlTiposCentrosCostos.actualizarGrupoTipoCC()}" process="@this" onstart="lovGruposTiposCC.clearFilters()" update="lovGruposTiposCC, :form:datosTipoCentroCosto"/>
+                            <p:ajax event="rowDblselect" listener="#{controlTiposCentrosCostos.actualizarGrupoTipoCC()}" process="@this" />
 
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Grupo Tipo CC : "  style="position: absolute; left: 27px; top: 14px"/>  
@@ -176,13 +176,8 @@
 
                         <h:outputText id="infoRegistroTiposCentrosCostos" value="#{controlTiposCentrosCostos.infoRegistroTiposCentrosCostos}" style="position: absolute; left: 15px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarGTCC"  icon="ui-icon-check" style="position: relative; left: 270px" value="Aceptar" disabled="#{controlTiposCentrosCostos.aceptar}"  onclick="gruposTiposCentrosCostosDialogo.hide(), lovGruposTiposCC.clearFilters();" actionListener="#{controlTiposCentrosCostos.actualizarGrupoTipoCC()}" update="lovGruposTiposCC, aceptarGTCC, datosTipoCentroCosto" process="@this">
-                            <p:resetInput target=":form:lovGruposTiposCC:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasGTE" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 270px" value="Atras" actionListener="#{controlTiposCentrosCostos.cancelarCambioGrupoTipoCC()}" onclick="gruposTiposCentrosCostosDialogo.hide();
-                                lovGruposTiposCC.clearFilters();" update="lovGruposTiposCC" process="@this">
-                            <p:resetInput target=":form:lovGruposTiposCC:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarGTCC"  icon="ui-icon-check" style="position: relative; left: 270px" value="Aceptar" disabled="#{controlTiposCentrosCostos.aceptar}"   actionListener="#{controlTiposCentrosCostos.actualizarGrupoTipoCC()}"  process="@this"/>
+                        <p:commandButton id="atrasGTE" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 270px" value="Atras" actionListener="#{controlTiposCentrosCostos.cancelarCambioGrupoTipoCC()}" process="@this"/>
                     </p:dialog>
 
 

@@ -403,7 +403,7 @@
                                      selection="#{controlEstructuraPlanta.centroCostoSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovCentroCosto" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlEstructuraPlanta.filtrarLovCentrosCostos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlEstructuraPlanta.activarAceptar()}" update=":form:aceptarCC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlEstructuraPlanta.actualizarCentroCosto()}"  process="@this" onstart="lovCentroCosto.clearFilters()"  />
+                            <p:ajax event="rowDblselect" listener="#{controlEstructuraPlanta.actualizarCentroCosto()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCentroCosto.filter();" style="width:140px; position: relative; left: 40px;" />  
@@ -418,12 +418,10 @@
                         
                         <h:outputText id="infoRegistroCentroCosto" value="#{controlEstructuraPlanta.infoRegistroCentroCosto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton id="aceptarCC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEstructuraPlanta.aceptar}" onclick="CentroCostoDialogo.hide(), lovCentroCosto.clearFilters();" actionListener="#{controlEstructuraPlanta.actualizarCentroCosto()}" update="lovCentroCosto, aceptarCC, datosEstructura" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":form:lovCentroCosto:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasCC" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="CentroCostoDialogo.hide(), lovCentroCosto.clearFilters();" actionListener="#{controlEstructuraPlanta.cancelarCambioCentroCosto()}" update="lovCentroCosto" process="@this">
-                            <p:resetInput target=":form:lovCentroCosto:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarCC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEstructuraPlanta.aceptar}" actionListener="#{controlEstructuraPlanta.actualizarCentroCosto()}" process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasCC" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlEstructuraPlanta.cancelarCambioCentroCosto()}" process="@this"/>
+                        
                     </p:dialog>
 
                     <p:dialog header="#{msg['estructuraPadreD']}" widgetVar="EstructuraPadreDialogo" draggable="false" resizable="false" closable="false" id="EstructuraPadreDialogo"  
@@ -432,7 +430,7 @@
                                      selection="#{controlEstructuraPlanta.estructuraPadreSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovEstructuraPadre" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlEstructuraPlanta.filtrarLovEstructurasPadres}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlEstructuraPlanta.activarAceptar()}" update=":form:aceptarEP"/>
-                            <p:ajax event="rowDblselect" listener="#{controlEstructuraPlanta.actualizarEstructuraPadre()}"  process="@this" onstart="lovEstructuraPadre.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlEstructuraPlanta.actualizarEstructuraPadre()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEstructuraPadre.filter();" style="width:140px; position: relative; left: 30px;" />  
@@ -454,12 +452,10 @@
                         
                         <h:outputText id="infoRegistroEstructura" value="#{controlEstructuraPlanta.infoRegistroEstructura}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton id="aceptarEP" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEstructuraPlanta.aceptar}" onclick="EstructuraPadreDialogo.hide(), lovEstructuraPadre.clearFilters();"  actionListener="#{controlEstructuraPlanta.actualizarEstructuraPadre()}" update="lovEstructuraPadre, aceptarEP, datosEstructura" process="@this" icon="ui-icon-check">
-                            <p:resetInput target=":form:lovEstructuraPadre:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasEP" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="EstructuraPadreDialogo.hide(), lovEstructuraPadre.clearFilters();" actionListener="#{controlEstructuraPlanta.cancelarCambioEstructuraPadre()}" update="lovEstructuraPadre" process="@this">
-                            <p:resetInput target=":form:lovEstructuraPadre:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarEP" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEstructuraPlanta.aceptar}"  actionListener="#{controlEstructuraPlanta.actualizarEstructuraPadre()}"  process="@this" icon="ui-icon-check"/>
+                        
+                        <p:commandButton id="atrasEP" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}"  actionListener="#{controlEstructuraPlanta.cancelarCambioEstructuraPadre()}" process="@this"/>
+                        
                     </p:dialog>
 
                 </h:form>

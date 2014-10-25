@@ -539,6 +539,7 @@
                                      selection="#{controlHistoriaFormula.operandoSeleccionado}" selectionMode="single" widgetVar="lovOperando" scrollable="true" scrollHeight="250" scrollWidth="560"
                                      filteredValue="#{controlHistoriaFormula.filtrarListOperandos}" emptyMessage="No se encontrarón resultados para la búsqueda">              
                             <p:ajax event="rowSelect" listener="#{controlHistoriaFormula.activarAceptar()}" update=":formularioDialogos:aceptarOperando"/>
+                            <p:ajax event="rowDblselect" listener="#{controlHistoriaFormula.actualizarOperando()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Operando:"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovOperando.filter();" style="width:140px; position: relative; left: 70px;" />  
@@ -568,12 +569,9 @@
                                 <h:outputText value="#{operando.codigo}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarOperando" style="position: relative; left: 190px" value="Aceptar" disabled="#{controlHistoriaFormula.aceptar}" onclick="OperandoDialogo.hide(), lovOperando.clearFilters();" actionListener="#{controlHistoriaFormula.actualizarOperando()}"  process="@this">
-                            <p:resetInput target=":formularioDialogos:lovOperando:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="cancelarOperando" style="position: relative; left: 230px" value="Atras" onclick="OperandoDialogo.hide(), lovOperando.clearFilters();" actionListener="#{controlHistoriaFormula.cancelarCambioOperando()}" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovOperando:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarOperando" style="position: relative; left: 190px" value="Aceptar" disabled="#{controlHistoriaFormula.aceptar}" actionListener="#{controlHistoriaFormula.actualizarOperando()}"  process="@this"/>
+                        
+                        <p:commandButton id="cancelarOperando" style="position: relative; left: 230px" value="Atras" actionListener="#{controlHistoriaFormula.cancelarCambioOperando()}" process="@this"/>
                     </p:dialog> 
 
                     <p:dialog header="Operadores" widgetVar="OperadorDialogo" draggable="false" resizable="false" closable="false" id="OperadorDialogo"  
@@ -582,6 +580,7 @@
                                      selection="#{controlHistoriaFormula.operadorSeleccionado}" selectionMode="single" widgetVar="lovOperador" scrollable="true" scrollHeight="250" scrollWidth="560"
                                      filteredValue="#{controlHistoriaFormula.filtrarListOperadores}" emptyMessage="No se encontrarón resultados para la búsqueda">              
                             <p:ajax event="rowSelect" listener="#{controlHistoriaFormula.activarAceptar()}" update=":formularioDialogos:aceptarOperador"/>
+                            <p:ajax event="rowDblselect" listener="#{controlHistoriaFormula.actualizarOperador()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Operador:"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovOperador.filter();" style="width:140px; position: relative; left: 70px;" />  
@@ -599,12 +598,9 @@
                                 <h:outputText value="#{operador.signo}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarOperador" style="position: relative; left: 190px" value="Aceptar" disabled="#{controlHistoriaFormula.aceptar}" onclick="OperadorDialogo.hide(), lovOperador.clearFilters();" actionListener="#{controlHistoriaFormula.actualizarOperador()}"  process="@this">
-                            <p:resetInput target=":formularioDialogos:lovOperador:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="cancelarOperador" style="position: relative; left: 230px" value="Atras" onclick="OperadorDialogo.hide(), lovOperador.clearFilters();" actionListener="#{controlHistoriaFormula.cancelarCambioOperador()}" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovOperador:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarOperador" style="position: relative; left: 190px" value="Aceptar" disabled="#{controlHistoriaFormula.aceptar}" actionListener="#{controlHistoriaFormula.actualizarOperador()}"  process="@this"/>
+                        
+                        <p:commandButton id="cancelarOperador" style="position: relative; left: 230px" value="Atras" actionListener="#{controlHistoriaFormula.cancelarCambioOperador()}" process="@this"/>
                     </p:dialog> 
 
                     <p:dialog id="NuevoRegistroHistoria" header="Nuevo Registro Historia Formula" widgetVar="NuevoRegistroHistoria" closable="false" resizable="false"  draggable="false" modal="true" height="240" width="400" style="font-size: 12px; padding: 0px">  

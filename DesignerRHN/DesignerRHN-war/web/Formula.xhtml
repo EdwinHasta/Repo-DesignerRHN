@@ -302,7 +302,7 @@
                                      selection="#{controlFormula.formulaSeleccionada}" selectionMode="single" widgetVar="lovFormulas" scrollable="true" scrollWidth="525" scrollHeight="250"
                                      filteredValue="#{controlFormula.filtradoListaFormulasLOV}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlFormula.activarAceptar()}" update=":formularioDialogos:aceptarF"/>
-                            <p:ajax event="rowDblselect" listener="#{controlFormula.seleccionFormula()}" process="@this" onstart="lovFormulas.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlFormula.seleccionFormula()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarF']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovFormulas.filter();" style="width:200px; position: relative; left: -20px;" />  
@@ -329,12 +329,10 @@
                         
                         <h:outputText id="infoRegistroFormula" value="#{controlFormula.infoRegistroFormula}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton icon="ui-icon-check" id="aceptarF" style="position: relative; left: 350px" value="#{msg['aceptar']}" disabled="#{controlFormula.aceptar}" actionListener="#{controlFormula.seleccionFormula()}" update="aceptarF" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovFormulas:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasF" style="position: relative; left: 350px" value="#{msg['atras']}" onclick="FormulasDialogo.hide(), lovFormulas.clearFilters();" actionListener="#{controlFormula.cancelarSeleccionFormula()}" update="lovFormulas, aceptarF" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovFormulas:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check" id="aceptarF" style="position: relative; left: 350px" value="#{msg['aceptar']}" disabled="#{controlFormula.aceptar}" actionListener="#{controlFormula.seleccionFormula()}" process="@this" />
+                            
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasF" style="position: relative; left: 350px" value="#{msg['atras']}" actionListener="#{controlFormula.cancelarSeleccionFormula()}" process="@this" />
+                            
                     </p:dialog>
 
                     <p:dialog id="validacioNuevaFormula" header="#{msg['atencion']}" widgetVar="validacioNuevaFormula"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  

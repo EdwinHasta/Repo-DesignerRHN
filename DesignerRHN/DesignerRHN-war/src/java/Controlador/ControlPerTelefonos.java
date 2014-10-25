@@ -218,9 +218,10 @@ public class ControlPerTelefonos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("tiposTelefonosDialogo.hide()");
         context.reset("formularioDialogos:LOVTiposTelefonos:globalFilter");
-        context.update("formularioDialogos:LOVTiposTelefonos");
+        context.execute("LOVTiposTelefonos.clearFilters()");
+        context.execute("tiposTelefonosDialogo.hide()");
+        //context.update("formularioDialogos:LOVTiposTelefonos");
     }
 
     public void cancelarCambioTiposTelefonos() {
@@ -232,6 +233,10 @@ public class ControlPerTelefonos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVTiposTelefonos:globalFilter");
+        context.execute("LOVTiposTelefonos.clearFilters()");
+        context.execute("tiposTelefonosDialogo.hide()");
     }
 //MOSTRAR DATOS CELDA
 
@@ -635,9 +640,10 @@ public class ControlPerTelefonos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("ciudadesDialogo.hide()");
         context.reset("formularioDialogos:LOVCiudades:globalFilter");
-        context.update("formularioDialogos:LOVCiudades");
+        context.execute("LOVCiudades.clearFilters()");
+        context.execute("ciudadesDialogo.hide()");
+        //context.update("formularioDialogos:LOVCiudades");
     }
 
     public void cancelarCambioCiudad() {
@@ -649,6 +655,10 @@ public class ControlPerTelefonos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVCiudades:globalFilter");
+        context.execute("LOVCiudades.clearFilters()");
+        context.execute("ciudadesDialogo.hide()");
     }
 
     //Ubicacion Celda.

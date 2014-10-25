@@ -6,7 +6,6 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
     </h:head>
     <h:body>
         <ui:composition template="/Template.xhtml">
@@ -272,7 +271,7 @@
                                      scrollWidth="540" selectionMode="single" selection="#{controlConceptoRedondeo.conceptosSeleccionado}" scrollable="true" scrollHeight="250"
                                      filteredValue="#{controlConceptoRedondeo.lovfiltradoslistaConceptos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlConceptoRedondeo.activarAceptar()}" update=":formularioDialogos:aceptarC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlConceptoRedondeo.actualizarConceptos()}" process="@this" onstart="LOVConceptos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlConceptoRedondeo.actualizarConceptos()}" process="@this" />
 
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -292,12 +291,9 @@
                             </p:column>
 
                         </p:dataTable>
-                        <p:commandButton id="aceptarC" style="position: relative; left: 360px" value="#{msg['aceptar']}" disabled="#{controlConceptoRedondeo.aceptar}" onclick="conceptosDialogo.hide(), LOVConceptos.clearFilters();" actionListener="#{controlConceptoRedondeo.actualizarConceptos()}" update="LOVConceptos, aceptarC" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVConceptos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasC" style="position: relative; left: 370px" value="#{msg['atras']}" onclick="conceptosDialogo.hide(), LOVConceptos.clearFilters();" actionListener="#{controlConceptoRedondeo.cancelarCambiosConceptos()}" update="LOVConceptos" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVConceptos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarC" style="position: relative; left: 360px" value="#{msg['aceptar']}" disabled="#{controlConceptoRedondeo.aceptar}" actionListener="#{controlConceptoRedondeo.actualizarConceptos()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasC" style="position: relative; left: 370px" value="#{msg['atras']}" actionListener="#{controlConceptoRedondeo.cancelarCambiosConceptos()}" process="@this"/>
                     </p:dialog>
 
                     <!-- DIALOGO L.O.V TIPOS REDONDEOS-->
@@ -308,7 +304,7 @@
                                      selection="#{controlConceptoRedondeo.tiposRedondeosSeleccionado}" scrollWidth="390" selectionMode="single" widgetVar="LOVTiposRedondeos" scrollable="true" scrollHeight="250"
                                      filteredValue="#{controlConceptoRedondeo.lovfiltradoslistaTiposRedondeos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlConceptoRedondeo.activarAceptar()}" update=":formularioDialogos:aceptarT"/>
-                            <p:ajax event="rowDblselect" listener="#{controlConceptoRedondeo.actualizarTiposRedondeos()}" process="@this" onstart="LOVTiposRedondeos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlConceptoRedondeo.actualizarTiposRedondeos()}" process="@this" />
 
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarT']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -328,12 +324,9 @@
                             </p:column>
 
                         </p:dataTable>
-                        <p:commandButton id="aceptarT" style="position: relative; left: 190px" value="#{msg['aceptar']}" disabled="#{controlConceptoRedondeo.aceptar}" onclick="tiposRedondeosDialogo.hide(), LOVTiposRedondeos.clearFilters();" actionListener="#{controlConceptoRedondeo.actualizarTiposRedondeos()}" update="LOVTiposRedondeos, aceptarT" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVTiposRedondeos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasT" style="position: relative; left: 200px" value="#{msg['atras']}" onclick="tiposRedondeosDialogo.hide(), LOVTiposRedondeos.clearFilters();" actionListener="#{controlConceptoRedondeo.cancelarCambiosTiposRedondeos()}" update="LOVTiposRedondeos" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVTiposRedondeos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarT" style="position: relative; left: 190px" value="#{msg['aceptar']}" disabled="#{controlConceptoRedondeo.aceptar}"  actionListener="#{controlConceptoRedondeo.actualizarTiposRedondeos()}"  process="@this"/>
+                        
+                        <p:commandButton id="atrasT" style="position: relative; left: 200px" value="#{msg['atras']}"  actionListener="#{controlConceptoRedondeo.cancelarCambiosTiposRedondeos()}" process="@this"/>
                     </p:dialog>
 
                     <!-- DIALOGO L.O.V CONCEPTOS REDONDEOS-->
@@ -344,7 +337,7 @@
                                      selection="#{controlConceptoRedondeo.conceptosRedondeosSeleccionado}" scrollWidth="540" selectionMode="single" widgetVar="LOVConceptosRedondeos" scrollable="true" scrollHeight="250"
                                      filteredValue="#{controlConceptoRedondeo.lovfiltradoslistaConceptosRedondeos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlConceptoRedondeo.activarAceptar()}" update=":formularioDialogos:aceptarCR"/>
-                            <p:ajax event="rowDblselect" listener="#{controlConceptoRedondeo.actualizarConceptosRedondeos()}" process="@this" onstart="LOVConceptosRedondeos.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlConceptoRedondeo.actualizarConceptosRedondeos()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCR']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVConceptosRedondeos.filter();" style="width:140px; position: relative; left: 70px;" />  
@@ -370,12 +363,9 @@
                             </p:column>
 
                         </p:dataTable>
-                        <p:commandButton id="aceptarCR" style="position: relative; left: 190px" value="#{msg['aceptar']}" disabled="#{controlConceptoRedondeo.aceptar}" onclick="conceptosRedondeosDialogo.hide(), LOVConceptosRedondeos.clearFilters();" actionListener="#{controlConceptoRedondeo.actualizarConceptosRedondeos()}" update="LOVConceptosRedondeos, aceptarCR" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVConceptosRedondeos:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasCR" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="conceptosRedondeosDialogo.hide(), LOVConceptosRedondeos.clearFilters();" actionListener="#{controlConceptoRedondeo.cancelarCambiosConceptosRedondeos()}" update="LOVConceptosRedondeos" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVConceptosRedondeos:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarCR" style="position: relative; left: 190px" value="#{msg['aceptar']}" disabled="#{controlConceptoRedondeo.aceptar}" actionListener="#{controlConceptoRedondeo.actualizarConceptosRedondeos()}"  process="@this"/>
+                        
+                        <p:commandButton id="atrasCR" style="position: relative; left: 230px" value="#{msg['atras']}"  actionListener="#{controlConceptoRedondeo.cancelarCambiosConceptosRedondeos()}"  process="@this"/>
                     </p:dialog>
 
                 </h:form>

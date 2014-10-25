@@ -823,10 +823,12 @@ public class ControlFormulaNovedad implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
-        context.update("form:FormulaDialogo");
-        context.update("form:lovFormula");
-        context.update("form:aceptarF");
+        /*
+         context.update("form:FormulaDialogo");
+         context.update("form:lovFormula");
+         context.update("form:aceptarF");*/
         context.reset("form:lovFormula:globalFilter");
+        context.execute("lovFormula.clearFilters()");
         context.execute("FormulaDialogo.hide()");
     }
 
@@ -838,6 +840,10 @@ public class ControlFormulaNovedad implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovFormula:globalFilter");
+        context.execute("lovFormula.clearFilters()");
+        context.execute("FormulaDialogo.hide()");
     }
 
     /**
@@ -1095,8 +1101,8 @@ public class ControlFormulaNovedad implements Serializable {
     }
 
     public List<Formulas> getLovFormulas() {
-            lovFormulas = administrarFormulaNovedad.listFormulas(formulaActual.getSecuencia());
-        
+        lovFormulas = administrarFormulaNovedad.listFormulas(formulaActual.getSecuencia());
+
         return lovFormulas;
     }
 

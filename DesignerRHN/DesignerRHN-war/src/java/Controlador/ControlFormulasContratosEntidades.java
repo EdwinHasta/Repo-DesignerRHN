@@ -337,9 +337,10 @@ public class ControlFormulasContratosEntidades implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         cambioFormulasContratosEntidades = true;
-        context.execute("personasDialogo.hide()");
         context.reset("form:lovFormulas:globalFilter");
-        context.update("form:lovFormulas");
+        context.execute("lovFormulas.clearFilters()");
+        context.execute("personasDialogo.hide()");
+        //context.update("form:lovFormulas");
     }
 
     public void cancelarCambioTiposEntidades() {
@@ -350,6 +351,10 @@ public class ControlFormulasContratosEntidades implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovFormulas:globalFilter");
+        context.execute("lovFormulas.clearFilters()");
+        context.execute("personasDialogo.hide()");
     }
 
     public void modificarFormulasContratosEntidades(int indice, String confirmarCambio, String valorConfirmar) {

@@ -445,7 +445,7 @@
                                          selection="#{controlVigenciaLocalizacion.estructuraSelecionada}" selectionMode="single" widgetVar="lovLocalizacion" scrollable="true" scrollWidth="737" scrollHeight="250"
                                          filteredValue="#{controlVigenciaLocalizacion.filtradoEstructura}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaLocalizacion.activarAceptar()}" update=":form:aceptarL"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaLocalizacion.actualizarEstructura()}"  process="@this" onstart="lovLocalizacion.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaLocalizacion.actualizarEstructura()}"  process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarL']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovLocalizacion.filter();" style="width:150px; position: relative;left: -125px" />  
@@ -472,12 +472,10 @@
                             
                             <h:outputText id="infoRegistroLocalizacion" value="#{controlVigenciaLocalizacion.infoRegistroLocalizacion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarL" style="position: relative; left: 570px; top:5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaLocalizacion.aceptar}" onclick="LocalizacionDialogo.hide(), lovLocalizacion.clearFilters();" actionListener="#{controlVigenciaLocalizacion.actualizarEstructura()}" update="lovLocalizacion, aceptarL, datosVLEmpleado" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovLocalizacion:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasL" style="position: relative; left: 570px; top:5px" value="#{msg['atras']}" onclick="LocalizacionDialogo.hide(), lovLocalizacion.clearFilters();" actionListener="#{controlVigenciaLocalizacion.cancelarCambioEstructura()}" update="lovLocalizacion" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovLocalizacion:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarL" style="position: relative; left: 570px; top:5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaLocalizacion.aceptar}" actionListener="#{controlVigenciaLocalizacion.actualizarEstructura()}" process="@this" icon="ui-icon-check"/>
+                                
+                            <p:commandButton id="atrasL" style="position: relative; left: 570px; top:5px" value="#{msg['atras']}" actionListener="#{controlVigenciaLocalizacion.cancelarCambioEstructura()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                                
                         </p:dialog>
 
                         <!-- DIALOGO L.O.V ESTATICO MOTIVOS -->
@@ -487,7 +485,7 @@
                                          selection="#{controlVigenciaLocalizacion.motivoLocalizacionSelecionado}" selectionMode="single" widgetVar="lovMotivo" scrollable="true" scrollWidth="448" scrollHeight="250"
                                          filteredValue="#{controlVigenciaLocalizacion.filtradoMotivosLocalizaciones}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaLocalizacion.activarAceptar()}" update=":form:aceptarM"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaLocalizacion.actualizarMotivoLocalizacion()}"  process="@this" onstart="lovMotivo.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaLocalizacion.actualizarMotivoLocalizacion()}"  process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarM']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovMotivo.filter();" style="width:150px; position: relative; left: -20px;" />  
@@ -508,12 +506,10 @@
                             
                             <h:outputText id="infoRegistroMotivoLocalizacion" value="#{controlVigenciaLocalizacion.infoRegistroMotivoLocalizacion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarM" style="position: relative; left: 280px;top:5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaLocalizacion.aceptar}" onclick="MotivoDialogo.hide(), lovMotivo.clearFilters();" actionListener="#{controlVigenciaLocalizacion.actualizarMotivoLocalizacion()}" update="lovMotivo, aceptarM, datosVLEmpleado" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovMotivo:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasM" style="position: relative; left: 280px;top:5px" value="#{msg['atras']}" onclick="MotivoDialogo.hide(), lovMotivo.clearFilters();" actionListener="#{controlVigenciaLocalizacion.cancelarCambioMotivoLocalizacion()}" update="lovMotivo" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovMotivo:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarM" style="position: relative; left: 280px;top:5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaLocalizacion.aceptar}"  actionListener="#{controlVigenciaLocalizacion.actualizarMotivoLocalizacion()}" process="@this" icon="ui-icon-check"/>
+                                
+                            <p:commandButton id="atrasM" style="position: relative; left: 280px;top:5px" value="#{msg['atras']}" actionListener="#{controlVigenciaLocalizacion.cancelarCambioMotivoLocalizacion()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                                
                         </p:dialog>
 
                         <!-- DIALOGO L.O.V ESTATICO PROYECTOS -->
@@ -523,7 +519,7 @@
                                          selection="#{controlVigenciaLocalizacion.proyectoSelecionado}" selectionMode="single" widgetVar="lovProyectos" scrollable="true" scrollWidth="608" scrollHeight="250"
                                          filteredValue="#{controlVigenciaLocalizacion.filtradoProyectos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaLocalizacion.activarAceptar()}" update=":form:aceptarP"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaLocalizacion.actualizarProyecto()}"  process="@this" onstart="lovProyectos.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaLocalizacion.actualizarProyecto()}"  process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovProyectos.filter();" style="width:150px; position: relative; left: -90px;" />  
@@ -550,12 +546,10 @@
                             
                             <h:outputText id="infoRegistroProyecto" value="#{controlVigenciaLocalizacion.infoRegistroProyecto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarP" style="position: relative; left: 440px; top:5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaLocalizacion.aceptar}" onclick="ProyectosDialogo.hide(), lovProyectos.clearFilters();" actionListener="#{controlVigenciaLocalizacion.actualizarProyecto()}" update="lovProyectos, aceptarP, datosVLEmpleado" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovProyectos:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasP" style="position: relative; left: 440px;top:5px " value="#{msg['atras']}" onclick="ProyectosDialogo.hide(), lovProyectos.clearFilters();" actionListener="#{controlVigenciaLocalizacion.cancelarCambioProyecto()}" update="lovProyectos" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovProyectos:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarP" style="position: relative; left: 440px; top:5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaLocalizacion.aceptar}"  actionListener="#{controlVigenciaLocalizacion.actualizarProyecto()}" process="@this" icon="ui-icon-check"/>
+                                
+                            <p:commandButton id="atrasP" style="position: relative; left: 440px;top:5px " value="#{msg['atras']}"  actionListener="#{controlVigenciaLocalizacion.cancelarCambioProyecto()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                                
                         </p:dialog>
 
 
@@ -566,7 +560,7 @@
                                          selection="#{controlVigenciaLocalizacion.centroCostoSeleccionado}" selectionMode="single" widgetVar="lovCentroCostos" scrollable="true" scrollWidth="737" scrollHeight="250"
                                          filteredValue="#{controlVigenciaLocalizacion.filtradoCentroCostos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaLocalizacion.activarAceptar()}" update=":form:aceptarCC"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaLocalizacion.actualizarCentroCostoVP()}"  process="@this" onstart="lovCentroCostos.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaLocalizacion.actualizarCentroCostoVP()}"  process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarLP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovCentroCostos.filter();" style="width:150px; position: relative; left: -125px;" />  
@@ -593,12 +587,10 @@
                             
                             <h:outputText id="infoRegistroCentroCosto" value="#{controlVigenciaLocalizacion.infoRegistroCentroCosto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarCC" style="position: relative; left: 570px;top: 5px" value="#{msg['aceptar']}" actionListener="#{controlVigenciaLocalizacion.actualizarCentroCostoVP()}" disabled="#{controlVigenciaLocalizacion.aceptar}" onclick="CentroCostosDialogo.hide(), lovCentroCostos.clearFilters();" update="lovCentroCostos, aceptarL, datosVPVigencia" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovCentroCostos:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasCC" style="position: relative; left: 570px;top: 5px" value="#{msg['atras']}" actionListener="#{controlVigenciaLocalizacion.cancelarCambioCentroCostoVP()}" onclick="CentroCostosDialogo.hide(), lovCentroCostos.clearFilters();" update="lovCentroCostos" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovCentroCostos:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarCC" style="position: relative; left: 570px;top: 5px" value="#{msg['aceptar']}" actionListener="#{controlVigenciaLocalizacion.actualizarCentroCostoVP()}" disabled="#{controlVigenciaLocalizacion.aceptar}" process="@this" icon="ui-icon-check"/>
+                                
+                            <p:commandButton id="atrasCC" style="position: relative; left: 570px;top: 5px" value="#{msg['atras']}" actionListener="#{controlVigenciaLocalizacion.cancelarCambioCentroCostoVP()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                                
                         </p:dialog>
 
                         <!-- DIALOGO L.O.V ESTATICO PROYECTOS VIGENCIA PRORRATEO -->
@@ -608,7 +600,7 @@
                                          selection="#{controlVigenciaLocalizacion.proyectoSelecionado}" selectionMode="single" widgetVar="lovProyectosVP" scrollable="true" scrollWidth="619" scrollHeight="250"
                                          filteredValue="#{controlVigenciaLocalizacion.filtradoProyectos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaLocalizacion.activarAceptar()}" update=":form:aceptarPVP"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaLocalizacion.actualizarProyectoVP()}"  process="@this" onstart="lovProyectosVP.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaLocalizacion.actualizarProyectoVP()}"  process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovProyectosVP.filter();" style="width:150px; position: relative; left: -90px;" />  
@@ -635,12 +627,10 @@
                             
                             <h:outputText id="infoRegistroProyectoVP" value="#{controlVigenciaLocalizacion.infoRegistroProyectoVP}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarPVP" style="position: relative; left: 450px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaLocalizacion.aceptar}" actionListener="#{controlVigenciaLocalizacion.actualizarProyectoVP()}" onclick="ProyectosDialogoVP.hide(), lovProyectosVP.clearFilters();" update="lovProyectosVP, aceptarPVP, datosVPVigencia" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovProyectosVP:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasPVP" style="position: relative; left: 450px;top: 5px" value="#{msg['atras']}" onclick="ProyectosDialogoVP.hide(), lovProyectosVP.clearFilters();" actionListener="#{controlVigenciaLocalizacion.cancelarCambioProyectoVP()}" update="lovProyectosVP" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovProyectosVP:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarPVP" style="position: relative; left: 450px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaLocalizacion.aceptar}" actionListener="#{controlVigenciaLocalizacion.actualizarProyectoVP()}" process="@this" icon="ui-icon-check"/>
+                                
+                            <p:commandButton id="atrasPVP" style="position: relative; left: 450px;top: 5px" value="#{msg['atras']}" actionListener="#{controlVigenciaLocalizacion.cancelarCambioProyectoVP()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                                
                         </p:dialog>
 
                         <!-- DIALOGO L.O.V ESTATICO PROYECTOS VIGENCIA PRORRATEO PROYECTO -->
@@ -650,7 +640,7 @@
                                          selection="#{controlVigenciaLocalizacion.proyectoSelecionado}" selectionMode="single" widgetVar="lovProyectosVPP" scrollable="true" scrollWidth="619" scrollHeight="250"
                                          filteredValue="#{controlVigenciaLocalizacion.filtradoProyectos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaLocalizacion.activarAceptar()}" update=":form:aceptarPVPP"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaLocalizacion.actualizarProyectoVPP()}"  process="@this" onstart="lovProyectosVPP.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaLocalizacion.actualizarProyectoVPP()}"  process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovProyectosVPP.filter();" style="width:150px; position: relative; left: -90px;" />  
@@ -677,12 +667,10 @@
                             
                             <h:outputText id="infoRegistroProyectoVPP" value="#{controlVigenciaLocalizacion.infoRegistroProyectoVPP}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarPVPP" style="position: relative; left: 450px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaLocalizacion.aceptar}" actionListener="#{controlVigenciaLocalizacion.actualizarProyectoVPP()}" onclick="ProyectosDialogoVPP.hide(), lovProyectosVPP.clearFilters();" update="lovProyectosVPP, aceptarPVPP, datosVPPVigencia" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovProyectosVPP:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasPVPP" style="position: relative; left: 450px;top: 5px" value="#{msg['atras']}" onclick="ProyectosDialogoVPP.hide(), lovProyectosVPP.clearFilters();" actionListener="#{controlVigenciaLocalizacion.cancelarCambioProyectoVPP()}" update="lovProyectosVPP" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovProyectosVPP:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarPVPP" style="position: relative; left: 450px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaLocalizacion.aceptar}" actionListener="#{controlVigenciaLocalizacion.actualizarProyectoVPP()}" process="@this" icon="ui-icon-check"/>
+                                
+                            <p:commandButton id="atrasPVPP" style="position: relative; left: 450px;top: 5px" value="#{msg['atras']}" actionListener="#{controlVigenciaLocalizacion.cancelarCambioProyectoVPP()}"  process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                                
                         </p:dialog>
 
 

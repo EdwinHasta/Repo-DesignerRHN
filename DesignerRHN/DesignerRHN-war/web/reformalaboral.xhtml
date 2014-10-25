@@ -325,7 +325,7 @@
                                      selection="#{controlReformaLaboral.reformaLaboralSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovReformaLaboral" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlReformaLaboral.filtrarLovReformasLaborales}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlReformaLaboral.activarAceptar()}" update=":form:aceptarRL"/>
-                            <p:ajax event="rowDblselect" listener="#{controlReformaLaboral.seleccionarReformaLaboralClonar()}"  process="@this" onstart="lovReformaLaboral.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlReformaLaboral.seleccionarReformaLaboralClonar()}"  process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarRL']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovReformaLaboral.filter();" style="width:140px; position: relative; left: 70px;" />  
@@ -346,12 +346,9 @@
                         
                         <h:outputText id="infoRegistroReforma" value="#{controlReformaLaboral.infoRegistroReforma}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton id="aceptarRL" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlReformaLaboral.aceptar}" onclick="ReformaLaboralDialogo.hide(), lovReformaLaboral.clearFilters();"  actionListener="#{controlReformaLaboral.seleccionarReformaLaboralClonar()}" update="lovReformaLaboral, aceptarRL" process="@this">
-                            <p:resetInput target=":form:lovReformaLaboral:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasRL" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="ReformaLaboralDialogo.hide(), lovReformaLaboral.clearFilters();" actionListener="#{controlReformaLaboral.cancelarReformaLaboralClonar()}" update="lovReformaLaboral" process="@this">
-                            <p:resetInput target=":form:lovReformaLaboral:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarRL" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlReformaLaboral.aceptar}"   actionListener="#{controlReformaLaboral.seleccionarReformaLaboralClonar()}"  process="@this"/>
+                        
+                        <p:commandButton id="atrasRL" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlReformaLaboral.cancelarReformaLaboralClonar()}" process="@this"/>
                     </p:dialog>
 
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlReformaLaboral.activarCtrlF11()}"/> 

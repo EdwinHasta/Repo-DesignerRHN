@@ -130,7 +130,7 @@
                                          selection="#{controlConceptosProyecciones.conceptoSeleccionado}" selectionMode="single" widgetVar="lovCiudades" scrollable="true" scrollWidth="450" scrollHeight="280"
                                          filteredValue="#{controlConceptosProyecciones.filtradoConceptos}" emptyMessage="No se encontrarón resultados para la búsqueda">              
                                 <p:ajax event="rowSelect" listener="#{controlConceptosProyecciones.activarAceptar()}" update=":form:aceptarCar"/>
-                                <p:ajax event="rowDblselect" listener="#{controlConceptosProyecciones.actualizarConceptos()}" process="@this" onstart="lovCiudades.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlConceptosProyecciones.actualizarConceptos()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="Buscar Concepto: "  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovCiudades.filter();" style="width:150px; position: relative; left: 15px;" />  
@@ -146,13 +146,9 @@
 
                             <h:outputText id="infoRegistroCiudades" value="#{controlConceptosProyecciones.infoRegistroConceptos}" style="position: absolute; left: 15px; top: 380px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarCar" style="position: relative; left: 283px" value="Aceptar" disabled="#{controlConceptosProyecciones.aceptar}"  onclick="conceptosDialogo.hide(), lovCiudades.clearFilters();"  actionListener="#{controlConceptosProyecciones.actualizarConceptos()}" update="lovCiudades, aceptarCar" process="@this" icon="ui-icon-check">
-                                <p:resetInput target=":form:lovCiudades:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasCar" style="position: relative; left: 283px" value="Atras"  actionListener="#{controlConceptosProyecciones.cancelarCambioConceptos()}" onclick="conceptosDialogo.hide();
-                                    lovCiudades.clearFilters();" update="lovCiudades" process="@this" icon="ui-icon-arrowreturnthick-1-w">
-                                <p:resetInput target=":form:lovCiudades:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarCar" style="position: relative; left: 283px" value="Aceptar" disabled="#{controlConceptosProyecciones.aceptar}"  actionListener="#{controlConceptosProyecciones.actualizarConceptos()}" process="@this" icon="ui-icon-check"/>
+                            
+                            <p:commandButton id="atrasCar" style="position: relative; left: 283px" value="Atras"  actionListener="#{controlConceptosProyecciones.cancelarCambioConceptos()}"  process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
                         <p:dialog id="confirmarGuardar" header="ATENCION...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  

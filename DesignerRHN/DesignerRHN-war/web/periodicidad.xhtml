@@ -178,7 +178,7 @@
                                          selection="#{controlPeriodicidades.unidadSeleccionada}" selectionMode="single" widgetVar="lovTipoPeriodicidades" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlPeriodicidades.filtradoUnidades}" emptyMessage="No se encuentran valores en esta tabla">              
                                 <p:ajax event="rowSelect" listener="#{controlPeriodicidades.activarAceptar()}" update=":form:aceptarTCC"/>
-                                <p:ajax event="rowDblselect" listener="#{controlPeriodicidades.actualizarUnidad()}" process="@this" onstart="lovTipoPeriodicidades.clearFilters()" update="lovTipoPeriodicidades, :form:datosPeriodicidades"/>
+                                <p:ajax event="rowDblselect" listener="#{controlPeriodicidades.actualizarUnidad()}" process="@this" />
 
                                 <f:facet name="header">  
                                     <h:outputText value="Buscar Unidad"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -199,12 +199,9 @@
                             </p:dataTable>
                             <h:outputText id="infoRegistroUnidades" value="#{controlPeriodicidades.infoRegistroUnidades}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarTCC" style="position: relative; left: 270px" icon="ui-icon-check" value="Aceptar" disabled="#{controlPeriodicidades.aceptar}" onclick="tiposPeriodicidadesDialogo.hide(), lovTipoPeriodicidades.clearFilters();" actionListener="#{controlPeriodicidades.actualizarUnidad()}" update="lovTipoPeriodicidades, aceptarTCC, datosPeriodicidades" process="@this">
-                                <p:resetInput target=":form:lovTipoPeriodicidades:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasTCC" style="position: relative; left: 270px" icon="ui-icon-arrowreturnthick-1-w" value="Atras" onclick="tiposPeriodicidadesDialogo.hide(), lovTipoPeriodicidades.clearFilters();" actionListener="#{controlPeriodicidades.cancelarCambioTiposUnidad()}" update="lovTipoPeriodicidades" process="@this">
-                                <p:resetInput target=":form:lovTipoPeriodicidades:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarTCC" style="position: relative; left: 270px" icon="ui-icon-check" value="Aceptar" disabled="#{controlPeriodicidades.aceptar}"  actionListener="#{controlPeriodicidades.actualizarUnidad()}" process="@this"/>
+                            
+                            <p:commandButton id="atrasTCC" style="position: relative; left: 270px" icon="ui-icon-arrowreturnthick-1-w" value="Atras"  actionListener="#{controlPeriodicidades.cancelarCambioTiposUnidad()}"  process="@this"/>
                         </p:dialog> 
 
                         <p:dialog header="Unidades Base" widgetVar="unidadesBaseDialogo" draggable="false" resizable="false" closable="false" id="unidadesBaseDialogo"  
@@ -213,7 +210,7 @@
                                          selection="#{controlPeriodicidades.unidadSeleccionada}" selectionMode="single" widgetVar="lovUnidadesBase" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlPeriodicidades.filtradoUnidades}" emptyMessage="No se encuentran valores en esta tabla">              
                                 <p:ajax event="rowSelect" listener="#{controlPeriodicidades.activarAceptar()}" update=":form:aceptarUB"/>
-                                <p:ajax event="rowDblselect" listener="#{controlPeriodicidades.actualizarUnidadBase()}" process="@this" onstart="lovUnidadesBase.clearFilters()" update="lovUnidadesBase, :form:datosPeriodicidades"/>
+                                <p:ajax event="rowDblselect" listener="#{controlPeriodicidades.actualizarUnidadBase()}" process="@this" />
 
                                 <f:facet name="header">  
                                     <h:outputText value="Buscar Unidad Base"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -234,12 +231,9 @@
                             </p:dataTable>
                             <h:outputText id="infoRegistroUnidades1" value="#{controlPeriodicidades.infoRegistroUnidades1}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarUB" style="position: relative; left: 280px" icon="ui-icon-check" value="Aceptar" disabled="#{controlPeriodicidades.aceptar}" onclick="unidadesBaseDialogo.hide(), lovUnidadesBase.clearFilters();" actionListener="#{controlPeriodicidades.actualizarUnidadBase()}" update="lovUnidadesBase, aceptarUB, datosPeriodicidades" process="@this">
-                                <p:resetInput target=":form:lovUnidadesBase:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasUB" style="position: relative; left: 280px" icon="ui-icon-arrowreturnthick-1-w" value="Atras" onclick="unidadesBaseDialogo.hide(), lovUnidadesBase.clearFilters();" actionListener="#{controlPeriodicidades.cancelarCambioTiposUnidad()}" update="lovUnidadesBase" process="@this">
-                                <p:resetInput target=":form:lovUnidadesBase:globalFilter"/>
-                            </p:commandButton>
+                            <p:commandButton id="aceptarUB" style="position: relative; left: 280px" icon="ui-icon-check" value="Aceptar" disabled="#{controlPeriodicidades.aceptar}"  actionListener="#{controlPeriodicidades.actualizarUnidadBase()}"  process="@this"/>
+                            
+                            <p:commandButton id="atrasUB" style="position: relative; left: 280px" icon="ui-icon-arrowreturnthick-1-w" value="Atras" actionListener="#{controlPeriodicidades.cancelarCambioUnidadBase()}"  process="@this"/>
                         </p:dialog> 
 
 
@@ -406,10 +400,6 @@
                     </p:dialog>
 
                     <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-                    <!-- muestra el dialogo del boton de buscar centros costos-->
-                    <!-- DIALOGO L.O.V ESTATICO UBICACIONES -->
-
-
 
                     <p:dialog header="Periodicidades" widgetVar="buscarPeriodicidadesDialogo" draggable="false" resizable="false" closable="false" id="buscarPeriodicidadesDialogo"  
                               showEffect="fade" hideEffect="fade" width="470" modal="true" style="">
@@ -417,7 +407,7 @@
                                       selection="#{controlPeriodicidades.periciodidadesSeleccionado}" selectionMode="single" widgetVar="lovPeriodicidades" scrollable="true" scrollWidth="450" scrollHeight="250"
                                       filteredValue="#{controlPeriodicidades.filterPericiodidades}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlPeriodicidades.activarAceptar()}" update=":formularioDialogos:aceptarNCC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlPeriodicidades.seleccionPeriodicidades()}" process="@this" onstart="lovPeriodicidades.clearFilters()" update="lovPeriodicidades, :form:datosPeriodicidades"/>
+                            <p:ajax event="rowDblselect" listener="#{controlPeriodicidades.seleccionPeriodicidades()}" process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Periodicidad : "  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovPeriodicidades.filter();" style="width:150px; position: relative; left: 50px;" />  
@@ -438,12 +428,8 @@
 
                         <h:outputText id="infoRegistroPeriodicidadesBoton" value="#{controlPeriodicidades.infoRegistroPeriodicidadesBoton}" style="position: absolute; left: 15px; top: 442px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarNCC" icon="ui-icon-check" style="position: relative; left: 280px" value="Aceptar" disabled="#{controlPeriodicidades.aceptar}" actionListener="#{controlPeriodicidades.seleccionPeriodicidades()}" update="lovPeriodicidades, aceptarNCC, :form:datosPeriodicidades" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovPeriodicidades:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasTCC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 280px" value="Atras" onclick="buscarPeriodicidadesDialogo.hide(), lovPeriodicidades.clearFilters();" actionListener="#{controlPeriodicidades.cancelarSeleccionUnidadPorEmpresa()}" update="lovPeriodicidades" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovPeriodicidades:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton id="aceptarNCC" icon="ui-icon-check" style="position: relative; left: 280px" value="Aceptar" disabled="#{controlPeriodicidades.aceptar}" actionListener="#{controlPeriodicidades.seleccionPeriodicidades()}" process="@this"/>
+                        <p:commandButton id="atrasTCC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 280px" value="Atras" actionListener="#{controlPeriodicidades.cancelarSeleccionUnidadPorEmpresa()}" process="@this"/>
                     </p:dialog> 
 
                     <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->                    

@@ -5326,11 +5326,12 @@ public class ControlDetalleConcepto implements Serializable {
         indexVigenciaCuenta = -1;
         secRegistroVigenciaCuenta = null;
         tipoActualizacion = -1;
-
+        /*
         context.update("form:TipoCCDialogo");
         context.update("form:lovTiposCC");
-        context.update("form:aceptarTCC");
+        context.update("form:aceptarTCC");*/
         context.reset("form:lovTiposCC:globalFilter");
+        context.execute("lovTiposCC.clearFilters()");
         context.execute("TipoCCDialogo.hide()");
     }
 
@@ -5342,6 +5343,10 @@ public class ControlDetalleConcepto implements Serializable {
         secRegistroVigenciaCuenta = null;
         tipoActualizacion = -1;
         permitirIndexVigenciaCuenta = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTiposCC:globalFilter");
+        context.execute("lovTiposCC.clearFilters()");
+        context.execute("TipoCCDialogo.hide()");
     }
 
     public void actualizarCuentaDebito() {
@@ -5388,11 +5393,12 @@ public class ControlDetalleConcepto implements Serializable {
         indexVigenciaCuenta = -1;
         secRegistroVigenciaCuenta = null;
         tipoActualizacion = -1;
-
+        /*
         context.update("form:DebitoDialogo");
         context.update("form:lovDebito");
-        context.update("form:aceptarCD");
+        context.update("form:aceptarCD");*/
         context.reset("form:lovDebito:globalFilter");
+        context.execute("lovDebito.clearFilters()");
         context.execute("DebitoDialogo.hide()");
     }
 
@@ -5404,6 +5410,10 @@ public class ControlDetalleConcepto implements Serializable {
         secRegistroVigenciaCuenta = null;
         tipoActualizacion = -1;
         permitirIndexVigenciaCuenta = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovDebito:globalFilter");
+        context.execute("lovDebito.clearFilters()");
+        context.execute("DebitoDialogo.hide()");
     }
 
     public void actualizarCuentaCredito() {
@@ -5450,11 +5460,12 @@ public class ControlDetalleConcepto implements Serializable {
         indexVigenciaCuenta = -1;
         secRegistroVigenciaCuenta = null;
         tipoActualizacion = -1;
-
+        /*
         context.update("form:CreditoDialogo");
         context.update("form:lovCredito");
-        context.update("form:aceptarCC");
+        context.update("form:aceptarCC");*/
         context.reset("form:lovCredito:globalFilter");
+        context.execute("lovCredito.clearFilters()");
         context.execute("CreditoDialogo.hide()");
     }
 
@@ -5466,6 +5477,10 @@ public class ControlDetalleConcepto implements Serializable {
         secRegistroVigenciaCuenta = null;
         tipoActualizacion = -1;
         permitirIndexVigenciaCuenta = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovCredito:globalFilter");
+        context.execute("lovCredito.clearFilters()");
+        context.execute("CreditoDialogo.hide()");
     }
 
     public void actualizarCentroCostoDebito() {
@@ -5510,11 +5525,12 @@ public class ControlDetalleConcepto implements Serializable {
         indexVigenciaCuenta = -1;
         secRegistroVigenciaCuenta = null;
         tipoActualizacion = -1;
-
+        /*
         context.update("form:CentroCostoDDialogo");
         context.update("form:lovCentroCostoD");
-        context.update("form:aceptarCCD");
+        context.update("form:aceptarCCD");*/
         context.reset("form:lovCentroCostoD:globalFilter");
+        context.execute("lovCentroCostoD.clearFilters()");
         context.execute("CentroCostoDDialogo.hide()");
     }
 
@@ -5526,6 +5542,10 @@ public class ControlDetalleConcepto implements Serializable {
         secRegistroVigenciaCuenta = null;
         tipoActualizacion = -1;
         permitirIndexVigenciaCuenta = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovCentroCostoD:globalFilter");
+        context.execute("lovCentroCostoD.clearFilters()");
+        context.execute("CentroCostoDDialogo.hide()");
     }
 
     public void actualizarCentroCostoCredito() {
@@ -5571,11 +5591,12 @@ public class ControlDetalleConcepto implements Serializable {
         indexVigenciaCuenta = -1;
         secRegistroVigenciaCuenta = null;
         tipoActualizacion = -1;
-
+        /*
         context.update("form:CentroCostoCDialogo");
         context.update("form:lovCentroCostoC");
-        context.update("form:aceptarCCC");
+        context.update("form:aceptarCCC");*/
         context.reset("form:lovCentroCostoC:globalFilter");
+        context.execute("lovCentroCostoC.clearFilters()");
         context.execute("CentroCostoCDialogo.hide()");
     }
 
@@ -5587,6 +5608,10 @@ public class ControlDetalleConcepto implements Serializable {
         secRegistroVigenciaCuenta = null;
         tipoActualizacion = -1;
         permitirIndexVigenciaCuenta = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovCentroCostoC:globalFilter");
+        context.execute("lovCentroCostoC.clearFilters()");
+        context.execute("CentroCostoCDialogo.hide()");
     }
 
     public void actualizarGrupoConcepto() {
@@ -5633,11 +5658,12 @@ public class ControlDetalleConcepto implements Serializable {
         indexVigenciaGrupoConcepto = -1;
         secRegistroVigenciaGrupoConcepto = null;
         tipoActualizacion = -1;
-
+        /*
         context.update("form:GruposConceptosDialogo");
         context.update("form:lovGrupoConcepto");
-        context.update("form:aceptarGC");
+        context.update("form:aceptarGC");*/
         context.reset("form:lovGrupoConcepto:globalFilter");
+        context.execute("lovGrupoConcepto.clearFilters()");
         context.execute("GruposConceptosDialogo.hide()");
     }
 
@@ -5649,6 +5675,10 @@ public class ControlDetalleConcepto implements Serializable {
         secRegistroVigenciaGrupoConcepto = null;
         tipoActualizacion = -1;
         permitirIndexVigenciaGrupoConcepto = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovGrupoConcepto:globalFilter");
+        context.execute("lovGrupoConcepto.clearFilters()");
+        context.execute("GruposConceptosDialogo.hide()");
     }
 
     public void actualizarTipoTrabajador() {
@@ -5693,11 +5723,12 @@ public class ControlDetalleConcepto implements Serializable {
         indexVigenciaConceptoTT = -1;
         secRegistroVigenciaConceptoTT = null;
         tipoActualizacion = -1;
-
+        /*
         context.update("form:TipoTrabajadorDialogo");
         context.update("form:lovTipoTrabajador");
-        context.update("form:aceptarTTr");
+        context.update("form:aceptarTTr");*/
         context.reset("form:lovTipoTrabajador:globalFilter");
+        context.execute("lovTipoTrabajador.clearFilters()");
         context.execute("TipoTrabajadorDialogo.hide()");
     }
 
@@ -5709,6 +5740,10 @@ public class ControlDetalleConcepto implements Serializable {
         secRegistroVigenciaConceptoTT = null;
         tipoActualizacion = -1;
         permitirIndexVigenciaConceptoTT = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTipoTrabajador:globalFilter");
+        context.execute("lovTipoTrabajador.clearFilters()");
+        context.execute("TipoTrabajadorDialogo.hide()");
     }
 
     public void actualizarTipoContrato() {
@@ -5754,11 +5789,12 @@ public class ControlDetalleConcepto implements Serializable {
         indexVigenciaConceptoTC = -1;
         secRegistroVigenciaConceptoTC = null;
         tipoActualizacion = -1;
-
+        /*
         context.update("form:TipoContratosDialogo");
         context.update("form:lovTipoContrato");
-        context.update("form:aceptarTCt");
+        context.update("form:aceptarTCt");*/
         context.reset("form:lovTipoContrato:globalFilter");
+        context.execute("lovTipoContrato.clearFilters()");
         context.execute("TipoContratosDialogo.hide()");
     }
 
@@ -5770,6 +5806,10 @@ public class ControlDetalleConcepto implements Serializable {
         secRegistroVigenciaConceptoTC = null;
         tipoActualizacion = -1;
         permitirIndexVigenciaConceptoTC = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTipoContrato:globalFilter");
+        context.execute("lovTipoContrato.clearFilters()");
+        context.execute("TipoContratosDialogo.hide()");
     }
 
     public void actualizarReformaLaboral() {
@@ -5814,11 +5854,12 @@ public class ControlDetalleConcepto implements Serializable {
         indexVigenciaConceptoRL = -1;
         secRegistroVigenciaConceptoRL = null;
         tipoActualizacion = -1;
-
+        /*
         context.update("form:ReformaLaboralDialogo");
         context.update("form:lovReformaLaboral");
-        context.update("form:aceptarRL");
+        context.update("form:aceptarRL");*/
         context.reset("form:lovReformaLaboral:globalFilter");
+        context.execute("lovReformaLaboral.clearFilters()");
         context.execute("ReformaLaboralDialogo.hide()");
     }
 
@@ -5830,6 +5871,10 @@ public class ControlDetalleConcepto implements Serializable {
         secRegistroVigenciaConceptoRL = null;
         tipoActualizacion = -1;
         permitirIndexVigenciaConceptoRL = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovReformaLaboral:globalFilter");
+        context.execute("lovReformaLaboral.clearFilters()");
+        context.execute("ReformaLaboralDialogo.hide()");
     }
 
     public void actualizarFormula() {
@@ -5874,11 +5919,12 @@ public class ControlDetalleConcepto implements Serializable {
         indexFormulasConceptos = -1;
         secRegistroFormulasConceptos = null;
         tipoActualizacion = -1;
-
+        /*
         context.update("form:FormulasDialogo");
         context.update("form:lovFormula");
-        context.update("form:aceptarF");
+        context.update("form:aceptarF");*/
         context.reset("form:lovFormula:globalFilter");
+        context.execute("lovFormula.clearFilters()");
         context.execute("FormulasDialogo.hide()");
     }
 
@@ -5890,6 +5936,10 @@ public class ControlDetalleConcepto implements Serializable {
         secRegistroFormulasConceptos = null;
         tipoActualizacion = -1;
         permitirIndexFormulasConceptos = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovFormula:globalFilter");
+        context.execute("lovFormula.clearFilters()");
+        context.execute("FormulasDialogo.hide()");
     }
 
     public void actualizarOrden() {
@@ -5935,11 +5985,12 @@ public class ControlDetalleConcepto implements Serializable {
         indexFormulasConceptos = -1;
         secRegistroFormulasConceptos = null;
         tipoActualizacion = -1;
-
+        /*
         context.update("form:FormulaConceptoDialogo");
         context.update("form:lovFormulaC");
-        context.update("form:aceptarFC");
+        context.update("form:aceptarFC");*/
         context.reset("form:lovFormulaC:globalFilter");
+        context.execute("lovFormulaC.clearFilters()");
         context.execute("FormulaConceptoDialogo.hide()");
     }
 
@@ -5951,6 +6002,10 @@ public class ControlDetalleConcepto implements Serializable {
         secRegistroFormulasConceptos = null;
         tipoActualizacion = -1;
         permitirIndexFormulasConceptos = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovFormulaC:globalFilter");
+        context.execute("lovFormulaC.clearFilters()");
+        context.execute("FormulaConceptoDialogo.hide()");
     }
 
     public void activarAceptar() {

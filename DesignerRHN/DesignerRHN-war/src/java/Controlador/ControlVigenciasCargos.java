@@ -640,9 +640,10 @@ public class ControlVigenciasCargos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("estructurasDialog.hide()");
         context.reset("form:lOVEstructuras:globalFilter");
-        context.update("form:lOVEstructuras");
+        context.execute("lOVEstructuras.clearFilters()");
+        context.execute("estructurasDialog.hide()");
+        //context.update("form:lOVEstructuras");
     }
 
     public void cancelarCambioEstructura() {
@@ -653,6 +654,10 @@ public class ControlVigenciasCargos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lOVEstructuras:globalFilter");
+        context.execute("lOVEstructuras.clearFilters()");
+        context.execute("estructurasDialog.hide()");
     }
     //MOTIVOS----------------------------------------------------------
     /*
@@ -716,9 +721,10 @@ public class ControlVigenciasCargos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("motivosDialog.hide()");
         context.reset("form:motivosCambCargo:globalFilter");
-        context.update("form:motivosCambCargo");
+        context.execute("motivosCambCargo.clearFilters()");
+        context.execute("motivosDialog.hide()");
+        //context.update("form:motivosCambCargo");
     }
 
     public void cancelarCambioMotivo() {
@@ -729,6 +735,10 @@ public class ControlVigenciasCargos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:motivosCambCargo:globalFilter");
+        context.execute("motivosCambCargo.clearFilters()");
+        context.execute("motivosDialog.hide()");
     }
 
     //CARGOS-----------------------------------------------------------
@@ -778,9 +788,10 @@ public class ControlVigenciasCargos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("cargosDialog.hide()");
         context.reset("form:lOVCargos:globalFilter");
-        context.update("form:lOVCargos");
+        context.execute("lOVCargos.clearFilters()");
+        context.execute("cargosDialog.hide()");
+        //context.update("form:lOVCargos");
     }
 
     public void cancelarCambioCargo() {
@@ -791,6 +802,10 @@ public class ControlVigenciasCargos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lOVCargos:globalFilter");
+        context.execute("lOVCargos.clearFilters()");
+        context.execute("cargosDialog.hide()");
     }
 
     public void actualizarEmpleadoJefe() {
@@ -835,9 +850,10 @@ public class ControlVigenciasCargos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("dialogoEmpleadoJefe.hide()");
         context.reset("form:lvEmpleadoJefe:globalFilter");
-        context.update("form:lvEmpleadoJefe");
+        context.execute("lvEmpleadoJefe.clearFilters()");
+        context.execute("dialogoEmpleadoJefe.hide()");
+        //context.update("form:lvEmpleadoJefe");
     }
 
     public void cancelarEmpleadoJefe() {
@@ -848,6 +864,10 @@ public class ControlVigenciasCargos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lvEmpleadoJefe:globalFilter");
+        context.execute("lvEmpleadoJefe.clearFilters()");
+        context.execute("dialogoEmpleadoJefe.hide()");
     }
     //FECHAVIGENCIA-------------------------------------------------------------
     /*

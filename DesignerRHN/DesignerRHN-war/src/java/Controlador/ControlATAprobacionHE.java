@@ -3,7 +3,7 @@ package Controlador;
 import Entidades.ActualUsuario;
 import Entidades.EersCabeceras;
 import Entidades.EersDetalles;
-import Entidades.EersFlujos; 
+import Entidades.EersFlujos;
 import Entidades.Empleados;
 import Entidades.Estructuras;
 import Exportar.ExportarPDF;
@@ -12,16 +12,16 @@ import InterfaceAdministrar.AdministrarATAprobacionHEInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigInteger;  
-import java.util.ArrayList; 
-import java.util.Date;  
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Map; 
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage; 
-import javax.faces.bean.ManagedBean;  
-import javax.faces.bean.SessionScoped; 
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
@@ -29,15 +29,15 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
 import org.primefaces.context.RequestContext;
 
-/**  
+/**
  *
  * @author Administrador
- */ 
+ */
 @ManagedBean
 @SessionScoped
 public class ControlATAprobacionHE implements Serializable {
 
-    @EJB 
+    @EJB
     AdministrarATAprobacionHEInterface administrarATAprobacionHE;
     @EJB
     AdministrarRastrosInterface administrarRastros;
@@ -86,15 +86,15 @@ public class ControlATAprobacionHE implements Serializable {
     private EersDetalles editarDetalle;
 
     private boolean guardado;
-    private boolean permitirIndexCabecera; 
-    private BigInteger secRegistro; 
-    private BigInteger backUpSecRegistro; 
+    private boolean permitirIndexCabecera;
+    private BigInteger secRegistro;
+    private BigInteger backUpSecRegistro;
     private Date fechaParametro;
-    private boolean aceptar; 
-    private String paginaAnterior; 
-    private String nombreTablaXML, nombreArchivoXML;   
+    private boolean aceptar;
+    private String paginaAnterior;
+    private String nombreTablaXML, nombreArchivoXML;
     private boolean activarBuscar, activarMostrarTodos;
- 
+
     //
     private int numeroScrollCabecera;
     private int rowsCabecera;
@@ -111,14 +111,14 @@ public class ControlATAprobacionHE implements Serializable {
 
         altoDivTablaInferiorIzquierda = "95px";
         topDivTablaInferiorIzquierda = "37px";
- 
+
         altoDivTablaInferiorDerecha = "95px";
-        topDivTablaInferiorDerecha = "37px"; 
+        topDivTablaInferiorDerecha = "37px";
 
         activarBuscar = false;
-        activarMostrarTodos = true; 
+        activarMostrarTodos = true;
 
-        listaEersCabeceras = null; 
+        listaEersCabeceras = null;
         cabeceraSeleccionada = new EersCabeceras();
         empleadoActualProceso = null;
         listaEersCabeceras = null;
@@ -955,11 +955,12 @@ public class ControlATAprobacionHE implements Serializable {
 
         numeroScrollCabecera = 505;
         rowsCabecera = 20;
-
-        context.update("formEmpleado:EmpleadoDialogo");
-        context.update("formEmpleado:lovEmpleado");
-        context.update("formEmpleado:aceptarE");
+        /*
+         context.update("formEmpleado:EmpleadoDialogo");
+         context.update("formEmpleado:lovEmpleado");
+         context.update("formEmpleado:aceptarE");*/
         context.reset("formEmpleado:lovEmpleado:globalFilter");
+        context.execute("lovEmpleado.clearFilters()");
         context.execute("EmpleadoDialogo.hide()");
 
         context.update("form:panelTotal");
@@ -998,6 +999,10 @@ public class ControlATAprobacionHE implements Serializable {
         aceptar = true;
         indexCabecera = -1;
         secRegistro = null;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formEmpleado:lovEmpleado:globalFilter");
+        context.execute("lovEmpleado.clearFilters()");
+        context.execute("EmpleadoDialogo.hide()");
     }
 
     public void actualizarEstructura() {
@@ -1029,10 +1034,12 @@ public class ControlATAprobacionHE implements Serializable {
         aceptar = true;
         indexCabecera = -1;
         secRegistro = null;
-        context.update("formEstructura:EstructuraDialogo");
-        context.update("formEstructura:lovEstructura");
-        context.update("formEstructura:aceptarEA");
+        /*
+         context.update("formEstructura:EstructuraDialogo");
+         context.update("formEstructura:lovEstructura");
+         context.update("formEstructura:aceptarEA");*/
         context.reset("formEstructura:lovEstructura:globalFilter");
+        context.execute("lovEstructura.clearFilters()");
         context.execute("EstructuraDialogo.hide()");
     }
 
@@ -1043,6 +1050,10 @@ public class ControlATAprobacionHE implements Serializable {
         indexCabecera = -1;
         secRegistro = null;
         permitirIndexCabecera = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formEstructura:lovEstructura:globalFilter");
+        context.execute("lovEstructura.clearFilters()");
+        context.execute("EstructuraDialogo.hide()");
     }
 
     public void eventoFiltrar() {
@@ -1173,8 +1184,8 @@ public class ControlATAprobacionHE implements Serializable {
                 filtrarListaFlujos = null;
                 tipoListaFlujo = 0;
             }
-        }  
-        if (indexDetalle >= 0) { 
+        }
+        if (indexDetalle >= 0) {
             if (banderaDetalle == 0) {
                 detalleConcepto = (Column) c.getViewRoot().findComponent("form:datosDetalle:detalleConcepto");
                 detalleConcepto.setFilterStyle("width: 90px");
@@ -1198,9 +1209,9 @@ public class ControlATAprobacionHE implements Serializable {
                 filtrarListaDetalles = null;
                 tipoListaDetalle = 0;
             }
-        }  
-    } 
-   
+        }
+    }
+
     public void exportPDF() throws IOException {
         if (indexCabecera >= 0) {
             FacesContext c = FacesContext.getCurrentInstance();
@@ -1209,8 +1220,8 @@ public class ControlATAprobacionHE implements Serializable {
             Exporter exporter = new ExportarPDF();
             exporter.export(context, tabla, "Conceptos_A_Aprobar_PDF", false, false, "UTF-8", null, null);
             context.responseComplete();
-            indexCabecera = -1; 
-            secRegistro = null; 
+            indexCabecera = -1;
+            secRegistro = null;
         }
         if (indexFlujo >= 0) {
             FacesContext c = FacesContext.getCurrentInstance();

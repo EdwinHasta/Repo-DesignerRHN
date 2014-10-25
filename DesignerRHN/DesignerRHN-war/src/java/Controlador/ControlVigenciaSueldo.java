@@ -2100,11 +2100,12 @@ public class ControlVigenciaSueldo implements Serializable {
         index = -1;
         secRegistroVS = null;
         tipoActualizacion = -1;
-
+        /*
         context.update("form:MotivoCambioSueldoDialogo");
         context.update("form:lovMotivoCambioSueldo");
-        context.update("form:aceptarMCS");
+        context.update("form:aceptarMCS");*/
         context.reset("form:lovMotivoCambioSueldo:globalFilter");
+        context.execute("lovMotivoCambioSueldo.clearFilters()");
         context.execute("MotivoCambioSueldoDialogo.hide()");
     }
 
@@ -2119,6 +2120,10 @@ public class ControlVigenciaSueldo implements Serializable {
         secRegistroVS = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovMotivoCambioSueldo:globalFilter");
+        context.execute("lovMotivoCambioSueldo.clearFilters()");
+        context.execute("MotivoCambioSueldoDialogo.hide()");
     }
 
     //Motivo Localizacion
@@ -2168,11 +2173,12 @@ public class ControlVigenciaSueldo implements Serializable {
         indexVA = -1;
         secRegistroVA = null;
         tipoActualizacion = -1;
-
+        /*
         context.update("form:TipoEntidadDialogo");
         context.update("form:lovTipoEntidad");
-        context.update("form:aceptarTE");
+        context.update("form:aceptarTE");*/
         context.reset("form:lovTipoEntidad:globalFilter");
+        context.execute("lovTipoEntidad.clearFilters()");
         context.execute("TipoEntidadDialogo.hide()");
     }
 
@@ -2188,6 +2194,10 @@ public class ControlVigenciaSueldo implements Serializable {
         secRegistroVA = null;
         tipoActualizacion = -1;
         permitirIndexVA = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTipoEntidad:globalFilter");
+        context.execute("lovTipoEntidad.clearFilters()");
+        context.execute("TipoEntidadDialogo.hide()");
     }
 
     //Motivo Localizacion
@@ -2258,11 +2268,12 @@ public class ControlVigenciaSueldo implements Serializable {
         indexVA = -1;
         secRegistroVA = null;
         tipoActualizacion = -1;
-
+        /*
         context.update("form:TerceroDialogo");
         context.update("form:lovTercero");
-        context.update("form:aceptarT");
+        context.update("form:aceptarT");*/
         context.reset("form:lovTercero:globalFilter");
+        context.execute("lovTercero.clearFilters()");
         context.execute("TerceroDialogo.hide()");
     }
 
@@ -2277,6 +2288,10 @@ public class ControlVigenciaSueldo implements Serializable {
         secRegistroVA = null;
         tipoActualizacion = -1;
         permitirIndexVA = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTercero:globalFilter");
+        context.execute("lovTercero.clearFilters()");
+        context.execute("TerceroDialogo.hide()");
     }
 
     ///////////////////////////////////////////////////////////////////////
@@ -2325,11 +2340,12 @@ public class ControlVigenciaSueldo implements Serializable {
         index = -1;
         secRegistroVS = null;
         tipoActualizacion = -1;
-
+        /*
         context.update("form:TipoSueldoDialogo");
         context.update("form:lovTipoSueldo");
-        context.update("form:aceptarTS");
+        context.update("form:aceptarTS");*/
         context.reset("form:lovTipoSueldo:globalFilter");
+        context.execute("lovTipoSueldo.clearFilters()");
         context.execute("TipoSueldoDialogo.hide()");
     }
 
@@ -2343,6 +2359,10 @@ public class ControlVigenciaSueldo implements Serializable {
         index = -1;
         secRegistroVS = null;
         tipoActualizacion = -1;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovTipoSueldo:globalFilter");
+        context.execute("lovTipoSueldo.clearFilters()");
+        context.execute("TipoSueldoDialogo.hide()");
     }
 
     //LISTA DE VALORES DINAMICA

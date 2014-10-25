@@ -834,9 +834,10 @@ public class ControlIndices implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("tiposindicesDialogo.hide()");
         context.reset("form:lovTiposIndices:globalFilter");
-        context.update("form:lovTiposIndices");
+        context.execute("lovTiposIndices.clearFilters()");
+        context.execute("tiposindicesDialogo.hide()");
+        //context.update("form:lovTiposIndices");
         context.update("form:datosIndices");
     }
 

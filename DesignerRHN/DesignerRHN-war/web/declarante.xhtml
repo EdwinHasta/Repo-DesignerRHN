@@ -7,7 +7,6 @@
       xmlns:lnk="http://java.sun.com/jsf/composite/linkare"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
     </h:head>
     <h:body>
         <ui:composition template="/Template.xhtml">
@@ -394,7 +393,7 @@
                                      filteredValue="#{controlDeclarantes.lovfiltradoslistaRetenciones}" emptyMessage="#{msg['lovvacio']}">              
                             
                             <p:ajax event="rowSelect" listener="#{controlDeclarantes.activarAceptar()}" update=":formularioDialogos:aceptarM"/>
-                            <p:ajax event="rowDblselect" listener="#{controlDeclarantes.actualizarRetenciones()}" process="@this" onstart="LOVMinimas.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlDeclarantes.actualizarRetenciones()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarR']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVMinimas.filter();" style="width:150px; position: relative; left: 40px;" />  
@@ -430,12 +429,11 @@
                                 <h:outputText value="#{m.ingresos}" />  
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarM" value="#{msg['aceptar']}" disabled="#{controlDeclarantes.aceptar}" icon="ui-icon-check" style="position: absolute; top: 305px; left: 290px; " actionListener="#{controlDeclarantes.actualizarRetenciones()}" onclick="LOVMinimas.clearFilters();" update="aceptarM" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVMinimas:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasM" style="position: absolute; left: 380px; top: 305px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlDeclarantes.cancelarCambioDeclarantes()}" onclick="minimasDialogo.hide(), LOVMinimas.clearFilters();"  update="LOVMinimas" process="@this">
-                            <p:resetInput target=":formularioDialogos:LOVMinimas:globalFilter"/>
-                        </p:commandButton>
+                        
+                        <p:commandButton id="aceptarM" value="#{msg['aceptar']}" disabled="#{controlDeclarantes.aceptar}" icon="ui-icon-check" style="position: absolute; top: 305px; left: 290px; " actionListener="#{controlDeclarantes.actualizarRetenciones()}" process="@this"/>
+                        
+                        <p:commandButton id="atrasM" style="position: absolute; left: 380px; top: 305px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlDeclarantes.cancelarCambioDeclarantes()}" process="@this"/>
+                        
                     </p:dialog>
                 </h:form>
 

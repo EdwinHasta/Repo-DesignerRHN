@@ -32,12 +32,10 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 public class ControlConceptoRedondeo implements Serializable {
 
-    
     @EJB
     AdministrarConceptosRedondeosInterface administrarConceptosRedondeos;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
 
     //Lista ConceptosRedondeos
     private List<ConceptosRedondeos> listaConceptosRedondeos;
@@ -88,7 +86,6 @@ public class ControlConceptoRedondeo implements Serializable {
     private List<TiposRedondeos> lovfiltradoslistaTiposRedondeos;
     private TiposRedondeos tiposRedondeosSeleccionado;
 
-
     /**
      * Constructor de ControlConceptoRedondeo
      */
@@ -119,7 +116,7 @@ public class ControlConceptoRedondeo implements Serializable {
         secRegistro = null;
         cambiosPagina = true;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -128,7 +125,7 @@ public class ControlConceptoRedondeo implements Serializable {
             administrarConceptosRedondeos.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -297,9 +294,10 @@ public class ControlConceptoRedondeo implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("conceptosDialogo.hide()");
         context.reset("formularioDialogos:LOVConceptos:globalFilter");
-        context.update("formularioDialogos:LOVConceptos");
+        context.execute("LOVConceptos.clearFilters()");
+        context.execute("conceptosDialogo.hide()");
+        //context.update("formularioDialogos:LOVConceptos");
     }
 
     public void cancelarCambiosConceptos() {
@@ -310,6 +308,10 @@ public class ControlConceptoRedondeo implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVConceptos:globalFilter");
+        context.execute("LOVConceptos.clearFilters()");
+        context.execute("conceptosDialogo.hide()");
     }
 
     public void actualizarTiposRedondeos() {
@@ -355,9 +357,10 @@ public class ControlConceptoRedondeo implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("tiposRedondeosDialogo.hide()");
         context.reset("formularioDialogos:LOVTiposRedondeos:globalFilter");
-        context.update("formularioDialogos:LOVTiposRedondeos");
+        context.execute("LOVTiposRedondeos.clearFilters()");
+        context.execute("tiposRedondeosDialogo.hide()");
+        //context.update("formularioDialogos:LOVTiposRedondeos");
     }
 
     public void cancelarCambiosTiposRedondeos() {
@@ -368,6 +371,10 @@ public class ControlConceptoRedondeo implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVTiposRedondeos:globalFilter");
+        context.execute("LOVTiposRedondeos.clearFilters()");
+        context.execute("tiposRedondeosDialogo.hide()");
     }
 
     public void actualizarConceptosRedondeos() {
@@ -381,9 +388,10 @@ public class ControlConceptoRedondeo implements Serializable {
             listaConceptosRedondeos.add(conceptosRedondeosSeleccionado);
         }
 
-        context.execute("conceptosRedondeosDialogo.hide()");
         context.reset("formularioDialogos:LOVConceptosRedondeos:globalFilter");
-        context.update("formularioDialogos:LOVConceptosRedondeos");
+        context.execute("LOVConceptosRedondeos.clearFilters()");
+        context.execute("conceptosRedondeosDialogo.hide()");
+        //context.update("formularioDialogos:LOVConceptosRedondeos");
         context.update("form:datosConceptosRedondeos");
         filtradoListaConceptosRedondeos = null;
         conceptosRedondeosSeleccionado = null;
@@ -393,7 +401,7 @@ public class ControlConceptoRedondeo implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
     }
-    
+
     public void cancelarCambiosConceptosRedondeos() {
         filtradoListaConceptosRedondeos = null;
         aceptar = true;
@@ -402,8 +410,12 @@ public class ControlConceptoRedondeo implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("formularioDialogos:LOVConceptosRedondeos:globalFilter");
+        context.execute("LOVConceptosRedondeos.clearFilters()");
+        context.execute("conceptosRedondeosDialogo.hide()");
     }
-    
+
     public void mostrarTodos() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (!listaConceptosRedondeos.isEmpty()) {
@@ -412,7 +424,7 @@ public class ControlConceptoRedondeo implements Serializable {
         } else {
             listaConceptosRedondeos = administrarConceptosRedondeos.consultarConceptosRedondeos();
         }
-        
+
         context.update("form:datosConceptosRedondeos");
         filtradoListaConceptosRedondeos = null;
         aceptar = true;
@@ -680,8 +692,8 @@ public class ControlConceptoRedondeo implements Serializable {
 
     //DUPLICAR VC
     /**
-     * Metodo que duplica un ConceptoRedondeo especifico dado por la posicion de la
-     * fila
+     * Metodo que duplica un ConceptoRedondeo especifico dado por la posicion de
+     * la fila
      */
     public void duplicarConceptosRedondeos() {
         if (index >= 0) {
@@ -701,7 +713,7 @@ public class ControlConceptoRedondeo implements Serializable {
                 duplicarConceptoRedondeo.setTiporedondeo(filtradoListaConceptosRedondeos.get(index).getTiporedondeo());
 
             }
-            System.out.println("Concepto Duplicar : "+listaConceptosRedondeos.get(index).getConcepto());
+            System.out.println("Concepto Duplicar : " + listaConceptosRedondeos.get(index).getConcepto());
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:DuplicarRegistroConceptosRedondeos");
             context.execute("DuplicarRegistroConceptosRedondeos.show()");
@@ -836,6 +848,7 @@ public class ControlConceptoRedondeo implements Serializable {
             tipoLista = 0;
         }
     }
+
     //SALIR
     /**
      * Metodo que cierra la sesion y limpia los datos en la pagina

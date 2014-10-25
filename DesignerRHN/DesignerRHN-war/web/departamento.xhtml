@@ -134,7 +134,7 @@
                                          selection="#{controlDepartamentos.paisSeleccionado}" selectionMode="single" widgetVar="lovTiposFamiliares" scrollable="true" scrollWidth="420" scrollHeight="280"
                                          filteredValue="#{controlDepartamentos.filtradoPaises}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlDepartamentos.activarAceptar()}" update=":form:aceptarS"/>
-                                <p:ajax event="rowDblselect" listener="#{controlDepartamentos.actualizarPais()}" process="@this" onstart="lovTiposFamiliares.clearFilters()"/>
+                                <p:ajax event="rowDblselect" listener="#{controlDepartamentos.actualizarPais()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="Buscar Pais :"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTiposFamiliares.filter();" style="width:180px; position: relative; left: 40px;" />  
@@ -154,13 +154,10 @@
 
                             </p:dataTable>
                             <h:outputText id="infoRegistroPaises" value="#{controlDepartamentos.infoRegistroPaises}" style="position: absolute; left: 15px; top: 385px; font-weight: bold"/>
-                            <p:commandButton id="aceptarS"  icon="ui-icon-check" style="position: relative; left: 240px" value="Aceptar"  onclick="sucursalesDialogo.hide(), lovTiposFamiliares.clearFilters();" disabled="#{controlDepartamentos.aceptar}" actionListener="#{controlDepartamentos.actualizarPais()}" update="lovTiposFamiliares, aceptarS" process="@this">
-                                <p:resetInput target=":form:lovTiposFamiliares:globalFilter"/>
-                            </p:commandButton>
-                            <p:commandButton id="atrasS"  icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 240px" value="Atras"  actionListener="#{controlDepartamentos.cancelarCambioPais()}" onclick="sucursalesDialogo.hide();
-                                    lovTiposFamiliares.clearFilters();" update="lovTiposFamiliares" process="@this">
-                                <p:resetInput target=":form:lovTiposFamiliares:globalFilter"/>
-                            </p:commandButton>
+                            
+                            <p:commandButton id="aceptarS"  icon="ui-icon-check" style="position: relative; left: 240px" value="Aceptar"  disabled="#{controlDepartamentos.aceptar}" actionListener="#{controlDepartamentos.actualizarPais()}" process="@this"/>
+                            
+                            <p:commandButton id="atrasS"  icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 240px" value="Atras"  actionListener="#{controlDepartamentos.cancelarCambioPais()}" process="@this"/>
                         </p:dialog>
 
 

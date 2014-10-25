@@ -117,7 +117,7 @@ public class ControlValoresConceptos implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
-              RequestContext context = RequestContext.getCurrentInstance();
+            RequestContext context = RequestContext.getCurrentInstance();
             infoRegistro = "Cantidad de registros: " + filtrarValoresConceptos.size();
             context.update("form:informacionRegistro");
         } catch (Exception e) {
@@ -217,7 +217,8 @@ public class ControlValoresConceptos implements Serializable {
     }
 
     public void cancelarModificacion() {
-        if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
             codigo = (Column) c.getViewRoot().findComponent("form:datosValoresConceptos:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
@@ -252,7 +253,8 @@ public class ControlValoresConceptos implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void salir() {FacesContext c = FacesContext.getCurrentInstance();
+    public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
             codigo = (Column) c.getViewRoot().findComponent("form:datosValoresConceptos:codigo");
@@ -288,7 +290,8 @@ public class ControlValoresConceptos implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void activarCtrlF11() {FacesContext c = FacesContext.getCurrentInstance();
+    public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             tamano = 246;
             codigo = (Column) c.getViewRoot().findComponent("form:datosValoresConceptos:codigo");
@@ -399,8 +402,9 @@ public class ControlValoresConceptos implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         cambioValoresConceptos = true;
-        context.execute("personasDialogo.hide()");
         context.reset("form:lovConceptos:globalFilter");
+        context.execute("lovConceptos.clearFilters()");
+        context.execute("personasDialogo.hide()");
         context.update("form:lovConceptos");
     }
 
@@ -412,6 +416,10 @@ public class ControlValoresConceptos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovConceptos:globalFilter");
+        context.execute("lovConceptos.clearFilters()");
+        context.execute("personasDialogo.hide()");
     }
 
     public void modificarValoresConceptos(int indice, String confirmarCambio, String valorConfirmar) {
@@ -1259,7 +1267,8 @@ public class ControlValoresConceptos implements Serializable {
         BigInteger contarValoresConceptos = administrarValoresConceptos.contarConceptoValorConcepto(nuevoValoresConceptos.getConcepto().getSecuencia());
 
         if (contador == 2 && contarValoresConceptos.equals(new BigInteger("0"))) {
-            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
                 codigo = (Column) c.getViewRoot().findComponent("form:datosValoresConceptos:codigo");
@@ -1398,7 +1407,8 @@ public class ControlValoresConceptos implements Serializable {
             infoRegistro = "Cantidad de registros: " + listValoresConceptos.size();
             context.update("form:informacionRegistro");
             context.update("form:ACEPTAR");
-            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 codigo = (Column) c.getViewRoot().findComponent("form:datosValoresConceptos:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");

@@ -486,11 +486,12 @@ public class ControlATParametroTiempo implements Serializable {
         aceptar = true;
 
         posicionParametroTiempo = -1;
-
-        context.update("formEmpleado:EmpleadoDialogo");
-        context.update("form:lovEmpleado");
-        context.update("form:aceptarE");
+        /*
+         context.update("formEmpleado:EmpleadoDialogo");
+         context.update("form:lovEmpleado");
+         context.update("form:aceptarE");*/
         context.reset("form:lovEmpleado:globalFilter");
+        context.execute("lovEmpleado.clearFilters()");
         context.execute("EmpleadoDialogo.hide()");
     }
 
@@ -498,6 +499,10 @@ public class ControlATParametroTiempo implements Serializable {
         filtrarLovEmpleados = null;
         empleadoSeleccionado = null;
         aceptar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovEmpleado:globalFilter");
+        context.execute("lovEmpleado.clearFilters()");
+        context.execute("EmpleadoDialogo.hide()");
     }
 
     public void actualizarCuadrilla() {
@@ -512,11 +517,12 @@ public class ControlATParametroTiempo implements Serializable {
         aceptar = true;
 
         posicionParametroTiempo = -1;
-
-        context.update("formCuadrilla:CuadrillaDialogo");
-        context.update("form:lovCuadrilla");
-        context.update("form:aceptarC");
+        /*
+         context.update("formCuadrilla:CuadrillaDialogo");
+         context.update("form:lovCuadrilla");
+         context.update("form:aceptarC");*/
         context.reset("form:lovCuadrilla:globalFilter");
+        context.execute("lovCuadrilla.clearFilters()");
         context.execute("CuadrillaDialogo.hide()");
     }
 
@@ -524,6 +530,10 @@ public class ControlATParametroTiempo implements Serializable {
         filtrarLovCuadrillas = null;
         cuadrillaSeleccionada = null;
         aceptar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovCuadrilla:globalFilter");
+        context.execute("lovCuadrilla.clearFilters()");
+        context.execute("CuadrillaDialogo.hide()");
     }
 
     public void actionBtnProgramarTurno() {

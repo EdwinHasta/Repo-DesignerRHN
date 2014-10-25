@@ -873,9 +873,10 @@ public class ControlClavesSap implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.execute("clavesajustesDialogo.hide()");
         context.reset("form:lovClavesSap:globalFilter");
-        context.update("form:lovClavesSap");
+        context.execute("lovClavesSap.clearFilters()");
+        context.execute("clavesajustesDialogo.hide()");
+        //context.update("form:lovClavesSap");
         context.update("form:datosClavesSap");
     }
 
@@ -894,6 +895,10 @@ public class ControlClavesSap implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovClavesSap:globalFilter");
+        context.execute("lovClavesSap.clearFilters()");
+        context.execute("clavesajustesDialogo.hide()");
     }
 
     public void borrandoClavesSap() {

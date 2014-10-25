@@ -507,7 +507,7 @@
                                      selection="#{controlATExtraRecargo.tipoDiaSeleccionado}" scrollWidth="410" selectionMode="single" widgetVar="lovTipoDia" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlATExtraRecargo.filtrarLovTiposDias}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlATExtraRecargo.activarAceptar()}" update=":form:aceptarTD"/>
-                            <p:ajax event="rowDblselect" listener="#{controlATExtraRecargo.actualizarTipoDia()}" process="@this" onstart="lovTipoDia.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlATExtraRecargo.actualizarTipoDia()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTD']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTipoDia.filter();" style="width:140px; position: relative; left: 70px;" />  
@@ -534,12 +534,10 @@
                         
                         <h:outputText id="infoRegistroTipoDia" value="#{controlATExtraRecargo.infoRegistroTipoDia}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton icon="ui-icon-check" id="aceptarTD" style="position: relative; left: 190px" value="#{msg['aceptar']}" disabled="#{controlATExtraRecargo.aceptar}" onclick="TipoDiaDialogo.hide(), lovTipoDia.clearFilters();" actionListener="#{controlATExtraRecargo.actualizarTipoDia()}" update="lovTipoDia, aceptarTD, datosExtraRecargo" process="@this">
-                            <p:resetInput target=":form:lovTipoDia:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasTD" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="TipoDiaDialogo.hide(), lovTipoDia.clearFilters();" actionListener="#{controlATExtraRecargo.cancelarCambioTipoDia()}" update="lovTipoDia" process="@this">
-                            <p:resetInput target=":form:lovTipoDia:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check" id="aceptarTD" style="position: relative; left: 190px" value="#{msg['aceptar']}" disabled="#{controlATExtraRecargo.aceptar}"  actionListener="#{controlATExtraRecargo.actualizarTipoDia()}" process="@this"/>
+                        
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasTD" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlATExtraRecargo.cancelarCambioTipoDia()}" process="@this"/>
+                        
                     </p:dialog>
 
                     <p:dialog header="#{msg['tiposjornadasTJ']}" widgetVar="TipoJornadaDialogo" draggable="false" resizable="false" closable="false" id="TipoJornadaDialogo"  
@@ -548,7 +546,7 @@
                                      selection="#{controlATExtraRecargo.tipoJornadaSeleccionada}" selectionMode="single" widgetVar="lovTipoJornada" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlATExtraRecargo.filtrarLovTiposJornadaS}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlATExtraRecargo.activarAceptar()}" update=":form:aceptarTJ"/>
-                            <p:ajax event="rowDblselect" listener="#{controlATExtraRecargo.actualizarTipoJornada()}" process="@this" onstart="lovTipoJornada.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlATExtraRecargo.actualizarTipoJornada()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTJ']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTipoJornada.filter();" style="width:140px; position: relative; left: 70px;" />  
@@ -600,12 +598,9 @@
                         
                         <h:outputText id="infoRegistroTipoJornada" value="#{controlATExtraRecargo.infoRegistroTipoJornada}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton icon="ui-icon-check" id="aceptarTJ" style="position: relative; left: 190px" value="#{msg['aceptar']}" disabled="#{controlATExtraRecargo.aceptar}" onclick="TipoJornadaDialogo.hide(), lovTipoJornada.clearFilters();" actionListener="#{controlATExtraRecargo.actualizarTipoJornada()}" update="lovTipoJornada, aceptarTJ, datosExtraRecargo" process="@this">
-                            <p:resetInput target=":form:lovTipoJornada:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasTJ" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="TipoJornadaDialogo.hide(), lovTipoJornada.clearFilters();" actionListener="#{controlATExtraRecargo.cancelarCambioTipoJornada()}" update="lovTipoJornada" process="@this">
-                            <p:resetInput target=":form:lovTipoJornada:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check" id="aceptarTJ" style="position: relative; left: 190px" value="#{msg['aceptar']}" disabled="#{controlATExtraRecargo.aceptar}" actionListener="#{controlATExtraRecargo.actualizarTipoJornada()}" process="@this"/>
+                        
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasTJ" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlATExtraRecargo.cancelarCambioTipoJornada()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['tiposlegislacionesTL']}" widgetVar="LegislacionDialogo" draggable="false" resizable="false" closable="false" id="LegislacionDialogo"  
@@ -614,7 +609,7 @@
                                      selection="#{controlATExtraRecargo.contratoSeleccionado}" selectionMode="single" widgetVar="lovLegislacion" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlATExtraRecargo.filtrarLovContratos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlATExtraRecargo.activarAceptar()}" update=":form:aceptarLeg"/>
-                            <p:ajax event="rowDblselect" listener="#{controlATExtraRecargo.actualizarLegislacion()}" process="@this" onstart="lovLegislacion.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlATExtraRecargo.actualizarLegislacion()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTL']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovLegislacion.filter();" style="width:140px; position: relative; left: 70px;" />  
@@ -641,12 +636,9 @@
                         
                         <h:outputText id="infoRegistroLegislacion" value="#{controlATExtraRecargo.infoRegistroLegislacion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton icon="ui-icon-check" id="aceptarLeg" style="position: relative; left: 190px" value="#{msg['aceptar']}" disabled="#{controlATExtraRecargo.aceptar}" onclick="LegislacionDialogo.hide(), lovLegislacion.clearFilters();" actionListener="#{controlATExtraRecargo.actualizarLegislacion()}" update="lovLegislacion, aceptarLeg, datosExtraRecargo" process="@this">
-                            <p:resetInput target=":form:lovLegislacion:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasLeg" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="LegislacionDialogo.hide(), lovLegislacion.clearFilters();" actionListener="#{controlATExtraRecargo.cancelarCambioLegislacion()}" update="lovLegislacion" process="@this">
-                            <p:resetInput target=":form:lovLegislacion:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check" id="aceptarLeg" style="position: relative; left: 190px" value="#{msg['aceptar']}" disabled="#{controlATExtraRecargo.aceptar}"  actionListener="#{controlATExtraRecargo.actualizarLegislacion()}"  process="@this"/>
+                        
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasLeg" style="position: relative; left: 230px" value="#{msg['atras']}"  actionListener="#{controlATExtraRecargo.cancelarCambioLegislacion()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['conceptosC']}" widgetVar="ConceptoDialogo" draggable="false" resizable="false" closable="false" id="ConceptoDialogo"  
@@ -655,7 +647,7 @@
                                      selection="#{controlATExtraRecargo.conceptoSeleccionado}" selectionMode="single" widgetVar="lovConcepto" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlATExtraRecargo.filtrarLovConceptos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlATExtraRecargo.activarAceptar()}" update=":form:aceptarCon"/>
-                            <p:ajax event="rowDblselect" listener="#{controlATExtraRecargo.actualizarConcepto()}" process="@this" onstart="lovConcepto.clearFilters()"/>
+                            <p:ajax event="rowDblselect" listener="#{controlATExtraRecargo.actualizarConcepto()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovConcepto.filter();" style="width:140px; position: relative; left: 70px;" />  
@@ -688,12 +680,10 @@
                         
                         <h:outputText id="infoRegistroConcepto" value="#{controlATExtraRecargo.infoRegistroConcepto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         
-                        <p:commandButton icon="ui-icon-check" id="aceptarCon" style="position: relative; left: 190px" value="#{msg['aceptar']}" disabled="#{controlATExtraRecargo.aceptar}" onclick="ConceptoDialogo.hide(), lovConcepto.clearFilters();" actionListener="#{controlATExtraRecargo.actualizarConcepto()}" update="lovConcepto, aceptarCon, datosDetalleExtraRecargo" process="@this">
-                            <p:resetInput target=":form:lovConcepto:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasCon" style="position: relative; left: 230px" value="#{msg['aceptar']}" onclick="ConceptoDialogo.hide(), lovConcepto.clearFilters();" actionListener="#{controlATExtraRecargo.cancelarCambioConcepto()}" update="lovConcepto" process="@this">
-                            <p:resetInput target=":form:lovConcepto:globalFilter"/>
-                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-check" id="aceptarCon" style="position: relative; left: 190px" value="#{msg['aceptar']}" disabled="#{controlATExtraRecargo.aceptar}" actionListener="#{controlATExtraRecargo.actualizarConcepto()}" process="@this"/>
+                        
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasCon" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlATExtraRecargo.cancelarCambioConcepto()}" process="@this"/>
+                        
                     </p:dialog>
 
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlATExtraRecargo.activarCtrlF11()}"/> 
