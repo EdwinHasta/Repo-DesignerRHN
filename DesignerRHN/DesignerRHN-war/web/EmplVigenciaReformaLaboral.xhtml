@@ -57,15 +57,20 @@
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasReformasLaborales.duplicarVigenciaRL()}"  process="@this"/>  
                                 <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
+                                
                                 <p:separator style="position: relative; top: -9px"/>
+                                
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasReformasLaborales.verificarRastro()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
 
                                 <p:separator style="position: relative; top: -9px"/>
+                                
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasReformasLaborales.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+                                
                                 <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasReformasLaborales.salir()}" action="nomina" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
+                                
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
@@ -157,7 +162,7 @@
                         </p:dialog> 
 
                         <h:outputText id="informacionRegistro" value="#{controlVigenciasReformasLaborales.infoRegistro}" style="position: absolute; left: 15px; top: 470px; font-weight: bold"/>
-                        <p:commandButton style="position: absolute; left: 683px; top: 470px;  " id="ACEPTAR" icon="ui-icon-check" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosVRLEmpleado" process="@this" disabled="#{controlVigenciasReformasLaborales.guardado}"/>
+                        <p:commandButton style="position: absolute; left: 683px; top: 470px;  " id="ACEPTAR" icon="ui-icon-check" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" process="@this" disabled="#{controlVigenciasReformasLaborales.guardado}"/>
                         <p:commandButton style="position: absolute; left: 775px; top: 470px;  " id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlVigenciasReformasLaborales.salir()}" action="nomina" process="@this" />
 
                     </p:panel>

@@ -789,7 +789,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             filtrarVRL = null;
             tipoLista = 0;
         }
-
         listVRLBorrar.clear();
         listVRLCrear.clear();
         listVRLModificar.clear();
@@ -798,7 +797,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         k = 0;
         vigenciasReformasLaborales = null;
         guardado = true;
-        context.update("form:ACEPTAR");
     }
     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO)
 

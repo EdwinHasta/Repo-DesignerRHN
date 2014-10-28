@@ -68,7 +68,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     private int index;
     //modificar
     private List<VigenciasTiposTrabajadores> listVTTModificar;
-    private boolean guardado, guardarOk;
+    private boolean guardado;
     //crear VC
     public VigenciasTiposTrabajadores nuevaVigencia;
     private List<VigenciasTiposTrabajadores> listVTTCrear;
@@ -131,8 +131,6 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     private BigInteger backUpSecRegistro;
     private Date fechaVigenciaVTT;
     private Date fechaParametro;
-    private Date fechaIni, fechaFin;
-    private Date fechaVig;
     private String altoTabla;
     //
     private String infoRegistroTipoTrabajador;
@@ -390,7 +388,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
             } else {
                 permitirIndex = false;
                 getInfoRegistroTipoTrabajador();
-                context.update("form:TipoTrabajadorDialogo");
+                context.update("formLovs:TipoTrabajadorDialogo");
                 context.execute("TipoTrabajadorDialogo.show()");
                 tipoActualizacion = 0;
             }
@@ -470,7 +468,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
                 listaTiposTrabajadores.clear();
                 getListaTiposTrabajadores();
             } else {
-                context.update("form:TipoTrabajadorDialogo");
+                context.update("formLovs:TipoTrabajadorDialogo");
                 context.execute("TipoTrabajadorDialogo.show()");
                 tipoActualizacion = tipoNuevo;
                 if (tipoNuevo == 1) {
@@ -558,11 +556,8 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
             }
             if (!listVTTCrear.isEmpty()) {
                 for (int i = 0; i < listVTTCrear.size(); i++) {
-                    try {
                         administrarVigenciasTiposTrabajadores.crearVTT(listVTTCrear.get(i));
-                    } catch (Exception e) {
-                        System.out.println("Error GuardarCambiosVTT crearVTT");
-                    }
+                    
                 }
                 listVTTCrear.clear();
             }
@@ -1161,7 +1156,6 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
             filtrarVTT = null;
             tipoLista = 0;
         }
-
         listVTTBorrar.clear();
         listVTTCrear.clear();
         listVTTModificar.clear();
@@ -1173,7 +1167,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         guardado = false;
         cambioPension = false;
         cambioRetiros = false;
-        context.update("form:ACEPTAR");
+        //context.update("form:ACEPTAR");
     }
     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO)
 
@@ -1194,7 +1188,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
             tipoActualizacion = 2;
         }
         getInfoRegistroTipoTrabajador();
-        context.update("form:TipoTrabajadorDialogo"); //TiposTrabajadoresDialogo
+        context.update("formLovs:TipoTrabajadorDialogo"); //TiposTrabajadoresDialogo
         context.execute("TipoTrabajadorDialogo.show()");
     }
 
@@ -1248,7 +1242,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
          context.update("form:TipoTrabajadorDialogo");
          context.update("form:lovTipoTrabajador");
          context.update("form:aceptarTT");*/
-        context.reset("form:lovTipoTrabajador:globalFilter");
+        context.reset("formLovs:lovTipoTrabajador:globalFilter");
         context.execute("lovTipoTrabajador.clearFilters()");
         context.execute("TipoTrabajadorDialogo.hide()");
     }
@@ -1265,7 +1259,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         tipoActualizacion = -1;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.reset("form:lovTipoTrabajador:globalFilter");
+        context.reset("formLovs:lovTipoTrabajador:globalFilter");
         context.execute("lovTipoTrabajador.clearFilters()");
         context.execute("TipoTrabajadorDialogo.hide()");
     }
@@ -1280,7 +1274,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             if (cualCelda == 1) {
                 getInfoRegistroTipoTrabajador();
-                context.update("form:TipoTrabajadorDialogo"); //TiposTrabajadoresDialogo
+                context.update("formLovs:TipoTrabajadorDialogo"); //TiposTrabajadoresDialogo
                 context.execute("TipoTrabajadorDialogo.show()");
                 tipoActualizacion = 0;
             }
@@ -1701,7 +1695,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     public void dialogoRetiros() {
         RequestContext context = RequestContext.getCurrentInstance();
         getInfoRegistroMotivoRetiros();
-        context.reset("form:motivoRetiro");
+        context.reset("formLovs:motivoRetiro");
         context.execute("RetirosDialogo.show()");
 
     }
@@ -1724,7 +1718,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
          context.update("form:RetirosDialogo");
          context.update("form:lovMotivosRetiros");
          context.update("form:aceptarMR");*/
-        context.reset("form:lovMotivosRetiros:globalFilter");
+        context.reset("formLovs:lovMotivosRetiros:globalFilter");
         context.execute("lovMotivosRetiros.clearFilters()");
         context.execute("RetirosDialogo.hide()");
     }
@@ -1739,7 +1733,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.reset("form:lovMotivosRetiros:globalFilter");
+        context.reset("formLovs:lovMotivosRetiros:globalFilter");
         context.execute("lovMotivosRetiros.clearFilters()");
         context.execute("RetirosDialogo.hide()");
     }
@@ -1752,7 +1746,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     public void dialogoClasePension() {
         RequestContext context = RequestContext.getCurrentInstance();
         getInfoRegistroClasePension();
-        context.reset("form:clasePension");
+        context.reset("formLovs:clasePension");
         context.execute("clasePensionDialogo.show()");
     }
 
@@ -1774,7 +1768,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         context.update("form:clasePensionDialogo");
         context.update("form:lovClasePension");
         context.update("form:aceptarCP");*/
-        context.reset("form:lovClasePension:globalFilter");
+        context.reset("formLovs:lovClasePension:globalFilter");
         context.execute("lovClasePension.clearFilters()");
         context.execute("clasePensionDialogo.hide()");
     }
@@ -1790,7 +1784,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.reset("form:lovClasePension:globalFilter");
+        context.reset("formLovs:lovClasePension:globalFilter");
         context.execute("lovClasePension.clearFilters()");
         context.execute("clasePensionDialogo.hide()");
     }
@@ -1804,7 +1798,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     public void dialogoTipoPensionado() {
         RequestContext context = RequestContext.getCurrentInstance();
         getInfoRegistroTipoPension();
-        context.reset("form:tipoPensionado");
+        context.reset("formLovs:tipoPensionado");
         context.execute("tipoPensionadoDialogo.show()");
     }
 
@@ -1826,7 +1820,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         context.update("form:tipoPensionadoDialogo");
         context.update("form:lovTipoPensionado");
         context.update("form:aceptarTP");*/
-        context.reset("form:lovTipoPensionado:globalFilter");
+        context.reset("formLovs:lovTipoPensionado:globalFilter");
         context.execute("lovTipoPensionado.clearFilters()");
         context.execute("tipoPensionadoDialogo.hide()");
     }
@@ -1842,7 +1836,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.reset("form:lovTipoPensionado:globalFilter");
+        context.reset("formLovs:lovTipoPensionado:globalFilter");
         context.execute("lovTipoPensionado.clearFilters()");
         context.execute("tipoPensionadoDialogo.hide()");
     }
@@ -1856,7 +1850,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     public void dialogoCausaBiente() {
         RequestContext context = RequestContext.getCurrentInstance();
         getInfoRegistroEmpleado();
-        context.reset("form:causaBiente");
+        context.reset("formLovs:causaBiente");
         context.execute("causaBientesDialogo.show()");
     }
 
@@ -1878,7 +1872,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         context.update("form:causaBientesDialogo");
         context.update("form:lovCausaBientes");
         context.update("form:aceptarCB");*/
-        context.reset("form:lovCausaBientes:globalFilter");
+        context.reset("formLovs:lovCausaBientes:globalFilter");
         context.execute("lovCausaBientes.clearFilters()");
         context.execute("causaBientesDialogo.hide()");
     }
@@ -1894,7 +1888,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.reset("form:lovCausaBientes:globalFilter");
+        context.reset("formLovs:lovCausaBientes:globalFilter");
         context.execute("lovCausaBientes.clearFilters()");
         context.execute("causaBientesDialogo.hide()");
     }
@@ -1908,7 +1902,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     public void dialogoTutor() {
         RequestContext context = RequestContext.getCurrentInstance();
         getInfoRegistroPersona();
-        context.reset("form:tutorPension");
+        context.reset("formLovs:tutorPension");
         context.execute("tutorDialogo.show()");
     }
 
@@ -1930,7 +1924,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         context.update("form:tutorDialogo");
         context.update("form:lovTutor");
         context.update("form:aceptarT");*/
-        context.reset("form:lovTutor:globalFilter");
+        context.reset("formLovs:lovTutor:globalFilter");
         context.execute("lovTutor.clearFilters()");
         context.execute("tutorDialogo.hide()");
     }
@@ -1946,7 +1940,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.reset("form:lovTutor:globalFilter");
+        context.reset("formLovs:lovTutor:globalFilter");
         context.execute("lovTutor.clearFilters()");
         context.execute("tutorDialogo.hide()");
     }

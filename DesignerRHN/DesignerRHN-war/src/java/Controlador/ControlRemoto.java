@@ -164,7 +164,6 @@ public class ControlRemoto implements Serializable {
         selectModulo = null;
         tablaExportar = "data1";
         nombreArchivo = "Modulos";
-        System.out.println("Se creo un nuevo BakingBean de NominaF");
         //Inicializar pestaña en 0
         numPestaña = 0;
         pago = "AUTOMATICO";
@@ -198,7 +197,6 @@ public class ControlRemoto implements Serializable {
     public void cancelarModificacion() {
         //vigenciasCargosEmpleado = null;
         //RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("Backing bean ControlVigenciasCargos.cancelarModificacion");
         //context.update("form:datosVCEmpleado");
     }
 
@@ -208,7 +206,6 @@ public class ControlRemoto implements Serializable {
         trabajador = vwActualesTiposTrabajadoresesLista.get(name);
         if (trabajador.getEmpleado() != null) {
             secuencia = trabajador.getEmpleado().getSecuencia();
-            System.out.println("secuencia = " + secuencia);
             identificacion = trabajador.getEmpleado().getPersona().getNumerodocumento();
         }
 
@@ -497,16 +494,13 @@ public class ControlRemoto implements Serializable {
     }
 
     public String pantallaReintegrar() {
-        System.out.println("accion= " + accion);
         return accion;
     }
 
     public void pruebita() {
         Long result = Long.parseLong("-1");
         RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("Entro a Pruebita");
         if (tipoPersonal.equals("activos")) {
-            System.out.println("El personal está activo");
             result = administrarCarpetaPersonal.borrarActivo(secuencia);
             if (result == 0) {
                 context.update("formularioDialogos:activoEliminarPaso1");
@@ -515,15 +509,9 @@ public class ControlRemoto implements Serializable {
                 context.update("formularioDialogos:activoNoEliminar");
                 context.execute("activoNoEliminar.show()");
             }
-        } else if (tipoPersonal.equals("pensionados")) {
-            System.out.println("El personal está en pensionados");
-
         } else if (tipoPersonal.equals("retirados")) {
-            System.out.println("El personal esta en retirados");
             accion = "reintegro";
-        } else if (tipoPersonal.equals("aspirantes")) {
-            System.out.println("El personal esta en aspirantes");
-        }
+        } 
     }
 
     public void paso2() {
@@ -537,7 +525,6 @@ public class ControlRemoto implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("formularioDialogos:activoEliminarPaso3");
         context.execute("activoEliminarPaso3.show()");
-        System.out.println("trabajador.getEmpleado().getSecuencia() " + trabajador.getEmpleado().getSecuencia() + " trabajador.getEmpleado().getPersona().getSecuencia()" + trabajador.getEmpleado().getPersona().getSecuencia());
     }
 
     public void paso4() {
@@ -673,8 +660,6 @@ public class ControlRemoto implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         filterBuscarEmpleado = null;
         tipo = emplSeleccionadoBE.getTipoTrabajador().getTipo();
-        System.out.println(tipo);
-
         vwActualesTiposTrabajadoresesLista = new ArrayList<VWActualesTiposTrabajadores>();
         vwActualesTiposTrabajadoresesLista.add(emplSeleccionadoBE);
         emplSeleccionadoBE = null;
@@ -727,7 +712,6 @@ public class ControlRemoto implements Serializable {
     }
 
     public void handleFileUpload(FileUploadEvent event) throws IOException {
-        System.out.println(event.getFile().getFileName());
         transformarArchivo(event.getFile().getSize(), event.getFile().getInputstream());
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("Cargar.hide()");
@@ -735,15 +719,13 @@ public class ControlRemoto implements Serializable {
     }
 
     public void probar(String nombreTab) {
-        System.out.println(nombreTabla);
-        System.out.println(nombreTab);
+        
         //nombreTabla = nombreTab;
         setNombreTabla(nombreTab);
-        System.out.println(nombreTabla);
+        
     }
 
     public void lab() {
-        System.out.println("HotKey <3");
         RequestContext context = RequestContext.getCurrentInstance();
         if (tablaExportar.equals("Tablas")) {
             tablasNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:Tablas:tablasNombre");
@@ -868,13 +850,10 @@ public class ControlRemoto implements Serializable {
     public void infoTablas(Tablas tab) {
 
         selectTabla = tab;
-        System.out.println(selectTabla.getSecuencia());
         BigInteger secuenciaTab = selectTabla.getSecuencia();
         pantalla = administrarCarpetaDesigner.consultarPantalla(secuenciaTab);
-        System.out.println(pantalla.getNombre());
         RequestContext context = RequestContext.getCurrentInstance();
         tablaExportar = "Tablas";
-        System.out.println("Va a imprmir -->" + tablaExportar);
         context.execute("VentanaTab.show()");
     }
 
@@ -1165,7 +1144,6 @@ public class ControlRemoto implements Serializable {
             return busquedaRapida;
 
         } catch (Exception e) {
-            System.out.println("Paila Bbe");
             return busquedaRapida;
         }
 
@@ -1460,7 +1438,6 @@ public class ControlRemoto implements Serializable {
         listTablas.clear();
         listTablas = administrarCarpetaDesigner.consultarTablas(selectModulo.getSecuencia());
         filterListTablas = null;
-        System.out.println("Tamaño: " + listTablas.size());
         mostrarTodasTablas = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:tabMenu:Tablas");
