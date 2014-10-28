@@ -84,9 +84,10 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
     @Override
     public List<Personas> consultarPersonas(EntityManager em) {
         em.clear();
-        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(Personas.class));
-        return em.createQuery(cq).getResultList();
+        String sql = "SELECT * FROM Personas";
+        Query query = em.createNativeQuery(sql, Personas.class);
+        List<Personas> lista = query.getResultList();
+        return lista;
     }
 
     @Override
@@ -123,9 +124,10 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
         Personas persona;
         try {
             em.clear();
-            Query query = em.createQuery("SELECT p FROM Personas p WHERE p.secuencia = :secuencia");
-            query.setParameter("secuencia", secuencia);
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            String sql = "SELECT * FROM Personas  WHERE secuencia = ?";
+            Query query = em.createNativeQuery(sql, Personas.class);
+            query.setParameter(1, secuencia);
+            //query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             persona = (Personas) query.getSingleResult();
             return persona;
         } catch (Exception e) {
@@ -151,10 +153,10 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
     }
 
     @Override
-    public Personas obtenerUltimaPersonaAlmacenada(EntityManager em,BigInteger documento) {
+    public Personas obtenerUltimaPersonaAlmacenada(EntityManager em, BigInteger documento) {
         try {
             em.clear();
-            System.out.println("documento : "+documento);
+            System.out.println("documento : " + documento);
             Query query = em.createQuery("SELECT p FROM Personas p WHERE p.numerodocumento=:documento");
             query.setParameter("documento", documento);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

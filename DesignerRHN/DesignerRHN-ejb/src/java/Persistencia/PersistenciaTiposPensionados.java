@@ -83,8 +83,9 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
             em.clear();
             //List<TiposPensionados> tiposPensionadosLista = (List<TiposPensionados>) em.createNamedQuery("TiposPensionados.findAll").getResultList();
             //return tiposPensionadosLista;
-            Query query = em.createQuery("SELECT t FROM  TiposPensionados t");
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            String sql = "SELECT * FROM  TiposPensionados";
+            Query query = em.createNativeQuery(sql, TiposPensionados.class);
+            //query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposPensionados> listaTiposPensionados = query.getResultList();
             return listaTiposPensionados;
         } catch (Exception e) {

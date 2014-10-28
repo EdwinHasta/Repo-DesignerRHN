@@ -103,9 +103,13 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
     public List<VigenciasTiposTrabajadores> buscarVigenciasTiposTrabajadoresEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
             em.clear();
-            Query query = em.createQuery("SELECT vtt FROM VigenciasTiposTrabajadores vtt WHERE vtt.empleado.secuencia = :secuenciaEmpl ORDER BY vtt.fechavigencia DESC");
-            query.setParameter("secuenciaEmpl", secEmpleado);
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            String sql = "SELECT * FROM VigenciasTiposTrabajadores  WHERE empleado = ? ORDER BY fechavigencia DESC";
+            /*
+             Query query = em.createQuery("SELECT vtt FROM VigenciasTiposTrabajadores vtt WHERE vtt.empleado.secuencia = :secuenciaEmpl ORDER BY vtt.fechavigencia DESC");
+             query.setParameter("secuenciaEmpl", secEmpleado);
+             query.setHint("javax.persistence.cache.storeMode", "REFRESH");*/
+            Query query = em.createNativeQuery(sql, VigenciasTiposTrabajadores.class);
+            query.setParameter(1, secEmpleado);
             List<VigenciasTiposTrabajadores> vigenciasTiposTrabajadores = query.getResultList();
             return vigenciasTiposTrabajadores;
         } catch (Exception e) {
@@ -136,9 +140,9 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         return query.getResultList();
     }
-    
+
     @Override
-    public VigenciasTiposTrabajadores buscarVigenciaTipoTrabajadorRestriccionUN(EntityManager em, BigInteger empleado,Date fechaVigencia, BigInteger tipoTrabajador) {
+    public VigenciasTiposTrabajadores buscarVigenciaTipoTrabajadorRestriccionUN(EntityManager em, BigInteger empleado, Date fechaVigencia, BigInteger tipoTrabajador) {
         try {
             em.clear();
             Query query = em.createQuery("SELECT vtt FROM VigenciasTiposTrabajadores vtt WHERE vtt.empleado.secuencia = :empleado AND vtt.fechavigencia=:fechaVigencia AND vtt.tipotrabajador.secuencia=:tipoTrabajador");

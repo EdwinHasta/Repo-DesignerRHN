@@ -117,9 +117,10 @@ public class PersistenciaRetirados implements PersistenciaRetiradosInterface {
     public Retirados buscarRetiroVigenciaSecuencia(EntityManager em, BigInteger secVigencia) {
         try {
             em.clear();
-            Query query = em.createQuery("SELECT r FROM Retirados r WHERE r.vigenciatipotrabajador.secuencia = :secVigencia");
-            query.setParameter("secVigencia", secVigencia);
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            String sql = "SELECT * FROM Retirados WHERE vigenciatipotrabajador = ?";
+            Query query = em.createNativeQuery(sql, Retirados.class);
+            query.setParameter(1, secVigencia);
+            //query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Retirados retiroVigencia = (Retirados) query.getSingleResult();
             return retiroVigencia;
         } catch (Exception e) {

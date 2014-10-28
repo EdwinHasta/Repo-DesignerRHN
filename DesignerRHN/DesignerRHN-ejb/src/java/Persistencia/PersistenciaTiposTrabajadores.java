@@ -60,7 +60,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             if (tx.isActive()) {
                 tx.rollback();
             }
-        } 
+        }
     }
 
     @Override
@@ -83,7 +83,9 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
     @Override
     public List<TiposTrabajadores> buscarTiposTrabajadores(EntityManager em) {
         em.clear();
-        List<TiposTrabajadores> tipoTLista = (List<TiposTrabajadores>) em.createNamedQuery("TiposTrabajadores.findAll").getResultList();
+        String sql = "select * from TiposTrabajadores";
+        Query query = em.createNativeQuery(sql, TiposTrabajadores.class);
+        List<TiposTrabajadores> tipoTLista = query.getResultList();
         return tipoTLista;
     }
 
@@ -101,19 +103,20 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
         TiposTrabajadores tipoT = null;
         return tipoT;
     }
-/*
-    @Override
-    public TiposTrabajadores buscarTipoTrabajadorCodigo(EntityManager em, BigDecimal codigo) {
-        try {
-            Query query = em.createNamedQuery("TiposTrabajadores.findByCodigo").setParameter("codigo", codigo);
-            TiposTrabajadores tipoTC = (TiposTrabajadores) query.getSingleResult();
-            return tipoTC;
-        } catch (Exception e) {
-        }
-        TiposTrabajadores tipoTC = null;
-        return null;
-    }
-*/
+    /*
+     @Override
+     public TiposTrabajadores buscarTipoTrabajadorCodigo(EntityManager em, BigDecimal codigo) {
+     try {
+     Query query = em.createNamedQuery("TiposTrabajadores.findByCodigo").setParameter("codigo", codigo);
+     TiposTrabajadores tipoTC = (TiposTrabajadores) query.getSingleResult();
+     return tipoTC;
+     } catch (Exception e) {
+     }
+     TiposTrabajadores tipoTC = null;
+     return null;
+     }
+     */
+
     @Override
     public String plantillaValidarTipoTrabajadorReformaLaboral(EntityManager em, BigInteger tipoTrabajador, BigInteger reformaLaboral) {
         try {
@@ -123,7 +126,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             query.setParameter(1, tipoTrabajador);
             query.setParameter(2, reformaLaboral);
             String retorno = (String) query.getSingleResult();
-            System.out.println("retorno : "+retorno);
+            System.out.println("retorno : " + retorno);
             return retorno;
         } catch (Exception e) {
             System.out.println("Error plantillaValidarTipoTrabajadorReformaLaboral PersistenciaTiposTrabajadores : " + e.toString());
@@ -140,7 +143,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             query.setParameter(1, tipoTrabajador);
             query.setParameter(2, tipoSueldo);
             String retorno = (String) query.getSingleResult();
-            System.out.println("retorno : "+retorno);
+            System.out.println("retorno : " + retorno);
             return retorno;
         } catch (Exception e) {
             System.out.println("Error plantillaValidarTipoTrabajadorTipoSueldo PersistenciaTiposTrabajadores : " + e.toString());
@@ -157,7 +160,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             query.setParameter(1, tipoTrabajador);
             query.setParameter(2, tipoContrato);
             String retorno = (String) query.getSingleResult();
-            System.out.println("retorno : "+retorno);
+            System.out.println("retorno : " + retorno);
             return retorno;
         } catch (Exception e) {
             System.out.println("Error plantillaValidarTipoTrabajadorTipoContrato PersistenciaTiposTrabajadores : " + e.toString());
@@ -174,7 +177,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             query.setParameter(1, tipoTrabajador);
             query.setParameter(2, contrato);
             String retorno = (String) query.getSingleResult();
-            System.out.println("retorno : "+retorno);
+            System.out.println("retorno : " + retorno);
             return retorno;
         } catch (Exception e) {
             System.out.println("Error plantillaValidarTipoTrabajadorContrato PersistenciaTiposTrabajadores : " + e.toString());
@@ -191,26 +194,29 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             query.setParameter(1, tipoTrabajador);
             query.setParameter(2, normaLaboral);
             String retorno = (String) query.getSingleResult();
-            System.out.println("retorno : "+retorno);
+            System.out.println("retorno : " + retorno);
             return retorno;
         } catch (Exception e) {
             System.out.println("Error plantillaValidarTipoTrabajadorNormaLaboral PersistenciaTiposTrabajadores : " + e.toString());
             return "N";
         }
     }
-    
+
     @Override
     public TiposTrabajadores buscarTipoTrabajadorCodigoTiposhort(EntityManager em, short codigo) {
         try {
             em.clear();
-            Query query = em.createQuery("SELECT t FROM TiposTrabajadores t WHERE t.codigo=:codigo");
-            query.setParameter("codigo", codigo);
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            String sql = "SELECT * FROM TiposTrabajadores WHERE codigo=?";
+            /*
+             Query query = em.createQuery("SELECT t FROM TiposTrabajadores t WHERE t.codigo=:codigo");*/
+            Query query = em.createNativeQuery(sql, TiposTrabajadores.class);
+            query.setParameter(1, codigo);
+            //query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             TiposTrabajadores tipoTC = (TiposTrabajadores) query.getSingleResult();
             return tipoTC;
         } catch (Exception e) {
+            TiposTrabajadores tipoTC = null;
+            return null;
         }
-        TiposTrabajadores tipoTC = null;
-        return null;
     }
 }

@@ -26,9 +26,8 @@ public class PersistenciaClasesPensiones implements PersistenciaClasesPensionesI
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+    /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;*/
     @Override
     public void crear(EntityManager em, ClasesPensiones clasesPensiones) {
         em.clear();
@@ -85,8 +84,10 @@ public class PersistenciaClasesPensiones implements PersistenciaClasesPensionesI
     public List<ClasesPensiones> consultarClasesPensiones(EntityManager em) {
         try {
             em.clear();
-            System.out.println("PersistenciaClasesPensiones consultarClasesPensiones ");
-            List<ClasesPensiones> clasesPensionesLista = (List<ClasesPensiones>) em.createNamedQuery("ClasesPensiones.findAll").getResultList();
+            String sql = "SELECT *  FROM ClasesPensiones";
+            //System.out.println("PersistenciaClasesPensiones consultarClasesPensiones ");
+            Query query = em.createNativeQuery(sql, ClasesPensiones.class);
+            List<ClasesPensiones> clasesPensionesLista = query.getResultList();
             return clasesPensionesLista;
         } catch (Exception e) {
             System.out.println("Error consultarClasesPensiones PersistenciaClasesPensiones");
@@ -95,13 +96,14 @@ public class PersistenciaClasesPensiones implements PersistenciaClasesPensionesI
     }
 
     @Override
-    public ClasesPensiones consultarClasePension(EntityManager em,BigInteger secuencia) {
+    public ClasesPensiones consultarClasePension(EntityManager em, BigInteger secuencia) {
 
         try {
             em.clear();
-            Query query = em.createQuery("SELECT cp FROM ClasesPensiones cp WHERE cp.secuencia = :secuencia");
-            query.setParameter("secuencia", secuencia);
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            String sql = "SELECT * FROM ClasesPensiones WHERE secuencia = ?";
+            Query query = em.createNativeQuery(sql, ClasesPensiones.class);
+            query.setParameter(1, secuencia);
+            //query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             ClasesPensiones claseP = (ClasesPensiones) query.getSingleResult();
             return claseP;
         } catch (Exception e) {

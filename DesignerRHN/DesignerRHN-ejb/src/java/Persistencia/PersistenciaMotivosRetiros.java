@@ -80,8 +80,9 @@ public class PersistenciaMotivosRetiros implements PersistenciaMotivosRetirosInt
     public List<MotivosRetiros> consultarMotivosRetiros(EntityManager em) {
         try {
             em.clear();
-            Query query = em.createQuery("SELECT l FROM MotivosRetiros  l ORDER BY l.codigo ASC ");
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            String sql = "SELECT * FROM MotivosRetiros ORDER BY codigo ASC";
+            Query query = em.createNativeQuery(sql, MotivosRetiros.class);
+            //query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<MotivosRetiros> listTiposViajeros = query.getResultList();
             return listTiposViajeros;
         } catch (Exception e) {
@@ -96,9 +97,10 @@ public class PersistenciaMotivosRetiros implements PersistenciaMotivosRetirosInt
 
         try {
             em.clear();
-            Query query = em.createQuery("SELECT mr FROM MotivosRetiros mr WHERE mr.secuencia = :secuencia");
-            query.setParameter("secuencia", secuencia);
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            String sql = "SELECT * FROM MotivosRetiros WHERE secuencia = ?";
+            Query query = em.createNativeQuery(sql, MotivosRetiros.class);
+            query.setParameter(1, secuencia);
+            //query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             MotivosRetiros motivoR = (MotivosRetiros) query.getSingleResult();
             return motivoR;
         } catch (Exception e) {
