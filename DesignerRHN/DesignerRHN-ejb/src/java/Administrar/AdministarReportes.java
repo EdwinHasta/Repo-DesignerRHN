@@ -87,6 +87,7 @@ public class AdministarReportes implements AdministarReportesInterface {
         conexion = em.unwrap(java.sql.Connection.class);
         em.getTransaction().commit();
         //em.close();
+        System.out.println("AdministrarReportes consultarDatosConexion");
     }
 
     public String generarReporte(String nombreReporte, String tipoReporte, AsynchronousFilllListener asistenteReporte) {
@@ -142,6 +143,8 @@ public class AdministarReportes implements AdministarReportesInterface {
                 String nombreArchivo = "JR" + nombreUsuario + fechaActual;
                 String rutaReporte = general.getPathreportes();
                 String rutaGenerado = general.getUbicareportes();
+                System.err.println("general.getPathreportes() : "+general.getPathreportes());
+                System.err.println("general.getUbicareportes() : "+general.getUbicareportes());
                 if (tipoReporte.equals("PDF")) {
                     nombreArchivo = nombreArchivo + ".pdf";
                 } else if (tipoReporte.equals("XLSX")) {

@@ -1709,7 +1709,8 @@ public class ControlNReporteNomina implements Serializable {
             nombreReporte = actualInfoReporteTabla.getNombrereporte();
             tipoReporte = actualInfoReporteTabla.getTipo();
         }
-
+        System.out.println("ControlNReporteNomina generarReporte nombreReporte " + nombreReporte);
+        System.out.println("ControlNReporteNomina generarReporte tipoReporte " + tipoReporte);
         if (nombreReporte != null && tipoReporte != null) {
             pathReporteGenerado = administarReportes.generarReporte(nombreReporte, tipoReporte);
         }
@@ -1779,7 +1780,7 @@ public class ControlNReporteNomina implements Serializable {
                     // context.execute("formDialogos:generandoReporte");
                     //generarArchivoReporte(jp);
                 } catch (Exception e) {
-                    System.out.println("Errrrrroooooorrrr: " + e.toString());
+                    System.out.println("ControlNReporteNomina reportFinished ERROR: " + e.toString());
                 }
                 //System.out.println("FINALIZO");
             }
@@ -1793,9 +1794,9 @@ public class ControlNReporteNomina implements Serializable {
             @Override
             public void reportFillError(Throwable e) {
                 if (e.getCause() != null) {
-                    pathReporteGenerado = "Error: " + e.toString() + "\n" + e.getCause().toString();
+                    pathReporteGenerado = "ControlNReporteNomina reportFillError Error: " + e.toString() + "\n" + e.getCause().toString();
                 } else {
-                    pathReporteGenerado = "Error: " + e.toString();
+                    pathReporteGenerado = "ControlNReporteNomina reportFillError Error: " + e.toString();
                 }
                 estadoReporte = true;
                 resultadoReporte = "Se estallo";

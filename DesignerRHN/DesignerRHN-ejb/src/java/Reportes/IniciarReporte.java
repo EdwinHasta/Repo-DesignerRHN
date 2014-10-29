@@ -47,12 +47,18 @@ public class IniciarReporte implements IniciarReporteInterface, Serializable {
     public String ejecutarReporte(String nombreReporte, String rutaReporte, String rutaGenerado, String nombreArchivo, String tipoReporte, Connection cxn) {
         try {
             //inicarC();
+            System.out.println("INICIARREPORTE NombreReporte: " + nombreReporte);
+            System.out.println("INICIARREPORTE rutaReporte: " + rutaReporte);
+            System.out.println("INICIARREPORTE rutaGenerado: " + rutaGenerado);
+            System.out.println("INICIARREPORTE nombreArchivo: " + nombreArchivo);
+            System.out.println("INICIARREPORTE tipoReporte: " + tipoReporte);
             File archivo = new File(rutaReporte + nombreReporte + ".jasper");
             JasperReport masterReport;
             masterReport = (JasperReport) JRLoader.loadObject(archivo);
             JasperPrint imprimir = JasperFillManager.fillReport(masterReport, null, cxn);
             //JasperPrint imprimir = JasperFillManager.fillReport(masterReport, null, conexion);
             String outFileName = rutaGenerado + nombreArchivo;
+            System.out.println("INICIARREPORTE outFileName: " + outFileName);
             JRExporter exporter = null;
             if (tipoReporte.equals("PDF")) {
                 exporter = new JRPdfExporter();
@@ -87,13 +93,13 @@ public class IniciarReporte implements IniciarReporteInterface, Serializable {
             System.out.println("************************************");
             //e.printStackTrace();
             if (e.getCause() != null) {
-                return "Error: " + e.toString() + "\n" + e.getCause().toString();
+                return "INICIARREPORTE Error: " + e.toString() + "\n" + e.getCause().toString();
             } else {
-                return "Error: " + e.toString();
+                return "INICIARREPORTE Error: " + e.toString();
             }
         }
     }
-    
+
     public String ejecutarReportinho(String nombreReporte, String rutaReporte, String rutaGenerado, String nombreArchivo, String tipoReporte, Connection cxn) {
         try {
             inicarC();
