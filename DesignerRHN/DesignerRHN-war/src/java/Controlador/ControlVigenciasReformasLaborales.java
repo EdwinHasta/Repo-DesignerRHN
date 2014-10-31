@@ -1,19 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Controlador;
 
-import Exportar.ExportarPDF;
-import Exportar.ExportarXLS;
+import Entidades.ActualUsuario;
 import Entidades.Empleados;
 import Entidades.ReformasLaborales;
 import Entidades.VigenciasReformasLaborales;
+import Exportar.ExportarPDF;
+import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarVigenciasReformasLaboralesInterface;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +22,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -59,7 +59,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
     private int index;
     //modificar
     private List<VigenciasReformasLaborales> listVRLModificar;
-    private boolean guardado, guardarOk;
+    private boolean guardado;
     //crear VC
     public VigenciasReformasLaborales nuevaVigencia;
     private List<VigenciasReformasLaborales> listVRLCrear;
@@ -70,7 +70,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
     //editar celda
     private VigenciasReformasLaborales editarVRL;
     private int cualCelda, tipoLista;
-    private boolean cambioEditor, aceptarEditar;
     //duplicar
     private VigenciasReformasLaborales duplicarVRL;
     private String reformaLaboral;
@@ -83,6 +82,12 @@ public class ControlVigenciasReformasLaborales implements Serializable {
     public String infoRegistro;
     //
     private String infoRegistroReformaLaboral;
+
+    private final static Logger logger = Logger.getLogger("connectionSout");
+    private final SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+    private final Date fechaDia = new Date();
+    //
+    private ActualUsuario actualUsuario;
 
     /**
      * Constructor de la clases Controlador
@@ -103,8 +108,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         listVRLModificar = new ArrayList<VigenciasReformasLaborales>();
         //editar
         editarVRL = new VigenciasReformasLaborales();
-        cambioEditor = false;
-        aceptarEditar = true;
         cualCelda = -1;
         tipoLista = 0;
         //guardar
@@ -125,10 +128,10 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             FacesContext x = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarVigenciasReformasLaborales.obtenerConexion(ses.getId());
+            actualUsuario = administrarVigenciasReformasLaborales.obtenerActualUsuario();
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct ControlVigenciasCargos: " + e);
-            System.out.println("Causa: " + e.getCause());
+            logger.error("Metodo: inicializarAdministrador - ControlVigenciasReformasLaborales - Fecha : " + format.format(fechaDia) + " - Usuario : " + actualUsuario.getAlias() + " - Error : " + e.getCause());
         }
     }
 
@@ -137,11 +140,11 @@ public class ControlVigenciasReformasLaborales implements Serializable {
      * Metodo que recibe la secuencia empleado desde la pagina anterior y
      * obtiene el empleado referenciado
      *
-     * @param sec Secuencia del Empleado
+     * @param empl Secuencia del Empleado
      */
     public void recibirEmpleado(Empleados empl) {
         RequestContext context = RequestContext.getCurrentInstance();
-
+        PropertyConfigurator.configure("log4j.properties");
         vigenciasReformasLaborales = null;
         empleado = empl;
         getVigenciasReformasLaboralesEmpleado();
@@ -156,7 +159,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
                 //infoRegistro = "Registro 1 de " + vigenciasCargosEmpleado.size();
                 infoRegistro = "Cantidad de registros: " + vigenciasReformasLaborales.size();
             }
-
         } else {
             infoRegistro = "Cantidad de registros: 0";
         }
@@ -1009,12 +1011,13 @@ public class ControlVigenciasReformasLaborales implements Serializable {
     public List<VigenciasReformasLaborales> getVigenciasReformasLaboralesEmpleado() {
         try {
             if (vigenciasReformasLaborales == null) {
-                return vigenciasReformasLaborales = administrarVigenciasReformasLaborales.vigenciasReformasLaboralesEmpleado(empleado.getSecuencia());
-            } else {
-                return vigenciasReformasLaborales;
+                vigenciasReformasLaborales = administrarVigenciasReformasLaborales.vigenciasReformasLaboralesEmpleado(empleado.getSecuencia());
             }
+            return vigenciasReformasLaborales;
         } catch (Exception e) {
-            System.out.println("Error...!! getVigenciasReformasLaboralesEmpleado ");
+            //logger.debug("Metodo: getVigenciasReformasLaboralesEmpleado - ControlVigenciasReformasLaborales - Fecha : " + format.format(fechaDia) + " - Usuario : " + actualUsuario.getAlias() + " - Error : " + e.toString());
+            //logger.info("Metodo getVigenciasReformasLaboralesEmpleado - ControlVigenciasReformasLaborales - Fecha : " + format.format(fechaDia));
+            logger.error("Metodo: getVigenciasReformasLaboralesEmpleado - ControlVigenciasReformasLaborales - Fecha : " + format.format(fechaDia) + " - Usuario : " + actualUsuario.getAlias() + " - Error : " + e.toString());
             return null;
         }
     }
