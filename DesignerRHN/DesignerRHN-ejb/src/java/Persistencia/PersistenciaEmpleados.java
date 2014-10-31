@@ -6,12 +6,15 @@ package Persistencia;
 import Entidades.Empleados;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 /**
  * Clase Stateless. <br>
@@ -22,6 +25,10 @@ import javax.persistence.Query;
  */
 @Stateless
 public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
+
+    private final static Logger logger = Logger.getLogger("connectionSout");
+    private Date fechaDia;
+    private final SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
 
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
      private EntityManager em;*/
@@ -34,7 +41,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             em.merge(empleados);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaEmpleados.crear: " + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: crear - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -51,7 +59,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             em.merge(empleados);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaEmpleados.editar: " + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: editar - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -68,12 +77,10 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             tx.commit();
 
         } catch (Exception e) {
-            try {
-                if (tx.isActive()) {
-                    tx.rollback();
-                }
-            } catch (Exception ex) {
-                System.out.println("Error PersistenciaEmpleados.borrar: " + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: borrar - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
             }
         }
     }
@@ -84,6 +91,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             em.clear();
             return em.find(Empleados.class, secuencia);
         } catch (Exception e) {
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: buscarEmpleado - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
 
@@ -105,7 +114,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<Empleados> listaEmpleados = query.getResultList();
             return listaEmpleados;
         } catch (Exception e) {
-            System.out.println("Error PersistenciaEmpleados.todosEmpleados" + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: todosEmpleados - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
 
@@ -120,7 +130,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<Empleados> listaEmpleados = query.getResultList();
             return listaEmpleados;
         } catch (Exception e) {
-            System.out.println("Error PersistenciaEmpleados.todosEmpleados" + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: consultarEmpleadosLiquidacionesLog - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
 
@@ -139,7 +150,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             Empleados empleado = (Empleados) query.getSingleResult();
             return empleado;
         } catch (Exception e) {
-            System.err.println("Error PersistenciaEmpleados.buscarEmpleadoSecuencia " + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: buscarEmpleadoSecuencia - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -153,7 +165,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             Empleados empleado = (Empleados) query.getSingleResult();
             return empleado;
         } catch (Exception e) {
-            System.err.println("Error PersistenciaEmpleados.buscarEmpleadoSecuenciaPersona " + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: buscarEmpleadoSecuenciaPersona - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -169,7 +182,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             Long resultado = (Long) query.getSingleResult();
             return resultado > 0;
         } catch (Exception e) {
-            System.out.println("Exepcion: " + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: verificarCodigoEmpleado_Empresa - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return false;
         }
     }
@@ -185,7 +199,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             Empleados empleado = (Empleados) query.getSingleResult();
             return empleado;
         } catch (Exception e) {
-            System.out.println("Exepcion en PersistenciaEmpleados.buscarEmpleadoCodigo");
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: buscarEmpleadoCodigo_Empresa - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -200,7 +215,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             Empleados empleado = (Empleados) query.getSingleResult();
             return empleado;
         } catch (Exception e) {
-            System.out.println("Exepcion en PersistenciaEmpleados.buscarEmpleadoCodigo");
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: buscarEmpleadoTipo - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -215,7 +231,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             Empleados empleado = (Empleados) query.getSingleResult();
             return empleado;
         } catch (Exception e) {
-            System.out.println("Exepcion en PersistenciaEmpleados.buscarEmpleadoCodigo");
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: buscarEmpleadoCodigo - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -230,7 +247,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<Empleados> listaEmpleados = query.getResultList();
             return listaEmpleados;
         } catch (Exception e) {
-            System.out.println("Exepcion en PersistenciaEmpleados.empleadosComprobantes" + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: empleadosComprobantes - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -247,7 +265,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<Empleados> listaEmpleados = query.getResultList();
             return listaEmpleados;
         } catch (Exception e) {
-            System.out.println("Exepcion en PersistenciaEmpleados.empleadosNovedad" + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: empleadosNovedad - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -264,7 +283,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<Empleados> listaEmpleados = query.getResultList();
             return listaEmpleados;
         } catch (Exception e) {
-            System.out.println("Exepcion en PersistenciaEmpleados.empleadosVacaciones" + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: empleadosVacaciones - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -277,7 +297,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<Empleados> listaEmpleados = query.getResultList();
             return listaEmpleados;
         } catch (Exception e) {
-            System.out.println("Exepcion en PersistenciaEmpleados.lovEmpleadosParametros" + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: lovEmpleadosParametros - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -295,7 +316,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<Empleados> listaEmpleados = query.getResultList();
             return listaEmpleados;
         } catch (Exception e) {
-            System.out.println("Exepcion en PersistenciaEmpleados.empleadosAuxilios" + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: empleadosAuxilios - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -313,7 +335,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<Empleados> listaEmpleados = query.getResultList();
             return listaEmpleados;
         } catch (Exception e) {
-            System.out.println("Exepcion en PersistenciaEmpleados.empleadosNovedad" + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: empleadosNovedadEmbargo - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -326,7 +349,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<Empleados> empleado = query.getResultList();
             return empleado;
         } catch (Exception e) {
-            System.out.println("Excepcion en PersistenciaEmpleados.buscarEmpleadosBusquedaAvanzada : " + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: buscarEmpleadosBusquedaAvanzada - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -339,7 +363,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<BigInteger> empleado = query.getResultList();
             return empleado;
         } catch (Exception e) {
-            System.out.println("Excepcion en PersistenciaEmpleados.buscarEmpleadosBusquedaAvanzadaCodigo : " + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: buscarEmpleadosBusquedaAvanzadaCodigo - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -356,7 +381,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             Empleados empl = (Empleados) query.getSingleResult();
             return empl;
         } catch (Exception e) {
-            System.out.println("Error buscarEmpleadoPorCodigoyEmpresa PersistenciaEmpleados : " + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: buscarEmpleadoPorCodigoyEmpresa - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -372,7 +398,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             Empleados empl = (Empleados) query.getSingleResult();
             return empl;
         } catch (Exception e) {
-            System.out.println("Error obtenerUltimoEmpleadoAlmacenado PersistenciaEmpleados : " + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: obtenerUltimoEmpleadoAlmacenado - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -393,7 +420,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<Empleados> lista = query.getResultList();
             return lista;
         } catch (Exception e) {
-            System.out.println("Error consultarEmpleadosParametroAutoliq PersistenciaEmpleados : " + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: consultarEmpleadosParametroAutoliq - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -406,7 +434,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<Empleados> lista = query.getResultList();
             return lista;
         } catch (Exception e) {
-            System.err.println("Error consultarEmpleadosParaProyecciones PersistenciaEmpleados : " + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: consultarEmpleadosParaProyecciones - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -424,12 +453,10 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             query.executeUpdate();
             tx.commit();
         } catch (Exception e) {
-            try {
-                if (tx.isActive()) {
-                    tx.rollback();
-                }
-            } catch (Exception ex) {
-                System.out.println("Error PersistenciaEmpleados.eliminarEmpleadoNominaF: " + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: eliminarEmpleadoNominaF - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
             }
         }
     }
@@ -450,12 +477,10 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             query.executeUpdate();
             tx.commit();
         } catch (Exception e) {
-            try {
-                if (tx.isActive()) {
-                    tx.rollback();
-                }
-            } catch (Exception ex) {
-                System.out.println("Error PersistenciaEmpleados.reingresarEmpleado: " + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: reingresarEmpleado - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
             }
         }
     }
@@ -469,7 +494,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<Empleados> lista = query.getResultList();
             return lista;
         } catch (Exception e) {
-            System.out.println("Error consultarEmpleadosReingreso PersistenciaEmpleados : " + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: consultarEmpleadosReingreso - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -489,7 +515,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             fechaRetiro = (Date) query.getSingleResult();
             return fechaRetiro;
         } catch (Exception e) {
-            System.out.println("Error verificarFecha PersistenciaEmpleados : " + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: verificarFecha - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -508,12 +535,10 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             query.executeUpdate();
             tx.commit();
         } catch (Exception e) {
-            try {
-                if (tx.isActive()) {
-                    tx.rollback();
-                }
-            } catch (Exception ex) {
-                System.out.println("Error PersistenciaEmpleados.cambiarFechaIngreso: " + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: cambiarFechaIngreso - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
             }
         }
     }
@@ -537,7 +562,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<Empleados> lista = query.getResultList();
             return lista;
         } catch (Exception e) {
-            System.out.println("Error consultarEmpleadosCuadrillas PersistenciaEmpleados : " + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: consultarEmpleadosCuadrillas - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -569,7 +595,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<Empleados> lista = query.getResultList();
             return lista;
         } catch (Exception e) {
-            System.out.println("Error buscarEmpleadosATHoraExtra PersistenciaEmpleados : " + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: buscarEmpleadosATHoraExtra - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -589,7 +616,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<Empleados> lista = query.getResultList();
             return lista;
         } catch (Exception e) {
-            System.out.println("Error consultarEmpleadosParaAprobarHorasExtras PersistenciaEmpleados : " + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: consultarEmpleadosParaAprobarHorasExtras - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }

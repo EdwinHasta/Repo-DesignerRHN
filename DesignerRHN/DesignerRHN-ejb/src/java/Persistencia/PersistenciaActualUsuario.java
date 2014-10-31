@@ -5,10 +5,14 @@ package Persistencia;
 
 import Entidades.ActualUsuario;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 /**
  * Clase Stateless. <br>
  * Clase encargada de realizar operaciones sobre la tabla 'ActualUsuario' de la base de datos.
@@ -16,6 +20,10 @@ import javax.persistence.Query;
  */
 @Stateless
 public class PersistenciaActualUsuario implements PersistenciaActualUsuarioInterface {
+    
+    private final static Logger logger = Logger.getLogger("connectionSout");
+    private Date fechaDia;
+    private final SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
@@ -32,7 +40,8 @@ public class PersistenciaActualUsuario implements PersistenciaActualUsuarioInter
             actualUsuario = (ActualUsuario) query.getSingleResult();
             return actualUsuario;
         } catch (Exception e) {
-            System.out.println("No se pudo encontrar informacion => " + e);
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: actualUsuarioBD - PersistenciaActualUsuario - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -46,7 +55,8 @@ public class PersistenciaActualUsuario implements PersistenciaActualUsuarioInter
             alias = (String) query.getSingleResult();
             return alias;
         } catch (Exception e) {
-            System.out.println("No se pudo encontrar el usuario :" + e);
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: actualAliasBD - PersistenciaActualUsuario - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -60,7 +70,8 @@ public class PersistenciaActualUsuario implements PersistenciaActualUsuarioInter
             alias = (String) query.getSingleResult();
             return alias;
         } catch (Exception e) {
-            System.out.println("No se pudo encontrar el usuario PersistenciaActualUsuario.actualAliasBD:" + e);
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: actualAliasBD_EM - PersistenciaActualUsuario - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }

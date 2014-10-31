@@ -7,28 +7,36 @@ import javax.ejb.Stateless;
 import Entidades.VigenciasReformasLaborales;
 import InterfacePersistencia.PersistenciaVigenciasReformasLaboralesInterface;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'VigenciasReformasLaborales'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla
+ * 'VigenciasReformasLaborales' de la base de datos.
+ *
  * @author Andres Pineda
  */
 @Stateless
-public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigenciasReformasLaboralesInterface{
-    
-   /**
+public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigenciasReformasLaboralesInterface {
+
+    private final static Logger logger = Logger.getLogger("connectionSout");
+    private Date fechaDia;
+    private final SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+
+    /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;*/
     @Override
     public void crear(EntityManager em, VigenciasReformasLaborales vigenciaRefLab) {
         em.clear();
@@ -38,13 +46,10 @@ public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigen
             em.persist(vigenciaRefLab);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("PersistenciaVigenciasReformasLaborales La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
-            try {
-                if (tx.isActive()) {
-                    tx.rollback();
-                }
-            } catch (Exception ex) {
-                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: crear - PersistenciaVigenciasReformasLaborales - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
             }
         }
     }
@@ -58,13 +63,10 @@ public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigen
             em.merge(vigenciaRefLab);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
-            try {
-                if (tx.isActive()) {
-                    tx.rollback();
-                }
-            } catch (Exception ex) {
-                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: editar - PersistenciaVigenciasReformasLaborales - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
             }
         }
     }
@@ -78,16 +80,13 @@ public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigen
             em.remove(em.merge(vigenciaRefLab));
             tx.commit();
         } catch (Exception e) {
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
-            try {
-                if (tx.isActive()) {
-                    tx.rollback();
-                }
-            } catch (Exception ex) {
-                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: borrar - PersistenciaVigenciasReformasLaborales - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
             }
         }
-        
+
     }
 
     @Override
@@ -97,7 +96,7 @@ public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigen
         cq.select(cq.from(VigenciasReformasLaborales.class));
         return em.createQuery(cq).getResultList();
     }
-    
+
     @Override
     public List<VigenciasReformasLaborales> buscarVigenciasReformasLaboralesEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
@@ -108,20 +107,23 @@ public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigen
             List<VigenciasReformasLaborales> vigenciasRefLab = query.getResultList();
             return vigenciasRefLab;
         } catch (Exception e) {
-            System.out.println("Error en Persistencia Vigencias Reforma Laboral " + e);
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: buscarVigenciasReformasLaboralesEmpleado - PersistenciaVigenciasReformasLaborales - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
-    
+
     @Override
-    public VigenciasReformasLaborales buscarVigenciaReformaLaboralSecuencia(EntityManager em, BigInteger secVRL){
-        try{
+    public VigenciasReformasLaborales buscarVigenciaReformaLaboralSecuencia(EntityManager em, BigInteger secVRL) {
+        try {
             em.clear();
             Query query = em.createNamedQuery("VigenciasReformasLaborales.findBySecuencia").setParameter("secuencia", secVRL);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
-            VigenciasReformasLaborales vigenciaRefLab = (VigenciasReformasLaborales)query.getSingleResult();
+            VigenciasReformasLaborales vigenciaRefLab = (VigenciasReformasLaborales) query.getSingleResult();
             return vigenciaRefLab;
-        }catch(Exception e){
+        } catch (Exception e) {
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: buscarVigenciaReformaLaboralSecuencia - PersistenciaVigenciasReformasLaborales - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }

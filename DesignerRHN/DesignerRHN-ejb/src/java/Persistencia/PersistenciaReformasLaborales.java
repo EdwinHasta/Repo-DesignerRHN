@@ -6,12 +6,16 @@ package Persistencia;
 import Entidades.ReformasLaborales;
 import InterfacePersistencia.PersistenciaReformasLaboralesInterface;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 /**
  * Clase Stateless. <br>
@@ -23,6 +27,11 @@ import javax.persistence.Query;
 @Stateless
 public class PersistenciaReformasLaborales implements PersistenciaReformasLaboralesInterface {
 
+    
+    private final static Logger logger = Logger.getLogger("connectionSout");
+    private Date fechaDia;
+    private final SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+    
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
@@ -37,7 +46,8 @@ public class PersistenciaReformasLaborales implements PersistenciaReformasLabora
             em.persist(reformaLaboral);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaReformasLaborales.crear: " + e);
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: crear - PersistenciaReformasLaborales - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -53,7 +63,8 @@ public class PersistenciaReformasLaborales implements PersistenciaReformasLabora
             em.merge(reformaLaboral);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaReformasLaborales.editar: " + e);
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: editar - PersistenciaReformasLaborales - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -69,7 +80,8 @@ public class PersistenciaReformasLaborales implements PersistenciaReformasLabora
             em.remove(em.merge(reformaLaboral));
             tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaReformasLaborales.borrar: " + e);
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: borrar - PersistenciaReformasLaborales - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -95,6 +107,8 @@ public class PersistenciaReformasLaborales implements PersistenciaReformasLabora
             ReformasLaborales reformaL = (ReformasLaborales) query.getSingleResult();
             return reformaL;
         } catch (Exception e) {
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: buscarReformaSecuencia - PersistenciaReformasLaborales - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             ReformasLaborales reformaL = null;
             return reformaL;
         }
@@ -113,7 +127,8 @@ public class PersistenciaReformasLaborales implements PersistenciaReformasLabora
             }
             return variable;
         } catch (Exception e) {
-            System.out.println("Error obtenerCheckIntegralReformaLaboral PersistenciaReformasLaborales : " + e.toString());
+            PropertyConfigurator.configure("log4j.properties");
+            logger.error("Metodo: obtenerCheckIntegralReformaLaboral - PersistenciaReformasLaborales - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return "N";
         }
     }
