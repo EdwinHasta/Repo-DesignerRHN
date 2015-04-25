@@ -554,7 +554,7 @@ public class ControlRemoto implements Serializable {
      public SelectItem[] getTipoEmpleado() {
      return tipoEmpleado;
      }*/
-    public void busquedaRapida2() {
+    public void busquedaRapida() {
         filterBusquedaRapida = null;
         RequestContext context = RequestContext.getCurrentInstance();
         if (emplSeleccionado.getTipoTrabajador().getTipo().equalsIgnoreCase("Activo")) {
