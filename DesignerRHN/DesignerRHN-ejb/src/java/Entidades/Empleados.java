@@ -7,12 +7,8 @@ package Entidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -20,8 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,7 +23,6 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -43,29 +36,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empleados.findAll", query = "SELECT e FROM Empleados e"),
     @NamedQuery(name = "Empleados.findBySecuencia", query = "SELECT e FROM Empleados e where e.secuencia = :secuencia")})
 public class Empleados implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<EersCabeceras> eersCabecerasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<TurnosEmpleados> turnosEmpleadosCollection;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private DetallesTurnosRotativos detallesTurnosRotativos;
-    @OneToMany(mappedBy = "empleado")
-    private Collection<InterconDynamics> interconDynamicsCollection;
-    @OneToMany(mappedBy = "empleado")
-    private Collection<InterconSapBO> interconSapBOCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<SolucionesNodos> solucionesNodosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<Comprobantes> comprobantesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<CortesProcesos> cortesProcesosCollection;
-    @OneToMany(mappedBy = "empleado")
-    private Collection<InterconTotal> interconTotalCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<AportesEntidades> aportesEntidadesCollection;
-    @Size(max = 30)
-    @Column(name = "USUARIOBD")
-    private String usuariobd;    private static final long serialVersionUID = 1L;
+
+    
+    private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
@@ -125,13 +98,16 @@ public class Empleados implements Serializable {
     @JoinColumn(name = "EMPRESA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Empresas empresa;
+    @Size(max = 30)
+    @Column(name = "USUARIOBD")
+    private String usuariobd;
     @Transient
     private String estado;
     @Transient
     private String codigoempleadoSTR;
 
     public Empleados() {
-       persona = new Personas();
+        persona = new Personas();
     }
 
     public Empleados(BigInteger secuencia) {
@@ -376,95 +352,4 @@ public class Empleados implements Serializable {
     public void setUsuariobd(String usuariobd) {
         this.usuariobd = usuariobd;
     }
-
-    @XmlTransient
-    public Collection<AportesEntidades> getAportesEntidadesCollection() {
-        return aportesEntidadesCollection;
-    }
-
-    public void setAportesEntidadesCollection(Collection<AportesEntidades> aportesEntidadesCollection) {
-        this.aportesEntidadesCollection = aportesEntidadesCollection;
-    }
-
-    @XmlTransient
-    public Collection<SolucionesNodos> getSolucionesNodosCollection() {
-        return solucionesNodosCollection;
-    }
-
-    public void setSolucionesNodosCollection(Collection<SolucionesNodos> solucionesNodosCollection) {
-        this.solucionesNodosCollection = solucionesNodosCollection;
-    }
-
-    @XmlTransient
-    public Collection<Comprobantes> getComprobantesCollection() {
-        return comprobantesCollection;
-    }
-
-    public void setComprobantesCollection(Collection<Comprobantes> comprobantesCollection) {
-        this.comprobantesCollection = comprobantesCollection;
-    }
-
-    @XmlTransient
-    public Collection<CortesProcesos> getCortesProcesosCollection() {
-        return cortesProcesosCollection;
-    }
-
-    public void setCortesProcesosCollection(Collection<CortesProcesos> cortesProcesosCollection) {
-        this.cortesProcesosCollection = cortesProcesosCollection;
-    }
-
-    @XmlTransient
-    public Collection<InterconTotal> getInterconTotalCollection() {
-        return interconTotalCollection;
-    }
-
-    public void setInterconTotalCollection(Collection<InterconTotal> interconTotalCollection) {
-        this.interconTotalCollection = interconTotalCollection;
-    }
-
-    @XmlTransient
-    public Collection<InterconSapBO> getInterconSapBOCollection() {
-        return interconSapBOCollection;
-    }
-
-    public void setInterconSapBOCollection(Collection<InterconSapBO> interconSapBOCollection) {
-        this.interconSapBOCollection = interconSapBOCollection;
-    }
-
-    @XmlTransient
-    public Collection<InterconDynamics> getInterconDynamicsCollection() {
-        return interconDynamicsCollection;
-    }
-
-    public void setInterconDynamicsCollection(Collection<InterconDynamics> interconDynamicsCollection) {
-        this.interconDynamicsCollection = interconDynamicsCollection;
-    }
-
-    public DetallesTurnosRotativos getDetallesTurnosRotativos() {
-        return detallesTurnosRotativos;
-    }
-
-    public void setDetallesTurnosRotativos(DetallesTurnosRotativos detallesTurnosRotativos) {
-        this.detallesTurnosRotativos = detallesTurnosRotativos;
-    }
-
-    @XmlTransient
-    public Collection<TurnosEmpleados> getTurnosEmpleadosCollection() {
-        return turnosEmpleadosCollection;
-    }
-
-    public void setTurnosEmpleadosCollection(Collection<TurnosEmpleados> turnosEmpleadosCollection) {
-        this.turnosEmpleadosCollection = turnosEmpleadosCollection;
-    }
-
-    @XmlTransient
-    public Collection<EersCabeceras> getEersCabecerasCollection() {
-        return eersCabecerasCollection;
-    }
-
-    public void setEersCabecerasCollection(Collection<EersCabeceras> eersCabecerasCollection) {
-        this.eersCabecerasCollection = eersCabecerasCollection;
-    }
-
-   
 }
