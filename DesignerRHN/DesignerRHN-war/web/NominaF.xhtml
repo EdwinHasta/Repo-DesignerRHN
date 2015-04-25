@@ -880,10 +880,7 @@
                         <h:outputText value="#{msg['paso4']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" actionListener="#{controlRemoto.activos()}" icon="ui-icon-check" onclick="activoEliminarPaso4.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
                     </p:dialog>
-                    <!-- <p:dialog id="reingresarEmpleado" widgetVar="reingresarEmpleado" draggable="false" resizable="false" closable="false"  
-                              showEffect="fade" hideEffect="fade" width="380" height="350" modal="true" dynamic="true">
-                        <ui:include src="resources/Ciudades.xhtml"/>
-                    </p:dialog> -->
+                    
                 </h:form>
                 <h:form id="formExportar">
                     <p:dataTable id="empleadosExportar" var="empleadoVW" style="visibility: hidden; display: none;"                           
@@ -916,4 +913,3 @@
         </ui:composition>
     </h:body>
 </html>
-
