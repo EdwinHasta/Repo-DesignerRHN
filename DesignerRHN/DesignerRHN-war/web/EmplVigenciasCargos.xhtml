@@ -241,9 +241,9 @@
 
                             <h:outputText id="infoRegistroEstructuras" value="#{controlVigenciasCargos.infoRegistroEstructuras}" style="position: relative; top: 15px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarE" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 390px; left: 552px; " icon="ui-icon-check" actionListener="#{controlVigenciasCargos.actualizarEstructura()}" process="@this" />
+                            <p:commandButton id="aceptarE" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar ? true : false }" style="position: absolute; top: 390px; left: 552px; " icon="ui-icon-check" actionListener="#{controlVigenciasCargos.actualizarEstructura()}" process="@this" onclick="estructurasDialog.hide()"/>
                                 
-                            <p:commandButton id="atrasE" value="#{msg['atras']}" style="position: absolute; top: 390px; left: 644px; " actionListener="#{controlVigenciasCargos.cancelarCambioEstructura()}" icon="ui-icon-arrowreturnthick-1-w"  process="@this" />
+                            <p:commandButton id="atrasE" value="#{msg['atras']}" style="position: absolute; top: 390px; left: 644px; " actionListener="#{controlVigenciasCargos.cancelarCambioEstructura()}" icon="ui-icon-arrowreturnthick-1-w"  process="@this" onclick="estructurasDialog.hide()"/>
                                 
                         </p:dialog>
 
@@ -274,9 +274,9 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <p:commandButton id="aceptarM" style="position: relative; left: 210px" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" icon="ui-icon-check"  actionListener="#{controlVigenciasCargos.actualizarMotivo()}" process="@this"/>
+                            <p:commandButton id="aceptarM" style="position: relative; left: 210px" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" icon="ui-icon-check"  actionListener="#{controlVigenciasCargos.actualizarMotivo()}" process="@this" onclick="motivosDialog.hide()"/>
                                 
-                            <p:commandButton id="atrasM" style="position: relative; left: 210px" value="#{msg['atras']}"  icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasCargos.cancelarCambioMotivo()}"  process="@this"/>
+                            <p:commandButton id="atrasM" style="position: relative; left: 210px" value="#{msg['atras']}"  icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasCargos.cancelarCambioMotivo()}"  process="@this" onclick="motivosDialog.hide()"/>
                                 
 
                             <h:outputText id="infoRegistroMotivos" value="#{controlVigenciasCargos.infoRegistroMotivos}" style="position: absolute; top: 350px; left: 20px; font-weight: bold"/>
@@ -315,9 +315,9 @@
 
                             <h:outputText id="infoRegistroCargos" value="#{controlVigenciasCargos.infoRegistroCargos}" style="position: relative; top: 15px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarC" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 390px; left: 308px; " icon="ui-icon-check" actionListener="#{controlVigenciasCargos.actualizarCargo()}" process="@this"/>
+                            <p:commandButton id="aceptarC" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 390px; left: 308px; " icon="ui-icon-check" actionListener="#{controlVigenciasCargos.actualizarCargo()}" process="@this" onclick="cargosDialog.hide()"/>
                                 
-                            <p:commandButton id="atrasC" value="#{msg['atras']}" style="position: absolute; top: 390px; left: 400px; " icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasCargos.cancelarCambioCargo()}" process="@this"/>
+                            <p:commandButton id="atrasC" value="#{msg['atras']}" style="position: absolute; top: 390px; left: 400px; " icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasCargos.cancelarCambioCargo()}" process="@this" onclick="cargosDialog.hide()"/>
                                 
 
                         </p:dialog>
@@ -377,9 +377,9 @@
                             </p:dataTable> 
                             <h:outputText id="informacionLOVEJ" value="#{controlVigenciasCargos.cantidadRegistrosLOV}" style="position: absolute; top: 265px; left: 20px; font-weight: bold"/>
 
-                            <p:commandButton id="AceptarEmplJ" value="#{msg['aceptar']}" actionListener="#{controlVigenciasCargos.actualizarEmpleadoJefe()}" icon="ui-icon-check"   process="@this" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 260px; left: 560px"/>
+                            <p:commandButton id="AceptarEmplJ" value="#{msg['aceptar']}" actionListener="#{controlVigenciasCargos.actualizarEmpleadoJefe()}" icon="ui-icon-check"   process="@this" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 260px; left: 560px" onclick="dialogoEmpleadoJefe.hide()"/>
                                 
-                            <p:commandButton value="#{msg['atras']}"  actionListener="#{controlVigenciasCargos.cancelarEmpleadoJefe()}" icon="ui-icon-arrowreturnthick-1-w"  style="position: absolute; top: 260px; left: 653px"/>
+                            <p:commandButton value="#{msg['atras']}"  actionListener="#{controlVigenciasCargos.cancelarEmpleadoJefe()}" icon="ui-icon-arrowreturnthick-1-w"  style="position: absolute; top: 260px; left: 653px" process="@this" onclick="dialogoEmpleadoJefe.hide()"/>
                                 
                         </p:dialog>
                         

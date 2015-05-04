@@ -1,10 +1,6 @@
 package Controlador;
 
-import Entidades.Ciudades;
-import Entidades.Empleados;
-import Entidades.MotivosContratos;
-import Entidades.TiposContratos;
-import Entidades.VigenciasTiposContratos;
+import Entidades.*;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarRastrosInterface;
@@ -48,7 +44,7 @@ public class ControlVigenciasTiposContratos implements Serializable {
     private List<TiposContratos> listaTiposContratos;
     private List<TiposContratos> filtradoTiposContrato;
     private TiposContratos TipoContratoSelecionado;
-    private BigInteger secuenciaEmpleado;
+    //private BigInteger secuenciaEmpleado;
     private Empleados empleado;
     private int tipoActualizacion;
     private boolean permitirIndex;
@@ -89,7 +85,7 @@ public class ControlVigenciasTiposContratos implements Serializable {
     public ControlVigenciasTiposContratos() {
         permitirIndex = true;
         vigenciasTiposContratoEmpleado = null;
-        listaCiudades = new ArrayList<Ciudades>();
+        listaCiudades = null;
         empleado = new Empleados();
         ciudadSelecionada = new Ciudades();
         //Otros
@@ -132,12 +128,16 @@ public class ControlVigenciasTiposContratos implements Serializable {
     }
 
     //EMPLEADO DE LA VIGENCIA
-    public void recibirEmpleado(BigInteger sec) {
+    public void recibirEmpleado(Empleados emp) {
         System.out.println("Recibe Empleado");
         RequestContext context = RequestContext.getCurrentInstance();
-        secuenciaEmpleado = sec;
+        vigenciasTiposContratoEmpleado = null;
+        listaCiudades = null;
+        listaMotivosContratos = null;
+        listaTiposContratos = null;
         //empleado = administrarVigenciasTiposContratos.buscarEmpleado(BigInteger.valueOf(10661039));
-        empleado = administrarVigenciasTiposContratos.buscarEmpleado(secuenciaEmpleado);
+        //empleado = administrarVigenciasTiposContratos.buscarEmpleado(secuenciaEmpleado);
+        empleado = emp;
         vigenciasTiposContratoEmpleado = null;
         getVigenciasTiposContratoEmpleado();
         //INICIALIZAR BOTONES NAVEGACION
@@ -1077,30 +1077,30 @@ public class ControlVigenciasTiposContratos implements Serializable {
             context.update("formularioDialogos:duplicarCiudad");
         }
         filtradoCiudades = null;
-        ciudadSelecionada = new Ciudades();
+        //ciudadSelecionada = new Ciudades();
         aceptar = true;
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.reset("formularioDialogos:lovCiudades:globalFilter");
+        /*context.reset("formularioDialogos:lovCiudades:globalFilter");
         context.execute("lovCiudades.clearFilters()");
-        context.execute("ciudadesDialogo.hide()");
+        context.execute("ciudadesDialogo.hide()");*/
         //context.update("form:lovCiudades");
     }
 
     public void cancelarCambioCiudad() {
         filtradoCiudades = null;
-        ciudadSelecionada = new Ciudades();
+        //ciudadSelecionada = new Ciudades();
         aceptar = true;
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
-        RequestContext context = RequestContext.getCurrentInstance();
+        /*RequestContext context = RequestContext.getCurrentInstance();
         context.reset("formularioDialogos:lovCiudades:globalFilter");
         context.execute("lovCiudades.clearFilters()");
-        context.execute("ciudadesDialogo.hide()");
+        context.execute("ciudadesDialogo.hide()");*/
     }
     //MOTIVO CONTRATO
 
@@ -1142,30 +1142,30 @@ public class ControlVigenciasTiposContratos implements Serializable {
             context.update("formularioDialogos:duplicarMotivoContrato");
         }
         filtradoMotivoContrato = null;
-        MotivoContratoSelecionado = null;
+        //MotivoContratoSelecionado = null;
         aceptar = true;
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.reset("formularioDialogos:lovMotivosContrato:globalFilter");
+        /*context.reset("formularioDialogos:lovMotivosContrato:globalFilter");
         context.execute("lovMotivosContrato.clearFilters()");
-        context.execute("MotivosContratoDialogo.hide()");
+        context.execute("MotivosContratoDialogo.hide()");*/
         //context.update("formularioDialogos:lovMotivosContrato");
     }
 
     public void cancelarCambioMotivoContrato() {
         filtradoMotivoContrato = null;
-        MotivoContratoSelecionado = null;
+        //MotivoContratoSelecionado = null;
         aceptar = true;
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
-        RequestContext context = RequestContext.getCurrentInstance();
+        /*RequestContext context = RequestContext.getCurrentInstance();
         context.reset("formularioDialogos:lovMotivosContrato:globalFilter");
         context.execute("lovMotivosContrato.clearFilters()");
-        context.execute("MotivosContratoDialogo.hide()");
+        context.execute("MotivosContratoDialogo.hide()");*/
     }
 
     //TIPO CONTRATO
@@ -1207,31 +1207,30 @@ public class ControlVigenciasTiposContratos implements Serializable {
             context.update("formularioDialogos:duplicarTipoContrato");
         }
         filtradoTiposContrato = null;
-        TipoContratoSelecionado = null;
+        //TipoContratoSelecionado = null;
         aceptar = true;
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        context.reset("formularioDialogos:lovTiposContrato:globalFilter");
+        /*context.reset("formularioDialogos:lovTiposContrato:globalFilter");
         context.execute("lovTiposContrato.clearFilters()");
         context.execute("TiposContratoDialogo.hide()");
-        //context.update("form:lovTiposContrato");
+        //context.update("form:lovTiposContrato");*/
     }
 
     public void cancelarTipoContrato() {
-        RequestContext context = RequestContext.getCurrentInstance();
+        //RequestContext context = RequestContext.getCurrentInstance();
         filtradoTiposContrato = null;
-        TipoContratoSelecionado = null;
+        //TipoContratoSelecionado = null;
         aceptar = true;
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
-        context.reset("formularioDialogos:lovTiposContrato:globalFilter");
+       /*context.reset("formularioDialogos:lovTiposContrato:globalFilter");
         context.execute("lovTiposContrato.clearFilters()");
-        context.execute("TiposContratoDialogo.hide()");
-    }
+        context.execute("TiposContratoDialogo.hide()");*/    }
     //LISTA DE VALORES DINAMICA
 
     public void listaValoresBoton() {
@@ -1328,7 +1327,10 @@ public class ControlVigenciasTiposContratos implements Serializable {
 
     public List<VigenciasTiposContratos> getVigenciasTiposContratoEmpleado() {
         try {
-            return vigenciasTiposContratoEmpleado = administrarVigenciasTiposContratos.vigenciasTiposContratosEmpleado(secuenciaEmpleado);
+            if (vigenciasTiposContratoEmpleado == null) {
+                vigenciasTiposContratoEmpleado = administrarVigenciasTiposContratos.vigenciasTiposContratosEmpleado(empleado.getSecuencia());
+            }
+            return vigenciasTiposContratoEmpleado;
 
         } catch (Exception e) {
             System.out.println("Error...!! getVigenciasTiposContratosEmpleado " + e);
@@ -1374,22 +1376,45 @@ public class ControlVigenciasTiposContratos implements Serializable {
     }
 
     public void verProceso() {
-        /*for (int i = 0; i < listVTCModificar.size(); i++) {
-         System.out.println("Las que se Modificaron:         " + " Fecha:   " + formatoFecha.format(listVTCModificar.get(i).getFechavigencia()) + "|   Estructura:  " + listVTCModificar.get(i).getMotivocontrato().getNombre() + "|   Motivo:  " + listVTCModificar.get(i).getTipocontrato().getNombre() + "|   Nombre Cargo:  " + listVTCModificar.get(i).getCiudad().getNombre() + "|   Centro Costo:  " + listVTCModificar.get(i).getIniciosustitucion());
-         }*/
+        /*
+         * for (int i = 0; i < listVTCModificar.size(); i++) {
+         * System.out.println("Las que se Modificaron: " + " Fecha: " +
+         * formatoFecha.format(listVTCModificar.get(i).getFechavigencia()) + "|
+         * Estructura: " +
+         * listVTCModificar.get(i).getMotivocontrato().getNombre() + "| Motivo:
+         * " + listVTCModificar.get(i).getTipocontrato().getNombre() + "| Nombre
+         * Cargo: " + listVTCModificar.get(i).getCiudad().getNombre() + "|
+         * Centro Costo: " + listVTCModificar.get(i).getIniciosustitucion()); }
+         */
         System.out.println(".................................................");
         for (int i = 0; i < listVTCCrear.size(); i++) {
             System.out.println("Las que se van a Crear:         " + " Fecha:   " + listVTCCrear.get(i).getFechavigencia() + "|   Motivo:  " + listVTCCrear.get(i).getMotivocontrato().getNombre() + "|   Tipo:  " + listVTCCrear.get(i).getTipocontrato().getNombre() + "|   Ciudad:  " + listVTCCrear.get(i).getCiudad().getSecuencia() + "|   Empleado:  " + listVTCCrear.get(i).getEmpleado().getSecuencia());
         }/*
-         System.out.println(".................................................");
-         for (int i = 0; i < listVTCBorrar.size(); i++) {
-         System.out.println("Las que se van a Borrar:         " + " Fecha:   " + formatoFecha.format(listVTCBorrar.get(i).getFechavigencia()) + "|   Estructura:  " + listVTCBorrar.get(i).getMotivocontrato().getNombre() + "|   Motivo:  " + listVTCBorrar.get(i).getTipocontrato().getNombre() + "|   Nombre Cargo:  " + listVTCBorrar.get(i).getCiudad().getNombre() + "|   Centro Costo:  " + listVTCBorrar.get(i).getEstructura().getCentrocosto().getNombre());
-         }
-         System.out.println(".................................................");
-         for (int i = 0; i < vigenciasTiposContratoEmpleado.size(); i++) {
-         System.out.println("lista total:         " + " Fecha:   " + formatoFecha.format(vigenciasTiposContratoEmpleado.get(i).getFechavigencia()) + "|   Estructura:  " + vigenciasTiposContratoEmpleado.get(i).getMotivocontrato().getNombre() + "|   Motivo:  " + vigenciasTiposContratoEmpleado.get(i).getTipocontrato().getNombre() + "|   Nombre Cargo:  " + vigenciasTiposContratoEmpleado.get(i).getCiudad().getNombre() + "|   Centro Costo:  " + vigenciasTiposContratoEmpleado.get(i).getEstructura().getCentrocosto().getNombre());
-         }
-         System.out.println("................................................. FIN.");*/
+         * System.out.println(".................................................");
+         * for (int i = 0; i < listVTCBorrar.size(); i++) {
+         * System.out.println("Las que se van a Borrar: " + " Fecha: " +
+         * formatoFecha.format(listVTCBorrar.get(i).getFechavigencia()) + "|
+         * Estructura: " + listVTCBorrar.get(i).getMotivocontrato().getNombre()
+         * + "| Motivo: " + listVTCBorrar.get(i).getTipocontrato().getNombre() +
+         * "| Nombre Cargo: " + listVTCBorrar.get(i).getCiudad().getNombre() +
+         * "| Centro Costo: " +
+         * listVTCBorrar.get(i).getEstructura().getCentrocosto().getNombre()); }
+         * System.out.println(".................................................");
+         * for (int i = 0; i < vigenciasTiposContratoEmpleado.size(); i++) {
+         * System.out.println("lista total: " + " Fecha: " +
+         * formatoFecha.format(vigenciasTiposContratoEmpleado.get(i).getFechavigencia())
+         * + "| Estructura: " +
+         * vigenciasTiposContratoEmpleado.get(i).getMotivocontrato().getNombre()
+         * + "| Motivo: " +
+         * vigenciasTiposContratoEmpleado.get(i).getTipocontrato().getNombre() +
+         * "| Nombre Cargo: " +
+         * vigenciasTiposContratoEmpleado.get(i).getCiudad().getNombre() + "|
+         * Centro Costo: " +
+         * vigenciasTiposContratoEmpleado.get(i).getEstructura().getCentrocosto().getNombre());
+         * }
+         * System.out.println(".................................................
+         * FIN.");
+         */
 
     }
 
@@ -1402,15 +1427,17 @@ public class ControlVigenciasTiposContratos implements Serializable {
     }
 
     public List<Ciudades> getListaCiudades() {
-        listaCiudades = administrarVigenciasTiposContratos.ciudades();
-        RequestContext context = RequestContext.getCurrentInstance();
+        if (listaCiudades == null) {
+            listaCiudades = administrarVigenciasTiposContratos.ciudades();
+            RequestContext context = RequestContext.getCurrentInstance();
 
-        if (listaCiudades == null || listaCiudades.isEmpty()) {
-            infoRegistroCiudades = "Cantidad de registros: 0 ";
-        } else {
-            infoRegistroCiudades = "Cantidad de registros: " + listaCiudades.size();
+            if (listaCiudades == null || listaCiudades.isEmpty()) {
+                infoRegistroCiudades = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistroCiudades = "Cantidad de registros: " + listaCiudades.size();
+            }
+            context.update("form:infoRegistroCiudades");
         }
-        context.update("form:infoRegistroCiudades");
         return listaCiudades;
     }
 
@@ -1431,7 +1458,9 @@ public class ControlVigenciasTiposContratos implements Serializable {
     }
 
     public List<MotivosContratos> getListaMotivosContratos() {
-        listaMotivosContratos = administrarVigenciasTiposContratos.motivosContratos();
+        if (listaMotivosContratos == null) {
+            listaMotivosContratos = administrarVigenciasTiposContratos.motivosContratos();
+        }
         return listaMotivosContratos;
     }
 
@@ -1464,15 +1493,17 @@ public class ControlVigenciasTiposContratos implements Serializable {
     }
 
     public List<TiposContratos> getListaTiposContratos() {
-        listaTiposContratos = administrarVigenciasTiposContratos.tiposContratos();
-        RequestContext context = RequestContext.getCurrentInstance();
+        if (listaTiposContratos == null) {
+            listaTiposContratos = administrarVigenciasTiposContratos.tiposContratos();
+            RequestContext context = RequestContext.getCurrentInstance();
 
-        if (listaTiposContratos == null || listaTiposContratos.isEmpty()) {
-            infoRegistroTiposContratos = "Cantidad de registros: 0 ";
-        } else {
-            infoRegistroTiposContratos = "Cantidad de registros: " + listaTiposContratos.size();
+            if (listaTiposContratos == null || listaTiposContratos.isEmpty()) {
+                infoRegistroTiposContratos = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistroTiposContratos = "Cantidad de registros: " + listaTiposContratos.size();
+            }
+            context.update("form:infoRegistroTiposContratos");
         }
-        context.update("form:infoRegistroTiposContratos");
         return listaTiposContratos;
     }
 
@@ -1531,5 +1562,4 @@ public class ControlVigenciasTiposContratos implements Serializable {
     public void setInfoRegistroTiposContratos(String infoRegistroTiposContratos) {
         this.infoRegistroTiposContratos = infoRegistroTiposContratos;
     }
-
 }

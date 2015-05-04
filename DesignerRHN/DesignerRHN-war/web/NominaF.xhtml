@@ -164,12 +164,12 @@
 
                                         <!-- Botones Panel Central -->
 
-                                        <p:commandButton id="CargoDesempeñado" value="" styleClass="colorBotones" style="position: absolute; background-image: url(Imagenes/Iconos/cargoDesempleñado.png); width: 29px; height: 35px; top: 15px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 2px; border-width: 2px;" action="vigenciasC"  disabled="#{controlRemoto.acumulado}" actionListener="#{controlVigenciasCargos.recibirEmpleado(item.empleado.secuencia)}" />
+                                        <p:commandButton id="CargoDesempeñado" value="" styleClass="colorBotones" style="position: absolute; background-image: url(Imagenes/Iconos/cargoDesempleñado.png); width: 29px; height: 35px; top: 15px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 2px; border-width: 2px;" action="vigenciasC"  disabled="#{controlRemoto.acumulado}" actionListener="#{controlVigenciasCargos.recibirEmpleado(item.empleado)}" />
                                         <p:tooltip  for="CargoDesempeñado">
                                             #{msg['cargosdesempeñados1']}<br/>#{msg['cargosdesempeñados2']}
                                         </p:tooltip>
 
-                                        <p:commandButton id="FechaContratacion" value="" style="position: absolute; background-image: url(Imagenes/Iconos/fechaContratacion.png); width: 29px; height: 35px; top: 52px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 2px;" disabled="#{controlRemoto.acumulado}" action="vigenciasTC" actionListener="#{controlVigenciasTiposContratos.recibirEmpleado(item.empleado.secuencia)}"  />
+                                        <p:commandButton id="FechaContratacion" value="" style="position: absolute; background-image: url(Imagenes/Iconos/fechaContratacion.png); width: 29px; height: 35px; top: 52px; left: 10px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 2px;" disabled="#{controlRemoto.acumulado}" action="vigenciasTC" actionListener="#{controlVigenciasTiposContratos.recibirEmpleado(item.empleado)}"  />
                                         <p:tooltip  for="FechaContratacion">
                                             #{msg['FechaContratacion1']}<br/>#{msg['FechaContratacion2']}
                                         </p:tooltip>

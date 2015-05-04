@@ -332,9 +332,9 @@
 
                         <h:outputText id="infoRegistroCiudades" value="#{controlVigenciasTiposContratos.infoRegistroCiudades}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarC" style="position: relative; left: 283px" value="#{msg['aceptar']}" disabled="#{controlVigenciasTiposContratos.aceptar}" actionListener="#{controlVigenciasTiposContratos.actualizarCiudad()}" process="@this" icon="ui-icon-check"/>
+                        <p:commandButton id="aceptarC" style="position: relative; left: 283px" value="#{msg['aceptar']}" disabled="#{controlVigenciasTiposContratos.aceptar}" actionListener="#{controlVigenciasTiposContratos.actualizarCiudad()}" process="@this" icon="ui-icon-check" onclick="ciudadesDialogo.hide()"/>
                             
-                        <p:commandButton id="atrasC" style="position: relative; left: 283px" value="#{msg['atras']}" actionListener="#{controlVigenciasTiposContratos.cancelarCambioCiudad()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                        <p:commandButton id="atrasC" style="position: relative; left: 283px" value="#{msg['atras']}" actionListener="#{controlVigenciasTiposContratos.cancelarCambioCiudad()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" onclick="ciudadesDialogo.hide()"/>
                             
                     </p:dialog> 
 
@@ -364,9 +364,9 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarTC" style="position: relative; left: 170px" value="#{msg['aceptar']}" disabled="#{controlVigenciasTiposContratos.aceptar}" actionListener="#{controlVigenciasTiposContratos.actualizarTipoContrato()}" process="@this" icon="ui-icon-check" />
+                        <p:commandButton id="aceptarTC" style="position: relative; left: 170px" value="#{msg['aceptar']}" disabled="#{controlVigenciasTiposContratos.aceptar}" actionListener="#{controlVigenciasTiposContratos.actualizarTipoContrato()}" process="@this" icon="ui-icon-check" onclick="TiposContratoDialogo.hide()"/>
                             
-                        <p:commandButton id="atrasTC" style="position: relative; left: 170px" value="#{msg['atras']}" actionListener="#{controlVigenciasTiposContratos.cancelarTipoContrato()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                        <p:commandButton id="atrasTC" style="position: relative; left: 170px" value="#{msg['atras']}" actionListener="#{controlVigenciasTiposContratos.cancelarTipoContrato()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" onclick="TiposContratoDialogo.hide()"/>
                             
                         
                         <h:outputText id="infoRegistroTiposContratos" value="#{controlVigenciasTiposContratos.infoRegistroTiposContratos}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
@@ -397,9 +397,9 @@
                                 <h:outputText  value="#{MotivosC.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarMC" style="position: relative; left: 145px" value="#{msg['aceptar']}" disabled="#{controlVigenciasTiposContratos.aceptar}" actionListener="#{controlVigenciasTiposContratos.actualizarMotivoContrato()}" process="@this" icon="ui-icon-check"/>
+                        <p:commandButton id="aceptarMC" style="position: relative; left: 145px" value="#{msg['aceptar']}" disabled="#{controlVigenciasTiposContratos.aceptar}" actionListener="#{controlVigenciasTiposContratos.actualizarMotivoContrato()}" process="@this" icon="ui-icon-check" onclick="MotivosContratoDialogo.hide()"/>
                             
-                        <p:commandButton id="atrasMC" style="position: relative; left: 145px; " value="#{msg['atras']}" actionListener="#{controlVigenciasTiposContratos.cancelarCambioMotivoContrato()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                        <p:commandButton id="atrasMC" style="position: relative; left: 145px; " value="#{msg['atras']}" actionListener="#{controlVigenciasTiposContratos.cancelarCambioMotivoContrato()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" onclick="MotivosContratoDialogo.hide()"/>
                             
                     </p:dialog>
 
