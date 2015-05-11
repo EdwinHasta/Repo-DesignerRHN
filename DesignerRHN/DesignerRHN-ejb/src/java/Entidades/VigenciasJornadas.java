@@ -1,29 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,14 +12,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "VIGENCIASJORNADAS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "VigenciasJornadas.findAll", query = "SELECT v FROM VigenciasJornadas v"),
-    @NamedQuery(name = "VigenciasJornadas.findBySecuencia", query = "SELECT v FROM VigenciasJornadas v WHERE v.secuencia = :secuencia"),
-    @NamedQuery(name = "VigenciasJornadas.findByFechavigencia", query = "SELECT v FROM VigenciasJornadas v WHERE v.fechavigencia = :fechavigencia")})
 public class VigenciasJornadas implements Serializable {
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -56,8 +32,6 @@ public class VigenciasJornadas implements Serializable {
     @JoinColumn(name = "EMPLEADO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Empleados empleado;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "vigenciajornada")
-    private Collection<VigenciasCompensaciones> vigenciascompensacionesCollection;
 
     public VigenciasJornadas() {
     }
@@ -115,15 +89,6 @@ public class VigenciasJornadas implements Serializable {
 
     public void setEmpleado(Empleados empleado) {
         this.empleado = empleado;
-    }
-
-    @XmlTransient
-    public Collection<VigenciasCompensaciones> getVigenciascompensacionesCollection() {
-        return vigenciascompensacionesCollection;
-    }
-
-    public void setVigenciascompensacionesCollection(Collection<VigenciasCompensaciones> vigenciascompensacionesCollection) {
-        this.vigenciascompensacionesCollection = vigenciascompensacionesCollection;
     }
 
     @Override

@@ -1,27 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -29,14 +12,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "OBJETOSDB")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "ObjetosDB.findAll", query = "SELECT o FROM ObjetosDB o")})
 public class ObjetosDB implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "objetodb")
-    private Collection<UsuariosVistas> usuariosVistasCollection;
+
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -47,9 +25,6 @@ public class ObjetosDB implements Serializable {
     @Size(min = 1, max = 30)
     @Column(name = "TIPO")
     private String tipo;
-    //@Basic(optional = false)
-    //@NotNull
-    //@Size(min = 1, max = 50)
     @Column(name = "NOMBRE")
     private String nombre;
     @Size(max = 80)
@@ -64,8 +39,6 @@ public class ObjetosDB implements Serializable {
     @Size(max = 1)
     @Column(name = "AUTORIZADA")
     private String autorizada;
-    @OneToMany(mappedBy = "objeto")
-    private Collection<RastrosTablas> rastrosTablasCollection;
     @JoinColumn(name = "MODULO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Modulos modulo;
@@ -142,15 +115,6 @@ public class ObjetosDB implements Serializable {
         this.autorizada = autorizada;
     }
 
-    @XmlTransient
-    public Collection<RastrosTablas> getRastrosTablasCollection() {
-        return rastrosTablasCollection;
-    }
-
-    public void setRastrosTablasCollection(Collection<RastrosTablas> rastrosTablasCollection) {
-        this.rastrosTablasCollection = rastrosTablasCollection;
-    }
-
     public Modulos getModulo() {
         return modulo;
     }
@@ -183,14 +147,4 @@ public class ObjetosDB implements Serializable {
     public String toString() {
         return "Entidades.ObjetosDB[ secuencia=" + secuencia + " ]";
     }
-
-    @XmlTransient
-    public Collection<UsuariosVistas> getUsuariosVistasCollection() {
-        return usuariosVistasCollection;
-    }
-
-    public void setUsuariosVistasCollection(Collection<UsuariosVistas> usuariosVistasCollection) {
-        this.usuariosVistasCollection = usuariosVistasCollection;
-    }
-    
 }

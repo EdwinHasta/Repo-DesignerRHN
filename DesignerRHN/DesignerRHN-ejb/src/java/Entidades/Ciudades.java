@@ -1,25 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -27,13 +11,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "CIUDADES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Ciudades.findAll", query = "SELECT c FROM Ciudades c")})
 public class Ciudades implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Column(name = "SECUENCIA", nullable = true)
     private BigInteger secuencia;
@@ -47,22 +27,6 @@ public class Ciudades implements Serializable {
     @JoinColumn(name = "DEPARTAMENTO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Departamentos departamento;
-    @OneToMany(mappedBy = "ciudad")
-    private Collection<Terceros> tercerosCollection;
-    @OneToMany(mappedBy = "ciudaddocumento")
-    private Collection<Personas> personasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ciudadnacimiento")
-    private Collection<Personas> personasCollection1;
-    @OneToMany(mappedBy = "ciudad")
-    private Collection<VigenciasTiposContratos> vigenciastiposcontratosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ciudad")
-    private Collection<DetallesEmpresas> detallesempresasCollection;
-    @OneToMany(mappedBy = "ciudaddocumentorepresentante")
-    private Collection<DetallesEmpresas> detallesempresasCollection1;
-    @OneToMany(mappedBy = "ciudad")
-    private Collection<UbicacionesGeograficas> ubicacionesgeograficasCollection;
-    @OneToMany(mappedBy = "ciudad")
-    private Collection<TercerosSucursales> tercerossucursalesCollection;
 
     public Ciudades() {
     }
@@ -119,34 +83,7 @@ public class Ciudades implements Serializable {
     public void setDepartamento(Departamentos departamento) {
         this.departamento = departamento;
     }
-
-    @XmlTransient
-    public Collection<Terceros> getTercerosCollection() {
-        return tercerosCollection;
-    }
-
-    public void setTercerosCollection(Collection<Terceros> tercerosCollection) {
-        this.tercerosCollection = tercerosCollection;
-    }
-
-    @XmlTransient
-    public Collection<Personas> getPersonasCollection() {
-        return personasCollection;
-    }
-
-    public void setPersonasCollection(Collection<Personas> personasCollection) {
-        this.personasCollection = personasCollection;
-    }
-
-    @XmlTransient
-    public Collection<Personas> getPersonasCollection1() {
-        return personasCollection1;
-    }
-
-    public void setPersonasCollection1(Collection<Personas> personasCollection1) {
-        this.personasCollection1 = personasCollection1;
-    }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -170,49 +107,5 @@ public class Ciudades implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Ciudades[ secuencia=" + secuencia + " ]";
-    }
-
-    @XmlTransient
-    public Collection<TercerosSucursales> getTercerossucursalesCollection() {
-        return tercerossucursalesCollection;
-    }
-
-    public void setTercerossucursalesCollection(Collection<TercerosSucursales> tercerossucursalesCollection) {
-        this.tercerossucursalesCollection = tercerossucursalesCollection;
-    }
-
-    @XmlTransient
-    public Collection<UbicacionesGeograficas> getUbicacionesgeograficasCollection() {
-        return ubicacionesgeograficasCollection;
-    }
-
-    public void setUbicacionesgeograficasCollection(Collection<UbicacionesGeograficas> ubicacionesgeograficasCollection) {
-        this.ubicacionesgeograficasCollection = ubicacionesgeograficasCollection;
-    }
-
-    @XmlTransient
-    public Collection<DetallesEmpresas> getDetallesempresasCollection() {
-        return detallesempresasCollection;
-    }
-
-    public void setDetallesempresasCollection(Collection<DetallesEmpresas> detallesempresasCollection) {
-        this.detallesempresasCollection = detallesempresasCollection;
-    }
-
-    @XmlTransient
-    public Collection<DetallesEmpresas> getDetallesempresasCollection1() {
-        return detallesempresasCollection1;
-    }
-
-    public void setDetallesempresasCollection1(Collection<DetallesEmpresas> detallesempresasCollection1) {
-        this.detallesempresasCollection1 = detallesempresasCollection1;
-    }
-
-    public Collection<VigenciasTiposContratos> getVigenciastiposcontratosCollection() {
-        return vigenciastiposcontratosCollection;
-    }
-
-    public void setVigenciastiposcontratosCollection(Collection<VigenciasTiposContratos> vigenciastiposcontratosCollection) {
-        this.vigenciastiposcontratosCollection = vigenciastiposcontratosCollection;
     }
 }

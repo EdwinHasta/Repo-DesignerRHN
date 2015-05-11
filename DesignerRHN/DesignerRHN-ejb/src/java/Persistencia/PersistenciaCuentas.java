@@ -84,7 +84,7 @@ public class PersistenciaCuentas implements PersistenciaCuentasInterface {
     public List<Cuentas> buscarCuentas(EntityManager em) {
         try {
             em.clear();
-            List<Cuentas> cuentas = (List<Cuentas>) em.createNamedQuery("Cuentas.findAll").getResultList();
+            List<Cuentas> cuentas = (List<Cuentas>) em.createQuery("SELECT c FROM Cuentas c").getResultList();
             return cuentas;
         } catch (Exception e) {
             System.out.println("Error buscarCuentas PersistenciaCuentas : " + e.toString());

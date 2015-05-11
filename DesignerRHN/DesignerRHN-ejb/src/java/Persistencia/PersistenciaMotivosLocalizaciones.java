@@ -81,7 +81,7 @@ public class PersistenciaMotivosLocalizaciones implements PersistenciaMotivosLoc
     public List<MotivosLocalizaciones> buscarMotivosLocalizaciones(EntityManager em) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("MotivosLocalizaciones.findAll");
+            Query query = em.createQuery("SELECT m FROM MotivosLocalizaciones m");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<MotivosLocalizaciones> motivosL = (List<MotivosLocalizaciones>) query.getResultList();
             return motivosL;

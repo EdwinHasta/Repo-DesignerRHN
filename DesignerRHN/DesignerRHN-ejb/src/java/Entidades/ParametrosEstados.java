@@ -1,23 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -25,12 +10,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "PARAMETROSESTADOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "ParametrosEstados.findAll", query = "SELECT p FROM ParametrosEstados p")})
 public class ParametrosEstados implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @JoinColumn(name = "PARAMETRO", referencedColumnName = "SECUENCIA")
     @OneToOne(optional = false)

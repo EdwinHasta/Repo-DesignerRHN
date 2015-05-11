@@ -103,19 +103,6 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
         TiposTrabajadores tipoT = null;
         return tipoT;
     }
-    /*
-     @Override
-     public TiposTrabajadores buscarTipoTrabajadorCodigo(EntityManager em, BigDecimal codigo) {
-     try {
-     Query query = em.createNamedQuery("TiposTrabajadores.findByCodigo").setParameter("codigo", codigo);
-     TiposTrabajadores tipoTC = (TiposTrabajadores) query.getSingleResult();
-     return tipoTC;
-     } catch (Exception e) {
-     }
-     TiposTrabajadores tipoTC = null;
-     return null;
-     }
-     */
 
     @Override
     public String plantillaValidarTipoTrabajadorReformaLaboral(EntityManager em, BigInteger tipoTrabajador, BigInteger reformaLaboral) {

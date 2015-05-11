@@ -1,33 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
 import java.util.Date;
-import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -35,48 +13,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "CONCEPTOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Conceptos.findAll", query = "SELECT c FROM Conceptos c")})
 public class Conceptos implements Serializable {
 
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "CODIGO")
-    private BigInteger codigo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
-    private Collection<EersDetalles> eersDetallesCollection;
-    @OneToMany(mappedBy = "concepto")
-    private Collection<InterconDynamics> interconDynamicsCollection;
-    @OneToMany(mappedBy = "concepto")
-    private Collection<InterconSapBO> interconSapBOCollection;
-    @OneToMany(mappedBy = "concepto")
-    private Collection<InterconTotal> interconTotalCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
-    private Collection<ConceptosRedondeos> conceptosRedondeosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
-    private Collection<DetallesFormasDtos> detallesFormasDtosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
-    private Collection<TSFormulasConceptos> tSFormulasConceptosCollection;
-    @OneToMany(mappedBy = "concepto")
-    private List<DetallesExtrasRecargos> detallesExtrasRecargosList;
-    @Column(name = "CONJUNTO")
-    private Short conjunto;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
-    private Collection<VigenciasCuentas> vigenciasCuentasCollection;
-
-    @OneToMany(mappedBy = "concepto")
-    private Collection<ConceptosSoportes> conceptosSoportesCollection;
-    @OneToOne(mappedBy = "concepto")
-    private GruposProvisiones gruposProvisiones;
-    @OneToMany(mappedBy = "conceptoabono")
-    private Collection<Tiposprestamos> tiposprestamosCollection;
-    @OneToMany(mappedBy = "conceptotercero")
-    private Collection<Tiposprestamos> tiposprestamosCollection1;
-    @OneToMany(mappedBy = "conceptodesembolso")
-    private Collection<Tiposprestamos> tiposprestamosCollection2;
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -146,6 +85,12 @@ public class Conceptos implements Serializable {
     @Size(max = 1)
     @Column(name = "GARANTIZAENVACACION")
     private String garantizaenvacacion;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CODIGO")
+    private BigInteger codigo;
+    @Column(name = "CONJUNTO")
+    private Short conjunto;
     @JoinColumn(name = "UNIDAD", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Unidades unidad;
@@ -161,14 +106,6 @@ public class Conceptos implements Serializable {
     @JoinColumn(name = "CLAVECONTABLECREDITO", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private ClavesSap clavecontablecredito;
-    @OneToMany(mappedBy = "concepto")
-    private Collection<Categorias> categoriasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
-    private Collection<FormulasConceptos> formulasconceptosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
-    private Collection<SolucionesNodos> solucionesnodosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
-    private Collection<Novedades> novedadesCollection;
     @Transient
     private String naturalezaConcepto;
     @Transient
@@ -463,15 +400,6 @@ public class Conceptos implements Serializable {
         this.strNaturalezaDescripcion = strNaturalezaDescripcion;
     }
 
-    @XmlTransient
-    public Collection<Categorias> getCategoriasCollection() {
-        return categoriasCollection;
-    }
-
-    public void setCategoriasCollection(Collection<Categorias> categoriasCollection) {
-        this.categoriasCollection = categoriasCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -495,91 +423,6 @@ public class Conceptos implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Conceptos[ secuencia=" + secuencia + " ]";
-    }
-
-    @XmlTransient
-    public Collection<SolucionesNodos> getSolucionesnodosCollection() {
-        return solucionesnodosCollection;
-    }
-
-    public void setSolucionesnodosCollection(Collection<SolucionesNodos> solucionesnodosCollection) {
-        this.solucionesnodosCollection = solucionesnodosCollection;
-    }
-
-    @XmlTransient
-    public Collection<Novedades> getNovedadesCollection() {
-        return novedadesCollection;
-    }
-
-    public void setNovedadesCollection(Collection<Novedades> novedadesCollection) {
-        this.novedadesCollection = novedadesCollection;
-    }
-
-    public Collection<FormulasConceptos> getFormulasconceptosCollection() {
-        return formulasconceptosCollection;
-    }
-
-    public void setFormulasconceptosCollection(Collection<FormulasConceptos> formulasconceptosCollection) {
-        this.formulasconceptosCollection = formulasconceptosCollection;
-    }
-    /*
-     public Collection<VigenciasGruposConceptos> getVigenciasgruposconceptosCollection() {
-     return vigenciasgruposconceptosCollection;
-     }
-
-     public void setVigenciasgruposconceptosCollection(Collection<VigenciasGruposConceptos> vigenciasgruposconceptosCollection) {
-     this.vigenciasgruposconceptosCollection = vigenciasgruposconceptosCollection;
-     }
-
-     public Collection<VigenciasConceptosTC> getVigenciasconceptostcCollection() {
-     return vigenciasconceptostcCollection;
-     }
-
-     public void setVigenciasconceptostcCollection(Collection<VigenciasConceptosTC> vigenciasconceptostcCollection) {
-     this.vigenciasconceptostcCollection = vigenciasconceptostcCollection;
-     }
-
-     public Collection<VigenciasConceptosRL> getVigenciasconceptosrlCollection() {
-     return vigenciasconceptosrlCollection;
-     }
-
-     public void setVigenciasconceptosrlCollection(Collection<VigenciasConceptosRL> vigenciasconceptosrlCollection) {
-     this.vigenciasconceptosrlCollection = vigenciasconceptosrlCollection;
-     }
-
-     public Collection<VigenciasConceptosTT> getVigenciasconceptosttCollection() {
-     return vigenciasconceptosttCollection;
-     }
-
-     public void setVigenciasconceptosttCollection(Collection<VigenciasConceptosTT> vigenciasconceptosttCollection) {
-     this.vigenciasconceptosttCollection = vigenciasconceptosttCollection;
-     }*/
-
-    @XmlTransient
-    public Collection<Tiposprestamos> getTiposprestamosCollection() {
-        return tiposprestamosCollection;
-    }
-
-    public void setTiposprestamosCollection(Collection<Tiposprestamos> tiposprestamosCollection) {
-        this.tiposprestamosCollection = tiposprestamosCollection;
-    }
-
-    @XmlTransient
-    public Collection<Tiposprestamos> getTiposprestamosCollection1() {
-        return tiposprestamosCollection1;
-    }
-
-    public void setTiposprestamosCollection1(Collection<Tiposprestamos> tiposprestamosCollection1) {
-        this.tiposprestamosCollection1 = tiposprestamosCollection1;
-    }
-
-    @XmlTransient
-    public Collection<Tiposprestamos> getTiposprestamosCollection2() {
-        return tiposprestamosCollection2;
-    }
-
-    public void setTiposprestamosCollection2(Collection<Tiposprestamos> tiposprestamosCollection2) {
-        this.tiposprestamosCollection2 = tiposprestamosCollection2;
     }
 
     public String getNaturalezaConcepto() {
@@ -695,14 +538,6 @@ public class Conceptos implements Serializable {
         this.codigoSTR = codigoSTR;
     }
 
-    public Short getConjunto() {
-        return conjunto;
-    }
-
-    public void setConjunto(Short conjunto) {
-        this.conjunto = conjunto;
-    }
-
     public String getInfoDetalleConcepto() {
         getNaturalezaConcepto();
         if (codigo != null && descripcion != null && naturalezaConcepto != null) {
@@ -717,82 +552,6 @@ public class Conceptos implements Serializable {
         this.infoDetalleConcepto = infoDetalleConcepto;
     }
 
-    @XmlTransient
-    public Collection<VigenciasCuentas> getVigenciasCuentasCollection() {
-        return vigenciasCuentasCollection;
-    }
-
-    public void setVigenciasCuentasCollection(Collection<VigenciasCuentas> vigenciasCuentasCollection) {
-        this.vigenciasCuentasCollection = vigenciasCuentasCollection;
-    }
-
-    @XmlTransient
-    public List<DetallesExtrasRecargos> getDetallesExtrasRecargosList() {
-        return detallesExtrasRecargosList;
-    }
-
-    public void setDetallesExtrasRecargosList(List<DetallesExtrasRecargos> detallesExtrasRecargosList) {
-        this.detallesExtrasRecargosList = detallesExtrasRecargosList;
-    }
-
-    @XmlTransient
-    public Collection<TSFormulasConceptos> getTSFormulasConceptosCollection() {
-        return tSFormulasConceptosCollection;
-    }
-
-    public void setTSFormulasConceptosCollection(Collection<TSFormulasConceptos> tSFormulasConceptosCollection) {
-        this.tSFormulasConceptosCollection = tSFormulasConceptosCollection;
-    }
-
-    @XmlTransient
-    public Collection<DetallesFormasDtos> getDetallesFormasDtosCollection() {
-        return detallesFormasDtosCollection;
-    }
-
-    public void setDetallesFormasDtosCollection(Collection<DetallesFormasDtos> detallesFormasDtosCollection) {
-        this.detallesFormasDtosCollection = detallesFormasDtosCollection;
-    }
-
-
-    @XmlTransient
-    public Collection<ConceptosRedondeos> getConceptosRedondeosCollection() {
-        return conceptosRedondeosCollection;
-    }
-
-    public void setConceptosRedondeosCollection(Collection<ConceptosRedondeos> conceptosRedondeosCollection) {
-        this.conceptosRedondeosCollection = conceptosRedondeosCollection;
-    }
-
-
-    @XmlTransient
-    public Collection<InterconTotal> getInterconTotalCollection() {
-        return interconTotalCollection;
-    }
-
-    public void setInterconTotalCollection(Collection<InterconTotal> interconTotalCollection) {
-        this.interconTotalCollection = interconTotalCollection;
-    }
-
-
-    @XmlTransient
-    public Collection<InterconSapBO> getInterconSapBOCollection() {
-        return interconSapBOCollection;
-    }
-
-    public void setInterconSapBOCollection(Collection<InterconSapBO> interconSapBOCollection) {
-        this.interconSapBOCollection = interconSapBOCollection;
-    }
-
-
-    @XmlTransient
-    public Collection<InterconDynamics> getInterconDynamicsCollection() {
-        return interconDynamicsCollection;
-    }
-
-    public void setInterconDynamicsCollection(Collection<InterconDynamics> interconDynamicsCollection) {
-        this.interconDynamicsCollection = interconDynamicsCollection;
-    }
-
     public BigInteger getCodigo() {
         return codigo;
     }
@@ -801,12 +560,11 @@ public class Conceptos implements Serializable {
         this.codigo = codigo;
     }
 
-    @XmlTransient
-    public Collection<EersDetalles> getEersDetallesCollection() {
-        return eersDetallesCollection;
+    public Short getConjunto() {
+        return conjunto;
     }
 
-    public void setEersDetallesCollection(Collection<EersDetalles> eersDetallesCollection) {
-        this.eersDetallesCollection = eersDetallesCollection;
+    public void setConjunto(Short conjunto) {
+        this.conjunto = conjunto;
     }
 }

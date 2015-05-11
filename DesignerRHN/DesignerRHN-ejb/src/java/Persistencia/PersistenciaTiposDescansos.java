@@ -77,8 +77,6 @@ public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInt
     public List<TiposDescansos> consultarTiposDescansos(EntityManager em) {
         try {
             em.clear();
-            //List<TiposDescansos> tiposDescansos = (List<TiposDescansos>) em.createNamedQuery("TiposDescansos.findAll").getResultList();
-            //return tiposDescansos;
             Query query = em.createQuery("SELECT t FROM TiposDescansos t");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposDescansos> listaTiposDescansos = query.getResultList();

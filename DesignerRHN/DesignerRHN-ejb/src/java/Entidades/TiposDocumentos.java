@@ -1,24 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -26,13 +11,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "TIPOSDOCUMENTOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "TiposDocumentos.findAll", query = "SELECT t FROM TiposDocumentos t")})
 public class TiposDocumentos implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -42,8 +23,6 @@ public class TiposDocumentos implements Serializable {
     private String nombrelargo;
     @Column(name = "NOMBRECORTO")
     private String nombrecorto;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipodocumento")
-    private Collection<Personas> personasCollection;
 
     public TiposDocumentos() {
     }
@@ -79,15 +58,6 @@ public class TiposDocumentos implements Serializable {
 
     public void setNombrecorto(String nombrecorto) {
         this.nombrecorto = nombrecorto.toUpperCase();
-    }
-
-    @XmlTransient
-    public Collection<Personas> getPersonasCollection() {
-        return personasCollection;
-    }
-
-    public void setPersonasCollection(Collection<Personas> personasCollection) {
-        this.personasCollection = personasCollection;
     }
 
     @Override

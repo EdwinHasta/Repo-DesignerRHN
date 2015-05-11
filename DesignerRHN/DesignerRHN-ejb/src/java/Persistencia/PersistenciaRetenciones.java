@@ -78,7 +78,7 @@ public class PersistenciaRetenciones implements PersistenciaRetencionesInterface
     @Override
     public List<Retenciones> buscarRetenciones(EntityManager em) {
         em.clear();
-        Query query = em.createNamedQuery("Retenciones.findAll");
+        Query query = em.createQuery("SELECT r FROM Retenciones r");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<Retenciones> setsLista = (List<Retenciones>) query.getResultList();
         return setsLista;

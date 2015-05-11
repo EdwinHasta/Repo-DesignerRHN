@@ -90,7 +90,7 @@ public class PersistenciaEscalafonesSalariales implements PersistenciaEscalafone
     public EscalafonesSalariales buscarEscalafonSecuencia(EntityManager em,BigInteger secEscalafon) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("SELECT e FROM EscalafonesSalariales e WHERE e.secuencia=:secuencia");
+            Query query = em.createQuery("SELECT e FROM EscalafonesSalariales e WHERE e.secuencia=:secuencia");
             query.setParameter("secuencia", secEscalafon);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             EscalafonesSalariales escalafonesSalariales = (EscalafonesSalariales) query.getSingleResult();

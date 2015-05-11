@@ -85,7 +85,7 @@ public class PersistenciaIndicadores implements PersistenciaIndicadoresInterface
     public List<Indicadores> buscarIndicadores(EntityManager em) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("Indicadores.findAll");
+            Query query = em.createQuery("SELECT i FROM Indicadores i");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Indicadores> indicadores = (List<Indicadores>) query.getResultList();
             return indicadores;

@@ -1,27 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -35,7 +19,6 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Pantallas implements Serializable {
     
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -43,9 +26,6 @@ public class Pantallas implements Serializable {
     private BigDecimal secuencia;
     @Column(name = "CODIGO")
     private Short codigo;
-    //@Basic(optional = false)
-    //@NotNull
-    //@Size(min = 1, max = 40)
     @Column(name = "NOMBRE")
     private String nombre;
     @JoinColumn(name = "TABLA", referencedColumnName = "SECUENCIA")
@@ -54,10 +34,6 @@ public class Pantallas implements Serializable {
     @Size(max = 40)
     @Column(name = "LISTA")
     private String lista;
-    @OneToMany(mappedBy = "pantallainicio")
-    private Collection<Usuarios> usuariosCollection;
-    @OneToMany(mappedBy = "pantallapadre")
-    private Collection<Pantallas> pantallasCollection;
     @JoinColumn(name = "PANTALLAPADRE", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Pantallas pantallapadre;
@@ -118,24 +94,6 @@ public class Pantallas implements Serializable {
 
     public void setLista(String lista) {
         this.lista = lista;
-    }
-
-    @XmlTransient
-    public Collection<Usuarios> getUsuariosCollection() {
-        return usuariosCollection;
-    }
-
-    public void setUsuariosCollection(Collection<Usuarios> usuariosCollection) {
-        this.usuariosCollection = usuariosCollection;
-    }
-
-    @XmlTransient
-    public Collection<Pantallas> getPantallasCollection() {
-        return pantallasCollection;
-    }
-
-    public void setPantallasCollection(Collection<Pantallas> pantallasCollection) {
-        this.pantallasCollection = pantallasCollection;
     }
 
     public Pantallas getPantallapadre() {

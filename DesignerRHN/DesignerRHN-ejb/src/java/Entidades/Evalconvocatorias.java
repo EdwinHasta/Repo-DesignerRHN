@@ -1,30 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,26 +13,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "EVALCONVOCATORIAS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Evalconvocatorias.findAll", query = "SELECT e FROM Evalconvocatorias e"),
-    @NamedQuery(name = "Evalconvocatorias.findBySecuencia", query = "SELECT e FROM Evalconvocatorias e WHERE e.secuencia = :secuencia"),
-    @NamedQuery(name = "Evalconvocatorias.findByCodigo", query = "SELECT e FROM Evalconvocatorias e WHERE e.codigo = :codigo"),
-    @NamedQuery(name = "Evalconvocatorias.findByEstado", query = "SELECT e FROM Evalconvocatorias e WHERE e.estado = :estado"),
-    @NamedQuery(name = "Evalconvocatorias.findByFechainicio", query = "SELECT e FROM Evalconvocatorias e WHERE e.fechainicio = :fechainicio"),
-    @NamedQuery(name = "Evalconvocatorias.findByFechalimite", query = "SELECT e FROM Evalconvocatorias e WHERE e.fechalimite = :fechalimite"),
-    @NamedQuery(name = "Evalconvocatorias.findByFechacierre", query = "SELECT e FROM Evalconvocatorias e WHERE e.fechacierre = :fechacierre"),
-    @NamedQuery(name = "Evalconvocatorias.findByObjetivos", query = "SELECT e FROM Evalconvocatorias e WHERE e.objetivos = :objetivos"),
-    @NamedQuery(name = "Evalconvocatorias.findByConclusiones", query = "SELECT e FROM Evalconvocatorias e WHERE e.conclusiones = :conclusiones"),
-    @NamedQuery(name = "Evalconvocatorias.findByAgrupado", query = "SELECT e FROM Evalconvocatorias e WHERE e.agrupado = :agrupado")})
 public class Evalconvocatorias implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "evalconvocatoria")
-    private Collection<EvalResultadosConv> evalResultadosConvCollection;
-    @OneToMany(mappedBy = "convocatoria")
-    private Collection<ParametrosInformes> parametrosinformesCollection;
-   
+
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -102,7 +66,6 @@ public class Evalconvocatorias implements Serializable {
     @JoinColumn(name = "CARGO", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Cargos cargo;
-    
 
     public Evalconvocatorias() {
     }
@@ -237,15 +200,6 @@ public class Evalconvocatorias implements Serializable {
         this.cargo = cargo;
     }
 
-    @XmlTransient
-    public Collection<ParametrosInformes> getParametrosinformesCollection() {
-        return parametrosinformesCollection;
-    }
-
-    public void setParametrosinformesCollection(Collection<ParametrosInformes> parametrosinformesCollection) {
-        this.parametrosinformesCollection = parametrosinformesCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -265,21 +219,4 @@ public class Evalconvocatorias implements Serializable {
         }
         return true;
     }
-
-    @Override
-    public String toString() {
-        return "Entidades.Evalconvocatorias[ secuencia=" + secuencia + " ]";
-    }
-
-    public Collection<EvalResultadosConv> getEvalResultadosConvCollection() {
-        return evalResultadosConvCollection;
-    }
-
-    public void setEvalResultadosConvCollection(Collection<EvalResultadosConv> evalResultadosConvCollection) {
-        this.evalResultadosConvCollection = evalResultadosConvCollection;
-    }
-
-   
-   
-    
 }

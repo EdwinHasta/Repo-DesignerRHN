@@ -1,29 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -31,23 +13,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "TURNOSEMPLEADOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "TurnosEmpleados.findAll", query = "SELECT t FROM TurnosEmpleados t"),
-    @NamedQuery(name = "TurnosEmpleados.findBySecuencia", query = "SELECT t FROM TurnosEmpleados t WHERE t.secuencia = :secuencia"),
-    @NamedQuery(name = "TurnosEmpleados.findByFechainicial", query = "SELECT t FROM TurnosEmpleados t WHERE t.fechainicial = :fechainicial"),
-    @NamedQuery(name = "TurnosEmpleados.findByFechafinal", query = "SELECT t FROM TurnosEmpleados t WHERE t.fechafinal = :fechafinal"),
-    @NamedQuery(name = "TurnosEmpleados.findByFechasistema", query = "SELECT t FROM TurnosEmpleados t WHERE t.fechasistema = :fechasistema"),
-    @NamedQuery(name = "TurnosEmpleados.findByProcesado", query = "SELECT t FROM TurnosEmpleados t WHERE t.procesado = :procesado"),
-    @NamedQuery(name = "TurnosEmpleados.findByComentario", query = "SELECT t FROM TurnosEmpleados t WHERE t.comentario = :comentario"),
-    @NamedQuery(name = "TurnosEmpleados.findByDescuentahorasalimentacion", query = "SELECT t FROM TurnosEmpleados t WHERE t.descuentahorasalimentacion = :descuentahorasalimentacion"),
-    @NamedQuery(name = "TurnosEmpleados.findByPagavalesalimentacion", query = "SELECT t FROM TurnosEmpleados t WHERE t.pagavalesalimentacion = :pagavalesalimentacion"),
-    @NamedQuery(name = "TurnosEmpleados.findByFechapago", query = "SELECT t FROM TurnosEmpleados t WHERE t.fechapago = :fechapago"),
-    @NamedQuery(name = "TurnosEmpleados.findByPagasolovale", query = "SELECT t FROM TurnosEmpleados t WHERE t.pagasolovale = :pagasolovale"),
-    @NamedQuery(name = "TurnosEmpleados.findByDocumentosoporte", query = "SELECT t FROM TurnosEmpleados t WHERE t.documentosoporte = :documentosoporte")})
 public class TurnosEmpleados implements Serializable {
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull

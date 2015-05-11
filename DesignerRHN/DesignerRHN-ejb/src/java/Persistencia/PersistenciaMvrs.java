@@ -91,7 +91,7 @@ public class PersistenciaMvrs implements PersistenciaMvrsInterface {
     @Override
     public List<Mvrs> buscarMvrs(EntityManager em) {
         em.clear();
-        List<Mvrs> mvrs = (List<Mvrs>) em.createNamedQuery("Mvrs.findAll").getResultList();
+        List<Mvrs> mvrs = (List<Mvrs>) em.createQuery("SELECT m FROM Mvrs m").getResultList();
         return mvrs;
     }
 

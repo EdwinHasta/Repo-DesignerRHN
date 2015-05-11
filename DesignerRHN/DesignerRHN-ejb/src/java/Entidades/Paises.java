@@ -1,24 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -26,14 +11,8 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "PAISES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Paises.findAll", query = "SELECT p FROM Paises p")})
 public class Paises implements Serializable {
-    @Column(name = "CODIGO")
-    private Integer codigo;
-
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -42,8 +21,8 @@ public class Paises implements Serializable {
     private BigInteger secuencia;
     @Column(name = "NOMBRE")
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pais")
-    private Collection<Departamentos> departamentosCollection;
+    @Column(name = "CODIGO")
+    private Integer codigo;
 
     public Paises() {
     }
@@ -76,16 +55,7 @@ public class Paises implements Serializable {
             this.nombre = nombre;
         }
     }
-
-    @XmlTransient
-    public Collection<Departamentos> getDepartamentosCollection() {
-        return departamentosCollection;
-    }
-
-    public void setDepartamentosCollection(Collection<Departamentos> departamentosCollection) {
-        this.departamentosCollection = departamentosCollection;
-    }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;

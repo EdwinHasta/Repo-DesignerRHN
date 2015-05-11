@@ -115,7 +115,7 @@ public class PersistenciaVigenciasSueldos implements PersistenciaVigenciasSueldo
     public VigenciasSueldos buscarVigenciasSueldosSecuencia(EntityManager em, BigInteger secVS) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("VigenciasSueldos.findBySecuencia").setParameter("secuencia", secVS);
+            Query query = em.createQuery("SELECT v FROM VigenciasSueldos v WHERE v.secuencia = :secuencia").setParameter("secuencia", secVS);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasSueldos vigenciasSueldos = (VigenciasSueldos) query.getSingleResult();
             return vigenciasSueldos;

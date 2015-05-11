@@ -1,29 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,44 +12,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "INFOREPORTES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Inforeportes.findAll", query = "SELECT i FROM Inforeportes i"),
-    @NamedQuery(name = "Inforeportes.findBySecuencia", query = "SELECT i FROM Inforeportes i WHERE i.secuencia = :secuencia"),
-    @NamedQuery(name = "Inforeportes.findByCodigo", query = "SELECT i FROM Inforeportes i WHERE i.codigo = :codigo"),
-    @NamedQuery(name = "Inforeportes.findByNombre", query = "SELECT i FROM Inforeportes i WHERE i.nombre = :nombre"),
-    @NamedQuery(name = "Inforeportes.findByTipo", query = "SELECT i FROM Inforeportes i WHERE i.tipo = :tipo"),
-    @NamedQuery(name = "Inforeportes.findByNombrereporte", query = "SELECT i FROM Inforeportes i WHERE i.nombrereporte = :nombrereporte"),
-    @NamedQuery(name = "Inforeportes.findByFecdesde", query = "SELECT i FROM Inforeportes i WHERE i.fecdesde = :fecdesde"),
-    @NamedQuery(name = "Inforeportes.findByFechasta", query = "SELECT i FROM Inforeportes i WHERE i.fechasta = :fechasta"),
-    @NamedQuery(name = "Inforeportes.findByEmdesde", query = "SELECT i FROM Inforeportes i WHERE i.emdesde = :emdesde"),
-    @NamedQuery(name = "Inforeportes.findByEmhasta", query = "SELECT i FROM Inforeportes i WHERE i.emhasta = :emhasta"),
-    @NamedQuery(name = "Inforeportes.findByLocalizacion", query = "SELECT i FROM Inforeportes i WHERE i.localizacion = :localizacion"),
-    @NamedQuery(name = "Inforeportes.findByEstado", query = "SELECT i FROM Inforeportes i WHERE i.estado = :estado"),
-    @NamedQuery(name = "Inforeportes.findByGrupo", query = "SELECT i FROM Inforeportes i WHERE i.grupo = :grupo"),
-    @NamedQuery(name = "Inforeportes.findByTercero", query = "SELECT i FROM Inforeportes i WHERE i.tercero = :tercero"),
-    @NamedQuery(name = "Inforeportes.findByTrabajador", query = "SELECT i FROM Inforeportes i WHERE i.trabajador = :trabajador"),
-    @NamedQuery(name = "Inforeportes.findByTipotrabajador", query = "SELECT i FROM Inforeportes i WHERE i.tipotrabajador = :tipotrabajador"),
-    @NamedQuery(name = "Inforeportes.findBySolicitud", query = "SELECT i FROM Inforeportes i WHERE i.solicitud = :solicitud"),
-    @NamedQuery(name = "Inforeportes.findByCiudad", query = "SELECT i FROM Inforeportes i WHERE i.ciudad = :ciudad"),
-    @NamedQuery(name = "Inforeportes.findByEstadocivil", query = "SELECT i FROM Inforeportes i WHERE i.estadocivil = :estadocivil"),
-    @NamedQuery(name = "Inforeportes.findByTipotelefono", query = "SELECT i FROM Inforeportes i WHERE i.tipotelefono = :tipotelefono"),
-    @NamedQuery(name = "Inforeportes.findByDeporte", query = "SELECT i FROM Inforeportes i WHERE i.deporte = :deporte"),
-    @NamedQuery(name = "Inforeportes.findByIdioma", query = "SELECT i FROM Inforeportes i WHERE i.idioma = :idioma"),
-    @NamedQuery(name = "Inforeportes.findByAficion", query = "SELECT i FROM Inforeportes i WHERE i.aficion = :aficion"),
-    @NamedQuery(name = "Inforeportes.findByJefedivision", query = "SELECT i FROM Inforeportes i WHERE i.jefedivision = :jefedivision"),
-    @NamedQuery(name = "Inforeportes.findByRodamiento", query = "SELECT i FROM Inforeportes i WHERE i.rodamiento = :rodamiento"),
-    @NamedQuery(name = "Inforeportes.findByEnviomasivo", query = "SELECT i FROM Inforeportes i WHERE i.enviomasivo = :enviomasivo"),
-    @NamedQuery(name = "Inforeportes.findByContador", query = "SELECT i FROM Inforeportes i WHERE i.contador = :contador"),
-    @NamedQuery(name = "Inforeportes.findByParametros", query = "SELECT i FROM Inforeportes i WHERE i.parametros = :parametros"),
-    @NamedQuery(name = "Inforeportes.findByAyuda", query = "SELECT i FROM Inforeportes i WHERE i.ayuda = :ayuda"),
-    @NamedQuery(name = "Inforeportes.findByCodigomemo", query = "SELECT i FROM Inforeportes i WHERE i.codigomemo = :codigomemo")})
 public class Inforeportes implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "inforeporte")
-    private Collection<UsuariosInforeportes> usuariosinforeportesCollection;
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -454,7 +400,7 @@ public class Inforeportes implements Serializable {
     }
 
     public Modulos getModulo() {
-        if(modulo== null){
+        if (modulo == null) {
             modulo = new Modulos();
         }
         return modulo;
@@ -966,14 +912,4 @@ public class Inforeportes implements Serializable {
     public String toString() {
         return "Entidades.Inforeportes[ secuencia=" + secuencia + " ]";
     }
-
-    @XmlTransient
-    public Collection<UsuariosInforeportes> getUsuariosinforeportesCollection() {
-        return usuariosinforeportesCollection;
-    }
-
-    public void setUsuariosinforeportesCollection(Collection<UsuariosInforeportes> usuariosinforeportesCollection) {
-        this.usuariosinforeportesCollection = usuariosinforeportesCollection;
-    }
-
 }

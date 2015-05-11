@@ -1,25 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -27,14 +11,6 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "TIPOSDESCANSOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "TiposDescansos.findAll", query = "SELECT t FROM TiposDescansos t"),
-    @NamedQuery(name = "TiposDescansos.findByCodigo", query = "SELECT t FROM TiposDescansos t WHERE t.codigo = :codigo"),
-    @NamedQuery(name = "TiposDescansos.findByDescripcion", query = "SELECT t FROM TiposDescansos t WHERE t.descripcion = :descripcion"),
-    @NamedQuery(name = "TiposDescansos.findBySecuencia", query = "SELECT t FROM TiposDescansos t WHERE t.secuencia = :secuencia"),
-    @NamedQuery(name = "TiposDescansos.findByDiastrabajados", query = "SELECT t FROM TiposDescansos t WHERE t.diastrabajados = :diastrabajados"),
-    @NamedQuery(name = "TiposDescansos.findByDiasdescansados", query = "SELECT t FROM TiposDescansos t WHERE t.diasdescansados = :diasdescansados")})
 public class TiposDescansos implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,8 +27,6 @@ public class TiposDescansos implements Serializable {
     private BigInteger diastrabajados;
     @Column(name = "DIASDESCANSADOS")
     private BigInteger diasdescansados;
-    @OneToMany(mappedBy = "tipodescanso")
-    private Collection<VigenciasJornadas> vigenciasjornadasCollection;
 
     public TiposDescansos() {
     }
@@ -110,16 +84,7 @@ public class TiposDescansos implements Serializable {
     public void setDiasdescansados(BigInteger diasdescansados) {
         this.diasdescansados = diasdescansados;
     }
-
-    @XmlTransient
-    public Collection<VigenciasJornadas> getVigenciasjornadasCollection() {
-        return vigenciasjornadasCollection;
-    }
-
-    public void setVigenciasjornadasCollection(Collection<VigenciasJornadas> vigenciasjornadasCollection) {
-        this.vigenciasjornadasCollection = vigenciasjornadasCollection;
-    }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;

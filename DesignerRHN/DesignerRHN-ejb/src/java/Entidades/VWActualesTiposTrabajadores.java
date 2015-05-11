@@ -1,23 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Cacheable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -26,12 +12,6 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Cacheable(false)
-@NamedQueries({
-    @NamedQuery(name = "VWActualesTiposTrabajadores.findAll", query = "SELECT vwatt FROM VWActualesTiposTrabajadores vwatt"),
-    @NamedQuery(name = "VWActualesTiposTrabajadores.findBySecuencia", query = "SELECT vwatt FROM VWActualesTiposTrabajadores vwatt WHERE vwatt.secuencia = :secuencia"),
-    @NamedQuery(name = "VWActualesTiposTrabajadores.findByTipoTrabajador", query = "SELECT vwatt FROM VWActualesTiposTrabajadores vwatt WHERE vwatt.tipoTrabajador.tipo = :tipotrabajador"),
-    @NamedQuery(name = "VWActualesTiposTrabajadores.findByEmpleado", query = "SELECT vwatt FROM VWActualesTiposTrabajadores vwatt WHERE vwatt.empleado.secuencia = :empleado")
-})
 public class VWActualesTiposTrabajadores implements Serializable {
 
     private static final long serialVersionUID = 1L;

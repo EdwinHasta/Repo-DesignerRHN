@@ -123,7 +123,7 @@ public class PersistenciaVigenciasJornadas implements PersistenciaVigenciasJorna
     public VigenciasJornadas buscarVigenciasJornadasSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("VigenciasJornadas.findBySecuencia").setParameter("secuencia", secuencia);
+            Query query = em.createQuery("SELECT v FROM VigenciasJornadas v WHERE v.secuencia = :secuencia").setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasJornadas vigenciasJornadas = (VigenciasJornadas) query.getSingleResult();
             return vigenciasJornadas;

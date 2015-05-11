@@ -1,25 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -27,21 +11,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "NIVELES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Niveles.findAll", query = "SELECT n FROM Niveles n"),
-    @NamedQuery(name = "Niveles.findBySecuencia", query = "SELECT n FROM Niveles n WHERE n.secuencia = :secuencia"),
-    @NamedQuery(name = "Niveles.findByCodigo", query = "SELECT n FROM Niveles n WHERE n.codigo = :codigo"),
-    @NamedQuery(name = "Niveles.findByDescripcion", query = "SELECT n FROM Niveles n WHERE n.descripcion = :descripcion")})
 public class Niveles implements Serializable {
 
-    @Column(name = "CODIGO")
-    private Integer codigo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "nivel")
-    private Collection<PlantasPersonales> plantasPersonalesCollection;
-
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -49,8 +21,8 @@ public class Niveles implements Serializable {
     private BigInteger secuencia;
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @OneToMany(mappedBy = "nivel")
-    private Collection<Evalconvocatorias> evalconvocatoriasCollection;
+    @Column(name = "CODIGO")
+    private Integer codigo;
 
     public Niveles() {
     }
@@ -79,15 +51,6 @@ public class Niveles implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion.toUpperCase();
-    }
-
-    @XmlTransient
-    public Collection<Evalconvocatorias> getEvalconvocatoriasCollection() {
-        return evalconvocatoriasCollection;
-    }
-
-    public void setEvalconvocatoriasCollection(Collection<Evalconvocatorias> evalconvocatoriasCollection) {
-        this.evalconvocatoriasCollection = evalconvocatoriasCollection;
     }
 
     @Override
@@ -122,14 +85,4 @@ public class Niveles implements Serializable {
     public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
-
-    @XmlTransient
-    public Collection<PlantasPersonales> getPlantasPersonalesCollection() {
-        return plantasPersonalesCollection;
-    }
-
-    public void setPlantasPersonalesCollection(Collection<PlantasPersonales> plantasPersonalesCollection) {
-        this.plantasPersonalesCollection = plantasPersonalesCollection;
-    }
-
 }

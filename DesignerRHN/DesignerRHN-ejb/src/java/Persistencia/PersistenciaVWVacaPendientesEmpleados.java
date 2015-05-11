@@ -14,8 +14,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br>
- * Clase encargada de realizar operaciones sobre la vista
+ * Clase Stateless.<br> Clase encargada de realizar operaciones sobre la vista
  * 'VWVacaPendientesEmpleados' de la base de datos.
  *
  * @author betelgeuse
@@ -26,10 +25,10 @@ public class PersistenciaVWVacaPendientesEmpleados implements PersistenciaVWVaca
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-     private EntityManager em;
+    /*
+     * @PersistenceContext(unitName = "DesignerRHN-ejbPU") private EntityManager
+     * em;
      */
-
     @Override
     public void crear(EntityManager em, VWVacaPendientesEmpleados vacaP) {
         em.clear();
@@ -129,7 +128,7 @@ public class PersistenciaVWVacaPendientesEmpleados implements PersistenciaVWVaca
         List<VWVacaPendientesEmpleados> listaVacaPendientesEmpleados = null;
         try {
             em.clear();
-            listaVacaPendientesEmpleados = em.createNamedQuery("VWVacaPendientesEmpleados.findByEmpleado").setParameter("empleado", secuenciaEmpleado).getResultList();
+            listaVacaPendientesEmpleados = em.createQuery("SELECT v FROM VWVacaPendientesEmpleados v WHERE v.empleado = :empleado").setParameter("empleado", secuenciaEmpleado).getResultList();
         } catch (Exception e) {
             System.err.println("PersistenciaVWVacaPendientesEmpleados.buscarVacaPendientesEmpleados.");
             System.out.println(e);

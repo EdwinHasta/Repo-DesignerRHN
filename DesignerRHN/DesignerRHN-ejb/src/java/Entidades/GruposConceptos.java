@@ -1,25 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -27,32 +12,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "GRUPOSCONCEPTOS")
-@NamedQueries({
-    @NamedQuery(name = "GruposConceptos.findAll", query = "SELECT g FROM GruposConceptos g")})
 public class GruposConceptos implements Serializable {
 
-    @OneToMany(mappedBy = "basegrupo")
-    private Collection<DetallesFormasDtos> detallesFormasDtosCollection;
-    @OneToMany(mappedBy = "grupodisparador")
-    private Collection<DetallesFormasDtos> detallesFormasDtosCollection1;
-    @OneToMany(mappedBy = "grupoconcepto")
-    private Collection<OperandosGruposConceptos> operandosGruposConceptosCollection;
-
-    @OneToMany(mappedBy = "grupoacumulado")
-    private Collection<GruposProvisiones> gruposProvisionesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupopago")
-    private Collection<GruposProvisiones> gruposProvisionesCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupoprovision")
-    private Collection<GruposProvisiones> gruposProvisionesCollection2;
-    @OneToMany(mappedBy = "grupoajusteprovision")
-    private Collection<GruposProvisiones> gruposProvisionesCollection3;
-    @OneToMany(mappedBy = "grupodefinitiva")
-    private Collection<GruposProvisiones> gruposProvisionesCollection4;
-    @OneToMany(mappedBy = "grupo")
-    private Collection<ParametrosInformes> parametrosInformesCollection;
-
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -70,8 +32,6 @@ public class GruposConceptos implements Serializable {
     @Size(max = 1)
     @Column(name = "FUNDAMENTAL")
     private String fundamental;
-    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "grupoConcepto")
-     private Collection<VigenciasGruposConceptos> vigenciasgruposconceptosCollection;*/
     @Transient
     private String strCodigo;
     @Transient
@@ -130,7 +90,7 @@ public class GruposConceptos implements Serializable {
     }
 
     public String getDescripcion() {
-        
+
         return descripcion;
     }
 
@@ -167,16 +127,7 @@ public class GruposConceptos implements Serializable {
     public void setEstadoFundamental(String estadoFundamental) {
         this.estadoFundamental = estadoFundamental;
     }
-
-    /*
-     public Collection<VigenciasGruposConceptos> getVigenciasgruposconceptosCollection() {
-     return vigenciasgruposconceptosCollection;
-     }
-
-     public void setVigenciasgruposconceptosCollection(Collection<VigenciasGruposConceptos> vigenciasgruposconceptosCollection) {
-     this.vigenciasgruposconceptosCollection = vigenciasgruposconceptosCollection;
-     }
-     */
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -201,86 +152,4 @@ public class GruposConceptos implements Serializable {
     public String toString() {
         return "Entidades.Gruposconceptos[ secuencia=" + secuencia + " ]";
     }
-
-    @XmlTransient
-    public Collection<ParametrosInformes> getParametrosInformesCollection() {
-        return parametrosInformesCollection;
-    }
-
-    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
-        this.parametrosInformesCollection = parametrosInformesCollection;
-    }
-
-    @XmlTransient
-    public Collection<GruposProvisiones> getGruposProvisionesCollection() {
-        return gruposProvisionesCollection;
-    }
-
-    public void setGruposProvisionesCollection(Collection<GruposProvisiones> gruposProvisionesCollection) {
-        this.gruposProvisionesCollection = gruposProvisionesCollection;
-    }
-
-    @XmlTransient
-    public Collection<GruposProvisiones> getGruposProvisionesCollection1() {
-        return gruposProvisionesCollection1;
-    }
-
-    public void setGruposProvisionesCollection1(Collection<GruposProvisiones> gruposProvisionesCollection1) {
-        this.gruposProvisionesCollection1 = gruposProvisionesCollection1;
-    }
-
-    @XmlTransient
-    public Collection<GruposProvisiones> getGruposProvisionesCollection2() {
-        return gruposProvisionesCollection2;
-    }
-
-    public void setGruposProvisionesCollection2(Collection<GruposProvisiones> gruposProvisionesCollection2) {
-        this.gruposProvisionesCollection2 = gruposProvisionesCollection2;
-    }
-
-    @XmlTransient
-    public Collection<GruposProvisiones> getGruposProvisionesCollection3() {
-        return gruposProvisionesCollection3;
-    }
-
-    public void setGruposProvisionesCollection3(Collection<GruposProvisiones> gruposProvisionesCollection3) {
-        this.gruposProvisionesCollection3 = gruposProvisionesCollection3;
-    }
-
-    @XmlTransient
-    public Collection<GruposProvisiones> getGruposProvisionesCollection4() {
-        return gruposProvisionesCollection4;
-    }
-
-    public void setGruposProvisionesCollection4(Collection<GruposProvisiones> gruposProvisionesCollection4) {
-        this.gruposProvisionesCollection4 = gruposProvisionesCollection4;
-    }
-
-    @XmlTransient
-    public Collection<OperandosGruposConceptos> getOperandosGruposConceptosCollection() {
-        return operandosGruposConceptosCollection;
-    }
-
-    public void setOperandosGruposConceptosCollection(Collection<OperandosGruposConceptos> operandosGruposConceptosCollection) {
-        this.operandosGruposConceptosCollection = operandosGruposConceptosCollection;
-    }
-
-    @XmlTransient
-    public Collection<DetallesFormasDtos> getDetallesFormasDtosCollection() {
-        return detallesFormasDtosCollection;
-    }
-
-    public void setDetallesFormasDtosCollection(Collection<DetallesFormasDtos> detallesFormasDtosCollection) {
-        this.detallesFormasDtosCollection = detallesFormasDtosCollection;
-    }
-
-    @XmlTransient
-    public Collection<DetallesFormasDtos> getDetallesFormasDtosCollection1() {
-        return detallesFormasDtosCollection1;
-    }
-
-    public void setDetallesFormasDtosCollection1(Collection<DetallesFormasDtos> detallesFormasDtosCollection1) {
-        this.detallesFormasDtosCollection1 = detallesFormasDtosCollection1;
-    }
-
 }

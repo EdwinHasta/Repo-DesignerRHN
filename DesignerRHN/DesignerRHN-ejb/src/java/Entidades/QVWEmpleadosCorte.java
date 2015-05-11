@@ -4,13 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -40,7 +34,6 @@ public class QVWEmpleadosCorte implements Serializable {
     @Size(max = 1)
     @Column(name = "SEXO")
     private String sexo;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 100)
     @Column(name = "EMAIL")
     private String email;
@@ -144,7 +137,6 @@ public class QVWEmpleadosCorte implements Serializable {
     @Column(name = "MVRFECHAFINAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date mvrfechafinal;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "MVRVALOR")
     private BigDecimal mvrvalor;
     @Size(max = 1)

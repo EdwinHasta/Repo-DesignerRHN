@@ -1,28 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -30,24 +12,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "TIPOSTRABAJADORES")
-@XmlRootElement
-@Cacheable(true)
-@NamedQueries({
-    @NamedQuery(name = "TiposTrabajadores.findAll", query = "SELECT t FROM TiposTrabajadores t ORDER BY t.nombre"),
-    @NamedQuery(name = "TiposTrabajadores.findByCodigo", query = "SELECT t FROM TiposTrabajadores t WHERE t.codigo = :codigo")})
 public class TiposTrabajadores implements Serializable {
-    @OneToMany(mappedBy = "tipotrabajador")
-    private Collection<AportesEntidades> aportesEntidadesCollection;
-    @OneToMany(mappedBy = "tipotrabajador")
-    private Collection<ParametrosAutoliq> parametrosAutoliqCollection;
-    @Size(max = 1)
-    @Column(name = "PROMEDIABASICOACUMULADOS")
-    private String promediabasicoacumulados;
-    @OneToMany(mappedBy = "tipotrabajador")
-    private Collection<ParametrosInformes> parametrosInformesCollection;
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -60,9 +27,6 @@ public class TiposTrabajadores implements Serializable {
     @Size(max = 1)
     @Column(name = "MODALIDAD")
     private String modalidad;
-    //@Basic(optional = true)
-    //@NotNull
-   // @Size(min = 1, max = 40)
     @Column(name = "NOMBRE")
     private String nombre;
     @Size(max = 15)
@@ -99,23 +63,12 @@ public class TiposTrabajadores implements Serializable {
     @Size(max = 1)
     @Column(name = "SEMESTREESPECIAL")
     private String semestreespecial;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipotrabajador")
-    private Collection<EscalafonesSalariales> escalafonessalarialesCollection;
+    @Size(max = 1)
+    @Column(name = "PROMEDIABASICOACUMULADOS")
+    private String promediabasicoacumulados;
     @JoinColumn(name = "TIPOCOTIZANTE", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private TiposCotizantes tipocotizante;
-    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "tipotrabajador")
-     private Collection<VigenciasConceptosTT> vigenciasconceptosttCollection;*/
-    @OneToMany(mappedBy = "tipotrabajadorretiro")
-    private Collection<MotivosRetiros> motivosretirosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipotrabajador")
-    private Collection<SolucionesNodos> solucionesnodosCollection;
-    @OneToMany(mappedBy = "tipotrabajador")
-    private Collection<Parametrospresupuestos> parametrospresupuestosCollection;
-    @OneToMany(mappedBy = "tipotrabajador")
-    private Collection<ParametrosEstructuras> parametrosestructurasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipotrabajador")
-    private Collection<VigenciasTiposTrabajadores> vigenciastipostrabajadoresCollection;
 
     public TiposTrabajadores() {
     }
@@ -266,15 +219,6 @@ public class TiposTrabajadores implements Serializable {
         this.semestreespecial = semestreespecial;
     }
 
-    @XmlTransient
-    public Collection<EscalafonesSalariales> getEscalafonessalarialesCollection() {
-        return escalafonessalarialesCollection;
-    }
-
-    public void setEscalafonessalarialesCollection(Collection<EscalafonesSalariales> escalafonessalarialesCollection) {
-        this.escalafonessalarialesCollection = escalafonessalarialesCollection;
-    }
-
     public TiposCotizantes getTipocotizante() {
         return tipocotizante;
     }
@@ -308,92 +252,11 @@ public class TiposTrabajadores implements Serializable {
         return "Entidades.Tipostrabajadores[ secuencia=" + secuencia + " ]";
     }
 
-    @XmlTransient
-    public Collection<VigenciasTiposTrabajadores> getVigenciastipostrabajadoresCollection() {
-        return vigenciastipostrabajadoresCollection;
-    }
-
-    public void setVigenciastipostrabajadoresCollection(Collection<VigenciasTiposTrabajadores> vigenciastipostrabajadoresCollection) {
-        this.vigenciastipostrabajadoresCollection = vigenciastipostrabajadoresCollection;
-    }
-
-    @XmlTransient
-    public Collection<ParametrosEstructuras> getParametrosestructurasCollection() {
-        return parametrosestructurasCollection;
-    }
-
-    public void setParametrosestructurasCollection(Collection<ParametrosEstructuras> parametrosestructurasCollection) {
-        this.parametrosestructurasCollection = parametrosestructurasCollection;
-    }
-
-    @XmlTransient
-    public Collection<MotivosRetiros> getMotivosretirosCollection() {
-        return motivosretirosCollection;
-    }
-
-    public void setMotivosretirosCollection(Collection<MotivosRetiros> motivosretirosCollection) {
-        this.motivosretirosCollection = motivosretirosCollection;
-    }
-
-    @XmlTransient
-    public Collection<SolucionesNodos> getSolucionesnodosCollection() {
-        return solucionesnodosCollection;
-    }
-
-    public void setSolucionesnodosCollection(Collection<SolucionesNodos> solucionesnodosCollection) {
-        this.solucionesnodosCollection = solucionesnodosCollection;
-    }
-
-    @XmlTransient
-    public Collection<Parametrospresupuestos> getParametrospresupuestosCollection() {
-        return parametrospresupuestosCollection;
-    }
-
-    public void setParametrospresupuestosCollection(Collection<Parametrospresupuestos> parametrospresupuestosCollection) {
-        this.parametrospresupuestosCollection = parametrospresupuestosCollection;
-    }
-    /*
-     public Collection<VigenciasConceptosTT> getVigenciasconceptosttCollection() {
-     return vigenciasconceptosttCollection;
-     }
-
-     public void setVigenciasconceptosttCollection(Collection<VigenciasConceptosTT> vigenciasconceptosttCollection) {
-     this.vigenciasconceptosttCollection = vigenciasconceptosttCollection;
-     }
-     */
-
-    @XmlTransient
-    public Collection<ParametrosInformes> getParametrosInformesCollection() {
-        return parametrosInformesCollection;
-    }
-
-    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
-        this.parametrosInformesCollection = parametrosInformesCollection;
-    }
-
     public String getPromediabasicoacumulados() {
         return promediabasicoacumulados;
     }
 
     public void setPromediabasicoacumulados(String promediabasicoacumulados) {
         this.promediabasicoacumulados = promediabasicoacumulados;
-    }
-
-    @XmlTransient
-    public Collection<AportesEntidades> getAportesEntidadesCollection() {
-        return aportesEntidadesCollection;
-    }
-
-    public void setAportesEntidadesCollection(Collection<AportesEntidades> aportesEntidadesCollection) {
-        this.aportesEntidadesCollection = aportesEntidadesCollection;
-    }
-
-    @XmlTransient
-    public Collection<ParametrosAutoliq> getParametrosAutoliqCollection() {
-        return parametrosAutoliqCollection;
-    }
-
-    public void setParametrosAutoliqCollection(Collection<ParametrosAutoliq> parametrosAutoliqCollection) {
-        this.parametrosAutoliqCollection = parametrosAutoliqCollection;
     }
 }

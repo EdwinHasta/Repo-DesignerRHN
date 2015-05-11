@@ -1,23 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -27,17 +13,9 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "EVALRESULTADOSCONV")
-@NamedQueries({
-    @NamedQuery(name = "EvalResultadosConv.findAll", query = "SELECT e FROM EvalResultadosConv e"),
-    @NamedQuery(name = "EvalResultadosConv.findBySecuencia", query = "SELECT e FROM EvalResultadosConv e WHERE e.secuencia = :secuencia"),
-    @NamedQuery(name = "EvalResultadosConv.findByPuntajeobtenido", query = "SELECT e FROM EvalResultadosConv e WHERE e.puntajeobtenido = :puntajeobtenido"),
-    @NamedQuery(name = "EvalResultadosConv.findByFechaperiododesde", query = "SELECT e FROM EvalResultadosConv e WHERE e.fechaperiododesde = :fechaperiododesde"),
-    @NamedQuery(name = "EvalResultadosConv.findByFechaperiodohasta", query = "SELECT e FROM EvalResultadosConv e WHERE e.fechaperiodohasta = :fechaperiodohasta"),
-    @NamedQuery(name = "EvalResultadosConv.findByNombreprueba", query = "SELECT e FROM EvalResultadosConv e WHERE e.nombreprueba = :nombreprueba"),
-    @NamedQuery(name = "EvalResultadosConv.findByEstadoeval", query = "SELECT e FROM EvalResultadosConv e WHERE e.estadoeval = :estadoeval")})
 public class EvalResultadosConv implements Serializable {
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull

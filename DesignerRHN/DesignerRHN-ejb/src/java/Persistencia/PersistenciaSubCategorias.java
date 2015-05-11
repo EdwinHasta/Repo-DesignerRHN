@@ -96,7 +96,7 @@ public class PersistenciaSubCategorias implements PersistenciaSubCategoriasInter
     public SubCategorias consultarSubCategoria(EntityManager em, BigInteger secSubCategoria) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("SELECT sc FROM SubCategorias sc WHERE sc.secuencia=:secuencia");
+            Query query = em.createQuery("SELECT sc FROM SubCategorias sc WHERE sc.secuencia=:secuencia");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             query.setParameter("secuencia", secSubCategoria);
             SubCategorias subCategorias = (SubCategorias) query.getSingleResult();

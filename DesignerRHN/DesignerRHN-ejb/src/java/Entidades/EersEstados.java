@@ -1,30 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,19 +12,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "EERSESTADOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "EersEstados.findAll", query = "SELECT e FROM EersEstados e"),
-    @NamedQuery(name = "EersEstados.findBySecuencia", query = "SELECT e FROM EersEstados e WHERE e.secuencia = :secuencia"),
-    @NamedQuery(name = "EersEstados.findByTipoeer", query = "SELECT e FROM EersEstados e WHERE e.tipoeer = :tipoeer"),
-    @NamedQuery(name = "EersEstados.findByCodigo", query = "SELECT e FROM EersEstados e WHERE e.codigo = :codigo"),
-    @NamedQuery(name = "EersEstados.findByDescripcion", query = "SELECT e FROM EersEstados e WHERE e.descripcion = :descripcion"),
-    @NamedQuery(name = "EersEstados.findByEnviaremail", query = "SELECT e FROM EersEstados e WHERE e.enviaremail = :enviaremail"),
-    @NamedQuery(name = "EersEstados.findByMensaje", query = "SELECT e FROM EersEstados e WHERE e.mensaje = :mensaje"),
-    @NamedQuery(name = "EersEstados.findByEmail", query = "SELECT e FROM EersEstados e WHERE e.email = :email")})
 public class EersEstados implements Serializable {
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -70,7 +40,6 @@ public class EersEstados implements Serializable {
     @Size(max = 200)
     @Column(name = "MENSAJE")
     private String mensaje;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 100)
     @Column(name = "EMAIL")
     private String email;
@@ -80,10 +49,6 @@ public class EersEstados implements Serializable {
     @JoinColumn(name = "EEROPCIONESTADOCANCELA", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private EersOpcionesEstados eeropcionestadocancela;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "eerestado")
-    private Collection<EersFlujos> eersFlujosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "eerestado")
-    private Collection<EersCabeceras> eersCabecerasCollection;
 
     public EersEstados() {
     }
@@ -169,24 +134,6 @@ public class EersEstados implements Serializable {
 
     public void setEeropcionestadocancela(EersOpcionesEstados eeropcionestadocancela) {
         this.eeropcionestadocancela = eeropcionestadocancela;
-    }
-
-    @XmlTransient
-    public Collection<EersFlujos> getEersFlujosCollection() {
-        return eersFlujosCollection;
-    }
-
-    public void setEersFlujosCollection(Collection<EersFlujos> eersFlujosCollection) {
-        this.eersFlujosCollection = eersFlujosCollection;
-    }
-
-    @XmlTransient
-    public Collection<EersCabeceras> getEersCabecerasCollection() {
-        return eersCabecerasCollection;
-    }
-
-    public void setEersCabecerasCollection(Collection<EersCabeceras> eersCabecerasCollection) {
-        this.eersCabecerasCollection = eersCabecerasCollection;
     }
 
     @Override

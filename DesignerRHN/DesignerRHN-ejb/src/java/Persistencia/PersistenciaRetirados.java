@@ -104,7 +104,7 @@ public class PersistenciaRetirados implements PersistenciaRetiradosInterface {
     public Retirados buscarRetiroSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("Retirados.findBySecuencia").setParameter("secuencia", secuencia);
+            Query query = em.createQuery("SELECT r FROM Retirados r WHERE r.secuencia = :secuencia").setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Retirados retiro = (Retirados) query.getSingleResult();
             return retiro;

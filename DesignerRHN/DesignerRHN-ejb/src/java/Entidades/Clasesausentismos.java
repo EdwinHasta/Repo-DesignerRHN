@@ -1,26 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,13 +11,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "CLASESAUSENTISMOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Clasesausentismos.findAll", query = "SELECT c FROM Clasesausentismos c")})
 public class Clasesausentismos implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -45,13 +24,9 @@ public class Clasesausentismos implements Serializable {
     private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "clase")
-    private Collection<Soausentismos> soausentismosCollection;
     @JoinColumn(name = "TIPO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Tiposausentismos tipo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "clase")
-    private Collection<Causasausentismos> causasausentismosCollection;
 
     public Clasesausentismos() {
     }
@@ -96,30 +71,12 @@ public class Clasesausentismos implements Serializable {
         }
     }
 
-    @XmlTransient
-    public Collection<Soausentismos> getSoausentismosCollection() {
-        return soausentismosCollection;
-    }
-
-    public void setSoausentismosCollection(Collection<Soausentismos> soausentismosCollection) {
-        this.soausentismosCollection = soausentismosCollection;
-    }
-
     public Tiposausentismos getTipo() {
         return tipo;
     }
 
     public void setTipo(Tiposausentismos tipo) {
         this.tipo = tipo;
-    }
-
-    @XmlTransient
-    public Collection<Causasausentismos> getCausasausentismosCollection() {
-        return causasausentismosCollection;
-    }
-
-    public void setCausasausentismosCollection(Collection<Causasausentismos> causasausentismosCollection) {
-        this.causasausentismosCollection = causasausentismosCollection;
     }
 
     @Override

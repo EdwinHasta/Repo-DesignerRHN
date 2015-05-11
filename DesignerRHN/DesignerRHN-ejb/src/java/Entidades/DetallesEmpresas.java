@@ -1,28 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -30,13 +13,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "DETALLESEMPRESAS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "DetallesEmpresas.findAll", query = "SELECT d FROM DetallesEmpresas d")})
 public class DetallesEmpresas implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -57,7 +36,6 @@ public class DetallesEmpresas implements Serializable {
     @Size(min = 1, max = 10)
     @Column(name = "TELEFONO")
     private String telefono;
-    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 10)
@@ -78,7 +56,6 @@ public class DetallesEmpresas implements Serializable {
     private String tiponit;
     @Column(name = "DIGITOVERIFICACION")
     private Short digitoverificacion;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 100)
     @Column(name = "EMAIL")
     private String email;
@@ -264,7 +241,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setTelefono(String telefono) {
-        this.telefono = telefono.toUpperCase();;
+        this.telefono = telefono.toUpperCase();
     }
 
     public String getFax() {
@@ -272,7 +249,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setFax(String fax) {
-        this.fax = fax.toUpperCase();;
+        this.fax = fax.toUpperCase();
     }
 
     public String getNombrerepresentante() {
@@ -280,7 +257,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setNombrerepresentante(String nombrerepresentante) {
-        this.nombrerepresentante = nombrerepresentante.toUpperCase();;
+        this.nombrerepresentante = nombrerepresentante.toUpperCase();
     }
 
     public String getDocumentorepresentante() {
@@ -288,7 +265,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setDocumentorepresentante(String documentorepresentante) {
-        this.documentorepresentante = documentorepresentante.toUpperCase();;
+        this.documentorepresentante = documentorepresentante.toUpperCase();
     }
 
     public String getTiponit() {
@@ -296,7 +273,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setTiponit(String tiponit) {
-        this.tiponit = tiponit.toUpperCase();;
+        this.tiponit = tiponit.toUpperCase();
     }
 
     public Short getDigitoverificacion() {
@@ -315,7 +292,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setEmail(String email) {
-        this.email = email.toUpperCase();;
+        this.email = email.toUpperCase();
     }
 
     public String getZona() {
@@ -337,7 +314,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setActividadeconomica(String actividadeconomica) {
-        this.actividadeconomica = actividadeconomica.toUpperCase();;
+        this.actividadeconomica = actividadeconomica.toUpperCase();
     }
 
     public Date getFechapensiones() {
@@ -605,7 +582,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setNombrearquitecto(String nombrearquitecto) {
-        this.nombrearquitecto = nombrearquitecto.toUpperCase();;
+        this.nombrearquitecto = nombrearquitecto.toUpperCase();
     }
 
     public String getCargoarquitecto() {
@@ -616,7 +593,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setCargoarquitecto(String cargoarquitecto) {
-        this.cargoarquitecto = cargoarquitecto.toUpperCase();;
+        this.cargoarquitecto = cargoarquitecto.toUpperCase();
     }
 
     public String getPilaultimaplanilla() {
@@ -627,7 +604,7 @@ public class DetallesEmpresas implements Serializable {
     }
 
     public void setPilaultimaplanilla(String pilaultimaplanilla) {
-        this.pilaultimaplanilla = pilaultimaplanilla.toUpperCase();;
+        this.pilaultimaplanilla = pilaultimaplanilla.toUpperCase();
     }
 
     public String getAfiliadoarp() {

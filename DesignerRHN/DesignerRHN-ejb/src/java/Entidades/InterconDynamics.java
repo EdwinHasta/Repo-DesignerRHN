@@ -1,28 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -30,59 +13,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "INTERCON_DYNAMICS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "InterconDynamics.findAll", query = "SELECT i FROM InterconDynamics i"),
-    @NamedQuery(name = "InterconDynamics.findByCodigotercero", query = "SELECT i FROM InterconDynamics i WHERE i.codigotercero = :codigotercero"),
-    @NamedQuery(name = "InterconDynamics.findByCodigocuentacontable", query = "SELECT i FROM InterconDynamics i WHERE i.codigocuentacontable = :codigocuentacontable"),
-    @NamedQuery(name = "InterconDynamics.findByFlag", query = "SELECT i FROM InterconDynamics i WHERE i.flag = :flag"),
-    @NamedQuery(name = "InterconDynamics.findByFechaultimamodificacion", query = "SELECT i FROM InterconDynamics i WHERE i.fechaultimamodificacion = :fechaultimamodificacion"),
-    @NamedQuery(name = "InterconDynamics.findByFechacontabilizacion", query = "SELECT i FROM InterconDynamics i WHERE i.fechacontabilizacion = :fechacontabilizacion"),
-    @NamedQuery(name = "InterconDynamics.findBySalida", query = "SELECT i FROM InterconDynamics i WHERE i.salida = :salida"),
-    @NamedQuery(name = "InterconDynamics.findByNaturaleza", query = "SELECT i FROM InterconDynamics i WHERE i.naturaleza = :naturaleza"),
-    @NamedQuery(name = "InterconDynamics.findByValorc", query = "SELECT i FROM InterconDynamics i WHERE i.valorc = :valorc"),
-    @NamedQuery(name = "InterconDynamics.findByValord", query = "SELECT i FROM InterconDynamics i WHERE i.valord = :valord"),
-    @NamedQuery(name = "InterconDynamics.findBySecuencia", query = "SELECT i FROM InterconDynamics i WHERE i.secuencia = :secuencia"),
-    @NamedQuery(name = "InterconDynamics.findByEmpresaCodigo", query = "SELECT i FROM InterconDynamics i WHERE i.empresaCodigo = :empresaCodigo"),
-    @NamedQuery(name = "InterconDynamics.findByPreradicacion", query = "SELECT i FROM InterconDynamics i WHERE i.preradicacion = :preradicacion"),
-    @NamedQuery(name = "InterconDynamics.findByRadicacion", query = "SELECT i FROM InterconDynamics i WHERE i.radicacion = :radicacion"),
-    @NamedQuery(name = "InterconDynamics.findByCodigocuentacontablealterna", query = "SELECT i FROM InterconDynamics i WHERE i.codigocuentacontablealterna = :codigocuentacontablealterna"),
-    @NamedQuery(name = "InterconDynamics.findByValororiginalc", query = "SELECT i FROM InterconDynamics i WHERE i.valororiginalc = :valororiginalc"),
-    @NamedQuery(name = "InterconDynamics.findByValororiginald", query = "SELECT i FROM InterconDynamics i WHERE i.valororiginald = :valororiginald"),
-    @NamedQuery(name = "InterconDynamics.findByFechavencimiento", query = "SELECT i FROM InterconDynamics i WHERE i.fechavencimiento = :fechavencimiento"),
-    @NamedQuery(name = "InterconDynamics.findByTipocuenta", query = "SELECT i FROM InterconDynamics i WHERE i.tipocuenta = :tipocuenta"),
-    @NamedQuery(name = "InterconDynamics.findByCodigocuentacontablevt", query = "SELECT i FROM InterconDynamics i WHERE i.codigocuentacontablevt = :codigocuentacontablevt")})
 public class InterconDynamics implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Size(max = 20)
-    @Column(name = "CODIGOTERCERO")
-    private String codigotercero;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 60)
-    @Column(name = "CODIGOCUENTACONTABLE")
-    private String codigocuentacontable;
-    @Size(max = 28)
-    @Column(name = "FLAG")
-    private String flag;
-    @Column(name = "FECHAULTIMAMODIFICACION")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaultimamodificacion;
-    @Column(name = "FECHACONTABILIZACION")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechacontabilizacion;
-    @Size(max = 50)
-    @Column(name = "SALIDA")
-    private String salida;
-    @Size(max = 20)
-    @Column(name = "NATURALEZA")
-    private String naturaleza;
-    @Column(name = "VALORC")
-    private Long valorc;
-    @Column(name = "VALORD")
-    private Long valord;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -110,6 +43,33 @@ public class InterconDynamics implements Serializable {
     @Size(max = 100)
     @Column(name = "CODIGOCUENTACONTABLEVT")
     private String codigocuentacontablevt;
+    @Size(max = 20)
+    @Column(name = "CODIGOTERCERO")
+    private String codigotercero;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 60)
+    @Column(name = "CODIGOCUENTACONTABLE")
+    private String codigocuentacontable;
+    @Size(max = 28)
+    @Column(name = "FLAG")
+    private String flag;
+    @Column(name = "FECHAULTIMAMODIFICACION")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaultimamodificacion;
+    @Column(name = "FECHACONTABILIZACION")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechacontabilizacion;
+    @Size(max = 50)
+    @Column(name = "SALIDA")
+    private String salida;
+    @Size(max = 20)
+    @Column(name = "NATURALEZA")
+    private String naturaleza;
+    @Column(name = "VALORC")
+    private Long valorc;
+    @Column(name = "VALORD")
+    private Long valord;
     @JoinColumn(name = "PROYECTO", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Proyectos proyecto;

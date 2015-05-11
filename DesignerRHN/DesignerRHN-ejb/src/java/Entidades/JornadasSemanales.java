@@ -1,26 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -28,23 +12,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "JORNADASSEMANALES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "JornadasSemanales.findAll", query = "SELECT j FROM JornadasSemanales j"),
-    @NamedQuery(name = "JornadasSemanales.findBySecuencia", query = "SELECT j FROM JornadasSemanales j WHERE j.secuencia = :secuencia"),
-    @NamedQuery(name = "JornadasSemanales.findByHorafinal", query = "SELECT j FROM JornadasSemanales j WHERE j.horafinal = :horafinal"),
-    @NamedQuery(name = "JornadasSemanales.findByHorafinalalimentacion", query = "SELECT j FROM JornadasSemanales j WHERE j.horafinalalimentacion = :horafinalalimentacion"),
-    @NamedQuery(name = "JornadasSemanales.findByHorainicial", query = "SELECT j FROM JornadasSemanales j WHERE j.horainicial = :horainicial"),
-    @NamedQuery(name = "JornadasSemanales.findByHorainicialalimentacion", query = "SELECT j FROM JornadasSemanales j WHERE j.horainicialalimentacion = :horainicialalimentacion"),
-    @NamedQuery(name = "JornadasSemanales.findByMinutofinal", query = "SELECT j FROM JornadasSemanales j WHERE j.minutofinal = :minutofinal"),
-    @NamedQuery(name = "JornadasSemanales.findByMinutofinalalimentacion", query = "SELECT j FROM JornadasSemanales j WHERE j.minutofinalalimentacion = :minutofinalalimentacion"),
-    @NamedQuery(name = "JornadasSemanales.findByMinutoinicial", query = "SELECT j FROM JornadasSemanales j WHERE j.minutoinicial = :minutoinicial"),
-    @NamedQuery(name = "JornadasSemanales.findByMinutoinicialalimentacion", query = "SELECT j FROM JornadasSemanales j WHERE j.minutoinicialalimentacion = :minutoinicialalimentacion"),
-    @NamedQuery(name = "JornadasSemanales.findByDia", query = "SELECT j FROM JornadasSemanales j WHERE j.dia = :dia")})
 public class JornadasSemanales implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull

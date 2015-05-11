@@ -1,30 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,31 +13,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "PROYECTOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Proyectos.findAll", query = "SELECT p FROM Proyectos p"),
-    @NamedQuery(name = "Proyectos.findBySecuencia", query = "SELECT p FROM Proyectos p WHERE p.secuencia = :secuencia"),
-    @NamedQuery(name = "Proyectos.findByNombreproyecto", query = "SELECT p FROM Proyectos p WHERE p.nombreproyecto = :nombreproyecto"),
-    @NamedQuery(name = "Proyectos.findByDescripcionproyecto", query = "SELECT p FROM Proyectos p WHERE p.descripcionproyecto = :descripcionproyecto"),
-    @NamedQuery(name = "Proyectos.findByMonto", query = "SELECT p FROM Proyectos p WHERE p.monto = :monto"),
-    @NamedQuery(name = "Proyectos.findByCantidadpersonas", query = "SELECT p FROM Proyectos p WHERE p.cantidadpersonas = :cantidadpersonas"),
-    @NamedQuery(name = "Proyectos.findByFechainicial", query = "SELECT p FROM Proyectos p WHERE p.fechainicial = :fechainicial"),
-    @NamedQuery(name = "Proyectos.findByFechafinal", query = "SELECT p FROM Proyectos p WHERE p.fechafinal = :fechafinal"),
-    @NamedQuery(name = "Proyectos.findByCodigo", query = "SELECT p FROM Proyectos p WHERE p.codigo = :codigo")})
 public class Proyectos implements Serializable {
-    @OneToMany(mappedBy = "proyecto")
-    private Collection<InterconDynamics> interconDynamicsCollection;
-    @OneToMany(mappedBy = "proyecto")
-    private Collection<InterconSapBO> interconSapBOCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto")
-    private Collection<VigenciasProyectos> vigenciasProyectosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto")
-    private Collection<VigenciasProrrateosProyectos> vigenciasprorrateosproyectosCollection;
-    @OneToMany(mappedBy = "proyecto")
-    private Collection<VigenciasProrrateos> vigenciasprorrateosCollection;
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -85,8 +44,6 @@ public class Proyectos implements Serializable {
     @Size(max = 20)
     @Column(name = "CODIGO")
     private String codigo;
-    @OneToMany(mappedBy = "proyecto")
-    private Collection<VigenciasLocalizaciones> vigenciaslocalizacionesCollection;
     @JoinColumn(name = "PRY_PLATAFORMA", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private PryPlataformas pryPlataforma;
@@ -122,7 +79,7 @@ public class Proyectos implements Serializable {
     }
 
     public String getNombreproyecto() {
-            return nombreproyecto;
+        return nombreproyecto;
     }
 
     public void setNombreproyecto(String nombreproyecto) {
@@ -130,7 +87,7 @@ public class Proyectos implements Serializable {
     }
 
     public String getDescripcionproyecto() {
-        if(descripcionproyecto!=null){
+        if (descripcionproyecto != null) {
             return descripcionproyecto.toUpperCase();
         }
         return descripcionproyecto;
@@ -178,15 +135,6 @@ public class Proyectos implements Serializable {
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
-    }
-
-    @XmlTransient
-    public Collection<VigenciasLocalizaciones> getVigenciaslocalizacionesCollection() {
-        return vigenciaslocalizacionesCollection;
-    }
-
-    public void setVigenciaslocalizacionesCollection(Collection<VigenciasLocalizaciones> vigenciaslocalizacionesCollection) {
-        this.vigenciaslocalizacionesCollection = vigenciaslocalizacionesCollection;
     }
 
     public PryPlataformas getPryPlataforma() {
@@ -244,49 +192,5 @@ public class Proyectos implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Proyectos[ secuencia=" + secuencia + " ]";
-    }
-
-    @XmlTransient
-    public Collection<VigenciasProrrateos> getVigenciasprorrateosCollection() {
-        return vigenciasprorrateosCollection;
-    }
-
-    public void setVigenciasprorrateosCollection(Collection<VigenciasProrrateos> vigenciasprorrateosCollection) {
-        this.vigenciasprorrateosCollection = vigenciasprorrateosCollection;
-    }
-
-    @XmlTransient
-    public Collection<VigenciasProrrateosProyectos> getVigenciasprorrateosproyectosCollection() {
-        return vigenciasprorrateosproyectosCollection;
-    }
-
-    public void setVigenciasprorrateosproyectosCollection(Collection<VigenciasProrrateosProyectos> vigenciasprorrateosproyectosCollection) {
-        this.vigenciasprorrateosproyectosCollection = vigenciasprorrateosproyectosCollection;
-    }
-    
-    public Collection<VigenciasProyectos> getVigenciasProyectosCollection() {
-        return vigenciasProyectosCollection;
-    }
-
-    public void setVigenciasProyectosCollection(Collection<VigenciasProyectos> vigenciasProyectosCollection) {
-        this.vigenciasProyectosCollection = vigenciasProyectosCollection;
-    }
-
-    @XmlTransient
-    public Collection<InterconSapBO> getInterconSapBOCollection() {
-        return interconSapBOCollection;
-    }
-
-    public void setInterconSapBOCollection(Collection<InterconSapBO> interconSapBOCollection) {
-        this.interconSapBOCollection = interconSapBOCollection;
-    }
-
-    @XmlTransient
-    public Collection<InterconDynamics> getInterconDynamicsCollection() {
-        return interconDynamicsCollection;
-    }
-
-    public void setInterconDynamicsCollection(Collection<InterconDynamics> interconDynamicsCollection) {
-        this.interconDynamicsCollection = interconDynamicsCollection;
     }
 }

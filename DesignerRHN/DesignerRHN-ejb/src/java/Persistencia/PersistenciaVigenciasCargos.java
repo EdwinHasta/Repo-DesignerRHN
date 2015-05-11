@@ -111,12 +111,8 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
             em.clear();
             //em.flush();
             //em.getTransaction().begin();
-            Query query = em.createNamedQuery("Empleados.findBySecuencia");
-            query.setParameter("secuencia", secEmpleado);
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
-            Empleados empleado = (Empleados) query.getSingleResult();
-            Query query2 = em.createNamedQuery("VigenciasCargos.findByEmpleado");
-            query2.setParameter("empleado", empleado);
+            Query query2 = em.createQuery("SELECT v FROM VigenciasCargos v where v.empleado.secuencia = :secuencia order by v.fechavigencia desc");
+            query2.setParameter("secuencia", secEmpleado);
             query2.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasCargos> vigenciasCargos = (List<VigenciasCargos>) query2.getResultList();
             //em.getTransaction().commit();

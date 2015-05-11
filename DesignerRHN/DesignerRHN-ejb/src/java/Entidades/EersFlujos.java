@@ -1,29 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -31,17 +13,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "EERSFLUJOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "EersFlujos.findAll", query = "SELECT e FROM EersFlujos e"),
-    @NamedQuery(name = "EersFlujos.findBySecuencia", query = "SELECT e FROM EersFlujos e WHERE e.secuencia = :secuencia"),
-    @NamedQuery(name = "EersFlujos.findByComentario", query = "SELECT e FROM EersFlujos e WHERE e.comentario = :comentario"),
-    @NamedQuery(name = "EersFlujos.findByAprobado", query = "SELECT e FROM EersFlujos e WHERE e.aprobado = :aprobado"),
-    @NamedQuery(name = "EersFlujos.findByFecha", query = "SELECT e FROM EersFlujos e WHERE e.fecha = :fecha"),
-    @NamedQuery(name = "EersFlujos.findByUsuario", query = "SELECT e FROM EersFlujos e WHERE e.usuario = :usuario")})
 public class EersFlujos implements Serializable {
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull

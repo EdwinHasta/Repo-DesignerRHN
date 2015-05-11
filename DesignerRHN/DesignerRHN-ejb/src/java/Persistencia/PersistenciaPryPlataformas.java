@@ -80,7 +80,7 @@ public class PersistenciaPryPlataformas implements PersistenciaPryPlataformasInt
     public List<PryPlataformas> buscarPryPlataformas(EntityManager em) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("PryPlataformas.findAll");
+            Query query = em.createQuery("SELECT p FROM PryPlataformas p");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<PryPlataformas> plataformas = (List<PryPlataformas>) query.getResultList();
             return plataformas;

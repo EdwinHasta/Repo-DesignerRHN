@@ -1,26 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,16 +11,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "PAPELES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Papeles.findAll", query = "SELECT p FROM Papeles p")})
 public class Papeles implements Serializable {
 
-    @OneToMany(mappedBy = "papel")
-    private Collection<VigenciasCargos> vigenciasCargosCollection;
-
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -98,7 +74,7 @@ public class Papeles implements Serializable {
 
     public void setCodigoalternativo(String codigoalternativo) {
         if (codigoalternativo == null) {
-               System.out.println("Papeles : Codigo alternativo nulo");
+            System.out.println("Papeles : Codigo alternativo nulo");
         } else {
             this.codigoalternativo = codigoalternativo.toUpperCase();
         }
@@ -128,14 +104,4 @@ public class Papeles implements Serializable {
     public String toString() {
         return "Entidades.Papeles[ secuencia=" + secuencia + " ]";
     }
-
-    @XmlTransient
-    public Collection<VigenciasCargos> getVigenciasCargosCollection() {
-        return vigenciasCargosCollection;
-    }
-
-    public void setVigenciasCargosCollection(Collection<VigenciasCargos> vigenciasCargosCollection) {
-        this.vigenciasCargosCollection = vigenciasCargosCollection;
-    }
-
 }

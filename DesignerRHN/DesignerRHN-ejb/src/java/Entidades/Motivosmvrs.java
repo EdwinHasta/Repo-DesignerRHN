@@ -1,26 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,15 +11,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "MOTIVOSMVRS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Motivosmvrs.findAll", query = "SELECT m FROM Motivosmvrs m")})
 public class Motivosmvrs implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "motivo")
-    private Collection<Mvrs> mvrsCollection;
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -46,8 +23,6 @@ public class Motivosmvrs implements Serializable {
     private String nombre;
     @Column(name = "CODIGO")
     private Integer codigo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "motivo")
-    private Collection<MVRSPersona> mvrspersonaCollection;
 
     public Motivosmvrs() {
     }
@@ -90,15 +65,6 @@ public class Motivosmvrs implements Serializable {
         this.codigo = codigo;
     }
 
-    @XmlTransient
-    public Collection<MVRSPersona> getMvrspersonaCollection() {
-        return mvrspersonaCollection;
-    }
-
-    public void setMvrspersonaCollection(Collection<MVRSPersona> mvrspersonaCollection) {
-        this.mvrspersonaCollection = mvrspersonaCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -122,14 +88,5 @@ public class Motivosmvrs implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Motivosmvrs[ secuencia=" + secuencia + " ]";
-    }
-
-    @XmlTransient
-    public Collection<Mvrs> getMvrsCollection() {
-        return mvrsCollection;
-    }
-
-    public void setMvrsCollection(Collection<Mvrs> mvrsCollection) {
-        this.mvrsCollection = mvrsCollection;
     }
 }

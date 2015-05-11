@@ -1,29 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,22 +13,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "NOVEDADESTURNOSROTATIVOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Novedadesturnosrotativos.findAll", query = "SELECT n FROM Novedadesturnosrotativos n"),
-    @NamedQuery(name = "Novedadesturnosrotativos.findBySecuencia", query = "SELECT n FROM Novedadesturnosrotativos n WHERE n.secuencia = :secuencia"),
-    @NamedQuery(name = "Novedadesturnosrotativos.findByFechainicial", query = "SELECT n FROM Novedadesturnosrotativos n WHERE n.fechainicial = :fechainicial"),
-    @NamedQuery(name = "Novedadesturnosrotativos.findByFechafinal", query = "SELECT n FROM Novedadesturnosrotativos n WHERE n.fechafinal = :fechafinal"),
-    @NamedQuery(name = "Novedadesturnosrotativos.findByHorainicial", query = "SELECT n FROM Novedadesturnosrotativos n WHERE n.horainicial = :horainicial"),
-    @NamedQuery(name = "Novedadesturnosrotativos.findByMinutoinicial", query = "SELECT n FROM Novedadesturnosrotativos n WHERE n.minutoinicial = :minutoinicial"),
-    @NamedQuery(name = "Novedadesturnosrotativos.findByHorafinal", query = "SELECT n FROM Novedadesturnosrotativos n WHERE n.horafinal = :horafinal"),
-    @NamedQuery(name = "Novedadesturnosrotativos.findByMinutofinal", query = "SELECT n FROM Novedadesturnosrotativos n WHERE n.minutofinal = :minutofinal"),
-    @NamedQuery(name = "Novedadesturnosrotativos.findByCompensatorio", query = "SELECT n FROM Novedadesturnosrotativos n WHERE n.compensatorio = :compensatorio"),
-    @NamedQuery(name = "Novedadesturnosrotativos.findByRotativo", query = "SELECT n FROM Novedadesturnosrotativos n WHERE n.rotativo = :rotativo"),
-    @NamedQuery(name = "Novedadesturnosrotativos.findByExtras", query = "SELECT n FROM Novedadesturnosrotativos n WHERE n.extras = :extras")})
 public class Novedadesturnosrotativos implements Serializable {
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -87,8 +56,6 @@ public class Novedadesturnosrotativos implements Serializable {
     @Size(max = 1)
     @Column(name = "EXTRAS")
     private String extras;
-    @OneToMany(mappedBy = "novedadturnorotativo")
-    private Collection<VigenciasCompensaciones> vigenciascompensacionesCollection;
     @JoinColumn(name = "TURNOROTATIVO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Turnosrotativos turnorotativo;
@@ -188,15 +155,6 @@ public class Novedadesturnosrotativos implements Serializable {
 
     public void setExtras(String extras) {
         this.extras = extras;
-    }
-
-    @XmlTransient
-    public Collection<VigenciasCompensaciones> getVigenciascompensacionesCollection() {
-        return vigenciascompensacionesCollection;
-    }
-
-    public void setVigenciascompensacionesCollection(Collection<VigenciasCompensaciones> vigenciascompensacionesCollection) {
-        this.vigenciascompensacionesCollection = vigenciascompensacionesCollection;
     }
 
     public Turnosrotativos getTurnorotativo() {

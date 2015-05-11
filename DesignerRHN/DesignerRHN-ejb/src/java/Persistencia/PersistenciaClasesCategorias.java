@@ -94,7 +94,7 @@ public class PersistenciaClasesCategorias implements PersistenciaClasesCategoria
     public ClasesCategorias consultarClaseCategoria(EntityManager em, BigInteger secClaseCategoria) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("SELECT cc FROM ClasesCategorias cc WHERE cc.secuencia=:secuencia");
+            Query query = em.createQuery("SELECT cc FROM ClasesCategorias cc WHERE cc.secuencia=:secuencia");
             query.setParameter("secuencia", secClaseCategoria);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             ClasesCategorias clasesCategorias = (ClasesCategorias) query.getSingleResult();

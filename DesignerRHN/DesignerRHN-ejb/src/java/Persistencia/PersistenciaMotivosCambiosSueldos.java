@@ -87,7 +87,7 @@ public class PersistenciaMotivosCambiosSueldos implements PersistenciaMotivosCam
     public List<MotivosCambiosSueldos> buscarMotivosCambiosSueldos(EntityManager em) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("MotivosCambiosSueldos.findAll");
+            Query query = em.createQuery("SELECT m FROM MotivosCambiosSueldos m");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<MotivosCambiosSueldos> motivosCambiosSueldos = (List<MotivosCambiosSueldos>) query.getResultList();
             return motivosCambiosSueldos;

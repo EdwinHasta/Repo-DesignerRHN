@@ -1,30 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,12 +14,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "ADIESTRAMIENTOSF")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "AdiestramientosF.findAll", query = "SELECT a FROM AdiestramientosF a")})
 public class AdiestramientosF implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -77,8 +56,6 @@ public class AdiestramientosF implements Serializable {
     @JoinColumn(name = "TIPOEDUCACION", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private TiposEducaciones tipoeducacion;
-    @OneToMany(mappedBy = "adiestramientof")
-    private Collection<VigenciasFormales> vigenciasFormalesCollection;
 
     public AdiestramientosF() {
     }
@@ -109,7 +86,6 @@ public class AdiestramientosF implements Serializable {
         } else {
             return descripcion.toUpperCase();
         }
-
     }
 
     public void setDescripcion(String descripcion) {
@@ -186,15 +162,6 @@ public class AdiestramientosF implements Serializable {
 
     public void setTipoeducacion(TiposEducaciones tipoeducacion) {
         this.tipoeducacion = tipoeducacion;
-    }
-
-    @XmlTransient
-    public Collection<VigenciasFormales> getVigenciasFormalesCollection() {
-        return vigenciasFormalesCollection;
-    }
-
-    public void setVigenciasFormalesCollection(Collection<VigenciasFormales> vigenciasFormalesCollection) {
-        this.vigenciasFormalesCollection = vigenciasFormalesCollection;
     }
 
     @Override

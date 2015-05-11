@@ -1,29 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,12 +13,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "INSTANCIAS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Instancias.findAll", query = "SELECT i FROM Instancias i")})
 public class Instancias implements Serializable {
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -68,10 +47,6 @@ public class Instancias implements Serializable {
     @Size(max = 60)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "instancia")
-    private UsuariosInstancias usuariosInstancias;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "instancia")
-    private List<ParametrosInstancias> parametrosInstanciasList;
 
     public Instancias() {
     }
@@ -150,23 +125,6 @@ public class Instancias implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public UsuariosInstancias getUsuariosInstancias() {
-        return usuariosInstancias;
-    }
-
-    public void setUsuariosInstancias(UsuariosInstancias usuariosInstancias) {
-        this.usuariosInstancias = usuariosInstancias;
-    }
-
-    @XmlTransient
-    public List<ParametrosInstancias> getParametrosInstanciasList() {
-        return parametrosInstanciasList;
-    }
-
-    public void setParametrosInstanciasList(List<ParametrosInstancias> parametrosInstanciasList) {
-        this.parametrosInstanciasList = parametrosInstanciasList;
     }
 
     @Override

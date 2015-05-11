@@ -1,26 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,15 +12,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "MOTIVOSTURNOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "MotivosTurnos.findAll", query = "SELECT m FROM MotivosTurnos m"),
-    @NamedQuery(name = "MotivosTurnos.findBySecuencia", query = "SELECT m FROM MotivosTurnos m WHERE m.secuencia = :secuencia"),
-    @NamedQuery(name = "MotivosTurnos.findByCodigo", query = "SELECT m FROM MotivosTurnos m WHERE m.codigo = :codigo"),
-    @NamedQuery(name = "MotivosTurnos.findByNombre", query = "SELECT m FROM MotivosTurnos m WHERE m.nombre = :nombre")})
 public class MotivosTurnos implements Serializable {
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -51,8 +29,6 @@ public class MotivosTurnos implements Serializable {
     @Size(min = 1, max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
-    @OneToMany(mappedBy = "motivoturno")
-    private Collection<TurnosEmpleados> turnosEmpleadosCollection;
 
     public MotivosTurnos() {
     }
@@ -90,16 +66,7 @@ public class MotivosTurnos implements Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
-    @XmlTransient
-    public Collection<TurnosEmpleados> getTurnosEmpleadosCollection() {
-        return turnosEmpleadosCollection;
-    }
-
-    public void setTurnosEmpleadosCollection(Collection<TurnosEmpleados> turnosEmpleadosCollection) {
-        this.turnosEmpleadosCollection = turnosEmpleadosCollection;
-    }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;

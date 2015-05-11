@@ -101,7 +101,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     @Override
     public List<Empleados> buscarEmpleados(EntityManager em) {
         em.clear();
-        List<Empleados> empleadosLista = (List<Empleados>) em.createNamedQuery("Empleados.findAll").getResultList();
+        List<Empleados> empleadosLista = (List<Empleados>) em.createQuery("SELECT e FROM Empleados e").getResultList();
         return empleadosLista;
     }
 

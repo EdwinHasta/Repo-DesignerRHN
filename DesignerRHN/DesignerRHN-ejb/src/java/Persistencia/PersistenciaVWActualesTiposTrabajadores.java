@@ -30,7 +30,7 @@ import javax.persistence.Query;
     public VWActualesTiposTrabajadores buscarTipoTrabajador(EntityManager em, BigInteger secuencia) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("VWActualesTiposTrabajadores.findByEmpleado");
+            Query query = em.createQuery("SELECT vwatt FROM VWActualesTiposTrabajadores vwatt WHERE vwatt.empleado.secuencia = :empleado");
             query.setParameter("empleado", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VWActualesTiposTrabajadores vwActualesTiposTrabajadores = (VWActualesTiposTrabajadores) query.getSingleResult();
@@ -46,7 +46,7 @@ import javax.persistence.Query;
         try {
             em.clear();
             if (!p_tipo.isEmpty()) {
-                List<VWActualesTiposTrabajadores> vwActualesTiposTrabajadoresLista = (List<VWActualesTiposTrabajadores>) em.createNamedQuery("VWActualesTiposTrabajadores.findByTipoTrabajador")
+                List<VWActualesTiposTrabajadores> vwActualesTiposTrabajadoresLista = (List<VWActualesTiposTrabajadores>) em.createQuery("SELECT vwatt FROM VWActualesTiposTrabajadores vwatt WHERE vwatt.tipoTrabajador.tipo = :tipotrabajador")
                         .setParameter("tipotrabajador", p_tipo)
                         .getResultList();
                 return vwActualesTiposTrabajadoresLista;
@@ -66,7 +66,7 @@ import javax.persistence.Query;
     public List<VWActualesTiposTrabajadores> busquedaRapidaTrabajadores(EntityManager em) {
         try {
             em.clear();
-            List<VWActualesTiposTrabajadores> vwActualesTiposTrabajadoresLista = (List<VWActualesTiposTrabajadores>) em.createNamedQuery("VWActualesTiposTrabajadores.findAll")
+            List<VWActualesTiposTrabajadores> vwActualesTiposTrabajadoresLista = (List<VWActualesTiposTrabajadores>) em.createQuery("SELECT vwatt FROM VWActualesTiposTrabajadores vwatt")
                     .getResultList();
             return vwActualesTiposTrabajadoresLista;
         } catch (Exception e) {

@@ -1,27 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -29,22 +14,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "VIGENCIASAFILIACIONES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "VigenciasAfiliaciones.findAll", query = "SELECT v FROM VigenciasAfiliaciones v"),
-    @NamedQuery(name = "VigenciasAfiliaciones.findBySecuencia", query = "SELECT v FROM VigenciasAfiliaciones v WHERE v.secuencia = :secuencia"),
-    @NamedQuery(name = "VigenciasAfiliaciones.findByFechainicial", query = "SELECT v FROM VigenciasAfiliaciones v WHERE v.fechainicial = :fechainicial"),
-    @NamedQuery(name = "VigenciasAfiliaciones.findByFechafinal", query = "SELECT v FROM VigenciasAfiliaciones v WHERE v.fechafinal = :fechafinal"),
-    @NamedQuery(name = "VigenciasAfiliaciones.findByCodigo", query = "SELECT v FROM VigenciasAfiliaciones v WHERE v.codigo = :codigo"),
-    @NamedQuery(name = "VigenciasAfiliaciones.findByModalidad", query = "SELECT v FROM VigenciasAfiliaciones v WHERE v.modalidad = :modalidad"),
-    @NamedQuery(name = "VigenciasAfiliaciones.findByValor", query = "SELECT v FROM VigenciasAfiliaciones v WHERE v.valor = :valor"),
-    @NamedQuery(name = "VigenciasAfiliaciones.findByObservaciones", query = "SELECT v FROM VigenciasAfiliaciones v WHERE v.observaciones = :observaciones"),
-    @NamedQuery(name = "VigenciasAfiliaciones.findByObservacion", query = "SELECT v FROM VigenciasAfiliaciones v WHERE v.observacion = :observacion"),
-    @NamedQuery(name = "VigenciasAfiliaciones.findByRegimen", query = "SELECT v FROM VigenciasAfiliaciones v WHERE v.regimen = :regimen"),
-    @NamedQuery(name = "VigenciasAfiliaciones.findByTipoafiliado", query = "SELECT v FROM VigenciasAfiliaciones v WHERE v.tipoafiliado = :tipoafiliado")})
 public class VigenciasAfiliaciones implements Serializable { 
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -201,10 +173,6 @@ public class VigenciasAfiliaciones implements Serializable {
     }
 
     public TiposEntidades getTipoentidad() {
-        /*
-        if(tipoentidad == null){
-            tipoentidad = new TiposEntidades();
-        }*/
         return tipoentidad;
     }
 

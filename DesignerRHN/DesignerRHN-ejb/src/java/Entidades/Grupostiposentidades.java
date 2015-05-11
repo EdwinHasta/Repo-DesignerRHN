@@ -1,25 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -27,18 +12,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "GRUPOSTIPOSENTIDADES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Grupostiposentidades.findAll", query = "SELECT g FROM Grupostiposentidades g")})
 public class Grupostiposentidades implements Serializable {
 
-    @Column(name = "CODIGO")
-    private Integer codigo;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupotipoentidad")
-    private Collection<TSGruposTiposEntidades> tSGruposTiposEntidadesCollection;
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -49,8 +25,8 @@ public class Grupostiposentidades implements Serializable {
     @Size(max = 1)
     @Column(name = "REQUERIDOPILA")
     private String requeridopila;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupo")
-    private Collection<TiposEntidades> tiposentidadesCollection;
+    @Column(name = "CODIGO")
+    private Integer codigo;
 
     public Grupostiposentidades() {
     }
@@ -89,15 +65,6 @@ public class Grupostiposentidades implements Serializable {
         this.requeridopila = requeridopila;
     }
 
-    @XmlTransient
-    public Collection<TiposEntidades> getTiposentidadesCollection() {
-        return tiposentidadesCollection;
-    }
-
-    public void setTiposentidadesCollection(Collection<TiposEntidades> tiposentidadesCollection) {
-        this.tiposentidadesCollection = tiposentidadesCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -123,15 +90,6 @@ public class Grupostiposentidades implements Serializable {
         return "Entidades.Grupostiposentidades[ secuencia=" + secuencia + " ]";
     }
 
-    @XmlTransient
-    public Collection<TSGruposTiposEntidades> getTSGruposTiposEntidadesCollection() {
-        return tSGruposTiposEntidadesCollection;
-    }
-
-    public void setTSGruposTiposEntidadesCollection(Collection<TSGruposTiposEntidades> tSGruposTiposEntidadesCollection) {
-        this.tSGruposTiposEntidadesCollection = tSGruposTiposEntidadesCollection;
-    }
-
     public Integer getCodigo() {
         return codigo;
     }
@@ -139,5 +97,4 @@ public class Grupostiposentidades implements Serializable {
     public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
-
 }

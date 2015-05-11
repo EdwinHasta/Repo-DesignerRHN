@@ -83,7 +83,7 @@ public class PersistenciaIbcsAutoliquidaciones implements PersistenciaIbcsAutoli
     public List<IbcsAutoliquidaciones> buscarIbcsAutoliquidaciones(EntityManager em) {
         try {
             em.clear();
-            Query query= em.createNamedQuery("IbcsAutoliquidaciones.findAll");
+            Query query= em.createQuery("SELECT i FROM IbcsAutoliquidaciones i");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<IbcsAutoliquidaciones> autoliquidaciones = (List<IbcsAutoliquidaciones>) query.getResultList();
             return autoliquidaciones;

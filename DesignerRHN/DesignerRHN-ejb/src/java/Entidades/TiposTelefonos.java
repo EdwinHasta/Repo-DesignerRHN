@@ -1,26 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,14 +11,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "TIPOSTELEFONOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "TiposTelefonos.findAll", query = "SELECT t FROM TiposTelefonos t")})
 public class TiposTelefonos implements Serializable {
-    @OneToMany(mappedBy = "tipotelefono")
-    private Collection<ParametrosInformes> parametrosInformesCollection;
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -49,8 +27,6 @@ public class TiposTelefonos implements Serializable {
     @NotNull
     @Column(name = "NOMBRE")
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipotelefono")
-    private Collection<Telefonos> telefonosCollection;
 
     public TiposTelefonos() {
     }
@@ -89,15 +65,6 @@ public class TiposTelefonos implements Serializable {
         this.nombre = nombre.toUpperCase();
     }
 
-    @XmlTransient
-    public Collection<Telefonos> getTelefonosCollection() {
-        return telefonosCollection;
-    }
-
-    public void setTelefonosCollection(Collection<Telefonos> telefonosCollection) {
-        this.telefonosCollection = telefonosCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -122,14 +89,4 @@ public class TiposTelefonos implements Serializable {
     public String toString() {
         return "Entidades.TiposTelefonos[ secuencia=" + secuencia + " ]";
     }
-
-    @XmlTransient
-    public Collection<ParametrosInformes> getParametrosInformesCollection() {
-        return parametrosInformesCollection;
-    }
-
-    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
-        this.parametrosInformesCollection = parametrosInformesCollection;
-    }
-    
 }

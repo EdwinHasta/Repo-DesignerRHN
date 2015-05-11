@@ -79,7 +79,7 @@ public class PersistenciaVigenciasCuentas implements PersistenciaVigenciasCuenta
     @Override
     public List<VigenciasCuentas> buscarVigenciasCuentas(EntityManager em) {
         em.clear();
-        Query query = em.createNamedQuery("VigenciasCuentas.findAll");
+        Query query = em.createQuery("SELECT v FROM VigenciasCuentas v");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<VigenciasCuentas> vigenciasCuentas = (List<VigenciasCuentas>) query.getResultList();
         return vigenciasCuentas;

@@ -1,27 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -29,12 +11,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "ESCALAFONES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Escalafones.findAll", query = "SELECT e FROM Escalafones e")})
 public class Escalafones implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -48,8 +27,6 @@ public class Escalafones implements Serializable {
     @JoinColumn(name = "CATEGORIA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Categorias categoria;
-    @OneToMany(mappedBy = "escalafon")
-    private Collection<VigenciasCargos> vigenciascargosCollection;
 
     public Escalafones() {
     }
@@ -93,15 +70,6 @@ public class Escalafones implements Serializable {
 
     public void setCategoria(Categorias categoria) {
         this.categoria = categoria;
-    }
-
-    @XmlTransient
-    public Collection<VigenciasCargos> getVigenciascargosCollection() {
-        return vigenciascargosCollection;
-    }
-
-    public void setVigenciascargosCollection(Collection<VigenciasCargos> vigenciascargosCollection) {
-        this.vigenciascargosCollection = vigenciascargosCollection;
     }
 
     @Override

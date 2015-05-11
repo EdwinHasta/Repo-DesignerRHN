@@ -29,7 +29,6 @@ public class PersistenciaPryRoles implements PersistenciaPryRolesInterface {
         try {
             em.clear();
             Query query = em.createQuery("SELECT p FROM PryRoles p ORDER BY p.descripcion ");
-            em.createNamedQuery("PryPlataformas.findAll");
             List<PryRoles> pryroles = query.getResultList();
             return pryroles;
         } catch (Exception e) {

@@ -79,7 +79,7 @@ public class PersistenciaDeclarantes implements PersistenciaDeclarantesInterface
     @Override
     public List<Declarantes> buscarDeclarantes(EntityManager em) {
         em.clear();
-        Query query = em.createNamedQuery("Declarantes.findAll");
+        Query query = em.createQuery("SELECT d FROM Declarantes d");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<Declarantes> declarantesLista = (List<Declarantes>) query.getResultList();
         return declarantesLista;

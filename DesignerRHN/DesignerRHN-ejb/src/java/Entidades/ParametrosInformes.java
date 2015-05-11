@@ -1,21 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -27,9 +15,7 @@ import javax.validation.constraints.Size;
 @Table(name = "PARAMETROSINFORMES")
 public class ParametrosInformes implements Serializable {
 
-    @JoinColumn(name = "NOMBREGERENTE", referencedColumnName = "SECUENCIA")
-    @ManyToOne
-    private Empleados nombregerente;
+    
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -117,6 +103,9 @@ public class ParametrosInformes implements Serializable {
     private BigInteger pdgpolitica;
     @Column(name = "PDGESTRATEGIA")
     private BigInteger pdgestrategia;
+    @JoinColumn(name = "NOMBREGERENTE", referencedColumnName = "SECUENCIA")
+    @ManyToOne
+    private Empleados nombregerente;
     @JoinColumn(name = "UBICACIONGEOGRAFICA", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private UbicacionesGeograficas ubicaciongeografica;

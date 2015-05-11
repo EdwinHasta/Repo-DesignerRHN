@@ -1,28 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -30,17 +14,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "PENSIONADOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Pensionados.findAll", query = "SELECT p FROM Pensionados p"),
-    @NamedQuery(name = "Pensionados.findBySecuencia", query = "SELECT p FROM Pensionados p WHERE p.secuencia = :secuencia"),
-    @NamedQuery(name = "Pensionados.findByFechafinalpension", query = "SELECT p FROM Pensionados p WHERE p.fechafinalpension = :fechafinalpension"),
-    @NamedQuery(name = "Pensionados.findByFechainiciopension", query = "SELECT p FROM Pensionados p WHERE p.fechainiciopension = :fechainiciopension"),
-    @NamedQuery(name = "Pensionados.findByPorcentaje", query = "SELECT p FROM Pensionados p WHERE p.porcentaje = :porcentaje"),
-    @NamedQuery(name = "Pensionados.findByResolucionpension", query = "SELECT p FROM Pensionados p WHERE p.resolucionpension = :resolucionpension")})
 public class Pensionados implements Serializable {
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull

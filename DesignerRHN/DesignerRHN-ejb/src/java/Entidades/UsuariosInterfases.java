@@ -1,23 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -25,24 +12,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "USUARIOSINTERFASES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "UsuariosInterfases.findAll", query = "SELECT u FROM UsuariosInterfases u"),
-    @NamedQuery(name = "UsuariosInterfases.findBySecuencia", query = "SELECT u FROM UsuariosInterfases u WHERE u.secuencia = :secuencia"),
-    @NamedQuery(name = "UsuariosInterfases.findByUsuariolocal", query = "SELECT u FROM UsuariosInterfases u WHERE u.usuariolocal = :usuariolocal"),
-    @NamedQuery(name = "UsuariosInterfases.findByPasswordlocal", query = "SELECT u FROM UsuariosInterfases u WHERE u.passwordlocal = :passwordlocal"),
-    @NamedQuery(name = "UsuariosInterfases.findByServernamelocal", query = "SELECT u FROM UsuariosInterfases u WHERE u.servernamelocal = :servernamelocal"),
-    @NamedQuery(name = "UsuariosInterfases.findByPortnumberlocal", query = "SELECT u FROM UsuariosInterfases u WHERE u.portnumberlocal = :portnumberlocal"),
-    @NamedQuery(name = "UsuariosInterfases.findBySidlocal", query = "SELECT u FROM UsuariosInterfases u WHERE u.sidlocal = :sidlocal"),
-    @NamedQuery(name = "UsuariosInterfases.findByUsuarioremoto", query = "SELECT u FROM UsuariosInterfases u WHERE u.usuarioremoto = :usuarioremoto"),
-    @NamedQuery(name = "UsuariosInterfases.findByPasswordremoto", query = "SELECT u FROM UsuariosInterfases u WHERE u.passwordremoto = :passwordremoto"),
-    @NamedQuery(name = "UsuariosInterfases.findByServernameremoto", query = "SELECT u FROM UsuariosInterfases u WHERE u.servernameremoto = :servernameremoto"),
-    @NamedQuery(name = "UsuariosInterfases.findByPortnumberremoto", query = "SELECT u FROM UsuariosInterfases u WHERE u.portnumberremoto = :portnumberremoto"),
-    @NamedQuery(name = "UsuariosInterfases.findBySidremoto", query = "SELECT u FROM UsuariosInterfases u WHERE u.sidremoto = :sidremoto"),
-    @NamedQuery(name = "UsuariosInterfases.findByInterfase", query = "SELECT u FROM UsuariosInterfases u WHERE u.interfase = :interfase")})
 public class UsuariosInterfases implements Serializable {
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull

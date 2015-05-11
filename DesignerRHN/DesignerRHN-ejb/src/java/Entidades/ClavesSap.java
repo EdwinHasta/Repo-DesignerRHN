@@ -1,26 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,13 +12,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "CLAVES_SAP")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "ClavesSap.findAll", query = "SELECT c FROM ClavesSap c")})
 public class ClavesSap implements Serializable {
     
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -51,10 +31,6 @@ public class ClavesSap implements Serializable {
     private String naturaleza;    
     @JoinColumn(name = "CLAVEAJUSTE", referencedColumnName = "SECUENCIA")
     private ClavesSap claveAjuste;
-    @OneToMany(mappedBy = "clavecontabledebito")
-    private Collection<Conceptos> conceptosCollection;
-    @OneToMany(mappedBy = "clavecontablecredito")
-    private Collection<Conceptos> conceptosCollection1;
     @Transient
     private String clasificacionTransient;
     @Transient
@@ -109,24 +85,6 @@ public class ClavesSap implements Serializable {
 
     public void setClaveAjuste(ClavesSap claveAjuste) {
         this.claveAjuste = claveAjuste;
-    }
-
-    @XmlTransient
-    public Collection<Conceptos> getConceptosCollection() {
-        return conceptosCollection;
-    }
-
-    public void setConceptosCollection(Collection<Conceptos> conceptosCollection) {
-        this.conceptosCollection = conceptosCollection;
-    }
-
-    @XmlTransient
-    public Collection<Conceptos> getConceptosCollection1() {
-        return conceptosCollection1;
-    }
-
-    public void setConceptosCollection1(Collection<Conceptos> conceptosCollection1) {
-        this.conceptosCollection1 = conceptosCollection1;
     }
 
     @Override

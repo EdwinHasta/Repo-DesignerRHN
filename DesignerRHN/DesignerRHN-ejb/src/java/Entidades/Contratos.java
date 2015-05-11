@@ -1,30 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,16 +12,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "CONTRATOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Contratos.findAll", query = "SELECT c FROM Contratos c")})
 public class Contratos implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipolegislacion")
-    private List<ExtrasRecargos> extrasRecargosList;
-
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -69,13 +42,9 @@ public class Contratos implements Serializable {
     @JoinColumn(name = "TIPOCOTIZANTE", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private TiposCotizantes tipocotizante;
-    @OneToMany(mappedBy = "contratopadre")
-    private Collection<Contratos> contratosCollection;
     @JoinColumn(name = "CONTRATOPADRE", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Contratos contratopadre;
-    @OneToMany(mappedBy = "contratohijo")
-    private Collection<Contratos> contratosCollection1;
     @JoinColumn(name = "CONTRATOHIJO", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Contratos contratohijo;
@@ -157,30 +126,12 @@ public class Contratos implements Serializable {
         this.tipocotizante = tipocotizante;
     }
 
-    @XmlTransient
-    public Collection<Contratos> getContratosCollection() {
-        return contratosCollection;
-    }
-
-    public void setContratosCollection(Collection<Contratos> contratosCollection) {
-        this.contratosCollection = contratosCollection;
-    }
-
     public Contratos getContratopadre() {
         return contratopadre;
     }
 
     public void setContratopadre(Contratos contratopadre) {
         this.contratopadre = contratopadre;
-    }
-
-    @XmlTransient
-    public Collection<Contratos> getContratosCollection1() {
-        return contratosCollection1;
-    }
-
-    public void setContratosCollection1(Collection<Contratos> contratosCollection1) {
-        this.contratosCollection1 = contratosCollection1;
     }
 
     public Contratos getContratohijo() {
@@ -227,14 +178,5 @@ public class Contratos implements Serializable {
 
     public void setInformacionContrato(String informacionContrato) {
         this.informacionContrato = informacionContrato;
-    }
-
-    @XmlTransient
-    public List<ExtrasRecargos> getExtrasRecargosList() {
-        return extrasRecargosList;
-    }
-
-    public void setExtrasRecargosList(List<ExtrasRecargos> extrasRecargosList) {
-        this.extrasRecargosList = extrasRecargosList;
     }
 }

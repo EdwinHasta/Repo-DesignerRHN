@@ -99,7 +99,7 @@ public class PersistenciaEscalafones implements PersistenciaEscalafonesInterface
     public Escalafones buscarEscalafonSecuencia(EntityManager em, BigInteger secEscalafon) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("SELECT e FROM Escalafones e WHERE e.secuencia=:secuencia");
+            Query query = em.createQuery("SELECT e FROM Escalafones e WHERE e.secuencia=:secuencia");
             query.setParameter("secuencia", secEscalafon);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Escalafones escalafones = (Escalafones) query.getSingleResult();

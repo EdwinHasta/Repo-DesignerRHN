@@ -1,23 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -25,15 +11,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "PRY_PLATAFORMAS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "PryPlataformas.findAll", query = "SELECT p FROM PryPlataformas p")})
 public class PryPlataformas implements Serializable {
-    @Column(name = "CODIGO")
-    private Integer codigo;
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -43,8 +23,8 @@ public class PryPlataformas implements Serializable {
     private String descripcion;
     @Column(name = "OBSERVACION")
     private String observacion;
-    @OneToMany(mappedBy = "pryPlataforma")
-    private Collection<Proyectos> proyectosCollection;
+    @Column(name = "CODIGO")
+    private Integer codigo;
 
     public PryPlataformas() {
     }
@@ -89,15 +69,6 @@ public class PryPlataformas implements Serializable {
         } else {
             this.observacion = observacion;
         }
-    }
-
-    @XmlTransient
-    public Collection<Proyectos> getProyectosCollection() {
-        return proyectosCollection;
-    }
-
-    public void setProyectosCollection(Collection<Proyectos> proyectosCollection) {
-        this.proyectosCollection = proyectosCollection;
     }
 
     @Override

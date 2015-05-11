@@ -1,26 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -28,24 +13,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "COLUMNASESCENARIOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "ColumnasEscenarios.findAll", query = "SELECT c FROM ColumnasEscenarios c"),
-    @NamedQuery(name = "ColumnasEscenarios.findBySecuencia", query = "SELECT c FROM ColumnasEscenarios c WHERE c.secuencia = :secuencia"),
-    @NamedQuery(name = "ColumnasEscenarios.findByDescripcion", query = "SELECT c FROM ColumnasEscenarios c WHERE c.descripcion = :descripcion"),
-    @NamedQuery(name = "ColumnasEscenarios.findByNombrecolumna", query = "SELECT c FROM ColumnasEscenarios c WHERE c.nombrecolumna = :nombrecolumna"),
-    @NamedQuery(name = "ColumnasEscenarios.findByTipo", query = "SELECT c FROM ColumnasEscenarios c WHERE c.tipo = :tipo"),
-    @NamedQuery(name = "ColumnasEscenarios.findByTamano", query = "SELECT c FROM ColumnasEscenarios c WHERE c.tamano = :tamano"),
-    @NamedQuery(name = "ColumnasEscenarios.findByColPrecision", query = "SELECT c FROM ColumnasEscenarios c WHERE c.colPrecision = :colPrecision"),
-    @NamedQuery(name = "ColumnasEscenarios.findByLovcolumna1", query = "SELECT c FROM ColumnasEscenarios c WHERE c.lovcolumna1 = :lovcolumna1"),
-    @NamedQuery(name = "ColumnasEscenarios.findByLovcolumna2", query = "SELECT c FROM ColumnasEscenarios c WHERE c.lovcolumna2 = :lovcolumna2"),
-    @NamedQuery(name = "ColumnasEscenarios.findByLovfrom", query = "SELECT c FROM ColumnasEscenarios c WHERE c.lovfrom = :lovfrom"),
-    @NamedQuery(name = "ColumnasEscenarios.findByClasecondicion", query = "SELECT c FROM ColumnasEscenarios c WHERE c.clasecondicion = :clasecondicion"),
-    @NamedQuery(name = "ColumnasEscenarios.findByOperadorespecial", query = "SELECT c FROM ColumnasEscenarios c WHERE c.operadorespecial = :operadorespecial"),
-    @NamedQuery(name = "ColumnasEscenarios.findBySubqueryespecial", query = "SELECT c FROM ColumnasEscenarios c WHERE c.subqueryespecial = :subqueryespecial")})
 public class ColumnasEscenarios implements Serializable {
+   
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull

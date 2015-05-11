@@ -1,27 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -29,22 +14,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "IBCSAUTOLIQUIDACIONES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "IbcsAutoliquidaciones.findAll", query = "SELECT i FROM IbcsAutoliquidaciones i"),
-    @NamedQuery(name = "IbcsAutoliquidaciones.findBySecuencia", query = "SELECT i FROM IbcsAutoliquidaciones i WHERE i.secuencia = :secuencia"),
-    @NamedQuery(name = "IbcsAutoliquidaciones.findByFechainicial", query = "SELECT i FROM IbcsAutoliquidaciones i WHERE i.fechainicial = :fechainicial"),
-    @NamedQuery(name = "IbcsAutoliquidaciones.findByFechafinal", query = "SELECT i FROM IbcsAutoliquidaciones i WHERE i.fechafinal = :fechafinal"),
-    @NamedQuery(name = "IbcsAutoliquidaciones.findByValor", query = "SELECT i FROM IbcsAutoliquidaciones i WHERE i.valor = :valor"),
-    @NamedQuery(name = "IbcsAutoliquidaciones.findByUnidades", query = "SELECT i FROM IbcsAutoliquidaciones i WHERE i.unidades = :unidades"),
-    @NamedQuery(name = "IbcsAutoliquidaciones.findByEstado", query = "SELECT i FROM IbcsAutoliquidaciones i WHERE i.estado = :estado"),
-    @NamedQuery(name = "IbcsAutoliquidaciones.findByFechapago", query = "SELECT i FROM IbcsAutoliquidaciones i WHERE i.fechapago = :fechapago"),
-    @NamedQuery(name = "IbcsAutoliquidaciones.findByFechasistema", query = "SELECT i FROM IbcsAutoliquidaciones i WHERE i.fechasistema = :fechasistema"),
-    @NamedQuery(name = "IbcsAutoliquidaciones.findByValorliquidado", query = "SELECT i FROM IbcsAutoliquidaciones i WHERE i.valorliquidado = :valorliquidado"),
-    @NamedQuery(name = "IbcsAutoliquidaciones.findByValoranterior", query = "SELECT i FROM IbcsAutoliquidaciones i WHERE i.valoranterior = :valoranterior")})
 public class IbcsAutoliquidaciones implements Serializable {
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull

@@ -1,23 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -25,20 +12,17 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "CANDADOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Candados.findAll", query = "SELECT c FROM Candados c")})
 public class Candados implements Serializable {
+    
     private static final long serialVersionUID = 1L;
-    @Size(max = 20)
-    @Column(name = "ESTADO")
-    private String estado;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
     private BigDecimal secuencia;
+    @Size(max = 20)
+    @Column(name = "ESTADO")
+    private String estado;
     @JoinColumn(name = "USUARIO", referencedColumnName = "SECUENCIA")
     @OneToOne
     private Usuarios usuario;

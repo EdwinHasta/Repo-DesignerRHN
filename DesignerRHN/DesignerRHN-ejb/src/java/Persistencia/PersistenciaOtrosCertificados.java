@@ -79,7 +79,7 @@ public class PersistenciaOtrosCertificados implements PersistenciaOtrosCertifica
     @Override
     public List<OtrosCertificados> buscarOtrosCertificados(EntityManager em) {
         em.clear();
-        Query query = em.createNamedQuery("OtrosCertificados.findAll");
+        Query query = em.createQuery("SELECT o FROM OtrosCertificados o");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<OtrosCertificados> certificados = (List<OtrosCertificados>) query.getResultList();
         return certificados;

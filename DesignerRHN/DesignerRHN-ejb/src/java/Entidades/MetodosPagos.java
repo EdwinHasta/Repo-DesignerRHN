@@ -1,23 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -25,13 +11,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "METODOSPAGOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "MetodosPagos.findAll", query = "SELECT m FROM MetodosPagos m")})
 public class MetodosPagos implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -43,8 +25,6 @@ public class MetodosPagos implements Serializable {
     private String descripcion;
     @Column(name = "PAGO")
     private String pago;
-    @OneToMany(mappedBy = "metodopago")
-    private Collection<VigenciasFormasPagos> vigenciasformaspagosCollection;
 
     public MetodosPagos() {
     }
@@ -93,15 +73,6 @@ public class MetodosPagos implements Serializable {
 
     public void setPago(String pago) {
         this.pago = pago;
-    }
-
-    @XmlTransient
-    public Collection<VigenciasFormasPagos> getVigenciasformaspagosCollection() {
-        return vigenciasformaspagosCollection;
-    }
-
-    public void setVigenciasformaspagosCollection(Collection<VigenciasFormasPagos> vigenciasformaspagosCollection) {
-        this.vigenciasformaspagosCollection = vigenciasformaspagosCollection;
     }
 
     @Override

@@ -1,26 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,13 +12,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "MOTIVOSCAMBIOSSUELDOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "MotivosCambiosSueldos.findAll", query = "SELECT m FROM MotivosCambiosSueldos m")})
 public class MotivosCambiosSueldos implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -47,8 +27,6 @@ public class MotivosCambiosSueldos implements Serializable {
     @Size(max = 1)
     @Column(name = "SUELDOPROMEDIO")
     private String sueldopromedio;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "motivocambiosueldo")
-    private Collection<VigenciasSueldos> vigenciassueldosCollection;
     @Transient
     private Boolean estadoSueldoPromedio;
 
@@ -99,15 +77,6 @@ public class MotivosCambiosSueldos implements Serializable {
 
     public void setSueldopromedio(String sueldopromedio) {
         this.sueldopromedio = sueldopromedio;
-    }
-
-    @XmlTransient
-    public Collection<VigenciasSueldos> getVigenciassueldosCollection() {
-        return vigenciassueldosCollection;
-    }
-
-    public void setVigenciassueldosCollection(Collection<VigenciasSueldos> vigenciassueldosCollection) {
-        this.vigenciassueldosCollection = vigenciassueldosCollection;
     }
 
     public Boolean getEstadoSueldoPromedio() {

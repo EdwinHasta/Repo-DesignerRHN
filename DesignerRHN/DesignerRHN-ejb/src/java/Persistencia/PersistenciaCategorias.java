@@ -94,7 +94,7 @@ public class PersistenciaCategorias implements PersistenciaCategoriasInterface{
     public Categorias buscarCategoriaSecuencia(EntityManager em,BigInteger secCategoria) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("SELECT c FROM Categorias c WHERE c.secuencia=:secuencia");
+            Query query = em.createQuery("SELECT c FROM Categorias c WHERE c.secuencia=:secuencia");
             query.setParameter("secuencia", secCategoria);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Categorias categorias = (Categorias) query.getSingleResult();

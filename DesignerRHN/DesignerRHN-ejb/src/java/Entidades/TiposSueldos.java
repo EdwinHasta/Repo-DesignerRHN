@@ -1,27 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -29,26 +12,14 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "TIPOSSUELDOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "TiposSueldos.findAll", query = "SELECT t FROM TiposSueldos t")})
 public class TiposSueldos implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tiposueldo")
-    private Collection<TSFormulasConceptos> tSFormulasConceptosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tiposueldo")
-    private Collection<TSGruposTiposEntidades> tSGruposTiposEntidadesCollection;
-
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    //@Basic(optional = false)
-    //@NotNull
-    //@Size(min = 1, max = 30)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Column(name = "CODIGO")
@@ -62,10 +33,6 @@ public class TiposSueldos implements Serializable {
     @Size(max = 1)
     @Column(name = "ADICIONALBASICO")
     private String adicionalbasico;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tiposueldo")
-    private Collection<VigenciasSueldos> vigenciassueldosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tiposueldo")
-    private Collection<Categorias> categoriasCollection;
     @Transient
     private String strCapacidad;
     @Transient
@@ -184,24 +151,6 @@ public class TiposSueldos implements Serializable {
         this.strAdicional = strAdicional;
     }
 
-    @XmlTransient
-    public Collection<VigenciasSueldos> getVigenciassueldosCollection() {
-        return vigenciassueldosCollection;
-    }
-
-    public void setVigenciassueldosCollection(Collection<VigenciasSueldos> vigenciassueldosCollection) {
-        this.vigenciassueldosCollection = vigenciassueldosCollection;
-    }
-
-    @XmlTransient
-    public Collection<Categorias> getCategoriasCollection() {
-        return categoriasCollection;
-    }
-
-    public void setCategoriasCollection(Collection<Categorias> categoriasCollection) {
-        this.categoriasCollection = categoriasCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -226,23 +175,4 @@ public class TiposSueldos implements Serializable {
     public String toString() {
         return "Entidades.Tipossueldos[ secuencia=" + secuencia + " ]";
     }
-
-    @XmlTransient
-    public Collection<TSFormulasConceptos> getTSFormulasConceptosCollection() {
-        return tSFormulasConceptosCollection;
-    }
-
-    public void setTSFormulasConceptosCollection(Collection<TSFormulasConceptos> tSFormulasConceptosCollection) {
-        this.tSFormulasConceptosCollection = tSFormulasConceptosCollection;
-    }
-
-    @XmlTransient
-    public Collection<TSGruposTiposEntidades> getTSGruposTiposEntidadesCollection() {
-        return tSGruposTiposEntidadesCollection;
-    }
-
-    public void setTSGruposTiposEntidadesCollection(Collection<TSGruposTiposEntidades> tSGruposTiposEntidadesCollection) {
-        this.tSGruposTiposEntidadesCollection = tSGruposTiposEntidadesCollection;
-    }
-
 }

@@ -1,29 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -31,23 +13,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "INTERCON_SAPBO")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "InterconSapBO.findAll", query = "SELECT i FROM InterconSapBO i"),
-    @NamedQuery(name = "InterconSapBO.findByCodigotercero", query = "SELECT i FROM InterconSapBO i WHERE i.codigotercero = :codigotercero"),
-    @NamedQuery(name = "InterconSapBO.findByFlag", query = "SELECT i FROM InterconSapBO i WHERE i.flag = :flag"),
-    @NamedQuery(name = "InterconSapBO.findByFechaultimamodificacion", query = "SELECT i FROM InterconSapBO i WHERE i.fechaultimamodificacion = :fechaultimamodificacion"),
-    @NamedQuery(name = "InterconSapBO.findByFechacontabilizacion", query = "SELECT i FROM InterconSapBO i WHERE i.fechacontabilizacion = :fechacontabilizacion"),
-    @NamedQuery(name = "InterconSapBO.findBySalida", query = "SELECT i FROM InterconSapBO i WHERE i.salida = :salida"),
-    @NamedQuery(name = "InterconSapBO.findByNaturaleza", query = "SELECT i FROM InterconSapBO i WHERE i.naturaleza = :naturaleza"),
-    @NamedQuery(name = "InterconSapBO.findByValorc", query = "SELECT i FROM InterconSapBO i WHERE i.valorc = :valorc"),
-    @NamedQuery(name = "InterconSapBO.findByValord", query = "SELECT i FROM InterconSapBO i WHERE i.valord = :valord"),
-    @NamedQuery(name = "InterconSapBO.findBySecuencia", query = "SELECT i FROM InterconSapBO i WHERE i.secuencia = :secuencia"),
-    @NamedQuery(name = "InterconSapBO.findByEmpresaCodigo", query = "SELECT i FROM InterconSapBO i WHERE i.empresaCodigo = :empresaCodigo"),
-    @NamedQuery(name = "InterconSapBO.findByConsecutivo", query = "SELECT i FROM InterconSapBO i WHERE i.consecutivo = :consecutivo"),
-    @NamedQuery(name = "InterconSapBO.findByFechavencimiento", query = "SELECT i FROM InterconSapBO i WHERE i.fechavencimiento = :fechavencimiento"),
-    @NamedQuery(name = "InterconSapBO.findByLote", query = "SELECT i FROM InterconSapBO i WHERE i.lote = :lote"),
-    @NamedQuery(name = "InterconSapBO.findByCodigocuentacontable", query = "SELECT i FROM InterconSapBO i WHERE i.codigocuentacontable = :codigocuentacontable")})
 public class InterconSapBO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -73,7 +38,6 @@ public class InterconSapBO implements Serializable {
     private Long valorc;
     @Column(name = "VALORD")
     private Long valord;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull

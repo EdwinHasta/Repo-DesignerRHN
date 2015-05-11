@@ -81,7 +81,7 @@ public class PersistenciaRubrosPresupuestales implements PersistenciaRubrosPresu
     public List<Rubrospresupuestales> buscarRubros(EntityManager em) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("Rubrospresupuestales.findAll");
+            Query query = em.createQuery("SELECT r FROM Rubrospresupuestales r");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Rubrospresupuestales> rubrospresupuestales = (List<Rubrospresupuestales>) query.getResultList();
             return rubrospresupuestales;

@@ -109,7 +109,7 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
     public VigenciasCompensaciones buscarVigenciaCompensacionSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("VigenciasCompensaciones.findBySecuencia").setParameter("secuencia", secuencia);
+            Query query = em.createQuery("SELECT v FROM VigenciasCompensaciones v WHERE v.secuencia = :secuencia").setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasCompensaciones vigenciasCompensaciones = (VigenciasCompensaciones) query.getSingleResult();
             return vigenciasCompensaciones;

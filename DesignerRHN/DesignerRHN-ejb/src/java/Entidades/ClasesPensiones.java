@@ -1,24 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -26,16 +11,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "CLASESPENSIONES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "ClasesPensiones.findAll", query = "SELECT c FROM ClasesPensiones c"),
-    @NamedQuery(name = "ClasesPensiones.findBySecuencia", query = "SELECT c FROM ClasesPensiones c WHERE c.secuencia = :secuencia"),
-    @NamedQuery(name = "ClasesPensiones.findByCodigo", query = "SELECT c FROM ClasesPensiones c WHERE c.codigo = :codigo"),
-    @NamedQuery(name = "ClasesPensiones.findByDescripcion", query = "SELECT c FROM ClasesPensiones c WHERE c.descripcion = :descripcion")})
 public class ClasesPensiones implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -45,8 +23,6 @@ public class ClasesPensiones implements Serializable {
     private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "clase")
-    private Collection<Pensionados> pensionadosCollection;
 
     public ClasesPensiones() {
     }
@@ -87,15 +63,6 @@ public class ClasesPensiones implements Serializable {
         } else {
             this.descripcion = descripcion.toUpperCase();
         }
-    }
-
-    @XmlTransient
-    public Collection<Pensionados> getPensionadosCollection() {
-        return pensionadosCollection;
-    }
-
-    public void setPensionadosCollection(Collection<Pensionados> pensionadosCollection) {
-        this.pensionadosCollection = pensionadosCollection;
     }
 
     @Override

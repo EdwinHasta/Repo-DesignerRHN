@@ -1,27 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -29,13 +13,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "VIGENCIASTALLAS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "VigenciasTallas.findAll", query = "SELECT v FROM VigenciasTallas v")})
 public class VigenciasTallas implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -53,8 +33,10 @@ public class VigenciasTallas implements Serializable {
     @Column(name = "OBSERVACIONES")
     private String observaciones;
     @JoinColumn(name = "EMPLEADO", referencedColumnName = "SECUENCIA")
+    @ManyToOne
     private Empleados empleado;
     @JoinColumn(name = "TIPOTALLA", referencedColumnName = "SECUENCIA")
+    @ManyToOne
     private TiposTallas tipoTalla;
 
     public VigenciasTallas() {

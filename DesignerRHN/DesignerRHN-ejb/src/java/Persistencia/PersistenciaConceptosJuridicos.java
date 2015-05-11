@@ -85,7 +85,7 @@ public class PersistenciaConceptosJuridicos implements PersistenciaConceptosJuri
     public List<ConceptosJuridicos> buscarConceptosJuridicos(EntityManager em) {
         try {
             em.clear();
-            List<ConceptosJuridicos> conceptosJuridicos = (List<ConceptosJuridicos>) em.createNamedQuery("ConceptosJuridicos.findAll").getResultList();
+            List<ConceptosJuridicos> conceptosJuridicos = (List<ConceptosJuridicos>) em.createQuery("SELECT c FROM ConceptosJuridicos c").getResultList();
             return conceptosJuridicos;
         } catch (Exception e) {
             System.out.println("Error buscarConceptosJuridicos PersistenciaConceptosJuridicos : " + e.toString());

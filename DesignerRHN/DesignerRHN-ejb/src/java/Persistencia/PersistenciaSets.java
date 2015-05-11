@@ -91,7 +91,7 @@ public class PersistenciaSets implements PersistenciaSetsInterface {
     @Override
     public List<Sets> buscarSets(EntityManager em) {
         em.clear();
-        Query query = em.createNamedQuery("Sets.findAll");
+        Query query = em.createQuery("SELECT s FROM Sets s");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<Sets> setsLista = (List<Sets>) query.getResultList();
         return setsLista;

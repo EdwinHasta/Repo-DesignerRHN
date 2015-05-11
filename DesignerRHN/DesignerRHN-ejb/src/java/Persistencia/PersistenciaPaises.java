@@ -93,7 +93,7 @@ public class PersistenciaPaises implements PersistenciaPaisesInterface {
     public Paises consultarPais(EntityManager em, BigInteger secClaseCategoria) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("SELECT cc FROM Paises cc WHERE cc.secuencia=:secuencia");
+            Query query = em.createQuery("SELECT cc FROM Paises cc WHERE cc.secuencia=:secuencia");
             query.setParameter("secuencia", secClaseCategoria);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Paises clasesCategorias = (Paises) query.getSingleResult();

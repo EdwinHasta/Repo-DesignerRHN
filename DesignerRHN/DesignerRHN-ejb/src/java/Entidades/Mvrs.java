@@ -1,26 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -28,18 +13,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "MVRS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Mvrs.findAll", query = "SELECT m FROM Mvrs m"),
-    @NamedQuery(name = "Mvrs.findBySecuencia", query = "SELECT m FROM Mvrs m WHERE m.secuencia = :secuencia"),
-    @NamedQuery(name = "Mvrs.findByFechafinal", query = "SELECT m FROM Mvrs m WHERE m.fechafinal = :fechafinal"),
-    @NamedQuery(name = "Mvrs.findByFechainicial", query = "SELECT m FROM Mvrs m WHERE m.fechainicial = :fechainicial"),
-    @NamedQuery(name = "Mvrs.findByPorcentaje", query = "SELECT m FROM Mvrs m WHERE m.porcentaje = :porcentaje"),
-    @NamedQuery(name = "Mvrs.findByValor", query = "SELECT m FROM Mvrs m WHERE m.valor = :valor"),
-    @NamedQuery(name = "Mvrs.findByValoranualoriginal", query = "SELECT m FROM Mvrs m WHERE m.valoranualoriginal = :valoranualoriginal")})
 public class Mvrs implements Serializable {
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull

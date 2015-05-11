@@ -1,29 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,54 +12,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "TERCEROS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Terceros.findAll", query = "SELECT t FROM Terceros t"),
-    @NamedQuery(name = "Terceros.findBySecuencia", query = "SELECT t FROM Terceros t WHERE t.secuencia = :secuencia"),
-    @NamedQuery(name = "Terceros.findByNit", query = "SELECT t FROM Terceros t WHERE t.nit = :nit"),
-    @NamedQuery(name = "Terceros.findByCodigoalternativo", query = "SELECT t FROM Terceros t WHERE t.codigoalternativo = :codigoalternativo"),
-    @NamedQuery(name = "Terceros.findByNombre", query = "SELECT t FROM Terceros t WHERE t.nombre = :nombre"),
-    @NamedQuery(name = "Terceros.findByDigitoverificacion", query = "SELECT t FROM Terceros t WHERE t.digitoverificacion = :digitoverificacion"),
-    @NamedQuery(name = "Terceros.findByCodigo", query = "SELECT t FROM Terceros t WHERE t.codigo = :codigo"),
-    @NamedQuery(name = "Terceros.findByCodigoss", query = "SELECT t FROM Terceros t WHERE t.codigoss = :codigoss"),
-    @NamedQuery(name = "Terceros.findByCodigosp", query = "SELECT t FROM Terceros t WHERE t.codigosp = :codigosp"),
-    @NamedQuery(name = "Terceros.findByCodigosc", query = "SELECT t FROM Terceros t WHERE t.codigosc = :codigosc"),
-    @NamedQuery(name = "Terceros.findByNitalternativo", query = "SELECT t FROM Terceros t WHERE t.nitalternativo = :nitalternativo"),
-    @NamedQuery(name = "Terceros.findByCodigoalternativodeudor", query = "SELECT t FROM Terceros t WHERE t.codigoalternativodeudor = :codigoalternativodeudor"),
-    @NamedQuery(name = "Terceros.findByTiponit", query = "SELECT t FROM Terceros t WHERE t.tiponit = :tiponit"),
-    @NamedQuery(name = "Terceros.findByCodigotercerosap", query = "SELECT t FROM Terceros t WHERE t.codigotercerosap = :codigotercerosap")})
 public class Terceros implements Serializable {
-    @OneToMany(mappedBy = "tercero")
-    private Collection<EersDetalles> eersDetallesCollection;
 
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "NIT")
-    private long nit;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tercero")
-    private Collection<EersPrestamos> eersPrestamosCollection;
-    @OneToMany(mappedBy = "demandante")
-    private Collection<EersPrestamos> eersPrestamosCollection1;
-    @OneToMany(mappedBy = "tercero")
-    private Collection<EersAuxilios> eersAuxiliosCollection;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "terceros")
-    private Collection<RelacionesIncapacidades> relacionesIncapacidadesCollection;
-    @OneToMany(mappedBy = "tercero")
-    private Collection<ParametrosInformes> parametrosInformesCollection;
-
-    @OneToMany(mappedBy = "tercero")
-    private Collection<Soausentismos> soausentismosCollection;
-    @OneToMany(mappedBy = "tercero")
-    private Collection<NovedadesSistema> novedadessistemaCollection;
-    @OneToMany(mappedBy = "nit")
-    private Collection<SolucionesNodos> solucionesnodosCollection;
-    @OneToMany(mappedBy = "tercero")
-    private Collection<Novedades> novedadesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tercero")
-    private Collection<TercerosSucursales> tercerossucursalesCollection;
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -115,8 +51,10 @@ public class Terceros implements Serializable {
     @Size(max = 5)
     @Column(name = "CODIGOTERCEROSAP")
     private String codigotercerosap;
-    @OneToMany(mappedBy = "terceroconsolidador")
-    private Collection<Terceros> tercerosCollection;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "NIT")
+    private long nit;
     @JoinColumn(name = "TERCEROCONSOLIDADOR", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Terceros terceroconsolidador;
@@ -129,8 +67,6 @@ public class Terceros implements Serializable {
     @JoinColumn(name = "CENTROCOSTO", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private CentrosCostos centrocosto;
-    @OneToMany(mappedBy = "tercero")
-    private Collection<Conceptos> conceptosCollection;
     @Transient
     private String strNit;
 
@@ -258,15 +194,6 @@ public class Terceros implements Serializable {
         this.codigotercerosap = codigotercerosap;
     }
 
-    @XmlTransient
-    public Collection<Terceros> getTercerosCollection() {
-        return tercerosCollection;
-    }
-
-    public void setTercerosCollection(Collection<Terceros> tercerosCollection) {
-        this.tercerosCollection = tercerosCollection;
-    }
-
     public Terceros getTerceroconsolidador() {
         if (terceroconsolidador == null) {
             terceroconsolidador = new Terceros();
@@ -305,15 +232,6 @@ public class Terceros implements Serializable {
         this.centrocosto = centrocosto;
     }
 
-    @XmlTransient
-    public Collection<Conceptos> getConceptosCollection() {
-        return conceptosCollection;
-    }
-
-    public void setConceptosCollection(Collection<Conceptos> conceptosCollection) {
-        this.conceptosCollection = conceptosCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -339,110 +257,11 @@ public class Terceros implements Serializable {
         return "Entidades.Terceros[ secuencia=" + secuencia + " ]";
     }
 
-    @XmlTransient
-    public Collection<TercerosSucursales> getTercerossucursalesCollection() {
-        return tercerossucursalesCollection;
-    }
-
-    public void setTercerossucursalesCollection(Collection<TercerosSucursales> tercerossucursalesCollection) {
-        this.tercerossucursalesCollection = tercerossucursalesCollection;
-    }
-
-    @XmlTransient
-    public Collection<Soausentismos> getSoausentismosCollection() {
-        return soausentismosCollection;
-    }
-
-    public void setSoausentismosCollection(Collection<Soausentismos> soausentismosCollection) {
-        this.soausentismosCollection = soausentismosCollection;
-    }
-
-    @XmlTransient
-    public Collection<NovedadesSistema> getNovedadessistemaCollection() {
-        return novedadessistemaCollection;
-    }
-
-    public void setNovedadessistemaCollection(Collection<NovedadesSistema> novedadessistemaCollection) {
-        this.novedadessistemaCollection = novedadessistemaCollection;
-    }
-
-    @XmlTransient
-    public Collection<SolucionesNodos> getSolucionesnodosCollection() {
-        return solucionesnodosCollection;
-    }
-
-    public void setSolucionesnodosCollection(Collection<SolucionesNodos> solucionesnodosCollection) {
-        this.solucionesnodosCollection = solucionesnodosCollection;
-    }
-
-    @XmlTransient
-    public Collection<Novedades> getNovedadesCollection() {
-        return novedadesCollection;
-    }
-
-    public void setNovedadesCollection(Collection<Novedades> novedadesCollection) {
-        this.novedadesCollection = novedadesCollection;
-    }
-
-    @XmlTransient
-    public Collection<ParametrosInformes> getParametrosInformesCollection() {
-        return parametrosInformesCollection;
-    }
-
-    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
-        this.parametrosInformesCollection = parametrosInformesCollection;
-    }
-
-    @XmlTransient
-    public Collection<RelacionesIncapacidades> getRelacionesIncapacidadesCollection() {
-        return relacionesIncapacidadesCollection;
-    }
-
-    public void setRelacionesIncapacidadesCollection(Collection<RelacionesIncapacidades> relacionesIncapacidadesCollection) {
-        this.relacionesIncapacidadesCollection = relacionesIncapacidadesCollection;
-    }
-
-    @XmlTransient
-    public Collection<EersAuxilios> getEersAuxiliosCollection() {
-        return eersAuxiliosCollection;
-    }
-
-    public void setEersAuxiliosCollection(Collection<EersAuxilios> eersAuxiliosCollection) {
-        this.eersAuxiliosCollection = eersAuxiliosCollection;
-    }
-
-    @XmlTransient
-    public Collection<EersPrestamos> getEersPrestamosCollection() {
-        return eersPrestamosCollection;
-    }
-
-    public void setEersPrestamosCollection(Collection<EersPrestamos> eersPrestamosCollection) {
-        this.eersPrestamosCollection = eersPrestamosCollection;
-    }
-
-    @XmlTransient
-    public Collection<EersPrestamos> getEersPrestamosCollection1() {
-        return eersPrestamosCollection1;
-    }
-
-    public void setEersPrestamosCollection1(Collection<EersPrestamos> eersPrestamosCollection1) {
-        this.eersPrestamosCollection1 = eersPrestamosCollection1;
-    }
-
     public long getNit() {
         return nit;
     }
 
     public void setNit(long nit) {
         this.nit = nit;
-    }
-
-    @XmlTransient
-    public Collection<EersDetalles> getEersDetallesCollection() {
-        return eersDetallesCollection;
-    }
-
-    public void setEersDetallesCollection(Collection<EersDetalles> eersDetallesCollection) {
-        this.eersDetallesCollection = eersDetallesCollection;
     }
 }

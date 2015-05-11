@@ -122,7 +122,7 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
     public VigenciasTiposTrabajadores buscarVigenciasTiposTrabajadoresSecuencia(EntityManager em, BigInteger secVTT) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("VigenciasTiposTrabajadores.findBySecuencia").setParameter("secuencia", secVTT);
+            Query query = em.createQuery("SELECT v FROM VigenciasTiposTrabajadores v WHERE v.secuencia = : secuencia").setParameter("secuencia", secVTT);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasTiposTrabajadores vigenciasTiposTrabajadores = (VigenciasTiposTrabajadores) query.getSingleResult();
             return vigenciasTiposTrabajadores;

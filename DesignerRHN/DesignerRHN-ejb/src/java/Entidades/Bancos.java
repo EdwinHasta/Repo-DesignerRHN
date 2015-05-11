@@ -1,24 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -26,15 +12,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "BANCOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Bancos.findAll", query = "SELECT b FROM Bancos b")})
 public class Bancos implements Serializable {
 
-    @OneToMany(mappedBy = "banco")
-    private Collection<ParametrosInformes> parametrosInformesCollection;
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -66,8 +46,6 @@ public class Bancos implements Serializable {
     @Size(max = 15)
     @Column(name = "NUMEROIDENTIFICACIONT")
     private String numeroidentificaciont;
-    @OneToMany(mappedBy = "banco")
-    private Collection<Direcciones> direccionesCollection;
 
     public Bancos() {
     }
@@ -166,15 +144,6 @@ public class Bancos implements Serializable {
         this.numeroidentificaciont = numeroidentificaciont;
     }
 
-    @XmlTransient
-    public Collection<Direcciones> getDireccionesCollection() {
-        return direccionesCollection;
-    }
-
-    public void setDireccionesCollection(Collection<Direcciones> direccionesCollection) {
-        this.direccionesCollection = direccionesCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -199,14 +168,4 @@ public class Bancos implements Serializable {
     public String toString() {
         return "Entidades.Bancos[ secuencia=" + secuencia + " ]";
     }
-
-    @XmlTransient
-    public Collection<ParametrosInformes> getParametrosInformesCollection() {
-        return parametrosInformesCollection;
-    }
-
-    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
-        this.parametrosInformesCollection = parametrosInformesCollection;
-    }
-
 }

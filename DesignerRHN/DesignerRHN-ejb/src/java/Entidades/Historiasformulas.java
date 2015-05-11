@@ -1,34 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -36,19 +14,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "HISTORIASFORMULAS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Historiasformulas.findAll", query = "SELECT h FROM Historiasformulas h")})
 public class Historiasformulas implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Column(name = "FECHAINICIAL")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechainicial;
-    @Column(name = "FECHAFINAL")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechafinal;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -56,8 +24,12 @@ public class Historiasformulas implements Serializable {
     private BigInteger secuencia;
     @Column(name = "OBSERVACIONES")
     private String observaciones;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "historiaformula")
-    private Collection<Nodos> nodosCollection;
+    @Column(name = "FECHAINICIAL")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechainicial;
+    @Column(name = "FECHAFINAL")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechafinal;
     @JoinColumn(name = "FORMULA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Formulas formula;
@@ -144,15 +116,6 @@ public class Historiasformulas implements Serializable {
 
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
-    }
-
-    @XmlTransient
-    public Collection<Nodos> getNodosCollection() {
-        return nodosCollection;
-    }
-
-    public void setNodosCollection(Collection<Nodos> nodosCollection) {
-        this.nodosCollection = nodosCollection;
     }
 
     public Formulas getFormula() {

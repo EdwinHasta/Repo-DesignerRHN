@@ -123,7 +123,7 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
     public VigenciasAfiliaciones buscarVigenciasAfiliacionesSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("VigenciasAfiliaciones.findBySecuencia").setParameter("secuencia", secuencia);
+            Query query = em.createQuery("SELECT v FROM VigenciasAfiliaciones v WHERE v.secuencia = :secuencia").setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasAfiliaciones vigenciasAfiliaciones = (VigenciasAfiliaciones) query.getSingleResult();
             return vigenciasAfiliaciones;

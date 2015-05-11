@@ -1,24 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -26,13 +11,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "TIPOSINDICADORES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "TiposIndicadores.findAll", query = "SELECT t FROM TiposIndicadores t")})
 public class TiposIndicadores implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -42,10 +23,6 @@ public class TiposIndicadores implements Serializable {
     private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @OneToMany(mappedBy = "tipoindicador")
-    private Collection<VigenciasIndicadores> vigenciasIndicadoresCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoindicador")
-    private Collection<Indicadores> indicadoresCollection;
 
     public TiposIndicadores() {
     }
@@ -86,24 +63,6 @@ public class TiposIndicadores implements Serializable {
         } else {
             this.descripcion = descripcion;
         }
-    }
-
-    @XmlTransient
-    public Collection<VigenciasIndicadores> getVigenciasIndicadoresCollection() {
-        return vigenciasIndicadoresCollection;
-    }
-
-    public void setVigenciasIndicadoresCollection(Collection<VigenciasIndicadores> vigenciasIndicadoresCollection) {
-        this.vigenciasIndicadoresCollection = vigenciasIndicadoresCollection;
-    }
-
-    @XmlTransient
-    public Collection<Indicadores> getIndicadoresCollection() {
-        return indicadoresCollection;
-    }
-
-    public void setIndicadoresCollection(Collection<Indicadores> indicadoresCollection) {
-        this.indicadoresCollection = indicadoresCollection;
     }
 
     @Override

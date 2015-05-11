@@ -78,7 +78,7 @@ public class PersistenciaAsociaciones implements PersistenciaAsociacionesInterfa
     public List<Asociaciones> buscarAsociaciones(EntityManager em) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("Asociaciones.findAll");
+            Query query = em.createQuery("SELECT a FROM Asociaciones a");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Asociaciones> asociaciones = (List<Asociaciones>) query.getResultList();
             

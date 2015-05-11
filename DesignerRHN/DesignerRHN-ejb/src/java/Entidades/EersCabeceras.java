@@ -1,33 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -35,22 +13,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "EERSCABECERAS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "EersCabeceras.findAll", query = "SELECT e FROM EersCabeceras e"),
-    @NamedQuery(name = "EersCabeceras.findBySecuencia", query = "SELECT e FROM EersCabeceras e WHERE e.secuencia = :secuencia"),
-    @NamedQuery(name = "EersCabeceras.findByDocumento", query = "SELECT e FROM EersCabeceras e WHERE e.documento = :documento"),
-    @NamedQuery(name = "EersCabeceras.findByEstado", query = "SELECT e FROM EersCabeceras e WHERE e.estado = :estado"),
-    @NamedQuery(name = "EersCabeceras.findByTipoeer", query = "SELECT e FROM EersCabeceras e WHERE e.tipoeer = :tipoeer"),
-    @NamedQuery(name = "EersCabeceras.findByAprobado", query = "SELECT e FROM EersCabeceras e WHERE e.aprobado = :aprobado"),
-    @NamedQuery(name = "EersCabeceras.findByComentario", query = "SELECT e FROM EersCabeceras e WHERE e.comentario = :comentario"),
-    @NamedQuery(name = "EersCabeceras.findByFechapago", query = "SELECT e FROM EersCabeceras e WHERE e.fechapago = :fechapago"),
-    @NamedQuery(name = "EersCabeceras.findByPagarporfuera", query = "SELECT e FROM EersCabeceras e WHERE e.pagarporfuera = :pagarporfuera"),
-    @NamedQuery(name = "EersCabeceras.findByHoras", query = "SELECT e FROM EersCabeceras e WHERE e.horas = :horas"),
-    @NamedQuery(name = "EersCabeceras.findByMinutos", query = "SELECT e FROM EersCabeceras e WHERE e.minutos = :minutos")})
 public class EersCabeceras implements Serializable {
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -87,10 +52,6 @@ public class EersCabeceras implements Serializable {
     private Short horas;
     @Column(name = "MINUTOS")
     private Short minutos;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "eercabecera")
-    private Collection<EersDetalles> eersDetallesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "eercabecera")
-    private Collection<EersFlujos> eersFlujosCollection;
     @JoinColumn(name = "ESTRUCTURAAPRUEBA", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Estructuras estructuraaprueba;
@@ -197,25 +158,7 @@ public class EersCabeceras implements Serializable {
     public void setMinutos(Short minutos) {
         this.minutos = minutos;
     }
-
-    @XmlTransient
-    public Collection<EersDetalles> getEersDetallesCollection() {
-        return eersDetallesCollection;
-    }
-
-    public void setEersDetallesCollection(Collection<EersDetalles> eersDetallesCollection) {
-        this.eersDetallesCollection = eersDetallesCollection;
-    }
-
-    @XmlTransient
-    public Collection<EersFlujos> getEersFlujosCollection() {
-        return eersFlujosCollection;
-    }
-
-    public void setEersFlujosCollection(Collection<EersFlujos> eersFlujosCollection) {
-        this.eersFlujosCollection = eersFlujosCollection;
-    }
-
+    
     public Estructuras getEstructuraaprueba() {
         return estructuraaprueba;
     }

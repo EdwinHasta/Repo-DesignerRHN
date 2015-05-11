@@ -1,34 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -36,17 +14,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "SOAUSENTISMOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Soausentismos.findAll", query = "SELECT s FROM Soausentismos s")})
 public class Soausentismos implements Serializable {
 
-    @Column(name = "PORCENTAJEINDIVIDUAL")
-    private BigInteger porcentajeindividual;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "soausentismos")
-    private RelacionesIncapacidades relacionesIncapacidades;
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -96,14 +66,14 @@ public class Soausentismos implements Serializable {
     private String usuariobd;
     @Column(name = "BASELIQUIDACION")
     private BigInteger baseliquidacion;
+    @Column(name = "PORCENTAJEINDIVIDUAL")
+    private BigInteger porcentajeindividual;
     @JoinColumn(name = "TIPO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Tiposausentismos tipo;
     @JoinColumn(name = "TERCERO", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Terceros tercero;
-    @OneToMany(mappedBy = "prorroga")
-    private Collection<Soausentismos> soausentismosCollection;
     @JoinColumn(name = "PRORROGA", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Soausentismos prorroga;
@@ -125,8 +95,6 @@ public class Soausentismos implements Serializable {
     @JoinColumn(name = "CAUSA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Causasausentismos causa;
-    @OneToMany(mappedBy = "soausentismo")
-    private Collection<NovedadesSistema> novedadessistemaCollection;
     @Transient
     private String relacion;
     @Transient
@@ -334,15 +302,6 @@ public class Soausentismos implements Serializable {
         this.prorrogaAusentismo = prorrogaAusentismo;
     }
 
-    @XmlTransient
-    public Collection<Soausentismos> getSoausentismosCollection() {
-        return soausentismosCollection;
-    }
-
-    public void setSoausentismosCollection(Collection<Soausentismos> soausentismosCollection) {
-        this.soausentismosCollection = soausentismosCollection;
-    }
-
     public Soausentismos getProrroga() {
         if (prorroga == null) {
             prorroga = new Soausentismos();
@@ -440,15 +399,6 @@ public class Soausentismos implements Serializable {
         this.relacionadaBool = relacionadaBool;
     }
 
-    @XmlTransient
-    public Collection<NovedadesSistema> getNovedadessistemaCollection() {
-        return novedadessistemaCollection;
-    }
-
-    public void setNovedadessistemaCollection(Collection<NovedadesSistema> novedadessistemaCollection) {
-        this.novedadessistemaCollection = novedadessistemaCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -483,13 +433,5 @@ public class Soausentismos implements Serializable {
 
     public void setPorcentajeindividual(BigInteger porcentajeindividual) {
         this.porcentajeindividual = porcentajeindividual;
-    }
-
-    public RelacionesIncapacidades getRelacionesIncapacidades() {
-        return relacionesIncapacidades;
-    }
-
-    public void setRelacionesIncapacidades(RelacionesIncapacidades relacionesIncapacidades) {
-        this.relacionesIncapacidades = relacionesIncapacidades;
     }
 }

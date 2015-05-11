@@ -80,7 +80,7 @@ public class PersistenciaTiposAsociaciones implements PersistenciaTiposAsociacio
     public List<TiposAsociaciones> buscarTiposAsociaciones(EntityManager em) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("TiposAsociaciones.findAll");
+            Query query = em.createQuery("SELECT t FROM TiposAsociaciones t");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposAsociaciones> tiposAsociaciones = (List<TiposAsociaciones>) query.getResultList();
             return tiposAsociaciones;

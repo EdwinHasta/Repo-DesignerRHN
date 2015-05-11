@@ -80,7 +80,7 @@ public class PersistenciaVigenciasGruposSalariales implements PersistenciaVigenc
     public List<VigenciasGruposSalariales> buscarVigenciasGruposSalariales(EntityManager em) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("VigenciasGruposSalariales.findAll");
+            Query query = em.createQuery("SELECT v FROM VigenciasGruposSalariales v");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasGruposSalariales> vigenciasGruposSalariales = (List<VigenciasGruposSalariales>) query.getResultList();
             return vigenciasGruposSalariales;

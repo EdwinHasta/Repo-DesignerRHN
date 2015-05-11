@@ -78,7 +78,7 @@ public class PersistenciaContratos implements PersistenciaContratosInterface {
     @Override
     public List<Contratos> buscarContratos(EntityManager em) {
         em.clear();
-        Query query = em.createNamedQuery("Contratos.findAll");
+        Query query = em.createQuery("SELECT c FROM Contratos c");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<Contratos> contratoLista = (List<Contratos>) query.getResultList();
         return contratoLista;

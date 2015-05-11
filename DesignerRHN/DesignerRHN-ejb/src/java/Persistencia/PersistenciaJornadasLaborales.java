@@ -85,7 +85,7 @@ public class PersistenciaJornadasLaborales implements PersistenciaJornadasLabora
     public List<JornadasLaborales> buscarJornadasLaborales(EntityManager em) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("JornadasLaborales.findAll");
+            Query query = em.createQuery("SELECT j FROM JornadasLaborales j");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<JornadasLaborales> jornadasLaborales = (List<JornadasLaborales>) query.getResultList();
             return jornadasLaborales;

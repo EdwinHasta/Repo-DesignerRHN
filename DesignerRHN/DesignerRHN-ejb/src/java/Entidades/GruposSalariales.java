@@ -1,28 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -30,15 +13,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "GRUPOSSALARIALES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "GruposSalariales.findAll", query = "SELECT g FROM GruposSalariales g")})
 public class GruposSalariales implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gruposalarial")
-    private Collection<VigenciasGruposSalariales> vigenciasGruposSalarialesCollection;
-    
+
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -53,8 +30,6 @@ public class GruposSalariales implements Serializable {
     private String descripcion;
     @Column(name = "SALARIO")
     private BigDecimal salario;
-    @OneToMany(mappedBy = "gruposalarial")
-    private Collection<Cargos> cargosCollection;
     @JoinColumn(name = "ESCALAFONSALARIAL", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private EscalafonesSalariales escalafonsalarial;
@@ -103,15 +78,6 @@ public class GruposSalariales implements Serializable {
         this.salario = salario;
     }
 
-    @XmlTransient
-    public Collection<Cargos> getCargosCollection() {
-        return cargosCollection;
-    }
-
-    public void setCargosCollection(Collection<Cargos> cargosCollection) {
-        this.cargosCollection = cargosCollection;
-    }
-
     public EscalafonesSalariales getEscalafonsalarial() {
         return escalafonsalarial;
     }
@@ -144,15 +110,4 @@ public class GruposSalariales implements Serializable {
     public String toString() {
         return "Entidades.Grupossalariales[ secuencia=" + secuencia + " ]";
     }
-
-    @XmlTransient
-    public Collection<VigenciasGruposSalariales> getVigenciasGruposSalarialesCollection() {
-        return vigenciasGruposSalarialesCollection;
-    }
-
-    public void setVigenciasGruposSalarialesCollection(Collection<VigenciasGruposSalariales> vigenciasGruposSalarialesCollection) {
-        this.vigenciasGruposSalarialesCollection = vigenciasGruposSalarialesCollection;
-    }
-
-    
 }

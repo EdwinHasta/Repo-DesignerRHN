@@ -1,29 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -31,21 +13,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "PARAMETROSTIEMPOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "ParametrosTiempos.findAll", query = "SELECT p FROM ParametrosTiempos p"),
-    @NamedQuery(name = "ParametrosTiempos.findBySecuencia", query = "SELECT p FROM ParametrosTiempos p WHERE p.secuencia = :secuencia"),
-    @NamedQuery(name = "ParametrosTiempos.findByFechadesde", query = "SELECT p FROM ParametrosTiempos p WHERE p.fechadesde = :fechadesde"),
-    @NamedQuery(name = "ParametrosTiempos.findByFechahasta", query = "SELECT p FROM ParametrosTiempos p WHERE p.fechahasta = :fechahasta"),
-    @NamedQuery(name = "ParametrosTiempos.findByCodigoempleadodesde", query = "SELECT p FROM ParametrosTiempos p WHERE p.codigoempleadodesde = :codigoempleadodesde"),
-    @NamedQuery(name = "ParametrosTiempos.findByCodigoempleadohasta", query = "SELECT p FROM ParametrosTiempos p WHERE p.codigoempleadohasta = :codigoempleadohasta"),
-    @NamedQuery(name = "ParametrosTiempos.findByFechacontrolnovedad", query = "SELECT p FROM ParametrosTiempos p WHERE p.fechacontrolnovedad = :fechacontrolnovedad"),
-    @NamedQuery(name = "ParametrosTiempos.findByFormaliquidacion", query = "SELECT p FROM ParametrosTiempos p WHERE p.formaliquidacion = :formaliquidacion"),
-    @NamedQuery(name = "ParametrosTiempos.findByUsuariobd", query = "SELECT p FROM ParametrosTiempos p WHERE p.usuariobd = :usuariobd")})
 public class ParametrosTiempos implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull

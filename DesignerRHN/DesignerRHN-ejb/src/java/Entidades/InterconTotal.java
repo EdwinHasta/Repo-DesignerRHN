@@ -1,29 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -31,21 +13,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "INTERCON_TOTAL")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "InterconTotal.findAll", query = "SELECT i FROM InterconTotal i"),
-    @NamedQuery(name = "InterconTotal.findByCodigotercero", query = "SELECT i FROM InterconTotal i WHERE i.codigotercero = :codigotercero"),
-    @NamedQuery(name = "InterconTotal.findByFlag", query = "SELECT i FROM InterconTotal i WHERE i.flag = :flag"),
-    @NamedQuery(name = "InterconTotal.findByFechaultimamodificacion", query = "SELECT i FROM InterconTotal i WHERE i.fechaultimamodificacion = :fechaultimamodificacion"),
-    @NamedQuery(name = "InterconTotal.findByFechacontabilizacion", query = "SELECT i FROM InterconTotal i WHERE i.fechacontabilizacion = :fechacontabilizacion"),
-    @NamedQuery(name = "InterconTotal.findBySalida", query = "SELECT i FROM InterconTotal i WHERE i.salida = :salida"),
-    @NamedQuery(name = "InterconTotal.findByNaturaleza", query = "SELECT i FROM InterconTotal i WHERE i.naturaleza = :naturaleza"),
-    @NamedQuery(name = "InterconTotal.findByValorc", query = "SELECT i FROM InterconTotal i WHERE i.valorc = :valorc"),
-    @NamedQuery(name = "InterconTotal.findByValord", query = "SELECT i FROM InterconTotal i WHERE i.valord = :valord"),
-    @NamedQuery(name = "InterconTotal.findBySecuencia", query = "SELECT i FROM InterconTotal i WHERE i.secuencia = :secuencia"),
-    @NamedQuery(name = "InterconTotal.findByEmpresaCodigo", query = "SELECT i FROM InterconTotal i WHERE i.empresaCodigo = :empresaCodigo"),
-    @NamedQuery(name = "InterconTotal.findByProceso", query = "SELECT i FROM InterconTotal i WHERE i.proceso = :proceso"),
-    @NamedQuery(name = "InterconTotal.findByConsecutivo", query = "SELECT i FROM InterconTotal i WHERE i.consecutivo = :consecutivo")})
 public class InterconTotal implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -71,7 +38,6 @@ public class InterconTotal implements Serializable {
     private Long valorc;
     @Column(name = "VALORD")
     private Long valord;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull

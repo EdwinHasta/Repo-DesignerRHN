@@ -1,23 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -25,17 +12,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "CONCEPTOSSOPORTES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "ConceptosSoportes.findAll", query = "SELECT c FROM ConceptosSoportes c"),
-    @NamedQuery(name = "ConceptosSoportes.findBySecuencia", query = "SELECT c FROM ConceptosSoportes c WHERE c.secuencia = :secuencia"),
-    @NamedQuery(name = "ConceptosSoportes.findByTipo", query = "SELECT c FROM ConceptosSoportes c WHERE c.tipo = :tipo"),
-    @NamedQuery(name = "ConceptosSoportes.findBySubgrupo", query = "SELECT c FROM ConceptosSoportes c WHERE c.subgrupo = :subgrupo"),
-    @NamedQuery(name = "ConceptosSoportes.findByComentario", query = "SELECT c FROM ConceptosSoportes c WHERE c.comentario = :comentario"),
-    @NamedQuery(name = "ConceptosSoportes.findByConsecutivo", query = "SELECT c FROM ConceptosSoportes c WHERE c.consecutivo = :consecutivo")})
 public class ConceptosSoportes implements Serializable {
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull

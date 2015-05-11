@@ -1,27 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -29,12 +11,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "CATEGORIAS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Categorias.findAll", query = "SELECT c FROM Categorias c")})
 public class Categorias implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -53,8 +32,6 @@ public class Categorias implements Serializable {
     @JoinColumn(name = "CLASECATEGORIA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private ClasesCategorias clasecategoria;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoria")
-    private Collection<Escalafones> escalafonesCollection;
 
     public Categorias() {
     }
@@ -115,15 +92,6 @@ public class Categorias implements Serializable {
 
     public void setClasecategoria(ClasesCategorias clasecategoria) {
         this.clasecategoria = clasecategoria;
-    }
-
-    @XmlTransient
-    public Collection<Escalafones> getEscalafonesCollection() {
-        return escalafonesCollection;
-    }
-
-    public void setEscalafonesCollection(Collection<Escalafones> escalafonesCollection) {
-        this.escalafonesCollection = escalafonesCollection;
     }
 
     @Override

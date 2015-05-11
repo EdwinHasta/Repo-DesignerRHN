@@ -1,30 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,45 +12,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "CUENTAS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Cuentas.findAll", query = "SELECT c FROM Cuentas c"),
-    @NamedQuery(name = "Cuentas.findBySecuencia", query = "SELECT c FROM Cuentas c WHERE c.secuencia = :secuencia"),
-    @NamedQuery(name = "Cuentas.findByCodigo", query = "SELECT c FROM Cuentas c WHERE c.codigo = :codigo"),
-    @NamedQuery(name = "Cuentas.findByDescripcion", query = "SELECT c FROM Cuentas c WHERE c.descripcion = :descripcion"),
-    @NamedQuery(name = "Cuentas.findByManejanit", query = "SELECT c FROM Cuentas c WHERE c.manejanit = :manejanit"),
-    @NamedQuery(name = "Cuentas.findByProrrateo", query = "SELECT c FROM Cuentas c WHERE c.prorrateo = :prorrateo"),
-    @NamedQuery(name = "Cuentas.findByManejanitempleado", query = "SELECT c FROM Cuentas c WHERE c.manejanitempleado = :manejanitempleado"),
-    @NamedQuery(name = "Cuentas.findByCentrocostoc", query = "SELECT c FROM Cuentas c WHERE c.centrocostoc = :centrocostoc"),
-    @NamedQuery(name = "Cuentas.findByCentrocostog", query = "SELECT c FROM Cuentas c WHERE c.centrocostog = :centrocostog"),
-    @NamedQuery(name = "Cuentas.findByTerceroasociado", query = "SELECT c FROM Cuentas c WHERE c.terceroasociado = :terceroasociado"),
-    @NamedQuery(name = "Cuentas.findByTerceroalternativo", query = "SELECT c FROM Cuentas c WHERE c.terceroalternativo = :terceroalternativo"),
-    @NamedQuery(name = "Cuentas.findByNaturaleza", query = "SELECT c FROM Cuentas c WHERE c.naturaleza = :naturaleza"),
-    @NamedQuery(name = "Cuentas.findByTipo", query = "SELECT c FROM Cuentas c WHERE c.tipo = :tipo"),
-    @NamedQuery(name = "Cuentas.findByCambianaturaleza", query = "SELECT c FROM Cuentas c WHERE c.cambianaturaleza = :cambianaturaleza"),
-    @NamedQuery(name = "Cuentas.findByManejacentrocosto", query = "SELECT c FROM Cuentas c WHERE c.manejacentrocosto = :manejacentrocosto"),
-    @NamedQuery(name = "Cuentas.findByIncluyecentrocostocodigocuenta", query = "SELECT c FROM Cuentas c WHERE c.incluyecentrocostocodigocuenta = :incluyecentrocostocodigocuenta"),
-    @NamedQuery(name = "Cuentas.findByCodigoalternativo", query = "SELECT c FROM Cuentas c WHERE c.codigoalternativo = :codigoalternativo"),
-    @NamedQuery(name = "Cuentas.findByConsolidanitempresa", query = "SELECT c FROM Cuentas c WHERE c.consolidanitempresa = :consolidanitempresa"),
-    @NamedQuery(name = "Cuentas.findByIncluyeshortnamesapbo", query = "SELECT c FROM Cuentas c WHERE c.incluyeshortnamesapbo = :incluyeshortnamesapbo"),
-    @NamedQuery(name = "Cuentas.findByIdentificaretencion", query = "SELECT c FROM Cuentas c WHERE c.identificaretencion = :identificaretencion"),
-    @NamedQuery(name = "Cuentas.findByCuentaasociadasap", query = "SELECT c FROM Cuentas c WHERE c.cuentaasociadasap = :cuentaasociadasap"),
-    @NamedQuery(name = "Cuentas.findByCodigoespecial", query = "SELECT c FROM Cuentas c WHERE c.codigoespecial = :codigoespecial"),
-    @NamedQuery(name = "Cuentas.findByManejasubcuenta", query = "SELECT c FROM Cuentas c WHERE c.manejasubcuenta = :manejasubcuenta")})
 public class Cuentas implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuenta")
-    private Collection<InterconSapBO> interconSapBOCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentad")
-    private Collection<SolucionesNodos> solucionesNodosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentac")
-    private Collection<SolucionesNodos> solucionesNodosCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuenta")
-    private Collection<InterconTotal> interconTotalCollection;
-    @OneToMany(mappedBy = "cuentaneto")
-    private Collection<Procesos> procesosCollection;
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -143,16 +87,12 @@ public class Cuentas implements Serializable {
     @Size(max = 1)
     @Column(name = "MANEJASUBCUENTA")
     private String manejasubcuenta;
-    @OneToMany(mappedBy = "cuenta")
-    private Collection<Rubrospresupuestales> rubrospresupuestalesCollection;
     @JoinColumn(name = "RUBROPRESUPUESTAL", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Rubrospresupuestales rubropresupuestal;
     @JoinColumn(name = "EMPRESA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Empresas empresa;
-    @OneToMany(mappedBy = "contracuentatesoreria")
-    private Collection<Cuentas> cuentasCollection;
     @JoinColumn(name = "CONTRACUENTATESORERIA", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Cuentas contracuentatesoreria;
@@ -381,15 +321,6 @@ public class Cuentas implements Serializable {
         this.manejasubcuenta = manejasubcuenta;
     }
 
-    @XmlTransient
-    public Collection<Rubrospresupuestales> getRubrospresupuestalesCollection() {
-        return rubrospresupuestalesCollection;
-    }
-
-    public void setRubrospresupuestalesCollection(Collection<Rubrospresupuestales> rubrospresupuestalesCollection) {
-        this.rubrospresupuestalesCollection = rubrospresupuestalesCollection;
-    }
-
     public Rubrospresupuestales getRubropresupuestal() {
         if (rubropresupuestal == null) {
             rubropresupuestal = new Rubrospresupuestales();
@@ -557,15 +488,6 @@ public class Cuentas implements Serializable {
         this.checkSubCuenta = check;
     }
 
-    @XmlTransient
-    public Collection<Cuentas> getCuentasCollection() {
-        return cuentasCollection;
-    }
-
-    public void setCuentasCollection(Collection<Cuentas> cuentasCollection) {
-        this.cuentasCollection = cuentasCollection;
-    }
-
     public Cuentas getContracuentatesoreria() {
         if (contracuentatesoreria == null) {
             contracuentatesoreria = new Cuentas();
@@ -601,50 +523,4 @@ public class Cuentas implements Serializable {
     public String toString() {
         return "Entidades.Cuentas[ secuencia=" + secuencia + " ]";
     }
-
-    @XmlTransient
-    public Collection<Procesos> getProcesosCollection() {
-        return procesosCollection;
-    }
-
-    public void setProcesosCollection(Collection<Procesos> procesosCollection) {
-        this.procesosCollection = procesosCollection;
-    }
-
-    @XmlTransient
-    public Collection<SolucionesNodos> getSolucionesNodosCollection() {
-        return solucionesNodosCollection;
-    }
-
-    public void setSolucionesNodosCollection(Collection<SolucionesNodos> solucionesNodosCollection) {
-        this.solucionesNodosCollection = solucionesNodosCollection;
-    }
-
-    @XmlTransient
-    public Collection<SolucionesNodos> getSolucionesNodosCollection1() {
-        return solucionesNodosCollection1;
-    }
-
-    public void setSolucionesNodosCollection1(Collection<SolucionesNodos> solucionesNodosCollection1) {
-        this.solucionesNodosCollection1 = solucionesNodosCollection1;
-    }
-
-    @XmlTransient
-    public Collection<InterconTotal> getInterconTotalCollection() {
-        return interconTotalCollection;
-    }
-
-    public void setInterconTotalCollection(Collection<InterconTotal> interconTotalCollection) {
-        this.interconTotalCollection = interconTotalCollection;
-    }
-
-    @XmlTransient
-    public Collection<InterconSapBO> getInterconSapBOCollection() {
-        return interconSapBOCollection;
-    }
-
-    public void setInterconSapBOCollection(Collection<InterconSapBO> interconSapBOCollection) {
-        this.interconSapBOCollection = interconSapBOCollection;
-    }
-
 }

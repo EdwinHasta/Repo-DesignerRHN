@@ -1,27 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -29,13 +12,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "RUBROSPRESUPUESTALES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Rubrospresupuestales.findAll", query = "SELECT r FROM Rubrospresupuestales r")})
 public class Rubrospresupuestales implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -80,10 +59,6 @@ public class Rubrospresupuestales implements Serializable {
     private String tipo;
     @Column(name = "CODIGOALTERNATIVO")
     private Long codigoalternativo;
-    @OneToMany(mappedBy = "rubropresupuestal")
-    private Collection<Cuentas> cuentasCollection;
-    @OneToMany(mappedBy = "rubropresupuestal")
-    private Collection<TiposEntidades> tiposentidadesCollection;
     @JoinColumn(name = "GRUPOTIPOCC", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private GruposTiposCC grupotipocc;
@@ -201,24 +176,6 @@ public class Rubrospresupuestales implements Serializable {
 
     public void setCodigoalternativo(Long codigoalternativo) {
         this.codigoalternativo = codigoalternativo;
-    }
-
-    @XmlTransient
-    public Collection<Cuentas> getCuentasCollection() {
-        return cuentasCollection;
-    }
-
-    public void setCuentasCollection(Collection<Cuentas> cuentasCollection) {
-        this.cuentasCollection = cuentasCollection;
-    }
-
-    @XmlTransient
-    public Collection<TiposEntidades> getTiposentidadesCollection() {
-        return tiposentidadesCollection;
-    }
-
-    public void setTiposentidadesCollection(Collection<TiposEntidades> tiposentidadesCollection) {
-        this.tiposentidadesCollection = tiposentidadesCollection;
     }
 
     public GruposTiposCC getGrupotipocc() {

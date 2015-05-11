@@ -1,30 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,26 +14,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "EVALPLANILLAS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Evalplanillas.findAll", query = "SELECT e FROM Evalplanillas e"),
-    @NamedQuery(name = "Evalplanillas.findBySecuencia", query = "SELECT e FROM Evalplanillas e WHERE e.secuencia = :secuencia"),
-    @NamedQuery(name = "Evalplanillas.findByDimension", query = "SELECT e FROM Evalplanillas e WHERE e.dimension = :dimension"),
-    @NamedQuery(name = "Evalplanillas.findByCodigo", query = "SELECT e FROM Evalplanillas e WHERE e.codigo = :codigo"),
-    @NamedQuery(name = "Evalplanillas.findByDescripcion", query = "SELECT e FROM Evalplanillas e WHERE e.descripcion = :descripcion"),
-    @NamedQuery(name = "Evalplanillas.findByEstado", query = "SELECT e FROM Evalplanillas e WHERE e.estado = :estado"),
-    @NamedQuery(name = "Evalplanillas.findByFechacreacion", query = "SELECT e FROM Evalplanillas e WHERE e.fechacreacion = :fechacreacion"),
-    @NamedQuery(name = "Evalplanillas.findByNumerorespuesta", query = "SELECT e FROM Evalplanillas e WHERE e.numerorespuesta = :numerorespuesta"),
-    @NamedQuery(name = "Evalplanillas.findByValortotal", query = "SELECT e FROM Evalplanillas e WHERE e.valortotal = :valortotal"),
-    @NamedQuery(name = "Evalplanillas.findByNumeropregunta", query = "SELECT e FROM Evalplanillas e WHERE e.numeropregunta = :numeropregunta"),
-    @NamedQuery(name = "Evalplanillas.findByIdeal", query = "SELECT e FROM Evalplanillas e WHERE e.ideal = :ideal"),
-    @NamedQuery(name = "Evalplanillas.findByPlanillaorigenclonacion", query = "SELECT e FROM Evalplanillas e WHERE e.planillaorigenclonacion = :planillaorigenclonacion")})
 public class Evalplanillas implements Serializable {
-    @OneToMany(mappedBy = "evalplanilla")
-    private Collection<ParametrosInformes> parametrosinformesCollection;
     
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -90,8 +55,7 @@ public class Evalplanillas implements Serializable {
     @Column(name = "IDEAL")
     private Short ideal;
     @Column(name = "PLANILLAORIGENCLONACION")
-    private BigInteger planillaorigenclonacion;
-    
+    private BigInteger planillaorigenclonacion;    
     @JoinColumn(name = "ESTRATEGIAMETA", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Pdgmetas estrategiameta;
@@ -213,15 +177,6 @@ public class Evalplanillas implements Serializable {
 
     public void setPlanillaorigenclonacion(BigInteger planillaorigenclonacion) {
         this.planillaorigenclonacion = planillaorigenclonacion;
-    }
-
-    @XmlTransient
-    public Collection<ParametrosInformes> getParametrosinformesCollection() {
-        return parametrosinformesCollection;
-    }
-
-    public void setParametrosinformesCollection(Collection<ParametrosInformes> parametrosinformesCollection) {
-        this.parametrosinformesCollection = parametrosinformesCollection;
     }
 
     public Pdgmetas getEstrategiameta() {

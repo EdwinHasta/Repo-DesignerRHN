@@ -117,7 +117,7 @@ public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigen
     public VigenciasReformasLaborales buscarVigenciaReformaLaboralSecuencia(EntityManager em, BigInteger secVRL) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("VigenciasReformasLaborales.findBySecuencia").setParameter("secuencia", secVRL);
+            Query query = em.createQuery("SELECT v FROM VigenciasReformasLaborales v WHERE v.secuencia = :secuencia").setParameter("secuencia", secVRL);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasReformasLaborales vigenciaRefLab = (VigenciasReformasLaborales) query.getSingleResult();
             return vigenciaRefLab;

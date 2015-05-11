@@ -1,26 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,15 +12,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "ESCENARIOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Escenarios.findAll", query = "SELECT e FROM Escenarios e"),
-    @NamedQuery(name = "Escenarios.findBySecuencia", query = "SELECT e FROM Escenarios e WHERE e.secuencia = :secuencia"),
-    @NamedQuery(name = "Escenarios.findByDescripcion", query = "SELECT e FROM Escenarios e WHERE e.descripcion = :descripcion"),
-    @NamedQuery(name = "Escenarios.findByQvwnombre", query = "SELECT e FROM Escenarios e WHERE e.qvwnombre = :qvwnombre")})
 public class Escenarios implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -48,8 +26,6 @@ public class Escenarios implements Serializable {
     @Size(max = 120)
     @Column(name = "QVWNOMBRE")
     private String qvwnombre;
-    @OneToMany(mappedBy = "escenario")
-    private Collection<ColumnasEscenarios> columnasEscenariosCollection;
 
     public Escenarios() {
     }
@@ -82,15 +58,6 @@ public class Escenarios implements Serializable {
         this.qvwnombre = qvwnombre;
     }
 
-    @XmlTransient
-    public Collection<ColumnasEscenarios> getColumnasEscenariosCollection() {
-        return columnasEscenariosCollection;
-    }
-
-    public void setColumnasEscenariosCollection(Collection<ColumnasEscenarios> columnasEscenariosCollection) {
-        this.columnasEscenariosCollection = columnasEscenariosCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -115,5 +82,4 @@ public class Escenarios implements Serializable {
     public String toString() {
         return "Entidades.Escenarios[ secuencia=" + secuencia + " ]";
     }
-    
 }

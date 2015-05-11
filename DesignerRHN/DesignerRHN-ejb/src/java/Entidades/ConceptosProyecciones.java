@@ -1,23 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -25,26 +11,20 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "CONCEPTOSPROYECCIONES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "ConceptosProyecciones.findAll", query = "SELECT c FROM ConceptosProyecciones c"),
-    @NamedQuery(name = "ConceptosProyecciones.findByConcepto", query = "SELECT c FROM ConceptosProyecciones c WHERE c.concepto = :concepto"),
-    @NamedQuery(name = "ConceptosProyecciones.findByPorcentajeproyeccion", query = "SELECT c FROM ConceptosProyecciones c WHERE c.porcentajeproyeccion = :porcentajeproyeccion"),
-    @NamedQuery(name = "ConceptosProyecciones.findBySecuencia", query = "SELECT c FROM ConceptosProyecciones c WHERE c.secuencia = :secuencia")})
 public class ConceptosProyecciones implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-
-    @JoinColumn(name = "CONCEPTO", referencedColumnName = "SECUENCIA")
-    private Conceptos concepto;
-    @Column(name = "PORCENTAJEPROYECCION")
-    private Short porcentajeproyeccion;
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
+    @Column(name = "PORCENTAJEPROYECCION")
+    private Short porcentajeproyeccion;
+    @JoinColumn(name = "CONCEPTO", referencedColumnName = "SECUENCIA")
+    @ManyToOne
+    private Conceptos concepto;
+    
 
     public ConceptosProyecciones() {
     }
@@ -102,5 +82,4 @@ public class ConceptosProyecciones implements Serializable {
     public String toString() {
         return "Entidades.ConceptosProyecciones[ concepto=" + concepto + " ]";
     }
-
 }

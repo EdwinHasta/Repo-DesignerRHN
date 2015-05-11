@@ -1,33 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -35,102 +13,8 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "EMPRESAS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Empresas.findAll", query = "SELECT e FROM Empresas e")})
 public class Empresas implements Serializable {
-    @OneToMany(mappedBy = "empresa")
-    private Collection<AportesEntidades> aportesEntidadesCollection;
-    @OneToMany(mappedBy = "empresa")
-    private Collection<ParametrosAutoliq> parametrosAutoliqCollection;
 
-    @Size(max = 1)
-    @Column(name = "CDIUSAHTTPS")
-    private String cdiusahttps;
-    @Size(max = 1)
-    @Column(name = "USARETENCIONMETODO3")
-    private String usaretencionmetodo3;
-    @Size(max = 50)
-    @Column(name = "DSNCDI")
-    private String dsncdi;
-    @Size(max = 1)
-    @Column(name = "GENERAREPORTEINGRESO")
-    private String generareporteingreso;
-    @Size(max = 5)
-    @Column(name = "SAPBOSUFIJOEMPLEADO")
-    private String sapbosufijoempleado;
-    @Size(max = 5)
-    @Column(name = "SAPBOSUFIJOTERCERO")
-    private String sapbosufijotercero;
-    @Size(max = 20)
-    @Column(name = "SAPBOADICIONALCUENTA")
-    private String sapboadicionalcuenta;
-    @Size(max = 1)
-    @Column(name = "PERMITEVALORMVRDEPENDIENTE")
-    private String permitevalormvrdependiente;
-    @Size(max = 1)
-    @Column(name = "BASEPRFFECHAPAGO")
-    private String baseprffechapago;
-    @Size(max = 1)
-    @Column(name = "INTERADICIONACCSEPARADOR")
-    private String interadicionaccseparador;
-    @Size(max = 1)
-    @Column(name = "CESAPROMEDIAVARIABLEANOREAL")
-    private String cesapromediavariableanoreal;
-    @Size(max = 1)
-    @Column(name = "RECALCULODEPENDIENTEUSADO")
-    private String recalculodependienteusado;
-    @Size(max = 1)
-    @Column(name = "RETETICKETSUMABASECOMPARA")
-    private String reteticketsumabasecompara;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
-    private Collection<Papeles> papelesCollection;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
-    private Collection<VigenciasMonedasBases> vigenciasMonedasBasesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
-    private Collection<Circulares> circularesCollection;
-    @OneToMany(mappedBy = "empresa")
-    private Collection<TSFormulasConceptos> tSFormulasConceptosCollection;
-    @OneToMany(mappedBy = "empresa")
-    private Collection<TEFormulasConceptos> tEFormulasConceptosCollection;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
-    private Collection<ConceptosJuridicos> conceptosJuridicosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
-    private Collection<SectoresEconomicos> sectoresEconomicosCollection;
-    @OneToMany(mappedBy = "empresas")
-    private Collection<RelacionesIncapacidades> relacionesIncapacidadesCollection;
-    @Size(max = 1)
-    @Column(name = "BARRACONSULTADATOS")
-    private String barraconsultadatos;
-    @OneToMany(mappedBy = "empresa")
-    private Collection<GruposProvisiones> gruposProvisionesCollection;
-    @OneToMany(mappedBy = "empresa")
-    private Collection<Evalconvocatorias> evalconvocatoriasCollection;
-    @OneToMany(mappedBy = "empresa")
-    private Collection<ParametrosInformes> parametrosInformesCollection;
-    @OneToMany(mappedBy = "empresa")
-    private Collection<Evalplanillas> evalplanillasCollection;
-    @OneToMany(mappedBy = "empresa")
-    private Collection<Pdgestrategias> pdgestrategiasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
-    private Collection<TiposAsociaciones> tiposAsociacionesCollection;
-
-    @OneToMany(mappedBy = "empresa")
-    private Collection<Proyectos> proyectosCollection;
-    @OneToMany(mappedBy = "empresa")
-    private Collection<Direcciones> direccionesCollection;
-    @OneToMany(mappedBy = "empresa")
-    private Collection<Pantallas> pantallasCollection;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "empresa")
-    private DetallesEmpresas detallesempresas;
-    @OneToMany(mappedBy = "empresa")
-    private Collection<UbicacionesGeograficas> ubicacionesgeograficasCollection;
-    @OneToMany(mappedBy = "empresa")
-    private Collection<SucursalesPila> sucursalesPilaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
-    private Collection<Cuentas> cuentasCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -355,24 +239,54 @@ public class Empresas implements Serializable {
     @Size(max = 1)
     @Column(name = "SAPBODETALLADA")
     private String sapbodetallada;
-    @OneToMany(mappedBy = "empresa")
-    private Collection<Terceros> tercerosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
-    private Collection<Organigramas> organigramasCollection;
+    @Size(max = 1)
+    @Column(name = "CDIUSAHTTPS")
+    private String cdiusahttps;
+    @Size(max = 1)
+    @Column(name = "USARETENCIONMETODO3")
+    private String usaretencionmetodo3;
+    @Size(max = 50)
+    @Column(name = "DSNCDI")
+    private String dsncdi;
+    @Size(max = 1)
+    @Column(name = "GENERAREPORTEINGRESO")
+    private String generareporteingreso;
+    @Size(max = 5)
+    @Column(name = "SAPBOSUFIJOEMPLEADO")
+    private String sapbosufijoempleado;
+    @Size(max = 5)
+    @Column(name = "SAPBOSUFIJOTERCERO")
+    private String sapbosufijotercero;
+    @Size(max = 20)
+    @Column(name = "SAPBOADICIONALCUENTA")
+    private String sapboadicionalcuenta;
+    @Size(max = 1)
+    @Column(name = "PERMITEVALORMVRDEPENDIENTE")
+    private String permitevalormvrdependiente;
+    @Size(max = 1)
+    @Column(name = "BASEPRFFECHAPAGO")
+    private String baseprffechapago;
+    @Size(max = 1)
+    @Column(name = "INTERADICIONACCSEPARADOR")
+    private String interadicionaccseparador;
+    @Size(max = 1)
+    @Column(name = "CESAPROMEDIAVARIABLEANOREAL")
+    private String cesapromediavariableanoreal;
+    @Size(max = 1)
+    @Column(name = "RECALCULODEPENDIENTEUSADO")
+    private String recalculodependienteusado;
+    @Size(max = 1)
+    @Column(name = "RETETICKETSUMABASECOMPARA")
+    private String reteticketsumabasecompara;
+    @Size(max = 1)
+    @Column(name = "BARRACONSULTADATOS")
+    private String barraconsultadatos;
     @JoinColumn(name = "MINIMAPERIODICIDAD", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Periodicidades minimaperiodicidad;
     @JoinColumn(name = "CENTROCOSTO", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private CentrosCostos centrocosto;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
-    private Collection<Empleados> empleadosCollection;
-    @OneToMany(mappedBy = "empresa")
-    private Collection<Cargos> cargosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
-    private Collection<Conceptos> conceptosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
-    private Collection<CentrosCostos> centroscostosCollection;
     @Transient
     private String strNit;
 
@@ -1004,24 +918,6 @@ public class Empresas implements Serializable {
         this.sapbodetallada = sapbodetallada;
     }
 
-    @XmlTransient
-    public Collection<Terceros> getTercerosCollection() {
-        return tercerosCollection;
-    }
-
-    public void setTercerosCollection(Collection<Terceros> tercerosCollection) {
-        this.tercerosCollection = tercerosCollection;
-    }
-
-    @XmlTransient
-    public Collection<Organigramas> getOrganigramasCollection() {
-        return organigramasCollection;
-    }
-
-    public void setOrganigramasCollection(Collection<Organigramas> organigramasCollection) {
-        this.organigramasCollection = organigramasCollection;
-    }
-
     public Periodicidades getMinimaperiodicidad() {
         return minimaperiodicidad;
     }
@@ -1031,7 +927,7 @@ public class Empresas implements Serializable {
     }
 
     public CentrosCostos getCentrocosto() {
-        if(centrocosto == null){
+        if (centrocosto == null) {
             centrocosto = new CentrosCostos();
         }
         return centrocosto;
@@ -1039,42 +935,6 @@ public class Empresas implements Serializable {
 
     public void setCentrocosto(CentrosCostos centrocosto) {
         this.centrocosto = centrocosto;
-    }
-
-    @XmlTransient
-    public Collection<Empleados> getEmpleadosCollection() {
-        return empleadosCollection;
-    }
-
-    public void setEmpleadosCollection(Collection<Empleados> empleadosCollection) {
-        this.empleadosCollection = empleadosCollection;
-    }
-
-    @XmlTransient
-    public Collection<Cargos> getCargosCollection() {
-        return cargosCollection;
-    }
-
-    public void setCargosCollection(Collection<Cargos> cargosCollection) {
-        this.cargosCollection = cargosCollection;
-    }
-
-    @XmlTransient
-    public Collection<Conceptos> getConceptosCollection() {
-        return conceptosCollection;
-    }
-
-    public void setConceptosCollection(Collection<Conceptos> conceptosCollection) {
-        this.conceptosCollection = conceptosCollection;
-    }
-
-    @XmlTransient
-    public Collection<CentrosCostos> getCentroscostosCollection() {
-        return centroscostosCollection;
-    }
-
-    public void setCentroscostosCollection(Collection<CentrosCostos> centroscostosCollection) {
-        this.centroscostosCollection = centroscostosCollection;
     }
 
     @Override
@@ -1102,199 +962,12 @@ public class Empresas implements Serializable {
         return "Entidades.Empresas[ secuencia=" + secuencia + " ]";
     }
 
-    @XmlTransient
-    public Collection<Cuentas> getCuentasCollection() {
-        return cuentasCollection;
-    }
-
-    public void setCuentasCollection(Collection<Cuentas> cuentasCollection) {
-        this.cuentasCollection = cuentasCollection;
-    }
-
-    @XmlTransient
-    public Collection<UbicacionesGeograficas> getUbicacionesgeograficasCollection() {
-        return ubicacionesgeograficasCollection;
-    }
-
-    public void setUbicacionesgeograficasCollection(Collection<UbicacionesGeograficas> ubicacionesgeograficasCollection) {
-        this.ubicacionesgeograficasCollection = ubicacionesgeograficasCollection;
-    }
-
-    @XmlTransient
-    public Collection<SucursalesPila> getSucursalesPilaCollection() {
-        return sucursalesPilaCollection;
-    }
-
-    public void setSucursalesPilaCollection(Collection<SucursalesPila> sucursalesPilaCollection) {
-        this.sucursalesPilaCollection = sucursalesPilaCollection;
-    }
-
-    public DetallesEmpresas getDetallesempresas() {
-        return detallesempresas;
-    }
-
-    public void setDetallesempresas(DetallesEmpresas detallesempresas) {
-        this.detallesempresas = detallesempresas;
-    }
-
-    @XmlTransient
-    public Collection<Pantallas> getPantallasCollection() {
-        return pantallasCollection;
-    }
-
-    public void setPantallasCollection(Collection<Pantallas> pantallasCollection) {
-        this.pantallasCollection = pantallasCollection;
-    }
-
-    @XmlTransient
-    public Collection<Direcciones> getDireccionesCollection() {
-        return direccionesCollection;
-    }
-
-    public void setDireccionesCollection(Collection<Direcciones> direccionesCollection) {
-        this.direccionesCollection = direccionesCollection;
-    }
-
-    public Collection<Proyectos> getProyectosCollection() {
-        return proyectosCollection;
-    }
-
-    public void setProyectosCollection(Collection<Proyectos> proyectosCollection) {
-        this.proyectosCollection = proyectosCollection;
-    }
-
-    // @XmlTransient
-    public Collection<TiposAsociaciones> getTiposAsociacionesCollection() {
-        return tiposAsociacionesCollection;
-    }
-
-    public void setTiposAsociacionesCollection(Collection<TiposAsociaciones> tiposAsociacionesCollection) {
-        this.tiposAsociacionesCollection = tiposAsociacionesCollection;
-    }
-
-    @XmlTransient
-    public Collection<Evalconvocatorias> getEvalconvocatoriasCollection() {
-        return evalconvocatoriasCollection;
-    }
-
-    public void setEvalconvocatoriasCollection(Collection<Evalconvocatorias> evalconvocatoriasCollection) {
-        this.evalconvocatoriasCollection = evalconvocatoriasCollection;
-    }
-
-    @XmlTransient
-    public Collection<ParametrosInformes> getParametrosInformesCollection() {
-        return parametrosInformesCollection;
-    }
-
-    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
-        this.parametrosInformesCollection = parametrosInformesCollection;
-    }
-
-    @XmlTransient
-    public Collection<Evalplanillas> getEvalplanillasCollection() {
-        return evalplanillasCollection;
-    }
-
-    public void setEvalplanillasCollection(Collection<Evalplanillas> evalplanillasCollection) {
-        this.evalplanillasCollection = evalplanillasCollection;
-    }
-
-    @XmlTransient
-    public Collection<Pdgestrategias> getPdgestrategiasCollection() {
-        return pdgestrategiasCollection;
-    }
-
-    public void setPdgestrategiasCollection(Collection<Pdgestrategias> pdgestrategiasCollection) {
-        this.pdgestrategiasCollection = pdgestrategiasCollection;
-    }
-
-    @XmlTransient
-    public Collection<GruposProvisiones> getGruposProvisionesCollection() {
-        return gruposProvisionesCollection;
-    }
-
-    public void setGruposProvisionesCollection(Collection<GruposProvisiones> gruposProvisionesCollection) {
-        this.gruposProvisionesCollection = gruposProvisionesCollection;
-    }
-
     public String getBarraconsultadatos() {
         return barraconsultadatos;
     }
 
     public void setBarraconsultadatos(String barraconsultadatos) {
         this.barraconsultadatos = barraconsultadatos;
-    }
-
-    @XmlTransient
-    public Collection<RelacionesIncapacidades> getRelacionesIncapacidadesCollection() {
-        return relacionesIncapacidadesCollection;
-    }
-
-    public void setRelacionesIncapacidadesCollection(Collection<RelacionesIncapacidades> relacionesIncapacidadesCollection) {
-        this.relacionesIncapacidadesCollection = relacionesIncapacidadesCollection;
-    }
-
-    @XmlTransient
-    public Collection<SectoresEconomicos> getSectoresEconomicosCollection() {
-        return sectoresEconomicosCollection;
-    }
-
-    public void setSectoresEconomicosCollection(Collection<SectoresEconomicos> sectoresEconomicosCollection) {
-        this.sectoresEconomicosCollection = sectoresEconomicosCollection;
-    }
-
-    @XmlTransient
-    public Collection<ConceptosJuridicos> getConceptosJuridicosCollection() {
-        return conceptosJuridicosCollection;
-    }
-
-    public void setConceptosJuridicosCollection(Collection<ConceptosJuridicos> conceptosJuridicosCollection) {
-        this.conceptosJuridicosCollection = conceptosJuridicosCollection;
-    }
-
-    @XmlTransient
-    public Collection<TSFormulasConceptos> getTSFormulasConceptosCollection() {
-        return tSFormulasConceptosCollection;
-    }
-
-    public void setTSFormulasConceptosCollection(Collection<TSFormulasConceptos> tSFormulasConceptosCollection) {
-        this.tSFormulasConceptosCollection = tSFormulasConceptosCollection;
-    }
-
-    @XmlTransient
-    public Collection<TEFormulasConceptos> getTEFormulasConceptosCollection() {
-        return tEFormulasConceptosCollection;
-    }
-
-    public void setTEFormulasConceptosCollection(Collection<TEFormulasConceptos> tEFormulasConceptosCollection) {
-        this.tEFormulasConceptosCollection = tEFormulasConceptosCollection;
-    }
-
-    @XmlTransient
-    public Collection<VigenciasMonedasBases> getVigenciasMonedasBasesCollection() {
-        return vigenciasMonedasBasesCollection;
-    }
-
-    public void setVigenciasMonedasBasesCollection(Collection<VigenciasMonedasBases> vigenciasMonedasBasesCollection) {
-        this.vigenciasMonedasBasesCollection = vigenciasMonedasBasesCollection;
-    }
-
-    @XmlTransient
-    public Collection<Circulares> getCircularesCollection() {
-        return circularesCollection;
-    }
-
-    public void setCircularesCollection(Collection<Circulares> circularesCollection) {
-        this.circularesCollection = circularesCollection;
-    }
-
-    @XmlTransient
-    public Collection<Papeles> getPapelesCollection() {
-        return papelesCollection;
-    }
-
-    public void setPapelesCollection(Collection<Papeles> papelesCollection) {
-        this.papelesCollection = papelesCollection;
     }
 
     public String getCdiusahttps() {
@@ -1400,23 +1073,4 @@ public class Empresas implements Serializable {
     public void setReteticketsumabasecompara(String reteticketsumabasecompara) {
         this.reteticketsumabasecompara = reteticketsumabasecompara;
     }
-
-    @XmlTransient
-    public Collection<AportesEntidades> getAportesEntidadesCollection() {
-        return aportesEntidadesCollection;
-    }
-
-    public void setAportesEntidadesCollection(Collection<AportesEntidades> aportesEntidadesCollection) {
-        this.aportesEntidadesCollection = aportesEntidadesCollection;
-    }
-
-    @XmlTransient
-    public Collection<ParametrosAutoliq> getParametrosAutoliqCollection() {
-        return parametrosAutoliqCollection;
-    }
-
-    public void setParametrosAutoliqCollection(Collection<ParametrosAutoliq> parametrosAutoliqCollection) {
-        this.parametrosAutoliqCollection = parametrosAutoliqCollection;
-    }
-
 }

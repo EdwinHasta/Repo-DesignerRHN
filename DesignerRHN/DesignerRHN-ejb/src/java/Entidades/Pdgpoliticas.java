@@ -1,31 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,20 +14,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "PDGPOLITICAS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Pdgpoliticas.findAll", query = "SELECT p FROM Pdgpoliticas p"),
-    @NamedQuery(name = "Pdgpoliticas.findBySecuencia", query = "SELECT p FROM Pdgpoliticas p WHERE p.secuencia = :secuencia"),
-    @NamedQuery(name = "Pdgpoliticas.findByCodigo", query = "SELECT p FROM Pdgpoliticas p WHERE p.codigo = :codigo"),
-    @NamedQuery(name = "Pdgpoliticas.findByDescripcion", query = "SELECT p FROM Pdgpoliticas p WHERE p.descripcion = :descripcion"),
-    @NamedQuery(name = "Pdgpoliticas.findByFechainicial", query = "SELECT p FROM Pdgpoliticas p WHERE p.fechainicial = :fechainicial"),
-    @NamedQuery(name = "Pdgpoliticas.findByFechafinal", query = "SELECT p FROM Pdgpoliticas p WHERE p.fechafinal = :fechafinal"),
-    @NamedQuery(name = "Pdgpoliticas.findByPeso", query = "SELECT p FROM Pdgpoliticas p WHERE p.peso = :peso"),
-    @NamedQuery(name = "Pdgpoliticas.findByCumplido", query = "SELECT p FROM Pdgpoliticas p WHERE p.cumplido = :cumplido"),
-    @NamedQuery(name = "Pdgpoliticas.findByEmpresa", query = "SELECT p FROM Pdgpoliticas p WHERE p.empresa = :empresa")})
 public class Pdgpoliticas implements Serializable {
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -81,8 +51,6 @@ public class Pdgpoliticas implements Serializable {
     @JoinColumn(name = "ESTRUCTURA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Estructuras estructura;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pdgpolitica")
-    private Collection<Pdgestrategias> pdgestrategiasCollection;
 
     public Pdgpoliticas() {
     }
@@ -177,16 +145,7 @@ public class Pdgpoliticas implements Serializable {
     public void setEstructura(Estructuras estructura) {
         this.estructura = estructura;
     }
-
-    @XmlTransient
-    public Collection<Pdgestrategias> getPdgestrategiasCollection() {
-        return pdgestrategiasCollection;
-    }
-
-    public void setPdgestrategiasCollection(Collection<Pdgestrategias> pdgestrategiasCollection) {
-        this.pdgestrategiasCollection = pdgestrategiasCollection;
-    }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;

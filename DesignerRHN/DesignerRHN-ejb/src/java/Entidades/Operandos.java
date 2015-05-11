@@ -1,33 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
-import Entidades.TiposBloques;
-import Entidades.TiposFormulas;
-import Entidades.TiposFunciones;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -35,34 +14,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "OPERANDOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Operandos.findAll", query = "SELECT o FROM Operandos o")})
 public class Operandos implements Serializable {
 
-    @OneToMany(mappedBy = "operando")
-    private Collection<OperandosGruposConceptos> operandosGruposConceptosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
-    private Collection<DependenciasOperandos> dependenciasOperandosCollection;
-    @OneToMany(mappedBy = "operando")
-    private Collection<NovedadesOperandos> novedadesOperandosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
-    private Collection<TiposConstantes> tiposConstantesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
-    private Collection<TiposFormulas> tiposFormulasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
-    private Collection<TiposFunciones> tiposFuncionesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
-    private Collection<TiposBloques> tiposBloquesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
-    private Collection<OperandosLogs> operandosLogsCollection;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
-    private Collection<ConceptosSoportes> conceptosSoportesCollection;
-    @OneToMany(mappedBy = "operandobaseliquidacion")
-    private Collection<GruposProvisiones> gruposProvisionesCollection;
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -97,8 +51,6 @@ public class Operandos implements Serializable {
     @Size(max = 1)
     @Column(name = "ACTUALIZABLE")
     private String actualizable;
-    @OneToMany(mappedBy = "operando")
-    private Collection<Nodos> nodosCollection;
     @Transient
     private String estadoTipo;
     @Transient
@@ -309,14 +261,6 @@ public class Operandos implements Serializable {
         this.valor = valor;
     }
 
-    @XmlTransient
-    public Collection<Nodos> getNodosCollection() {
-        return nodosCollection;
-    }
-
-    public void setNodosCollection(Collection<Nodos> nodosCollection) {
-        this.nodosCollection = nodosCollection;
-    }
 
     @Override
     public int hashCode() {
@@ -342,86 +286,4 @@ public class Operandos implements Serializable {
     public String toString() {
         return "Entidades.Operandos[ secuencia=" + secuencia + " ]";
     }
-
-    @XmlTransient
-    public Collection<GruposProvisiones> getGruposProvisionesCollection() {
-        return gruposProvisionesCollection;
-    }
-
-    public void setGruposProvisionesCollection(Collection<GruposProvisiones> gruposProvisionesCollection) {
-        this.gruposProvisionesCollection = gruposProvisionesCollection;
-    }
-
-    @XmlTransient
-    public Collection<ConceptosSoportes> getConceptosSoportesCollection() {
-        return conceptosSoportesCollection;
-    }
-
-    public void setConceptosSoportesCollection(Collection<ConceptosSoportes> conceptosSoportesCollection) {
-        this.conceptosSoportesCollection = conceptosSoportesCollection;
-    }
-
-    @XmlTransient
-    public Collection<TiposConstantes> getTiposConstantesCollection() {
-        return tiposConstantesCollection;
-    }
-
-    public void setTiposConstantesCollection(Collection<TiposConstantes> tiposConstantesCollection) {
-        this.tiposConstantesCollection = tiposConstantesCollection;
-    }
-
-    @XmlTransient
-    public Collection<TiposFormulas> getTiposFormulasCollection() {
-        return tiposFormulasCollection;
-    }
-
-    public void setTiposFormulasCollection(Collection<TiposFormulas> tiposFormulasCollection) {
-        this.tiposFormulasCollection = tiposFormulasCollection;
-    }
-
-    @XmlTransient
-    public Collection<TiposFunciones> getTiposFuncionesCollection() {
-        return tiposFuncionesCollection;
-    }
-
-    public void setTiposFuncionesCollection(Collection<TiposFunciones> tiposFuncionesCollection) {
-        this.tiposFuncionesCollection = tiposFuncionesCollection;
-    }
-
-    @XmlTransient
-    public Collection<TiposBloques> getTiposBloquesCollection() {
-        return tiposBloquesCollection;
-    }
-
-    public void setTiposBloquesCollection(Collection<TiposBloques> tiposBloquesCollection) {
-        this.tiposBloquesCollection = tiposBloquesCollection;
-    }
-
-    @XmlTransient
-    public Collection<OperandosLogs> getOperandosLogsCollection() {
-        return operandosLogsCollection;
-    }
-
-    public void setOperandosLogsCollection(Collection<OperandosLogs> operandosLogsCollection) {
-        this.operandosLogsCollection = operandosLogsCollection;
-    }
-
-    @XmlTransient
-    public Collection<NovedadesOperandos> getNovedadesOperandosCollection() {
-        return novedadesOperandosCollection;
-    }
-
-    public void setNovedadesOperandosCollection(Collection<NovedadesOperandos> novedadesOperandosCollection) {
-        this.novedadesOperandosCollection = novedadesOperandosCollection;
-    }
-
-    @XmlTransient
-    public Collection<DependenciasOperandos> getDependenciasOperandosCollection() {
-        return dependenciasOperandosCollection;
-    }
-
-    public void setDependenciasOperandosCollection(Collection<DependenciasOperandos> dependenciasOperandosCollection) {
-        this.dependenciasOperandosCollection = dependenciasOperandosCollection;
-    }
-
 }

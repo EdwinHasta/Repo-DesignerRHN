@@ -1,33 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -35,18 +13,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "PARAMETROS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Parametros.findAll", query = "SELECT p FROM Parametros p")})
 public class Parametros implements Serializable {
-    @JoinColumn(name = "USUARIO", referencedColumnName = "SECUENCIA")
-    @ManyToOne
-    private Usuarios usuario;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "parametros")
-    private ParametrosEstados parametrosEstados;
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -65,8 +34,9 @@ public class Parametros implements Serializable {
     @Column(name = "FECHASISTEMA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechasistema;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parametro")
-    private List<ParametrosInstancias> parametrosInstanciasList;
+    @JoinColumn(name = "USUARIO", referencedColumnName = "SECUENCIA")
+    @ManyToOne
+    private Usuarios usuario;
     @JoinColumn(name = "PROCESO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Procesos proceso;
@@ -126,15 +96,6 @@ public class Parametros implements Serializable {
         this.fechasistema = fechasistema;
     }
 
-    @XmlTransient
-    public List<ParametrosInstancias> getParametrosInstanciasList() {
-        return parametrosInstanciasList;
-    }
-
-    public void setParametrosInstanciasList(List<ParametrosInstancias> parametrosInstanciasList) {
-        this.parametrosInstanciasList = parametrosInstanciasList;
-    }
-
     public Procesos getProceso() {
         return proceso;
     }
@@ -166,7 +127,7 @@ public class Parametros implements Serializable {
     public void setEstadoParametro(String estadoParametro) {
         this.estadoParametro = estadoParametro;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -210,13 +171,5 @@ public class Parametros implements Serializable {
 
     public void setUsuario(Usuarios usuario) {
         this.usuario = usuario;
-    }
-
-    public ParametrosEstados getParametrosEstados() {
-        return parametrosEstados;
-    }
-
-    public void setParametrosEstados(ParametrosEstados parametrosEstados) {
-        this.parametrosEstados = parametrosEstados;
     }
 }

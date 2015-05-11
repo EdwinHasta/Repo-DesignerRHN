@@ -1,26 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,12 +12,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "CURSOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Cursos.findAll", query = "SELECT c FROM Cursos c")})
 public class Cursos implements Serializable {
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -51,10 +32,6 @@ public class Cursos implements Serializable {
     @Size(min = 1, max = 400)
     @Column(name = "OBJETIVO")
     private String objetivo;
-    @OneToMany(mappedBy = "curso")
-    private Collection<VigenciasNoFormales> vigenciasNoFormalesCollection;
-    @OneToMany(mappedBy = "curso")
-    private Collection<AdiestramientosNF> adiestramientosNFCollection;
     @JoinColumn(name = "TIPOCURSO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private TiposCursos tipocurso;
@@ -107,24 +84,6 @@ public class Cursos implements Serializable {
 
     public void setObjetivo(String objetivo) {
         this.objetivo = objetivo;
-    }
-
-    @XmlTransient
-    public Collection<VigenciasNoFormales> getVigenciasNoFormalesCollection() {
-        return vigenciasNoFormalesCollection;
-    }
-
-    public void setVigenciasNoFormalesCollection(Collection<VigenciasNoFormales> vigenciasNoFormalesCollection) {
-        this.vigenciasNoFormalesCollection = vigenciasNoFormalesCollection;
-    }
-
-    @XmlTransient
-    public Collection<AdiestramientosNF> getAdiestramientosNFCollection() {
-        return adiestramientosNFCollection;
-    }
-
-    public void setAdiestramientosNFCollection(Collection<AdiestramientosNF> adiestramientosNFCollection) {
-        this.adiestramientosNFCollection = adiestramientosNFCollection;
     }
 
     public TiposCursos getTipocurso() {

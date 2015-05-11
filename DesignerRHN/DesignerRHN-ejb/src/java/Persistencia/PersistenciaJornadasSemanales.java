@@ -68,7 +68,7 @@ public class PersistenciaJornadasSemanales implements PersistenciaJornadasSemana
     public List<JornadasSemanales> buscarJornadasSemanales(EntityManager em) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("JornadasSemanales.findAll");
+            Query query = em.createQuery("SELECT j FROM JornadasSemanales j");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<JornadasSemanales> jornadasSemanales = (List<JornadasSemanales>) query.getResultList();
             return jornadasSemanales;

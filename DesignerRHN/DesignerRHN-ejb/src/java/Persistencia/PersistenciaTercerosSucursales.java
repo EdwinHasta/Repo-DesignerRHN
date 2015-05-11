@@ -82,7 +82,7 @@ public class PersistenciaTercerosSucursales implements PersistenciaTercerosSucur
     public List<TercerosSucursales> buscarTercerosSucursales(EntityManager em) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("TercerosSucursales.findAll");
+            Query query = em.createQuery("SELECT t FROM TercerosSucursales t");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TercerosSucursales> tercerosSucursales = (List<TercerosSucursales>) query.getResultList();
             return tercerosSucursales;

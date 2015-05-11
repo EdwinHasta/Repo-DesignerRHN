@@ -1,29 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
-import Entidades.TiposFormulas;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
-import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,35 +12,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "FORMULAS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Formulas.findAll", query = "SELECT f FROM Formulas f")})
 public class Formulas implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
-    private Collection<DetallesFormasDtos> detallesFormasDtosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
-    private Collection<TiposFormulas> tiposFormulasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
-    private Collection<TSFormulasConceptos> tSFormulasConceptosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
-    private Collection<TEFormulasConceptos> tEFormulasConceptosCollection;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
-    private List<FormulasProcesos> formulasProcesosList;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
-    private Collection<FormulasDependientes> formulasDependientesCollection;
-    @OneToMany(mappedBy = "dependiente")
-    private Collection<FormulasDependientes> formulasDependientesCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
-    private Collection<ProcesosDependientes> procesosDependientesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
-    private Collection<FormulasConceptos> formulasconceptosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
-    private Collection<FormulasNovedades> formulasnovedadesCollection;
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -90,12 +45,6 @@ public class Formulas implements Serializable {
     @Size(max = 1)
     @Column(name = "PERIODICIDADINDEPENDIENTE")
     private String periodicidadindependiente;
-    @OneToMany(mappedBy = "formula")
-    private Collection<SolucionesNodos> solucionesnodosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
-    private Collection<Novedades> novedadesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula")
-    private Collection<Historiasformulas> historiasformulasCollection;
     @Transient
     private boolean periodicidadFormula;
     @Transient
@@ -201,33 +150,6 @@ public class Formulas implements Serializable {
         this.periodicidadindependiente = periodicidadindependiente;
     }
 
-    @XmlTransient
-    public Collection<SolucionesNodos> getSolucionesnodosCollection() {
-        return solucionesnodosCollection;
-    }
-
-    public void setSolucionesnodosCollection(Collection<SolucionesNodos> solucionesnodosCollection) {
-        this.solucionesnodosCollection = solucionesnodosCollection;
-    }
-
-    @XmlTransient
-    public Collection<Novedades> getNovedadesCollection() {
-        return novedadesCollection;
-    }
-
-    public void setNovedadesCollection(Collection<Novedades> novedadesCollection) {
-        this.novedadesCollection = novedadesCollection;
-    }
-
-    @XmlTransient
-    public Collection<Historiasformulas> getHistoriasformulasCollection() {
-        return historiasformulasCollection;
-    }
-
-    public void setHistoriasformulasCollection(Collection<Historiasformulas> historiasformulasCollection) {
-        this.historiasformulasCollection = historiasformulasCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -251,49 +173,6 @@ public class Formulas implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Formulas[ secuencia=" + secuencia + " ]";
-    }
-
-    public Collection<FormulasConceptos> getFormulasconceptosCollection() {
-        return formulasconceptosCollection;
-    }
-
-    public void setFormulasconceptosCollection(Collection<FormulasConceptos> formulasconceptosCollection) {
-        this.formulasconceptosCollection = formulasconceptosCollection;
-    }
-
-    public Collection<FormulasNovedades> getFormulasnovedadesCollection() {
-        return formulasnovedadesCollection;
-    }
-
-    public void setFormulasnovedadesCollection(Collection<FormulasNovedades> formulasnovedadesCollection) {
-        this.formulasnovedadesCollection = formulasnovedadesCollection;
-    }
-
-    @XmlTransient
-    public Collection<FormulasDependientes> getFormulasDependientesCollection() {
-        return formulasDependientesCollection;
-    }
-
-    public void setFormulasDependientesCollection(Collection<FormulasDependientes> formulasDependientesCollection) {
-        this.formulasDependientesCollection = formulasDependientesCollection;
-    }
-
-    @XmlTransient
-    public Collection<FormulasDependientes> getFormulasDependientesCollection1() {
-        return formulasDependientesCollection1;
-    }
-
-    public void setFormulasDependientesCollection1(Collection<FormulasDependientes> formulasDependientesCollection1) {
-        this.formulasDependientesCollection1 = formulasDependientesCollection1;
-    }
-
-    @XmlTransient
-    public Collection<ProcesosDependientes> getProcesosDependientesCollection() {
-        return procesosDependientesCollection;
-    }
-
-    public void setProcesosDependientesCollection(Collection<ProcesosDependientes> procesosDependientesCollection) {
-        this.procesosDependientesCollection = procesosDependientesCollection;
     }
 
     public boolean isPeriodicidadFormula() {
@@ -327,50 +206,4 @@ public class Formulas implements Serializable {
     public void setNombresFormula(String nombresFormula) {
         this.nombresFormula = nombresFormula;
     }
-
-    @XmlTransient
-    public List<FormulasProcesos> getFormulasProcesosList() {
-        return formulasProcesosList;
-    }
-
-    public void setFormulasProcesosList(List<FormulasProcesos> formulasProcesosList) {
-        this.formulasProcesosList = formulasProcesosList;
-    }
-
-    @XmlTransient
-    public Collection<TSFormulasConceptos> getTSFormulasConceptosCollection() {
-        return tSFormulasConceptosCollection;
-    }
-
-    public void setTSFormulasConceptosCollection(Collection<TSFormulasConceptos> tSFormulasConceptosCollection) {
-        this.tSFormulasConceptosCollection = tSFormulasConceptosCollection;
-    }
-
-    @XmlTransient
-    public Collection<TEFormulasConceptos> getTEFormulasConceptosCollection() {
-        return tEFormulasConceptosCollection;
-    }
-
-    public void setTEFormulasConceptosCollection(Collection<TEFormulasConceptos> tEFormulasConceptosCollection) {
-        this.tEFormulasConceptosCollection = tEFormulasConceptosCollection;
-    }
-
-    @XmlTransient
-    public Collection<TiposFormulas> getTiposFormulasCollection() {
-        return tiposFormulasCollection;
-    }
-
-    public void setTiposFormulasCollection(Collection<TiposFormulas> tiposFormulasCollection) {
-        this.tiposFormulasCollection = tiposFormulasCollection;
-    }
-
-    @XmlTransient
-    public Collection<DetallesFormasDtos> getDetallesFormasDtosCollection() {
-        return detallesFormasDtosCollection;
-    }
-
-    public void setDetallesFormasDtosCollection(Collection<DetallesFormasDtos> detallesFormasDtosCollection) {
-        this.detallesFormasDtosCollection = detallesFormasDtosCollection;
-    }
-
 }

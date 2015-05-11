@@ -1,28 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -30,18 +13,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "VIGENCIASCARGOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "VigenciasCargos.findAll", query = "SELECT v FROM VigenciasCargos v"),
-    @NamedQuery(name = "VigenciasCargos.findByEmpleado", query = "SELECT v FROM VigenciasCargos v where v.empleado = :empleado order by v.fechavigencia desc")})
 public class VigenciasCargos implements Serializable {
 
-    @JoinColumn(name = "PAPEL", referencedColumnName = "SECUENCIA")
-    @ManyToOne
-    private Papeles papel;
-
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -60,6 +34,9 @@ public class VigenciasCargos implements Serializable {
     private String liquidahe;
     @Column(name = "CALIFICACION")
     private Short calificacion;
+    @JoinColumn(name = "PAPEL", referencedColumnName = "SECUENCIA")
+    @ManyToOne
+    private Papeles papel;
     @JoinColumn(name = "MOTIVOCAMBIOCARGO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private MotivosCambiosCargos motivocambiocargo;

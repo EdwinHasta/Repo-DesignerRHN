@@ -1,25 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -27,15 +12,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "SUELDOSMERCADOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "SueldosMercados.findAll", query = "SELECT s FROM SueldosMercados s"),
-    @NamedQuery(name = "SueldosMercados.findBySecuencia", query = "SELECT s FROM SueldosMercados s WHERE s.secuencia = :secuencia"),
-    @NamedQuery(name = "SueldosMercados.findBySueldomin", query = "SELECT s FROM SueldosMercados s WHERE s.sueldomin = :sueldomin"),
-    @NamedQuery(name = "SueldosMercados.findBySueldomax", query = "SELECT s FROM SueldosMercados s WHERE s.sueldomax = :sueldomax")})
 public class SueldosMercados implements Serializable {
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull

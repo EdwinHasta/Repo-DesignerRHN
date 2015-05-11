@@ -195,7 +195,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     public List<Estructuras> buscarEstructuras(EntityManager em) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("Estructuras.findAll");
+            Query query = em.createQuery("SELECT e FROM Estructuras e");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Estructuras> estructuras = (List<Estructuras>) query.getResultList();
 

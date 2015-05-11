@@ -1,26 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,24 +11,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "TIPOSDIAS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "TiposDias.findAll", query = "SELECT t FROM TiposDias t"),
-    @NamedQuery(name = "TiposDias.findBySecuencia", query = "SELECT t FROM TiposDias t WHERE t.secuencia = :secuencia"),
-    @NamedQuery(name = "TiposDias.findByCodigo", query = "SELECT t FROM TiposDias t WHERE t.codigo = :codigo"),
-    @NamedQuery(name = "TiposDias.findByDescripcion", query = "SELECT t FROM TiposDias t WHERE t.descripcion = :descripcion"),
-    @NamedQuery(name = "TiposDias.findByTipo", query = "SELECT t FROM TiposDias t WHERE t.tipo = :tipo")})
 public class TiposDias implements Serializable {
 
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "CODIGO")
-    private Integer codigo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipodia")
-    private Collection<DiasLaborables> diasLaborablesCollection;
-
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -55,8 +23,10 @@ public class TiposDias implements Serializable {
     private String descripcion;
     @Column(name = "TIPO")
     private String tipo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipodia")
-    private List<ExtrasRecargos> extrasRecargosList;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CODIGO")
+    private Integer codigo;
 
     public TiposDias() {
     }
@@ -100,15 +70,6 @@ public class TiposDias implements Serializable {
         this.tipo = tipo.toUpperCase();
     }
 
-    @XmlTransient
-    public List<ExtrasRecargos> getExtrasRecargosList() {
-        return extrasRecargosList;
-    }
-
-    public void setExtrasRecargosList(List<ExtrasRecargos> extrasRecargosList) {
-        this.extrasRecargosList = extrasRecargosList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -141,14 +102,4 @@ public class TiposDias implements Serializable {
     public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
-
-    @XmlTransient
-    public Collection<DiasLaborables> getDiasLaborablesCollection() {
-        return diasLaborablesCollection;
-    }
-
-    public void setDiasLaborablesCollection(Collection<DiasLaborables> diasLaborablesCollection) {
-        this.diasLaborablesCollection = diasLaborablesCollection;
-    }
-
 }

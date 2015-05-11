@@ -1,30 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
-import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,39 +13,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "CARGOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Cargos.findAll", query = "SELECT c FROM Cargos c")})
 public class Cargos implements Serializable {
-    @OneToMany(mappedBy = "cargos")
-    private List<VigenciasArps> vigenciasArpsList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargo")
-    private Collection<PlantasPersonales> plantasPersonalesCollection;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargo")
-    private Collection<DetallesCargos> detallesCargosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargo")
-    private Collection<SueldosMercados> sueldosMercadosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargo")
-    private Collection<Competenciascargos> competenciascargosCollection;
-    @OneToMany(mappedBy = "cargo")
-    private Collection<ParametrosInformes> parametrosInformesCollection;
-    @OneToMany(mappedBy = "cargo")
-    private Collection<Evalplanillas> evalplanillasCollection;
-    @OneToMany(mappedBy = "cargo")
-    private Collection<Evalconvocatorias> evalconvocatoriasCollection;
-    @OneToMany(mappedBy = "cargo")
-    private Collection<Encargaturas> encargaturasCollection;
-    @OneToMany(mappedBy = "pryCargoproyecto")
-    private Collection<VigenciasProyectos> vigenciasProyectosCollection;
-    @OneToMany(mappedBy = "cargo")
-    private Collection<HVHojasDeVida> hVHojasDeVidaCollection;
-    @OneToMany(mappedBy = "cargo")
-    private Collection<SolucionesNodos> solucionesnodosCollection;
-    @OneToMany(mappedBy = "cargofirmaconstancia")
-    private Collection<DetallesEmpresas> detallesempresasCollection;
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -72,9 +23,6 @@ public class Cargos implements Serializable {
     private BigInteger secuencia;
     @Column(name = "CODIGO")
     private Short codigo;
-    //@Basic(optional = false)
-    //@NotNull
-    //@Size(min = 1, max = 50)
     @Column(name = "NOMBRE")
     private String nombre;
     @Column(name = "SUELDOMAXIMO")
@@ -89,7 +37,6 @@ public class Cargos implements Serializable {
     @Size(max = 1)
     @Column(name = "JEFE")
     private String jefe;
-    //@Size(max = 20)
     @Column(name = "CODIGOALTERNATIVO")
     private String codigoalternativo;
     @JoinColumn(name = "PROCESOPRODUCTIVO", referencedColumnName = "SECUENCIA")
@@ -104,8 +51,6 @@ public class Cargos implements Serializable {
     @JoinColumn(name = "EMPRESA", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Empresas empresa;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargo")
-    private Collection<VigenciasCargos> vigenciascargosCollection;
     @Transient
     private BigDecimal sueldoCargo;
     @Transient
@@ -309,15 +254,6 @@ public class Cargos implements Serializable {
         this.strJefe = strJefe;
     }
 
-    @XmlTransient
-    public Collection<VigenciasCargos> getVigenciascargosCollection() {
-        return vigenciascargosCollection;
-    }
-
-    public void setVigenciascargosCollection(Collection<VigenciasCargos> vigenciascargosCollection) {
-        this.vigenciascargosCollection = vigenciascargosCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -343,127 +279,11 @@ public class Cargos implements Serializable {
         return "Entidades.Cargos[ secuencia=" + secuencia + " ]";
     }
 
-    @XmlTransient
-    public Collection<DetallesEmpresas> getDetallesempresasCollection() {
-        return detallesempresasCollection;
-    }
-
-    public void setDetallesempresasCollection(Collection<DetallesEmpresas> detallesempresasCollection) {
-        this.detallesempresasCollection = detallesempresasCollection;
-    }
-
-    @XmlTransient
-    public Collection<SolucionesNodos> getSolucionesnodosCollection() {
-        return solucionesnodosCollection;
-    }
-
-    public void setSolucionesnodosCollection(Collection<SolucionesNodos> solucionesnodosCollection) {
-        this.solucionesnodosCollection = solucionesnodosCollection;
-    }
-
-    @XmlTransient
-    public Collection<HVHojasDeVida> getHVHojasDeVidaCollection() {
-        return hVHojasDeVidaCollection;
-    }
-
-    public void setHVHojasDeVidaCollection(Collection<HVHojasDeVida> hVHojasDeVidaCollection) {
-        this.hVHojasDeVidaCollection = hVHojasDeVidaCollection;
-    }
-
-    @XmlTransient
-    public Collection<Encargaturas> getEncargaturasCollection() {
-        return encargaturasCollection;
-    }
-
-    public void setEncargaturasCollection(Collection<Encargaturas> encargaturasCollection) {
-        this.encargaturasCollection = encargaturasCollection;
-    }
-
-    @XmlTransient
-    public Collection<VigenciasProyectos> getVigenciasProyectosCollection() {
-        return vigenciasProyectosCollection;
-    }
-
-    public void setVigenciasProyectosCollection(Collection<VigenciasProyectos> vigenciasProyectosCollection) {
-        this.vigenciasProyectosCollection = vigenciasProyectosCollection;
-    }
-
-    public Collection<Evalconvocatorias> getEvalconvocatoriasCollection() {
-        return evalconvocatoriasCollection;
-    }
-
-    public void setEvalconvocatoriasCollection(Collection<Evalconvocatorias> evalconvocatoriasCollection) {
-        this.evalconvocatoriasCollection = evalconvocatoriasCollection;
-    }
-
-    @XmlTransient
-    public Collection<Competenciascargos> getCompetenciascargosCollection() {
-        return competenciascargosCollection;
-    }
-
-    public void setCompetenciascargosCollection(Collection<Competenciascargos> competenciascargosCollection) {
-        this.competenciascargosCollection = competenciascargosCollection;
-    }
-
-    @XmlTransient
-    public Collection<ParametrosInformes> getParametrosInformesCollection() {
-        return parametrosInformesCollection;
-    }
-
-    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
-        this.parametrosInformesCollection = parametrosInformesCollection;
-    }
-
-    @XmlTransient
-    public Collection<Evalplanillas> getEvalplanillasCollection() {
-        return evalplanillasCollection;
-    }
-
-    public void setEvalplanillasCollection(Collection<Evalplanillas> evalplanillasCollection) {
-        this.evalplanillasCollection = evalplanillasCollection;
-    }
-
     public BigDecimal getSueldoCargo() {
         return sueldoCargo;
     }
 
     public void setSueldoCargo(BigDecimal sueldoCargo) {
         this.sueldoCargo = sueldoCargo;
-    }
-
-    @XmlTransient
-    public Collection<DetallesCargos> getDetallesCargosCollection() {
-        return detallesCargosCollection;
-    }
-
-    public void setDetallesCargosCollection(Collection<DetallesCargos> detallesCargosCollection) {
-        this.detallesCargosCollection = detallesCargosCollection;
-    }
-
-    @XmlTransient
-    public Collection<SueldosMercados> getSueldosMercadosCollection() {
-        return sueldosMercadosCollection;
-    }
-
-    public void setSueldosMercadosCollection(Collection<SueldosMercados> sueldosMercadosCollection) {
-        this.sueldosMercadosCollection = sueldosMercadosCollection;
-    }
-
-    @XmlTransient
-    public Collection<PlantasPersonales> getPlantasPersonalesCollection() {
-        return plantasPersonalesCollection;
-    }
-
-    public void setPlantasPersonalesCollection(Collection<PlantasPersonales> plantasPersonalesCollection) {
-        this.plantasPersonalesCollection = plantasPersonalesCollection;
-    }
-
-    @XmlTransient
-    public List<VigenciasArps> getVigenciasArpsList() {
-        return vigenciasArpsList;
-    }
-
-    public void setVigenciasArpsList(List<VigenciasArps> vigenciasArpsList) {
-        this.vigenciasArpsList = vigenciasArpsList;
     }
 }

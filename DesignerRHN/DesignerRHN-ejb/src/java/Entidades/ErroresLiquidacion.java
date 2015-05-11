@@ -1,28 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -30,19 +13,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "ERRORESLIQUIDACION")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "ErroresLiquidacion.findAll", query = "SELECT e FROM ErroresLiquidacion e"),
-    @NamedQuery(name = "ErroresLiquidacion.findBySecuencia", query = "SELECT e FROM ErroresLiquidacion e WHERE e.secuencia = :secuencia"),
-    @NamedQuery(name = "ErroresLiquidacion.findByFechadesde", query = "SELECT e FROM ErroresLiquidacion e WHERE e.fechadesde = :fechadesde"),
-    @NamedQuery(name = "ErroresLiquidacion.findByFechahasta", query = "SELECT e FROM ErroresLiquidacion e WHERE e.fechahasta = :fechahasta"),
-    @NamedQuery(name = "ErroresLiquidacion.findByFecha", query = "SELECT e FROM ErroresLiquidacion e WHERE e.fecha = :fecha"),
-    @NamedQuery(name = "ErroresLiquidacion.findByError", query = "SELECT e FROM ErroresLiquidacion e WHERE e.error = :error"),
-    @NamedQuery(name = "ErroresLiquidacion.findByPaquete", query = "SELECT e FROM ErroresLiquidacion e WHERE e.paquete = :paquete")})
 public class ErroresLiquidacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull

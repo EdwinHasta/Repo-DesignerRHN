@@ -96,7 +96,7 @@ public class PersistenciaTiposAusentismos implements PersistenciaTiposAusentismo
     public Tiposausentismos consultarTipoAusentismo(EntityManager em, BigInteger secClaseCategoria) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("SELECT cc FROM Tiposausentismos cc WHERE cc.secuencia=:secuencia");
+            Query query = em.createQuery("SELECT cc FROM Tiposausentismos cc WHERE cc.secuencia=:secuencia");
             query.setParameter("secuencia", secClaseCategoria);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Tiposausentismos clasesCategorias = (Tiposausentismos) query.getSingleResult();

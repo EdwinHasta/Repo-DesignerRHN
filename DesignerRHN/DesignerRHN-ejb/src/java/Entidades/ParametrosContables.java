@@ -1,29 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -31,32 +13,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "PARAMETROSCONTABLES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "ParametrosContables.findAll", query = "SELECT p FROM ParametrosContables p"),
-    @NamedQuery(name = "ParametrosContables.findBySecuencia", query = "SELECT p FROM ParametrosContables p WHERE p.secuencia = :secuencia"),
-    @NamedQuery(name = "ParametrosContables.findByEmpresaCodigo", query = "SELECT p FROM ParametrosContables p WHERE p.empresaCodigo = :empresaCodigo"),
-    @NamedQuery(name = "ParametrosContables.findByMonedaCodigo", query = "SELECT p FROM ParametrosContables p WHERE p.monedaCodigo = :monedaCodigo"),
-    @NamedQuery(name = "ParametrosContables.findByFechainicialcontabilizacion", query = "SELECT p FROM ParametrosContables p WHERE p.fechainicialcontabilizacion = :fechainicialcontabilizacion"),
-    @NamedQuery(name = "ParametrosContables.findByFechafinalcontabilizacion", query = "SELECT p FROM ParametrosContables p WHERE p.fechafinalcontabilizacion = :fechafinalcontabilizacion"),
-    @NamedQuery(name = "ParametrosContables.findByUsuario", query = "SELECT p FROM ParametrosContables p WHERE p.usuario = :usuario"),
-    @NamedQuery(name = "ParametrosContables.findByArchivo", query = "SELECT p FROM ParametrosContables p WHERE p.archivo = :archivo"),
-    @NamedQuery(name = "ParametrosContables.findByRespuestaxml", query = "SELECT p FROM ParametrosContables p WHERE p.respuestaxml = :respuestaxml"),
-    @NamedQuery(name = "ParametrosContables.findByFechageneracion", query = "SELECT p FROM ParametrosContables p WHERE p.fechageneracion = :fechageneracion"),
-    @NamedQuery(name = "ParametrosContables.findByEstado", query = "SELECT p FROM ParametrosContables p WHERE p.estado = :estado"),
-    @NamedQuery(name = "ParametrosContables.findByComentario", query = "SELECT p FROM ParametrosContables p WHERE p.comentario = :comentario"),
-    @NamedQuery(name = "ParametrosContables.findByDocumentoContable", query = "SELECT p FROM ParametrosContables p WHERE p.documentoContable = :documentoContable"),
-    @NamedQuery(name = "ParametrosContables.findByUltimonumerodocumento", query = "SELECT p FROM ParametrosContables p WHERE p.ultimonumerodocumento = :ultimonumerodocumento"),
-    @NamedQuery(name = "ParametrosContables.findByCodigoempleadodesde", query = "SELECT p FROM ParametrosContables p WHERE p.codigoempleadodesde = :codigoempleadodesde"),
-    @NamedQuery(name = "ParametrosContables.findByCodigoempleadohasta", query = "SELECT p FROM ParametrosContables p WHERE p.codigoempleadohasta = :codigoempleadohasta"),
-    @NamedQuery(name = "ParametrosContables.findByDocumentoalternativo", query = "SELECT p FROM ParametrosContables p WHERE p.documentoalternativo = :documentoalternativo"),
-    @NamedQuery(name = "ParametrosContables.findByDestino", query = "SELECT p FROM ParametrosContables p WHERE p.destino = :destino"),
-    @NamedQuery(name = "ParametrosContables.findByChequera", query = "SELECT p FROM ParametrosContables p WHERE p.chequera = :chequera"),
-    @NamedQuery(name = "ParametrosContables.findByFechacontabilizacion", query = "SELECT p FROM ParametrosContables p WHERE p.fechacontabilizacion = :fechacontabilizacion")})
 public class ParametrosContables implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull

@@ -1,24 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import javax.persistence.Basic;
-import javax.persistence.Cacheable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -26,27 +12,15 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "VWACTUALUSUARIO")
-@XmlRootElement
 @Cacheable(true)
-@NamedQueries({
-    @NamedQuery(name = "ActualUsuario.findAll", query = "SELECT a FROM ActualUsuario a"),
-    @NamedQuery(name = "ActualUsuario.findBySecuencia", query = "SELECT a FROM ActualUsuario a WHERE a.secuencia = :secuencia"),
-    @NamedQuery(name = "ActualUsuario.findByPersona", query = "SELECT a FROM ActualUsuario a WHERE a.persona = :persona"),
-    @NamedQuery(name = "ActualUsuario.findByPerfil", query = "SELECT a FROM ActualUsuario a WHERE a.perfil = :perfil"),
-    @NamedQuery(name = "ActualUsuario.findByActivo", query = "SELECT a FROM ActualUsuario a WHERE a.activo = :activo"),
-    @NamedQuery(name = "ActualUsuario.findByAlias", query = "SELECT a FROM ActualUsuario a WHERE a.alias = :alias"),
-    @NamedQuery(name = "ActualUsuario.findByPropietario", query = "SELECT a FROM ActualUsuario a WHERE a.propietario = :propietario"),
-    @NamedQuery(name = "ActualUsuario.findByPantallainicio", query = "SELECT a FROM ActualUsuario a WHERE a.pantallainicio = :pantallainicio")})
 public class ActualUsuario implements Serializable {
+    
     private static final long serialVersionUID = 1L;
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
     @Id
     private BigInteger secuencia;
-    @JoinColumn(name = "PERSONA", referencedColumnName = "SECUENCIA")
-    @ManyToOne(optional = false)
-    private Personas persona;
     @Column(name = "PERFIL")
     private BigInteger perfil;
     @Size(max = 1)
@@ -60,6 +34,9 @@ public class ActualUsuario implements Serializable {
     private String propietario;
     @Column(name = "PANTALLAINICIO")
     private BigInteger pantallainicio;
+    @JoinColumn(name = "PERSONA", referencedColumnName = "SECUENCIA")
+    @ManyToOne(optional = false)
+    private Personas persona;
 
     public ActualUsuario() {
     }

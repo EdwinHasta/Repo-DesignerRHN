@@ -1,26 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,10 +18,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "SucursalesPila.findAll", query = "SELECT s FROM SucursalesPila s")})
 public class SucursalesPila implements Serializable {
 
-    @OneToMany(mappedBy = "sucursalPila")
-    private Collection<ParametrosInformes> parametrosInformesCollection;
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -48,8 +30,6 @@ public class SucursalesPila implements Serializable {
     @Size(max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @OneToMany(mappedBy = "sucursalPila")
-    private Collection<UbicacionesGeograficas> ubicacionesgeograficasCollection;
     @JoinColumn(name = "EMPRESA", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Empresas empresa;
@@ -89,15 +69,6 @@ public class SucursalesPila implements Serializable {
         }
     }
 
-    @XmlTransient
-    public Collection<UbicacionesGeograficas> getUbicacionesgeograficasCollection() {
-        return ubicacionesgeograficasCollection;
-    }
-
-    public void setUbicacionesgeograficasCollection(Collection<UbicacionesGeograficas> ubicacionesgeograficasCollection) {
-        this.ubicacionesgeograficasCollection = ubicacionesgeograficasCollection;
-    }
-
     public Empresas getEmpresa() {
         return empresa;
     }
@@ -130,14 +101,4 @@ public class SucursalesPila implements Serializable {
     public String toString() {
         return "Entidades.SucursalesPila[ secuencia=" + secuencia + " ]";
     }
-
-    @XmlTransient
-    public Collection<ParametrosInformes> getParametrosInformesCollection() {
-        return parametrosInformesCollection;
-    }
-
-    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
-        this.parametrosInformesCollection = parametrosInformesCollection;
-    }
-
 }

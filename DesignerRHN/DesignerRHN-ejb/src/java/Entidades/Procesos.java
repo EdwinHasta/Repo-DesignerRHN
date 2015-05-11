@@ -1,29 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,54 +12,16 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "PROCESOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Procesos.findAll", query = "SELECT p FROM Procesos p")})
 public class Procesos implements Serializable {
-    @OneToMany(mappedBy = "proceso")
-    private Collection<InterconDynamics> interconDynamicsCollection;
-    @OneToMany(mappedBy = "proceso")
-    private Collection<InterconSapBO> interconSapBOCollection;
-    @OneToMany(mappedBy = "proceso")
-    private Collection<ParametrosContables> parametrosContablesCollection;
 
-    @OneToMany(mappedBy = "proceso")
-    private Collection<OperandosGruposConceptos> operandosGruposConceptosCollection;
-
-    @OneToMany(mappedBy = "proceso")
-    private Collection<OperandosLogs> operandosLogsCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "proceso")
-    private List<FormulasProcesos> formulasProcesosList;
-    @OneToMany(mappedBy = "proceso")
-    private Collection<IbcsAutoliquidaciones> ibcsAutoliquidacionesCollection;
-    @OneToMany(mappedBy = "procesoliquidado")
-    private Collection<IbcsAutoliquidaciones> ibcsAutoliquidacionesCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "proceso")
-    private List<Parametros> parametrosList;
-    @OneToMany(mappedBy = "proceso")
-    private Collection<ParametrosInformes> parametrosInformesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "dependiente")
-    private Collection<ProcesosDependientes> procesosDependientesCollection;
-    @OneToMany(mappedBy = "proceso")
-    private Collection<SolucionesNodos> solucionesnodosCollection;
-    @OneToMany(mappedBy = "proceso")
-    private Collection<Parametrospresupuestos> parametrospresupuestosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "proceso")
-    private Collection<CortesProcesos> cortesprocesosCollection;
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    //@Basic(optional = false)
-    //@NotNull
     @Column(name = "CODIGO")
     private short codigo;
-    //@Basic(optional = false)
-    //@NotNull
-    //@Size(min = 1, max = 30)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Size(max = 15)
@@ -115,8 +58,6 @@ public class Procesos implements Serializable {
     @JoinColumn(name = "CUENTANETO", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Cuentas cuentaneto;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "proceso")
-    private Collection<ParametrosEstructuras> parametrosestructurasCollection;
     @Transient
     private String strContabilizacion;
     @Transient
@@ -451,15 +392,6 @@ public class Procesos implements Serializable {
         this.checkAutomatico = checkAutomatico;
     }
 
-    @XmlTransient
-    public Collection<ParametrosEstructuras> getParametrosestructurasCollection() {
-        return parametrosestructurasCollection;
-    }
-
-    public void setParametrosestructurasCollection(Collection<ParametrosEstructuras> parametrosestructurasCollection) {
-        this.parametrosestructurasCollection = parametrosestructurasCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -484,131 +416,4 @@ public class Procesos implements Serializable {
     public String toString() {
         return "Entidades.Procesos[ secuencia=" + secuencia + " ]";
     }
-
-    @XmlTransient
-    public Collection<SolucionesNodos> getSolucionesnodosCollection() {
-        return solucionesnodosCollection;
-    }
-
-    public void setSolucionesnodosCollection(Collection<SolucionesNodos> solucionesnodosCollection) {
-        this.solucionesnodosCollection = solucionesnodosCollection;
-    }
-
-    @XmlTransient
-    public Collection<Parametrospresupuestos> getParametrospresupuestosCollection() {
-        return parametrospresupuestosCollection;
-    }
-
-    public void setParametrospresupuestosCollection(Collection<Parametrospresupuestos> parametrospresupuestosCollection) {
-        this.parametrospresupuestosCollection = parametrospresupuestosCollection;
-    }
-
-    @XmlTransient
-    public Collection<CortesProcesos> getCortesprocesosCollection() {
-        return cortesprocesosCollection;
-    }
-
-    public void setCortesprocesosCollection(Collection<CortesProcesos> cortesprocesosCollection) {
-        this.cortesprocesosCollection = cortesprocesosCollection;
-    }
-
-    @XmlTransient
-    public Collection<ProcesosDependientes> getProcesosDependientesCollection() {
-        return procesosDependientesCollection;
-    }
-
-    public void setProcesosDependientesCollection(Collection<ProcesosDependientes> procesosDependientesCollection) {
-        this.procesosDependientesCollection = procesosDependientesCollection;
-    }
-
-    @XmlTransient
-    public Collection<ParametrosInformes> getParametrosInformesCollection() {
-        return parametrosInformesCollection;
-    }
-
-    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
-        this.parametrosInformesCollection = parametrosInformesCollection;
-    }
-
-    @XmlTransient
-    public List<Parametros> getParametrosList() {
-        return parametrosList;
-    }
-
-    public void setParametrosList(List<Parametros> parametrosList) {
-        this.parametrosList = parametrosList;
-    }
-
-    @XmlTransient
-    public Collection<IbcsAutoliquidaciones> getIbcsAutoliquidacionesCollection() {
-        return ibcsAutoliquidacionesCollection;
-    }
-
-    public void setIbcsAutoliquidacionesCollection(Collection<IbcsAutoliquidaciones> ibcsAutoliquidacionesCollection) {
-        this.ibcsAutoliquidacionesCollection = ibcsAutoliquidacionesCollection;
-    }
-
-    @XmlTransient
-    public Collection<IbcsAutoliquidaciones> getIbcsAutoliquidacionesCollection1() {
-        return ibcsAutoliquidacionesCollection1;
-    }
-
-    public void setIbcsAutoliquidacionesCollection1(Collection<IbcsAutoliquidaciones> ibcsAutoliquidacionesCollection1) {
-        this.ibcsAutoliquidacionesCollection1 = ibcsAutoliquidacionesCollection1;
-    }
-
-    @XmlTransient
-    public List<FormulasProcesos> getFormulasProcesosList() {
-        return formulasProcesosList;
-    }
-
-    public void setFormulasProcesosList(List<FormulasProcesos> formulasProcesosList) {
-        this.formulasProcesosList = formulasProcesosList;
-    }
-
-    @XmlTransient
-    public Collection<OperandosLogs> getOperandosLogsCollection() {
-        return operandosLogsCollection;
-    }
-
-    public void setOperandosLogsCollection(Collection<OperandosLogs> operandosLogsCollection) {
-        this.operandosLogsCollection = operandosLogsCollection;
-    }
-
-    @XmlTransient
-    public Collection<OperandosGruposConceptos> getOperandosGruposConceptosCollection() {
-        return operandosGruposConceptosCollection;
-    }
-
-    public void setOperandosGruposConceptosCollection(Collection<OperandosGruposConceptos> operandosGruposConceptosCollection) {
-        this.operandosGruposConceptosCollection = operandosGruposConceptosCollection;
-    }
-
-    @XmlTransient
-    public Collection<ParametrosContables> getParametrosContablesCollection() {
-        return parametrosContablesCollection;
-    }
-
-    public void setParametrosContablesCollection(Collection<ParametrosContables> parametrosContablesCollection) {
-        this.parametrosContablesCollection = parametrosContablesCollection;
-    }
-
-    @XmlTransient
-    public Collection<InterconSapBO> getInterconSapBOCollection() {
-        return interconSapBOCollection;
-    }
-
-    public void setInterconSapBOCollection(Collection<InterconSapBO> interconSapBOCollection) {
-        this.interconSapBOCollection = interconSapBOCollection;
-    }
-
-    @XmlTransient
-    public Collection<InterconDynamics> getInterconDynamicsCollection() {
-        return interconDynamicsCollection;
-    }
-
-    public void setInterconDynamicsCollection(Collection<InterconDynamics> interconDynamicsCollection) {
-        this.interconDynamicsCollection = interconDynamicsCollection;
-    }
-
 }

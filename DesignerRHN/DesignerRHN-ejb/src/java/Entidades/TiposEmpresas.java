@@ -1,24 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -26,20 +11,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "TIPOSEMPRESAS")
-@NamedQueries({
-    @NamedQuery(name = "TiposEmpresas.findAll", query = "SELECT t FROM TiposEmpresas t"),
-    @NamedQuery(name = "TiposEmpresas.findBySecuencia", query = "SELECT t FROM TiposEmpresas t WHERE t.secuencia = :secuencia"),
-    @NamedQuery(name = "TiposEmpresas.findByCodigo", query = "SELECT t FROM TiposEmpresas t WHERE t.codigo = :codigo"),
-    @NamedQuery(name = "TiposEmpresas.findByDescripcion", query = "SELECT t FROM TiposEmpresas t WHERE t.descripcion = :descripcion")})
 public class TiposEmpresas implements Serializable {
 
-    @Column(name = "CODIGO")
-    private Integer codigo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoempresa")
-    private Collection<SueldosMercados> sueldosMercadosCollection;
-
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -47,6 +21,8 @@ public class TiposEmpresas implements Serializable {
     private BigInteger secuencia;
     @Column(name = "DESCRIPCION")
     private String descripcion;
+    @Column(name = "CODIGO")
+    private Integer codigo;
 
     public TiposEmpresas() {
     }
@@ -108,14 +84,4 @@ public class TiposEmpresas implements Serializable {
     public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
-
-    @XmlTransient
-    public Collection<SueldosMercados> getSueldosMercadosCollection() {
-        return sueldosMercadosCollection;
-    }
-
-    public void setSueldosMercadosCollection(Collection<SueldosMercados> sueldosMercadosCollection) {
-        this.sueldosMercadosCollection = sueldosMercadosCollection;
-    }
-
 }

@@ -116,7 +116,7 @@ public class PersistenciaVigenciasContratos implements PersistenciaVigenciasCont
     public VigenciasContratos buscarVigenciaContratoSecuencia(EntityManager em, BigInteger secuencia){
         try{
             em.clear();
-            Query query = em.createNamedQuery("VigenciasContratos.findBySecuencia").setParameter("secuencia", secuencia);
+            Query query = em.createQuery("SELECT v FROM VigenciasContratos v WHERE v.secuencia = :secuencia").setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasContratos vigenciaC = (VigenciasContratos)query.getSingleResult();
             return vigenciaC;

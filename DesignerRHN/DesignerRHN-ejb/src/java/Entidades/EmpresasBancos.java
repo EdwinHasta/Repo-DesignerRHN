@@ -1,23 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -25,13 +11,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "EMPRESASBANCOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "EmpresasBancos.findAll", query = "SELECT e FROM EmpresasBancos e")})
 public class EmpresasBancos implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -42,10 +24,13 @@ public class EmpresasBancos implements Serializable {
     @Column(name = "TIPOCUENTA")
     private String tipocuenta;
     @JoinColumn(name = "EMPRESA", referencedColumnName = "SECUENCIA")
+    @ManyToOne
     private Empresas empresa;
     @JoinColumn(name = "BANCO", referencedColumnName = "SECUENCIA")
+    @ManyToOne
     private Bancos banco;
     @JoinColumn(name = "CIUDAD", referencedColumnName = "SECUENCIA")
+    @ManyToOne
     private Ciudades ciudad;
     @Transient
     private String trTipoCuenta;

@@ -1,24 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -26,16 +12,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "GRUPOSPROVISIONES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "GruposProvisiones.findAll", query = "SELECT g FROM GruposProvisiones g"),
-    @NamedQuery(name = "GruposProvisiones.findBySecuencia", query = "SELECT g FROM GruposProvisiones g WHERE g.secuencia = :secuencia"),
-    @NamedQuery(name = "GruposProvisiones.findByNombre", query = "SELECT g FROM GruposProvisiones g WHERE g.nombre = :nombre"),
-    @NamedQuery(name = "GruposProvisiones.findByDiasprovision", query = "SELECT g FROM GruposProvisiones g WHERE g.diasprovision = :diasprovision"),
-    @NamedQuery(name = "GruposProvisiones.findByDiasprovisionadicional", query = "SELECT g FROM GruposProvisiones g WHERE g.diasprovisionadicional = :diasprovisionadicional")})
 public class GruposProvisiones implements Serializable {
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull

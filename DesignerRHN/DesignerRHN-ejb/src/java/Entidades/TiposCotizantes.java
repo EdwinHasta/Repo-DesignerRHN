@@ -1,25 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -27,18 +12,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "TIPOSCOTIZANTES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "TiposCotizantes.findAll", query = "SELECT t FROM TiposCotizantes t")})
 public class TiposCotizantes implements Serializable {
 
-    @OneToMany(mappedBy = "tipocotizante")
-    private Collection<DetallesTiposCotizantes> detallesTiposCotizantesCollection;
-
-    @OneToMany(mappedBy = "tipocotizante")
-    private Collection<Contratos> contratosCollection;
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -78,8 +54,6 @@ public class TiposCotizantes implements Serializable {
     @Size(max = 1)
     @Column(name = "EXTRANJERO")
     private String extranjero;
-    @OneToMany(mappedBy = "tipocotizante")
-    private Collection<TiposTrabajadores> tipostrabajadoresCollection;
     @Transient
     private boolean cotizapensionBool;
     @Transient
@@ -435,15 +409,6 @@ public class TiposCotizantes implements Serializable {
         this.extranjeroBool = extranjeroBool;
     }
 
-    @XmlTransient
-    public Collection<TiposTrabajadores> getTipostrabajadoresCollection() {
-        return tipostrabajadoresCollection;
-    }
-
-    public void setTipostrabajadoresCollection(Collection<TiposTrabajadores> tipostrabajadoresCollection) {
-        this.tipostrabajadoresCollection = tipostrabajadoresCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -467,23 +432,5 @@ public class TiposCotizantes implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Tiposcotizantes[ secuencia=" + secuencia + " ]";
-    }
-
-    @XmlTransient
-    public Collection<Contratos> getContratosCollection() {
-        return contratosCollection;
-    }
-
-    public void setContratosCollection(Collection<Contratos> contratosCollection) {
-        this.contratosCollection = contratosCollection;
-    }
-
-    @XmlTransient
-    public Collection<DetallesTiposCotizantes> getDetallesTiposCotizantesCollection() {
-        return detallesTiposCotizantesCollection;
-    }
-
-    public void setDetallesTiposCotizantesCollection(Collection<DetallesTiposCotizantes> detallesTiposCotizantesCollection) {
-        this.detallesTiposCotizantesCollection = detallesTiposCotizantesCollection;
     }
 }

@@ -1,26 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -28,16 +12,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "VIGENCIASPRORRATEOSPROYECTOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "VigenciasProrrateosProyectos.findAll", query = "SELECT v FROM VigenciasProrrateosProyectos v"),
-    @NamedQuery(name = "VigenciasProrrateosProyectos.findBySecuencia", query = "SELECT v FROM VigenciasProrrateosProyectos v WHERE v.secuencia = :secuencia"),
-    @NamedQuery(name = "VigenciasProrrateosProyectos.findByPorcentaje", query = "SELECT v FROM VigenciasProrrateosProyectos v WHERE v.porcentaje = :porcentaje"),
-    @NamedQuery(name = "VigenciasProrrateosProyectos.findByFechainicial", query = "SELECT v FROM VigenciasProrrateosProyectos v WHERE v.fechainicial = :fechainicial"),
-    @NamedQuery(name = "VigenciasProrrateosProyectos.findByFechafinal", query = "SELECT v FROM VigenciasProrrateosProyectos v WHERE v.fechafinal = :fechafinal")})
 public class VigenciasProrrateosProyectos implements Serializable {
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull

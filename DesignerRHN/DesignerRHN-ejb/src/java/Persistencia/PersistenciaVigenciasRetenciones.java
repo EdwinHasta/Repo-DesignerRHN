@@ -78,7 +78,7 @@ public class PersistenciaVigenciasRetenciones implements PersistenciaVigenciasRe
     @Override
     public List<VigenciasRetenciones> buscarVigenciasRetenciones(EntityManager em) {
         em.clear();
-        Query query = em.createNamedQuery("VigenciasRetenciones.findAll");
+        Query query = em.createQuery("SELECT v FROM VigenciasRetenciones v ORDER BY v.fechavigencia ASC");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<VigenciasRetenciones> setsLista = (List<VigenciasRetenciones>) query.getResultList();
         return setsLista;

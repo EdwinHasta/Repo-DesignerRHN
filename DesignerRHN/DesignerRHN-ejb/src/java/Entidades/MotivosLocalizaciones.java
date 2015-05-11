@@ -1,26 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,16 +11,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "MOTIVOSLOCALIZACIONES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "MotivosLocalizaciones.findAll", query = "SELECT m FROM MotivosLocalizaciones m"),
-    @NamedQuery(name = "MotivosLocalizaciones.findBySecuencia", query = "SELECT m FROM MotivosLocalizaciones m WHERE m.secuencia = :secuencia"),
-    @NamedQuery(name = "MotivosLocalizaciones.findByCodigo", query = "SELECT m FROM MotivosLocalizaciones m WHERE m.codigo = :codigo"),
-    @NamedQuery(name = "MotivosLocalizaciones.findByDescripcion", query = "SELECT m FROM MotivosLocalizaciones m WHERE m.descripcion = :descripcion")})
 public class MotivosLocalizaciones implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -48,8 +24,6 @@ public class MotivosLocalizaciones implements Serializable {
     @Basic(optional = false)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "motivo")
-    private Collection<VigenciasLocalizaciones> vigenciaslocalizacionesCollection;
 
     public MotivosLocalizaciones() {
     }
@@ -92,16 +66,7 @@ public class MotivosLocalizaciones implements Serializable {
             this.descripcion = descripcion;  
         }
     }
-
-    @XmlTransient
-    public Collection<VigenciasLocalizaciones> getVigenciaslocalizacionesCollection() {
-        return vigenciaslocalizacionesCollection;
-    }
-
-    public void setVigenciaslocalizacionesCollection(Collection<VigenciasLocalizaciones> vigenciaslocalizacionesCollection) {
-        this.vigenciaslocalizacionesCollection = vigenciaslocalizacionesCollection;
-    }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;

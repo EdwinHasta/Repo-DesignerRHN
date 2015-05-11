@@ -1,27 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -29,12 +11,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "ESCALAFONESSALARIALES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "EscalafonesSalariales.findAll", query = "SELECT e FROM EscalafonesSalariales e")})
 public class EscalafonesSalariales implements Serializable {
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -42,16 +21,11 @@ public class EscalafonesSalariales implements Serializable {
     private BigInteger secuencia;
     @Column(name = "CODIGO")
     private Short codigo;
-    //@Basic(optional = false)
-    //@NotNull
-    //@Size(min = 1, max = 30)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @JoinColumn(name = "TIPOTRABAJADOR", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private TiposTrabajadores tipotrabajador;
-    @OneToMany(mappedBy = "escalafonsalarial")
-    private Collection<GruposSalariales> grupossalarialesCollection;
 
     public EscalafonesSalariales() {
     }
@@ -95,15 +69,6 @@ public class EscalafonesSalariales implements Serializable {
 
     public void setTipotrabajador(TiposTrabajadores tipotrabajador) {
         this.tipotrabajador = tipotrabajador;
-    }
-
-    @XmlTransient
-    public Collection<GruposSalariales> getGrupossalarialesCollection() {
-        return grupossalarialesCollection;
-    }
-
-    public void setGrupossalarialesCollection(Collection<GruposSalariales> grupossalarialesCollection) {
-        this.grupossalarialesCollection = grupossalarialesCollection;
     }
 
     @Override

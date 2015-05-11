@@ -1,28 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -30,27 +11,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "CENTROSCOSTOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "CentrosCostos.findAll", query = "SELECT c FROM CentrosCostos c")})
 public class CentrosCostos implements Serializable {
-    @OneToMany(mappedBy = "centrocosto")
-    private Collection<InterconDynamics> interconDynamicsCollection;
-    @OneToMany(mappedBy = "centrocosto")
-    private Collection<InterconSapBO> interconSapBOCollection;
-    @OneToMany(mappedBy = "centrocosto")
-    private Collection<InterconTotal> interconTotalCollection;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "centrocostod")
-    private Collection<SolucionesNodos> solucionesnodosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "centrocostoc")
-    private Collection<SolucionesNodos> solucionesnodosCollection1;
-    @OneToMany(mappedBy = "centrocostod")
-    private Collection<Novedades> novedadesCollection;
-    @OneToMany(mappedBy = "centrocostoc")
-    private Collection<Novedades> novedadesCollection1;
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -72,12 +35,6 @@ public class CentrosCostos implements Serializable {
     private String codigoctt;
     @Column(name = "DIMENSIONES")
     private BigInteger dimensiones;
-    @OneToMany(mappedBy = "centrocosto")
-    private Collection<Terceros> tercerosCollection;
-    @OneToMany(mappedBy = "centrocosto")
-    private Collection<Empresas> empresasCollection;
-    @OneToMany(mappedBy = "centrocosto")
-    private Collection<Estructuras> estructurasCollection;
     @JoinColumn(name = "TIPOCENTROCOSTO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private TiposCentrosCostos tipocentrocosto;
@@ -87,8 +44,6 @@ public class CentrosCostos implements Serializable {
     @JoinColumn(name = "CLASERIESGO", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private ClasesRiesgos claseriesgo;
-    @OneToMany(mappedBy = "centrocosto")
-    private Collection<ProcesosProductivos> procesosproductivosCollection;
     @Transient
     private String codigoNombre;
     @Transient
@@ -205,33 +160,6 @@ public class CentrosCostos implements Serializable {
         this.codigoNombre = codigoNombre;
     }
 
-    @XmlTransient
-    public Collection<Terceros> getTercerosCollection() {
-        return tercerosCollection;
-    }
-
-    public void setTercerosCollection(Collection<Terceros> tercerosCollection) {
-        this.tercerosCollection = tercerosCollection;
-    }
-
-    @XmlTransient
-    public Collection<Empresas> getEmpresasCollection() {
-        return empresasCollection;
-    }
-
-    public void setEmpresasCollection(Collection<Empresas> empresasCollection) {
-        this.empresasCollection = empresasCollection;
-    }
-
-    @XmlTransient
-    public Collection<Estructuras> getEstructurasCollection() {
-        return estructurasCollection;
-    }
-
-    public void setEstructurasCollection(Collection<Estructuras> estructurasCollection) {
-        this.estructurasCollection = estructurasCollection;
-    }
-
     public TiposCentrosCostos getTipocentrocosto() {
         return tipocentrocosto;
     }
@@ -254,15 +182,6 @@ public class CentrosCostos implements Serializable {
 
     public void setClaseriesgo(ClasesRiesgos claseriesgo) {
         this.claseriesgo = claseriesgo;
-    }
-
-    @XmlTransient
-    public Collection<ProcesosProductivos> getProcesosproductivosCollection() {
-        return procesosproductivosCollection;
-    }
-
-    public void setProcesosproductivosCollection(Collection<ProcesosProductivos> procesosproductivosCollection) {
-        this.procesosproductivosCollection = procesosproductivosCollection;
     }
 
     @Override
@@ -288,42 +207,6 @@ public class CentrosCostos implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Centroscostos[ secuencia=" + secuencia + " ]";
-    }
-
-    @XmlTransient
-    public Collection<SolucionesNodos> getSolucionesnodosCollection() {
-        return solucionesnodosCollection;
-    }
-
-    public void setSolucionesnodosCollection(Collection<SolucionesNodos> solucionesnodosCollection) {
-        this.solucionesnodosCollection = solucionesnodosCollection;
-    }
-
-    @XmlTransient
-    public Collection<SolucionesNodos> getSolucionesnodosCollection1() {
-        return solucionesnodosCollection1;
-    }
-
-    public void setSolucionesnodosCollection1(Collection<SolucionesNodos> solucionesnodosCollection1) {
-        this.solucionesnodosCollection1 = solucionesnodosCollection1;
-    }
-
-    @XmlTransient
-    public Collection<Novedades> getNovedadesCollection() {
-        return novedadesCollection;
-    }
-
-    public void setNovedadesCollection(Collection<Novedades> novedadesCollection) {
-        this.novedadesCollection = novedadesCollection;
-    }
-
-    @XmlTransient
-    public Collection<Novedades> getNovedadesCollection1() {
-        return novedadesCollection1;
-    }
-
-    public void setNovedadesCollection1(Collection<Novedades> novedadesCollection1) {
-        this.novedadesCollection1 = novedadesCollection1;
     }
 
     public String getVariableManoObra() {
@@ -362,32 +245,5 @@ public class CentrosCostos implements Serializable {
 
     public void setVariableObsoleto(String variableObsoleto) {
         this.variableObsoleto = variableObsoleto;
-    }
-
-    @XmlTransient
-    public Collection<InterconTotal> getInterconTotalCollection() {
-        return interconTotalCollection;
-    }
-
-    public void setInterconTotalCollection(Collection<InterconTotal> interconTotalCollection) {
-        this.interconTotalCollection = interconTotalCollection;
-    }
-
-    @XmlTransient
-    public Collection<InterconSapBO> getInterconSapBOCollection() {
-        return interconSapBOCollection;
-    }
-
-    public void setInterconSapBOCollection(Collection<InterconSapBO> interconSapBOCollection) {
-        this.interconSapBOCollection = interconSapBOCollection;
-    }
-
-    @XmlTransient
-    public Collection<InterconDynamics> getInterconDynamicsCollection() {
-        return interconDynamicsCollection;
-    }
-
-    public void setInterconDynamicsCollection(Collection<InterconDynamics> interconDynamicsCollection) {
-        this.interconDynamicsCollection = interconDynamicsCollection;
     }
 }

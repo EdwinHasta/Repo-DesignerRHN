@@ -1,31 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,13 +14,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "VACACIONES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Vacaciones.findAll", query = "SELECT v FROM Vacaciones v")})
 public class Vacaciones implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -64,8 +41,6 @@ public class Vacaciones implements Serializable {
     private BigDecimal diaspendientes;
     @Column(name = "DIASPENDIENTESPRECIERRE")
     private BigDecimal diaspendientesprecierre;
-    @OneToMany(mappedBy = "vacacion")
-    private Collection<NovedadesSistema> novedadessistemaCollection;
     @JoinColumn(name = "NOVEDAD", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Novedades novedad;
@@ -135,15 +110,6 @@ public class Vacaciones implements Serializable {
 
     public void setDiaspendientesprecierre(BigDecimal diaspendientesprecierre) {
         this.diaspendientesprecierre = diaspendientesprecierre;
-    }
-
-    @XmlTransient
-    public Collection<NovedadesSistema> getNovedadessistemaCollection() {
-        return novedadessistemaCollection;
-    }
-
-    public void setNovedadessistemaCollection(Collection<NovedadesSistema> novedadessistemaCollection) {
-        this.novedadessistemaCollection = novedadessistemaCollection;
     }
 
     public Novedades getNovedad() {

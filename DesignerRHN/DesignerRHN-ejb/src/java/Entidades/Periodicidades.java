@@ -1,26 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,18 +11,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "PERIODICIDADES")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Periodicidades.findAll", query = "SELECT p FROM Periodicidades p")})
 public class Periodicidades implements Serializable {
 
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "CODIGO")
-    private Integer codigo;
-
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -55,8 +29,10 @@ public class Periodicidades implements Serializable {
     @JoinColumn(name = "UNIDADBASE", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Unidades unidadbase;
-    @OneToMany(mappedBy = "minimaperiodicidad")
-    private Collection<Empresas> empresasCollection;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "CODIGO")
+    private Integer codigo;
     @Transient
     private String codigoStr;
 
@@ -114,15 +90,6 @@ public class Periodicidades implements Serializable {
 
     public void setUnidadbase(Unidades unidadbase) {
         this.unidadbase = unidadbase;
-    }
-
-    @XmlTransient
-    public Collection<Empresas> getEmpresasCollection() {
-        return empresasCollection;
-    }
-
-    public void setEmpresasCollection(Collection<Empresas> empresasCollection) {
-        this.empresasCollection = empresasCollection;
     }
 
     @Override

@@ -1,29 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,15 +13,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "RASTROS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Rastros.findAll", query = "SELECT r FROM Rastros r")})
 public class Rastros implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rastro")
-    private Collection<RastrosValores> rastrosValoresCollection;
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -213,14 +189,5 @@ public class Rastros implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Rastros[ secuencia=" + secuencia + " ]";
-    }
-
-    @XmlTransient
-    public Collection<RastrosValores> getRastrosValoresCollection() {
-        return rastrosValoresCollection;
-    }
-
-    public void setRastrosValoresCollection(Collection<RastrosValores> rastrosValoresCollection) {
-        this.rastrosValoresCollection = rastrosValoresCollection;
     }
 }

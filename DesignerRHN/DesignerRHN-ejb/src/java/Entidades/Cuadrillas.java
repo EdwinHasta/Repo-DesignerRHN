@@ -1,26 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,33 +12,16 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "CUADRILLAS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Cuadrillas.findAll", query = "SELECT c FROM Cuadrillas c"),
-    @NamedQuery(name = "Cuadrillas.findBySecuencia", query = "SELECT c FROM Cuadrillas c WHERE c.secuencia = :secuencia"),
-    @NamedQuery(name = "Cuadrillas.findByCodigo", query = "SELECT c FROM Cuadrillas c WHERE c.codigo = :codigo"),
-    @NamedQuery(name = "Cuadrillas.findByDescripcion", query = "SELECT c FROM Cuadrillas c WHERE c.descripcion = :descripcion"),
-    @NamedQuery(name = "Cuadrillas.findByModulo", query = "SELECT c FROM Cuadrillas c WHERE c.modulo = :modulo"),
-    @NamedQuery(name = "Cuadrillas.findByMetodorotacion", query = "SELECT c FROM Cuadrillas c WHERE c.metodorotacion = :metodorotacion"),
-    @NamedQuery(name = "Cuadrillas.findByDiasciclo", query = "SELECT c FROM Cuadrillas c WHERE c.diasciclo = :diasciclo"),
-    @NamedQuery(name = "Cuadrillas.findByEstado", query = "SELECT c FROM Cuadrillas c WHERE c.estado = :estado")})
 public class Cuadrillas implements Serializable {
-    @OneToMany(mappedBy = "cuadrilla")
-    private Collection<ParametrosTiempos> parametrosTiemposCollection;
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    //@Basic(optional = false)
-    //@NotNull
     @Column(name = "CODIGO")
     private short codigo;
-    //@Basic(optional = false)
-    //@NotNull
-    //@Size(min = 1, max = 40)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Column(name = "MODULO")
@@ -67,8 +34,6 @@ public class Cuadrillas implements Serializable {
     @Size(max = 10)
     @Column(name = "ESTADO")
     private String estado;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuadrilla")
-    private Collection<Turnosrotativos> turnosrotativosCollection;
 
     public Cuadrillas() {
     }
@@ -139,15 +104,6 @@ public class Cuadrillas implements Serializable {
         this.estado = estado;
     }
 
-    @XmlTransient
-    public Collection<Turnosrotativos> getTurnosrotativosCollection() {
-        return turnosrotativosCollection;
-    }
-
-    public void setTurnosrotativosCollection(Collection<Turnosrotativos> turnosrotativosCollection) {
-        this.turnosrotativosCollection = turnosrotativosCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -172,14 +128,4 @@ public class Cuadrillas implements Serializable {
     public String toString() {
         return "Entidades.Cuadrillas[ secuencia=" + secuencia + " ]";
     }
-
-    @XmlTransient
-    public Collection<ParametrosTiempos> getParametrosTiemposCollection() {
-        return parametrosTiemposCollection;
-    }
-
-    public void setParametrosTiemposCollection(Collection<ParametrosTiempos> parametrosTiemposCollection) {
-        this.parametrosTiemposCollection = parametrosTiemposCollection;
-    }
-    
 }

@@ -1,26 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,14 +11,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "COMPETENCIASCARGOS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Competenciascargos.findAll", query = "SELECT c FROM Competenciascargos c"),
-    @NamedQuery(name = "Competenciascargos.findBySecuencia", query = "SELECT c FROM Competenciascargos c WHERE c.secuencia = :secuencia"),
-    @NamedQuery(name = "Competenciascargos.findByPeso", query = "SELECT c FROM Competenciascargos c WHERE c.peso = :peso")})
 public class Competenciascargos implements Serializable {
+    
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -49,8 +27,6 @@ public class Competenciascargos implements Serializable {
     @JoinColumn(name = "CARGO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Cargos cargo;
-    @OneToMany(mappedBy = "competenciacargo")
-    private Collection<Evalplanillas> evalplanillasCollection;
 
     public Competenciascargos() {
     }
@@ -89,15 +65,6 @@ public class Competenciascargos implements Serializable {
 
     public void setCargo(Cargos cargo) {
         this.cargo = cargo;
-    }
-
-    @XmlTransient
-    public Collection<Evalplanillas> getEvalplanillasCollection() {
-        return evalplanillasCollection;
-    }
-
-    public void setEvalplanillasCollection(Collection<Evalplanillas> evalplanillasCollection) {
-        this.evalplanillasCollection = evalplanillasCollection;
     }
 
     @Override

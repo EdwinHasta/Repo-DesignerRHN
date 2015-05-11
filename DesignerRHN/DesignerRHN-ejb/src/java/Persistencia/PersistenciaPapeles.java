@@ -75,7 +75,7 @@ public class PersistenciaPapeles implements PersistenciaPapelesInterface {
     public List<Papeles> consultarPapeles(EntityManager em) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("Papeles.findAll");
+            Query query = em.createQuery("SELECT p FROM Papeles p");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Papeles> listaPapeles = (List<Papeles>) query.getResultList();
             return listaPapeles;

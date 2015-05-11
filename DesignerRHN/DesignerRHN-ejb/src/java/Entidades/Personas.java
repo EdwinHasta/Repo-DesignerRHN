@@ -1,34 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
 import java.util.Date;
-import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -36,26 +13,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "PERSONAS")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Personas.findAll", query = "SELECT p FROM Personas p")})
 public class Personas implements Serializable {
 
-    //@Basic(optional = false)
-    //@NotNull
-    @Column(name = "NUMERODOCUMENTO")
-    private BigInteger numerodocumento;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona", fetch = FetchType.LAZY)
-    private List<IbcsPersona> ibcsPersonaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona")
-    private Collection<Declarantes> declarantesCollection;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "responsable")
-    private Collection<EnfermeadadesProfesionales> enfermeadadesProfesionalesCollection;
-
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
@@ -104,7 +64,6 @@ public class Personas implements Serializable {
     @Size(max = 100)
     @Column(name = "PATHFOTO")
     private String pathfoto;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 100)
     @Column(name = "EMAIL")
     private String email;
@@ -128,8 +87,8 @@ public class Personas implements Serializable {
     @Size(max = 30)
     @Column(name = "SEGUNDONOMBRE")
     private String segundonombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona")
-    private Collection<Empleados> empleadosCollection;
+    @Column(name = "NUMERODOCUMENTO")
+    private BigInteger numerodocumento;
     @JoinColumn(name = "TIPODOCUMENTO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private TiposDocumentos tipodocumento;
@@ -139,44 +98,6 @@ public class Personas implements Serializable {
     @JoinColumn(name = "CIUDADNACIMIENTO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Ciudades ciudadnacimiento;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona")
-    private Collection<MVRSPersona> mvrspersonaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "jefe")
-    private Collection<Soaccidentes> soaccidentesCollection;
-    @OneToMany(mappedBy = "testigo")
-    private Collection<Soaccidentes> soaccidentesCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personareporta")
-    private Collection<Soaccidentes> soaccidentesCollection2;
-    @OneToMany(mappedBy = "jefearea")
-    private Collection<Soaccidentes> soaccidentesCollection3;
-    @OneToOne(mappedBy = "persona")
-    private Usuarios usuarios;
-    @OneToMany(mappedBy = "personafirmaconstancia")
-    private Collection<DetallesEmpresas> detallesempresasCollection;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "persona")
-    private HVHojasDeVida hVHojasDeVida;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona")
-    private Collection<Telefonos> telefonosCollection;
-    @OneToMany(mappedBy = "persona")
-    private Collection<VigenciasNoFormales> vigenciasNoFormalesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona")
-    private Collection<VigenciasAficiones> vigenciasAficionesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personafamiliar")
-    private Collection<Familiares> familiaresCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona")
-    private Collection<Familiares> familiaresCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona")
-    private Collection<IdiomasPersonas> idiomasPersonasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona")
-    private Collection<VigenciasDeportes> vigenciasDeportesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona")
-    private Collection<VigenciasEstadosCiviles> vigenciasEstadosCivilesCollection;
-    @OneToMany(mappedBy = "persona")
-    private Collection<VigenciasFormales> vigenciasFormalesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona")
-    private Collection<VigenciasDomiciliarias> vigenciasDomiciliariasCollection;
-    @OneToMany(mappedBy = "persona")
-    private Collection<Direcciones> direccionesCollection;
     @Transient
     private String nombreCompleto;
     @Transient
@@ -414,15 +335,6 @@ public class Personas implements Serializable {
         this.segundonombre = segundonombre.toUpperCase();
     }
 
-    @XmlTransient
-    public Collection<Empleados> getEmpleadosCollection() {
-        return empleadosCollection;
-    }
-
-    public void setEmpleadosCollection(Collection<Empleados> empleadosCollection) {
-        this.empleadosCollection = empleadosCollection;
-    }
-
     public TiposDocumentos getTipodocumento() {
         return tipodocumento;
     }
@@ -483,23 +395,6 @@ public class Personas implements Serializable {
         return "Entidades.Personas[ secuencia=" + secuencia + " ]";
     }
 
-    @XmlTransient
-    public Collection<DetallesEmpresas> getDetallesempresasCollection() {
-        return detallesempresasCollection;
-    }
-
-    public void setDetallesempresasCollection(Collection<DetallesEmpresas> detallesempresasCollection) {
-        this.detallesempresasCollection = detallesempresasCollection;
-    }
-
-    public Usuarios getUsuarios() {
-        return usuarios;
-    }
-
-    public void setUsuarios(Usuarios usuarios) {
-        this.usuarios = usuarios;
-    }
-
     public String getNombreCompleto() {
         if (nombreCompleto == null) {
             nombreCompleto = getPrimerapellido() + " " + getSegundoapellido() + " " + getNombre();
@@ -537,186 +432,6 @@ public class Personas implements Serializable {
 
     public void setEdad(int edad) {
         this.edad = edad;
-    }
-
-    @XmlTransient
-    public Collection<MVRSPersona> getMvrspersonaCollection() {
-        return mvrspersonaCollection;
-    }
-
-    public void setMvrspersonaCollection(Collection<MVRSPersona> mvrspersonaCollection) {
-        this.mvrspersonaCollection = mvrspersonaCollection;
-    }
-
-    @XmlTransient
-    public Collection<Soaccidentes> getSoaccidentesCollection() {
-        return soaccidentesCollection;
-    }
-
-    public void setSoaccidentesCollection(Collection<Soaccidentes> soaccidentesCollection) {
-        this.soaccidentesCollection = soaccidentesCollection;
-    }
-
-    @XmlTransient
-    public Collection<Soaccidentes> getSoaccidentesCollection1() {
-        return soaccidentesCollection1;
-    }
-
-    public void setSoaccidentesCollection1(Collection<Soaccidentes> soaccidentesCollection1) {
-        this.soaccidentesCollection1 = soaccidentesCollection1;
-    }
-
-    @XmlTransient
-    public Collection<Soaccidentes> getSoaccidentesCollection2() {
-        return soaccidentesCollection2;
-    }
-
-    public void setSoaccidentesCollection2(Collection<Soaccidentes> soaccidentesCollection2) {
-        this.soaccidentesCollection2 = soaccidentesCollection2;
-    }
-
-    @XmlTransient
-    public Collection<Soaccidentes> getSoaccidentesCollection3() {
-        return soaccidentesCollection3;
-    }
-
-    public void setSoaccidentesCollection3(Collection<Soaccidentes> soaccidentesCollection3) {
-        this.soaccidentesCollection3 = soaccidentesCollection3;
-    }
-
-    public HVHojasDeVida getHVHojasDeVida() {
-        return hVHojasDeVida;
-    }
-
-    public void setHVHojasDeVida(HVHojasDeVida hVHojasDeVida) {
-        this.hVHojasDeVida = hVHojasDeVida;
-    }
-
-    @XmlTransient
-    public Collection<Telefonos> getTelefonosCollection() {
-        return telefonosCollection;
-    }
-
-    public void setTelefonosCollection(Collection<Telefonos> telefonosCollection) {
-        this.telefonosCollection = telefonosCollection;
-    }
-
-    @XmlTransient
-    public Collection<VigenciasNoFormales> getVigenciasNoFormalesCollection() {
-        return vigenciasNoFormalesCollection;
-    }
-
-    public void setVigenciasNoFormalesCollection(Collection<VigenciasNoFormales> vigenciasNoFormalesCollection) {
-        this.vigenciasNoFormalesCollection = vigenciasNoFormalesCollection;
-    }
-
-    @XmlTransient
-    public Collection<VigenciasAficiones> getVigenciasAficionesCollection() {
-        return vigenciasAficionesCollection;
-    }
-
-    public void setVigenciasAficionesCollection(Collection<VigenciasAficiones> vigenciasAficionesCollection) {
-        this.vigenciasAficionesCollection = vigenciasAficionesCollection;
-    }
-
-    @XmlTransient
-    public Collection<Familiares> getFamiliaresCollection() {
-        return familiaresCollection;
-    }
-
-    public void setFamiliaresCollection(Collection<Familiares> familiaresCollection) {
-        this.familiaresCollection = familiaresCollection;
-    }
-
-    @XmlTransient
-    public Collection<Familiares> getFamiliaresCollection1() {
-        return familiaresCollection1;
-    }
-
-    public void setFamiliaresCollection1(Collection<Familiares> familiaresCollection1) {
-        this.familiaresCollection1 = familiaresCollection1;
-    }
-
-    @XmlTransient
-    public Collection<IdiomasPersonas> getIdiomasPersonasCollection() {
-        return idiomasPersonasCollection;
-    }
-
-    public void setIdiomasPersonasCollection(Collection<IdiomasPersonas> idiomasPersonasCollection) {
-        this.idiomasPersonasCollection = idiomasPersonasCollection;
-    }
-
-    @XmlTransient
-    public Collection<VigenciasDeportes> getVigenciasDeportesCollection() {
-        return vigenciasDeportesCollection;
-    }
-
-    public void setVigenciasDeportesCollection(Collection<VigenciasDeportes> vigenciasDeportesCollection) {
-        this.vigenciasDeportesCollection = vigenciasDeportesCollection;
-    }
-
-    @XmlTransient
-    public Collection<VigenciasEstadosCiviles> getVigenciasEstadosCivilesCollection() {
-        return vigenciasEstadosCivilesCollection;
-    }
-
-    public void setVigenciasEstadosCivilesCollection(Collection<VigenciasEstadosCiviles> vigenciasEstadosCivilesCollection) {
-        this.vigenciasEstadosCivilesCollection = vigenciasEstadosCivilesCollection;
-    }
-
-    @XmlTransient
-    public Collection<VigenciasFormales> getVigenciasFormalesCollection() {
-        return vigenciasFormalesCollection;
-    }
-
-    public void setVigenciasFormalesCollection(Collection<VigenciasFormales> vigenciasFormalesCollection) {
-        this.vigenciasFormalesCollection = vigenciasFormalesCollection;
-    }
-
-    @XmlTransient
-    public Collection<VigenciasDomiciliarias> getVigenciasDomiciliariasCollection() {
-        return vigenciasDomiciliariasCollection;
-    }
-
-    public void setVigenciasDomiciliariasCollection(Collection<VigenciasDomiciliarias> vigenciasDomiciliariasCollection) {
-        this.vigenciasDomiciliariasCollection = vigenciasDomiciliariasCollection;
-    }
-
-    @XmlTransient
-    public Collection<Direcciones> getDireccionesCollection() {
-        return direccionesCollection;
-    }
-
-    public void setDireccionesCollection(Collection<Direcciones> direccionesCollection) {
-        this.direccionesCollection = direccionesCollection;
-    }
-
-    @XmlTransient
-    public Collection<EnfermeadadesProfesionales> getEnfermeadadesProfesionalesCollection() {
-        return enfermeadadesProfesionalesCollection;
-    }
-
-    public void setEnfermeadadesProfesionalesCollection(Collection<EnfermeadadesProfesionales> enfermeadadesProfesionalesCollection) {
-        this.enfermeadadesProfesionalesCollection = enfermeadadesProfesionalesCollection;
-    }
-
-
-    @XmlTransient
-    public Collection<Declarantes> getDeclarantesCollection() {
-        return declarantesCollection;
-    }
-
-    public void setDeclarantesCollection(Collection<Declarantes> declarantesCollection) {
-        this.declarantesCollection = declarantesCollection;
-    }
-
-    @XmlTransient
-    public List<IbcsPersona> getIbcsPersonaList() {
-        return ibcsPersonaList;
-    }
-
-    public void setIbcsPersonaList(List<IbcsPersona> ibcsPersonaList) {
-        this.ibcsPersonaList = ibcsPersonaList;
     }
 
     public BigInteger getNumerodocumento() {

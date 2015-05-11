@@ -110,7 +110,7 @@ public class PersistenciaVigenciasProrrateosProyectos implements PersistenciaVig
     public VigenciasProrrateosProyectos buscarVigenciasProrrateosProyectosSecuencia(EntityManager em, BigInteger secVPP) {
         try {
             em.clear();
-            Query query = em.createNamedQuery("VigenciasProrrateosProyectos.findBySecuencia").setParameter("secuencia", secVPP);
+            Query query = em.createQuery("SELECT v FROM VigenciasProrrateosProyectos v WHERE v.secuencia = :secuencia").setParameter("secuencia", secVPP);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasProrrateosProyectos prorrateosProyectos = (VigenciasProrrateosProyectos) query.getSingleResult();
             return prorrateosProyectos;
