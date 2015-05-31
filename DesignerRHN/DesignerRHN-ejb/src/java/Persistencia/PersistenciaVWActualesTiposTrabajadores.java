@@ -12,21 +12,23 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la vista 'VWActualesTiposTrabajadores'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la vista
+ * 'VWActualesTiposTrabajadores' de la base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
-    public class PersistenciaVWActualesTiposTrabajadores implements PersistenciaVWActualesTiposTrabajadoresInterface {
+public class PersistenciaVWActualesTiposTrabajadores implements PersistenciaVWActualesTiposTrabajadoresInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-    
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     public VWActualesTiposTrabajadores buscarTipoTrabajador(EntityManager em, BigInteger secuencia) {
         try {
             em.clear();
@@ -63,6 +65,48 @@ import javax.persistence.Query;
     }
 
     @Override
+    public VWActualesTiposTrabajadores filtrarTipoTrabajadorPosicion(EntityManager em, String p_tipo, int posicion) {
+        try {
+            em.clear();
+            if (!p_tipo.isEmpty()) {
+                Query query = em.createQuery("SELECT vwatt FROM VWActualesTiposTrabajadores vwatt WHERE vwatt.tipoTrabajador.tipo = :tipotrabajador");
+                query.setParameter("tipotrabajador", p_tipo);
+                query.setFirstResult(posicion);
+                query.setMaxResults(1);
+                VWActualesTiposTrabajadores vwActualesTiposTrabajadores = (VWActualesTiposTrabajadores) query.getSingleResult();
+                return vwActualesTiposTrabajadores;
+            } else {
+                System.out.println("Error en PersistenciaVWActualesTiposTrabajadores.filtrarTipoTrabajadorPosicion. " + "No recibió el parametro");
+                return null;
+            }
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public int obtenerTotalRegistrosTipoTrabajador(EntityManager em, String p_tipo) {
+        try {
+            em.clear();
+            if (!p_tipo.isEmpty()) {
+                Query query = em.createQuery("SELECT COUNT(vwatt) FROM VWActualesTiposTrabajadores vwatt WHERE vwatt.tipoTrabajador.tipo = :tipotrabajador");
+                query.setParameter("tipotrabajador", p_tipo);
+                Long totalRegistros = (Long) query.getSingleResult();
+                System.out.println("Valor total Registros: " + totalRegistros);
+                System.out.println("Tipo: " + p_tipo);
+                return totalRegistros.intValue();
+            } else {
+                System.out.println("Error en PersistenciaVWActualesTiposTrabajadores.obtenerTotalRegistrosTipoTrabajador. " + "No recibió el parametro");
+                return -1;
+            }
+        } catch (Exception e) {
+            System.out.println("AQUI");
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    @Override
     public List<VWActualesTiposTrabajadores> busquedaRapidaTrabajadores(EntityManager em) {
         try {
             em.clear();
@@ -90,7 +134,7 @@ import javax.persistence.Query;
             return false;
         }
     }
-    
+
     @Override
     public List<VWActualesTiposTrabajadores> tipoTrabajadorEmpleado(EntityManager em) {
         try {
@@ -98,7 +142,7 @@ import javax.persistence.Query;
             Query query = em.createQuery("SELECT vw FROM VWActualesTiposTrabajadores vw where vw.tipoTrabajador.tipo IN ('ACTIVO','PENSIONADO','RETIRADO')");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VWActualesTiposTrabajadores> tipoEmpleado = query.getResultList();
-            System.out.println("Tiene: " + tipoEmpleado.size()+ " registros");
+            System.out.println("Tiene: " + tipoEmpleado.size() + " registros");
             return tipoEmpleado;
         } catch (Exception e) {
             System.out.println("Exepcion en PersistenciaVWActualesTiposTrabajadores.tipoTrabajadorEmpleado" + e);

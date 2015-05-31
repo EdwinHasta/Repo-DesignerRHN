@@ -48,4 +48,7 @@ public interface PersistenciaVWActualesTiposTrabajadoresInterface {
      * @return Retorna una lista de VWActualesTiposTrabajadores.
      */
     public List<VWActualesTiposTrabajadores> tipoTrabajadorEmpleado(EntityManager em );
+    
+    public VWActualesTiposTrabajadores filtrarTipoTrabajadorPosicion(EntityManager em, String p_tipo, int posicion);
+    public int obtenerTotalRegistrosTipoTrabajador(EntityManager em, String p_tipo);
 }

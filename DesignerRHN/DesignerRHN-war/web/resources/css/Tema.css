@@ -376,3 +376,9 @@ and open the template in the editor.
     background: #CBCFDA;
     padding: 0px 3px;
 }
+
+.cssBotonesPaginadorPersonalizado{
+    position: absolute;
+    width: 25px;
+    height: 25px;
+}

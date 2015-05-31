@@ -295,7 +295,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
             return null;
         }
     }
-    
+
     @Override
     public Date consultarActualesFechas() {
         try {
@@ -306,7 +306,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
             return null;
         }
     }
-    
+
     @Override
     public String consultarActualARP(BigInteger secEstructura, BigInteger secCargo, Date fechaHasta) {
         try {
@@ -540,6 +540,26 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
+    public VWActualesTiposTrabajadores consultarEmpleadosTipoTrabajadorPosicion(String tipo, int posicion) {
+        try {
+            VWActualesTiposTrabajadores tipoEmpleado = persistenciaVWActualesTiposTrabajadores.filtrarTipoTrabajadorPosicion(em, tipo, posicion);
+            return tipoEmpleado;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public int obtenerTotalRegistrosTipoTrabajador(String tipo) {
+        try {
+            int totalRegistros = persistenciaVWActualesTiposTrabajadores.obtenerTotalRegistrosTipoTrabajador(em, tipo);
+            return totalRegistros;
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
+    @Override
     public DetallesEmpresas consultarDetalleEmpresaUsuario() {
         try {
             Short codigoEmpresa = persistenciaEmpresas.codigoEmpresa(em);
@@ -645,18 +665,18 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     public void borrarLiquidacionNoAutomatico() {
         persistenciaCandados.borrarLiquidacionNoAutomatico(em);
     }
-    
+
     //METODOS QUE TENGAN QUE VER CON EL BOTON DE LAS FOTOS DE NOMINA F
     @Override
     public Long borrarActivo(BigInteger secuencia) {
-        resultadoActivos= persistenciaSolucionesNodos.activos(em, secuencia);
+        resultadoActivos = persistenciaSolucionesNodos.activos(em, secuencia);
         return resultadoActivos;
     }
-    
+
     @Override
     public void borrarEmpleadoActivo(BigInteger secuenciaEmpleado, BigInteger secuenciaPersona) {
-        persistenciaEmpleado.eliminarEmpleadoNominaF(em, secuenciaEmpleado,secuenciaPersona);
-        
+        persistenciaEmpleado.eliminarEmpleadoNominaF(em, secuenciaEmpleado, secuenciaPersona);
+
     }
-    
+
 }

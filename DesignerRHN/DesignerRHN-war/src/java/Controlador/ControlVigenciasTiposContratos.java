@@ -138,7 +138,6 @@ public class ControlVigenciasTiposContratos implements Serializable {
         //empleado = administrarVigenciasTiposContratos.buscarEmpleado(BigInteger.valueOf(10661039));
         //empleado = administrarVigenciasTiposContratos.buscarEmpleado(secuenciaEmpleado);
         empleado = emp;
-        vigenciasTiposContratoEmpleado = null;
         getVigenciasTiposContratoEmpleado();
         //INICIALIZAR BOTONES NAVEGACION
         if (vigenciasTiposContratoEmpleado != null && !vigenciasTiposContratoEmpleado.isEmpty()) {

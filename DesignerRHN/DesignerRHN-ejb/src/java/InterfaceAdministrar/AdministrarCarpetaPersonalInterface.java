@@ -206,4 +206,6 @@ public interface AdministrarCarpetaPersonalInterface {
     public String consultarActualComprobante(BigInteger secEmpleado);
     public Long borrarActivo(BigInteger secuencia);
     public void borrarEmpleadoActivo(BigInteger secuenciaEmpleado, BigInteger secuenciaPersona);
+    public VWActualesTiposTrabajadores consultarEmpleadosTipoTrabajadorPosicion(String tipo, int posicion);
+    public int obtenerTotalRegistrosTipoTrabajador(String tipo);
 }

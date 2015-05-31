@@ -348,7 +348,7 @@
                             <p:dataTable  id="lvEmpleadoJefe" style="width: 700px" var="item" value="#{controlVigenciasCargos.vwActualesTiposTrabajadoresesLista}"
                                           scrollable="true" scrollHeight="162" scrollWidth="718" widgetVar="lvEmpleadoJefe" 
                                           filteredValue="#{controlVigenciasCargos.filtradoVWActualesTiposTrabajadoresesLista}" emptyMessage="#{msg['lovvacio']}"
-                                          rowKey="#{item.empleado.secuencia}" selection="#{controlVigenciasCargos.seleccionVWActualesTiposTrabajadoreses}" selectionMode="single" >
+                                          rowKey="#{item.rfEmpleado}" selection="#{controlVigenciasCargos.seleccionVWActualesTiposTrabajadoreses}" selectionMode="single" >
 
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasCargos.activarAceptar()}"  update=":form:AceptarEmplJ"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciasCargos.actualizarEmpleadoJefe()}" process="@this" />
@@ -359,20 +359,20 @@
                                     <p:watermark for="globalFilter" value="#{msg['ingreseEJ']}" />
                                 </f:facet>
 
-                                <p:column  headerText="#{msg['codigoEJ']}" filterOptions="" filterBy="#{item.empleado.codigoempleado}" filterMatchMode="contains">  
-                                    <h:outputText value="#{item.empleado.codigoempleado}" />  
+                                <p:column  headerText="#{msg['codigoEJ']}" filterOptions="" filterBy="#{item.codigoEmpleado}" filterMatchMode="contains">  
+                                    <h:outputText value="#{item.codigoEmpleado}" />  
                                 </p:column>  
 
-                                <p:column headerText="#{msg['primerapellidoEJ']}" filterBy="#{item.empleado.persona.primerapellido}" filterMatchMode="contains">  
-                                    <h:outputText value="#{item.empleado.persona.primerapellido}" />  
+                                <p:column headerText="#{msg['primerapellidoEJ']}" filterBy="#{item.primerApellido}" filterMatchMode="contains">  
+                                    <h:outputText value="#{item.primerApellido}" />  
                                 </p:column>  
 
-                                <p:column headerText="#{msg['segundoapellidoEJ']}" filterBy="#{item.empleado.persona.segundoapellido}" filterMatchMode="contains" >  
-                                    <h:outputText value="#{item.empleado.persona.segundoapellido}" />  
+                                <p:column headerText="#{msg['segundoapellidoEJ']}" filterBy="#{item.segundoApellido}" filterMatchMode="contains" >  
+                                    <h:outputText value="#{item.segundoApellido}" />  
                                 </p:column>  
 
-                                <p:column headerText="#{msg['nombreEJ']}" width="160" filterBy="#{item.empleado.persona.nombre}" filterMatchMode="contains">  
-                                    <h:outputText value="#{item.empleado.persona.nombre}" />  
+                                <p:column headerText="#{msg['nombreEJ']}" width="160" filterBy="#{item.nombre}" filterMatchMode="contains">  
+                                    <h:outputText value="#{item.nombre}" />  
                                 </p:column>  
                             </p:dataTable> 
                             <h:outputText id="informacionLOVEJ" value="#{controlVigenciasCargos.cantidadRegistrosLOV}" style="position: absolute; top: 265px; left: 20px; font-weight: bold"/>

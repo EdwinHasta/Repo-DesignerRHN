@@ -19,7 +19,6 @@ import InterfacePersistencia.PersistenciaRetiradosInterface;
 import InterfacePersistencia.PersistenciaTiposPensionadosInterface;
 import InterfacePersistencia.PersistenciaTiposTrabajadoresInterface;
 import InterfacePersistencia.PersistenciaVigenciasTiposTrabajadoresInterface;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;

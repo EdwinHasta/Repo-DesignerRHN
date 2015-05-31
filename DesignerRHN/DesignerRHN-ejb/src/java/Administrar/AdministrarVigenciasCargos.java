@@ -1,13 +1,15 @@
 package Administrar;
 
 import Entidades.Empleados;
-import Entidades.VWActualesTiposTrabajadores;
+//import Entidades.VWActualesTiposTrabajadores;
 import Entidades.VigenciasCargos;
+import Entidades.VwTiposEmpleados;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfaceAdministrar.AdministrarVigenciasCargosInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
-import InterfacePersistencia.PersistenciaVWActualesTiposTrabajadoresInterface;
+//import InterfacePersistencia.PersistenciaVWActualesTiposTrabajadoresInterface;
 import InterfacePersistencia.PersistenciaVigenciasCargosInterface;
+import InterfacePersistencia.PersistenciaVwTiposEmpleadosInterface;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -28,7 +30,8 @@ public class AdministrarVigenciasCargos implements AdministrarVigenciasCargosInt
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleado;
     @EJB
-    PersistenciaVWActualesTiposTrabajadoresInterface persistenciaVWActualesTiposTrabajadores;
+    PersistenciaVwTiposEmpleadosInterface persistenciaTiposEmpleados;
+    //PersistenciaVWActualesTiposTrabajadoresInterface persistenciaVWActualesTiposTrabajadores;
     /**
      * Enterprise JavaBean.<br>
      * Atributo que representa todo lo referente a la conexión del usuario que
@@ -38,7 +41,7 @@ public class AdministrarVigenciasCargos implements AdministrarVigenciasCargosInt
     AdministrarSesionesInterface administrarSesiones;
 
     private List<VigenciasCargos> vigenciasCargos;
-    public List<VWActualesTiposTrabajadores> tipoEmpleadoLista;
+    public List<VwTiposEmpleados> tipoEmpleadoLista;
     private VigenciasCargos vc;
     private Empleados empleado;
     private SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
@@ -145,16 +148,16 @@ public class AdministrarVigenciasCargos implements AdministrarVigenciasCargosInt
         }
     }
 
-    public List<VWActualesTiposTrabajadores> FiltrarTipoTrabajador() {
+    public List<VwTiposEmpleados> FiltrarTipoTrabajador() {
 
         try {
-            tipoEmpleadoLista = persistenciaVWActualesTiposTrabajadores.FiltrarTipoTrabajador(em, "ACTIVO");
+            //tipoEmpleadoLista = persistenciaVWActualesTiposTrabajadores.FiltrarTipoTrabajador(em, "ACTIVO");
+            tipoEmpleadoLista = persistenciaTiposEmpleados.buscarTiposEmpleadosPorTipo(em, "ACTIVO");
             return tipoEmpleadoLista;
         } catch (Exception e) {
             tipoEmpleadoLista = null;
             return tipoEmpleadoLista;
         }
-
     }
 
     @Remove

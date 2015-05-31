@@ -16,18 +16,17 @@ import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
-import org.primefaces.component.datagrid.DataGrid;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.context.RequestContext;
@@ -61,8 +60,8 @@ public class ControlRemoto implements Serializable {
     private VWActualesFormasPagos vwActualesFormasPagos;
     private VWActualesVigenciasViajeros vwActualesVigenciasViajeros;
     private String estadoVacaciones, actualMVR, actualIBC, actualSet, actualComprobante;
-    private List<VWActualesTiposTrabajadores> vwActualesTiposTrabajadoresesLista;
-    private List<VWActualesTiposTrabajadores> backup;
+    private VWActualesTiposTrabajadores vwActualesTiposTrabajadoresPosicion;
+    private VWActualesTiposTrabajadores backup;
     private List<VWActualesTiposTrabajadores> busquedaRapida;
     private List<VWActualesTiposTrabajadores> filterBusquedaRapida;
     private List<VWActualesTiposTrabajadores> filterBuscarEmpleado;
@@ -93,8 +92,6 @@ public class ControlRemoto implements Serializable {
     //datos tablas ctrl+f11
     private Column tablasNombre, tablasDescripcion, moduloCodigo, moduloNombre, moduloObs;
     private boolean filtrosActivos;
-    //DataGrid
-    private DataGrid dg;
     @EJB
     AdministrarCarpetaDesignerInterface administrarCarpetaDesigner;
     private List<Modulos> listModulos;
@@ -125,10 +122,14 @@ public class ControlRemoto implements Serializable {
     private String accion;
     private String redirigir;
     private String infoRegistroBuscarEmpleados;
+    private int posicion;
+    private int totalRegistros;
+    private String informacionTiposTrabajadores;
 
     public ControlRemoto() {
         accion = null;
         tipoPersonal = "activos";
+        tipo = "ACTIVO";
         vwActualesCargos = new VWActualesCargos();
         vwActualesTiposContratos = new VWActualesTiposContratos();
         vwActualesNormasEmpleados = new VWActualesNormasEmpleados();
@@ -142,10 +143,10 @@ public class ControlRemoto implements Serializable {
         vwActualesUbicaciones = new VWActualesUbicaciones();
         vwActualesFormasPagos = new VWActualesFormasPagos();
         vwActualesVigenciasViajeros = new VWActualesVigenciasViajeros();
-        vwActualesTiposTrabajadoresesLista = new ArrayList<VWActualesTiposTrabajadores>();
+        vwActualesTiposTrabajadoresPosicion = new VWActualesTiposTrabajadores();
         /*for (int i = 0; i < 59; i++) {
-            vwActualesTiposTrabajadoresesLista.add(new VWActualesTiposTrabajadores());
-        }*/
+         vwActualesTiposTrabajadoresesLista.add(new VWActualesTiposTrabajadores());
+         }*/
         //vwActualesTiposTrabajadoresesLista.add(vwActualesTiposTrabajadores);
         administrarCarpetaPersonal = new AdministrarCarpetaPersonal();
         busquedaRapida = null;
@@ -178,6 +179,8 @@ public class ControlRemoto implements Serializable {
         buscarTablasLOV = true;
         mostrarTodasTablas = true;
         filtrosActivos = false;
+        posicion = 0;
+        totalRegistros = -1;
     }
 
     @PostConstruct
@@ -187,7 +190,9 @@ public class ControlRemoto implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarCarpetaPersonal.obtenerConexion(ses.getId());
             administrarCarpetaDesigner.obtenerConexion(ses.getId());
-
+            primerTipoTrabajador();
+            totalRegistros = administrarCarpetaPersonal.obtenerTotalRegistrosTipoTrabajador(tipo);
+            actualizarInformacionTipoTrabajador();
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
@@ -204,10 +209,8 @@ public class ControlRemoto implements Serializable {
         //context.update("form:datosVCEmpleado");
     }
 
-    public void valorImputText(int indice) throws ParseException {
-        estadoEmpleado = indice;
-        int name = indice;
-        trabajador = vwActualesTiposTrabajadoresesLista.get(name);
+    public void valorImputText() throws ParseException {
+        trabajador = vwActualesTiposTrabajadoresPosicion;
         if (trabajador.getEmpleado() != null) {
             secuencia = trabajador.getEmpleado().getSecuencia();
             identificacion = trabajador.getEmpleado().getPersona().getNumerodocumento();
@@ -339,13 +342,15 @@ public class ControlRemoto implements Serializable {
 
     public void activos() {
         tipoPersonal = "activos";
-        backup = vwActualesTiposTrabajadoresesLista;
+        backup = vwActualesTiposTrabajadoresPosicion;
         tipoBk = tipo;
         tipo = "ACTIVO";
-        vwActualesTiposTrabajadoresesLista = administrarCarpetaPersonal.consultarEmpleadosTipoTrabajador(tipo);
+        posicion = 0;
+        requerirTipoTrabajador(posicion);
+        totalRegistros = administrarCarpetaPersonal.obtenerTotalRegistrosTipoTrabajador(tipo);
         RequestContext context = RequestContext.getCurrentInstance();
-        if (vwActualesTiposTrabajadoresesLista.isEmpty()) {
-            vwActualesTiposTrabajadoresesLista = backup;
+        if (vwActualesTiposTrabajadoresPosicion == null) {
+            vwActualesTiposTrabajadoresPosicion = backup;
             Mensaje = "Activo";
             context.execute("alerta.show()");
             tipo = tipoBk;
@@ -367,25 +372,31 @@ public class ControlRemoto implements Serializable {
             hv1 = true;
             hv2 = false;
             mostrarT = true;
-            dg = (DataGrid) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:data");
-             dg.setFirst(0);
-             context.update("form:tabMenu:data");
-             context.update("form:tabMenu:Activos");
-             context.update("form:tabMenu:Pensionados");
-             context.update("form:tabMenu:Retirados");
-             context.update("form:tabMenu:Aspirantes");
+            try {
+                valorImputText();
+            } catch (ParseException ex) {
+                Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            actualizarInformacionTipoTrabajador();
+            context.update("form:tabMenu:contenedor");
+            context.update("form:tabMenu:Activos");
+            context.update("form:tabMenu:Pensionados");
+            context.update("form:tabMenu:Retirados");
+            context.update("form:tabMenu:Aspirantes");
         }
     }
 
     public void pensionados() {
         tipoPersonal = "pensionados";
-        backup = vwActualesTiposTrabajadoresesLista;
+        backup = vwActualesTiposTrabajadoresPosicion;
         tipoBk = tipo;
         tipo = "PENSIONADO";
-        vwActualesTiposTrabajadoresesLista = administrarCarpetaPersonal.consultarEmpleadosTipoTrabajador(tipo);
+        posicion = 0;
+        requerirTipoTrabajador(posicion);
+        totalRegistros = administrarCarpetaPersonal.obtenerTotalRegistrosTipoTrabajador(tipo);
         RequestContext context = RequestContext.getCurrentInstance();
-        if (vwActualesTiposTrabajadoresesLista.isEmpty()) {
-            vwActualesTiposTrabajadoresesLista = backup;
+        if (vwActualesTiposTrabajadoresPosicion == null) {
+            vwActualesTiposTrabajadoresPosicion = backup;
             Mensaje = "Pensionado";
             context.execute("alerta.show()");
             tipo = tipoBk;
@@ -407,25 +418,31 @@ public class ControlRemoto implements Serializable {
             hv1 = true;
             hv2 = true;
             mostrarT = true;
-            dg = (DataGrid) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:data");
-             dg.setFirst(0);
-             context.update("form:tabMenu:data");
-             context.update("form:tabMenu:Activos");
-             context.update("form:tabMenu:Pensionados");
-             context.update("form:tabMenu:Retirados");
-             context.update("form:tabMenu:Aspirantes");
+            try {
+                valorImputText();
+            } catch (ParseException ex) {
+                Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            actualizarInformacionTipoTrabajador();
+            context.update("form:tabMenu:contenedor");
+            context.update("form:tabMenu:Activos");
+            context.update("form:tabMenu:Pensionados");
+            context.update("form:tabMenu:Retirados");
+            context.update("form:tabMenu:Aspirantes");
         }
     }
 
     public void retirados() {
         tipoPersonal = "retirados";
-        backup = vwActualesTiposTrabajadoresesLista;
+        backup = vwActualesTiposTrabajadoresPosicion;
         tipoBk = tipo;
         tipo = "RETIRADO";
-        vwActualesTiposTrabajadoresesLista = administrarCarpetaPersonal.consultarEmpleadosTipoTrabajador(tipo);
+        posicion = 0;
+        requerirTipoTrabajador(posicion);
+        totalRegistros = administrarCarpetaPersonal.obtenerTotalRegistrosTipoTrabajador(tipo);
         RequestContext context = RequestContext.getCurrentInstance();
-        if (vwActualesTiposTrabajadoresesLista.isEmpty()) {
-            vwActualesTiposTrabajadoresesLista = backup;
+        if (vwActualesTiposTrabajadoresPosicion == null) {
+            vwActualesTiposTrabajadoresPosicion = backup;
             Mensaje = "Retirado";
             context.execute("alerta.show()");
             tipo = tipoBk;
@@ -447,25 +464,31 @@ public class ControlRemoto implements Serializable {
             hv1 = true;
             hv2 = true;
             mostrarT = true;
-            dg = (DataGrid) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:data");
-             dg.setFirst(0);
-             context.update("form:tabMenu:data");
-             context.update("form:tabMenu:Activos");
-             context.update("form:tabMenu:Pensionados");
-             context.update("form:tabMenu:Retirados");
-             context.update("form:tabMenu:Aspirantes");
+            try {
+                valorImputText();
+            } catch (ParseException ex) {
+                Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            actualizarInformacionTipoTrabajador();
+            context.update("form:tabMenu:contenedor");
+            context.update("form:tabMenu:Activos");
+            context.update("form:tabMenu:Pensionados");
+            context.update("form:tabMenu:Retirados");
+            context.update("form:tabMenu:Aspirantes");
         }
     }
 
     public void aspirantes() {
         tipoPersonal = "aspirantes";
-        backup = vwActualesTiposTrabajadoresesLista;
+        backup = vwActualesTiposTrabajadoresPosicion;
         tipoBk = tipo;
         tipo = "DISPONIBLE";
-        vwActualesTiposTrabajadoresesLista = administrarCarpetaPersonal.consultarEmpleadosTipoTrabajador(tipo);
+        posicion = 0;
+        requerirTipoTrabajador(posicion);
+        totalRegistros = administrarCarpetaPersonal.obtenerTotalRegistrosTipoTrabajador(tipo);
         RequestContext context = RequestContext.getCurrentInstance();
-        if (vwActualesTiposTrabajadoresesLista.isEmpty()) {
-            vwActualesTiposTrabajadoresesLista = backup;
+        if (vwActualesTiposTrabajadoresPosicion == null) {
+            vwActualesTiposTrabajadoresPosicion = backup;
             Mensaje = "Aspirante";
             context.execute("alerta.show()");
             tipo = tipoBk;
@@ -487,13 +510,17 @@ public class ControlRemoto implements Serializable {
             hv1 = false;
             hv2 = true;
             mostrarT = true;
-            dg = (DataGrid) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:data");
-             dg.setFirst(0);
-             context.update("form:tabMenu:data");
-             context.update("form:tabMenu:Activos");
-             context.update("form:tabMenu:Pensionados");
-             context.update("form:tabMenu:Retirados");
-             context.update("form:tabMenu:Aspirantes");
+            try {
+                valorImputText();
+            } catch (ParseException ex) {
+                Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            actualizarInformacionTipoTrabajador();
+            context.update("form:tabMenu:contenedor");
+            context.update("form:tabMenu:Activos");
+            context.update("form:tabMenu:Pensionados");
+            context.update("form:tabMenu:Retirados");
+            context.update("form:tabMenu:Aspirantes");
         }
     }
 
@@ -630,17 +657,17 @@ public class ControlRemoto implements Serializable {
         context.update("form:tabMenu:Pensionados");
         context.update("form:tabMenu:Retirados");
         context.update("form:tabMenu:Aspirantes");
-        vwActualesTiposTrabajadoresesLista.clear();
-        vwActualesTiposTrabajadoresesLista.add(emplSeleccionado);
+
+        vwActualesTiposTrabajadoresPosicion = emplSeleccionado;
         emplSeleccionado = null;
         buscar = true;
         buscarEmp = true;
         mostrarT = false;
 
-        context.update("form:tabMenu:data");
+        context.update("form:tabMenu:contenedor");
         context.update("form:tabMenu:TipoPersonal");
-        context.update("form:tabMenu:data:panelInf");
-        context.update("form:tabMenu:data:MostrarTodos");
+        context.update("form:tabMenu:panelInf");
+        context.update("form:tabMenu:contenedor:MostrarTodos");
 
         //DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent(":form:lvBusquedaRapida");
         //dataTable.reset();
@@ -664,8 +691,7 @@ public class ControlRemoto implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         filterBuscarEmpleado = null;
         tipo = emplSeleccionadoBE.getTipoTrabajador().getTipo();
-        vwActualesTiposTrabajadoresesLista = new ArrayList<VWActualesTiposTrabajadores>();
-        vwActualesTiposTrabajadoresesLista.add(emplSeleccionadoBE);
+        vwActualesTiposTrabajadoresPosicion = emplSeleccionadoBE;
         emplSeleccionadoBE = null;
         buscar = true;
         mostrarT = false;
@@ -673,8 +699,8 @@ public class ControlRemoto implements Serializable {
         context.execute("buscarE.clearFilters()");
         context.execute("lvBE.hide()");
 
-        context.update("form:tabMenu:data");
-        context.update("form:tabMenu:data:MostrarTodos");
+        context.update("form:tabMenu:contenedor");
+        context.update("form:tabMenu:contenedor:MostrarTodos");
     }
 
     public void busquedaEmpleadoAtras() {
@@ -688,8 +714,9 @@ public class ControlRemoto implements Serializable {
     }
 
     public void mostrarTodos() {
-        vwActualesTiposTrabajadoresesLista = administrarCarpetaPersonal.consultarEmpleadosTipoTrabajador(tipo);
-
+        posicion = 0;
+        requerirTipoTrabajador(posicion);
+        totalRegistros = administrarCarpetaPersonal.obtenerTotalRegistrosTipoTrabajador(tipo);
         mostrarT = true;
         buscarEmp = false;
     }
@@ -861,6 +888,97 @@ public class ControlRemoto implements Serializable {
         context.execute("VentanaTab.show()");
     }
 
+    public void requerirBusquedaRapida() {
+        if (busquedaRapida == null) {
+            busquedaRapida = administrarCarpetaPersonal.consultarRapidaEmpleados();
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("lvBr.show();");
+    }
+
+    public void requerirBuscarEmpleadoTipo() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (buscarEmplTipo == null || buscarEmplTipo.isEmpty()) {
+            buscarEmplTipo = administrarCarpetaPersonal.consultarEmpleadosTipoTrabajador(tipo);
+            if (buscarEmplTipo == null || buscarEmplTipo.isEmpty()) {
+                infoRegistroBuscarEmpleados = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistroBuscarEmpleados = "Cantidad de registros: " + buscarEmplTipo.size();
+            }
+            context.update("formularioDialogos:infoRegistroBuscarEmpleados");
+        }
+        context.execute("lvBE.show()");
+    }
+
+    public void primerTipoTrabajador() {
+        posicion = 0;
+        requerirTipoTrabajador(posicion);
+        try {
+            valorImputText();
+        } catch (ParseException ex) {
+            Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        actualizarInformacionTipoTrabajador();
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tabMenu:contenedor");
+    }
+
+    public void atrasTipoTrabajador() {
+        if (posicion > 0) {
+            posicion--;
+            requerirTipoTrabajador(posicion);
+            try {
+                valorImputText();
+            } catch (ParseException ex) {
+                Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            actualizarInformacionTipoTrabajador();
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:tabMenu:contenedor");
+        }
+
+    }
+
+    public void siguienteTipoTrabajador() {
+        if (posicion <= (totalRegistros - 1)) {
+            posicion++;
+            requerirTipoTrabajador(posicion);
+            try {
+                valorImputText();
+            } catch (ParseException ex) {
+                Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            actualizarInformacionTipoTrabajador();
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:tabMenu:contenedor");
+        }
+
+    }
+
+    public void ultimoTipoTrabajador() {
+        posicion = totalRegistros - 1;
+        requerirTipoTrabajador(posicion);
+        try {
+            valorImputText();
+        } catch (ParseException ex) {
+            Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        actualizarInformacionTipoTrabajador();
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tabMenu:contenedor");
+    }
+
+    public void actualizarInformacionTipoTrabajador() {
+        informacionTiposTrabajadores = "Empleado " + (posicion + 1) + " de " + totalRegistros;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tabMenu:informacionTT");
+    }
+
+    public VWActualesTiposTrabajadores requerirTipoTrabajador(int posicion) {
+        vwActualesTiposTrabajadoresPosicion = administrarCarpetaPersonal.consultarEmpleadosTipoTrabajadorPosicion(tipo, posicion);
+        return vwActualesTiposTrabajadoresPosicion;
+    }
+
     public List<Tablas> getListTablas() {
         return listTablas;
     }
@@ -1000,33 +1118,8 @@ public class ControlRemoto implements Serializable {
         this.nombreTabla = nombreTabla;
     }
 
-    public List<VWActualesTiposTrabajadores> getVwActualesTiposTrabajadoresesLista() {
-        System.out.println("ENTRO A CONSULTAS");
-        if (!vwActualesTiposTrabajadoresesLista.isEmpty()) {
-            System.out.println("ENTRO A CONSULTAS 1");
-            return vwActualesTiposTrabajadoresesLista;
-        } else {
-            System.out.println("ENTRO A CONSULTAS 2");
-            tipo = "ACTIVO";
-            vwActualesTiposTrabajadoresesLista = administrarCarpetaPersonal.consultarEmpleadosTipoTrabajador(tipo);
-            if (vwActualesTiposTrabajadoresesLista != null && vwActualesTiposTrabajadoresesLista.isEmpty()) {
-                vwActualesTiposTrabajadoresesLista.add(new VWActualesTiposTrabajadores());
-                acumulado = true;
-                novedad = true;
-                evaluacion = true;
-                bandera = true;
-                hv1 = true;
-                hv2 = true;
-            } else {
-                acumulado = false;
-                novedad = false;
-                evaluacion = false;
-                bandera = false;
-                hv1 = false;
-                hv2 = false;
-            }
-            return vwActualesTiposTrabajadoresesLista;
-        }
+    public VWActualesTiposTrabajadores getVwActualesTiposTrabajadoresesPosicion() {
+        return vwActualesTiposTrabajadoresPosicion;
     }
 
     public String getMensaje() {
@@ -1144,10 +1237,6 @@ public class ControlRemoto implements Serializable {
 
     public List<VWActualesTiposTrabajadores> getBusquedaRapida() {
         try {
-            if (busquedaRapida == null) {
-                busquedaRapida = administrarCarpetaPersonal.consultarRapidaEmpleados();
-                return busquedaRapida;
-            }
             return busquedaRapida;
 
         } catch (Exception e) {
@@ -1193,20 +1282,7 @@ public class ControlRemoto implements Serializable {
     }
 
     public List<VWActualesTiposTrabajadores> getBuscarEmplTipo() {
-        if (buscarEmplTipo != null && !buscarEmplTipo.isEmpty()) {
-            return buscarEmplTipo;
-        } else {
-            buscarEmplTipo = administrarCarpetaPersonal.consultarEmpleadosTipoTrabajador(tipo);
-            RequestContext context = RequestContext.getCurrentInstance();
-
-            if (buscarEmplTipo == null || buscarEmplTipo.isEmpty()) {
-                infoRegistroBuscarEmpleados = "Cantidad de registros: 0 ";
-            } else {
-                infoRegistroBuscarEmpleados = "Cantidad de registros: " + buscarEmplTipo.size();
-            }
-            context.update("formularioDialogos:infoRegistroBuscarEmpleados");
-            return buscarEmplTipo;
-        }
+        return buscarEmplTipo;
     }
 
     public UploadedFile getFile() {
@@ -1509,4 +1585,7 @@ public class ControlRemoto implements Serializable {
         this.infoRegistroBuscarEmpleados = infoRegistroBuscarEmpleados;
     }
 
+    public String getInformacionTiposTrabajadores() {
+        return informacionTiposTrabajadores;
+    }
 }

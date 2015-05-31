@@ -16,7 +16,6 @@ import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarVigenciasTiposTrabajadoresInterface;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
@@ -556,8 +555,8 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
             }
             if (!listVTTCrear.isEmpty()) {
                 for (int i = 0; i < listVTTCrear.size(); i++) {
-                        administrarVigenciasTiposTrabajadores.crearVTT(listVTTCrear.get(i));
-                    
+                    administrarVigenciasTiposTrabajadores.crearVTT(listVTTCrear.get(i));
+
                 }
                 listVTTCrear.clear();
             }
@@ -1167,6 +1166,12 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         guardado = false;
         cambioPension = false;
         cambioRetiros = false;
+        tiposPensionados = null;
+        clasesPensiones = null;
+        listaPersonas = null;
+        listaPensionados = null;
+        motivosRetiros = null;
+        listaTiposTrabajadores = null;
         //context.update("form:ACEPTAR");
     }
     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO)
@@ -1765,9 +1770,9 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         clasesPensionesSeleccionada = null;
         getClasesPensiones();
         /*
-        context.update("form:clasePensionDialogo");
-        context.update("form:lovClasePension");
-        context.update("form:aceptarCP");*/
+         context.update("form:clasePensionDialogo");
+         context.update("form:lovClasePension");
+         context.update("form:aceptarCP");*/
         context.reset("formLovs:lovClasePension:globalFilter");
         context.execute("lovClasePension.clearFilters()");
         context.execute("clasePensionDialogo.hide()");
@@ -1817,9 +1822,9 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         tiposPensionadosFiltrado = null;
         getTiposPensionados();
         /*
-        context.update("form:tipoPensionadoDialogo");
-        context.update("form:lovTipoPensionado");
-        context.update("form:aceptarTP");*/
+         context.update("form:tipoPensionadoDialogo");
+         context.update("form:lovTipoPensionado");
+         context.update("form:aceptarTP");*/
         context.reset("formLovs:lovTipoPensionado:globalFilter");
         context.execute("lovTipoPensionado.clearFilters()");
         context.execute("tipoPensionadoDialogo.hide()");
@@ -1869,9 +1874,9 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         pensionadosFiltrado = null;
         getListaPensionados();
         /*
-        context.update("form:causaBientesDialogo");
-        context.update("form:lovCausaBientes");
-        context.update("form:aceptarCB");*/
+         context.update("form:causaBientesDialogo");
+         context.update("form:lovCausaBientes");
+         context.update("form:aceptarCB");*/
         context.reset("formLovs:lovCausaBientes:globalFilter");
         context.execute("lovCausaBientes.clearFilters()");
         context.execute("causaBientesDialogo.hide()");
@@ -1921,9 +1926,9 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         personaSeleccionada = null;
         getListaPersonas();
         /*
-        context.update("form:tutorDialogo");
-        context.update("form:lovTutor");
-        context.update("form:aceptarT");*/
+         context.update("form:tutorDialogo");
+         context.update("form:lovTutor");
+         context.update("form:aceptarT");*/
         context.reset("formLovs:lovTutor:globalFilter");
         context.execute("lovTutor.clearFilters()");
         context.execute("tutorDialogo.hide()");
@@ -2224,8 +2229,15 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     }
 
     public List<TiposTrabajadores> getListaTiposTrabajadores() {
-        listaTiposTrabajadores = administrarVigenciasTiposTrabajadores.tiposTrabajadores();
-        return listaTiposTrabajadores;
+        try {
+            if (listaTiposTrabajadores == null || listaTiposTrabajadores.isEmpty()) {
+                listaTiposTrabajadores = administrarVigenciasTiposTrabajadores.tiposTrabajadores();
+            }
+            return listaTiposTrabajadores;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void setListaTiposTrabajadores(List<TiposTrabajadores> listaTiposTrabajadores) {
@@ -2273,8 +2285,15 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     }
 
     public List<MotivosRetiros> getMotivosRetiros() {
-        motivosRetiros = administrarVigenciasTiposTrabajadores.motivosRetiros();
-        return motivosRetiros;
+        try {
+            if (motivosRetiros == null || motivosRetiros.isEmpty()) {
+                motivosRetiros = administrarVigenciasTiposTrabajadores.motivosRetiros();
+            }
+            return motivosRetiros;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void setMotivosRetiros(List<MotivosRetiros> motivosRetiros) {
@@ -2290,8 +2309,15 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     }
 
     public List<Pensionados> getListaPensionados() {
-        listaPensionados = administrarVigenciasTiposTrabajadores.listaPensionados();
-        return listaPensionados;
+        try {
+            if (listaPensionados == null || listaPensionados.isEmpty()) {
+                listaPensionados = administrarVigenciasTiposTrabajadores.listaPensionados();
+            }
+            return listaPensionados;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void setListaPensionados(List<Pensionados> listaPensionados) {
@@ -2307,10 +2333,15 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     }
 
     public List<Personas> getListaPersonas() {
-
-        listaPersonas = administrarVigenciasTiposTrabajadores.listaPersonas();
-
-        return listaPersonas;
+        try {
+            if (listaPersonas == null || listaPersonas.isEmpty()) {
+                listaPersonas = administrarVigenciasTiposTrabajadores.listaPersonas();
+            }
+            return listaPersonas;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void setListaPersonas(List<Personas> listaPersonas) {
@@ -2326,8 +2357,15 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     }
 
     public List<ClasesPensiones> getClasesPensiones() {
-        clasesPensiones = administrarVigenciasTiposTrabajadores.clasesPensiones();
-        return clasesPensiones;
+        try {
+            if (clasesPensiones == null || clasesPensiones.isEmpty()) {
+                clasesPensiones = administrarVigenciasTiposTrabajadores.clasesPensiones();
+            }
+            return clasesPensiones;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void setClasesPensiones(List<ClasesPensiones> clasesPensiones) {
@@ -2343,8 +2381,15 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     }
 
     public List<TiposPensionados> getTiposPensionados() {
-        tiposPensionados = administrarVigenciasTiposTrabajadores.tiposPensionados();
-        return tiposPensionados;
+        try {
+            if (tiposPensionados == null || tiposPensionados.isEmpty()) {
+                tiposPensionados = administrarVigenciasTiposTrabajadores.tiposPensionados();
+            }
+            return tiposPensionados;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void setTiposPensionados(List<TiposPensionados> tiposPensionados) {

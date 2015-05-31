@@ -1,11 +1,8 @@
 package InterfaceAdministrar;
 
-import Entidades.Cargos;
 import Entidades.Empleados;
-import Entidades.Estructuras;
-import Entidades.MotivosCambiosCargos;
-import Entidades.VWActualesTiposTrabajadores;
 import Entidades.VigenciasCargos;
+import Entidades.VwTiposEmpleados;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -36,5 +33,5 @@ public interface AdministrarVigenciasCargosInterface {
 
     public void salir();
 
-    public List<VWActualesTiposTrabajadores> FiltrarTipoTrabajador();
+    public List<VwTiposEmpleados> FiltrarTipoTrabajador();
 }

@@ -54,9 +54,10 @@ public class ControlVigenciasCargos implements Serializable {
     private List<VigenciasCargos> vigenciasCargosEmpleado;
     private List<VigenciasCargos> filterVC;
     private VigenciasCargos vigenciaSeleccionada;
-    private List<VWActualesTiposTrabajadores> vwActualesTiposTrabajadoresesLista;
-    private List<VWActualesTiposTrabajadores> filtradoVWActualesTiposTrabajadoresesLista;
-    private VWActualesTiposTrabajadores seleccionVWActualesTiposTrabajadoreses;
+    //private List<VWActualesTiposTrabajadores> vwActualesTiposTrabajadoresesLista;
+    private List<VwTiposEmpleados> vwActualesTiposTrabajadoresesLista;
+    private List<VwTiposEmpleados> filtradoVWActualesTiposTrabajadoresesLista;
+    private VwTiposEmpleados seleccionVWActualesTiposTrabajadoreses;
     private Date fechaVigencia;
 //    private BigInteger secuencia;
     private Empleados empleado;
@@ -166,7 +167,7 @@ public class ControlVigenciasCargos implements Serializable {
         nuevaVigencia.setMotivocambiocargo(new MotivosCambiosCargos());
         nuevaVigencia.setCargo(new Cargos());
         //lista empleados jefe
-        vwActualesTiposTrabajadoresesLista = new ArrayList<VWActualesTiposTrabajadores>();
+        vwActualesTiposTrabajadoresesLista = new ArrayList<VwTiposEmpleados>();
         //AUTOCOMPLETAR
         permitirIndex = true;
         //RASTRO
@@ -450,26 +451,26 @@ public class ControlVigenciasCargos implements Serializable {
         this.duplicarVC = duplicarVC;
     }
 
-    public List<VWActualesTiposTrabajadores> getVwActualesTiposTrabajadoresesLista() {
+    public List<VwTiposEmpleados> getVwActualesTiposTrabajadoresesLista() {
         if (vwActualesTiposTrabajadoresesLista == null) {
             vwActualesTiposTrabajadoresesLista = administrarVigenciasCargos.FiltrarTipoTrabajador();
         }
         return vwActualesTiposTrabajadoresesLista;
     }
 
-    public List<VWActualesTiposTrabajadores> getFiltradoVWActualesTiposTrabajadoresesLista() {
+    public List<VwTiposEmpleados> getFiltradoVWActualesTiposTrabajadoresesLista() {
         return filtradoVWActualesTiposTrabajadoresesLista;
     }
 
-    public void setFiltradoVWActualesTiposTrabajadoresesLista(List<VWActualesTiposTrabajadores> filtradoVWActualesTiposTrabajadoresesLista) {
+    public void setFiltradoVWActualesTiposTrabajadoresesLista(List<VwTiposEmpleados> filtradoVWActualesTiposTrabajadoresesLista) {
         this.filtradoVWActualesTiposTrabajadoresesLista = filtradoVWActualesTiposTrabajadoresesLista;
     }
 
-    public VWActualesTiposTrabajadores getSeleccionVWActualesTiposTrabajadoreses() {
+    public VwTiposEmpleados getSeleccionVWActualesTiposTrabajadoreses() {
         return seleccionVWActualesTiposTrabajadoreses;
     }
 
-    public void setSeleccionVWActualesTiposTrabajadoreses(VWActualesTiposTrabajadores seleccionVWActualesTiposTrabajadoreses) {
+    public void setSeleccionVWActualesTiposTrabajadoreses(VwTiposEmpleados seleccionVWActualesTiposTrabajadoreses) {
         this.seleccionVWActualesTiposTrabajadoreses = seleccionVWActualesTiposTrabajadoreses;
     }
 
@@ -839,7 +840,7 @@ public class ControlVigenciasCargos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                vigenciasCargosEmpleado.get(index).setEmpleadojefe(seleccionVWActualesTiposTrabajadoreses.getEmpleado());
+                vigenciasCargosEmpleado.get(index).setEmpleadojefe(administrarVigenciasCargos.buscarEmpleado(seleccionVWActualesTiposTrabajadoreses.getRfEmpleado()));
                 if (!listVCCrear.contains(vigenciasCargosEmpleado.get(index))) {
                     if (listVCModificar.isEmpty()) {
                         listVCModificar.add(vigenciasCargosEmpleado.get(index));
@@ -848,7 +849,7 @@ public class ControlVigenciasCargos implements Serializable {
                     }
                 }
             } else {
-                filterVC.get(index).setEmpleadojefe(seleccionVWActualesTiposTrabajadoreses.getEmpleado());
+                filterVC.get(index).setEmpleadojefe(administrarVigenciasCargos.buscarEmpleado(seleccionVWActualesTiposTrabajadoreses.getRfEmpleado()));
                 if (!listVCCrear.contains(filterVC.get(index))) {
                     if (listVCModificar.isEmpty()) {
                         listVCModificar.add(filterVC.get(index));
@@ -864,10 +865,10 @@ public class ControlVigenciasCargos implements Serializable {
             permitirIndex = true;
             context.update("form:datosVCEmpleado");
         } else if (tipoActualizacion == 1) {
-            nuevaVigencia.setEmpleadojefe(seleccionVWActualesTiposTrabajadoreses.getEmpleado());
+            nuevaVigencia.setEmpleadojefe(administrarVigenciasCargos.buscarEmpleado(seleccionVWActualesTiposTrabajadoreses.getRfEmpleado()));
             context.update("formularioDialogos:nuevaVC");
         } else if (tipoActualizacion == 2) {
-            duplicarVC.setEmpleadojefe(seleccionVWActualesTiposTrabajadoreses.getEmpleado());
+            duplicarVC.setEmpleadojefe(administrarVigenciasCargos.buscarEmpleado(seleccionVWActualesTiposTrabajadoreses.getRfEmpleado()));
             context.update("formularioDialogos:duplicarVC");
         }
         filtradoVWActualesTiposTrabajadoresesLista = null;
@@ -1286,16 +1287,18 @@ public class ControlVigenciasCargos implements Serializable {
                     filterVC.get(indice).getEmpleadojefe().getPersona().setNombreCompleto(nombreCompleto);
                 }
                 for (int i = 0; i < vwActualesTiposTrabajadoresesLista.size(); i++) {
-                    if (vwActualesTiposTrabajadoresesLista.get(i).getEmpleado().getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
+                    //if (vwActualesTiposTrabajadoresesLista.get(i).getEmpleado().getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
+                    if ( vwActualesTiposTrabajadoresesLista.get(i).getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
                         indiceUnicoElemento = i;
                         coincidencias++;
                     }
                 }
                 if (coincidencias == 1) {
                     if (tipoLista == 0) {
-                        vigenciasCargosEmpleado.get(indice).setEmpleadojefe(vwActualesTiposTrabajadoresesLista.get(indiceUnicoElemento).getEmpleado());
+                        //vigenciasCargosEmpleado.get(indice).setEmpleadojefe(vwActualesTiposTrabajadoresesLista.get(indiceUnicoElemento).getEmpleado());
+                        vigenciasCargosEmpleado.get(indice).setEmpleadojefe(administrarVigenciasCargos.buscarEmpleado(vwActualesTiposTrabajadoresesLista.get(indiceUnicoElemento).getRfEmpleado()));
                     } else {
-                        filterVC.get(indice).setEmpleadojefe(vwActualesTiposTrabajadoresesLista.get(indiceUnicoElemento).getEmpleado());
+                        filterVC.get(indice).setEmpleadojefe(administrarVigenciasCargos.buscarEmpleado(vwActualesTiposTrabajadoresesLista.get(indiceUnicoElemento).getRfEmpleado()));
                     }
                     vwActualesTiposTrabajadoresesLista.clear();
                     getVwActualesTiposTrabajadoresesLista();
@@ -1512,17 +1515,20 @@ public class ControlVigenciasCargos implements Serializable {
                     duplicarVC.getEmpleadojefe().getPersona().setNombreCompleto(nombreCompleto);
                 }
                 for (int i = 0; i < vwActualesTiposTrabajadoresesLista.size(); i++) {
-                    if (vwActualesTiposTrabajadoresesLista.get(i).getEmpleado().getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
+                    //if (vwActualesTiposTrabajadoresesLista.get(i).getEmpleado().getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
+                    if (vwActualesTiposTrabajadoresesLista.get(indiceUnicoElemento).getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
                         indiceUnicoElemento = i;
                         coincidencias++;
                     }
                 }
                 if (coincidencias == 1) {
                     if (tipoNuevo == 1) {
-                        nuevaVigencia.setEmpleadojefe(vwActualesTiposTrabajadoresesLista.get(indiceUnicoElemento).getEmpleado());
+                        //nuevaVigencia.setEmpleadojefe(vwActualesTiposTrabajadoresesLista.get(indiceUnicoElemento).getEmpleado());
+                        nuevaVigencia.setEmpleadojefe(administrarVigenciasCargos.buscarEmpleado(vwActualesTiposTrabajadoresesLista.get(indiceUnicoElemento).getRfEmpleado()));
                         context.update("formularioDialogos:nuevoJefe");
                     } else if (tipoNuevo == 2) {
-                        duplicarVC.setEmpleadojefe(vwActualesTiposTrabajadoresesLista.get(indiceUnicoElemento).getEmpleado());
+                        //duplicarVC.setEmpleadojefe(vwActualesTiposTrabajadoresesLista.get(indiceUnicoElemento).getEmpleado());
+                        duplicarVC.setEmpleadojefe(administrarVigenciasCargos.buscarEmpleado(vwActualesTiposTrabajadoresesLista.get(indiceUnicoElemento).getRfEmpleado()));
                         context.update("formularioDialogos:duplicarJefe");
                     }
                     vwActualesTiposTrabajadoresesLista.clear();
