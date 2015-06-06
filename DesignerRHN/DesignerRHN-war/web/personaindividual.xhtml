@@ -561,7 +561,10 @@
                         </fieldset>
 
                         <p:commandButton style="position: absolute; left: 315px; top: 505px; " id="ACEPTAR" value="#{msg['ingresarPersonal']}" icon="ui-icon-disk" actionListener="#{controlPersonaIndividual.crearNuevoEmpleado()}"  process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 505px; " id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlPersonaIndividual.cancelarModificaciones()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 505px; " id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" action="nomina" process="@this">
+                            <f:actionListener binding="#{controlPersonaIndividual.cancelarModificaciones()}" />
+                            <f:actionListener binding="#{controlRemoto.validarEstadoNominaF()}" />
+                        </p:commandButton>
                     </p:panel>
 
                 </h:form>
@@ -613,7 +616,10 @@
                             <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPersonaIndividual.cancelarModificaciones()}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()"  process="@this"/>  
                             <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
-                            <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPersonaIndividual.cancelarModificaciones()}" action="nomina" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" process="@this"/>  
+                            <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " action="nomina" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" process="@this">
+                                <f:actionListener binding="#{controlPersonaIndividual.cancelarModificaciones()}" />
+                                <f:actionListener binding="#{controlRemoto.validarEstadoNominaF()}" />
+                            </p:commandButton>
                             <p:tooltip  for="salir" value="#{msg['salir']}"/>
 
                         </p:toolbarGroup>  
@@ -1746,7 +1752,10 @@
                     <p:dialog id="procesoGuardadoOK" header="#{msg['atencion']}" widgetVar="procesoGuardadoOK"   resizable="false" draggable="false" modal="true" height="88" width="388px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/bien.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['procesoGuardadoOK']}" style="position: absolute; left: 70px; top: 10px; width: 235px; font-weight:bold;" />
-                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="procesoGuardadoOK.hide();" action="nomina" actionListener="#{controlPersonaIndividual.cancelarModificaciones()}" style="position: absolute; top: 50px; left: 285px" process="@this" />
+                        <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="procesoGuardadoOK.hide();" action="nomina" actionListener="#{controlPersonaIndividual.cancelarModificaciones()}" style="position: absolute; top: 50px; left: 285px" process="@this" >
+                    <f:actionListener binding="#{controlPersonaIndividual.cancelarModificaciones()}" />
+                            <f:actionListener binding="#{controlRemoto.validarEstadoNominaF()}" />
+                        </p:commandButton>
                     </p:dialog>
 
                     <!-- EDITAR CELDA INFORMACION PERSONAL -->

@@ -5963,7 +5963,8 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public List<TercerosSucursales> getLovTercerosSucursales() {
-        if (nuevoEmpleado.getEmpresa().getSecuencia() != null && ((lovTercerosSucursales == null || lovTercerosSucursales.isEmpty()) || (!lovTercerosSucursales.isEmpty() && lovTercerosSucursales.get(0).getTercero().getEmpresa().getSecuencia() != nuevoEmpleado.getEmpresa().getSecuencia()))) {
+        //if (nuevoEmpleado.getEmpresa().getSecuencia() != null && ((lovTercerosSucursales == null || lovTercerosSucursales.isEmpty()) || (!lovTercerosSucursales.isEmpty() && lovTercerosSucursales.get(0).getTercero().getEmpresa().getSecuencia() != nuevoEmpleado.getEmpresa().getSecuencia()))) {
+        if ((lovTercerosSucursales == null || lovTercerosSucursales.isEmpty()) && nuevoEmpleado.getEmpresa().getSecuencia() != null) {
             lovTercerosSucursales = administrarPersonaIndividual.lovTercerosSucursales(nuevoEmpleado.getEmpresa().getSecuencia());
         }
         return lovTercerosSucursales;

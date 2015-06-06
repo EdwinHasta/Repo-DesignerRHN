@@ -23,21 +23,21 @@
 
                                 <h:outputText id="fechas" style="position: absolute; font-size: 11px;  font-weight: bold; left: 343px; top: 39px; width: 500px; text-align: right; color: #BF1A1A" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta']} #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
 
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 727px; top: 57px; z-index: 1;"  process="@this" update=":form:lvBuscarEmpleado" oncomplete="lvBE.show()"/>
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 727px; top: 57px; z-index: 1;"  process="@this" actionListener="#{controlRemoto.requerirBuscarEmpleadoTipo()}"/>
                                 <p:tooltip  for="listaValores" value="#{msg['lista']}" />
 
 
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 754px; top: 57px; z-index: 1;"   ajax="false">
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 754px; top: 57px; z-index: 1;" actionListener="#{controlRemoto.requerirBuscarEmpleadoTipo()}"   ajax="false">
                                     <p:dataExporter type="xls"  target=":formExportar:empleadosExportar" fileName="PersonalXLS" encoding="UTF-8"/>
                                 </p:commandButton>
                                 <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
 
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 782px; top: 57px; z-index: 1;"   ajax="false">
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 782px; top: 57px; z-index: 1;"  actionListener="#{controlRemoto.requerirBuscarEmpleadoTipo()}" ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportar:empleadosExportar" fileName="PersonalXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
 
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 809px; top: 57px; z-index: 1;"   ajax="false">
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 809px; top: 57px; z-index: 1;" actionListener="#{controlRemoto.requerirBuscarEmpleadoTipo()}"  ajax="false">
                                     <p:dataExporter type="pdf"  target=":formExportar:empleadosExportar" fileName="PersonalPDF" encoding="UTF-8"/>
                                 </p:commandButton>
                                 <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
@@ -66,10 +66,10 @@
 
                                 <!-- Panel Derecho - Superior -->
                                 <h:outputText id="informacionTT" value="#{controlRemoto.informacionTiposTrabajadores}" style="position: absolute; left: 500px; top: 60px;"/>
-                                <p:commandButton id="btnPrimero" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 610px; top: 57px;" icon="ui-icon-arrowthickstop-1-w"  actionListener="#{controlRemoto.primerTipoTrabajador()}"/>
-                                <p:commandButton id="btnAtras" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 638px; top: 57px;" icon="ui-icon-arrowthick-1-w" actionListener="#{controlRemoto.atrasTipoTrabajador()}"/>
-                                <p:commandButton id="btnSiguiente" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 666px; top: 57px;" icon="ui-icon-arrowthick-1-e" actionListener="#{controlRemoto.siguienteTipoTrabajador()}"/>
-                                <p:commandButton id="btnUltimo" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 694px; top: 57px;" icon="ui-icon-arrowthickstop-1-e" actionListener="#{controlRemoto.ultimoTipoTrabajador()}"/>
+                                <p:commandButton id="btnPrimero" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 610px; top: 57px;" icon="ui-icon-arrowthickstop-1-w" disabled="#{controlRemoto.mostrarT == false ? true : false}"  actionListener="#{controlRemoto.primerTipoTrabajador()}"/>
+                                <p:commandButton id="btnAtras" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 638px; top: 57px;" icon="ui-icon-arrowthick-1-w" disabled="#{controlRemoto.mostrarT == false ? true : false}" actionListener="#{controlRemoto.atrasTipoTrabajador()}"/>
+                                <p:commandButton id="btnSiguiente" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 666px; top: 57px;" icon="ui-icon-arrowthick-1-e" disabled="#{controlRemoto.mostrarT == false ? true : false}" actionListener="#{controlRemoto.siguienteTipoTrabajador()}"/>
+                                <p:commandButton id="btnUltimo" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 694px; top: 57px;" icon="ui-icon-arrowthickstop-1-e" disabled="#{controlRemoto.mostrarT == false ? true : false}" actionListener="#{controlRemoto.ultimoTipoTrabajador()}"/>
 
                                 <p:panel id="contenedor" style="border: none">
                                     <fieldset id="set" style="height: 72px; width: 595px; display: block; position: absolute; border-radius: 10px; left: 225px; top: 82px;">
@@ -749,7 +749,7 @@
                         <p:dataTable  id="lvBusquedaRapida" style=" width: 700px" var="item" value="#{controlRemoto.busquedaRapida}"
                                       scrollable="true" scrollHeight="162" scrollWidth="717" widgetVar="busquedaR" 
                                       filteredValue="#{controlRemoto.filterBusquedaRapida}" emptyMessage="#{msg['lovvacio']}"
-                                      rowKey="#{item.empleado.secuencia}" selection="#{controlRemoto.emplSeleccionado}" selectionMode="single">
+                                      rowKey="#{item.rfEmpleado}" selection="#{controlRemoto.emplSeleccionado}" selectionMode="single">
 
                             <p:ajax event="rowSelect" listener="#{controlRemoto.activarBuscar()}"  update=":form:buscarRap"/>
                             <p:ajax event="rowDblselect" listener="#{controlRemoto.busquedaRapida()}" process="@this" />
@@ -761,27 +761,27 @@
                                 <p:watermark for="globalFilter" value="#{msg['ingresarvalor']}" />
                             </f:facet>
 
-                            <p:column  headerText="#{msg['codigoE']}" filterOptions="" filterBy="#{item.empleado.codigoempleado}" filterMatchMode="contains">  
-                                <h:outputText value="#{item.empleado.codigoempleado}" />
+                            <p:column  headerText="#{msg['codigoE']}" filterOptions="" filterBy="#{item.codigoEmpleado}" filterMatchMode="contains">  
+                                <h:outputText value="#{item.codigoEmpleado}" />
                             </p:column>  
 
-                            <p:column headerText="#{msg['primerapellidoE']}" filterBy="#{item.empleado.persona.primerapellido}" filterMatchMode="contains">  
-                                <h:outputText value="#{item.empleado.persona.primerapellido}" />  
+                            <p:column headerText="#{msg['primerapellidoE']}" filterBy="#{item.primerApellido}" filterMatchMode="contains">  
+                                <h:outputText value="#{item.primerApellido}" />  
                             </p:column>  
 
-                            <p:column headerText="#{msg['segundoapellidoE']}" filterBy="#{item.empleado.persona.segundoapellido}" filterMatchMode="contains" >  
-                                <h:outputText value="#{item.empleado.persona.segundoapellido}" />  
+                            <p:column headerText="#{msg['segundoapellidoE']}" filterBy="#{item.segundoApellido}" filterMatchMode="contains" >  
+                                <h:outputText value="#{item.segundoApellido}" />  
                             </p:column>  
 
-                            <p:column headerText="#{msg['nombre']}" width="160" filterBy="#{item.empleado.persona.nombre}" filterMatchMode="contains">  
-                                <h:outputText value="#{item.empleado.persona.nombre}" />  
+                            <p:column headerText="#{msg['nombre']}" width="160" filterBy="#{item.nombre}" filterMatchMode="contains">  
+                                <h:outputText value="#{item.nombre}" />  
                             </p:column>  
 
-                            <p:column headerText="#{msg['tipo']}" filterBy="#{item.tipoTrabajador.tipo}" filterMatchMode="contains">  
-                                <h:outputText value="#{item.tipoTrabajador.tipo}" />  
+                            <p:column headerText="#{msg['tipo']}" filterBy="#{item.tipo}" filterMatchMode="contains">  
+                                <h:outputText value="#{item.tipo}" />  
                             </p:column>
                         </p:dataTable> 
-
+                        <h:outputText id="infoRegistroBusquedaRapida" value="#{controlRemoto.infoRegistroBusquedaRapida}" style="position: absolute; left: 15px; top: 270px; font-weight: bold"/>
                         <p:commandButton id="buscarRap" value="#{msg['aceptar']}" actionListener="#{controlRemoto.busquedaRapida}" icon="ui-icon-check"  style="position: absolute; top: 260px; left: 565px"  disabled="#{controlRemoto.buscar}"/>
                         <p:commandButton value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w"  style="position: absolute; top: 260px; left: 653px" onclick="lvBr.hide()" />
                     </p:dialog>
@@ -790,7 +790,7 @@
                         <p:dataTable  id="lvBuscarEmpleado" style=" width: 700px" var="item" value="#{controlRemoto.buscarEmplTipo}"
                                       scrollable="true" scrollHeight="162" scrollWidth="717" widgetVar="buscarE" 
                                       filteredValue="#{controlRemoto.filterBuscarEmpleado}" emptyMessage="#{msg['lovvacio']}"
-                                      rowKey="#{item.empleado.secuencia}" selection="#{controlRemoto.emplSeleccionadoBE}" selectionMode="single" >
+                                      rowKey="#{item.rfEmpleado}" selection="#{controlRemoto.emplSeleccionadoBE}" selectionMode="single" >
 
                             <p:ajax event="rowSelect" listener="#{controlRemoto.activarBuscar()}"  update=":form:buscarEmpl"/>
                             <p:ajax event="rowDblselect" listener="#{controlRemoto.buscarEmpleado()}" process="@this" />
@@ -800,25 +800,24 @@
                                 <p:watermark for="globalFilter" value="#{msg['ingresarvalor']}" />
                             </f:facet>
 
-                            <p:column  headerText="#{msg['codigoE']}" filterOptions="" filterBy="#{item.empleado.codigoempleado}" filterMatchMode="contains">  
-                                <h:outputText value="#{item.empleado.codigoempleado}" />  
+                            <p:column  headerText="#{msg['codigoE']}" filterOptions="" filterBy="#{item.codigoEmpleado}" filterMatchMode="contains">  
+                                <h:outputText value="#{item.codigoEmpleado}" />  
                             </p:column>  
 
-                            <p:column headerText="#{msg['primerapellidoE']}" filterBy="#{item.empleado.persona.primerapellido}" filterMatchMode="contains">  
-                                <h:outputText value="#{item.empleado.persona.primerapellido}" />  
+                            <p:column headerText="#{msg['primerapellidoE']}" filterBy="#{item.primerApellido}" filterMatchMode="contains">  
+                                <h:outputText value="#{item.primerApellido}" />  
                             </p:column>  
 
-                            <p:column headerText="#{msg['segundoapellidoE']}" filterBy="#{item.empleado.persona.segundoapellido}" filterMatchMode="contains" >  
-                                <h:outputText value="#{item.empleado.persona.segundoapellido}" />  
+                            <p:column headerText="#{msg['segundoapellidoE']}" filterBy="#{item.segundoApellido}" filterMatchMode="contains" >  
+                                <h:outputText value="#{item.segundoApellido}" />  
                             </p:column>  
 
-                            <p:column headerText="#{msg['nombre']}" width="160" filterBy="#{item.empleado.persona.nombre}" filterMatchMode="contains">  
-                                <h:outputText value="#{item.empleado.persona.nombre}" />  
+                            <p:column headerText="#{msg['nombre']}" width="160" filterBy="#{item.nombre}" filterMatchMode="contains">  
+                                <h:outputText value="#{item.nombre}" />  
                             </p:column>  
                         </p:dataTable> 
 
                         <h:outputText id="infoRegistroBuscarEmpleados" value="#{controlRemoto.infoRegistroBuscarEmpleados}" style="position: absolute; left: 15px; top: 270px; font-weight: bold"/>
-
                         <p:commandButton id="buscarEmpl" value="#{msg['aceptar']}" icon="ui-icon-check" actionListener="#{controlRemoto.buscarEmpleado()}"   disabled="#{controlRemoto.buscar}" style="position: absolute; top: 260px; left: 565px"/>
                         <p:commandButton value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" onclick="lvBE.hide()" style="position: absolute; top: 260px; left: 653px"/>
                     </p:dialog>
@@ -891,24 +890,24 @@
 
                         <p:column>  
                             <f:facet name="header"><h:outputText value="#{msg['codigoX']}" /></f:facet>
-                            <h:outputText value="#{empleadoVW.empleado.codigoempleado}"/>
+                            <h:outputText value="#{empleadoVW.codigoEmpleado}"/>
                         </p:column>
 
                         <p:column headerText="#{msg['primerApellidoXX']}">                                  
                             <f:facet name="header"><h:outputText value="#{msg['primerApellidoX']}"/></f:facet> 
-                            <h:outputText value="#{empleadoVW.empleado.persona.primerapellido}" />
+                            <h:outputText value="#{empleadoVW.primerApellido}" />
                         </p:column>  
 
                         <p:column headerText="#{msg['segundoApellidoXX']}">      
                             <f:facet name="header"><h:outputText value="#{msg['segundoApellidoX']}"/></f:facet>
-                            <h:outputText value="#{empleadoVW.empleado.persona.segundoapellido}" />
+                            <h:outputText value="#{empleadoVW.segundoApellido}" />
                         </p:column>
 
                         <p:column>                                                              
                             <f:facet name="header"> 
                                 <h:outputText value="#{msg['nombreX']}"/>
                             </f:facet>
-                            <h:outputText value="#{empleadoVW.empleado.persona.nombre}" />
+                            <h:outputText value="#{empleadoVW.nombre}" />
                         </p:column>
                     </p:dataTable>
                 </h:form>

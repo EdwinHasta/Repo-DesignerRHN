@@ -270,6 +270,8 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     AdministrarSesionesInterface administrarSesiones;
     @EJB
     PersistenciaSolucionesNodosInterface persistenciaSolucionesNodos;
+    @EJB
+    PersistenciaVwTiposEmpleadosInterface persistenciaVwTiposEmpleados;
 
     private EntityManager em;
     private Long resultadoActivos;
@@ -530,9 +532,10 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         }
     }
 
-    public List<VWActualesTiposTrabajadores> consultarEmpleadosTipoTrabajador(String tipo) {
+    @Override
+    public List<VwTiposEmpleados> consultarEmpleadosTipoTrabajador(String tipo) {
         try {
-            List<VWActualesTiposTrabajadores> tipoEmpleadoLista = persistenciaVWActualesTiposTrabajadores.FiltrarTipoTrabajador(em, tipo);
+            List<VwTiposEmpleados> tipoEmpleadoLista = persistenciaVwTiposEmpleados.buscarTiposEmpleadosPorTipo(em, tipo);
             return tipoEmpleadoLista;
         } catch (Exception e) {
             return null;
@@ -601,9 +604,9 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     }
 
     @Override
-    public List<VWActualesTiposTrabajadores> consultarRapidaEmpleados() {
+    public List<VwTiposEmpleados> consultarRapidaEmpleados() {
         try {
-            List<VWActualesTiposTrabajadores> busquedaRapidaEmpleado = persistenciaVWActualesTiposTrabajadores.busquedaRapidaTrabajadores(em);
+            List<VwTiposEmpleados> busquedaRapidaEmpleado = persistenciaVwTiposEmpleados.buscarTiposEmpleados(em);
             return busquedaRapidaEmpleado;
         } catch (Exception e) {
             return null;

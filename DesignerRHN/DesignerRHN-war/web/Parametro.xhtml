@@ -124,7 +124,10 @@
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlParametro.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
                                 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlParametro.salir()}" action="nomina" process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " action="nomina" process="@this">
+                                    <f:actionListener binding="#{controlParametro.salir()}" />
+                                    <f:actionListener binding="#{controlRemoto.validarEstadoNominaF()}" />
+                                </p:commandButton>
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
 
                             </p:toolbarGroup>  
@@ -250,7 +253,10 @@
                             <p:commandButton style="position: absolute; left: 700px; top: 255px;  " id="adicionarEmpleado" value="#{msg['adicionarempleado']}" onclick="buscarEmpleadoDialogo.show();" process="@this"/>
                         </fieldset>
                         <p:commandButton style="position: absolute; left: 683px; top: 483px;  " id="ACEPTAR" disabled="#{controlParametro.guardado}" value="#{msg['aceptar']}" icon="ui-icon-check"  onclick="confirmarGuardar.show();" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 483px;  " id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlParametro.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 483px;  " id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" action="nomina" process="@this">
+                            <f:actionListener binding="#{controlParametro.salir()}" />
+                            <f:actionListener binding="#{controlRemoto.validarEstadoNominaF()}" />
+                         </p:commandButton>
                         <h:outputText id="informacionRegistro" value="#{controlParametro.infoRegistro}" style="position: absolute; left: 20px; top: 427px; font-weight: bold"/>
                     </p:panel>
 
@@ -542,7 +548,10 @@
                     <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlParametro.guardarCambios()}" action="nomina" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" action="nomina" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" >
+                            <f:actionListener binding="#{controlParametro.guardarCambios()}" />
+                            <f:actionListener binding="#{controlRemoto.validarEstadoNominaF()}" />
+                        </p:commandButton>
                         <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlParametro.salir()}" action="nomina" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>

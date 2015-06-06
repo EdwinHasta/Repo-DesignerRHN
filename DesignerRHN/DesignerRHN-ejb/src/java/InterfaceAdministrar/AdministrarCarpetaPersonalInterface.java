@@ -123,7 +123,7 @@ public interface AdministrarCarpetaPersonalInterface {
      * @param tipo Tipo del trabajador por el cual se va a filtrar.
      * @return Retorna una lista de VWActualesTiposTrabajadores con la informacion requerida.
      */
-    public List<VWActualesTiposTrabajadores> consultarEmpleadosTipoTrabajador(String tipo);
+    public List<VwTiposEmpleados> consultarEmpleadosTipoTrabajador(String tipo);
     /**
      * Método encargado de recuperar la información de la empresa a la cual pertenece el Usuario conectado.
      * @return Retorna el DetalleEmpresa con la información de la empresa.
@@ -152,7 +152,7 @@ public interface AdministrarCarpetaPersonalInterface {
      * empleados sin importar el tipo.
      * @return Retorna una lista con todos los VWActualesTiposTrabajadores de la vista.
      */
-    public List<VWActualesTiposTrabajadores> consultarRapidaEmpleados();
+    public List<VwTiposEmpleados> consultarRapidaEmpleados();
     /**
      * Método encargado de recuperar una Persona según su identificación.
      * @param identificacion Identificación de la Persona.

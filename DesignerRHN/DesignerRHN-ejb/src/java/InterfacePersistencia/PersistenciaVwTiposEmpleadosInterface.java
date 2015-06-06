@@ -16,4 +16,5 @@ import javax.persistence.EntityManager;
  */
 public interface PersistenciaVwTiposEmpleadosInterface {
     public List<VwTiposEmpleados> buscarTiposEmpleadosPorTipo(EntityManager em, String tipo);
+    public List<VwTiposEmpleados> buscarTiposEmpleados (EntityManager em);
 }

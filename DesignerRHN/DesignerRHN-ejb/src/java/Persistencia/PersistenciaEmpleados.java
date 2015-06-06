@@ -140,18 +140,12 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     @Override
     public Empleados buscarEmpleadoSecuencia(EntityManager em, BigInteger secuencia) {
         try {
-            em.clear();
-            String sql = "SELECT * FROM Empleados e WHERE secuencia = ?";
-            /*
-             yQuery query = em.createQuery("SELECT e FROM Empleados e WHERE e.secuencia = :secuencia");
-             query.setParameter("secuencia", secuencia);
-             query.setHint("javax.persistence.cache.storeMode", "REFRESH");*/
-            Query query = em.createNativeQuery(sql, Empleados.class);
+            Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.secuencia = :secuencia");
+            query.setParameter("secuencia", secuencia);
             Empleados empleado = (Empleados) query.getSingleResult();
             return empleado;
         } catch (Exception e) {
-            PropertyConfigurator.configure("log4j.properties");
-            logger.error("Metodo: buscarEmpleadoSecuencia - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
+            System.err.println("Error PersistenciaEmpleados.buscarEmpleadoSecuencia " + e);
             return null;
         }
     }
