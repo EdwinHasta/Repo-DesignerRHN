@@ -63,7 +63,7 @@
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlConfigurarColumnas.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
                             
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlBusquedaAvanzada.obtenerListaColumnasEscenarios(controlConfigurarColumnas.listaColumnasEscenarios)}" action="busquedaAvanzada" process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlBusquedaAvanzada2.obtenerListaColumnasEscenarios(controlConfigurarColumnas.listaColumnasEscenarios)}" action="busquedaAvanzada" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
                             
                             </p:toolbarGroup>  
@@ -144,7 +144,7 @@
                             
                         </p:dialog> 
 
-                        <p:commandButton style="position: absolute; left: 775px; top: 470px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlBusquedaAvanzada.obtenerListaColumnasEscenarios(controlConfigurarColumnas.listaColumnasEscenarios)}" action="busquedaAvanzada" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 470px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlBusquedaAvanzada2.obtenerListaColumnasEscenarios(controlConfigurarColumnas.listaColumnasEscenarios)}" action="busquedaAvanzada" process="@this" />
 
                     </p:panel>
 

@@ -1,11 +1,20 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Administrar;
 
 import ClasesAyuda.ColumnasBusquedaAvanzada;
 import ClasesAyuda.ParametrosQueryBusquedaAvanzada;
-import Entidades.*;
-import InterfaceAdministrar.AdministrarBusquedaAvanzadaInterface;
+import Entidades.ColumnasEscenarios;
+import Entidades.Empleados;
+import Entidades.ResultadoBusquedaAvanzada;
+import InterfaceAdministrar.AdministrarBusquedaAvanzadaInterface2;
 import InterfaceAdministrar.AdministrarSesionesInterface;
-import InterfacePersistencia.*;
+import InterfacePersistencia.PersistenciaColumnasEscenariosInterface;
+import InterfacePersistencia.PersistenciaEmpleadoInterface;
+import InterfacePersistencia.PersistenciaEmpresasInterface;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,271 +22,32 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 
+/**
+ *
+ * @author PROYECTO01
+ */
 @Stateful
-public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaInterface {
+public class AdministrarBusquedaAvanzada2 implements AdministrarBusquedaAvanzadaInterface2 {
 
-    @EJB
-    AdministrarSesionesInterface administrarSesiones;
-    //NOMINA
-    @EJB
-    PersistenciaCargosInterface persistenciaCargos;
-    @EJB
-    PersistenciaEstructurasInterface persistenciaEstructuras;
-    @EJB
-    PersistenciaEmpleadoInterface persistenciaEmpleados;
-    @EJB
-    PersistenciaMotivosCambiosCargosInterface persistenciaMotivosCambiosCargos;
-    @EJB
-    PersistenciaPapelesInterface persistenciaPapeles;
-    @EJB
-    PersistenciaMotivosLocalizacionesInterface persistenciaMotivosLocalizaciones;
-    @EJB
-    PersistenciaTiposSueldosInterface persistenciaTiposSueldos;
-    @EJB
-    PersistenciaMotivosCambiosSueldosInterface persistenciaMotivosCambiosSueldos;
-    @EJB
-    PersistenciaTiposContratosInterface persistenciaTiposContratos;
-    @EJB
-    PersistenciaMotivosContratosInterface persistenciaMotivosContratos;
-    @EJB
-    PersistenciaTiposTrabajadoresInterface persistenciaTiposTrabajadores;
-    @EJB
-    PersistenciaReformasLaboralesInterface persistenciaReformasLaborales;
-    @EJB
-    PersistenciaContratosInterface persistenciaContratos;
-    @EJB
-    PersistenciaUbicacionesGeograficasInterface persistenciaUbicacionesGeograficas;
-    @EJB
-    PersistenciaTercerosSucursalesInterface persistenciaTercerosSucursales;
-    @EJB
-    PersistenciaTiposEntidadesInterface persistenciaTiposEntidades;
-    @EJB
-    PersistenciaEstadosAfiliacionesInterface persistenciaEstadosAfiliaciones;
-    @EJB
-    PersistenciaPeriodicidadesInterface persistenciaPeriodicidades;
-    @EJB
-    PersistenciaSucursalesInterface persistenciaSucursales;
-    @EJB
-    PersistenciaMotivosMvrsInterface persistenciaMotivosMvrs;
-    @EJB
-    PersistenciaNormasLaboralesInterface persistenciaNormasLaborales;
-    @EJB
-    PersistenciaJornadasLaboralesInterface persistenciaJornadasLaborales;
-    @EJB
-    PersistenciaMotivosRetirosInterface persistenciaMotivosRetiros;
-    //PERSONAL
-    @EJB
-    PersistenciaCiudadesInterface persistenciaCiudades;
-    @EJB
-    PersistenciaEstadosCivilesInterface persistenciaEstadosCiviles;
-    @EJB
-    PersistenciaIdiomasInterface persistenciaIdiomas;
-    @EJB
-    PersistenciaTiposIndicadoresInterface persistenciaTiposIndicadores;
-    @EJB
-    PersistenciaIndicadoresInterface persistenciaIndicadores;
-    @EJB
-    PersistenciaProfesionesInterface persistenciaProfesiones;
-    @EJB
-    PersistenciaInstitucionesInterface persistenciaInstituciones;
-    @EJB
-    PersistenciaCursosInterface persistenciaCursos;
-    @EJB
-    PersistenciaSectoresEconomicosInterface persistenciaSectoresEconomicos;
-    @EJB
-    PersistenciaProyectosInterface persistenciaProyectos;
-    @EJB
-    PersistenciaPryRolesInterface persistenciaPryRoles;
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleado;
     @EJB
     PersistenciaEmpresasInterface persistenciaEmpresas;
     @EJB
     PersistenciaColumnasEscenariosInterface persistenciaColumnasEscenarios;
-    
-    
+
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
     private EntityManager em;
+
     private boolean usoWhere = false;
-    
 
     @Override
     public void obtenerConexion(String idSesion) {
         em = administrarSesiones.obtenerConexionSesion(idSesion);
     }
 
-    //NOMINA
-    @Override
-    public List<Cargos> lovCargos() {
-        return persistenciaCargos.consultarCargos(em);
-    }
-
-    @Override
-    public List<Estructuras> lovEstructuras() {
-        return persistenciaEstructuras.buscarEstructuras(em);
-    }
-
-    @Override
-    public List<Empleados> lovJefe() {
-        return persistenciaEmpleados.buscarEmpleados(em);
-    }
-
-    @Override
-    public List<MotivosCambiosCargos> lovMotivosCargos() {
-        return persistenciaMotivosCambiosCargos.buscarMotivosCambiosCargos(em);
-    }
-
-    @Override
-    public List<Papeles> lovPapeles() {
-        return persistenciaPapeles.consultarPapeles(em);
-    }
-
-    @Override
-    public List<MotivosLocalizaciones> lovMotivosLocalizaciones() {
-        return persistenciaMotivosLocalizaciones.buscarMotivosLocalizaciones(em);
-    }
-
-    @Override
-    public List<TiposSueldos> lovTiposSueldos() {
-        return persistenciaTiposSueldos.buscarTiposSueldos(em);
-    }
-
-    @Override
-    public List<MotivosCambiosSueldos> lovMotivosSueldos() {
-        return persistenciaMotivosCambiosSueldos.buscarMotivosCambiosSueldos(em);
-    }
-
-    @Override
-    public List<TiposContratos> lovTiposContratos() {
-        return persistenciaTiposContratos.tiposContratos(em);
-    }
-
-    @Override
-    public List<MotivosContratos> lovMotivosContratos() {
-        return persistenciaMotivosContratos.buscarMotivosContratos(em);
-    }
-
-    @Override
-    public List<TiposTrabajadores> lovTiposTrabajadores() {
-        return persistenciaTiposTrabajadores.buscarTiposTrabajadores(em);
-    }
-
-    @Override
-    public List<ReformasLaborales> lovReformasLaborales() {
-        return persistenciaReformasLaborales.buscarReformasLaborales(em);
-    }
-
-    @Override
-    public List<Contratos> lovContratos() {
-        return persistenciaContratos.buscarContratos(em);
-    }
-
-    @Override
-    public List<UbicacionesGeograficas> lovUbicaciones() {
-        return persistenciaUbicacionesGeograficas.consultarUbicacionesGeograficas(em);
-    }
-
-    @Override
-    public List<TercerosSucursales> lovTercerosSucursales() {
-        return persistenciaTercerosSucursales.buscarTercerosSucursales(em);
-    }
-
-    @Override
-    public List<TiposEntidades> lovTiposEntidades() {
-        return persistenciaTiposEntidades.buscarTiposEntidades(em);
-    }
-
-    @Override
-    public List<EstadosAfiliaciones> lovEstadosAfiliaciones() {
-        return persistenciaEstadosAfiliaciones.buscarEstadosAfiliaciones(em);
-    }
-
-    @Override
-    public List<Periodicidades> lovFormasPagos() {
-        return persistenciaPeriodicidades.consultarPeriodicidades(em);
-    }
-
-    @Override
-    public List<Sucursales> lovSucursales() {
-        return persistenciaSucursales.consultarSucursales(em);
-    }
-
-    //PERSONAL
-    @Override
-    public List<Motivosmvrs> lovMotivosMvrs() {
-        return persistenciaMotivosMvrs.buscarMotivosMvrs(em);
-    }
-
-    @Override
-    public List<NormasLaborales> lovNormasLaborales() {
-        return persistenciaNormasLaborales.consultarNormasLaborales(em);
-    }
-
-    @Override
-    public List<JornadasLaborales> lovJornadasLaborales() {
-        return persistenciaJornadasLaborales.buscarJornadasLaborales(em);
-    }
-
-    @Override
-    public List<MotivosRetiros> lovMotivosRetiros() {
-        return persistenciaMotivosRetiros.consultarMotivosRetiros(em);
-    }
-
-    @Override
-    public List<Ciudades> lovCiudades() {
-        return persistenciaCiudades.ciudades(em);
-    }
-
-    @Override
-    public List<EstadosCiviles> lovEstadosCiviles() {
-        return persistenciaEstadosCiviles.consultarEstadosCiviles(em);
-    }
-
-    @Override
-    public List<Idiomas> lovIdiomas() {
-        return persistenciaIdiomas.buscarIdiomas(em);
-    }
-
-    @Override
-    public List<TiposIndicadores> lovTiposIndicadores() {
-        return persistenciaTiposIndicadores.buscarTiposIndicadores(em);
-    }
-
-    @Override
-    public List<Indicadores> lovIndicadores() {
-        return persistenciaIndicadores.buscarIndicadores(em);
-    }
-
-    @Override
-    public List<Profesiones> lovProfesiones() {
-        return persistenciaProfesiones.profesiones(em);
-    }
-
-    @Override
-    public List<Instituciones> lovInstitucioneses() {
-        return persistenciaInstituciones.instituciones(em);
-    }
-
-    @Override
-    public List<Cursos> lovCursos() {
-        return persistenciaCursos.cursos(em);
-    }
-
-    @Override
-    public List<SectoresEconomicos> lovSectoresEconomicos() {
-        return persistenciaSectoresEconomicos.buscarSectoresEconomicos(em);
-    }
-
-    @Override
-    public List<Proyectos> lovProyectos() {
-        return persistenciaProyectos.proyectos(em);
-    }
-
-    @Override
-    public List<PryRoles> lovRoles() {
-        return persistenciaPryRoles.pryroles(em);
-    }
-
-    //QUERY
     @Override
     public List<ColumnasEscenarios> buscarColumnasEscenarios() {
         try {
@@ -820,7 +590,7 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
                     queryAux = queryAux + " AND  V.FECHAFINAL <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("METODO")) {
-                    queryAux = queryAux + " AND  V.TIPOSET = '" + listaAuxiliar.get(i).getValorParametro() + "'";
+                    queryAux = queryAux + " AND  V.TIPOSET = '" + listaAuxiliar.get(i).getValorParametro()+"'";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("PROMEDIOMINIMO")) {
                     queryAux = queryAux + " AND  V.PROMEDIO >= " + listaAuxiliar.get(i).getValorParametro();
@@ -918,7 +688,7 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
                     queryAux = queryAux + " AND   P.CIUDADDOCUMENTO = " + listaAuxiliar.get(i).getValorParametro();
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("SEXO")) {
-                    queryAux = queryAux + " AND   P.SEXO = '" + listaAuxiliar.get(i).getValorParametro() + "'";
+                    queryAux = queryAux + " AND   P.SEXO = '" + listaAuxiliar.get(i).getValorParametro()+"'";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("CIUDADNACIMIENTO")) {
                     queryAux = queryAux + " AND  P.CIUDADNACIMIENTO " + listaAuxiliar.get(i).getValorParametro();
@@ -944,10 +714,10 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
             queryAux = queryAux + "WHERE P.SECUENCIA = EM.PERSONA ";
             for (int i = 0; i < listaAuxiliar.size(); i++) {
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("FACTORRH")) {
-                    queryAux = queryAux + " AND  P.FACTORRH  = '" + listaAuxiliar.get(i).getValorParametro() + "'";
+                    queryAux = queryAux + " AND  P.FACTORRH  = '" + listaAuxiliar.get(i).getValorParametro()+"'";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("GRUPOSANGUINEO")) {
-                    queryAux = queryAux + " AND  P.GRUPOSANGUINEO  = '" + listaAuxiliar.get(i).getValorParametro() + "'";
+                    queryAux = queryAux + " AND  P.GRUPOSANGUINEO  = '" + listaAuxiliar.get(i).getValorParametro()+"'";
                 }
             }
             queryAux = queryAux + ")";
@@ -1086,7 +856,7 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
                     queryAux = queryAux + " AND  V.CURSO = " + listaAuxiliar.get(i).getValorParametro();
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("REALIZADO")) {
-                    queryAux = queryAux + " AND  V.ACARGO = '" + listaAuxiliar.get(i).getValorParametro() + "'";
+                    queryAux = queryAux + " AND  V.ACARGO = '" + listaAuxiliar.get(i).getValorParametro()+"'";
                 }
             }
             queryAux = queryAux + ")";
@@ -1124,7 +894,7 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
                     queryAux = queryAux + " AND  V.PROFESION = " + listaAuxiliar.get(i).getValorParametro();
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("REALIZADO")) {
-                    queryAux = queryAux + " AND  V.ACARGO = '" + listaAuxiliar.get(i).getValorParametro() + "'";
+                    queryAux = queryAux + " AND  V.ACARGO = '" + listaAuxiliar.get(i).getValorParametro()+"'";
                 }
             }
             queryAux = queryAux + ")";
@@ -1193,10 +963,10 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
                     queryAux = queryAux + " AND  V.FECHAHASTA = TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("CARGO")) {
-                    queryAux = queryAux + " AND V.CARGO = '" + listaAuxiliar.get(i).getValorParametro() + "'";
+                    queryAux = queryAux + " AND V.CARGO = '" + listaAuxiliar.get(i).getValorParametro()+"'";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("EMPRESA")) {
-                    queryAux = queryAux + " AND V.EMPRESA = '" + listaAuxiliar.get(i).getValorParametro() + "'";
+                    queryAux = queryAux + " AND V.EMPRESA = '" + listaAuxiliar.get(i).getValorParametro()+"'";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("SECTORECONOMICO")) {
                     queryAux = queryAux + " AND V.SECTORECONOMICO = " + listaAuxiliar.get(i).getValorParametro();
@@ -1242,4 +1012,5 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
         }
 
     }
+
 }

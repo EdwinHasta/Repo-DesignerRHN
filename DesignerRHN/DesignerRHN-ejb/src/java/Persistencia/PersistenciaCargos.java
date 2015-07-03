@@ -102,6 +102,7 @@ public class PersistenciaCargos implements PersistenciaCargosInterface {
             List<Cargos> cargos = query.getResultList();
             return cargos;
         } catch (Exception e) {
+            System.out.println("Error PersistenciaCargos.consultarCargos: " + e);
             return null;
         }
     }
