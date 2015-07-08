@@ -357,8 +357,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<BigInteger> empleado = query.getResultList();
             return empleado;
         } catch (Exception e) {
-            PropertyConfigurator.configure("log4j.properties");
-            logger.error("Metodo: buscarEmpleadosBusquedaAvanzadaCodigo - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
+  //          PropertyConfigurator.configure("log4j.properties");
+//            logger.error("Metodo: buscarEmpleadosBusquedaAvanzadaCodigo - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }

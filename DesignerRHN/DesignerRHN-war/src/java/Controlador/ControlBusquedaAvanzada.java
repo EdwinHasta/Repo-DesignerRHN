@@ -2129,7 +2129,7 @@ public class ControlBusquedaAvanzada implements Serializable {
         String queryEmpleado = "SELECT codigoempleado FROM EMPLEADOS EM ";
         if (!query.isEmpty()) {
             queryEmpleado = queryEmpleado + query;
-            System.out.println("PASA6 QUERY: " + query);
+            System.out.println("PASA6 QUERY: " + queryEmpleado);
         }
         listaCodigosEmpleado = administrarBusquedaAvanzada.ejecutarQueryBusquedaAvanzadaPorModulosCodigo(queryEmpleado);
         System.out.println("PASA7");
