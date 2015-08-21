@@ -118,7 +118,7 @@ import org.primefaces.context.RequestContext;
 public class ControlBusquedaAvanzada2 implements Serializable {
 
     /*
-     MODULO DE BUSQUEDA AVANZADA NOMINA
+     * MODULO DE BUSQUEDA AVANZADA NOMINA
      */
     //Inyeccion EJB Administrar de cada modulo
     @EJB
@@ -150,7 +150,6 @@ public class ControlBusquedaAvanzada2 implements Serializable {
     //
     @EJB
     AdministrarBusquedaAvanzadaInterface2 administrarBusquedaAvanzada;
-
     //Objetos para realizar el proceso de busqueda avanzada
     //Modulo Cargos
     private VigenciasCargos vigenciaCargoBA;
@@ -399,10 +398,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
     private BigDecimal promedioMinimoSets, promedioMaximoSets;
     private String tipoMetodoSets;
     /*
-     MODULO DE BUSQUEDA AVANZADA NOMINA
+     * MODULO DE BUSQUEDA AVANZADA NOMINA
      */
     /*
-     MODULO DE BUSQUEDA AVANZADA PERSONAL
+     * MODULO DE BUSQUEDA AVANZADA PERSONAL
      */
     //Inyeccion EJB Para Busqueda Avanzada Personal
     @EJB
@@ -554,10 +553,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
     private String desarrolladoEducacionNoFormal;
     private String empresaExperienciaLaboral, cargoExperienciaLaboral;
     /*
-     MODULO DE BUSQUEDA AVANZADA PERSONAL
+     * MODULO DE BUSQUEDA AVANZADA PERSONAL
      */
     /*
-     VARIABLES TABLA DINAMICA
+     * VARIABLES TABLA DINAMICA
      */
     private boolean aceptar;
     private Date fechaParametro;
@@ -594,12 +593,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
     private int indice, cualCelda;
     private String cabeceraEditarCelda, infoVariableEditarCelda;
     /*
-     VARIABLES TABLA DINAMICA
+     * VARIABLES TABLA DINAMICA
      */
     private int numeroTipoBusqueda;
-
     private ScrollPanel scrollPanelNomina, scrollPanelPersonal;
-
     private int tipoLista;
     private int bandera;
     private Columns columnasDinamicas;
@@ -6002,9 +5999,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         aceptar = true;
         permitirIndexVigenciaCargoPersonal = true;
         /*
-         context.update("form:CargoCargoPostularseDialogo");
-         context.update("form:lovCargoCargoPostularse");
-         context.update("form:aceptarCCP");*/
+         * context.update("form:CargoCargoPostularseDialogo");
+         * context.update("form:lovCargoCargoPostularse");
+         context.update("form:aceptarCCP");
+         */
 
         context.reset("form:lovCargoCargoPostularse:globalFilter");
         context.execute("lovCargoCargoPostularse.clearFilters()");
@@ -6033,9 +6031,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         aceptar = true;
         permitirIndexVigenciaProyecto = true;
         /*
-         context.update("form:ProyectoProyectoDialogo");
-         context.update("form:lovProyectoProyecto");
-         context.update("form:aceptarPP");*/
+         * context.update("form:ProyectoProyectoDialogo");
+         * context.update("form:lovProyectoProyecto");
+         context.update("form:aceptarPP");
+         */
         context.reset("form:lovProyectoProyecto:globalFilter");
         context.execute("lovProyectoProyecto.clearFilters()");
         context.execute("ProyectoProyectoDialogo.hide()");
@@ -6062,9 +6061,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaProyecto = -1;
         aceptar = true;
         permitirIndexVigenciaProyecto = true;/*
-         context.update("form:PryRolProyectoDialogo");
-         context.update("form:lovPryRolProyecto");
-         context.update("form:aceptarPRYP");*/
+         * context.update("form:PryRolProyectoDialogo");
+         * context.update("form:lovPryRolProyecto");
+         context.update("form:aceptarPRYP");
+         */
 
         context.reset("form:lovPryRolProyecto:globalFilter");
         context.execute("lovPryRolProyecto.clearFilters()");
@@ -6092,9 +6092,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaHvExperienciaLaboral = -1;
         aceptar = true;
         permitirIndexHvExperienciaLaboral = true;/*
-         context.update("form:SectorEconomicoExperienciaLaboralDialogo");
-         context.update("form:lovSectorEconomicoExperienciaLaboral");
-         context.update("form:aceptarSEEL");*/
+         * context.update("form:SectorEconomicoExperienciaLaboralDialogo");
+         * context.update("form:lovSectorEconomicoExperienciaLaboral");
+         context.update("form:aceptarSEEL");
+         */
 
         context.reset("form:lovSectorEconomicoExperienciaLaboral:globalFilter");
         context.execute("lovSectorEconomicoExperienciaLaboral.clearFilters()");
@@ -6122,9 +6123,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaHvExperienciaLaboral = -1;
         aceptar = true;
         permitirIndexHvExperienciaLaboral = true;/*
-         context.update("form:MotivoRetiroExperienciaLaboralDialogo");
-         context.update("form:lovMotivoRetiroExperienciaLaboral");
-         context.update("form:aceptarMREL");*/
+         * context.update("form:MotivoRetiroExperienciaLaboralDialogo");
+         * context.update("form:lovMotivoRetiroExperienciaLaboral");
+         context.update("form:aceptarMREL");
+         */
 
         context.reset("form:lovMotivoRetiroExperienciaLaboral:globalFilter");
         context.execute("lovMotivoRetiroExperienciaLaboral.clearFilters()");
@@ -6152,9 +6154,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaNoFormal = -1;
         aceptar = true;
         permitirIndexVigenciaNoFormal = true;/*
-         context.update("form:InstitucionEducacionNoFormalDialogo");
-         context.update("form:lovInstitucionEducacionNoFormal");
-         context.update("form:aceptarIENF");*/
+         * context.update("form:InstitucionEducacionNoFormalDialogo");
+         * context.update("form:lovInstitucionEducacionNoFormal");
+         context.update("form:aceptarIENF");
+         */
 
         context.reset("form:lovInstitucionEducacionNoFormal:globalFilter");
         context.execute("lovInstitucionEducacionNoFormal.clearFilters()");
@@ -6182,9 +6185,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaNoFormal = -1;
         aceptar = true;
         permitirIndexVigenciaNoFormal = true;/*
-         context.update("form:CursoEducacionNoFormalDialogo");
-         context.update("form:lovCursoEducacionNoFormal");
-         context.update("form:aceptarPENF");*/
+         * context.update("form:CursoEducacionNoFormalDialogo");
+         * context.update("form:lovCursoEducacionNoFormal");
+         context.update("form:aceptarPENF");
+         */
 
         context.reset("form:lovCursoEducacionNoFormal:globalFilter");
         context.execute("lovCursoEducacionNoFormal.clearFilters()");
@@ -6212,9 +6216,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaFormal = -1;
         aceptar = true;
         permitirIndexVigenciaFormal = true;/*
-         context.update("form:ProfesionEducacionFormalDialogo");
-         context.update("form:lovProfesionEducacionFormal");
-         context.update("form:aceptarPEF");*/
+         * context.update("form:ProfesionEducacionFormalDialogo");
+         * context.update("form:lovProfesionEducacionFormal");
+         context.update("form:aceptarPEF");
+         */
 
         context.reset("form:lovProfesionEducacionFormal:globalFilter");
         context.execute("lovProfesionEducacionFormal.clearFilters()");
@@ -6242,9 +6247,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaFormal = -1;
         aceptar = true;
         permitirIndexVigenciaFormal = true;/*
-         context.update("form:InstitucionEducacionFormalDialogo");
-         context.update("form:lovInstitucionEducacionFormal");
-         context.update("form:aceptarIEF");*/
+         * context.update("form:InstitucionEducacionFormalDialogo");
+         * context.update("form:lovInstitucionEducacionFormal");
+         context.update("form:aceptarIEF");
+         */
 
         context.reset("form:lovInstitucionEducacionFormal:globalFilter");
         context.execute("lovInstitucionEducacionFormal.clearFilters()");
@@ -6272,9 +6278,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaIndicador = -1;
         aceptar = true;
         permitirIndexVigenciaIndicador = true;/*
-         context.update("form:TipoIndicadorCensoDialogo");
-         context.update("form:lovTipoIndicadorCensol");
-         context.update("form:aceptarTIC");*/
+         * context.update("form:TipoIndicadorCensoDialogo");
+         * context.update("form:lovTipoIndicadorCensol");
+         context.update("form:aceptarTIC");
+         */
 
         context.reset("form:lovTipoIndicadorCenso:globalFilter");
         context.execute("lovTipoIndicadorCenso.clearFilters()");
@@ -6302,9 +6309,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaIndicador = -1;
         aceptar = true;
         permitirIndexVigenciaIndicador = true;/*
-         context.update("form:IndicadorCensoDialogo");
-         context.update("form:lovIndicadorCensol");
-         context.update("form:aceptarIC");*/
+         * context.update("form:IndicadorCensoDialogo");
+         * context.update("form:lovIndicadorCensol");
+         context.update("form:aceptarIC");
+         */
 
         context.reset("form:lovIndicadorCenso:globalFilter");
         context.execute("lovIndicadorCenso.clearFilters()");
@@ -6332,9 +6340,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaIdiomaPersona = -1;
         aceptar = true;
         permitirIndexIdiomaPersona = true;/*
-         context.update("form:IdiomaIdiomaDialogo");
-         context.update("form:lovIdiomaIdiomal");
-         context.update("form:aceptarII");*/
+         * context.update("form:IdiomaIdiomaDialogo");
+         * context.update("form:lovIdiomaIdiomal");
+         context.update("form:aceptarII");
+         */
 
         context.reset("form:lovIdiomaIdioma:globalFilter");
         context.execute("lovIdiomaIdioma.clearFilters()");
@@ -6362,9 +6371,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaEstadoCivil = -1;
         aceptar = true;
         permitirIndexEstadoCivil = true;/*
-         context.update("form:EstadoCivilEstadoCivilDialogo");
-         context.update("form:lovEstadoCivilEstadoCivil");
-         context.update("form:aceptarECEC");*/
+         * context.update("form:EstadoCivilEstadoCivilDialogo");
+         * context.update("form:lovEstadoCivilEstadoCivil");
+         context.update("form:aceptarECEC");
+         */
 
         context.reset("form:lovEstadoCivilEstadoCivil:globalFilter");
         context.execute("lovEstadoCivilEstadoCivil.clearFilters()");
@@ -6392,9 +6402,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaEmpleado = -1;
         aceptar = true;
         permitirIndexEmpleado = true;/*
-         context.update("form:CiudadDocumentoDatosPersonalesDialogo");
-         context.update("form:lovCiudadDocumentoDatosPersonales");
-         context.update("form:aceptarCDDP");*/
+         * context.update("form:CiudadDocumentoDatosPersonalesDialogo");
+         * context.update("form:lovCiudadDocumentoDatosPersonales");
+         context.update("form:aceptarCDDP");
+         */
 
         context.reset("form:lovCiudadDocumentoDatosPersonales:globalFilter");
         context.execute("lovCiudadDocumentoDatosPersonales.clearFilters()");
@@ -6422,9 +6433,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaEmpleado = -1;
         aceptar = true;
         permitirIndexEmpleado = true;/*
-         context.update("form:CiudadNacimientoDatosPersonalesDialogo");
-         context.update("form:lovCiudadNacimientoDatosPersonales");
-         context.update("form:aceptarCNDP");*/
+         * context.update("form:CiudadNacimientoDatosPersonalesDialogo");
+         * context.update("form:lovCiudadNacimientoDatosPersonales");
+         context.update("form:aceptarCNDP");
+         */
 
         context.reset("form:lovCiudadNacimientoDatosPersonales:globalFilter");
         context.execute("lovCiudadNacimientoDatosPersonales.clearFilters()");
@@ -6452,9 +6464,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaMotivoRetiro = -1;
         aceptar = true;
         permitirIndexMotivoRetiro = true;/*
-         context.update("form:MotivoFechaRetiroDialogo");
-         context.update("form:lovMotivoFechaRetiro");
-         context.update("form:aceptarMRFR");*/
+         * context.update("form:MotivoFechaRetiroDialogo");
+         * context.update("form:lovMotivoFechaRetiro");
+         context.update("form:aceptarMRFR");
+         */
 
         context.reset("form:lovMotivoFechaRetiro:globalFilter");
         context.execute("lovMotivoFechaRetiro.clearFilters()");
@@ -6482,9 +6495,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaJornadaLaboral = -1;
         aceptar = true;
         permitirIndexVigenciaJornada = true;/*
-         context.update("form:JornadaJornadaLaboralDialogo");
-         context.update("form:lovJornadaJornadaLaboral");
-         context.update("form:aceptarJLJL");*/
+         * context.update("form:JornadaJornadaLaboralDialogo");
+         * context.update("form:lovJornadaJornadaLaboral");
+         context.update("form:aceptarJLJL");
+         */
 
         context.reset("form:lovJornadaJornadaLaboral:globalFilter");
         context.execute("lovJornadaJornadaLaboral.clearFilters()");
@@ -6512,9 +6526,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaMvrs = -1;
         aceptar = true;
         permitirIndexMvrs = true;/*
-         context.update("form:MotivoMvrsDialogo");
-         context.update("form:lovMotivoMvrs");
-         context.update("form:aceptarMMVR");*/
+         * context.update("form:MotivoMvrsDialogo");
+         * context.update("form:lovMotivoMvrs");
+         context.update("form:aceptarMMVR");
+         */
 
         context.reset("form:lovMotivoMvrs:globalFilter");
         context.execute("lovMotivoMvrs.clearFilters()");
@@ -6542,9 +6557,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaFormaPago = -1;
         aceptar = true;
         permitirIndexVigenciaFormaPago = true;/*
-         context.update("form:PeriodicidadFormaPagoDialogo");
-         context.update("form:lovPeriodicidadFormaPago");
-         context.update("form:aceptarPFP");*/
+         * context.update("form:PeriodicidadFormaPagoDialogo");
+         * context.update("form:lovPeriodicidadFormaPago");
+         context.update("form:aceptarPFP");
+         */
 
         context.reset("form:lovPeriodicidadFormaPago:globalFilter");
         context.execute("lovPeriodicidadFormaPago.clearFilters()");
@@ -6572,9 +6588,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaFormaPago = -1;
         aceptar = true;
         permitirIndexVigenciaFormaPago = true;/*
-         context.update("form:SucursalFormaPagoDialogo");
-         context.update("form:lovSucursalFormaPago");
-         context.update("form:aceptarSFP");*/
+         * context.update("form:SucursalFormaPagoDialogo");
+         * context.update("form:lovSucursalFormaPago");
+         context.update("form:aceptarSFP");
+         */
 
         context.reset("form:lovSucursalFormaPago:globalFilter");
         context.execute("lovSucursalFormaPago.clearFilters()");
@@ -6602,9 +6619,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaAfiliacion = -1;
         aceptar = true;
         permitirIndexVigenciaAfiliacion = true;/*
-         context.update("form:EstadoAfiliacionDialogo");
-         context.update("form:lovEstadoAfiliacion");
-         context.update("form:aceptarEA");*/
+         * context.update("form:EstadoAfiliacionDialogo");
+         * context.update("form:lovEstadoAfiliacion");
+         context.update("form:aceptarEA");
+         */
 
         context.reset("form:lovEstadoAfiliacion:globalFilter");
         context.execute("lovEstadoAfiliacion.clearFilters()");
@@ -6632,9 +6650,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaAfiliacion = -1;
         aceptar = true;
         permitirIndexVigenciaAfiliacion = true;/*
-         context.update("form:TerceroAfiliacionDialogo");
-         context.update("form:lovTerceroAfiliacion");
-         context.update("form:aceptarTSA");*/
+         * context.update("form:TerceroAfiliacionDialogo");
+         * context.update("form:lovTerceroAfiliacion");
+         context.update("form:aceptarTSA");
+         */
 
         context.reset("form:lovTerceroAfiliacion:globalFilter");
         context.execute("lovTerceroAfiliacion.clearFilters()");
@@ -6662,9 +6681,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaAfiliacion = -1;
         aceptar = true;
         permitirIndexVigenciaAfiliacion = true;/*
-         context.update("form:TipoEntidadAfiliacionDialogo");
-         context.update("form:lovTipoEntidadAfiliacion");
-         context.update("form:aceptarTEA");*/
+         * context.update("form:TipoEntidadAfiliacionDialogo");
+         * context.update("form:lovTipoEntidadAfiliacion");
+         context.update("form:aceptarTEA");
+         */
 
         context.reset("form:lovTipoEntidadAfiliacion:globalFilter");
         context.execute("lovTipoEntidadAfiliacion.clearFilters()");
@@ -6693,9 +6713,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaUbicacion = -1;
         aceptar = true;
         permitirIndexVigenciaUbicacion = true;/*
-         context.update("form:UbicacionUbicacionDialogo");
-         context.update("form:lovUbicacionUbicacion");
-         context.update("form:aceptarUUG");*/
+         * context.update("form:UbicacionUbicacionDialogo");
+         * context.update("form:lovUbicacionUbicacion");
+         context.update("form:aceptarUUG");
+         */
 
         context.reset("form:lovUbicacionUbicacion:globalFilter");
         context.execute("lovUbicacionUbicacion.clearFilters()");
@@ -6723,9 +6744,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaContrato = -1;
         aceptar = true;
         permitirIndexVigenciaContrato = true;/*
-         context.update("form:LegislacionLegislacionLaboralDialogo");
-         context.update("form:lovLegislacionLegislacionLaboral");
-         context.update("form:aceptarLLL");*/
+         * context.update("form:LegislacionLegislacionLaboralDialogo");
+         * context.update("form:lovLegislacionLegislacionLaboral");
+         context.update("form:aceptarLLL");
+         */
 
         context.reset("form:lovLegislacionLegislacionLaboral:globalFilter");
         context.execute("lovLegislacionLegislacionLaboral.clearFilters()");
@@ -6753,9 +6775,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaNormaLaboral = -1;
         aceptar = true;
         permitirIndexVigenciaNormaEmpleado = true;/*
-         context.update("form:NormaLaboralNormaLaboralDialogo");
-         context.update("form:lovNormaLaboralNormaLaboral");
-         context.update("form:aceptarNLNL");*/
+         * context.update("form:NormaLaboralNormaLaboralDialogo");
+         * context.update("form:lovNormaLaboralNormaLaboral");
+         context.update("form:aceptarNLNL");
+         */
 
         context.reset("form:lovNormaLaboralNormaLaboral:globalFilter");
         context.execute("lovNormaLaboralNormaLaboral.clearFilters()");
@@ -6783,9 +6806,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaReformaLaboral = -1;
         aceptar = true;
         permitirIndexVigenciaReformaLaboral = true;/*
-        context.update("form:ReformaLaboralTipoSalarioDialogo");
-        context.update("form:lovReformaLaboralTipoSalario");
-        context.update("form:aceptarRLTS");*/
+         * context.update("form:ReformaLaboralTipoSalarioDialogo");
+         * context.update("form:lovReformaLaboralTipoSalario");
+        context.update("form:aceptarRLTS");
+         */
         context.reset("form:lovReformaLaboralTipoSalario:globalFilter");
         context.execute("lovReformaLaboralTipoSalario.clearFilters()");
         context.execute("ReformaLaboralTipoSalarioDialogo.hide()");
@@ -6812,9 +6836,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaTipoTrabajador = -1;
         aceptar = true;
         permitirIndexVigenciaTipoTrabajador = true;/*
-        context.update("form:TipoTrabajadorTipoTrabajadorDialogo");
-        context.update("form:lovTipoTrabajadorTipoTrabajador");
-        context.update("form:aceptarTTTT");*/
+         * context.update("form:TipoTrabajadorTipoTrabajadorDialogo");
+         * context.update("form:lovTipoTrabajadorTipoTrabajador");
+        context.update("form:aceptarTTTT");
+         */
         context.reset("form:lovTipoTrabajadorTipoTrabajador:globalFilter");
         context.execute("lovTipoTrabajadorTipoTrabajador.clearFilters()");
         context.execute("TipoTrabajadorTipoTrabajadorDialogo.hide()");
@@ -6841,9 +6866,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaTipoContrato = -1;
         aceptar = true;
         permitirIndexVigenciaTipoContrato = true;/*
-        context.update("form:TipoContratoFechaContratoDialogo");
-        context.update("form:lovTipoContratoFechaContrato");
-        context.update("form:aceptarTCFC");*/
+         * context.update("form:TipoContratoFechaContratoDialogo");
+         * context.update("form:lovTipoContratoFechaContrato");
+        context.update("form:aceptarTCFC");
+         */
         context.reset("form:lovTipoContratoFechaContrato:globalFilter");
         context.execute("lovTipoContratoFechaContrato.clearFilters()");
         context.execute("TipoContratoFechaContratoDialogo.hide()");
@@ -6870,9 +6896,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaTipoContrato = -1;
         aceptar = true;
         permitirIndexVigenciaTipoContrato = true;/*
-        context.update("form:MotivoFechaContratoDialogo");
-        context.update("form:lovMotivoFechaContrato");
-        context.update("form:aceptarMFC");*/
+         * context.update("form:MotivoFechaContratoDialogo");
+         * context.update("form:lovMotivoFechaContrato");
+        context.update("form:aceptarMFC");
+         */
         context.reset("form:lovMotivoFechaContrato:globalFilter");
         context.execute("lovMotivoFechaContrato.clearFilters()");
         context.execute("MotivoFechaContratoDialogo.hide()");
@@ -6899,9 +6926,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaSueldo = -1;
         aceptar = true;
         permitirIndexVigenciaSueldo = true;/*
-        context.update("form:TipoSueldoSueldoDialogo");
-        context.update("form:lovTipoSueldoSueldo");
-        context.update("form:aceptarTSS");*/
+         * context.update("form:TipoSueldoSueldoDialogo");
+         * context.update("form:lovTipoSueldoSueldo");
+        context.update("form:aceptarTSS");
+         */
         context.reset("form:lovTipoSueldoSueldo:globalFilter");
         context.execute("lovTipoSueldoSueldo.clearFilters()");
         context.execute("TipoSueldoSueldoDialogo.hide()");
@@ -6928,9 +6956,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaSueldo = -1;
         aceptar = true;
         permitirIndexVigenciaSueldo = true;/*
-        context.update("form:MotivoSueldoDialogo");
-        context.update("form:lovMotivoSueldo");
-        context.update("form:aceptarMSS");*/
+         * context.update("form:MotivoSueldoDialogo");
+         * context.update("form:lovMotivoSueldo");
+        context.update("form:aceptarMSS");
+         */
         context.reset("form:lovMotivoSueldo:globalFilter");
         context.execute("lovMotivoSueldo.clearFilters()");
         context.execute("MotivoSueldoDialogo.hide()");
@@ -6957,9 +6986,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaLocalizacion = -1;
         aceptar = true;
         permitirIndexVigenciaLocalizacion = true;/*
-        context.update("form:LocalizacionCentroCostoDialogo");
-        context.update("form:lovLocalizacionCentroCosto");
-        context.update("form:aceptarECC");*/
+         * context.update("form:LocalizacionCentroCostoDialogo");
+         * context.update("form:lovLocalizacionCentroCosto");
+        context.update("form:aceptarECC");
+         */
         context.reset("form:lovLocalizacionCentroCosto:globalFilter");
         context.execute("lovLocalizacionCentroCosto.clearFilters()");
         context.execute("LocalizacionCentroCostoDialogo.hide()");
@@ -6986,9 +7016,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaLocalizacion = -1;
         aceptar = true;
         permitirIndexVigenciaLocalizacion = true;/*
-        context.update("form:MotivoCentroCostoDialogo");
-        context.update("form:lovMotivoCentroCosto");
-        context.update("form:aceptarMCC");*/
+         * context.update("form:MotivoCentroCostoDialogo");
+         * context.update("form:lovMotivoCentroCosto");
+        context.update("form:aceptarMCC");
+         */
         context.reset("form:lovMotivoCentroCosto:globalFilter");
         context.execute("lovMotivoCentroCosto.clearFilters()");
         context.execute("MotivoCentroCostoDialogo.hide()");
@@ -7016,9 +7047,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaCargo = -1;
         aceptar = true;
         permitirIndexVigenciaCargo = true;/*
-        context.update("form:EstructuraCargoDialogo");
-        context.update("form:lovEstructuraCargo");
-        context.update("form:aceptarEC");*/
+         * context.update("form:EstructuraCargoDialogo");
+         * context.update("form:lovEstructuraCargo");
+        context.update("form:aceptarEC");
+         */
         context.reset("form:lovEstructuraCargo:globalFilter");
         context.execute("lovEstructuraCargo.clearFilters()");
         context.execute("EstructuraCargoDialogo.hide()");
@@ -7045,9 +7077,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaCargo = -1;
         aceptar = true;
         permitirIndexVigenciaCargo = true;/*
-        context.update("form:CargoCargoDialogo");
-        context.update("form:lovCargoCargo");
-        context.update("form:aceptarCC");*/
+         * context.update("form:CargoCargoDialogo");
+         * context.update("form:lovCargoCargo");
+        context.update("form:aceptarCC");
+         */
         context.reset("form:lovCargoCargo:globalFilter");
         context.execute("lovCargoCargo.clearFilters()");
         context.execute("CargoCargoDialogo.hide()");
@@ -7074,9 +7107,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaCargo = -1;
         aceptar = true;
         permitirIndexVigenciaCargo = true;/*
-        context.update("form:PapelCargoDialogo");
-        context.update("form:lovPapelCargo");
-        context.update("form:aceptarPC");*/
+         * context.update("form:PapelCargoDialogo");
+         * context.update("form:lovPapelCargo");
+        context.update("form:aceptarPC");
+         */
         context.reset("form:lovPapelCargo:globalFilter");
         context.execute("lovPapelCargo.clearFilters()");
         context.execute("PapelCargoDialogo.hide()");
@@ -7103,9 +7137,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaCargo = -1;
         aceptar = true;
         permitirIndexVigenciaCargo = true;/*
-        context.update("form:MotivoCargoDialogo");
-        context.update("form:lovMotivoCargo");
-        context.update("form:aceptarMC");*/
+         * context.update("form:MotivoCargoDialogo");
+         * context.update("form:lovMotivoCargo");
+        context.update("form:aceptarMC");
+         */
         context.reset("form:lovMotivoCargo:globalFilter");
         context.execute("lovMotivoCargo.clearFilters()");
         context.execute("MotivoCargoDialogo.hide()");
@@ -7132,9 +7167,10 @@ public class ControlBusquedaAvanzada2 implements Serializable {
         casillaVigenciaCargo = -1;
         aceptar = true;
         permitirIndexVigenciaCargo = true;/*
-        context.update("form:JefeCargoDialogo");
-        context.update("form:lovJefeCargo");
-        context.update("form:aceptarJC");*/
+         * context.update("form:JefeCargoDialogo");
+         * context.update("form:lovJefeCargo");
+        context.update("form:aceptarJC");
+         */
         context.reset("form:lovJefeCargo:globalFilter");
         context.execute("lovJefeCargo.clearFilters()");
         context.execute("JefeCargoDialogo.hide()");
@@ -7644,45 +7680,29 @@ public class ControlBusquedaAvanzada2 implements Serializable {
                 columnaSeleccionada = listaColumnasBusquedaAvanzada.get(0);
             }
         }
-        /*int tamEmpleado = listaEmpleadosResultados.size();
-         for (int i = 0; i < tamEmpleado; i++) {
-         listaColumnasBusquedaAvanzada.add(new ColumnasBusquedaAvanzada("", "", "", "", "", "", "", "", "", "", "", "", "", ""));
+        /*
+         * int tamEmpleado = listaEmpleadosResultados.size(); for (int i = 0; i
+         * < tamEmpleado; i++) { listaColumnasBusquedaAvanzada.add(new
+         * ColumnasBusquedaAvanzada("", "", "", "", "", "", "", "", "", "", "",
+         * "", "", "")); } int tam = 0; if (listaColumnasEscenarios != null) {
+         * tam = listaColumnasEscenarios.size(); } System.out.println("dsadsa
+         * listaColumnasEscenarios : " + tam); if (tam > 0) { for (int j = 0; j
+         * < listaColumnasEscenarios.size(); j++) { String[] palabras =
+         * listaColumnasEscenarios.get(j).getNombrecolumna().split(" ");
+         * nuevaColumna = palabras[0]; for (int i = 1; i < palabras.length; i++)
+         * { nuevaColumna = nuevaColumna + "_" + palabras[i]; } columnTemplate =
+         * columnTemplate + nuevaColumna + " "; nuevaColumna = ""; } } String[]
+         * valoresColumnasDeseadas = columnTemplate.split(" "); columns.clear();
+         * mapValoresColumnas.clear(); if (tamEmpleado > 0) {
+         * System.out.println("valoresColumnasDeseadas.length : " +
+         * valoresColumnasDeseadas.length); if (valoresColumnasDeseadas.length
+         * == 4) { createStaticColumns(); cargarTablaColumnasEstaticas(); } if
+         * (valoresColumnasDeseadas.length >= 5) { createStaticColumns();
+         * createDynamicColumns(); cargarTablaColumnasEstaticas();
+         * cargarTablaColumnasDinamicas(); } } else {
+         * listaColumnasBusquedaAvanzada = null; createStaticColumns();
          }
-         int tam = 0;
-         if (listaColumnasEscenarios != null) {
-         tam = listaColumnasEscenarios.size();
-         }
-         System.out.println("dsadsa listaColumnasEscenarios : " + tam);
-         if (tam > 0) {
-         for (int j = 0; j < listaColumnasEscenarios.size(); j++) {
-         String[] palabras = listaColumnasEscenarios.get(j).getNombrecolumna().split(" ");
-         nuevaColumna = palabras[0];
-         for (int i = 1; i < palabras.length; i++) {
-         nuevaColumna = nuevaColumna + "_" + palabras[i];
-         }
-         columnTemplate = columnTemplate + nuevaColumna + " ";
-         nuevaColumna = "";
-         }
-         }
-         String[] valoresColumnasDeseadas = columnTemplate.split(" ");
-         columns.clear();
-         mapValoresColumnas.clear();
-         if (tamEmpleado > 0) {
-         System.out.println("valoresColumnasDeseadas.length : " + valoresColumnasDeseadas.length);
-         if (valoresColumnasDeseadas.length == 4) {
-         createStaticColumns();
-         cargarTablaColumnasEstaticas();
-         }
-         if (valoresColumnasDeseadas.length >= 5) {
-         createStaticColumns();
-         createDynamicColumns();
-         cargarTablaColumnasEstaticas();
-         cargarTablaColumnasDinamicas();
-         }
-         } else {
-         listaColumnasBusquedaAvanzada = null;
-         createStaticColumns();
-         }*/
+         */
     }
 
     public void createStaticColumns() {
@@ -7896,7 +7916,7 @@ public class ControlBusquedaAvanzada2 implements Serializable {
     }
 
     public void exportPDF() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosBusquedaAvanzadaExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:resultadoBusqueda");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "ResultadosBusquedaAvanzada_PDF", false, false, "UTF-8", null, null);
@@ -7910,12 +7930,11 @@ public class ControlBusquedaAvanzada2 implements Serializable {
      * @throws IOException Excepcion de In-Out de datos
      */
     public void exportXLS() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosBusquedaAvanzadaExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:resultadoBusqueda");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "ResultadosBusquedaAvanzada_XLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-
     }
 
     public void posicionTablaBusquedaAvanzada() {
@@ -10266,5 +10285,4 @@ public class ControlBusquedaAvanzada2 implements Serializable {
     public void setColumnaSeleccionada(ColumnasBusquedaAvanzada columnaSeleccionada) {
         this.columnaSeleccionada = columnaSeleccionada;
     }
-
 }

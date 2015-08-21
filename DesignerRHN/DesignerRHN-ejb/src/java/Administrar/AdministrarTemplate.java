@@ -8,11 +8,8 @@ import InterfaceAdministrar.AdministrarTemplateInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaEmpresasInterface;
 import InterfacePersistencia.PersistenciaGeneralesInterface;
-import java.io.IOException;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 
 /**

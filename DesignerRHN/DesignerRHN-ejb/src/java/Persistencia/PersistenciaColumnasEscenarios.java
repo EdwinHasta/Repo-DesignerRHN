@@ -24,10 +24,10 @@ import javax.persistence.Query;
 @Stateless
 public class PersistenciaColumnasEscenarios implements PersistenciaColumnasEscenariosInterface {
     /*
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-    */
-    
+     * @PersistenceContext(unitName = "DesignerRHN-ejbPU") private EntityManager
+     * em;
+     */
+
     @Override
     public List<ColumnasEscenarios> buscarColumnasEscenarios(EntityManager em) {
         try {
@@ -42,7 +42,7 @@ public class PersistenciaColumnasEscenarios implements PersistenciaColumnasEscen
     }
 
     @Override
-    public List<ColumnasBusquedaAvanzada> buscarQVWEmpleadosCorteCodigoEmpleado(EntityManager em,List<Empleados> listaEmpleadosResultados, List<String> campos) {
+    public List<ColumnasBusquedaAvanzada> buscarQVWEmpleadosCorteCodigoEmpleado(EntityManager em, List<Empleados> listaEmpleadosResultados, List<String> campos) {
         try {
             em.clear();
             List<ColumnasBusquedaAvanzada> registro = new ArrayList<ColumnasBusquedaAvanzada>();
@@ -102,7 +102,7 @@ public class PersistenciaColumnasEscenarios implements PersistenciaColumnasEscen
     }
 
     @Override
-    public List<ResultadoBusquedaAvanzada> buscarQVWEmpleadosCorteCodigoEmpleadoCodigo(EntityManager em,List<BigInteger> listaEmpleadosResultados, String campos) {
+    public List<ResultadoBusquedaAvanzada> buscarQVWEmpleadosCorteCodigoEmpleadoCodigo(EntityManager em, List<BigInteger> listaEmpleadosResultados, String campos) {
         try {
             em.clear();
             String[] nnn = campos.split(",");
@@ -115,12 +115,13 @@ public class PersistenciaColumnasEscenarios implements PersistenciaColumnasEscen
                 if (aux.contains("FECHA")) {
                     camposAux = camposAux + ", NVL(TO_CHAR(" + nnn[i] + ",'DD/MM/YYYY'),' ') COLUMNA" + String.valueOf(numColumna) + " ";
                 } else {
-                    camposAux = camposAux + ", NVL(TO_CHAR(" + nnn[i] + "),' ') COLUMNA" + String.valueOf(numColumna) + " ";
+                    camposAux = camposAux + ", NVL(TO_CHAR('" + nnn[i] + "'),' ') COLUMNA" + String.valueOf(numColumna) + " ";
                 }
                 i++;
                 numColumna++;
             }
             String queryMap = "SELECT " + camposAux + " FROM QVWEmpleadosCorte q WHERE q.codigoempleado= ?";
+            System.out.println("queryMap: " + queryMap);
             List<ResultadoBusquedaAvanzada> registroPrueba = new ArrayList<ResultadoBusquedaAvanzada>();
             for (int j = 0; j < listaEmpleadosResultados.size(); j++) {
                 ResultadoBusquedaAvanzada resultado = new ResultadoBusquedaAvanzada();

@@ -2,8 +2,12 @@ package Controlador;
 
 import ClasesAyuda.ParametrosBusquedaAvanzada;
 import ClasesAyuda.ParametrosQueryBusquedaAvanzada;
+import ComponentesDinamicos.ControladorColumnasDinamicas;
 import Entidades.*;
+import Exportar.ExportarPDF;
+import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarBusquedaAvanzadaInterface;
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -14,14 +18,17 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.Exporter;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.context.RequestContext;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class ControlBusquedaAvanzada implements Serializable {
 
     @EJB
@@ -187,6 +194,13 @@ public class ControlBusquedaAvanzada implements Serializable {
     private String vTipoFechaEducacionNoFormal;
     //Parametros Busqueda Avanzada
     private List<ParametrosQueryBusquedaAvanzada> listaParametrosQueryModulos;
+    //LOV Columnas de busqueda
+    List<ColumnasEscenarios> lovColumnasEscenarios;
+    List<ColumnasEscenarios> seleccionColumnasEscenarios;
+    List<ColumnasEscenarios> filtradoColumnasEscenarios;
+    //Respuesta de la busqueda avanzada
+    private List<ResultadoBusquedaAvanzada> listaResultadoBusqueda;
+    private List<ResultadoBusquedaAvanzada> filtroResultadoBusqueda;
     //Variables miscelaneas
     private String valorPorDefecto;
     private String valorCopia;
@@ -1385,6 +1399,10 @@ public class ControlBusquedaAvanzada implements Serializable {
         }
     }
 
+    public void requerirLovColumnasBusqueda() {
+        lovColumnasEscenarios = administrarBusquedaAvanzada.buscarColumnasEscenarios();
+    }
+
     //METODO ACEPTAR - PARAMETROS NOMIMA
     public void actualizarParametroNomina(String tipoLov) {
         if (tipoLov.equals("CARGO")) {
@@ -1622,6 +1640,8 @@ public class ControlBusquedaAvanzada implements Serializable {
             parametros.getParametrosBusquedaPersonal().setCargo(seleccionCargo);
             seleccionCargo = null;
             filtroLovCargos = null;
+        } else if (tipoLov.equals("COLUMNASBUSQUEDA")) {
+            filtradoColumnasEscenarios = null;
         }
     }
 
@@ -1670,6 +1690,9 @@ public class ControlBusquedaAvanzada implements Serializable {
         } else if (tipoLov.equals("CARGO")) {
             seleccionCargo = null;
             filtroLovCargos = null;
+        } else if (tipoLov.equals("COLUMNASBUSQUEDA")) {
+            seleccionColumnasEscenarios = null;
+            filtradoColumnasEscenarios = null;
         }
     }
 
@@ -2117,23 +2140,22 @@ public class ControlBusquedaAvanzada implements Serializable {
     //ARMAR QUERY BUSQUEDA AVANZADA
     public void ejecutarBusqueda() {
         //restaurar();
-        System.out.println("PASA1");
         listaParametrosQueryModulos = new ArrayList<ParametrosQueryBusquedaAvanzada>();
-        System.out.println("PASA2");
         cargueQueryModuloNomina();
-        System.out.println("PASA3");
         cargueQueryModuloPersonal();
-        System.out.println("PASA4");
         String query = administrarBusquedaAvanzada.armarQueryModulosBusquedaAvanzada(listaParametrosQueryModulos);
-        System.out.println("PASA5 QUERY: " + query);
+        System.out.println("QUERY: " + query);
         String queryEmpleado = "SELECT codigoempleado FROM EMPLEADOS EM ";
         if (!query.isEmpty()) {
             queryEmpleado = queryEmpleado + query;
-            System.out.println("PASA6 QUERY: " + queryEmpleado);
+            System.out.println("SUPER QUERY: " + queryEmpleado);
+            listaCodigosEmpleado = administrarBusquedaAvanzada.ejecutarQueryBusquedaAvanzadaPorModulosCodigo(queryEmpleado);
+            String columnas = convertirListaAString();
+            listaResultadoBusqueda = administrarBusquedaAvanzada.obtenerQVWEmpleadosCorteParaEmpleadoCodigo(listaCodigosEmpleado, columnas);
+            FacesContext context = FacesContext.getCurrentInstance();
+            ControladorColumnasDinamicas controladorColumnasDinamicas = (ControladorColumnasDinamicas) context.getApplication().evaluateExpressionGet(context, "#{controladorColumnasDinamicas}", ControladorColumnasDinamicas.class);
+            controladorColumnasDinamicas.updateColumns(columnas);
         }
-        listaCodigosEmpleado = administrarBusquedaAvanzada.ejecutarQueryBusquedaAvanzadaPorModulosCodigo(queryEmpleado);
-        System.out.println("PASA7");
-        //updateColumns();
     }
 
     public void cargueQueryModuloNomina() {
@@ -2158,7 +2180,7 @@ public class ControlBusquedaAvanzada implements Serializable {
     public void cargueQueryModuloPersonal() {
         FacesContext c = FacesContext.getCurrentInstance();
         TabView t = (TabView) c.getViewRoot().findComponent("form:opcionesCosto");
-        if (t.getActiveIndex() == 0) {
+        if (t.getActiveIndex() == 1) {
             ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("TIPOTRABAJADOR", "BTIPOTRABAJADOR", "A");
             listaParametrosQueryModulos.add(parametro);
             ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("TIPOTRABAJADOR", "TIPOTRABAJADORACTIVO", "ACTIVO");
@@ -2219,7 +2241,7 @@ public class ControlBusquedaAvanzada implements Serializable {
                 listaParametrosQueryModulos.add(parametro);
             }
             if (this.parametros.getParametrosBusquedaNomina().getVigenciaCargo().getPapel() != null) {
-                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("CARGO", "PAPEL", this.parametros.getParametrosBusquedaNomina().getVigenciaCargo().getPapel().toString());
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("CARGO", "PAPEL", this.parametros.getParametrosBusquedaNomina().getVigenciaCargo().getPapel().getSecuencia().toString());
                 listaParametrosQueryModulos.add(parametro);
             }
         }
@@ -2283,7 +2305,7 @@ public class ControlBusquedaAvanzada implements Serializable {
                 }
             }
             if (this.parametros.getParametrosBusquedaNomina().getVigenciaSueldo().getTiposueldo() != null) {
-                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("SUELDO", "TIPOSUELDO ", this.parametros.getParametrosBusquedaNomina().getVigenciaSueldo().getTiposueldo().getSecuencia().toString());
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("SUELDO", "TIPOSUELDO", this.parametros.getParametrosBusquedaNomina().getVigenciaSueldo().getTiposueldo().getSecuencia().toString());
                 listaParametrosQueryModulos.add(parametro);
             }
             if (this.parametros.getParametrosBusquedaNomina().getVigenciaSueldo().getMotivocambiosueldo() != null) {
@@ -2325,7 +2347,7 @@ public class ControlBusquedaAvanzada implements Serializable {
                 }
             }
             if (this.parametros.getParametrosBusquedaNomina().getVigenciaTipoContrato().getTipocontrato() != null) {
-                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("FECHACONTRATO", "TIPOCONTRATO", this.parametros.getParametrosBusquedaNomina().getVigenciaTipoContrato().getTipocontrato().toString());
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("FECHACONTRATO", "TIPOCONTRATO", this.parametros.getParametrosBusquedaNomina().getVigenciaTipoContrato().getTipocontrato().getSecuencia().toString());
                 listaParametrosQueryModulos.add(parametro);
             }
             if (this.parametros.getParametrosBusquedaNomina().getVigenciaTipoContrato().getMotivocontrato() != null) {
@@ -2359,7 +2381,7 @@ public class ControlBusquedaAvanzada implements Serializable {
                 }
             }
             if (this.parametros.getParametrosBusquedaNomina().getVigenciaTipoTrabajador().getTipotrabajador() != null) {
-                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("TIPOTRABAJADOR", "TIPOTRABAJADOR", this.parametros.getParametrosBusquedaNomina().getVigenciaTipoTrabajador().getTipotrabajador().toString());
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("TIPOTRABAJADOR", "TIPOTRABAJADOR", this.parametros.getParametrosBusquedaNomina().getVigenciaTipoTrabajador().getTipotrabajador().getSecuencia().toString());
                 listaParametrosQueryModulos.add(parametro);
             }
         }
@@ -2562,7 +2584,7 @@ public class ControlBusquedaAvanzada implements Serializable {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("FORMAPAGO", "FORMAPAGO", this.parametros.getParametrosBusquedaNomina().getVigenciaFormaPago().getFormapago().getSecuencia().toString());
                 listaParametrosQueryModulos.add(parametro);
             }
-            if (this.parametros.getParametrosBusquedaNomina().getVigenciaFormaPago().getSucursal() != null) {
+            if (this.parametros.getParametrosBusquedaNomina().getVigenciaFormaPago().getSucursal() != null && this.parametros.getParametrosBusquedaNomina().getVigenciaFormaPago().getSucursal().getSecuencia() != null) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("FORMAPAGO", "SUCURSAL", this.parametros.getParametrosBusquedaNomina().getVigenciaFormaPago().getSucursal().getSecuencia().toString());
                 listaParametrosQueryModulos.add(parametro);
             }
@@ -2642,7 +2664,7 @@ public class ControlBusquedaAvanzada implements Serializable {
                     listaParametrosQueryModulos.add(parametro5);
                 }
             }
-            if (this.parametros.getParametrosBusquedaNomina().getTipoMetodoSet() != null) {
+            if (this.parametros.getParametrosBusquedaNomina().getTipoMetodoSet() != null && !this.parametros.getParametrosBusquedaNomina().getTipoMetodoSet().isEmpty()) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("SETS", "METODO", this.parametros.getParametrosBusquedaNomina().getTipoMetodoSet());
                 listaParametrosQueryModulos.add(parametro);
             }
@@ -2725,7 +2747,7 @@ public class ControlBusquedaAvanzada implements Serializable {
                 ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("JORNADALABORAL", "JORNADALABORALHASTA", df.format(this.parametros.getParametrosBusquedaNomina().getFechaFinalJornadaLaboral()).toString());
                 listaParametrosQueryModulos.add(parametro3);
             }
-            if (this.parametros.getParametrosBusquedaNomina().getVigenciaJornada().getJornadatrabajo() != null) {
+            if (this.parametros.getParametrosBusquedaNomina().getVigenciaJornada().getJornadatrabajo().getSecuencia() != null) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("JORNADALABORAL", "JORNADA", this.parametros.getParametrosBusquedaNomina().getVigenciaJornada().getJornadatrabajo().getSecuencia().toString());
                 listaParametrosQueryModulos.add(parametro);
             }
@@ -2735,16 +2757,14 @@ public class ControlBusquedaAvanzada implements Serializable {
     public void cargueParametrosModuloDatosPersonales() {
         FacesContext c = FacesContext.getCurrentInstance();
         TabView t = (TabView) c.getViewRoot().findComponent("form:opcionesDatosPersonales");
-        if (t.getActiveIndex() == 0) {
+        if (t.getActiveIndex() == 1) {
 
             ParametrosQueryBusquedaAvanzada parametroInicial = new ParametrosQueryBusquedaAvanzada("DATOSPERSONALES", "NN", "NN");
             listaParametrosQueryModulos.add(parametroInicial);
 
             if (this.parametros.getParametrosBusquedaPersonal().getEmpleado().getPersona().getNumerodocumento() != null) {
-                if (!this.parametros.getParametrosBusquedaPersonal().getEmpleado().getPersona().getStrNumeroDocumento().isEmpty()) {
-                    ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("DATOSPERSONALES", "NUMERODOCUMENTO", this.parametros.getParametrosBusquedaPersonal().getEmpleado().getPersona().getNumerodocumento().toString());
-                    listaParametrosQueryModulos.add(parametro);
-                }
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("DATOSPERSONALES", "NUMERODOCUMENTO", this.parametros.getParametrosBusquedaPersonal().getEmpleado().getPersona().getNumerodocumento().toString());
+                listaParametrosQueryModulos.add(parametro);
             }
             if (this.parametros.getParametrosBusquedaPersonal().getEmpleado().getPersona().getCiudaddocumento() != null) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("DATOSPERSONALES", "CIUDADDOCUMENTO", this.parametros.getParametrosBusquedaPersonal().getEmpleado().getPersona().getCiudaddocumento().getSecuencia().toString());
@@ -3048,7 +3068,41 @@ public class ControlBusquedaAvanzada implements Serializable {
         }
     }
 
+    //CONVERTIR LISTA A STRING
+    public String convertirListaAString() {
+        String columnas = "SECUENCIA, CODIGOEMPLEADO, NOMBRE, PRIMERAPELLIDO, SEGUNDOAPELLIDO";
+        if (seleccionColumnasEscenarios != null && !seleccionColumnasEscenarios.isEmpty()) {
+            for (ColumnasEscenarios columna : seleccionColumnasEscenarios) {
+                columnas += "," + columna.getDescripcion();
+            }
+        }
+        return columnas;
+    }
+
+    public void exportPDF() throws IOException {
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosBusquedaAvanzadaExportar");
+        FacesContext context = FacesContext.getCurrentInstance();
+        Exporter exporter = new ExportarPDF();
+        exporter.export(context, tabla, "ResultadosBusquedaAvanzada_PDF", false, false, "UTF-8", null, null);
+        context.responseComplete();
+
+    }
+
+    /**
+     * Metodo que exporta datos a XLS
+     *
+     * @throws IOException Excepcion de In-Out de datos
+     */
+    public void exportXLS() throws IOException {
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosBusquedaAvanzadaExportar");
+        FacesContext context = FacesContext.getCurrentInstance();
+        Exporter exporter = new ExportarXLS();
+        exporter.export(context, tabla, "ResultadosBusquedaAvanzada_XLS", false, false, "UTF-8", null, null);
+        context.responseComplete();
+
+    }
     //GETTER AND SETTERS UNICAMENTE
+
     public ParametrosBusquedaAvanzada getParametros() {
         return parametros;
     }
@@ -4035,5 +4089,45 @@ public class ControlBusquedaAvanzada implements Serializable {
 
     public void setSeleccionTipoIndicador(TiposIndicadores seleccionTipoIndicador) {
         this.seleccionTipoIndicador = seleccionTipoIndicador;
+    }
+
+    public List<ColumnasEscenarios> getFiltradoColumnasEscenarios() {
+        return filtradoColumnasEscenarios;
+    }
+
+    public void setFiltradoColumnasEscenarios(List<ColumnasEscenarios> filtradoColumnasEscenarios) {
+        this.filtradoColumnasEscenarios = filtradoColumnasEscenarios;
+    }
+
+    public List<ColumnasEscenarios> getLovColumnasEscenarios() {
+        return lovColumnasEscenarios;
+    }
+
+    public void setLovColumnasEscenarios(List<ColumnasEscenarios> lovColumnasEscenarios) {
+        this.lovColumnasEscenarios = lovColumnasEscenarios;
+    }
+
+    public List<ColumnasEscenarios> getSeleccionColumnasEscenarios() {
+        return seleccionColumnasEscenarios;
+    }
+
+    public void setSeleccionColumnasEscenarios(List<ColumnasEscenarios> seleccionColumnasEscenarios) {
+        this.seleccionColumnasEscenarios = seleccionColumnasEscenarios;
+    }
+
+    public List<ResultadoBusquedaAvanzada> getFiltroResultadoBusqueda() {
+        return filtroResultadoBusqueda;
+    }
+
+    public void setFiltroResultadoBusqueda(List<ResultadoBusquedaAvanzada> filtroResultadoBusqueda) {
+        this.filtroResultadoBusqueda = filtroResultadoBusqueda;
+    }
+
+    public List<ResultadoBusquedaAvanzada> getListaResultadoBusqueda() {
+        return listaResultadoBusqueda;
+    }
+
+    public void setListaResultadoBusqueda(List<ResultadoBusquedaAvanzada> listaResultadoBusqueda) {
+        this.listaResultadoBusqueda = listaResultadoBusqueda;
     }
 }

@@ -94,11 +94,8 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
     PersistenciaEmpresasInterface persistenciaEmpresas;
     @EJB
     PersistenciaColumnasEscenariosInterface persistenciaColumnasEscenarios;
-    
-    
     private EntityManager em;
     private boolean usoWhere = false;
-    
 
     @Override
     public void obtenerConexion(String idSesion) {
@@ -662,9 +659,9 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
             } else {
                 queryAux = " AND ";
             }
-            String v_vcRETENCIONYSEGSOCXPERSONA = persistenciaEmpresas.consultarPrimeraEmpresa(em);
             for (int i = 0; i < listaAuxiliar.size(); i++) {
-                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("BUBICACION")) {
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("BAFILIACIONES")) {
+                    String v_vcRETENCIONYSEGSOCXPERSONA = persistenciaEmpresas.consultarPrimeraEmpresa(em);
                     if (v_vcRETENCIONYSEGSOCXPERSONA.equalsIgnoreCase("N")) {
                         if (listaAuxiliar.get(i).getValorParametro().equalsIgnoreCase("A")) {
                             queryAux = queryAux + "EXISTS (SELECT 1 FROM VWACTUALESAFILIACIONES V ";
@@ -672,6 +669,10 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
                         } else {
                             queryAux = queryAux + "EXISTS (SELECT 1 FROM VIGENCIASAFILIACIONES V ";
                             queryAux = queryAux + "WHERE V.EMPLEADO = EM.SECUENCIA ";
+
+                            if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("ESTADO")) {
+                                queryAux = queryAux + " AND  V.ESTADOAFILIACION = " + listaAuxiliar.get(i).getValorParametro();
+                            }
                         }
                     } else {
                         if (listaAuxiliar.get(i).getValorParametro().equalsIgnoreCase("A")) {
@@ -695,9 +696,14 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("TIPOENTIDAD")) {
                     queryAux = queryAux + " AND  V.TIPOENTIDAD = " + listaAuxiliar.get(i).getValorParametro();
                 }
-                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("ESTADO")) {
-                    queryAux = queryAux + " AND  V.ESTADOAFILIACION = " + listaAuxiliar.get(i).getValorParametro();
+                //ESTADO AFILIACION NO EXITE EN VWACTUALESAFILIACIONES NI EN VWACTUALESAFILIACIONESPERSONA SOLO ESTA EN VIGENCIASAFILIACIONES
+                /*
+                 * if
+                 * (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("ESTADO"))
+                 * { queryAux = queryAux + " AND V.ESTADOAFILIACION = " +
+                 * listaAuxiliar.get(i).getValorParametro();
                 }
+                 */
             }
             queryAux = queryAux + ")";
         }
@@ -771,10 +777,10 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
                     queryAux = queryAux + " AND  V.MOTIVO = " + listaAuxiliar.get(i).getValorParametro();
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("SUELDOMINIMO")) {
-                    queryAux = queryAux + " AND  V.VALOR = " + listaAuxiliar.get(i).getValorParametro();
+                    queryAux = queryAux + " AND  V.VALOR >= " + listaAuxiliar.get(i).getValorParametro();
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("SUELDOMAXIMO")) {
-                    queryAux = queryAux + " AND  V.VALOR = " + listaAuxiliar.get(i).getValorParametro();
+                    queryAux = queryAux + " AND  V.VALOR <= " + listaAuxiliar.get(i).getValorParametro();
                 }
             }
             queryAux = queryAux + ")";
@@ -921,7 +927,7 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
                     queryAux = queryAux + " AND   P.SEXO = '" + listaAuxiliar.get(i).getValorParametro() + "'";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("CIUDADNACIMIENTO")) {
-                    queryAux = queryAux + " AND  P.CIUDADNACIMIENTO " + listaAuxiliar.get(i).getValorParametro();
+                    queryAux = queryAux + " AND  P.CIUDADNACIMIENTO =" + listaAuxiliar.get(i).getValorParametro();
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("FECHANACIMIENTODESDE")) {
                     queryAux = queryAux + " AND   P.FECHANACIMIENTO  >=  TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
@@ -1054,7 +1060,7 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
             queryAux = queryAux + ")";
         }
 
-        if (modulo.equalsIgnoreCase("EDUCACIONFORMAL")) {
+        if (modulo.equalsIgnoreCase("EDUCACIONNOFORMAL")) {
             if (usoWhere == false) {
                 queryAux = " WHERE ";
                 usoWhere = true;
@@ -1092,7 +1098,7 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
             queryAux = queryAux + ")";
         }
 
-        if (modulo.equalsIgnoreCase("EDUCACIONNOFORMAL")) {
+        if (modulo.equalsIgnoreCase("EDUCACIONFORMAL")) {
             if (usoWhere == false) {
                 queryAux = " WHERE ";
                 usoWhere = true;

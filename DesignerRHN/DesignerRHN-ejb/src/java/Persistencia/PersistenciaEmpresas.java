@@ -213,11 +213,11 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
             Query query = em.createNativeQuery("SELECT * FROM Empresas e WHERE ROWNUM=1", Empresas.class);
             Empresas empresa = (Empresas) query.getSingleResult();
             if (empresa != null) {
-                String sqlQuery = "call EMPRESAS_PKG.RETENCIONYSEGSOCXPERSONA(?)";
+                String sqlQuery = "SELECT EMPRESAS_PKG.RETENCIONYSEGSOCXPERSONA(?) FROM DUAL";
                 Query query2 = em.createNativeQuery(sqlQuery);
                 query2.setParameter(1, empresa.getCodigo());
                 String aux = (String) query2.getSingleResult();
-                if (aux == null || aux.isEmpty()) {
+                if (aux == null || aux.isEmpty() || aux.equals("N")) {
                     retorno = "N";
                 } else {
                     retorno = "S";
