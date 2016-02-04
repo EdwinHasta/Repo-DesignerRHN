@@ -167,6 +167,18 @@
 
                     </p:panel>
 
+                    <p:dialog id="validacionNuevoF" header="#{msg['atencion']}" widgetVar="validacionNuevoF"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['validacionNuevo']} #{controlVigenciasReformasLaborales.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionNuevoF.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
+                    </p:dialog>
+                    
+                    <p:dialog id="validacionDuplicarF" header="#{msg['atencion']}" widgetVar="validacionDuplicarF"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['validacionDuplicar']} #{controlVigenciasReformasLaborales.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionDuplicarF.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
+                    </p:dialog>
+                    
                     <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
@@ -230,8 +242,7 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFechas']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
                     </p:dialog>
-
-
+                                    
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciasReformasLaborales.activarCtrlF11()}"/> 
                 </h:form>
                 <h:form id="formularioDialogos" >

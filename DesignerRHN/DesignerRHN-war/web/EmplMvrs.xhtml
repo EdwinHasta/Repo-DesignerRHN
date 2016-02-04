@@ -14,7 +14,7 @@
                 <h:form id="form"> 
                     <f:loadBundle basename="Recursos.emplmvrs" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
-                   <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">    
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">    
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlEmplMvr.empleado.persona.nombreCompleto}"/> 
 
                         <p:toolbar style=" position: absolute; top: 37px; left: 12px; height: 24px">  
@@ -48,7 +48,8 @@
                                 <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplMvr.validarNuevoRegistro()}"  process="@this"/> 
+                                <!--<p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#/{controlEmplMvr.validarNuevoRegistro()}"  process="@this"/> -->
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroPagina.show()" update=":formularioDialogos:nuevoRegistroPanel" process="@this"/> 
                                 <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
 
                                 <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplMvr.validarBorradoRegistro()}" process="@this"/>  
@@ -58,6 +59,7 @@
                                 <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
+                                
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplMvr.verificarRastroTabla()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
                                 
@@ -68,7 +70,7 @@
 
                                 <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplMvr.salir()}" action="nomina" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
-                                
+
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
@@ -82,10 +84,11 @@
                                          editable="true" editMode="cell"
                                          selection="#{controlEmplMvr.mvrSeleccionado}" selectionMode="single">
 
+                                <p:ajax event="rowUnselect" listener="#{controlEmplMvr.deseleccionarRow()}" process="@this"/>
                                 <p:ajax event="filter" listener="#{controlEmplMvr.eventoFiltrar()}"/>
 
                                 <p:column  headerText="#{msg['inicial']}" sortBy="#{infoMvr.fechainicial}" filterBy="#{infoMvr.fechainicial}" filterMatchMode="contains" 
-                                          width="70" id="mvrFechaInicial" filterStyle="display: none; visibility: hidden;"  >  
+                                           width="70" id="mvrFechaInicial" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoMvr.fechainicial}" >
@@ -107,7 +110,7 @@
                                 </p:column>
 
                                 <p:column  headerText="#{msg['final']}" sortBy="#{infoMvr.fechafinal}" filterBy="#{infoMvr.fechafinal}" 
-                                          filterMatchMode="contains"  width="70" id="mvrFechaFinal" filterStyle="display: none; visibility: hidden;"  >  
+                                           filterMatchMode="contains"  width="70" id="mvrFechaFinal" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoMvr.fechafinal}" >
@@ -148,7 +151,7 @@
                                 </p:column>
 
                                 <p:column  headerText="#{msg['motivo']}" sortBy="#{infoMvr.motivo.nombre}" filterBy="#{infoMvr.motivo.nombre}" 
-                                          filterMatchMode="contains" id="mvrMotivo"  filterStyle="display: none; visibility: hidden" >                                  
+                                           filterMatchMode="contains" id="mvrMotivo"  filterStyle="display: none; visibility: hidden" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoMvr.motivo.nombre}"/></f:facet>  
                                         <f:facet name="input">
@@ -165,7 +168,7 @@
                                 </p:column>
 
                                 <p:column  headerText="#{msg['valoranual']}" sortBy="#{infoMvr.valoranualoriginal}" filterBy="#{infoMvr.valoranualoriginal}" 
-                                          filterMatchMode="contains" id="mvrValorAnual" width="150" filterStyle="display: none; visibility: hidden;" >                                  
+                                           filterMatchMode="contains" id="mvrValorAnual" width="150" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText id="originalText" value="#{infoMvr.valoranualoriginal}">
@@ -194,6 +197,8 @@
                                          scrollable="true" scrollHeight="#{controlEmplMvr.altoTabla2}" scrollWidth="830" emptyMessage="#{msg['vacio']}" style=" border: 1px;width: 830px"
                                          selection="#{controlEmplMvr.otroCertificadoSeleccionado}" selectionMode="single">
 
+                                <p:ajax event="rowUnselect" listener="#{controlEmplMvr.deseleccionarRow()}" process="@this"/>
+                                
                                 <p:column headerText="#{msg['inicial']}" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" 
                                           filterMatchMode="contains" id="ocFechaInicial" width="70"
                                           filterStyle="display: none; visibility: hidden;" >                                  
@@ -265,9 +270,8 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.estado}" style="width: 100px; "/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.estado}" readonly="true" id="editarEstadoOC" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"
-                                                         onselect="posicionOtro([{name: 'n', value: '3'}, {name: 't', value: '#{indiceOC}'}]);"
-                                                         > 
+                                            <p:inputText value="#{info.estado}" readonly="true" id="editarEstadoOC" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px">
+                                                         onselect="posicionOtro([{name: 'n', value: '3'}, {name: 't', value: '#/{indiceOC}'}]); >
                                                 <p:ajax event="select" listener="#{controlEmplMvr.cambiarIndiceOtrosCertificados(indiceOC,3)}" process="@this"/> 
                                                 <p:ajax event="change" listener="#{controlEmplMvr.modificarOtrosCertificados(indiceOC)}" process="@this" update="editarEstadoOC"/>
                                             </p:inputText>
@@ -283,13 +287,14 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.tipocertificado.descripcion}" style="width: 100px; "/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText readonly="true" value="#{info.tipocertificado.descripcion}" id="editarCertificadoOC" style=" border-radius: 0px; width: 97%;text-transform: uppercase; height: 12px"
-                                                         onselect="posicionOtro([{name: 'n', value: '4'}, {name: 't', value: '#{indiceOC}'}]);"
-                                                         > 
+                                            <p:inputText value="#{info.tipocertificado.descripcion}" id="editarCertificadoOC" style=" border-radius: 0px; width: 97%;text-transform: uppercase; height: 12px"
+                                                onselect="posicionOtro([{name: 'n', value: '4'}, {name: 't', value: '#/{indiceOC}'}]);">
+                                                          
                                                 <p:ajax event="select" listener="#{controlEmplMvr.cambiarIndiceOtrosCertificados(indiceOC,4)}" process="@this"/> 
-                                                <p:ajax event="dblclick" listener="#{controlEmplMvr.asignarIndex(indiceOC,0,0,1)}" process="@this"/>
+                                                <p:ajax event="dblclick" listener="#{controlEmplMvr.asignarIndex(indiceOC,0,0,1)}" process="@this" update="editarCertificadoOC"/>
                                                 <p:ajax event="change" listener="#{controlEmplMvr.modificarOtrosCertificados(indiceOC, 'CERTIFICADO', info.tipocertificado.descripcion)}" process="@this" update="editarCertificadoOC"/>                                                
                                             </p:inputText>
+                                            
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
@@ -316,7 +321,7 @@
                                 </p:column> 
 
                             </p:dataTable>
-                            
+
                             <p:remoteCommand name="posicionOtro" actionListener="#{controlEmplMvr.posicionOtro()}"/>
                         </fieldset>
 
@@ -328,7 +333,7 @@
                                          selection="#{controlEmplMvr.motivoMvrSeleccionado}" selectionMode="single" widgetVar="lovMotivo" scrollable="true" scrollHeight="250" scrollWidth="435"
                                          filteredValue="#{controlEmplMvr.filtrarListMotivosMvrs}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlEmplMvr.activarAceptar()}" update=":form:aceptarM"/>
-                                <p:ajax event="rowDblselect" listener="#{controlEmplMvr.actualizarMotivo()}"  process="@this" />
+                                <p:ajax event="rowDblselect" listener="#{controlEmplMvr.actualizarMotivo()}" oncomplete="MotivoDialogo.hide()" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarM']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovMotivo.filter();" style="width:140px; position: relative; left: -5px;" />  
@@ -346,13 +351,13 @@
                                     <h:outputText value="#{motivo.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroMotivoMVR" value="#{controlEmplMvr.infoRegistroMotivoMVR}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
-                            <p:commandButton id="aceptarM" icon="ui-icon-check" style="position: relative; left: 260px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlEmplMvr.aceptar}" actionListener="#{controlEmplMvr.actualizarMotivo()}" process="@this"/>
-                                
+
+                            <p:commandButton id="aceptarM" icon="ui-icon-check" style="position: relative; left: 260px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlEmplMvr.aceptar}" actionListener="#{controlEmplMvr.actualizarMotivo()}" process="@this" onclick="MotivoDialogo.hide()"/>
+
                             <p:commandButton id="atrasM" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px;top: 5px" value="#{msg['atras']}"  actionListener="#{controlEmplMvr.cancelarCambioMotivo()}" process="@this"/>
-                                
+
                         </p:dialog>
 
                         <!-- DIALOGO L.O.V CERTIFICADOS-->
@@ -362,7 +367,7 @@
                                          selection="#{controlEmplMvr.tipoCertificadoSeleccionado}" selectionMode="single" widgetVar="lovCertificado" scrollable="true" scrollWidth="435" scrollHeight="250"
                                          filteredValue="#{controlEmplMvr.filtrarListTiposCertificados}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlEmplMvr.activarAceptar()}" update=":form:aceptarTC"/>
-                                <p:ajax event="rowDblselect" listener="#{controlEmplMvr.actualizarTipo()}"  process="@this" />
+                                <p:ajax event="rowDblselect" listener="#{controlEmplMvr.actualizarTipo()}"  process="@this" oncomplete="CertificadosDialogo.hide()"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovCertificado.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -380,20 +385,20 @@
                                     <h:outputText value="#{tipoC.descripcion}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroCertificado" value="#{controlEmplMvr.infoRegistroCertificado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarTC" icon="ui-icon-check" style="position: relative; left: 260px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlEmplMvr.aceptar}"  actionListener="#{controlEmplMvr.actualizarTipo()}" process="@this"/>
-                                
+
                             <p:commandButton id="atrasTC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px;top: 5px" value="#{msg['atras']}" actionListener="#{controlEmplMvr.cancelarCambioTipo()}" process="@this"/>
-                                
+
                         </p:dialog>
-                        
+
                         <p:commandButton style="position: absolute; left: 683px; top: 478px;  " id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" process="@this"  disabled="#{controlEmplMvr.guardado}" />
                         <p:commandButton style="position: absolute; left: 775px; top: 478px;  " id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlEmplMvr.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
-                    
+
                     <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
@@ -402,16 +407,16 @@
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
 
-                    <p:dialog id="verificarRastrosTablas" widgetVar="verificarRastrosTablas" header="#{msg['rastrosparatablas']}" resizable="false" draggable="false" modal="true" height="95" width="330px"  >
-                        <h:outputText value="#{msg['seleccionarR']}" style="position: absolute; left: 20px; top: 20px;color: blue;font-weight: bold"/>
-                        <p:commandButton value="#{msg['mrv']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 30px; top: 50px;" actionListener="#{controlEmplMvr.verificarRastroMvr()}" process="@this" />
-                        <p:commandButton value="#{msg['otros']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 200px; top: 50px;" actionListener="#{controlEmplMvr.verificarRastroOC()}" process="@this"/>
+                    <p:dialog id="verificarRastrosTablas" widgetVar="verificarRastrosTablas" header="#{msg['rastros']}" resizable="false" draggable="false" modal="true" height="95" width="330px"  >
+                        <h:outputText value="#{msg['verificarRastrosTablas']}" style="position: absolute; left: 20px; top: 20px;color: blue;font-weight: bold"/>
+                        <p:commandButton value="#{msg['mvr']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 30px; top: 50px;" actionListener="#{controlEmplMvr.verificarRastroMvrHist()}" process="@this" />
+                        <p:commandButton value="#{msg['otros']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 200px; top: 50px;" actionListener="#{controlEmplMvr.verificarRastroOCHist()}" process="@this"/>
                     </p:dialog>
-
+                                       
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{controlEmplMvr.msnConfirmarRastro}" id="msnConfirmarRastro" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlEmplMvr.backUp, controlEmplMvr.nombreTablaRastro , 'mvrRastro')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlEmplMvr.backUp, controlEmplMvr.nombreTablaRastro , 'mvrRastro')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" /> 
                         <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" actionListener="#{controlEmplMvr.limpiarMSNRastros()}" style="position: absolute; top: 63px; left: 270px" process="@this" />
                     </p:dialog>
 
@@ -481,14 +486,16 @@
                 <h:form id="formularioDialogos" >
 
                     <p:dialog id="NuevoRegistroPagina" header="#{msg['nuevoregistroparaingreso']}" widgetVar="NuevoRegistroPagina" closable="false" resizable="false"  draggable="false" modal="true" height="160" width="400" style=" padding: 0px">  
-                        <center><strong><h:outputText value="#{msg['seleccionar']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
-                        <h:outputText value="#{msg['mvrs']}" style="position: absolute; top: 47px;left: 60px"/>
-                        <p:commandButton id="NuevoMvrs" icon="ui-icon-circle-check" style="position: absolute; top: 45px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroMVRS.show()" update=":formularioDialogos:nuevaMVRS" onclick="NuevoRegistroPagina.hide();" process="@this"/>
+                        <p:panel id="nuevoRegistroPanel" style="border: none;">
+                            <center><strong><h:outputText value="#{msg['seleccionar']}" style="font-size: 14px; color: blue; position: relative; top: 0px" /></strong></center> 
+                            <h:outputText value="#{msg['mvrs']}" style="position: absolute; top: 67px;left: 60px"/>
+                            <p:commandButton id="NuevoMvrs" icon="ui-icon-circle-check" style="position: absolute; top: 65px;left: 270px; height: 25px; width: 40px" oncomplete="NuevoRegistroMVRS.show()" update=":formularioDialogos:nuevaMVRS" onclick="NuevoRegistroPagina.hide();" process="@this"/>
 
-                        <h:outputText value="#{msg['otros']}" style="position: absolute; top: 92px;left: 60px"/>
-                        <p:commandButton id="NuevoOtrosC" icon="ui-icon-circle-check" style="position: absolute; top: 90px;left: 300px; height: 25px; width: 40px"  oncomplete="NuevoRegistroOC.show()" update=":formularioDialogos:nuevaOC"  onclick="NuevoRegistroPagina.hide();" process="@this"/>
+                            <h:outputText value="#{msg['otros']}" style="position: absolute; top: 97px;left: 60px"/>
+                            <p:commandButton id="NuevoOtrosC" icon="ui-icon-circle-check" style="position: absolute; top: 95px;left: 270px; height: 25px; width: 40px"  oncomplete="NuevoRegistroOC.show()" update=":formularioDialogos:nuevaOC"  onclick="NuevoRegistroPagina.hide();" process="@this"/>
 
-                        <p:commandButton id="CancelarNuevosRegistros" onclick="NuevoRegistroPagina.hide();"  process="@this" value="#{msg['cancelar']}" style="position: absolute; top: 125px;left: 300px"/>
+                            <p:commandButton id="CancelarNuevosRegistros" onclick="NuevoRegistroPagina.hide();"  process="@this" value="#{msg['cancelar']}" style="position: absolute; top: 130px;left: 40%; width: 20%"/>
+                        </p:panel>
                     </p:dialog>
 
                     <p:dialog id="NuevoRegistroMVRS" header="#{msg['nuevoregistroMVRS']}" widgetVar="NuevoRegistroMVRS" closable="false" resizable="false"  draggable="false" modal="true" height="300" width="350" style=" padding: 0px">  
@@ -624,7 +631,7 @@
                             <p:watermark for="nuevaValorMOC" value="#{msg['valor']}" />
 
                             <strong><h:outputText  value="*#{msg['estadoOC']}" style=" position: absolute; top: 165px; left: 50px" /></strong>
-                            <p:inputText id="nuevaEstadoOC" readonly="true" value="#{controlEmplMvr.nuevaOtroCertificado.estado}" style=" width: 122px; position: absolute; left: 170px; top: 160px; text-transform: uppercase">
+                            <p:inputText disabled="true" id="nuevaEstadoOC" readonly="true" value="MANUAL" style=" width: 122px; position: absolute; left: 170px; top: 160px; text-transform: uppercase">
                                 <p:ajax event="change" update="nuevaEstadoOC"/>
                             </p:inputText>
                             <p:watermark for="nuevaEstadoOC" value="#{msg['estado']}" />

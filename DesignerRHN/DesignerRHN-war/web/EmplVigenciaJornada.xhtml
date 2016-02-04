@@ -48,7 +48,8 @@
                                 <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaJornada.validarNuevoRegistro()}"  process="@this"/> 
+                                <!--<p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#/{controlVigenciaJornada.validarNuevoRegistro()}"  process="@this"/> -->
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroPagina.show()" update=":formularioDialogos:NuevoRegistroPanel"  process="@this"/> 
                                 <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
 
                                 <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaJornada.validarBorradoVigencia()}" process="@this"/>  
@@ -124,7 +125,7 @@
                                         <f:facet name="output"><h:outputText value="#{infoVJ.tipodescanso.descripcion}"/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{infoVJ.tipodescanso.descripcion}"  id="editarTipoDescanso" style=" border-radius: 0px; width: 98.5%; text-transform: uppercase; height: 12px"> 
-                                                <p:ajax event="change" listener="#{controlVigenciaJornada.modificarVJ(indice, 'TIPODESCANSO', infoVJ.tipodescanso.descripcion)}" update="editarTipoDescanso"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaJornada.modificarVJ(indice, 'TIPODESCANSO', infoVJ.tipodescanso.descripcion)}"/>
                                                 <p:ajax event="dblclick" listener="#{controlVigenciaJornada.asignarIndex(indice,1,0,0)}"/>
                                                 <p:ajax event="select" listener="#{controlVigenciaJornada.cambiarIndice(indice,2)}" process="@this"/>
                                             </p:inputText>
@@ -284,7 +285,7 @@
                                 </f:facet>
                                 <p:column filterBy="#{jLaboral.descripcion}" width="200" filterMatchMode="contains">
                                     <f:facet name="header">
-                                        <h:outputText style="text-align: center" value="#{msg['jornadalaboralJ']}" />
+                                        <h:outputText style="text-align: center" value="#{msg['jornadaJ']}" />
                                     </f:facet>
                                     <h:outputText  value="#{jLaboral.descripcion}" />
                                 </p:column>
@@ -298,10 +299,10 @@
 
                             <h:outputText id="infoRegistroJornadaLaboral" value="#{controlVigenciaJornada.infoRegistroJornadaLaboral}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarJL" style="position: relative; left: 210px" value="#{msg['aceptar']}" disabled="#{controlVigenciaJornada.aceptar}" actionListener="#{controlVigenciaJornada.actualizarJornadaLaboral()}" process="@this" icon="ui-icon-check" />
-                                
+                            <p:commandButton id="aceptarJL" style="position: relative; left: 210px" value="#{msg['aceptar']}" disabled="#{controlVigenciaJornada.aceptar}" actionListener="#{controlVigenciaJornada.actualizarJornadaLaboral()}" process="@this" icon="ui-icon-check" onclick="JornadaLaboralDialogo.hide()"/>
+
                             <p:commandButton id="atrasJL" style="position: relative; left: 210px" value="#{msg['atras']}" actionListener="#{controlVigenciaJornada.cancelarCambioJornadaLaboral()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
-                                
+
                         </p:dialog>
 
                         <!-- Dialogo Tipo Descanso-->
@@ -332,10 +333,10 @@
 
                             <h:outputText id="infoRegistroTipoDescanso" value="#{controlVigenciaJornada.infoRegistroTipoDescanso}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarTD" style="position: relative; left: 210px" value="#{msg['aceptar']}" disabled="#{controlVigenciaJornada.aceptar}"  actionListener="#{controlVigenciaJornada.actualizarTipoDescanso()}"  process="@this" icon="ui-icon-check"/>
-                                
+                            <p:commandButton id="aceptarTD" style="position: relative; left: 210px" value="#{msg['aceptar']}" disabled="#{controlVigenciaJornada.aceptar}"  actionListener="#{controlVigenciaJornada.actualizarTipoDescanso()}"  process="@this" icon="ui-icon-check" onclick="TiposDescansosDialogo.hide()"/>
+
                             <p:commandButton id="atrasTD" style="position: relative; left: 210px" value="#{msg['atras']}" actionListener="#{controlVigenciaJornada.cancelarCambioTipoDescanso()}"  process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
-                                
+
                         </p:dialog>
 
                         <p:commandButton style="position: absolute; left: 683px; top: 478px;  " id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVJEmpleado" process="@this" disabled="#{controlVigenciaJornada.guardado}"/>
@@ -428,21 +429,23 @@
 
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciaJornada.activarCtrlF11()}"/> 
                 </h:form>
+                
                 <h:form id="formularioDialogos" >
 
-
                     <p:dialog id="NuevoRegistroPagina" header="#{msg['nuevoregistroparaingreso']}" widgetVar="NuevoRegistroPagina" closable="false" resizable="false"  draggable="false" modal="true" height="215" width="400" style=" padding: 0px">  
-                        <center><strong><h:outputText value="#{msg['seleccione']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
-                        <h:outputText value="#{msg['jornadadeltrabajador']}" style="position: absolute; top: 47px;left: 60px"/>
-                        <p:commandButton id="NuevoVigenciaJornada" icon="ui-icon-circle-check" style="position: absolute; top: 45px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroVJ.show()" update=":formularioDialogos:nuevaVJ" onclick="NuevoRegistroPagina.hide();" process="@this"/>
+                        <p:panel id="NuevoRegistroPanel" style="border: none;">
+                            <center><strong><h:outputText value="#{msg['seleccione']}" style="font-size: 14px; color: blue; position: relative; top: 0px" /></strong></center> 
+                            <h:outputText value="#{msg['jornadadeltrabajador']}" style="position: absolute; top: 47px;left: 60px"/>
+                            <p:commandButton id="NuevoVigenciaJornada" icon="ui-icon-circle-check" style="position: absolute; top: 45px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroVJ.show()" update=":formularioDialogos:nuevaVJ" onclick="NuevoRegistroPagina.hide();" process="@this"/>
 
-                        <h:outputText value="#{msg['descansostomadosentiempo']}" style="position: absolute; top: 92px;left: 60px"/>
-                        <p:commandButton id="NuevoVigenciaCompensacionTiempo" icon="ui-icon-circle-check" style="position: absolute; top: 90px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroVCT.show()" update=":formularioDialogos:nuevaVCT" onclick="NuevoRegistroPagina.hide();" process="@this"/>
+                            <h:outputText value="#{msg['descansostomadosentiempo']}" style="position: absolute; top: 92px;left: 60px"/>
+                            <p:commandButton id="NuevoVigenciaCompensacionTiempo" icon="ui-icon-circle-check" style="position: absolute; top: 90px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroVCT.show()" update=":formularioDialogos:nuevaVCT" onclick="NuevoRegistroPagina.hide();" process="@this"/>
 
-                        <h:outputText value="#{msg['descansostomadosendinero']}" style="position: absolute; top: 137px;left: 60px"/>
-                        <p:commandButton id="NuevoVigenciaCompensacionDinero" icon="ui-icon-circle-check" style="position: absolute; top: 135px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroVCD.show()" update=":formularioDialogos:nuevaVCD" onclick="NuevoRegistroPagina.hide();" process="@this"/>
+                            <h:outputText value="#{msg['descansostomadosendinero']}" style="position: absolute; top: 137px;left: 60px"/>
+                            <p:commandButton id="NuevoVigenciaCompensacionDinero" icon="ui-icon-circle-check" style="position: absolute; top: 135px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroVCD.show()" update=":formularioDialogos:nuevaVCD" onclick="NuevoRegistroPagina.hide();" process="@this"/>
 
-                        <p:commandButton id="CancelarNuevosRegistros" onclick="NuevoRegistroPagina.hide();"  process="@this" value="#{msg['cancelar']}" style="position: absolute; top: 185px;left: 280px"/>
+                            <p:commandButton id="CancelarNuevosRegistros" onclick="NuevoRegistroPagina.hide();"  process="@this" value="#{msg['cancelar']}" style="position: absolute; top: 185px;left: 40%; width: 20%"/>
+                        </p:panel>
                     </p:dialog>
 
                     <p:dialog id="NuevoRegistroVJ" header="#{msg['nuevoregistrovj']}" widgetVar="NuevoRegistroVJ" closable="false" resizable="false"  draggable="false" modal="true" height="230" width="330" style=" padding: 0px">  

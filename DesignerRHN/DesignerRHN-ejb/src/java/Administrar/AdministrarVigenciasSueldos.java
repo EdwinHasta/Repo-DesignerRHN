@@ -102,6 +102,17 @@ public class AdministrarVigenciasSueldos implements AdministrarVigenciasSueldosI
         }
         return listVigenciasSueldos;
     }
+    
+    @Override
+    public List<TercerosSucursales> listTercerosSucursales() {
+        try {
+            listTercerosSucursales = persistenciaTercerosSucursales.buscarTercerosSucursales(em);
+            return listTercerosSucursales;
+        } catch (Exception e) {
+            System.out.println("Error listTercerosSucursales Admi : " + e.toString());
+            return null;
+        }
+    }
 
 
     @Override

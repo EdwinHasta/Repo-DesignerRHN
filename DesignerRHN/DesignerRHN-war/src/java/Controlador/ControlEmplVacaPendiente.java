@@ -34,12 +34,15 @@ public class ControlEmplVacaPendiente implements Serializable {
 
     @EJB
     AdministrarVWVacaPendientesEmpleadosInterface administrarVWVacaPendientesEmpleados;
+    
     private List<VWVacaPendientesEmpleados> listVacaPendientes;
     private List<VWVacaPendientesEmpleados> filtrarListVacaPendientes;
     private VWVacaPendientesEmpleados vacaPendienteSeleccionada;
+    
     private List<VWVacaPendientesEmpleados> listVacaDisfrutadas;
     private List<VWVacaPendientesEmpleados> filtrarListVacaDisfrutadas;
     private VWVacaPendientesEmpleados vacaDisfrutadaSeleccionada;
+    
     private int tipoTabla, filtrarListaPendientes, filtrarListaDisfrutadas;
     private int banderaPendientes, banderaDisfrutadas;
     private int casillaPendiente, casillaDisfrutada;

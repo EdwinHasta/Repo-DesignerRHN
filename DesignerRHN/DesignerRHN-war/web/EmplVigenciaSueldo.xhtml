@@ -325,7 +325,7 @@
                                          selection="#{controlVigenciaSueldo.motivoCambioSueldoSeleccionado}" selectionMode="single" widgetVar="lovMotivoCambioSueldo" scrollable="true" scrollHeight="250" scrollWidth="420"
                                          filteredValue="#{controlVigenciaSueldo.filtrarMotivosCambiosSueldos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaSueldo.activarAceptar()}" update=":form:aceptarMCS"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaSueldo.actualizarMotivoCambioSueldo()}" process="@this" />
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaSueldo.actualizarMotivoCambioSueldo()}" process="@this" oncomplete="MotivoCambioSueldoDialogo.hide()"/>
 
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarM']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -347,7 +347,7 @@
                             
                             <h:outputText id="infoRegistroMotivoCambioSueldo" value="#{controlVigenciaSueldo.infoRegistroMotivoCambioSueldo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarMCS" style="position: relative; left: 250px" value="#{msg['aceptar']}" disabled="#{controlVigenciaSueldo.aceptar}" actionListener="#{controlVigenciaSueldo.actualizarMotivoCambioSueldo()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="aceptarMCS" style="position: relative; left: 250px" value="#{msg['aceptar']}" disabled="#{controlVigenciaSueldo.aceptar}" actionListener="#{controlVigenciaSueldo.actualizarMotivoCambioSueldo()}" process="@this" icon="ui-icon-check" onclick="MotivoCambioSueldoDialogo.hide()"/>
                                 
                             <p:commandButton id="atrasMCS" style="position: relative; left: 250px" value="#{msg['atras']}" actionListener="#{controlVigenciaSueldo.cancelarCambioMotivoCambioSueldo()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                                 
@@ -360,7 +360,7 @@
                                          selection="#{controlVigenciaSueldo.tipoSueldoSeleccionado}" selectionMode="single" widgetVar="lovTipoSueldo" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlVigenciaSueldo.filtrarTiposSueldos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaSueldo.activarAceptar()}" update=":form:aceptarTS"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaSueldo.actualizarTipoSueldo()}" process="@this" />
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaSueldo.actualizarTipoSueldo()}" process="@this" oncomplete="TipoSueldoDialogo.hide()"/>
 
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarT']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -382,7 +382,7 @@
                             
                             <h:outputText id="infoRegistroTipoSueldo" value="#{controlVigenciaSueldo.infoRegistroTipoSueldo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarTS" style="position: relative; left: 250px" value="#{msg['aceptar']}" disabled="#{controlVigenciaSueldo.aceptar}"  actionListener="#{controlVigenciaSueldo.actualizarTipoSueldo()}" process="@this" icon="ui-icon-check" />
+                            <p:commandButton id="aceptarTS" style="position: relative; left: 250px" value="#{msg['aceptar']}" disabled="#{controlVigenciaSueldo.aceptar}"  actionListener="#{controlVigenciaSueldo.actualizarTipoSueldo()}" process="@this" icon="ui-icon-check" onclick="TipoSueldoDialogo.hide()" />
                                 
                             <p:commandButton id="atrasTS" style="position: relative; left: 250px" value="#{msg['atras']}" actionListener="#{controlVigenciaSueldo.cancelarCambioTipoSueldo()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                                 
@@ -395,7 +395,7 @@
                                          selection="#{controlVigenciaSueldo.tipoEntidadSeleccionado}" selectionMode="single" widgetVar="lovTipoEntidad" scrollable="true" scrollWidth="430" scrollHeight="250"
                                          filteredValue="#{controlVigenciaSueldo.filtrarTiposEntidades}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaSueldo.activarAceptar()}" update=":form:aceptarTE"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaSueldo.actualizarTipoEntidad()}" process="@this" />
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaSueldo.actualizarTipoEntidad()}" process="@this" oncomplete="TipoEntidadDialogo.hide()"/>
 
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarTE']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -417,7 +417,7 @@
                             
                             <h:outputText id="infoRegistroTipoEntidad" value="#{controlVigenciaSueldo.infoRegistroTipoEntidad}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarTE" style="position: relative; left: 250px" value="#{msg['aceptar']}" disabled="#{controlVigenciaSueldo.aceptar}" actionListener="#{controlVigenciaSueldo.actualizarTipoEntidad()}" process="@this" icon="ui-icon-check" />
+                            <p:commandButton id="aceptarTE" style="position: relative; left: 250px" value="#{msg['aceptar']}" disabled="#{controlVigenciaSueldo.aceptar}" actionListener="#{controlVigenciaSueldo.actualizarTipoEntidad()}" process="@this" icon="ui-icon-check" onclick="TipoEntidadDialogo.hide()" />
                                 
                             <p:commandButton id="atrasTE" style="position: relative; left: 250px" value="#{msg['atras']}" actionListener="#{controlVigenciaSueldo.cancelarCambioTipoEntidad()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                                 
@@ -431,7 +431,7 @@
                                          selection="#{controlVigenciaSueldo.terceroSeleccionado}" selectionMode="single" widgetVar="lovTercero" scrollable="true" scrollWidth="630" scrollHeight="250"
                                          filteredValue="#{controlVigenciaSueldo.filtrarTerceros}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaSueldo.activarAceptar()}" update=":form:aceptarT"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaSueldo.actualizarTerceros()}" process="@this" />
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaSueldo.actualizarTerceros()}" process="@this" oncomplete="TerceroDialogo.hide()"/>
 
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarTER']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -459,7 +459,7 @@
                             
                             <h:outputText id="infoRegistroTercero" value="#{controlVigenciaSueldo.infoRegistroTercero}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarT" style="position: relative; left: 450px" value="#{msg['aceptar']}" actionListener="#{controlVigenciaSueldo.actualizarTerceros()}" disabled="#{controlVigenciaSueldo.aceptar}" process="@this" icon="ui-icon-check" />
+                            <p:commandButton id="aceptarT" style="position: relative; left: 450px" value="#{msg['aceptar']}" actionListener="#{controlVigenciaSueldo.actualizarTerceros()}" disabled="#{controlVigenciaSueldo.aceptar}" process="@this" icon="ui-icon-check" onclick="TerceroDialogo.hide()"/>
                                 
                             <p:commandButton id="atrasT" style="position: relative; left: 450px" value="#{msg['atras']}" actionListener="#{controlVigenciaSueldo.cancelarCambioTerceros()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                                
@@ -481,10 +481,10 @@
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
 
-                    <p:dialog id="verificarRastrosTablas" widgetVar="verificarRastrosTablas" header="#{msg['rastros']}" resizable="false" draggable="false" modal="true" height="95" width="330px"  >
-                        <h:outputText value="#{msg['verificarRastrosTablas']}" style="position: absolute; left: 20px; top: 20px;color: blue;font-weight: bold"/>
-                        <p:commandButton value="#{msg['sueldodelempleado']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 30px; top: 50px;" actionListener="#{controlVigenciaSueldo.verificarRastroVigenciaSueldo()}" process="@this" />
-                        <p:commandButton value="#{msg['distribucion']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 200px; top: 50px;" actionListener="#{controlVigenciaSueldo.verificarRastroVigenciaAfiliacion()}" process="@this"/>
+                    <p:dialog id="verificarRastrosTablas" widgetVar="verificarRastrosTablas" header="#{msg['rastros']}" resizable="false" draggable="false" modal="true" height="95" width="370px"  >
+                        <h:outputText value="#{msg['verificarRastrosTablas']}" style="position: absolute; left: 20px; top: 10px;color: blue;font-weight: bold"/>
+                        <p:commandButton value="#{msg['sueldodelempleado']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 50px; top: 50px;" actionListener="#{controlVigenciaSueldo.verificarRastroVigenciaSueldoHist()}" process="@this" />
+                        <p:commandButton value="#{msg['distribucion']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 220px; top: 50px;" actionListener="#{controlVigenciaSueldo.verificarRastroVigenciaAfiliacionHist()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
@@ -665,7 +665,7 @@
                             <p:watermark for="duplicarObservaciones" value="#{msg['observaciones']}" />
 
                             <p:commandButton id="limpiarDuplicadoVS" value="#{msg['limpiar']}" style="  ;position: absolute; left: 20px; top: 360px;" icon="ui-icon-trash" actionListener="#{controlVigenciaSueldo.limpiarduplicarVS()}" update="duplicarVS" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoVS" value="#{msg['agregar']}" style=" position: absolute; left: 190px; top: 360px;" icon="ui-icon-circle-check" process="@this" actionListener="#{controlVigenciaSueldo.confirmarDuplicar()}" />
+                            <p:commandButton id="agregarDuplicadoVS" value="#{msg['agregar']}" style=" position: absolute; left: 190px; top: 360px;" icon="ui-icon-circle-check" process="@this" actionListener="#{controlVigenciaSueldo.confirmarDuplicarS}" />
                             <p:commandButton id="cancelarDuplicadoVS" value="#{msg['cancelar']}" style=" position: absolute; left: 280px; top: 360px;" icon="ui-icon-circle-close" actionListener="#{controlVigenciaSueldo.limpiarduplicarVS()}" update="duplicarVS" onclick="DuplicarRegistroVS.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
@@ -817,7 +817,6 @@
                         <p:inputTextarea value="#{controlVigenciaSueldo.editarVA.tipoentidad.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>
 
-
                     <p:dialog id="editarFechaInicialVAD" header="#{msg['editarFechaInicialVAD']}" widgetVar="editarFechaInicialVAD" resizable="false" draggable="false" modal="true" height="55" width="240" style=" padding: 0px">  
                         <p:inputTextarea value="#{controlVigenciaSueldo.editarVA.fechainicial}" style="overflow: auto; width: 200px; height: 40px" readonly="true">                        
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
@@ -829,7 +828,6 @@
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </p:inputTextarea>
                     </p:dialog>
-
 
                     <p:dialog id="guardarCambiosVigenciasAfiliaciones" header="#{msg['atencion']}" widgetVar="guardarCambiosVigenciasAfiliaciones"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
@@ -844,7 +842,6 @@
                         <h:outputText value="#{msg['negacionNuevaS']}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="negacionNuevaS.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
                     </p:dialog>
-
 
                     <p:dialog id="errorFechasVS" header="#{msg['atencion']}" widgetVar="errorFechasVS"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
@@ -864,14 +861,37 @@
                         <p:commandButton value="#{msg['aceptar']}" onclick="negacionNuevaVA.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
                     </p:dialog>
 
-
                     <p:dialog id="errorFechasVA" header="#{msg['atencion']}" widgetVar="errorFechasVA"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFechasVA']}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="errorFechasVA.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
                     </p:dialog>
 
+                    <!--     Agregadas:    -->
 
+                    <p:dialog id="nuevaSFechasDuplicadas" header="#{msg['atencion']}" widgetVar="nuevaSFechasDuplicadas"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['validacionNuevoS']} #{controlVigenciaSueldo.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="nuevaSFechasDuplicadas.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
+                    </p:dialog>
+                    
+                    <p:dialog id="nuevaAFechasDuplicadas" header="#{msg['atencion']}" widgetVar="nuevaAFechasDuplicadas"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['validacionNuevoA']} #{controlVigenciaSueldo.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="nuevaAFechasDuplicadas.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
+                    </p:dialog>
+                    
+                    <p:dialog id="duplicarSFechasDuplicadas" header="#{msg['atencion']}" widgetVar="duplicarSFechasDuplicadas"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['validacionDuplicarS']} #{controlVigenciaSueldo.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="duplicarSFechasDuplicadas.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
+                    </p:dialog>
+                    
+                    <p:dialog id="duplicarAFechasDuplicadas" header="#{msg['atencion']}" widgetVar="duplicarAFechasDuplicadas"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['validacionDuplicarA']} #{controlVigenciaSueldo.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="duplicarAFechasDuplicadas.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
+                    </p:dialog>
 
                 </h:form>
                 <h:form id="formExportarVS">

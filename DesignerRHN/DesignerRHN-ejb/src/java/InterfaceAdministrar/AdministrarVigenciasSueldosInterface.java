@@ -116,4 +116,6 @@ public interface AdministrarVigenciasSueldosInterface {
      */
     public List<VigenciasSueldos> VigenciasSueldosActualesEmpleado(BigInteger secEmpleado);
     
+    public List<TercerosSucursales> listTercerosSucursales();
+    
 }

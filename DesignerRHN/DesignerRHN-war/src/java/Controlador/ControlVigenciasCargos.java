@@ -191,328 +191,7 @@ public class ControlVigenciasCargos implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-//------------------------------------------------------------------------------------------
-    //METODOS GETTER'S AND SETTER'S
-    //------------------------------------------------------------------------------------------
-    //VIGENCIAS CARGOS
-    //VigenciasCargosEmpleado---------------------------
 
-    public List<VigenciasCargos> getVigenciasCargosEmpleado() {
-        try {
-            if (vigenciasCargosEmpleado == null) {
-                vigenciasCargosEmpleado = administrarVigenciasCargos.vigenciasEmpleado(empleado.getSecuencia());
-            }
-            return vigenciasCargosEmpleado;
-        } catch (Exception e) {
-            System.out.println("Error....................!!!!!!!!!!!! getVigenciasCargosEmpleado ");
-            return null;
-        }
-    }
-
-    /*
-     * public Empleados getEmpleado() { try { if (empleado == null) { empleado =
-     * administrarVigenciasCargos.buscarEmpleado(secuencia); } //empleado =
-     * administrarVigenciasCargos.buscarEmpleado(BigInteger.valueOf(10661039));
-     * } catch (Exception e) { System.out.println("Falló
-     * ControlVigenciasCargos.getEmpleado."); } return empleado; }
-     */
-    public Empleados getEmpleado() {
-        return empleado;
-    }
-
-    /*
-     * public BigInteger getSecuencia() { return secuencia; }
-     *
-     * public void setSecuencia(BigInteger secuencia) { this.secuencia =
-     * secuencia; }
-     */
-    public List<VigenciasCargos> getFilterVC() {
-        return filterVC;
-    }
-
-    public void setFilterVC(List<VigenciasCargos> filterVC) {
-        this.filterVC = filterVC;
-    }
-
-    public void setVigenciasCargosEmpleado(List<VigenciasCargos> vigenciasCargosEmpleado) {
-        this.vigenciasCargosEmpleado = vigenciasCargosEmpleado;
-    }
-    //FechaVigencia--------------------------------------
-
-    public Date getFechaVigencia() {
-        return fechaVigencia;
-    }
-
-    public void setFechaVigencia(Date fechaVigencia) {
-        this.fechaVigencia = fechaVigencia;
-    }
-    //VigenciaSeleccionada--------------------------------
-
-    public VigenciasCargos getVigenciaSeleccionada() {
-        return vigenciaSeleccionada;
-    }
-
-    public void setVigenciaSeleccionada(VigenciasCargos vigenciaSeleccionada) {
-        this.vigenciaSeleccionada = vigenciaSeleccionada;
-    }
-    //ESTRUCTURAS
-    //Estructuras--------------------------------------------
-
-    public List<Estructuras> getEstructuras() {
-        if (estructuras == null) {
-            return estructuras = administrarEstructuras.consultarTodoEstructuras();
-        } else {
-            return estructuras;
-        }
-    }
-
-    public void setEstructuras(List<Estructuras> estructuras) {
-        this.estructuras = estructuras;
-    }
-    //EstructurasLOV-----------------------------------------
-
-    public List<Estructuras> getEstructurasLOV() {
-        if (estructurasLOV == null) {
-            estructurasLOV = administrarEstructuras.consultarTodoEstructuras();
-            RequestContext context = RequestContext.getCurrentInstance();
-            if (estructurasLOV == null || estructurasLOV.isEmpty()) {
-                infoRegistroEstructuras = "Cantidad de registros: 0 ";
-            } else {
-                infoRegistroEstructuras = "Cantidad de registros: " + estructurasLOV.size();
-            }
-            context.update("form:infoRegistroEstructuras");
-        }
-        return estructurasLOV;
-    }
-
-    public void setEstructurasLOV(List<Estructuras> estructurasLOV) {
-        this.estructurasLOV = estructurasLOV;
-    }
-    //Estructurasfilter--------------------------------------
-
-    public List<Estructuras> getEstructurasfilter() {
-        return estructurasfilter;
-    }
-
-    public void setEstructurasfilter(List<Estructuras> estructurasfilter) {
-        this.estructurasfilter = estructurasfilter;
-    }
-    //EstructuraSeleccionada---------------------------------
-
-    public Estructuras getEstructuraSeleccionada() {
-        return estructuraSeleccionada;
-    }
-
-    public void setEstructuraSeleccionada(Estructuras estructuraSeleccionada) {
-        this.estructuraSeleccionada = estructuraSeleccionada;
-    }
-    //MOTIVOS
-    //MotivosCambiosCargos---------------------------------
-
-    public List<MotivosCambiosCargos> getMotivosCambiosCargos() {
-        if (motivosCambiosCargos == null) {
-            motivosCambiosCargos = administrarMotivosCambiosCargos.consultarMotivosCambiosCargos();
-            RequestContext context = RequestContext.getCurrentInstance();
-            if (motivosCambiosCargos == null || motivosCambiosCargos.isEmpty()) {
-                infoRegistroMotivos = "Cantidad de registros: 0 ";
-            } else {
-                infoRegistroMotivos = "Cantidad de registros: " + motivosCambiosCargos.size();
-            }
-            context.update("form:infoRegistroEstructuras");
-        }
-        return motivosCambiosCargos;
-    }
-
-    public void setMotivosCambiosCargos(List<MotivosCambiosCargos> motivosCambiosCargos) {
-        this.motivosCambiosCargos = motivosCambiosCargos;
-    }
-
-    public String getInfoRegistroMotivos() {
-        return infoRegistroMotivos;
-    }
-
-    public void setInfoRegistroMotivos(String infoRegistroMotivos) {
-        this.infoRegistroMotivos = infoRegistroMotivos;
-    }
-
-    //FilterMotivos---------------------------------------
-    public List<MotivosCambiosCargos> getFilterMotivos() {
-        return filterMotivos;
-    }
-
-    public void setFilterMotivos(List<MotivosCambiosCargos> filterMotivos) {
-        this.filterMotivos = filterMotivos;
-    }
-    //MotivoSeleccionado-----------------------------------
-
-    public MotivosCambiosCargos getMotivoSeleccionado() {
-        return motivoSeleccionado;
-    }
-
-    public void setMotivoSeleccionado(MotivosCambiosCargos motivoSeleccionado) {
-        this.motivoSeleccionado = motivoSeleccionado;
-    }
-    //MotivoConverter--------------------------------------
-
-    public MotivosCambiosCargosConverter getMotivoConverter() {
-        motivoConverter.setMo(getMotivosCambiosCargos());
-        return motivoConverter;
-    }
-
-    public void setMotivoConverter(MotivosCambiosCargosConverter motivoConverter) {
-        this.motivoConverter = motivoConverter;
-    }
-    //CARGOS
-    //Cargos------------------------------------------------
-
-    public List<Cargos> getCargos() {
-        if (cargos == null) {
-            cargos = administrarEstructuras.consultarTodoCargos();
-            RequestContext context = RequestContext.getCurrentInstance();
-            if (cargos == null || cargos.isEmpty()) {
-                infoRegistroCargos = "Cantidad de registros: 0 ";
-            } else {
-                infoRegistroCargos = "Cantidad de registros: " + cargos.size();
-            }
-            context.update("form:infoRegistroEstructuras");
-        }
-        return cargos;
-    }
-
-    public void setCargos(List<Cargos> cargos) {
-        this.cargos = cargos;
-    }
-
-    public String getInfoRegistroCargos() {
-        return infoRegistroCargos;
-    }
-
-    public void setInfoRegistroCargos(String infoRegistroCargos) {
-        this.infoRegistroCargos = infoRegistroCargos;
-    }
-
-    //CargosFilter------------------------------------------
-    public List<Cargos> getCargosFilter() {
-        return cargosFilter;
-    }
-
-    public void setCargosFilter(List<Cargos> cargosFilter) {
-        this.cargosFilter = cargosFilter;
-    }
-    //CargoSeleccionado-------------------------------------
-
-    public Cargos getCargoSeleccionado() {
-        return cargoSeleccionado;
-    }
-
-    public void setCargoSeleccionado(Cargos cargoSeleccionado) {
-        this.cargoSeleccionado = cargoSeleccionado;
-    }
-    //OTROS
-    //Aceptar---------------------------------------------
-
-    public boolean isAceptar() {
-        return aceptar;
-    }
-
-    public void setAceptar(boolean aceptar) {
-        this.aceptar = aceptar;
-    }
-
-    //Nueva Vigencia Cargo
-    public VigenciasCargos getNuevaVigencia() {
-        return nuevaVigencia;
-    }
-
-    public void setNuevaVigencia(VigenciasCargos nuevaVigencia) {
-        this.nuevaVigencia = nuevaVigencia;
-    }
-
-    //editar VC celda
-    public VigenciasCargos getEditarVC() {
-        return editarVC;
-    }
-
-    public void setEditarVC(VigenciasCargos editarVC) {
-        this.editarVC = editarVC;
-    }
-
-    // guardado VC
-    public boolean isGuardado() {
-        return guardado;
-    }
-
-    //DUPLICAR
-    public VigenciasCargos getDuplicarVC() {
-        return duplicarVC;
-    }
-
-    public void setDuplicarVC(VigenciasCargos duplicarVC) {
-        this.duplicarVC = duplicarVC;
-    }
-
-    public List<VwTiposEmpleados> getVwActualesTiposTrabajadoresesLista() {
-        if (vwActualesTiposTrabajadoresesLista == null) {
-            vwActualesTiposTrabajadoresesLista = administrarVigenciasCargos.FiltrarTipoTrabajador();
-        }
-        return vwActualesTiposTrabajadoresesLista;
-    }
-
-    public List<VwTiposEmpleados> getFiltradoVWActualesTiposTrabajadoresesLista() {
-        return filtradoVWActualesTiposTrabajadoresesLista;
-    }
-
-    public void setFiltradoVWActualesTiposTrabajadoresesLista(List<VwTiposEmpleados> filtradoVWActualesTiposTrabajadoresesLista) {
-        this.filtradoVWActualesTiposTrabajadoresesLista = filtradoVWActualesTiposTrabajadoresesLista;
-    }
-
-    public VwTiposEmpleados getSeleccionVWActualesTiposTrabajadoreses() {
-        return seleccionVWActualesTiposTrabajadoreses;
-    }
-
-    public void setSeleccionVWActualesTiposTrabajadoreses(VwTiposEmpleados seleccionVWActualesTiposTrabajadoreses) {
-        this.seleccionVWActualesTiposTrabajadoreses = seleccionVWActualesTiposTrabajadoreses;
-    }
-
-    public String getMensajeValidacion() {
-        return mensajeValidacion;
-    }
-
-    public BigInteger getSecRegistro() {
-        return secRegistro;
-    }
-
-    public void setSecRegistro(BigInteger secRegistro) {
-        this.secRegistro = secRegistro;
-    }
-
-    public boolean isBotonPrimero() {
-        return botonPrimero;
-    }
-
-    public boolean isBotonAnterior() {
-        return botonAnterior;
-    }
-
-    public boolean isBotonSiguiente() {
-        return botonSiguiente;
-    }
-
-    public boolean isBotonUltimo() {
-        return botonUltimo;
-    }
-
-    public String getRegistroFoco() {
-        return registroFoco;
-    }
-
-    public String getInfoRegistro() {
-        return infoRegistro;
-    }
-
-    public String getAltoTabla() {
-        return altoTabla;
-    }
 
     //------------------------------------------------------------------------------------------
     //METODOS DE MANEJO DE INFORMACION
@@ -2227,6 +1906,331 @@ public class ControlVigenciasCargos implements Serializable {
         index = -1;
     }
 
+    
+    //------------------------------------------------------------------------------------------
+    //METODOS GETTER'S AND SETTER'S
+    //------------------------------------------------------------------------------------------
+    //VIGENCIAS CARGOS
+    //VigenciasCargosEmpleado---------------------------
+
+    public List<VigenciasCargos> getVigenciasCargosEmpleado() {
+        try {
+            if (vigenciasCargosEmpleado == null) {
+                vigenciasCargosEmpleado = administrarVigenciasCargos.vigenciasEmpleado(empleado.getSecuencia());
+            }
+            return vigenciasCargosEmpleado;
+        } catch (Exception e) {
+            System.out.println("Error....................!!!!!!!!!!!! getVigenciasCargosEmpleado ");
+            return null;
+        }
+    }
+
+    /*
+     * public Empleados getEmpleado() { try { if (empleado == null) { empleado =
+     * administrarVigenciasCargos.buscarEmpleado(secuencia); } //empleado =
+     * administrarVigenciasCargos.buscarEmpleado(BigInteger.valueOf(10661039));
+     * } catch (Exception e) { System.out.println("Falló
+     * ControlVigenciasCargos.getEmpleado."); } return empleado; }
+     */
+    public Empleados getEmpleado() {
+        return empleado;
+    }
+
+    /*
+     * public BigInteger getSecuencia() { return secuencia; }
+     *
+     * public void setSecuencia(BigInteger secuencia) { this.secuencia =
+     * secuencia; }
+     */
+    public List<VigenciasCargos> getFilterVC() {
+        return filterVC;
+    }
+
+    public void setFilterVC(List<VigenciasCargos> filterVC) {
+        this.filterVC = filterVC;
+    }
+
+    public void setVigenciasCargosEmpleado(List<VigenciasCargos> vigenciasCargosEmpleado) {
+        this.vigenciasCargosEmpleado = vigenciasCargosEmpleado;
+    }
+    //FechaVigencia--------------------------------------
+
+    public Date getFechaVigencia() {
+        return fechaVigencia;
+    }
+
+    public void setFechaVigencia(Date fechaVigencia) {
+        this.fechaVigencia = fechaVigencia;
+    }
+    //VigenciaSeleccionada--------------------------------
+
+    public VigenciasCargos getVigenciaSeleccionada() {
+        return vigenciaSeleccionada;
+    }
+
+    public void setVigenciaSeleccionada(VigenciasCargos vigenciaSeleccionada) {
+        this.vigenciaSeleccionada = vigenciaSeleccionada;
+    }
+    //ESTRUCTURAS
+    //Estructuras--------------------------------------------
+
+    public List<Estructuras> getEstructuras() {
+        if (estructuras == null) {
+            return estructuras = administrarEstructuras.consultarTodoEstructuras();
+        } else {
+            return estructuras;
+        }
+    }
+
+    public void setEstructuras(List<Estructuras> estructuras) {
+        this.estructuras = estructuras;
+    }
+    //EstructurasLOV-----------------------------------------
+
+    public List<Estructuras> getEstructurasLOV() {
+        if (estructurasLOV == null) {
+            estructurasLOV = administrarEstructuras.consultarTodoEstructuras();
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (estructurasLOV == null || estructurasLOV.isEmpty()) {
+                infoRegistroEstructuras = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistroEstructuras = "Cantidad de registros: " + estructurasLOV.size();
+            }
+            context.update("form:infoRegistroEstructuras");
+        }
+        return estructurasLOV;
+    }
+
+    public void setEstructurasLOV(List<Estructuras> estructurasLOV) {
+        this.estructurasLOV = estructurasLOV;
+    }
+    //Estructurasfilter--------------------------------------
+
+    public List<Estructuras> getEstructurasfilter() {
+        return estructurasfilter;
+    }
+
+    public void setEstructurasfilter(List<Estructuras> estructurasfilter) {
+        this.estructurasfilter = estructurasfilter;
+    }
+    //EstructuraSeleccionada---------------------------------
+
+    public Estructuras getEstructuraSeleccionada() {
+        return estructuraSeleccionada;
+    }
+
+    public void setEstructuraSeleccionada(Estructuras estructuraSeleccionada) {
+        this.estructuraSeleccionada = estructuraSeleccionada;
+    }
+    //MOTIVOS
+    //MotivosCambiosCargos---------------------------------
+
+    public List<MotivosCambiosCargos> getMotivosCambiosCargos() {
+        if (motivosCambiosCargos == null) {
+            motivosCambiosCargos = administrarMotivosCambiosCargos.consultarMotivosCambiosCargos();
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (motivosCambiosCargos == null || motivosCambiosCargos.isEmpty()) {
+                infoRegistroMotivos = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistroMotivos = "Cantidad de registros: " + motivosCambiosCargos.size();
+            }
+            context.update("form:infoRegistroEstructuras");
+        }
+        return motivosCambiosCargos;
+    }
+
+    public void setMotivosCambiosCargos(List<MotivosCambiosCargos> motivosCambiosCargos) {
+        this.motivosCambiosCargos = motivosCambiosCargos;
+    }
+
+    public String getInfoRegistroMotivos() {
+        return infoRegistroMotivos;
+    }
+
+    public void setInfoRegistroMotivos(String infoRegistroMotivos) {
+        this.infoRegistroMotivos = infoRegistroMotivos;
+    }
+
+    //FilterMotivos---------------------------------------
+    public List<MotivosCambiosCargos> getFilterMotivos() {
+        return filterMotivos;
+    }
+
+    public void setFilterMotivos(List<MotivosCambiosCargos> filterMotivos) {
+        this.filterMotivos = filterMotivos;
+    }
+    //MotivoSeleccionado-----------------------------------
+
+    public MotivosCambiosCargos getMotivoSeleccionado() {
+        return motivoSeleccionado;
+    }
+
+    public void setMotivoSeleccionado(MotivosCambiosCargos motivoSeleccionado) {
+        this.motivoSeleccionado = motivoSeleccionado;
+    }
+    //MotivoConverter--------------------------------------
+
+    public MotivosCambiosCargosConverter getMotivoConverter() {
+        motivoConverter.setMo(getMotivosCambiosCargos());
+        return motivoConverter;
+    }
+
+    public void setMotivoConverter(MotivosCambiosCargosConverter motivoConverter) {
+        this.motivoConverter = motivoConverter;
+    }
+    //CARGOS
+    //Cargos------------------------------------------------
+
+    public List<Cargos> getCargos() {
+        if (cargos == null) {
+            cargos = administrarEstructuras.consultarTodoCargos();
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (cargos == null || cargos.isEmpty()) {
+                infoRegistroCargos = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistroCargos = "Cantidad de registros: " + cargos.size();
+            }
+            context.update("form:infoRegistroEstructuras");
+        }
+        return cargos;
+    }
+
+    public void setCargos(List<Cargos> cargos) {
+        this.cargos = cargos;
+    }
+
+    public String getInfoRegistroCargos() {
+        return infoRegistroCargos;
+    }
+
+    public void setInfoRegistroCargos(String infoRegistroCargos) {
+        this.infoRegistroCargos = infoRegistroCargos;
+    }
+
+    //CargosFilter------------------------------------------
+    public List<Cargos> getCargosFilter() {
+        return cargosFilter;
+    }
+
+    public void setCargosFilter(List<Cargos> cargosFilter) {
+        this.cargosFilter = cargosFilter;
+    }
+    //CargoSeleccionado-------------------------------------
+
+    public Cargos getCargoSeleccionado() {
+        return cargoSeleccionado;
+    }
+
+    public void setCargoSeleccionado(Cargos cargoSeleccionado) {
+        this.cargoSeleccionado = cargoSeleccionado;
+    }
+    //OTROS
+    //Aceptar---------------------------------------------
+
+    public boolean isAceptar() {
+        return aceptar;
+    }
+
+    public void setAceptar(boolean aceptar) {
+        this.aceptar = aceptar;
+    }
+
+    //Nueva Vigencia Cargo
+    public VigenciasCargos getNuevaVigencia() {
+        return nuevaVigencia;
+    }
+
+    public void setNuevaVigencia(VigenciasCargos nuevaVigencia) {
+        this.nuevaVigencia = nuevaVigencia;
+    }
+
+    //editar VC celda
+    public VigenciasCargos getEditarVC() {
+        return editarVC;
+    }
+
+    public void setEditarVC(VigenciasCargos editarVC) {
+        this.editarVC = editarVC;
+    }
+
+    // guardado VC
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    //DUPLICAR
+    public VigenciasCargos getDuplicarVC() {
+        return duplicarVC;
+    }
+
+    public void setDuplicarVC(VigenciasCargos duplicarVC) {
+        this.duplicarVC = duplicarVC;
+    }
+
+    public List<VwTiposEmpleados> getVwActualesTiposTrabajadoresesLista() {
+        if (vwActualesTiposTrabajadoresesLista == null) {
+            vwActualesTiposTrabajadoresesLista = administrarVigenciasCargos.FiltrarTipoTrabajador();
+        }
+        return vwActualesTiposTrabajadoresesLista;
+    }
+
+    public List<VwTiposEmpleados> getFiltradoVWActualesTiposTrabajadoresesLista() {
+        return filtradoVWActualesTiposTrabajadoresesLista;
+    }
+
+    public void setFiltradoVWActualesTiposTrabajadoresesLista(List<VwTiposEmpleados> filtradoVWActualesTiposTrabajadoresesLista) {
+        this.filtradoVWActualesTiposTrabajadoresesLista = filtradoVWActualesTiposTrabajadoresesLista;
+    }
+
+    public VwTiposEmpleados getSeleccionVWActualesTiposTrabajadoreses() {
+        return seleccionVWActualesTiposTrabajadoreses;
+    }
+
+    public void setSeleccionVWActualesTiposTrabajadoreses(VwTiposEmpleados seleccionVWActualesTiposTrabajadoreses) {
+        this.seleccionVWActualesTiposTrabajadoreses = seleccionVWActualesTiposTrabajadoreses;
+    }
+
+    public String getMensajeValidacion() {
+        return mensajeValidacion;
+    }
+
+    public BigInteger getSecRegistro() {
+        return secRegistro;
+    }
+
+    public void setSecRegistro(BigInteger secRegistro) {
+        this.secRegistro = secRegistro;
+    }
+
+    public boolean isBotonPrimero() {
+        return botonPrimero;
+    }
+
+    public boolean isBotonAnterior() {
+        return botonAnterior;
+    }
+
+    public boolean isBotonSiguiente() {
+        return botonSiguiente;
+    }
+
+    public boolean isBotonUltimo() {
+        return botonUltimo;
+    }
+
+    public String getRegistroFoco() {
+        return registroFoco;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+    
+    
     public String getCantidadRegistrosLOV() {
         return cantidadRegistrosLOV;
     }
