@@ -82,8 +82,13 @@ public class ControlRastro implements Serializable {
         nombreTablaRastro = nombreTablaR;
         nomPagina = nombrePagina;
         listaRastros = administrarRastros.rastrosTabla(secRegistroT, nombreTablaRastro);
+        System.out.println("recibirDatosTabla() : " );
+        System.out.println("Secuencia tabla " + secRegistroT);
+        System.out.println("nombreTablaRastro : " + nombreTablaRastro);
+        //System.out.println("listaRastros : " + listaRastros.get(bandera));
         estado = 1;
         campoEmpl = administrarRastros.existenciaEmpleadoTabla(nombreTablaRastro);
+        System.out.println("Empleado: " + campoEmpl);
     }
 
     //HISTORICOS RASTRO TABLA
@@ -93,6 +98,10 @@ public class ControlRastro implements Serializable {
         nombreTablaRastro = nombreTablaR;
         nomPagina = nombrePagina;
         getListaRastros();
+        System.out.println("ControlRastro.historicosTabla() : " );
+        System.out.println("Secuencia tabla " + secRegistroT);
+        System.out.println("nombreTablaRastro : " + nombreTablaRastro);
+        System.out.println("nombrePagina : " + nomPagina);
         listaRastros = administrarRastros.rastrosTablaHistoricos(nombreTablaRastro);
         estado = 2;
         campoEmpl = administrarRastros.existenciaEmpleadoTabla(nombreTablaRastro);

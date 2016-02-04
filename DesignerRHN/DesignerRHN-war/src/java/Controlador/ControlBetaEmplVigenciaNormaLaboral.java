@@ -42,7 +42,6 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
     AdministrarVigenciaNormaLaboralInterface administrarVigenciaNormaLaboral;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-
     private List<VigenciasNormasEmpleados> listEmplVigenciaNormaLaboralPorEmpleado;
     private List<VigenciasNormasEmpleados> filtrarEmplVigenciaNormaLaboralPorEmplado;
     private List<VigenciasNormasEmpleados> crearEmplVigenciaNormaLaboralPorEmplado;
@@ -287,7 +286,6 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
             }
         }
     }
-
     private String infoRegistro;
 
     public void cancelarModificacion() {
@@ -590,9 +588,10 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;/*
-         context.update("form:sucursalesDialogo");
-         context.update("form:lovTiposFamiliares");
-         context.update("form:aceptarS");*/
+         * context.update("form:sucursalesDialogo");
+         * context.update("form:lovTiposFamiliares");
+         context.update("form:aceptarS");
+         */
 
         context.reset("form:lovTiposFamiliares:globalFilter");
         context.execute("lovTiposFamiliares.clearFilters()");
@@ -782,30 +781,27 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
 
     }
 
-    /* public void verificarBorrado() {
-     System.out.println("Estoy en verificarBorrado");
-     try {
-     System.err.println("Control Secuencia de ControlHvEntrevistas ");
-     competenciasCargos = administrarHvEntrevistas.verificarBorradoCompetenciasCargos(listHvEntrevistas.get(index).getSecuencia());
-
-     if (competenciasCargos.intValueExact() == 0) {
-     System.out.println("Borrado==0");
-     borrandoHvEntrevistas();
-     } else {
-     System.out.println("Borrado>0");
-
-     RequestContext context = RequestContext.getCurrentInstance();
-     context.update("form:validacionBorrar");
-     context.execute("validacionBorrar.show()");
-     index = -1;
-
-     competenciasCargos = new BigDecimal(-1);
-
+    /*
+     * public void verificarBorrado() { System.out.println("Estoy en
+     * verificarBorrado"); try { System.err.println("Control Secuencia de
+     * ControlHvEntrevistas "); competenciasCargos =
+     * administrarHvEntrevistas.verificarBorradoCompetenciasCargos(listHvEntrevistas.get(index).getSecuencia());
+     *
+     * if (competenciasCargos.intValueExact() == 0) {
+     * System.out.println("Borrado==0"); borrandoHvEntrevistas(); } else {
+     * System.out.println("Borrado>0");
+     *
+     * RequestContext context = RequestContext.getCurrentInstance();
+     * context.update("form:validacionBorrar");
+     * context.execute("validacionBorrar.show()"); index = -1;
+     *
+     * competenciasCargos = new BigDecimal(-1);
+     *
+     * }
+     * } catch (Exception e) { System.err.println("ERROR ControlHvEntrevistas
+     * verificarBorrado ERROR " + e); }
      }
-     } catch (Exception e) {
-     System.err.println("ERROR ControlHvEntrevistas verificarBorrado ERROR " + e);
-     }
-     }*/
+     */
     public void revisarDialogoGuardar() {
 
         if (!borrarEmplVigenciaNormaLaboralPorEmplado.isEmpty() || !crearEmplVigenciaNormaLaboralPorEmplado.isEmpty() || !modificarEmplVigenciaNormaLaboralPorEmplado.isEmpty()) {
@@ -1104,22 +1100,24 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
             }
 
         }
-        index = -1;
+        index = -1;    
     }
 
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<VigenciasNormasEmpleados> getListEmplVigenciaNormaLaboralPorEmpleado() {
-        if (listEmplVigenciaNormaLaboralPorEmpleado == null) {
+      
+    if (listEmplVigenciaNormaLaboralPorEmpleado == null) {
             listEmplVigenciaNormaLaboralPorEmpleado = administrarVigenciaNormaLaboral.consultarVigenciasNormasEmpleadosPorEmpleado(secuenciaEmpleado);
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (listEmplVigenciaNormaLaboralPorEmpleado == null || listEmplVigenciaNormaLaboralPorEmpleado.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listEmplVigenciaNormaLaboralPorEmpleado.size();
+            }
+            context.update("form:informacionRegistro");
         }
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (listEmplVigenciaNormaLaboralPorEmpleado == null || listEmplVigenciaNormaLaboralPorEmpleado.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
-        } else {
-            infoRegistro = "Cantidad de registros: " + listEmplVigenciaNormaLaboralPorEmpleado.size();
-        }
-        context.update("form:informacionRegistro");
         return listEmplVigenciaNormaLaboralPorEmpleado;
+    
     }
 
     public void setListEmplVigenciaNormaLaboralPorEmpleado(List<VigenciasNormasEmpleados> listEmplVigenciaNormaLaboralPorEmpleado) {
@@ -1192,21 +1190,22 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
     public void setEmpleadoSeleccionado(Empleados empleadoSeleccionado) {
         this.empleadoSeleccionado = empleadoSeleccionado;
     }
-
     private String infoRecursoNormasLaborales;
 
     public List<NormasLaborales> getListaNormasLaborales() {
+       
         if (listaNormasLaborales == null) {
             listaNormasLaborales = administrarVigenciaNormaLaboral.lovNormasLaborales();
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (listaNormasLaborales == null || listaNormasLaborales.isEmpty()) {
+                infoRecursoNormasLaborales = "Cantidad de registros: 0 ";
+            } else {
+                infoRecursoNormasLaborales = "Cantidad de registros: " + listaNormasLaborales.size();
+            }
+            context.update("form:infoRecursoNormasLaborales");
         }
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (listaNormasLaborales == null || listaNormasLaborales.isEmpty()) {
-            infoRecursoNormasLaborales = "Cantidad de registros: 0 ";
-        } else {
-            infoRecursoNormasLaborales = "Cantidad de registros: " + listaNormasLaborales.size();
-        }
-        context.update("form:infoRecursoNormasLaborales");
         return listaNormasLaborales;
+    
     }
 
     public void setListaNormasLaborales(List<NormasLaborales> listaNormasLaborales) {
@@ -1279,5 +1278,4 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
     public void setInfoRecursoNormasLaborales(String infoRecursoNormasLaborales) {
         this.infoRecursoNormasLaborales = infoRecursoNormasLaborales;
     }
-
 }

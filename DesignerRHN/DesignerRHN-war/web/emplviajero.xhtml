@@ -15,63 +15,9 @@
                 <h:form id="form"> 
                     <p:growl id="growl" showDetail="true"/>
                     <f:loadBundle basename="Recursos.emplviajero" var="msg"/>
-                    
+
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">  
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlVigenciasViajeros.empleadoSeleccionado.persona.nombreCompleto}"/>
-
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
-                            <legend style="font-size: 14px; color: blue"><strong>#{msg['vigenciaViajeroT']}</strong></legend>
-
-                            <p:dataTable id="datosHvEntrevista" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 830px ; border: 1px;"                           
-                                         value="#{controlVigenciasViajeros.listVigenciasViajerosPorEmpleado}" scrollable="true" scrollHeight="#{controlVigenciasViajeros.altoTabla}"  scrollWidth="830"
-                                         filteredValue="#{controlVigenciasViajeros.filtrarVigenciasViajerosPorEmplado}" emptyMessage="#{msg['vacio']}"
-                                         editable="true" editMode="cell" selectionMode="single" selection="#{controlVigenciasViajeros.vigenciaSeleccionada}">
-                                <p:ajax event="filter" listener="#{controlVigenciasViajeros.eventoFiltrar()}"/>
-
-                                <p:column headerText="#{msg['fecha']}" sortBy="#{info.fechavigencia}" filterBy="#{info.fechavigencia}" filterMatchMode="contains" 
-                                          id="fecha" width="80"
-                                          filterStyle="display: none; visibility: hidden;"  style="width: 80px; ">                                  
-                                    <p:cellEditor> 
-                                        <f:facet name="output">
-                                            <h:outputText value="#{info.fechavigencia}" style="width: 80px; text-transform: uppercase">
-                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
-                                            </h:outputText>
-                                        </f:facet>  
-                                        <f:facet name="input">
-                                            <lnk:calendar id="dateFechaInicial" value="#{info.fechavigencia}" height="12" width="99" > 
-                                                <p:ajax event="select" listener="#{controlVigenciasViajeros.cambiarIndice(indice, 0)}" process="@this"/>  
-                                                <p:ajax event="change" listener="#{controlVigenciasViajeros.mostrarInfo(indice,0)}" process="@this"/> 
-                                                <p:ajax event="dateSelect" listener="#{controlVigenciasViajeros.mostrarInfo(indice,0)}" process="@this" update="editFecha"/>
-                                            </lnk:calendar>
-                                        </f:facet>  
-                                    </p:cellEditor>
-
-                                    <f:facet name="footer">
-                                        <h:outputText value="" />
-                                    </f:facet>
-                                </p:column>
-
-                                <p:column headerText="#{msg['tipoViajero']}" sortBy="#{info.tipoViajero.nombre}" filterBy="#{info.tipoViajero.nombre}" filterMatchMode="contains" id="parentesco" width="700" filterStyle="display: none; visibility: hidden;" >                                  
-                                    <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.tipoViajero.nombre}" /></f:facet>  
-                                        <f:facet name="input">
-                                            <p:inputText value="#{info.tipoViajero.nombre}" id="editarparentesco" style="  border-radius: 0px; width: 99%; text-transform: uppercase; height: 12px"  > 
-                                                <p:ajax event="select" listener="#{controlVigenciasViajeros.cambiarIndice(indice, 1)}" process="@this"/> 
-                                                <p:ajax event="dblclick" listener="#{controlVigenciasViajeros.asignarIndex(indice, 0,1)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlVigenciasViajeros.modificandoVigenciasViajeros(indice, 'VIGENCIASVIAJEROS',info.tipoViajero.nombre)}"/>
-                                            </p:inputText>
-                                        </f:facet>  
-                                    </p:cellEditor>
-
-                                    <f:facet name="footer">
-                                        <p:commandButton value="" style="width: 780px; margin: -14px; height: 20px; border: none; color: blue;" id="fooNormaLaboral"/>
-                                    </f:facet>
-                                </p:column>
-
-                            </p:dataTable>
-
-                        </fieldset>
-
                         <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">  
                             <p:toolbarGroup align="left"> 
 
@@ -123,6 +69,60 @@
 
                             </p:toolbarGroup>  
                         </p:toolbar>
+
+                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
+                            <legend style="font-size: 14px; color: blue"><strong>#{msg['vigenciaViajeroT']}</strong></legend>
+
+                            <p:dataTable id="datosHvEntrevista" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 830px ; border: 1px;"                           
+                                         value="#{controlVigenciasViajeros.listVigenciasViajerosPorEmpleado}" scrollable="true" scrollHeight="#{controlVigenciasViajeros.altoTabla}"  scrollWidth="830"
+                                         filteredValue="#{controlVigenciasViajeros.filtrarVigenciasViajerosPorEmpleado}" emptyMessage="#{msg['vacio']}"
+                                         editable="true" editMode="cell" selectionMode="single" selection="#{controlVigenciasViajeros.vigenciaSeleccionada}">
+                                <p:ajax event="filter" listener="#{controlVigenciasViajeros.eventoFiltrar()}"/>
+
+                                <p:column headerText="#{msg['fecha']}" sortBy="#{info.fechavigencia}" filterBy="#{info.fechavigencia}" filterMatchMode="contains" 
+                                          id="fecha" width="80" filterStyle="display: none; visibility: hidden;"  style="width: 80px; ">                                  
+                                    <p:cellEditor> 
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info.fechavigencia}" style="width: 80px; text-transform: uppercase">
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <lnk:calendar id="dateFechaInicial" value="#{info.fechavigencia}" height="12" width="99" > 
+                                                <p:ajax event="select" listener="#{controlVigenciasViajeros.cambiarIndice(indice, 0)}" process="@this"/>  
+                                                <p:ajax event="change" listener="#{controlVigenciasViajeros.mostrarInfo(indice,0)}" process="@this"/> 
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciasViajeros.mostrarInfo(indice,0)}" process="@this" update="editFecha"/>
+                                            </lnk:calendar>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="" />
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="#{msg['tipoViajero']}" sortBy="#{info.tipoViajero.nombre}" filterBy="#{info.tipoViajero.nombre}" filterMatchMode="contains" id="parentesco" width="700" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.tipoViajero.nombre}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.tipoViajero.nombre}" id="editarparentesco" style="  border-radius: 0px; width: 99%; text-transform: uppercase; height: 12px"  > 
+                                                <p:ajax event="select" listener="#{controlVigenciasViajeros.cambiarIndice(indice, 1)}" process="@this"/> 
+                                                <p:ajax event="dblclick" listener="#{controlVigenciasViajeros.asignarIndex(indice, 0,1)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciasViajeros.modificandoVigenciasViajeros(indice, 'VIGENCIASVIAJEROS',info.tipoViajero.nombre)}"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                    
+                                    <f:facet name="footer" >
+                                        <p:commandButton value="" style="width: 780px; margin: -14px; height: 20px; border: none; color: blue" action="normalaboral" id="fooNormaLaboral" />
+                                    </f:facet>
+                                </p:column>
+
+                            </p:dataTable>
+
+                        </fieldset>
+
+
                         <h:outputText id="informacionRegistro" value="#{controlVigenciasViajeros.infoRegistro}" style="position: absolute; left: 15px; top: 470px; font-weight: bold"/>
 
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px;  " icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" disabled="#{controlVigenciasViajeros.guardado}"  actionListener="#{controlVigenciasViajeros.revisarDialogoGuardar()}"     process="@this"   />
@@ -157,9 +157,9 @@
                             <h:outputText id="infoRegistroTiposViajeros" value="#{controlVigenciasViajeros.infoRegistroTiposViajeros}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
 
                             <p:commandButton id="aceptarS" style="position: relative; left: 275px" value="#{msg['aceptar']}" disabled="#{controlVigenciasViajeros.aceptar}"   actionListener="#{controlVigenciasViajeros.actualizarNormaLaboral()}" process="@this" icon="ui-icon-check"/>
-                            
+
                             <p:commandButton id="atrasS" style="position: relative; left: 275px" value="#{msg['atras']}"  actionListener="#{controlVigenciasViajeros.cancelarCambioNormaLaboral()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
-                            
+
                         </p:dialog>
 
                         <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
@@ -207,6 +207,65 @@
                 </h:form>
 
                 <h:form id="formularioDialogos">
+                    <p:dialog id="nuevoRegistroEvalEmpresas" header="#{msg['nuevoregistro']}" widgetVar="nuevoRegistroEvalEmpresas" closable="false" resizable="false"  draggable="false" modal="true" height="140" width="340" style=" padding: 0px">  
+                        <center><strong><h:outputText id="informacion" value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="nuevaaEvalEmpresa" style="border: none;">
+
+                            <strong><h:outputText value="*#{msg['fechaN']}"  style=" position: absolute; top: 55px;" /></strong>
+                            <div  id="nuevaFecha" style="width: 135px; position: absolute; top: 50px; left: 135px;">
+                                <lnk:calendar id="nuevaFecha" value="#{controlVigenciasViajeros.nuevoVigenciasViajeros.fechavigencia}" height="12" width="60" >
+                                    <p:ajax event="dateSelect" update="nuevaFecha"/>
+                                    <p:ajax event="change" update="nuevaFecha"/>
+                                </lnk:calendar>
+                            </div>
+                            <p:watermark for="nuevaFecha" value="#{msg['fecha']}" />
+
+                            <strong><h:outputText value="*#{msg['tipoViajeroN']}" style=" position: absolute; top: 85px" /></strong>
+                            <p:inputText id="nuevoNombreSucursal" value="#{controlVigenciasViajeros.nuevoVigenciasViajeros.tipoViajero.nombre}" style=" width: 127px; position: absolute; left: 135px; top: 80px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlVigenciasViajeros.valoresBackupAutocompletar(1)}" />
+                                <p:ajax event="change" listener="#{controlVigenciasViajeros.autocompletarNuevo('VIGENCIASVIAJEROS',controlVigenciasViajeros.nuevoVigenciasViajeros.tipoViajero.nombre, 1)}" />
+                                <p:ajax event="dblclick" listener="#{controlVigenciasViajeros.asignarVariableTiposviajeros(0)}" />
+                            </p:inputText>
+
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 270px; top: 80px;  " id="btnnuevoNombreSucursal" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasViajeros.asignarVariableTiposviajeros(0)}"/>   
+                            <p:watermark for="nuevoNombreSucursal" value="#{msg['tipoViajero']}" />
+
+                            <p:commandButton id="limpiar" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 115px;"  actionListener="#{controlVigenciasViajeros.limpiarNuevoVigenciasViajeros()}" update="nuevaaEvalEmpresa" process="@this" icon="ui-icon-trash"/>
+                            <p:commandButton id="agregarTE" value="#{msg['agregar']}" style="position: absolute; left: 130px; top: 115px;" actionListener="#{controlVigenciasViajeros.agregarNuevoVigenciasViajeros()}" process="@this" icon="ui-icon-circle-check"/>
+                            <p:commandButton id="cancelarTE" value="#{msg['cancelar']}" style="position: absolute; left: 220px; top: 115px;"  update="nuevaaEvalEmpresa" onclick="nuevoRegistroEvalEmpresas.hide();"  actionListener="#{controlVigenciasViajeros.limpiarNuevoVigenciasViajeros()}"  process="@this" icon="ui-icon-circle-close"/>
+                        </p:panel>
+                    </p:dialog>
+
+
+                    <p:dialog id="duplicarRegistroEvalCompetencias" header="#{msg['duplicarregistro']}" widgetVar="duplicarRegistroEvalCompetencias" closable="false" resizable="false"  draggable="false" modal="true" height="140" width="340" style=" padding: 0px">  
+                        <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="duplicarEvC" style="border: none;">
+
+                            <strong><h:outputText value="*#{msg['fechaN']}"  style=" position: absolute; top: 55px;" /></strong>
+                            <div  id="duplicarFecha" style="width: 135px; position: absolute; top: 50px; left: 135px;">
+                                <lnk:calendar id="duplicarFechaa" value="#{controlVigenciasViajeros.duplicarVigenciasViajeros.fechavigencia}" height="12" width="60" >
+                                    <p:ajax event="dateSelect" update="@this"/>
+                                    <p:ajax event="change" update="@this"/>
+                                </lnk:calendar>
+                            </div>
+                            <p:watermark for="duplicarFechaa" value="#{msg['fecha']}" />
+
+                            <strong><h:outputText value="*#{msg['tipoViajeroN']}" style=" position: absolute; top: 85px" /></strong>
+                            <p:inputText id="duplicarTipoCentroCostos" value="#{controlVigenciasViajeros.duplicarVigenciasViajeros.tipoViajero.nombre}" style=" width: 127px; position: absolute; left: 135px; top: 80px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlVigenciasViajeros.valoresBackupAutocompletar(2)}" />
+                                <p:ajax event="change" listener="#{controlVigenciasViajeros.autocompletarDuplicado('VIGENCIASVIAJEROS',controlVigenciasViajeros.duplicarVigenciasViajeros.tipoViajero.nombre, 2)}" />
+                                <p:ajax event="dblclick" listener="#{controlVigenciasViajeros.asignarVariableTiposviajeros(1)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 270px; top: 80px;  " id="btnduplicarNombreSucursal" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasViajeros.asignarVariableTiposviajeros(1)}"/>   
+                            <p:watermark for="duplicarTipoCentroCostos" value="#{msg['tipoViajero']}" />
+
+                            <p:commandButton id="limpiarD" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 115px;"  actionListener="#{controlVigenciasViajeros.limpiarDuplicarVigenciasViajeros()}" update="duplicarEvC" process="@this" icon="ui-icon-trash"/>
+                            <p:commandButton id="duplicarVFP" value="#{msg['agregar']}" style="position: absolute; left: 130px; top: 115px;" actionListener="#{controlVigenciasViajeros.confirmarDuplicar()}" process="@this" icon="ui-icon-circle-check"/>
+                            <p:commandButton id="cancelarDuplicarVFP" value="#{msg['cancelar']}" style="position: absolute; left: 220px; top: 115px;"  update="duplicarEvC" onclick="duplicarRegistroEvalCompetencias.hide();"  actionListener="#{controlVigenciasViajeros.limpiarDuplicarVigenciasViajeros()}"  process="@this" icon="ui-icon-circle-close"/>
+                        </p:panel>
+                    </p:dialog>
 
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
@@ -264,65 +323,7 @@
                         <p:inputTextarea value="#{controlVigenciasViajeros.editarVigenciasViajeros.tipoViajero.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="nuevoRegistroEvalEmpresas" header="#{msg['nuevoregistro']}" widgetVar="nuevoRegistroEvalEmpresas" closable="false" resizable="false"  draggable="false" modal="true" height="140" width="340" style=" padding: 0px">  
-                        <center><strong><h:outputText id="informacion" value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
-                        <p:panel id="nuevaaEvalEmpresa" style="border: none;">
-
-                            <strong><h:outputText value="*#{msg['fechaN']}"  style=" position: absolute; top: 55px;" /></strong>
-                            <div  id="nuevaFechaa" style="width: 135px; position: absolute; top: 50px; left: 135px;">
-                                <lnk:calendar id="nuevaFecha" value="#{controlVigenciasViajeros.nuevoVigenciasViajeros.fechavigencia}" height="12" width="60" >
-                                    <p:ajax event="dateSelect" update="nuevaFecha"/>
-                                    <p:ajax event="change" update="nuevaFecha"/>
-                                </lnk:calendar>
-                            </div>
-                            <p:watermark for="nuevaFecha" value="#{msg['fecha']}" />
-
-                            <strong><h:outputText value="*#{msg['tipoViajeroN']}" style=" position: absolute; top: 85px" /></strong>
-                            <p:inputText id="nuevoNombreSucursal" value="#{controlVigenciasViajeros.nuevoVigenciasViajeros.tipoViajero.nombre}" style=" width: 127px; position: absolute; left: 135px; top: 80px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="click" listener="#{controlVigenciasViajeros.valoresBackupAutocompletar(1)}" />
-                                <p:ajax event="change" listener="#{controlVigenciasViajeros.autocompletarNuevo('VIGENCIASVIAJEROS',controlVigenciasViajeros.nuevoVigenciasViajeros.tipoViajero.nombre, 1)}" />
-                                <p:ajax event="dblclick" listener="#{controlVigenciasViajeros.asignarVariableTiposviajeros(0)}" />
-                            </p:inputText>
-
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 270px; top: 80px;  " id="btnnuevoNombreSucursal" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasViajeros.asignarVariableTiposviajeros(0)}"/>   
-                            <p:watermark for="nuevoNombreSucursal" value="#{msg['tipoViajero']}" />
-
-                            <p:commandButton id="limpiar" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 115px;"  actionListener="#{controlVigenciasViajeros.limpiarNuevoVigenciasViajeros()}" update="nuevaaEvalEmpresa" process="@this" icon="ui-icon-trash"/>
-                            <p:commandButton id="agregarTE" value="#{msg['agregar']}" style="position: absolute; left: 130px; top: 115px;" actionListener="#{controlVigenciasViajeros.agregarNuevoVigenciasViajeros()}" process="@this" icon="ui-icon-circle-check"/>
-                            <p:commandButton id="cancelarTE" value="#{msg['cancelar']}" style="position: absolute; left: 220px; top: 115px;"  update="nuevaaEvalEmpresa" onclick="nuevoRegistroEvalEmpresas.hide();"  actionListener="#{controlVigenciasViajeros.limpiarNuevoVigenciasViajeros()}"  process="@this" icon="ui-icon-circle-close"/>
-                        </p:panel>
-                    </p:dialog>
-
-
-                    <p:dialog id="duplicarRegistroEvalCompetencias" header="#{msg['duplicarregistro']}" widgetVar="duplicarRegistroEvalCompetencias" closable="false" resizable="false"  draggable="false" modal="true" height="140" width="340" style=" padding: 0px">  
-                        <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
-
-                        <p:panel id="duplicarEvC" style="border: none;">
-
-                            <strong><h:outputText value="*#{msg['fechaN']}"  style=" position: absolute; top: 55px;" /></strong>
-                            <div  id="duplicarFecha" style="width: 135px; position: absolute; top: 50px; left: 135px;">
-                                <lnk:calendar id="duplicarFechaa" value="#{controlVigenciasViajeros.duplicarVigenciasViajeros.fechavigencia}" height="12" width="60" >
-                                    <p:ajax event="dateSelect" update="@this"/>
-                                    <p:ajax event="change" update="@this"/>
-                                </lnk:calendar>
-                            </div>
-                            <p:watermark for="duplicarFechaa" value="#{msg['fecha']}" />
-
-                            <strong><h:outputText value="*#{msg['tipoViajeroN']}" style=" position: absolute; top: 85px" /></strong>
-                            <p:inputText id="duplicarTipoCentroCostos" value="#{controlVigenciasViajeros.duplicarVigenciasViajeros.tipoViajero.nombre}" style=" width: 127px; position: absolute; left: 135px; top: 80px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="click" listener="#{controlVigenciasViajeros.valoresBackupAutocompletar(2)}" />
-                                <p:ajax event="change" listener="#{controlVigenciasViajeros.autocompletarDuplicado('VIGENCIASVIAJEROS',controlVigenciasViajeros.duplicarVigenciasViajeros.tipoViajero.nombre, 2)}" />
-                                <p:ajax event="dblclick" listener="#{controlVigenciasViajeros.asignarVariableTiposviajeros(1)}" />
-                            </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 270px; top: 80px;  " id="btnduplicarNombreSucursal" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasViajeros.asignarVariableTiposviajeros(1)}"/>   
-                            <p:watermark for="duplicarTipoCentroCostos" value="#{msg['tipoViajero']}" />
-
-                            <p:commandButton id="limpiarD" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 115px;"  actionListener="#{controlVigenciasViajeros.limpiarDuplicarVigenciasViajeros()}" update="duplicarEvC" process="@this" icon="ui-icon-trash"/>
-                            <p:commandButton id="duplicarVFP" value="#{msg['agregar']}" style="position: absolute; left: 130px; top: 115px;" actionListener="#{controlVigenciasViajeros.confirmarDuplicar()}" process="@this" icon="ui-icon-circle-check"/>
-                            <p:commandButton id="cancelarDuplicarVFP" value="#{msg['cancelar']}" style="position: absolute; left: 220px; top: 115px;"  update="duplicarEvC" onclick="duplicarRegistroEvalCompetencias.hide();"  actionListener="#{controlVigenciasViajeros.limpiarDuplicarVigenciasViajeros()}"  process="@this" icon="ui-icon-circle-close"/>
-                        </p:panel>
-                    </p:dialog>
                 </h:form>
 
                 <h:form id="formExportar">

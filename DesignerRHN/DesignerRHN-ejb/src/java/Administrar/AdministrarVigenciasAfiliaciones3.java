@@ -73,6 +73,8 @@ public class AdministrarVigenciasAfiliaciones3 implements AdministrarVigenciasAf
     @Override
     public void crearVigenciaAfiliacion(VigenciasAfiliaciones vigencia) {
         try {
+            System.out.println("AdministrarVigenciasAfiliaciones3.crearVigenciaAfiliacion");
+            System.out.println("Secuencia empleado: "+ vigencia.getEmpleado());
             persistenciaVigenciasAfilicaciones.crear(em, vigencia);
         } catch (Exception e) {
             System.out.println("Error crearVigenciaAfiliacion Admi : " + e.toString());
@@ -167,6 +169,7 @@ public class AdministrarVigenciasAfiliaciones3 implements AdministrarVigenciasAf
     public Empleados obtenerEmpleado(BigInteger secuencia) {
         try {
             empleado = persistenciaEmpleado.buscarEmpleado(em, secuencia);
+            System.out.println("AdministrarVigenciasAfiliaciones.obtenerEmpleado: " + empleado);
             return empleado;
         } catch (Exception e) {
             System.out.println("Error obtenerEmpleado Admi : " + e.toString());
@@ -184,7 +187,8 @@ public class AdministrarVigenciasAfiliaciones3 implements AdministrarVigenciasAf
             return null;
         }
     }
-
+    
+    
     @Override
     public Date fechaContratacion(Empleados empleado) {
         try {

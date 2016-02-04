@@ -200,7 +200,11 @@ public class ControlTercero implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-
+    
+    /*public void recibirPagina(String pagina) {
+        paginaAnterior = pagina;
+    }*/
+    
     public void recibirPaginaEntrante(String pagina) {
         paginaAnterior = pagina;
         index = -1;
@@ -209,7 +213,7 @@ public class ControlTercero implements Serializable {
         getListTerceros();
     }
 
-    public String redirigir() {
+     public String redirigirPaginaAnterior() {
         return paginaAnterior;
     }
 

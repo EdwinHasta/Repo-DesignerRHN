@@ -418,7 +418,7 @@ public class ControlVigenciasUbicaciones implements Serializable {
             guardado = true;
             context.update("form:ACEPTAR");
             k = 0;
-            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesMessage msg = new FacesMessage("Información", "Se guardarón los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
         }
@@ -533,64 +533,77 @@ public class ControlVigenciasUbicaciones implements Serializable {
 
     //CREAR VU
     public void agregarNuevaVU() {
-        boolean pasa = false;
-        mensajeValidacion = "";
+        int contador = 0;
+        mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
-        if (nuevaVigencia.getFechavigencia() == null) {
-            mensajeValidacion = " * Fecha \n";
-            pasa = false;
-        } else {
-            pasa = true;
-        }
-        if (nuevaVigencia.getUbicacion().getSecuencia() == null) {
-            mensajeValidacion = mensajeValidacion + " * Ubicación \n";
-            pasa = false;
-        } else {
-            pasa = true;
-        }
-        if (pasa == true) {
-            if (bandera == 1) {
-                //CERRAR FILTRADO
-                FacesContext c = FacesContext.getCurrentInstance();
-                vuFecha = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuFecha");
-                vuFecha.setFilterStyle("display: none; visibility: hidden;");
-                vuDescripcion = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuDescripcion");
-                vuDescripcion.setFilterStyle("display: none; visibility: hidden;");
-                vuCiudad = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuCiudad");
-                vuCiudad.setFilterStyle("display: none; visibility: hidden;");
-                altoTabla = "270";
-                RequestContext.getCurrentInstance().update("form:datosVUEmpleado");
-                bandera = 0;
-                filtrarVU = null;
-                tipoLista = 0;
-            }
-            //AGREGAR REGISTRO A LA LISTA VIGENCIAS CARGOS EMPLEADO.
-            k++;
-            l = BigInteger.valueOf(k);
-            nuevaVigencia.setSecuencia(l);
-            nuevaVigencia.setEmpleado(empleado);
-            listVUCrear.add(nuevaVigencia);
+        boolean banderaConfirmar = false;
 
-            vigenciasUbicaciones.add(nuevaVigencia);
-            infoRegistro = "Cantidad de registros: " + vigenciasUbicaciones.size();
-            context.update("form:informacionRegistro");
-            nuevaVigencia = new VigenciasUbicaciones();
-            nuevaVigencia.setUbicacion(new UbicacionesGeograficas());
-            context.update("form:datosVUEmpleado");
-            if (guardado == true) {
-                guardado = false;
-                context.update("form:ACEPTAR");
+        for (int j = 0; j < vigenciasUbicaciones.size(); j++) {
+            if (nuevaVigencia.getFechavigencia().equals(vigenciasUbicaciones.get(j).getFechavigencia())) {
+                contador++;
             }
-            context.execute("NuevoRegistroVU.hide()");
-            index = -1;
-            secRegistro = null;
-        } else {
+        }
+        if (contador > 0) {
+            mensajeValidacion = "Fechas NO Repetidas";
             context.update("form:validacioNuevaVigencia");
             context.execute("validacioNuevaVigencia.show()");
+        } else {
+            
+            boolean pasa = false;
+            mensajeValidacion = "";
+
+            if (nuevaVigencia.getFechavigencia() == null) {
+                mensajeValidacion = " * Fecha \n";
+                pasa = false;
+            } else {
+                pasa = true;
+            }
+            if (nuevaVigencia.getUbicacion().getSecuencia() == null) {
+                mensajeValidacion = mensajeValidacion + " * Ubicación \n";
+                pasa = false;
+            } else {
+                pasa = true;
+            }
+            if (pasa == true) {
+                if (bandera == 1) {
+                    //CERRAR FILTRADO
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    vuFecha = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuFecha");
+                    vuFecha.setFilterStyle("display: none; visibility: hidden;");
+                    vuDescripcion = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuDescripcion");
+                    vuDescripcion.setFilterStyle("display: none; visibility: hidden;");
+                    vuCiudad = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuCiudad");
+                    vuCiudad.setFilterStyle("display: none; visibility: hidden;");
+                    altoTabla = "270";
+                    RequestContext.getCurrentInstance().update("form:datosVUEmpleado");
+                    bandera = 0;
+                    filtrarVU = null;
+                    tipoLista = 0;
+                }
+                //AGREGAR REGISTRO A LA LISTA VIGENCIAS CARGOS EMPLEADO.
+                k++;
+                l = BigInteger.valueOf(k);
+                nuevaVigencia.setSecuencia(l);
+                nuevaVigencia.setEmpleado(empleado);
+                listVUCrear.add(nuevaVigencia);
+
+                vigenciasUbicaciones.add(nuevaVigencia);
+                infoRegistro = "Cantidad de registros: " + vigenciasUbicaciones.size();
+                context.update("form:informacionRegistro");
+                nuevaVigencia = new VigenciasUbicaciones();
+                nuevaVigencia.setUbicacion(new UbicacionesGeograficas());
+                context.update("form:datosVUEmpleado");
+                if (guardado == true) {
+                    guardado = false;
+                    context.update("form:ACEPTAR");
+                }
+                context.execute("NuevoRegistroVU.hide()");
+                index = -1;
+                secRegistro = null;
+            }
         }
     }
-    //LIMPIAR NUEVO REGISTRO
-
+        //LIMPIAR NUEVO REGISTRO}
     public void limpiarNuevaVU() {
         nuevaVigencia = new VigenciasUbicaciones();
         nuevaVigencia.setUbicacion(new UbicacionesGeograficas());
@@ -627,35 +640,57 @@ public class ControlVigenciasUbicaciones implements Serializable {
     }
 
     public void confirmarDuplicar() {
-
-        vigenciasUbicaciones.add(duplicarVU);
-        listVUCrear.add(duplicarVU);
+        int contador = 0;
+        mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
-        infoRegistro = "Cantidad de registros: " + vigenciasUbicaciones.size();
-        context.update("form:informacionRegistro");
-        context.update("form:datosVUEmpleado");
-        index = -1;
-        secRegistro = null;
-        if (guardado == true) {
-            guardado = false;
-            context.update("form:ACEPTAR");
+
+        for (int j = 0; j < vigenciasUbicaciones.size(); j++) {
+            if (duplicarVU.getFechavigencia().equals(vigenciasUbicaciones.get(j).getFechavigencia())) {
+                contador++;
+            }
         }
-        if (bandera == 1) {
-            //CERRAR FILTRADO
-            FacesContext c = FacesContext.getCurrentInstance();
-            vuFecha = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuFecha");
-            vuFecha.setFilterStyle("display: none; visibility: hidden;");
-            vuDescripcion = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuDescripcion");
-            vuDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            vuCiudad = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuCiudad");
-            vuCiudad.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "270";
-            RequestContext.getCurrentInstance().update("form:datosVUEmpleado");
-            bandera = 0;
-            filtrarVU = null;
-            tipoLista = 0;
+        if (contador > 0) {
+            mensajeValidacion = "Fechas NO Repetidas";
+
+            context.update("form:validacionFechaDuplicada");
+            context.execute("validacionFechaDuplicada.show()");
+
+        } else {
+            vigenciasUbicaciones.add(duplicarVU);
+            listVUCrear.add(duplicarVU);
+            infoRegistro = "Cantidad de registros: " + vigenciasUbicaciones.size();
+            context.update("form:informacionRegistro");
+            context.update("form:datosVUEmpleado");
+            index = -1;
+            secRegistro = null;
+            if (guardado == true) {
+                guardado = false;
+                context.update("form:ACEPTAR");
+            }
+            System.out.println("Fecha: " + vuFecha);
+            System.out.println("Descripcion: " + vuDescripcion);
+            System.out.println("Ciudad: " + vuCiudad);
+
+            if (bandera == 1) {
+                //CERRAR FILTRADO
+                FacesContext c = FacesContext.getCurrentInstance();
+                vuFecha = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuFecha");
+                vuFecha.setFilterStyle("display: none; visibility: hidden;");
+                vuDescripcion = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuDescripcion");
+                vuDescripcion.setFilterStyle("display: none; visibility: hidden;");
+                vuCiudad = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuCiudad");
+                vuCiudad.setFilterStyle("display: none; visibility: hidden;");
+
+                altoTabla = "270";
+                RequestContext.getCurrentInstance().update("form:datosVUEmpleado");
+                bandera = 0;
+                filtrarVU = null;
+                tipoLista = 0;
+            }
+            duplicarVU = new VigenciasUbicaciones();
+            RequestContext.getCurrentInstance().execute("DuplicarRegistroVU.hide()");
         }
-        duplicarVU = new VigenciasUbicaciones();
+
     }
     //LIMPIAR DUPLICAR
 
@@ -837,9 +872,10 @@ public class ControlVigenciasUbicaciones implements Serializable {
         cualCelda = -1;
         secRegistro = null;
         /*
-        context.update("form:UbicacionesGeograficasDialogo");
-        context.update("form:lovUbicaciones");
-        context.update("form:aceptarU");*/
+         * context.update("form:UbicacionesGeograficasDialogo");
+         * context.update("form:lovUbicaciones");
+         * context.update("form:aceptarU");
+         */
         context.reset("form:lovUbicaciones:globalFilter");
         context.execute("lovUbicaciones.clearFilters()");
         context.execute("UbicacionesGeograficasDialogo.hide()");
@@ -907,7 +943,7 @@ public class ControlVigenciasUbicaciones implements Serializable {
         }
         RequestContext context = RequestContext.getCurrentInstance();
         infoRegistro = "Cantidad de Registros: " + filtrarVU.size();
-        
+
         context.update("form:informacionRegistro");
     }
     //GETTERS AND SETTERS
@@ -961,24 +997,44 @@ public class ControlVigenciasUbicaciones implements Serializable {
 
 
     /*
-     public void verProceso() {
-     for (int i = 0; i < listVUModificar.size(); i++) {
-     System.out.println("Las que se Modificaron:         " + " Fecha:   " + formatoFecha.format(listVUModificar.get(i).getFechavigencia()) + "|   Estructura:  " + listVUModificar.get(i).getMotivocontrato().getNombre() + "|   Motivo:  " + listVUModificar.get(i).getTipocontrato().getNombre() + "|   Nombre Cargo:  " + listVUModificar.get(i).getCiudad().getNombre() + "|   Centro Costo:  " + listVUModificar.get(i).getIniciosustitucion());
-     }
-     System.out.println(".................................................");
-     for (int i = 0; i < listVUCrear.size(); i++) {
-     System.out.println("Las que se van a Crear:         " + " Fecha:   " + formatoFecha.format(listVUCrear.get(i).getFechavigencia()) + "|   Estructura:  " + listVUCrear.get(i).getMotivocontrato().getNombre() + "|   Motivo:  " + listVUCrear.get(i).getTipocontrato().getNombre() + "|   Nombre Cargo:  " + listVUCrear.get(i).getCiudad().getNombre() + "|   Centro Costo:  " + listVUCrear.get(i).getEstructura().getCentrocosto().getNombre());
-     }
-     System.out.println(".................................................");
-     for (int i = 0; i < listVUBorrar.size(); i++) {
-     System.out.println("Las que se van a Borrar:         " + " Fecha:   " + formatoFecha.format(listVUBorrar.get(i).getFechavigencia()) + "|   Estructura:  " + listVUBorrar.get(i).getMotivocontrato().getNombre() + "|   Motivo:  " + listVUBorrar.get(i).getTipocontrato().getNombre() + "|   Nombre Cargo:  " + listVUBorrar.get(i).getCiudad().getNombre() + "|   Centro Costo:  " + listVUBorrar.get(i).getEstructura().getCentrocosto().getNombre());
-     }
-     System.out.println(".................................................");
-     for (int i = 0; i < vigenciasTiposContratoEmpleado.size(); i++) {
-     System.out.println("lista total:         " + " Fecha:   " + formatoFecha.format(vigenciasTiposContratoEmpleado.get(i).getFechavigencia()) + "|   Estructura:  " + vigenciasTiposContratoEmpleado.get(i).getMotivocontrato().getNombre() + "|   Motivo:  " + vigenciasTiposContratoEmpleado.get(i).getTipocontrato().getNombre() + "|   Nombre Cargo:  " + vigenciasTiposContratoEmpleado.get(i).getCiudad().getNombre() + "|   Centro Costo:  " + vigenciasTiposContratoEmpleado.get(i).getEstructura().getCentrocosto().getNombre());
-     }
-     System.out.println("................................................. FIN.");
-     }*/
+     * public void verProceso() { for (int i = 0; i < listVUModificar.size();
+     * i++) { System.out.println("Las que se Modificaron: " + " Fecha: " +
+     * formatoFecha.format(listVUModificar.get(i).getFechavigencia()) + "|
+     * Estructura: " + listVUModificar.get(i).getMotivocontrato().getNombre() +
+     * "| Motivo: " + listVUModificar.get(i).getTipocontrato().getNombre() + "|
+     * Nombre Cargo: " + listVUModificar.get(i).getCiudad().getNombre() + "|
+     * Centro Costo: " + listVUModificar.get(i).getIniciosustitucion()); }
+     * System.out.println(".................................................");
+     * for (int i = 0; i < listVUCrear.size(); i++) { System.out.println("Las
+     * que se van a Crear: " + " Fecha: " +
+     * formatoFecha.format(listVUCrear.get(i).getFechavigencia()) + "|
+     * Estructura: " + listVUCrear.get(i).getMotivocontrato().getNombre() + "|
+     * Motivo: " + listVUCrear.get(i).getTipocontrato().getNombre() + "| Nombre
+     * Cargo: " + listVUCrear.get(i).getCiudad().getNombre() + "| Centro Costo:
+     * " + listVUCrear.get(i).getEstructura().getCentrocosto().getNombre()); }
+     * System.out.println(".................................................");
+     * for (int i = 0; i < listVUBorrar.size(); i++) { System.out.println("Las
+     * que se van a Borrar: " + " Fecha: " +
+     * formatoFecha.format(listVUBorrar.get(i).getFechavigencia()) + "|
+     * Estructura: " + listVUBorrar.get(i).getMotivocontrato().getNombre() + "|
+     * Motivo: " + listVUBorrar.get(i).getTipocontrato().getNombre() + "| Nombre
+     * Cargo: " + listVUBorrar.get(i).getCiudad().getNombre() + "| Centro Costo:
+     * " + listVUBorrar.get(i).getEstructura().getCentrocosto().getNombre()); }
+     * System.out.println(".................................................");
+     * for (int i = 0; i < vigenciasTiposContratoEmpleado.size(); i++) {
+     * System.out.println("lista total: " + " Fecha: " +
+     * formatoFecha.format(vigenciasTiposContratoEmpleado.get(i).getFechavigencia())
+     * + "| Estructura: " +
+     * vigenciasTiposContratoEmpleado.get(i).getMotivocontrato().getNombre() +
+     * "| Motivo: " +
+     * vigenciasTiposContratoEmpleado.get(i).getTipocontrato().getNombre() + "|
+     * Nombre Cargo: " +
+     * vigenciasTiposContratoEmpleado.get(i).getCiudad().getNombre() + "| Centro
+     * Costo: " +
+     * vigenciasTiposContratoEmpleado.get(i).getEstructura().getCentrocosto().getNombre());
+     * } System.out.println(".................................................
+     * FIN."); }
+     */
     public List<UbicacionesGeograficas> getListaUbicaciones() {
         listaUbicaciones = administrarVigenciasUbicaciones.ubicacionesGeograficas();
         return listaUbicaciones;
@@ -1054,10 +1110,10 @@ public class ControlVigenciasUbicaciones implements Serializable {
 
     public String getInfoRegistroUbicacion() {
         getListaUbicaciones();
-        if(listaUbicaciones != null){
-            infoRegistroUbicacion = "Cantidad de registros : "+listaUbicaciones.size();
-        }else{
-        infoRegistroUbicacion = "Cantidad de registros : 0";
+        if (listaUbicaciones != null) {
+            infoRegistroUbicacion = "Cantidad de registros : " + listaUbicaciones.size();
+        } else {
+            infoRegistroUbicacion = "Cantidad de registros : 0";
         }
         return infoRegistroUbicacion;
     }
@@ -1065,5 +1121,4 @@ public class ControlVigenciasUbicaciones implements Serializable {
     public void setInfoRegistroUbicacion(String infoRegistroUbicacion) {
         this.infoRegistroUbicacion = infoRegistroUbicacion;
     }
-
 }

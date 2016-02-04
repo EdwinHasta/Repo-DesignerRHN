@@ -51,5 +51,5 @@ public interface AdministrarVigenciasAfiliaciones3Interface {
     public VigenciasAfiliaciones vigenciaAfiliacionSecuencia(BigInteger secuencia);
     
     public Date fechaContratacion(Empleados empl);
-    
+   
 }

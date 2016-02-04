@@ -276,8 +276,7 @@
 
                             <p:commandButton id="aceptarM" style="position: relative; left: 210px" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" icon="ui-icon-check"  actionListener="#{controlVigenciasCargos.actualizarMotivo()}" process="@this" onclick="motivosDialog.hide()"/>
                                 
-                            <p:commandButton id="atrasM" style="position: relative; left: 210px" value="#{msg['atras']}"  icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasCargos.cancelarCambioMotivo()}"  process="@this" onclick="motivosDialog.hide()"/>
-                                
+                            <p:commandButton id="atrasM" style="position: relative; left: 210px" value="#{msg['atras']}"  icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasCargos.cancelarCambioMotivo()}"  process="@this" onclick="motivosDialog.hide()"/>    
 
                             <h:outputText id="infoRegistroMotivos" value="#{controlVigenciasCargos.infoRegistroMotivos}" style="position: absolute; top: 350px; left: 20px; font-weight: bold"/>
 

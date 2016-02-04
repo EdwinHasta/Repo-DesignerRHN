@@ -91,8 +91,8 @@
     <validation-mode>NONE</validation-mode>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@nominasaas2:1521:SOPORTE"/>
-      <property name="javax.persistence.jdbc.user" value="ENTRADA"/>
-      <property name="javax.persistence.jdbc.password" value="ENTRADA"/>
+      <property name="javax.persistence.jdbc.user" value="DESPEGAR"/>
+      <property name="javax.persistence.jdbc.password" value="DESPEGAR"/>
       <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
       <property name="eclipselink.cache.shared.default" value="false"/>
       <property name="eclipselink.cache.type.default" value="NONE"/>

@@ -428,7 +428,7 @@
                                 </lnk:calendar>
                             </div>
 
-                            <strong><h:outputText value="#{msg['cuentaN']}"  style=" position: absolute; top: 125px" /></strong>
+                            <strong><h:outputText value="*#{msg['cuentaN']}"  style=" position: absolute; top: 125px" /></strong>
                             <p:inputText id="nuevoCuenta" maxlength="25" value="#{controlVigenciasFormasPagos.nuevaVigenciaFormasPago.cuenta}" style=" width: 140px; position: absolute; left: 150px; top: 120px;">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>

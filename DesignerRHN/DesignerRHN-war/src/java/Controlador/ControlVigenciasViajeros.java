@@ -42,10 +42,10 @@ public class ControlVigenciasViajeros implements Serializable {
     @EJB
     AdministrarRastrosInterface administrarRastros;
     private List<VigenciasViajeros> listVigenciasViajerosPorEmpleado;
-    private List<VigenciasViajeros> filtrarVigenciasViajerosPorEmplado;
-    private List<VigenciasViajeros> crearVigenciasViajerosPorEmplado;
-    private List<VigenciasViajeros> modificarVigenciasViajerosPorEmplado;
-    private List<VigenciasViajeros> borrarVigenciasViajerosPorEmplado;
+    private List<VigenciasViajeros> filtrarVigenciasViajerosPorEmpleado;
+    private List<VigenciasViajeros> crearVigenciasViajerosPorEmpleado;
+    private List<VigenciasViajeros> modificarVigenciasViajerosPorEmpleado;
+    private List<VigenciasViajeros> borrarVigenciasViajerosPorEmpleado;
     private VigenciasViajeros nuevoVigenciasViajeros;
     private VigenciasViajeros duplicarVigenciasViajeros;
     private VigenciasViajeros editarVigenciasViajeros;
@@ -77,9 +77,9 @@ public class ControlVigenciasViajeros implements Serializable {
 
     public ControlVigenciasViajeros() {
         listVigenciasViajerosPorEmpleado = null;
-        crearVigenciasViajerosPorEmplado = new ArrayList<VigenciasViajeros>();
-        modificarVigenciasViajerosPorEmplado = new ArrayList<VigenciasViajeros>();
-        borrarVigenciasViajerosPorEmplado = new ArrayList<VigenciasViajeros>();
+        crearVigenciasViajerosPorEmpleado = new ArrayList<VigenciasViajeros>();
+        modificarVigenciasViajerosPorEmpleado = new ArrayList<VigenciasViajeros>();
+        borrarVigenciasViajerosPorEmpleado = new ArrayList<VigenciasViajeros>();
         permitirIndex = true;
         editarVigenciasViajeros = new VigenciasViajeros();
         nuevoVigenciasViajeros = new VigenciasViajeros();
@@ -133,7 +133,7 @@ public class ControlVigenciasViajeros implements Serializable {
         context.update("form:informacionRegistro");
 
     }
-    
+
     public void mostrarInfo(int indice, int celda) {
         int contador = 0;
         int fechas = 0;
@@ -162,11 +162,11 @@ public class ControlVigenciasViajeros implements Serializable {
                     contador++;
                 }
                 if (contador == 0) {
-                    if (!crearVigenciasViajerosPorEmplado.contains(listVigenciasViajerosPorEmpleado.get(indice))) {
-                        if (modificarVigenciasViajerosPorEmplado.isEmpty()) {
-                            modificarVigenciasViajerosPorEmplado.add(listVigenciasViajerosPorEmpleado.get(indice));
-                        } else if (!modificarVigenciasViajerosPorEmplado.contains(listVigenciasViajerosPorEmpleado.get(indice))) {
-                            modificarVigenciasViajerosPorEmplado.add(listVigenciasViajerosPorEmpleado.get(indice));
+                    if (!crearVigenciasViajerosPorEmpleado.contains(listVigenciasViajerosPorEmpleado.get(indice))) {
+                        if (modificarVigenciasViajerosPorEmpleado.isEmpty()) {
+                            modificarVigenciasViajerosPorEmpleado.add(listVigenciasViajerosPorEmpleado.get(indice));
+                        } else if (!modificarVigenciasViajerosPorEmpleado.contains(listVigenciasViajerosPorEmpleado.get(indice))) {
+                            modificarVigenciasViajerosPorEmpleado.add(listVigenciasViajerosPorEmpleado.get(indice));
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -182,21 +182,21 @@ public class ControlVigenciasViajeros implements Serializable {
                 }
             } else {
 
-                secRegistro = filtrarVigenciasViajerosPorEmplado.get(index).getSecuencia();
-                if (filtrarVigenciasViajerosPorEmplado.get(indice).getFechavigencia() == null) {
+                secRegistro = filtrarVigenciasViajerosPorEmpleado.get(index).getSecuencia();
+                if (filtrarVigenciasViajerosPorEmpleado.get(indice).getFechavigencia() == null) {
                     mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                     contador++;
                 } else {
-                    for (int j = 0; j < filtrarVigenciasViajerosPorEmplado.size(); j++) {
+                    for (int j = 0; j < filtrarVigenciasViajerosPorEmpleado.size(); j++) {
                         if (j != indice) {
-                            if (filtrarVigenciasViajerosPorEmplado.get(indice).getFechavigencia().equals(filtrarVigenciasViajerosPorEmplado.get(j).getFechavigencia())) {
+                            if (filtrarVigenciasViajerosPorEmpleado.get(indice).getFechavigencia().equals(filtrarVigenciasViajerosPorEmpleado.get(j).getFechavigencia())) {
                                 fechas++;
                             }
                         }
                     }
                     for (int j = 0; j < listVigenciasViajerosPorEmpleado.size(); j++) {
                         if (j != indice) {
-                            if (filtrarVigenciasViajerosPorEmplado.get(indice).getFechavigencia().equals(listVigenciasViajerosPorEmpleado.get(j).getFechavigencia())) {
+                            if (filtrarVigenciasViajerosPorEmpleado.get(indice).getFechavigencia().equals(listVigenciasViajerosPorEmpleado.get(j).getFechavigencia())) {
                                 fechas++;
                             }
                         }
@@ -208,11 +208,11 @@ public class ControlVigenciasViajeros implements Serializable {
                     contador++;
                 }
                 if (contador == 0) {
-                    if (!crearVigenciasViajerosPorEmplado.contains(listVigenciasViajerosPorEmpleado.get(indice))) {
-                        if (modificarVigenciasViajerosPorEmplado.isEmpty()) {
-                            modificarVigenciasViajerosPorEmplado.add(listVigenciasViajerosPorEmpleado.get(indice));
-                        } else if (!modificarVigenciasViajerosPorEmplado.contains(listVigenciasViajerosPorEmpleado.get(indice))) {
-                            modificarVigenciasViajerosPorEmplado.add(listVigenciasViajerosPorEmpleado.get(indice));
+                    if (!crearVigenciasViajerosPorEmpleado.contains(listVigenciasViajerosPorEmpleado.get(indice))) {
+                        if (modificarVigenciasViajerosPorEmpleado.isEmpty()) {
+                            modificarVigenciasViajerosPorEmpleado.add(listVigenciasViajerosPorEmpleado.get(indice));
+                        } else if (!modificarVigenciasViajerosPorEmpleado.contains(listVigenciasViajerosPorEmpleado.get(indice))) {
+                            modificarVigenciasViajerosPorEmpleado.add(listVigenciasViajerosPorEmpleado.get(indice));
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -239,7 +239,7 @@ public class ControlVigenciasViajeros implements Serializable {
             tipoLista = 1;
         }
         RequestContext context = RequestContext.getCurrentInstance();
-        infoRegistro = "Cantidad de Registros: " + filtrarVigenciasViajerosPorEmplado.size();
+        infoRegistro = "Cantidad de Registros: " + filtrarVigenciasViajerosPorEmpleado.size();
         context.update("form:informacionRegistro");
     }
 
@@ -296,7 +296,7 @@ public class ControlVigenciasViajeros implements Serializable {
 
     public void cancelarModificacion() {
         if (bandera == 1) {
-            FacesContext c =FacesContext.getCurrentInstance();
+            FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
             fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
             fecha.setFilterStyle("display: none; visibility: hidden;");
@@ -305,13 +305,13 @@ public class ControlVigenciasViajeros implements Serializable {
             altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
             bandera = 0;
-            filtrarVigenciasViajerosPorEmplado = null;
+            filtrarVigenciasViajerosPorEmpleado = null;
             tipoLista = 0;
         }
 
-        borrarVigenciasViajerosPorEmplado.clear();
-        crearVigenciasViajerosPorEmplado.clear();
-        modificarVigenciasViajerosPorEmplado.clear();
+        borrarVigenciasViajerosPorEmpleado.clear();
+        crearVigenciasViajerosPorEmpleado.clear();
+        modificarVigenciasViajerosPorEmpleado.clear();
         index = -1;
         secRegistro = null;
         k = 0;
@@ -333,7 +333,8 @@ public class ControlVigenciasViajeros implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void activarCtrlF11() {FacesContext c =FacesContext.getCurrentInstance();
+    public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
             fecha.setFilterStyle("width: 60px");
@@ -350,7 +351,7 @@ public class ControlVigenciasViajeros implements Serializable {
             altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
             bandera = 0;
-            filtrarVigenciasViajerosPorEmplado = null;
+            filtrarVigenciasViajerosPorEmpleado = null;
             tipoLista = 0;
         }
     }
@@ -366,7 +367,7 @@ public class ControlVigenciasViajeros implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("N")) {
             if (tipoLista == 0) {
-                if (!crearVigenciasViajerosPorEmplado.contains(listVigenciasViajerosPorEmpleado.get(indice))) {
+                if (!crearVigenciasViajerosPorEmpleado.contains(listVigenciasViajerosPorEmpleado.get(indice))) {
                     if (listVigenciasViajerosPorEmpleado.get(indice).getFechavigencia() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
@@ -387,10 +388,10 @@ public class ControlVigenciasViajeros implements Serializable {
                     }
 
                     if (banderita == true) {
-                        if (modificarVigenciasViajerosPorEmplado.isEmpty()) {
-                            modificarVigenciasViajerosPorEmplado.add(listVigenciasViajerosPorEmpleado.get(indice));
-                        } else if (!modificarVigenciasViajerosPorEmplado.contains(listVigenciasViajerosPorEmpleado.get(indice))) {
-                            modificarVigenciasViajerosPorEmplado.add(listVigenciasViajerosPorEmpleado.get(indice));
+                        if (modificarVigenciasViajerosPorEmpleado.isEmpty()) {
+                            modificarVigenciasViajerosPorEmpleado.add(listVigenciasViajerosPorEmpleado.get(indice));
+                        } else if (!modificarVigenciasViajerosPorEmpleado.contains(listVigenciasViajerosPorEmpleado.get(indice))) {
+                            modificarVigenciasViajerosPorEmpleado.add(listVigenciasViajerosPorEmpleado.get(indice));
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -407,8 +408,8 @@ public class ControlVigenciasViajeros implements Serializable {
                 }
             } else {
 
-                if (!crearVigenciasViajerosPorEmplado.contains(filtrarVigenciasViajerosPorEmplado.get(indice))) {
-                    if (filtrarVigenciasViajerosPorEmplado.get(indice).getFechavigencia() == null) {
+                if (!crearVigenciasViajerosPorEmpleado.contains(filtrarVigenciasViajerosPorEmpleado.get(indice))) {
+                    if (filtrarVigenciasViajerosPorEmpleado.get(indice).getFechavigencia() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
@@ -416,10 +417,10 @@ public class ControlVigenciasViajeros implements Serializable {
                     }
 
                     if (banderita == true) {
-                        if (modificarVigenciasViajerosPorEmplado.isEmpty()) {
-                            modificarVigenciasViajerosPorEmplado.add(filtrarVigenciasViajerosPorEmplado.get(indice));
-                        } else if (!modificarVigenciasViajerosPorEmplado.contains(filtrarVigenciasViajerosPorEmplado.get(indice))) {
-                            modificarVigenciasViajerosPorEmplado.add(filtrarVigenciasViajerosPorEmplado.get(indice));
+                        if (modificarVigenciasViajerosPorEmpleado.isEmpty()) {
+                            modificarVigenciasViajerosPorEmpleado.add(filtrarVigenciasViajerosPorEmpleado.get(indice));
+                        } else if (!modificarVigenciasViajerosPorEmpleado.contains(filtrarVigenciasViajerosPorEmpleado.get(indice))) {
+                            modificarVigenciasViajerosPorEmpleado.add(filtrarVigenciasViajerosPorEmpleado.get(indice));
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -456,7 +457,7 @@ public class ControlVigenciasViajeros implements Serializable {
                     if (tipoLista == 0) {
                         listVigenciasViajerosPorEmpleado.get(indice).setTipoViajero(listaTiposviajeros.get(indiceUnicoElemento));
                     } else {
-                        filtrarVigenciasViajerosPorEmplado.get(indice).setTipoViajero(listaTiposviajeros.get(indiceUnicoElemento));
+                        filtrarVigenciasViajerosPorEmpleado.get(indice).setTipoViajero(listaTiposviajeros.get(indiceUnicoElemento));
                     }
                     listaTiposviajeros.clear();
                     listaTiposviajeros = null;
@@ -472,7 +473,7 @@ public class ControlVigenciasViajeros implements Serializable {
                 if (tipoLista == 0) {
                     listVigenciasViajerosPorEmpleado.get(index).getTipoViajero().setNombre(normaLaboral);
                 } else {
-                    filtrarVigenciasViajerosPorEmplado.get(index).getTipoViajero().setNombre(normaLaboral);
+                    filtrarVigenciasViajerosPorEmpleado.get(index).getTipoViajero().setNombre(normaLaboral);
                 }
                 context.update("form:sucursalesDialogo");
                 context.execute("sucursalesDialogo.show()");
@@ -480,23 +481,23 @@ public class ControlVigenciasViajeros implements Serializable {
 
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    if (!crearVigenciasViajerosPorEmplado.contains(listVigenciasViajerosPorEmpleado.get(indice))) {
+                    if (!crearVigenciasViajerosPorEmpleado.contains(listVigenciasViajerosPorEmpleado.get(indice))) {
 
-                        if (modificarVigenciasViajerosPorEmplado.isEmpty()) {
-                            modificarVigenciasViajerosPorEmplado.add(listVigenciasViajerosPorEmpleado.get(indice));
-                        } else if (!modificarVigenciasViajerosPorEmplado.contains(listVigenciasViajerosPorEmpleado.get(indice))) {
-                            modificarVigenciasViajerosPorEmplado.add(listVigenciasViajerosPorEmpleado.get(indice));
+                        if (modificarVigenciasViajerosPorEmpleado.isEmpty()) {
+                            modificarVigenciasViajerosPorEmpleado.add(listVigenciasViajerosPorEmpleado.get(indice));
+                        } else if (!modificarVigenciasViajerosPorEmpleado.contains(listVigenciasViajerosPorEmpleado.get(indice))) {
+                            modificarVigenciasViajerosPorEmpleado.add(listVigenciasViajerosPorEmpleado.get(indice));
                         }
                     }
                     index = -1;
                     secRegistro = null;
                 } else {
-                    if (!crearVigenciasViajerosPorEmplado.contains(filtrarVigenciasViajerosPorEmplado.get(indice))) {
+                    if (!crearVigenciasViajerosPorEmpleado.contains(filtrarVigenciasViajerosPorEmpleado.get(indice))) {
 
-                        if (modificarVigenciasViajerosPorEmplado.isEmpty()) {
-                            modificarVigenciasViajerosPorEmplado.add(filtrarVigenciasViajerosPorEmplado.get(indice));
-                        } else if (!modificarVigenciasViajerosPorEmplado.contains(filtrarVigenciasViajerosPorEmplado.get(indice))) {
-                            modificarVigenciasViajerosPorEmplado.add(filtrarVigenciasViajerosPorEmplado.get(indice));
+                        if (modificarVigenciasViajerosPorEmpleado.isEmpty()) {
+                            modificarVigenciasViajerosPorEmpleado.add(filtrarVigenciasViajerosPorEmpleado.get(indice));
+                        } else if (!modificarVigenciasViajerosPorEmpleado.contains(filtrarVigenciasViajerosPorEmpleado.get(indice))) {
+                            modificarVigenciasViajerosPorEmpleado.add(filtrarVigenciasViajerosPorEmpleado.get(indice));
                         }
                     }
                     index = -1;
@@ -517,20 +518,20 @@ public class ControlVigenciasViajeros implements Serializable {
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 listVigenciasViajerosPorEmpleado.get(index).setTipoViajero(normaLaboralSeleccionada);
-                if (!crearVigenciasViajerosPorEmplado.contains(listVigenciasViajerosPorEmpleado.get(index))) {
-                    if (modificarVigenciasViajerosPorEmplado.isEmpty()) {
-                        modificarVigenciasViajerosPorEmplado.add(listVigenciasViajerosPorEmpleado.get(index));
-                    } else if (!modificarVigenciasViajerosPorEmplado.contains(listVigenciasViajerosPorEmpleado.get(index))) {
-                        modificarVigenciasViajerosPorEmplado.add(listVigenciasViajerosPorEmpleado.get(index));
+                if (!crearVigenciasViajerosPorEmpleado.contains(listVigenciasViajerosPorEmpleado.get(index))) {
+                    if (modificarVigenciasViajerosPorEmpleado.isEmpty()) {
+                        modificarVigenciasViajerosPorEmpleado.add(listVigenciasViajerosPorEmpleado.get(index));
+                    } else if (!modificarVigenciasViajerosPorEmpleado.contains(listVigenciasViajerosPorEmpleado.get(index))) {
+                        modificarVigenciasViajerosPorEmpleado.add(listVigenciasViajerosPorEmpleado.get(index));
                     }
                 }
             } else {
-                filtrarVigenciasViajerosPorEmplado.get(index).setTipoViajero(normaLaboralSeleccionada);
-                if (!crearVigenciasViajerosPorEmplado.contains(filtrarVigenciasViajerosPorEmplado.get(index))) {
-                    if (modificarVigenciasViajerosPorEmplado.isEmpty()) {
-                        modificarVigenciasViajerosPorEmplado.add(filtrarVigenciasViajerosPorEmplado.get(index));
-                    } else if (!modificarVigenciasViajerosPorEmplado.contains(filtrarVigenciasViajerosPorEmplado.get(index))) {
-                        modificarVigenciasViajerosPorEmplado.add(filtrarVigenciasViajerosPorEmplado.get(index));
+                filtrarVigenciasViajerosPorEmpleado.get(index).setTipoViajero(normaLaboralSeleccionada);
+                if (!crearVigenciasViajerosPorEmpleado.contains(filtrarVigenciasViajerosPorEmpleado.get(index))) {
+                    if (modificarVigenciasViajerosPorEmpleado.isEmpty()) {
+                        modificarVigenciasViajerosPorEmpleado.add(filtrarVigenciasViajerosPorEmpleado.get(index));
+                    } else if (!modificarVigenciasViajerosPorEmpleado.contains(filtrarVigenciasViajerosPorEmpleado.get(index))) {
+                        modificarVigenciasViajerosPorEmpleado.add(filtrarVigenciasViajerosPorEmpleado.get(index));
                     }
                 }
             }
@@ -684,7 +685,7 @@ public class ControlVigenciasViajeros implements Serializable {
                     if (tipoLista == 0) {
                         listVigenciasViajerosPorEmpleado.get(index).getTipoViajero().setNombre(nuevoYduplicarCompletarNormaLaboral);
                     } else if (tipoLista == 1) {
-                        filtrarVigenciasViajerosPorEmplado.get(index).getTipoViajero().setNombre(nuevoYduplicarCompletarNormaLaboral);
+                        filtrarVigenciasViajerosPorEmpleado.get(index).getTipoViajero().setNombre(nuevoYduplicarCompletarNormaLaboral);
                     }
 
                 }
@@ -698,34 +699,34 @@ public class ControlVigenciasViajeros implements Serializable {
 
         if (index >= 0) {
             if (tipoLista == 0) {
-                if (!modificarVigenciasViajerosPorEmplado.isEmpty() && modificarVigenciasViajerosPorEmplado.contains(listVigenciasViajerosPorEmpleado.get(index))) {
-                    int modIndex = modificarVigenciasViajerosPorEmplado.indexOf(listVigenciasViajerosPorEmpleado.get(index));
-                    modificarVigenciasViajerosPorEmplado.remove(modIndex);
-                    borrarVigenciasViajerosPorEmplado.add(listVigenciasViajerosPorEmpleado.get(index));
-                } else if (!crearVigenciasViajerosPorEmplado.isEmpty() && crearVigenciasViajerosPorEmplado.contains(listVigenciasViajerosPorEmpleado.get(index))) {
-                    int crearIndex = crearVigenciasViajerosPorEmplado.indexOf(listVigenciasViajerosPorEmpleado.get(index));
-                    crearVigenciasViajerosPorEmplado.remove(crearIndex);
+                if (!modificarVigenciasViajerosPorEmpleado.isEmpty() && modificarVigenciasViajerosPorEmpleado.contains(listVigenciasViajerosPorEmpleado.get(index))) {
+                    int modIndex = modificarVigenciasViajerosPorEmpleado.indexOf(listVigenciasViajerosPorEmpleado.get(index));
+                    modificarVigenciasViajerosPorEmpleado.remove(modIndex);
+                    borrarVigenciasViajerosPorEmpleado.add(listVigenciasViajerosPorEmpleado.get(index));
+                } else if (!crearVigenciasViajerosPorEmpleado.isEmpty() && crearVigenciasViajerosPorEmpleado.contains(listVigenciasViajerosPorEmpleado.get(index))) {
+                    int crearIndex = crearVigenciasViajerosPorEmpleado.indexOf(listVigenciasViajerosPorEmpleado.get(index));
+                    crearVigenciasViajerosPorEmpleado.remove(crearIndex);
                 } else {
-                    borrarVigenciasViajerosPorEmplado.add(listVigenciasViajerosPorEmpleado.get(index));
+                    borrarVigenciasViajerosPorEmpleado.add(listVigenciasViajerosPorEmpleado.get(index));
                 }
                 listVigenciasViajerosPorEmpleado.remove(index);
                 infoRegistro = "Cantidad de registros: " + listVigenciasViajerosPorEmpleado.size();
             }
             if (tipoLista == 1) {
-                if (!modificarVigenciasViajerosPorEmplado.isEmpty() && modificarVigenciasViajerosPorEmplado.contains(filtrarVigenciasViajerosPorEmplado.get(index))) {
-                    int modIndex = modificarVigenciasViajerosPorEmplado.indexOf(filtrarVigenciasViajerosPorEmplado.get(index));
-                    modificarVigenciasViajerosPorEmplado.remove(modIndex);
-                    borrarVigenciasViajerosPorEmplado.add(filtrarVigenciasViajerosPorEmplado.get(index));
-                } else if (!crearVigenciasViajerosPorEmplado.isEmpty() && crearVigenciasViajerosPorEmplado.contains(filtrarVigenciasViajerosPorEmplado.get(index))) {
-                    int crearIndex = crearVigenciasViajerosPorEmplado.indexOf(filtrarVigenciasViajerosPorEmplado.get(index));
-                    crearVigenciasViajerosPorEmplado.remove(crearIndex);
+                if (!modificarVigenciasViajerosPorEmpleado.isEmpty() && modificarVigenciasViajerosPorEmpleado.contains(filtrarVigenciasViajerosPorEmpleado.get(index))) {
+                    int modIndex = modificarVigenciasViajerosPorEmpleado.indexOf(filtrarVigenciasViajerosPorEmpleado.get(index));
+                    modificarVigenciasViajerosPorEmpleado.remove(modIndex);
+                    borrarVigenciasViajerosPorEmpleado.add(filtrarVigenciasViajerosPorEmpleado.get(index));
+                } else if (!crearVigenciasViajerosPorEmpleado.isEmpty() && crearVigenciasViajerosPorEmpleado.contains(filtrarVigenciasViajerosPorEmpleado.get(index))) {
+                    int crearIndex = crearVigenciasViajerosPorEmpleado.indexOf(filtrarVigenciasViajerosPorEmpleado.get(index));
+                    crearVigenciasViajerosPorEmpleado.remove(crearIndex);
                 } else {
-                    borrarVigenciasViajerosPorEmplado.add(filtrarVigenciasViajerosPorEmplado.get(index));
+                    borrarVigenciasViajerosPorEmpleado.add(filtrarVigenciasViajerosPorEmpleado.get(index));
                 }
-                int VCIndex = listVigenciasViajerosPorEmpleado.indexOf(filtrarVigenciasViajerosPorEmplado.get(index));
+                int VCIndex = listVigenciasViajerosPorEmpleado.indexOf(filtrarVigenciasViajerosPorEmpleado.get(index));
                 listVigenciasViajerosPorEmpleado.remove(VCIndex);
-                filtrarVigenciasViajerosPorEmplado.remove(index);
-                infoRegistro = "Cantidad de registros: " + filtrarVigenciasViajerosPorEmplado.size();
+                filtrarVigenciasViajerosPorEmpleado.remove(index);
+                infoRegistro = "Cantidad de registros: " + filtrarVigenciasViajerosPorEmpleado.size();
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
@@ -742,33 +743,30 @@ public class ControlVigenciasViajeros implements Serializable {
 
     }
 
-    /* public void verificarBorrado() {
-     System.out.println("Estoy en verificarBorrado");
-     try {
-     System.err.println("Control Secuencia de ControlHvEntrevistas ");
-     competenciasCargos = administrarHvEntrevistas.verificarBorradoCompetenciasCargos(listHvEntrevistas.get(index).getSecuencia());
-
-     if (competenciasCargos.intValueExact() == 0) {
-     System.out.println("Borrado==0");
-     borrandoHvEntrevistas();
-     } else {
-     System.out.println("Borrado>0");
-
-     RequestContext context = RequestContext.getCurrentInstance();
-     context.update("form:validacionBorrar");
-     context.execute("validacionBorrar.show()");
-     index = -1;
-
-     competenciasCargos = new BigDecimal(-1);
-
+    /*
+     * public void verificarBorrado() { System.out.println("Estoy en
+     * verificarBorrado"); try { System.err.println("Control Secuencia de
+     * ControlHvEntrevistas "); competenciasCargos =
+     * administrarHvEntrevistas.verificarBorradoCompetenciasCargos(listHvEntrevistas.get(index).getSecuencia());
+     *
+     * if (competenciasCargos.intValueExact() == 0) {
+     * System.out.println("Borrado==0"); borrandoHvEntrevistas(); } else {
+     * System.out.println("Borrado>0");
+     *
+     * RequestContext context = RequestContext.getCurrentInstance();
+     * context.update("form:validacionBorrar");
+     * context.execute("validacionBorrar.show()"); index = -1;
+     *
+     * competenciasCargos = new BigDecimal(-1);
+     *
+     * }
+     * } catch (Exception e) { System.err.println("ERROR ControlHvEntrevistas
+     * verificarBorrado ERROR " + e); }
      }
-     } catch (Exception e) {
-     System.err.println("ERROR ControlHvEntrevistas verificarBorrado ERROR " + e);
-     }
-     }*/
+     */
     public void revisarDialogoGuardar() {
 
-        if (!borrarVigenciasViajerosPorEmplado.isEmpty() || !crearVigenciasViajerosPorEmplado.isEmpty() || !modificarVigenciasViajerosPorEmplado.isEmpty()) {
+        if (!borrarVigenciasViajerosPorEmpleado.isEmpty() || !crearVigenciasViajerosPorEmpleado.isEmpty() || !modificarVigenciasViajerosPorEmpleado.isEmpty()) {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:confirmarGuardar");
             context.execute("confirmarGuardar.show()");
@@ -780,26 +778,26 @@ public class ControlVigenciasViajeros implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (guardado == false) {
-            if (!borrarVigenciasViajerosPorEmplado.isEmpty()) {
-                for (int i = 0; i < borrarVigenciasViajerosPorEmplado.size(); i++) {
-                    administrarVigenciasViajeros.borrarVigenciasViajeros(borrarVigenciasViajerosPorEmplado);
+            if (!borrarVigenciasViajerosPorEmpleado.isEmpty()) {
+                for (int i = 0; i < borrarVigenciasViajerosPorEmpleado.size(); i++) {
+                    administrarVigenciasViajeros.borrarVigenciasViajeros(borrarVigenciasViajerosPorEmpleado);
                 }
                 //mostrarBorrados
-                registrosBorrados = borrarVigenciasViajerosPorEmplado.size();
+                registrosBorrados = borrarVigenciasViajerosPorEmpleado.size();
                 context.update("form:mostrarBorrados");
                 context.execute("mostrarBorrados.show()");
-                borrarVigenciasViajerosPorEmplado.clear();
+                borrarVigenciasViajerosPorEmpleado.clear();
             }
-            if (!crearVigenciasViajerosPorEmplado.isEmpty()) {
-                for (int i = 0; i < crearVigenciasViajerosPorEmplado.size(); i++) {
-                    administrarVigenciasViajeros.crearVigenciasViajeros(crearVigenciasViajerosPorEmplado);
+            if (!crearVigenciasViajerosPorEmpleado.isEmpty()) {
+                for (int i = 0; i < crearVigenciasViajerosPorEmpleado.size(); i++) {
+                    administrarVigenciasViajeros.crearVigenciasViajeros(crearVigenciasViajerosPorEmpleado);
 
                 }
-                crearVigenciasViajerosPorEmplado.clear();
+                crearVigenciasViajerosPorEmpleado.clear();
             }
-            if (!modificarVigenciasViajerosPorEmplado.isEmpty()) {
-                administrarVigenciasViajeros.modificarVigenciasViajeros(modificarVigenciasViajerosPorEmplado);
-                modificarVigenciasViajerosPorEmplado.clear();
+            if (!modificarVigenciasViajerosPorEmpleado.isEmpty()) {
+                administrarVigenciasViajeros.modificarVigenciasViajeros(modificarVigenciasViajerosPorEmpleado);
+                modificarVigenciasViajerosPorEmpleado.clear();
             }
             listVigenciasViajerosPorEmpleado = null;
             getListVigenciasViajerosPorEmpleado();
@@ -814,7 +812,7 @@ public class ControlVigenciasViajeros implements Serializable {
             k = 0;
             guardado = true;
             context.update("form:ACEPTAR");
-            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesMessage msg = new FacesMessage("Información", "Se guardarón los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
         }
@@ -827,7 +825,7 @@ public class ControlVigenciasViajeros implements Serializable {
                 editarVigenciasViajeros = listVigenciasViajerosPorEmpleado.get(index);
             }
             if (tipoLista == 1) {
-                editarVigenciasViajeros = filtrarVigenciasViajerosPorEmplado.get(index);
+                editarVigenciasViajeros = filtrarVigenciasViajerosPorEmpleado.get(index);
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -882,15 +880,16 @@ public class ControlVigenciasViajeros implements Serializable {
         } else {
             contador++;
         }
-        /*if (nuevoHvEntrevista.getTipo() == (null)) {
-         mensajeValidacion = mensajeValidacion + " *Debe tener un tipo entrevista \n";
-         System.out.println("Mensaje validacion : " + mensajeValidacion);
-         } else {
-         System.out.println("bandera");
-         contador++;
-         }*/
+        /*
+         * if (nuevoHvEntrevista.getTipo() == (null)) { mensajeValidacion =
+         * mensajeValidacion + " *Debe tener un tipo entrevista \n";
+         * System.out.println("Mensaje validacion : " + mensajeValidacion); }
+         * else { System.out.println("bandera"); contador++;
+         }
+         */
 
-        if (contador == 2 && pasa == 0) {FacesContext c =FacesContext.getCurrentInstance();
+        if (contador == 2 && pasa == 0) {
+            FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
@@ -900,7 +899,7 @@ public class ControlVigenciasViajeros implements Serializable {
                 altoTabla = "270";
                 RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
                 bandera = 0;
-                filtrarVigenciasViajerosPorEmplado = null;
+                filtrarVigenciasViajerosPorEmpleado = null;
                 tipoLista = 0;
             }
 
@@ -909,7 +908,7 @@ public class ControlVigenciasViajeros implements Serializable {
             nuevoVigenciasViajeros.setSecuencia(l);
             nuevoVigenciasViajeros.setEmpleado(empleadoSeleccionado);
 
-            crearVigenciasViajerosPorEmplado.add(nuevoVigenciasViajeros);
+            crearVigenciasViajerosPorEmpleado.add(nuevoVigenciasViajeros);
             if (listVigenciasViajerosPorEmpleado == null) {
                 listVigenciasViajerosPorEmpleado = new ArrayList<VigenciasViajeros>();
                 listVigenciasViajerosPorEmpleado.add(nuevoVigenciasViajeros);
@@ -963,9 +962,9 @@ public class ControlVigenciasViajeros implements Serializable {
             }
             if (tipoLista == 1) {
                 duplicarVigenciasViajeros.setSecuencia(l);
-                duplicarVigenciasViajeros.setEmpleado(filtrarVigenciasViajerosPorEmplado.get(index).getEmpleado());
-                duplicarVigenciasViajeros.setFechavigencia(filtrarVigenciasViajerosPorEmplado.get(index).getFechavigencia());
-                duplicarVigenciasViajeros.setTipoViajero(filtrarVigenciasViajerosPorEmplado.get(index).getTipoViajero());
+                duplicarVigenciasViajeros.setEmpleado(filtrarVigenciasViajerosPorEmpleado.get(index).getEmpleado());
+                duplicarVigenciasViajeros.setFechavigencia(filtrarVigenciasViajerosPorEmpleado.get(index).getFechavigencia());
+                duplicarVigenciasViajeros.setTipoViajero(filtrarVigenciasViajerosPorEmpleado.get(index).getTipoViajero());
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -1013,9 +1012,9 @@ public class ControlVigenciasViajeros implements Serializable {
         }
         if (contador == 2 && pasa == 0) {
 
-           
+
             listVigenciasViajerosPorEmpleado.add(duplicarVigenciasViajeros);
-            crearVigenciasViajerosPorEmplado.add(duplicarVigenciasViajeros);
+            crearVigenciasViajerosPorEmpleado.add(duplicarVigenciasViajeros);
             infoRegistro = "Cantidad de registros: " + listVigenciasViajerosPorEmpleado.size();
             context.update("form:informacionRegistro");
 
@@ -1027,7 +1026,8 @@ public class ControlVigenciasViajeros implements Serializable {
                 guardado = false;
                 context.update("form:ACEPTAR");
             }
-            if (bandera == 1) {FacesContext c =FacesContext.getCurrentInstance();
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
                 fecha.setFilterStyle("display: none; visibility: hidden;");
@@ -1036,7 +1036,7 @@ public class ControlVigenciasViajeros implements Serializable {
                 altoTabla = "270";
                 RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
                 bandera = 0;
-                filtrarVigenciasViajerosPorEmplado = null;
+                filtrarVigenciasViajerosPorEmpleado = null;
                 tipoLista = 0;
             }
             duplicarVigenciasViajeros = new VigenciasViajeros();
@@ -1117,12 +1117,12 @@ public class ControlVigenciasViajeros implements Serializable {
         this.listVigenciasViajerosPorEmpleado = listVigenciasViajerosPorEmpleado;
     }
 
-    public List<VigenciasViajeros> getFiltrarVigenciasViajerosPorEmplado() {
-        return filtrarVigenciasViajerosPorEmplado;
+    public List<VigenciasViajeros> getFiltrarVigenciasViajerosPorEmpleado() {
+        return filtrarVigenciasViajerosPorEmpleado;
     }
 
-    public void setFiltrarVigenciasViajerosPorEmplado(List<VigenciasViajeros> filtrarVigenciasViajerosPorEmplado) {
-        this.filtrarVigenciasViajerosPorEmplado = filtrarVigenciasViajerosPorEmplado;
+    public void setFiltrarVigenciasViajerosPorEmpleado(List<VigenciasViajeros> filtrarVigenciasViajerosPorEmpleado) {
+        this.filtrarVigenciasViajerosPorEmpleado = filtrarVigenciasViajerosPorEmpleado;
     }
 
     public VigenciasViajeros getNuevoVigenciasViajeros() {
@@ -1256,7 +1256,4 @@ public class ControlVigenciasViajeros implements Serializable {
     public void setInfoRegistroTiposViajeros(String infoRegistroTiposViajeros) {
         this.infoRegistroTiposViajeros = infoRegistroTiposViajeros;
     }
-    
-    
-
 }

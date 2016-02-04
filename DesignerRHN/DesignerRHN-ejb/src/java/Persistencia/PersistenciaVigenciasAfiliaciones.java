@@ -34,7 +34,7 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
     public void crear(EntityManager em, VigenciasAfiliaciones vigenciasAfiliaciones) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
-        try {
+        try {            
             tx.begin();
             em.persist(vigenciasAfiliaciones);
             tx.commit();
@@ -48,6 +48,7 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
                 System.out.println("No se puede hacer rollback porque no hay una transacción");
             }
         }
+        
     }
 
     @Override

@@ -23,10 +23,10 @@ public class VigenciasAfiliaciones implements Serializable {
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
     @Column(name = "FECHAINICIAL")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date fechainicial;
     @Column(name = "FECHAFINAL")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date fechafinal;
     @Size(max = 12)
     @Column(name = "CODIGO")
@@ -105,6 +105,7 @@ public class VigenciasAfiliaciones implements Serializable {
     }
 
     public void setFechafinal(Date fechafinal) {
+        System.out.println("VigenciasAfiliaciones.setFechafinal");
         this.fechafinal = fechafinal;
     }
 
@@ -214,6 +215,7 @@ public class VigenciasAfiliaciones implements Serializable {
     }
 
     public Empleados getEmpleado() {
+        System.out.println("VigenciasAfiliaciones.getEmpleado: " + empleado);
         return empleado;
     }
 

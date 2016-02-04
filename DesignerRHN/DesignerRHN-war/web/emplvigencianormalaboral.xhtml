@@ -17,55 +17,8 @@
                     <f:loadBundle basename="Recursos.emplvigencianormalaboral" var="msg"/>
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">  
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlBetaEmplVigenciaNormaLaboral.empleadoSeleccionado.persona.nombreCompleto}"/>
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
-                            <legend style="font-size: 14px; color: blue"><strong>#{msg['normaLaboralT']}</strong></legend>
 
-                            <p:dataTable id="datosHvEntrevista" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 830px ;border: 1px;"                           
-                                         value="#{controlBetaEmplVigenciaNormaLaboral.listEmplVigenciaNormaLaboralPorEmpleado}" scrollable="true" scrollHeight="#{controlBetaEmplVigenciaNormaLaboral.altoTabla}"  scrollWidth="830"
-                                         filteredValue="#{controlBetaEmplVigenciaNormaLaboral.filtrarEmplVigenciaNormaLaboralPorEmplado}" emptyMessage="#{msg['vacio']}"
-                                         editable="true" editMode="cell" selection="#{controlBetaEmplVigenciaNormaLaboral.vigenciaSeleccionada}" selectionMode="single" >
-                                <p:ajax event="filter" listener="#{controlBetaEmplVigenciaNormaLaboral.eventoFiltrar()}"/>
-
-                                <p:column headerText="#{msg['fecha']}" sortBy="#{info.fechavigencia}" filterBy="#{info.fechavigencia}" filterMatchMode="contains" 
-                                          id="fecha" width="80"
-                                          filterStyle="display: none; visibility: hidden;"  style="width: 80px; ">                                  
-                                    <p:cellEditor> 
-                                        <f:facet name="output">
-                                            <h:outputText value="#{info.fechavigencia}" style="width: 80px; text-transform: uppercase">
-                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
-                                            </h:outputText>
-                                        </f:facet>  
-                                        <f:facet name="input">
-                                            <lnk:calendar id="dateFechaInicial" value="#{info.fechavigencia}" height="12" width="99"> 
-                                                <p:ajax event="select" listener="#{controlBetaEmplVigenciaNormaLaboral.cambiarIndice(indice, 0)}" process="@this"/>  
-                                                <p:ajax event="change" listener="#{controlBetaEmplVigenciaNormaLaboral.mostrarInfo(indice,0)}" process="@this"/> 
-                                                <p:ajax event="dateSelect" listener="#{controlBetaEmplVigenciaNormaLaboral.mostrarInfo(indice,0)}" process="@this" update="editFecha"/>
-                                            </lnk:calendar>
-                                        </f:facet>  
-                                    </p:cellEditor>
-
-                                </p:column>
-
-                                <p:column headerText="#{msg['nombreNormaLaboral']}" sortBy="#{info.normalaboral.nombre}" filterBy="#{info.normalaboral.nombre}" filterMatchMode="contains" id="parentesco" width="700" filterStyle="display: none; visibility: hidden;" >                                  
-                                    <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.normalaboral.nombre}" /></f:facet>  
-                                        <f:facet name="input">
-                                            <p:inputText maxlength="40" value="#{info.normalaboral.nombre}" id="editarparentesco" style=" border-radius: 0px; width: 99%; height: 12px; text-transform: uppercase"  > 
-                                                <p:ajax event="select" listener="#{controlBetaEmplVigenciaNormaLaboral.cambiarIndice(indice, 1)}" process="@this"/> 
-                                                <p:ajax event="dblclick" listener="#{controlBetaEmplVigenciaNormaLaboral.asignarIndex(indice, 0,1)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlBetaEmplVigenciaNormaLaboral.modificandoEmplVigenciaNormaLaboral(indice, 'NORMASLABORALES',info.normalaboral.nombre)}"/>
-                                            </p:inputText>
-                                        </f:facet>  
-                                    </p:cellEditor>
-
-                                    <f:facet name="footer">
-                                        <p:commandButton style="width: 728px;  margin: -14px; height: 20px; border: none; color: blue;" id="fooNormaLaboral" actionListener="#{controlNormasLaborales.recibirPaginaEntrante('emplvigencianormalaboral')}" action="normaLaboral" value=""/>
-                                    </f:facet>
-                                </p:column>
-
-                            </p:dataTable>
-
-                        </fieldset>
+                        <!--TOOLBAR-->
 
                         <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">  
                             <p:toolbarGroup align="left"> 
@@ -119,6 +72,58 @@
                             </p:toolbarGroup>  
                         </p:toolbar>
 
+                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
+                            <legend style="font-size: 14px; color: blue"><strong>#{msg['normaLaboralT']}</strong></legend>
+
+                            <p:dataTable id="datosHvEntrevista" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 830px ;border: 1px;"                           
+                                         value="#{controlBetaEmplVigenciaNormaLaboral.listEmplVigenciaNormaLaboralPorEmpleado}" scrollable="true" scrollHeight="#{controlBetaEmplVigenciaNormaLaboral.altoTabla}"  scrollWidth="830"
+                                         filteredValue="#{controlBetaEmplVigenciaNormaLaboral.filtrarEmplVigenciaNormaLaboralPorEmplado}" emptyMessage="#{msg['vacio']}"
+                                         editable="true" editMode="cell" selection="#{controlBetaEmplVigenciaNormaLaboral.vigenciaSeleccionada}" selectionMode="single" >
+                                <p:ajax event="filter" listener="#{controlBetaEmplVigenciaNormaLaboral.eventoFiltrar()}"/>
+
+                                <p:column headerText="#{msg['fecha']}" sortBy="#{info.fechavigencia}" filterBy="#{info.fechavigencia}" filterMatchMode="contains" 
+                                          id="fecha" width="80"
+                                          filterStyle="display: none; visibility: hidden;"  style="width: 80px; ">                                  
+                                    <p:cellEditor> 
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info.fechavigencia}" style="width: 80px; text-transform: uppercase">
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <lnk:calendar id="dateFechaInicial" value="#{info.fechavigencia}" height="12" width="99"> 
+                                                <p:ajax event="select" listener="#{controlBetaEmplVigenciaNormaLaboral.cambiarIndice(indice, 0)}" process="@this"/>  
+                                                <p:ajax event="change" listener="#{controlBetaEmplVigenciaNormaLaboral.mostrarInfo(indice,0)}" process="@this"/> 
+                                                <p:ajax event="dateSelect" listener="#{controlBetaEmplVigenciaNormaLaboral.mostrarInfo(indice,0)}" process="@this" update="editFecha"/>
+                                            </lnk:calendar>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                </p:column>
+
+                                <p:column headerText="#{msg['nombreNormaLaboral']}" sortBy="#{info.normalaboral.nombre}" filterBy="#{info.normalaboral.nombre}" filterMatchMode="contains" id="parentesco" width="700" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.normalaboral.nombre}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText maxlength="40" value="#{info.normalaboral.nombre}" id="editarparentesco" style=" border-radius: 0px; width: 99%; height: 12px; text-transform: uppercase"  > 
+                                                <p:ajax event="select" listener="#{controlBetaEmplVigenciaNormaLaboral.cambiarIndice(indice, 1)}" process="@this"/> 
+                                                <p:ajax event="dblclick" listener="#{controlBetaEmplVigenciaNormaLaboral.asignarIndex(indice, 0,1)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlBetaEmplVigenciaNormaLaboral.modificandoEmplVigenciaNormaLaboral(indice, 'NORMASLABORALES',info.normalaboral.nombre)}"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 728px;  margin: -14px; height: 20px; border: none; color: blue;" id="fooNormaLaboral" actionListener="#{controlNormasLaborales.recibirPaginaEntrante('emplvigencianormalaboral')}" action="normaLaboral" value=""/>
+                                    </f:facet>
+                                </p:column>
+
+                            </p:dataTable>
+
+                        </fieldset>
+
+
+
                         <h:outputText id="informacionRegistro" value="#{controlBetaEmplVigenciaNormaLaboral.infoRegistro}" style="position: absolute; left: 15px; top: 470px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px;  " icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" disabled="#{controlBetaEmplVigenciaNormaLaboral.guardado}"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.revisarDialogoGuardar()}"     process="@this"   />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px;  " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" action="normalaboralNominaF" value="#{msg['atras']}"    />
@@ -151,9 +156,9 @@
                             <h:outputText id="infoRecursoNormasLaborales" value="#{controlBetaEmplVigenciaNormaLaboral.infoRecursoNormasLaborales}" style="position: absolute; left: 15px; top: 355px; font-weight: bold"/>
 
                             <p:commandButton id="aceptarS" style="position: relative; left: 278px" disabled="#{controlBetaEmplVigenciaNormaLaboral.aceptar}" value="#{msg['aceptar']}" actionListener="#{controlBetaEmplVigenciaNormaLaboral.actualizarNormaLaboral()}" process="@this" icon="ui-icon-check"/>
-                            
+
                             <p:commandButton id="atrasS" style="position: relative; left: 278px" value="#{msg['atras']}"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.cancelarCambioNormaLaboral()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
-                            
+
                         </p:dialog>
 
                         <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
@@ -172,7 +177,7 @@
                         <h:outputText value="#{msg['validacionDuplicarVigencia']} #{controlBetaEmplVigenciaNormaLaboral.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 200px; font-weight:bold" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="validacionDuplicarVigencia.hide();" style="position: absolute; top: 60px; left: 290px" process="@this" />
                     </p:dialog>
-                     <p:dialog id="validacionModificar" header="#{msg['atencion']}" widgetVar="validacionModificar"  resizable="false" draggable="false" modal="true" height="77" width="330px" style="" closable="false">  
+                    <p:dialog id="validacionModificar" header="#{msg['atencion']}" widgetVar="validacionModificar"  resizable="false" draggable="false" modal="true" height="77" width="330px" style="" closable="false">  
                         <h:graphicImage value="Imagenes/error.png" width="60" height="60" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value=" #{controlBetaEmplVigenciaNormaLaboral.mensajeValidacion}" style="position: absolute; left: 80px; top: 15px; width: 250px; font-weight:bold" />
                         <p:commandButton value="Aceptar" onclick="validacionModificar.hide();" style="position: absolute; top: 40px; left: 230px" process="@this" />
