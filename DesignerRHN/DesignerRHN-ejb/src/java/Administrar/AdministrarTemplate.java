@@ -1,11 +1,13 @@
 package Administrar;
 
 import Entidades.ActualUsuario;
+import Entidades.DetallesEmpresas;
 import Entidades.Empresas;
 import Entidades.Generales;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfaceAdministrar.AdministrarTemplateInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
+import InterfacePersistencia.PersistenciaDetallesEmpresasInterface;
 import InterfacePersistencia.PersistenciaEmpresasInterface;
 import InterfacePersistencia.PersistenciaGeneralesInterface;
 import javax.ejb.EJB;
@@ -41,6 +43,8 @@ public class AdministrarTemplate implements AdministrarTemplateInterface {
     PersistenciaGeneralesInterface persistenciaGenerales;
     @EJB
     PersistenciaEmpresasInterface persistenciaEmpresas;
+    @EJB
+    PersistenciaDetallesEmpresasInterface persistenciaDetallesEmpresas;
 
     private EntityManager em;
     private Generales general;
@@ -56,7 +60,7 @@ public class AdministrarTemplate implements AdministrarTemplateInterface {
         return persistenciaActualUsuario.actualUsuarioBD(em);
     }
 
-    //@Override
+    @Override
     public String logoEmpresa() {
         String rutaLogo;
         general = persistenciaGenerales.obtenerRutas(em);
@@ -73,6 +77,7 @@ public class AdministrarTemplate implements AdministrarTemplateInterface {
         return rutaLogo;
     }
 
+    @Override
     public String rutaFotoUsuario() {
         String rutaFoto;
         general = persistenciaGenerales.obtenerRutas(em);
@@ -84,10 +89,23 @@ public class AdministrarTemplate implements AdministrarTemplateInterface {
         return rutaFoto;
     }
 
+    
+    @Override
     public void cerrarSession(String idSesion) {
         if (em.isOpen()) {
             em.getEntityManagerFactory().close();
             administrarSesiones.borrarSesion(idSesion);
+        }
+    }
+    @Override
+    public DetallesEmpresas consultarDetalleEmpresaUsuario() {
+        System.out.println("AdministrarTemplate.consultarDetalleEmpresaUsuario");
+        try {
+            Short codigoEmpresa = persistenciaEmpresas.codigoEmpresa(em);
+            DetallesEmpresas detallesEmpresas = persistenciaDetallesEmpresas.buscarDetalleEmpresa(em, codigoEmpresa);
+            return detallesEmpresas;
+        } catch (Exception e) {
+            return null;
         }
     }
 }

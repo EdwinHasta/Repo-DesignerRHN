@@ -407,6 +407,18 @@ public class Personas implements Serializable {
         }
     }
 
+    public String getNombreCompletoOrden2() {
+        if (nombreCompleto == null) {
+            nombreCompleto = getNombre()+ " " + getPrimerapellido() + " " + getSegundoapellido();
+            if (nombreCompleto.equals("  ")) {
+                nombreCompleto = null;
+            }
+            return nombreCompleto;
+        } else {
+            return nombreCompleto;
+        }
+    }
+    
     public void setNombreCompleto(String nombreCompleto) {
         if (nombreCompleto != null) {
             this.nombreCompleto = nombreCompleto.toUpperCase();

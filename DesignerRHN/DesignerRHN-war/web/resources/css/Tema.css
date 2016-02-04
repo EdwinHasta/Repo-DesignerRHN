@@ -20,7 +20,8 @@ and open the template in the editor.
 }
 .ui-widget-content {
     border: 1px solid #1E63A4;
-    background: #CBCFDA;
+    /*background: #CBCFDA;*/
+    background: #FFFFFF;
     color: #1F2429;
 }
 .ui-widget-content a {
@@ -29,7 +30,7 @@ and open the template in the editor.
 .ui-widget-header {
     border: 1px solid #ffffff;
     background: #61A0CA url("images/ui-bg_highlight-hard_50_61A0CA_1x100.png") 50% 50% repeat-x;
-    color: #ffffff;
+    color: #000000;
     font-weight: bold;
 }
 .ui-widget-header a {
@@ -362,9 +363,10 @@ and open the template in the editor.
 }
 
 .ui-clock {
-    padding: 4px 10px;
-    background: white !important;
+    padding: 4px 0px;
+    background: initial;
     color: black;
+    border: 0px;
 }
 
 .outputTextFielset{
@@ -373,7 +375,8 @@ and open the template in the editor.
     position: absolute;
     top: -9px;
     left: 10px;
-    background: #CBCFDA;
+    /*background: #CBCFDA;*/
+    background: #FFFFFF;
     padding: 0px 3px;
 }
 

@@ -21,23 +21,23 @@
 
                             <p:tab title="#{msg['personal']}" id="Personal">  
 
-                                <h:outputText id="fechas" style="position: absolute; font-size: 11px;  font-weight: bold; left: 343px; top: 39px; width: 500px; text-align: right; color: #BF1A1A" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta']} #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
+                                <h:outputText id="fechas" style="position: absolute; font-size: 11px;  font-weight: bold; left: 343px; top: -27px; width: 500px; text-align: right; color: #000000; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.7); " value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta']} #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
 
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 727px; top: 57px; z-index: 1;"  process="@this" actionListener="#{controlRemoto.requerirBuscarEmpleadoTipo()}"/>
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 30px; height: 29px; position: absolute; left: 725px; top: 5px; z-index: 1;"  process="@this" actionListener="#{controlRemoto.requerirBuscarEmpleadoTipo()}"/>
                                 <p:tooltip  for="listaValores" value="#{msg['lista']}" />
 
 
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 754px; top: 57px; z-index: 1;" actionListener="#{controlRemoto.requerirBuscarEmpleadoTipo()}"   ajax="false">
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 30px; height: 29px; position: absolute; left: 755px; top: 5px; z-index: 1;" actionListener="#{controlRemoto.requerirBuscarEmpleadoTipo()}"   ajax="false">
                                     <p:dataExporter type="xls"  target=":formExportar:empleadosExportar" fileName="PersonalXLS" encoding="UTF-8"/>
                                 </p:commandButton>
                                 <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
 
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 782px; top: 57px; z-index: 1;"  actionListener="#{controlRemoto.requerirBuscarEmpleadoTipo()}" ajax="false">
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 30px; height: 29px; position: absolute; left: 785px; top: 5px; z-index: 1;"  actionListener="#{controlRemoto.requerirBuscarEmpleadoTipo()}" ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportar:empleadosExportar" fileName="PersonalXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
 
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 809px; top: 57px; z-index: 1;" actionListener="#{controlRemoto.requerirBuscarEmpleadoTipo()}"  ajax="false">
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 30px; height: 29px; position: absolute; left: 815px; top: 5px; z-index: 1;" actionListener="#{controlRemoto.requerirBuscarEmpleadoTipo()}"  ajax="false">
                                     <p:dataExporter type="pdf"  target=":formExportar:empleadosExportar" fileName="PersonalPDF" encoding="UTF-8"/>
                                 </p:commandButton>
                                 <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
@@ -65,11 +65,11 @@
                                 </fieldset>
 
                                 <!-- Panel Derecho - Superior -->
-                                <h:outputText id="informacionTT" value="#{controlRemoto.informacionTiposTrabajadores}" style="position: absolute; left: 500px; top: 60px;"/>
-                                <p:commandButton id="btnPrimero" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 610px; top: 57px;" icon="ui-icon-arrowthickstop-1-w" disabled="#{controlRemoto.mostrarT == false ? true : false}"  actionListener="#{controlRemoto.primerTipoTrabajador()}"/>
-                                <p:commandButton id="btnAtras" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 638px; top: 57px;" icon="ui-icon-arrowthick-1-w" disabled="#{controlRemoto.mostrarT == false ? true : false}" actionListener="#{controlRemoto.atrasTipoTrabajador()}"/>
-                                <p:commandButton id="btnSiguiente" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 666px; top: 57px;" icon="ui-icon-arrowthick-1-e" disabled="#{controlRemoto.mostrarT == false ? true : false}" actionListener="#{controlRemoto.siguienteTipoTrabajador()}"/>
-                                <p:commandButton id="btnUltimo" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 694px; top: 57px;" icon="ui-icon-arrowthickstop-1-e" disabled="#{controlRemoto.mostrarT == false ? true : false}" actionListener="#{controlRemoto.ultimoTipoTrabajador()}"/>
+                                <h:outputText id="informacionTT" value="#{controlRemoto.informacionTiposTrabajadores}" style="position: absolute; left: 480px; top: 11px;"/>
+                                <p:commandButton id="btnPrimero" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 605px; top: 5px; height: 29px; width: 30px;" icon="ui-icon-arrowthickstop-1-w" disabled="#{controlRemoto.mostrarT == false ? true : false}"  actionListener="#{controlRemoto.primerTipoTrabajador()}"/>
+                                <p:commandButton id="btnAtras" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 635px; top: 5px; height: 29px; width: 30px;" icon="ui-icon-arrowthick-1-w" disabled="#{controlRemoto.mostrarT == false ? true : false}" actionListener="#{controlRemoto.atrasTipoTrabajador()}"/>
+                                <p:commandButton id="btnSiguiente" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 665px; top: 5px; height: 29px; width: 30px;" icon="ui-icon-arrowthick-1-e" disabled="#{controlRemoto.mostrarT == false ? true : false}" actionListener="#{controlRemoto.siguienteTipoTrabajador()}"/>
+                                <p:commandButton id="btnUltimo" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 695px; top: 5px; height: 29px; width: 30px;" icon="ui-icon-arrowthickstop-1-e" disabled="#{controlRemoto.mostrarT == false ? true : false}" actionListener="#{controlRemoto.ultimoTipoTrabajador()}"/>
 
                                 <p:panel id="contenedor" style="border: none">
                                     <fieldset id="set" style="height: 72px; width: 595px; display: block; position: absolute; border-radius: 10px; left: 225px; top: 82px;">
@@ -258,26 +258,26 @@
 
                                         <!-- Cajas de Texto -->
 
-                                        <p:inputText id="VCargoDesempeñado" style="position: absolute; left: 45px; top: 30px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.actualCargo}"  /> 
-                                        <p:inputText id="VFechaContratacion" style="position: absolute; left: 45px; top: 66px; width: 210px; height: 12px; " readonly="true" value="Fecha: #{controlRemoto.fechaActualesTiposContratos} - #{controlRemoto.vwActualesTiposContratos.tipoContrato.nombre}"/>
-                                        <p:inputText id="VNormaLaboral" style="position: absolute; left: 45px; top: 101px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesNormasEmpleados.normaLaboral.nombre}" />
-                                        <p:inputText id="VAfiliaciones" style="position: absolute; left: 45px; top: 137px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesAfiliacionesSalud.tiposEntidades.nombre} - #{controlRemoto.vwActualesAfiliacionesSalud.tercerosSucursales.tercero.nombre} - #{controlRemoto.vwActualesAfiliacionesPension.tiposEntidades.nombre} - #{controlRemoto.vwActualesAfiliacionesPension.tercerosSucursales.tercero.nombre}" />
-                                        <p:inputText id="VIBC" style="position: absolute; left: 45px; top: 173px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.actualIBC}" />
-                                        <p:inputText id="VTipoViajero" style="position: absolute; left: 45px; top: 208px; width: 210px; height: 12px;"  readonly="true" value="#{controlRemoto.vwActualesVigenciasViajeros.tipoViajero.nombre}"/>
+                                        <p:inputText id="VCargoDesempeñado" style="position: absolute; left: 45px; top: 30px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.actualCargo}"  /> 
+                                        <p:inputText id="VFechaContratacion" style="position: absolute; left: 45px; top: 66px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="Fecha: #{controlRemoto.fechaActualesTiposContratos} - #{controlRemoto.vwActualesTiposContratos.tipoContrato.nombre}"/>
+                                        <p:inputText id="VNormaLaboral" style="position: absolute; left: 45px; top: 101px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesNormasEmpleados.normaLaboral.nombre}" />
+                                        <p:inputText id="VAfiliaciones" style="position: absolute; left: 45px; top: 137px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesAfiliacionesSalud.tiposEntidades.nombre} - #{controlRemoto.vwActualesAfiliacionesSalud.tercerosSucursales.tercero.nombre} - #{controlRemoto.vwActualesAfiliacionesPension.tiposEntidades.nombre} - #{controlRemoto.vwActualesAfiliacionesPension.tercerosSucursales.tercero.nombre}" />
+                                        <p:inputText id="VIBC" style="position: absolute; left: 45px; top: 173px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.actualIBC}" />
+                                        <p:inputText id="VTipoViajero" style="position: absolute; left: 45px; top: 208px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;"  readonly="true" value="#{controlRemoto.vwActualesVigenciasViajeros.tipoViajero.nombre}"/>
 
-                                        <p:inputText id="VCentroDeCosto" style="position: absolute; left: 315px; top: 30px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesLocalizaciones.localizacion.centrocosto.codigo} - #{controlRemoto.vwActualesLocalizaciones.localizacion.nombre}"  />
-                                        <p:inputText id="VTipoTrabajador" style="position: absolute; left: 315px; top: 66px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesTiposTrabajadores.tipoTrabajador.nombre}" />
-                                        <p:inputText id="VLegislacionLaboral" style="position: absolute; left: 315px; top: 101px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesContratos.contrato.descripcion}" />
-                                        <p:inputText id="VJornada" style="position: absolute; left: 315px; top: 137px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesJornadas.jornadaTrabajo.descripcion}"  />
-                                        <p:inputText id="VMenorValorRetencio" style="position: absolute; left: 315px; top: 173px; width: 210px; height: 12px;"  readonly="true" value="#{controlRemoto.actualMVR}"/>
-                                        <p:inputText id="VVacaciones" style="position: absolute; left: 315px; top: 208px; width: 210px; height: 12px;"  readonly="true" value="#{controlRemoto.estadoVacaciones}"/>
+                                        <p:inputText id="VCentroDeCosto" style="position: absolute; left: 315px; top: 30px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesLocalizaciones.localizacion.centrocosto.codigo} - #{controlRemoto.vwActualesLocalizaciones.localizacion.nombre}"  />
+                                        <p:inputText id="VTipoTrabajador" style="position: absolute; left: 315px; top: 66px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesTiposTrabajadores.tipoTrabajador.nombre}" />
+                                        <p:inputText id="VLegislacionLaboral" style="position: absolute; left: 315px; top: 101px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesContratos.contrato.descripcion}" />
+                                        <p:inputText id="VJornada" style="position: absolute; left: 315px; top: 137px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesJornadas.jornadaTrabajo.descripcion}"  />
+                                        <p:inputText id="VMenorValorRetencio" style="position: absolute; left: 315px; top: 173px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;"  readonly="true" value="#{controlRemoto.actualMVR}"/>
+                                        <p:inputText id="VVacaciones" style="position: absolute; left: 315px; top: 208px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;"  readonly="true" value="#{controlRemoto.estadoVacaciones}"/>
 
-                                        <p:inputText id="VSueldo" style="position: absolute; left: 585px; top: 30px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.sueldo}"/>
-                                        <p:inputText id="VTipoSalario" style="position: absolute; left: 585px; top: 66px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesReformasLaborales.reformaLaboral.nombre}" />
-                                        <p:inputText id="VUbicacion" style="position: absolute; left: 585px; top: 101px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesUbicaciones.ubicacion.descripcion} #{controlRemoto.vwActualesUbicaciones.ubicacion.ciudad.nombre}" />
-                                        <p:inputText id="VFormaDePago" style="position: absolute; left: 585px; top: 137px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesFormasPagos.formaPago.nombre}" />
-                                        <p:inputText id="VSET" style="position: absolute; left: 585px; top: 173px; width: 210px; height: 12px;"  readonly="true" value="#{controlRemoto.actualSet}"/>
-                                        <p:inputText id="VComprobantes" style="position: absolute; left: 585px; top: 208px; width: 210px; height: 12px;"  readonly="true" value="#{controlRemoto.actualComprobante}"/>
+                                        <p:inputText id="VSueldo" style="position: absolute; left: 585px; top: 30px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.sueldo}"/>
+                                        <p:inputText id="VTipoSalario" style="position: absolute; left: 585px; top: 66px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesReformasLaborales.reformaLaboral.nombre}" />
+                                        <p:inputText id="VUbicacion" style="position: absolute; left: 585px; top: 101px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesUbicaciones.ubicacion.descripcion} #{controlRemoto.vwActualesUbicaciones.ubicacion.ciudad.nombre}" />
+                                        <p:inputText id="VFormaDePago" style="position: absolute; left: 585px; top: 137px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesFormasPagos.formaPago.nombre}" />
+                                        <p:inputText id="VSET" style="position: absolute; left: 585px; top: 173px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.actualSet}"/>
+                                        <p:inputText id="VComprobantes" style="position: absolute; left: 585px; top: 208px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.actualComprobante}"/>
                                     </fieldset>
                                 </p:panel>
 
@@ -380,9 +380,9 @@
 
                                     <p:commandButton value="" style="position: absolute; background-image: url(Imagenes/Designer.jpg); width: 200px; height: 42px; top: 426px; background-repeat: no-repeat; background-size: 100% 100%; left: 643px;" action="acercade" />
 
-                                    <em><h:outputText style="position: absolute; top: 474px; ; left: 17px" value="#{msg['bienvenido']}"/></em>
+                                    <!--<em><h:outputText style="position: absolute; top: 474px; ; left: 17px" value="#{msg['bienvenido']}"/></em>-->
 
-                                    <h:outputText id="Usuario" style="position: absolute; top: 475px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
+                                    <!--<h:outputText id="Usuario" style="position: absolute; top: 475px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>-->
 
                                     <h:outputText id="Empresa"  style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
 
@@ -394,7 +394,7 @@
 
                             <p:tab title="#{msg['nomina']}" id="Nomina">  
 
-                                <h:outputText style="position: absolute;  font-weight: bold; font-size: 11px; left: 343px; top: 39px; width: 500px; text-align: right; color: #BF1A1A" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta']} #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
+                                <h:outputText style="position: absolute;  font-weight: bold; font-size: 11px; left: 343px; top: -27px; width: 500px; text-align: right; color: #000000; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.7);" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta']} #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
 
 
                                 <fieldset style="position: absolute; border-radius: 10px; width: 800px; height: 110px; top: 54px;">
@@ -506,9 +506,9 @@
 
                                 </fieldset>
 
-                                <em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>
+                                <!--<em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>-->
 
-                                <h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
+                                <!--<h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>-->
                                 <h:outputText style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
 
                                 <p:dialog id="confirmarLiquidacion" header="#{msg['atencion']}" widgetVar="confirmarLiquidacion"  resizable="false" draggable="false" modal="true" height="120" width="420px"  closable="false">  
@@ -536,7 +536,7 @@
 
                             <p:tab title="#{msg['integracion']}" id="Integracion">  
 
-                                <h:outputText style="position: absolute;  font-weight: bold; font-size: 11px; left: 343px; top: 39px; width: 500px; text-align: right; color: #BF1A1A" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta']} #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
+                                <h:outputText style="position: absolute;  font-weight: bold; font-size: 11px; left: 343px; top: -27px; width: 500px; text-align: right; color: #000000; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.7);" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta']} #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
 
 
                                 <fieldset style="width: 390px; height: 397px; position: absolute; top: 60px; border-radius: 10px; left: 5px;">
@@ -573,8 +573,8 @@
                                     <h:outputText value="#{msg['textointegracionconcontabilidad']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 330px;  text-align: justify" />
                                 </fieldset>
 
-                                <em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>
-                                <h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
+                                <!--<em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>-->
+                                <!--<h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>-->
                                 <h:outputText style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
 
                                 <p:dialog id="confirmarProcesoInterfaceContableTotal" header="#{msg['atencion']}" widgetVar="confirmarProcesoInterfaceContableTotal"  resizable="false" draggable="false" modal="true" height="100" width="420px"  closable="false">  
@@ -589,7 +589,7 @@
 
                             <p:tab title="#{msg['gerencial']}" id="Gerencial" > 
 
-                                <h:outputText style="position: absolute;  font-weight: bold; font-size: 11px; left: 343px; top: 39px; width: 500px; text-align: right; color: #BF1A1A" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta']} #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
+                                <h:outputText style="position: absolute;  font-weight: bold; font-size: 11px; left: 343px; top: -27px; width: 500px; text-align: right; color: #000000; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.7);" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta']} #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
 
                                 <fieldset style="position:absolute; width: 790px; height: 393px; border-radius: 10px; top: 60px;">
                                     <h:outputText value="#{msg['herramientasgerenciales']}" styleClass="outputTextFielset" />
@@ -624,14 +624,14 @@
                                     <h:outputText style="width:150px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 605px; top:383px; text-align:center" value="#{msg['proyecciones']}"/>
                                 </fieldset>
 
-                                <em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>
-                                <h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
+                                <!--<em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>-->
+                                <!--<h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>-->
                                 <h:outputText style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
                             </p:tab>
 
                             <p:tab title="#{msg['designer']}" id="Designer">
 
-                                <h:outputText style="position: absolute;  font-weight: bold; font-size: 11px; left: 343px; top: 39px; width: 500px; text-align: right; color: #BF1A1A" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta'] } #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
+                                <h:outputText style="position: absolute;  font-weight: bold; font-size: 11px; left: 343px; top: -27px; width: 500px; text-align: right; color: #000000; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.7);" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta'] } #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
 
                                 <h:commandLink  style="position: absolute; left: 805px; top: 65px">  
                                     <p:graphicImage value="Imagenes/excel.png"  width="30" height="30"/>  
@@ -724,8 +724,8 @@
                                 <p:commandButton id="buscarTablas" value="#{msg['buscarTabla']}" icon="ui-icon-search" style="position: absolute; top: 445px; left: 600px; width: 120px" actionListener="#{controlRemoto.buscarTablas()}" disabled="#{controlRemoto.buscarTablasLOV}"/>
                                 <p:commandButton id="mostrarTodasTablas" value="#{msg['mostrarTodos']}" style="position: absolute; top: 445px; left: 720px; width: 120px" disabled="#{controlRemoto.mostrarTodasTablas}" actionListener="#{controlRemoto.mostrarTodo_Tablas()}"/>
 
-                                <em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>
-                                <h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
+                                <!--<em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>-->
+                                <!--<h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>-->
                                 <h:outputText style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
                             </p:tab>
                         </p:tabView> 

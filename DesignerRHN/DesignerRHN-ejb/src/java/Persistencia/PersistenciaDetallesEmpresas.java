@@ -20,7 +20,8 @@ import javax.persistence.criteria.CriteriaQuery;
  * la base de datos.
  *
  * @author betelgeuse
- * @version 1.1 AndresPineda (Crear-Editar-Borrar-BuscarDetallesEmpresas-BuscarDetalleEmpresaPorSecuencia)
+ * @version 1.1 AndresPineda
+ * (Crear-Editar-Borrar-BuscarDetallesEmpresas-BuscarDetalleEmpresaPorSecuencia)
  */
 @Stateless
 public class PersistenciaDetallesEmpresas implements PersistenciaDetallesEmpresasInterface {
@@ -29,10 +30,9 @@ public class PersistenciaDetallesEmpresas implements PersistenciaDetallesEmpresa
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+     private EntityManager em;*/
     @Override
-    public void crear(EntityManager em,DetallesEmpresas detallesEmpresas) {
+    public void crear(EntityManager em, DetallesEmpresas detallesEmpresas) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -48,7 +48,7 @@ public class PersistenciaDetallesEmpresas implements PersistenciaDetallesEmpresa
     }
 
     @Override
-    public void editar(EntityManager em,DetallesEmpresas detallesEmpresas) {
+    public void editar(EntityManager em, DetallesEmpresas detallesEmpresas) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -64,7 +64,7 @@ public class PersistenciaDetallesEmpresas implements PersistenciaDetallesEmpresa
     }
 
     @Override
-    public void borrar(EntityManager em,DetallesEmpresas detallesEmpresas) {
+    public void borrar(EntityManager em, DetallesEmpresas detallesEmpresas) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -84,24 +84,26 @@ public class PersistenciaDetallesEmpresas implements PersistenciaDetallesEmpresa
     }
 
     @Override
-    public DetallesEmpresas buscarDetalleEmpresa(EntityManager em,Short codigoEmpresa) {
-        DetallesEmpresas detallesEmpresas = null;
+    public DetallesEmpresas buscarDetalleEmpresa(EntityManager em, Short codigoEmpresa) {
+        System.out.println("PersistenciaDetallesEmpresas.buscarDetalleEmpresa.");
+        DetallesEmpresas detallesEmpresas;
         try {
             em.clear();
             Query query = em.createQuery("SELECT de FROM DetallesEmpresas de WHERE de.empresa.codigo = :codigoEmpresa");
             query.setParameter("codigoEmpresa", codigoEmpresa);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             detallesEmpresas = (DetallesEmpresas) query.getSingleResult();
-        } catch (Exception e) {
-            System.out.println("PersistenciaDetallesEmpresas.buscarDetallesEmpresas.");
-            System.out.println("Error consultando los detallesempresas.");
-        } finally {
+            System.out.println("DetalleEmpresa: "+detallesEmpresas);
             return detallesEmpresas;
+        } catch (Exception e) {
+            System.out.println("Error consultando el detalleempresa.");
+            System.out.println(e.getMessage());
+            return null;
         }
     }
 
     @Override
-    public DetallesEmpresas buscarDetalleEmpresaPorSecuencia(EntityManager em,BigInteger secEmpresa) {
+    public DetallesEmpresas buscarDetalleEmpresaPorSecuencia(EntityManager em, BigInteger secEmpresa) {
         try {
             em.clear();
             DetallesEmpresas detallesEmpresas = null;
@@ -111,7 +113,7 @@ public class PersistenciaDetallesEmpresas implements PersistenciaDetallesEmpresa
             detallesEmpresas = (DetallesEmpresas) query.getSingleResult();
             return detallesEmpresas;
         } catch (Exception e) {
-            System.out.println("Error buscarDetalleEmpresaPorSecuencia PersistenciaDetallesEmpresas : "+e.toString());
+            System.out.println("Error buscarDetalleEmpresaPorSecuencia PersistenciaDetallesEmpresas : " + e.toString());
             DetallesEmpresas detallesEmpresas = null;
             return detallesEmpresas;
         }

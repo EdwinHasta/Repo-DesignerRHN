@@ -478,6 +478,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         }
     }
 
+    @Override
     public String actualIBC(BigInteger secEmpleado, String RETENCIONYSEGSOCXPERSONA) {
         try {
             String ibcEmpleado;
@@ -502,6 +503,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         }
     }
 
+    @Override
     public String consultarActualSet(BigInteger secEmpleado) {
         try {
             String actualSetEmpleado;
@@ -517,6 +519,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         }
     }
 
+    @Override
     public String consultarActualComprobante(BigInteger secEmpleado) {
         try {
             String actualComprobante;
@@ -583,7 +586,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         }
     }
 
-    //@Override
+    @Override
     public ParametrosEstructuras consultarParametrosUsuario() {
         try {
             ParametrosEstructuras parametrosEstructuras = persistenciaParametrosEstructuras.buscarParametro(em, consultarAliasActualUsuario());

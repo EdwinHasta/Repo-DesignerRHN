@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Controlador;
 
 import Entidades.ActualUsuario;
+import Entidades.DetallesEmpresas;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarTemplateInterface;
 import java.io.File;
@@ -23,10 +19,6 @@ import javax.servlet.http.HttpSession;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
-/**
- *
- * @author Administrador
- */
 @ManagedBean
 @SessionScoped
 public class ControlTemplate implements Serializable {
@@ -41,12 +33,20 @@ public class ControlTemplate implements Serializable {
     private StreamedContent logoEmpresa;
     private StreamedContent fotoUsuario;
     private FileInputStream fis;
+    private final String acercaDe;
+    private final String webSite;
+    private final String linkSoporte;
+    private DetallesEmpresas detalleEmpresa;
 
     public ControlTemplate() {
+        acercaDe="acercade";
+        webSite="www.nomina.com.co";
+        linkSoporte="Teamviewer";
     }
 
     @PostConstruct
     public void inicializarAdministrador() {
+        System.out.println("Inicializando Template.");
         try {
             FacesContext x = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
@@ -104,7 +104,7 @@ public class ControlTemplate implements Serializable {
 
     public String getNombreUsuario() {
         if (nombreUsuario == null && actualUsuario != null) {
-            nombreUsuario = actualUsuario.getPersona().getNombreCompleto();
+            nombreUsuario = actualUsuario.getPersona().getNombreCompletoOrden2();
         }
         return nombreUsuario;
     }
@@ -125,11 +125,28 @@ public class ControlTemplate implements Serializable {
             try {
                 fis = new FileInputStream(new File(rutaFoto));
                 logoEmpresa = new DefaultStreamedContent(fis, "image/png");
-            } catch (IOException e) {
+            } catch (FileNotFoundException e) {
                 logoEmpresa = null;
                 System.out.println("Logo de la empresa no encontrado para el template. \n" + e);
             }
         }
+    }
+    public String obtenerAcercaDe(){
+        return acercaDe;
+    }
+
+    public String getWebSite() {
+        return webSite;
+    }
+
+    public String getLinkSoporte() {
+        return linkSoporte;
+    }
+
+    public DetallesEmpresas getDetalleEmpresa() {
+        System.out.println("ControlTemplate.getDetalleEmpresa");
+        administrarTemplate.consultarDetalleEmpresaUsuario();
+        return detalleEmpresa;
     }
 
 }

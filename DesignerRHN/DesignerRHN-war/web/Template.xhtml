@@ -11,53 +11,77 @@
         <link href="./resources/css/cssLayout.css" rel="stylesheet" type="text/css" />
         <link href="./resources/css/Tema.css" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="./resources/js/calendarioIdioma.js"></script>
-        <title>Aplicativo de Nomina Designer RHN</title>
+        <title>..::Designer.NOM::..</title>
     </h:head>
 
-    <h:body onload="iniciarScrollEmpleado();">
-        <div id="top"  class="top" style="background-image: url(Imagenes/sinImagen.png); height: 80px; background-repeat: no-repeat; background-size: 100% 100%;">
+    <h:body onload="iniciarScrollEmpleado();" style="background-image: url(Imagenes/sinImagen.png);">
+        <div id="top" class="top" style="background-image: url(Imagenes/encabezadotemplate.png); background-size: 100% 100%; background-repeat: repeat-x; position: absolute; top: 0px; left: 0px; width: 100%; height: 20px;">
             <ui:insert name="banner">
                 <h:form>
-                    <div style="position: absolute; top: 100px; left: -3px;">
-                        <p:clock pattern=" dd/MM/yyyy - HH:mm:ss"/>
+                    <div>
+                        <!--<p:commandLink id="acercade" action="#{controlTemplate.obtenerAcercaDe}">-->
+                        <a href="https://www.nomina.com.co" target="_blank">
+                            <p:graphicImage value="Imagenes/Designer.png" alt="Logo Designer" style="position: absolute; top:0px; height: 31px; "/>
+                        </a>
+                        <!--</p:commandLink>-->
+                        <h:outputText value="Su compañ&iacute;a de tecnolog&iacute;a y consultor&iacute;a en n&oacute;mina y talento humano desde 1998" style="position: absolute; left: 120px; top:9px; color: #0000FF; font-weight: bold;"/>
+                        <a href="https://www.nomina.com.co/soporte/descargas/file/43-teamviewer3.html" target="_blank">
+                            <h:outputText value="#{controlTemplate.linkSoporte}" style="position: absolute; left: 1040px; top:9px; color: #0000FF; text-decoration: underline;"/>
+                        </a>
+                        <p:separator id="separador1" style="position: absolute; top:25px; left: 0px; width:100%; height:8px; color: #0000FF; background-color: #0000FF; border-color: transparent; border-radius: 0px; box-shadow: none;"/>
                     </div>
                 </h:form>
             </ui:insert>
         </div>
-        <div>
-            <div id="left">
-                <ui:insert name="left">
-                    <h:form>
-                        <table width="224" border="0">
-                            <tr>
-                                <td colspan="2" align="left"><h:outputText value="Licencia de Uso a:" style="font-weight: bold"/></td>
-                            </tr>
-                            <tr>
-                                <br/>
-                                <td colspan="2" align="center">
-                                    <p:graphicImage  value="#{controlTemplate.logoEmpresa}" height="60" width="180" alt="Logo Empresa" style="position: relative; top: 20px"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="96" >
-                                    <p:graphicImage value="#{controlTemplate.fotoUsuario}"  height="130" width="110" alt="Foto Usuario" style="position: relative; top: 30px; left: 55px"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="118">
-                                    <div style="font-weight: bold; position: relative; top: 35px; width: 224px; text-align: center; border: 2px; border-color: red;">
-                                        <h:outputText value="#{controlTemplate.nombreUsuario}"/>
-                                    </div>
-                                    <p:commandButton value="Cerrar Sesión" actionListener="#{controlTemplate.cerrarSession()}" style="position: relative; top: 35px; left: 50px"/>
-                                </td>
-                            </tr>
-                        </table>
-                    </h:form>
-                </ui:insert>
-            </div>
-            <div id="content" class="left_content">
-                <ui:insert name="body" />
-            </div>
+        <div id="left" style="position: absolute; top:26px;">
+            <ui:insert name="left">
+                <h:form>
+                    <table border="0px;">
+                        <tr>
+                            <td align="center">
+                                <p:clock id="clock" pattern=" dd/MM/yyyy - HH:mm:ss" mode="server"/>
+                                <p:separator id="separador2" style="border-style: inset; position: relative; top: 11px;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <h:outputText value="Licencia de uso a:" style="font-weight: bold"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <br/>
+                            <td align="center">
+                                <h:outputText id="empresa"  style="font-weight: bold;" value="#{controlTemplate.detalleEmpresa.empresa.nombre} - Nit. #{controlTemplate.detalleEmpresa.empresa.nit}- Tel. #{controlTemplate.detalleEmpresa.telefono}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <br/>
+                            <td align="center">
+                                <p:graphicImage  value="#{controlTemplate.logoEmpresa}" height="60" width="180" alt="Logo Empresa"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" >
+                                <p:graphicImage value="#{controlTemplate.fotoUsuario}"  height="130" width="110" alt="Foto Usuario" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <h:outputText value="#{controlTemplate.nombreUsuario}" style="font-weight: bold;"/>
+                                <p:separator id="separador3" style="border-style: inset"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <p:commandButton value="Cerrar Sesión" actionListener="#{controlTemplate.cerrarSession()}" style="font-weight: bold;"/>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+            </ui:insert>
+        </div>
+        <div id="content" class="left_content" style="position: absolute; top:40px;">
+            <ui:insert name="body" />
         </div>
     </h:body>
 </html>

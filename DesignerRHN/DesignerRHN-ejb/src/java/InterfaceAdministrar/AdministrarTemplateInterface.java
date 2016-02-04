@@ -6,6 +6,7 @@
 package InterfaceAdministrar;
 
 import Entidades.ActualUsuario;
+import Entidades.DetallesEmpresas;
 
 /**
  *
@@ -23,4 +24,5 @@ public interface AdministrarTemplateInterface {
     
     public String rutaFotoUsuario();
 
+    public DetallesEmpresas consultarDetalleEmpresaUsuario();
 }

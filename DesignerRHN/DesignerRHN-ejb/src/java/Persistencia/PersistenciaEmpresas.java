@@ -172,6 +172,8 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
 
     @Override
     public Short codigoEmpresa(EntityManager em) {
+        System.out.println("PersistenciaEmpresas.codigoEmpresa");
+        Short codigoEmpresa=1;
         try {
             em.clear();
             Query query = em.createQuery("SELECT COUNT(e) FROM Empresas e");
@@ -180,11 +182,13 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
             if (resultado == 1) {
                 query = em.createQuery("SELECT e.codigo FROM Empresas e");
                 query.setHint("javax.persistence.cache.storeMode", "REFRESH");
-                Short codigoEmpresa = (Short) query.getSingleResult();
-                return codigoEmpresa;
-            } else {
+                codigoEmpresa = (Short) query.getSingleResult();
+                //return codigoEmpresa;
+            } /*else {
                 return 1;
-            }
+            }*/
+            System.out.println("codigo empresa: "+ codigoEmpresa);
+            return codigoEmpresa;
         } catch (Exception e) {
             System.out.println("Exepcion en PersistenciaEmpleados.codigoEmpresa" + e);
             return null;
