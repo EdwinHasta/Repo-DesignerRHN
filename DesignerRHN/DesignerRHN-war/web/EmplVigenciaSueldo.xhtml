@@ -65,13 +65,15 @@
                                 <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaSueldo.verificarRastroTabla()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
-                                
+
                                 <p:separator style="position: relative; top: -9px"/>
+
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaSueldo.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+
                                 <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaSueldo.salir()}" action="nomina" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
-                                
+
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
@@ -87,7 +89,7 @@
 
                                 <p:ajax event="filter" listener="#{controlVigenciaSueldo.eventoFiltrar()}"/>
 
-                                <p:column  headerText="#{msg['fecha']}" sortBy="#{infoDVS.fechavigencia}" filterBy="#{infoDVS.fechavigencia}" filterMatchMode="contains"  width="72" id="vSFechaVigencia" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column  headerText="#{msg['fecha']}" sortBy="#{infoDVS.fechavigencia}" filterBy="#{infoDVS.fechavigencia}" filterMatchMode="contains"  width="68" id="vSFechaVigencia" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoDVS.fechavigencia}" >
@@ -142,7 +144,11 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column  headerText="..." id="vSRetroactivo" width="15" sortBy="#{infoDVS.retroactivo}" filterBy="#{infoDVS.retroactivo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding-top: 0px; padding-left: 2px; padding-right: 6px">                                  
+                                <p:column id="vSRetroactivo" width="15" sortBy="#{infoDVS.retroactivo}" filterBy="#{infoDVS.retroactivo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding-top: 0px; padding-left: 2px; padding-right: 6px">                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerR" value="..." />
+                                        <p:tooltip  for="headerR" value="#{msg['activarRTooltip']}"/> 
+                                    </f:facet>
                                     <p:selectBooleanCheckbox id="editarRetroactivo" style="alignment-adjust: central; height: 12px;" value="#{infoDVS.checkRetroactivo}">
                                         <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarVS(indice)}" process="@this"/>
                                     </p:selectBooleanCheckbox>  
@@ -150,8 +156,13 @@
                                         <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
+                                <p:tooltip for="vSRetroactivo" showEvent="focus" hideEvent="blur" value="#{msg['activarRetroactivo']}"/> 
 
-                                <p:column  headerText="#{msg['vigenciaretroactivo']}" sortBy="#{infoDVS.fechavigenciaretroactivo}" filterBy="#{infoDVS.fechavigenciaretroactivo}" filterMatchMode="contains" id="vSVigenciaRetroactivo" width="148" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column id="vSVigenciaRetroactivo" sortBy="#{infoDVS.fechavigenciaretroactivo}" filterBy="#{infoDVS.fechavigenciaretroactivo}" filterMatchMode="contains" width="68" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerRF" value="#{msg['vigenciaRetroactivoHeader']}"/>
+                                        <p:tooltip  for="headerRF" value="#{msg['viReTooltip']}"/> 
+                                    </f:facet>
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoDVS.fechavigenciaretroactivo}">
@@ -166,13 +177,13 @@
                                             </lnk:calendar> 
                                         </f:facet>
                                     </p:cellEditor>
-
                                     <f:facet name="footer">
                                         <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
+                                <p:tooltip for="vSVigenciaRetroactivo"  showEvent="focus" value="#{msg['vigenciaretroactivo']}"/> 
 
-                                <p:column  headerText="#{msg['valor']}" sortBy="#{infoDVS.valor}" filterBy="#{infoDVS.valor}" filterMatchMode="contains" id="vSValor" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column  headerText="#{msg['valor']}" sortBy="#{infoDVS.valor}" filterBy="#{infoDVS.valor}" filterMatchMode="contains" id="vSValor" width="120" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoDVS.valor}">
@@ -344,13 +355,13 @@
                                     <h:outputText value="#{motivoCS.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroMotivoCambioSueldo" value="#{controlVigenciaSueldo.infoRegistroMotivoCambioSueldo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarMCS" style="position: relative; left: 250px" value="#{msg['aceptar']}" disabled="#{controlVigenciaSueldo.aceptar}" actionListener="#{controlVigenciaSueldo.actualizarMotivoCambioSueldo()}" process="@this" icon="ui-icon-check" onclick="MotivoCambioSueldoDialogo.hide()"/>
-                                
+
                             <p:commandButton id="atrasMCS" style="position: relative; left: 250px" value="#{msg['atras']}" actionListener="#{controlVigenciaSueldo.cancelarCambioMotivoCambioSueldo()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
-                                
+
                         </p:dialog>
 
                         <!-- DIALOGO L.O.V ESTATICO TIPO SUELDO -->
@@ -379,13 +390,13 @@
                                     <h:outputText value="#{tipoS.descripcion}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroTipoSueldo" value="#{controlVigenciaSueldo.infoRegistroTipoSueldo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarTS" style="position: relative; left: 250px" value="#{msg['aceptar']}" disabled="#{controlVigenciaSueldo.aceptar}"  actionListener="#{controlVigenciaSueldo.actualizarTipoSueldo()}" process="@this" icon="ui-icon-check" onclick="TipoSueldoDialogo.hide()" />
-                                
+
                             <p:commandButton id="atrasTS" style="position: relative; left: 250px" value="#{msg['atras']}" actionListener="#{controlVigenciaSueldo.cancelarCambioTipoSueldo()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
-                                
+
                         </p:dialog>
 
                         <!-- DIALOGO L.O.V ESTATICO TIPO ENTIDAD -->
@@ -414,13 +425,13 @@
                                     <h:outputText value="#{tipoE.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroTipoEntidad" value="#{controlVigenciaSueldo.infoRegistroTipoEntidad}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarTE" style="position: relative; left: 250px" value="#{msg['aceptar']}" disabled="#{controlVigenciaSueldo.aceptar}" actionListener="#{controlVigenciaSueldo.actualizarTipoEntidad()}" process="@this" icon="ui-icon-check" onclick="TipoEntidadDialogo.hide()" />
-                                
+
                             <p:commandButton id="atrasTE" style="position: relative; left: 250px" value="#{msg['atras']}" actionListener="#{controlVigenciaSueldo.cancelarCambioTipoEntidad()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
-                                
+
                         </p:dialog>
 
 
@@ -456,13 +467,13 @@
                                     <h:outputText value="#{tercero.nit}" />
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="infoRegistroTercero" value="#{controlVigenciaSueldo.infoRegistroTercero}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            
+
                             <p:commandButton id="aceptarT" style="position: relative; left: 450px" value="#{msg['aceptar']}" actionListener="#{controlVigenciaSueldo.actualizarTerceros()}" disabled="#{controlVigenciaSueldo.aceptar}" process="@this" icon="ui-icon-check" onclick="TerceroDialogo.hide()"/>
-                                
+
                             <p:commandButton id="atrasT" style="position: relative; left: 450px" value="#{msg['atras']}" actionListener="#{controlVigenciaSueldo.cancelarCambioTerceros()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
-                               
+
                         </p:dialog>
 
                         <p:commandButton style="position: absolute; top: 478px;left: 20px" value="#{msg['consultar']}" actionListener="#{controlVigenciaSueldo.cambioConsultaActual()}" />
@@ -874,19 +885,19 @@
                         <h:outputText value="#{msg['validacionNuevoS']} #{controlVigenciaSueldo.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="nuevaSFechasDuplicadas.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="nuevaAFechasDuplicadas" header="#{msg['atencion']}" widgetVar="nuevaAFechasDuplicadas"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['validacionNuevoA']} #{controlVigenciaSueldo.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="nuevaAFechasDuplicadas.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="duplicarSFechasDuplicadas" header="#{msg['atencion']}" widgetVar="duplicarSFechasDuplicadas"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['validacionDuplicarS']} #{controlVigenciaSueldo.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="duplicarSFechasDuplicadas.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="duplicarAFechasDuplicadas" header="#{msg['atencion']}" widgetVar="duplicarAFechasDuplicadas"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['validacionDuplicarA']} #{controlVigenciaSueldo.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />

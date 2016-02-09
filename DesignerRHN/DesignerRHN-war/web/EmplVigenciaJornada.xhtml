@@ -48,7 +48,6 @@
                                 <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
-                                <!--<p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#/{controlVigenciaJornada.validarNuevoRegistro()}"  process="@this"/> -->
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroPagina.show()" update=":formularioDialogos:NuevoRegistroPanel"  process="@this"/> 
                                 <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
 
@@ -342,6 +341,12 @@
                         <p:commandButton style="position: absolute; left: 683px; top: 478px;  " id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVJEmpleado" process="@this" disabled="#{controlVigenciaJornada.guardado}"/>
                         <p:commandButton style="position: absolute; left: 775px; top: 478px;  " id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlVigenciaJornada.cancelarModificacion()}" action="nomina" process="@this" />
                     </p:panel>
+                    
+                    <p:dialog id="validarNuevoFechas" header="#{msg['atencion']}" widgetVar="validarNuevoFechas"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['validacionNuevo']} #{controlVigenciaJornada.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validarNuevoFechas.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
+                    </p:dialog>
 
                     <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
@@ -361,9 +366,9 @@
 
                     <p:dialog id="verificarRastrosTablas" widgetVar="verificarRastrosTablas" header="Rastros Para Tablas Historicos Jornadas" resizable="false" draggable="false" modal="true" height="95" width="470px"  >
                         <h:outputText value="#{msg['seleccionar']}" style="position: absolute; left: 80px; top: 20px;color: blue;font-weight: bold"/>
-                        <p:commandButton value="#{msg['vj']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 10px; top: 50px;" actionListener="#{controlVigenciaJornada.verificarRastroVigenciaJornada()}" process="@this" />
-                        <p:commandButton value="#{msg['dd']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 140px; top: 50px;" actionListener="#{controlVigenciaJornada.verificarRastroVigenciaCompensacionDinero()}" process="@this"/>
-                        <p:commandButton value="#{msg['dt']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 286px; top: 50px;" actionListener="#{controlVigenciaJornada.verificarRastroVigenciaCompensacionTiempo()}" process="@this"/>
+                        <p:commandButton value="#{msg['vj']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 10px; top: 50px;" actionListener="#{controlVigenciaJornada.verificarRastroVigenciaJornadaHist()}" process="@this" />
+                        <p:commandButton value="#{msg['dd']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 140px; top: 50px;" actionListener="#{controlVigenciaJornada.verificarRastroVigenciaCompensacionDineroHist()}" process="@this"/>
+                        <p:commandButton value="#{msg['dt']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 286px; top: 50px;" actionListener="#{controlVigenciaJornada.verificarRastroVigenciaCompensacionTiempoHist()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
@@ -427,6 +432,11 @@
                         <h:outputText value="#{msg['errorNullDescanso']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
+                    <p:dialog id="seleccionarRegistroJT" header="#{msg['atencion']}" widgetVar="seleccionarRegistroJT"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['seleccionarRegistroJT']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
+                    </p:dialog>
+                    
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciaJornada.activarCtrlF11()}"/> 
                 </h:form>
                 
@@ -435,14 +445,18 @@
                     <p:dialog id="NuevoRegistroPagina" header="#{msg['nuevoregistroparaingreso']}" widgetVar="NuevoRegistroPagina" closable="false" resizable="false"  draggable="false" modal="true" height="215" width="400" style=" padding: 0px">  
                         <p:panel id="NuevoRegistroPanel" style="border: none;">
                             <center><strong><h:outputText value="#{msg['seleccione']}" style="font-size: 14px; color: blue; position: relative; top: 0px" /></strong></center> 
+                            
                             <h:outputText value="#{msg['jornadadeltrabajador']}" style="position: absolute; top: 47px;left: 60px"/>
-                            <p:commandButton id="NuevoVigenciaJornada" icon="ui-icon-circle-check" style="position: absolute; top: 45px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroVJ.show()" update=":formularioDialogos:nuevaVJ" onclick="NuevoRegistroPagina.hide();" process="@this"/>
+                            <!--<p:commandButton id="NuevoVigenciaJornada" icon="ui-icon-circle-check" style="position: absolute; top: 45px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroVJ.show()" update=":formularioDialogos:nuevaVJ" onclick="NuevoRegistroPagina.hide();" process="@this"/>-->
+                            <p:commandButton id="NuevoVigenciaJornada" icon="ui-icon-circle-check" style="position: absolute; top: 45px;left: 300px; height: 25px; width: 40px" actionListener="#{controlVigenciaJornada.validarCualTabla(1)}" onclick="NuevoRegistroPagina.hide();" process="@this"/>
 
                             <h:outputText value="#{msg['descansostomadosentiempo']}" style="position: absolute; top: 92px;left: 60px"/>
-                            <p:commandButton id="NuevoVigenciaCompensacionTiempo" icon="ui-icon-circle-check" style="position: absolute; top: 90px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroVCT.show()" update=":formularioDialogos:nuevaVCT" onclick="NuevoRegistroPagina.hide();" process="@this"/>
+                            <!--<p:commandButton id="NuevoVigenciaCompensacionTiempo" icon="ui-icon-circle-check" style="position: absolute; top: 90px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroVCT.show()" update=":formularioDialogos:nuevaVCT" onclick="NuevoRegistroPagina.hide();" process="@this"/>-->
+                            <p:commandButton id="NuevoVigenciaCompensacionTiempo" icon="ui-icon-circle-check" style="position: absolute; top: 90px;left: 300px; height: 25px; width: 40px" actionListener="#{controlVigenciaJornada.validarCualTabla(2)}" onclick="NuevoRegistroPagina.hide();" process="@this"/>
 
                             <h:outputText value="#{msg['descansostomadosendinero']}" style="position: absolute; top: 137px;left: 60px"/>
-                            <p:commandButton id="NuevoVigenciaCompensacionDinero" icon="ui-icon-circle-check" style="position: absolute; top: 135px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroVCD.show()" update=":formularioDialogos:nuevaVCD" onclick="NuevoRegistroPagina.hide();" process="@this"/>
+                            <!--<p:commandButton id="NuevoVigenciaCompensacionDinero" icon="ui-icon-circle-check" style="position: absolute; top: 135px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroVCD.show()" update=":formularioDialogos:nuevaVCD" onclick="NuevoRegistroPagina.hide();" process="@this"/>-->
+                            <p:commandButton id="NuevoVigenciaCompensacionDinero" icon="ui-icon-circle-check" style="position: absolute; top: 135px;left: 300px; height: 25px; width: 40px" actionListener="#{controlVigenciaJornada.validarCualTabla(3)}" onclick="NuevoRegistroPagina.hide();" process="@this"/>
 
                             <p:commandButton id="CancelarNuevosRegistros" onclick="NuevoRegistroPagina.hide();"  process="@this" value="#{msg['cancelar']}" style="position: absolute; top: 185px;left: 40%; width: 20%"/>
                         </p:panel>
@@ -579,8 +593,8 @@
                                 </lnk:calendar>
                             </div>
 
-                            <strong><h:outputText value="#{msg['comentariott']}" style=" position: absolute; top: 135px; left: 170px" /></strong>
-                            <p:inputTextarea id="duplicadoComentarioVCT" value="#{controlVigenciaJornada.duplicarVCT.comentario}" style=" width: 140px; position: absolute; left: 200px; top: 130px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['comentariott']}" style=" position: absolute; top: 135px; left: 50px" /></strong>
+                            <p:inputTextarea id="duplicadoComentarioVCT" value="#{controlVigenciaJornada.duplicarVCT.comentario}" style=" width: 140px; position: absolute; left: 170px; top: 130px;text-transform: uppercase">
                                 <p:ajax event="change" update="duplicadoComentarioVCT"/>
                             </p:inputTextarea>
                             <p:watermark for="duplicadoComentarioVCT" value="#{msg['comentario']}" />

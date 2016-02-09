@@ -59,10 +59,10 @@
                                 <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
-                                
+
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplMvr.verificarRastroTabla()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
-                                
+
                                 <p:separator style="position: relative; top: -9px"/> 
 
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplMvr.cancelarModificacion()}" process="@this"/>  
@@ -198,7 +198,7 @@
                                          selection="#{controlEmplMvr.otroCertificadoSeleccionado}" selectionMode="single">
 
                                 <p:ajax event="rowUnselect" listener="#{controlEmplMvr.deseleccionarRow()}" process="@this"/>
-                                
+
                                 <p:column headerText="#{msg['inicial']}" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" 
                                           filterMatchMode="contains" id="ocFechaInicial" width="70"
                                           filterStyle="display: none; visibility: hidden;" >                                  
@@ -244,11 +244,11 @@
                                 </p:column>
 
                                 <p:column  headerText="#{msg['valor']}" sortBy="#{info.valor}" filterBy="#{info.valor}" filterMatchMode="contains" 
-                                           id="ocValor" width="130"
+                                           id="ocValor" width="100"
                                            filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
-                                            <h:outputText value="#{info.valor}" style="width: 100px; ">
+                                            <h:outputText value="#{info.valor}" style="width: 95px; ">
                                                 <f:convertNumber type="currency" currencySymbol="$"/>
                                             </h:outputText>
                                         </f:facet>  
@@ -270,8 +270,8 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.estado}" style="width: 100px; "/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.estado}" readonly="true" id="editarEstadoOC" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px">
-                                                         onselect="posicionOtro([{name: 'n', value: '3'}, {name: 't', value: '#/{indiceOC}'}]); >
+                                            <p:inputText value="#{info.estado}" readonly="true" id="editarEstadoOC" style=" border-radius: 0px; width: 95%;text-transform: uppercase; height: 12px" 
+                                                         onselect="posicionOtro([{name: 'n', value: '3'}, {name: 't', value: '#{indiceOC}'}]);"> 
                                                 <p:ajax event="select" listener="#{controlEmplMvr.cambiarIndiceOtrosCertificados(indiceOC,3)}" process="@this"/> 
                                                 <p:ajax event="change" listener="#{controlEmplMvr.modificarOtrosCertificados(indiceOC)}" process="@this" update="editarEstadoOC"/>
                                             </p:inputText>
@@ -288,13 +288,13 @@
                                         <f:facet name="output"><h:outputText value="#{info.tipocertificado.descripcion}" style="width: 100px; "/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{info.tipocertificado.descripcion}" id="editarCertificadoOC" style=" border-radius: 0px; width: 97%;text-transform: uppercase; height: 12px"
-                                                onselect="posicionOtro([{name: 'n', value: '4'}, {name: 't', value: '#/{indiceOC}'}]);">
-                                                          
+                                                         onselect="posicionOtro([{name: 'n', value: '4'}, {name: 't', value: '#/{indiceOC}'}]);">
+
                                                 <p:ajax event="select" listener="#{controlEmplMvr.cambiarIndiceOtrosCertificados(indiceOC,4)}" process="@this"/> 
                                                 <p:ajax event="dblclick" listener="#{controlEmplMvr.asignarIndex(indiceOC,0,0,1)}" process="@this" update="editarCertificadoOC"/>
                                                 <p:ajax event="change" listener="#{controlEmplMvr.modificarOtrosCertificados(indiceOC, 'CERTIFICADO', info.tipocertificado.descripcion)}" process="@this" update="editarCertificadoOC"/>                                                
                                             </p:inputText>
-                                            
+
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
@@ -412,7 +412,7 @@
                         <p:commandButton value="#{msg['mvr']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 30px; top: 50px;" actionListener="#{controlEmplMvr.verificarRastroMvrHist()}" process="@this" />
                         <p:commandButton value="#{msg['otros']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 200px; top: 50px;" actionListener="#{controlEmplMvr.verificarRastroOCHist()}" process="@this"/>
                     </p:dialog>
-                                       
+
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{controlEmplMvr.msnConfirmarRastro}" id="msnConfirmarRastro" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />

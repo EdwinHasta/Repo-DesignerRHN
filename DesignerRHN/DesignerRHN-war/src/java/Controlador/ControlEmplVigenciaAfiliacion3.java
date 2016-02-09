@@ -1106,7 +1106,7 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
         for (int cont = 0; cont < listaAuxiliar.size(); cont++) {
             if (listaAuxiliar.get(cont).getTipoentidad().getSecuencia() == provisional.getTipoentidad().getSecuencia()) {
                 listAuxiliarTipoESeleccionado.add(listaAuxiliar.get(cont));
-            }
+                }
         }
         int tam = listAuxiliarTipoESeleccionado.size();
         System.out.println("variable tam: " + tam);
