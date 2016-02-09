@@ -74,6 +74,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
     private String nuevoYduplicarCompletarNormaLaboral;
     //ALTO TABLA
     private String altoTabla;
+    private String infoRegistro;
 
     public ControlBetaEmplVigenciaNormaLaboral() {
         listEmplVigenciaNormaLaboralPorEmpleado = null;
@@ -92,6 +93,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         guardado = true;
         altoTabla = "270";
         aceptar = true;
+        index = -1;
     }
 
     @PostConstruct
@@ -125,7 +127,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         index = indice;
         cualCelda = celda;
         RequestContext context = RequestContext.getCurrentInstance();
-        if (permitirIndex == true) {
+        if (permitirIndex) {
             if (tipoLista == 0) {
                 secRegistro = listEmplVigenciaNormaLaboralPorEmpleado.get(index).getSecuencia();
                 if (listEmplVigenciaNormaLaboralPorEmpleado.get(indice).getFechavigencia() == null) {
@@ -153,7 +155,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
                         } else if (!modificarEmplVigenciaNormaLaboralPorEmplado.contains(listEmplVigenciaNormaLaboralPorEmpleado.get(indice))) {
                             modificarEmplVigenciaNormaLaboralPorEmplado.add(listEmplVigenciaNormaLaboralPorEmpleado.get(indice));
                         }
-                        if (guardado == true) {
+                        if (guardado) {
                             guardado = false;
                             RequestContext.getCurrentInstance().update("form:ACEPTAR");
                         }
@@ -193,7 +195,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
                         } else if (!modificarEmplVigenciaNormaLaboralPorEmplado.contains(listEmplVigenciaNormaLaboralPorEmpleado.get(indice))) {
                             modificarEmplVigenciaNormaLaboralPorEmplado.add(listEmplVigenciaNormaLaboralPorEmpleado.get(indice));
                         }
-                        if (guardado == true) {
+                        if (guardado) {
                             guardado = false;
                             RequestContext.getCurrentInstance().update("form:ACEPTAR");
                         }
@@ -231,7 +233,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
 
     public void cambiarIndice(int indice, int celda) {
 
-        if (permitirIndex == true) {
+        if (permitirIndex) {
             index = indice;
             cualCelda = celda;
             secRegistro = listEmplVigenciaNormaLaboralPorEmpleado.get(index).getSecuencia();
@@ -278,15 +280,24 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
     }
 
     public void listaValoresBoton() {
-        if (index >= 0) {
-            if (cualCelda == 1) {
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.update("form:sucursalesDialogo");
-                context.execute("sucursalesDialogo.show()");
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (index < 0) {
+            context.execute("seleccionarRegistro.show()");
+        } else {
+            if (!listEmplVigenciaNormaLaboralPorEmpleado.isEmpty()) {
+                if (secRegistro != null) {
+                    if (index >= 0) {
+                        if (cualCelda == 1) {
+                            context.update("form:sucursalesDialogo");
+                            context.execute("sucursalesDialogo.show()");
+                        }
+                    }
+                } else {
+                    context.execute("seleccionarRegistro.show()");
+                }
             }
         }
     }
-    private String infoRegistro;
 
     public void cancelarModificacion() {
         if (bandera == 1) {
@@ -420,7 +431,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
                         } else if (!modificarEmplVigenciaNormaLaboralPorEmplado.contains(listEmplVigenciaNormaLaboralPorEmpleado.get(indice))) {
                             modificarEmplVigenciaNormaLaboralPorEmplado.add(listEmplVigenciaNormaLaboralPorEmpleado.get(indice));
                         }
-                        if (guardado == true) {
+                        if (guardado) {
                             guardado = false;
                         }
 
@@ -448,7 +459,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
                         } else if (!modificarEmplVigenciaNormaLaboralPorEmplado.contains(filtrarEmplVigenciaNormaLaboralPorEmplado.get(indice))) {
                             modificarEmplVigenciaNormaLaboralPorEmplado.add(filtrarEmplVigenciaNormaLaboralPorEmplado.get(indice));
                         }
-                        if (guardado == true) {
+                        if (guardado) {
                             guardado = false;
                         }
 
@@ -514,7 +525,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
                         } else if (!modificarEmplVigenciaNormaLaboralPorEmplado.contains(listEmplVigenciaNormaLaboralPorEmpleado.get(indice))) {
                             modificarEmplVigenciaNormaLaboralPorEmplado.add(listEmplVigenciaNormaLaboralPorEmpleado.get(indice));
                         }
-                        if (guardado == true) {
+                        if (guardado) {
                             guardado = false;
                         }
                     }
@@ -528,7 +539,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
                         } else if (!modificarEmplVigenciaNormaLaboralPorEmplado.contains(filtrarEmplVigenciaNormaLaboralPorEmplado.get(indice))) {
                             modificarEmplVigenciaNormaLaboralPorEmplado.add(filtrarEmplVigenciaNormaLaboralPorEmplado.get(indice));
                         }
-                        if (guardado == true) {
+                        if (guardado) {
                             guardado = false;
                         }
                     }
@@ -568,7 +579,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
                     }
                 }
             }
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
             }
             permitirIndex = true;
@@ -590,7 +601,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         cualCelda = -1;/*
          * context.update("form:sucursalesDialogo");
          * context.update("form:lovTiposFamiliares");
-         context.update("form:aceptarS");
+         * context.update("form:aceptarS");
          */
 
         context.reset("form:lovTiposFamiliares:globalFilter");
@@ -735,50 +746,52 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
     }
 
     public void borrandoHvEntrevistas() {
-
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                if (!modificarEmplVigenciaNormaLaboralPorEmplado.isEmpty() && modificarEmplVigenciaNormaLaboralPorEmplado.contains(listEmplVigenciaNormaLaboralPorEmpleado.get(index))) {
-                    int modIndex = modificarEmplVigenciaNormaLaboralPorEmplado.indexOf(listEmplVigenciaNormaLaboralPorEmpleado.get(index));
-                    modificarEmplVigenciaNormaLaboralPorEmplado.remove(modIndex);
-                    borrarEmplVigenciaNormaLaboralPorEmplado.add(listEmplVigenciaNormaLaboralPorEmpleado.get(index));
-                } else if (!crearEmplVigenciaNormaLaboralPorEmplado.isEmpty() && crearEmplVigenciaNormaLaboralPorEmplado.contains(listEmplVigenciaNormaLaboralPorEmpleado.get(index))) {
-                    int crearIndex = crearEmplVigenciaNormaLaboralPorEmplado.indexOf(listEmplVigenciaNormaLaboralPorEmpleado.get(index));
-                    crearEmplVigenciaNormaLaboralPorEmplado.remove(crearIndex);
-                } else {
-                    borrarEmplVigenciaNormaLaboralPorEmplado.add(listEmplVigenciaNormaLaboralPorEmpleado.get(index));
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (index < 0) {
+            context.execute("seleccionarRegistro.show()");
+        } else {
+            if (index >= 0) {
+                if (tipoLista == 0) {
+                    if (!modificarEmplVigenciaNormaLaboralPorEmplado.isEmpty() && modificarEmplVigenciaNormaLaboralPorEmplado.contains(listEmplVigenciaNormaLaboralPorEmpleado.get(index))) {
+                        int modIndex = modificarEmplVigenciaNormaLaboralPorEmplado.indexOf(listEmplVigenciaNormaLaboralPorEmpleado.get(index));
+                        modificarEmplVigenciaNormaLaboralPorEmplado.remove(modIndex);
+                        borrarEmplVigenciaNormaLaboralPorEmplado.add(listEmplVigenciaNormaLaboralPorEmpleado.get(index));
+                    } else if (!crearEmplVigenciaNormaLaboralPorEmplado.isEmpty() && crearEmplVigenciaNormaLaboralPorEmplado.contains(listEmplVigenciaNormaLaboralPorEmpleado.get(index))) {
+                        int crearIndex = crearEmplVigenciaNormaLaboralPorEmplado.indexOf(listEmplVigenciaNormaLaboralPorEmpleado.get(index));
+                        crearEmplVigenciaNormaLaboralPorEmplado.remove(crearIndex);
+                    } else {
+                        borrarEmplVigenciaNormaLaboralPorEmplado.add(listEmplVigenciaNormaLaboralPorEmpleado.get(index));
+                    }
+                    listEmplVigenciaNormaLaboralPorEmpleado.remove(index);
                 }
-                listEmplVigenciaNormaLaboralPorEmpleado.remove(index);
-            }
-            if (tipoLista == 1) {
-                if (!modificarEmplVigenciaNormaLaboralPorEmplado.isEmpty() && modificarEmplVigenciaNormaLaboralPorEmplado.contains(filtrarEmplVigenciaNormaLaboralPorEmplado.get(index))) {
-                    int modIndex = modificarEmplVigenciaNormaLaboralPorEmplado.indexOf(filtrarEmplVigenciaNormaLaboralPorEmplado.get(index));
-                    modificarEmplVigenciaNormaLaboralPorEmplado.remove(modIndex);
-                    borrarEmplVigenciaNormaLaboralPorEmplado.add(filtrarEmplVigenciaNormaLaboralPorEmplado.get(index));
-                } else if (!crearEmplVigenciaNormaLaboralPorEmplado.isEmpty() && crearEmplVigenciaNormaLaboralPorEmplado.contains(filtrarEmplVigenciaNormaLaboralPorEmplado.get(index))) {
-                    int crearIndex = crearEmplVigenciaNormaLaboralPorEmplado.indexOf(filtrarEmplVigenciaNormaLaboralPorEmplado.get(index));
-                    crearEmplVigenciaNormaLaboralPorEmplado.remove(crearIndex);
-                } else {
-                    borrarEmplVigenciaNormaLaboralPorEmplado.add(filtrarEmplVigenciaNormaLaboralPorEmplado.get(index));
+                if (tipoLista == 1) {
+                    if (!modificarEmplVigenciaNormaLaboralPorEmplado.isEmpty() && modificarEmplVigenciaNormaLaboralPorEmplado.contains(filtrarEmplVigenciaNormaLaboralPorEmplado.get(index))) {
+                        int modIndex = modificarEmplVigenciaNormaLaboralPorEmplado.indexOf(filtrarEmplVigenciaNormaLaboralPorEmplado.get(index));
+                        modificarEmplVigenciaNormaLaboralPorEmplado.remove(modIndex);
+                        borrarEmplVigenciaNormaLaboralPorEmplado.add(filtrarEmplVigenciaNormaLaboralPorEmplado.get(index));
+                    } else if (!crearEmplVigenciaNormaLaboralPorEmplado.isEmpty() && crearEmplVigenciaNormaLaboralPorEmplado.contains(filtrarEmplVigenciaNormaLaboralPorEmplado.get(index))) {
+                        int crearIndex = crearEmplVigenciaNormaLaboralPorEmplado.indexOf(filtrarEmplVigenciaNormaLaboralPorEmplado.get(index));
+                        crearEmplVigenciaNormaLaboralPorEmplado.remove(crearIndex);
+                    } else {
+                        borrarEmplVigenciaNormaLaboralPorEmplado.add(filtrarEmplVigenciaNormaLaboralPorEmplado.get(index));
+                    }
+                    int VCIndex = listEmplVigenciaNormaLaboralPorEmpleado.indexOf(filtrarEmplVigenciaNormaLaboralPorEmplado.get(index));
+                    listEmplVigenciaNormaLaboralPorEmpleado.remove(VCIndex);
+                    filtrarEmplVigenciaNormaLaboralPorEmplado.remove(index);
+
                 }
-                int VCIndex = listEmplVigenciaNormaLaboralPorEmpleado.indexOf(filtrarEmplVigenciaNormaLaboralPorEmplado.get(index));
-                listEmplVigenciaNormaLaboralPorEmpleado.remove(VCIndex);
-                filtrarEmplVigenciaNormaLaboralPorEmplado.remove(index);
+                if (guardado) {
+                    guardado = false;
+                }
+                context.update("form:datosHvEntrevista");
+                infoRegistro = "Cantidad de registros: " + listEmplVigenciaNormaLaboralPorEmpleado.size();
+                context.update("form:informacionRegistro");
+                context.update("form:ACEPTAR");
+                index = -1;
+                secRegistro = null;
 
             }
-            RequestContext context = RequestContext.getCurrentInstance();
-            if (guardado == true) {
-                guardado = false;
-            }
-            context.update("form:datosHvEntrevista");
-            infoRegistro = "Cantidad de registros: " + listEmplVigenciaNormaLaboralPorEmpleado.size();
-            context.update("form:informacionRegistro");
-            context.update("form:ACEPTAR");
-            index = -1;
-            secRegistro = null;
-
         }
-
     }
 
     /*
@@ -799,8 +812,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
      *
      * }
      * } catch (Exception e) { System.err.println("ERROR ControlHvEntrevistas
-     * verificarBorrado ERROR " + e); }
-     }
+     * verificarBorrado ERROR " + e); } }
      */
     public void revisarDialogoGuardar() {
 
@@ -846,35 +858,35 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
     }
 
     public void editarCelda() {
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                editarEmplVigenciaNormaLaboral = listEmplVigenciaNormaLaboralPorEmpleado.get(index);
-            }
-            if (tipoLista == 1) {
-                editarEmplVigenciaNormaLaboral = filtrarEmplVigenciaNormaLaboralPorEmplado.get(index);
-            }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (index < 0) {
+            context.execute("seleccionarRegistro.show()");
+        } else {
+            if (index >= 0) {
+                if (tipoLista == 0) {
+                    editarEmplVigenciaNormaLaboral = listEmplVigenciaNormaLaboralPorEmpleado.get(index);
+                }
+                if (tipoLista == 1) {
+                    editarEmplVigenciaNormaLaboral = filtrarEmplVigenciaNormaLaboralPorEmplado.get(index);
+                }
 
-            RequestContext context = RequestContext.getCurrentInstance();
-            if (cualCelda == 0) {
-                context.update("formularioDialogos:editarFecha");
-                context.execute("editarFecha.show()");
-                cualCelda = -1;
-            } else if (cualCelda == 1) {
-                context.update("formularioDialogos:editPuntaje");
-                context.execute("editPuntaje.show()");
-                cualCelda = -1;
+                if (cualCelda == 0) {
+                    context.update("formularioDialogos:editarFecha");
+                    context.execute("editarFecha.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 1) {
+                    context.update("formularioDialogos:editPuntaje");
+                    context.execute("editPuntaje.show()");
+                    cualCelda = -1;
+                }
             }
-
+            index = -1;
+            secRegistro = null;
         }
-        index = -1;
-        secRegistro = null;
     }
 
     public void agregarNuevoEmplVigenciaNormaLaboral() {
         int contador = 0;
-        //nuevoEmplVigenciaNormaLaboral.setNormalaboral(new NormasLaborales());
-        Short a = 0;
-        a = null;
         int fechas = 0;
         mensajeValidacion = " ";
         nuevoEmplVigenciaNormaLaboral.setEmpleado(empleadoSeleccionado);
@@ -925,7 +937,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
             context.update("form:datosHvEntrevista");
             infoRegistro = "Cantidad de registros: " + listEmplVigenciaNormaLaboralPorEmpleado.size();
             context.update("form:informacionRegistro");
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
@@ -951,100 +963,113 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
 
     //------------------------------------------------------------------------------
     public void duplicandoEmplVigenciaNormaLaboral() {
-        if (index >= 0) {
-            duplicarEmplVigenciaNormaLaboral = new VigenciasNormasEmpleados();
-            duplicarEmplVigenciaNormaLaboral.setEmpleado(new Empleados());
-            duplicarEmplVigenciaNormaLaboral.setNormalaboral(new NormasLaborales());
-            k++;
-            l = BigInteger.valueOf(k);
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (index < 0) {
+            context.execute("seleccionarRegistro.show()");
+        } else {
+            if (index >= 0) {
+                duplicarEmplVigenciaNormaLaboral = new VigenciasNormasEmpleados();
+                duplicarEmplVigenciaNormaLaboral.setEmpleado(new Empleados());
+                duplicarEmplVigenciaNormaLaboral.setNormalaboral(new NormasLaborales());
+                k++;
+                l = BigInteger.valueOf(k);
 
-            if (tipoLista == 0) {
-                duplicarEmplVigenciaNormaLaboral.setSecuencia(l);
-                duplicarEmplVigenciaNormaLaboral.setEmpleado(listEmplVigenciaNormaLaboralPorEmpleado.get(index).getEmpleado());
-                duplicarEmplVigenciaNormaLaboral.setFechavigencia(listEmplVigenciaNormaLaboralPorEmpleado.get(index).getFechavigencia());
-                duplicarEmplVigenciaNormaLaboral.setNormalaboral(listEmplVigenciaNormaLaboralPorEmpleado.get(index).getNormalaboral());
-            }
-            if (tipoLista == 1) {
-                duplicarEmplVigenciaNormaLaboral.setSecuencia(l);
-                duplicarEmplVigenciaNormaLaboral.setEmpleado(filtrarEmplVigenciaNormaLaboralPorEmplado.get(index).getEmpleado());
-                duplicarEmplVigenciaNormaLaboral.setFechavigencia(filtrarEmplVigenciaNormaLaboralPorEmplado.get(index).getFechavigencia());
-                duplicarEmplVigenciaNormaLaboral.setNormalaboral(filtrarEmplVigenciaNormaLaboralPorEmplado.get(index).getNormalaboral());
-            }
+                if (tipoLista == 0) {
+                    duplicarEmplVigenciaNormaLaboral.setSecuencia(l);
+                    duplicarEmplVigenciaNormaLaboral.setEmpleado(listEmplVigenciaNormaLaboralPorEmpleado.get(index).getEmpleado());
+                    duplicarEmplVigenciaNormaLaboral.setFechavigencia(listEmplVigenciaNormaLaboralPorEmpleado.get(index).getFechavigencia());
+                    duplicarEmplVigenciaNormaLaboral.setNormalaboral(listEmplVigenciaNormaLaboralPorEmpleado.get(index).getNormalaboral());
+                }
+                if (tipoLista == 1) {
+                    duplicarEmplVigenciaNormaLaboral.setSecuencia(l);
+                    duplicarEmplVigenciaNormaLaboral.setEmpleado(filtrarEmplVigenciaNormaLaboralPorEmplado.get(index).getEmpleado());
+                    duplicarEmplVigenciaNormaLaboral.setFechavigencia(filtrarEmplVigenciaNormaLaboralPorEmplado.get(index).getFechavigencia());
+                    duplicarEmplVigenciaNormaLaboral.setNormalaboral(filtrarEmplVigenciaNormaLaboralPorEmplado.get(index).getNormalaboral());
+                }
 
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("formularioDialogos:duplicarEvC");
-            context.execute("duplicarRegistroEvalCompetencias.show()");
-            //index = -1;
-            secRegistro = null;
+                context.update("formularioDialogos:duplicarEvC");
+                context.execute("duplicarRegistroEvalCompetencias.show()");
+                //index = -1;
+                secRegistro = null;
+            }
         }
     }
 
     public void confirmarDuplicar() {
-        int contador = 0;
-        mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
-        Short a = 0;
-        int fechas = 0;
-        a = null;
-        if (duplicarEmplVigenciaNormaLaboral.getFechavigencia() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Fecha \n";
+        if (index < 0) {
+            context.execute("seleccionarRegistro.show()");
         } else {
+            if (!listEmplVigenciaNormaLaboralPorEmpleado.isEmpty()) {
+                int contador = 0;
+                mensajeValidacion = " ";
+                //Short a = 0;
+                int fechas = 0;
+                //a = null;
+                if (duplicarEmplVigenciaNormaLaboral.getFechavigencia() == null) {
+                    mensajeValidacion = mensajeValidacion + "   * Fecha \n";
+                } else {
 
-            for (int j = 0; j < listEmplVigenciaNormaLaboralPorEmpleado.size(); j++) {
-                if (duplicarEmplVigenciaNormaLaboral.getFechavigencia().equals(listEmplVigenciaNormaLaboralPorEmpleado.get(j).getFechavigencia())) {
-                    fechas++;
+                    for (int j = 0; j < listEmplVigenciaNormaLaboralPorEmpleado.size(); j++) {
+                        if (duplicarEmplVigenciaNormaLaboral.getFechavigencia().equals(listEmplVigenciaNormaLaboralPorEmpleado.get(j).getFechavigencia())) {
+                            fechas++;
+                        }
+                    }
+                    if (fechas > 0) {
+                        mensajeValidacion = "FECHAS NO REPETIDAS";
+                    } else {
+                        contador++;
+                    }
+
                 }
-            }
-            if (fechas > 0) {
-                mensajeValidacion = "FECHAS REPETIDAS";
+                if (duplicarEmplVigenciaNormaLaboral.getNormalaboral().getNombre() == null || duplicarEmplVigenciaNormaLaboral.getNormalaboral().getNombre().equals(" ") || duplicarEmplVigenciaNormaLaboral.getNormalaboral().getNombre().isEmpty()) {
+                    mensajeValidacion = mensajeValidacion + "   * Norma Laboral \n";
+                } else {
+                    contador++;
+                }
+                if (duplicarEmplVigenciaNormaLaboral.getEmpleado().getSecuencia() == null) {
+                    duplicarEmplVigenciaNormaLaboral.setEmpleado(empleadoSeleccionado);
+                }
+                if (contador == 2) {
+                    listEmplVigenciaNormaLaboralPorEmpleado.add(duplicarEmplVigenciaNormaLaboral);
+                    crearEmplVigenciaNormaLaboralPorEmplado.add(duplicarEmplVigenciaNormaLaboral);
+                    context.update("form:datosHvEntrevista");
+                    index = -1;
+                    secRegistro = null;
+                    if (guardado) {
+                        guardado = false;
+                    }
+                    infoRegistro = "Cantidad de registros: " + listEmplVigenciaNormaLaboralPorEmpleado.size();
+                    context.update("form:informacionRegistro");
+                    if (bandera == 1) {
+                        //CERRAR FILTRADO
+                        FacesContext c = FacesContext.getCurrentInstance();
+                        fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+                        fecha.setFilterStyle("display: none; visibility: hidden;");
+                        parentesco = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
+                        parentesco.setFilterStyle("display: none; visibility: hidden;");
+                        altoTabla = "270";
+                        RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
+                        bandera = 0;
+                        filtrarEmplVigenciaNormaLaboralPorEmplado = null;
+                        tipoLista = 0;
+                    }
+                    duplicarEmplVigenciaNormaLaboral = new VigenciasNormasEmpleados();
+                    RequestContext.getCurrentInstance().execute("duplicarRegistroEvalCompetencias.hide()");
+
+                } else {
+                    contador = 0;
+                    fechas = 0;
+                    context.update("form:validacionDuplicarVigencia");
+                    context.execute("validacionDuplicarVigencia.show()");
+                }
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
             } else {
-                contador++;
+                context.update("form:validacioNuevaVigencia");
+                context.execute("validacioNuevaVigencia.show()");
             }
-
         }
-        if (duplicarEmplVigenciaNormaLaboral.getNormalaboral().getNombre() == null || duplicarEmplVigenciaNormaLaboral.getNormalaboral().getNombre().isEmpty() || duplicarEmplVigenciaNormaLaboral.getNormalaboral().getNombre().equals(" ") || duplicarEmplVigenciaNormaLaboral.getNormalaboral().getNombre().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * Norma Laboral \n";
-        } else {
-            contador++;
-
-        }
-        if (duplicarEmplVigenciaNormaLaboral.getEmpleado().getSecuencia() == null) {
-            duplicarEmplVigenciaNormaLaboral.setEmpleado(empleadoSeleccionado);
-        }
-        if (contador == 2) {
-            listEmplVigenciaNormaLaboralPorEmpleado.add(duplicarEmplVigenciaNormaLaboral);
-            crearEmplVigenciaNormaLaboralPorEmplado.add(duplicarEmplVigenciaNormaLaboral);
-            context.update("form:datosHvEntrevista");
-            index = -1;
-            secRegistro = null;
-            if (guardado == true) {
-                guardado = false;
-            }
-            infoRegistro = "Cantidad de registros: " + listEmplVigenciaNormaLaboralPorEmpleado.size();
-            context.update("form:informacionRegistro");
-            if (bandera == 1) {
-                //CERRAR FILTRADO
-                FacesContext c = FacesContext.getCurrentInstance();
-                fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
-                fecha.setFilterStyle("display: none; visibility: hidden;");
-                parentesco = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
-                parentesco.setFilterStyle("display: none; visibility: hidden;");
-                altoTabla = "270";
-                RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
-                bandera = 0;
-                filtrarEmplVigenciaNormaLaboralPorEmplado = null;
-                tipoLista = 0;
-            }
-            duplicarEmplVigenciaNormaLaboral = new VigenciasNormasEmpleados();
-            RequestContext.getCurrentInstance().execute("duplicarRegistroEvalCompetencias.hide()");
-
-        } else {
-            contador = 0;
-            fechas = 0;
-            context.update("form:validacionDuplicarVigencia");
-            context.execute("validacionDuplicarVigencia.show()");
-        }
-        RequestContext.getCurrentInstance().update("form:ACEPTAR");
     }
 
     public void limpiarDuplicarEmplVigenciaNormaLaboral() {
@@ -1075,22 +1100,18 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
 
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (!listEmplVigenciaNormaLaboralPorEmpleado.isEmpty()) {
-            if (secRegistro != null) {
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "VIGENCIASNORMASEMPLEADOS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
-                if (resultado == 1) {
-                    context.execute("errorObjetosDB.show()");
-                } else if (resultado == 2) {
-                    context.execute("confirmarRastro.show()");
-                } else if (resultado == 3) {
-                    context.execute("errorRegistroRastro.show()");
-                } else if (resultado == 4) {
-                    context.execute("errorTablaConRastro.show()");
-                } else if (resultado == 5) {
-                    context.execute("errorTablaSinRastro.show()");
-                }
-            } else {
-                context.execute("seleccionarRegistro.show()");
+        if (index >= 0) {
+            int resultado = administrarRastros.obtenerTabla(secRegistro, "VIGENCIASNORMASEMPLEADOS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
+            if (resultado == 1) {
+                context.execute("errorObjetosDB.show()");
+            } else if (resultado == 2) {
+                context.execute("confirmarRastro.show()");
+            } else if (resultado == 3) {
+                context.execute("errorRegistroRastro.show()");
+            } else if (resultado == 4) {
+                context.execute("errorTablaConRastro.show()");
+            } else if (resultado == 5) {
+                context.execute("errorTablaSinRastro.show()");
             }
         } else {
             if (administrarRastros.verificarHistoricosTabla("VIGENCIASNORMASEMPLEADOS")) { // igual acá
@@ -1100,13 +1121,13 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
             }
 
         }
-        index = -1;    
+        index = -1;
     }
 
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<VigenciasNormasEmpleados> getListEmplVigenciaNormaLaboralPorEmpleado() {
-      
-    if (listEmplVigenciaNormaLaboralPorEmpleado == null) {
+
+        if (listEmplVigenciaNormaLaboralPorEmpleado == null) {
             listEmplVigenciaNormaLaboralPorEmpleado = administrarVigenciaNormaLaboral.consultarVigenciasNormasEmpleadosPorEmpleado(secuenciaEmpleado);
             RequestContext context = RequestContext.getCurrentInstance();
             if (listEmplVigenciaNormaLaboralPorEmpleado == null || listEmplVigenciaNormaLaboralPorEmpleado.isEmpty()) {
@@ -1117,7 +1138,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
             context.update("form:informacionRegistro");
         }
         return listEmplVigenciaNormaLaboralPorEmpleado;
-    
+
     }
 
     public void setListEmplVigenciaNormaLaboralPorEmpleado(List<VigenciasNormasEmpleados> listEmplVigenciaNormaLaboralPorEmpleado) {
@@ -1193,7 +1214,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
     private String infoRecursoNormasLaborales;
 
     public List<NormasLaborales> getListaNormasLaborales() {
-       
+
         if (listaNormasLaborales == null) {
             listaNormasLaborales = administrarVigenciaNormaLaboral.lovNormasLaborales();
             RequestContext context = RequestContext.getCurrentInstance();
@@ -1205,7 +1226,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
             context.update("form:infoRecursoNormasLaborales");
         }
         return listaNormasLaborales;
-    
+
     }
 
     public void setListaNormasLaborales(List<NormasLaborales> listaNormasLaborales) {
