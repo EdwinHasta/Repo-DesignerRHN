@@ -201,7 +201,7 @@
 
                         <h:outputText id="informacionRegistro" value="#{controlSets.infoRegistro}" style="position: absolute; left: 15px; top: 480px; font-weight: bold"/>
                         <p:commandButton style="position: absolute; left: 683px; top: 470px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" disabled="#{controlSets.guardado}" update=":form:datosSetsEmpleado" process="@this" />
-                        <p:commandButton style="position: absolute; left: 10px; top: 445px;" id="DECLARANTE" value="#{msg['declarante']}" action="declarante" actionListener="#{controlDeclarantes.recibirPersona(controlSets.per)}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 10px; top: 450px;" id="DECLARANTE" value="#{msg['declarante']}" action="declarante" actionListener="#{controlDeclarantes.recibirPersona(controlSets.per)}" process="@this" />
                         <p:commandButton style="position: absolute;left: 775px; top: 470px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlSets.salir()}" action="nomina" process="@this" />
 
                         <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425px"  closable="false">  
