@@ -214,12 +214,18 @@
                                 </p:column> 
 
                                 <p:column headerText="P" width="25" style="height: 16px; padding: 0px;" exportable="false">  
-                                    <f:facet name="header"><h:outputText value="#{msg['p']}" /></f:facet>
+                                    <f:facet name="header">
+                                        <h:outputText id="headP" value="#{msg['p']}"/>
+                                        <p:tooltip for="headP" value="#{msg['pvH']}"/>
+                                    </f:facet>
                                     <p:commandButton style="background-image: url(Imagenes/revertir.gif); width:23px; height: 21px; background-repeat: no-repeat; background-size: 100% 100%;"/>
                                 </p:column>
 
                                 <p:column headerText="S" width="25" style="height: 16px;padding: 0px;" exportable="false">  
-                                    <f:facet name="header"><h:outputText value="#{msg['s']}" /></f:facet>
+                                    <f:facet name="header">
+                                        <h:outputText id="headS" value="#{msg['s']}"/>
+                                        <p:tooltip for="headS" value="#{msg['scH']}"/>
+                                    </f:facet>
                                     <p:commandButton  style="width: 23px; height: 21px;padding: 0px; padding: 0px; padding-bottom: 0px; padding-top: 0px" id="selectButton" />
                                 </p:column>     
                             </p:dataTable> 
@@ -231,75 +237,81 @@
                         <p:commandButton style="position: absolute; left: 683px; top: 470px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVTCEmpleado" process="@this" disabled="#{controlVigenciasTiposContratos.guardado}"/>
                         <p:commandButton style="position: absolute; left: 775px; top: 470px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlVigenciasTiposContratos.salir()}" action="nomina" process="@this" />
 
+
+                        <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
+                            <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
+                            <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
+                            <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciasTiposContratos.guardarCambiosVTC()}" action="nomina" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                            <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciasTiposContratos.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
+                            <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                        </p:dialog>
+                        
+                        <p:dialog id="validacionNuevo" header="#{msg['atencion']}" widgetVar="validacionNuevo"  resizable="false" draggable="false" modal="true" height="95" width="450px"  closable="false">  
+                            <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
+                            <h:outputText value="#{msg['validacionNuevo']}#{controlVigenciasTiposContratos.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
+                            <p:commandButton value="#{msg['aceptar']}" onclick="validacionNuevo.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        </p:dialog>
+                        
+                        <p:dialog id="fechas" header="#{msg['atencion']}" widgetVar="fechas"  resizable="false" draggable="false" modal="true" height="110" width="400px" style="" closable="false">  
+                            <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 20px; top: 20px;"  />
+                            <h:outputText value="#{msg['fechas']}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
+                            <p:commandButton value="#{msg['aceptar']}" onclick="fechas.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        </p:dialog>
+
+                        <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                            <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                            <h:outputText value="#{msg['confirmarRastro']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                            <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciasTiposContratos.secRegistro, 'VigenciasTiposContratos', 'vigenciasTC')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                            <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
+                        </p:dialog>
+
+                        <p:dialog id="confirmarRastroHistorico" header="#{msg['atencion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                            <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                            <h:outputText value="#{msg['confirmarRastroHistorico']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                            <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('VigenciasTiposContratos', 'vigenciasTC')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                            <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                        </p:dialog>
+
+                        <p:dialog id="errorRastroHistorico" header="#{msg['atencion']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                            <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                            <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                        </p:dialog>
+
+                        <p:dialog id="errorRegistroRastro" header="#{msg['atencion']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                            <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                            <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                        </p:dialog>
+
+                        <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                            <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                            <h:outputText value="#{msg['errorTablaConRastro']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                            <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciasTiposContratos.secRegistro, 'VigenciasTiposContratos', 'vigenciasTC')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                            <p:commandButton value="#{msg['no']}" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                        </p:dialog>
+
+                        <p:dialog id="errorTablaSinRastro" header="#{msg['atencion']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
+                            <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                            <h:outputText value="#{msg['errorTablaSinRastro']}" style="position: absolute; left: 70px; top: 28px; width: 195px; font-weight:bold" />
+                        </p:dialog>
+
+                        <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                            <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                            <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                        </p:dialog>
+
+                        <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                            <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                            <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                        </p:dialog>
+
+                        <p:dialog id="validacionFechaDuplicada" header="#{msg['atencion']}" widgetVar="validacionFechaDuplicada"  resizable="false" draggable="false" modal="true" height="95" width="440"  closable="false">  
+                            <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
+                            <h:outputText value="#{msg['fechaDuplicada']}" style="position: absolute; left: 110px; top: 20px; width: 300px;" />
+                            <p:commandButton value="#{msg['aceptar']}" onclick="validacionFechaDuplicada.hide();" style="position: absolute; top: 60px; left: 300px"  process="@this" />
+                        </p:dialog>
+
+                        <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciasTiposContratos.activarCtrlF11()}"/> 
                     </p:panel>
-
-                    <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciasTiposContratos.guardarCambiosVTC()}" action="nomina" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciasTiposContratos.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
-                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
-                    </p:dialog>
-
-                    <p:dialog id="validacioNuevaVigencia" header="#{msg['atencion']}" widgetVar="validacioNuevaVigencia"  resizable="false" draggable="false" modal="true" height="95" width="440"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
-                        <h:outputText value="#{msg['validacionNuevo']} #{controlVigenciasTiposContratos.mensajeValidacion}" style="position: absolute; left: 110px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="validacioNuevaVigencia.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
-                    </p:dialog>
-
-                    <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['confirmarRastro']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciasTiposContratos.secRegistro, 'VigenciasTiposContratos', 'vigenciasTC')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
-                    </p:dialog>
-
-                    <p:dialog id="confirmarRastroHistorico" header="#{msg['atencion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['confirmarRastroHistorico']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('VigenciasTiposContratos', 'vigenciasTC')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
-                    </p:dialog>
-
-                    <p:dialog id="errorRastroHistorico" header="#{msg['atencion']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
-                    </p:dialog>
-
-                    <p:dialog id="errorRegistroRastro" header="#{msg['atencion']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
-                    </p:dialog>
-
-                    <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorTablaConRastro']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciasTiposContratos.secRegistro, 'VigenciasTiposContratos', 'vigenciasTC')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
-                    </p:dialog>
-
-                    <p:dialog id="errorTablaSinRastro" header="#{msg['atencion']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorTablaSinRastro']}" style="position: absolute; left: 70px; top: 28px; width: 195px; font-weight:bold" />
-                    </p:dialog>
-
-                    <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
-                    </p:dialog>
-
-                    <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
-                    </p:dialog>
-
-                    <p:dialog id="validacionFechaDuplicada" header="#{msg['atencion']}" widgetVar="validacionFechaDuplicada"  resizable="false" draggable="false" modal="true" height="95" width="440"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
-                        <h:outputText value="#{msg['fechaDuplicada']}" style="position: absolute; left: 110px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionFechaDuplicada.hide();" style="position: absolute; top: 60px; left: 300px"  process="@this" />
-                    </p:dialog>
-
-                    <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciasTiposContratos.activarCtrlF11()}"/> 
                 </h:form>
 
                 <h:form id="formularioDialogos" >
@@ -333,9 +345,9 @@
                         <h:outputText id="infoRegistroCiudades" value="#{controlVigenciasTiposContratos.infoRegistroCiudades}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
 
                         <p:commandButton id="aceptarC" style="position: relative; left: 283px" value="#{msg['aceptar']}" disabled="#{controlVigenciasTiposContratos.aceptar}" actionListener="#{controlVigenciasTiposContratos.actualizarCiudad()}" process="@this" icon="ui-icon-check" onclick="ciudadesDialogo.hide()"/>
-                            
+
                         <p:commandButton id="atrasC" style="position: relative; left: 283px" value="#{msg['atras']}" actionListener="#{controlVigenciasTiposContratos.cancelarCambioCiudad()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" onclick="ciudadesDialogo.hide()"/>
-                            
+
                     </p:dialog> 
 
                     <!-- DIALOGO L.O.V ESTATICO DE TIPOS CONTRATO -->
@@ -365,10 +377,10 @@
                         </p:dataTable>
 
                         <p:commandButton id="aceptarTC" style="position: relative; left: 170px" value="#{msg['aceptar']}" disabled="#{controlVigenciasTiposContratos.aceptar}" actionListener="#{controlVigenciasTiposContratos.actualizarTipoContrato()}" process="@this" icon="ui-icon-check" onclick="TiposContratoDialogo.hide()"/>
-                            
+
                         <p:commandButton id="atrasTC" style="position: relative; left: 170px" value="#{msg['atras']}" actionListener="#{controlVigenciasTiposContratos.cancelarTipoContrato()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" onclick="TiposContratoDialogo.hide()"/>
-                            
-                        
+
+
                         <h:outputText id="infoRegistroTiposContratos" value="#{controlVigenciasTiposContratos.infoRegistroTiposContratos}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
                     </p:dialog>
                     <!-- DIALOGO L.O.V ESTATICO DE MOTIVOS CONTRATO -->
@@ -398,9 +410,9 @@
                             </p:column>
                         </p:dataTable>
                         <p:commandButton id="aceptarMC" style="position: relative; left: 145px" value="#{msg['aceptar']}" disabled="#{controlVigenciasTiposContratos.aceptar}" actionListener="#{controlVigenciasTiposContratos.actualizarMotivoContrato()}" process="@this" icon="ui-icon-check" onclick="MotivosContratoDialogo.hide()"/>
-                            
+
                         <p:commandButton id="atrasMC" style="position: relative; left: 145px; " value="#{msg['atras']}" actionListener="#{controlVigenciasTiposContratos.cancelarCambioMotivoContrato()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" onclick="MotivosContratoDialogo.hide()"/>
-                            
+
                     </p:dialog>
 
                     <p:dialog id="NuevoRegistroVTC" header="#{msg['nuevoregistro']}" widgetVar="NuevoRegistroVTC" closable="false" resizable="false"  draggable="false" modal="true" height="370" width="400" style=" padding: 0px">  
@@ -534,7 +546,7 @@
                             <p:watermark for="duplicarObservacion" value="#{msg['observaciones']}" />
 
                             <p:commandButton id="limpiarDuplicadoVTC" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 370px;" actionListener="#{controlVigenciasTiposContratos.limpiarduplicarVTC()}" update="duplicarVTC" process="@this" icon="ui-icon-trash"/>
-                            <p:commandButton id="agregarDuplicadoVTC" value="#{msg['agregar']}" style=" position: absolute; left: 180px; top: 370px;"  process="@this" actionListener="#{controlVigenciasTiposContratos.confirmarDuplicar()}" onclick="DuplicarRegistroVTC.hide();"  icon="ui-icon-circle-check"/>
+                            <p:commandButton id="agregarDuplicadoVTC" value="#{msg['agregar']}" style=" position: absolute; left: 180px; top: 370px;"  process="@this" actionListener="#{controlVigenciasTiposContratos.confirmarDuplicar()}" icon="ui-icon-circle-check"/>
                             <p:commandButton id="cancelarDuplicadoVTC" value="#{msg['cancelar']}" style=" position: absolute; left: 270px; top: 370px;" actionListener="#{controlVigenciasTiposContratos.limpiarduplicarVTC()}" update="duplicarVTC" onclick="DuplicarRegistroVTC.hide();"  process="@this" icon="ui-icon-circle-close"/>
                         </p:panel>
                     </p:dialog>

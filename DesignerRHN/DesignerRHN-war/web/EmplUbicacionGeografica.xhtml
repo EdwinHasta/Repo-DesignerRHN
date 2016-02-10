@@ -199,7 +199,7 @@
                             <h:outputText value="#{msg['validacioModificarVigenciaFechas']} #{controlVigenciasUbicaciones.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
                             <p:commandButton value="#{msg['aceptar']}" onclick="validacioModificarVigenciaFechas.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                         </p:dialog>
-                        
+
                         <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
@@ -208,6 +208,11 @@
                             <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                         </p:dialog>
 
+                        <p:dialog id="validacionNuevo" header="#{msg['atencion']}" widgetVar="validacionNuevo"  resizable="false" draggable="false" modal="true" height="95" width="450px"  closable="false">  
+                            <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
+                            <h:outputText value="#{msg['validacionNuevo']}#{controlVigenciasUbicaciones.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
+                            <p:commandButton value="#{msg['aceptar']}" onclick="validacionNuevo.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        </p:dialog>
                     </p:panel>
                 </h:form>
 

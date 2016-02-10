@@ -16,6 +16,57 @@
                     <f:loadBundle basename="Recursos.emplvigenciaformapago" var="msg" />
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">  
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlVigenciasFormasPagos.empleadoSeleccionado.persona.primerapellido} #{controlVigenciasFormasPagos.empleadoSeleccionado.persona.segundoapellido} #{controlVigenciasFormasPagos.empleadoSeleccionado.persona.nombre}"/>
+                        <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">  
+                            <p:toolbarGroup align="left"> 
+
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; "  actionListener="#{controlVigenciasFormasPagos.guardarCambiosVigenciasFormasPagos()}" process="@this" />
+                                <p:tooltip style="" for="guardarRapido" value="#{msg['guardar']}" />
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlVigenciasFormasPagos.editarCelda()}" process="@this"/>
+                                <p:tooltip style="" for="editar" value="#{msg['editar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasFormasPagos.listaValoresBoton()}" process="@this"/>
+                                <p:tooltip style="" for="listaValores" value="#{msg['lista']}" />
+
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasFormasPagos.activarCtrlF11()}"  process="@this"/>
+                                <p:tooltip style="" for="filtrar" value="#{msg['filtrar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasFormasPagos.exportXLS()}" ajax="false"/>
+                                <p:tooltip style="" for="exportarXLS" value="#{msg['xls']}" />
+
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasFormasPagos.limpiarNuevaVigenciaFormpasPagos()}" ajax="false">
+                                    <p:dataExporter type="xml"  target=":formExportar:datosVFPEmpleadoExportar" fileName="VigenciasFormasPagosXML" encoding="UTF-8"/> 
+                                </p:commandButton> 
+                                <p:tooltip style="" for="exportarXML" value="#{msg['xml']}" />
+
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlVigenciasFormasPagos.exportPDF()}" ajax="false"/>
+                                <p:tooltip style="" for="exportarPDF" value="#{msg['pdf']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg);  background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "   oncomplete="NuevoRegistroVigenciasFormasPagos.show()" update=":formularioDialogos:nuevaVigenciaFormasPagos" process="@this"/> 
+                                <p:tooltip style="" for="insertar" value="#{msg['nuevo']}" />
+
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasFormasPagos.borrarVigenciasFormasPagos()}" process="@this"/>  
+                                <p:tooltip style="" for="eliminar" value="#{msg['eliminar']}" />
+
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlVigenciasFormasPagos.duplicarVigenciaFormasPagos()}" process="@this"/>  
+                                <p:tooltip style="" for="duplicar" value="#{msg['duplicar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasFormasPagos.verificarRastro()}" process="@this"/>  
+                                <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
+
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasFormasPagos.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasFormasPagos.salir()}" action="nomina" process="@this"/>  
+                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
+                            </p:toolbarGroup>  
+                        </p:toolbar>
+
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>#{msg['formaPagoEmpleado']}</strong></legend>
 
@@ -74,7 +125,7 @@
 
                                 </p:column>
 
-                                <p:column headerText="#{msg['sucursal']}" sortBy="#{info.sucursal.nombre}" filterBy="#{info.sucursal.nombre}" filterMatchMode="contains" id="sucursal" width="200" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="#{msg['sucursal']}" sortBy="#{info.sucursal.nombre}" filterBy="#{info.sucursal.nombre}" filterMatchMode="contains" id="sucursal" width="120" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.sucursal.nombre}" /></f:facet>  
                                         <f:facet name="input">
@@ -107,6 +158,11 @@
                                 </p:column> 
 
                                 <p:column headerText="#{msg['tc']}" sortBy="#{info.tipocuenta}" filterBy="#{info.tipocuenta}" filterMatchMode="contains" id="tc" width="25" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="headtc" value="#{msg['tc']}"/>
+                                        <p:tooltip for="headtc" value="#{msg['tcH']}"/>
+                                    </f:facet>
+
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.tipocuenta}" style=" text-transform: uppercase" /></f:facet>  
                                         <f:facet name="input">
@@ -119,7 +175,7 @@
 
                                 </p:column> 
 
-                                <p:column headerText="#{msg['metodoPago']}" sortBy="#{info.metodopago.descripcion}" filterBy="#{info.metodopago.descripcion}" filterMatchMode="contains" id="metodoPago" width="120" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="#{msg['metodoPago']}" sortBy="#{info.metodopago.descripcion}" filterBy="#{info.metodopago.descripcion}" filterMatchMode="contains" id="metodoPago" width="100" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.metodopago.descripcion}" /></f:facet>  
                                         <f:facet name="input">
@@ -140,57 +196,6 @@
                             </p:dataTable>
 
                         </fieldset>
-
-                        <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">  
-                            <p:toolbarGroup align="left"> 
-
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; "  actionListener="#{controlVigenciasFormasPagos.guardarCambiosVigenciasFormasPagos()}" process="@this" />
-                                <p:tooltip style="" for="guardarRapido" value="#{msg['guardar']}" />
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlVigenciasFormasPagos.editarCelda()}" process="@this"/>
-                                <p:tooltip style="" for="editar" value="#{msg['editar']}" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasFormasPagos.listaValoresBoton()}" process="@this"/>
-                                <p:tooltip style="" for="listaValores" value="#{msg['lista']}" />
-
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasFormasPagos.activarCtrlF11()}"  process="@this"/>
-                                <p:tooltip style="" for="filtrar" value="#{msg['filtrar']}" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasFormasPagos.exportXLS()}" ajax="false"/>
-                                <p:tooltip style="" for="exportarXLS" value="#{msg['xls']}" />
-
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasFormasPagos.limpiarNuevaVigenciaFormpasPagos()}" ajax="false">
-                                    <p:dataExporter type="xml"  target=":formExportar:datosVFPEmpleadoExportar" fileName="VigenciasFormasPagosXML" encoding="UTF-8"/> 
-                                </p:commandButton> 
-                                <p:tooltip style="" for="exportarXML" value="#{msg['xml']}" />
-
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlVigenciasFormasPagos.exportPDF()}" ajax="false"/>
-                                <p:tooltip style="" for="exportarPDF" value="#{msg['pdf']}" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg);  background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "   oncomplete="NuevoRegistroVigenciasFormasPagos.show()" update=":formularioDialogos:nuevaVigenciaFormasPagos" process="@this"/> 
-                                <p:tooltip style="" for="insertar" value="#{msg['nuevo']}" />
-
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasFormasPagos.borrarVigenciasFormasPagos()}" process="@this"/>  
-                                <p:tooltip style="" for="eliminar" value="#{msg['eliminar']}" />
-
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlVigenciasFormasPagos.duplicarVigenciaFormasPagos()}" process="@this"/>  
-                                <p:tooltip style="" for="duplicar" value="#{msg['duplicar']}" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasFormasPagos.verificarRastro()}" process="@this"/>  
-                                <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
-
-                                <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasFormasPagos.cancelarModificacion()}" process="@this"/>  
-                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasFormasPagos.salir()}" action="nomina" process="@this"/>  
-                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
-                            </p:toolbarGroup>  
-                        </p:toolbar>
 
                         <h:outputText id="informacionRegistro" value="#{controlVigenciasFormasPagos.infoRegistro}" style="position: absolute; left: 15px; top: 470px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 683px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" disabled="#{controlVigenciasFormasPagos.guardado}" onclick="confirmarGuardar.show();"  update="datosVigenciasFormasPagos"  process="@this"   />
@@ -232,7 +237,7 @@
                             <h:outputText id="infoRegistroSucursales" value="#{controlVigenciasFormasPagos.infoRegistroSucursales}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
 
                             <p:commandButton id="aceptarS" style="position: relative; left: 280px" value="#{msg['aceptar']}"  disabled="#{controlVigenciasFormasPagos.aceptar}"   actionListener="#{controlVigenciasFormasPagos.actualizarSucursal()}"  process="@this" icon="ui-icon-check"/>
-                            
+
                             <p:commandButton id="atrasS" style="position: relative; left: 280px" value="#{msg['atras']}"  actionListener="#{controlVigenciasFormasPagos.cancelarCambioSucursal()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 
@@ -260,9 +265,9 @@
                             <h:outputText id="infoRegistroPeriodicidades" value="#{controlVigenciasFormasPagos.infoRegistroPeriodicidades}" style="position: absolute; left: 15px; top: 300px; font-weight: bold"/>
 
                             <p:commandButton id="aceptarP" style="position: relative; left: 185px" disabled="#{controlVigenciasFormasPagos.aceptar}" icon="ui-icon-check" value="#{msg['aceptar']}"  actionListener="#{controlVigenciasFormasPagos.actualizarPeriodicidad()}" process="@this"/>
-                            
+
                             <p:commandButton id="atrasP" style="position: relative; left: 185px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlVigenciasFormasPagos.cancelarCambioPeriodicidad()}" process="@this"/>
-                            
+
                         </p:dialog>
 
 
@@ -289,7 +294,7 @@
                             <h:outputText id="infoRegistroMetodosPagos" value="#{controlVigenciasFormasPagos.infoRegistroMetodosPagos}" style="position: absolute; left: 15px; top: 375px; font-weight: bold"/>
 
                             <p:commandButton id="aceptarMP" style="position: absolute; top: 365px; left:210px" disabled="#{controlVigenciasFormasPagos.aceptar}" icon="ui-icon-check" value="#{msg['aceptar']}" actionListener="#{controlVigenciasFormasPagos.actualizarMetodoPago()}" process="@this"/>
-                            
+
                             <p:commandButton id="atrasMP" style="position: absolute;  top: 365px; left: 300px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}"   actionListener="#{controlVigenciasFormasPagos.cancelarCambioMetodoPago()}"  process="@this"/>
                         </p:dialog>
 
@@ -330,7 +335,12 @@
                             <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciasFormasPagos.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                             <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                         </p:dialog>
-
+                        
+                        <p:dialog id="validacionFechas" header="#{msg['atencion']}" widgetVar="validacionFechas"  resizable="false" draggable="false" modal="true" height="95" width="450px"  closable="false">  
+                            <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
+                            <h:outputText value="#{msg['validacionFechas']}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
+                            <p:commandButton value="#{msg['aceptar']}" onclick="validacionFechas.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        </p:dialog>
                     </p:panel>
 
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciasFormasPagos.activarCtrlF11()}"/> 
