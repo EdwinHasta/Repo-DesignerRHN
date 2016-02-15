@@ -301,7 +301,7 @@
                                          selection="#{controlProyecto.clienteSeleccionado}" selectionMode="single" widgetVar="lovClientes" scrollable="true" scrollWidth="656" scrollHeight="250"
                                          filteredValue="#{controlProyecto.filtrarListPryClientes}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlProyecto.activarAceptar()}" update=":form:aceptarC"/>
-                                <p:ajax event="rowDblselect" listener="#{controlProyecto.actualizarCliente()}" process="@this" >
+                                <p:ajax event="rowDblselect" listener="#{controlProyecto.actualizarCliente()}" process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovClientes.filter();" style="width:150px; position: relative; left: -90px;" />  

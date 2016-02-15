@@ -1726,16 +1726,16 @@ public class ControlVigenciaJornada implements Serializable {
                 duplicarVCT.setSecuencia(nuevaVJornadaSecuencia);
                 duplicarVCT.setVigenciajornada(listVigenciasCompensacionesTiempo.get(indexVCT).getVigenciajornada());
                 duplicarVCT.setTipocompensacion(listVigenciasCompensacionesTiempo.get(indexVCT).getTipocompensacion());
-                duplicarVCT.setFechafinal(listVigenciasCompensacionesTiempo.get(indexVCT).getFechainicial());
-                duplicarVCT.setFechainicial(listVigenciasCompensacionesTiempo.get(indexVCT).getFechafinal());
+                duplicarVCT.setFechainicial(listVigenciasCompensacionesTiempo.get(indexVCT).getFechainicial());
+                duplicarVCT.setFechafinal(listVigenciasCompensacionesTiempo.get(indexVCT).getFechafinal());
                 duplicarVCT.setComentario(listVigenciasCompensacionesTiempo.get(indexVCT).getComentario());
             }
             if (tipoListaVCT == 1) {//Si tiene filtro
                 duplicarVCT.setSecuencia(nuevaVJornadaSecuencia);
                 duplicarVCT.setVigenciajornada(filtrarVigenciasCompensacionesTiempo.get(indexVCT).getVigenciajornada());
                 duplicarVCT.setTipocompensacion(filtrarVigenciasCompensacionesTiempo.get(indexVCT).getTipocompensacion());
-                duplicarVCT.setFechafinal(filtrarVigenciasCompensacionesTiempo.get(indexVCT).getFechainicial());
-                duplicarVCT.setFechainicial(filtrarVigenciasCompensacionesTiempo.get(indexVCT).getFechafinal());
+                duplicarVCT.setFechainicial(filtrarVigenciasCompensacionesTiempo.get(indexVCT).getFechainicial());
+                duplicarVCT.setFechafinal(filtrarVigenciasCompensacionesTiempo.get(indexVCT).getFechafinal());
                 duplicarVCT.setComentario(filtrarVigenciasCompensacionesTiempo.get(indexVCT).getComentario());
             }
             RequestContext context = RequestContext.getCurrentInstance();

@@ -10,7 +10,6 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
@@ -34,6 +33,12 @@ public class PersistenciaVWVacaPendientesEmpleados implements PersistenciaVWVaca
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
+            System.out.println("getSecuencia: "+vacaP.getSecuencia());
+            System.out.println("getEstado: "+vacaP.getEstado());
+            System.out.println("getDiaspendientes: "+vacaP.getDiaspendientes());
+            System.out.println("getEmpleado: "+vacaP.getEmpleado());
+            System.out.println("getInicialcausacion: "+vacaP.getInicialcausacion());
+            System.out.println("getFinalcausacion: "+vacaP.getFinalcausacion());
             tx.begin();
             em.merge(vacaP);
             tx.commit();

@@ -37,7 +37,7 @@ public class VigenciasProrrateos implements Serializable {
     @ManyToOne(optional = false)
     private VigenciasLocalizaciones viglocalizacion;
     @JoinColumn(name = "PROYECTO", referencedColumnName = "SECUENCIA")
-    @ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+    @ManyToOne(cascade={CascadeType.DETACH},fetch=FetchType.LAZY)
     private Proyectos proyecto;
     @JoinColumn(name = "CENTROCOSTO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)

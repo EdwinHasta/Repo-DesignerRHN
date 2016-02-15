@@ -66,7 +66,7 @@
 
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaLocalizacion.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
-                                
+
                                 <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaLocalizacion.salir()}" action="nomina" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
 
@@ -138,7 +138,7 @@
                                         <f:facet name="output"><h:outputText value="#{infoDVL.localizacion.nombre}"/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{infoDVL.localizacion.nombre}" readonly="true" id="editarLocalizacion" style=" border-radius: 0px; width: 95%;text-transform: uppercase; height: 12px" 
-                                                        onselect="posicionLocalizacion([{name: 'n', value: '2'}, {name: 't', value: '#{indice}'}]);"> 
+                                                         onselect="posicionLocalizacion([{name: 'n', value: '2'}, {name: 't', value: '#{indice}'}]);"> 
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -222,7 +222,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 130px; margin: -14px; height: 26px;  border: none; color: blue" id="fooCentroCostoVP" value=""/>
+                                        <p:commandButton style="width: 130px; margin: -14px; height: 26px;  border: none; color: blue" action="centrocostoEmplVigenciaLocalizacion" actionListener="#{controlBetaCentrosCostos.recibirPagina('atrascentrocostoEmplVigenciaLocalizacion')}" id="fooCentroCostoVP" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -235,9 +235,9 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.porcentaje}" style="width: 100px; "/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.porcentaje}" id="editarComentarioVCT" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px "> 
+                                            <p:inputText binding="#{vPPorcentajeAux}" maxlength="4" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px "> 
                                                 <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndiceVP(indiceVP,1)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVP(indiceVP)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVPPorcentaje(vPPorcentajeAux.value, indiceVP, 1, 0)}" process="@this"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -327,9 +327,9 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.subporcentaje}" style="width: 100px; "/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.subporcentaje}" id="editarSubPorcentajeVP" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
+                                            <p:inputText  binding="#{vPPorcentajeAuxSub}" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
                                                 <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndiceVP(indiceVP,5)}" process="@this"/> 
-                                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVP(indiceVP)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVPPorcentaje(vPPorcentajeAuxSub.value, indiceVP, 1, 1)}" process="@this"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -378,9 +378,9 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info2.porcentaje}" style="width: 100px; "/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info2.porcentaje}" id="editarPorcentajeVPP" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
-                                                <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndiceVPP(indiceVPP,1)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVPP(indiceVPP)}" process="@this"/>
+                                            <p:inputText binding="#{vPPorcentajeAux2}" maxlength="4" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px "> 
+                                                <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndiceVP(indiceVPP,1)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVPPorcentaje(vPPorcentajeAux2.value, indiceVPP, 2, 0)}" process="@this"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -676,6 +676,12 @@
                         <p:commandButton value="#{msg['aceptar']}" onclick="validarNuevoFechas.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
                     </p:dialog>
 
+                    <p:dialog id="validarPorcentajes" header="#{msg['atencion']}" widgetVar="validarPorcentajes"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorPorcentaje']}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validarPorcentajes.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
+                    </p:dialog>
+
                     <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="font-size: 14px; position: absolute; left: 100px; top: 20px; width: 270px;" />
@@ -751,20 +757,17 @@
                     </p:dialog>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciaLocalizacion.activarCtrlF11()}"/> 
                 </h:form>
-                <h:form id="formularioDialogos" >
+                <h:form id="formularioDialogos">
 
                     <p:dialog id="NuevoRegistroPagina" header="#{msg['nuevoregistroparaingreso']}" widgetVar="NuevoRegistroPagina" closable="false" resizable="false"  draggable="false" modal="true" height="215" width="400" style=" padding: 0px">  
                         <center><strong><h:outputText value="#{msg['seleccione']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
                         <h:outputText value="#{msg['le']}" style="font-size: 14px; position: absolute; top: 47px;left: 60px"/>
-                        <!-- <p:commandButton id="NuevoVigenciaLocalizacion" icon="ui-icon-circle-check" style="position: absolute; top: 45px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroVL.show()" update=":formularioDialogos:nuevaVL" onclick="NuevoRegistroPagina.hide();" process="@this"/>-->
                         <p:commandButton id="NuevoVigenciaLocalizacion" icon="ui-icon-circle-check" style="position: absolute; top: 45px;left: 300px; height: 25px; width: 40px" actionListener="#{controlVigenciaLocalizacion.validarCualTabla(1)}" onclick="NuevoRegistroPagina.hide();" process="@this"/>
 
                         <h:outputText value="#{msg['ppcc']}" style="font-size: 14px; position: absolute; top: 92px;left: 60px"/>
-                        <!--<p:commandButton id="NuevoVigenciaProrrateo" icon="ui-icon-circle-check" style="position: absolute; top: 90px;left: 300px; height: 25px; width: 40px" oncomplete="NuevoRegistroVP.show()" update=":formularioDialogos:nuevaVP" onclick="NuevoRegistroPagina.hide();" process="@this"/>-->
                         <p:commandButton id="NuevoVigenciaProrrateo" icon="ui-icon-circle-check" style="position: absolute; top: 90px;left: 300px; height: 25px; width: 40px" actionListener="#{controlVigenciaLocalizacion.validarCualTabla(2)}" onclick="NuevoRegistroPagina.hide();" process="@this"/>
 
                         <h:outputText value="#{msg['ppp']}" style="font-size: 14px; position: absolute; top: 137px;left: 60px"/>
-                        <!--<p:commandButton id="NuevoVigenciaProrrateoProyecto" icon="ui-icon-circle-check" style="position: absolute; top: 135px;left: 300px; height: 25px; width: 40px" actionListener="#/{controlVigenciaLocalizacion.validarRegistroVPP()}" onclick="NuevoRegistroPagina.hide();" process="@this"/>-->
                         <p:commandButton id="NuevoVigenciaProrrateoProyecto" icon="ui-icon-circle-check" style="position: absolute; top: 135px;left: 300px; height: 25px; width: 40px" actionListener="#{controlVigenciaLocalizacion.validarCualTabla(3)}" onclick="NuevoRegistroPagina.hide();" process="@this"/>
 
                         <p:commandButton id="CancelarNuevosRegistros" onclick="NuevoRegistroPagina.hide();"  process="@this" value="#{msg['cancelar']}" style="position: absolute; top: 185px;left: 280px"/>
@@ -870,14 +873,14 @@
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="NuevoRegistroVP" header="#{msg['nuevoregistroVP']}" widgetVar="NuevoRegistroVP" closable="false" resizable="false"  draggable="false" modal="true" height="300" width="340" style=" padding: 0px">  
+                    <p:dialog id="NuevoRegistroVP" header="#{msg['nuevoregistroVP']}" widgetVar="NuevoRegistroVP" closable="false" resizable="false"  draggable="false" modal="true" height="300" width="360" style=" padding: 0px">  
 
                         <center><strong><h:outputText value="#{msg['ingresarnuevoVP']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaVP" style="border: none;">
 
                             <strong><h:outputText value="*#{msg['centrocostoVP']}" style=" position: absolute; top: 75px; left: 50px" /></strong>
-                            <p:inputText id="nuevaCentroCostoVP" value="#{controlVigenciaLocalizacion.nuevaVigenciaP.centrocosto.nombre}" style=" width: 110px; position: absolute; left: 170px; top: 70px; text-transform: uppercase" onclick="select();" >
+                            <p:inputText id="nuevaCentroCostoVP" value="#{controlVigenciaLocalizacion.nuevaVigenciaP.centrocosto.nombre}" style=" width: 110px; position: absolute; left: 170px; top: 70px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="dblclick" listener="#{controlVigenciaLocalizacion.asignarIndex(indice,0,1,1)}"/>
                                 <p:ajax event="click" listener="#{controlVigenciaLocalizacion.valoresBackupAutocompletarVP(1, 'CENTROCOSTO')}" />
                                 <p:ajax event="change" listener="#{controlVigenciaLocalizacion.autocompletarNuevoyDuplicadoVP('CENTROCOSTO', controlVigenciaLocalizacion.nuevaVigenciaP.centrocosto.nombre,1)}" update="nuevaCentroCostoVP"/>
@@ -885,28 +888,27 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 290px; top: 70px;  " id="btnNuevoCentroCostoVP" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaLocalizacion.asignarIndex(indice,0,1,1)}"/>   
                             <p:watermark for="nuevaCentroCostoVP" value="#{msg['centrocostos']}" />
 
-                            <strong><h:outputText value="*#{msg['porcentajeVP']}" style=" position: absolute; top: 105px; left: 50px" /></strong>
-                            <p:inputText id="nuevaPorcentajeVP" value="#{controlVigenciaLocalizacion.nuevaVigenciaP.porcentaje}" style=" width: 110px; position: absolute; left: 170px; top: 100px; text-transform: uppercase" >
-                                <p:ajax event="change" update="nuevaPorcentajeVP"  />
-                            </p:inputText>
-                            <p:watermark for="nuevaPorcentajeVP" value="#{msg['p']}" />
-
-
-                            <strong><h:outputText value="*#{msg['inicialVP']}" style=" position: absolute; top: 135px; left: 50px;" /></strong>
-                            <div id="posicionFormulaFechaIniNuevoRegVP" style=" position: absolute; top: 130px; left: 170px">
+                            <strong><h:outputText value="*#{msg['inicialVP']}" style=" position: absolute; top: 105px; left: 50px" /></strong>
+                            <div id="posicionFormulaFechaIniNuevoRegVP" style=" width: 110px; position: absolute; left: 170px; top: 100px; text-transform: uppercase">
                                 <lnk:calendar id="nuevaFechaInicialVP" value="#{controlVigenciaLocalizacion.nuevaVigenciaP.fechainicial}" >
                                     <p:ajax event="dateSelect" update="nuevaFechaInicialVP" process="@this"/>
                                     <p:ajax event="change" update="nuevaFechaInicialVP" process="@this"/>
                                 </lnk:calendar>
                             </div>
 
-                            <strong><h:outputText value="#{msg['finalVP']}" style=" position: absolute; top: 165px; left: 50px;" /></strong>
-                            <div id="posicionFormulaFechaFinNuevoRegVP" style=" position: absolute; top: 160px; left: 170px">
+                            <strong><h:outputText value="#{msg['finalVP']}" style=" position: absolute; top: 135px; left: 50px;" /></strong>
+                            <div id="posicionFormulaFechaFinNuevoRegVP" style=" width: 110px; position: absolute; top: 130px; left: 170px">
                                 <lnk:calendar id="nuevaFechaFinalVP" value="#{controlVigenciaLocalizacion.nuevaVigenciaP.fechafinal}" >
                                     <p:ajax event="dateSelect" update="nuevaFechaFinalVP" process="@this"/>
                                     <p:ajax event="change" update="nuevaFechaFinalVP" process="@this"/>
                                 </lnk:calendar>
                             </div>
+
+                            <strong><h:outputText value="*#{msg['porcentajeVP']}" style=" position: absolute; top: 165px; left: 50px;" /></strong>
+                            <p:inputText id="nuevaPorcentajeVP" binding="#{vPPorcentajeAux3}" maxlength="4" style=" width: 110px; position: absolute; top: 160px; left: 170px" onclick="select();"> 
+                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVPPorcentajes(1, 1, vPPorcentajeAux3.value, 0)}" update="nuevaPorcentajeVP" process="@this"/>
+                            </p:inputText>
+                            <p:watermark for="nuevaPorcentajeVP" value="#{msg['p']}" />
 
                             <strong><h:outputText value="#{msg['proyectoVP']}" style=" position: absolute; top: 195px; left: 50px" /></strong>
                             <p:inputText maxlength="50" id="nuevaProyectoVP" value="#{controlVigenciaLocalizacion.nuevaVigenciaP.proyecto.nombreproyecto}" style=" width: 110px; position: absolute; left: 170px; top: 190px; text-transform: uppercase" onclick="select();">
@@ -918,10 +920,10 @@
                             <p:watermark for="nuevaProyectoVP" value="#{msg['proyecto']}" />
 
                             <strong><h:outputText value="#{msg['subporcentajeVP']}" style=" position: absolute; top: 225px; left: 50px" /></strong>
-                            <p:inputText id="nuevaSubPorcentajeVP" value="#{controlVigenciaLocalizacion.nuevaVigenciaP.subporcentaje}" style=" width: 110px; position: absolute; left: 170px; top: 220px;">
-                                <p:ajax event="change" update="nuevaSubPorcentajeVP"  />
+                            <p:inputText id="nuevaSubPorcentajeVP" binding="#{vPPorcentajeAux3sub}" style=" width: 110px; position: absolute; left: 170px; top: 220px;">
+                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVPPorcentajes(1, 1, vPPorcentajeAux3sub.value, 1)}" update="nuevaSubPorcentajeVP" />
                             </p:inputText>
-                            <p:watermark for="nuevaSubPorcentajeVP" value="#{msg['subporcentaje']}" />
+                            <p:watermark for="nuevaSubPorcentajeVP" value="#{msg['p']}"/>
 
                             <p:commandButton id="limpiarVP" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 260px;" actionListener="#{controlVigenciaLocalizacion.limpiarNuevaVP()}" update="nuevaVP" process="@this" icon="ui-icon-trash"/>
                             <p:commandButton id="agregarVP" value="#{msg['agregar']}" style=" position: absolute; left: 160px; top: 260px;" actionListener="#{controlVigenciaLocalizacion.agregarNuevaVP()}" process="@this"   icon="ui-icon-circle-check"/>
@@ -944,26 +946,27 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 290px; top: 70px;  " id="btnDuplicadoCentroCostoVP" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaLocalizacion.asignarIndex(indice,0,2,1)}"/>   
                             <p:watermark for="duplicadoCentroCostoVP" value="#{msg['centrocostos']}" />
 
-                            <strong><h:outputText value="*#{msg['porcentajeVP']}" style=" position: absolute; top: 105px; left: 50px" /></strong>
-                            <p:inputText id="duplicadoPorcentajeVP" value="#{controlVigenciaLocalizacion.duplicarVP.porcentaje}" style=" width: 110px; position: absolute; left: 170px; top: 100px; text-transform: uppercase" >
-                            </p:inputText>
-                            <p:watermark for="duplicadoPorcentajeVP" value="#{msg['p']}" />
-
-                            <strong><h:outputText value="*#{msg['inicialVP']}" style=" position: absolute; top: 135px; left: 50px;" /></strong>
-                            <div id="posicionFormulaFechaIniDupliRegVP" style=" position: absolute; top: 130px; left: 170px">
+                            <strong><h:outputText value="*#{msg['inicialVP']}" style=" position: absolute; top: 105px; left: 50px" /></strong>
+                            <div id="posicionFormulaFechaIniDupliRegVP" style=" width: 110px; position: absolute; left: 170px; top: 100px; text-transform: uppercase">
                                 <lnk:calendar id="duplicadoFechaInicialVP" value="#{controlVigenciaLocalizacion.duplicarVP.fechainicial}" >
                                     <p:ajax event="dateSelect" update="duplicadoFechaInicialVP" process="@this"/>
                                     <p:ajax event="change" update="duplicadoFechaInicialVP" process="@this"/>
                                 </lnk:calendar>
                             </div>
 
-                            <strong><h:outputText value="#{msg['finalVP']}" style=" position: absolute; top: 165px; left: 50px;" /></strong>
-                            <div id="posicionFormulaFechaFinDupliRegVP" style=" position: absolute; top: 160px; left: 170px">
+                            <strong><h:outputText value="#{msg['finalVP']}" style=" position: absolute; top: 135px; left: 50px;" /></strong>
+                            <div id="posicionFormulaFechaFinDupliRegVP" style=" width: 110px; position: absolute; top: 130px; left: 170px">
                                 <lnk:calendar id="duplicadoFechaFinalVP" value="#{controlVigenciaLocalizacion.duplicarVP.fechafinal}" >
                                     <p:ajax event="dateSelect" update="duplicadoFechaFinalVP" process="@this"/>
                                     <p:ajax event="change" update="duplicadoFechaFinalVP" process="@this"/>
                                 </lnk:calendar>
                             </div>
+
+                            <strong><h:outputText value="*#{msg['porcentajeVP']}" style=" position: absolute; top: 165px; left: 50px;"/></strong>
+                            <p:inputText id="duplicadoPorcentajeVP" maxlength="4" binding="#{vPPorcentajeAux4}" style=" width: 110px; position: absolute; top: 160px; left: 170px" onclick="select();" >
+                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVPPorcentajes(2, 1, vPPorcentajeAux4.value, 0)}" update="duplicadoPorcentajeVP" process="@this"/>
+                            </p:inputText>
+                            <p:watermark for="duplicadoPorcentajeVP" value="#{msg['p']}" />
 
                             <strong><h:outputText value="#{msg['proyectoVP']}" style=" position: absolute; top: 195px; left: 50px" /></strong>
                             <p:inputText maxlength="50" id="duplicadoProyectoVP" value="#{controlVigenciaLocalizacion.duplicarVP.proyecto.nombreproyecto}" style=" width: 110px; position: absolute; left: 170px; top: 190px; text-transform: uppercase" onclick="select();">
@@ -972,10 +975,12 @@
                                 <p:ajax event="change" listener="#{controlVigenciaLocalizacion.autocompletarNuevoyDuplicadoVP('PROYECTO', controlVigenciaLocalizacion.duplicarVP.proyecto.nombreproyecto, 2)}" update="duplicadoProyectoVP"/>
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 290px; top: 190px;  " id="btnDuplicadoProyectoVP" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaLocalizacion.asignarIndex(indice,1,2,1)}"/>   
-                            <p:watermark for="duplicadoProyectoVP" value="#{msg['proyecto']}" />
+                            <p:watermark for="duplicadoProyectoVP" value="#{msg['proyecto']}"/>
 
                             <strong><h:outputText value="#{msg['subporcentajeVP']}" style=" position: absolute; top: 225px; left: 50px" /></strong>
-                            <p:inputText id="duplicadoSubPorcentajeVP" value="#{controlVigenciaLocalizacion.duplicarVP.subporcentaje}" style=" width: 110px; position: absolute; left: 170px; top: 220px;"/>
+                            <p:inputText id="duplicadoSubPorcentajeVP" binding="#{vPPorcentajeAux4sub}" style=" width: 110px; position: absolute; left: 170px; top: 220px;">
+                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVPPorcentajes(2, 1, vPPorcentajeAux4sub.value, 1)}" update="duplicadoSubPorcentajeVP" />
+                            </p:inputText>
                             <p:watermark for="duplicadoSubPorcentajeVP" value="#{msg['subporcentaje']}" />
 
                             <p:commandButton id="limpiarDuplicadoVP" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 260px;" actionListener="#{controlVigenciaLocalizacion.limpiarduplicarVP()}" update="duplicadoVP" process="@this" icon="ui-icon-trash"/>
@@ -1001,28 +1006,27 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 290px; top: 70px;  " id="btnNuevoProyectoVPP" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaLocalizacion.asignarIndex(indice,0,1,2)}"/>   
                             <p:watermark for="nuevaProyectoVPP" value="#{msg['proyecto']}" />
 
-                            <strong><h:outputText value="*#{msg['porcentajeVPP']}"  style=" position: absolute; top: 105px; left: 50px" /></strong>
-                            <p:inputText id="nuevaPorcentajeVPP" value="#{controlVigenciaLocalizacion.nuevaVigenciaPP.porcentaje}" style=" width: 110px; position: absolute; left: 170px; top: 100px; text-transform: uppercase" onclick="select();" >
-                                <p:ajax event="change" update="nuevaPorcentajeVPP"/>
-                            </p:inputText>
-                            <p:watermark for="nuevaPorcentajeVPP" value="#{msg['p']}" />
-
-
-                            <strong><h:outputText value="*#{msg['inicialVPP']}" style=" position: absolute; top: 135px; left: 50px;" /></strong>
-                            <div id="posicionFormulaFechaIniNuevoRegVPP" style=" position: absolute; top: 130px; left: 170px">
+                            <strong><h:outputText value="*#{msg['inicialVPP']}" style=" position: absolute; top: 105px; left: 50px" /></strong>
+                            <div id="posicionFormulaFechaIniNuevoRegVPP" style=" width: 110px; position: absolute; left: 170px; top: 100px; text-transform: uppercase">
                                 <lnk:calendar id="nuevaFechaInicialVPP" value="#{controlVigenciaLocalizacion.nuevaVigenciaPP.fechainicial}" >
                                     <p:ajax event="dateSelect" update="nuevaFechaInicialVPP" process="@this"/>
                                     <p:ajax event="change" update="nuevaFechaInicialVPP" process="@this"/>
                                 </lnk:calendar>
                             </div>
 
-                            <strong><h:outputText value="#{msg['finalVPP']}" style=" position: absolute; top: 165px; left: 50px;" /></strong>
-                            <div id="posicionFormulaFechaFinNuevoRegVPP" style=" position: absolute; top: 160px; left: 170px">
+                            <strong><h:outputText value="#{msg['finalVPP']}" style=" position: absolute; top: 135px; left: 50px;" /></strong>
+                            <div id="posicionFormulaFechaFinNuevoRegVPP" style=" width: 110px; position: absolute; top: 130px; left: 170px">
                                 <lnk:calendar id="nuevaFechaFinalVPP" value="#{controlVigenciaLocalizacion.nuevaVigenciaPP.fechafinal}" >
                                     <p:ajax event="dateSelect" update="nuevaFechaFinalVPP" process="@this"/>
                                     <p:ajax event="change" update="nuevaFechaFinalVPP" process="@this"/>
                                 </lnk:calendar>
                             </div>
+
+                            <strong><h:outputText value="*#{msg['porcentajeVPP']}" style=" position: absolute; top: 165px; left: 50px;" /></strong>
+                            <p:inputText id="nuevaPorcentajeVPP" binding="#{vPPorcentajeAux5}" maxlength="4" style=" width: 110px; position: absolute; top: 160px; left: 170px" onclick="select();"> 
+                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVPPorcentajes(1, 2, vPPorcentajeAux5.value)}" process="@this"/>
+                            </p:inputText>
+                            <p:watermark for="nuevaPorcentajeVPP" value="#{msg['p']}" />
 
                             <p:commandButton id="limpiarVPP" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 190px;" actionListener="#{controlVigenciaLocalizacion.limpiarNuevaVPP()}" update="nuevaVPP" process="@this" icon="ui-icon-trash"/>
                             <p:commandButton id="agregarVPP" value="#{msg['agregar']}" style=" position: absolute; left: 160px; top: 190px;" actionListener="#{controlVigenciaLocalizacion.agregarNuevaVPP()}"  process="@this"  icon="ui-icon-circle-check"/>
@@ -1045,27 +1049,28 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 290px; top: 70px;  " id="btnDuplicarProyectoVPP" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaLocalizacion.asignarIndex(indice,0,1,2)}"/>   
                             <p:watermark for="duplicarProyectoVPP" value="#{msg['proyecto']}" />
 
-                            <strong><h:outputText value="*#{msg['porcentajeVPP']}"  style=" position: absolute; top: 105px; left: 50px" /></strong>
-                            <p:inputText id="duplicarPorcentajeVPP" value="#{controlVigenciaLocalizacion.duplicarVPP.porcentaje}" style=" width: 110px; position: absolute; left: 170px; top: 100px; text-transform: uppercase" onclick="select();" >
-                            </p:inputText>
-                            <p:watermark for="duplicarPorcentajeVPP" value="#{msg['p']}" />
-
-
-                            <strong><h:outputText value="*#{msg['inicialVPP']}" style=" position: absolute; top: 135px; left: 50px;" /></strong>
-                            <div id="posicionFormulaFechaIniDupliRegVPP" style=" position: absolute; top: 130px; left: 170px">
+                            <strong><h:outputText value="*#{msg['inicialVPP']}" style=" position: absolute; top: 105px; left: 50px" /></strong>
+                            <div id="posicionFormulaFechaIniDupliRegVPP" style=" width: 110px; position: absolute; left: 170px; top: 100px; text-transform: uppercase">
                                 <lnk:calendar id="duplicadoFechaInicialVPP" value="#{controlVigenciaLocalizacion.duplicarVPP.fechainicial}" >
                                     <p:ajax event="dateSelect" update="duplicadoFechaInicialVPP" process="@this"/>
                                     <p:ajax event="change" update="duplicadoFechaInicialVPP" process="@this"/>
                                 </lnk:calendar>
                             </div>
 
-                            <strong><h:outputText value="#{msg['finalVP']}" style=" position: absolute; top: 165px; left: 50px;" /></strong>
-                            <div id="posicionFormulaFechaFinDupliRegVPP" style=" position: absolute; top: 160px; left: 170px">
+                            <strong><h:outputText value="#{msg['finalVP']}" style=" position: absolute; top: 135px; left: 50px;" /></strong>
+                            <div id="posicionFormulaFechaFinDupliRegVPP" style=" width: 110px; position: absolute; top: 130px; left: 170px">
                                 <lnk:calendar id="duplicadoFechaFinalVPP" value="#{controlVigenciaLocalizacion.duplicarVPP.fechafinal}" >
                                     <p:ajax event="dateSelect" update="duplicadoFechaFinalVPP" process="@this"/>
                                     <p:ajax event="change" update="duplicadoFechaFinalVPP" process="@this"/>
                                 </lnk:calendar>
                             </div>
+
+                            <strong><h:outputText value="*#{msg['porcentajeVPP']}" style=" position: absolute; top: 165px; left: 50px;" /></strong>
+                            <p:inputText id="duplicarPorcentajeVPP" binding="#{vPPorcentajeAux6}" maxlength="4" style=" width: 110px; position: absolute; top: 160px; left: 170px" onclick="select();"> 
+                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVPPorcentajes(2, 2, vPPorcentajeAux6.value)}" process="@this"/>
+                            </p:inputText>
+                            <p:watermark for="duplicarPorcentajeVPP" value="#{msg['p']}" />
+
 
                             <p:commandButton id="limpiarDuplicarVPP" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 190px;" actionListener="#{controlVigenciaLocalizacion.limpiarduplicarVPP()}" update="duplicarVPP" process="@this" icon="ui-icon-trash"/>
                             <p:commandButton id="agregarDuplicarVPP" value="#{msg['agregar']}" style=" position: absolute; left: 160px; top: 190px;" actionListener="#{controlVigenciaLocalizacion.confirmarDuplicarVPP()}"  process="@this" icon="ui-icon-circle-check"/>
@@ -1190,12 +1195,12 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['negacionNuevaVL']}" style="font-size: 14px; position: absolute; left: 70px; top: 15px; width: 300px; font-weight:bold;" />
                     </p:dialog>
-                    
+
                     <p:dialog id="negacionNuevaVLP" header="#{msg['atencion']}" widgetVar="negacionNuevaVLP"  resizable="false" draggable="false" modal="true" height="80" width="380px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['negacionNuevaVLP']}" style="font-size: 14px; position: absolute; left: 70px; top: 15px; width: 300px; font-weight:bold;" />
                     </p:dialog>
-                    
+
                     <p:dialog id="negacionNuevaVLPP" header="#{msg['atencion']}" widgetVar="negacionNuevaVLPP"  resizable="false" draggable="false" modal="true" height="80" width="380px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['negacionNuevaVLPP']}" style="font-size: 14px; position: absolute; left: 70px; top: 15px; width: 300px; font-weight:bold;" />
