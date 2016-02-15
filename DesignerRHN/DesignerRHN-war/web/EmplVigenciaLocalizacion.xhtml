@@ -188,7 +188,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooProyecto" value=""/>
+                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooProyecto" value="" action="pageProyectos" actionListener="#{controlProyecto.recibirPaginaEntrante('vigencialocalizacion')}"/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>  
@@ -314,7 +314,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value=""  id="fooProyectoVP"/>
+                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooProyectoVP" value="" action="pageProyectos" actionListener="#{controlProyecto.recibirPaginaEntrante('vigencialocalizacion')}"/>
                                     </f:facet>
                                 </p:column>
 
@@ -365,7 +365,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 130px; margin: -14px; height: 26px; border: none; color: blue" id="fooProyectosPP" value=""/>
+                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooProyectosPP" value="" action="pageProyectos" actionListener="#{controlProyecto.recibirPaginaEntrante('vigencialocalizacion')}"/>
                                     </f:facet>
                                 </p:column>
 
