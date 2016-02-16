@@ -241,9 +241,9 @@
 
                             <h:outputText id="infoRegistroEstructuras" value="#{controlVigenciasCargos.infoRegistroEstructuras}" style="position: relative; top: 15px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarE" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar ? true : false }" style="position: absolute; top: 390px; left: 552px; " icon="ui-icon-check" actionListener="#{controlVigenciasCargos.actualizarEstructura()}" process="@this" onclick="estructurasDialog.hide()"/>
+                            <p:commandButton id="aceptarE" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar ? true : false }" style="position: absolute; top: 390px; left: 552px; " icon="ui-icon-check" actionListener="#{controlVigenciasCargos.actualizarEstructura()}" process="@this" onclick="estructurasDialog.hide()" styleClass="cssBotonAceptar"/>
                                 
-                            <p:commandButton id="atrasE" value="#{msg['atras']}" style="position: absolute; top: 390px; left: 644px; " actionListener="#{controlVigenciasCargos.cancelarCambioEstructura()}" icon="ui-icon-arrowreturnthick-1-w"  process="@this" onclick="estructurasDialog.hide()"/>
+                            <p:commandButton id="atrasE" value="#{msg['atras']}" style="position: absolute; top: 390px; left: 644px; " actionListener="#{controlVigenciasCargos.cancelarCambioEstructura()}" icon="ui-icon-arrowreturnthick-1-w"  process="@this" onclick="estructurasDialog.hide()" styleClass="cssBotonCancelar"/>
                                 
                         </p:dialog>
 

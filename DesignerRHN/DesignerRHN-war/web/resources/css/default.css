@@ -27,7 +27,11 @@ a:link:hover, a:visited:hover  {
     font-weight : bold;
     text-decoration : underline;
 }
-
+/*
+.ui-button-text-only .ui-button-text{
+    padding: 0;
+}
+*/
 .ui-felipe>.ui-datagrid-content {
     border: none;
 }

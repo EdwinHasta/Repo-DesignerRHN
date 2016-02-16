@@ -7,6 +7,10 @@ and open the template in the editor.
     Created on : Nov 29, 2013, 11:38:05 AM
     Author     : Administrator
 */
+.cssBotonIngreso{
+    font-weight: bold; 
+    border: 1px solid #cccccc;
+}
 .ui-widget {
     font-family: Tahoma;
     font-size: 12px;
@@ -41,8 +45,10 @@ and open the template in the editor.
 .ui-state-default,
 .ui-widget-content .ui-state-default,
 .ui-widget-header .ui-state-default {
-    border: 1px solid #cccccc;
-    background: #FAF7F7;
+    /*border: 1px solid #cccccc;*/
+    border:none;
+    box-shadow:none;
+    background-color:transparent;
     color: #1F2429;
 }
 .ui-state-default a,
@@ -384,4 +390,19 @@ and open the template in the editor.
     position: absolute;
     width: 25px;
     height: 25px;
+}
+.cssBotonCerrarSesion{
+    font-weight: bold; 
+    border: 1px solid #cccccc;
+    color: red;
+}
+.cssBotonCancelar{
+    font-weight: bold; 
+    border: 1px solid #cccccc;
+    color: red;
+}
+.cssBotonAceptar{
+    font-weight: bold; 
+    border: 1px solid #cccccc;
+    color: red;
 }
