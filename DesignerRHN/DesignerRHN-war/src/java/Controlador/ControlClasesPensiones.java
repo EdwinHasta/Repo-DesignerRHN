@@ -121,7 +121,7 @@ public class ControlClasesPensiones implements Serializable {
     public void cambiarIndice(int indice, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
 
-        if (permitirIndex == true) {
+        if (permitirIndex) {
             index = indice;
             cualCelda = celda;
             if (tipoLista == 0) {

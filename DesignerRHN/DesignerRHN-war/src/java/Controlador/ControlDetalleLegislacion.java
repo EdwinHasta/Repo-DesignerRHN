@@ -161,7 +161,7 @@ public class ControlDetalleLegislacion implements Serializable {
         contratoActual = new Contratos();
         listFormulasContratosDetalle = null;
         contratoActual = administrarDetalleLegislacion.consultarContrato(secuencia);
-        System.out.println("contratoActual : " + contratoActual.getSecuencia());
+//        System.out.println("contratoActual : " + contratoActual.getSecuencia());
         getListFormulasContratosDetalle();
         listFormulasContratos = null;
     }

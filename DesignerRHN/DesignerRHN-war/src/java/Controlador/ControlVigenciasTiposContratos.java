@@ -721,7 +721,7 @@ public class ControlVigenciasTiposContratos implements Serializable {
         mensajeValidacion = " ";
         nuevaVigencia.setEmpleado(empleado);
         RequestContext context = RequestContext.getCurrentInstance();
-        boolean banderaConfirmar = false;
+        //boolean banderaConfirmar = false;
 
         if (nuevaVigencia.getFechavigencia() == null || nuevaVigencia.getFechavigencia().equals("")) {
             mensajeValidacion = " *Fecha\n";
@@ -742,13 +742,13 @@ public class ControlVigenciasTiposContratos implements Serializable {
                 contador++;
             }
         }
-        if (nuevaVigencia.getMotivocontrato().getSecuencia() == null) {
+        if (nuevaVigencia.getMotivocontrato().getSecuencia() == null || nuevaVigencia.getMotivocontrato().getSecuencia().equals(" ")) {
             mensajeValidacion = mensajeValidacion + " * Motivo del Contrato \n";
             pasa++;
         } else {
             contador++;
         }
-        if (nuevaVigencia.getTipocontrato().getSecuencia() == null) {
+        if (nuevaVigencia.getTipocontrato().getSecuencia() == null || nuevaVigencia.getTipocontrato().getSecuencia().equals(" ")) {
             mensajeValidacion = mensajeValidacion + " * Tipo del Contrato \n";
 
         } else {
@@ -804,7 +804,7 @@ public class ControlVigenciasTiposContratos implements Serializable {
            context.execute("NuevoRegistroVTC.hide()");
             index = -1;
             secRegistro = null;
-        } else if (pasa == 0 && contador != 3) {
+        } else if (contador != 3 && pasa == 0) {
             context.update("form:validacionNuevo");
             context.execute("validacionNuevo.show()");
             contador = 0;

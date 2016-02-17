@@ -61,13 +61,10 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
             tx.commit();
         } catch (Exception e) {
             System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
-            try {
+           
                 if (tx.isActive()) {
                     tx.rollback();
                 }
-            } catch (Exception ex) {
-                System.out.println("No se puede hacer rollback porque no hay una transacción");
-            }
         }
     }
 

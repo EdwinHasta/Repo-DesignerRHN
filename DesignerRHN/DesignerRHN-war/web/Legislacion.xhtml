@@ -14,62 +14,7 @@
                     <f:loadBundle basename="Recursos.legislacion" var="msg" />
                     <p:growl id="growl" showDetail="true"/> 
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}"  style="position: absolute; width: 874px; height: 530px;" > 
-                        <fieldset style="position: absolute; left: 5px; top: 70px; width: 835px; height: 290px; border-radius: 10px; ">
-                            <legend style="color: blue"><strong>#{msg['tipo']}</strong></legend>
-                            <p:dataTable id="datosContratos" var="contrato" rowKey="#{contrato.secuencia}" rowIndexVar="indice" style="width: 817px; position: relative"                           
-                                         value="#{controlLegislacion.listaContratos}" scrollable="true" scrollWidth="832" scrollHeight="#{controlLegislacion.altoTabla}" liveScroll="true" scrollRows="25"
-                                         filteredValue="#{controlLegislacion.filtradolistaContratos}" emptyMessage="#{msg['vacio']}" 
-                                         editable="true" editMode="cell"  selection="#{controlLegislacion.contratoTablaSeleccionado}" selectionMode="single">
-
-                                <p:ajax event="filter" listener="#{controlLegislacion.eventoFiltrar()}"/>
-
-                                <p:column headerText="#{msg['codigo']}"  sortBy="#{contrato.codigo}" filterBy="#{contrato.codigo}" filterMatchMode="contains" id="columnaCodigo" width="25" filterStyle="display: none; visibility: hidden;">                                  
-                                    <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{contrato.codigo}" /></f:facet>  
-                                        <f:facet name="input">
-                                            <p:inputText value="#{contrato.codigo}" id="editarCodigo" style="border-radius: 0px; width: 99.5%; text-transform: uppercase"> 
-                                                <p:ajax event="change" listener="#{controlLegislacion.modificarContrato(indice, 'N', contrato.codigo)}"/>
-                                                <p:ajax event="select" listener="#{controlLegislacion.cambiarIndice(indice, 0)}" />
-                                            </p:inputText> 
-                                        </f:facet>  
-                                    </p:cellEditor>
-                                </p:column>  
-
-                                <p:column headerText="#{msg['descripcion']}"  sortBy="#{contrato.descripcion}" filterBy="#{contrato.descripcion}" filterMatchMode="contains"  id="columnaDescripción" width="300" filterStyle="display: none; visibility: hidden;" >      
-                                    <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{contrato.descripcion}" style="text-transform: uppercase" /></f:facet>  
-                                        <f:facet name="input">
-                                            <p:inputText id="editarDescripcion" maxlength="50" value="#{contrato.descripcion}" style="border-radius: 0px; width: 99.5%; text-transform: uppercase">
-                                                <p:ajax event="change" listener="#{controlLegislacion.modificarContrato(indice, 'N', contrato.descripcion)}"/>
-                                                <p:ajax event="select" listener="#{controlLegislacion.cambiarIndice(indice, 1)}" />
-                                            </p:inputText>
-                                        </f:facet>  
-                                    </p:cellEditor>
-                                </p:column>
-
-                                <p:column headerText="#{msg['tipocotizante']}"  sortBy="#{contrato.tipocotizante.descripcion}" filterBy="#{contrato.tipocotizante.descripcion}" filterMatchMode="contains" id="columnaTipoCotizante" filterStyle="display: none; visibility: hidden;">                                                              
-                                    <p:cellEditor>   
-                                        <f:facet name="output"><h:outputText value="#{contrato.tipocotizante.descripcion}" style="text-transform: uppercase" /></f:facet>  
-                                        <f:facet name="input">
-                                            <p:inputText value="#{contrato.tipocotizante.descripcion}" style="border-radius: 0px; width: 99.5%; text-transform: uppercase" >
-                                                <p:ajax event="change" listener="#{controlLegislacion.modificarContrato(indice, 'TIPOSCOTIZANTES', contrato.tipocotizante.descripcion)}"/>
-                                                <p:ajax event="select" listener="#{controlLegislacion.cambiarIndice(indice, 2)}" />
-                                                <p:ajax event="dblclick" listener="#{controlLegislacion.llamarDialogosLista(indice)}"/>
-                                            </p:inputText> 
-                                        </f:facet>  
-                                    </p:cellEditor>
-                                </p:column>
-
-                                <p:column headerText="#{msg['estado']}" style="padding: 0px" sortBy="#{contrato.estado}" filterBy="#{contrato.estado}" filterMatchMode="contains" id="columnaEstado" width="100" filterStyle="display: none; visibility: hidden;" >
-                                    <p:selectOneMenu id="editarFechaAcumulado" value="#{contrato.estado}" style="font-weight: bold;width: 100px" >  
-                                        <f:selectItem itemLabel="#{msg['activo']}"  itemValue="ACTIVO" />  
-                                        <f:selectItem itemLabel="#{msg['inactivo']}"  itemValue="INACTIVO" />
-                                        <p:ajax listener="#{controlLegislacion.modificarContrato(indice, 'N', contrato.estado)}" update="@this" />
-                                    </p:selectOneMenu>
-                                </p:column>
-                            </p:dataTable> 
-                        </fieldset>
-
+                        <h:outputText id="informacionRegistro" value="#{controlLegislacion.infoRegistro}" style="position: absolute; left: 15px; top: 505px; font-weight: bold"/>
                         <p:toolbar style="position: absolute; top: 37px; left: 12px; height: 23px">  
                             <p:toolbarGroup align="left"> 
 
@@ -127,6 +72,66 @@
                             </p:toolbarGroup>  
                         </p:toolbar>
 
+                        <fieldset style="position: absolute; left: 5px; top: 70px; width: 835px; height: 290px; border-radius: 10px; ">
+                            <legend style="color: blue"><strong>#{msg['tipo']}</strong></legend>
+                            <p:dataTable id="datosContratos" var="contrato" rowKey="#{contrato.secuencia}" rowIndexVar="indice" style="width: 817px; position: relative"                           
+                                         value="#{controlLegislacion.listaContratos}" scrollable="true" scrollWidth="832" scrollHeight="#{controlLegislacion.altoTabla}" liveScroll="true" scrollRows="25"
+                                         filteredValue="#{controlLegislacion.filtradolistaContratos}" emptyMessage="#{msg['vacio']}" 
+                                         editable="true" editMode="cell"  selection="#{controlLegislacion.contratoTablaSeleccionado}" selectionMode="single">
+
+                                <p:ajax event="filter" listener="#{controlLegislacion.eventoFiltrar()}"/>
+
+                                <p:column headerText="#{msg['codigo']}"  sortBy="#{contrato.codigo}" filterBy="#{contrato.codigo}" filterMatchMode="contains" id="columnaCodigo" width="25" filterStyle="display: none; visibility: hidden;">                                  
+                                    <f:facet name="header">
+                                        <h:outputText id="headCod" value="#{msg['codigo']}"/>
+                                        <p:tooltip for="headCod" value="#{msg['codigoH']}"/>
+                                    </f:facet>
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{contrato.codigo}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{contrato.codigo}" id="editarCodigo" style="border-radius: 0px; width: 99.5%; text-transform: uppercase"> 
+                                                <p:ajax event="change" listener="#{controlLegislacion.modificarContrato(indice, 'N', contrato.codigo)}"/>
+                                                <p:ajax event="select" listener="#{controlLegislacion.cambiarIndice(indice, 0)}" />
+                                            </p:inputText> 
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>  
+
+                                <p:column headerText="#{msg['descripcion']}"  sortBy="#{contrato.descripcion}" filterBy="#{contrato.descripcion}" filterMatchMode="contains"  id="columnaDescripción" width="300" filterStyle="display: none; visibility: hidden;" >      
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{contrato.descripcion}" style="text-transform: uppercase" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText id="editarDescripcion" maxlength="50" value="#{contrato.descripcion}" style="border-radius: 0px; width: 99.5%; text-transform: uppercase">
+                                                <p:ajax event="change" listener="#{controlLegislacion.modificarContrato(indice, 'N', contrato.descripcion)}"/>
+                                                <p:ajax event="select" listener="#{controlLegislacion.cambiarIndice(indice, 1)}" />
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="#{msg['tipocotizante']}"  sortBy="#{contrato.tipocotizante.descripcion}" filterBy="#{contrato.tipocotizante.descripcion}" filterMatchMode="contains" id="columnaTipoCotizante" filterStyle="display: none; visibility: hidden;">                                                              
+                                    <p:cellEditor>   
+                                        <f:facet name="output"><h:outputText value="#{contrato.tipocotizante.descripcion}" style="text-transform: uppercase" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{contrato.tipocotizante.descripcion}" style="border-radius: 0px; width: 99.5%; text-transform: uppercase" >
+                                                <p:ajax event="change" listener="#{controlLegislacion.modificarContrato(indice, 'TIPOSCOTIZANTES', contrato.tipocotizante.descripcion)}"/>
+                                                <p:ajax event="select" listener="#{controlLegislacion.cambiarIndice(indice, 2)}" />
+                                                <p:ajax event="dblclick" listener="#{controlLegislacion.llamarDialogosLista(indice)}"/>
+                                            </p:inputText> 
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="#{msg['estado']}" style="padding: 0px" sortBy="#{contrato.estado}" filterBy="#{contrato.estado}" filterMatchMode="contains" id="columnaEstado" width="100" filterStyle="display: none; visibility: hidden;" >
+                                    <p:selectOneMenu id="editarFechaAcumulado" value="#{contrato.estado}" style="font-weight: bold;width: 100px" >  
+                                        <f:selectItem itemLabel="#{msg['activo']}"  itemValue="ACTIVO" />  
+                                        <f:selectItem itemLabel="#{msg['inactivo']}"  itemValue="INACTIVO" />
+                                        <p:ajax listener="#{controlLegislacion.modificarContrato(indice, 'N', contrato.estado)}" update="@this" />
+                                    </p:selectOneMenu>
+                                </p:column>
+                            </p:dataTable> 
+                        </fieldset>
+
                         <fieldset style="position: absolute; left: 5px; top: 410px; width: 835px; height: 70px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['clonar']}</strong></legend>
                             <h:outputText value="#{msg['contratoaactualizar']}"   style="color: #14388B; font-weight: bold; position: absolute"/>
@@ -146,13 +151,11 @@
 
                         <p:commandButton style="position: absolute; left: 683px; top: 500px;" id="ACEPTAR" value="#{msg['aceptar']}"  icon="ui-icon-check" actionListener="#{controlLegislacion.dispararDialogoConfirmarGuardar()}" disabled="#{controlLegislacion.guardado}"  process="@this" />
                         <p:commandButton style="position: absolute; left: 775px; top: 500px;" id="ATRAS" value="#{msg['cancelar']}"  icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlLegislacion.refrescar()}" action="#{controlLegislacion.redirigir()}" process="@this" />
-                        <h:outputText id="informacionRegistro" value="#{controlLegislacion.infoRegistro}" style="position: absolute; left: 15px; top: 505px; font-weight: bold"/>
                     </p:panel>
-                </h:form>
-                <h:form>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlLegislacion.activarCtrlF11()}"/>
                 </h:form>
-                <h:form id="formularioDialogos" >
+
+                <h:form id="formularioDialogos">
 
                     <p:dialog id="NuevoContratoDialogo" header="#{msg['nuevoregistro']}"  widgetVar="NuevoContratoDialogo" closable="false" resizable="false"  draggable="false" modal="true" height="225" width="350" style="padding: 0px">  
 
@@ -160,25 +163,25 @@
 
                         <p:panel id="nuevoContrato" style="border: none; position: relative; top: -50px;">
                             <strong><h:outputText value="*#{msg['codigoN']}"  style="position: absolute; top: 75px" /></strong>
-                            <p:inputText value="#{controlLegislacion.nuevoContrato.codigo}" style="position: absolute; top: 70px; left: 180px;">
+                            <p:inputText value="#{controlLegislacion.nuevoContrato.codigo}" style="position: absolute; top: 70px; left: 180px; width: 60px">
                                 <p:ajax event="change" update="@this" />
                             </p:inputText>
 
                             <strong><h:outputText value="*#{msg['descripcionN']}"  style="position: absolute; top: 105px" /></strong>
-                            <p:inputText value="#{controlLegislacion.nuevoContrato.descripcion}" maxlength="50" style="width: 122px; position: absolute; left: 180px; top: 100px; text-transform: uppercase" onclick="select();">
+                            <p:inputText value="#{controlLegislacion.nuevoContrato.descripcion}" maxlength="50" style="width: 118px; position: absolute; left: 180px; top: 100px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this" />
                             </p:inputText>
 
                             <strong><h:outputText value="#{msg['tipocotizanteN']}"  style="position: absolute; top: 135px" /></strong>
-                            <p:inputText id="nuevaDescripcionTipoCotizante" value="#{controlLegislacion.nuevoContrato.tipocotizante.descripcion}" style="width: 122px; position: absolute; left: 180px; top: 130px; text-transform: uppercase" onclick="select();">
+                            <p:inputText id="nuevaDescripcionTipoCotizante" value="#{controlLegislacion.nuevoContrato.tipocotizante.descripcion}" style="width: 118px; position: absolute; left: 180px; top: 130px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlLegislacion.valoresBackupAutocompletar(1)}" />
                                 <p:ajax event="change" listener="#{controlLegislacion.autocompletarNuevoyDuplicado(controlLegislacion.nuevoContrato.tipocotizante.descripcion, 1)}" />
                                 <p:ajax event="dblclick" listener="#{controlLegislacion.llamarLOVNuevo_Duplicado(1)}"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 311px; top: 130px;" actionListener="#{controlLegislacion.llamarLOVNuevo_Duplicado(1)}" icon="ui-icon-search" process="@this" />
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 308px; top: 130px;" actionListener="#{controlLegislacion.llamarLOVNuevo_Duplicado(1)}" icon="ui-icon-search" process="@this" />
 
                             <strong><h:outputText value="*#{msg['estadoN']}"  style="position: absolute; top: 165px" /></strong>
-                            <p:selectOneMenu value="#{controlLegislacion.nuevoContrato.estado}" style="width: 120px; font-weight: bold; position: absolute; top: 160px; left: 180px;" panelStyle="width: 115px" >  
+                            <p:selectOneMenu value="#{controlLegislacion.nuevoContrato.estado}" style="width: 95px; font-weight: bold; position: absolute; top: 160px; left: 180px;" panelStyle="width: 115px" >  
                                 <f:selectItem itemLabel="#{msg['activo']}"  itemValue="ACTIVO" />  
                                 <f:selectItem itemLabel="#{msg['inactivo']}"  itemValue="INACTIVO" />
                                 <p:ajax update="@this"/>
@@ -251,13 +254,13 @@
                                 <h:outputText  value="#{tipoCotizante.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroTipo" value="#{controlLegislacion.infoRegistroTipo}" style="position: absolute; left: 20px; top: 330px; font-weight: bold"/>
-                        
+
                         <p:commandButton icon="ui-icon-check" id="aceptarTC" style="position: relative; left: 305px" value="#{msg['aceptar']}"  disabled="#{controlLegislacion.aceptar}" actionListener="#{controlLegislacion.actualizarTipoCotizante()}" process="@this" />
-                            
+
                         <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasTC" style="position: relative; left: 305px" value="#{msg['atras']}"  actionListener="#{controlLegislacion.cancelarTipoCotizante()}" process="@this" />
-                           
+
                     </p:dialog>
 
 
@@ -286,13 +289,13 @@
                                 <h:outputText  value="#{contratoLOV.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroContrato" value="#{controlLegislacion.infoRegistroContrato}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton icon="ui-icon-check" id="aceptarC" style="position: relative; left: 350px" value="#{msg['aceptar']}"  disabled="#{controlLegislacion.aceptar}" actionListener="#{controlLegislacion.seleccionContrato()}" process="@this" />
-                            
+
                         <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasC" style="position: relative; left: 350px" value="#{msg['atras']}"  actionListener="#{controlLegislacion.cancelarSeleccionContrato()}"  process="@this" />
-                            
+
                     </p:dialog>
 
                     <p:dialog id="validacioNuevoContrato" header="#{msg['atencion']}"  widgetVar="validacioNuevoContrato"  resizable="false" draggable="false" modal="true" height="95" width="400px" closable="false">  
@@ -300,6 +303,13 @@
                         <h:outputText value="#{msg['validacionNuevo']} #{controlLegislacion.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}"  onclick="validacioNuevoContrato.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
+
+                    <p:dialog id="validacionCodigo" header="#{msg['atencion']}" widgetVar="validacionCodigo"  resizable="false" draggable="false" modal="true" height="95" width="450px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
+                        <h:outputText value="#{msg['validacionCodigo']}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionCodigo.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+
 
                     <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
@@ -309,6 +319,17 @@
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
 
+                    <p:dialog id="validacionReproducirContratoClon" header="#{msg['atencion']}"  widgetVar="validacionReproducirContratoClon"  resizable="false" draggable="false" modal="true" height="95" width="400px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['validacionReproducirContratoClon']} #{controlLegislacion.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}"  onclick="validacionReproducirContratoClon.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+                    
+                    <p:dialog id="validacionReproducirContratOrigen" header="#{msg['atencion']}"  widgetVar="validacionReproducirContratOrigen"  resizable="false" draggable="false" modal="true" height="95" width="400px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['validacionReproducirContratOrigen']} #{controlLegislacion.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}"  onclick="validacionReproducirContratOrigen.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
 
                     <!-- EDITOR -->
 
@@ -371,6 +392,7 @@
                         <h:outputText value="#{msg['errorObjetosDB']}"  style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
                 </h:form>
+
                 <h:form id="formExportar">
                     <p:dataTable id="datosContratosExportar" var="infoExp" style="visibility: hidden; display: none;"                           
                                  value="#{controlLegislacion.listaContratos}">

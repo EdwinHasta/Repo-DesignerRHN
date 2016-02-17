@@ -82,6 +82,7 @@
                                          scrollable="true" scrollWidth="830" scrollHeight="#{controlEmplVigenciaAfiliacion3.altoTabla}" emptyMessage="#{msg['vacio']}" style=" border: 1px;width: 830px"
                                          selection="#{controlEmplVigenciaAfiliacion3.vigenciaSeleccionada}" selectionMode="single">
                                 <p:ajax event="filter" listener="#{controlEmplVigenciaAfiliacion3.eventoFiltrar()}" process="@this"/>
+                                
                                 <p:column headerText="#{msg['inicial']}" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains" id="vAFechaInicial" width="68"
                                           filterStyle="display: none; visibility: hidden;"  style="width: 80px; ">                                  
                                     <p:cellEditor>  

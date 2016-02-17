@@ -15,9 +15,8 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- * Clase Stateless. <br>
- * Clase encargada de realizar operaciones sobre la tabla 'MotivosContratos' de
- * la base de datos.
+ * Clase Stateless. <br> Clase encargada de realizar operaciones sobre la tabla
+ * 'MotivosContratos' de la base de datos.
  *
  * @author AndresPineda
  */
@@ -44,7 +43,7 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
             }
         }
     }
-
+    
     @Override
     public void editar(EntityManager em, Pensionados pensionados) {
         em.clear();
@@ -52,6 +51,8 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
         try {
             tx.begin();
             em.merge(pensionados);
+            //em.clear();
+            //Query sql = em.createQuery("UPDATE Pensionados p SET p. WHERE p.SECUENCIA " + pensionados.getSecuencia());
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaPensionados.editar: " + e);
@@ -60,7 +61,7 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
             }
         }
     }
-
+    
     @Override
     public void borrar(EntityManager em, Pensionados pensionados) {
         em.clear();
@@ -76,7 +77,7 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
             }
         }
     }
-
+    
     @Override
     public Pensionados buscarPensionado(EntityManager em, BigInteger secuencia) {
         try {
@@ -88,7 +89,7 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
             return null;
         }
     }
-
+    
     @Override
     public List<Pensionados> buscarPensionados(EntityManager em) {
         em.clear();
@@ -97,7 +98,7 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
         List<Pensionados> lista = query.getResultList();
         return lista;
     }
-
+    
     @Override
     public List<Pensionados> buscarPensionadosEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
@@ -112,7 +113,7 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
             return null;
         }
     }
-
+    
     @Override
     public Pensionados buscarPensionVigenciaSecuencia(EntityManager em, BigInteger secVigencia) {
         try {

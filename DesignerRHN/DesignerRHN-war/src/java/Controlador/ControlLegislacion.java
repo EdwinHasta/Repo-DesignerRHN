@@ -34,7 +34,6 @@ public class ControlLegislacion implements Serializable {
     private List<Contratos> listaContratos;
     private List<Contratos> filtradolistaContratos;
     private Contratos contratoTablaSeleccionado;
-
     private List<Contratos> listaContratoLOV;
     private List<Contratos> filtradoListaContratosLOV;
     private Contratos contratoSeleccionado;
@@ -86,6 +85,8 @@ public class ControlLegislacion implements Serializable {
     //
     private String infoRegistro;
     private String infoRegistroTipo, infoRegistroContrato;
+    //
+    private BigInteger backUpSecRegistro;
 
     public ControlLegislacion() {
         contratoTablaSeleccionado = new Contratos();
@@ -115,6 +116,8 @@ public class ControlLegislacion implements Serializable {
         contratoOriginal = new Contratos();
         permitirIndex = true;
         altoTabla = "230";
+        //
+        backUpSecRegistro = null;
     }
 
     @PostConstruct
@@ -253,45 +256,52 @@ public class ControlLegislacion implements Serializable {
 
     //LISTA DE VALORES DINAMICA
     public void listaValoresBoton() {
-        if (index >= 0) {
-            RequestContext context = RequestContext.getCurrentInstance();
-            if (cualCelda == 2) {
-                context.update("formularioDialogos:tiposCotizantesDialogo");
-                context.execute("tiposCotizantesDialogo.show()");
-                tipoActualizacion = 0;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (index < 0) {
+            context.execute("seleccionarRegistro.show()");
+        } else {
+            if (index >= 0) {
+                if (cualCelda == 2) {
+                    context.update("formularioDialogos:tiposCotizantesDialogo");
+                    context.execute("tiposCotizantesDialogo.show()");
+                    tipoActualizacion = 0;
+                }
             }
         }
     }
 
     //MOSTRAR DATOS CELDA
     public void editarCelda() {
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                editarContrato = listaContratos.get(index);
-            }
-            if (tipoLista == 1) {
-                editarContrato = filtradolistaContratos.get(index);
-            }
-            RequestContext context = RequestContext.getCurrentInstance();
-            if (cualCelda == 0) {
-                context.update("formularioDialogos:editorCodigo");
-                context.execute("editorCodigo.show()");
-                cualCelda = -1;
-            } else if (cualCelda == 1) {
-                context.update("formularioDialogos:editorDescripcion");
-                context.execute("editorDescripcion.show()");
-                cualCelda = -1;
-            } else if (cualCelda == 2) {
-                context.update("formularioDialogos:editorTipoCotizante");
-                context.execute("editorTipoCotizante.show()");
-                cualCelda = -1;
-            }
-        }
-        activoDetalleFormula = true;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:detalleFormula");
-        index = -1;
-        secRegistro = null;
+        if (index < 0) {
+            context.execute("seleccionarRegistro.show()");
+        } else {
+            if (index >= 0) {
+                if (tipoLista == 0) {
+                    editarContrato = listaContratos.get(index);
+                }
+                if (tipoLista == 1) {
+                    editarContrato = filtradolistaContratos.get(index);
+                }
+                if (cualCelda == 0) {
+                    context.update("formularioDialogos:editorCodigo");
+                    context.execute("editorCodigo.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 1) {
+                    context.update("formularioDialogos:editorDescripcion");
+                    context.execute("editorDescripcion.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 2) {
+                    context.update("formularioDialogos:editorTipoCotizante");
+                    context.execute("editorTipoCotizante.show()");
+                    cualCelda = -1;
+                }
+            }
+            activoDetalleFormula = true;
+            context.update("form:detalleFormula");
+            index = -1;
+            secRegistro = null;
+        }
     }
 
     public void modificarContrato(int indice, String confirmarCambio, String valorConfirmar) {
@@ -459,9 +469,11 @@ public class ControlLegislacion implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
-        /*context.update("formularioDialogos:tiposCotizantesDialogo");
-        context.update("formularioDialogos:lovTiposCotizantes");
-        context.update("formularioDialogos:aceptarTC");*/
+        /*
+         * context.update("formularioDialogos:tiposCotizantesDialogo");
+         * context.update("formularioDialogos:lovTiposCotizantes");
+         * context.update("formularioDialogos:aceptarTC");
+         */
         context.reset("formularioDialogos:lovTiposCotizantes:globalFilter");
         context.execute("lovTiposCotizantes.clearFilters()");
         context.execute("tiposCotizantesDialogo.hide()");
@@ -595,9 +607,10 @@ public class ControlLegislacion implements Serializable {
         filtradoListaContratosLOV = null;
         contratoSeleccionado = null;
         aceptar = true;/*
-        context.update("formularioDialogos:ContratosDialogo");
-        context.update("formularioDialogos:lovContratos");
-        context.update("formularioDialogos:aceptarC");*/
+         * context.update("formularioDialogos:ContratosDialogo");
+         * context.update("formularioDialogos:lovContratos");
+         * context.update("formularioDialogos:aceptarC");
+         */
         context.reset("formularioDialogos:lovContratos:globalFilter");
         context.execute("lovContratos.clearFilters()");
         context.execute("ContratosDialogo.hide()");
@@ -614,50 +627,54 @@ public class ControlLegislacion implements Serializable {
     }
 
     public void borrarContrato() {
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                if (!listaContratosModificar.isEmpty() && listaContratosModificar.contains(listaContratos.get(index))) {
-                    int modIndex = listaContratosModificar.indexOf(listaContratos.get(index));
-                    listaContratosModificar.remove(modIndex);
-                    listaContratosBorrar.add(listaContratos.get(index));
-                } else if (!listaContratosEmpresaCrear.isEmpty() && listaContratosEmpresaCrear.contains(listaContratos.get(index))) {
-                    int crearIndex = listaContratosEmpresaCrear.indexOf(listaContratos.get(index));
-                    listaContratosEmpresaCrear.remove(crearIndex);
-                } else {
-                    listaContratosBorrar.add(listaContratos.get(index));
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (index < 0) {
+            context.execute("seleccionarRegistro.show()");
+        } else {
+            if (index >= 0) {
+                if (tipoLista == 0) {
+                    if (!listaContratosModificar.isEmpty() && listaContratosModificar.contains(listaContratos.get(index))) {
+                        int modIndex = listaContratosModificar.indexOf(listaContratos.get(index));
+                        listaContratosModificar.remove(modIndex);
+                        listaContratosBorrar.add(listaContratos.get(index));
+                    } else if (!listaContratosEmpresaCrear.isEmpty() && listaContratosEmpresaCrear.contains(listaContratos.get(index))) {
+                        int crearIndex = listaContratosEmpresaCrear.indexOf(listaContratos.get(index));
+                        listaContratosEmpresaCrear.remove(crearIndex);
+                    } else {
+                        listaContratosBorrar.add(listaContratos.get(index));
+                    }
+                    listaContratos.remove(index);
                 }
-                listaContratos.remove(index);
-            }
-            if (tipoLista == 1) {
-                if (!listaContratosModificar.isEmpty() && listaContratosModificar.contains(filtradolistaContratos.get(index))) {
-                    int modIndex = listaContratosModificar.indexOf(filtradolistaContratos.get(index));
-                    listaContratosModificar.remove(modIndex);
-                    listaContratosBorrar.add(filtradolistaContratos.get(index));
-                } else if (!listaContratosEmpresaCrear.isEmpty() && listaContratosEmpresaCrear.contains(filtradolistaContratos.get(index))) {
-                    int crearIndex = listaContratosEmpresaCrear.indexOf(filtradolistaContratos.get(index));
-                    listaContratosEmpresaCrear.remove(crearIndex);
-                } else {
-                    listaContratosBorrar.add(filtradolistaContratos.get(index));
+                if (tipoLista == 1) {
+                    if (!listaContratosModificar.isEmpty() && listaContratosModificar.contains(filtradolistaContratos.get(index))) {
+                        int modIndex = listaContratosModificar.indexOf(filtradolistaContratos.get(index));
+                        listaContratosModificar.remove(modIndex);
+                        listaContratosBorrar.add(filtradolistaContratos.get(index));
+                    } else if (!listaContratosEmpresaCrear.isEmpty() && listaContratosEmpresaCrear.contains(filtradolistaContratos.get(index))) {
+                        int crearIndex = listaContratosEmpresaCrear.indexOf(filtradolistaContratos.get(index));
+                        listaContratosEmpresaCrear.remove(crearIndex);
+                    } else {
+                        listaContratosBorrar.add(filtradolistaContratos.get(index));
+                    }
+                    filtradolistaContratos.remove(index);
                 }
-                filtradolistaContratos.remove(index);
-            }
 
-            activoDetalleFormula = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            infoRegistro = "Cantidad de registros : " + listaContratos.size();
-            context.update("form:informacionRegistro");
-            context.update("form:detalleFormula");
-            context.update("form:datosContratos");
-            index = -1;
-            secRegistro = null;
-            if (guardado == true) {
-                guardado = false;
-                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                activoDetalleFormula = true;
+                infoRegistro = "Cantidad de registros : " + listaContratos.size();
+                context.update("form:informacionRegistro");
+                context.update("form:detalleFormula");
+                context.update("form:datosContratos");
+                index = -1;
+                secRegistro = null;
+                if (guardado == true) {
+                    guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                }
             }
         }
     }
-
     //GUARDAR
+
     public void guardarSalir() {
         System.out.println("guardado : " + guardado);
         guardarCambios();
@@ -721,7 +738,7 @@ public class ControlLegislacion implements Serializable {
                 if (verMostrarTodos == true) {
                     mostrarTodosContratos();
                 }
-                FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+                FacesMessage msg = new FacesMessage("Información", "Se guardarón los datos con éxito");
                 FacesContext.getCurrentInstance().addMessage(null, msg);
                 context.update("form:growl");
             }
@@ -777,12 +794,29 @@ public class ControlLegislacion implements Serializable {
 
     public void agregarNuevoContrato() {
         int pasa = 0;
+        int codigo = 0;
+        int contador = 0;
         mensajeValidacion = "";
         RequestContext context = RequestContext.getCurrentInstance();
-        if (nuevoContrato.getCodigo() == null) {
+        if (nuevoContrato.getCodigo() != null) {
+            for (int j = 0; j < listaContratos.size(); j++) {
+                if (nuevoContrato.getCodigo().equals(listaContratos.get(j).getCodigo())) {
+                    codigo++;
+                }
+            }
+        } else if (nuevoContrato.getCodigo() == null) {
             mensajeValidacion = " * Código\n";
             pasa++;
         }
+        if (codigo > 0) {
+            context.update("formularioDialogos:validacionCodigo");
+            context.execute("validacionCodigo.show()");
+            pasa++;
+
+        } else {
+            contador++;
+        }
+
         if (nuevoContrato.getDescripcion() == null) {
             mensajeValidacion = mensajeValidacion + " *Descripción\n";
             pasa++;
@@ -834,7 +868,7 @@ public class ControlLegislacion implements Serializable {
             context.execute("validacioNuevoContrato.show()");
         }
     }
-    //LIMPIAR NUEVO REGISTRO
+//LIMPIAR NUEVO REGISTRO
 
     public void limpiarNuevoContrato() {
         nuevoContrato = new Contratos();
@@ -843,36 +877,57 @@ public class ControlLegislacion implements Serializable {
     }
 
     public void duplicarRegistro() {
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                duplicarContrato.setCodigo(listaContratos.get(index).getCodigo());
-                duplicarContrato.setDescripcion(listaContratos.get(index).getDescripcion());
-                duplicarContrato.setTipocotizante(listaContratos.get(index).getTipocotizante());
-                duplicarContrato.setEstado(listaContratos.get(index).getEstado());
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (index < 0) {
+            context.execute("seleccionarRegistro.show()");
+        } else {
+            if (index >= 0) {
+                if (tipoLista == 0) {
+                    duplicarContrato.setCodigo(listaContratos.get(index).getCodigo());
+                    duplicarContrato.setDescripcion(listaContratos.get(index).getDescripcion());
+                    duplicarContrato.setTipocotizante(listaContratos.get(index).getTipocotizante());
+                    duplicarContrato.setEstado(listaContratos.get(index).getEstado());
+                }
+                if (tipoLista == 1) {
+                    duplicarContrato.setCodigo(filtradolistaContratos.get(index).getCodigo());
+                    duplicarContrato.setDescripcion(filtradolistaContratos.get(index).getDescripcion());
+                    duplicarContrato.setTipocotizante(filtradolistaContratos.get(index).getTipocotizante());
+                    duplicarContrato.setEstado(filtradolistaContratos.get(index).getEstado());
+                }
+                activoDetalleFormula = true;
+                context.update("formularioDialogos:duplicarContrato");
+                context.execute("DuplicarContratoDialogo.show()");
+                index = -1;
+                secRegistro = null;
             }
-            if (tipoLista == 1) {
-                duplicarContrato.setCodigo(filtradolistaContratos.get(index).getCodigo());
-                duplicarContrato.setDescripcion(filtradolistaContratos.get(index).getDescripcion());
-                duplicarContrato.setTipocotizante(filtradolistaContratos.get(index).getTipocotizante());
-                duplicarContrato.setEstado(filtradolistaContratos.get(index).getEstado());
-            }
-            activoDetalleFormula = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("formularioDialogos:duplicarContrato");
-            context.execute("DuplicarContratoDialogo.show()");
-            index = -1;
-            secRegistro = null;
         }
     }
 
     public void confirmarDuplicar() {
         int pasa = 0;
+        int codigo = 0;
+        int contador = 0;
         mensajeValidacion = "";
         RequestContext context = RequestContext.getCurrentInstance();
-        if (duplicarContrato.getCodigo() == null) {
+        if (duplicarContrato.getCodigo() != null) {
+            for (int j = 0; j < listaContratos.size(); j++) {
+                if (duplicarContrato.getCodigo().equals(listaContratos.get(j).getCodigo())) {
+                    codigo++;
+                }
+            }
+        } else if (duplicarContrato.getCodigo() == null) {
             mensajeValidacion = " * Código\n";
             pasa++;
         }
+        if (codigo > 0) {
+            context.update("formularioDialogos:validacionCodigo");
+            context.execute("validacionCodigo.show()");
+            pasa++;
+
+        } else {
+            contador++;
+        }
+
         if (duplicarContrato.getDescripcion() == null) {
             mensajeValidacion = mensajeValidacion + " *Descripción\n";
             pasa++;
@@ -880,45 +935,45 @@ public class ControlLegislacion implements Serializable {
         if (duplicarContrato.getEstado() == null) {
             mensajeValidacion = mensajeValidacion + " *Estado\n";
             pasa++;
-        }
-        if (pasa == 0) {
-            k++;
-            l = BigInteger.valueOf(k);
-            duplicarContrato.setSecuencia(l);
-            listaContratos.add(duplicarContrato);
-            listaContratosEmpresaCrear.add(duplicarContrato);
-            infoRegistro = "Cantidad de registros : " + listaContratos.size();
-            context.update("form:informacionRegistro");
-            context.update("form:datosContratos");
-            index = -1;
-            secRegistro = null;
-            context.execute("DuplicarContratoDialogo.hide()");
-            if (guardado == true) {
-                guardado = false;
-                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+        } if (pasa == 0) {
+                k++;
+                l = BigInteger.valueOf(k);
+                duplicarContrato.setSecuencia(l);
+                listaContratos.add(duplicarContrato);
+                listaContratosEmpresaCrear.add(duplicarContrato);
+                infoRegistro = "Cantidad de registros : " + listaContratos.size();
+                context.update("form:informacionRegistro");
+                context.update("form:datosContratos");
+                index = -1;
+                secRegistro = null;
+                context.execute("DuplicarContratoDialogo.hide()");
+                if (guardado == true) {
+                    guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                }
+                if (bandera == 1) {
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    altoTabla = "230";
+                    columnaCodigo = (Column) c.getViewRoot().findComponent("form:datosContratos:columnaCodigo");
+                    columnaCodigo.setFilterStyle("display: none; visibility: hidden;");
+                    columnaDescripción = (Column) c.getViewRoot().findComponent("form:datosContratos:columnaDescripción");
+                    columnaDescripción.setFilterStyle("display: none; visibility: hidden;");
+                    columnaTipoCotizante = (Column) c.getViewRoot().findComponent("form:datosContratos:columnaNaturaleza");
+                    columnaTipoCotizante.setFilterStyle("display: none; visibility: hidden;");
+                    columnaEstado = (Column) c.getViewRoot().findComponent("form:datosContratos:columnaEstado");
+                    columnaEstado.setFilterStyle("display: none; visibility: hidden;");
+                    RequestContext.getCurrentInstance().update("form:datosContratos");
+                    bandera = 0;
+                    filtradolistaContratos = null;
+                    tipoLista = 0;
+                }
+                duplicarContrato = new Contratos();
+            } else {
+                context.update("formularioDialogos:validacioNuevoContrato");
+                context.execute("validacioNuevoContrato.show()");
             }
-            if (bandera == 1) {
-                FacesContext c = FacesContext.getCurrentInstance();
-                altoTabla = "230";
-                columnaCodigo = (Column) c.getViewRoot().findComponent("form:datosContratos:columnaCodigo");
-                columnaCodigo.setFilterStyle("display: none; visibility: hidden;");
-                columnaDescripción = (Column) c.getViewRoot().findComponent("form:datosContratos:columnaDescripción");
-                columnaDescripción.setFilterStyle("display: none; visibility: hidden;");
-                columnaTipoCotizante = (Column) c.getViewRoot().findComponent("form:datosContratos:columnaNaturaleza");
-                columnaTipoCotizante.setFilterStyle("display: none; visibility: hidden;");
-                columnaEstado = (Column) c.getViewRoot().findComponent("form:datosContratos:columnaEstado");
-                columnaEstado.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosContratos");
-                bandera = 0;
-                filtradolistaContratos = null;
-                tipoLista = 0;
-            }
-            duplicarContrato = new Contratos();
-        } else {
-            context.update("formularioDialogos:validacioNuevoContrato");
-            context.execute("validacioNuevoContrato.show()");
         }
-    }
+    
     //LIMPIAR DUPLICAR
 
     public void limpiarduplicar() {
@@ -981,22 +1036,20 @@ public class ControlLegislacion implements Serializable {
         activoDetalleFormula = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:detalleFormula");
-        if (!listaContratos.isEmpty()) {
-            if (secRegistro != null) {
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "CONTRATOS");
-                if (resultado == 1) {
-                    context.execute("errorObjetosDB.show()");
-                } else if (resultado == 2) {
-                    context.execute("confirmarRastro.show()");
-                } else if (resultado == 3) {
-                    context.execute("errorRegistroRastro.show()");
-                } else if (resultado == 4) {
-                    context.execute("errorTablaConRastro.show()");
-                } else if (resultado == 5) {
-                    context.execute("errorTablaSinRastro.show()");
-                }
-            } else {
-                context.execute("seleccionarRegistro.show()");
+        if (index >= 0) {
+            int resultado = administrarRastros.obtenerTabla(secRegistro, "CONTRATOS");
+            backUpSecRegistro = secRegistro;
+            secRegistro = null;
+            if (resultado == 1) {
+                context.execute("errorObjetosDB.show()");
+            } else if (resultado == 2) {
+                context.execute("confirmarRastro.show()");
+            } else if (resultado == 3) {
+                context.execute("errorRegistroRastro.show()");
+            } else if (resultado == 4) {
+                context.execute("errorTablaConRastro.show()");
+            } else if (resultado == 5) {
+                context.execute("errorTablaSinRastro.show()");
             }
         } else {
             if (administrarRastros.verificarHistoricosTabla("CONTRATOS")) {
@@ -1051,29 +1104,37 @@ public class ControlLegislacion implements Serializable {
 
     //CLONAR
     public void reproducirContrato() {
-        if (contratoClon.getSecuencia() != null && contratoOriginal.getSecuencia() != null) {
-            administrarContratos.reproducirContrato(contratoOriginal.getCodigo(), contratoClon.getCodigo());
-            contratoClon = new Contratos();
-            contratoOriginal = new Contratos();
-            listaContratos = null;
-            getListaContratos();
-            if (listaContratos != null) {
-                infoRegistro = "Cantidad de registros : " + listaContratos.size();
-            } else {
-                infoRegistro = "Cantidad de registros : 0";
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (contratoClon.getSecuencia() == null) {
+            context.update("formularioDialogos:validacionReproducirContratoClon");
+            context.execute("validacionReproducirContratoClon.show()");
+        } else if (contratoOriginal.getSecuencia() == null) {
+            context.update("formularioDialogos:validacionReproducirContratOrigen");
+            context.execute("validacionReproducirContratOrigen.show()");
+        } else {
+            if (contratoClon.getSecuencia() != null && contratoOriginal.getSecuencia() != null) {
+                administrarContratos.reproducirContrato(contratoOriginal.getCodigo(), contratoClon.getCodigo());
+                contratoClon = new Contratos();
+                contratoOriginal = new Contratos();
+                listaContratos = null;
+                getListaContratos();
+                if (listaContratos != null) {
+                    infoRegistro = "Cantidad de registros : " + listaContratos.size();
+                } else {
+                    infoRegistro = "Cantidad de registros : 0";
+                }
+                context.update("form:informacionRegistro");
+                FacesMessage msg = new FacesMessage("Información", "Reproducción completada");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                context.update("form:growl");
+                context.update("form:datosContratos");
+                context.update("form:descripcionContrato1");
+                context.update("form:descripcionContrato2");
             }
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:informacionRegistro");
-            FacesMessage msg = new FacesMessage("Información", "Reproducción completada");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            context.update("form:growl");
-            context.update("form:datosContratos");
-            context.update("form:descripcionContrato1");
-            context.update("form:descripcionContrato2");
         }
     }
-
     //GETTER AND SETTER
+
     public List<Contratos> getListaContratos() {
         if (listaContratos == null) {
             listaContratos = administrarContratos.consultarContratos();
@@ -1305,4 +1366,11 @@ public class ControlLegislacion implements Serializable {
         this.infoRegistroContrato = infoRegistroContrato;
     }
 
+    public BigInteger getBackUpSecRegistro() {
+        return backUpSecRegistro;
+    }
+
+    public void setBackUpSecRegistro(BigInteger backUpSecRegistro) {
+        this.backUpSecRegistro = backUpSecRegistro;
+    }
 }
