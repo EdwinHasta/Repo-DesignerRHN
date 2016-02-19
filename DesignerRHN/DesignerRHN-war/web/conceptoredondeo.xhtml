@@ -116,7 +116,7 @@
 
                         <p:commandButton style="position: absolute; left: 700px; top: 460px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="#{msg['aceptar']}"  disabled="#{controlConceptoRedondeo.cambiosPagina}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosConceptosRedondeos" process="@this" />
                         <p:commandButton style="position: absolute; left: 25px; top: 460px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="#{msg['refrescar']}"  icon="ui-icon-refresh" actionListener="#{controlConceptoRedondeo.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 783px; top: 460px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}"  icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlConceptoRedondeo.salir()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 783px; top: 460px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}"  icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlConceptoRedondeo.salir()}" process="@this" action="#{controlConceptoRedondeo.volverPaginaAnterior()}"/>
 
                     </p:panel>
                 </h:form>

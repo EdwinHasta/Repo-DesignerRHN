@@ -278,35 +278,6 @@
 
                 </h:form>
 
-                <h:form id="formExportarVP">
-                    <p:dataTable id="datosVPEmpleadoExportar" var="infoEXP" style="visibility: hidden; display: none;"
-                                 value="#{controlEmplVacaPendiente.listVacaPendientes}"> 
-                        <p:column>  
-                            <f:facet name="header">
-                                <h:outputText value="#{msg['estadoVPX']}" />
-                            </f:facet>
-                            <h:outputText  value="#{infoEXP.estado}">
-                            </h:outputText>
-                        </p:column>
-                        <p:column headerText="#{msg['diaspendientesVPXX']}">                                  
-                            <f:facet name="header"><h:outputText value="#{msg['diaspendientesVPX']}"/> </f:facet> 
-                            <h:outputText value="#{infoEXP.diaspendientes}"/>
-                        </p:column>  
-                        <p:column headerText="#{msg['fechainicialVPXX']}">      
-                            <f:facet name="header"><h:outputText value="#{msg['fechainicialVPX']}"/></f:facet>
-                            <h:outputText value="#{infoEXP.inicialcausacion}">
-                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                            </h:outputText>
-                        </p:column>
-                        <p:column headerText="#{msg['fechafinalVPXX']}">      
-                            <f:facet name="header"><h:outputText value="#{msg['fechafinalVPX']}"/></f:facet>
-                            <h:outputText value="#{infoEXP.finalcausacion}" >
-                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                            </h:outputText>
-                        </p:column>
-                    </p:dataTable>
-                </h:form>
-
                 <h:form id="formExportarVD">
                     <p:dataTable id="datosVDEmpleadoExportar" var="info4" style="visibility: hidden; display: none;"
                                  value="#{controlEmplVacaPendiente.listVacaDisfrutadas}"> 
@@ -447,6 +418,35 @@
 
                         </p:panel>
                     </p:dialog>
+                </h:form>
+
+                <h:form id="formExportarVP">
+                    <p:dataTable id="datosVPEmpleadoExportar" var="infoEXP" style="visibility: hidden; display: none;"
+                                 value="#{controlEmplVacaPendiente.listVacaPendientes}"> 
+                        <p:column>  
+                            <f:facet name="header">
+                                <h:outputText value="#{msg['estadoVPX']}" />
+                            </f:facet>
+                            <h:outputText  value="#{infoEXP.estado}">
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="#{msg['diaspendientesVPXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['diaspendientesVPX']}"/> </f:facet> 
+                            <h:outputText value="#{infoEXP.diaspendientes}"/>
+                        </p:column>  
+                        <p:column headerText="#{msg['fechainicialVPXX']}">      
+                            <f:facet name="header"><h:outputText value="#{msg['fechainicialVPX']}"/></f:facet>
+                            <h:outputText value="#{infoEXP.inicialcausacion}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="#{msg['fechafinalVPXX']}">      
+                            <f:facet name="header"><h:outputText value="#{msg['fechafinalVPX']}"/></f:facet>
+                            <h:outputText value="#{infoEXP.finalcausacion}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
                 </h:form>
 
             </ui:define>

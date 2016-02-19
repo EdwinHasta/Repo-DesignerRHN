@@ -113,4 +113,6 @@ public interface AdministrarConceptosInterface {
     public List<ClavesSap> consultarLOVClavesSap();
 
     public List<Empresas> consultarEmpresaPorSecuencia(BigInteger secEmpresa);
+
+    public boolean ValidarUpdateConceptoAcumulados(BigInteger secuencia);
 }

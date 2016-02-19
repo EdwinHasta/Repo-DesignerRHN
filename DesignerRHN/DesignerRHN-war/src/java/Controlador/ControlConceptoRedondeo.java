@@ -85,6 +85,8 @@ public class ControlConceptoRedondeo implements Serializable {
     private List<TiposRedondeos> lovlistaTiposRedondeos;
     private List<TiposRedondeos> lovfiltradoslistaTiposRedondeos;
     private TiposRedondeos tiposRedondeosSeleccionado;
+    
+    private String paginaAnterior;
 
     /**
      * Constructor de ControlConceptoRedondeo
@@ -115,6 +117,7 @@ public class ControlConceptoRedondeo implements Serializable {
         duplicarConceptoRedondeo = new ConceptosRedondeos();
         secRegistro = null;
         cambiosPagina = true;
+        paginaAnterior = "";
     }
 
     @PostConstruct
@@ -1004,6 +1007,13 @@ public class ControlConceptoRedondeo implements Serializable {
         secRegistro = null;
     }
 
+    public void recibirPagina(String paginaAnterior){
+        this.paginaAnterior = paginaAnterior;
+    }
+    
+    public String volverPaginaAnterior() {
+        return paginaAnterior;
+    }
     //GETTERS AND SETTERS
     /**
      * Metodo que obtiene la lista de ConceptosRedondeos de un Empleado, en caso
@@ -1170,6 +1180,14 @@ public class ControlConceptoRedondeo implements Serializable {
 
     public void setTiposRedondeosSeleccionado(TiposRedondeos tiposRedondeosSeleccionado) {
         this.tiposRedondeosSeleccionado = tiposRedondeosSeleccionado;
+    }
+
+    public String getPaginaAnterior() {
+        return paginaAnterior;
+    }
+
+    public void setPaginaAnterior(String paginaAnterior) {
+        this.paginaAnterior = paginaAnterior;
     }
 
 }

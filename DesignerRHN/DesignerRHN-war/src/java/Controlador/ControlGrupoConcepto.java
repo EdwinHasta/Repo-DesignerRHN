@@ -43,7 +43,6 @@ public class ControlGrupoConcepto implements Serializable {
     AdministrarGruposConceptosInterface administrarGruposConceptos;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-
     //Lista Grupos Conceptos(Arriba)
     private List<GruposConceptos> listaGruposConceptos;
     private List<GruposConceptos> filtradoListaGruposConceptos;
@@ -116,8 +115,10 @@ public class ControlGrupoConcepto implements Serializable {
     private List<GruposConceptos> lovlistaGruposConceptos;
     private List<GruposConceptos> lovfiltradoListaGruposConceptos;
     private GruposConceptos gruposSeleccionado;
+    private String paginaAnterior;
 
     public ControlGrupoConcepto() {
+        paginaAnterior = "";
         permitirIndex = true;
         cualTabla = 0;
         bandera = 0;
@@ -1857,7 +1858,15 @@ public class ControlGrupoConcepto implements Serializable {
 
     }
 
+    public void recibirPagina(String paginaAnterior) {
+        this.paginaAnterior = paginaAnterior;
+    }
+    
+    public String volverPaginaAnterior() {
+        return paginaAnterior;
+    }
     //Getter & Setter
+
     public List<GruposConceptos> getListaGruposConceptos() {
         if (listaGruposConceptos == null) {
             listaGruposConceptos = administrarGruposConceptos.buscarGruposConceptos();
@@ -2091,4 +2100,11 @@ public class ControlGrupoConcepto implements Serializable {
         this.gruposSeleccionado = gruposSeleccionado;
     }
 
+    public String getPaginaAnterior() {
+        return paginaAnterior;
+    }
+
+    public void setPaginaAnterior(String paginaAnterior) {
+        this.paginaAnterior = paginaAnterior;
+    }
 }

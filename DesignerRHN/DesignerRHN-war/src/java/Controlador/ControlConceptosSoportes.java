@@ -83,10 +83,15 @@ public class ControlConceptosSoportes implements Serializable {
     private List<ConceptosSoportes> listConceptosSoportesBoton;
     private List<ConceptosSoportes> filterConceptosSoportesBoton;
     private ConceptosSoportes conceptoSoporteMostrado;
+    
+    private String paginaAnterior;
 
     private BigInteger secConceptoSeleccionado;
+    
+    private String infoRecursoConceptoLista; 
 
     public ControlConceptosSoportes() {
+        paginaAnterior = "";
         banderaConceptoEscogido = true;
         listConceptosSoportesBoton = null;
         listConceptosSoportes = null;
@@ -1504,6 +1509,7 @@ public class ControlConceptosSoportes implements Serializable {
 
         }
 
+    
         if (nuevoConceptosSoportes.getOperando().getNombre() == null) {
             mensajeValidacion = mensajeValidacion + " *Debe Tener una Operando \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
@@ -1858,8 +1864,15 @@ public class ControlConceptosSoportes implements Serializable {
             System.out.println("ERROR CONTROLBETACENTROSCOSTOS.cancelarSeleccionVigencia ERROR====" + e.getMessage());
         }
     }
-    private String infoRecursoConceptoLista;
-
+    
+    public void recibirPagina(String paginaAnterior) {
+        this.paginaAnterior = paginaAnterior;
+    }
+    
+    public String volverPaginaAnterior() {
+        return paginaAnterior;
+    }
+    
     public List<ConceptosSoportes> getListConceptosSoportesBoton() {
         if (listConceptosSoportesBoton == null) {
             listConceptosSoportesBoton = administrarConceptosSoportes.consultarConceptosSoportes();
@@ -2129,5 +2142,14 @@ public class ControlConceptosSoportes implements Serializable {
     public void setInfoRecursoConceptoLista(String infoRecursoConceptoLista) {
         this.infoRecursoConceptoLista = infoRecursoConceptoLista;
     }
+
+    public String getPaginaAnterior() {
+        return paginaAnterior;
+    }
+
+    public void setPaginaAnterior(String paginaAnterior) {
+        this.paginaAnterior = paginaAnterior;
+    }
+    
 
 }

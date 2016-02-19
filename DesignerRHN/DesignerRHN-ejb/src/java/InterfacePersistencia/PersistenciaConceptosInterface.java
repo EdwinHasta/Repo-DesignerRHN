@@ -137,5 +137,4 @@ public interface PersistenciaConceptosInterface {
     public List<Conceptos> conceptoEmpresa(EntityManager em);
     
     public List<Conceptos> novedadConceptos(EntityManager em);
-
 }

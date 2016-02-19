@@ -374,11 +374,11 @@ public class ControlEmplVacaPendiente implements Serializable {
         regVacaAuxiliar = null;
         if (revertir) {
             if (filtrarListaPendientes == 0) {
-                listVacaPendientes.get(indice).setInicialcausacion(fechaFinP);
-                listVacaPendientes.get(indice).setFinalcausacion(fechaIniP);
+                listVacaPendientes.get(indice).setInicialcausacion(fechaIniP);
+                listVacaPendientes.get(indice).setFinalcausacion(fechaFinP);
             } else {
-                filtrarListVacaPendientes.get(indice).setInicialcausacion(fechaFinP);
-                filtrarListVacaPendientes.get(indice).setFinalcausacion(fechaIniP);
+                filtrarListVacaPendientes.get(indice).setInicialcausacion(fechaIniP);
+                filtrarListVacaPendientes.get(indice).setFinalcausacion(fechaFinP);
             }
         }
     }

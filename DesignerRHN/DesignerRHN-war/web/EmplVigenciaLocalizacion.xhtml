@@ -5,7 +5,8 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
+      xmlns:lnk="http://java.sun.com/jsf/composite/linkare"
+      xmlns:pe="http://primefaces.org/ui/extensions">
     <h:head>
     </h:head>
     <h:body>
@@ -235,7 +236,8 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.porcentaje}" style="width: 100px; "/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText binding="#{vPPorcentajeAux}" maxlength="4" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px "> 
+                                            <p:inputText id="editPorcentaje1" binding="#{vPPorcentajeAux}" maxlength="4" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px "> 
+                                                <pe:keyFilter for="editPorcentaje1" mask="num"/>
                                                 <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndiceVP(indiceVP,1)}" process="@this"/>
                                                 <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVPPorcentaje(vPPorcentajeAux.value, indiceVP, 1, 0)}" process="@this"/>
                                             </p:inputText>
@@ -327,7 +329,8 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.subporcentaje}" style="width: 100px; "/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText  binding="#{vPPorcentajeAuxSub}" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
+                                            <p:inputText id="editPorcentaje2" binding="#{vPPorcentajeAuxSub}" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
+                                                <pe:keyFilter for="editPorcentaje2" mask="num"/>
                                                 <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndiceVP(indiceVP,5)}" process="@this"/> 
                                                 <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVPPorcentaje(vPPorcentajeAuxSub.value, indiceVP, 1, 1)}" process="@this"/>
                                             </p:inputText>
@@ -378,7 +381,8 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info2.porcentaje}" style="width: 100px; "/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText binding="#{vPPorcentajeAux2}" maxlength="4" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px "> 
+                                            <p:inputText id="editPorcentaje2" binding="#{vPPorcentajeAux2}" maxlength="4" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px "> 
+                                                <pe:keyFilter for="editPorcentaje2" mask="num"/>
                                                 <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndiceVP(indiceVPP,1)}" process="@this"/>
                                                 <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVPPorcentaje(vPPorcentajeAux2.value, indiceVPP, 2, 0)}" process="@this"/>
                                             </p:inputText>
@@ -906,6 +910,7 @@
 
                             <strong><h:outputText value="*#{msg['porcentajeVP']}" style=" position: absolute; top: 165px; left: 50px;" /></strong>
                             <p:inputText id="nuevaPorcentajeVP" binding="#{vPPorcentajeAux3}" maxlength="4" style=" width: 110px; position: absolute; top: 160px; left: 170px" onclick="select();"> 
+                                <pe:keyFilter for="nuevaPorcentajeVP" mask="num"/>
                                 <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVPPorcentajes(1, 1, vPPorcentajeAux3.value, 0)}" update="nuevaPorcentajeVP" process="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevaPorcentajeVP" value="#{msg['p']}" />
@@ -921,6 +926,7 @@
 
                             <strong><h:outputText value="#{msg['subporcentajeVP']}" style=" position: absolute; top: 225px; left: 50px" /></strong>
                             <p:inputText id="nuevaSubPorcentajeVP" binding="#{vPPorcentajeAux3sub}" style=" width: 110px; position: absolute; left: 170px; top: 220px;">
+                                <pe:keyFilter for="nuevaSubPorcentajeVP" mask="num"/>
                                 <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVPPorcentajes(1, 1, vPPorcentajeAux3sub.value, 1)}" update="nuevaSubPorcentajeVP" />
                             </p:inputText>
                             <p:watermark for="nuevaSubPorcentajeVP" value="#{msg['p']}"/>
@@ -964,6 +970,7 @@
 
                             <strong><h:outputText value="*#{msg['porcentajeVP']}" style=" position: absolute; top: 165px; left: 50px;"/></strong>
                             <p:inputText id="duplicadoPorcentajeVP" maxlength="4" binding="#{vPPorcentajeAux4}" style=" width: 110px; position: absolute; top: 160px; left: 170px" onclick="select();" >
+                                <pe:keyFilter for="duplicadoPorcentajeVP" mask="num"/>
                                 <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVPPorcentajes(2, 1, vPPorcentajeAux4.value, 0)}" update="duplicadoPorcentajeVP" process="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicadoPorcentajeVP" value="#{msg['p']}" />
@@ -979,6 +986,7 @@
 
                             <strong><h:outputText value="#{msg['subporcentajeVP']}" style=" position: absolute; top: 225px; left: 50px" /></strong>
                             <p:inputText id="duplicadoSubPorcentajeVP" binding="#{vPPorcentajeAux4sub}" style=" width: 110px; position: absolute; left: 170px; top: 220px;">
+                                <pe:keyFilter for="duplicadoSubPorcentajeVP" mask="num"/>
                                 <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVPPorcentajes(2, 1, vPPorcentajeAux4sub.value, 1)}" update="duplicadoSubPorcentajeVP" />
                             </p:inputText>
                             <p:watermark for="duplicadoSubPorcentajeVP" value="#{msg['subporcentaje']}" />
@@ -1024,6 +1032,7 @@
 
                             <strong><h:outputText value="*#{msg['porcentajeVPP']}" style=" position: absolute; top: 165px; left: 50px;" /></strong>
                             <p:inputText id="nuevaPorcentajeVPP" binding="#{vPPorcentajeAux5}" maxlength="4" style=" width: 110px; position: absolute; top: 160px; left: 170px" onclick="select();"> 
+                                <pe:keyFilter for="nuevaPorcentajeVPP" mask="num"/>
                                 <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVPPorcentajes(1, 2, vPPorcentajeAux5.value)}" process="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevaPorcentajeVPP" value="#{msg['p']}" />
@@ -1067,6 +1076,7 @@
 
                             <strong><h:outputText value="*#{msg['porcentajeVPP']}" style=" position: absolute; top: 165px; left: 50px;" /></strong>
                             <p:inputText id="duplicarPorcentajeVPP" binding="#{vPPorcentajeAux6}" maxlength="4" style=" width: 110px; position: absolute; top: 160px; left: 170px" onclick="select();"> 
+                                <pe:keyFilter for="duplicarPorcentajeVPP" mask="num"/>
                                 <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVPPorcentajes(2, 2, vPPorcentajeAux6.value)}" process="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarPorcentajeVPP" value="#{msg['p']}" />

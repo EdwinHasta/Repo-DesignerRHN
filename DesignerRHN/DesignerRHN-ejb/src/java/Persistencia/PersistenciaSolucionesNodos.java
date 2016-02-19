@@ -12,13 +12,11 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br>
- * Clase encargada de realizar operaciones sobre la tabla 'SolucionesNodos' de
- * la base de datos.
+ * Clase Stateless.<br> Clase encargada de realizar operaciones sobre la tabla
+ * 'SolucionesNodos' de la base de datos.
  *
  * @author betelgeuse
  */
@@ -266,7 +264,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long valor = (Long) query.getSingleResult();
-            return valor > 0;
+            return (valor == 0);
         } catch (Exception e) {
             System.out.println("Error solucionesNodosParaConcepto PersistenciaSolucionesNodos : " + e.toString());
             return false;

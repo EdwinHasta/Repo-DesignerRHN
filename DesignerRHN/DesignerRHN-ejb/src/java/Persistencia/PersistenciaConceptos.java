@@ -11,7 +11,6 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
@@ -26,8 +25,9 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-     private EntityManager em;*/
+    /*
+     * @PersistenceContext(unitName = "DesignerRHN-ejbPU") private EntityManager em;
+     */
     @Override
     public void crear(EntityManager em, Conceptos concepto) {
         em.clear();
@@ -122,8 +122,8 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     public List<Conceptos> conceptosPorEmpresa(EntityManager em, BigInteger secEmpresa) {
         try {
             em.clear();
-           // Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.empresa.secuencia  = NVL(:secEmpresa, c.empresa.secuencia) ORDER BY c.codigo ASC");
-                        Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.empresa.secuencia  = :secEmpresa ORDER BY c.codigo ASC");
+            // Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.empresa.secuencia  = NVL(:secEmpresa, c.empresa.secuencia) ORDER BY c.codigo ASC");
+            Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.empresa.secuencia  = :secEmpresa ORDER BY c.codigo ASC");
 
             query.setParameter("secEmpresa", secEmpresa);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -259,6 +259,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
         }
     }
 
+    @Override
     public List<Conceptos> novedadConceptos(EntityManager em) {
         try {
             em.clear();
@@ -271,5 +272,4 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
             return null;
         }
     }
-
 }

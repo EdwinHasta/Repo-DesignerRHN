@@ -13,8 +13,10 @@ import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaClavesSapInterface;
 import InterfacePersistencia.PersistenciaConceptosInterface;
 import InterfacePersistencia.PersistenciaEmpresasInterface;
+import InterfacePersistencia.PersistenciaSolucionesNodosInterface;
 import InterfacePersistencia.PersistenciaTercerosInterface;
 import InterfacePersistencia.PersistenciaUnidadesInterface;
+import Persistencia.PersistenciaSolucionesNodos;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
@@ -22,9 +24,8 @@ import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 
 /**
- * Clase Stateful. <br>
- * Clase encargada de realizar las operaciones lógicas para la pantalla
- * 'Conceptos'.
+ * Clase Stateful. <br> Clase encargada de realizar las operaciones lógicas para
+ * la pantalla 'Conceptos'.
  *
  * @author betelgeuse
  */
@@ -35,49 +36,44 @@ public class AdministrarConceptos implements AdministrarConceptosInterface {
     //ATRIBUTOS
     //--------------------------------------------------------------------------    
     /**
-     * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia
-     * 'persistenciaConceptos'.
+     * Enterprise JavaBeans.<br> Atributo que representa la comunicación con la
+     * persistencia 'persistenciaConceptos'.
      */
     @EJB
     PersistenciaConceptosInterface persistenciaConceptos;
-        /**
-     * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia
-     * 'persistenciaConceptos'.
+    /**
+     * Enterprise JavaBeans.<br> Atributo que representa la comunicación con la
+     * persistencia 'persistenciaConceptos'.
      */
     @EJB
     PersistenciaClavesSapInterface persistenciaClavesSap;
     /**
-     * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia
-     * 'persistenciaUnidades'.
+     * Enterprise JavaBeans.<br> Atributo que representa la comunicación con la
+     * persistencia 'persistenciaUnidades'.
      */
     @EJB
     PersistenciaUnidadesInterface persistenciaUnidades;
     /**
-     * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia
-     * 'persistenciaTerceros'.
+     * Enterprise JavaBeans.<br> Atributo que representa la comunicación con la
+     * persistencia 'persistenciaTerceros'.
      */
     @EJB
     PersistenciaTercerosInterface persistenciaTerceros;
     /**
-     * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia
-     * 'persistenciaEmpresas'.
+     * Enterprise JavaBeans.<br> Atributo que representa la comunicación con la
+     * persistencia 'persistenciaEmpresas'.
      */
     @EJB
     PersistenciaEmpresasInterface persistenciaEmpresas;
     /**
-     * Enterprise JavaBean.<br>
-     * Atributo que representa todo lo referente a la conexión del usuario que
-     * está usando el aplicativo.
+     * Enterprise JavaBean.<br> Atributo que representa todo lo referente a la
+     * conexión del usuario que está usando el aplicativo.
      */
     @EJB
     AdministrarSesionesInterface administrarSesiones;
-
     private EntityManager em;
+    @EJB
+    PersistenciaSolucionesNodosInterface persistenciaSolucionesNodos;
 
     //--------------------------------------------------------------------------
     //MÉTODOS
@@ -106,7 +102,7 @@ public class AdministrarConceptos implements AdministrarConceptosInterface {
     public List<Empresas> consultarEmpresas() {
         return persistenciaEmpresas.consultarEmpresas(em);
     }
-    
+
     public List<Empresas> consultarEmpresaPorSecuencia(BigInteger secEmpresa) {
         return persistenciaEmpresas.buscarEmpresasLista(em, secEmpresa);
     }
@@ -178,10 +174,16 @@ public class AdministrarConceptos implements AdministrarConceptosInterface {
     public void clonarConcepto(BigInteger secConceptoOrigen, BigInteger codigoConceptoNuevo, String descripcionConceptoNuevo) {
         persistenciaConceptos.clonarConcepto(em, secConceptoOrigen, codigoConceptoNuevo, descripcionConceptoNuevo);
     }
-    
+
     @Override
-    public List<ClavesSap> consultarLOVClavesSap(){
-    List<ClavesSap> listaClavesSap = persistenciaClavesSap.consultarClavesSap(em);
-    return listaClavesSap;
+    public List<ClavesSap> consultarLOVClavesSap() {
+        List<ClavesSap> listaClavesSap = persistenciaClavesSap.consultarClavesSap(em);
+        return listaClavesSap;
+    }
+
+    @Override
+    public boolean ValidarUpdateConceptoAcumulados(BigInteger secuencia) {
+        boolean retorno = persistenciaSolucionesNodos.solucionesNodosParaConcepto(em, secuencia);
+        return retorno;
     }
 }

@@ -552,7 +552,6 @@ public class ControlVigenciaLocalizacion implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         FacesContext c = FacesContext.getCurrentInstance();
         try {
-            System.out.println("entro al try");
             if (nTabla == 1) {
                 BigDecimal porcentajePrueba = new BigDecimal(valor);
                 if (subPorcent == 1) {
@@ -560,29 +559,35 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 } else {
                     vigenciasProrrateosCentroC.get(indice).setPorcentaje(porcentajePrueba);
                 }
-                System.out.println("porcentajeVP: " + vigenciasProrrateosCentroC.get(indice).getPorcentaje());
                 modificarVP(indice);
+                if (porcentajePrueba.intValueExact() < 0 || porcentajePrueba.intValueExact() > 100) {
+                    context.update("form:validarPorcentajes");
+                    context.execute("validarPorcentajes.show()");
+                }
             }
             if (nTabla == 2) {
                 int porcentajePrueba = Integer.parseInt(valor);
                 vigenciasProrrateosProyectos.get(indice).setPorcentaje(porcentajePrueba);
-                System.out.println("porcentajeVPP: " + vigenciasProrrateosProyectos.get(indice).getPorcentaje());
                 modificarVP(indice);
+                if (porcentajePrueba < 0 || porcentajePrueba > 100) {
+                    context.update("form:validarPorcentajes");
+                    context.execute("validarPorcentajes.show()");
+                }
+            }
+            if (nTabla == 1) {
+                vPPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPPorcentaje");
+                vPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
+                context.update("form:datosVPVigencia");
+            } else if (nTabla == 2) {
+                vPPPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPPorcentaje");
+                vPPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
+                context.update("form:datosVPPVigencia");
             }
         } catch (NumberFormatException e) {
-            System.out.println("ERROR:" + e);
             context.update("form:validarPorcentajes");
             context.execute("validarPorcentajes.show()");
         }
-        if (nTabla == 1) {
-            vPPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPPorcentaje");
-            vPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            context.update("form:datosVPVigencia");
-        } else if (nTabla == 2) {
-            vPPPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPPorcentaje");
-            vPPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            context.update("form:datosVPPVigencia");
-        }
+
     }
 
     public void modificarVPPorcentajes(int tipoAct, int nTabla, String valor, int subPorcent) {
@@ -606,6 +611,10 @@ public class ControlVigenciaLocalizacion implements Serializable {
                         duplicarVP.setPorcentaje(porcentajePrueba);
                     }
                 }
+                if (porcentajePrueba.intValueExact() > 100 || porcentajePrueba.intValueExact() < 0) {
+                    context.update("form:validarPorcentajes");
+                    context.execute("validarPorcentajes.show()");
+                }
             }
             if (nTabla == 2) {
                 int porcentajePrueba = Integer.parseInt(valor);
@@ -614,24 +623,29 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 } else if (tipoActualizacion == 2) {
                 }
                 duplicarVPP.setPorcentaje(porcentajePrueba);
+                if (porcentajePrueba > 100 || porcentajePrueba < 0) {
+                    context.update("form:validarPorcentajes");
+                    context.execute("validarPorcentajes.show()");
+                }
+            }
+            if (nTabla == 1) {
+                if (tipoActualizacion == 1) {
+                    context.update("formularioDialogos:nuevaCentroCostoVP");
+                } else if (tipoActualizacion == 2) {
+                    context.update("formularioDialogos:duplicadoCentroCostoVP");
+                }
+            } else if (nTabla == 2) {
+                if (tipoActualizacion == 1) {
+                    context.update("formularioDialogos:nuevaProyectoVP");
+                } else if (tipoActualizacion == 2) {
+                    context.update("formularioDialogos:duplicadoProyectoVP");
+                }
             }
         } catch (NumberFormatException e) {
             context.update("form:validarPorcentajes");
             context.execute("validarPorcentajes.show()");
         }
-        if (nTabla == 1) {
-            if (tipoActualizacion == 1) {
-                context.update("formularioDialogos:nuevaCentroCostoVP");
-            } else if (tipoActualizacion == 2) {
-                context.update("formularioDialogos:duplicadoCentroCostoVP");
-            }
-        } else if (nTabla == 2) {
-            if (tipoActualizacion == 1) {
-                context.update("formularioDialogos:nuevaProyectoVP");
-            } else if (tipoActualizacion == 2) {
-                context.update("formularioDialogos:duplicadoProyectoVP");
-            }
-        }
+
     }
 
     public void modificarVP(int indice) {

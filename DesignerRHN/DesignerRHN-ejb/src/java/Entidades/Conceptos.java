@@ -428,7 +428,7 @@ public class Conceptos implements Serializable {
     public String getNaturalezaConcepto() {
         if (naturalezaConcepto == null) {
             if (naturaleza == null) {
-                naturalezaConcepto = "PAGO";
+                naturalezaConcepto = "NETO";
             } else {
                 if (naturaleza.equalsIgnoreCase("N")) {
                     naturalezaConcepto = "NETO";
