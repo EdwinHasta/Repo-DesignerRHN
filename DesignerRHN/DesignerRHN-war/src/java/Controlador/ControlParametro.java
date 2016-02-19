@@ -205,9 +205,10 @@ public class ControlParametro implements Serializable {
         guardado = false;
         cambiosParametros = true;
         context.update("form:ACEPTAR");/*
-        context.update("formularioDialogos:estructurasDialogo");
-        context.update("formularioDialogos:lOVEstructuras");
-        context.update("formularioDialogos:aceptarE");*/
+         * context.update("formularioDialogos:estructurasDialogo");
+         * context.update("formularioDialogos:lOVEstructuras");
+         * context.update("formularioDialogos:aceptarE");
+         */
         context.reset("formularioDialogos:lOVEstructuras:globalFilter");
         context.execute("lOVEstructuras.clearFilters()");
         context.execute("estructurasDialogo.hide()");
@@ -233,9 +234,10 @@ public class ControlParametro implements Serializable {
         guardado = false;
         cambiosParametros = true;
         context.update("form:ACEPTAR");/*
-        context.update("formularioDialogos:TipoTrabajadorDialogo");
-        context.update("formularioDialogos:lovTipoTrabajador");
-        context.update("formularioDialogos:aceptarTT");*/
+         * context.update("formularioDialogos:TipoTrabajadorDialogo");
+         * context.update("formularioDialogos:lovTipoTrabajador");
+         * context.update("formularioDialogos:aceptarTT");
+         */
         context.reset("formularioDialogos:lovTipoTrabajador:globalFilter");
         context.execute("lovTipoTrabajador.clearFilters()");
         context.execute("TipoTrabajadorDialogo.hide()");
@@ -262,9 +264,10 @@ public class ControlParametro implements Serializable {
         cambiosParametros = true;
         context.update("form:ACEPTAR");
         /*
-        context.update("formularioDialogos:ProcesosDialogo");
-        context.update("formularioDialogos:lovProcesos");
-        context.update("formularioDialogos:aceptarP");*/
+         * context.update("formularioDialogos:ProcesosDialogo");
+         * context.update("formularioDialogos:lovProcesos");
+         * context.update("formularioDialogos:aceptarP");
+         */
         context.reset("formularioDialogos:lovProcesos:globalFilter");
         context.execute("lovProcesos.clearFilters()");
         context.execute("ProcesosDialogo.hide()");
@@ -314,9 +317,10 @@ public class ControlParametro implements Serializable {
         context.update("form:ACEPTAR");
         context.update("form:quitarTodos");
         /*
-        context.update("formularioDialogos:buscarEmpleadoDialogo");
-        context.update("formularioDialogos:lovEmpleados");
-        context.update("formularioDialogos:aceptarEm");*/
+         * context.update("formularioDialogos:buscarEmpleadoDialogo");
+         * context.update("formularioDialogos:lovEmpleados");
+         * context.update("formularioDialogos:aceptarEm");
+         */
         context.reset("formularioDialogos:lovEmpleados:globalFilter");
         context.execute("lovEmpleados.clearFilters()");
         context.execute("buscarEmpleadoDialogo.hide()");
@@ -482,6 +486,7 @@ public class ControlParametro implements Serializable {
     }
 
     public void validarGuardado(String tipoG) {
+        System.out.println("Entre a validarGuardado");
         tipoGuardado = tipoG;
         RequestContext context = RequestContext.getCurrentInstance();
         if (guardado == false) {
@@ -845,6 +850,7 @@ public class ControlParametro implements Serializable {
     }
 
     public void adicionarEmpleados() {
+        System.out.println("Entre a Adicionar Empleados");
         if (parametroLiquidacion != null) {
             administrarParametros.adicionarEmpleados(parametroLiquidacion.getSecuencia());
         }
@@ -897,27 +903,7 @@ public class ControlParametro implements Serializable {
     }
 
     public void cancelarModificacion() {
-        if (bandera == 1) {
-            FechaDesde = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadosParametros:FechaDesde");
-            FechaDesde.setFilterStyle("display: none; visibility: hidden;");
-            FechaHasta = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadosParametros:FechaHasta");
-            FechaHasta.setFilterStyle("display: none; visibility: hidden;");
-            Codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadosParametros:Codigo");
-            Codigo.setFilterStyle("display: none; visibility: hidden;");
-            pApellido = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadosParametros:pApellido");
-            pApellido.setFilterStyle("display: none; visibility: hidden;");
-            sApellido = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadosParametros:sApellido");
-            sApellido.setFilterStyle("display: none; visibility: hidden;");
-            nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadosParametros:nombre");
-            nombre.setFilterStyle("display: none; visibility: hidden;");
-            estadoParametro = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadosParametros:estadoParametro");
-            estadoParametro.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "185";
-            RequestContext.getCurrentInstance().update("form:empleadosParametros");
-            bandera = 0;
-            filtradoEmpleadosParametros = null;
-            tipoLista = 0;
-        }
+      cerrarFiltrado();
         parametroLiquidacion = null;
         getParametroLiquidacion();
         empleadosParametros = null;
@@ -953,6 +939,29 @@ public class ControlParametro implements Serializable {
     }
 
     public void salir() {
+        cerrarFiltrado();
+        parametroLiquidacion = null;
+        empleadosParametros = null;
+        cambiosEmpleadosParametros = false;
+        lovEstructuras = null;
+        lovProcesos = null;
+        lovTiposTrabajadores = null;
+        lovEmpleados = null;
+        guardado = true;
+        cambiosParametros = false;
+        listaBorrarParametros.clear();
+        listaCrearParametros.clear();
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+        getEmpleadosParametros();
+        if (empleadosParametros != null) {
+            infoRegistro = "Cantidad de registros : " + empleadosParametros.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
+        RequestContext.getCurrentInstance().update("form:informacionRegistro");
+    }
+
+    private void cerrarFiltrado() {
         if (bandera == 1) {
             FechaDesde = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadosParametros:FechaDesde");
             FechaDesde.setFilterStyle("display: none; visibility: hidden;");
@@ -974,25 +983,6 @@ public class ControlParametro implements Serializable {
             filtradoEmpleadosParametros = null;
             tipoLista = 0;
         }
-        parametroLiquidacion = null;
-        empleadosParametros = null;
-        cambiosEmpleadosParametros = false;
-        lovEstructuras = null;
-        lovProcesos = null;
-        lovTiposTrabajadores = null;
-        lovEmpleados = null;
-        guardado = true;
-        cambiosParametros = false;
-        listaBorrarParametros.clear();
-        listaCrearParametros.clear();
-        RequestContext.getCurrentInstance().update("form:ACEPTAR");
-        getEmpleadosParametros();
-        if (empleadosParametros != null) {
-            infoRegistro = "Cantidad de registros : " + empleadosParametros.size();
-        } else {
-            infoRegistro = "Cantidad de registros : 0";
-        }
-        RequestContext.getCurrentInstance().update("form:informacionRegistro");
     }
 
     public void borrarParametros() {
@@ -1039,7 +1029,16 @@ public class ControlParametro implements Serializable {
     }
 
     public List<Estructuras> getLovEstructuras() {
-        lovEstructuras = administrarParametros.lovEstructuras();
+        if (lovEstructuras == null) {
+            lovEstructuras = administrarParametros.lovEstructuras();
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (lovEstructuras == null || lovEstructuras.isEmpty()) {
+                infoRegistroEstructura = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistroEstructura = "Cantidad de registros: " + lovEstructuras.size();
+            }
+            context.update("formularioDialogos:infoRegistroEstructura");
+        }
         return lovEstructuras;
     }
 
@@ -1068,7 +1067,16 @@ public class ControlParametro implements Serializable {
     }
 
     public List<TiposTrabajadores> getLovTiposTrabajadores() {
-        lovTiposTrabajadores = administrarParametros.lovTiposTrabajadores();
+        if (lovTiposTrabajadores == null) {
+            lovTiposTrabajadores = administrarParametros.lovTiposTrabajadores();
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (lovTiposTrabajadores == null || lovTiposTrabajadores.isEmpty()) {
+                infoRegistroTipoTrabajador = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistroTipoTrabajador = "Cantidad de registros: " + lovTiposTrabajadores.size();
+            }
+            context.update("formularioDialogos:infoRegistroTipoTrabajador");
+        }
         return lovTiposTrabajadores;
     }
 
@@ -1093,7 +1101,16 @@ public class ControlParametro implements Serializable {
     }
 
     public List<Procesos> getLovProcesos() {
-        lovProcesos = administrarParametros.lovProcesos();
+        if (lovProcesos == null) {
+            lovProcesos = administrarParametros.lovProcesos();
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (lovProcesos == null || lovProcesos.isEmpty()) {
+                infoRegistroProceso = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistroProceso = "Cantidad de registros: " + lovProcesos.size();
+            }
+            context.update("formularioDialogos:infoRegistroProceso");
+        }
         return lovProcesos;
     }
 
@@ -1199,8 +1216,19 @@ public class ControlParametro implements Serializable {
     }
 
     public List<Empleados> getLovEmpleados() {
+        /*
+         * if (lovEmpleados == null) { lovEmpleados =
+         * administrarParametros.empleadosLov(); } return lovEmpleados;
+         */
         if (lovEmpleados == null) {
             lovEmpleados = administrarParametros.empleadosLov();
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (lovEmpleados == null || lovEmpleados.isEmpty()) {
+                infoRegistroEmpleado = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistroEmpleado = "Cantidad de registros: " + lovEmpleados.size();
+            }
+            context.update("formularioDialogos:infoRegistroEmpleado");
         }
         return lovEmpleados;
     }
@@ -1241,12 +1269,12 @@ public class ControlParametro implements Serializable {
     }
 
     public String getInfoRegistroEmpleado() {
-        getLovEmpleados();
-        if (lovEmpleados != null) {
-            infoRegistroEmpleado = "Cantidad de registros : " + lovEmpleados.size();
-        } else {
-            infoRegistroEmpleado = "Cantidad de registros : 0";
+        /*
+         * getLovEmpleados(); if (lovEmpleados != null) { infoRegistroEmpleado =
+         * "Cantidad de registros : " + lovEmpleados.size(); } else {
+         * infoRegistroEmpleado = "Cantidad de registros : 0";
         }
+         */
         return infoRegistroEmpleado;
     }
 
@@ -1255,12 +1283,12 @@ public class ControlParametro implements Serializable {
     }
 
     public String getInfoRegistroProceso() {
-        getLovProcesos();
-        if (lovProcesos != null) {
-            infoRegistroProceso = "Cantidad de registros : " + lovProcesos.size();
-        } else {
-            infoRegistroProceso = "Cantidad de registros : 0";
+        /*
+         * getLovProcesos(); if (lovProcesos != null) { infoRegistroProceso =
+         * "Cantidad de registros : " + lovProcesos.size(); } else {
+         * infoRegistroProceso = "Cantidad de registros : 0";
         }
+         */
         return infoRegistroProceso;
     }
 
@@ -1269,12 +1297,13 @@ public class ControlParametro implements Serializable {
     }
 
     public String getInfoRegistroTipoTrabajador() {
-        getLovTiposTrabajadores();
-        if (lovTiposTrabajadores != null) {
-            infoRegistroTipoTrabajador = "Cantidad de registros : " + lovTiposTrabajadores.size();
-        } else {
-            infoRegistroTipoTrabajador = "Cantidad de registros : 0";
+        /*
+         * getLovTiposTrabajadores(); if (lovTiposTrabajadores != null) {
+         * infoRegistroTipoTrabajador = "Cantidad de registros : " +
+         * lovTiposTrabajadores.size(); } else { infoRegistroTipoTrabajador =
+         * "Cantidad de registros : 0";
         }
+         */
         return infoRegistroTipoTrabajador;
     }
 
@@ -1283,12 +1312,13 @@ public class ControlParametro implements Serializable {
     }
 
     public String getInfoRegistroEstructura() {
-        getLovEstructuras();
-        if (lovEstructuras != null) {
-            infoRegistroEstructura = "Cantidad de registros : " + lovEstructuras.size();
-        } else {
-            infoRegistroEstructura = "Cantidad de registros : 0";
+        /*
+         * getLovEstructuras(); if (lovEstructuras != null) {
+         * infoRegistroEstructura = "Cantidad de registros : " +
+         * lovEstructuras.size(); } else { infoRegistroEstructura = "Cantidad de
+         * registros : 0";
         }
+         */
         return infoRegistroEstructura;
     }
 
@@ -1303,5 +1333,4 @@ public class ControlParametro implements Serializable {
     public void setInfoRegistro(String infoRegistro) {
         this.infoRegistro = infoRegistro;
     }
-
 }

@@ -363,7 +363,7 @@ public class ControlVigenciasCargos implements Serializable {
      * Metodo encargado de llenar la lista utilizada por el autocompletar
      */
 
-    public List<MotivosCambiosCargos> autocomlpetarMotivo(String in) {
+    public List<MotivosCambiosCargos> autocompletarMotivo(String in) {
         List<MotivosCambiosCargos> mot = getMotivosCambiosCargos();
         List<MotivosCambiosCargos> rta = new ArrayList<MotivosCambiosCargos>();
         for (MotivosCambiosCargos m : mot) {
@@ -676,28 +676,7 @@ public class ControlVigenciasCargos implements Serializable {
     }
 
     public void cancelarModificacion() {
-        if (bandera == 1) {
-            //CERRAR FILTRADO
-            FacesContext c = FacesContext.getCurrentInstance();
-            vcFecha = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcFecha");
-            vcFecha.setFilterStyle("display: none; visibility: hidden;");
-            vcEstructura = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcEstructura");
-            vcEstructura.setFilterStyle("display: none; visibility: hidden;");
-            vcMotivo = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcMotivo");
-            vcMotivo.setFilterStyle("display: none; visibility: hidden;");
-            vcNombreCargo = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreCargo");
-            vcNombreCargo.setFilterStyle("display: none; visibility: hidden;");
-            vcCentrosC = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcCentrosC");
-            vcCentrosC.setFilterStyle("display: none; visibility: hidden;");
-            vcNombreJefe = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
-            vcNombreJefe.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "270";
-            RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
-            bandera = 0;
-            filterVC = null;
-            tipoLista = 0;
-        }
-
+        cerrarFiltrado();
         listVCBorrar.clear();
         listVCCrear.clear();
         listVCModificar.clear();
@@ -721,6 +700,17 @@ public class ControlVigenciasCargos implements Serializable {
     }
 
     public void salir() {
+        cerrarFiltrado();
+        listVCBorrar.clear();
+        listVCCrear.clear();
+        listVCModificar.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        vigenciasCargosEmpleado = null;
+        guardado = true;
+    }
+    private void cerrarFiltrado(){
         if (bandera == 1) {
             //CERRAR FILTRADO
             FacesContext c = FacesContext.getCurrentInstance();
@@ -742,16 +732,6 @@ public class ControlVigenciasCargos implements Serializable {
             filterVC = null;
             tipoLista = 0;
         }
-
-        listVCBorrar.clear();
-        listVCCrear.clear();
-        listVCModificar.clear();
-        index = -1;
-        secRegistro = null;
-        k = 0;
-        vigenciasCargosEmpleado = null;
-        guardado = true;
-
     }
 
     public void picachu(String a) {
