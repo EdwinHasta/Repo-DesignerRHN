@@ -1199,7 +1199,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         guardado = false;
         cambioPension = false;
         cambioRetiros = false;
-        tiposPensionados = null;
+        //tiposPensionados = null;        
         clasesPensiones = null;
         listaPersonas = null;
         listaPensionados = null;
@@ -1213,8 +1213,11 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     /**
      * Metodo que muestra los dialogos de las listas dentro de la pagina
      *
-     * @param indice
-     * @param LND
+     * @param indice Fila de la tabla
+     * @param dlg Dialogo
+     * @param LND Tipo actualizacion = LISTA - NUEVO - DUPLICADO
+     * @param tt Tipo Trabajador : Pensionado / Retirado /
+     * VigenciaProrrateoProyecto
      */
     public void asignarIndex(Integer indice, int LND) {
         index = indice;
@@ -1238,109 +1241,73 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
      * @param indice
      * @param LND
      */
-    public void asignarIndexClasePensionados(Integer indice, int LND) {
-        index = indice;
+    public void asignarIndexClasePensionados(Integer indice, int LND, int pensionado) {
+        //index = indice;
         RequestContext context = RequestContext.getCurrentInstance();
-        if (LND == 0) {
-            tipoActualizacion = 0;
-        } else if (LND == 1) {
-            tipoActualizacion = 1;
-        } else if (LND == 2) {
-            tipoActualizacion = 2;
+        if (pensionado == 0) {
+            if (LND == 0) {
+                tipoActualizacion = 0;
+            } else if (LND == 1) {
+                tipoActualizacion = 1;
+            } else if (LND == 2) {
+                tipoActualizacion = 2;
+            }
+            getInfoRegistroTipoTrabajador();
+            context.update("formLovs:clasePensionDialogo"); //ClasesPensionDialogo
+            context.execute("clasePensionDialogo.show()");
+        } else if (pensionado == 1) {
+            if (LND == 0) {
+                tipoActualizacion = 0;
+            } else if (LND == 1) {
+                tipoActualizacion = 1;
+            } else if (LND == 2) {
+                tipoActualizacion = 2;
+            }
+            getInfoRegistroTipoTrabajador();
+            context.update("formLovs:tipoPensionadoDialogo"); //ClasesPensionDialogo
+            context.execute("tipoPensionadoDialogo.show()");
+        } else if (pensionado == 2) {
+            if (LND == 0) {
+                tipoActualizacion = 0;
+            } else if (LND == 1) {
+                tipoActualizacion = 1;
+            } else if (LND == 2) {
+                tipoActualizacion = 2;
+            }
+            getInfoRegistroTipoTrabajador();
+            context.update("formLovs:causaBientesDialogo"); //tipoPensionadoDialogo
+            context.execute("causaBientesDialogo.show()");
+        } else if (pensionado == 3) {
+            if (LND == 0) {
+                tipoActualizacion = 0;
+            } else if (LND == 1) {
+                tipoActualizacion = 1;
+            } else if (LND == 2) {
+                tipoActualizacion = 2;
+            }
+            getInfoRegistroTipoTrabajador();
+            context.update("formLovs:tutorDialogo"); //tipoPensionadoDialogo
+            context.execute("tutorDialogo.show()");
         }
-        getInfoRegistroTipoTrabajador();
-        context.update("formLovs:clasePensionDialogo"); //ClasesPensionDialogo
-        context.execute("clasePensionDialogo.show()");
     }
-
-    //ASIGNAR INDEX PARA DIALOGOS tipoPensionadoDialogo (LDN = LISTA - NUEVO - DUPLICADO)
-    /**
-     * Metodo que muestra los dialogos de las listas dentro de la pagina
-     *
-     * @param indice
-     * @param LND
-     */
-    public void asignarIndextipoPensionado(Integer indice, int LND) {
-        index = indice;
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (LND == 0) {
-            tipoActualizacion = 0;
-        } else if (LND == 1) {
-            tipoActualizacion = 1;
-        } else if (LND == 2) {
-            tipoActualizacion = 2;
-        }
-        getInfoRegistroTipoTrabajador();
-        context.update("formLovs:tipoPensionadoDialogo"); //tipoPensionadoDialogo
-        context.execute("tipoPensionadoDialogo.show()");
-    }
-
-    //ASIGNAR INDEX PARA DIALOGOS tipoPensionadoDialogo (LDN = LISTA - NUEVO - DUPLICADO)
-    /**
-     * Metodo que muestra los dialogos de las listas dentro de la pagina
-     *
-     * @param indice
-     * @param LND
-     */
-    public void asignarIndexCausaBiente(Integer indice, int LND) {
-        index = indice;
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (LND == 0) {
-            tipoActualizacion = 0;
-        } else if (LND == 1) {
-            tipoActualizacion = 1;
-        } else if (LND == 2) {
-            tipoActualizacion = 2;
-        }
-        getInfoRegistroTipoTrabajador();
-        context.update("formLovs:causaBientesDialogo"); //tipoPensionadoDialogo
-        context.execute("causaBientesDialogo.show()");
-    }
-
-    //ASIGNAR INDEX PARA DIALOGOS tipoPensionadoDialogo (LDN = LISTA - NUEVO - DUPLICADO)
-    /**
-     * Metodo que muestra los dialogos de las listas dentro de la pagina
-     *
-     * @param indice
-     * @param LND
-     */
-    public void asignarIndexTutor(Integer indice, int LND) {
-        index = indice;
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (LND == 0) {
-            tipoActualizacion = 0;
-        } else if (LND == 1) {
-            tipoActualizacion = 1;
-        } else if (LND == 2) {
-            tipoActualizacion = 2;
-        }
-        getInfoRegistroTipoTrabajador();
-        context.update("formLovs:tutorDialogo"); //tipoPensionadoDialogo
-        context.execute("tutorDialogo.show()");
-    }
-
     //ASIGNAR INDEX PARA DIALOGOS RETIRADOS (LDN = LISTA - NUEVO - DUPLICADO)
+
     /**
      * Metodo que muestra los dialogos de las listas dentro de la pagina
      *
      * @param indice
      * @param LND
      */
-    public void asignarIndexRetirados(Integer indice, int LND) {
-        index = indice;
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (LND == 0) {
-            tipoActualizacion = 0;
-        } else if (LND == 1) {
-            tipoActualizacion = 1;
-        } else if (LND == 2) {
-            tipoActualizacion = 2;
-        }
-        getInfoRegistroTipoTrabajador();
-        context.update("formLovs:RetirosDialogo"); //RetirosDialogo
-        context.execute("RetirosDialogo.show()");
+    /*
+     * public void asignarIndexRetirados(Integer indice, int LND) { index =
+     * indice; RequestContext context = RequestContext.getCurrentInstance(); if
+     * (LND == 0) { tipoActualizacion = 0; } else if (LND == 1) {
+     * tipoActualizacion = 1; } else if (LND == 2) { tipoActualizacion = 2; }
+     * getInfoRegistroTipoTrabajador();
+     * context.update("formLovs:RetirosDialogo"); //RetirosDialogo
+     * context.execute("RetirosDialogo.show()");
     }
-
+     */
     //ASIGNAR INDEX PARA DIALOGOS tipoPensionadoDialogo (LDN = LISTA - NUEVO - DUPLICADO)
     /**
      * Metodo que muestra los dialogos de las listas dentro de la pagina
@@ -1349,7 +1316,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
      * @param LND
      */
     public void asignarIndexMotivoRetiro(Integer indice, int LND) {
-        index = indice;
+        indexRetiro = indice;
         RequestContext context = RequestContext.getCurrentInstance();
         if (LND == 0) {
             tipoActualizacion = 0;
@@ -1525,7 +1492,6 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
      */
     public void listaValoresBotonCausaBientes() {
         RequestContext context = RequestContext.getCurrentInstance();
-
         if (index >= 0) {
             if (cualCelda == 1) {
                 getInfoRegistroTipoTrabajador();
@@ -1864,7 +1830,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
             System.out.println("Secuencia: " + pensionVigencia.getSecuencia());
             if (tipoLista == 0) {
                 pensionVigencia.setVigenciatipotrabajador(vigenciasTiposTrabajadores.get(indexPension));
-               
+
             }
             if (tipoLista == 1) {
                 pensionVigencia.setVigenciatipotrabajador(filtrarVTT.get(indexPension));

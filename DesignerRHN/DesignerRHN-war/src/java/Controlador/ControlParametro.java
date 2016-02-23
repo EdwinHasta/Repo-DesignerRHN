@@ -903,7 +903,7 @@ public class ControlParametro implements Serializable {
     }
 
     public void cancelarModificacion() {
-      cerrarFiltrado();
+        cerrarFiltrado();
         parametroLiquidacion = null;
         getParametroLiquidacion();
         empleadosParametros = null;
@@ -1066,6 +1066,7 @@ public class ControlParametro implements Serializable {
         return aceptar;
     }
 
+    //GETS & SETS DE LOVTIPOSTRABAJADORES
     public List<TiposTrabajadores> getLovTiposTrabajadores() {
         if (lovTiposTrabajadores == null) {
             lovTiposTrabajadores = administrarParametros.lovTiposTrabajadores();
@@ -1091,6 +1092,8 @@ public class ControlParametro implements Serializable {
     public void setFiltradoLovTiposTrabajadores(List<TiposTrabajadores> filtradoLovTiposTrabajadores) {
         this.filtradoLovTiposTrabajadores = filtradoLovTiposTrabajadores;
     }
+    
+    //GETS & SETS DE SeleccionTipoTrabajador
 
     public TiposTrabajadores getSeleccionTipoTrabajador() {
         return seleccionTipoTrabajador;
@@ -1099,6 +1102,8 @@ public class ControlParametro implements Serializable {
     public void setSeleccionTipoTrabajador(TiposTrabajadores seleccionTipoTrabajador) {
         this.seleccionTipoTrabajador = seleccionTipoTrabajador;
     }
+    
+    //GETS & SETS DE LovProcesos
 
     public List<Procesos> getLovProcesos() {
         if (lovProcesos == null) {
@@ -1216,10 +1221,12 @@ public class ControlParametro implements Serializable {
     }
 
     public List<Empleados> getLovEmpleados() {
-        /*
-         * if (lovEmpleados == null) { lovEmpleados =
-         * administrarParametros.empleadosLov(); } return lovEmpleados;
-         */
+//        
+//          if (lovEmpleados == null) { 
+//          lovEmpleados = administrarParametros.empleadosLov(); 
+//          } 
+//         return lovEmpleados;
+//        
         if (lovEmpleados == null) {
             lovEmpleados = administrarParametros.empleadosLov();
             RequestContext context = RequestContext.getCurrentInstance();
@@ -1269,12 +1276,15 @@ public class ControlParametro implements Serializable {
     }
 
     public String getInfoRegistroEmpleado() {
-        /*
-         * getLovEmpleados(); if (lovEmpleados != null) { infoRegistroEmpleado =
-         * "Cantidad de registros : " + lovEmpleados.size(); } else {
-         * infoRegistroEmpleado = "Cantidad de registros : 0";
-        }
-         */
+//       
+//        getLovEmpleados();
+//        if (lovEmpleados != null) {
+//            infoRegistroEmpleado =
+//                    "Cantidad de registros : " + lovEmpleados.size();
+//        } else {
+//            infoRegistroEmpleado = "Cantidad de registros : 0";
+//        }
+
         return infoRegistroEmpleado;
     }
 
@@ -1286,8 +1296,7 @@ public class ControlParametro implements Serializable {
         /*
          * getLovProcesos(); if (lovProcesos != null) { infoRegistroProceso =
          * "Cantidad de registros : " + lovProcesos.size(); } else {
-         * infoRegistroProceso = "Cantidad de registros : 0";
-        }
+         * infoRegistroProceso = "Cantidad de registros : 0"; }
          */
         return infoRegistroProceso;
     }
@@ -1301,8 +1310,7 @@ public class ControlParametro implements Serializable {
          * getLovTiposTrabajadores(); if (lovTiposTrabajadores != null) {
          * infoRegistroTipoTrabajador = "Cantidad de registros : " +
          * lovTiposTrabajadores.size(); } else { infoRegistroTipoTrabajador =
-         * "Cantidad de registros : 0";
-        }
+         * "Cantidad de registros : 0"; }
          */
         return infoRegistroTipoTrabajador;
     }
@@ -1316,8 +1324,7 @@ public class ControlParametro implements Serializable {
          * getLovEstructuras(); if (lovEstructuras != null) {
          * infoRegistroEstructura = "Cantidad de registros : " +
          * lovEstructuras.size(); } else { infoRegistroEstructura = "Cantidad de
-         * registros : 0";
-        }
+         * registros : 0"; }
          */
         return infoRegistroEstructura;
     }

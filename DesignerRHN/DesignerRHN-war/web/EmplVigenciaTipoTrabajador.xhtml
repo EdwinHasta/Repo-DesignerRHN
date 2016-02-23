@@ -119,6 +119,7 @@
                                                 <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.modificarVTT(indice, 'TIPOTRABAJADOR', info.tipotrabajador.nombre)}"/>
                                                 <p:ajax event="select" listener="#{controlVigenciaTipoTrabajador.cambiarIndice(indice, 1)}" />
                                                 <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndex(indice, 0)}"/>
+                                                <!--<p:ajax event="dblclick" listener="# {controlVigenciaTipoTrabajador.asignarIndex(indice, 0, 0, 0)}"/>-->
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -157,8 +158,8 @@
                         </p:panel>
 
                         <p:panel id="panelPensionadosInput" header="#{msg['informacionP']}" style="position: absolute; left: 12px; top: 280px;  width: 410px; height: 195px; border-radius: 10px; text-align: left; visibility: hidden;" >
-                           
-                             <h:outputText value="#{msg['fechainicioP']}:" style="position: absolute; left: 5px; top: 30px"/>
+
+                            <h:outputText value="#{msg['fechainicioP']}:" style="position: absolute; left: 5px; top: 30px"/>
                             <div id="posicionFechaInicialDialogo" style="position: absolute; left: 5px; top: 45px; height: 14px">
                                 <lnk:calendar id="fechaPensionInicio" value="#{controlVigenciaTipoTrabajador.pensionVigencia.fechainiciopension}">
                                     <!-- onclick="peguelo1();"-->
@@ -167,7 +168,7 @@
                                 </lnk:calendar>
                                 <!--<p:remoteCommand name="peguelo1" actionListener="# {controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}" update="fechaPensionInicio" process="@this"/>-->
                             </div>
-                            
+
 
                             <h:outputText value="#{msg['fechafinalP']}:" style="position: absolute; left: 118px; top: 30px"/>
                             <div id="posicionFechaFinalDialogo" style="position: absolute; left: 118px; top: 45px; height: 14px">
@@ -194,29 +195,33 @@
                             <p:inputText onclick="select();" id="clasePension" value="#{controlVigenciaTipoTrabajador.pensionVigencia.clase.descripcion}" style="position: absolute; left: 5px; top: 85px; width: 175px; height: 13px">
                                 <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}"  process="@this"/>
                                 <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.cambiosPension()}" update="clasePension"/>
-                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndexClasePensionados(indice, 0)}"/>
+                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndexClasePensionados(indice, 0, 0)}"/>
+                                <!--<p:ajax event="dblclick" listener="# {controlVigenciaTipoTrabajador.asignarIndex(indice, 0, 0, 1)}"/>-->
                             </p:inputText>
                             <p:commandButton value="" process="@this" icon="ui-icon-search" actionListener="#{controlVigenciaTipoTrabajador.listaValoresBotonClasePensionado()}" style="position: absolute; left: 190px; top: 85px; height: 23px; width: 23px"/>
 
                             <h:outputText value="#{msg['tipoP']}:" style="position: absolute; left: 230px; top: 70px"/>
                             <p:inputText onclick="select();" id="tipoPensionado" value="#{controlVigenciaTipoTrabajador.pensionVigencia.tipopensionado.descripcion}" style="position: absolute; left: 230px; top: 85px; width: 120px; height: 13px">
-                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndextipoPensionado(indice, 0)}"/>
-                                <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}" process="@this"/>
-                                <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.cambiosPension()}" update="tipoPensionado"/>
+                                <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}"  process="@this" immediate="true"/>
+                                <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.cambiosPension()}" update="tipoPensionado" process="@this"/>       
+                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndexClasePensionados(indice, 0, 1)}"/>
+                                <!--<p:ajax event="dblclick" listener="# {controlVigenciaTipoTrabajador.asignarIndex(indice, 1, 0, 1)}}" process="@this"/>-->
                             </p:inputText>
                             <p:commandButton value="" process="@this" actionListener="#{controlVigenciaTipoTrabajador.listaValoresBotonTipoPensionado()}" icon="ui-icon-search" style="position: absolute; left: 361px; top: 85px; height: 23px; width: 23px"/>
 
                             <h:outputText value="#{msg['nombreP']}:" style="position: absolute; left: 5px; top: 113px"/>
                             <p:inputText onclick="select();" id="causaBiente" value="#{controlVigenciaTipoTrabajador.pensionVigencia.causabiente.persona.nombre}" style="position: absolute; left: 5px; top: 129px; width: 270px; height: 13px">
-                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndexCausaBiente(indice, 0)}"  process="@this"/>
                                 <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}" immediate="true" process="@this"/>
-                                <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.cambiosPension()}" update="causaBiente"/>
+                                <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.cambiosPension()}" update="causaBiente" process="@this"/>
+                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndexClasePensionados(indice, 0, 2)}"/>
+                           <!--     <p:ajax event="dblclick" listener="# {controlVigenciaTipoTrabajador.asignarIndex(indice, 2, 0, 1)}" process="@this"/>-->
                             </p:inputText>
-                            <p:commandButton value="" process="@this" icon="ui-icon-search" actionListener="# {controlVigenciaTipoTrabajador.listaValoresBotonCausaBientes()}" style="position: absolute; left: 286px; top: 129px; height: 23px; width: 23px"/>
+                            <p:commandButton value="" process="@this" icon="ui-icon-search" actionListener="#{controlVigenciaTipoTrabajador.listaValoresBotonCausaBientes()}" style="position: absolute; left: 286px; top: 129px; height: 23px; width: 23px"/>
 
                             <h:outputText value="#{msg['nombretutorP']}:" style="position: absolute; left: 5px; top: 155px"/>
                             <p:inputText onclick="select();" id="tutorPension" value="#{controlVigenciaTipoTrabajador.pensionVigencia.tutor.nombreCompleto}" style="position: absolute; left: 5px; top: 170px; width: 270px; height: 13px">
-                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndexTutor(indice, 0)}"  process="@this"/>
+                                <!--<p:ajax event="dblclick" listener="# {controlVigenciaTipoTrabajador.asignarIndex(indice, 3, 0, 1)}"  process="@this"/>      -->  
+                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndexClasePensionados(indice, 0, 3)}"/>
                                 <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}"  process="@this"/>
                                 <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.cambiosPension()}" update="tutorPension"/>
                             </p:inputText> 
@@ -228,8 +233,8 @@
                         <p:panel id="panelRetiradosMensaje" header="#{msg['informacionR']}" style="position: absolute; left: 440px; top: 280px;  width: 415px; height: 195px; border-radius: 10px; text-align: left; visibility: visible">
                             <h:outputText value="#{msg['panelRetiradosMensaje']}" />
                         </p:panel>
-                        
-                        
+
+
                         <p:panel id="panelRetiradosInput" header="#{msg['informacionR']}" style="position: absolute; left: 440px; top: 280px;  width: 415px; height: 195px; border-radius: 10px; text-align: left; visibility: hidden">
                             <h:outputText value="#{msg['fecharetiroR']}:" style="position: absolute; left: 10px; top: 45px"/>
                             <div id="posicionFechaRetiroDialogo" style=" position: absolute; left: 90px; top: 40px">
@@ -241,7 +246,7 @@
 
                             <h:outputText value="#{msg['motivoretiroR']}:" style="position: absolute; left: 185px; top: 45px"/>
                             <p:inputText id="motivoRetiro" value="#{controlVigenciaTipoTrabajador.retiroVigencia.motivoretiro.nombre}" style="position: absolute; left: 270px; top: 40px; width: 113px">
-                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndexMotivoRetiro(indice, 0)}" immediate="true" process="@this"/>
+                                <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndex(indice, 0, 0, 2)}" immediate="true" process="@this"/>
                                 <p:ajax event="click"  listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoRetirados()}" process="@this" immediate="true"/>
                             </p:inputText>
                             <p:commandButton value="" actionListener="#{controlMotivosReemplazos.recibirPaginaAnterior('atrasmotivoreemplazo')}"  icon="ui-icon-search" style="position: absolute; left: 393px; top: 41px; height: 23px; width: 23px" action="motivoreempleazo" process="@this"/>
@@ -336,13 +341,13 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRegPensionado']}" style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold;text-align: center" />
                     </p:dialog>
-                    
-                     <p:dialog id="validacionFechas" header="#{msg['atencion']}" widgetVar="validacionFechas"  resizable="false" draggable="false" modal="true" height="95" width="450px"  closable="false">  
+
+                    <p:dialog id="validacionFechas" header="#{msg['atencion']}" widgetVar="validacionFechas"  resizable="false" draggable="false" modal="true" height="95" width="450px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
                         <h:outputText value="#{msg['validacionFechas']}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="validacionFechas.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciaTipoTrabajador.activarCtrlF11()}"/> 
                 </h:form>
 
@@ -475,9 +480,9 @@
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['codigoTP']}" />
                                 </f:facet>
-                             <h:outputText  value="#{tipoPensionado.codigo}" />
+                                <h:outputText  value="#{tipoPensionado.codigo}" />
                             </p:column>
-                        <p:column filterBy="#{tipoPensionado.descripcion}"  filterMatchMode="contains">
+                            <p:column filterBy="#{tipoPensionado.descripcion}"  filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="#{msg['descripcionTP']}" />
                                 </f:facet>
