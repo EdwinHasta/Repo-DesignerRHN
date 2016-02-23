@@ -44,23 +44,23 @@
 
                                 <!-- Panel Izquierdo - Superior -->
 
-                                <fieldset style="height: 92px; width: 185px; display: block; position: absolute; border-radius: 10px; top: 40px; left: 15px; padding-right: 8px; padding-bottom: 0px; padding-top:0px;">
+                                <fieldset style="height: 92px; width: 148px; display: block; position: absolute; border-radius: 10px; top: 40px; left: 15px; padding-right: 8px; padding-bottom: 0px; padding-top:0px;">
                                     <!-- <h:outputText value="#{msg['tipopersonal']}" styleClass="outputTextFielset" /> -->
 
-                                    <p:commandButton style="background-image: url(Imagenes/#{controlRemoto.imagen}); width: 80px; height: 80px; position: absolute; top: 7px; left: 5px; background-repeat: no-repeat; background-size: 100% 100%;" id="TipoPersonal" value="" update=":formularioDialogos" actionListener="#{controlRemoto.pruebita()}"  action="#{controlRemoto.pantallaReintegrar()}" process="@this"/>
+                                    <p:commandButton id="TipoPersonal" style="background-image: url(Imagenes/#{controlRemoto.imagen}); width: 41px; height: 80px; position: absolute; top: 7px; left: 5px; background-repeat: no-repeat; background-size: 100% 100%;" value="" update=":formularioDialogos" actionListener="#{controlRemoto.pruebita()}"  action="#{controlRemoto.pantallaReintegrar()}" process="@this"/>
                                     <p:tooltip  for="TipoPersonal">
                                         #{msg['cargosdesempeñados1']} <br/> #{msg['cargosdesempeñados2']}
                                     </p:tooltip>
-                                    <p:commandButton id="Activos" value="#{msg['activos']}" style="position: absolute; width: 110px; height: 20px; left: 87px; top: 7px; font-size: 11px; padding: 0;" styleClass="#{controlRemoto.styleActivos}" actionListener="#{controlRemoto.activos()}" update=":form:tabMenu:contenedor, :form:alerta, TipoPersonal" />
+                                    <p:commandButton id="Activos" value="#{msg['activos']}" style="position: absolute; width: 110px; height: 20px; left: 50px; top: 7px; font-size: 11px; padding: 0;" styleClass="#{controlRemoto.styleActivos}" actionListener="#{controlRemoto.activos()}" update=":form:tabMenu:contenedor, :form:alerta, TipoPersonal" />
                                     <p:tooltip  for="Activos" value="#{msg['informacionactivos']}"  />
 
-                                    <p:commandButton id="Pensionados" value="#{msg['pensionados']}" style="position: absolute; left: 87px; top: 27px; width: 110px; height: 20px; font-size: 11px; padding: 0;" styleClass="#{controlRemoto.stylePensionados}" actionListener="#{controlRemoto.pensionados()}" update="contenedor, :form:alerta, TipoPersonal"/>
+                                    <p:commandButton id="Pensionados" value="#{msg['pensionados']}" style="position: absolute; left: 50px; top: 27px; width: 110px; height: 20px; font-size: 11px; padding: 0;" styleClass="#{controlRemoto.stylePensionados}" actionListener="#{controlRemoto.pensionados()}" update="contenedor, :form:alerta, TipoPersonal"/>
                                     <p:tooltip  for="Pensionados" value="#{msg['informacionpensionados']}"  />
 
-                                    <p:commandButton id="Retirados" value="#{msg['retirados']}" style="position: absolute; left: 87px; top: 47px; width: 110px; height: 20px; font-size: 11px; padding: 0;" styleClass="#{controlRemoto.styleRetirados}" actionListener="#{controlRemoto.retirados()}" update="contenedor, :form:alerta, TipoPersonal"/>
+                                    <p:commandButton id="Retirados" value="#{msg['retirados']}" style="position: absolute; left: 50px; top: 47px; width: 110px; height: 20px; font-size: 11px; padding: 0;" styleClass="#{controlRemoto.styleRetirados}" actionListener="#{controlRemoto.retirados()}" update="contenedor, :form:alerta, TipoPersonal"/>
                                     <p:tooltip  for="Retirados" value="#{msg['informacionretirados']}"  />
 
-                                    <p:commandButton id="Aspirantes" value="#{msg['aspirantes']}"  style="position: absolute; left: 87px; top: 67px; width: 110px; height: 20px; font-size: 11px; padding: 0;" styleClass="#{controlRemoto.styleAspirantes}" actionListener="#{controlRemoto.aspirantes()}" update="contenedor , :form:alerta, TipoPersonal"/>
+                                    <p:commandButton id="Aspirantes" value="#{msg['aspirantes']}"  style="position: absolute; left: 50px; top: 67px; width: 110px; height: 20px; font-size: 11px; padding: 0;" styleClass="#{controlRemoto.styleAspirantes}" actionListener="#{controlRemoto.aspirantes()}" update="contenedor , :form:alerta, TipoPersonal"/>
                                     <p:tooltip  for="Aspirantes" value="#{msg['informacionaspirantes']}"  />
                                 </fieldset>
 
@@ -72,28 +72,28 @@
                                 <p:commandButton id="btnUltimo" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 695px; top: 5px; height: 29px; width: 30px;" icon="ui-icon-arrowthickstop-1-e" disabled="#{controlRemoto.mostrarT == false ? true : false}" actionListener="#{controlRemoto.ultimoTipoTrabajador()}"/>
 
                                 <p:panel id="contenedor" style="border: none">
-                                    <fieldset id="set" style="height: 92px; width: 595px; display: block; position: absolute; border-radius: 10px; left: 225px; top: 40px; padding-top: 0px; padding-bottom: 0px;">
+                                    <fieldset id="set" style="height: 92px; width: 632px; display: block; position: absolute; border-radius: 10px; left: 188px; top: 40px; padding-top: 0px; padding-bottom: 0px;">
 
 
 
-                                        <p:outputLabel value="#{msg['codigo']}" id="cod" style="position: absolute; left: 12px; color: #14388B; 
-                                                       ; width: 63px; height: 20px; top: 7px; font-weight: bold"/>
+                                        <p:outputLabel value="#{msg['codigo']}" id="cod" style="position: absolute; left: 12px; 
+                                                       color: #14388B; width: 63px; height: 20px; top: 7px; font-weight: bold"/>
                                         <p:inputText id="codigo" readonly="true"  value="#{controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.codigoempleado}" style="position: absolute; left: 12px; top: 22px; width: 76px; height: 15px;" onclick="select();"/>
                                         <!-- <p:ajax event="change" update=":formulario:info:VCargoDesempeñado"/> -->
 
                                         <p:outputLabel value="#{msg['primerapellido']}" id="pa" style="position: absolute; left: 105px; 
                                                        color: #14388B; ; top: 7px; font-weight: bold"  />
                                         <p:inputText id="primerApellido" readonly="true" value="#{controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.persona.primerapellido}" style="position: absolute;left: 105px;
-                                                     top: 22px; width: 128px; height: 15px;" onclick="select();"/>
+                                                     top: 22px; width: 138px; height: 15px;" onclick="select();"/>
 
                                         <p:outputLabel value="#{msg['segundoapellido']}" id="sa" style="position: absolute; left: 250px; 
                                                        color: #14388B; ; top: 7px; font-weight: bold" />
                                         <p:inputText id="segundoApellido" readonly="true" value="#{controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.persona.segundoapellido}" style="position: absolute;
-                                                     left: 250px; top: 22px; height: 15px; width: 128px;" onclick="select();"/>
+                                                     left: 250px; top: 22px; height: 15px; width: 138px;" onclick="select();"/>
 
                                         <p:outputLabel value="#{msg['nombre']}" style="position: absolute; left: 394px;  color: #14388B; top: 7px; font-weight: bold"  />
                                         <p:inputText id="nombre" readonly="true" value="#{controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.persona.nombre}" style="position: absolute; left: 394px; top: 22px; 
-                                                     height: 15px; width: 128px;" onclick="select();"/>
+                                                     height: 15px; width: 138px;" onclick="select();"/>
 
 
 

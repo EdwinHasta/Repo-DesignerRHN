@@ -126,8 +126,10 @@ public class ControlRemoto implements Serializable {
     private int posicion;
     private int totalRegistros;
     private String informacionTiposTrabajadores;
+    private final String extension;
 
     public ControlRemoto() {
+        extension=".png";
         accion = null;
         tipoPersonal = "activos";
         tipo = "ACTIVO";
@@ -151,7 +153,7 @@ public class ControlRemoto implements Serializable {
         //vwActualesTiposTrabajadoresesLista.add(vwActualesTiposTrabajadores);
         administrarCarpetaPersonal = new AdministrarCarpetaPersonal();
         busquedaRapida = null;
-        Imagen = "personal1.gif";
+        Imagen = "personal1"+extension;
         styleActivos = "ui-state-highlight";
         acumulado = false;
         novedad = false;
@@ -234,7 +236,7 @@ public class ControlRemoto implements Serializable {
             vwActualesTiposContratos = null;
             fechaActualesTiposContratos = null;
         }
-
+        
         try {
             vwActualesNormasEmpleados = administrarCarpetaPersonal.consultarActualNormaLaboralEmpleado(secuencia);
         } catch (Exception e) {
@@ -336,7 +338,6 @@ public class ControlRemoto implements Serializable {
         } catch (Exception e) {
             actualComprobante = null;
         }
-
         //RequestContext.getCurrentInstance().update("formulario:info:VCargoDesempeñado");
         //FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("formulario:VCargoDesempeñado");
     }
@@ -357,7 +358,7 @@ public class ControlRemoto implements Serializable {
             tipo = tipoBk;
         } else {
             backup = null;
-            Imagen = "personal1.gif";
+            Imagen = "personal1"+extension;
             styleActivos = "ui-state-highlight";
             stylePensionados = "";
             styleRetirados = "";
@@ -404,7 +405,7 @@ public class ControlRemoto implements Serializable {
             tipo = tipoBk;
         } else {
             backup = null;
-            Imagen = "personal2.gif";
+            Imagen = "personal2"+extension;
             stylePensionados = "ui-state-highlight";
             styleActivos = "";
             styleRetirados = "";
@@ -451,7 +452,7 @@ public class ControlRemoto implements Serializable {
             tipo = tipoBk;
         } else {
             backup = null;
-            Imagen = "personal3.gif";
+            Imagen = "personal3"+extension;
             styleRetirados = "ui-state-highlight";
             stylePensionados = "";
             styleActivos = "";
@@ -498,7 +499,7 @@ public class ControlRemoto implements Serializable {
             tipo = tipoBk;
         } else {
             backup = null;
-            Imagen = "personal4.gif";
+            Imagen = "personal4"+extension;
             styleAspirantes = "ui-state-highlight";
             stylePensionados = "";
             styleActivos = "";
@@ -591,7 +592,7 @@ public class ControlRemoto implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         VWActualesTiposTrabajadores empleadoSeleccionado = administrarCarpetaPersonal.consultarActualTipoTrabajadorEmpleado(emplSeleccionado.getRfEmpleado());
         if (empleadoSeleccionado.getTipoTrabajador().getTipo().equalsIgnoreCase("Activo")) {
-            Imagen = "personal1.gif";
+            Imagen = "personal1"+extension;
             styleActivos = "ui-state-highlight";
             stylePensionados = "";
             styleRetirados = "";
@@ -607,7 +608,7 @@ public class ControlRemoto implements Serializable {
             tipo = "ACTIVO";
         }
         if (empleadoSeleccionado.getTipoTrabajador().getTipo().equalsIgnoreCase("Pensionado")) {
-            Imagen = "personal2.gif";
+            Imagen = "personal2"+extension;
             stylePensionados = "ui-state-highlight";
             styleActivos = "";
             styleRetirados = "";
@@ -623,7 +624,7 @@ public class ControlRemoto implements Serializable {
             tipo = "PENSIONADO";
         }
         if (empleadoSeleccionado.getTipoTrabajador().getTipo().equalsIgnoreCase("Retirado")) {
-            Imagen = "personal3.gif";
+            Imagen = "personal3"+extension;
             styleRetirados = "ui-state-highlight";
             stylePensionados = "";
             styleActivos = "";
@@ -639,7 +640,7 @@ public class ControlRemoto implements Serializable {
             tipo = "RETIRADO";
         }
         if (empleadoSeleccionado.getTipoTrabajador().getTipo().equalsIgnoreCase("Disponible")) {
-            Imagen = "personal4.gif";
+            Imagen = "personal4"+extension;
             styleAspirantes = "ui-state-highlight";
             styleRetirados = "";
             stylePensionados = "";
@@ -752,7 +753,7 @@ public class ControlRemoto implements Serializable {
             administrarCarpetaPersonal.actualizarFotoPersona(identificacion);
             //RequestContext.getCurrentInstance().update("formEncrip:foto");
         } catch (Exception e) {
-            System.out.println("Pailander");
+            //System.out.println("Pailander");
         }
     }
 
