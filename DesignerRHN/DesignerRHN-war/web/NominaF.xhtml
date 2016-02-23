@@ -16,7 +16,7 @@
                     <p:growl id="growl" showDetail="true"/>
                     <p:panel id="PanelTotal" header="#{msg['titulo']}" style=" ; position: absolute; width: 874px; height: 530px;"> 
 
-                        <p:tabView  id="tabMenu"  dynamic="true" style=" height: 485px;" widgetVar="tabMenu" activeIndex="#{controlRemoto.numPestaña}">  
+                        <p:tabView  id="tabMenu"  dynamic="true" style=" height: 490px;" widgetVar="tabMenu" activeIndex="#{controlRemoto.numPestaña}">  
                             <p:ajax event="tabChange" listener="#{controlRemoto.pestañaActual}"/> 
 
                             <p:tab title="#{msg['personal']}" id="Personal">  
@@ -147,18 +147,18 @@
                                             <h:outputText style="position: absolute; left: 50px; top: 140px; ; font-weight: bold; color: #14388B; " value="#{msg['afiliaciones']}"/>
                                             <h:outputText style="position: absolute; left: 50px; top: 185px; ; font-weight: bold; color: #14388B; " value="#{msg['ibc']}"/>
                                             <h:outputText style="position: absolute; left: 50px; top: 230px; ; font-weight: bold; color: #14388B; " value="#{msg['tipoviajero']}"/>
-                                            <h:outputText style="position: absolute; left: 320px; top: 5px; ; font-weight: bold; color: #14388B; " value="#{msg['centrodecosto']}"/>
-                                            <h:outputText style="position: absolute; left: 320px; top: 50px; ; font-weight: bold; color: #14388B; " value="#{msg['tipotrabajador']}"/>
-                                            <h:outputText style="position: absolute; left: 320px; top: 95px; ; font-weight: bold; color: #14388B; " value="#{msg['legislacionlaboral']}"/>
-                                            <h:outputText style="position: absolute; left: 320px; top: 140px; ; font-weight: bold; color: #14388B; " value="#{msg['jornada']}"/>
-                                            <h:outputText style="position: absolute; left: 320px; top: 185px; ; font-weight: bold; color: #14388B; " value="#{msg['menorvalorretencion']}"/>
-                                            <h:outputText style="position: absolute; left: 320px; top: 230px; ; font-weight: bold; color: #14388B; " value="#{msg['vacaciones']}"/>
-                                            <h:outputText style="position: absolute; left: 590px; top: 5px; ; font-weight: bold; color: #14388B; " value="#{msg['sueldo']}"/>
-                                            <h:outputText style="position: absolute; left: 590px; top: 50px; ; font-weight: bold; color: #14388B; " value="#{msg['tiposalario']}"/>
-                                            <h:outputText style="position: absolute; left: 590px; top: 95px; ; font-weight: bold; color: #14388B; " value="#{msg['ubicaciongeografica']}"/>
-                                            <h:outputText style="position: absolute; left: 590px; top: 140px; ; font-weight: bold; color: #14388B; " value="#{msg['formadepago']}"/>
-                                            <h:outputText style="position: absolute; left: 590px; top: 185px; ; font-weight: bold; color: #14388B; " value="#{msg['set']}"/>
-                                            <h:outputText style="position: absolute; left: 590px; top: 230px; ; font-weight: bold; color: #14388B; " value="#{msg['comprobantesdepago']}"/>
+                                            <h:outputText style="position: absolute; left: 325px; top: 5px; ; font-weight: bold; color: #14388B; " value="#{msg['centrodecosto']}"/>
+                                            <h:outputText style="position: absolute; left: 325px; top: 50px; ; font-weight: bold; color: #14388B; " value="#{msg['tipotrabajador']}"/>
+                                            <h:outputText style="position: absolute; left: 325px; top: 95px; ; font-weight: bold; color: #14388B; " value="#{msg['legislacionlaboral']}"/>
+                                            <h:outputText style="position: absolute; left: 325px; top: 140px; ; font-weight: bold; color: #14388B; " value="#{msg['jornada']}"/>
+                                            <h:outputText style="position: absolute; left: 325px; top: 185px; ; font-weight: bold; color: #14388B; " value="#{msg['menorvalorretencion']}"/>
+                                            <h:outputText style="position: absolute; left: 325px; top: 230px; ; font-weight: bold; color: #14388B; " value="#{msg['vacaciones']}"/>
+                                            <h:outputText style="position: absolute; left: 595px; top: 5px; ; font-weight: bold; color: #14388B; " value="#{msg['sueldo']}"/>
+                                            <h:outputText style="position: absolute; left: 595px; top: 50px; ; font-weight: bold; color: #14388B; " value="#{msg['tiposalario']}"/>
+                                            <h:outputText style="position: absolute; left: 595px; top: 95px; ; font-weight: bold; color: #14388B; " value="#{msg['ubicaciongeografica']}"/>
+                                            <h:outputText style="position: absolute; left: 595px; top: 140px; ; font-weight: bold; color: #14388B; " value="#{msg['formadepago']}"/>
+                                            <h:outputText style="position: absolute; left: 595px; top: 185px; ; font-weight: bold; color: #14388B; " value="#{msg['set']}"/>
+                                            <h:outputText style="position: absolute; left: 595px; top: 230px; ; font-weight: bold; color: #14388B; " value="#{msg['comprobantesdepago']}"/>
                                         </p>
 
                                         <!-- Botones Panel Central -->
@@ -264,127 +264,93 @@
                                         <p:inputText id="VIBC" style="position: absolute; left: 50px; top: 200px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.actualIBC}" />
                                         <p:inputText id="VTipoViajero" style="position: absolute; left: 50px; top: 245px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;"  readonly="true" value="#{controlRemoto.vwActualesVigenciasViajeros.tipoViajero.nombre}"/>
 
-                                        <p:inputText id="VCentroDeCosto" style="position: absolute; left: 320px; top: 20px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesLocalizaciones.localizacion.centrocosto.codigo} - #{controlRemoto.vwActualesLocalizaciones.localizacion.nombre}"  />
-                                        <p:inputText id="VTipoTrabajador" style="position: absolute; left: 320px; top: 65px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesTiposTrabajadores.tipoTrabajador.nombre}" />
-                                        <p:inputText id="VLegislacionLaboral" style="position: absolute; left: 320px; top: 110px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesContratos.contrato.descripcion}" />
-                                        <p:inputText id="VJornada" style="position: absolute; left: 320px; top: 155px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesJornadas.jornadaTrabajo.descripcion}"  />
-                                        <p:inputText id="VMenorValorRetencio" style="position: absolute; left: 320px; top: 210px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;"  readonly="true" value="#{controlRemoto.actualMVR}"/>
-                                        <p:inputText id="VVacaciones" style="position: absolute; left: 320px; top: 245px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;"  readonly="true" value="#{controlRemoto.estadoVacaciones}"/>
+                                        <p:inputText id="VCentroDeCosto" style="position: absolute; left: 325px; top: 20px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesLocalizaciones.localizacion.centrocosto.codigo} - #{controlRemoto.vwActualesLocalizaciones.localizacion.nombre}"  />
+                                        <p:inputText id="VTipoTrabajador" style="position: absolute; left: 325px; top: 65px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesTiposTrabajadores.tipoTrabajador.nombre}" />
+                                        <p:inputText id="VLegislacionLaboral" style="position: absolute; left: 325px; top: 110px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesContratos.contrato.descripcion}" />
+                                        <p:inputText id="VJornada" style="position: absolute; left: 325px; top: 155px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesJornadas.jornadaTrabajo.descripcion}"  />
+                                        <p:inputText id="VMenorValorRetencio" style="position: absolute; left: 325px; top: 210px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;"  readonly="true" value="#{controlRemoto.actualMVR}"/>
+                                        <p:inputText id="VVacaciones" style="position: absolute; left: 325px; top: 245px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;"  readonly="true" value="#{controlRemoto.estadoVacaciones}"/>
 
-                                        <p:inputText id="VSueldo" style="position: absolute; left: 590px; top: 20px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.sueldo}"/>
-                                        <p:inputText id="VTipoSalario" style="position: absolute; left: 590px; top: 65px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesReformasLaborales.reformaLaboral.nombre}" />
-                                        <p:inputText id="VUbicacion" style="position: absolute; left: 590px; top: 110px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesUbicaciones.ubicacion.descripcion} #{controlRemoto.vwActualesUbicaciones.ubicacion.ciudad.nombre}" />
-                                        <p:inputText id="VFormaDePago" style="position: absolute; left: 590px; top: 155px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesFormasPagos.formaPago.nombre}" />
-                                        <p:inputText id="VSET" style="position: absolute; left: 590px; top: 210px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.actualSet}"/>
-                                        <p:inputText id="VComprobantes" style="position: absolute; left: 590px; top: 245px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.actualComprobante}"/>
+                                        <p:inputText id="VSueldo" style="position: absolute; left: 595px; top: 20px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.sueldo}"/>
+                                        <p:inputText id="VTipoSalario" style="position: absolute; left: 595px; top: 65px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesReformasLaborales.reformaLaboral.nombre}" />
+                                        <p:inputText id="VUbicacion" style="position: absolute; left: 595px; top: 110px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesUbicaciones.ubicacion.descripcion} #{controlRemoto.vwActualesUbicaciones.ubicacion.ciudad.nombre}" />
+                                        <p:inputText id="VFormaDePago" style="position: absolute; left: 595px; top: 155px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesFormasPagos.formaPago.nombre}" />
+                                        <p:inputText id="VSET" style="position: absolute; left: 595px; top: 210px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.actualSet}"/>
+                                        <p:inputText id="VComprobantes" style="position: absolute; left: 595px; top: 245px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.actualComprobante}"/>
                                     </fieldset>
                                 </p:panel>
 
 
 
 
-                                <p:panel id="panelInf" style="border: none" >
+                                <p:panel id="panelInf" style="position: absolute; top:423px; left:0px; padding: 0px; width: 849px; border: none; background: transparent;" >
 
                                     <!-- Panel Acumulados y Novedades -->
-
-                                    <fieldset style="height: 35px; width: 74px; display: block; position: absolute; top: 423px; border-radius: 5px; left: 17px">
-
-                                        <p:commandButton id="AcumuladosNomina" value="" disabled="#{controlRemoto.acumulado}" style="position: absolute; background-image: url(Imagenes/Iconos/acumulados.png); width: 40px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px; border: outset; border-width: 0px;" action="acumuladosEmpleado" actionListener="#{controlEmplAcumulados.recibirEmpleado(controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.secuencia)}"/>
-                                        <p:tooltip  for="AcumuladosNomina">
-                                            #{msg['AcumuladosNomina1']}<br/>#{msg['AcumuladosNomina2']}
-                                        </p:tooltip>
-
-                                        <p:commandButton id="NovedadesEmpleado" value="" disabled="#{controlRemoto.novedad}" style="position: absolute; background-image: url(Imagenes/Iconos/novedadEmpleado.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%; left: 47px; top: 2px; border: outset; border-width: 0px; " action="novedadEmpl" actionListener="#{controlEmplNovedad.recibirEmpleado(controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.secuencia)}"/>
-                                        <!--     <p:tooltip   for="NovedadesEmpleado" value="NOVEDADES DEL EMPLEADO: Observe todas las novedades fijas y/o ocacionales que el empleado ha tenido desde su ingreso."  /> -->
-                                        <p:tooltip   for="NovedadesEmpleado" >
-                                            #{msg['NovedadesEmpleado1']} 
-                                            <br/>
-                                            #{msg['NovedadesEmpleado2']}
-                                        </p:tooltip>
-
+                                    <fieldset style="border-radius: 5px; position: relative; left: 0px; width: 808px;">
+                                        <center>
+                                            <p:commandButton id="AcumuladosNomina" value="" disabled="#{controlRemoto.acumulado}" style="background-image: url(Imagenes/Iconos/acumulados.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" action="acumuladosEmpleado" actionListener="#{controlEmplAcumulados.recibirEmpleado(controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.secuencia)}"/>
+                                            <p:tooltip  for="AcumuladosNomina">
+                                                #{msg['AcumuladosNomina1']}<br/>#{msg['AcumuladosNomina2']}
+                                            </p:tooltip>
+                                            <p:commandButton id="NovedadesEmpleado" value="" disabled="#{controlRemoto.novedad}" style="background-image: url(Imagenes/Iconos/novedadEmpleado.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%; " action="novedadEmpl" actionListener="#{controlEmplNovedad.recibirEmpleado(controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.secuencia)}"/>
+                                            <p:tooltip   for="NovedadesEmpleado" >
+                                                #{msg['NovedadesEmpleado1']} 
+                                                <br/>
+                                                #{msg['NovedadesEmpleado2']}
+                                            </p:tooltip>
+                                            <p:spacer styleClass="separador"/>
+                                            <!-- Panel Evaluacion y Resultados -->
+                                            <p:commandButton id="EvaluarPersona" value="" disabled="#{controlRemoto.evaluacion}" style=" background-image: url(Imagenes/Iconos/evaluacion.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%; " />
+                                            <p:tooltip  for="EvaluarPersona" value="#{msg['EvaluarPersona']}"  />
+                                            <p:commandButton id="ResultadosEvaluaciones" value=""  style="background-image: url(Imagenes/Iconos/resultados.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" />
+                                            <p:tooltip  for="ResultadosEvaluaciones">
+                                                #{msg['resultadosevaluaciones1']}<br/>#{msg['resultadosevaluaciones2']}
+                                            </p:tooltip>
+                                            <p:spacer styleClass="separador"/>
+                                            <!-- Panel Salud Ocupacional-->
+                                            <p:commandButton id="SaludOcupacional" value="" style="background-image: url(Imagenes/Iconos/saludOcupacional2.png); background-repeat: no-repeat; background-size: 100% 100%; width: 40px; height: 40px;" action="emplvigsaludocupacional" />
+                                            <p:tooltip  for="SaludOcupacional" >
+                                                #{msg['saludocupacional1']}<br/>#{msg['saludocupacional2']}
+                                            </p:tooltip>
+                                            <p:spacer styleClass="separador"/>
+                                            <!-- Panel Ingresos Act. Pen. y Asp.-->
+                                            <p:commandButton id="IngresoPersonal" value="" disabled="#{controlRemoto.activo}"  style="background-image: url(Imagenes/Iconos/ingreso.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" action="personaIndividual"/>                            
+                                            <p:tooltip  for="IngresoPersonal">
+                                                #{msg['ingresodepersonal1']}<br/>#{msg['ingresodepersonal2']}
+                                            </p:tooltip>
+                                            <p:commandButton id="InformacionJubilados" value="" disabled="#{controlRemoto.pensionado}"  style="background-image: url(Imagenes/Iconos/pensionado.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" />
+                                            <p:tooltip  for="InformacionJubilados" >
+                                                #{msg['informacionjubilados1']}<br/>#{msg['informacionjubilados2']}
+                                            </p:tooltip>
+                                            <p:commandButton id="IngresoAspirantes" value="" disabled="#{controlRemoto.aspirante}"  style="background-image: url(Imagenes/Iconos/aspirantes.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" />
+                                            <p:tooltip  for="IngresoAspirantes">
+                                                #{msg['ingresoaspirantes1']}<br/>#{msg['ingresoaspirantes2']}
+                                            </p:tooltip>
+                                            <p:spacer styleClass="separador"/>
+                                            <!-- Panel Hoja de Vida -->
+                                            <p:commandButton id="InformacionAdicional" value="" disabled="#{controlRemoto.hv1}"  style="background-image: url(Imagenes/Iconos/informacionAdicional.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" />
+                                            <p:tooltip  for="InformacionAdicional">
+                                                #{msg['informacionadicionalaspirantes1']}<br/>#{msg['informacionadicionalaspirantes2']}
+                                            </p:tooltip>
+                                            <!--
+                                            <p:commandButton id="IngresoHojaDeVida" value="" disabled="#{controlRemoto.hv2}" style="background-image: url(Imagenes/Iconos/hojaDeVida.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" />
+                                            <p:tooltip  for="IngresoHojaDeVida">
+                                                #{msg['ingresohojadevida1']}<br/>#{msg['ingresohojadevida2']}
+                                            </p:tooltip>
+                                            -->
+                                            <p:spacer styleClass="separador"/>
+                                            <!-- Panel Reportes -->
+                                            <p:commandButton id="ReportesLaborales" value="" style="background-image: url(Imagenes/Iconos/reportes.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" action="ReporteLaboral" actionListener="#{controlNReporteLaboral.iniciarPagina()}" />
+                                            <p:tooltip  for="ReportesLaborales">
+                                                #{msg['reporteslaborales1']}<br/>#{msg['reporteslaborales2']}
+                                            </p:tooltip>
+                                        <!--<p:spacer styleClass="separador"/> -->
+                                        <!--<p:commandButton value="" style="background-image: url(Imagenes/Designer.jpg); height: 40px; width: 100px; background-repeat: no-repeat; background-size: 100% 100%;" action="acercade" /> -->
+                                        <!--<em><h:outputText style="position: absolute; top: 474px; ; left: 17px" value="#{msg['bienvenido']}"/></em>-->
+                                        <!--<h:outputText id="Usuario" style="position: absolute; top: 475px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>-->
+                                        <!--<h:outputText id="Empresa"  style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/> -->
+                                        </center>
                                     </fieldset>
-
-
-                                    <!-- Panel Evaluacion y Resultados -->
-
-                                    <fieldset style="height: 35px; width: 73px; display: block; position: absolute; border-radius: 5px; top: 423px; left: 115px;">
-
-                                        <p:commandButton id="EvaluarPersona" value="" disabled="#{controlRemoto.evaluacion}" style="position: absolute; background-image: url(Imagenes/Iconos/evaluacion.png); width: 40px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px; border: outset; border-width: 0px;" />
-                                        <p:tooltip  for="EvaluarPersona" value="#{msg['EvaluarPersona']}"  />
-
-                                        <p:commandButton id="ResultadosEvaluaciones" value=""  style="position: absolute; background-image: url(Imagenes/Iconos/resultados.png); width: 40px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 46px; border: outset; border-width: 0px;" />
-                                        <p:tooltip  for="ResultadosEvaluaciones">
-                                            #{msg['resultadosevaluaciones1']}<br/>#{msg['resultadosevaluaciones2']}
-                                        </p:tooltip>
-
-                                    </fieldset>
-
-
-                                    <!-- Panel Salud Ocupacional-->
-
-                                    <fieldset style="height: 35px; width: 70px; display: block; position: absolute; border-radius: 5px; top: 423px; left: 212px;">
-                                        <p:commandButton id="SaludOcupacional" value="" style="position: absolute; background-image: url(Imagenes/Iconos/saludOcupacional2.png); width: 75px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 5px; border: outset; border-width: 0px;" action="emplvigsaludocupacional" />
-                                        <p:tooltip  for="SaludOcupacional" >
-                                            #{msg['saludocupacional1']}<br/>#{msg['saludocupacional2']}
-                                        </p:tooltip>
-                                    </fieldset>
-
-                                    <!-- Panel Ingresos Act. Pen. y Asp.-->
-
-                                    <fieldset style="height: 35px; width: 130px; display: block; position: absolute; border-radius: 5px; top: 423px; left: 306px;">
-
-                                        <p:commandButton id="IngresoPersonal" value="" disabled="#{controlRemoto.activo}"  style="position: absolute; background-image: url(Imagenes/Iconos/ingreso.png); width: 45px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px; border: outset; border-width: 0px;" action="personaIndividual"/>                            
-                                        <p:tooltip  for="IngresoPersonal">
-                                            #{msg['ingresodepersonal1']}<br/>#{msg['ingresodepersonal2']}
-                                        </p:tooltip>
-
-                                        <p:commandButton id="InformacionJubilados" value="" disabled="#{controlRemoto.pensionado}"  style="position: absolute; background-image: url(Imagenes/Iconos/pensionado.png); width: 45px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 50px; border: outset; border-width: 0px;" />
-                                        <p:tooltip  for="InformacionJubilados" >
-                                            #{msg['informacionjubilados1']}<br/>#{msg['informacionjubilados2']}
-                                        </p:tooltip>
-
-                                        <p:commandButton id="IngresoAspirantes" value="" disabled="#{controlRemoto.aspirante}"  style="position: absolute; background-image: url(Imagenes/Iconos/aspirantes.png); width: 45px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 98px; border: outset; border-width: 0px;" />
-                                        <p:tooltip  for="IngresoAspirantes">
-                                            #{msg['ingresoaspirantes1']}<br/>#{msg['ingresoaspirantes2']}
-                                        </p:tooltip>
-
-                                    </fieldset>
-
-                                    <!-- Panel Hoja de Vida -->
-
-                                    <fieldset style="height: 35px; width: 82px; display: block; position: absolute; border-radius: 5px; top: 423px; left: 460px;">
-
-                                        <p:commandButton id="InformacionAdicional" value="" disabled="#{controlRemoto.hv1}"  style="position: absolute; background-image: url(Imagenes/Iconos/informacionAdicional.png); width: 45px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px; border: outset; border-width: 0px;" />
-                                        <p:tooltip  for="InformacionAdicional">
-                                            #{msg['informacionadicionalaspirantes1']}<br/>#{msg['informacionadicionalaspirantes2']}
-                                        </p:tooltip>
-
-                                        <p:commandButton id="IngresoHojaDeVida" value="" disabled="#{controlRemoto.hv2}" style="position: absolute; background-image: url(Imagenes/Iconos/hojaDeVida.png); width: 45px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 50px; border: outset; border-width: 0px;" />
-                                        <p:tooltip  for="IngresoHojaDeVida">
-                                            #{msg['ingresohojadevida1']}<br/>#{msg['ingresohojadevida2']}
-                                        </p:tooltip>
-
-                                    </fieldset>
-
-
-                                    <!-- Panel Reportes -->
-
-                                    <fieldset style="height: 35px; width: 50px; display: block; position: absolute; border-radius: 5px; top: 423px; left: 566px;">
-                                        <p:commandButton id="ReportesLaborales" value="" style="position: absolute; background-image: url(Imagenes/Iconos/reportes.png); width: 60px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px; border: outset; border-width: 0px;" action="ReporteLaboral" actionListener="#{controlNReporteLaboral.iniciarPagina()}" />
-                                        <p:tooltip  for="ReportesLaborales">
-                                            #{msg['reporteslaborales1']}<br/>#{msg['reporteslaborales2']}
-                                        </p:tooltip>
-                                    </fieldset>
-
-
-                                    <p:commandButton value="" style="position: absolute; background-image: url(Imagenes/Designer.jpg); width: 200px; height: 42px; top: 426px; background-repeat: no-repeat; background-size: 100% 100%; left: 643px;" action="acercade" />
-
-                                    <!--<em><h:outputText style="position: absolute; top: 474px; ; left: 17px" value="#{msg['bienvenido']}"/></em>-->
-
-                                    <!--<h:outputText id="Usuario" style="position: absolute; top: 475px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>-->
-
-                                    <h:outputText id="Empresa"  style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
-
                                 </p:panel>
 
 
