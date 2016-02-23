@@ -1163,6 +1163,7 @@ public class ControlConcepto implements Serializable {
         filtradoConceptosEmpresa_Estado = null;
         conceptoSeleccionado = null;
         aceptar = true;
+        conceptoOriginal.setInformacionConcepto(null);
         RequestContext context = RequestContext.getCurrentInstance();
         context.reset("formularioDialogos:lovConceptos:globalFilter");
         context.execute("lovConceptos.clearFilters()");
@@ -1907,7 +1908,7 @@ public class ControlConcepto implements Serializable {
                 context.execute("validacioNuevoCodigo.show()");
             }
         } else {
-            context.update("formularioDialogos:validacioNuevoConcepto");
+            context.update("formularioDialogos:validacioNuevoClon");
             context.execute("validacioNuevoClon.show()");
         }
         tipoActualizacion = -1;

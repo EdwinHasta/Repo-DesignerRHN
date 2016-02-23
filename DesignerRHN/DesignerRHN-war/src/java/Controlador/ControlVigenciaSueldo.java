@@ -1364,20 +1364,25 @@ public class ControlVigenciaSueldo implements Serializable {
     public void agregarNuevaVS() {
 
         RequestContext context = RequestContext.getCurrentInstance();
-        int cont = 0;
-        mensajeValidacion = "";
-        for (int j = 0; j < listVigenciasAfiliaciones.size(); j++) {
-            if (nuevaVigenciaS.getFechavigencia().equals(listVigenciasSueldos.get(j).getFechavigencia())) {
-                cont++;
+        if ((nuevaVigenciaS.getFechavigencia() != null) && (nuevaVigenciaS.getMotivocambiosueldo().getSecuencia() != null) && (nuevaVigenciaS.getValor() != null)
+                && (nuevaVigenciaS.getTiposueldo().getSecuencia() != null)) {
+            
+            if(nuevaVigenciaS.getFechavigenciaretroactivo() == null){
+                nuevaVigenciaS.setFechavigenciaretroactivo(nuevaVigenciaS.getFechavigencia());
             }
-        }
-        if (cont > 0) {
-            mensajeValidacion = "FECHAS NO REPETIDAS";
-            context.update("form:nuevaSFechasDuplicadas");
-            context.execute("nuevaSFechasDuplicadas.show()");
-        } else {
-            if ((nuevaVigenciaS.getFechavigencia() != null) && (nuevaVigenciaS.getValor() != null) && (nuevaVigenciaS.getFechavigenciaretroactivo() != null)
-                    && (nuevaVigenciaS.getTiposueldo().getSecuencia() != null) && (nuevaVigenciaS.getMotivocambiosueldo().getSecuencia() != null)) {
+
+            int cont = 0;
+            mensajeValidacion = "";
+            for (int j = 0; j < listVigenciasSueldos.size(); j++) {
+                if (nuevaVigenciaS.getFechavigencia().equals(listVigenciasSueldos.get(j).getFechavigencia())) {
+                    cont++;
+                }
+            }
+            if (cont > 0) {
+                mensajeValidacion = "FECHAS NO REPETIDAS";
+                context.update("form:nuevaSFechasDuplicadas");
+                context.execute("nuevaSFechasDuplicadas.show()");
+            } else {
                 if (validarFechasRegistroVigenciaSueldo(1)) {
                     if (bandera == 1) {
                         //CERRAR FILTRADO
@@ -1435,9 +1440,9 @@ public class ControlVigenciaSueldo implements Serializable {
                 } else {
                     context.execute("errorFechasVS.show()");
                 }
-            } else {
-                context.execute("negacionNuevaS.show()");
             }
+        } else {
+            context.execute("negacionNuevaS.show()");
         }
     }
     //LIMPIAR NUEVO REGISTRO
@@ -1609,20 +1614,25 @@ public class ControlVigenciaSueldo implements Serializable {
      */
     public void confirmarDuplicarS() {
         RequestContext context = RequestContext.getCurrentInstance();
-        int cont = 0;
-        mensajeValidacion = "";
-        for (int j = 0; j < listVigenciasSueldos.size(); j++) {
-            if (duplicarVS.getFechavigencia().equals(listVigenciasSueldos.get(j).getFechavigencia())) {
-                cont++;
+        if ((duplicarVS.getFechavigencia() != null) && (duplicarVS.getValor() != null) 
+                && (duplicarVS.getTiposueldo().getSecuencia() != null) && (duplicarVS.getMotivocambiosueldo().getSecuencia() != null)) {
+            
+            if (duplicarVS.getFechavigenciaretroactivo() == null){
+                duplicarVS.setFechavigenciaretroactivo(duplicarVS.getFechavigencia());
             }
-        }
-        if (cont > 0) {
-            mensajeValidacion = "FECHAS NO REPETIDAS";
-            context.update("form:duplicarSFechasDuplicadas");
-            context.execute("duplicarSFechasDuplicadas.show()");
-        } else {
-            if ((duplicarVS.getFechavigencia() != null) && (duplicarVS.getValor() != null) && (duplicarVS.getFechavigenciaretroactivo() != null)
-                    && (duplicarVS.getTiposueldo().getSecuencia() != null) && (duplicarVS.getMotivocambiosueldo().getSecuencia() != null)) {
+            
+            int cont = 0;
+            mensajeValidacion = "";
+            for (int j = 0; j < listVigenciasSueldos.size(); j++) {
+                if (duplicarVS.getFechavigencia().equals(listVigenciasSueldos.get(j).getFechavigencia())) {
+                    cont++;
+                }
+            }
+            if (cont > 0) {
+                mensajeValidacion = "FECHAS NO REPETIDAS";
+                context.update("form:duplicarSFechasDuplicadas");
+                context.execute("duplicarSFechasDuplicadas.show()");
+            } else {
                 if (validarFechasRegistroVigenciaSueldo(2)) {
                     paraNuevaVSueldo++;
                     BigInteger var = BigInteger.valueOf(paraNuevaVSueldo);
@@ -1665,9 +1675,9 @@ public class ControlVigenciaSueldo implements Serializable {
                 } else {
                     context.execute("errorFechasVS.show()");
                 }
-            } else {
-                context.execute("negacionNuevaS.show()");
             }
+        } else {
+            context.execute("negacionNuevaS.show()");
         }
     }
     //LIMPIAR DUPLICAR
@@ -2431,11 +2441,7 @@ public class ControlVigenciaSueldo implements Serializable {
         index = -1;
         secRegistroVS = null;
         tipoActualizacion = -1;
-        /*
-         * context.update("form:TipoSueldoDialogo");
-         * context.update("form:lovTipoSueldo");
-         * context.update("form:aceptarTS");
-         */
+
         //context.reset("form:lovTipoSueldo:globalFilter");
         //context.execute("lovTipoSueldo.clearFilters()");
         context.update(":form:datosVSEmpleado");
@@ -2451,6 +2457,7 @@ public class ControlVigenciaSueldo implements Serializable {
         index = -1;
         secRegistroVS = null;
         tipoActualizacion = -1;
+
         RequestContext context = RequestContext.getCurrentInstance();
         context.reset("form:lovTipoSueldo:globalFilter");
         context.execute("lovTipoSueldo.clearFilters()");

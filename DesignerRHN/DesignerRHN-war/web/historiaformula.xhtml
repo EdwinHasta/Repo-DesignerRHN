@@ -18,6 +18,52 @@
                         <h:outputText value="Formula:"  style="position: absolute; top: 45px;left: 395px;color: #14388B;font-weight: bold"/>
                         <h:outputText id="formulaActual" value="#{controlHistoriaFormula.formulaActual.nombrelargo}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 45px;left: 460px;"/>
 
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 35px; left: 10px;">
+                            <p:toolbarGroup align="left"> 
+                                <p:commandButton id="guardarRapido" value="" style="background-size: 100% 100%;background-image: url(Imagenes/guardar.jpg) ;background-repeat: no-repeat; width: 25px; height: 25px;"  process="@this" actionListener="#{controlHistoriaFormula.guardadoGeneral()}"/>
+                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
+
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHistoriaFormula.editarCelda()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
+
+                                <p:separator />
+
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHistoriaFormula.dispararDialogoNodo()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
+
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHistoriaFormula.activarCtrlF11()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
+
+                                <p:separator />
+
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHistoriaFormula.verificarExportXLS()}" ajax="false"  />
+                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
+
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  ajax="false">
+                                    <p:dataExporter type="xml"  target="#{controlHistoriaFormula.exportXML()}" fileName="#{controlHistoriaFormula.nombreXML}" encoding="UTF-8"/> 
+                                </p:commandButton> 
+                                <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
+
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHistoriaFormula.validarExportPDF()}" ajax="false"/>
+                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
+
+                                <p:separator /> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHistoriaFormula.ingresoNuevoRegistro()}"  process="@this"/> 
+                                <p:tooltip style="font-size: 12px" for="insertar" value="Nuevo Registro" />
+
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHistoriaFormula.validarBorradoRegistro()}" process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Registro" />
+
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlHistoriaFormula.validarDuplicadoRegistro()}" process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Registro" />
+
+                                <p:separator /> 
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHistoriaFormula.verificarRastroTabla()}" process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="rastro" value="Rastro"/>
+                            </p:toolbarGroup>  
+                        </p:toolbar> 
+
+
                         <fieldset style="position: absolute; top: 70px; font-size: 10px; width: 815px; height: 178px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 12px; color: blue"><strong>Historia Formula</strong></legend>
 
@@ -410,7 +456,7 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La fecha inicial es menor a 01/01/1990 y/o la fecha final es menor a la fecha inicial." style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
-                    
+
                     <p:dialog id="errorSolapamientoFechas" header="ATENCIÓN" widgetVar="errorSolapamientoFechas"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="Error de solapamiento de fechas. Verifique las fechas del registro" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
@@ -440,8 +486,8 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="Los datos de la tabla no pueden ser modificados." style="position: absolute; left: 70px; top: 18px; width: 185px; font-weight:bold;text-align: center" />
                     </p:dialog>
-                    
-                    
+
+
                     <p:dialog id="errorBorradoHistoriaF" header="ATENCIÓN" widgetVar="errorBorradoHistoriaF"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="Para eliminar el registro es necesario que no tenga Nodos asociados." style="position: absolute; left: 70px; top: 18px; width: 185px; font-weight:bold;text-align: center" />
@@ -459,54 +505,6 @@
 
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlHistoriaFormula.activarCtrlF11()}"/>
 
-                </h:form>
-
-
-                <h:form style="position: relative">
-                    <p:toolbar style="font-size: 12px; position: absolute; top: 35px; left: 10px;">
-                        <p:toolbarGroup align="left"> 
-                            <p:commandButton id="guardarRapido" value="" style="background-size: 100% 100%;background-image: url(Imagenes/guardar.jpg) ;background-repeat: no-repeat; width: 25px; height: 25px;"  process="@this" actionListener="#{controlHistoriaFormula.guardadoGeneral()}"/>
-                            <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
-
-                            <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHistoriaFormula.editarCelda()}" process="@this"/>
-                            <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
-
-                            <p:separator />
-
-                            <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHistoriaFormula.dispararDialogoNodo()}" process="@this"/>
-                            <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
-
-                            <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHistoriaFormula.activarCtrlF11()}" process="@this"/>
-                            <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
-
-                            <p:separator />
-
-                            <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHistoriaFormula.verificarExportXLS()}" ajax="false"  />
-                            <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
-
-                            <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  ajax="false">
-                                <p:dataExporter type="xml"  target="#{controlHistoriaFormula.exportXML()}" fileName="#{controlHistoriaFormula.nombreXML}" encoding="UTF-8"/> 
-                            </p:commandButton> 
-                            <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
-
-                            <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHistoriaFormula.validarExportPDF()}" ajax="false"/>
-                            <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
-
-                            <p:separator /> 
-                            <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHistoriaFormula.ingresoNuevoRegistro()}"  process="@this"/> 
-                            <p:tooltip style="font-size: 12px" for="insertar" value="Nuevo Registro" />
-
-                            <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHistoriaFormula.validarBorradoRegistro()}" process="@this"/>  
-                            <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Registro" />
-
-                            <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlHistoriaFormula.validarDuplicadoRegistro()}" process="@this"/>  
-                            <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Registro" />
-
-                            <p:separator /> 
-                            <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHistoriaFormula.verificarRastroTabla()}" process="@this"/>  
-                            <p:tooltip style="font-size: 12px" for="rastro" value="Rastro"/>
-                        </p:toolbarGroup>  
-                    </p:toolbar> 
                 </h:form>
 
                 <h:form id="formularioDialogos">
@@ -570,7 +568,7 @@
                             </p:column>
                         </p:dataTable>
                         <p:commandButton id="aceptarOperando" style="position: relative; left: 190px" value="Aceptar" disabled="#{controlHistoriaFormula.aceptar}" actionListener="#{controlHistoriaFormula.actualizarOperando()}"  process="@this"/>
-                        
+
                         <p:commandButton id="cancelarOperando" style="position: relative; left: 230px" value="Atras" actionListener="#{controlHistoriaFormula.cancelarCambioOperando()}" process="@this"/>
                     </p:dialog> 
 
@@ -599,7 +597,7 @@
                             </p:column>
                         </p:dataTable>
                         <p:commandButton id="aceptarOperador" style="position: relative; left: 190px" value="Aceptar" disabled="#{controlHistoriaFormula.aceptar}" actionListener="#{controlHistoriaFormula.actualizarOperador()}"  process="@this"/>
-                        
+
                         <p:commandButton id="cancelarOperador" style="position: relative; left: 230px" value="Atras" actionListener="#{controlHistoriaFormula.cancelarCambioOperador()}" process="@this"/>
                     </p:dialog> 
 

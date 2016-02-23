@@ -68,7 +68,7 @@
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTercero.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTercero.salir()}" action="#{controlTercero.redirigir()}" process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTercero.salir()}" action="#{controlTercero.redirigirPaginaAnterior()}" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
 
                             </p:toolbarGroup>  
@@ -362,7 +362,7 @@
                         </fieldset>
 
                         <p:commandButton style="position: absolute; left: 683px; top: 480px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" update=":form:datosTerceros" disabled="#{controlTercero.guardado}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 480px;" id="ATRAS" value="#{msg['cancelar']}" action="#{controlTercero.redirigir()}" icon="ui-icon-closethick" actionListener="#{controlTercero.salir()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 480px;" id="ATRAS" value="#{msg['cancelar']}" action="#{controlTercero.redirigirPaginaAnterior()}" icon="ui-icon-closethick" actionListener="#{controlTercero.salir()}" process="@this" />
                     </p:panel>
 
 
@@ -491,7 +491,7 @@
 
                         <p:commandButton id="aceptarCTS" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlTercero.actualizarCiudadTS()}" disabled="#{controlTercero.aceptar}"  process="@this"/>
                         
-                        <p:commandButton id="atrasCTS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlTercero.cancelarCambioCiudadTS()}"  process="@this"/>
+                        <p:commandButton id="atrasCTS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlTercero.cancelarCambioCiudadTS()}" action="#{controlTercero.redirigirPaginaAnterior()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="verificarRastrosTablas" widgetVar="verificarRastrosTablas" header="#{msg['rastrospara']}" resizable="false" draggable="false" modal="true" height="95" width="330" >
@@ -557,8 +557,8 @@
                     <p:dialog id="confirmarGuardarSalida" header="#{msg['atencion']}" widgetVar="confirmarGuardarSalida"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlTercero.guardadoGeneral()}" action="#{controlTercero.redirigir()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlTercero.salir()}" action="#{controlTercero.redirigir()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlTercero.guardadoGeneral()}" action="#{controlTercero.redirigirPaginaAnterior()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlTercero.salir()}" action="#{controlTercero.redirigirPaginaAnterior()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardarSalida.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
 

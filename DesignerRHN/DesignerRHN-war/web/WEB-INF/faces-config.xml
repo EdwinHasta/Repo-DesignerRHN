@@ -3927,7 +3927,6 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-    
     <navigation-rule>
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
@@ -3936,6 +3935,7 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/PruebasUnitariasComponentes.xhtml</from-view-id>
         <navigation-case>
@@ -4911,7 +4911,7 @@
         <from-view-id>/Tercero.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasterceroemplvigenciaafiliacion3</from-outcome>
-            <to-view-id>/Tercero.xhtml</to-view-id>
+            <to-view-id>/EmplVigenciaAfiliacion3.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -5438,6 +5438,57 @@
         <from-view-id>/grupoconcepto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasgrupoconcepto</from-outcome>
+            <to-view-id>/Concepto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Concepto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>terceroPag</from-outcome>
+            <to-view-id>/Tercero.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Tercero.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasTerceroConcepto</from-outcome>
+            <to-view-id>/Concepto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/EmplVigenciaSueldo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>terceroPag</from-outcome>
+            <to-view-id>/Tercero.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Tercero.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasEmplVigenciaSueldo</from-outcome>
+            <to-view-id>/EmplVigenciaSueldo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Concepto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>unidades</from-outcome>
+            <to-view-id>/unidad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/unidad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasConcepto</from-outcome>
             <to-view-id>/Concepto.xhtml</to-view-id>
             <redirect />
         </navigation-case>

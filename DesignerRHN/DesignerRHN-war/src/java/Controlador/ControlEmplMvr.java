@@ -51,6 +51,7 @@ public class ControlEmplMvr implements Serializable {
     private List<OtrosCertificados> listOCEmpleado;
     private List<OtrosCertificados> filtrarListOtrosCertificados;
     private OtrosCertificados otroCertificadoSeleccionado;
+    
     private List<Motivosmvrs> listMotivosMvrs;
     private Motivosmvrs motivoMvrSeleccionado;
     private List<Motivosmvrs> filtrarListMotivosMvrs;
@@ -2309,7 +2310,16 @@ public class ControlEmplMvr implements Serializable {
     }
 
     public List<TiposCertificados> getListTiposCertificados() {
+        if (listTiposCertificados == null) {
         listTiposCertificados = administrarEmplMvrs.listTiposCertificados();
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (listTiposCertificados == null || listTiposCertificados.isEmpty()) {
+                infoRegistroCertificado = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistroCertificado = "Cantidad de registros: " + listTiposCertificados.size();
+            }
+            context.update("form:infoRegistroCertificado");
+        }
         return listTiposCertificados;
     }
 

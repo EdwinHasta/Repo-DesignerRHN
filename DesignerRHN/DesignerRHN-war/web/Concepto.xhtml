@@ -101,9 +101,9 @@
                         <fieldset style="position: absolute; left: 5px; top: 95px; width: 835px; height: 265px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['titulo']}</strong></legend>
 
-                            <p:dataTable id="datosConceptos" var="concepto" rowKey="#{concepto.secuencia}" rowIndexVar="indice" style="width: 820px; position: relative;"                           
+                            <p:dataTable id="datosConceptos" var="concepto" rowKey="#{concepto.secuencia}" rowIndexVar="indice" style="width: 835px; position: relative;"                           
                                          value="#{controlConcepto.listaConceptosEmpresa}" scrollable="true" scrollWidth="835" scrollHeight="#{controlConcepto.altoTabla}" 
-                                         liveScroll="true" scrollRows="50" filteredValue="#{controlConcepto.filtradoConceptosEmpresa}" emptyMessage="#{msg['vacio']}" 
+                                         liveScroll="true" scrollRows="40" filteredValue="#{controlConcepto.filtradoConceptosEmpresa}" emptyMessage="#{msg['vacio']}" 
                                          widgetVar="datosConceptos" editable="true" editMode="cell" selection="#{controlConcepto.seleccionConceptoEmpresa}" selectionMode="single">
 
                                 <p:ajax event="filter" listener="#{controlConcepto.eventoFiltrar()}"/>
@@ -124,11 +124,14 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
                                 </p:column>  
                                 <p:tooltip  for="listaValores" value="#{msg['codigoTool']}" />
 
                                 <p:column headerText="#{msg['descripcion']}" sortBy="#{concepto.descripcion}" filterBy="#{concepto.descripcion}" 
-                                          filterMatchMode="contains"  id="columnaDescripción" width="200" filterStyle="display: none; visibility: hidden;" >      
+                                          filterMatchMode="contains" width="225" id="columnaDescripción" filterStyle="display: none; visibility: hidden;" >      
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{concepto.descripcion}" style="text-transform: uppercase" /></f:facet>  
                                         <f:facet name="input">
@@ -138,6 +141,9 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
                                 </p:column>
 
                                 <p:column style="padding: 0px; text-align: center" sortBy="#{concepto.naturalezaConcepto}" filterBy="#{concepto.naturalezaConcepto}" 
@@ -155,6 +161,9 @@
                                             </p:selectOneMenu>
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
                                 </p:column>  
 
                                 <p:column headerText="#{msg['cu']}" sortBy="#{concepto.unidad.codigo}" filterBy="#{concepto.unidad.codigo}" filterMatchMode="contains" 
@@ -173,10 +182,13 @@
                                             </p:inputText> 
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
                                 </p:column> 
 
                                 <p:column headerText="#{msg['unidad']}" sortBy="#{concepto.unidad.nombre}" filterBy="#{concepto.unidad.nombre}" filterMatchMode="contains" 
-                                          id="columnaNombreUnidad" width="70" style="text-align: center; padding: 0px" filterStyle="display: none; visibility: hidden;" >                                                              
+                                          id="columnaNombreUnidad" width="70" style="text-align: center" filterStyle="display: none; visibility: hidden;" >                                                              
                                     <p:cellEditor>   
                                         <f:facet name="output"><h:outputText value="#{concepto.unidad.nombre}" style="text-transform: uppercase" /></f:facet>  
                                         <f:facet name="input">
@@ -187,6 +199,9 @@
                                             </p:inputText> 
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 90px; left: 415px; margin: -14px; position: absolute ; height: 20px; border: none; color: blue" actionListener="#{controlUnidad.recibirPaginaEntrante('atrasConcepto')}" action="unidades" value=""/>
+                                    </f:facet>
                                 </p:column> 
 
                                 <p:column headerText="#{msg['codigo']}" sortBy="#{concepto.codigodesprendible}" filterBy="#{concepto.codigodesprendible}" filterMatchMode="contains" 
@@ -205,6 +220,9 @@
                                             </p:inputText> 
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
                                 </p:column>
 
                                 <p:column headerText="#{msg['descripcion']}" sortBy="#{concepto.descripciondesprendible}" filterBy="#{concepto.descripciondesprendible}" 
@@ -219,6 +237,9 @@
                                             </p:inputText> 
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
                                 </p:column>
 
                                 <p:column headerText="#{msg['i']}" sortBy="#{concepto.independienteConcepto}"
@@ -230,7 +251,10 @@
 
                                     <p:selectBooleanCheckbox value="#{concepto.independienteConcepto}" style="width: 19px; font-weight: bold;">  
                                         <p:ajax listener="#{controlConcepto.modificarConcepto(indice, 'N', concepto.independienteConcepto)}" update=":form:datosConceptos"/>  
-                                    </p:selectBooleanCheckbox>                                     
+                                    </p:selectBooleanCheckbox>    
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
                                 </p:column>
 
                                 <p:column sortBy="#{concepto.conjunto}" filterBy="#{concepto.conjunto}" filterMatchMode="contains"
@@ -249,6 +273,9 @@
                                             </p:selectOneMenu>
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
                                 </p:column>
 
                                 <p:column style="padding: 0px; width: 90px; text-align: center" sortBy="#{concepto.contenidofechahasta}" 
@@ -268,6 +295,9 @@
                                             </p:selectOneMenu>
                                         </f:facet>
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
                                 </p:column>
 
                                 <p:column headerText="#{msg['tercero']}" sortBy="#{concepto.tercero.nombre}" filterBy="#{concepto.tercero.nombre}" 
@@ -282,6 +312,9 @@
                                             </p:inputText> 
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 170px; left: 865px; position: absolute; margin: -14px; height: 26px; border: none; color: blue" id="footTercero" actionListener="#{controlTercero.recibirPaginaEntrante('atrasTerceroConcepto')}" action="terceroPag" value=""/>
+                                    </f:facet>
                                 </p:column>
 
                                 <p:column style="padding: 0px; width: 75px; text-align: center" headerText="#{msg['estado']}" sortBy="#{concepto.estadoConcepto}" filterBy="#{concepto.estadoConcepto}" 
@@ -296,6 +329,9 @@
                                             </p:selectOneMenu>
                                         </f:facet>
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
                                 </p:column>
 
                                 <p:column style="padding: 0px; width: 40px; text-align: center" sortBy="#{concepto.enviarConcepto}" filterBy="#{concepto.enviarConcepto}" filterMatchMode="contains" 
@@ -314,6 +350,9 @@
                                             </p:selectOneMenu>
                                         </f:facet>
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
                                 </p:column>
 
                                 <p:column sortBy="#{concepto.codigoalternativo}" filterBy="#{concepto.codigoalternativo}" filterMatchMode="contains" 
@@ -333,6 +372,9 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
                                 </p:column>
 
                             </p:dataTable> 
@@ -345,14 +387,14 @@
                             <legend style="color: blue"><strong>#{msg['cconcepto']}</strong></legend>
                             <h:outputText value="#{msg['cnnc']}"  style="color: #14388B; font-weight: bold; position: absolute"/>
                             <p:inputText id="codigoConceptoClon" value="#{controlConcepto.conceptoClon.codigo}" style="position: absolute; top: 35px; width: 55px;">
-                                <p:ajax event="change" update="@this"/>
+                                <pe:keyFilter for="codigoConceptoClon" mask="num"/>
                             </p:inputText>
                             <p:inputText id="descripcioConceptoClon" value="#{controlConcepto.conceptoClon.descripcion}" style="position: absolute; top: 35px; left: 75px; width: 280px;" >
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <h:outputText value="#{msg['cncc']}"  style="color: #14388B; font-weight: bold; position: absolute; left: 380px"/>
                             <p:commandButton icon="ui-icon-transfer-e-w" actionListener="#{controlConcepto.lovConcepto(1)}"  style="position: absolute; top: 32px; left: 380px" process="@this"/>
-                            <p:inputText id="descripcionClon" value="#{controlConcepto.conceptoOriginal.informacionConcepto}" style="position: absolute; top: 35px; left: 408px; width: 350px;">
+                            <p:inputText id="descripcionClon" widgetVar="descripcionClon" value="#{controlConcepto.conceptoOriginal.informacionConcepto}" style="position: absolute; top: 35px; left: 408px; width: 350px;">
                                 <p:ajax event="change" listener="#{controlConcepto.lovConcepto(1)}" update="@this"/>
                             </p:inputText>
                             <p:commandButton value="#{msg['clonar']}" actionListener="#{controlConcepto.clonarConcepto()}" 
@@ -361,9 +403,9 @@
 
                         <p:commandButton style="position: absolute; left: 9px; top: 378px;" value="#{msg['grupoconceptos']}" id="grupoConcepto" 
                                          action="grupoconceptoPag" actionListener="#{controlGrupoConcepto.recibirPagina('atrasgrupoconcepto')}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 160px; top: 378px;" value="#{msg['conceptosredondeos']}" id="conceptoRedondeos" 
+                        <p:commandButton style="position: absolute; left: 155px; top: 378px;" value="#{msg['conceptosredondeos']}" id="conceptoRedondeos" 
                                          action="conceptoredondeoPag" actionListener="#{controlConceptoRedondeo.recibirPagina('atrasconceptoredondeo') }" process="@this" />
-                        <p:commandButton style="position: absolute; left: 340px; top: 378px;" value="#{msg['unidadconcepto']}" id="unidadesConcepto" 
+                        <p:commandButton style="position: absolute; left: 330px; top: 378px;" value="#{msg['unidadconcepto']}" id="unidadesConcepto" 
                                          action="conceptosoporte" actionListener="#{controlConceptosSoportes.recibirPagina('atrasconceptosporte')}" process="@this" />
                         <p:commandButton style="position: absolute; left: 620px; top: 378px;" id="buscarConcepto" value="#{msg['buscar']}" 
                                          actionListener="#{controlConcepto.lovConcepto(0)}" process="@this" />
@@ -374,7 +416,7 @@
                                          onclick="confirmarGuardar.show();" disabled="#{controlConcepto.guardado}"  process="@this" />
                         <p:commandButton disabled="#{controlConcepto.activoDetalle}" id="DETALLES" value="" process="@this" action="detalleConcepto" 
                                          actionListener="#{controlDetalleConcepto.obtenerConcepto(controlConcepto.conceptoRegistro.secuencia)}"
-                                         style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat;position: absolute; width: 28px; height: 28px; left: 15px; top: 500px;" />
+                                         style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat;position: absolute; width: 28px; height: 28px; left: 590px; top: 378px;" />
                         <p:tooltip  for="DETALLES" value="#{msg['detalle']}" />
                         <p:commandButton style="position: absolute; left: 775px; top: 500px;" id="ATRAS" action="#{controlConcepto.redirigir()}" value="#{msg['cancelar']}" 
                                          icon="ui-icon-closethick" actionListener="#{controlConcepto.refrescar()}" process="@this" />
@@ -749,8 +791,9 @@
                         <h:outputText id="infoRegistroConcepto" value="#{controlConcepto.infoRegistroConcepto}" style="position: absolute; left: 20px; top: 370px; font-weight: bold"/>
 
                         <p:commandButton id="aceptarC" icon="ui-icon-check" style="position: relative; left: 350px" value="#{msg['aceptar']}" disabled="#{controlConcepto.aceptar}" 
-                                         actionListener="#{controlConcepto.seleccionConcepto()}"  process="@this"/>
-                        <p:commandButton id="atrasC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 350px" value="#{msg['atras']}" actionListener="#{controlConcepto.cancelarSeleccionConcepto()}" process="@this"/>
+                                         actionListener="#{controlConcepto.seleccionConcepto()}" update=":formularioDialogos:lovConceptos" process="@this"/>
+                        <p:commandButton id="atrasC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 350px" value="#{msg['atras']}"
+                                         actionListener="#{controlConcepto.cancelarSeleccionConcepto()}" update=":formularioDialogos:lovConceptos :form:descripcionClon" process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="validacioNuevoConcepto" header="#{msg['atencion']}" widgetVar="validacioNuevoConcepto"  resizable="false" draggable="false" modal="true" height="95" width="430px"  closable="true">  
