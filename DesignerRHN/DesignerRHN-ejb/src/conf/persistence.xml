@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-  <persistence-unit name="SOPORTE9" transaction-type="RESOURCE_LOCAL">
+  <persistence-unit name="REMOTO" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <shared-cache-mode>DISABLE_SELECTIVE</shared-cache-mode>
     <validation-mode>NONE</validation-mode>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@SOPORTE9:1521:SOPORTE9"/>
-      <property name="javax.persistence.jdbc.user" value="ENTRADA"/>
-      <property name="javax.persistence.jdbc.password" value="ENTRADA"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@181.49.129.134:1701:SOPORTE"/>
+      <property name="javax.persistence.jdbc.user" value="DESPEGAR"/>
+      <property name="javax.persistence.jdbc.password" value="DESPEGAR"/>
       <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
       <property name="eclipselink.cache.shared.default" value="false"/>
       <property name="eclipselink.cache.type.default" value="NONE"/>
@@ -20,7 +20,7 @@
     <shared-cache-mode>DISABLE_SELECTIVE</shared-cache-mode>
     <validation-mode>NONE</validation-mode>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@nominasaas2:1521:PROYECTOJ"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@nominasaas2:1521:SOPORTE"/>
       <property name="javax.persistence.jdbc.user" value="ENTRADA"/>
       <property name="javax.persistence.jdbc.password" value="ENTRADA"/>
       <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>

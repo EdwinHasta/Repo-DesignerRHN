@@ -395,6 +395,7 @@ and open the template in the editor.
     font-weight: bold; 
     border: 1px solid #cccccc;
     color: red;
+    padding: 6px;
 }
 .cssBotonCancelar{
     font-weight: bold; 
@@ -405,4 +406,8 @@ and open the template in the editor.
     font-weight: bold; 
     border: 1px solid #cccccc;
     color: red;
+}
+
+.ui-button-text-only .ui-button-text{
+    padding: 0 0 0;
 }

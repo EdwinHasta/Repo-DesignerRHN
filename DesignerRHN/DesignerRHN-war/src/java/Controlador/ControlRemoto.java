@@ -1005,7 +1005,7 @@ public class ControlRemoto implements Serializable {
     }
     
     public void actualizarInformacionTipoTrabajador() {
-        informacionTiposTrabajadores = "Empleado " + (posicion + 1) + " de " + totalRegistros;
+        informacionTiposTrabajadores = "Reg. "+(posicion + 1) + " de " + totalRegistros;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:tabMenu:informacionTT");
     }

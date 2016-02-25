@@ -23,21 +23,17 @@
 
                                 <h:outputText id="fechas" style="position: absolute; font-size: 11px;  font-weight: bold; left: 343px; top: -27px; width: 500px; text-align: right; color: #000000; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.7); " value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta']} #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
 
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 30px; height: 29px; position: absolute; left: 725px; top: 5px; z-index: 1;"  process="@this" actionListener="#{controlRemoto.requerirBuscarEmpleadoTipo()}"/>
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 30px; height: 30px; position: absolute; left: 300px; top: 100px; z-index: 1;"  process="@this" actionListener="#{controlRemoto.requerirBuscarEmpleadoTipo()}"/>
                                 <p:tooltip  for="listaValores" value="#{msg['lista']}" />
-
-
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 30px; height: 29px; position: absolute; left: 755px; top: 5px; z-index: 1;" actionListener="#{controlRemoto.requerirBuscarEmpleadoTipo()}"   ajax="false">
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 30px; height: 30px; position: absolute; left: 330px; top: 100px; z-index: 1;" actionListener="#{controlRemoto.requerirBuscarEmpleadoTipo()}"   ajax="false">
                                     <p:dataExporter type="xls"  target=":formExportar:empleadosExportar" fileName="PersonalXLS" encoding="UTF-8"/>
                                 </p:commandButton>
                                 <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
-
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 30px; height: 29px; position: absolute; left: 785px; top: 5px; z-index: 1;"  actionListener="#{controlRemoto.requerirBuscarEmpleadoTipo()}" ajax="false">
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; width: 30px; height: 30px; position: absolute; left: 360px; top: 100px; z-index: 1;"  actionListener="#{controlRemoto.requerirBuscarEmpleadoTipo()}" ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportar:empleadosExportar" fileName="PersonalXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
-
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 30px; height: 29px; position: absolute; left: 815px; top: 5px; z-index: 1;" actionListener="#{controlRemoto.requerirBuscarEmpleadoTipo()}"  ajax="false">
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; width: 30px; height: 30px; position: absolute; left: 390px; top: 100px; z-index: 1;" actionListener="#{controlRemoto.requerirBuscarEmpleadoTipo()}"  ajax="false">
                                     <p:dataExporter type="pdf"  target=":formExportar:empleadosExportar" fileName="PersonalPDF" encoding="UTF-8"/>
                                 </p:commandButton>
                                 <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
@@ -47,11 +43,11 @@
                                 <fieldset style="height: 92px; width: 148px; display: block; position: absolute; border-radius: 10px; top: 40px; left: 15px; padding-right: 8px; padding-bottom: 0px; padding-top:0px;">
                                     <!-- <h:outputText value="#{msg['tipopersonal']}" styleClass="outputTextFielset" /> -->
 
-                                    <p:commandButton id="TipoPersonal" style="background-image: url(Imagenes/#{controlRemoto.imagen}); width: 41px; height: 80px; position: absolute; top: 7px; left: 5px; background-repeat: no-repeat; background-size: 100% 100%;" value="" update=":formularioDialogos" actionListener="#{controlRemoto.pruebita()}"  action="#{controlRemoto.pantallaReintegrar()}" process="@this"/>
+                                    <p:commandButton id="TipoPersonal" style="background-image: url(Imagenes/Iconos/#{controlRemoto.imagen}); width: 41px; height: 80px; position: absolute; top: 7px; left: 5px; background-repeat: no-repeat; background-size: 100% 100%;" value="" update=":formularioDialogos" actionListener="#{controlRemoto.pruebita()}"  action="#{controlRemoto.pantallaReintegrar()}" process="@this"/>
                                     <p:tooltip  for="TipoPersonal">
                                         #{msg['cargosdesempeñados1']} <br/> #{msg['cargosdesempeñados2']}
                                     </p:tooltip>
-                                    <p:commandButton id="Activos" value="#{msg['activos']}" style="position: absolute; width: 110px; height: 20px; left: 50px; top: 7px; font-size: 11px; padding: 0;" styleClass="#{controlRemoto.styleActivos}" actionListener="#{controlRemoto.activos()}" update=":form:tabMenu:contenedor, :form:alerta, TipoPersonal" />
+                                    <p:commandButton id="Activos" value="#{msg['activos']}" style="position: absolute; width: 110px; height: 20px; left: 50px; top: 7px; font-size: 11px; " styleClass="#{controlRemoto.styleActivos}" actionListener="#{controlRemoto.activos()}" update=":form:tabMenu:contenedor, :form:alerta, TipoPersonal" />
                                     <p:tooltip  for="Activos" value="#{msg['informacionactivos']}"  />
 
                                     <p:commandButton id="Pensionados" value="#{msg['pensionados']}" style="position: absolute; left: 50px; top: 27px; width: 110px; height: 20px; font-size: 11px; padding: 0;" styleClass="#{controlRemoto.stylePensionados}" actionListener="#{controlRemoto.pensionados()}" update="contenedor, :form:alerta, TipoPersonal"/>
@@ -64,71 +60,62 @@
                                     <p:tooltip  for="Aspirantes" value="#{msg['informacionaspirantes']}"  />
                                 </fieldset>
 
-                                <!-- Panel Derecho - Superior -->
-                                <h:outputText id="informacionTT" value="#{controlRemoto.informacionTiposTrabajadores}" style="position: absolute; left: 480px; top: 11px;"/>
-                                <p:commandButton id="btnPrimero" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 605px; top: 5px; height: 29px; width: 30px;" icon="ui-icon-arrowthickstop-1-w" disabled="#{controlRemoto.mostrarT == false ? true : false}"  actionListener="#{controlRemoto.primerTipoTrabajador()}"/>
-                                <p:commandButton id="btnAtras" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 635px; top: 5px; height: 29px; width: 30px;" icon="ui-icon-arrowthick-1-w" disabled="#{controlRemoto.mostrarT == false ? true : false}" actionListener="#{controlRemoto.atrasTipoTrabajador()}"/>
-                                <p:commandButton id="btnSiguiente" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 665px; top: 5px; height: 29px; width: 30px;" icon="ui-icon-arrowthick-1-e" disabled="#{controlRemoto.mostrarT == false ? true : false}" actionListener="#{controlRemoto.siguienteTipoTrabajador()}"/>
-                                <p:commandButton id="btnUltimo" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 695px; top: 5px; height: 29px; width: 30px;" icon="ui-icon-arrowthickstop-1-e" disabled="#{controlRemoto.mostrarT == false ? true : false}" actionListener="#{controlRemoto.ultimoTipoTrabajador()}"/>
-
                                 <p:panel id="contenedor" style="border: none">
                                     <fieldset id="set" style="height: 92px; width: 632px; display: block; position: absolute; border-radius: 10px; left: 188px; top: 40px; padding-top: 0px; padding-bottom: 0px;">
-
-
-
-                                        <p:outputLabel value="#{msg['codigo']}" id="cod" style="position: absolute; left: 12px; 
-                                                       color: #14388B; width: 63px; height: 20px; top: 7px; font-weight: bold"/>
-                                        <p:inputText id="codigo" readonly="true"  value="#{controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.codigoempleado}" style="position: absolute; left: 12px; top: 22px; width: 76px; height: 15px;" onclick="select();"/>
+                                        <p:outputLabel value="#{msg['codigo']}" id="cod" style="position: relative; width: 63px; top: 4px; height: 20px; 
+                                                       color: #14388B; font-weight: bold"/>
+                                        <p:outputLabel value="#{msg['primerapellido']}" id="pa" style="position: relative; left:45px; top: 4px;
+                                                       color: #14388B; font-weight: bold"  />
+                                        <!--<p:outputLabel value="#{msg['segundoapellido']}" id="sa" style="position: relative; 
+                                                       color: #14388B; font-weight: bold" />
+                                        <p:outputLabel value="#{msg['nombre']}" style="position: relative; color: #14388B; font-weight: bold"  />
+                                        -->
+                                        <br/>
+                                        <p:inputText id="codigo" readonly="true"  value="#{controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.codigoempleado}" 
+                                                     style="position: relative; top: 10px; width: 79px; height: 20px; border-width: 1px;" onclick="select();"/>
                                         <!-- <p:ajax event="change" update=":formulario:info:VCargoDesempeñado"/> -->
-
-                                        <p:outputLabel value="#{msg['primerapellido']}" id="pa" style="position: absolute; left: 105px; 
-                                                       color: #14388B; ; top: 7px; font-weight: bold"  />
-                                        <p:inputText id="primerApellido" readonly="true" value="#{controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.persona.primerapellido}" style="position: absolute;left: 105px;
-                                                     top: 22px; width: 138px; height: 15px;" onclick="select();"/>
-
-                                        <p:outputLabel value="#{msg['segundoapellido']}" id="sa" style="position: absolute; left: 250px; 
-                                                       color: #14388B; ; top: 7px; font-weight: bold" />
-                                        <p:inputText id="segundoApellido" readonly="true" value="#{controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.persona.segundoapellido}" style="position: absolute;
-                                                     left: 250px; top: 22px; height: 15px; width: 138px;" onclick="select();"/>
-
-                                        <p:outputLabel value="#{msg['nombre']}" style="position: absolute; left: 394px;  color: #14388B; top: 7px; font-weight: bold"  />
-                                        <p:inputText id="nombre" readonly="true" value="#{controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.persona.nombre}" style="position: absolute; left: 394px; top: 22px; 
-                                                     height: 15px; width: 138px;" onclick="select();"/>
-
-
-
-
-
+                                        <p:inputText id="primerApellido" readonly="true" value="#{controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.persona.nombreCompleto}" 
+                                                     style="position: relative; top: 10px; width: 310px; height: 20px; border-width: 1px;" onclick="select();"/>
+                                        <!-- <p:inputText id="segundoApellido" readonly="true" value="#{controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.persona.segundoapellido}" 
+                                                     style="position: relative; height: 15px; width: 114px;" onclick="select();"/>
+                                        <p:inputText id="nombre" readonly="true" value="#{controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.persona.nombre}" 
+                                                     style="position: relative; height: 15px; width: 143px;" onclick="select();"/>
+                                        -->
+                                        <!-- Panel Derecho - Superior -->
+                                        <p:commandButton id="btnPrimero" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 440px; height: 30px; width: 30px; background-image: url(Imagenes/Iconos/rgprimero.png); background-size: 100% 100%; background-repeat: no-repeat;" disabled="#{controlRemoto.mostrarT == false ? true : false}"  actionListener="#{controlRemoto.primerTipoTrabajador()}"/>
+                                        <p:commandButton id="btnAtras" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 470px; height: 30px; width: 30px; background-image: url(Imagenes/Iconos/rgatras.png); background-size: 100% 100%; background-repeat: no-repeat;" disabled="#{controlRemoto.mostrarT == false ? true : false}" actionListener="#{controlRemoto.atrasTipoTrabajador()}"/>
+                                        <p:commandButton id="btnSiguiente" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 500px; height: 30px; width: 30px; background-image: url(Imagenes/Iconos/rgsiguiente.png); background-size: 100% 100%; background-repeat: no-repeat;" disabled="#{controlRemoto.mostrarT == false ? true : false}" actionListener="#{controlRemoto.siguienteTipoTrabajador()}"/>
+                                        <p:commandButton id="btnUltimo" value="" styleClass="cssBotonesPaginadorPersonalizado" style="left: 530px; height: 30px; width: 30px; background-image: url(Imagenes/Iconos/rgultimo.png); background-size: 100% 100%; background-repeat: no-repeat;" disabled="#{controlRemoto.mostrarT == false ? true : false}" actionListener="#{controlRemoto.ultimoTipoTrabajador()}"/>
+                                        <br/>
                                         <!-- Botones Con Imagen (3) -->
-
-                                        <p:commandButton style="background-image: url(Imagenes/buscarlaboral1.gif); position: absolute; top: 52px; width: 28px; height: 28px; background-size: 100% 100%; left: 12px; background-repeat: no-repeat; " value="" id="buscarLaboral" action="busquedaAvanzada"  actionListener="#{controlBusquedaAvanzada2.recibirTipoBusqueda(0)}"  />
+                                        <p:commandButton id="buscarLaboral" style="position: relative; top: 10px; width: 30px; height: 30px; background-image: url(Imagenes/Iconos/buscarlaboral1.png); background-size: 100% 100%; background-repeat: no-repeat;" value="" action="busquedaAvanzada"  actionListener="#{controlBusquedaAvanzada2.recibirTipoBusqueda(0)}"  />
                                         <p:tooltip  for="buscarLaboral" value="#{msg['badl']}"  />
-
-                                        <p:commandButton style="background-image: url(Imagenes/buscarpersonal1.gif); position: absolute; left: 43px; top: 52px; width: 28px; height: 28px; background-size: 100% 100%; background-repeat: no-repeat; " id="buscarPersonal" value="" action="busquedaAvanzada"  actionListener="#{controlBusquedaAvanzada2.recibirTipoBusqueda(1)}"  />
+                                        <p:commandButton id="buscarPersonal" style="position: relative; top: 10px; width: 30px; height: 30px; background-image: url(Imagenes/Iconos/buscarpersonal1.png); background-size: 100% 100%; background-repeat: no-repeat;" value="" action="busquedaAvanzada"  actionListener="#{controlBusquedaAvanzada2.recibirTipoBusqueda(1)}"  />
                                         <p:tooltip  for="buscarPersonal" value="#{msg['badp']}"  />
-
-                                        <p:commandButton style="background-image: url(Imagenes/buscarrapida1.gif); position: absolute; left: 74px; top: 52px; width: 28px; height: 28px; background-size: 100% 100%; background-repeat: no-repeat; " id="busquedaRapida" value="" actionListener="#{controlRemoto.requerirBusquedaRapida()}" update=":form:lvBusquedaRapida"/>
+                                        <p:commandButton id="busquedaRapida" style="position: relative; top: 10px; width: 30px; height: 30px; background-image: url(Imagenes/Iconos/buscarrapida1.png); background-size: 100% 100%; background-repeat: no-repeat;" value="" actionListener="#{controlRemoto.requerirBusquedaRapida()}" update=":form:lvBusquedaRapida"/>
                                         <p:tooltip  for="busquedaRapida" value="#{msg['br']}"  />
 
+                                        
+
                                         <!-- Botones Buscar Empleado y Mostrar Todos --> 
-                                        <p:commandButton style="position: absolute; left: 248px; top: 52px; width: 150px;"  id="BuscarEmpleado" value="#{msg['Buscar']}"
+                                        <p:commandButton style="position: relative; left: 135px; top: 13px; width: 90px; height: 30px;"  id="BuscarEmpleado" value="#{msg['Buscar']}"
                                                          disabled="#{controlRemoto.buscarEmp}" actionListener="#{controlRemoto.requerirBuscarEmpleadoTipo()}" update=":form:lvBuscarEmpleado"/>
                                         <p:tooltip  for="BuscarEmpleado">
                                             #{msg['buscarunempleadoporcedula']}<br/>#{msg['nombreoapellidos']}
                                         </p:tooltip>
-
-                                        <p:commandButton style="position: absolute; left: 400px; top: 52px;    width: 124px;" id="MostrarTodos" value="#{msg['mostrar']}"
+                                        <p:commandButton style="position: relative; left: 135px; top: 13px; width: 90px; height: 30px;" id="MostrarTodos" value="#{msg['mostrar']}"
                                                          actionListener="#{controlRemoto.mostrarTodos()}" update=":form:tabMenu:contenedor" disabled="#{controlRemoto.mostrarT}"/>
                                         <p:tooltip  for="MostrarTodos" value="#{msg['mostrartodos']}" />
-
+                                        
+                                        <h:outputText id="informacionTT" value="#{controlRemoto.informacionTiposTrabajadores}" style="position: relative; left: 170px; top: 13px;"/>
+                                        <p:spacer styleClass="separador" style="position: absolute; left: 552px; top: 10px; height: 70px;"/>   
                                         <!-- Boton Hoja de Vida -->
-
-                                        <p:commandButton id="HojaDeVida" value=""  style="background-size: 100% 100%; position: absolute; background-image: url(Imagenes/Iconos/informacionPersonal.png); left: 539px; top: 2px; width: 60px; height: 60px; background-repeat: no-repeat;" disabled="#{controlRemoto.acumulado}" actionListener="#{controlEmpleadoIndividual.recibirEmpleado(controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.secuencia)}" action="hojaVida" />
+                                        <p:commandButton id="HojaDeVida" value=""  style="background-size: 100% 100%; position: absolute; background-image: url(Imagenes/Iconos/informacionPersonal.png); left: 575px; top: 2px; width: 60px; height: 60px; background-repeat: no-repeat;" disabled="#{controlRemoto.acumulado}" actionListener="#{controlEmpleadoIndividual.recibirEmpleado(controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.secuencia)}" action="hojaVida" />
                                         <p:tooltip for="HojaDeVida">
                                             #{msg['vaom']}<br/>#{msg['dpe']}
                                         </p:tooltip>
 
-                                        <h:outputText style="position: absolute; left: 528px; top: 65px; color: #006; width: 80px; font-weight: bold; text-align: center;" value="#{msg['hojadevida']}"/>
+                                        <h:outputText style="position: absolute; left: 565px; top: 68px; color: #006; width: 80px; font-weight: bold; text-align: center;" value="#{msg['hojadevida']}"/>
                                     </fieldset>
 
 
@@ -335,8 +322,8 @@
                                             <!--
                                             <p:commandButton id="IngresoHojaDeVida" value="" disabled="#{controlRemoto.hv2}" style="background-image: url(Imagenes/Iconos/hojaDeVida.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" />
                                             <p:tooltip  for="IngresoHojaDeVida">
-                                                #{msg['ingresohojadevida1']}<br/>#{msg['ingresohojadevida2']}
-                                            </p:tooltip>
+                                            #{msg['ingresohojadevida1']}<br/>#{msg['ingresohojadevida2']}
+                                        </p:tooltip>
                                             -->
                                             <p:spacer styleClass="separador"/>
                                             <!-- Panel Reportes -->
@@ -344,11 +331,11 @@
                                             <p:tooltip  for="ReportesLaborales">
                                                 #{msg['reporteslaborales1']}<br/>#{msg['reporteslaborales2']}
                                             </p:tooltip>
-                                        <!--<p:spacer styleClass="separador"/> -->
-                                        <!--<p:commandButton value="" style="background-image: url(Imagenes/Designer.jpg); height: 40px; width: 100px; background-repeat: no-repeat; background-size: 100% 100%;" action="acercade" /> -->
-                                        <!--<em><h:outputText style="position: absolute; top: 474px; ; left: 17px" value="#{msg['bienvenido']}"/></em>-->
-                                        <!--<h:outputText id="Usuario" style="position: absolute; top: 475px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>-->
-                                        <!--<h:outputText id="Empresa"  style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/> -->
+                                            <!--<p:spacer styleClass="separador"/> -->
+                                            <!--<p:commandButton value="" style="background-image: url(Imagenes/Designer.jpg); height: 40px; width: 100px; background-repeat: no-repeat; background-size: 100% 100%;" action="acercade" /> -->
+                                            <!--<em><h:outputText style="position: absolute; top: 474px; ; left: 17px" value="#{msg['bienvenido']}"/></em>-->
+                                            <!--<h:outputText id="Usuario" style="position: absolute; top: 475px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>-->
+                                            <!--<h:outputText id="Empresa"  style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/> -->
                                         </center>
                                     </fieldset>
                                 </p:panel>
