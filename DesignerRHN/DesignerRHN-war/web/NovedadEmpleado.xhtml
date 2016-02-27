@@ -18,36 +18,7 @@
                     <f:loadBundle basename="Recursos.novedadempleado" var="msg" />
 
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">    
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 130px;width: 580px; border-radius: 10px; text-align: left">
-                            <legend style="font-size: 14px; color: #14388B"><strong>#{msg['empleados']}</strong></legend>
-
-                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 30px;  " id="btnBuscarEmpleados" actionListener="#{controlNovedadesEmpleados.asignarIndex(indice, 0, 0)}" value="#{msg['buscar']}" process="@this"/>
-                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 60px;  " id="btnMostrarTodos" actionListener="#{controlNovedadesEmpleados.mostrarTodos()}" value="#{msg['mostrar']}"  process="@this"/>
-
-                            <p:dataTable id="datosEmpleados" var="empleados" value="#{controlNovedadesEmpleados.listaEmpleadosNovedad}"
-                                         rowKey="#{empleados.codigo}" rowIndexVar="indiceT" style=" border: 1px; text-align: left; width: 560px"                           
-                                         scrollable="true" scrollHeight="80" scrollWidth="575" filteredValue="#{controlNovedadesEmpleados.filtradosListaEmpleadosNovedad}" 
-                                         emptyMessage="#{msg['vacio']}" selection="#{controlNovedadesEmpleados.seleccionMostrar}"
-                                         editable="true" editMode="cell" selectionMode="single" >
-
-                                <p:ajax event="filter" listener="#{controlNovedadesEmpleados.eventoFiltrar()}"/>
-                                <p:ajax event="rowSelect" listener="#{controlNovedadesEmpleados.cambiarEmpleado()}"/>
-
-                                <p:column headerText="#{msg['codigo']}" sortBy="#{empleados.codigo}" filterBy="#{empleados.codigo}" filterMatchMode="contains" id="nEEmpleadosCodigos" width="30" filterStyle="display: none; visibility: hidden;" >                                  
-                                    <h:outputText value="#{empleados.codigo}" />
-                                </p:column>
-
-                                <p:column headerText="#{msg['nombre']}" sortBy="#{empleados.nombre}" filterBy="#{empleados.nombre}" filterMatchMode="contains" id="nEEmpleadosNombres" width="100" filterStyle="display: none; visibility: hidden;" >                                  
-                                    <h:outputText value="#{empleados.nombre}" />
-                                </p:column>
-
-                                <p:column headerText="#{msg['valor']}" sortBy="#{empleados.valor}" filterBy="#{empleados.valor}" filterMatchMode="contains" id="nEEmpleadosValor" width="30" filterStyle="display: none; visibility: hidden;" >                                  
-                                    <h:outputText value="#{empleados.valor}" />
-                                </p:column>
-                            </p:dataTable>
-                        </fieldset>
-
-                        <p:toolbar style=" position: absolute; top: 37px; left: 12px; height: 24px">  
+                                                <p:toolbar style=" position: absolute; top: 37px; left: 12px; height: 24px">  
 
                             <p:toolbarGroup align="left"> 
 
@@ -89,10 +60,45 @@
                                 <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesEmpleados.verificarRastro()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
+                                
+                                <p:separator style="position: relative; top: -9px"/> 
 
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesEmpleados.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesEmpleados.salir()}" action="novedad" process="@this"/>  
+                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
                             </p:toolbarGroup>  
                         </p:toolbar> 
+                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 130px;width: 580px; border-radius: 10px; text-align: left">
+                            <legend style="font-size: 14px; color: #14388B"><strong>#{msg['empleados']}</strong></legend>
 
+                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 30px;  " id="btnBuscarEmpleados" actionListener="#{controlNovedadesEmpleados.asignarIndex(indice, 0, 0)}" value="#{msg['buscar']}" process="@this"/>
+                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 60px;  " id="btnMostrarTodos" actionListener="#{controlNovedadesEmpleados.mostrarTodos()}" value="#{msg['mostrar']}"  process="@this"/>
+
+                            <p:dataTable id="datosEmpleados" var="empleados" value="#{controlNovedadesEmpleados.listaEmpleadosNovedad}"
+                                         rowKey="#{empleados.codigo}" rowIndexVar="indiceT" style=" border: 1px; text-align: left; width: 560px"                           
+                                         scrollable="true" scrollHeight="80" scrollWidth="575" filteredValue="#{controlNovedadesEmpleados.filtradosListaEmpleadosNovedad}" 
+                                         emptyMessage="#{msg['vacio']}" selection="#{controlNovedadesEmpleados.seleccionMostrar}"
+                                         editable="true" editMode="cell" selectionMode="single" >
+
+                                <p:ajax event="filter" listener="#{controlNovedadesEmpleados.eventoFiltrar()}"/>
+                                <p:ajax event="rowSelect" listener="#{controlNovedadesEmpleados.cambiarEmpleado()}"/>
+
+                                <p:column headerText="#{msg['codigo']}" sortBy="#{empleados.codigo}" filterBy="#{empleados.codigo}" filterMatchMode="contains" id="nEEmpleadosCodigos" width="30" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <h:outputText value="#{empleados.codigo}" />
+                                </p:column>
+
+                                <p:column headerText="#{msg['nombre']}" sortBy="#{empleados.nombre}" filterBy="#{empleados.nombre}" filterMatchMode="contains" id="nEEmpleadosNombres" width="100" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <h:outputText value="#{empleados.nombre}" />
+                                </p:column>
+
+                                <p:column headerText="#{msg['valor']}" sortBy="#{empleados.valor}" filterBy="#{empleados.valor}" filterMatchMode="contains" id="nEEmpleadosValor" width="30" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <h:outputText value="#{empleados.valor}" />
+                                </p:column>
+                            </p:dataTable>
+                        </fieldset>
+                        
                         <p:commandButton style="position: absolute; left: 10px; top: 470px;" id="TODAS" value="#{msg['todas']}" actionListener="#{controlNovedadesEmpleados.todasNovedades()}" disabled="#{controlNovedadesEmpleados.todas}" process="@this" />
                         <p:commandButton style="position: absolute; left: 165px; top: 470px;" id="ACTUALES" value="#{msg['actuales']}" actionListener="#{controlNovedadesEmpleados.actualesNovedades()}" disabled="#{controlNovedadesEmpleados.actuales}" process="@this" />
                         <p:commandButton style="position: absolute; left: 315px; top: 470px;" id="ACUMULADOS" value="#{msg['btnAcumuladoNovedad']}" disabled="#{controlNovedadesEmpleados.activoBtnAcumulado}" action="acomuladoPorNovedad" actionListener="#{controlSolucionFormula.recibirParametros(controlNovedadesEmpleados.seleccionMostrar.codigo, controlNovedadesEmpleados.actualNovedadTabla.secuencia)}" process="@this" />

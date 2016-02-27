@@ -121,11 +121,11 @@
                                     </p:row>
                                     <!-- Fila de Abajo -->
                                     <p:row>
-                                        <p:column  style="width: 100px" colspan="1" width="100" headerText="#{msg['tipo']}" filterBy="#{ausentismos.tipo.descripcion}" filterMatchMode="contains" id="ATipo" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.tipo.descripcion}" />  
-                                        <p:column  style="width: 100px" width="100" headerText="#{msg['clase']}" filterBy="#{ausentismos.clase.descripcion}" filterMatchMode="contains" id="AClase" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.clase.descripcion}" >     
+                                        <p:column  style="width: 100px" colspan="1"  width="100" headerText="#{msg['tipo']}" filterBy="#{ausentismos.tipo.descripcion}" filterMatchMode="contains" id="ATipo" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.tipo.descripcion}" />  
+                                        <p:column  width="100" headerText="#{msg['clase']}" filterBy="#{ausentismos.clase.descripcion}" filterMatchMode="contains" id="AClase" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.clase.descripcion}" >     
                                         </p:column>
 
-                                        <p:column  style="width: 100px" width="100" headerText="#{msg['causa']}" filterBy="#{ausentismos.causa.descripcion}" filterMatchMode="contains" id="ACausa" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.causa.descripcion}" >
+                                        <p:column  width="100" headerText="#{msg['causa']}" filterBy="#{ausentismos.causa.descripcion}" filterMatchMode="contains" id="ACausa" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.causa.descripcion}" >
                                         </p:column>
 
                                         <p:column  headerText="#{msg['dias']}" filterBy="#{ausentismos.dias}" filterMatchMode="contains" id="ADias" filterStyle="display: none; visibility: hidden;" sortBy= "#{ausentismos.dias}">
@@ -557,7 +557,7 @@
                                     </p:cellEditor>  
                                     </p:column>
                             </p:dataTable>
-                            <p:dataTable id="datosAusentismosEmpleado" var="ausentismos" value="#{controlAusentismos.listaAusentismos}"
+                     <!--       <p:dataTable id="datosAusentismoEmpleado" var="ausentismos" value="#{controlAusentismos.listaAusentismos}"
                                          rowKey="#{ausentismos.secuencia}" rowIndexVar="indice" style="border: 1px;width: 840px"                           
                                          scrollHeight="#{controlAusentismos.altoTabla}" scrollable="true"
                                          filteredValue="#{controlAusentismos.filtradosListaAusentismos}" 
@@ -572,10 +572,10 @@
                                 </p:column>
                                          
                                 
-                            </p:dataTable>
+                            </p:dataTable>-->
                             
                         </fieldset>
-
+                    
                     </p:panel>
                     <p:remoteCommand name="periodoAusentismo" actionListener="#{controlAusentismos.periodoAusentismo()}"/>
                 </h:form>

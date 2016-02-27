@@ -616,18 +616,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     public void cancelarModificacion() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
-            //CERRAR FILTRADO
-            vttFecha = (Column) c.getViewRoot().findComponent("form:datosVTTEmpleado:vttFecha");
-            vttFecha.setFilterStyle("display: none; visibility: hidden;");
-            vttTipoTrabajador = (Column) c.getViewRoot().findComponent("form:datosVTTEmpleado:vttTipoTrabajador");
-            vttTipoTrabajador.setFilterStyle("display: none; visibility: hidden;");
-            vttTipoCotizante = (Column) c.getViewRoot().findComponent("form:datosVTTEmpleado:vttTipoCotizante");
-            vttTipoCotizante.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "116";
-            RequestContext.getCurrentInstance().update("form:datosVTTEmpleado");
-            bandera = 0;
-            filtrarVTT = null;
-            tipoLista = 0;
+            cerrarFiltrado();
         }
 
         listVTTBorrar.clear();
@@ -725,18 +714,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
             if (validarFechasRegistroVTT(1) == true) {
                 FacesContext c = FacesContext.getCurrentInstance();
                 if (bandera == 1) {
-                    //CERRAR FILTRADO
-                    vttFecha = (Column) c.getViewRoot().findComponent("form:datosVTTEmpleado:vttFecha");
-                    vttFecha.setFilterStyle("display: none; visibility: hidden;");
-                    vttTipoTrabajador = (Column) c.getViewRoot().findComponent("form:datosVTTEmpleado:vttTipoTrabajador");
-                    vttTipoTrabajador.setFilterStyle("display: none; visibility: hidden;");
-                    vttTipoCotizante = (Column) c.getViewRoot().findComponent("form:datosVTTEmpleado:vttTipoCotizante");
-                    vttTipoCotizante.setFilterStyle("display: none; visibility: hidden;");
-                    altoTabla = "116";
-                    RequestContext.getCurrentInstance().update("form:datosVTTEmpleado");
-                    bandera = 0;
-                    filtrarVTT = null;
-                    tipoLista = 0;
+                    cerrarFiltrado();
                 }
                 //AGREGAR REGISTRO A LA LISTA VIGENCIAS CARGOS EMPLEADO.
                 k++;
@@ -910,18 +888,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
                         }
                         guardado = false;
                         if (bandera == 1) {
-                            //CERRAR FILTRADO
-                            vttFecha = (Column) c.getViewRoot().findComponent("form:datosVTTEmpleado:vttFecha");
-                            vttFecha.setFilterStyle("display: none; visibility: hidden;");
-                            vttTipoTrabajador = (Column) c.getViewRoot().findComponent("form:datosVTTEmpleado:vttTipoTrabajador");
-                            vttTipoTrabajador.setFilterStyle("display: none; visibility: hidden;");
-                            vttTipoCotizante = (Column) c.getViewRoot().findComponent("form:datosVTTEmpleado:vttTipoCotizante");
-                            vttTipoCotizante.setFilterStyle("display: none; visibility: hidden;");
-                            altoTabla = "116";
-                            RequestContext.getCurrentInstance().update("form:datosVTTEmpleado");
-                            bandera = 0;
-                            filtrarVTT = null;
-                            tipoLista = 0;
+                            cerrarFiltrado();
                         }
                         duplicarVTT = new VigenciasTiposTrabajadores();
                         context.execute("DuplicarRegistroVTT.hide();");
@@ -1154,17 +1121,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
             RequestContext.getCurrentInstance().update("form:datosVTTEmpleado");
             bandera = 1;
         } else if (bandera == 1) {
-            vttFecha = (Column) c.getViewRoot().findComponent("form:datosVTTEmpleado:vttFecha");
-            vttFecha.setFilterStyle("display: none; visibility: hidden;");
-            vttTipoTrabajador = (Column) c.getViewRoot().findComponent("form:datosVTTEmpleado:vttTipoTrabajador");
-            vttTipoTrabajador.setFilterStyle("display: none; visibility: hidden;");
-            vttTipoCotizante = (Column) c.getViewRoot().findComponent("form:datosVTTEmpleado:vttTipoCotizante");
-            vttTipoCotizante.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "116";
-            RequestContext.getCurrentInstance().update("form:datosVTTEmpleado");
-            bandera = 0;
-            filtrarVTT = null;
-            tipoLista = 0;
+            cerrarFiltrado();
         }
     }
 
@@ -1173,21 +1130,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
      * Metodo que cierra la sesion y limpia los datos en la pagina
      */
     public void salir() {
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (bandera == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
-            vttFecha = (Column) c.getViewRoot().findComponent("form:datosVTTEmpleado:vttFecha");
-            vttFecha.setFilterStyle("display: none; visibility: hidden;");
-            vttTipoTrabajador = (Column) c.getViewRoot().findComponent("form:datosVTTEmpleado:vttTipoTrabajador");
-            vttTipoTrabajador.setFilterStyle("display: none; visibility: hidden;");
-            vttTipoCotizante = (Column) c.getViewRoot().findComponent("form:datosVTTEmpleado:vttTipoCotizante");
-            vttTipoCotizante.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "116";
-            context.update("form:datosVTTEmpleado");
-            bandera = 0;
-            filtrarVTT = null;
-            tipoLista = 0;
-        }
+        cerrarFiltrado();
         listVTTBorrar.clear();
         listVTTCrear.clear();
         listVTTModificar.clear();
@@ -1208,8 +1151,26 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         motivosRetiros = null;
         //context.update("form:ACEPTAR");
     }
-    //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO)
 
+    public void cerrarFiltrado() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            vttFecha = (Column) c.getViewRoot().findComponent("form:datosVTTEmpleado:vttFecha");
+            vttFecha.setFilterStyle("display: none; visibility: hidden;");
+            vttTipoTrabajador = (Column) c.getViewRoot().findComponent("form:datosVTTEmpleado:vttTipoTrabajador");
+            vttTipoTrabajador.setFilterStyle("display: none; visibility: hidden;");
+            vttTipoCotizante = (Column) c.getViewRoot().findComponent("form:datosVTTEmpleado:vttTipoCotizante");
+            vttTipoCotizante.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "116";
+            context.update("form:datosVTTEmpleado");
+            bandera = 0;
+            filtrarVTT = null;
+            tipoLista = 0;
+        }
+    }
+
+    //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO)
     /**
      * Metodo que muestra los dialogos de las listas dentro de la pagina
      *
@@ -1217,117 +1178,73 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
      * @param dlg Dialogo
      * @param LND Tipo actualizacion = LISTA - NUEVO - DUPLICADO
      * @param tt Tipo Trabajador : Pensionado / Retirado /
-     * VigenciaProrrateoProyecto
+     * VigenciaTipoTrabajador
      */
-    public void asignarIndex(Integer indice, int LND) {
-        index = indice;
+    public void asignarIndex(Integer indice, int dlg, int LND, int tt) {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (LND == 0) {
-            tipoActualizacion = 0;
-        } else if (LND == 1) {
-            tipoActualizacion = 1;
-        } else if (LND == 2) {
-            tipoActualizacion = 2;
+        if (tt == 0) {
+            if (LND == 0) {
+                index = indice;
+                tipoActualizacion = 0;
+            } else if (LND == 1) {
+                tipoActualizacion = 1;
+            } else if (LND == 2) {
+                tipoActualizacion = 2;
+            }
+            if (dlg == 0) {
+                //TiposTrabajadoresDialogo
+                getInfoRegistroTipoTrabajador();
+                context.update("formLovs:TipoTrabajadorDialogo");
+                context.execute("formLovs:TipoTrabajadorDialogo.show()");
+            }
         }
-        getInfoRegistroTipoTrabajador();
-        context.update("formLovs:TipoTrabajadorDialogo"); //TiposTrabajadoresDialogo
-        context.execute("TipoTrabajadorDialogo.show()");
-    }
-
-    //ASIGNAR INDEX PARA DIALOGOS PENSIONADOS (LDN = LISTA - NUEVO - DUPLICADO)
-    /**
-     * Metodo que muestra los dialogos de las listas dentro de la pagina
-     *
-     * @param indice
-     * @param LND
-     */
-    public void asignarIndexClasePensionados(Integer indice, int LND, int pensionado) {
-        //index = indice;
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (pensionado == 0) {
+        if (tt == 1) {
             if (LND == 0) {
+                indexPension = indice;
                 tipoActualizacion = 0;
             } else if (LND == 1) {
                 tipoActualizacion = 1;
             } else if (LND == 2) {
                 tipoActualizacion = 2;
             }
-            getInfoRegistroTipoTrabajador();
-            context.update("formLovs:clasePensionDialogo"); //ClasesPensionDialogo
-            context.execute("clasePensionDialogo.show()");
-        } else if (pensionado == 1) {
-            if (LND == 0) {
-                tipoActualizacion = 0;
-            } else if (LND == 1) {
-                tipoActualizacion = 1;
-            } else if (LND == 2) {
-                tipoActualizacion = 2;
+            if (dlg == 0) {
+                //ClasesPensionDialogo
+                getInfoRegistroClasePension();
+                context.update("formLovs:clasePensionDialogo");
+                context.execute("clasePensionDialogo.show()");
+            } else if (dlg == 1) {
+                //tipoPensionadoDialogo
+                getInfoRegistroTipoPension();
+                context.update("formLovs:tipoPensionadoDialogo");
+                context.execute("tipoPensionadoDialogo.show()");
+            } else if (dlg == 2) {
+                //causaBientesDialogo
+                getInfoRegistroEmpleado();
+                context.update("formLovs:causaBientesDialogo");
+                context.execute("causaBientesDialogo.show()");
+            } else if (dlg == 3) {
+                //tipoPensionadoDialogo
+                getInfoRegistroPersona();
+                context.update("formLovs:tutorDialogo");
+                context.execute("tutorDialogo.show()");
             }
-            getInfoRegistroTipoTrabajador();
-            context.update("formLovs:tipoPensionadoDialogo"); //ClasesPensionDialogo
-            context.execute("tipoPensionadoDialogo.show()");
-        } else if (pensionado == 2) {
-            if (LND == 0) {
-                tipoActualizacion = 0;
-            } else if (LND == 1) {
-                tipoActualizacion = 1;
-            } else if (LND == 2) {
-                tipoActualizacion = 2;
-            }
-            getInfoRegistroTipoTrabajador();
-            context.update("formLovs:causaBientesDialogo"); //tipoPensionadoDialogo
-            context.execute("causaBientesDialogo.show()");
-        } else if (pensionado == 3) {
-            if (LND == 0) {
-                tipoActualizacion = 0;
-            } else if (LND == 1) {
-                tipoActualizacion = 1;
-            } else if (LND == 2) {
-                tipoActualizacion = 2;
-            }
-            getInfoRegistroTipoTrabajador();
-            context.update("formLovs:tutorDialogo"); //tipoPensionadoDialogo
-            context.execute("tutorDialogo.show()");
         }
-    }
-    //ASIGNAR INDEX PARA DIALOGOS RETIRADOS (LDN = LISTA - NUEVO - DUPLICADO)
-
-    /**
-     * Metodo que muestra los dialogos de las listas dentro de la pagina
-     *
-     * @param indice
-     * @param LND
-     */
-    /*
-     * public void asignarIndexRetirados(Integer indice, int LND) { index =
-     * indice; RequestContext context = RequestContext.getCurrentInstance(); if
-     * (LND == 0) { tipoActualizacion = 0; } else if (LND == 1) {
-     * tipoActualizacion = 1; } else if (LND == 2) { tipoActualizacion = 2; }
-     * getInfoRegistroTipoTrabajador();
-     * context.update("formLovs:RetirosDialogo"); //RetirosDialogo
-     * context.execute("RetirosDialogo.show()");
-    }
-     */
-    //ASIGNAR INDEX PARA DIALOGOS tipoPensionadoDialogo (LDN = LISTA - NUEVO - DUPLICADO)
-    /**
-     * Metodo que muestra los dialogos de las listas dentro de la pagina
-     *
-     * @param indice
-     * @param LND
-     */
-    public void asignarIndexMotivoRetiro(Integer indice, int LND) {
-        indexRetiro = indice;
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (LND == 0) {
-            tipoActualizacion = 0;
-        } else if (LND == 1) {
-            tipoActualizacion = 1;
-        } else if (LND == 2) {
-            tipoActualizacion = 2;
+        if (tt == 2) {
+            if (LND == 0) {
+                indexRetiro = indice;
+                tipoActualizacion = 0;
+            } else if (LND == 1) {
+                tipoActualizacion = 1;
+            } else if (LND == 2) {
+                tipoActualizacion = 2;
+            }
+            if (dlg == 0) {
+                //RetirosDialogo
+                getInfoRegistroMotivoRetiros();
+                context.update("formLovs:RetirosDialogo");
+                context.execute("RetirosDialogo.show()");
+            }
         }
-        getInfoRegistroTipoTrabajador();
-        context.update("formLovs:RetirosDialogo"); //RetirosDialogo
-        context.execute("RetirosDialogo.show()");
     }
 
     //LOVS
@@ -1405,127 +1322,33 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
 
     //LISTA DE VALORES DINAMICA
     /**
-     * Muestra el dialogo de TiposTrabajador cuando se hace click en un boton de
-     * nueva y duplicar vigencia
+     * Metodo que activa la lista de valores de todas las tablas con respecto al
+     * index activo y la columna activa
      */
     public void listaValoresBoton() {
         RequestContext context = RequestContext.getCurrentInstance();
+        //Si no hay registro selecciionado
+        //if (index < 0 && indexPension < 0 && indexRetiro < 0) {
         if (index < 0) {
             context.execute("seleccionarRegistro.show()");
         } else {
             if (index >= 0) {
                 if (cualCelda == 1) {
+                    //TiposTrabajadoresDialogo
                     getInfoRegistroTipoTrabajador();
-                    context.update("formLovs:TipoTrabajadorDialogo"); //TiposTrabajadoresDialogo
+                    context.update("formLovs:TipoTrabajadorDialogo");
                     context.execute("TipoTrabajadorDialogo.show()");
                     tipoActualizacion = 0;
-                    cualCelda = -1;
-                    tipoLista = 0;
                 }
             }
         }
     }
 
-    //LISTA DE VALORES DINAMICA
-    /**
-     * Muestra el dialogo de TiposTrabajador cuando se hace click en un boton de
-     * nueva y duplicar vigencia
-     */
-    public void listaValoresBotonRetirado() {
-        RequestContext context = RequestContext.getCurrentInstance();
+        /**
+         * Activa el boton aceptar en la pantalla inicial y en los dialogos
+         */
+    
 
-        if (index >= 0) {
-            if (cualCelda == 1) {
-                getInfoRegistroTipoTrabajador();
-                context.update("formLovs:RetirosDialogo"); //RetiradosDialogo
-                context.execute("RetirosDialogo.show()");
-                tipoActualizacion = 0;
-                cualCelda = -1;
-                tipoLista = 0;
-            }
-        }
-    }
-
-    //LISTA DE VALORES DINAMICA
-    /**
-     * Muestra el dialogo de TiposTrabajador cuando se hace click en un boton de
-     * nueva y duplicar vigencia
-     */
-    public void listaValoresBotonClasePensionado() {
-        RequestContext context = RequestContext.getCurrentInstance();
-
-        if (index >= 0) {
-            if (cualCelda == 1) {
-                getInfoRegistroTipoTrabajador();
-                context.update("formLovs:clasePensionDialogo"); //clasePensionDialogo
-                context.execute("clasePensionDialogo.show()");
-                tipoActualizacion = 0;
-                cualCelda = -1;
-                tipoLista = 0;
-            }
-        }
-    }
-
-    //LISTA DE VALORES DINAMICA
-    /**
-     * Muestra el dialogo de TiposTrabajador cuando se hace click en un boton de
-     * nueva y duplicar vigencia
-     */
-    public void listaValoresBotonTipoPensionado() {
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (index >= 0) {
-            if (cualCelda == 1) {
-                getInfoRegistroTipoTrabajador();
-                context.update("formLovs:tipoPensionadoDialogo"); //tipoPensionadoDialogo
-                context.execute("tipoPensionadoDialogo.show()");
-                tipoActualizacion = 0;
-                cualCelda = -1;
-                tipoLista = 0;
-            }
-        }
-    }
-
-    //LISTA DE VALORES DINAMICA
-    /**
-     * Muestra el dialogo de TiposTrabajador cuando se hace click en un boton de
-     * nueva y duplicar vigencia
-     */
-    public void listaValoresBotonCausaBientes() {
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (index >= 0) {
-            if (cualCelda == 1) {
-                getInfoRegistroTipoTrabajador();
-                context.update("formLovs:causaBientesDialogo"); //causaBientesDialogo
-                context.execute("causaBientesDialogo.show()");
-                tipoActualizacion = 0;
-                cualCelda = -1;
-                tipoLista = 0;
-            }
-        }
-    }
-
-    //LISTA DE VALORES DINAMICA
-    /**
-     * Muestra el dialogo de TiposTrabajador cuando se hace click en un boton de
-     * nueva y duplicar vigencia
-     */
-    public void listaValoresBotonTutor() {
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (index >= 0) {
-            if (cualCelda == 1) {
-                getInfoRegistroTipoTrabajador();
-                context.update("formLovs:tutorDialogo"); //tutorDialogo
-                context.execute("tutorDialogo.show()");
-                tipoActualizacion = 0;
-                cualCelda = -1;
-                tipoLista = 0;
-            }
-        }
-    }
-
-    /**
-     * Activa el boton aceptar en la pantalla inicial y en los dialogos
-     */
     public void activarAceptar() {
         aceptar = false;
     }

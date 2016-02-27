@@ -1780,45 +1780,7 @@ public class ControlNovedadesConceptos implements Serializable {
 
     //CANCELAR MODIFICACIONES
     public void cancelarModificacion() {
-        if (bandera == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
-
-            nCEmpleadoCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCConceptoCodigo");
-            nCEmpleadoCodigo.setFilterStyle("display: none; visibility: hidden;");
-            nCEmpleadoNombre = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCConceptoDescripcion");
-            nCEmpleadoNombre.setFilterStyle("display: none; visibility: hidden;");
-            nCFechasInicial = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCFechasInicial");
-            nCFechasInicial.setFilterStyle("display: none; visibility: hidden;");
-            nCFechasFinal = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCFechasFinal");
-            nCFechasFinal.setFilterStyle("display: none; visibility: hidden;");
-            nCValor = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCValor");
-            nCValor.setFilterStyle("display: none; visibility: hidden;");
-            nCSaldo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCSaldo");
-            nCSaldo.setFilterStyle("display: none; visibility: hidden;");
-            nCPeriodicidadCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCPeriodicidadCodigo");
-            nCPeriodicidadCodigo.setFilterStyle("display: none; visibility: hidden;");
-            nCDescripcionPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCDescripcionPeriodicidad");
-            nCDescripcionPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
-            nCTercerosNit = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCTercerosNit");
-            nCTercerosNit.setFilterStyle("display: none; visibility: hidden;");
-            nCTercerosNombre = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCTercerosNombre");
-            nCTercerosNombre.setFilterStyle("display: none; visibility: hidden;");
-            nCFormulas = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCFormulas");
-            nCFormulas.setFilterStyle("display: none; visibility: hidden;");
-            nCHorasDias = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCHorasDias");
-            nCHorasDias.setFilterStyle("display: none; visibility: hidden;");
-            nCMinutosHoras = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCMinutosHoras");
-            nCMinutosHoras.setFilterStyle("display: none; visibility: hidden;");
-            nCTipo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCTipo");
-            nCTipo.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "155";
-
-            RequestContext.getCurrentInstance().update("form:datosNovedadesConcepto");
-            bandera = 0;
-            filtradosListaNovedades = null;
-            tipoLista = 0;
-        }
-
+        cerrarFiltrado();
         listaNovedadesBorrar.clear();
         listaNovedadesCrear.clear();
         listaNovedadesModificar.clear();
@@ -1838,7 +1800,20 @@ public class ControlNovedadesConceptos implements Serializable {
     }
 
     public void salir() {
-
+        cerrarFiltrado();
+        listaNovedadesBorrar.clear();
+        listaNovedadesCrear.clear();
+        listaNovedadesModificar.clear();
+        index = -1;
+        secRegistro = null;
+//        k = 0;
+        listaNovedades = null;
+        resultado = 0;
+        guardado = true;
+        permitirIndex = true;
+    }
+    
+    public void cerrarFiltrado(){
         if (bandera == 1) {
             FacesContext c = FacesContext.getCurrentInstance();
 
@@ -1877,16 +1852,6 @@ public class ControlNovedadesConceptos implements Serializable {
             filtradosListaNovedades = null;
             tipoLista = 0;
         }
-        listaNovedadesBorrar.clear();
-        listaNovedadesCrear.clear();
-        listaNovedadesModificar.clear();
-        index = -1;
-        secRegistro = null;
-//        k = 0;
-        listaNovedades = null;
-        resultado = 0;
-        guardado = true;
-        permitirIndex = true;
     }
 
     public void todasNovedades() {
