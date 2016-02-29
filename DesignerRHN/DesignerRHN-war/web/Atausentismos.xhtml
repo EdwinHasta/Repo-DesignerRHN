@@ -97,7 +97,7 @@
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style="position: absolute; left: 688px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" disabled="#{controlAusentismos.guardado}" onclick="confirmarGuardar.show();" update=":form:datosAusentismosEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 688px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" disabled="#{controlAusentismos.guardado}" onclick="confirmarGuardar.show();" update=":form:datosAusentismoEmpleado" process="@this" />
                         <p:commandButton style="position: absolute; left: 785px; top: 470px;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['cancelar']}" actionListener="#{controlAusentismos.salir()}" action="novedad" />
 
 
@@ -121,16 +121,16 @@
                                     </p:row>
                                     <!-- Fila de Abajo -->
                                     <p:row>
-                                        <p:column  style="width: 100px" colspan="1"  width="100" headerText="#{msg['tipo']}" filterBy="#{ausentismos.tipo.descripcion}" filterMatchMode="contains" id="ATipo" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.tipo.descripcion}" />  
-                                        <p:column  width="100" headerText="#{msg['clase']}" filterBy="#{ausentismos.clase.descripcion}" filterMatchMode="contains" id="AClase" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.clase.descripcion}" >     
+                                        <p:column  style="width: 100px" colspan="1"  width="100" headerText="#{msg['tipo']}" filterBy="#{ausentismos.tipo.descripcion}" filterMatchMode="contains" id="ATipo" filterStyle="display: none; visibility: hidden" sortBy="#{ausentismos.tipo.descripcion}" />  
+                                        <p:column  width="100" headerText="#{msg['clase']}" filterBy="#{ausentismos.clase.descripcion}" filterMatchMode="contains" id="AClase" filterStyle="display: none; visibility: hidden" sortBy="#{ausentismos.clase.descripcion}" >     
                                         </p:column>
 
-                                        <p:column  width="100" headerText="#{msg['causa']}" filterBy="#{ausentismos.causa.descripcion}" filterMatchMode="contains" id="ACausa" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.causa.descripcion}" >
+                                        <p:column  width="100" headerText="#{msg['causa']}" filterBy="#{ausentismos.causa.descripcion}" filterMatchMode="contains" id="ACausa" filterStyle="display: none; visibility: hidden" sortBy="#{ausentismos.causa.descripcion}" >
                                         </p:column>
 
-                                        <p:column  headerText="#{msg['dias']}" filterBy="#{ausentismos.dias}" filterMatchMode="contains" id="ADias" filterStyle="display: none; visibility: hidden;" sortBy= "#{ausentismos.dias}">
+                                        <p:column  headerText="#{msg['dias']}" filterBy="#{ausentismos.dias}" filterMatchMode="contains" id="ADias" filterStyle="display: none; visibility: hidden" sortBy= "#{ausentismos.dias}">
                                         </p:column>
-                                        <p:column  headerText="#{msg['horas']}" filterBy="#{ausentismos.horas}" filterMatchMode="contains" id="AHoras" filterStyle="display: none; visibility: hidden;" sortBy= "#{ausentismos.horas}">
+                                        <p:column  headerText="#{msg['horas']}" filterBy="#{ausentismos.horas}" filterMatchMode="contains" id="AHoras" filterStyle="display: none; visibility: hidden" sortBy= "#{ausentismos.horas}">
                                         </p:column>
                                         <p:column  filterBy="#{ausentismos.fecha}" filterMatchMode="contains" id="AFecha" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fecha}">
                                             <f:facet name="header">
@@ -139,7 +139,7 @@
                                             </f:facet>
                                         </p:column>
 
-                                        <p:column  filterBy="#{ausentismos.fechafinaus}" filterMatchMode="contains" id="AFechaFinaus" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fechafinaus}">
+                                        <p:column  filterBy="#{ausentismos.fechafinaus}" filterMatchMode="contains" id="AFechaFinaus" filterStyle="display: none; visibility: hidden" sortBy="#{ausentismos.fechafinaus}">
                                             <f:facet name="header">
                                                 <h:outputText id="fechafinausHead" value="#{msg['fausencia']}"/>
                                                 <p:tooltip for="fechafinausHead" value="#{msg['tfa']}" showEffect="fade" hideEffect="fade"/>
@@ -148,35 +148,35 @@
 
                                         <p:column  headerText="#{msg['expedicion']}" filterBy="#{ausentismos.fechaexpedicion}" filterMatchMode="contains" id="AFechaExpedicion" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fechaexpedicion}"/>  
 
-                                        <p:column  filterBy="#{ausentismos.fechainipago}" filterMatchMode="contains" id="AFechaInipago" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fechainipago}">
+                                        <p:column  filterBy="#{ausentismos.fechainipago}" filterMatchMode="contains" id="AFechaInipago" filterStyle="display: none; visibility: hidden" sortBy="#{ausentismos.fechainipago}">
                                             <f:facet name="header">
                                                 <h:outputText id="fechainipagoHead" value="#{msg['ipago']}" />
                                                 <p:tooltip for="fechainipagoHead" value="#{msg['tip']}" showEffect="fade" hideEffect="fade"/>
                                             </f:facet> 
                                         </p:column>
 
-                                        <p:column  filterBy="#{ausentismos.fechafinpago}" filterMatchMode="contains" id="AFechaFinpago" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.fechafinpago}">
+                                        <p:column  filterBy="#{ausentismos.fechafinpago}" filterMatchMode="contains" id="AFechaFinpago" filterStyle="display: none; visibility: hidden" sortBy="#{ausentismos.fechafinpago}">
                                             <f:facet name="header">
                                                 <h:outputText id="fechafinpagoHead" value="#{msg['fpago']}"/>
                                                 <p:tooltip for="fechafinpagoHead" value="#{msg['tfp']}" showEffect="fade" hideEffect="fade"/>
                                             </f:facet> 
                                         </p:column>
 
-                                        <p:column  filterBy="#{ausentismos.porcentajeindividual}" filterMatchMode="contains" id="APorcentaje" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.porcentajeindividual}">  
+                                        <p:column  filterBy="#{ausentismos.porcentajeindividual}" filterMatchMode="contains" id="APorcentaje" filterStyle="display: none; visibility: hidden" sortBy="#{ausentismos.porcentajeindividual}">  
                                             <f:facet name="header">
                                                 <h:outputText id="porcentajeHead" value="%" />
                                                 <p:tooltip for="porcentajeHead" value="#{msg['tp']}"/>
                                             </f:facet> 
                                         </p:column>
 
-                                        <p:column  filterBy="#{ausentismos.baseliquidacion}" filterMatchMode="contains" id="ABase" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.baseliquidacion}">  
+                                        <p:column  filterBy="#{ausentismos.baseliquidacion}" filterMatchMode="contains" id="ABase" filterStyle="display: none; visibility: hidden" sortBy="#{ausentismos.baseliquidacion}">  
                                             <f:facet name="header">
                                                 <h:outputText id="baseHead" value="#{msg['bliquidacion']}" />
                                                 <p:tooltip for="baseHead" value="#{msg['tbl']}"/>
                                             </f:facet> 
                                         </p:column>
 
-                                        <p:column  filterBy="#{ausentismos.formaliquidacion}" filterMatchMode="contains" id="AForma" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.formaliquidacion}">
+                                        <p:column  filterBy="#{ausentismos.formaliquidacion}" filterMatchMode="contains" id="AForma" filterStyle="display: none; visibility: hidden" sortBy="#{ausentismos.formaliquidacion}">
                                             <f:facet name="header">
                                                 <h:outputText id="fliquidacionHead" value="#{msg['fliquidacion']}" />
                                                 <p:tooltip for="fliquidacionHead" value="#{msg['tfl']}"/>
@@ -185,46 +185,46 @@
                                             </f:facet>
                                         </p:column>
 
-                                        <p:column  filterBy="#{ausentismos.accidente.descripcioncaso}" filterMatchMode="contains" id="ADescripcionCaso" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.accidente.descripcioncaso}" >
+                                        <p:column  filterBy="#{ausentismos.accidente.descripcioncaso}" filterMatchMode="contains" id="ADescripcionCaso" filterStyle="display: none; visibility: hidden" sortBy="#{ausentismos.accidente.descripcioncaso}" >
                                             <f:facet name="header">
                                                 <h:outputText id="atHead" value="#{msg['at']}" />
                                                 <p:tooltip for="atHead" value="#{msg['tat']}" showEffect="fade" hideEffect="fade"/>
                                             </f:facet> 
                                         </p:column>
 
-                                        <p:column  filterBy="#{ausentismos.enfermedad.categoria.descripcion}" filterMatchMode="contains" id="AEnfermedad" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.enfermedad.categoria.descripcion}" >
+                                        <p:column  filterBy="#{ausentismos.enfermedad.categoria.descripcion}" filterMatchMode="contains" id="AEnfermedad" filterStyle="display: none; visibility: hidden" sortBy="#{ausentismos.enfermedad.categoria.descripcion}" >
                                             <f:facet name="header">
                                                 <h:outputText id="epHead" value="#{msg['ep']}" />
                                                 <p:tooltip for="epHead" value="#{msg['tep']}" showEffect="fade" hideEffect="fade"/>
                                             </f:facet> 
                                         </p:column>
-                                        <p:column  headerText="#{msg['numero']}" filterBy="#{ausentismos.numerocertificado}" filterMatchMode="contains" id="ANumero" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.numerocertificado}" >
+                                        <p:column  headerText="#{msg['numero']}" filterBy="#{ausentismos.numerocertificado}" filterMatchMode="contains" id="ANumero" filterStyle="display: none; visibility: hidden" sortBy="#{ausentismos.numerocertificado}" >
                                         </p:column>
-                                        <p:column  filterBy="#{ausentismos.diagnosticocategoria.descripcion}" filterMatchMode="contains" id="ADiagnostico" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.diagnosticocategoria.descripcion}" >
+                                        <p:column  filterBy="#{ausentismos.diagnosticocategoria.descripcion}" filterMatchMode="contains" id="ADiagnostico" filterStyle="display: none; visibility: hidden" sortBy="#{ausentismos.diagnosticocategoria.descripcion}" >
                                             <f:facet name="header">
                                                 <h:outputText id="cdHead" value="#{msg['cdiagnostico']}" />
                                                 <p:tooltip for="cdHead" value="#{msg['tcd']}"  showEffect="fade" hideEffect="fade"/>
                                             </f:facet> 
                                         </p:column>
-                                        <p:column  headerText="#{msg['prorroga']}" filterBy="#{ausentismos.prorroga}" filterMatchMode="contains" id="AProrroga" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.prorroga}" >
+                                        <p:column  headerText="#{msg['prorroga']}" filterBy="#{ausentismos.prorroga}" filterMatchMode="contains" id="AProrroga" filterStyle="display: none; visibility: hidden" sortBy="#{ausentismos.prorroga}" >
                                         </p:column>
-                                        <p:column  filterBy="#{controlAusentismos.relacion}" filterMatchMode="contains" id="ARelacion" filterStyle="display: none; visibility: hidden;" sortBy="#{controlAusentismos.relacion}" >
+                                        <p:column  filterBy="#{controlAusentismos.relacion}" filterMatchMode="contains" id="ARelacion" filterStyle="display: none; visibility: hidden" sortBy="#{controlAusentismos.relacion}" >
                                             <f:facet name="header">
                                                 <h:outputText id="periodoHead" value="#{msg['periodo']}" />
                                                 <p:tooltip for="periodoHead" value="#{msg['tpe']}"  showEffect="fade" hideEffect="fade"/>
                                             </f:facet>
                                         </p:column>
 
-                                        <p:column  filterBy="#{ausentismos.relacionada}" filterMatchMode="contains" id="ARelacionada" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.relacionada}" >
+                                        <p:column  filterBy="#{ausentismos.relacionada}" filterMatchMode="contains" id="ARelacionada" filterStyle="display: none; visibility: hidden" sortBy="#{ausentismos.relacionada}" >
                                             <f:facet name="header">
                                                 <h:outputText id="relacionadaHead" value="..." />
                                                 <p:tooltip for="relacionadaHead" value="#{msg['reportada']}"  showEffect="fade" hideEffect="fade"/>
                                             </f:facet> 
                                         </p:column>
 
-                                        <p:column  headerText="#{msg['tercero']}" filterBy="#{ausentismos.tercero.nombre}" filterMatchMode="contains" id="ATercero" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.tercero.nombre}" >
+                                        <p:column  headerText="#{msg['tercero']}" filterBy="#{ausentismos.tercero.nombre}" filterMatchMode="contains" id="ATercero" filterStyle="display: none; visibility: hidden" sortBy="#{ausentismos.tercero.nombre}" >
                                         </p:column>
-                                        <p:column  headerText="#{msg['observaciones']}" filterBy="#{ausentismos.observaciones}" filterMatchMode="contains" id="AObservaciones" filterStyle="display: none; visibility: hidden;" sortBy="#{ausentismos.observaciones}" >
+                                        <p:column  headerText="#{msg['observaciones']}" filterBy="#{ausentismos.observaciones}" filterMatchMode="contains" id="AObservaciones" filterStyle="display: none; visibility: hidden" sortBy="#{ausentismos.observaciones}" >
                                         </p:column>
                                     </p:row>
                                 </p:columnGroup>
@@ -456,7 +456,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{ausentismos.accidente.descripcioncaso}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{ausentismos.accidente.descripcioncaso}" id="editarDescripcionAccidente" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px;"> 
+                                            <p:inputText value="#{ausentismos.accidente.descripcioncaso}" id="editarDescripcionAccidente" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
                                                 <p:ajax event="change" listener="#{controlAusentismos.modificarAusentismos(indice, 'AD', ausentismos.accidente.descripcioncaso)}"/>
                                                 <p:ajax event="select" listener="#{controlAusentismos.cambiarIndice(indice, 13)}" process="@this"/>
                                                 <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 7, 0)}"/>
@@ -527,7 +527,7 @@
                                 </p:column>
                                 <!-- Aca va el CheckBox ese ficti -->
                                 <p:column>
-                                    <p:selectBooleanCheckbox value="#{ausentismos.relacionadaBool}" id="editarRelacionada" style="border-radius: 0px; width: 93.5%;"> 
+                                    <p:selectBooleanCheckbox value="#{ausentismos.relacionadaBool}" id="editarRelacionada" style="border-radius: 0px; width: 93.5%"> 
                                         <p:ajax event="change" listener="#{controlAusentismos.modificarAusentismos(indice, 'N', ausentismos.relacionadaBool)}"/>
                                     </p:selectBooleanCheckbox>
                                 </p:column>
@@ -549,7 +549,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{ausentismos.observaciones}" style="text-transform:uppercase" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{ausentismos.observaciones}" id="editarObservaciones" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
+                                            <p:inputText value="#{ausentismos.observaciones}" id="editarObservaciones" style=" border-radius: 0px; width: 93.5%; text-transform: uppercase; height: 12px"> 
                                                 <p:ajax event="change" listener="#{controlAusentismos.modificarAusentismos(indice, 'N', ausentismos.observaciones)}"/>
                                                 <p:ajax event="select" listener="#{controlAusentismos.cambiarIndice(indice, 20)}" process="@this"/>
                                             </p:inputText>
@@ -557,12 +557,10 @@
                                     </p:cellEditor>  
                                     </p:column>
                             </p:dataTable>
-                     <!--       <p:dataTable id="datosAusentismoEmpleado" var="ausentismos" value="#{controlAusentismos.listaAusentismos}"
+                        <!-- <p:dataTable id="datoAusentismoEmpleado" var="ausentismos" value="#{controlAusentismos.listaAusentismos}"
                                          rowKey="#{ausentismos.secuencia}" rowIndexVar="indice" style="border: 1px;width: 840px"                           
-                                         scrollHeight="#{controlAusentismos.altoTabla}" scrollable="true"
-                                         filteredValue="#{controlAusentismos.filtradosListaAusentismos}" 
-                                         emptyMessage="#{msg['vacio']}" 
-                                         editable="true" editMode="cell"
+                                         scrollHeight="#{controlAusentismos.altoTabla}" scrollable="true" filteredValue="#{controlAusentismos.filtradosListaAusentismos}" 
+                                         emptyMessage="#{msg['vacio']}" editable="true" editMode="cell"
                                          selectionMode="single" selection="#{controlAusentismos.ausentismoSeleccionado}">
                                 
                                 <p:column headerText=" " sortBy="#{ausentismos.tipo.descripcion}" filterBy="#{JornadasLaborales.codigo}" filterMatchMode="contains" id="jornadasLaboralesCodigos" width="70" filterStyle="display: none; visibility: hidden;" >
