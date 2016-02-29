@@ -7738,7 +7738,4 @@ public class ControlDetalleConcepto implements Serializable {
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
     }
-    
-    
-
 }

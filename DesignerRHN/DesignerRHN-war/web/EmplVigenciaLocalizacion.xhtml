@@ -82,7 +82,9 @@
                                          value="#{controlVigenciaLocalizacion.vigenciaLocalizaciones}" scrollable="true" scrollHeight="#{controlVigenciaLocalizacion.altoTabla1}" scrollWidth="820"
                                          filteredValue="#{controlVigenciaLocalizacion.filtrarVL}" emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell" selection="#{controlVigenciaLocalizacion.vigenciaLocalizacionSeleccionada}" selectionMode="single" >
+
                                 <p:ajax event="filter" listener="#{controlVigenciaLocalizacion.eventoFiltrar()}"/>
+                                <f:event type="preRenderView" listener="#{controlVigenciaLocalizacion.recordarSeleccionVL()}"/>
 
                                 <p:column style=""  sortBy="#{infoDVL.fechavigencia}" filterBy="#{infoDVL.fechavigencia}" filterMatchMode="contains"  width="72" id="vlFechaVigencia" filterStyle="display: none; visibility: hidden;"  >  
                                     <f:facet name="header">
@@ -205,6 +207,9 @@
                                          filteredValue="#{controlVigenciaLocalizacion.filtradoVigenciasProrrateosCentroC}" emptyMessage="#{msg['vacio']}" 
                                          scrollable="true" editable="true" editMode="cell" scrollHeight="#{controlVigenciaLocalizacion.altoTabla2}" scrollWidth="445" 
                                          selection="#{controlVigenciaLocalizacion.vigenciaProrrateoSeleccionada}" selectionMode="single">
+
+                                <p:ajax event="filter" listener="#{controlVigenciaLocalizacion.eventoFiltrar()}"/>
+                                <f:event type="preRenderView" listener="#{controlVigenciaLocalizacion.recordarSeleccionVP()}"/>
 
                                 <p:column sortBy="#{info.centrocosto.nombre}" filterBy="#{info.centrocosto.nombre}" filterMatchMode="contains" id="vPCentroCosto" filterStyle="display: none; visibility: hidden;"  style="width: 110px; " >                                  
                                     <f:facet name="header">
@@ -351,6 +356,9 @@
                                          filteredValue="#{controlVigenciaLocalizacion.filtradoVigenciasProrrateosProyectos}" editable="true" editMode="cell" 
                                          scrollable="true" scrollHeight="#{controlVigenciaLocalizacion.altoTabla3}" scrollWidth="345" emptyMessage="#{msg['vacio']}" style=" border: 1px;width:345px"
                                          selection="#{controlVigenciaLocalizacion.vigenciaProrrateoProyectoSeleccionada}" selectionMode="single">
+
+                                <p:ajax event="filter" listener="#{controlVigenciaLocalizacion.eventoFiltrar()}"/>
+                                <f:event type="preRenderView" listener="#{controlVigenciaLocalizacion.recordarSeleccionVPP()}"/>
 
                                 <p:column  sortBy="#{info2.proyecto.nombreproyecto}" filterBy="#{info2.proyecto.nombreproyecto}" filterMatchMode="contains" id="vPPProyecto" filterStyle="display: none; visibility: hidden;" >
                                     <f:facet name="header">

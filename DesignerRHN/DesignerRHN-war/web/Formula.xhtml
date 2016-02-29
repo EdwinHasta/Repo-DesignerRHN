@@ -77,11 +77,31 @@
 
                             <p:dataTable id="datosFormulas" widgetVar="datosFormulas" var="formula" rowKey="#{formula.secuencia}" rowIndexVar="indice" style="width: 804px; position: relative"                           
                                          value="#{controlFormula.listaFormulas}" scrollable="true" scrollWidth="832" scrollHeight="#{controlFormula.altoTabla}" 
-                                         liveScroll="true" scrollRows="30"  filteredValue="#{controlFormula.filtradoListaFormulas}" emptyMessage="#{msg['vacio']}" 
+                                         liveScroll="true" scrollRows="25"  filteredValue="#{controlFormula.filtradoListaFormulas}" emptyMessage="#{msg['vacio']}" 
                                          selection="#{controlFormula.formulaSeleccionadaPrueba}" selectionMode="single" editable="true" editMode="cell">
 
+                                <f:event type="preRenderView" listener="#{controlFormula.recordarSeleccion()}"/>
                                 <p:ajax event="filter" listener="#{controlFormula.eventoFiltrar()}"/>
+                                <p:ajax event="filter" listener="#{controlFormula.eventosort()}"/>
 
+                                <p:column id="columnaDetalleFormula" width="19" style="padding-left: 5px;padding: 0px; text-align: center" >                                                              
+                                    <f:facet name="header">
+                                        <h:outputText id="DetalleF" value="D"/>
+                                        <p:tooltip for="DetalleF" value="Detalle Formula"/>
+                                    </f:facet>
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><img src="http://icon.medownloads.com/32x32/19/27/4513084.a3d670e290b7639645dceda7795c4222.png" width="18" height="18" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="D" maxlength="1" style="background-color: blue; width: 6px; height: 6px" id="editarD">
+                                                <p:ajax event="select" listener="#{controlFormula.verDetalle(indice)}" immediate="#{controlHistoriaFormula.recibirFormula(formula.secuencia)}"/>
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                </p:column>
+                                
                                 <p:column headerText="#{msg['nombrelargo']}" sortBy="#{formula.nombrelargo}" filterBy="#{formula.nombrelargo}" filterMatchMode="contains" id="columnaNombreLargo" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{formula.nombrelargo}" /></f:facet>  
@@ -211,12 +231,12 @@
                             <h:outputText value="#{msg['legislacion']}" style="position: absolute; top: 15px; font-weight: bold; text-align: justify; left: 690px; width: 160px;"/>
                         </fieldset>
 
-                        <p:commandButton id="detalleFormula"  value="" style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 28px; height: 28px; position: absolute; top: 332px; left: 575px; " disabled="#{controlFormula.activoDetalleFormula}" action="historiaFormula" actionListener="#{controlHistoriaFormula.recibirFormula(controlFormula.actualFormula.secuencia)}" process="@this"/>  
-                        <p:tooltip for="detalleFormula" value="#{msg['detalle']}"/>
+                        <!--<p:commandButton id="detalleFormula"  value="" style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 28px; height: 28px; position: absolute; top: 332px; left: 575px; " disabled="#/{controlFormula.activoDetalleFormula}" action="historiaFormula" actionListener="#/{controlHistoriaFormula.recibirFormula(controlFormula.actualFormula.secuencia)}" process="@this"/>  -->
+                        <!--<p:tooltip for="detalleFormula" value="#/{msg['detalle']}"/>-->
                         <p:commandButton id="operandoFormula" value="" style="background-image: url(Imagenes/proceso.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 28px; height: 28px; position: absolute; top: 332px; left: 605px; " disabled="#{controlFormula.activoDetalleFormula}" actionListener="#{controlFormula.formulaOperando()}" process="@this"/>                          
                         <p:tooltip for="operandoFormula" value="#{msg['operando']}"/>
                         <h:outputText id="informacionRegistro" value="#{controlFormula.infoRegistro}" style="position: absolute; left: 15px; top: 335px; font-weight: bold"/>
-                        
+
                         <p:commandButton style="position: absolute; left: 635px; top: 333px;" id="buscarFormula" value="#{msg['buscar']}" actionListener="#{controlFormula.lovFomula(0)}" process="@this" />
                         <p:commandButton style="position: absolute; left: 755px; top: 333px;" disabled="#{controlFormula.mostrarTodos}" id="mostrarTodos" actionListener="#{controlFormula.mostrarTodasFormulas()}" value="#{msg['mostrar']}" process="@this" />
 
@@ -326,7 +346,7 @@
                                      selection="#{controlFormula.formulaSeleccionada}" selectionMode="single" widgetVar="lovFormulas" scrollable="true" scrollWidth="525" scrollHeight="250"
                                      filteredValue="#{controlFormula.filtradoListaFormulasLOV}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlFormula.activarAceptar()}" update=":formularioDialogos:aceptarF"/>
-                            <p:ajax event="rowDblselect" listener="#{controlFormula.seleccionFormula()}" process="@this" />
+                            <p:ajax event="rowDblselect" listener="#{controlFormula.seleccionFormula()}" process="@this" update=":formularioDialogos:lovFormulas"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarF']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovFormulas.filter();" style="width:200px; position: relative; left: -20px;" />  
@@ -353,9 +373,9 @@
 
                         <h:outputText id="infoRegistroFormula" value="#{controlFormula.infoRegistroFormula}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton icon="ui-icon-check" id="aceptarF" style="position: relative; left: 350px" value="#{msg['aceptar']}" disabled="#{controlFormula.aceptar}" actionListener="#{controlFormula.seleccionFormula()}" process="@this" />
+                        <p:commandButton icon="ui-icon-check" id="aceptarF" style="position: relative; left: 350px" value="#{msg['aceptar']}" disabled="#{controlFormula.aceptar}" actionListener="#{controlFormula.seleccionFormula()}" process="@this" update=":formularioDialogos:lovFormulas"/>
 
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasF" style="position: relative; left: 350px" value="#{msg['atras']}" actionListener="#{controlFormula.cancelarSeleccionFormula()}" process="@this" />
+                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasF" style="position: relative; left: 350px" value="#{msg['atras']}" actionListener="#{controlFormula.cancelarSeleccionFormula()}" process="@this" update=":formularioDialogos:lovFormulas"/>
 
                     </p:dialog>
 

@@ -83,6 +83,7 @@ public class ControlFormula implements Serializable {
     private String infoRegistro;
     private String infoRegistroFormula;
     //
+    private DataTable tabla;
 
     public ControlFormula() {
         actualFormula = new Formulas();
@@ -424,7 +425,8 @@ public class ControlFormula implements Serializable {
                 columnaTipo = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaTipo");
                 columnaTipo.setFilterStyle("display: none; visibility: hidden;");
                 columnaPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaPeriodicidad");
-                columnaPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
+                columnaPeriodicidad.
+                        setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosFormulas");
                 bandera = 0;
                 filtradoListaFormulas = null;
@@ -432,14 +434,14 @@ public class ControlFormula implements Serializable {
             }
             listaFormulas.clear();
             listaFormulas.add(formulaSeleccionada);
-            infoRegistro = "Cantidad de registros : " + listaFormulas.size();
-            context.update("form:informacionRegistro");
             mostrarTodos = false;
             activoDetalleFormula = true;
             context.update("form:detalleFormula");
             context.update("form:operandoFormula");
             context.update("form:datosFormulas");
             context.update("form:mostrarTodos");
+            infoRegistro = "Cantidad de registros : " + listaFormulas.size();
+            context.update("form:informacionRegistro");
         } else {
             formulaOriginal = formulaSeleccionada;
             context.update("form:descripcionClon");
@@ -589,21 +591,23 @@ public class ControlFormula implements Serializable {
 
     //CTRL + F11 ACTIVAR/DESACTIVAR
     public void activarCtrlF11() {
+        index = -1;
+        secRegistro = null;
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             altoTabla = "172";
             columnaNombreLargo = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNombreLargo");
-            columnaNombreLargo.setFilterStyle("width: 90%;");
+            columnaNombreLargo.setFilterStyle("width: 94%;");
             columnaNombreCorto = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNombreCorto");
-            columnaNombreCorto.setFilterStyle("width: 90%;");
+            columnaNombreCorto.setFilterStyle("width: 94%;");
             columnaEstado = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaEstado");
-            columnaEstado.setFilterStyle("width: 90%;");
+            columnaEstado.setFilterStyle("width: 94%;");
             columnaNota = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNota");
-            columnaNota.setFilterStyle("width: 90%;");
+            columnaNota.setFilterStyle("width: 94%;");
             columnaTipo = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaTipo");
-            columnaTipo.setFilterStyle("width: 90%;");
+            columnaTipo.setFilterStyle("width: 94%;");
             columnaPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaPeriodicidad");
-            columnaPeriodicidad.setFilterStyle("width: 90%;");
+            columnaPeriodicidad.setFilterStyle("width: 94%;");
             RequestContext.getCurrentInstance().update("form:datosFormulas");
             bandera = 1;
 
@@ -992,6 +996,8 @@ public class ControlFormula implements Serializable {
 
     //EVENTO FILTRAR
     public void eventoFiltrar() {
+        index = -1;
+        secRegistro = null;
         if (tipoLista == 0) {
             tipoLista = 1;
         }
@@ -1000,6 +1006,17 @@ public class ControlFormula implements Serializable {
         context.update("form:informacionRegistro");
     }
 
+    public void eventosort() {
+        index = -1;
+        secRegistro = null;
+    }
+    
+    public void verDetalle(int indice) {
+        index = indice;
+        FacesContext fc = FacesContext.getCurrentInstance();
+        fc.getApplication().getNavigationHandler().handleNavigation(FacesContext.getCurrentInstance(), null, "historiaFormula");
+    }
+    
     public void activarAceptar() {
         aceptar = false;
     }
@@ -1061,6 +1078,18 @@ public class ControlFormula implements Serializable {
         llamadoPrevioPagina = 1;
         return paginaRetorno;
     }
+    
+    public void recordarSeleccion() {
+        if (index >= 0) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            tabla = (DataTable) c.getViewRoot().findComponent("form:datosFormulas");
+            formulaSeleccionadaPrueba = listaFormulas.get(index);
+            tabla.setSelection(formulaSeleccionadaPrueba);
+        } else {
+            formulaSeleccionadaPrueba = null;
+        }
+    }
+    
     //GETTER AND SETTER
 
     public List<Formulas> getListaFormulas() {
