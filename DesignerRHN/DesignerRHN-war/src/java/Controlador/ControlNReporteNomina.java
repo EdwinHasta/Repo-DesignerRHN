@@ -242,6 +242,7 @@ public class ControlNReporteNomina implements Serializable {
         resaltoParametrosParaReporte(indiceSeleccion);
     }
 
+    // ESTAFUNCION NO SE ESTA LLAMANDO EN NINGUN LADO
     public void cambiarIndexInforeporte(int i, int c) {
         casillaInforReporte = c;
         casilla = -1;

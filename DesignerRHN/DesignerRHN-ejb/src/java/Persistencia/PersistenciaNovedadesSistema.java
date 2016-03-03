@@ -94,6 +94,7 @@ public class PersistenciaNovedadesSistema implements PersistenciaNovedadesSistem
         }
     }
 
+    @Override
     public List<NovedadesSistema> novedadesEmpleadoVacaciones(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
             em.clear();
@@ -101,7 +102,15 @@ public class PersistenciaNovedadesSistema implements PersistenciaNovedadesSistem
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<NovedadesSistema> novedadesSistema = query.getResultList();
+            if(novedadesSistema != null){
+                if(novedadesSistema.isEmpty()){
+                    return null;
+                } else {
+                    return novedadesSistema;
+                }
+            } else{
             return novedadesSistema;
+            }
         } catch (Exception e) {
             System.out.println("Error: (novedadesEmpleado)" + e);
             return null;

@@ -13,91 +13,108 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-
                     <p:panel  id="PanelTotal" header="Novedades de Vacaciones" style="position: absolute; width: 874px; height: 510px; text-align: left">    
+                        
+                        <p:toolbar style=" position: absolute; top: 40px; left: 20px;">  
+                            <p:toolbarGroup align="left"> 
+
+                                <p:commandButton style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " 
+                                                 id="guardarRapido" value="" actionListener="#{controlNovedadesVacaciones.guardarCambiosNovedades()}" process="@this" />
+                                <p:tooltip  for="guardarRapido" value="#Guardar" />
+
+                                <p:commandButton style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                                 id="editar" value="" actionListener="#{controlNovedadesVacaciones.editarCelda()}" process="@this"/>
+                                <p:tooltip  for="editar" value="Editar" />
+                                <p:separator />
+
+                                <p:commandButton style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                                 id="listaValores" value="" onclick="botonDesactivado.show()" process="@this"/>
+                                <p:tooltip  for="listaValores" value="Lista de Valores" />
+
+                                <p:commandButton style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                                 id="filtrar" value="" actionListener="#{controlNovedadesVacaciones.activarCtrlF11()}" process="@this"/>
+                                <p:tooltip  for="filtrar" value="Activar Filtrado" />
+                                <p:separator />
+
+                                <p:commandButton style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                                 id="exportarXLS" value="" ajax="false" actionListener="#{controlNovedadesVacaciones.exportXLS()}" />
+                                <p:tooltip  for="exportarXLS" value="Exportar a XLS" />
+
+                                <p:commandButton style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                                 id="exportarXML" value="" actionListener="#{controlNovedadesVacaciones.limpiarNuevaNovedad()}" ajax="false">
+                                    <p:dataExporter type="xml"  target=":formExportar:datosNovedadesExportar" fileName="NovedadVacacionesXML" encoding="UTF-8"/> 
+                                </p:commandButton> 
+                                <p:tooltip  for="exportarXML" value="Exportar a XML"/>
+
+                                <p:commandButton style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                                 id="exportarPDF" value="" actionListener="#{controlNovedadesVacaciones.exportPDF()}" ajax="false"/>
+                                <p:tooltip  for="exportarPDF" value="Exportar a PDF" />
+
+                                <p:separator /> 
+                                <p:commandButton style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                                 id="insertar" value="" oncomplete="NuevaNovedadVacaciones.show()" update=":formularioDialogos:nuevaNovedad" process="@this"/> 
+                                <p:tooltip  for="insertar" value="Nuevo Registro" /> 
+
+                                <p:commandButton style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                                 id="eliminar" value="" actionListener="#{controlNovedadesVacaciones.borrarNovedades()}" process="@this"/>  
+                                <p:tooltip  for="eliminar" value="Eliminar Registro" />
+
+                                <p:commandButton style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                                 id="duplicar" value="" actionListener="#{controlNovedadesVacaciones.duplicarNV()}"  process="@this"/>  
+                                <p:tooltip  for="duplicar" value="Duplicar Registro" />
+
+                                <p:separator /> 
+                                <p:commandButton style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                                 id="rastro" value="" actionListener="#{controlNovedadesVacaciones.verificarRastro()}" process="@this"/>  
+                                <p:tooltip  for="rastro" value="Rastro"/>
+                                
+                                <p:separator style="position: relative; top: -9px"/> 
+
+                                <p:commandButton style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px"
+                                                 id="refrescar" value="" actionListener="#{controlNovedadesVacaciones.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+
+                                <p:commandButton style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px"
+                                                 id="salir" value="" action="#{controlNovedadesVacaciones.volverPagAnterior()}" actionListener="#{controlNovedadesVacaciones.salir()}"/>  
+                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
+
+                            </p:toolbarGroup>  
+                        </p:toolbar> 
 
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 130px;width: 580px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: #14388B"><strong>Empleados</strong></legend>
 
-                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 30px;  " id="btnBuscarEmpleados" actionListener="#{controlNovedadesVacaciones.asignarIndex(indice, 0, 0)}" value="Buscar Empleado" process="@this"/>
-                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 60px;  " id="btnMostrarTodos" actionListener="#{controlNovedadesVacaciones.mostrarTodos()}" value="Mostrar Todos" process="@this"/>
-
                             <!-- Botones Buscar Empleado y Mostrar Todos--> 
-
                             <p:dataTable id="datosEmpleados" var="empleados" value="#{controlNovedadesVacaciones.listaEmpleadosNovedad}"
-                                         rowKey="#{empleados.secuencia}" rowIndexVar="indice" style=" border: 1px; text-align: left; width: 560px"                           
-                                         scrollable="true"  scrollHeight="80" scrollWidth="575" filteredValue="#{controlNovedadesVacaciones.filtradosListaEmpleadosNovedad}" 
+                                         rowKey="#{empleados.secuencia}" style=" border: 1px; text-align: left; width: 560px"                           
+                                         scrollable="true"  scrollHeight="86" scrollWidth="580" filteredValue="#{controlNovedadesVacaciones.filtradosListaEmpleadosNovedad}" 
                                          emptyMessage="No se encontrarón resultados para la búsqueda" selection="#{controlNovedadesVacaciones.empleadoSeleccionado}"
                                          editable="true" editMode="cell" selectionMode="single" >
 
                                 <p:ajax event="filter" listener="#{controlNovedadesVacaciones.eventoFiltrar()}"/>
                                 <p:ajax event="rowSelect" listener="#{controlNovedadesVacaciones.cambiarEmpleado()}"/>
 
-                                <p:column headerText="Código" sortBy="#{empleados.codigoempleado}" filterBy="#{empleados.codigoempleado}" filterMatchMode="contains" id="nEEmpleadosCodigos" width="30" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="text-align: center" headerText="Código" sortBy="#{empleados.codigoempleado}" filterBy="#{empleados.codigoempleado}" 
+                                          filterMatchMode="contains" id="nEEmpleadosCodigos" width="70" filterStyle="display: none; visibility: hidden;" >                                  
                                     <h:outputText value="#{empleados.codigoempleado}" />
                                 </p:column>
 
-                                <p:column headerText="Nombre" sortBy="#{empleados.persona.nombreCompleto}" filterBy="#{empleados.persona.nombreCompleto}" filterMatchMode="contains" id="nEEmpleadosNombres" width="100" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Nombre" sortBy="#{empleados.persona.nombreCompleto}" filterBy="#{empleados.persona.nombreCompleto}" 
+                                          filterMatchMode="contains" id="nEEmpleadosNombres" filterStyle="display: none; visibility: hidden;" >                                  
                                     <h:outputText value="#{empleados.persona.nombreCompleto}" />
                                 </p:column>
 
-                                <p:column headerText="Fecha Ingreso" sortBy="#{empleados.fechacreacion}" filterBy="#{empleados.fechacreacion}" filterMatchMode="contains"  width="72" id="nEFechasIngreso" filterStyle="display: none; visibility: hidden;"  >
+                                <p:column style="text-align: center" headerText="Fecha Ingreso" sortBy="#{empleados.fechacreacion}" filterBy="#{empleados.fechacreacion}" 
+                                          filterMatchMode="contains"  width="76" id="nEFechasIngreso" filterStyle="display: none; visibility: hidden;"  >
                                     <h:outputText value="#{empleados.fechacreacion}" >
                                         <f:convertDateTime pattern="dd/MM/yyyy" />
                                     </h:outputText>
                                 </p:column>
-
                             </p:dataTable>
+                            
+                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 46px;  " id="btnBuscarEmpleados" actionListener="#{controlNovedadesVacaciones.abrirLista(0) }" value="Buscar Empleado" process="@this"/>
+                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 80px;  " id="btnMostrarTodos" actionListener="#{controlNovedadesVacaciones.mostrarTodos()}" value="Mostrar Todos" process="@this"/>
                         </fieldset>
-
-                        <p:toolbar style=" position: absolute; top: 40px; left: 20px;">  
-
-                            <p:toolbarGroup align="left"> 
-
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlNovedadesVacaciones.guardarCambiosNovedades()}" process="@this" />
-                                <p:tooltip  for="guardarRapido" value="#Guardar" />
-
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesVacaciones.editarCelda()}" process="@this"/>
-                                <p:tooltip  for="editar" value="Editar" />
-                                <p:separator />
-
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " onclick="botonDesactivado.show()" process="@this"/>
-                                <p:tooltip  for="listaValores" value="Lista de Valores" />
-
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesVacaciones.activarCtrlF11()}" process="@this"/>
-                                <p:tooltip  for="filtrar" value="Activar Filtrado" />
-                                <p:separator />
-
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlNovedadesVacaciones.exportXLS()}" />
-                                <p:tooltip  for="exportarXLS" value="Exportar a XLS" />
-
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesVacaciones.limpiarNuevaNovedad()}" ajax="false">
-                                    <p:dataExporter type="xml"  target=":formExportar:datosNovedadesExportar" fileName="NovedadVacacionesXML" encoding="UTF-8"/> 
-                                </p:commandButton> 
-                                <p:tooltip  for="exportarXML" value="Exportar a XML"/>
-
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesVacaciones.exportPDF()}" ajax="false"/>
-                                <p:tooltip  for="exportarPDF" value="Exportar a PDF" />
-
-                                <p:separator /> 
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevaNovedadVacaciones.show()" update=":formularioDialogos:nuevaNovedad" process="@this"/> 
-                                <p:tooltip  for="insertar" value="Nuevo Registro" /> 
-
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesVacaciones.borrarNovedades()}" process="@this"/>  
-                                <p:tooltip  for="eliminar" value="Eliminar Registro" />
-
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesVacaciones.duplicarNV()}"  process="@this"/>  
-                                <p:tooltip  for="duplicar" value="Duplicar Registro" />
-
-                                <p:separator /> 
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesVacaciones.verificarRastro()}" process="@this"/>  
-                                <p:tooltip  for="rastro" value="Rastro"/>
-
-                            </p:toolbarGroup>  
-                        </p:toolbar> 
-                        <p:commandButton style="position: absolute; left: 695px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" disabled="#{controlNovedadesVacaciones.guardado}" onclick="confirmarGuardar.show();" update=":form:datosNovedadesEmpleado" process="@this" />
-                        <p:commandButton style="position: absolute; left: 10px; top: 470px;" icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlNovedadesVacaciones.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 785px; top: 470px;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlNovedadesVacaciones.salir()}" action="individual" />
 
                         <fieldset style="position: absolute; left: 10px; top: 230px; width: 100px; height: 220px; border-radius: 10px; ">
                             <legend style="font-size: 14px; color: #14388B"><strong>Novedad de Vacaciones disfrutadas/por disfrutar</strong></legend>
@@ -133,7 +150,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Fecha Inical" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -149,7 +166,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="Periodo" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
                                 
@@ -166,11 +183,10 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Dias" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
-                               
                                 <p:column headerText="Fecha Sig. Fin. Vac" sortBy="#{novedades.fechasiguientefinvaca}" filterBy="#{novedades.fechasiguientefinvaca}" filterMatchMode="contains" id="nEFechaSiguiente" width="20" filterStyle="display: none; visibility: hidden;" >                                  
                                     <f:facet name="header">
                                         <h:outputText id="headerFechaSiguiente" value="Fecha Siguiente" />
@@ -193,7 +209,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Fecha Siguiente" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -211,7 +227,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Subtipo" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -233,7 +249,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Adelanta Hasta" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -254,7 +270,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Fecha Pago" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -275,7 +291,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="D.A" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -285,6 +301,10 @@
                             <h:outputText value="Total Dias Aplazados" style=" position: absolute; top: 205px;left:645px"/>
                             <p:inputText value="#{controlNovedadesVacaciones.diasAplazadosTotal}" id="diasAplazados" style=" position: absolute; top:200px ;left:770px;border-radius: 0px; width: 50px" /> 
                         </fieldset>
+                        
+                        <p:commandButton style="position: absolute; left: 695px; top: 474px;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" disabled="#{controlNovedadesVacaciones.guardado}" onclick="confirmarGuardar.show();" update=":form:datosNovedadesEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 785px; top: 474px;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlNovedadesVacaciones.salir()}" action="#{controlNovedadesVacaciones.volverPagAnterior()}"/>
+                    
                     </p:panel>
                     <p:remoteCommand name="ubicacionC" actionListener="#{controlNovedadesVacaciones.ubicacionCampo()}" process="@this"/>
                     <p:remoteCommand name="indiceC" actionListener="#{controlNovedadesVacaciones.indiceRegistro()}" process="@this"/>
@@ -521,9 +541,9 @@
 
                     <!-- L.O.V Empleado-->
                     <p:dialog header="Buscar Empleado." widgetVar="empleadosDialogo" draggable="false" resizable="false" id="empleadosDialogo" closable="false"  
-                              showEffect="fade" hideEffect="fade" modal="true" width="650" height="350" >
+                              showEffect="fade" hideEffect="fade" modal="true" width="646" height="330" >
 
-                        <p:dataTable  id="LOVEmpleados" style=" width: 600px" var="emp" value="#{controlNovedadesVacaciones.listaEmpleados}"
+                        <p:dataTable  id="LOVEmpleados" style=" width: 600px" var="emp" value="#{controlNovedadesVacaciones.listaValEmpleados}"
                                       scrollable="true" scrollHeight="200" scrollWidth="620" widgetVar="LOVEmpleados" 
                                       filteredValue="#{controlNovedadesVacaciones.filtradoslistaEmpleados}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
                                       rowKey="#{emp.secuencia}" selection="#{controlNovedadesVacaciones.seleccionEmpleados}" selectionMode="single">
@@ -535,21 +555,21 @@
                                 <p:inputText id="globalFilter" onkeyup="LOVEmpleados.filter();" style="width: 400px; position: relative; left: 60px;" />  
                             </f:facet>
 
-                            <p:column sortBy="#{emp.persona.nombreCompleto}" filterBy="#{emp.persona.nombreCompleto}" width="200" filterMatchMode="contains" > 
-                                <f:facet name="header">
-                                    <h:outputText value="Nombre" />
-                                </f:facet>
-                                <h:outputText value="#{emp.persona.nombreCompleto}" />  
-                            </p:column>
-
-                            <p:column sortBy="#{emp.codigoempleado}" filterBy="#{emp.codigoempleado}" width="150" filterMatchMode="contains" > 
+                            <p:column style="text-align: center" sortBy="#{emp.codigoempleado}" filterBy="#{emp.codigoempleado}" width="80" filterMatchMode="contains" filterStyle="width: 94%"> 
                                 <f:facet name="header">
                                     <h:outputText value="Codigo" />
                                 </f:facet>
                                 <h:outputText value="#{emp.codigoempleado}" />  
                             </p:column>
 
-                            <p:column sortBy="#{emp.fechacreacion}" filterBy="#{emp.fechacreacion}" width="150" filterMatchMode="contains" > 
+                            <p:column sortBy="#{emp.persona.nombreCompleto}"  filterBy="#{emp.persona.nombreCompleto}" filterMatchMode="contains" filterStyle="width: 94%"> 
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre" />
+                                </f:facet>
+                                <h:outputText value="#{emp.persona.nombreCompleto}" />  
+                            </p:column>
+
+                            <p:column sortBy="#{emp.fechacreacion}" filterBy="#{emp.fechacreacion}" filterMatchMode="contains" filterStyle="width: 94%" > 
                                 <f:facet name="header">
                                     <h:outputText value="Fecha Ingreso" />
                                 </f:facet>
@@ -557,9 +577,7 @@
                             </p:column>
 
                         </p:dataTable>
-
                         <p:commandButton id="aceptarE" value="Aceptar" disabled="#{controlNovedadesVacaciones.aceptar}" style="position: absolute; top: 305px; left: 350px; " actionListener="#{controlNovedadesVacaciones.actualizarEmpleadosNovedad()}" process="@this"/>
-                        
                         <p:commandButton id="atrasE" value="Atras" style="position: absolute; top: 305px; left: 450px; " actionListener="#{controlNovedadesVacaciones.cancelarCambioEmpleados()}" process="@this"/>
                         
                     </p:dialog>
