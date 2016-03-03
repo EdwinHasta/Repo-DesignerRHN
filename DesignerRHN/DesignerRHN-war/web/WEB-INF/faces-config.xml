@@ -3759,6 +3759,14 @@
     </navigation-rule>
     
     <navigation-rule>
+        <from-view-id>/novedad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedadtercero</from-outcome>
+            <to-view-id>/NovedadTercero.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
         <from-view-id>/NovedadTercero.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedad</from-outcome>
@@ -3766,6 +3774,7 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/NominaF.xhtml</from-view-id>
         <navigation-case>

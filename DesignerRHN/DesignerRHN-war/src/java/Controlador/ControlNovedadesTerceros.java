@@ -57,7 +57,7 @@ public class ControlNovedadesTerceros implements Serializable {
     //LISTA DE ARRIBA
     private List<Terceros> listaTercerosNovedad;
     private List<Terceros> filtradosListaTercerosNovedad;
-    private Terceros seleccionMostrar; //Seleccion Mostrar
+    private Terceros terceroSeleccionado; //Seleccion Mostrar
     //editar celda
     private Novedades editarNovedades;
     private boolean cambioEditor, aceptarEditar;
@@ -102,7 +102,7 @@ public class ControlNovedadesTerceros implements Serializable {
     //L.O.V TERCEROS
     private List<Terceros> listaTerceros;
     private List<Terceros> filtradoslistaTerceros;
-    private Terceros seleccionTerceros;
+    private Terceros terceroSeleccionadoLOV;
     //L.O.V FORMULAS
     private List<Formulas> listaFormulas;
     private List<Formulas> filtradoslistaFormulas;
@@ -125,13 +125,15 @@ public class ControlNovedadesTerceros implements Serializable {
         permitirIndex = true;
         listaNovedades = null;
         listaEmpleados = null;
+        listaConceptos = null;
+        listaPeriodicidades = null;
+        listaFormulas = null;
         listaFormulas = null;
         listaEmpleados = null;
         todas = false;
         actuales = true;
         listaPeriodicidades = null;
         listaTercerosNovedad = null;
-        permitirIndex = true;
         aceptar = true;
         secRegistro = null;
         guardado = true;
@@ -146,9 +148,9 @@ public class ControlNovedadesTerceros implements Serializable {
         nuevaNovedad.setPeriodicidad(new Periodicidades());
         nuevaNovedad.setFechareporte(new Date());
         nuevaNovedad.setTipo("FIJA");
-        altoTabla = "155";
+        altoTabla = "170";
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -166,7 +168,7 @@ public class ControlNovedadesTerceros implements Serializable {
         listaNovedadesCrear.clear();
         listaNovedadesBorrar.clear();
         listaNovedadesModificar.clear();
-        secuenciaTercero = seleccionMostrar.getSecuencia();
+        secuenciaTercero = terceroSeleccionado.getSecuencia();
         listaNovedades = null;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosNovedadesTercero");
@@ -177,7 +179,7 @@ public class ControlNovedadesTerceros implements Serializable {
         //Si ninguna de las 3 listas (crear,modificar,borrar) tiene algo, hace esto
         //{
         if (listaNovedadesCrear.isEmpty() && listaNovedadesBorrar.isEmpty() && listaNovedadesModificar.isEmpty()) {
-            secuenciaTercero = seleccionMostrar.getSecuencia();
+            secuenciaTercero = terceroSeleccionado.getSecuencia();
             listaNovedades = null;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosNovedadesTercero");
@@ -192,25 +194,18 @@ public class ControlNovedadesTerceros implements Serializable {
     //RASTROS 
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("lol");
-        if (!listaNovedades.isEmpty()) {
-            if (secRegistro != null) {
-                System.out.println("lol 2");
-                int result = administrarRastros.obtenerTabla(secRegistro, "NOVEDADES");
-                System.out.println("resultado: " + result);
-                if (result == 1) {
-                    context.execute("errorObjetosDB.show()");
-                } else if (result == 2) {
-                    context.execute("confirmarRastro.show()");
-                } else if (result == 3) {
-                    context.execute("errorRegistroRastro.show()");
-                } else if (result == 4) {
-                    context.execute("errorTablaConRastro.show()");
-                } else if (result == 5) {
-                    context.execute("errorTablaSinRastro.show()");
-                }
-            } else {
-                context.execute("seleccionarRegistro.show()");
+        if (index >= 0) {
+            int result = administrarRastros.obtenerTabla(secRegistro, "NOVEDADES");
+            if (result == 1) {
+                context.execute("errorObjetosDB.show()");
+            } else if (result == 2) {
+                context.execute("confirmarRastro.show()");
+            } else if (result == 3) {
+                context.execute("errorRegistroRastro.show()");
+            } else if (result == 4) {
+                context.execute("errorTablaConRastro.show()");
+            } else if (result == 5) {
+                context.execute("errorTablaSinRastro.show()");
             }
         } else {
             if (administrarRastros.verificarHistoricosTabla("NOVEDADES")) {
@@ -218,8 +213,8 @@ public class ControlNovedadesTerceros implements Serializable {
             } else {
                 context.execute("errorRastroHistorico.show()");
             }
-
         }
+        //context.execute("seleccionarRegistro.show()");
         index = -1;
     }
 
@@ -279,34 +274,35 @@ public class ControlNovedadesTerceros implements Serializable {
         System.out.println("Index: " + index + " Celda: " + celda);
     }
 
-    public void asignarIndex(Integer indice, int dlg, int LND) {
+    public void asignarIndex(Integer indice, int columnLOV, int tipoAct) {
         index = indice;
         RequestContext context = RequestContext.getCurrentInstance();
-        if (LND == 0) {
+        if (tipoAct == 0) {
             tipoActualizacion = 0;
-        } else if (LND == 1) {
+        } else if (tipoAct == 1) {
             tipoActualizacion = 1;
             index = -1;
             secRegistro = null;
             System.out.println("Tipo Actualizacion: " + tipoActualizacion);
-        } else if (LND == 2) {
+        } else if (tipoAct == 2) {
             index = -1;
             secRegistro = null;
             tipoActualizacion = 2;
         }
-        if (dlg == 0) {
+        if (columnLOV == 0) {
             context.update("formularioDialogos:empleadosDialogo");
             context.execute("empleadosDialogo.show()");
-        } else if (dlg == 1) {
+        } else if (columnLOV == 1) {
             context.update("formularioDialogos:conceptosDialogo");
             context.execute("conceptosDialogo.show()");
-        } else if (dlg == 2) {
+        } else if (columnLOV == 2) {
             context.update("formularioDialogos:formulasDialogo");
             context.execute("formulasDialogo.show()");
-        } else if (dlg == 3) {
+        } else if (columnLOV == 3) {
             context.update("formularioDialogos:periodicidadesDialogo");
             context.execute("periodicidadesDialogo.show()");
-        } else if (dlg == 4) {
+        } else if (columnLOV == 4) {
+            terceroSeleccionadoLOV = null;
             context.update("formularioDialogos:tercerosDialogo");
             context.execute("tercerosDialogo.show()");
         }
@@ -394,7 +390,7 @@ public class ControlNovedadesTerceros implements Serializable {
 
     //BORRAR Novedades
     public void borrarNovedades() {
-
+        RequestContext context = RequestContext.getCurrentInstance();
         if (index >= 0) {
             if (tipoLista == 0) {
                 if (!listaNovedadesModificar.isEmpty() && listaNovedadesModificar.contains(listaNovedades.get(index))) {
@@ -427,15 +423,16 @@ public class ControlNovedadesTerceros implements Serializable {
                 System.out.println("Realizado");
             }
 
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosNovedadesTercero");
             index = -1;
             secRegistro = null;
 
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                context.update("form:ACEPTAR");
             }
+        } else {
+            context.execute("seleccionarRegistro.show()");
         }
     }
 
@@ -538,7 +535,7 @@ public class ControlNovedadesTerceros implements Serializable {
                 nTMinutosHoras.setFilterStyle("display: none; visibility: hidden;");
                 nTTipo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTTipo");
                 nTTipo.setFilterStyle("display: none; visibility: hidden;");
-                altoTabla = "155";
+                altoTabla = "170";
 
                 RequestContext.getCurrentInstance().update("form:datosNovedadesTercero");
                 bandera = 0;
@@ -566,7 +563,7 @@ public class ControlNovedadesTerceros implements Serializable {
             System.out.println("Alias: " + alias);
             getUsuarioBD();
             System.out.println("UsuarioBD: " + usuarioBD);
-            nuevaNovedad.setTercero(seleccionMostrar);
+            nuevaNovedad.setTercero(terceroSeleccionado);
             nuevaNovedad.setTerminal(localMachine.getHostName());
             nuevaNovedad.setUsuarioreporta(usuarioBD);
             listaNovedadesCrear.add(nuevaNovedad);
@@ -876,6 +873,7 @@ public class ControlNovedadesTerceros implements Serializable {
 
     //DUPLICAR TERCERO NOVEDAD
     public void duplicarTN() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (index >= 0) {
             duplicarNovedad = new Novedades();
             k++;
@@ -891,7 +889,7 @@ public class ControlNovedadesTerceros implements Serializable {
                 duplicarNovedad.setValortotal(listaNovedades.get(index).getValortotal());
                 duplicarNovedad.setSaldo(listaNovedades.get(index).getSaldo());
                 duplicarNovedad.setPeriodicidad(listaNovedades.get(index).getPeriodicidad());
-                duplicarNovedad.setTercero(seleccionMostrar);
+                duplicarNovedad.setTercero(terceroSeleccionado);
                 duplicarNovedad.setFormula(listaNovedades.get(index).getFormula());
                 duplicarNovedad.setUnidadesparteentera(listaNovedades.get(index).getUnidadesparteentera());
                 duplicarNovedad.setUnidadespartefraccion(listaNovedades.get(index).getUnidadespartefraccion());
@@ -909,7 +907,7 @@ public class ControlNovedadesTerceros implements Serializable {
                 duplicarNovedad.setValortotal(filtradosListaNovedades.get(index).getValortotal());
                 duplicarNovedad.setSaldo(filtradosListaNovedades.get(index).getSaldo());
                 duplicarNovedad.setPeriodicidad(filtradosListaNovedades.get(index).getPeriodicidad());
-                duplicarNovedad.setTercero(seleccionMostrar);
+                duplicarNovedad.setTercero(terceroSeleccionado);
                 duplicarNovedad.setFormula(filtradosListaNovedades.get(index).getFormula());
                 duplicarNovedad.setUnidadesparteentera(filtradosListaNovedades.get(index).getUnidadesparteentera());
                 duplicarNovedad.setUnidadespartefraccion(filtradosListaNovedades.get(index).getUnidadespartefraccion());
@@ -917,12 +915,12 @@ public class ControlNovedadesTerceros implements Serializable {
                 duplicarNovedad.setTerminal(filtradosListaNovedades.get(index).getTerminal());
                 duplicarNovedad.setUsuarioreporta(filtradosListaNovedades.get(index).getUsuarioreporta());
             }
-
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarNovedad");
             context.execute("DuplicarRegistroNovedad.show()");
             index = -1;
             secRegistro = null;
+        } else {
+            context.execute("seleccionarRegistro.show()");
         }
     }
 
@@ -1048,7 +1046,7 @@ public class ControlNovedadesTerceros implements Serializable {
                 nTMinutosHoras.setFilterStyle("display: none; visibility: hidden;");
                 nTTipo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTTipo");
                 nTTipo.setFilterStyle("display: none; visibility: hidden;");
-                altoTabla = "155";
+                altoTabla = "170";
                 RequestContext.getCurrentInstance().update("form:datosNovedadesTercero");
                 bandera = 0;
                 filtradosListaNovedades = null;
@@ -1073,7 +1071,7 @@ public class ControlNovedadesTerceros implements Serializable {
             System.out.println("UsuarioBD: " + usuarioBD);
 
             duplicarNovedad.setTerminal(localMachine.getHostName());
-            duplicarNovedad.setTercero(seleccionMostrar);
+            duplicarNovedad.setTercero(terceroSeleccionado);
             duplicarNovedad = new Novedades();
             context.update("formularioDialogos:DuplicarRegistroNovedad");
             context.execute("DuplicarRegistroNovedad.hide()");
@@ -1084,14 +1082,12 @@ public class ControlNovedadesTerceros implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (!listaTercerosNovedad.isEmpty()) {
             listaTercerosNovedad.clear();
-            listaTercerosNovedad = administrarNovedadesTerceros.Terceros();
-        } else {
-            listaTercerosNovedad = administrarNovedadesTerceros.Terceros();
         }
+        listaTercerosNovedad = administrarNovedadesTerceros.Terceros();
         if (!listaTercerosNovedad.isEmpty()) {
-            seleccionMostrar = listaTercerosNovedad.get(0);
+            terceroSeleccionado = listaTercerosNovedad.get(0);
             listaTercerosNovedad = null;
-            getListaTerceros();
+            //getListaTerceros();
         }
         listaNovedades = null;
         context.update("form:datosTerceros");
@@ -1159,6 +1155,7 @@ public class ControlNovedadesTerceros implements Serializable {
 
     //MOSTRAR DATOS CELDA
     public void editarCelda() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (index >= 0) {
             if (tipoLista == 0) {
                 editarNovedades = listaNovedades.get(index);
@@ -1167,7 +1164,6 @@ public class ControlNovedadesTerceros implements Serializable {
                 editarNovedades = filtradosListaNovedades.get(index);
             }
 
-            RequestContext context = RequestContext.getCurrentInstance();
             System.out.println("Entro a editar... valor celda: " + cualCelda);
             if (cualCelda == 0) {
                 context.update("formularioDialogos:editarEmpleadosCodigos");
@@ -1224,6 +1220,8 @@ public class ControlNovedadesTerceros implements Serializable {
                 context.execute("editarTipos.show()");
                 cualCelda = -1;
             }
+        } else {
+            context.execute("seleccionarRegistro.show()");
         }
         index = -1;
         secRegistro = null;
@@ -1231,8 +1229,8 @@ public class ControlNovedadesTerceros implements Serializable {
 
     //LISTA DE VALORES DINAMICA
     public void listaValoresBoton() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (index >= 0) {
-            RequestContext context = RequestContext.getCurrentInstance();
             if (cualCelda == 0) {
                 context.update("formularioDialogos:empleadosDialogo");
                 context.execute("empleadosDialogo.show()");
@@ -1249,6 +1247,8 @@ public class ControlNovedadesTerceros implements Serializable {
                 context.update("formularioDialogos:formulasDialogo");
                 context.execute("formulasDialogo.show()");
             }
+        } else {
+            context.execute("seleccionarRegistro.show()");
         }
     }
 
@@ -1260,34 +1260,34 @@ public class ControlNovedadesTerceros implements Serializable {
             System.out.println("Activar");
             System.out.println("TipoLista= " + tipoLista);
             nTEmpleadoCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTEmpleadoCodigo");
-            nTEmpleadoCodigo.setFilterStyle("width: 60px");
+            nTEmpleadoCodigo.setFilterStyle("width: 94%");
             nTEmpleadoNombre = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTEmpleadoNombre");
-            nTEmpleadoNombre.setFilterStyle("width: 60px");
+            nTEmpleadoNombre.setFilterStyle("width: 94%");
             nTConceptoCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTConceptoCodigo");
-            nTConceptoCodigo.setFilterStyle("width: 60px");
+            nTConceptoCodigo.setFilterStyle("width: 94%");
             nTConceptoDescripcion = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTConceptoDescripcion");
-            nTConceptoDescripcion.setFilterStyle("width: 60px");
+            nTConceptoDescripcion.setFilterStyle("width: 94%");
             nTFechasInicial = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTFechasInicial");
-            nTFechasInicial.setFilterStyle("width: 60px");
+            nTFechasInicial.setFilterStyle("width: 94%");
             nTFechasFinal = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTFechasFinal");
-            nTFechasFinal.setFilterStyle("width: 60px");
+            nTFechasFinal.setFilterStyle("width: 94%");
             nTValor = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTValor");
-            nTValor.setFilterStyle("width: 60px");
+            nTValor.setFilterStyle("width: 94%");
             nTSaldo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTSaldo");
-            nTSaldo.setFilterStyle("width: 60px");
+            nTSaldo.setFilterStyle("width: 94%");
             nTPeriodicidadCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTPeriodicidadCodigo");
-            nTPeriodicidadCodigo.setFilterStyle("width: 60px");
+            nTPeriodicidadCodigo.setFilterStyle("width: 94%");
             nTDescripcionPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTDescripcionPeriodicidad");
-            nTDescripcionPeriodicidad.setFilterStyle("width: 60px");
+            nTDescripcionPeriodicidad.setFilterStyle("width: 94%");
             nTFormulas = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTFormulas");
-            nTFormulas.setFilterStyle("width: 60px");
+            nTFormulas.setFilterStyle("width: 94%");
             nTHorasDias = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTHorasDias");
-            nTHorasDias.setFilterStyle("width: 60px");
+            nTHorasDias.setFilterStyle("width: 94%");
             nTMinutosHoras = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTMinutosHoras");
-            nTMinutosHoras.setFilterStyle("width: 60px");
+            nTMinutosHoras.setFilterStyle("width: 94%");
             nTTipo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTTipo");
-            nTTipo.setFilterStyle("width: 60px");
-            altoTabla = "131";
+            nTTipo.setFilterStyle("width: 94%");
+            altoTabla = "146";
             RequestContext.getCurrentInstance().update("form:datosNovedadesTercero");
             bandera = 1;
             tipoLista = 1;
@@ -1322,7 +1322,7 @@ public class ControlNovedadesTerceros implements Serializable {
             nTMinutosHoras.setFilterStyle("display: none; visibility: hidden;");
             nTTipo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTTipo");
             nTTipo.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "155";
+            altoTabla = "170";
             RequestContext.getCurrentInstance().update("form:datosNovedadesTercero");
             bandera = 0;
             filtradosListaNovedades = null;
@@ -1578,7 +1578,7 @@ public class ControlNovedadesTerceros implements Serializable {
 
     public void cancelarCambioTerceros() {
         filtradoslistaTerceros = null;
-        seleccionTerceros = null;
+        terceroSeleccionadoLOV = null;
         aceptar = true;
         index = -1;
         secRegistro = null;
@@ -1603,16 +1603,16 @@ public class ControlNovedadesTerceros implements Serializable {
 
     public void actualizarTercerosNovedad() {
         RequestContext context = RequestContext.getCurrentInstance();
-        Terceros t = seleccionTerceros;
-
+        //Terceros t = seleccionTerceros;
         if (!listaTercerosNovedad.isEmpty()) {
             listaTercerosNovedad.clear();
-            listaTercerosNovedad.add(t);
-            seleccionMostrar = listaTercerosNovedad.get(0);
-        } else {
-            listaTercerosNovedad.add(t);
-        }
-        secuenciaTercero = seleccionTerceros.getSecuencia();
+            listaTercerosNovedad.add(terceroSeleccionadoLOV);
+            terceroSeleccionado = terceroSeleccionadoLOV;
+            //seleccionMostrar = listaTercerosNovedad.get(0);
+        } /*
+         * else { listaTercerosNovedad.add(seleccionTerceros); }
+         */
+        secuenciaTercero = terceroSeleccionadoLOV.getSecuencia();
         listaNovedades = null;
         context.reset("formularioDialogos:LOVTerceros:globalFilter");
         context.execute("LOVTerceros.clearFilters()");
@@ -1621,9 +1621,8 @@ public class ControlNovedadesTerceros implements Serializable {
         context.update("form:datosTerceros");
         context.update("form:datosNovedadesTercero");
         filtradosListaTercerosNovedad = null;
-        seleccionTerceros = null;
+        //seleccionTerceros = null;
         aceptar = true;
-        index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
@@ -1841,7 +1840,7 @@ public class ControlNovedadesTerceros implements Serializable {
             nTMinutosHoras.setFilterStyle("display: none; visibility: hidden;");
             nTTipo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTTipo");
             nTTipo.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "155";
+            altoTabla = "170";
             RequestContext.getCurrentInstance().update("form:datosNovedadesTercero");
             bandera = 0;
             filtradosListaNovedades = null;
@@ -1894,7 +1893,7 @@ public class ControlNovedadesTerceros implements Serializable {
             nTMinutosHoras.setFilterStyle("display: none; visibility: hidden;");
             nTTipo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTTipo");
             nTTipo.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "155";
+            altoTabla = "170";
             RequestContext.getCurrentInstance().update("form:datosNovedadesTercero");
             bandera = 0;
             filtradosListaNovedades = null;
@@ -1913,7 +1912,7 @@ public class ControlNovedadesTerceros implements Serializable {
 
     public void todasNovedades() {
         listaNovedades.clear();
-        listaNovedades = administrarNovedadesTerceros.todasNovedadesTercero(seleccionMostrar.getSecuencia());
+        listaNovedades = administrarNovedadesTerceros.todasNovedadesTercero(terceroSeleccionado.getSecuencia());
         RequestContext context = RequestContext.getCurrentInstance();
         todas = true;
         actuales = false;
@@ -1924,7 +1923,7 @@ public class ControlNovedadesTerceros implements Serializable {
 
     public void actualesNovedades() {
         listaNovedades.clear();
-        listaNovedades = administrarNovedadesTerceros.novedadesTercero(seleccionMostrar.getSecuencia());
+        listaNovedades = administrarNovedadesTerceros.novedadesTercero(terceroSeleccionado.getSecuencia());
         RequestContext context = RequestContext.getCurrentInstance();
         todas = false;
         actuales = true;
@@ -1937,8 +1936,8 @@ public class ControlNovedadesTerceros implements Serializable {
     public List<Terceros> getListaTercerosNovedad() {
         if (listaTercerosNovedad == null) {
             listaTercerosNovedad = administrarNovedadesTerceros.Terceros();
-            seleccionMostrar = listaTercerosNovedad.get(0);
-            System.out.println(seleccionMostrar.getSecuencia());
+            terceroSeleccionado = listaTercerosNovedad.get(0);
+            System.out.println(terceroSeleccionado.getSecuencia());
         }
         return listaTercerosNovedad;
     }
@@ -1976,7 +1975,7 @@ public class ControlNovedadesTerceros implements Serializable {
 
     public List<Novedades> getListaNovedades() {
         if (listaNovedades == null) {
-            listaNovedades = administrarNovedadesTerceros.novedadesTercero(seleccionMostrar.getSecuencia());
+            listaNovedades = administrarNovedadesTerceros.novedadesTercero(terceroSeleccionado.getSecuencia());
         }
         return listaNovedades;
     }
@@ -1994,11 +1993,11 @@ public class ControlNovedadesTerceros implements Serializable {
     }
 
     public Terceros getSeleccionMostrar() {
-        return seleccionMostrar;
+        return terceroSeleccionado;
     }
 
     public void setSeleccionMostrar(Terceros seleccionMostrar) {
-        this.seleccionMostrar = seleccionMostrar;
+        this.terceroSeleccionado = seleccionMostrar;
     }
 
     public List<Terceros> getFiltradosListaTercerosNovedad() {
@@ -2029,11 +2028,11 @@ public class ControlNovedadesTerceros implements Serializable {
     }
 
     public Terceros getSeleccionTerceros() {
-        return seleccionTerceros;
+        return terceroSeleccionadoLOV;
     }
 
     public void setSeleccionTerceros(Terceros seleccionTerceros) {
-        this.seleccionTerceros = seleccionTerceros;
+        this.terceroSeleccionadoLOV = seleccionTerceros;
     }
 
     public List<Formulas> getListaFormulas() {
@@ -2225,7 +2224,7 @@ public class ControlNovedadesTerceros implements Serializable {
     public void setAltoTabla(String altoTabla) {
         this.altoTabla = altoTabla;
     }
-    
+
     public boolean isGuardado() {
         return guardado;
     }
@@ -2233,5 +2232,4 @@ public class ControlNovedadesTerceros implements Serializable {
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
     }
-
 }
