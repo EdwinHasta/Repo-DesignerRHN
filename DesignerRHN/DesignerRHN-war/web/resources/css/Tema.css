@@ -34,8 +34,9 @@ and open the template in the editor.
 .ui-widget-header {
     border: 1px solid #ffffff;
     background: #61A0CA url("images/ui-bg_highlight-hard_50_61A0CA_1x100.png") 50% 50% repeat-x;
-    color: #000000;
+    color: #FFFFFF;
     font-weight: bold;
+    text-shadow: none;
 }
 .ui-widget-header a {
     color: #ffffff;
@@ -390,12 +391,6 @@ and open the template in the editor.
     position: absolute;
     width: 25px;
     height: 25px;
-}
-.cssBotonCerrarSesion{
-    font-weight: bold; 
-    border: 1px solid #cccccc;
-    color: red;
-    padding: 6px;
 }
 .cssBotonCancelar{
     font-weight: bold; 

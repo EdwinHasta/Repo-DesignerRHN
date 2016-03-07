@@ -1,8 +1,13 @@
 
 #top {
-    position: relative;
+    /*position: relative;*/
     padding: 5px;
     margin: 0px 0px 10px 0px;
+    position: absolute; 
+    top: 0px; 
+    left: 5px; 
+    width: 881px; 
+    height: 28px;
 }
 
 #bottom {
@@ -13,8 +18,7 @@
 
 #left {
     float: left;
-    padding: 5px;
-    width: 150px;
+    padding: 0px;
 }
 
 #right {
@@ -27,10 +31,21 @@
     position: relative;
     padding: 5px;
 }
-
+.pnlRight_content{
+    position: absolute; 
+    left:230px; 
+    top: 0px;
+    width: 1000px;
+    height: 600px;
+    background-image: url(../../Imagenes/encabezadotemplate.png); 
+    background-size: 100% 100%; 
+    background-repeat: repeat;
+}
 .left_content {
     padding: 5px;
-    margin-left: 230px;
+    margin-left: 5px;
+    position: absolute; 
+    top:40px;
 }
 
 .right_content {

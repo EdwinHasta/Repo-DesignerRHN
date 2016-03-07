@@ -21,7 +21,7 @@
 
                             <p:tab title="#{msg['personal']}" id="Personal">  
 
-                                <h:outputText id="fechas" style="position: absolute; font-size: 11px;  font-weight: bold; left: 343px; top: -27px; width: 500px; text-align: right; color: #000000; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.7); " value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta']} #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
+                                <!-- <h:outputText id="fechas" style="position: absolute; font-size: 11px;  font-weight: bold; left: 343px; top: -27px; width: 500px; text-align: right; color: #000000; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.7); " value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta']} #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/> -->
 
                                 <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 30px; height: 30px; position: absolute; left: 300px; top: 103px; z-index: 1;"  process="@this" actionListener="#{controlRemoto.requerirBuscarEmpleadoTipo()}"/>
                                 <p:tooltip  for="listaValores" value="#{msg['lista']}" />
@@ -275,7 +275,6 @@
 
                                     <!-- Panel Acumulados y Novedades -->
                                     <fieldset style="border-radius: 5px; position: relative; left: 0px; width: 808px;">
-                                        <center>
                                             <p:commandButton id="AcumuladosNomina" value="" disabled="#{controlRemoto.acumulado}" style="background-image: url(Imagenes/Iconos/acumulados.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" action="acumuladosEmpleado" actionListener="#{controlEmplAcumulados.recibirEmpleado(controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.secuencia)}"/>
                                             <p:tooltip  for="AcumuladosNomina">
                                                 #{msg['AcumuladosNomina1']}<br/>#{msg['AcumuladosNomina2']}
@@ -332,12 +331,16 @@
                                             <p:tooltip  for="ReportesLaborales">
                                                 #{msg['reporteslaborales1']}<br/>#{msg['reporteslaborales2']}
                                             </p:tooltip>
-                                            <!--<p:spacer styleClass="separador"/> -->
+                                            <p:spacer styleClass="separador"/>
+                                            <p:commandButton id="acercade" value="" style="background-image: url(Imagenes/Iconos/reportes.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" action="acercade" />
+                                            <p:tooltip  for="acercade">
+                                                #{msg['acercade1']}
+                                            </p:tooltip>
+                                            <p:spacer styleClass="separador"/>
                                             <!--<p:commandButton value="" style="background-image: url(Imagenes/Designer.jpg); height: 40px; width: 100px; background-repeat: no-repeat; background-size: 100% 100%;" action="acercade" /> -->
                                             <!--<em><h:outputText style="position: absolute; top: 474px; ; left: 17px" value="#{msg['bienvenido']}"/></em>-->
                                             <!--<h:outputText id="Usuario" style="position: absolute; top: 475px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>-->
                                             <!--<h:outputText id="Empresa"  style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/> -->
-                                        </center>
                                     </fieldset>
                                 </p:panel>
 
