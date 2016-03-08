@@ -10,6 +10,7 @@ import Entidades.Formulas;
 import Entidades.FormulasConceptos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -38,5 +39,11 @@ public interface AdministrarFormulaConceptoInterface {
     public List<Conceptos> listConceptos();
 
     public Formulas formulaActual(BigInteger secuencia);
-
+    
+    public List<Entidades.FormulasConceptos> cargarFormulasConcepto(BigInteger secConcepto);
+    
+    //public boolean verificarExistenciaConceptoFormulasConcepto(EntityManager em,BigInteger secConcepto);
+    
+    //public boolean cargarFormulasConcepto(EntityManager em, BigInteger secuencia, BigInteger secFormula);
+  
 }

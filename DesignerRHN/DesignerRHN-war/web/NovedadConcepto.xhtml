@@ -17,32 +17,6 @@
                     <f:loadBundle basename="Recursos.novedadconcepto" var="msg" />
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">    
 
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 130px;width: 580px; border-radius: 10px; text-align: left">
-                            <legend style="font-size: 14px; color: #14388B"><strong>#{msg['conceptos']}</strong></legend>
-
-                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 30px;  " id="btnBuscarConceptos" actionListener="#{controlNovedadesConceptos.asignarIndex(indice, 1, 0)}" value="#{msg['buscar']}" process="@this"/>
-                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 60px;  " id="btnMostrarTodos" actionListener="#{controlNovedadesConceptos.mostrarTodos()}" value="#{msg['mostrar']}" process="@this"/>
-
-                            <p:dataTable id="datosConceptos" var="conceptos" value="#{controlNovedadesConceptos.listaConceptosNovedad}"
-                                         rowKey="#{conceptos.secuencia}" rowIndexVar="indiceT" style=" border: 1px; text-align: left; width: 560px"                           
-                                         scrollable="true" scrollHeight="80" scrollWidth="575" filteredValue="#{controlNovedadesConceptos.filtradosListaConceptosNovedad}" 
-                                         emptyMessage="#{msg['vacio']}" selection="#{controlNovedadesConceptos.seleccionMostrar}"
-                                         editable="true" editMode="cell" selectionMode="single" >
-
-                                <p:ajax event="filter" listener="#{controlNovedadesConceptos.eventoFiltrar()}"/>
-                                <p:ajax event="rowSelect" listener="#{controlNovedadesConceptos.cambiarConcepto()}"/>
-
-                                <p:column headerText="#{msg['codigoC']}" sortBy="#{conceptos.codigo}" filterBy="#{conceptos.codigo}" filterMatchMode="contains" id="nCConceptosCodigos" width="1" filterStyle="display: none; visibility: hidden;" >                                  
-                                    <h:outputText value="#{conceptos.codigo}" />
-                                </p:column>
-
-                                <p:column headerText="#{msg['descripcionC']}" sortBy="#{conceptos.descripcion}" filterBy="#{conceptos.descripcion}" filterMatchMode="contains" id="nCConceptosDescripcion" width="133" filterStyle="display: none; visibility: hidden;" >                                  
-                                    <h:outputText value="#{conceptos.descripcion}" />
-                                </p:column>
-
-                            </p:dataTable>
-                        </fieldset>
-
                         <p:toolbar style=" position: absolute; top: 37px; left: 12px; height: 24px">  
                             <p:toolbarGroup align="left"> 
 
@@ -95,6 +69,32 @@
                             </p:toolbarGroup>  
                         </p:toolbar>
 
+                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 130px;width: 580px; border-radius: 10px; text-align: left">
+                            <legend style="font-size: 14px; color: #14388B"><strong>#{msg['conceptos']}</strong></legend>
+
+                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 30px;  " id="btnBuscarConceptos" actionListener="#{controlNovedadesConceptos.asignarIndex(indice, 1, 0)}" value="#{msg['buscar']}" process="@this"/>
+                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 60px;  " id="btnMostrarTodos" actionListener="#{controlNovedadesConceptos.mostrarTodos()}" value="#{msg['mostrar']}" process="@this"/>
+
+                            <p:dataTable id="datosConceptos" var="conceptos" value="#{controlNovedadesConceptos.listaConceptosNovedad}"
+                                         rowKey="#{conceptos.secuencia}" rowIndexVar="indiceT" style=" border: 1px; text-align: left; width: 560px"                           
+                                         scrollable="true" scrollHeight="80" scrollWidth="575" filteredValue="#{controlNovedadesConceptos.filtradosListaConceptosNovedad}" 
+                                         emptyMessage="#{msg['vacio']}" selection="#{controlNovedadesConceptos.seleccionMostrar}"
+                                         editable="true" editMode="cell" selectionMode="single" >
+
+                                <p:ajax event="filter" listener="#{controlNovedadesConceptos.eventoFiltrar()}"/>
+                                <p:ajax event="rowSelect" listener="#{controlNovedadesConceptos.cambiarConcepto()}"/>
+
+                                <p:column headerText="#{msg['codigoC']}" sortBy="#{conceptos.codigo}" filterBy="#{conceptos.codigo}" filterMatchMode="contains" id="nCConceptosCodigos" width="1" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <h:outputText value="#{conceptos.codigo}" />
+                                </p:column>
+
+                                <p:column headerText="#{msg['descripcionC']}" sortBy="#{conceptos.descripcion}" filterBy="#{conceptos.descripcion}" filterMatchMode="contains" id="nCConceptosDescripcion" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <h:outputText value="#{conceptos.descripcion}" />
+                                </p:column>
+
+                            </p:dataTable>
+                        </fieldset>
+
                         <p:commandButton style="position: absolute; left: 670px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" disabled="#{controlNovedadesConceptos.guardado}" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosNovedadesConcepto" process="@this" />
                         <p:commandButton style="position: absolute; left: 760px; top: 470px;" icon="ui-icon-closethick" id="ATRAS" value="#{msg['cancelar']}" actionListener="#{controlNovedadesConceptos.salir()}" action="novedad" />
 
@@ -108,9 +108,8 @@
                                          rowKey="#{novedades.secuencia}" rowIndexVar="indice" style=" border: 1px;width: 820px"                           
                                          scrollable="true" scrollHeight="#{controlNovedadesConceptos.altoTabla}" scrollWidth="820"   
                                          filteredValue="#{controlNovedadesConceptos.filtradosListaNovedades}" 
-                                         emptyMessage="#{msg['vacio']}"
-                                         editable="true" editMode="cell"
-                                         selection="#{controlNovedadesConceptos.novedadSeleccionada}" selectionMode="Single">
+                                         emptyMessage="#{msg['vacio']}" editable="true" editMode="cell"
+                                         selection="#{controlNovedadesConceptos.novedadSeleccionada}" selectionMode="single" >
 
                                 <p:ajax event="filter" listener="#{controlNovedadesConceptos.eventoFiltrar()}"/>
 
@@ -821,18 +820,18 @@
                                 <p:inputText id="globalFilter" onkeyup="LOVEmpleados.filter();" style="width: 100px; position: relative; left: 60px;" />  
                             </f:facet>
 
-                            <p:column sortBy="#{emp.persona.nombreCompleto}" filterBy="#{emp.persona.nombreCompleto}" width="150" filterMatchMode="contains" > 
-                                <f:facet name="header">
-                                    <h:outputText value="#{msg['nombreE']}" />
-                                </f:facet>
-                                <h:outputText value="#{emp.persona.nombreCompleto}" />  
-                            </p:column>
-
                             <p:column sortBy="#{emp.codigoempleado}" filterBy="#{emp.codigoempleado}" width="80" filterStyle="width:45px" filterMatchMode="contains" > 
                                 <f:facet name="header">
                                     <h:outputText value="#{msg['codigoE']}" />
                                 </f:facet>
                                 <h:outputText value="#{emp.codigoempleado}" />  
+                            </p:column>
+
+                            <p:column sortBy="#{emp.persona.nombreCompleto}" filterBy="#{emp.persona.nombreCompleto}" width="150" filterMatchMode="contains" > 
+                                <f:facet name="header">
+                                    <h:outputText value="#{msg['nombreE']}" />
+                                </f:facet>
+                                <h:outputText value="#{emp.persona.nombreCompleto}" />  
                             </p:column>
 
                         </p:dataTable>
@@ -917,7 +916,7 @@
 
                         <p:commandButton id="aceptarT" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlNovedadesConceptos.aceptar}" style="position: absolute; top: 305px; left: 200px;" actionListener="#{controlNovedadesConceptos.actualizarTerceros()}"   process="@this" />
                             
-                        <p:commandButton id="atrasT" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 290px;" actionListener="#{controlNovedadesConceptos.cancelarCambioConceptos()}" process="@this" />
+                        <p:commandButton id="atrasT" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 305px; left: 290px;" actionListener="#{controlNovedadesConceptos.cancelarCambioTerceros()}" process="@this" />
                             
 
                     </p:dialog>

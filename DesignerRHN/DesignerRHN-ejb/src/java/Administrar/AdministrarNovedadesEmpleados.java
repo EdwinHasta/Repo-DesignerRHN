@@ -74,7 +74,9 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
     }
     //Trae los empleados con Novedades dependiendo el Tipo de Trabajador que sea.
 
+    @Override
     public List<PruebaEmpleados> empleadosNovedad() {
+        
         List<Empleados> listaEmpleados = persistenciaEmpleados.empleadosNovedad(em);
         List<PruebaEmpleados> listaEmpleadosNovedad = new ArrayList<PruebaEmpleados>();
         for (int i = 0; i < listaEmpleados.size(); i++) {

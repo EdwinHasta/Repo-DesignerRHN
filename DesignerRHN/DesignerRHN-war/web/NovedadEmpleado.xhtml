@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
@@ -103,8 +104,8 @@
                         <p:commandButton style="position: absolute; left: 165px; top: 470px;" id="ACTUALES" value="#{msg['actuales']}" actionListener="#{controlNovedadesEmpleados.actualesNovedades()}" disabled="#{controlNovedadesEmpleados.actuales}" process="@this" />
                         <p:commandButton style="position: absolute; left: 315px; top: 470px;" id="ACUMULADOS" value="#{msg['btnAcumuladoNovedad']}" disabled="#{controlNovedadesEmpleados.activoBtnAcumulado}" action="acomuladoPorNovedad" actionListener="#{controlSolucionFormula.recibirParametros(controlNovedadesEmpleados.seleccionMostrar.codigo, controlNovedadesEmpleados.actualNovedadTabla.secuencia)}" process="@this" />
                         <p:separator style="position: absolute; left: 500px; top: 467px;width: 3px; height: 25px"/> 
-                        <p:commandButton style="position: absolute; left: 510px; top: 470px;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlNovedadesEmpleados.cancelarModificacion()}" process="@this" />
-
+                     <!--   <p:commandButton style="position: absolute; left: 510px; top: 470px;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlNovedadesEmpleados.cancelarModificacion()}" process="@this" />-->
+                        
                         <p:commandButton style="position: absolute; left: 760px; top: 470px;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlNovedadesEmpleados.salir()}" action="novedad" />
                         <p:commandButton style="position: absolute; left: 670px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" disabled="#{controlNovedadesEmpleados.guardado}" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosNovedadesEmpleado" process="@this" />
 
@@ -120,9 +121,9 @@
 
                                 <p:ajax event="filter" listener="#{controlNovedadesEmpleados.eventoFiltrar()}"/>
 
-                                <p:column headerText="#{msg['concepto']}" sortBy= "#{novedades.concepto.codigoSTR}" filterBy="#{novedades.concepto.codigoSTR}" filterMatchMode="contains" id="nEConceptoCodigo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="#{msg['concepto']}" sortBy= "#{novedades.concepto.codigoSTR}" filterBy="#{novedades.concepto.codigoSTR}" filterMatchMode="contains" id="nEConceptoCodigo" width="60" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>
-                                        <f:facet name="output"><h:outputText value="#{novedades.concepto.codigoSTR}" /></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{novedades.concepto.codigoSTR}" style=""/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{novedades.concepto.codigoSTR}" id="editarConceptoCodigo" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
                                                 <p:ajax event="change" listener="#{controlNovedadesEmpleados.modificarNovedades(indice, 'CODIGO', novedades.concepto.codigoSTR)}"/>
@@ -137,11 +138,11 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['dConcepto']}" sortBy="#{novedades.concepto.descripcion}" filterBy="#{novedades.concepto.descripcion}" filterMatchMode="contains" id="nEConceptoDescripcion" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="#{msg['dConcepto']}" sortBy="#{novedades.concepto.descripcion}" filterBy="#{novedades.concepto.descripcion}" filterMatchMode="contains" id="nEConceptoDescripcion" width="145" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{novedades.concepto.descripcion}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText readonly="true" value="#{novedades.concepto.descripcion}" id="editarDescripcionConcepto" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px" > 
+                                            <p:inputText value="#{novedades.concepto.descripcion}" id="editarDescripcionConcepto" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px" > 
                                                 <p:ajax event="select" listener="#{controlNovedadesEmpleados.cambiarIndice(indice, 1)}" process="@this"/>
                                             </p:inputText>
                                         </f:facet>  
@@ -194,7 +195,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['vaalor']}" sortBy= "#{novedades.valortotal}" filterBy="#{novedades.valortotal}" filterMatchMode="contains" id="nEValor" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="#{msg['vaalor']}" sortBy= "#{novedades.valortotal}" filterBy="#{novedades.valortotal}" filterMatchMode="contains" id="nEValor" width="90" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{novedades.valortotal}" /></f:facet>  
                                         <f:facet name="input">
@@ -210,7 +211,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['saldo']}" sortBy= "#{novedades.saldo}" filterBy="#{novedades.saldo}" filterMatchMode="contains" id="nESaldo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="#{msg['saldo']}" sortBy= "#{novedades.saldo}" filterBy="#{novedades.saldo}" filterMatchMode="contains" id="nESaldo" width="90" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{novedades.saldo}" /></f:facet>  
                                         <f:facet name="input">
@@ -226,7 +227,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['coodigo']}" sortBy= "#{novedades.periodicidad.codigoStr}" filterBy="#{novedades.periodicidad.codigoStr}" filterMatchMode="contains" id="nEPeriodicidadCodigo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="#{msg['coodigo']}" sortBy= "#{novedades.periodicidad.codigoStr}" filterBy="#{novedades.periodicidad.codigoStr}" filterMatchMode="contains" id="nEPeriodicidadCodigo" width="35" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{novedades.periodicidad.codigoStr}" /></f:facet>  
                                         <f:facet name="input">
@@ -243,11 +244,11 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['periodicidad']}" sortBy= "#{novedades.periodicidad.nombre}" filterBy="#{novedades.periodicidad.nombre}" filterMatchMode="contains" id="nEDescripcionPeriodicidad" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="#{msg['periodicidad']}" sortBy= "#{novedades.periodicidad.nombre}" filterBy="#{novedades.periodicidad.nombre}" filterMatchMode="contains" id="nEDescripcionPeriodicidad" width="180" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{novedades.periodicidad.nombre}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{novedades.periodicidad.nombre}" id="editarDescripcionPeriodicidad" readonly="true" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
+                                            <p:inputText value="#{novedades.periodicidad.nombre}" id="editarDescripcionPeriodicidad" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
                                                 <p:ajax event="select" listener="#{controlNovedadesEmpleados.cambiarIndice(indice, 7)}" process="@this"/>
                                             </p:inputText>
                                         </f:facet>  
@@ -735,7 +736,7 @@
                         <p:commandButton id="aceptarC" value="#{msg['aceptar']}" disabled="#{controlNovedadesEmpleados.aceptar}"  icon="ui-icon-check" style="position: absolute; top: 305px; left: 450px; " actionListener="#{controlNovedadesEmpleados.actualizarConceptos()}"  process="@this"/>
                             
                         <p:commandButton id="atrasC" value="#{msg['atras']}" style="position: absolute; top: 305px; left: 540px; " icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlNovedadesEmpleados.cancelarCambioConceptos()}" process="@this"/>
-                            
+
 
                     </p:dialog>
 
