@@ -4,15 +4,10 @@
  */
 package Controlador;
 
-import Entidades.Conceptos;
-import Entidades.Empleados;
-import Entidades.Formulas;
-import Entidades.Novedades;
-import Entidades.Periodicidades;
-import Entidades.Terceros;
-import Entidades.Usuarios;
+import Entidades.*;
 import Exportar.ExportarPDFTablasAnchas;
 import Exportar.ExportarXLS;
+import InterfaceAdministrar.AdministrarFormulaConceptoInterface;
 import InterfaceAdministrar.AdministrarNovedadesConceptosInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
@@ -50,6 +45,8 @@ public class ControlNovedadesConceptos implements Serializable {
     AdministrarNovedadesConceptosInterface administrarNovedadesConceptos;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    @EJB
+    AdministrarFormulaConceptoInterface administrarFormulaConcepto;
     //SECUENCIA DEL CONCEPTO
     private BigInteger secuenciaConcepto;
     //LISTA NOVEDADES
@@ -130,6 +127,10 @@ public class ControlNovedadesConceptos implements Serializable {
     public String infoRegistroEmpleados;
     public String infoRegistroPeriodicidades;
     public String infoRegistroTerceros;
+    //CARGAR FORMULA DEL CONCEPTO
+    private BigInteger autoFormula;
+    
+    BigDecimal valor = new BigDecimal(Integer.toString(0));
 
     public ControlNovedadesConceptos() {
         permitirIndex = true;
@@ -137,11 +138,12 @@ public class ControlNovedadesConceptos implements Serializable {
         listaEmpleados = null;
         listaFormulas = null;
         listaEmpleados = null;
+        listaPeriodicidades = null;
+        //listaConceptos = null;
+        //listaConceptosNovedad = null;
         todas = false;
         actuales = true;
-        listaPeriodicidades = null;
-        listaConceptosNovedad = null;
-        permitirIndex = true;
+        novedadSeleccionada = null;
         aceptar = true;
         secRegistro = null;
         guardado = true;
@@ -158,6 +160,10 @@ public class ControlNovedadesConceptos implements Serializable {
         nuevaNovedad.setFechareporte(new Date());
         nuevaNovedad.setTipo("FIJA");
         altoTabla = "155";
+        autoFormula = null;
+        //nuevaNovedad.setValortotal(valor);
+        nuevaNovedad.setValortotal(valor);
+
     }
 
     @PostConstruct
@@ -167,6 +173,7 @@ public class ControlNovedadesConceptos implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarNovedadesConceptos.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
+            administrarFormulaConcepto.obtenerConexion(ses.getId());
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
@@ -388,21 +395,28 @@ public class ControlNovedadesConceptos implements Serializable {
     }
 
     public void mostrarTodos() {
+
         RequestContext context = RequestContext.getCurrentInstance();
         if (!listaConceptosNovedad.isEmpty()) {
             listaConceptosNovedad.clear();
-            listaConceptosNovedad = administrarNovedadesConceptos.Conceptos();
-        } else {
-            listaConceptosNovedad = administrarNovedadesConceptos.Conceptos();
         }
-        if (!listaConceptosNovedad.isEmpty()) {
-            seleccionMostrar = listaConceptosNovedad.get(0);
-            listaConceptosNovedad = null;
-            getListaConceptosNovedad();
+        //listaEmpleadosNovedad = listaValEmpleados;
+        if (listaConceptosNovedad != null) {
+            for (int i = 0; i < listaConceptos.size(); i++) {
+                listaConceptosNovedad.add(listaConceptos.get(i));
+            }
+
         }
-        listaNovedades = null;
+        seleccionConceptos = listaConceptosNovedad.get(0);
+        listaNovedades = administrarNovedadesConceptos.novedadesConcepto(seleccionConceptos.getSecuencia());
+
         context.update("form:datosConceptos");
         context.update("form:datosNovedadesConcepto");
+        //getListaConceptosNovedad();
+        context.update("form:diasTotales");
+        context.update("form:diasAplazados");
+
+        listaNovedades = null;
         filtradosListaConceptosNovedad = null;
         aceptar = true;
         index = -1;
@@ -685,6 +699,7 @@ public class ControlNovedadesConceptos implements Serializable {
     }
 
     public void actualizarFormulas() {
+        //  verificarFormulaConcepto(seleccionConceptos.getSecuencia());
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
@@ -1089,6 +1104,10 @@ public class ControlNovedadesConceptos implements Serializable {
             if (request.getRemoteAddr().startsWith("127.0.0.1")) {
                 try {
                     localMachine = java.net.InetAddress.getLocalHost();
+
+
+
+
                 } catch (UnknownHostException ex) {
                     Logger.getLogger(ControlNovedadesConceptos.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -1098,6 +1117,10 @@ public class ControlNovedadesConceptos implements Serializable {
             }
             try {
                 localMachine = java.net.InetAddress.getByName(equipo);
+
+
+
+
             } catch (UnknownHostException ex) {
                 Logger.getLogger(ControlNovedadesConceptos.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -1804,16 +1827,23 @@ public class ControlNovedadesConceptos implements Serializable {
         listaNovedadesBorrar.clear();
         listaNovedadesCrear.clear();
         listaNovedadesModificar.clear();
+        listaNovedades = null;
+        listaConceptos = null;
+        listaConceptosNovedad = null;
+        listaEmpleados = null;
+        listaFormulas = null;
+        listaPeriodicidades = null;
+        listaTerceros = null;
+        tipoLista = 0;
         index = -1;
         secRegistro = null;
 //        k = 0;
-        listaNovedades = null;
         resultado = 0;
         guardado = true;
         permitirIndex = true;
     }
-    
-    public void cerrarFiltrado(){
+
+    public void cerrarFiltrado() {
         if (bandera == 1) {
             FacesContext c = FacesContext.getCurrentInstance();
 
@@ -1876,7 +1906,34 @@ public class ControlNovedadesConceptos implements Serializable {
         context.update("form:ACTUALES");
     }
 
+    //CARGAR FORMULA AUTOMATICAMENTE
+    public void verificarFormulaConcepto(BigInteger secCon) {
+        RequestContext context = RequestContext.getCurrentInstance();
+        List<FormulasConceptos> formulasConceptoSel = administrarFormulaConcepto.cargarFormulasConcepto(secCon);
+        if (formulasConceptoSel != null) {
+            autoFormula = formulasConceptoSel.get(0).getFormula().getSecuencia();
+            for (int i = 0; i < listaFormulas.size(); i++) {
+                if (autoFormula.equals(listaFormulas.get(i).getSecuencia())) {
+                    if (tipoActualizacion == 1) {
+                        System.out.println("La secuencia de la formula es: " + listaFormulas.get(i).getSecuencia());
+                        //nuevaNovedad.getFormula().setNombrelargo(listaFormulas.get(i).getNombrelargo());
+                        nuevaNovedad.setFormula(listaFormulas.get(i));
+                        context.update("formularioDialogos:NuevaNovedadConcepto");
+                    } else if (tipoActualizacion == 2) {
+                        // System.out.println("La secuencia de la formula es: " + listaFormulas.get(i).getSecuencia());
+                        //duplicarNovedad.getFormula().setNombrelargo(listaFormulas.get(i).getNombrelargo());
+                        duplicarNovedad.setFormula(listaFormulas.get(i));
+                        context.update("formularioDialogos:DuplicarRegistroNovedad");
+                    }
+                }
+            }
+        } else {
+            System.out.println("ControlNovedadesEmpleados.verificarFormulaConcepto: El concepto no tiene formula");
+        }
+        autoFormula = null;
+    }
     //GETTER & SETTER
+
     public List<Conceptos> getListaConceptosNovedad() {
         if (listaConceptosNovedad == null) {
             listaConceptosNovedad = administrarNovedadesConceptos.Conceptos();
@@ -1900,9 +1957,9 @@ public class ControlNovedadesConceptos implements Serializable {
     }
 
     public Conceptos getSeleccionMostrar() {
-        if (seleccionMostrar == null && (listaConceptosNovedad != null && !listaConceptosNovedad.isEmpty())) {
-            seleccionMostrar = listaConceptosNovedad.get(0);
-        }
+//        if (seleccionMostrar == null && (listaConceptosNovedad != null && !listaConceptosNovedad.isEmpty())) {
+//            seleccionMostrar = listaConceptosNovedad.get(0);
+//        }
         return seleccionMostrar;
     }
 
@@ -1919,9 +1976,17 @@ public class ControlNovedadesConceptos implements Serializable {
     }
 
     public List<Novedades> getListaNovedades() {
+//        if (listaNovedades == null) {
+//            System.out.println("Seleccion Mostrar: " + seleccionMostrar);
+//            listaNovedades = administrarNovedadesConceptos.novedadesConcepto(seleccionMostrar.getSecuencia());
+//        }
+//        return listaNovedades;
+        
         if (listaNovedades == null) {
-            System.out.println("Seleccion Mostrar: " + seleccionMostrar);
-            listaNovedades = administrarNovedadesConceptos.novedadesConcepto(seleccionMostrar.getSecuencia());
+            RequestContext context = RequestContext.getCurrentInstance();
+            listaNovedades = listaNovedades = administrarNovedadesConceptos.novedadesConcepto(seleccionMostrar.getSecuencia());
+            seleccionMostrar = listaConceptosNovedad.get(0);
+            context.update("form:datosNovedadesConcepto");
         }
         return listaNovedades;
     }
@@ -1979,14 +2044,19 @@ public class ControlNovedadesConceptos implements Serializable {
     }
 
     public List<Empleados> getListaEmpleados() {
-        listaEmpleados = administrarNovedadesConceptos.lovEmpleados();
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (listaEmpleados == null || listaEmpleados.isEmpty()) {
-            infoRegistroEmpleados = "Cantidad de registros: 0 ";
-        } else {
-            infoRegistroEmpleados = "Cantidad de registros: " + listaEmpleados.size();
+//        listaEmpleados = administrarNovedadesConceptos.lovEmpleados();
+//        RequestContext context = RequestContext.getCurrentInstance();
+//        if (listaEmpleados == null || listaEmpleados.isEmpty()) {
+//            infoRegistroEmpleados = "Cantidad de registros: 0 ";
+//        } else {
+//            infoRegistroEmpleados = "Cantidad de registros: " + listaEmpleados.size();
+//        }
+//        context.update("formularioDialogos:infoRegistroEmpleados");
+//        return listaEmpleados;
+//        
+        if (listaEmpleados == null) {
+            listaEmpleados = administrarNovedadesConceptos.lovEmpleados();
         }
-        context.update("formularioDialogos:infoRegistroEmpleados");
         return listaEmpleados;
     }
 
@@ -2011,14 +2081,22 @@ public class ControlNovedadesConceptos implements Serializable {
     }
 
     public List<Periodicidades> getListaPeriodicidades() {
-        listaPeriodicidades = administrarNovedadesConceptos.lovPeriodicidades();
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (listaPeriodicidades == null || listaPeriodicidades.isEmpty()) {
-            infoRegistroPeriodicidades = "Cantidad de registros: 0 ";
-        } else {
-            infoRegistroPeriodicidades = "Cantidad de registros: " + listaPeriodicidades.size();
+
+//        if (listaPeriodicidades == null) {
+//            listaPeriodicidades = administrarNovedadesConceptos.lovPeriodicidades();
+//            RequestContext context = RequestContext.getCurrentInstance();
+//            if (listaPeriodicidades == null || listaPeriodicidades.isEmpty()) {
+//                infoRegistroPeriodicidades = "Cantidad de registros: 0 ";
+//            } else {
+//                infoRegistroPeriodicidades = "Cantidad de registros: " + listaPeriodicidades.size();
+//            }
+//            context.update("formularioDialogos:infoRegistroPeriodicidades");
+//        }
+//        return listaPeriodicidades;
+//        
+        if (listaPeriodicidades == null) {
+            listaPeriodicidades = administrarNovedadesConceptos.lovPeriodicidades();
         }
-        context.update("formularioDialogos:infoRegistroPeriodicidades");
         return listaPeriodicidades;
     }
 
@@ -2043,14 +2121,20 @@ public class ControlNovedadesConceptos implements Serializable {
     }
 
     public List<Terceros> getListaTerceros() {
-        listaTerceros = administrarNovedadesConceptos.lovTerceros();
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (listaTerceros == null || listaTerceros.isEmpty()) {
-            infoRegistroTerceros = "Cantidad de registros: 0 ";
-        } else {
-            infoRegistroTerceros = "Cantidad de registros: " + listaTerceros.size();
+//        if (listaTerceros == null) {
+//            listaTerceros = administrarNovedadesConceptos.lovTerceros();
+//            RequestContext context = RequestContext.getCurrentInstance();
+//            if (listaTerceros == null || listaTerceros.isEmpty()) {
+//                infoRegistroTerceros = "Cantidad de registros: 0 ";
+//            } else {
+//                infoRegistroTerceros = "Cantidad de registros: " + listaTerceros.size();
+//            }
+//            context.update("formularioDialogos:infoRegistroPeriodicidades");
+//        }
+//        return listaTerceros;
+        if (listaTerceros == null) {
+            listaTerceros = administrarNovedadesConceptos.lovTerceros();
         }
-        context.update("formularioDialogos:infoRegistroTerceros");
         return listaTerceros;
     }
 
@@ -2075,14 +2159,21 @@ public class ControlNovedadesConceptos implements Serializable {
     }
 
     public List<Formulas> getListaFormulas() {
-        listaFormulas = administrarNovedadesConceptos.lovFormulas();
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (listaFormulas == null || listaFormulas.isEmpty()) {
-            infoRegistroFormulas = "Cantidad de registros: 0 ";
-        } else {
-            infoRegistroFormulas = "Cantidad de registros: " + listaFormulas.size();
+//        if (listaFormulas == null) {
+//            listaFormulas = administrarNovedadesConceptos.lovFormulas();
+//            RequestContext context = RequestContext.getCurrentInstance();
+//            if (listaFormulas == null || listaFormulas.isEmpty()) {
+//                infoRegistroFormulas = "Cantidad de registros: 0 ";
+//            } else {
+//                infoRegistroFormulas = "Cantidad de registros: " + listaFormulas.size();
+//            }
+//            context.update("formularioDialogos:infoRegistroFormulas");
+//        }
+//        return listaFormulas;
+
+        if (listaFormulas == null) {
+            listaFormulas = administrarNovedadesConceptos.lovFormulas();
         }
-        context.update("formularioDialogos:infoRegistroFormulas");
         return listaFormulas;
     }
 
@@ -2108,14 +2199,16 @@ public class ControlNovedadesConceptos implements Serializable {
     }
 
     public List<Conceptos> getListaConceptos() {
-        listaConceptos = administrarNovedadesConceptos.Conceptos();
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (listaConceptos == null || listaConceptos.isEmpty()) {
-            infoRegistroConceptos = "Cantidad de registros: 0 ";
-        } else {
-            infoRegistroConceptos = "Cantidad de registros: " + listaConceptos.size();
+        if (listaConceptos == null) {
+            listaConceptos = administrarNovedadesConceptos.Conceptos();
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (listaConceptos == null || listaConceptos.isEmpty()) {
+                infoRegistroConceptos = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistroConceptos = "Cantidad de registros: " + listaConceptos.size();
+            }
+            context.update("formularioDialogos:infoRegistroConceptos");
         }
-        context.update("formularioDialogos:infoRegistroConceptos");
         return listaConceptos;
     }
 
@@ -2275,5 +2368,4 @@ public class ControlNovedadesConceptos implements Serializable {
     public void setInfoRegistroTerceros(String infoRegistroTerceros) {
         this.infoRegistroTerceros = infoRegistroTerceros;
     }
-
 }

@@ -49,7 +49,6 @@ public class ControlAusentismos implements Serializable {
     AdministrarSoausentismosInterface administrarAusentismos;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-
     //LISTA FICTI PORCENTAJES
     private List<String> listaPorcentaje;
     private List<String> filtradosListaPorcentajes;
@@ -93,7 +92,6 @@ public class ControlAusentismos implements Serializable {
     private boolean guardado, guardarOk;
     //Crear Novedades
     private List<Soausentismos> listaAusentismosCrear;
-
     public Soausentismos nuevoAusentismo;
     private int k;
     private BigInteger l;
@@ -331,19 +329,21 @@ public class ControlAusentismos implements Serializable {
     }
 
     public void mostrarTodos() {
+
         RequestContext context = RequestContext.getCurrentInstance();
         if (!listaEmpleadosAusentismo.isEmpty()) {
             listaEmpleadosAusentismo.clear();
-            listaEmpleadosAusentismo = administrarAusentismos.lovEmpleados();
-        } else {
-            listaEmpleadosAusentismo = administrarAusentismos.lovEmpleados();
         }
-        if (!listaEmpleadosAusentismo.isEmpty()) {
-            seleccionMostrar = listaEmpleadosAusentismo.get(0);
-            listaEmpleadosAusentismo = null;
-            getListaEmpleados();
+        //listaEmpleadosAusentismo = administrarAusentismos.lovEmpleados();
+        if (listaEmpleadosAusentismo != null) {
+            for (int i = 0; i < listaEmpleados.size(); i++) {
+                listaEmpleadosAusentismo.add(listaEmpleados.get(i));
+            }
         }
-        listaAusentismos = null;
+        seleccionEmpleados = listaEmpleadosAusentismo.get(0);
+        listaAusentismos = administrarAusentismos.ausentismosEmpleado(seleccionEmpleados.getSecuencia());
+
+        listaEmpleadosAusentismo = null;
         context.update("form:datosEmpleados");
         context.update("form:datosAusentismosEmpleado");
         filtradosListaAusentismos = null;
@@ -375,9 +375,9 @@ public class ControlAusentismos implements Serializable {
         context.reset("formularioDialogos:LOVEmpleados:globalFilter");
         context.execute("LOVEmpleados.clearFilters()");
         context.execute("empleadosDialogo.hide()");
-        //context.update("formularioDialogos:LOVEmpleados");
-        //context.update("form:datosEmpleados");
-        //context.update("form:datosAusentismosEmpleado");
+        context.update("formularioDialogos:LOVEmpleados");
+        context.update("form:datosEmpleados");
+        context.update("form:datosAusentismosEmpleado");
         filtradosListaAusentismos = null;
         seleccionEmpleados = null;
         aceptar = true;
@@ -2393,56 +2393,7 @@ public class ControlAusentismos implements Serializable {
             altoTabla = "145";
             System.out.println("Activar");
             System.out.println("TipoLista= " + tipoLista);
-            ATipo = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATipo");
-            ATipo.setFilterStyle("display: none; visibility: hidden;");
-            AClase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AClase");
-            AClase.setFilterStyle("display: none; visibility: hidden;");
-            ACausa = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ACausa");
-            ACausa.setFilterStyle("display: none; visibility: hidden;");
-            ADias = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADias");
-            ADias.setFilterStyle("display: none; visibility: hidden;");
-            AHoras = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AHoras");
-            AHoras.setFilterStyle("display: none; visibility: hidden;");
-            AFecha = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFecha");
-            AFecha.setFilterStyle("display: none; visibility: hidden;");
-            AFechaFinaus = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinaus");
-            AFechaFinaus.setFilterStyle("display: none; visibility: hidden;");
-            AFechaExpedicion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaExpedicion");
-            AFechaExpedicion.setFilterStyle("display: none; visibility: hidden;");
-            AFechaInipago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaInipago");
-            AFechaInipago.setFilterStyle("display: none; visibility: hidden;");
-            AFechaFinpago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinpago");
-            AFechaFinpago.setFilterStyle("display: none; visibility: hidden;");
-            APorcentaje = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:APorcentaje");
-            APorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            ABase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ABase");
-            ABase.setFilterStyle("display: none; visibility: hidden;");
-            AForma = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AForma");
-            AForma.setFilterStyle("display: none; visibility: hidden;");
-            ADescripcionCaso = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADescripcionCaso");
-            ADescripcionCaso.setFilterStyle("display: none; visibility: hidden;");
-            AEnfermedad = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AEnfermedad");
-            AEnfermedad.setFilterStyle("display: none; visibility: hidden;");
-            ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
-            ANumero.setFilterStyle("display: none; visibility: hidden;");
-            ADiagnostico = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADiagnostico");
-            ADiagnostico.setFilterStyle("display: none; visibility: hidden;");
-            AProrroga = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AProrroga");
-            AProrroga.setFilterStyle("display: none; visibility: hidden;");
-            ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
-            ANumero.setFilterStyle("display: none; visibility: hidden;");
-            ARelacion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacion");
-            ARelacion.setFilterStyle("display: none; visibility: hidden;");
-            ARelacionada = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacionada");
-            ARelacionada.setFilterStyle("display: none; visibility: hidden;");
-            ATercero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATercero");
-            ATercero.setFilterStyle("display: none; visibility: hidden;");
-            AObservaciones = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AObservaciones");
-            AObservaciones.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosAusentismosEmpleado");
-            bandera = 0;
-            filtradosListaAusentismos = null;
-            tipoLista = 0;
+            cerrarFiltrado();
         }
     }
 
@@ -2541,62 +2492,9 @@ public class ControlAusentismos implements Serializable {
         if (pasa == 0) {
             if (bandera == 1) {
                 altoTabla = "135";
-
                 System.out.println("Activar");
                 System.out.println("TipoLista= " + tipoLista);
-                FacesContext c = FacesContext.getCurrentInstance();
-
-                ATipo = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATipo");
-                ATipo.setFilterStyle("display: none; visibility: hidden;");
-                AClase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AClase");
-                AClase.setFilterStyle("display: none; visibility: hidden;");
-                ACausa = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ACausa");
-                ACausa.setFilterStyle("display: none; visibility: hidden;");
-                ADias = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADias");
-                ADias.setFilterStyle("display: none; visibility: hidden;");
-                AHoras = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AHoras");
-                AHoras.setFilterStyle("display: none; visibility: hidden;");
-                AFecha = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFecha");
-                AFecha.setFilterStyle("display: none; visibility: hidden;");
-                AFechaFinaus = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinaus");
-                AFechaFinaus.setFilterStyle("display: none; visibility: hidden;");
-                AFechaExpedicion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaExpedicion");
-                AFechaExpedicion.setFilterStyle("display: none; visibility: hidden;");
-                AFechaInipago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaInipago");
-                AFechaInipago.setFilterStyle("display: none; visibility: hidden;");
-                AFechaFinpago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinpago");
-                AFechaFinpago.setFilterStyle("display: none; visibility: hidden;");
-                APorcentaje = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:APorcentaje");
-                APorcentaje.setFilterStyle("display: none; visibility: hidden;");
-                ABase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ABase");
-                ABase.setFilterStyle("display: none; visibility: hidden;");
-                AForma = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AForma");
-                AForma.setFilterStyle("display: none; visibility: hidden;");
-                ADescripcionCaso = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADescripcionCaso");
-                ADescripcionCaso.setFilterStyle("display: none; visibility: hidden;");
-                AEnfermedad = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AEnfermedad");
-                AEnfermedad.setFilterStyle("display: none; visibility: hidden;");
-                ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
-                ANumero.setFilterStyle("display: none; visibility: hidden;");
-                ADiagnostico = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADiagnostico");
-                ADiagnostico.setFilterStyle("display: none; visibility: hidden;");
-                AProrroga = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AProrroga");
-                AProrroga.setFilterStyle("display: none; visibility: hidden;");
-                ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
-                ANumero.setFilterStyle("display: none; visibility: hidden;");
-                ARelacion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacion");
-                ARelacion.setFilterStyle("display: none; visibility: hidden;");
-                ARelacionada = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacionada");
-                ARelacionada.setFilterStyle("display: none; visibility: hidden;");
-                ATercero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATercero");
-                ATercero.setFilterStyle("display: none; visibility: hidden;");
-                AObservaciones = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AObservaciones");
-                AObservaciones.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosAusentismosEmpleado");
-                bandera = 0;
-                filtradosListaAusentismos = null;
-                tipoLista = 0;
-
+                cerrarFiltrado();
             }
             cambiosPagina = false;
             context.update("form:ACEPTAR");
@@ -2686,62 +2584,12 @@ public class ControlAusentismos implements Serializable {
             guardado = false;
             context.update("form:ACEPTAR");
         }
-        
+
         if (bandera == 1) {
             System.out.println("Activar");
             System.out.println("TipoLista= " + tipoLista);
-            FacesContext c = FacesContext.getCurrentInstance();
             altoTabla = "135";
-            ATipo = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATipo");
-            ATipo.setFilterStyle("display: none; visibility: hidden;");
-            AClase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AClase");
-            AClase.setFilterStyle("display: none; visibility: hidden;");
-            ACausa = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ACausa");
-            ACausa.setFilterStyle("display: none; visibility: hidden;");
-            ADias = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADias");
-            ADias.setFilterStyle("display: none; visibility: hidden;");
-            AHoras = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AHoras");
-            AHoras.setFilterStyle("display: none; visibility: hidden;");
-            AFecha = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFecha");
-            AFecha.setFilterStyle("display: none; visibility: hidden;");
-            AFechaFinaus = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinaus");
-            AFechaFinaus.setFilterStyle("display: none; visibility: hidden;");
-            AFechaExpedicion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaExpedicion");
-            AFechaExpedicion.setFilterStyle("display: none; visibility: hidden;");
-            AFechaInipago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaInipago");
-            AFechaInipago.setFilterStyle("display: none; visibility: hidden;");
-            AFechaFinpago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinpago");
-            AFechaFinpago.setFilterStyle("display: none; visibility: hidden;");
-            APorcentaje = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:APorcentaje");
-            APorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            ABase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ABase");
-            ABase.setFilterStyle("display: none; visibility: hidden;");
-            AForma = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AForma");
-            AForma.setFilterStyle("display: none; visibility: hidden;");
-            ADescripcionCaso = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADescripcionCaso");
-            ADescripcionCaso.setFilterStyle("display: none; visibility: hidden;");
-            AEnfermedad = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AEnfermedad");
-            AEnfermedad.setFilterStyle("display: none; visibility: hidden;");
-            ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
-            ANumero.setFilterStyle("display: none; visibility: hidden;");
-            ADiagnostico = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADiagnostico");
-            ADiagnostico.setFilterStyle("display: none; visibility: hidden;");
-            AProrroga = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AProrroga");
-            AProrroga.setFilterStyle("display: none; visibility: hidden;");
-            ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
-            ANumero.setFilterStyle("display: none; visibility: hidden;");
-            ARelacion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacion");
-            ARelacion.setFilterStyle("display: none; visibility: hidden;");
-            ARelacionada = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacionada");
-            ARelacionada.setFilterStyle("display: none; visibility: hidden;");
-            ATercero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATercero");
-            ATercero.setFilterStyle("display: none; visibility: hidden;");
-            AObservaciones = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AObservaciones");
-            AObservaciones.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosAusentismosEmpleado");
-            bandera = 0;
-            filtradosListaAusentismos = null;
-            tipoLista = 0;
+            cerrarFiltrado();
         }
         duplicarAusentismo.setEmpleado(seleccionMostrar);
         duplicarAusentismo = new Soausentismos();
@@ -2839,9 +2687,11 @@ public class ControlAusentismos implements Serializable {
                     if (listaAusentismosBorrar.get(i).getRelacion() == null) {
                         listaAusentismosBorrar.get(i).setRelacion(null);
                     }
-                    /*  if (listaAusentismosBorrar.get(i).getRelacionadaBool()== false) {
-                     listaAusentismosBorrar.get(i).setRelacionada("N");
-                     }*/
+                    /*
+                     * if (listaAusentismosBorrar.get(i).getRelacionadaBool()==
+                     * false) {
+                     * listaAusentismosBorrar.get(i).setRelacionada("N"); }
+                     */
                     if (listaAusentismosBorrar.get(i).getTercero().getSecuencia() == null) {
                         listaAusentismosBorrar.get(i).setTercero(null);
                     }
@@ -2945,56 +2795,8 @@ public class ControlAusentismos implements Serializable {
     //CANCELAR MODIFICACIONES
     public void cancelarModificacion() {
         if (bandera == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
             altoTabla = "135";
-            ATipo = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATipo");
-            ATipo.setFilterStyle("display: none; visibility: hidden;");
-            AClase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AClase");
-            AClase.setFilterStyle("display: none; visibility: hidden;");
-            ACausa = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ACausa");
-            ACausa.setFilterStyle("display: none; visibility: hidden;");
-            ADias = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADias");
-            ADias.setFilterStyle("display: none; visibility: hidden;");
-            AHoras = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AHoras");
-            AHoras.setFilterStyle("display: none; visibility: hidden;");
-            AFecha = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFecha");
-            AFecha.setFilterStyle("display: none; visibility: hidden;");
-            AFechaFinaus = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinaus");
-            AFechaFinaus.setFilterStyle("display: none; visibility: hidden;");
-            AFechaExpedicion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaExpedicion");
-            AFechaExpedicion.setFilterStyle("display: none; visibility: hidden;");
-            AFechaInipago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaInipago");
-            AFechaInipago.setFilterStyle("display: none; visibility: hidden;");
-            AFechaFinpago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinpago");
-            AFechaFinpago.setFilterStyle("display: none; visibility: hidden;");
-            APorcentaje = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:APorcentaje");
-            APorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            ABase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ABase");
-            ABase.setFilterStyle("display: none; visibility: hidden;");
-            AForma = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AForma");
-            AForma.setFilterStyle("display: none; visibility: hidden;");
-            ADescripcionCaso = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADescripcionCaso");
-            ADescripcionCaso.setFilterStyle("display: none; visibility: hidden;");
-            AEnfermedad = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AEnfermedad");
-            AEnfermedad.setFilterStyle("display: none; visibility: hidden;");
-            ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
-            ANumero.setFilterStyle("display: none; visibility: hidden;");
-            ADiagnostico = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADiagnostico");
-            ADiagnostico.setFilterStyle("display: none; visibility: hidden;");
-            AProrroga = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AProrroga");
-            AProrroga.setFilterStyle("display: none; visibility: hidden;");
-            ARelacion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacion");
-            ARelacion.setFilterStyle("display: none; visibility: hidden;");
-            ARelacionada = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacionada");
-            ARelacionada.setFilterStyle("display: none; visibility: hidden;");
-            ATercero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATercero");
-            ATercero.setFilterStyle("display: none; visibility: hidden;");
-            AObservaciones = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AObservaciones");
-            AObservaciones.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosAusentismosEmpleado");
-            bandera = 0;
-            filtradosListaAusentismos = null;
-            tipoLista = 0;
+            cerrarFiltrado();
         }
         FacesContext d = FacesContext.getCurrentInstance();
 
@@ -3101,58 +2903,8 @@ public class ControlAusentismos implements Serializable {
     //SALIR
     public void salir() {
         if (bandera == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
             altoTabla = "135";
-            ATipo = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATipo");
-            ATipo.setFilterStyle("display: none; visibility: hidden;");
-            AClase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AClase");
-            AClase.setFilterStyle("display: none; visibility: hidden;");
-            ACausa = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ACausa");
-            ACausa.setFilterStyle("display: none; visibility: hidden;");
-            ADias = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADias");
-            ADias.setFilterStyle("display: none; visibility: hidden;");
-            AHoras = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AHoras");
-            AHoras.setFilterStyle("display: none; visibility: hidden;");
-            AFecha = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFecha");
-            AFecha.setFilterStyle("display: none; visibility: hidden;");
-            AFechaFinaus = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinaus");
-            AFechaFinaus.setFilterStyle("display: none; visibility: hidden;");
-            AFechaExpedicion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaExpedicion");
-            AFechaExpedicion.setFilterStyle("display: none; visibility: hidden;");
-            AFechaInipago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaInipago");
-            AFechaInipago.setFilterStyle("display: none; visibility: hidden;");
-            AFechaFinpago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinpago");
-            AFechaFinpago.setFilterStyle("display: none; visibility: hidden;");
-            APorcentaje = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:APorcentaje");
-            APorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            ABase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ABase");
-            ABase.setFilterStyle("display: none; visibility: hidden;");
-            AForma = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AForma");
-            AForma.setFilterStyle("display: none; visibility: hidden;");
-            ADescripcionCaso = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADescripcionCaso");
-            ADescripcionCaso.setFilterStyle("display: none; visibility: hidden;");
-            AEnfermedad = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AEnfermedad");
-            AEnfermedad.setFilterStyle("display: none; visibility: hidden;");
-            ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
-            ANumero.setFilterStyle("display: none; visibility: hidden;");
-            ADiagnostico = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADiagnostico");
-            ADiagnostico.setFilterStyle("display: none; visibility: hidden;");
-            AProrroga = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AProrroga");
-            AProrroga.setFilterStyle("display: none; visibility: hidden;");
-            ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
-            ANumero.setFilterStyle("display: none; visibility: hidden;");
-            ARelacion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacion");
-            ARelacion.setFilterStyle("display: none; visibility: hidden;");
-            ARelacionada = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacionada");
-            ARelacionada.setFilterStyle("display: none; visibility: hidden;");
-            ATercero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATercero");
-            ATercero.setFilterStyle("display: none; visibility: hidden;");
-            AObservaciones = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AObservaciones");
-            AObservaciones.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosAusentismosEmpleado");
-            bandera = 0;
-            filtradosListaAusentismos = null;
-            tipoLista = 0;
+            cerrarFiltrado();
         }
         listaAusentismosBorrar.clear();
         listaAusentismosCrear.clear();
@@ -3166,6 +2918,60 @@ public class ControlAusentismos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosAusentismosEmpleado");
         context.update("form:ACEPTAR");
+    }
+
+    public void cerrarFiltrado() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        ATipo = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATipo");
+        ATipo.setFilterStyle("display: none; visibility: hidden;");
+        AClase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AClase");
+        AClase.setFilterStyle("display: none; visibility: hidden;");
+        ACausa = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ACausa");
+        ACausa.setFilterStyle("display: none; visibility: hidden;");
+        ADias = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADias");
+        ADias.setFilterStyle("display: none; visibility: hidden;");
+        AHoras = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AHoras");
+        AHoras.setFilterStyle("display: none; visibility: hidden;");
+        AFecha = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFecha");
+        AFecha.setFilterStyle("display: none; visibility: hidden;");
+        AFechaFinaus = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinaus");
+        AFechaFinaus.setFilterStyle("display: none; visibility: hidden;");
+        AFechaExpedicion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaExpedicion");
+        AFechaExpedicion.setFilterStyle("display: none; visibility: hidden;");
+        AFechaInipago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaInipago");
+        AFechaInipago.setFilterStyle("display: none; visibility: hidden;");
+        AFechaFinpago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinpago");
+        AFechaFinpago.setFilterStyle("display: none; visibility: hidden;");
+        APorcentaje = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:APorcentaje");
+        APorcentaje.setFilterStyle("display: none; visibility: hidden;");
+        ABase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ABase");
+        ABase.setFilterStyle("display: none; visibility: hidden;");
+        AForma = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AForma");
+        AForma.setFilterStyle("display: none; visibility: hidden;");
+        ADescripcionCaso = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADescripcionCaso");
+        ADescripcionCaso.setFilterStyle("display: none; visibility: hidden;");
+        AEnfermedad = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AEnfermedad");
+        AEnfermedad.setFilterStyle("display: none; visibility: hidden;");
+        ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
+        ANumero.setFilterStyle("display: none; visibility: hidden;");
+        ADiagnostico = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADiagnostico");
+        ADiagnostico.setFilterStyle("display: none; visibility: hidden;");
+        AProrroga = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AProrroga");
+        AProrroga.setFilterStyle("display: none; visibility: hidden;");
+        ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
+        ANumero.setFilterStyle("display: none; visibility: hidden;");
+        ARelacion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacion");
+        ARelacion.setFilterStyle("display: none; visibility: hidden;");
+        ARelacionada = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacionada");
+        ARelacionada.setFilterStyle("display: none; visibility: hidden;");
+        ATercero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATercero");
+        ATercero.setFilterStyle("display: none; visibility: hidden;");
+        AObservaciones = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AObservaciones");
+        AObservaciones.setFilterStyle("display: none; visibility: hidden;");
+        RequestContext.getCurrentInstance().update("form:datosAusentismosEmpleado");
+        bandera = 0;
+        filtradosListaAusentismos = null;
+        tipoLista = 0;
     }
 
     //GETTER & SETTER
@@ -3229,11 +3035,15 @@ public class ControlAusentismos implements Serializable {
     }
 
     public List<Empleados> getListaEmpleados() {
+//        if (listaEmpleados == null) {
+//            listaEmpleados = administrarAusentismos.lovEmpleados();
+//            if (!listaEmpleados.isEmpty()) {
+//                seleccionMostrar = listaEmpleados.get(0);
+//            }
+//        }
+//        return listaEmpleados;
         if (listaEmpleados == null) {
             listaEmpleados = administrarAusentismos.lovEmpleados();
-            if (!listaEmpleados.isEmpty()) {
-                seleccionMostrar = listaEmpleados.get(0);
-            }
         }
         return listaEmpleados;
     }
@@ -3267,7 +3077,9 @@ public class ControlAusentismos implements Serializable {
     }
 
     public List<Tiposausentismos> getListaTiposAusentismos() {
-        listaTiposAusentismos = administrarAusentismos.lovTiposAusentismos();
+        if (listaTiposAusentismos == null) {
+            listaTiposAusentismos = administrarAusentismos.lovTiposAusentismos();
+        }
         return listaTiposAusentismos;
     }
 
@@ -3308,7 +3120,9 @@ public class ControlAusentismos implements Serializable {
     }
 
     public List<Clasesausentismos> getListaClasesAusentismos() {
-        listaClasesAusentismos = administrarAusentismos.lovClasesAusentismos();
+        if (listaClasesAusentismos == null) {
+            listaClasesAusentismos = administrarAusentismos.lovClasesAusentismos();
+        }
         return listaClasesAusentismos;
     }
 
@@ -3325,7 +3139,10 @@ public class ControlAusentismos implements Serializable {
     }
 
     public List<Causasausentismos> getListaCausasAusentismos() {
-        listaCausasAusentismos = administrarAusentismos.lovCausasAusentismos();
+
+        if (listaCausasAusentismos == null) {
+            listaCausasAusentismos = administrarAusentismos.lovCausasAusentismos();
+        }
         return listaCausasAusentismos;
     }
 
@@ -3382,7 +3199,9 @@ public class ControlAusentismos implements Serializable {
     }
 
     public List<Ibcs> getListaIBCS() {
-        listaIBCS = administrarAusentismos.empleadosIBCS(secuenciaEmpleado);
+        if (listaIBCS == null) {
+            listaIBCS = administrarAusentismos.empleadosIBCS(secuenciaEmpleado);
+        }
         return listaIBCS;
     }
 
@@ -3431,7 +3250,9 @@ public class ControlAusentismos implements Serializable {
     }
 
     public List<Soaccidentes> getListaAccidentes() {
-        listaAccidentes = administrarAusentismos.lovAccidentes(secuenciaEmpleado);
+        if (listaAccidentes == null) {
+            listaAccidentes = administrarAusentismos.lovAccidentes(secuenciaEmpleado);
+        }
         return listaAccidentes;
     }
 
@@ -3456,6 +3277,8 @@ public class ControlAusentismos implements Serializable {
     }
 
     public List<EnfermeadadesProfesionales> getListaEnfermeadadesProfesionales() {
+
+
         listaEnfermeadadesProfesionales = administrarAusentismos.empleadosEP(secuenciaEmpleado);
         return listaEnfermeadadesProfesionales;
     }
@@ -3481,7 +3304,10 @@ public class ControlAusentismos implements Serializable {
     }
 
     public List<Diagnosticoscategorias> getListaDiagnosticos() {
-        listaDiagnosticos = administrarAusentismos.lovDiagnosticos();
+
+        if (listaDiagnosticos == null) {
+            listaDiagnosticos = administrarAusentismos.lovDiagnosticos();
+        }
         return listaDiagnosticos;
     }
 
@@ -3506,7 +3332,9 @@ public class ControlAusentismos implements Serializable {
     }
 
     public List<Terceros> getListaTerceros() {
-        listaTerceros = administrarAusentismos.lovTerceros();
+        if (listaTerceros == null) {
+            listaTerceros = administrarAusentismos.lovTerceros();
+        }
         return listaTerceros;
     }
 
@@ -3531,7 +3359,9 @@ public class ControlAusentismos implements Serializable {
     }
 
     public List<Soausentismos> getListaProrrogas() {
-        listaProrrogas = administrarAusentismos.lovProrrogas(secuenciaEmpleado, secuenciaCausa, secuenciaAusentismo);
+        if (listaProrrogas == null) {
+            listaProrrogas = administrarAusentismos.lovProrrogas(secuenciaEmpleado, secuenciaCausa, secuenciaAusentismo);
+        }
         return listaProrrogas;
     }
 
@@ -3562,6 +3392,7 @@ public class ControlAusentismos implements Serializable {
             }
         }
         return Prorroga;
+
     }
 
     public String getRelacion() {
@@ -3642,12 +3473,12 @@ public class ControlAusentismos implements Serializable {
     }
 
     public String getInfoRegistroTipo() {
-        getListaTiposAusentismos();
-        if (listaTiposAusentismos != null) {
-            infoRegistroTipo = "Cantidad de registros : " + listaTiposAusentismos.size();
-        } else {
-            infoRegistroTipo = "Cantidad de registros : 0";
-        }
+//        getListaTiposAusentismos();
+//        if (listaTiposAusentismos != null) {
+//            infoRegistroTipo = "Cantidad de registros : " + listaTiposAusentismos.size();
+//        } else {
+//            infoRegistroTipo = "Cantidad de registros : 0";
+//        }
 
         return infoRegistroTipo;
     }
@@ -3657,12 +3488,12 @@ public class ControlAusentismos implements Serializable {
     }
 
     public String getInfoRegistroClase() {
-        getListaClasesAusentismos();
-        if (listaClasesAusentismos != null) {
-            infoRegistroClase = "Cantidad de registros : " + listaClasesAusentismos.size();
-        } else {
-            infoRegistroClase = "Cantidad de registros : 0";
-        }
+//        getListaClasesAusentismos();
+//        if (listaClasesAusentismos != null) {
+//            infoRegistroClase = "Cantidad de registros : " + listaClasesAusentismos.size();
+//        } else {
+//            infoRegistroClase = "Cantidad de registros : 0";
+//        }
         return infoRegistroClase;
     }
 
@@ -3671,12 +3502,12 @@ public class ControlAusentismos implements Serializable {
     }
 
     public String getInfoRegistroCausa() {
-        getListaCausasAusentismos();
-        if (listaCausasAusentismos != null) {
-            infoRegistroCausa = "Cantidad de registros : " + listaCausasAusentismos.size();
-        } else {
-            infoRegistroCausa = "Cantidad de registros : 0";
-        }
+//        getListaCausasAusentismos();
+//        if (listaCausasAusentismos != null) {
+//            infoRegistroCausa = "Cantidad de registros : " + listaCausasAusentismos.size();
+//        } else {
+//            infoRegistroCausa = "Cantidad de registros : 0";
+//        }
         return infoRegistroCausa;
     }
 
@@ -3685,12 +3516,12 @@ public class ControlAusentismos implements Serializable {
     }
 
     public String getInfoRegistroPorcentaje() {
-        getListaPorcentaje();
-        if (listaPorcentaje != null) {
-            infoRegistroPorcentaje = "Cantidad de registros : " + listaPorcentaje.size();
-        } else {
-            infoRegistroPorcentaje = "Cantidad de registros : 0";
-        }
+//        getListaPorcentaje();
+//        if (listaPorcentaje != null) {
+//            infoRegistroPorcentaje = "Cantidad de registros : " + listaPorcentaje.size();
+//        } else {
+//            infoRegistroPorcentaje = "Cantidad de registros : 0";
+//        }
         return infoRegistroPorcentaje;
     }
 
@@ -3699,12 +3530,12 @@ public class ControlAusentismos implements Serializable {
     }
 
     public String getInfoRegistroBase() {
-        getListaIBCS();
-        if (listaIBCS != null) {
-            infoRegistroBase = "Cantidad de registros : " + listaIBCS.size();
-        } else {
-            infoRegistroBase = "Cantidad de registros : 0";
-        }
+//        getListaIBCS();
+//        if (listaIBCS != null) {
+//            infoRegistroBase = "Cantidad de registros : " + listaIBCS.size();
+//        } else {
+//            infoRegistroBase = "Cantidad de registros : 0";
+//        }
         return infoRegistroBase;
     }
 
@@ -3713,12 +3544,12 @@ public class ControlAusentismos implements Serializable {
     }
 
     public String getInfoRegistroAccidente() {
-        getListaAccidentes();
-        if (listaAccidentes != null) {
-            infoRegistroAccidente = "Cantidad de registros : " + listaAccidentes.size();
-        } else {
-            infoRegistroAccidente = "Cantidad de registros : 0";
-        }
+//        getListaAccidentes();
+//        if (listaAccidentes != null) {
+//            infoRegistroAccidente = "Cantidad de registros : " + listaAccidentes.size();
+//        } else {
+//            infoRegistroAccidente = "Cantidad de registros : 0";
+//        }
         return infoRegistroAccidente;
     }
 
@@ -3727,12 +3558,12 @@ public class ControlAusentismos implements Serializable {
     }
 
     public String getInfoRegistroEnfermedad() {
-        getListaEnfermeadadesProfesionales();
-        if (listaEnfermeadadesProfesionales != null) {
-            infoRegistroEnfermedad = "Cantidad de registros : " + listaEnfermeadadesProfesionales.size();
-        } else {
-            infoRegistroEnfermedad = "Cantidad de registros : 0";
-        }
+//        getListaEnfermeadadesProfesionales();
+//        if (listaEnfermeadadesProfesionales != null) {
+//            infoRegistroEnfermedad = "Cantidad de registros : " + listaEnfermeadadesProfesionales.size();
+//        } else {
+//            infoRegistroEnfermedad = "Cantidad de registros : 0";
+//        }
         return infoRegistroEnfermedad;
     }
 
@@ -3741,12 +3572,12 @@ public class ControlAusentismos implements Serializable {
     }
 
     public String getInfoRegistroDiagnostico() {
-        getListaDiagnosticos();
-        if (listaDiagnosticos != null) {
-            infoRegistroDiagnostico = "Cantidad de registros : " + listaDiagnosticos.size();
-        } else {
-            infoRegistroDiagnostico = "Cantidad de registros : 0";
-        }
+//        getListaDiagnosticos();
+//        if (listaDiagnosticos != null) {
+//            infoRegistroDiagnostico = "Cantidad de registros : " + listaDiagnosticos.size();
+//        } else {
+//            infoRegistroDiagnostico = "Cantidad de registros : 0";
+//        }
         return infoRegistroDiagnostico;
     }
 
@@ -3755,12 +3586,12 @@ public class ControlAusentismos implements Serializable {
     }
 
     public String getInfoRegistroProrroga() {
-        getListaProrrogas();
-        if (listaProrrogas != null) {
-            infoRegistroProrroga = "Cantidad de registros : " + listaProrrogas.size();
-        } else {
-            infoRegistroProrroga = "Cantidad de registros : 0";
-        }
+//        getListaProrrogas();
+//        if (listaProrrogas != null) {
+//            infoRegistroProrroga = "Cantidad de registros : " + listaProrrogas.size();
+//        } else {
+//            infoRegistroProrroga = "Cantidad de registros : 0";
+//        }
         return infoRegistroProrroga;
     }
 
@@ -3769,12 +3600,12 @@ public class ControlAusentismos implements Serializable {
     }
 
     public String getInfoRegistroTercero() {
-        getListaTerceros();
-        if (listaTerceros != null) {
-            infoRegistroTercero = "Cantidad de registros : " + listaTerceros.size();
-        } else {
-            infoRegistroTercero = "Cantidad de registros : 0";
-        }
+//        getListaTerceros();
+//        if (listaTerceros != null) {
+//            infoRegistroTercero = "Cantidad de registros : " + listaTerceros.size();
+//        } else {
+//            infoRegistroTercero = "Cantidad de registros : 0";
+//        }
         return infoRegistroTercero;
     }
 
@@ -3783,12 +3614,12 @@ public class ControlAusentismos implements Serializable {
     }
 
     public String getInfoRegistroEmpleado() {
-        getListaEmpleadosAusentismo();
-        if (listaEmpleadosAusentismo != null) {
-            infoRegistroEmpleado = "Cantidad de registros : " + listaEmpleadosAusentismo.size();
-        } else {
-            infoRegistroEmpleado = "Cantidad de registros : 0";
-        }
+//        getListaEmpleadosAusentismo();
+//        if (listaEmpleadosAusentismo != null) {
+//            infoRegistroEmpleado = "Cantidad de registros : " + listaEmpleadosAusentismo.size();
+//        } else {
+//            infoRegistroEmpleado = "Cantidad de registros : 0";
+//        }
         return infoRegistroEmpleado;
     }
 
@@ -3797,12 +3628,12 @@ public class ControlAusentismos implements Serializable {
     }
 
     public String getInfoRegistroForma() {
-        getListaForma();
-        if (listaForma != null) {
-            infoRegistroForma = "Cantidad de registros : " + listaForma.size();
-        } else {
-            infoRegistroForma = "Cantidad de registros : 0";
-        }
+//        getListaForma();
+//        if (listaForma != null) {
+//            infoRegistroForma = "Cantidad de registros : " + listaForma.size();
+//        } else {
+//            infoRegistroForma = "Cantidad de registros : 0";
+//        }
         return infoRegistroForma;
     }
 
@@ -3825,7 +3656,4 @@ public class ControlAusentismos implements Serializable {
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
     }
-    
-    
-
 }

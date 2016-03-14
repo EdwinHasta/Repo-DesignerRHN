@@ -13,22 +13,24 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
+
 /**
- * Clase Stateless. <br> 
- * Clase encargada de realizar operaciones sobre la tabla 'FormulasConceptos'
- * de la base de datos.
+ * Clase Stateless. <br> Clase encargada de realizar operaciones sobre la tabla
+ * 'FormulasConceptos' de la base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaFormulasConceptos implements PersistenciaFormulasConceptosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+    /*
+     * @PersistenceContext(unitName = "DesignerRHN-ejbPU") private EntityManager em;
+     */
     @Override
-    public void crear(EntityManager em,FormulasConceptos conceptos) {
+    public void crear(EntityManager em, FormulasConceptos conceptos) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -44,7 +46,7 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
     }
 
     @Override
-    public void editar(EntityManager em,FormulasConceptos conceptos) {
+    public void editar(EntityManager em, FormulasConceptos conceptos) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -60,7 +62,7 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
     }
 
     @Override
-    public void borrar(EntityManager em,FormulasConceptos conceptos) {
+    public void borrar(EntityManager em, FormulasConceptos conceptos) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -81,19 +83,20 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
 
     @Override
     public List<FormulasConceptos> buscarFormulasConceptos(EntityManager em) {
-        try{
+        try {
             em.clear();
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(FormulasConceptos.class));
-        return em.createQuery(cq).getResultList();
-        } catch(Exception e){
-            System.out.println("Error buscarFormulasConceptos Persistencia : "+e.toString());
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(FormulasConceptos.class));
+            return em.createQuery(cq).getResultList();
+        } catch (Exception e) {
+            System.out.println("Error buscarFormulasConceptos Persistencia : " + e.toString());
             return null;
         }
     }
-    
+
     @Override
-    public boolean verificarExistenciaConceptoFormulasConcepto(EntityManager em,BigInteger secuencia) {
+    public boolean verificarExistenciaConceptoFormulasConcepto(EntityManager em, BigInteger secuencia) {
+        System.out.println("buenas verificarExistenciaConceptoFormulasConcepto");
         try {
             em.clear();
             Query query = em.createQuery("SELECT COUNT(fc) FROM FormulasConceptos fc WHERE fc.concepto.secuencia = :secuencia");
@@ -108,7 +111,7 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
     }
 
     @Override
-    public List<FormulasConceptos> formulasConcepto(EntityManager em,BigInteger secuencia) {
+    public List<FormulasConceptos> formulasConcepto(EntityManager em, BigInteger secuencia) {
         try {
             em.clear();
             Query query = em.createQuery("SELECT fc FROM FormulasConceptos fc WHERE fc.concepto.secuencia = :secuencia");
@@ -116,12 +119,14 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             return query.getResultList();
         } catch (Exception e) {
+            System.out.println("Error en formulasConcepto() : " + e);
             return null;
         }
     }
 
     @Override
-    public boolean verificarFormulaCargue_Concepto(EntityManager em,BigInteger secuencia, BigInteger secFormula) {
+    public boolean verificarFormulaCargue_Concepto(EntityManager em, BigInteger secuencia, BigInteger secFormula) {
+        System.out.println("Entrando a verificarFormulaCargue_Concepto PersistenciaFormulasConceptos");
         try {
             em.clear();
             Query query = em.createQuery("SELECT COUNT(fc) FROM FormulasConceptos fc WHERE fc.concepto.secuencia = :secuencia AND fc.formula.secuencia = :secFormula");
@@ -135,9 +140,9 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
             return false;
         }
     }
-    
-      @Override
-    public Long comportamientoConceptoAutomaticoSecuenciaConcepto(EntityManager em,BigInteger secuencia) {
+
+    @Override
+    public Long comportamientoConceptoAutomaticoSecuenciaConcepto(EntityManager em, BigInteger secuencia) {
         try {
             em.clear();
             Query query = em.createQuery("SELECT COUNT(f.secuencia) FROM FormulasConceptos f WHERE f.concepto.secuencia=:secuencia");
@@ -152,7 +157,7 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
     }
 
     @Override
-    public Long comportamientoConceptoSemiAutomaticoSecuenciaConcepto(EntityManager em,BigInteger secuencia) {
+    public Long comportamientoConceptoSemiAutomaticoSecuenciaConcepto(EntityManager em, BigInteger secuencia) {
         try {
             em.clear();
             Query query = em.createQuery("SELECT COUNT(f.secuencia) FROM FormulasConceptos f, FormulasNovedades fn WHERE  fn.formula=f.formula AND f.concepto.secuencia=:secuencia");
@@ -165,15 +170,15 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
             return null;
         }
     }
-    
+
     @Override
-    public List<FormulasConceptos> formulasConceptosParaFormulaSecuencia(EntityManager em,BigInteger secuencia) {
+    public List<FormulasConceptos> formulasConceptosParaFormulaSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             em.clear();
             Query query = em.createQuery("SELECT f FROM FormulasConceptos f WHERE f.formula.secuencia=:secuenciaF");
             query.setParameter("secuenciaF", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
-            List<FormulasConceptos> resultado =  query.getResultList();
+            List<FormulasConceptos> resultado = query.getResultList();
             return resultado;
         } catch (Exception e) {
             System.out.println("Error Persistencia formulasConceptosParaFormulaSecuencia : " + e.toString());
