@@ -378,7 +378,7 @@ and open the template in the editor.
 
 .outputTextFielset{
     font-weight: bold;
-    color: #00F;
+    color: #0000FF;
     position: absolute;
     top: -9px;
     left: 10px;
@@ -400,9 +400,14 @@ and open the template in the editor.
 .cssBotonAceptar{
     font-weight: bold; 
     border: 1px solid #cccccc;
-    color: red;
+    background: red;
 }
 
 .ui-button-text-only .ui-button-text{
     padding: 0 0 0;
+}
+.cssToolbar{
+    background: transparent;
+    /*border-color: #61A0CA;*/
+    border-color: #8a8a8a;
 }

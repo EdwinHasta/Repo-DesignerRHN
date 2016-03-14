@@ -3,11 +3,11 @@ package Controlador;
 import Administrar.AdministrarCarpetaPersonal;
 import Entidades.*;
 import InterfaceAdministrar.*;
-import java.io.File;
+/*import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.OutputStream;*/
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -30,7 +30,7 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.FileUploadEvent;
+//import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.UploadedFile;
 
@@ -85,7 +85,7 @@ public class ControlRemoto implements Serializable {
     private VwTiposEmpleados emplSeleccionadoBE;
     private SelectItem[] tipoEmpleado;
     private boolean buscar, buscarEmp, mostrarT;
-    private String destino = "C:\\Prueba\\Juguetito\\FirstFormWhitBD\\web\\ArchivosCargados\\";
+    //private String destino = "C:\\Prueba\\Juguetito\\FirstFormWhitBD\\web\\ArchivosCargados\\";
     private UploadedFile file;
     private String nombreTabla;
     private Integer estadoEmpleado;
@@ -735,7 +735,7 @@ public class ControlRemoto implements Serializable {
         actualizarInformacionTipoTrabajador();
         actualizarNavegacion();
     }
-
+/*
     public void transformarArchivo(long size, InputStream in) {
         try {
             //extencion = fileName.split("[.]")[1];
@@ -763,7 +763,7 @@ public class ControlRemoto implements Serializable {
         context.execute("Cargar.hide()");
         context.execute("Exito.show()");
     }
-
+*/
     public void probar(String nombreTab) {
 
         //nombreTabla = nombreTab;

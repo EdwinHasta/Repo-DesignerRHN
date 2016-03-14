@@ -4,12 +4,17 @@ import Entidades.ActualUsuario;
 import Entidades.DetallesEmpresas;
 import Entidades.Empresas;
 import Entidades.Generales;
+import Entidades.ParametrosEstructuras;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfaceAdministrar.AdministrarTemplateInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaDetallesEmpresasInterface;
 import InterfacePersistencia.PersistenciaEmpresasInterface;
 import InterfacePersistencia.PersistenciaGeneralesInterface;
+import InterfacePersistencia.PersistenciaParametrosEstructurasInterface;
+import InterfacePersistencia.PersistenciaPerfilesInterface;
+//import java.math.BigInteger;
+//import java.text.SimpleDateFormat;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
@@ -41,10 +46,22 @@ public class AdministrarTemplate implements AdministrarTemplateInterface {
      */
     @EJB
     PersistenciaGeneralesInterface persistenciaGenerales;
+    /**
+     * Enterprise JavaBean.<br>
+     * Representa la interfaz para acceder a los datos de las empresas.
+     */
     @EJB
     PersistenciaEmpresasInterface persistenciaEmpresas;
+    /**
+     * Enterprise JavaBean.<br>
+     * Representa la interfaz para acceder a los datos de detallesempresas.
+     */
     @EJB
     PersistenciaDetallesEmpresasInterface persistenciaDetallesEmpresas;
+    @EJB
+    PersistenciaParametrosEstructurasInterface persistenciaParametrosEstructuras;
+    @EJB
+    PersistenciaPerfilesInterface persistenciaPerfiles;
 
     private EntityManager em;
     private Generales general;
@@ -69,7 +86,7 @@ public class AdministrarTemplate implements AdministrarTemplateInterface {
             if (empresa != null) {
                 rutaLogo = general.getPathfoto() + empresa.getNit() + ".png";
             } else {
-                rutaLogo = general.getPathfoto() + "sinlogo.jpg";
+                rutaLogo = general.getPathfoto() + "sinLogo.png";
             }
         } else {
             return null;
@@ -102,10 +119,26 @@ public class AdministrarTemplate implements AdministrarTemplateInterface {
         System.out.println("AdministrarTemplate.consultarDetalleEmpresaUsuario");
         try {
             Short codigoEmpresa = persistenciaEmpresas.codigoEmpresa(em);
+            System.out.println("Codigo empresa: "+codigoEmpresa);
             DetallesEmpresas detallesEmpresas = persistenciaDetallesEmpresas.buscarDetalleEmpresa(em, codigoEmpresa);
+            System.out.println("detallesempresas: "+detallesEmpresas);
             return detallesEmpresas;
         } catch (Exception e) {
             return null;
         }
+    }
+    @Override
+    public ParametrosEstructuras consultarParametrosUsuario() {
+        System.out.println("AdministrarTemplate.consultarParametrosUsuario");
+        try {
+            ParametrosEstructuras parametrosEstructuras = persistenciaParametrosEstructuras.buscarParametro(em, consultarActualUsuario().getAlias());
+            return parametrosEstructuras;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    @Override
+    public String consultarNombrePerfil(){
+        return persistenciaPerfiles.consultarPerfil(em, consultarActualUsuario().getPerfil()).getDescripcion();
     }
 }

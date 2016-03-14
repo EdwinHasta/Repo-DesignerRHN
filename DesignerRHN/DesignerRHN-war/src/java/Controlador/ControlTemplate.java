@@ -2,6 +2,7 @@ package Controlador;
 
 import Entidades.ActualUsuario;
 import Entidades.DetallesEmpresas;
+import Entidades.ParametrosEstructuras;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarTemplateInterface;
 import java.io.File;
@@ -9,6 +10,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+//import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -33,15 +36,18 @@ public class ControlTemplate implements Serializable {
     private StreamedContent logoEmpresa;
     private StreamedContent fotoUsuario;
     private FileInputStream fis;
-    private final String acercaDe;
     private final String webSite;
     private final String linkSoporte;
     private DetallesEmpresas detalleEmpresa;
+    private String fechaDesde, fechaHasta, fechaCorte;
+    private ParametrosEstructuras parametrosEstructuras;
+    private SimpleDateFormat formato;
+    private String nombrePerfil;
 
     public ControlTemplate() {
-        acercaDe="acercade";
-        webSite="www.nomina.com.co";
-        linkSoporte="Teamviewer";
+        webSite = "www.nomina.com.co";
+        linkSoporte = "Teamviewer";
+        formato = new SimpleDateFormat("dd/MM/yyyy");
     }
 
     @PostConstruct
@@ -53,6 +59,8 @@ public class ControlTemplate implements Serializable {
             administrarTemplate.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
             actualUsuario = administrarTemplate.consultarActualUsuario();
+            detalleEmpresa = administrarTemplate.consultarDetalleEmpresaUsuario();
+            nombrePerfil = administrarTemplate.consultarNombrePerfil();
         } catch (Exception e) {
             System.out.println("Error postconstruct ControlTemplate: " + e);
             System.out.println("Causa: " + e.getCause());
@@ -125,14 +133,23 @@ public class ControlTemplate implements Serializable {
             try {
                 fis = new FileInputStream(new File(rutaFoto));
                 logoEmpresa = new DefaultStreamedContent(fis, "image/png");
-            } catch (FileNotFoundException e) {
-                logoEmpresa = null;
-                System.out.println("Logo de la empresa no encontrado para el template. \n" + e);
+            } catch (FileNotFoundException fnfe) {
+                try {
+                    System.out.println("Logo de la empresa no encontrado para el template. \n" + fnfe);
+                    logoEmpresa = null;
+                    fis = null;
+                    rutaFoto = administrarTemplate.rutaFotoUsuario() + "sinLogo.png";
+                    //rutaFoto = "Imagenes/" + "sinLogo.png";
+                    System.out.println("ruta sin logo: "+rutaFoto);
+                    fis = new FileInputStream(new File(rutaFoto));
+                    logoEmpresa = new DefaultStreamedContent(fis, "image/png");
+                } catch (FileNotFoundException fnfei) {
+                    System.out.println("Logo de empresa por defecto no encontrado. \n" + fnfei);
+                    logoEmpresa = null;
+                }
+
             }
         }
-    }
-    public String obtenerAcercaDe(){
-        return acercaDe;
     }
 
     public String getWebSite() {
@@ -144,9 +161,44 @@ public class ControlTemplate implements Serializable {
     }
 
     public DetallesEmpresas getDetalleEmpresa() {
-        System.out.println("ControlTemplate.getDetalleEmpresa");
-        administrarTemplate.consultarDetalleEmpresaUsuario();
+        //System.out.println("ControlTemplate.getDetalleEmpresa");
+        detalleEmpresa = administrarTemplate.consultarDetalleEmpresaUsuario();
         return detalleEmpresa;
+    }
+
+    public String getFechaDesde() {
+        parametrosEstructuras = administrarTemplate.consultarParametrosUsuario();
+        fechaDesde = formato.format(parametrosEstructuras.getFechadesdecausado());
+        return fechaDesde;
+    }
+
+    public void setFechaDesde(String fechaDesde) {
+        this.fechaDesde = fechaDesde;
+    }
+
+    public String getFechaHasta() {
+        fechaHasta = formato.format(parametrosEstructuras.getFechahastacausado());
+        return fechaHasta;
+    }
+
+    public void setFechaHasta(String fechaHasta) {
+        this.fechaHasta = fechaHasta;
+    }
+
+    public String getFechaCorte() {
+        fechaCorte = formato.format(parametrosEstructuras.getFechasistema());
+        return fechaCorte;
+    }
+
+    public void setFechaCorte(String fechaCorte) {
+        this.fechaCorte = fechaCorte;
+    }
+
+    public String getNombrePerfil() {
+        if (nombrePerfil == null) {
+            nombrePerfil = administrarTemplate.consultarNombrePerfil();
+        }
+        return nombrePerfil;
     }
 
 }

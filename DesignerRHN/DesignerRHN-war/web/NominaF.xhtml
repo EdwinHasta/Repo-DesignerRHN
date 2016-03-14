@@ -97,7 +97,7 @@
                                         <p:commandButton id="busquedaRapida" style="position: absolute; left: 69px; top: 60px; width: 30px; height: 30px; background-image: url(Imagenes/Iconos/buscarrapida1.png); background-size: 100% 100%; background-repeat: no-repeat;" value="" actionListener="#{controlRemoto.requerirBusquedaRapida()}" update=":form:lvBusquedaRapida"/>
                                         <p:tooltip  for="busquedaRapida" value="#{msg['br']}"  />
 
-                                        
+
 
                                         <!-- Botones Buscar Empleado y Mostrar Todos --> 
                                         <p:commandButton id="BuscarEmpleado" style="position: absolute; left: 370px; top: 60px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/buscardb.png); background-size: 100% 100%; background-repeat: no-repeat;"
@@ -108,7 +108,7 @@
                                         <p:commandButton id="MostrarTodos" style="position: absolute; left: 460px; top: 60px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/todosdb.png); background-size: 100% 100%; background-repeat: no-repeat;"
                                                          value="#{msg['mostrar']}" actionListener="#{controlRemoto.mostrarTodos()}" update=":form:tabMenu:contenedor" disabled="#{controlRemoto.mostrarT}"/>
                                         <p:tooltip  for="MostrarTodos" value="#{msg['mostrartodos']}" />
-                                        
+
                                         <p:spacer styleClass="separador" style="position: absolute; left: 552px; top: 10px; height: 70px;"/>   
                                         <!-- Boton Hoja de Vida -->
                                         <p:commandButton id="HojaDeVida" value=""  style="background-size: 100% 100%; position: absolute; background-image: url(Imagenes/Iconos/informacionPersonal.png); left: 575px; top: 2px; width: 60px; height: 60px; background-repeat: no-repeat;" disabled="#{controlRemoto.acumulado}" actionListener="#{controlEmpleadoIndividual.recibirEmpleado(controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.secuencia)}" action="hojaVida" />
@@ -275,72 +275,72 @@
 
                                     <!-- Panel Acumulados y Novedades -->
                                     <fieldset style="border-radius: 5px; position: relative; left: 0px; width: 808px;">
-                                            <p:commandButton id="AcumuladosNomina" value="" disabled="#{controlRemoto.acumulado}" style="background-image: url(Imagenes/Iconos/acumulados.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" action="acumuladosEmpleado" actionListener="#{controlEmplAcumulados.recibirEmpleado(controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.secuencia)}"/>
-                                            <p:tooltip  for="AcumuladosNomina">
-                                                #{msg['AcumuladosNomina1']}<br/>#{msg['AcumuladosNomina2']}
-                                            </p:tooltip>
-                                            <p:commandButton id="NovedadesEmpleado" value="" disabled="#{controlRemoto.novedad}" style="background-image: url(Imagenes/Iconos/novedadEmpleado.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%; " action="novedadEmpl" actionListener="#{controlEmplNovedad.recibirEmpleado(controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.secuencia)}"/>
-                                            <p:tooltip   for="NovedadesEmpleado" >
-                                                #{msg['NovedadesEmpleado1']} 
-                                                <br/>
-                                                #{msg['NovedadesEmpleado2']}
-                                            </p:tooltip>
-                                            <p:spacer styleClass="separador"/>
-                                            <!-- Panel Evaluacion y Resultados -->
-                                            <p:commandButton id="EvaluarPersona" value="" disabled="#{controlRemoto.evaluacion}" style=" background-image: url(Imagenes/Iconos/evaluacion.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%; " />
-                                            <p:tooltip  for="EvaluarPersona" value="#{msg['EvaluarPersona']}"  />
-                                            <p:commandButton id="ResultadosEvaluaciones" value=""  style="background-image: url(Imagenes/Iconos/resultados.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" />
-                                            <p:tooltip  for="ResultadosEvaluaciones">
-                                                #{msg['resultadosevaluaciones1']}<br/>#{msg['resultadosevaluaciones2']}
-                                            </p:tooltip>
-                                            <p:spacer styleClass="separador"/>
-                                            <!-- Panel Salud Ocupacional-->
-                                            <p:commandButton id="SaludOcupacional" value="" style="background-image: url(Imagenes/Iconos/saludOcupacional2.png); background-repeat: no-repeat; background-size: 100% 100%; width: 40px; height: 40px;" action="emplvigsaludocupacional" />
-                                            <p:tooltip  for="SaludOcupacional" >
-                                                #{msg['saludocupacional1']}<br/>#{msg['saludocupacional2']}
-                                            </p:tooltip>
-                                            <p:spacer styleClass="separador"/>
-                                            <!-- Panel Ingresos Act. Pen. y Asp.-->
-                                            <p:commandButton id="IngresoPersonal" value="" disabled="#{controlRemoto.activo}"  style="background-image: url(Imagenes/Iconos/ingreso.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" action="personaIndividual"/>                            
-                                            <p:tooltip  for="IngresoPersonal">
-                                                #{msg['ingresodepersonal1']}<br/>#{msg['ingresodepersonal2']}
-                                            </p:tooltip>
-                                            <p:commandButton id="InformacionJubilados" value="" disabled="#{controlRemoto.pensionado}"  style="background-image: url(Imagenes/Iconos/pensionado.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" />
-                                            <p:tooltip  for="InformacionJubilados" >
-                                                #{msg['informacionjubilados1']}<br/>#{msg['informacionjubilados2']}
-                                            </p:tooltip>
-                                            <p:commandButton id="IngresoAspirantes" value="" disabled="#{controlRemoto.aspirante}"  style="background-image: url(Imagenes/Iconos/aspirantes.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" />
-                                            <p:tooltip  for="IngresoAspirantes">
-                                                #{msg['ingresoaspirantes1']}<br/>#{msg['ingresoaspirantes2']}
-                                            </p:tooltip>
-                                            <p:spacer styleClass="separador"/>
-                                            <!-- Panel Hoja de Vida -->
-                                            <p:commandButton id="InformacionAdicional" value="" disabled="#{controlRemoto.hv1}"  style="background-image: url(Imagenes/Iconos/informacionAdicional.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" />
-                                            <p:tooltip  for="InformacionAdicional">
-                                                #{msg['informacionadicionalaspirantes1']}<br/>#{msg['informacionadicionalaspirantes2']}
-                                            </p:tooltip>
-                                            <!--
-                                            <p:commandButton id="IngresoHojaDeVida" value="" disabled="#{controlRemoto.hv2}" style="background-image: url(Imagenes/Iconos/hojaDeVida.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" />
-                                            <p:tooltip  for="IngresoHojaDeVida">
-                                            #{msg['ingresohojadevida1']}<br/>#{msg['ingresohojadevida2']}
+                                        <p:commandButton id="AcumuladosNomina" value="" disabled="#{controlRemoto.acumulado}" style="background-image: url(Imagenes/Iconos/acumulados.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" action="acumuladosEmpleado" actionListener="#{controlEmplAcumulados.recibirEmpleado(controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.secuencia)}"/>
+                                        <p:tooltip  for="AcumuladosNomina">
+                                            #{msg['AcumuladosNomina1']}<br/>#{msg['AcumuladosNomina2']}
                                         </p:tooltip>
-                                            -->
-                                            <p:spacer styleClass="separador"/>
-                                            <!-- Panel Reportes -->
-                                            <p:commandButton id="ReportesLaborales" value="" style="background-image: url(Imagenes/Iconos/reportes.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" action="ReporteLaboral" actionListener="#{controlNReporteLaboral.iniciarPagina()}" />
-                                            <p:tooltip  for="ReportesLaborales">
-                                                #{msg['reporteslaborales1']}<br/>#{msg['reporteslaborales2']}
-                                            </p:tooltip>
-                                            <p:spacer styleClass="separador"/>
-                                            <p:commandButton id="acercade" value="" style="background-image: url(Imagenes/Iconos/reportes.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" action="acercade" />
-                                            <p:tooltip  for="acercade">
-                                                #{msg['acercade1']}
-                                            </p:tooltip>
-                                            <p:spacer styleClass="separador"/>
-                                            <!--<p:commandButton value="" style="background-image: url(Imagenes/Designer.jpg); height: 40px; width: 100px; background-repeat: no-repeat; background-size: 100% 100%;" action="acercade" /> -->
-                                            <!--<em><h:outputText style="position: absolute; top: 474px; ; left: 17px" value="#{msg['bienvenido']}"/></em>-->
-                                            <!--<h:outputText id="Usuario" style="position: absolute; top: 475px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>-->
-                                            <!--<h:outputText id="Empresa"  style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/> -->
+                                        <p:commandButton id="NovedadesEmpleado" value="" disabled="#{controlRemoto.novedad}" style="background-image: url(Imagenes/Iconos/novedadEmpleado.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%; " action="novedadEmpl" actionListener="#{controlEmplNovedad.recibirEmpleado(controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado.secuencia)}"/>
+                                        <p:tooltip   for="NovedadesEmpleado" >
+                                            #{msg['NovedadesEmpleado1']} 
+                                            <br/>
+                                            #{msg['NovedadesEmpleado2']}
+                                        </p:tooltip>
+                                        <p:spacer styleClass="separador"/>
+                                        <!-- Panel Evaluacion y Resultados -->
+                                        <p:commandButton id="EvaluarPersona" value="" disabled="#{controlRemoto.evaluacion}" style=" background-image: url(Imagenes/Iconos/evaluacion.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%; " />
+                                        <p:tooltip  for="EvaluarPersona" value="#{msg['EvaluarPersona']}"  />
+                                        <p:commandButton id="ResultadosEvaluaciones" value=""  style="background-image: url(Imagenes/Iconos/resultados.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" />
+                                        <p:tooltip  for="ResultadosEvaluaciones">
+                                            #{msg['resultadosevaluaciones1']}<br/>#{msg['resultadosevaluaciones2']}
+                                        </p:tooltip>
+                                        <p:spacer styleClass="separador"/>
+                                        <!-- Panel Salud Ocupacional-->
+                                        <p:commandButton id="SaludOcupacional" value="" style="background-image: url(Imagenes/Iconos/saludOcupacional2.png); background-repeat: no-repeat; background-size: 100% 100%; width: 40px; height: 40px;" action="emplvigsaludocupacional" />
+                                        <p:tooltip  for="SaludOcupacional" >
+                                            #{msg['saludocupacional1']}<br/>#{msg['saludocupacional2']}
+                                        </p:tooltip>
+                                        <p:spacer styleClass="separador"/>
+                                        <!-- Panel Ingresos Act. Pen. y Asp.-->
+                                        <p:commandButton id="IngresoPersonal" value="" disabled="#{controlRemoto.activo}"  style="background-image: url(Imagenes/Iconos/ingreso.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" action="personaIndividual"/>                            
+                                        <p:tooltip  for="IngresoPersonal">
+                                            #{msg['ingresodepersonal1']}<br/>#{msg['ingresodepersonal2']}
+                                        </p:tooltip>
+                                        <p:commandButton id="InformacionJubilados" value="" disabled="#{controlRemoto.pensionado}"  style="background-image: url(Imagenes/Iconos/pensionado.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" />
+                                        <p:tooltip  for="InformacionJubilados" >
+                                            #{msg['informacionjubilados1']}<br/>#{msg['informacionjubilados2']}
+                                        </p:tooltip>
+                                        <p:commandButton id="IngresoAspirantes" value="" disabled="#{controlRemoto.aspirante}"  style="background-image: url(Imagenes/Iconos/aspirantes.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" />
+                                        <p:tooltip  for="IngresoAspirantes">
+                                            #{msg['ingresoaspirantes1']}<br/>#{msg['ingresoaspirantes2']}
+                                        </p:tooltip>
+                                        <p:spacer styleClass="separador"/>
+                                        <!-- Panel Hoja de Vida -->
+                                        <p:commandButton id="InformacionAdicional" value="" disabled="#{controlRemoto.hv1}"  style="background-image: url(Imagenes/Iconos/informacionAdicional.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" />
+                                        <p:tooltip  for="InformacionAdicional">
+                                            #{msg['informacionadicionalaspirantes1']}<br/>#{msg['informacionadicionalaspirantes2']}
+                                        </p:tooltip>
+                                        <!--
+                                        <p:commandButton id="IngresoHojaDeVida" value="" disabled="#{controlRemoto.hv2}" style="background-image: url(Imagenes/Iconos/hojaDeVida.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" />
+                                        <p:tooltip  for="IngresoHojaDeVida">
+                                        #{msg['ingresohojadevida1']}<br/>#{msg['ingresohojadevida2']}
+                                    </p:tooltip>
+                                        -->
+                                        <p:spacer styleClass="separador"/>
+                                        <!-- Panel Reportes -->
+                                        <p:commandButton id="ReportesLaborales" value="" style="background-image: url(Imagenes/Iconos/reportes.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" action="ReporteLaboral" actionListener="#{controlNReporteLaboral.iniciarPagina()}" />
+                                        <p:tooltip  for="ReportesLaborales">
+                                            #{msg['reporteslaborales1']}<br/>#{msg['reporteslaborales2']}
+                                        </p:tooltip>
+                                        <p:spacer styleClass="separador"/>
+                                        <p:commandButton id="acercade" value="" style="background-image: url(Imagenes/Iconos/acercade.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%;" action="acercade" />
+                                        <p:tooltip  for="acercade">
+                                            #{msg['acercade1']}
+                                        </p:tooltip>
+                                        <p:spacer styleClass="separador"/>
+                                        <!--<p:commandButton value="" style="background-image: url(Imagenes/Designer.jpg); height: 40px; width: 100px; background-repeat: no-repeat; background-size: 100% 100%;" action="acercade" /> -->
+                                        <!--<em><h:outputText style="position: absolute; top: 474px; ; left: 17px" value="#{msg['bienvenido']}"/></em>-->
+                                        <!--<h:outputText id="Usuario" style="position: absolute; top: 475px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>-->
+                                        <!--<h:outputText id="Empresa"  style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/> -->
                                     </fieldset>
                                 </p:panel>
 
@@ -350,16 +350,16 @@
 
                             <p:tab title="#{msg['nomina']}" id="Nomina">  
 
-                                <h:outputText style="position: absolute;  font-weight: bold; font-size: 11px; left: 343px; top: -27px; width: 500px; text-align: right; color: #000000; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.7);" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta']} #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
+                                <!-- <h:outputText style="position: absolute;  font-weight: bold; font-size: 11px; left: 343px; top: -27px; width: 500px; text-align: right; color: #000000; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.7);" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta']} #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/> -->
 
 
                                 <fieldset style="position: absolute; border-radius: 10px; width: 800px; height: 110px; top: 54px;">
                                     <h:outputText value="#{msg['propiedadesdenomina']}" styleClass="outputTextFielset" />
 
-                                    <h:outputText  id="lblNovedadesNomina" style="position: absolute; left: 22px; top: 104px;  font-weight: bold; text-align: center; width: 150px;" value="#{msg['novedadesdenomina']}"/>
-                                    <h:outputText  id="lblConceptosNomina" style="position: absolute; left: 228px; top: 104px;  font-weight: bold; text-align: center; width: 150px;"  value="#{msg['conceptosdenomina']}"/>
-                                    <h:outputText id="lblFormulasLiquidacion" style="position: absolute; left: 439px; top: 104px;  font-weight: bold; text-align: center; width: 150px;"  value="#{msg['formulasdeliquidacion']}"/>
-                                    <h:outputText id="lblLegislacionLaboral" style="position: absolute; left: 642px; top: 104px;  font-weight: bold; text-align: center; width: 150px;"  value="#{msg['legislacionlaboral']}"/>
+                                    <h:outputText  id="lblNovedadesNomina" style="position: absolute; left: 22px; top: 104px; color: #14388B; font-weight: bold; text-align: center; width: 150px;" value="#{msg['novedadesdenomina']}"/>
+                                    <h:outputText  id="lblConceptosNomina" style="position: absolute; left: 228px; top: 104px; color: #14388B; font-weight: bold; text-align: center; width: 150px;"  value="#{msg['conceptosdenomina']}"/>
+                                    <h:outputText id="lblFormulasLiquidacion" style="position: absolute; left: 439px; top: 104px; color: #14388B; font-weight: bold; text-align: center; width: 150px;"  value="#{msg['formulasdeliquidacion']}"/>
+                                    <h:outputText id="lblLegislacionLaboral" style="position: absolute; left: 642px; top: 104px; color: #14388B; font-weight: bold; text-align: center; width: 150px;"  value="#{msg['legislacionlaboral']}"/>
 
                                     <p:commandButton id="NovedadesNomina" value="" style="position: absolute; left: 50px; top: 7px; width: 95px; height: 95px; background-image: url(Imagenes/nom_novedad.gif);  background-repeat: no-repeat; background-size: 100% 100%;" action="novedad"/>
                                     <p:tooltip  for="NovedadesNomina">
@@ -401,7 +401,7 @@
 
                                         <hr style="position: absolute; top: 50px; width: 254px; left: 5px;"/>
 
-                                        <center><strong><h:outputText id="tipoPago" style=" color: #00F; position: relative; top: 55px;" value="#{controlRemoto.tituloPago}"/></strong></center>
+                                        <center><strong><h:outputText id="tipoPago" style=" color: #14388B; position: relative; top: 55px;" value="#{controlRemoto.tituloPago}"/></strong></center>
 
                                         <h:outputText id="mensajePago" style="  overflow: auto; position: absolute; left: 9px; top: 80px; width: 250px; height: 53px; text-align: justify" value="#{controlRemoto.mensajePagos}" />
 
@@ -409,7 +409,7 @@
 
                                     <fieldset style="position: absolute; border-radius: 10px; width: 250px; height: 100px; top: 157px;">
 
-                                        <strong><h:outputText  value="#{msg['estadisticas']}" style=" color: #00F; position: absolute; left: 100px; top: 9px;"/></strong>
+                                        <strong><h:outputText  value="#{msg['estadisticas']}" style=" color: #14388B; position: absolute; left: 100px; top: 9px;"/></strong>
 
                                         <h:outputText  style=" position: absolute; left: 100px; top: 25px; width: 160px; text-align: justify" value="#{msg['textoestadisticas']}"/>
 
@@ -419,27 +419,27 @@
 
                                     <fieldset style="position: absolute; border-radius: 10px; width: 500px; height: 250px; top: 7px; left: 284px;">
 
-                                        <strong><h:outputText style=" color: #00F; position: absolute; left: 100px; top: 5px;" value="#{msg['parametrosdeliquidacion']}"/></strong>
+                                        <strong><h:outputText style=" color: #14388B; position: absolute; left: 100px; top: 5px;" value="#{msg['parametrosdeliquidacion']}"/></strong>
 
                                         <h:outputText style=" position: absolute; left: 100px; top: 25px; width: 150px; text-align: justify" value="#{msg['textoparametrosdeliquidacion']}"/>
 
-                                        <strong><h:outputText style=" color: #00F; position: absolute; left: 100px; top: 90px;" value="#{msg['generarliquidacion']}"/></strong>
+                                        <strong><h:outputText style=" color: #14388B; position: absolute; left: 100px; top: 90px;" value="#{msg['generarliquidacion']}"/></strong>
 
                                         <h:outputText style=" position: absolute; left: 100px; top: 110px; width: 150px; text-align: justify" value="#{msg['textogenerarliquidacion']}"/>
 
-                                        <strong><h:outputText style=" color: #00F; position: absolute; left: 100px; top: 175px;" value="#{msg['comprobantesdepago']}"/></strong>
+                                        <strong><h:outputText style=" color: #14388B; position: absolute; left: 100px; top: 175px;" value="#{msg['comprobantesdepago']}"/></strong>
 
                                         <h:outputText style=" position: absolute; left: 100px; top: 195px; width: 150px; text-align: justify" value="#{msg['textocomprobantesdepago']}"/>
 
-                                        <strong><h:outputText style=" color: #00F; position: absolute; left: 360px; top: 5px;" value="#{msg['borrarliquidacion']}"/></strong>
+                                        <strong><h:outputText style=" color: #14388B; position: absolute; left: 360px; top: 5px;" value="#{msg['borrarliquidacion']}"/></strong>
 
                                         <h:outputText style=" position: absolute; left: 360px; top: 25px; width: 130px; text-align: justify" value="#{msg['textoborrarliquidacion']}"/>
 
-                                        <strong><h:outputText style=" color: #00F; position: absolute; left: 360px; top: 90px;" value="#{msg['cerrarliquidacion']}"/></strong>
+                                        <strong><h:outputText style=" color: #14388B; position: absolute; left: 360px; top: 90px;" value="#{msg['cerrarliquidacion']}"/></strong>
 
                                         <h:outputText style=" position: absolute; left: 360px; top: 110px; width: 130px; text-align: justify" value="#{msg['textocerrarliquidacion']}"/>
 
-                                        <strong><h:outputText style=" color: #00F; position: absolute; left: 360px; top: 175px;" value="#{msg['reportesdenomina']}"/></strong>
+                                        <strong><h:outputText style=" color: #14388B; position: absolute; left: 360px; top: 175px;" value="#{msg['reportesdenomina']}"/></strong>
 
                                         <h:outputText style=" position: absolute; left: 360px; top: 195px; width: 150px;" value="#{msg['textoreportesdenomina']}"/>
 
@@ -465,7 +465,7 @@
                                 <!--<em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>-->
 
                                 <!--<h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>-->
-                                <h:outputText style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
+                                <!-- <h:outputText style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/> -->
 
                                 <p:dialog id="confirmarLiquidacion" header="#{msg['atencion']}" widgetVar="confirmarLiquidacion"  resizable="false" draggable="false" modal="true" height="120" width="420px"  closable="false">  
                                     <h:graphicImage value="Imagenes/alerta.jpg" width="100" height="80" style="position: absolute; left: 10px; top: 10px;"  />
@@ -492,7 +492,7 @@
 
                             <p:tab title="#{msg['integracion']}" id="Integracion">  
 
-                                <h:outputText style="position: absolute;  font-weight: bold; font-size: 11px; left: 343px; top: -27px; width: 500px; text-align: right; color: #000000; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.7);" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta']} #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
+                                <!-- <h:outputText style="position: absolute;  font-weight: bold; font-size: 11px; left: 343px; top: -27px; width: 500px; text-align: right; color: #000000; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.7);" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta']} #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/> -->
 
 
                                 <fieldset style="width: 390px; height: 397px; position: absolute; top: 60px; border-radius: 10px; left: 5px;">
@@ -502,13 +502,13 @@
                                     <p:commandButton id="btnCC"  value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 115px; background-image: url(Imagenes/IntCentrocosto.gif); background-repeat: no-repeat; background-size: 100% 100%;" action="centrocosto" actionListener="#{controlBetaCentrosCostos.recibirPagina('nomina')}" />
                                     <p:commandButton id="btnTerceros" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 213px; background-image: url(Imagenes/IntInfotercero.gif); background-repeat: no-repeat; background-size: 100% 100%;" action="tercero" actionListener="#{controlTercero.recibirPaginaEntrante('nomina')}"/>
                                     <p:commandButton id="btnRepCont" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 310px; background-image: url(Imagenes/reportesboton.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="ReporteContabilidad" actionListener="#{controlNReporteContabilidad.iniciarPagina()}"/>
-                                    <h:outputText value="#{msg['plandecuentaspuc']}" style="width: 199px; height: 12px; position: absolute; left: 110px; top: 18px; color:blue;  font-weight: bold" />
+                                    <h:outputText value="#{msg['plandecuentaspuc']}" style="width: 199px; height: 12px; position: absolute; left: 110px; top: 18px; color:#14388B;  font-weight: bold" />
                                     <h:outputText value="#{msg['textoplandecuentaspuc']}" style="width: 280px; height: 35px; position: absolute; left: 110px; top: 35px;  text-align: justify" />                            
-                                    <h:outputText value="#{msg['centrodecostos']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 120px; color: blue;  font-weight: bold" />                            
+                                    <h:outputText value="#{msg['centrodecostos']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 120px; color: #14388B;  font-weight: bold" />                            
                                     <h:outputText value="#{msg['textocentrodecostos']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 140px;  text-align: justify" />
-                                    <h:outputText value="#{msg['informaciondecadatercero']}" style=" height: 12px; position: absolute; left: 110px; top: 220px; color: blue;  font-weight: bold" />
+                                    <h:outputText value="#{msg['informaciondecadatercero']}" style=" height: 12px; position: absolute; left: 110px; top: 220px; color: #14388B;  font-weight: bold" />
                                     <h:outputText value="#{msg['textoinformaciondecadatercero']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 240px;  text-align: justify" />
-                                    <h:outputText value="#{msg['reportescontables']}" style="height: 12px; position: absolute; left: 110px; top: 310px; color: blue;  font-weight: bold" />                    
+                                    <h:outputText value="#{msg['reportescontables']}" style="height: 12px; position: absolute; left: 110px; top: 310px; color: #14388B;  font-weight: bold" />                    
                                     <h:outputText value="#{msg['textoreportescontables']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 330px;  text-align: justify"/>
                                 </fieldset>
 
@@ -519,19 +519,19 @@
                                     <p:commandButton id="btnPresup" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 115px; background-image: url(Imagenes/IntPresupuesto.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
                                     <p:commandButton id="btnTersoreria" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 213px; background-image: url(Imagenes/IntTesoreria.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="ReporteBanco" actionListener="#{controlReportesBancos.iniciarPagina}"/>
                                     <p:commandButton id="btnContabi" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 310px; background-image: url(Imagenes/IntContabilidad.gif); background-repeat: no-repeat; background-size: 100% 100%; " onclick="confirmarProcesoInterfaceContableTotal.show()"/>
-                                    <h:outputText value="#{msg['integracionconpila']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 15px; color: blue;  font-weight: bold" />
+                                    <h:outputText value="#{msg['integracionconpila']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 15px; color: #14388B;  font-weight: bold" />
                                     <h:outputText value="#{msg['textointegracionconpila']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 32px;  text-align: justify" />
-                                    <h:outputText value="#{msg['integracionconpresupuesto']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 120px; color: blue;  font-weight: bold"/>
+                                    <h:outputText value="#{msg['integracionconpresupuesto']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 120px; color: #14388B;  font-weight: bold"/>
                                     <h:outputText value="#{msg['textointegracionconpresupuesto']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 140px;  text-align: justify" />
-                                    <h:outputText value="#{msg['integracioncontesoreria']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 220px; color: blue;  font-weight: bold" />                
+                                    <h:outputText value="#{msg['integracioncontesoreria']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 220px; color: #14388B;  font-weight: bold" />                
                                     <h:outputText value="#{msg['textointegracioncontesoreria']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 240px;  text-align: justify" />
-                                    <h:outputText value="#{msg['integracionconcontabilidad']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 310px; color: blue;  font-weight: bold" />
+                                    <h:outputText value="#{msg['integracionconcontabilidad']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 310px; color: #14388B;  font-weight: bold" />
                                     <h:outputText value="#{msg['textointegracionconcontabilidad']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 330px;  text-align: justify" />
                                 </fieldset>
 
                                 <!--<em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>-->
                                 <!--<h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>-->
-                                <h:outputText style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
+                                <!-- <h:outputText style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/> -->
 
                                 <p:dialog id="confirmarProcesoInterfaceContableTotal" header="#{msg['atencion']}" widgetVar="confirmarProcesoInterfaceContableTotal"  resizable="false" draggable="false" modal="true" height="100" width="420px"  closable="false">  
                                     <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 10px; top: 15px;"  />
@@ -545,7 +545,7 @@
 
                             <p:tab title="#{msg['gerencial']}" id="Gerencial" > 
 
-                                <h:outputText style="position: absolute;  font-weight: bold; font-size: 11px; left: 343px; top: -27px; width: 500px; text-align: right; color: #000000; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.7);" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta']} #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
+                                <!-- <h:outputText style="position: absolute;  font-weight: bold; font-size: 11px; left: 343px; top: -27px; width: 500px; text-align: right; color: #000000; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.7);" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta']} #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/> -->
 
                                 <fieldset style="position:absolute; width: 790px; height: 393px; border-radius: 10px; top: 60px;">
                                     <h:outputText value="#{msg['herramientasgerenciales']}" styleClass="outputTextFielset" />
@@ -554,40 +554,40 @@
                                     <p:commandButton id="btnEstrucOrgan" value=" " style="position: absolute; width: 100px; height: 100px; left: 265px; top: 15px; background-image: url(Imagenes/GereEstructuraOrgan.gif); background-repeat: no-repeat; background-size: 100% 100%;" action="estructura" actionListener="#{controlEstructura.recibirPaginaEntrante('nomina')}"/>
                                     <p:commandButton id="btnSaludOcu" value=" " style="position: absolute; width: 100px; height: 100px; left: 450px; top: 15px; background-image: url(Imagenes/GereSaludOcupacion.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="gersaludocupacional"  />
                                     <p:commandButton id="btnConcepJuridicos" value=" " style="position: absolute; width: 100px; height: 100px; left: 630px; top: 15px; background-image: url(Imagenes/GereNormativo.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="conceptojuridico" />
-                                    <h:outputText style="width:150px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 55px; top:117px; text-align:center" value="#{msg['generadordereportes']}"/>
-                                    <h:outputText style="width:160px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 235px; top:117px; text-align:center" value="#{msg['estructuraorganizacional']}"/>
-                                    <h:outputText style="width:150px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 424px; top:117px; text-align:center" value="#{msg['saludocupacional']}"/>
-                                    <h:outputText style="width:250px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 560px; top:117px; text-align:center" value="#{msg['conceptosjuridicos']}"/>
+                                    <h:outputText style="width:150px; height:12px ;position:absolute ;color: #14388B;  font-weight: bold; left: 55px; top:117px; text-align:center" value="#{msg['generadordereportes']}"/>
+                                    <h:outputText style="width:160px; height:12px ;position:absolute ;color: #14388B;  font-weight: bold; left: 235px; top:117px; text-align:center" value="#{msg['estructuraorganizacional']}"/>
+                                    <h:outputText style="width:150px; height:12px ;position:absolute ;color: #14388B;  font-weight: bold; left: 424px; top:117px; text-align:center" value="#{msg['saludocupacional']}"/>
+                                    <h:outputText style="width:250px; height:12px ;position:absolute ;color: #14388B;  font-weight: bold; left: 560px; top:117px; text-align:center" value="#{msg['conceptosjuridicos']}"/>
                                     <hr style="width:785px; top:133.3px; position:absolute; height:0px" />
 
                                     <p:commandButton id="btnAnalisisCargos" value=" " style="position: absolute; width: 100px; height: 100px; left: 80px; top: 150px; background-image: url(Imagenes/GereAnalisisCargos.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="analisisCargos" actionListener="#{controlCargo.inicializarPagina('nominaf')}"/>
                                     <p:commandButton id="btnGPlanGestion" value=" " style="position: absolute; width: 100px; height: 100px; left: 265px; top: 150px; background-image: url(Imagenes/GerePlanGestion.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
                                     <p:commandButton id="btnEvaluacionComp" value=" " style="position: absolute; width: 100px; height: 100px; left: 450px; top: 150px; background-image: url(Imagenes/GereEvaluacionComp.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
                                     <p:commandButton id="btnEvaluacionDesemp" value=" " style="position: absolute; width: 100px; height: 100px; left: 630px; top: 150px; background-image: url(Imagenes/GereEvalDesempenho.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
-                                    <h:outputText style="width:150px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 55px; top:252px; text-align:center" value="#{msg['analisisdecargos']}"/>
-                                    <h:outputText style="width:150px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 240px; top:252px; text-align:center" value="#{msg['plandegestion']}"/>
-                                    <h:outputText style="width:200px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 400px; top:252px; text-align:center" value="#{msg['evaluacioncompetencias']}"/>
-                                    <h:outputText style="width:150px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 606px; top:252px; text-align:center" value="#{msg['evaluaciondesempeño']}"/>
+                                    <h:outputText style="width:150px; height:12px ;position:absolute ;color: #14388B;  font-weight: bold; left: 55px; top:252px; text-align:center" value="#{msg['analisisdecargos']}"/>
+                                    <h:outputText style="width:150px; height:12px ;position:absolute ;color: #14388B;  font-weight: bold; left: 240px; top:252px; text-align:center" value="#{msg['plandegestion']}"/>
+                                    <h:outputText style="width:200px; height:12px ;position:absolute ;color: #14388B;  font-weight: bold; left: 400px; top:252px; text-align:center" value="#{msg['evaluacioncompetencias']}"/>
+                                    <h:outputText style="width:150px; height:12px ;position:absolute ;color: #14388B;  font-weight: bold; left: 606px; top:252px; text-align:center" value="#{msg['evaluaciondesempeño']}"/>
                                     <hr style="width:785px; top:266.6px; position:absolute; height:0px" />
 
                                     <p:commandButton id="btnEvaluacionSeleccion" value=" " style="position: absolute; width: 100px; height: 100px; left: 80px; top: 281px; background-image: url(Imagenes/GereEvalSeleccion.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
                                     <p:commandButton id="btnCapacitacion" value=" " style="position: absolute; width: 100px; height: 100px; left: 265px; top: 281px; background-image: url(Imagenes/GereCapacitacion.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="menucapacitacion" />
                                     <p:commandButton id="btnBienestar" value=" " style="position: absolute; width: 100px; height: 100px; left: 450px; top: 281px; background-image: url(Imagenes/GereBienestar.gif); background-repeat: no-repeat; background-size: 100% 100%;" action="bienestar" />
                                     <p:commandButton id="btnProyecciones" value=" " style="position: absolute; width: 100px; height: 100px; left: 630px; top: 281px; background-image: url(Imagenes/GereProyeccion1.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="liquidarproyeccion"   />
-                                    <h:outputText style="width:150px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 54px; top:383px; text-align:center" value="#{msg['evaluacionseleccion']}"/>
-                                    <h:outputText style="width:150px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 240px; top:383px; text-align:center" value="#{msg['capacitacion']}"/>
-                                    <h:outputText style="width:150px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 425px; top:383px; text-align:center" value="#{msg['bienestar']}"/>
-                                    <h:outputText style="width:150px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 605px; top:383px; text-align:center" value="#{msg['proyecciones']}"/>
+                                    <h:outputText style="width:150px; height:12px ;position:absolute ;color: #14388B;  font-weight: bold; left: 54px; top:383px; text-align:center" value="#{msg['evaluacionseleccion']}"/>
+                                    <h:outputText style="width:150px; height:12px ;position:absolute ;color: #14388B;  font-weight: bold; left: 240px; top:383px; text-align:center" value="#{msg['capacitacion']}"/>
+                                    <h:outputText style="width:150px; height:12px ;position:absolute ;color: #14388B;  font-weight: bold; left: 425px; top:383px; text-align:center" value="#{msg['bienestar']}"/>
+                                    <h:outputText style="width:150px; height:12px ;position:absolute ;color: #14388B;  font-weight: bold; left: 605px; top:383px; text-align:center" value="#{msg['proyecciones']}"/>
                                 </fieldset>
 
                                 <!--<em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>-->
                                 <!--<h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>-->
-                                <h:outputText style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
+                                <!-- <h:outputText style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/> -->
                             </p:tab>
 
                             <p:tab title="#{msg['designer']}" id="Designer">
 
-                                <h:outputText style="position: absolute;  font-weight: bold; font-size: 11px; left: 343px; top: -27px; width: 500px; text-align: right; color: #000000; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.7);" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta'] } #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
+                                <!-- <h:outputText style="position: absolute;  font-weight: bold; font-size: 11px; left: 343px; top: -27px; width: 500px; text-align: right; color: #000000; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.7);" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta'] } #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/> -->
 
                                 <h:commandLink  style="position: absolute; left: 805px; top: 65px">  
                                     <p:graphicImage value="Imagenes/excel.png"  width="30" height="30"/>  
@@ -682,7 +682,7 @@
 
                                 <!--<em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>-->
                                 <!--<h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>-->
-                                <h:outputText style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
+                                <!-- <h:outputText style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/> -->
                             </p:tab>
                         </p:tabView> 
                         <p:remoteCommand name="dirigirUsuario" actionListener="#{controlUsuarios.recibirPaginaEntrante('nomina')}" action="usuario" process="@this"/>
