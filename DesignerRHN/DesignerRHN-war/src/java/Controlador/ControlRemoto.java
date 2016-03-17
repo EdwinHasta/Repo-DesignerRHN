@@ -1,13 +1,14 @@
 package Controlador;
 
 import Administrar.AdministrarCarpetaPersonal;
+import Banner.BannerInicioRed;
 import Entidades.*;
 import InterfaceAdministrar.*;
 /*import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;*/
+ import java.io.FileOutputStream;
+ import java.io.IOException;
+ import java.io.InputStream;
+ import java.io.OutputStream;*/
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -16,6 +17,7 @@ import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -127,9 +129,10 @@ public class ControlRemoto implements Serializable {
     private int totalRegistros;
     private String informacionTiposTrabajadores;
     private final String extension;
+    private List<BannerInicioRed> banner;
 
     public ControlRemoto() {
-        extension=".png";
+        extension = ".png";
         accion = null;
         tipoPersonal = "activos";
         tipo = "ACTIVO";
@@ -153,7 +156,7 @@ public class ControlRemoto implements Serializable {
         //vwActualesTiposTrabajadoresesLista.add(vwActualesTiposTrabajadores);
         administrarCarpetaPersonal = new AdministrarCarpetaPersonal();
         busquedaRapida = null;
-        Imagen = "personal1"+extension;
+        Imagen = "personal1" + extension;
         styleActivos = "ui-state-highlight";
         acumulado = false;
         novedad = false;
@@ -184,6 +187,7 @@ public class ControlRemoto implements Serializable {
         filtrosActivos = false;
         posicion = 0;
         totalRegistros = -1;
+        banner = new ArrayList<BannerInicioRed>();
     }
 
     @PostConstruct
@@ -196,6 +200,7 @@ public class ControlRemoto implements Serializable {
             primerTipoTrabajador();
             totalRegistros = administrarCarpetaPersonal.obtenerTotalRegistrosTipoTrabajador(tipo);
             actualizarInformacionTipoTrabajador();
+            llenarBannerDefault();
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
@@ -236,7 +241,7 @@ public class ControlRemoto implements Serializable {
             vwActualesTiposContratos = null;
             fechaActualesTiposContratos = null;
         }
-        
+
         try {
             vwActualesNormasEmpleados = administrarCarpetaPersonal.consultarActualNormaLaboralEmpleado(secuencia);
         } catch (Exception e) {
@@ -358,7 +363,7 @@ public class ControlRemoto implements Serializable {
             tipo = tipoBk;
         } else {
             backup = null;
-            Imagen = "personal1"+extension;
+            Imagen = "personal1" + extension;
             styleActivos = "ui-state-highlight";
             stylePensionados = "";
             styleRetirados = "";
@@ -405,7 +410,7 @@ public class ControlRemoto implements Serializable {
             tipo = tipoBk;
         } else {
             backup = null;
-            Imagen = "personal2"+extension;
+            Imagen = "personal2" + extension;
             stylePensionados = "ui-state-highlight";
             styleActivos = "";
             styleRetirados = "";
@@ -452,7 +457,7 @@ public class ControlRemoto implements Serializable {
             tipo = tipoBk;
         } else {
             backup = null;
-            Imagen = "personal3"+extension;
+            Imagen = "personal3" + extension;
             styleRetirados = "ui-state-highlight";
             stylePensionados = "";
             styleActivos = "";
@@ -499,7 +504,7 @@ public class ControlRemoto implements Serializable {
             tipo = tipoBk;
         } else {
             backup = null;
-            Imagen = "personal4"+extension;
+            Imagen = "personal4" + extension;
             styleAspirantes = "ui-state-highlight";
             stylePensionados = "";
             styleActivos = "";
@@ -592,7 +597,7 @@ public class ControlRemoto implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         VWActualesTiposTrabajadores empleadoSeleccionado = administrarCarpetaPersonal.consultarActualTipoTrabajadorEmpleado(emplSeleccionado.getRfEmpleado());
         if (empleadoSeleccionado.getTipoTrabajador().getTipo().equalsIgnoreCase("Activo")) {
-            Imagen = "personal1"+extension;
+            Imagen = "personal1" + extension;
             styleActivos = "ui-state-highlight";
             stylePensionados = "";
             styleRetirados = "";
@@ -608,7 +613,7 @@ public class ControlRemoto implements Serializable {
             tipo = "ACTIVO";
         }
         if (empleadoSeleccionado.getTipoTrabajador().getTipo().equalsIgnoreCase("Pensionado")) {
-            Imagen = "personal2"+extension;
+            Imagen = "personal2" + extension;
             stylePensionados = "ui-state-highlight";
             styleActivos = "";
             styleRetirados = "";
@@ -624,7 +629,7 @@ public class ControlRemoto implements Serializable {
             tipo = "PENSIONADO";
         }
         if (empleadoSeleccionado.getTipoTrabajador().getTipo().equalsIgnoreCase("Retirado")) {
-            Imagen = "personal3"+extension;
+            Imagen = "personal3" + extension;
             styleRetirados = "ui-state-highlight";
             stylePensionados = "";
             styleActivos = "";
@@ -640,7 +645,7 @@ public class ControlRemoto implements Serializable {
             tipo = "RETIRADO";
         }
         if (empleadoSeleccionado.getTipoTrabajador().getTipo().equalsIgnoreCase("Disponible")) {
-            Imagen = "personal4"+extension;
+            Imagen = "personal4" + extension;
             styleAspirantes = "ui-state-highlight";
             styleRetirados = "";
             stylePensionados = "";
@@ -735,35 +740,36 @@ public class ControlRemoto implements Serializable {
         actualizarInformacionTipoTrabajador();
         actualizarNavegacion();
     }
-/*
-    public void transformarArchivo(long size, InputStream in) {
-        try {
-            //extencion = fileName.split("[.]")[1];
-            //System.out.println(extencion);
+    /*
+     public void transformarArchivo(long size, InputStream in) {
+     try {
+     //extencion = fileName.split("[.]")[1];
+     //System.out.println(extencion);
 
-            OutputStream out = new FileOutputStream(new File(destino + identificacion + ".jpg"));
-            int reader = 0;
-            byte[] bytes = new byte[(int) size];
-            while ((reader = in.read(bytes)) != -1) {
-                out.write(bytes, 0, reader);
-            }
-            in.close();
-            out.flush();
-            out.close();
-            administrarCarpetaPersonal.actualizarFotoPersona(identificacion);
-            //RequestContext.getCurrentInstance().update("formEncrip:foto");
-        } catch (Exception e) {
-            //System.out.println("Pailander");
-        }
-    }
+     OutputStream out = new FileOutputStream(new File(destino + identificacion + ".jpg"));
+     int reader = 0;
+     byte[] bytes = new byte[(int) size];
+     while ((reader = in.read(bytes)) != -1) {
+     out.write(bytes, 0, reader);
+     }
+     in.close();
+     out.flush();
+     out.close();
+     administrarCarpetaPersonal.actualizarFotoPersona(identificacion);
+     //RequestContext.getCurrentInstance().update("formEncrip:foto");
+     } catch (Exception e) {
+     //System.out.println("Pailander");
+     }
+     }
 
-    public void handleFileUpload(FileUploadEvent event) throws IOException {
-        transformarArchivo(event.getFile().getSize(), event.getFile().getInputstream());
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("Cargar.hide()");
-        context.execute("Exito.show()");
-    }
-*/
+     public void handleFileUpload(FileUploadEvent event) throws IOException {
+     transformarArchivo(event.getFile().getSize(), event.getFile().getInputstream());
+     RequestContext context = RequestContext.getCurrentInstance();
+     context.execute("Cargar.hide()");
+     context.execute("Exito.show()");
+     }
+     */
+
     public void probar(String nombreTab) {
 
         //nombreTabla = nombreTab;
@@ -992,9 +998,9 @@ public class ControlRemoto implements Serializable {
         context.update("form:tabMenu:contenedor");
     }
 
-    public void validarEstadoNominaF(){
+    public void validarEstadoNominaF() {
         int totalActual = administrarCarpetaPersonal.obtenerTotalRegistrosTipoTrabajador(tipo);
-        if(totalActual != totalRegistros){
+        if (totalActual != totalRegistros) {
             posicion = 0;
             totalRegistros = totalActual;
             primerTipoTrabajador();
@@ -1003,9 +1009,9 @@ public class ControlRemoto implements Serializable {
             actualizarInformacionTipoTrabajador();
         }
     }
-    
+
     public void actualizarInformacionTipoTrabajador() {
-        informacionTiposTrabajadores = "Reg. "+(posicion + 1) + " de " + totalRegistros;
+        informacionTiposTrabajadores = "Reg. " + (posicion + 1) + " de " + totalRegistros;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:tabMenu:informacionTT");
     }
@@ -1021,6 +1027,15 @@ public class ControlRemoto implements Serializable {
     public VWActualesTiposTrabajadores requerirTipoTrabajador(int posicion) {
         vwActualesTiposTrabajadoresPosicion = administrarCarpetaPersonal.consultarEmpleadosTipoTrabajadorPosicion(tipo, posicion);
         return vwActualesTiposTrabajadoresPosicion;
+    }
+
+    public void llenarBannerDefault() {
+        banner.clear();
+        //banner.add(new BannerInicioRed("Imagenes/sinPublicidad.JPG", ""));
+        banner.add(new BannerInicioRed("http://www.nomina.com.co/clientes/img/sponsors/tuscany.png", "www.nomina.com.co"));
+        banner.add(new BannerInicioRed("http://www.nomina.com.co/clientes/img/sponsors/VISI-SALUD.png", ""));
+        banner.add(new BannerInicioRed("https://www.nomina.com.co/clientes/img/sponsors/titan-dol.png", ""));
+        banner.add(new BannerInicioRed("https://www.nomina.com.co/clientes/img/sponsors/ni%C3%B1ez.png", ""));
     }
 
     public List<Tablas> getListTablas() {
@@ -1636,4 +1651,13 @@ public class ControlRemoto implements Serializable {
     public String getInfoRegistroBusquedaRapida() {
         return infoRegistroBusquedaRapida;
     }
+
+    public List<BannerInicioRed> getBanner() {
+        return banner;
+    }
+
+    public void setBanner(List<BannerInicioRed> banner) {
+        this.banner = banner;
+    }
+
 }

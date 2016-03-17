@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.annotation.PostConstruct;
+//import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -68,13 +68,14 @@ public class ControlInicioRed implements Serializable {
         actualizaciones.add("form:baseDatos");
         actualizaciones.add("form:bannerConsultas");
         banner = new ArrayList<BannerInicioRed>();
-        banner.add(new BannerInicioRed("9091310.png", "http://www.nomina.com.co/"));
-        banner.add(new BannerInicioRed("primefaces.png", ""));
-        banner.add(new BannerInicioRed("Java.jpg", ""));
-        banner.add(new BannerInicioRed("eclipseLink.jpeg", ""));
-        banner.add(new BannerInicioRed("glassfish_logo.png", ""));
-        banner.add(new BannerInicioRed("java.png", ""));
-        banner.add(new BannerInicioRed("Jsf-logo.png", ""));
+        //banner.add(new BannerInicioRed("9091310.png", "http://www.nomina.com.co/"));
+        //banner.add(new BannerInicioRed("primefaces.png", ""));
+        //banner.add(new BannerInicioRed("Java.jpg", ""));
+        //banner.add(new BannerInicioRed("eclipseLink.jpeg", ""));
+        //banner.add(new BannerInicioRed("glassfish_logo.png", ""));
+        //banner.add(new BannerInicioRed("java.png", ""));
+        //banner.add(new BannerInicioRed("Jsf-logo.png", ""));
+        llenarBannerDefaul();
         //FECHA ACTUAL
         formatoFechaActual = new SimpleDateFormat("EEEEE dd 'de' MMMMM 'de' yyyy");
         formatoAño = new SimpleDateFormat("yyyy");
@@ -116,7 +117,7 @@ public class ControlInicioRed implements Serializable {
                                             if (listaConsultas.get(j).getNombreimagen() != null) {
                                                 banner.add(new BannerInicioRed(listaConsultas.get(j).getNombreimagen(), ""));
                                             } else {
-                                                banner.add(new BannerInicioRed("SinImagen.JPG", ""));
+                                                banner.add(new BannerInicioRed("publicidad/SinImagen.png", ""));
                                             }
                                         }
                                     } else {
@@ -204,13 +205,13 @@ public class ControlInicioRed implements Serializable {
 
     public void llenarBannerDefaul() {
         banner.clear();
-        banner.add(new BannerInicioRed("9091310.png", "http://www.nomina.com.co/"));
-        banner.add(new BannerInicioRed("primefaces.png", ""));
-        banner.add(new BannerInicioRed("Java.jpg", ""));
-        banner.add(new BannerInicioRed("eclipseLink.jpeg", ""));
-        banner.add(new BannerInicioRed("glassfish_logo.png", ""));
-        banner.add(new BannerInicioRed("java.png", ""));
-        banner.add(new BannerInicioRed("Jsf-logo.png", ""));
+        banner.add(new BannerInicioRed("publicidad/publicidad01.png", "https://www.oracle.com/"));
+        banner.add(new BannerInicioRed("publicidad/publicidad02.png", "http://primefaces.org"));
+        banner.add(new BannerInicioRed("publicidad/publicidad03.jpg", "https://www.java.com/"));
+        banner.add(new BannerInicioRed("publicidad/publicidad04.jpeg", "http://www.eclipse.org/eclipselink/"));
+        banner.add(new BannerInicioRed("publicidad/publicidad05.png", "https://glassfish.java.net/"));
+        banner.add(new BannerInicioRed("publicidad/publicidad06.png", "https://www.java.com/"));
+        banner.add(new BannerInicioRed("publicidad/publicidad07.png", "https://javaserverfaces.java.net/"));
     }
 
     public void sessionEntradaDefault() {
