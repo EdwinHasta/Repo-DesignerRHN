@@ -303,10 +303,10 @@
                                 </p:column>
 
                             </p:dataTable>
-                            <h:outputText value="Total Dias Vacaciones Disfrutadas:" style=" position: absolute; top: 205px;left:136px"/>
-                            <h:outputText value="#{controlNovedadesVacaciones.diasTotales}" id="diasTotales" style=" position: absolute; top:205px ;left:345px;border-radius: 0px; width: 55px" /> 
-                            <h:outputText value="Total Dias Aplazados:" style=" position: absolute; top: 205px;left:655px"/>
-                            <h:outputText value="#{controlNovedadesVacaciones.diasAplazadosTotal}" id="diasAplazados" style=" position: absolute; top:205px ;left:810px;border-radius: 0px; width: 50px" /> 
+                            <h:outputText value="Total Dias Vacaciones Disfrutadas:" style=" position: relative; top: 15px; left:120px"/>
+                            <h:outputText value="#{controlNovedadesVacaciones.diasTotales}" id="diasTotales" style=" position: relative; top:15px; left:155px;border-radius: 0px; width: 55px" /> 
+                            <h:outputText value="Total Dias Aplazados:" style=" position: relative; top: 15px; left:330px"/>
+                            <h:outputText value="#{controlNovedadesVacaciones.diasAplazadosTotal}" id="diasAplazados" style=" position: relative; top: 15px ; left:360px; border-radius: 0px; width: 50px" /> 
                         </fieldset>
 
                         <p:commandButton style="position: absolute; left: 695px; top: 474px;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" disabled="#{controlNovedadesVacaciones.guardado}" onclick="confirmarGuardar.show();" update=":form:datosNovedadesEmpleado" process="@this" />

@@ -24,7 +24,7 @@
                     <p:panel id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">  
 
                         <!-- TOOLBAR--> 
-                        <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 30px; left: 12px; height: 24px;">  
+                        <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 37px; left: 12px; height: 24px;">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " 
@@ -80,8 +80,8 @@
                             <legend style="font-size: 14px; color: #14388B"><strong>#{msg['empleados']}</strong></legend>
 
                             <p:dataTable id="datosEmpleados" var="empleado" value="#{controlNovedadesDefinitivas.listaEmpleados}"
-                                         rowKey="#{empleado.secuencia}" rowIndexVar="indice" style=" border: 1px;width: 820px"                        
-                                         scrollable="true" scrollHeight="135" scrollWidth="840" filteredValue="#{controlNovedadesDefinitivas.filtradosListaEmpleadosNovedad}" 
+                                         rowKey="#{empleado.secuencia}" rowIndexVar="indice" style=" border: 1px; width: 810px"                        
+                                         scrollable="true" scrollHeight="135" scrollWidth="830" filteredValue="#{controlNovedadesDefinitivas.filtradosListaEmpleadosNovedad}" 
                                          emptyMessage="#{msg['vacio']}" selection="#{controlNovedadesDefinitivas.empleadoSeleccionado}"
                                          editable="true" editMode="cell" selectionMode="single" >
 
@@ -107,8 +107,8 @@
                                              actionListener="#{controlNovedadesDefinitivas.mostrarTodos()}" value="#{msg['mostrar']}" process="@this"/>
                         </fieldset>
 
-                        <p:panel id="formularioNovedades" style="position: absolute; width: 860px; border: 5px; border-color: red;">
-                            <fieldset style="position: absolute; top: 274px; left: -5px;height: 142px; width: 830px; border-radius: 10px; text-align: left">
+                        <p:panel id="formularioNovedades" style="position: absolute; left: 5px;  top: 2px; background-color: transparent; border-color: transparent" >
+                            <fieldset style="position: absolute; top: 310px; left: 5px;height: 142px; width: 830px; border-radius: 10px; text-align: left">
                                 <legend style="font-size: 14px; color: #14388B"><strong>#{msg['titulo']}</strong></legend>
 
                                 <h:outputText id="novedadesRangos" style="left: 300px; position: absolute; color: red" value="- No hay mas novedades -" rendered="#{controlNovedadesDefinitivas.activarNoRango}"/>
