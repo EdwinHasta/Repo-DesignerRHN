@@ -5,6 +5,8 @@
 package InterfaceAdministrar;
 
 import Entidades.Empleados;
+import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,4 +21,5 @@ public interface AdministrarNovedadesVacacionesInterface {
      */
     public void obtenerConexion(String idSesion);
     public List<Empleados> empleadosVacaciones();
+    public Date obtenerFechaContratacionEmpleado(BigInteger secEmpleado); 
 }

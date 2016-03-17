@@ -143,7 +143,6 @@ public class PersistenciaVigenciasTiposContratos implements PersistenciaVigencia
             return fecha;
         }catch(Exception e){
             System.out.println("Error fechaFinalContratacionVacaciones PersistenciaTiposContratos : "+e.toString());
-
             return null;
         }
     }

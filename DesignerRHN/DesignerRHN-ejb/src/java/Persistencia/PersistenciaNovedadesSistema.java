@@ -117,6 +117,7 @@ public class PersistenciaNovedadesSistema implements PersistenciaNovedadesSistem
         }
     }
 
+    @Override
     public String buscarEstadoVacaciones(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
             em.clear();

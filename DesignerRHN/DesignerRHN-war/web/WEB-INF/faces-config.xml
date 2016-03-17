@@ -5517,5 +5517,22 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/novedad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>definitivas</from-outcome>
+            <to-view-id>/NovedadDefinitivas.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/NovedadDefinitivas.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedad</from-outcome>
+            <to-view-id>/novedad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
     
 </faces-config>

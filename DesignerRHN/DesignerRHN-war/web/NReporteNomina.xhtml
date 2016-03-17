@@ -19,61 +19,61 @@
 
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="  position: absolute; width: 874px; height: 510px; text-align: left"> 
 
-                        <p:toolbar style="position: absolute; top: 30px; left: 10px;">  
+                        <p:toolbar styleClass="cssToolbar" style="position: absolute; top: 30px; left: 10px;">  
                             <p:toolbarGroup align="left"> 
-                                <p:commandButton style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px;" 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px;" 
                                                  id="guardarRapido" value="" actionListener="#{controlNReporteNomina.guardarCambios()}" process="@this" />
                                 <p:tooltip style="font-size: 12px" for="guardarRapido" value="#{msg['guardar']}" />
 
-                                <p:commandButton style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" 
                                                  id="editar" value="" process="@this" actionListener="#{controlNReporteNomina.editarCelda()}"/>
                                 <p:tooltip style="font-size: 12px" for="editar" value="#{msg['editar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/> 
 
-                                <p:commandButton style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" 
                                                  id="listaValores" value="" process="@this" actionListener="#{controlNReporteNomina.listaValoresBoton()}" />
                                 <p:tooltip style="font-size: 12px" for="listaValores" value="#{msg['lista']}" />
 
-                                <p:commandButton style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" 
                                                  id="filtrar" value="" actionListener="#{controlNReporteNomina.activarCtrlF11()}" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="filtrar" value="#{msg['filtrar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/> 
 
-                                <p:commandButton id="exportarXLS" disabled="true" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" />
+                                <p:commandButton id="exportarXLS" disabled="true" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" />
                                 <p:tooltip style="font-size: 12px" for="exportarXLS" value="#{msg['xls']}" />
 
-                                <p:commandButton id="exportarXML" disabled="true" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" >
+                                <p:commandButton id="exportarXML" disabled="true" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" >
                                 </p:commandButton> 
                                 <p:tooltip style="font-size: 12px" for="exportarXML" value="#{msg['xmle']}" />
 
-                                <p:commandButton id="exportarPDF" disabled="true" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" />
+                                <p:commandButton id="exportarPDF" disabled="true" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" />
                                 <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator style="position: relative; top: -9px"/> 
 
-                                <p:commandButton id="insertar" value="" disabled="true" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" /> 
+                                <p:commandButton id="insertar" value="" disabled="true" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" /> 
                                 <p:tooltip style="font-size: 12px" for="insertar" value="#{msg['nuevo']}" />
 
-                                <p:commandButton id="eliminar" value="" disabled="true" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px"  />  
+                                <p:commandButton id="eliminar" value="" disabled="true" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px"  />  
                                 <p:tooltip style="font-size: 12px" for="eliminar" value="#{msg['eliminar']}" />
 
-                                <p:commandButton id="duplicar" value="" disabled="true" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" />  
+                                <p:commandButton id="duplicar" value="" disabled="true" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" />  
                                 <p:tooltip style="font-size: 12px" for="duplicar" value="#{msg['duplicar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  
                                                  id="rastro" value="" disabled="true" process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}"/>
 
                                 <p:separator style="position: relative; top: -9px"/> 
 
-                                <p:commandButton style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
                                                  id="refrescar" value="" actionListener="#{controlNReporteNomina.cancelarModificaciones()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
-                                <p:commandButton style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
                                                  id="salir" value="" actionListener="#{controlNReporteNomina.cancelarYSalir()}" action="nomina" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
 
@@ -97,22 +97,22 @@
                         </p:dialog>
 
 
-                        <fieldset style="position: absolute; left: 10px; top: 230px; height: 235px;width: 115px; border-radius: 10px;">
-                            <h:outputText id="btn" style="position: absolute; left: 10px; top: 10px; background-image: url(Imagenes/reporte.jpg); width:115px ;height:210px; background-repeat: no-repeat; background-size: 100% 100%; "/>
+                        <fieldset style="position: absolute; left: 10px; top: 260px; height: 205px;width: 115px; border-radius: 10px;">
+                            <h:outputText id="btn" style="position: absolute; left: 10px; top: 10px; background-image: url(Imagenes/reporte.jpg); width:115px; height:180px; background-repeat: no-repeat; background-size: 100% 100%"/>
                         </fieldset>
 
-                        <fieldset style="position: absolute; left: 150px; top: 223px;  width: 690px; height: 243px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 150px; top: 253px; width: 690px; height: 213px; border-radius: 10px">
                             <legend style=" color: blue;text-align:left"><strong>#{msg['titulo']}</strong></legend>
 
                             <p:dataTable id="reportesNomina" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="border: 1px; width: 675px"                           
-                                         value="#{controlNReporteNomina.listaIR}" scrollable="true" scrollHeight="#{controlNReporteNomina.altoTabla}" scrollWidth="696"
+                                         value="#{controlNReporteNomina.listaIR}" scrollable="true" scrollHeight="140" scrollWidth="696"
                                          filteredValue="#{controlNReporteNomina.filtrarListInforeportesUsuario}" selectionMode="single" emptyMessage="#{msg['vacio']}"
-                                         editable="true" editMode="cell" selection="#{controlNReporteNomina.inforreporteSeleccionado}"  liveScroll="true" scrollRows="8">
+                                         editable="true" editMode="cell" selection="#{controlNReporteNomina.reporteSeleccionado}"  liveScroll="true" scrollRows="8">
 
                                 <f:event type="preRenderView" listener="#{controlNReporteNomina.recordarSeleccion()}"/>
-                                <p:ajax event="rowSelect" listener="#{controlNReporteNomina.seleccionRegistro()}" process="@this" />
+                                <p:ajax event="rowSelect" listener="#{controlNReporteNomina.seleccionRegistro(info)}" process="@this" />
                                 <p:ajax event="rowDblselect" listener="#{controlNReporteNomina.requisitosParaReporte()}" process="@this" />
-                                <p:ajax event="filter" listener="#{controlNReporteNomina.eventoFiltrar()}"/>
+                                <!--<p:ajax event="filter" listener="#/{controlNReporteNomina.eventoFiltrar()}"/>-->
 
                                 <p:column style="text-align: center" id="codigoIR" headerText="#{msg['codigo']}" width="50" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains"  filterStyle="display: none; visibility: hidden;"  >  
                                     <h:outputText value="#{info.codigo}"/>
@@ -132,7 +132,7 @@
                                                 <f:selectItem itemLabel="#{msg['xls']}" itemValue="XLS" />  
                                                 <f:selectItem itemLabel="#{msg['xlsx']}" itemValue="XLSX" />  
                                                 <f:selectItem itemLabel="#{msg['csv']}" itemValue="CSV" />
-                                                <p:ajax listener="#{controlNReporteNomina.modificacionTipoReporte(indice)}" update=":form:reportesNomina" event="change" />
+                                                <p:ajax listener="#{controlNReporteNomina.modificacionTipoReporte(info)}" update=":form:reportesNomina" event="change" />
                                             </p:selectOneMenu>
                                         </f:facet>
                                     </p:cellEditor>
@@ -148,7 +148,7 @@
                                         <p:tooltip for="hacerReporte" value="#{msg['generarReporte']}"/>
                                         <f:facet name="input">
                                             <p:inputText value="G" maxlength="1" style="background-color: blue; width: 6px; height: 6px" id="EdGenerarR">
-                                                <p:ajax event="select" process="@this" listener="#{controlNReporteNomina.generarReporte()}" oncomplete="generandoReporte.show()" />
+                                                <p:ajax event="select" process="@this" listener="#{controlNReporteNomina.generarReporte(info)}" oncomplete="generandoReporte.show()" />
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor>
@@ -159,9 +159,11 @@
 
                             </p:dataTable>
 
-                            <p:commandButton style="position: absolute; left: 585px; top: 230px; " id="MOSTRARTODOS" value="#{msg['mostrar']}"  process="@this" actionListener="#{controlNReporteNomina.mostrarTodos()}" disabled="#{controlNReporteNomina.activoMostrarTodos}" />
+                            <p:commandButton style="position: relative; left: 600px; top: 5px; " id="MOSTRARTODOS" value="#{msg['mostrar']}"  process="@this" 
+                                             actionListener="#{controlNReporteNomina.mostrarTodos()}" disabled="#{controlNReporteNomina.activoMostrarTodos}" />
                             <p:tooltip  for="MOSTRARTODOS" value="#{msg['mostrarTodos']}" />
-                            <p:commandButton style="position: absolute; left: 460px; top: 230px; " id="BUSCARREPORTE" value="#{msg['buscar']}"   process="@this" actionListener="#{controlNReporteNomina.mostrarDialogoBuscarReporte()}" disabled="#{controlNReporteNomina.activoBuscarReporte}"/>
+                            <p:commandButton style="position: relative; left: 380px; top: 5px; " id="BUSCARREPORTE" value="#{msg['buscar']}"   process="@this" 
+                                             actionListener="#{controlNReporteNomina.mostrarDialogoBuscarReporte()}" disabled="#{controlNReporteNomina.activoBuscarReporte}"/>
                             <p:tooltip  for="BUSCARREPORTE" value="#{msg['buscarReporte']}" />
                             <p:remoteCommand name="validarDescargaReporte" actionListener="#{controlNReporteNomina.validarDescargaReporte()}"/>
                         </fieldset>
@@ -178,9 +180,9 @@
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlNReporteNomina.activarCtrlF11()}" process="@this"/> 
 
                     <p:dialog header="#{msg['reporteR']}" widgetVar="ReportesDialogo" draggable="false" resizable="false" closable="false" id="ReportesDialogo"  
-                              showEffect="fade" hideEffect="fade" width="460" modal="true" >
+                              showEffect="fade" hideEffect="fade" height="370" width="470" modal="true" >
                         <p:dataTable id="lovReportesDialogo" style=" width: 430px" var="reportes" value="#{controlNReporteNomina.listValInforeportes}" rowKey="#{reportes.secuencia}"
-                                     selection="#{controlNReporteNomina.inforreporteSeleccionado}" selectionMode="single" widgetVar="lovReportesDialogo" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                     selection="#{controlNReporteNomina.reporteSeleccionadoLOV}" selectionMode="single" widgetVar="lovReportesDialogo" scrollable="true" scrollWidth="445" scrollHeight="240"
                                      filteredValue="#{controlNReporteNomina.filtrarLovInforeportes}" emptyMessage="#{msg['lovvacio']}" liveScroll="true" scrollRows="25">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteNomina.activarAceptar()}" update=":form:aceptarR"/>
                             <p:ajax event="rowDblselect" listener="#{controlNReporteNomina.actualizarSeleccionInforeporte()}"  process="@this"  />
@@ -188,33 +190,29 @@
                                 <h:outputText value="#{msg['buscarR']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovReportesDialogo.filter();" style="width:150px; position: relative; left: -5px;" />  
                             </f:facet>
-                            <p:column  filterBy="#{reportes.codigo}" width="40" filterMatchMode="contains" filterStyle="width: 30px">
+                            <p:column style="text-align: center" filterBy="#{reportes.codigo}" width="40" filterMatchMode="contains" filterStyle="width: 94%">
                                 <f:facet name="header">
                                     <h:outputText  value="#{msg['codigoR']}" />
                                 </f:facet>
                                 <h:outputText style="text-align: center" value="#{reportes.codigo}" />
                             </p:column>
 
-                            <p:column filterBy="#{reportes.nombre}" width="180"  filterMatchMode="contains" filterStyle="width: 160px">
+                            <p:column filterBy="#{reportes.nombre}" filterMatchMode="contains" filterStyle="width: 94%">
                                 <f:facet name="header">
                                     <h:outputText value="#{msg['nombreR']}" />
                                 </f:facet>
                                 <h:outputText value="#{reportes.nombre}" />
                             </p:column>
 
-                            <p:column filterBy="#{reportes.tipo}" width="40"  filterMatchMode="contains" filterStyle="width: 30px">
-                                <f:facet name="header">
-                                    <h:outputText value="#{msg['tipoR']}" />
-                                </f:facet>
-                                <h:outputText value="#{reportes.tipo}" />
-                            </p:column>
                         </p:dataTable>
 
-                        <h:outputText id="infoRegistroReportes" value="#{controlNReporteNomina.infoRegistroReportes}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-
-                        <p:commandButton id="aceptarR" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReporteNomina.aceptar}" actionListener="#{controlNReporteNomina.actualizarSeleccionInforeporte()}" process="@this" icon="ui-icon-check" />
-
-                        <p:commandButton id="atrasR" style="position: relative; left: 280px" value="#{msg['atras']}" actionListener="#{controlNReporteNomina.cancelarSeleccionInforeporte()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                        <h:outputText id="infoRegistroReportes" value="#{controlNReporteNomina.infoRegistroReportes}" 
+                                      style="position: relative; left: 20px; top: 15px; font-weight: bold"/>
+                        <p:commandButton id="aceptarR" style="position: relative; top: 15px; left: 80px" value="#{msg['aceptar']}" disabled="#{controlNReporteNomina.aceptar}" 
+                                         actionListener="#{controlNReporteNomina.actualizarSeleccionInforeporte()}" process="@this" icon="ui-icon-check"
+                                          />
+                        <p:commandButton id="atrasR" style="position: relative; top: 15px; left: 100px" value="#{msg['atras']}" 
+                                         actionListener="#{controlNReporteNomina.cancelarSeleccionInforeporte()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
 
                     </p:dialog>
 
@@ -623,72 +621,86 @@
                 </h:form>
 
                 <h:form id="formParametros" style="position: absolute; top: 7px; left: 7px">
-                    <fieldset id="parametrosInforme" style="position: absolute; left: 10px; top: 65px;  width: 830px; height: 143px; border-radius: 10px;">
+                    <fieldset id="parametrosInforme" style=" position: absolute; left: 10px; top: 65px;  width: 830px; height: 170px; border-radius: 10px;">
                         <legend style=" color: blue;text-align:left"><strong>#{msg['parametros']}</strong></legend>
 
-                        <h:outputText value="#{msg['fechadesde']}:" style="position: absolute; top: 15px; left: 50px;"/>
-                        <div id="posicionFechaDesdeParametro" style="position: absolute; top: 14px; left: 160px;">
-                            <lnk:calendar value="#{controlNReporteNomina.parametroDeInforme.fechadesde}" id="fechaDesdeParametroL" color="#{controlNReporteNomina.color}" decoration="#{controlNReporteNomina.decoracion}"  width="58" height="8">
+                        <h:outputText value="#{msg['fechadesde']}:" style="position: absolute; top: 20px; left: 40px;"/>
+                        <div id="posicionFechaDesdeParametro" style="position: absolute; top: 19px; left: 150px;">
+                            <lnk:calendar value="#{controlNReporteNomina.parametroDeInforme.fechadesde}" id="fechaDesdeParametroL" 
+                                          color="#{controlNReporteNomina.color}" decoration="#{controlNReporteNomina.decoracion}"  width="64" height="10">
                                 <p:ajax event="click" listener="#{controlNReporteNomina.posicionCelda(1)}" process="@this"/>
                                 <p:ajax event="change" listener="#{controlNReporteNomina.modificarParametroInforme()}" process="@this" update="fechaDesdeParametroL"/>
                                 <p:ajax event="dateSelect" listener="#{controlNReporteNomina.modificarParametroInforme()}" process="@this" update="fechaDesdeParametroL"/>
                             </lnk:calendar> 
                         </div>
 
-                        <h:outputText value="#{msg['empleadodesde']}:" style="position: absolute; top: 38px; left: 50px;"/>
-                        <p:inputText value="#{controlNReporteNomina.parametroDeInforme.codigoempleadodesde}" id="empleadoDesdeParametro" style="position: absolute; top: 36px; left: 160px; height: 8px; font-size: 11px; width: 90px;" onclick="select();">
+                        <h:outputText value="#{msg['empleadodesde']}:" style="position: absolute; top: 43px; left: 40px;"/>
+                        <p:inputText value="#{controlNReporteNomina.parametroDeInforme.codigoempleadodesde}" id="empleadoDesdeParametro" 
+                                     style="position: absolute; top: 41px; left: 150px; height: 10px; font-size: 11px; width: 90px;" onclick="select();">
                             <p:ajax event="click" listener="#{controlNReporteNomina.posicionCelda(2)}" process="@this"/> 
-                            <p:ajax event="change" listener="#{controlNReporteNomina.autocompletarGeneral('DESDE',controlNReporteNomina.parametroDeInforme.codigoempleadodesde)}" update="empleadoDesdeParametro"/>
+                            <p:ajax listener="#{controlNReporteNomina.autocompletarGeneral('DESDE',controlNReporteNomina.parametroDeInforme.codigoempleadodesde)}" 
+                                    event="change" update="empleadoDesdeParametro"/>
                             <p:ajax event="dblclick" listener="#{controlNReporteNomina.dialogosParametros(2)}" process="@this"/> 
                         </p:inputText>
 
-                        <h:outputText value="#{msg['estado']}:" style="position: absolute; top: 61px; left: 50px;"/>
-                        <p:selectOneMenu value="#{controlNReporteNomina.parametroDeInforme.estadosolucionnodo}" id="estadoParametro" style="position: absolute; top: 57px; left: 160px;width: 97px; text-transform: uppercase" >  
+                        <h:outputText value="#{msg['estado']}:" style="position: absolute; top: 66px; left: 40px;"/>
+                        <p:selectOneMenu value="#{controlNReporteNomina.parametroDeInforme.estadosolucionnodo}" id="estadoParametro" 
+                                         style="position: absolute; top: 63px; left: 150px; width: 100px; text-transform: uppercase" >  
                             <f:selectItem itemLabel="" itemValue="" />  
                             <f:selectItem itemLabel="#{msg['cerrado']}" itemValue="CERRADO" />  
                             <f:selectItem itemLabel="#{msg['liquidado']}" itemValue="LIQUIDADO" />  
                             <p:ajax event="change" listener="#{controlNReporteNomina.modificarParametroInforme()}" update="estadoParametro" process="@this"/>
                         </p:selectOneMenu> 
 
-                        <h:outputText value="#{msg['grupo']}:" style="position: absolute; top: 84px; left: 50px;"/>
-                        <p:inputText value="#{controlNReporteNomina.parametroDeInforme.grupo.descripcion}" id="grupoParametro" style="position: absolute; top: 84px; left: 160px; height: 8px; font-size: 11px; width: 130px;" onclick="select();">
+                        <h:outputText value="#{msg['grupo']}:" style="position: absolute; top: 89px; left: 40px;"/>
+                        <p:inputText value="#{controlNReporteNomina.parametroDeInforme.grupo.descripcion}" id="grupoParametro" 
+                                     style="position: absolute; top: 89px; left: 150px; height: 10px; font-size: 11px; width: 130px;" onclick="select();">
                             <p:ajax event="click" listener="#{controlNReporteNomina.posicionCelda(4)}" process="@this"/> 
-                            <p:ajax event="change" listener="#{controlNReporteNomina.autocompletarGeneral('GRUPO', controlNReporteNomina.parametroDeInforme.grupo.descripcion)}" update="grupoParametro" process="@this"/>
+                            <p:ajax listener="#{controlNReporteNomina.autocompletarGeneral('GRUPO', controlNReporteNomina.parametroDeInforme.grupo.descripcion)}" 
+                                    event="change"  update="grupoParametro" process="@this"/>
                             <p:ajax event="dblclick" listener="#{controlNReporteNomina.dialogosParametros(4)}" process="@this"/>
                         </p:inputText>
 
-                        <h:outputText value="#{msg['ubigeografica']}:" style="position: absolute; top: 107px; left: 50px;"/>
-                        <p:inputText value="#{controlNReporteNomina.parametroDeInforme.ubicaciongeografica.descripcion}" id="ubicacionGeograficaParametro" style="position: absolute; top: 107px; left: 160px;height: 8px; font-size: 11px; width: 258px;" onclick="select();">
+                        <h:outputText value="#{msg['ubigeografica']}:" style="position: absolute; top: 112px; left: 40px;"/>
+                        <p:inputText value="#{controlNReporteNomina.parametroDeInforme.ubicaciongeografica.descripcion}" id="ubicacionGeograficaParametro" 
+                                     style="position: absolute; top: 112px; left: 150px;height: 10px; font-size: 11px; width: 268px;" onclick="select();">
                             <p:ajax event="click" listener="#{controlNReporteNomina.posicionCelda(5)}" process="@this"/> 
-                            <p:ajax event="change" listener="#{controlNReporteNomina.autocompletarGeneral('UBIGEOGRAFICA', controlNReporteNomina.parametroDeInforme.ubicaciongeografica.descripcion)}" update="ubicacionGeograficaParametro" process="@this"/>
+                            <p:ajax listener="#{controlNReporteNomina.autocompletarGeneral('UBIGEOGRAFICA', controlNReporteNomina.parametroDeInforme.ubicaciongeografica.descripcion)}" 
+                                    event="change"  update="ubicacionGeograficaParametro" process="@this"/>
                             <p:ajax event="dblclick" listener="#{controlNReporteNomina.dialogosParametros(5)}" process="@this"/>
                         </p:inputText>
 
-                        <h:outputText value="#{msg['tipoasociacion']}:" style="position: absolute; top: 130px; left: 50px;"/>
-                        <p:inputText maxlength="200" value="#{controlNReporteNomina.parametroDeInforme.tipoasociacion.descripcion}" id="tipoAsociacionParametro" style="position: absolute; top: 130px; left: 160px;height: 8px; font-size: 11px; width: 258px;" onclick="select();">
+                        <h:outputText value="#{msg['tipoasociacion']}:" style="position: absolute; top: 135px; left: 40px;"/>
+                        <p:inputText maxlength="200" value="#{controlNReporteNomina.parametroDeInforme.tipoasociacion.descripcion}" id="tipoAsociacionParametro" 
+                                     style="position: absolute; top: 135px; left: 150px;height: 10px; font-size: 11px; width: 268px;" onclick="select();">
                             <p:ajax event="click" listener="#{controlNReporteNomina.posicionCelda(6)}" process="@this"/> 
-                            <p:ajax event="change" listener="#{controlNReporteNomina.autocompletarGeneral('TIPOASOCIACION', controlNReporteNomina.parametroDeInforme.tipoasociacion.descripcion)}" update="tipoAsociacionParametro" process="@this"/>
+                            <p:ajax listener="#{controlNReporteNomina.autocompletarGeneral('TIPOASOCIACION', controlNReporteNomina.parametroDeInforme.tipoasociacion.descripcion)}" 
+                                    event="change"  update="tipoAsociacionParametro" process="@this"/>
                             <p:ajax event="dblclick" listener="#{controlNReporteNomina.dialogosParametros(6)}" process="@this"/>
                         </p:inputText>
 
-                        <h:outputText value="#{msg['hasta']}:" style="position: absolute; top: 15px; left: 275px"/>
-                        <div id="posicionFechaHastaParametro" style="position: absolute; top: 14px; left: 330px">
-                            <lnk:calendar value="#{controlNReporteNomina.parametroDeInforme.fechahasta}" id="fechaHastaParametroL" color="#{controlNReporteNomina.color2}" decoration="#{controlNReporteNomina.decoracion2}"  width="58" height="8">
+                        <h:outputText value="#{msg['hasta']}:" style="position: absolute; top: 20px; left: 265px"/>
+                        <div id="posicionFechaHastaParametro" style="position: absolute; top: 19px; left: 330px">
+                            <lnk:calendar value="#{controlNReporteNomina.parametroDeInforme.fechahasta}" id="fechaHastaParametroL" 
+                                          color="#{controlNReporteNomina.color2}" decoration="#{controlNReporteNomina.decoracion2}"  width="64" height="10">
                                 <p:ajax event="click" listener="#{controlNReporteNomina.posicionCelda(7)}" process="@this"/> 
                                 <p:ajax event="change" listener="#{controlNReporteNomina.modificarParametroInforme()}" process="@this" update="fechaHastaParametroL"/>
                                 <p:ajax event="dateSelect" listener="#{controlNReporteNomina.modificarParametroInforme()}" process="@this" update="fechaHastaParametroL"/>
                             </lnk:calendar> 
                         </div>
 
-                        <h:outputText value="#{msg['hasta']}:" style="position: absolute; top: 38px; left: 275px;"/>
-                        <p:inputText value="#{controlNReporteNomina.parametroDeInforme.codigoempleadohasta}" id="empleadoHastaParametro" style="position: absolute; top: 36px; left: 330px;height: 8px; font-size: 11px; width: 90px;" onclick="select();">
+                        <h:outputText value="#{msg['hasta']}:" style="position: absolute; top: 43px; left: 265px;"/>
+                        <p:inputText value="#{controlNReporteNomina.parametroDeInforme.codigoempleadohasta}" id="empleadoHastaParametro" 
+                                     style="position: absolute; top: 41px; left: 330px; height: 10px; font-size: 11px; width: 90px;" onclick="select();">
                             <p:ajax event="click" listener="#{controlNReporteNomina.posicionCelda(8)}" process="@this"/> 
-                            <p:ajax event="change" listener="#{controlNReporteNomina.autocompletarGeneral('HASTA',controlNReporteNomina.parametroDeInforme.codigoempleadohasta)}" update="empleadoHastaParametro"/>
+                            <p:ajax listener="#{controlNReporteNomina.autocompletarGeneral('HASTA',controlNReporteNomina.parametroDeInforme.codigoempleadohasta)}"
+                                    event="change" update="empleadoHastaParametro" />
                             <p:ajax event="dblclick" listener="#{controlNReporteNomina.dialogosParametros(8)}" process="@this"/>
                         </p:inputText>
 
-                        <h:outputText value="#{msg['personal']}:" style="position: absolute; top: 61px; left: 275px;"/>
-                        <p:selectOneMenu value="#{controlNReporteNomina.parametroDeInforme.tipopersonal}" id="tipoPersonalParametro" style="position: absolute; top: 57px; left: 330px; width: 97px; text-transform: uppercase">  
+                        <h:outputText value="#{msg['personal']}:" style="position: absolute; top: 66px; left: 265px;"/>
+                        <p:selectOneMenu value="#{controlNReporteNomina.parametroDeInforme.tipopersonal}" id="tipoPersonalParametro" 
+                                         style="position: absolute; top: 63px; left: 330px; width: 100px; text-transform: uppercase">  
                             <f:selectItem itemLabel="#{msg['activo']}" itemValue="ACTIVO" />  
                             <f:selectItem itemLabel="#{msg['pensionado']}" itemValue="PENSIONADO" />  
                             <f:selectItem itemLabel="#{msg['retirado']}" itemValue="RETIRADO" />
@@ -696,53 +708,66 @@
                             <p:ajax event="change" listener="#{controlNReporteNomina.modificarParametroInforme()}" update="tipoPersonalParametro" process="@this"/>
                         </p:selectOneMenu> 
 
-                        <h:outputText value="#{msg['empresa']}:" style="position: absolute; top: 84px; left: 320px;"/>
-                        <p:inputText value="#{controlNReporteNomina.parametroDeInforme.empresa.nombre}" id="empresaParametro" style="position: absolute; top: 84px; left: 380px;height: 8px; font-size: 11px; width: 100px;" onclick="select();">
+                        <h:outputText value="#{msg['empresa']}:" style="position: absolute; top: 89px; left: 310px;"/>
+                        <p:inputText value="#{controlNReporteNomina.parametroDeInforme.empresa.nombre}" id="empresaParametro" 
+                                     style="position: absolute; top: 89px; left: 380px;height: 10px; font-size: 11px; width: 100px;" onclick="select();">
                             <p:ajax event="click" listener="#{controlNReporteNomina.posicionCelda(10)}" process="@this"/> 
-                            <p:ajax event="change" listener="#{controlNReporteNomina.autocompletarGeneral('EMPRESA', controlNReporteNomina.parametroDeInforme.empresa.nombre)}" update="empresaParametro" process="@this"/>
+                            <p:ajax listener="#{controlNReporteNomina.autocompletarGeneral('EMPRESA', controlNReporteNomina.parametroDeInforme.empresa.nombre)}" 
+                                    event="change" update="empresaParametro" process="@this"/>
                             <p:ajax event="dblclick" listener="#{controlNReporteNomina.dialogosParametros(10)}" process="@this"/>
                         </p:inputText>
 
-                        <p:separator id="separator"  style="vertical-align: central;position: absolute;height: 140px;width: 1px;top: 5px;left: 460px "/>  
+                       <!-- <p:separator id="separator"  style="vertical-align: central;position: absolute;height: 140px;width: 1px;top: 5px;left: 460px "/>  -->
 
-                        <h:outputText value="#{msg['estructura']}:" style="position: absolute; top: 15px; left: 520px;"/>
-                        <p:inputText maxlength="50" value="#{controlNReporteNomina.parametroDeInforme.localizacion.nombre}" id="estructuraParametro" style="position: absolute; top: 15px; left: 625px;height: 8px; font-size: 11px;width: 180px;" onclick="select();">
+                        <h:outputText value="#{msg['estructura']}:" style="position: absolute; top: 20px; left: 510px;"/>
+                        <p:inputText maxlength="50" value="#{controlNReporteNomina.parametroDeInforme.localizacion.nombre}" id="estructuraParametro" 
+                                     style="position: absolute; top: 20px; left: 625px;height: 10px; font-size: 11px;width: 180px;" onclick="select();">
                             <p:ajax event="click" listener="#{controlNReporteNomina.posicionCelda(11)}" process="@this"/> 
-                            <p:ajax event="change" listener="#{controlNReporteNomina.autocompletarGeneral('ESTRUCTURA', controlNReporteNomina.parametroDeInforme.localizacion.nombre)}" update="estructuraParametro" process="@this"/>
+                            <p:ajax listener="#{controlNReporteNomina.autocompletarGeneral('ESTRUCTURA', controlNReporteNomina.parametroDeInforme.localizacion.nombre)}" 
+                                    event="change" update="estructuraParametro" process="@this"/>
                             <p:ajax event="dblclick" listener="#{controlNReporteNomina.dialogosParametros(11)}" process="@this"/>
                         </p:inputText>
 
-                        <h:outputText value="#{msg['tipotrabajador']}:" style="position: absolute; top: 38px; left: 520px;"/>
-                        <p:inputText value="#{controlNReporteNomina.parametroDeInforme.tipotrabajador.nombre}" id="tipoTrabajadorParametro" style="position: absolute; top: 38px; left: 625px;height: 8px; font-size: 11px; width: 180px;" onclick="select();">
+                        <h:outputText value="#{msg['tipotrabajador']}:" style="position: absolute; top: 43px; left: 510px;"/>
+                        <p:inputText value="#{controlNReporteNomina.parametroDeInforme.tipotrabajador.nombre}" id="tipoTrabajadorParametro" 
+                                     style="position: absolute; top: 43px; left: 625px;height: 10px; font-size: 11px; width: 180px;" onclick="select();">
                             <p:ajax event="click" listener="#{controlNReporteNomina.posicionCelda(12)}" process="@this"/> 
-                            <p:ajax event="change" listener="#{controlNReporteNomina.autocompletarGeneral('TIPOTRABAJADOR', controlNReporteNomina.parametroDeInforme.tipotrabajador.nombre)}" update="tipoTrabajadorParametro" process="@this"/>
+                            <p:ajax listener="#{controlNReporteNomina.autocompletarGeneral('TIPOTRABAJADOR', controlNReporteNomina.parametroDeInforme.tipotrabajador.nombre)}" 
+                                    event="change" update="tipoTrabajadorParametro" process="@this"/>
                             <p:ajax event="dblclick" listener="#{controlNReporteNomina.dialogosParametros(12)}" process="@this"/>
                         </p:inputText>
 
-                        <h:outputText value="#{msg['tercero']}:" style="position: absolute; top: 61px; left: 520px;"/>
-                        <p:inputText value="#{controlNReporteNomina.parametroDeInforme.tercero.nombre}" id="terceroParametro" style="position: absolute; top: 61px; left: 625px; height: 8px; font-size: 11px; width: 180px;" onclick="select();">
+                        <h:outputText value="#{msg['tercero']}:" style="position: absolute; top: 66px; left: 510px;"/>
+                        <p:inputText value="#{controlNReporteNomina.parametroDeInforme.tercero.nombre}" id="terceroParametro" 
+                                     style="position: absolute; top: 66px; left: 625px; height: 10px; font-size: 11px; width: 180px;" onclick="select();">
                             <p:ajax event="click" listener="#{controlNReporteNomina.posicionCelda(13)}" process="@this"/> 
-                            <p:ajax event="change" listener="#{controlNReporteNomina.autocompletarGeneral('TERCERO', controlNReporteNomina.parametroDeInforme.tercero.nombre)}" update="terceroParametro" process="@this"/>
+                            <p:ajax listener="#{controlNReporteNomina.autocompletarGeneral('TERCERO', controlNReporteNomina.parametroDeInforme.tercero.nombre)}" 
+                                    event="change" update="terceroParametro" process="@this"/>
                             <p:ajax event="dblclick" listener="#{controlNReporteNomina.dialogosParametros(13)}" process="@this"/>
                         </p:inputText>
 
-                        <h:outputText value="#{msg['proceso']}:" style="position: absolute; top: 84px; left: 520px;"/>
-                        <p:inputText maxlength="30" value="#{controlNReporteNomina.parametroDeInforme.proceso.descripcion}" id="procesoParametro" style="position: absolute; top: 84px; left: 625px; height: 8px; font-size: 11px; width: 180px;" onclick="select();">
+                        <h:outputText value="#{msg['proceso']}:" style="position: absolute; top: 89px; left: 510px;"/>
+                        <p:inputText maxlength="30" value="#{controlNReporteNomina.parametroDeInforme.proceso.descripcion}" id="procesoParametro" 
+                                     style="position: absolute; top: 89px; left: 625px; height: 10px; font-size: 11px; width: 180px;" onclick="select();">
                             <p:ajax event="click" listener="#{controlNReporteNomina.posicionCelda(14)}" process="@this"/> 
-                            <p:ajax event="change" listener="#{controlNReporteNomina.autocompletarGeneral('PROCESO', controlNReporteNomina.parametroDeInforme.proceso.descripcion)}" update="procesoParametro" process="@this"/>
+                            <p:ajax listener="#{controlNReporteNomina.autocompletarGeneral('PROCESO', controlNReporteNomina.parametroDeInforme.proceso.descripcion)}" 
+                                    event="change" update="procesoParametro" process="@this"/>
                             <p:ajax event="dblclick" listener="#{controlNReporteNomina.dialogosParametros(14)}" process="@this"/>
                         </p:inputText>
 
-                        <h:outputText value="#{msg['notas']}:" style="position: absolute; top: 107px; left: 520px;"/>
-                        <p:inputText value="#{controlNReporteNomina.parametroDeInforme.mensajedesprendible}" id="notasParametro" style="position: absolute; top: 107px; left: 625px;height: 8px; font-size: 11px; width: 180px;text-transform: uppercase" onclick="select();">
+                        <h:outputText value="#{msg['notas']}:" style="position: absolute; top: 112px; left: 510px;"/>
+                        <p:inputText value="#{controlNReporteNomina.parametroDeInforme.mensajedesprendible}" id="notasParametro" onclick="select();"
+                                     style="position: absolute; top: 112px; left: 625px;height: 10px; font-size: 11px; width: 180px;text-transform: uppercase" >
                             <p:ajax event="click" listener="#{controlNReporteNomina.posicionCelda(15)}" process="@this"/> 
                             <p:ajax event="change" listener="#{controlNReporteNomina.modificarParametroInforme()}" process="@this"/>
                         </p:inputText>
 
-                        <h:outputText value="#{msg['asociacion']}:" style="position: absolute; top: 130px; left: 520px;"/>
-                        <p:inputText maxlength="200" value="#{controlNReporteNomina.parametroDeInforme.asociacion.descripcion}" id="asociacionParametro" style="position: absolute; top: 130px; left: 625px;height: 8px; font-size: 11px; width: 180px" onclick="select();">
+                        <h:outputText value="#{msg['asociacion']}:" style="position: absolute; top: 135px; left: 510px;"/>
+                        <p:inputText maxlength="200" value="#{controlNReporteNomina.parametroDeInforme.asociacion.descripcion}" id="asociacionParametro" 
+                                     style="position: absolute; top: 135px; left: 625px;height: 10px; font-size: 11px; width: 180px" onclick="select();">
                             <p:ajax event="click" listener="#{controlNReporteNomina.posicionCelda(16)}" process="@this"/> 
-                            <p:ajax event="change" listener="#{controlNReporteNomina.autocompletarGeneral('ASOCIACION', controlNReporteNomina.parametroDeInforme.asociacion.descripcion)}" update="asociacionParametro" process="@this"/>
+                            <p:ajax listener="#{controlNReporteNomina.autocompletarGeneral('ASOCIACION', controlNReporteNomina.parametroDeInforme.asociacion.descripcion)}" 
+                                    event="change" update="asociacionParametro" process="@this"/>
                             <p:ajax event="dblclick" listener="#{controlNReporteNomina.dialogosParametros(16)}" process="@this"/>
                         </p:inputText>
                         
@@ -760,11 +785,11 @@
                         </p:dialog>
 
                         <p:dialog id="infoReporteCodigoD" header="#{msg['infoReporteCodigoD']}" widgetVar="infoReporteCodigoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                            <p:inputTextarea value="#{controlNReporteNomina.actualInfoReporteTabla.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                            <p:inputTextarea value="#{controlNReporteNomina.reporteSeleccionado.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         </p:dialog>
 
                         <p:dialog id="infoReporteNombreD" header="#{msg['infoReporteNombreD']}" widgetVar="infoReporteNombreD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                            <p:inputTextarea value="#{controlNReporteNomina.actualInfoReporteTabla.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                            <p:inputTextarea value="#{controlNReporteNomina.reporteSeleccionado.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         </p:dialog>
                 </h:form>
                 

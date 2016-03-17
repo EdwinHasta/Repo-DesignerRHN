@@ -5,7 +5,9 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
+      xmlns:lnk="http://java.sun.com/jsf/composite/linkare"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
 
     <h:head>
     </h:head>
@@ -14,67 +16,67 @@
             <ui:define name="body">                  
                 <h:form id="form"> 
                     <p:panel  id="PanelTotal" header="Novedades de Vacaciones" style="position: absolute; width: 874px; height: 510px; text-align: left">    
-                        
-                        <p:toolbar style=" position: absolute; top: 40px; left: 20px;">  
+
+                        <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 40px; left: 20px;">  
                             <p:toolbarGroup align="left"> 
 
-                                <p:commandButton style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " 
                                                  id="guardarRapido" value="" actionListener="#{controlNovedadesVacaciones.guardarCambiosNovedades()}" process="@this" />
                                 <p:tooltip  for="guardarRapido" value="#Guardar" />
 
-                                <p:commandButton style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
                                                  id="editar" value="" actionListener="#{controlNovedadesVacaciones.editarCelda()}" process="@this"/>
                                 <p:tooltip  for="editar" value="Editar" />
                                 <p:separator />
 
-                                <p:commandButton style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
                                                  id="listaValores" value="" onclick="botonDesactivado.show()" process="@this"/>
                                 <p:tooltip  for="listaValores" value="Lista de Valores" />
 
-                                <p:commandButton style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
                                                  id="filtrar" value="" actionListener="#{controlNovedadesVacaciones.activarCtrlF11()}" process="@this"/>
                                 <p:tooltip  for="filtrar" value="Activar Filtrado" />
                                 <p:separator />
 
-                                <p:commandButton style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
                                                  id="exportarXLS" value="" ajax="false" actionListener="#{controlNovedadesVacaciones.exportXLS()}" />
                                 <p:tooltip  for="exportarXLS" value="Exportar a XLS" />
 
-                                <p:commandButton style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
                                                  id="exportarXML" value="" actionListener="#{controlNovedadesVacaciones.limpiarNuevaNovedad()}" ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportar:datosNovedadesExportar" fileName="NovedadVacacionesXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip  for="exportarXML" value="Exportar a XML"/>
 
-                                <p:commandButton style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
                                                  id="exportarPDF" value="" actionListener="#{controlNovedadesVacaciones.exportPDF()}" ajax="false"/>
                                 <p:tooltip  for="exportarPDF" value="Exportar a PDF" />
 
                                 <p:separator /> 
-                                <p:commandButton style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
-                                                 id="insertar" value="" oncomplete="NuevaNovedadVacaciones.show()" update=":formularioDialogos:nuevaNovedad" process="@this"/> 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                                 id="insertar" value="" actionListener="#{controlNovedadesVacaciones.entrarNuevoRegistro()}"  process="@this"/> 
                                 <p:tooltip  for="insertar" value="Nuevo Registro" /> 
 
-                                <p:commandButton style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
                                                  id="eliminar" value="" actionListener="#{controlNovedadesVacaciones.borrarNovedades()}" process="@this"/>  
                                 <p:tooltip  for="eliminar" value="Eliminar Registro" />
 
-                                <p:commandButton style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
                                                  id="duplicar" value="" actionListener="#{controlNovedadesVacaciones.duplicarNV()}"  process="@this"/>  
                                 <p:tooltip  for="duplicar" value="Duplicar Registro" />
 
                                 <p:separator /> 
-                                <p:commandButton style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
                                                  id="rastro" value="" actionListener="#{controlNovedadesVacaciones.verificarRastro()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="Rastro"/>
-                                
+
                                 <p:separator style="position: relative; top: -9px"/> 
 
-                                <p:commandButton style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px"
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px"
                                                  id="refrescar" value="" actionListener="#{controlNovedadesVacaciones.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
-                                <p:commandButton style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px"
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px"
                                                  id="salir" value="" action="#{controlNovedadesVacaciones.volverPagAnterior()}" actionListener="#{controlNovedadesVacaciones.salir()}"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
 
@@ -111,16 +113,16 @@
                                     </h:outputText>
                                 </p:column>
                             </p:dataTable>
-                            
-                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 46px;  " id="btnBuscarEmpleados" actionListener="#{controlNovedadesVacaciones.abrirLista(0) }" value="Buscar Empleado" process="@this"/>
-                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 80px;  " id="btnMostrarTodos" actionListener="#{controlNovedadesVacaciones.mostrarTodos()}" value="Mostrar Todos" process="@this"/>
+
+                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 46px; " id="btnBuscarEmpleados" actionListener="#{controlNovedadesVacaciones.abrirLista(0) }" value="Buscar Empleado" process="@this"/>
+                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 80px; " id="btnMostrarTodos" widgetVar="btnMostrarTodos" actionListener="#{controlNovedadesVacaciones.mostrarTodos()}" disabled="#{controlNovedadesVacaciones.activarMTodos}" value="Mostrar Todos" process="@this"/>
                         </fieldset>
 
-                        <fieldset style="position: absolute; left: 10px; top: 230px; width: 100px; height: 220px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 230px; width: 830px; height: 220px; border-radius: 10px; ">
                             <legend style="font-size: 14px; color: #14388B"><strong>Novedad de Vacaciones disfrutadas/por disfrutar</strong></legend>
                             <p:dataTable id="datosNovedadesEmpleado" var="novedades" value="#{controlNovedadesVacaciones.listaNovedades}"
                                          rowKey="#{novedades.secuencia}" rowIndexVar="indice" style=" border: 1px;width: 820px"                             
-                                         scrollable="true" scrollHeight="#{controlNovedadesVacaciones.altoTabla}" scrollWidth="820"
+                                         scrollable="true" scrollHeight="#{controlNovedadesVacaciones.altoTabla}" scrollWidth="828"
                                          filteredValue="#{controlNovedadesVacaciones.filtradosListaNovedades}" 
                                          emptyMessage="No se encontrarón resultados para la búsqueda"
                                          editable="true" editMode="cell"
@@ -128,7 +130,8 @@
 
                                 <p:ajax event="filter" listener="#{controlNovedadesVacaciones.eventoFiltrar()}"/>
 
-                                <p:column headerText="Fecha Inicial" sortBy="#{novedades.fechainicialdisfrute}" filterBy="#{novedades.fechainicialdisfrute}" filterMatchMode="contains" id="nEFechaInicialDisfrute" width="5" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="text-align: center" headerText="Fecha Inicial" sortBy="#{novedades.fechainicialdisfrute}" filterBy="#{novedades.fechainicialdisfrute}" 
+                                          filterMatchMode="contains" id="nEFechaInicialDisfrute" width="86" filterStyle="display: none; visibility: hidden;" >                                  
                                     <f:facet name="header">
                                         <h:outputText id="headerFechaInicial" value="Fecha Inicial" />
                                         <p:tooltip  for="headerFechaInicial" value="Fecha Inicial Disfrute" />
@@ -142,9 +145,9 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <p:inputText  readonly="true" value="#{novedades.fechainicialdisfrute}" id="editarFechaInicial" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase;height:12px" 
-                                                          onclick="select();" onselect="ubicacionC(([{name: 'CAMPO', value: 'FECHA INICIAL'}])); indiceC(([{name: 'INDICE', value: '#{indice}'}]));">
+                                                          onclick="select();">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
-                                                <p:ajax event="select" listener="#{controlNovedadesVacaciones.cambiarIndice(indice, 0)}" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlNovedadesVacaciones.cambiarIndice(novedades, 0)}" process="@this"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -154,14 +157,15 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Periodo" sortBy= "#{novedades.vacacion.periodo}" filterBy="#{novedades.vacacion.periodo}" filterMatchMode="contains" id="nEPeriodo" width="60" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="text-align: center" headerText="Periodo" sortBy= "#{novedades.vacacion.periodo}" filterBy="#{novedades.vacacion.periodo}" 
+                                          filterMatchMode="contains" id="nEPeriodo" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{novedades.vacacion.periodo}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText readonly="true" value="#{novedades.vacacion.periodo}" id="editarPeriodo" style=" border-radius: 0px; width: 95.5%;text-transform: uppercase;height:12px"
-                                                         onclick="select();" onselect="ubicacionC(([{name: 'CAMPO', value: 'PERIODO'}]));indiceC(([{name: 'INDICE', value: '#{indice}'}]));">
-                                                <p:ajax event="select" listener="#{controlNovedadesVacaciones.cambiarIndice(indice, 1)}" process="@this"/>
+                                                         onclick="select();">
+                                                <p:ajax event="select" listener="#{controlNovedadesVacaciones.cambiarIndice(novedades, 1)}" process="@this"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -169,16 +173,17 @@
                                         <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
-                                
-                                <p:column headerText="Dias" sortBy="#{novedades.dias}" filterBy="#{novedades.dias}" filterMatchMode="contains" id="nEDias" width="10" filterStyle="display: none; visibility: hidden;" >                                  
+
+                                <p:column style="text-align: center" headerText="Dias" sortBy="#{novedades.dias}" filterBy="#{novedades.dias}" filterMatchMode="contains" 
+                                          id="nEDias" width="25" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{novedades.dias}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{novedades.dias}" id="editarDias" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase;height:12px"
-                                                         onselect="ubicacionC(([{name: 'CAMPO', value: 'DA'}]));indiceC(([{name: 'INDICE', value: '#{indice}'}]));">
-                                                <p:ajax event="select" listener="#{controlNovedadesVacaciones.cambiarIndice(indice, 7)}" process="@this"/>
+                                            <p:inputText value="#{novedades.dias}" id="editarDias" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase;height:12px" >
+                                                <p:ajax event="select" listener="#{controlNovedadesVacaciones.cambiarIndice(novedades, 7)}" process="@this"/>
                                             </p:inputText>
+                                            <pe:keyFilter for="editarDias" mask="num"/>
                                         </f:facet>  
                                     </p:cellEditor>
 
@@ -187,7 +192,8 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Fecha Sig. Fin. Vac" sortBy="#{novedades.fechasiguientefinvaca}" filterBy="#{novedades.fechasiguientefinvaca}" filterMatchMode="contains" id="nEFechaSiguiente" width="20" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="text-align: center" headerText="Fecha Sig. Fin. Vac" sortBy="#{novedades.fechasiguientefinvaca}" filterBy="#{novedades.fechasiguientefinvaca}" 
+                                          filterMatchMode="contains" id="nEFechaSiguiente" width="86" filterStyle="display: none; visibility: hidden;" >                                  
                                     <f:facet name="header">
                                         <h:outputText id="headerFechaSiguiente" value="Fecha Siguiente" />
                                         <p:tooltip  for="headerFechaSiguiente" value="Fecha del día siguiente al fin de las vacaciones" />
@@ -200,10 +206,9 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <p:inputText  readonly="true" value="#{novedades.fechasiguientefinvaca}" id="editarFechaSiguiente" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase;height:12px"
-                                                          onclick="select();" onselect="ubicacionC(([{name: 'CAMPO', value: 'FECHA SIGUIENTE'}]));
-                                                                  indiceC(([{name: 'INDICE', value: '#{indice}'}]));">
+                                                          onclick="select();">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
-                                                <p:ajax event="select" listener="#{controlNovedadesVacaciones.cambiarIndice(indice, 3)}" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlNovedadesVacaciones.cambiarIndice(novedades, 3)}" process="@this"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -213,15 +218,15 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Subtipo" sortBy="#{novedades.subtipo}" filterBy="#{novedades.subtipo}" filterMatchMode="contains" id="nESubTipo" width="25" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="text-align: center" headerText="Subtipo" sortBy="#{novedades.subtipo}" filterBy="#{novedades.subtipo}" 
+                                          filterMatchMode="contains" id="nESubTipo" width="80" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{novedades.subtipo}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText readonly="true" value="#{novedades.subtipo}" id="editarSubtipo" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase;height:12px" 
-                                                         onclick="select();" onselect="ubicacionC(([{name: 'CAMPO', value: 'SUBTIPO'}]));
-                                                                 indiceC(([{name: 'INDICE', value: '#{indice}'}]));">
+                                                         onclick="select();">
                                                 <p:ajax event="change" update="@this" />
-                                                <p:ajax event="select" listener="#{controlNovedadesVacaciones.cambiarIndice(indice, 4)}" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlNovedadesVacaciones.cambiarIndice(novedades, 4)}" process="@this"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -231,7 +236,8 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Adelanta Hasta" sortBy="#{novedades.adelantapagohasta}" filterBy="#{novedades.adelantapagohasta}" filterMatchMode="contains" id="nEAdelantoHasta" width="25" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="text-align: center" headerText="Adelanta Hasta" sortBy="#{novedades.adelantapagohasta}" filterBy="#{novedades.adelantapagohasta}" 
+                                          filterMatchMode="contains" id="nEAdelantoHasta" width="86" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{novedades.adelantapagohasta}" >
@@ -240,10 +246,9 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <p:inputText readonly="true" value="#{novedades.adelantapagohasta}" id="editarAdelantoHasta" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase;height:12px" 
-                                                         onclick="select();" onselect="ubicacionC(([{name: 'CAMPO', value: 'ADELANTA HASTA'}]));
-                                                                 indiceC(([{name: 'INDICE', value: '#{indice}'}]));">
+                                                         onclick="select();">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
-                                                <p:ajax event="select" listener="#{controlNovedadesVacaciones.cambiarIndice(indice, 5)}" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlNovedadesVacaciones.cambiarIndice(novedades, 5)}" process="@this"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -253,7 +258,8 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Fecha Pago" sortBy="#{novedades.fechapago}" filterBy="#{novedades.fechapago}" filterMatchMode="contains" id="nEFechaPago" width="25" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="text-align: center" headerText="Fecha Pago" sortBy="#{novedades.fechapago}" filterBy="#{novedades.fechapago}" 
+                                          filterMatchMode="contains" id="nEFechaPago" width="86" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{novedades.fechapago}" >
@@ -262,9 +268,9 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <p:inputText  readonly="true" value="#{novedades.fechapago}" id="editarFechaPago" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase;height:12px"
-                                                          onclick="select();" onselect="ubicacionC(([{name: 'CAMPO', value: 'FECHA PAGO'}]));indiceC(([{name: 'INDICE', value: '#{indice}'}]));">
+                                                          onclick="select();">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
-                                                <p:ajax event="select" listener="#{controlNovedadesVacaciones.cambiarIndice(indice, 6)}" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlNovedadesVacaciones.cambiarIndice(novedades, 6)}" process="@this"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -274,7 +280,8 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="D.A" sortBy="#{novedades.vacadiasaplazados}" filterBy="#{novedades.vacadiasaplazados}" filterMatchMode="contains" id="nEDiasAplazados" width="10" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="text-align: center" headerText="D.A" sortBy="#{novedades.vacadiasaplazados}" filterBy="#{novedades.vacadiasaplazados}" 
+                                          filterMatchMode="contains" id="nEDiasAplazados" width="25" filterStyle="display: none; visibility: hidden;" >                                  
                                     <f:facet name="header">
                                         <h:outputText id="headerDiasAplazados" value="D.A" />
                                         <p:tooltip  for="headerDiasAplazados" value="Dias Aplazados" />
@@ -283,10 +290,10 @@
                                         <f:facet name="output">
                                             <h:outputText value="#{novedades.vacadiasaplazados}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{novedades.vacadiasaplazados}" id="editarDiasAplazados" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase;height:12px"
-                                                         onclick="ubicacionC(([{name: 'CAMPO', value: 'DA'}]));">
-                                                <p:ajax event="select" listener="#{controlNovedadesVacaciones.cambiarIndice(indice, 7)}" process="@this"/>
+                                            <p:inputText value="#{novedades.vacadiasaplazados}" id="editarDiasAplazados" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase;height:12px">
+                                                <p:ajax event="select" listener="#{controlNovedadesVacaciones.cambiarIndice(novedades, 7)}" process="@this"/>
                                             </p:inputText>
+                                            <pe:keyFilter for="editarDiasAplazados" mask="num"/>
                                         </f:facet>  
                                     </p:cellEditor>
 
@@ -296,24 +303,22 @@
                                 </p:column>
 
                             </p:dataTable>
-                            <h:outputText value="Total Dias Vacaciones Disfrutadas" style=" position: absolute; top: 205px;left:130px"/>
-                            <p:inputText value="#{controlNovedadesVacaciones.diasTotales}" id="diasTotales" style=" position: absolute; top:200px ;left:330px;border-radius: 0px; width: 55px" /> 
-                            <h:outputText value="Total Dias Aplazados" style=" position: absolute; top: 205px;left:645px"/>
-                            <p:inputText value="#{controlNovedadesVacaciones.diasAplazadosTotal}" id="diasAplazados" style=" position: absolute; top:200px ;left:770px;border-radius: 0px; width: 50px" /> 
+                            <h:outputText value="Total Dias Vacaciones Disfrutadas:" style=" position: absolute; top: 205px;left:136px"/>
+                            <h:outputText value="#{controlNovedadesVacaciones.diasTotales}" id="diasTotales" style=" position: absolute; top:205px ;left:345px;border-radius: 0px; width: 55px" /> 
+                            <h:outputText value="Total Dias Aplazados:" style=" position: absolute; top: 205px;left:655px"/>
+                            <h:outputText value="#{controlNovedadesVacaciones.diasAplazadosTotal}" id="diasAplazados" style=" position: absolute; top:205px ;left:810px;border-radius: 0px; width: 50px" /> 
                         </fieldset>
-                        
+
                         <p:commandButton style="position: absolute; left: 695px; top: 474px;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" disabled="#{controlNovedadesVacaciones.guardado}" onclick="confirmarGuardar.show();" update=":form:datosNovedadesEmpleado" process="@this" />
                         <p:commandButton style="position: absolute; left: 785px; top: 474px;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlNovedadesVacaciones.salir()}" action="#{controlNovedadesVacaciones.volverPagAnterior()}"/>
-                    
+
                     </p:panel>
-                    <p:remoteCommand name="ubicacionC" actionListener="#{controlNovedadesVacaciones.ubicacionCampo()}" process="@this"/>
-                    <p:remoteCommand name="indiceC" actionListener="#{controlNovedadesVacaciones.indiceRegistro()}" process="@this"/>
                 </h:form>
 
                 <h:form id="formularioDialogos">
 
                     <!-- DIALOGO NUEVO REGISTRO -->
-                    <p:dialog id="NuevaNovedadVacaciones" header="Nuevo Registro" widgetVar="NuevaNovedadVacaciones" closable="false" resizable="false"  draggable="false" modal="true" height="420" width="400" style=" padding: 0px">  
+                    <p:dialog id="NuevaNovedadVacaciones" header="Nuevo Registro" widgetVar="NuevaNovedadVacaciones" closable="false" resizable="false" draggable="false" modal="true" height="420" width="400" style=" padding: 0px">  
 
                         <center><strong><h:outputText value="Ingresar nueva novedad" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
@@ -322,21 +327,23 @@
                             <strong><h:outputText value="Fecha Inicial Disfrute: " style=" position: absolute; top: 85px" /></strong>
                             <div id="posicionFechaInicialNuevoReg" style=" position: absolute; top: 80px; left: 200px">
                                 <lnk:calendar id="nuevaFechaInicial" value="#{controlNovedadesVacaciones.nuevaNovedad.fechainicialdisfrute}" >
-                                    <p:ajax event="dateSelect" listener="#{controlNovedadesVacaciones.validaciones(1)}" update="nuevaFechaInicial"/>
-                                    <p:ajax event="change" update="nuevaFechaInicial"/>
+                                    <p:ajax event="dateSelect" listener="#{controlNovedadesVacaciones.validaciones(1)}"/>
+                                    <p:ajax event="change" listener="#{controlNovedadesVacaciones.validaciones(1)}"/>
                                 </lnk:calendar>
                             </div>
 
                             <strong><h:outputText value="Periodo: " style=" position: absolute; top: 125px" /></strong>
-                            <p:inputText id="nuevoPeriodo" value="#{controlNovedadesVacaciones.nuevaNovedad.vacacion.periodo}" style=" width: 122px; position: absolute; left: 200px; top: 120px; text-transform: uppercase" onclick="select();" readonly="#{controlNovedadesVacaciones.isReadonly()}">
+                            <p:inputText id="nuevoPeriodo" value="#{controlNovedadesVacaciones.nuevaNovedad.vacacion.periodo}" style=" width: 122px; position: absolute; left: 200px; top: 120px; text-transform: uppercase" onclick="select();">
                                 <!-- Evento Click, sí es nulo el campo Que aparezca la lista de valores de Periodo -->
                                 <p:ajax event="click" listener="#{controlNovedadesVacaciones.lovPeriodo(secuenciaEmpleado,1)}" />
+                                <p:ajax event="change" listener="#{controlNovedadesVacaciones.lovPeriodo(secuenciaEmpleado,1)}" />
                             </p:inputText>
 
                             <strong><h:outputText value="Dias: " style=" position: absolute; top: 165px" /></strong>
-                            <p:inputText id="nuevoDias" value="#{controlNovedadesVacaciones.nuevaNovedad.dias}" style=" width: 122px; position: absolute; left: 200px; top: 160px; text-transform: uppercase" onclick="select();">
+                            <p:inputText readonly="true" id="nuevoDias" value="#{controlNovedadesVacaciones.nuevaNovedad.vacacion.diaspendientes}" style=" width: 122px; position: absolute; left: 200px; top: 160px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" listener="#{controlNovedadesVacaciones.diasMayor(controlNovedadesVacaciones.nuevaNovedad.dias)}" />
                             </p:inputText>
+                            <pe:keyFilter for="nuevoDias" mask="num"/>
 
                             <strong><h:outputText value="Fecha Sig. Fin. Vacacion: " style=" position: absolute; top: 205px" /></strong>
                             <div id="posicionFechaSiguienteNuevoReg" style=" position: absolute; top: 200px; left: 200px">
@@ -374,6 +381,7 @@
                             <p:inputText id="nuevoDiasAplazados" value="#{controlNovedadesVacaciones.nuevaNovedad.vacadiasaplazados}" style=" width: 122px; position: absolute; left: 200px; top: 360px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
+                            <pe:keyFilter for="nuevoDiasAplazados" mask="num"/>
 
                             <p:commandButton id="limpiar" value="Limpiar" icon="ui-icon-trash" style=" position: absolute; left: 20px; top: 390px;" actionListener="#{controlNovedadesVacaciones.limpiarNuevaNovedad()}" update="nuevaNovedad" process="@this"/>
                             <p:commandButton id="agregarNE" value="Agregar" icon="ui-icon-circle-check" style=" position: absolute; left: 200px; top: 390px;"  actionListener="#{controlNovedadesVacaciones.agregarNuevaNovedadVacaciones()}" process="@this"/>
@@ -398,13 +406,14 @@
                             </div>
 
                             <strong><h:outputText value="Periodo: " style=" position: absolute; top: 125px" /></strong>
-                            <p:inputText id="duplicarPeriodo" value="#{controlNovedadesVacaciones.duplicarNovedad.vacacion.periodo}" style=" width: 122px; position: absolute; left: 200px; top: 120px; text-transform: uppercase" onclick="select();" readonly="#{controlNovedadesVacaciones.isReadonly()}">
+                            <p:inputText id="duplicarPeriodo" value="#{controlNovedadesVacaciones.duplicarNovedad.vacacion.periodo}" style=" width: 122px; position: absolute; left: 200px; top: 120px; text-transform: uppercase" onclick="select();">
                                 <!-- Evento Click, sí es nulo el campo Que aparezca la lista de valores de Periodo -->
                                 <p:ajax event="click" listener="#{controlNovedadesVacaciones.lovPeriodo(secuenciaEmpleado,2)}" />
+                                <p:ajax event="change" listener="#{controlNovedadesVacaciones.lovPeriodo(secuenciaEmpleado,2)}" />
                             </p:inputText>
 
                             <strong><h:outputText value="Dias: " style=" position: absolute; top: 165px" /></strong>
-                            <p:inputText id="duplicarDias" value="#{controlNovedadesVacaciones.duplicarNovedad.dias}" style=" width: 122px; position: absolute; left: 200px; top: 160px; text-transform: uppercase" onclick="select();">
+                            <p:inputText readonly="true" id="duplicarDias" value="#{controlNovedadesVacaciones.duplicarNovedad.vacacion.diaspendientes}" style=" width: 122px; position: absolute; left: 200px; top: 160px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" listener="#{controlNovedadesVacaciones.diasMayor(controlNovedadesVacaciones.duplicarNovedad.dias)}" />
                             </p:inputText>
 
@@ -516,9 +525,9 @@
                     </p:dialog>
 
                     <p:dialog id="validacion1" header="Atencion" widgetVar="validacion1"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="La fecha inicial del disfrute de vacaciones del empleado, no puede ser menor a la fecha de ingreso del mismo" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="Aceptar"   onclick="validacion1.hide();" style="position: absolute; top: 60px; left: 200px" process="@this" />
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;" />
+                        <h:outputText value="La fecha inicial del disfrute de vacaciones del empleado, no puede ser menor a la fecha de contratacion del mismo" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Aceptar" onclick="validacion1.hide();" style="position: absolute; top: 60px; left: 200px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="diasMayor" header="Atencion" widgetVar="diasMayor"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
@@ -551,7 +560,7 @@
                             <p:ajax event="rowSelect" listener="#{controlNovedadesVacaciones.activarAceptar()}" update=":formularioDialogos:aceptarE"/>
                             <p:ajax event="rowDblselect" listener="#{controlNovedadesVacaciones.actualizarEmpleadosNovedad()}" process="@this" />
                             <f:facet name="header">  
-                                <h:outputText value="Nombre: "  style="position: absolute; left: 27px; top: 15px;"/>  
+                                <h:outputText value="Nombre: " style="position: absolute; left: 27px; top: 15px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVEmpleados.filter();" style="width: 400px; position: relative; left: 60px;" />  
                             </f:facet>
 
@@ -562,51 +571,53 @@
                                 <h:outputText value="#{emp.codigoempleado}" />  
                             </p:column>
 
-                            <p:column sortBy="#{emp.persona.nombreCompleto}"  filterBy="#{emp.persona.nombreCompleto}" filterMatchMode="contains" filterStyle="width: 94%"> 
+                            <p:column sortBy="#{emp.persona.nombreCompleto}" filterBy="#{emp.persona.nombreCompleto}" filterMatchMode="contains" filterStyle="width: 94%"> 
                                 <f:facet name="header">
                                     <h:outputText value="Nombre" />
                                 </f:facet>
                                 <h:outputText value="#{emp.persona.nombreCompleto}" />  
                             </p:column>
 
-                            <p:column sortBy="#{emp.fechacreacion}" filterBy="#{emp.fechacreacion}" filterMatchMode="contains" filterStyle="width: 94%" > 
+                            <p:column style="text-align: center" width="90" sortBy="#{emp.fechacreacion}" filterBy="#{emp.fechacreacion}" filterMatchMode="contains" filterStyle="width: 94%" > 
                                 <f:facet name="header">
                                     <h:outputText value="Fecha Ingreso" />
                                 </f:facet>
-                                <h:outputText value="#{emp.fechacreacion}" />  
+                                <h:outputText value="#{emp.fechacreacion}">  
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
                             </p:column>
 
                         </p:dataTable>
-                        <p:commandButton id="aceptarE" value="Aceptar" disabled="#{controlNovedadesVacaciones.aceptar}" style="position: absolute; top: 305px; left: 350px; " actionListener="#{controlNovedadesVacaciones.actualizarEmpleadosNovedad()}" process="@this"/>
-                        <p:commandButton id="atrasE" value="Atras" style="position: absolute; top: 305px; left: 450px; " actionListener="#{controlNovedadesVacaciones.cancelarCambioEmpleados()}" process="@this"/>
-                        
+                        <p:commandButton id="aceptarE" value="Aceptar" disabled="#{controlNovedadesVacaciones.aceptar}" style="position: absolute; top: 305px; left: 255px; " actionListener="#{controlNovedadesVacaciones.actualizarEmpleadosNovedad()}" process="@this"/>
+                        <p:commandButton id="atrasE" value="Atras" style="position: absolute; top: 305px; left: 355px; " actionListener="#{controlNovedadesVacaciones.cancelarCambioEmpleados()}" process="@this"/>
+
                     </p:dialog>
 
 
                     <!-- L.O.V Periodo-->
                     <p:dialog header="Periodos" widgetVar="periodosDialogo" draggable="false" resizable="false" id="periodosDialogo" closable="false"  
-                              showEffect="fade" hideEffect="fade" modal="true" width="650" height="350" >
+                              showEffect="fade" hideEffect="fade" modal="true" width="450" height="350" >
 
-                        <p:dataTable  id="LOVPeriodos" style=" width: 600px" var="per" value="#{controlNovedadesVacaciones.listaPeriodos}"
-                                      scrollable="true" scrollHeight="200" scrollWidth="620" widgetVar="LOVPeriodos" rowKey="#{per.secuencia}"
+                        <p:dataTable  id="LOVPeriodos" style=" width: 410px" var="per" value="#{controlNovedadesVacaciones.listaPeriodos}"
+                                      scrollable="true" scrollHeight="200" scrollWidth="420" widgetVar="LOVPeriodos" rowKey="#{per.secuencia}"
                                       filteredValue="#{controlNovedadesVacaciones.filtradoslistaPeriodos}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
-                                      selection="#{controlNovedadesVacaciones.seleccionPeriodo}" selectionMode="single">
+                                      selection="#{controlNovedadesVacaciones.periodoSeleccionado}" selectionMode="single">
 
                             <p:ajax event="rowSelect" listener="#{controlNovedadesVacaciones.activarAceptar()}" update=":formularioDialogos:aceptarP"/>
                             <p:ajax event="rowDblselect" listener="#{controlNovedadesVacaciones.actualizarPeriodos()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Periodo: "  style="position: absolute; left: 27px; top: 15px;"/>  
-                                <p:inputText id="globalFilter" onkeyup="LOVPeriodos.filter();" style="width: 400px; position: relative; left: 60px;" />  
+                                <p:inputText id="globalFilter" onkeyup="LOVPeriodos.filter();" style="width: 230px; position: relative; left: 60px;" />  
                             </f:facet>
 
-                            <p:column sortBy="#{per.diaspendientes}" filterBy="#{per.diaspendientes}" width="150" filterMatchMode="contains" > 
+                            <p:column style="text-align: center" sortBy="#{per.diaspendientes}" filterStyle="width: 94%" filterBy="#{per.diaspendientes}" width="70" filterMatchMode="contains" > 
                                 <f:facet name="header">
                                     <h:outputText value="Dias Pendientes" />
                                 </f:facet>
                                 <h:outputText value="#{per.diaspendientes}" />  
                             </p:column>
 
-                            <p:column sortBy="#{per.periodo}" filterBy="#{per.periodo}" width="150" filterMatchMode="contains" > 
+                            <p:column style="text-align: center" sortBy="#{per.periodo}" filterStyle="width: 94%" filterBy="#{per.periodo}" filterMatchMode="contains" > 
                                 <f:facet name="header">
                                     <h:outputText value="Periodo" />
                                 </f:facet>
@@ -615,10 +626,10 @@
 
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarP" value="Aceptar" disabled="#{controlNovedadesVacaciones.aceptar}" style="position: absolute; top: 305px; left: 350px; " actionListener="#{controlNovedadesVacaciones.actualizarPeriodos()}"  process="@this"/>
-                        
-                        <p:commandButton id="atrasP" value="Atras" style="position: absolute; top: 305px; left: 450px; "  actionListener="#{controlNovedadesVacaciones.cancelarCambioPeriodos()}"  process="@this"/>
-                        
+                        <p:commandButton id="aceptarP" value="Aceptar" disabled="#{controlNovedadesVacaciones.aceptar}" style="position: absolute; top: 305px; left: 150px; " actionListener="#{controlNovedadesVacaciones.actualizarPeriodos()}"  process="@this"/>
+
+                        <p:commandButton id="atrasP" value="Atras" style="position: absolute; top: 305px; left: 250px; "  actionListener="#{controlNovedadesVacaciones.cancelarCambioPeriodos()}"  process="@this"/>
+
                     </p:dialog>
 
                     <!-- DIALOGOS RASTROS -->

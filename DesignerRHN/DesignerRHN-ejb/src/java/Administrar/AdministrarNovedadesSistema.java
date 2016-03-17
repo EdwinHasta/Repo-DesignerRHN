@@ -79,6 +79,7 @@ public class AdministrarNovedadesSistema implements AdministrarNovedadesSistemaI
         
     }
     
+    @Override
     public List<Empleados> buscarEmpleados(){
         return persistenciaEmpleados.todosEmpleados(em);
     }
@@ -87,18 +88,22 @@ public class AdministrarNovedadesSistema implements AdministrarNovedadesSistemaI
         return persistenciaEmpleados.todosEmpleados(em);
     }
     
+    @Override
     public List<MotivosDefinitivas> lovMotivos(){
         return persistenciaMotivos.buscarMotivosDefinitivas(em);
     }
     
+    @Override
     public List<MotivosRetiros> lovRetiros(){
         return persistenciaRetiros.consultarMotivosRetiros(em);
     }
     
+    @Override
     public List<NovedadesSistema> vacacionesEmpleado(BigInteger secuenciaEmpleado){
         return persistenciaNovedades.novedadesEmpleadoVacaciones(em, secuenciaEmpleado);
     }
         
+    @Override
     public List<Vacaciones> periodosEmpleado(BigInteger secuenciaEmpleado){
         return persistenciaVacaciones.periodoVacaciones(em, secuenciaEmpleado);
     }

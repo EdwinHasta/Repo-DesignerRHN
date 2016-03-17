@@ -47,10 +47,10 @@ public class ControlConcepto implements Serializable {
     private Empresas empresaActual;
     private List<Empresas> filtradoListaEmpresas;
     //Lista completa de conceptos para clonar
-    private List<Conceptos> listaConceptosEmpresa_Estado;
+    private List<Conceptos> listaConceptosEmpresaLOV;
+    private Conceptos conceptoSeleccionadoLOV;
+    private List<Conceptos> filtradoConceptosEmpresaLOV;
     private Conceptos conceptoSeleccionado;
-    private List<Conceptos> filtradoConceptosEmpresa_Estado;
-    private Conceptos seleccionConceptoEmpresa;
     private Empresas backUpEmpresaActual;
     private Map<String, String> conjuntoC;
     private String estadoConceptoEmpresa;
@@ -69,7 +69,6 @@ public class ControlConcepto implements Serializable {
             columnaIndependienteConcepto, columnaConjunto, columnaFechaAcumulado, columnaNombreTercero, columnaEstado, columnaEnvio, columnaCodigoAlternativo;
     //Otros
     private boolean aceptar;
-    private int index;
     //modificar
     private List<Conceptos> listaConceptosEmpresaModificar;
     private boolean guardado;
@@ -82,19 +81,17 @@ public class ControlConcepto implements Serializable {
     //borrar VC
     private List<Conceptos> listaConceptosBorrar;
     //editar celda
-    private Conceptos editarConcepto;
+    //private Conceptos editarConcepto;
     private int cualCelda, tipoLista;
     //duplicar
     private Conceptos duplicarConcepto;
     //AUTOCOMPLETAR
     private String codigoUnidad, nombreUnidad, tercero;
     //RASTRO
-    private BigInteger secRegistro;
     //CLONAR CONCEPTO
     private Conceptos conceptoOriginal;
     private Conceptos conceptoClon;
     private int cambioConcepto;
-    private Conceptos conceptoRegistro;
     private String paginaAnterior;
     //
     private String altoTabla;
@@ -102,22 +99,21 @@ public class ControlConcepto implements Serializable {
     private String infoRegistroUnidad, infoRegistroTercero, infoRegistroEmpresa, infoRegistroConcepto;
     //
     private boolean activoDetalle;
-    private List<VWAcumulados> listVWAcumuladosPorEmpleado;
     //Advertencias
     private boolean continuarNuevoNat;
-
     private DataTable tabla;
-    
+    //private Object stado;
+
     public ControlConcepto() {
+
+        conceptoSeleccionado = null;
         activoDetalle = true;
         altoTabla = "205";
-        conceptoRegistro = new Conceptos();
-        listaConceptosEmpresa_Estado = null;
         conjuntoC = new LinkedHashMap<String, String>();
         listaUnidades = null;
         listaTerceros = null;
         listaEmpresas = null;
-        empresaActual = new Empresas();
+        empresaActual = null;
         backUpEmpresaActual = new Empresas();
         //Otros
         aceptar = true;
@@ -129,7 +125,7 @@ public class ControlConcepto implements Serializable {
         //modificar aficiones
         listaConceptosEmpresaModificar = new ArrayList<Conceptos>();
         //editar
-        editarConcepto = new Conceptos();
+        //editarConcepto = new Conceptos();
         mostrarTodos = true;
         cualCelda = -1;
         tipoLista = 0;
@@ -154,8 +150,8 @@ public class ControlConcepto implements Serializable {
             conjuntoC.put("" + i + "", "" + i + "");
         }
 
-        listVWAcumuladosPorEmpleado = null;
         continuarNuevoNat = false;
+        estadoConceptoEmpresa = "S";
     }
 
     @PostConstruct
@@ -165,7 +161,7 @@ public class ControlConcepto implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarConceptos.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
-            estadoConceptoEmpresa = "TODOS";
+            estadoConceptoEmpresa = "S";
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
@@ -176,43 +172,11 @@ public class ControlConcepto implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (guardado) {
             if (bandera == 1) {
-                FacesContext c = FacesContext.getCurrentInstance();
-                altoTabla = "205";
-                columnaCodigo = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigo");
-                columnaCodigo.setFilterStyle("display: none; visibility: hidden;");
-                columnaDescripción = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaDescripción");
-                columnaDescripción.setFilterStyle("display: none; visibility: hidden;");
-                columnaNaturaleza = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNaturaleza");
-                columnaNaturaleza.setFilterStyle("display: none; visibility: hidden;");
-                columnaCodigoUnidad = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoUnidad");
-                columnaCodigoUnidad.setFilterStyle("display: none; visibility: hidden;");
-                columnaNombreUnidad = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNombreUnidad");
-                columnaNombreUnidad.setFilterStyle("display: none; visibility: hidden;");
-                columnaCodigoDesprendible = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoDesprendible");
-                columnaCodigoDesprendible.setFilterStyle("display: none; visibility: hidden;");
-                columnaDescripcionDesplendible = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaDescripcionDesplendible");
-                columnaDescripcionDesplendible.setFilterStyle("display: none; visibility: hidden;");
-                columnaConjunto = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaConjunto");
-                columnaConjunto.setFilterStyle("display: none; visibility: hidden;");
-                columnaFechaAcumulado = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaFechaAcumulado");
-                columnaFechaAcumulado.setFilterStyle("display: none; visibility: hidden;");
-                columnaNombreTercero = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNombreTercero");
-                columnaNombreTercero.setFilterStyle("display: none; visibility: hidden;");
-                columnaEstado = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaEstado");
-                columnaEstado.setFilterStyle("display: none; visibility: hidden;");
-                columnaEnvio = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaEnvio");
-                columnaEnvio.setFilterStyle("display: none; visibility: hidden;");
-                columnaCodigoAlternativo = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoAlternativo");
-                columnaCodigoAlternativo.setFilterStyle("display: none; visibility: hidden;");
-                columnaIndependienteConcepto = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaIndependienteConcepto");
-                columnaIndependienteConcepto.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosConceptos");
-                bandera = 0;
-                filtradoConceptosEmpresa = null;
-                tipoLista = 0;
+                cargarTablaDefault();
             }
             listaConceptosEmpresa = null;
             getListaConceptosEmpresa();
+
             backUpEstadoConceptoEmpresa = estadoConceptoEmpresa;
             context.update("form:datosConceptos");
             verCambioEstado = false;
@@ -220,18 +184,16 @@ public class ControlConcepto implements Serializable {
             verCambioEstado = true;
             context.execute("confirmarGuardar.show()");
         }
-        //index = -1;
         activoDetalle = true;
         context.update("form:DETALLES");
-        //secRegistro = null;
         cualCelda = -1;
     }
 
     public void recibirPaginaEntrante(String pagina) {
         paginaAnterior = pagina;
         estadoConceptoEmpresa = "S";
+        listaConceptosEmpresaLOV = null;
         backUpEstadoConceptoEmpresa = "S";
-        listaConceptosEmpresa = null;
         if (listaEmpresas == null) {
             getListaEmpresas();
         }
@@ -239,6 +201,7 @@ public class ControlConcepto implements Serializable {
         if (empresaActual == null) {
             empresaActual = listaEmpresas.get(0);
         }
+        listaConceptosEmpresa = null;
         getListaConceptosEmpresa();
         if (listaConceptosEmpresa != null) {
             infoRegistro = "Cantidad de registros : " + listaConceptosEmpresa.size();
@@ -254,73 +217,37 @@ public class ControlConcepto implements Serializable {
     }
     //SELECCIONAR NATURALEZA
 
-    public void seleccionarItem(String itemSeleccionado, int indice, int celda) {
-        if (tipoLista == 0) {
-            if (celda == 2) {
-                if (itemSeleccionado.equals("NETO")) {
-                    listaConceptosEmpresa.get(indice).setNaturaleza("N");
-                } else if (itemSeleccionado.equals("GASTO")) {
-                    listaConceptosEmpresa.get(indice).setNaturaleza("G");
-                } else if (itemSeleccionado.equals("DESCUENTO")) {
-                    listaConceptosEmpresa.get(indice).setNaturaleza("D");
-                } else if (itemSeleccionado.equals("PAGO")) {
-                    listaConceptosEmpresa.get(indice).setNaturaleza("P");
-                } else if (itemSeleccionado.equals("PASIVO")) {
-                    listaConceptosEmpresa.get(indice).setNaturaleza("L");
-                }
-            } else if (celda == 11) {
-                if (itemSeleccionado.equals("ACTIVO")) {
-                    listaConceptosEmpresa.get(indice).setActivo("S");
-                } else if (itemSeleccionado.equals("INACTIVO")) {
-                    listaConceptosEmpresa.get(indice).setActivo("N");
-                }
-            } else if (celda == 12) {
-                if (itemSeleccionado.equals("SI")) {
-                    listaConceptosEmpresa.get(indice).setEnviotesoreria("S");
-                } else if (itemSeleccionado.equals("NO")) {
-                    listaConceptosEmpresa.get(indice).setEnviotesoreria("N");
-                }
+    public void seleccionarItem(String itemSeleccionado, Conceptos conceptoS, int celda) {
+        if (celda == 2) {
+            if (itemSeleccionado.equals("NETO")) {
+                conceptoS.setNaturaleza("N");
+            } else if (itemSeleccionado.equals("GASTO")) {
+                conceptoS.setNaturaleza("G");
+            } else if (itemSeleccionado.equals("DESCUENTO")) {
+                conceptoS.setNaturaleza("D");
+            } else if (itemSeleccionado.equals("PAGO")) {
+                conceptoS.setNaturaleza("P");
+            } else if (itemSeleccionado.equals("PASIVO")) {
+                conceptoS.setNaturaleza("L");
             }
-            if (!listaConceptosEmpresaCrear.contains(listaConceptosEmpresa.get(indice))) {
-                if (listaConceptosEmpresaModificar.isEmpty()) {
-                    listaConceptosEmpresaModificar.add(listaConceptosEmpresa.get(indice));
-                } else if (!listaConceptosEmpresaModificar.contains(listaConceptosEmpresa.get(indice))) {
-                    listaConceptosEmpresaModificar.add(listaConceptosEmpresa.get(indice));
-                }
+        } else if (celda == 11) {
+            if (itemSeleccionado.equals("ACTIVO")) {
+                conceptoS.setActivo("S");
+            } else if (itemSeleccionado.equals("INACTIVO")) {
+                conceptoS.setActivo("N");
             }
-        } else {
-            if (celda == 2) {
-                if (itemSeleccionado.equals("NETO")) {
-                    filtradoConceptosEmpresa.get(indice).setNaturaleza("N");
-                } else if (itemSeleccionado.equals("GASTO")) {
-                    filtradoConceptosEmpresa.get(indice).setNaturaleza("G");
-                } else if (itemSeleccionado.equals("DESCUENTO")) {
-                    filtradoConceptosEmpresa.get(indice).setNaturaleza("D");
-                } else if (itemSeleccionado.equals("PAGO")) {
-                    filtradoConceptosEmpresa.get(indice).setNaturaleza("P");
-                } else if (itemSeleccionado.equals("PASIVO")) {
-                    filtradoConceptosEmpresa.get(indice).setNaturaleza("L");
-                }
-            } else if (celda == 11) {
-                if (itemSeleccionado.equals("ACTIVO")) {
-                    filtradoConceptosEmpresa.get(indice).setActivo("S");
-                } else if (itemSeleccionado.equals("INACTIVO")) {
-                    filtradoConceptosEmpresa.get(indice).setActivo("N");
-                }
-            } else if (celda == 12) {
-                if (itemSeleccionado.equals("SI")) {
-                    filtradoConceptosEmpresa.get(indice).setEnviotesoreria("S");
-                } else if (itemSeleccionado.equals("NO")) {
-                    filtradoConceptosEmpresa.get(indice).setEnviotesoreria("N");
-                }
+        } else if (celda == 12) {
+            if (itemSeleccionado.equals("SI")) {
+                conceptoS.setEnviotesoreria("S");
+            } else if (itemSeleccionado.equals("NO")) {
+                conceptoS.setEnviotesoreria("N");
             }
-
-            if (!listaConceptosEmpresaCrear.contains(filtradoConceptosEmpresa.get(indice))) {
-                if (listaConceptosEmpresaModificar.isEmpty()) {
-                    listaConceptosEmpresaModificar.add(filtradoConceptosEmpresa.get(indice));
-                } else if (!listaConceptosEmpresaModificar.contains(filtradoConceptosEmpresa.get(indice))) {
-                    listaConceptosEmpresaModificar.add(filtradoConceptosEmpresa.get(indice));
-                }
+        }
+        if (!listaConceptosEmpresaCrear.contains(conceptoS)) {
+            if (listaConceptosEmpresaModificar.isEmpty()) {
+                listaConceptosEmpresaModificar.add(conceptoS);
+            } else if (!listaConceptosEmpresaModificar.contains(conceptoS)) {
+                listaConceptosEmpresaModificar.add(conceptoS);
             }
         }
         if (guardado) {
@@ -481,11 +408,7 @@ public class ControlConcepto implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (LND == 1) {
             tipoActualizacion = 1;
-            //index = -1;
-            //secRegistro = null;
         } else if (LND == 2) {
-            //index = -1;
-            //secRegistro = null;
             tipoActualizacion = 2;
         }
         activoDetalle = true;
@@ -499,14 +422,14 @@ public class ControlConcepto implements Serializable {
         }
     }
 
-    public void llamarDialogosLista(Integer indice, int dlg) {
-        index = indice;
+    public void llamarDialogosLista(Conceptos conceptoS, int columnD) {
         RequestContext context = RequestContext.getCurrentInstance();
+        conceptoSeleccionado = conceptoS;
         tipoActualizacion = 0;
-        if (dlg == 0) {
+        if (columnD == 0) {
             context.update("formularioDialogos:unidadesDialogo");
             context.execute("unidadesDialogo.show()");
-        } else if (dlg == 1) {
+        } else if (columnD == 1) {
             context.update("formularioDialogos:TercerosDialogo");
             context.execute("TercerosDialogo.show()");
         }
@@ -515,7 +438,7 @@ public class ControlConcepto implements Serializable {
     //LISTA DE VALORES DINAMICA
     public void listaValoresBoton() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index >= 0) {
+        if (conceptoSeleccionado != null) {
             //Si la columna es Unidades
             if (cualCelda == 3 || cualCelda == 4) {
                 context.update("formularioDialogos:unidadesDialogo");
@@ -534,14 +457,16 @@ public class ControlConcepto implements Serializable {
 
     //MOSTRAR DATOS CELDA
     public void editarCelda() {
+        /*
+         * if(stado != null){ FacesContext fc =
+         * FacesContext.getCurrentInstance();
+         * fc.getViewRoot().findComponent("form:datosConceptos").processRestoreState(fc,
+         * stado); }
+         */
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                editarConcepto = listaConceptosEmpresa.get(index);
-            }
-            if (tipoLista == 1) {
-                editarConcepto = filtradoConceptosEmpresa.get(index);
-            }
+        if (conceptoSeleccionado != null) {
+            //editarConcepto = conceptoSeleccionado;
+
             switch (cualCelda) {
                 case 0: {
                     context.update("formularioDialogos:editorCodigo");
@@ -615,8 +540,6 @@ public class ControlConcepto implements Serializable {
                 break;
             }
             cualCelda = -1;
-            //index = -1;
-            //secRegistro = null;
             activoDetalle = true;
             context.update("form:DETALLES");
         } else {
@@ -624,77 +547,37 @@ public class ControlConcepto implements Serializable {
         }
     }
 
-    public void modificarConcepto(int indice, String confirmarCambio, String valor) {
-        tipoActualizacion = 0;
+    public void modificarConcepto(Conceptos conseptoS, String columCambio, String valor) {
+
         RequestContext context = RequestContext.getCurrentInstance();
+        tipoActualizacion = 0;
         //  Validación: que el concepto no sea usado para ningun registro de empleado
         boolean conceptoUtilizado;
-        if (tipoLista == 0) {
-            conceptoUtilizado = administrarConceptos.ValidarUpdateConceptoAcumulados(listaConceptosEmpresa.get(indice).getSecuencia());
-        } else {
-            conceptoUtilizado = administrarConceptos.ValidarUpdateConceptoAcumulados(filtradoConceptosEmpresa.get(indice).getSecuencia());
-        }
+
+        conceptoUtilizado = administrarConceptos.ValidarUpdateConceptoAcumulados(conseptoS.getSecuencia());
+
         //Si se puede modificar
         if (conceptoUtilizado) {
-            index = indice;
+            conceptoSeleccionado = conseptoS;
             int coincidencias = 0;
             int indiceUnicoElemento = 0;
-            if (confirmarCambio.equalsIgnoreCase("COD")) {
+
+            if (columCambio.equalsIgnoreCase("COD")) {
                 BigInteger cod = new BigInteger(valor);
                 boolean error = validarCodigo(cod);
                 if (error) {
-                    if (tipoLista == 0) {
-                        listaConceptosEmpresa.get(indice).setCodigo(cod);
-                    } else {
-                        filtradoConceptosEmpresa.get(indice).setCodigo(cod);
-                    }
+                    conseptoS.setCodigo(cod);
                     context.update("formularioDialogos:NuevoConceptoDialogo");
                     context.update("formularioDialogos:validacioNuevoCodigo");
                     context.execute("validacioNuevoCodigo.show()");
                     refrescar();
                 }
 
-            } else if (confirmarCambio.equalsIgnoreCase("N")) {
-                if (tipoLista == 0) {
-                    if (!listaConceptosEmpresaCrear.contains(listaConceptosEmpresa.get(indice))) {
+            } else if (columCambio.equalsIgnoreCase("N")) {
+                coincidencias++;
 
-                        if (!listaConceptosEmpresaModificar.contains(listaConceptosEmpresa.get(indice))
-                                || listaConceptosEmpresaModificar.isEmpty()) {
-                            listaConceptosEmpresaModificar.add(listaConceptosEmpresa.get(indice));
-                        }
-                        if (guardado) {
-                            guardado = false;
-                            RequestContext.getCurrentInstance().update("form:ACEPTAR");
-                        }
-                    }
-                    //index = -1;
-                    //secRegistro = null;
-                    activoDetalle = true;
-                    context.update("form:DETALLES");
-                } else {
-                    if (!listaConceptosEmpresaCrear.contains(filtradoConceptosEmpresa.get(indice))) {
-
-                        if (!listaConceptosEmpresaModificar.contains(filtradoConceptosEmpresa.get(indice))
-                                || listaConceptosEmpresaModificar.isEmpty()) {
-                            listaConceptosEmpresaModificar.add(filtradoConceptosEmpresa.get(indice));
-                        }
-                        if (guardado) {
-                            guardado = false;
-                            RequestContext.getCurrentInstance().update("form:ACEPTAR");
-                        }
-                    }
-                    //index = -1;
-                    //secRegistro = null;
-                    activoDetalle = true;
-                    context.update("form:DETALLES");
-                }
-                context.update("form:datosConceptos");
-            } else if (confirmarCambio.equalsIgnoreCase("UNIDADESCODIGO")) {
-                if (tipoLista == 0) {
-                    listaConceptosEmpresa.get(indice).getUnidad().setCodigo(codigoUnidad);
-                } else {
-                    filtradoConceptosEmpresa.get(indice).getUnidad().setCodigo(codigoUnidad);
-                }
+            } else if (columCambio.equalsIgnoreCase("UNIDADESCODIGO")) {
+                conseptoS.getUnidad().setCodigo(codigoUnidad);
                 for (int i = 0; i < listaUnidades.size(); i++) {
                     if (listaUnidades.get(i).getCodigo().startsWith(valor.toUpperCase())) {
                         indiceUnicoElemento = i;
@@ -702,24 +585,17 @@ public class ControlConcepto implements Serializable {
                     }
                 }
                 if (coincidencias == 1) {
-                    if (tipoLista == 0) {
-                        listaConceptosEmpresa.get(indice).setUnidad(listaUnidades.get(indiceUnicoElemento));
-                    } else {
-                        filtradoConceptosEmpresa.get(indice).setUnidad(listaUnidades.get(indiceUnicoElemento));
-                    }
-                    listaUnidades.clear();
-                    getListaUnidades();
+                    conseptoS.setUnidad(listaUnidades.get(indiceUnicoElemento));
+                    //listaUnidades.clear();
+                    //getListaUnidades();
                 } else {
                     permitirIndex = false;
                     context.update("formularioDialogos:unidadesDialogo");
                     context.execute("unidadesDialogo.show()");
                 }
-            } else if (confirmarCambio.equalsIgnoreCase("UNIDADESNOMBRE")) {
-                if (tipoLista == 0) {
-                    listaConceptosEmpresa.get(indice).getUnidad().setNombre(nombreUnidad);
-                } else {
-                    filtradoConceptosEmpresa.get(indice).getUnidad().setNombre(nombreUnidad);
-                }
+
+            } else if (columCambio.equalsIgnoreCase("UNIDADESNOMBRE")) {
+                conseptoS.getUnidad().setNombre(nombreUnidad);
                 for (int i = 0; i < listaUnidades.size(); i++) {
                     if (listaUnidades.get(i).getNombre().startsWith(valor.toUpperCase())) {
                         indiceUnicoElemento = i;
@@ -727,23 +603,16 @@ public class ControlConcepto implements Serializable {
                     }
                 }
                 if (coincidencias == 1) {
-                    if (tipoLista == 0) {
-                        listaConceptosEmpresa.get(indice).setUnidad(listaUnidades.get(indiceUnicoElemento));
-                    } else {
-                        filtradoConceptosEmpresa.get(indice).setUnidad(listaUnidades.get(indiceUnicoElemento));
-                    }
+                    conseptoS.setUnidad(listaUnidades.get(indiceUnicoElemento));
                 } else {
                     permitirIndex = false;
                     context.update("formularioDialogos:unidadesDialogo");
                     context.execute("unidadesDialogo.show()");
                 }
-            } else if (confirmarCambio.equalsIgnoreCase("TERCERO")) {
+
+            } else if (columCambio.equalsIgnoreCase("TERCERO")) {
                 if (!valor.isEmpty()) {
-                    if (tipoLista == 0) {
-                        listaConceptosEmpresa.get(indice).getTercero().setNombre(tercero);
-                    } else {
-                        filtradoConceptosEmpresa.get(indice).getTercero().setNombre(tercero);
-                    }
+                    conseptoS.getTercero().setNombre(tercero);
                     for (int i = 0; i < listaTerceros.size(); i++) {
                         if (listaTerceros.get(i).getNombre().startsWith(valor.toUpperCase())) {
                             indiceUnicoElemento = i;
@@ -751,87 +620,53 @@ public class ControlConcepto implements Serializable {
                         }
                     }
                     if (coincidencias == 1) {
-                        if (tipoLista == 0) {
-                            listaConceptosEmpresa.get(indice).setTercero(listaTerceros.get(indiceUnicoElemento));
-                        } else {
-                            filtradoConceptosEmpresa.get(indice).setTercero(listaTerceros.get(indiceUnicoElemento));
-                        }
-                        listaTerceros.clear();
-                        getListaTerceros();
+                        conseptoS.setTercero(listaTerceros.get(indiceUnicoElemento));
+                        //listaTerceros.clear();
+                        //getListaTerceros();
                     } else {
                         permitirIndex = false;
                         context.update("formularioDialogos:TercerosDialogo");
                         context.execute("TercerosDialogo.show()");
                     }
                 } else {
-                    listaTerceros.clear();
-                    getListaTerceros();
-                    if (tipoLista == 0) {
-                        listaConceptosEmpresa.get(indice).setTercero(new Terceros());
-                    } else {
-                        filtradoConceptosEmpresa.get(indice).setTercero(new Terceros());
-                    }
+                    //listaTerceros.clear();
+                    //getListaTerceros();
+                    conseptoS.setTercero(new Terceros());
                     coincidencias = 1;
                 }
             }
+
             if (coincidencias == 1) {
-                if (tipoLista == 0) {
-                    if (!listaConceptosEmpresaCrear.contains(listaConceptosEmpresa.get(indice))) {
+                if (!listaConceptosEmpresaCrear.contains(conseptoS)) {
 
-                        if (listaConceptosEmpresaModificar.isEmpty()) {
-                            listaConceptosEmpresaModificar.add(listaConceptosEmpresa.get(indice));
-                        } else if (!listaConceptosEmpresaModificar.contains(listaConceptosEmpresa.get(indice))) {
-                            listaConceptosEmpresaModificar.add(listaConceptosEmpresa.get(indice));
-                        }
+                    if (listaConceptosEmpresaModificar.isEmpty() || !listaConceptosEmpresaModificar.contains(conseptoS)) {
+                        listaConceptosEmpresaModificar.add(conseptoS);
                     }
-                } else {
-                    if (!listaConceptosEmpresaCrear.contains(filtradoConceptosEmpresa.get(indice))) {
-
-                        if (listaConceptosEmpresaModificar.isEmpty()) {
-                            listaConceptosEmpresaModificar.add(filtradoConceptosEmpresa.get(indice));
-                        } else if (!listaConceptosEmpresaModificar.contains(filtradoConceptosEmpresa.get(indice))) {
-                            listaConceptosEmpresaModificar.add(filtradoConceptosEmpresa.get(indice));
-                        }
+                    if (guardado) {
+                        guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
+                    activoDetalle = true;
+                    context.update("form:DETALLES");
                 }
-                if (guardado) {
-                    guardado = false;
-                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
-                }
-                //index = -1;
-                //secRegistro = null;
-                activoDetalle = true;
-                context.update("form:DETALLES");
             }
-
         } else {
-            if (tipoLista == 0) {
-                refrescar();
-                context.execute("errorNoModificar.show()");
-            }
+            refrescar();
+            context.execute("errorNoModificar.show()");
         }
         tipoActualizacion = -1;
         context.update("form:datosConceptos");
     }
 
     //Ubicacion Celda.
-
-    public void cambiarIndice(int indice, int celda) {
+    public void cambiarIndice(Conceptos conceptoS, int celda) {
         if (permitirIndex) {
-            index = indice;
+            conceptoSeleccionado = conceptoS;
             cualCelda = celda;
             if (tipoLista == 0) {
-                secRegistro = listaConceptosEmpresa.get(index).getSecuencia();
-                conceptoRegistro = listaConceptosEmpresa.get(index);
-                codigoUnidad = listaConceptosEmpresa.get(index).getUnidad().getCodigo();
-                nombreUnidad = listaConceptosEmpresa.get(index).getUnidad().getNombre();
-                tercero = listaConceptosEmpresa.get(index).getTercero().getNombre();
-            } else {
-                secRegistro = filtradoConceptosEmpresa.get(index).getSecuencia();
-                conceptoRegistro = filtradoConceptosEmpresa.get(index);
-                codigoUnidad = filtradoConceptosEmpresa.get(index).getUnidad().getCodigo();
-                nombreUnidad = filtradoConceptosEmpresa.get(index).getUnidad().getNombre();
-                tercero = filtradoConceptosEmpresa.get(index).getTercero().getNombre();
+                codigoUnidad = conceptoSeleccionado.getUnidad().getCodigo();
+                nombreUnidad = conceptoSeleccionado.getUnidad().getNombre();
+                tercero = conceptoSeleccionado.getTercero().getNombre();
             }
             RequestContext context = RequestContext.getCurrentInstance();
             activoDetalle = false;
@@ -842,23 +677,12 @@ public class ControlConcepto implements Serializable {
     public void actualizarUnidad() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
-            if (tipoLista == 0) {
-                listaConceptosEmpresa.get(index).setUnidad(unidadSeleccionada);
-                if (!listaConceptosEmpresaCrear.contains(listaConceptosEmpresa.get(index))) {
-                    if (listaConceptosEmpresaModificar.isEmpty()) {
-                        listaConceptosEmpresaModificar.add(listaConceptosEmpresa.get(index));
-                    } else if (!listaConceptosEmpresaModificar.contains(listaConceptosEmpresa.get(index))) {
-                        listaConceptosEmpresaModificar.add(listaConceptosEmpresa.get(index));
-                    }
-                }
-            } else {
-                filtradoConceptosEmpresa.get(index).setUnidad(unidadSeleccionada);
-                if (!listaConceptosEmpresaCrear.contains(filtradoConceptosEmpresa.get(index))) {
-                    if (listaConceptosEmpresaModificar.isEmpty()) {
-                        listaConceptosEmpresaModificar.add(filtradoConceptosEmpresa.get(index));
-                    } else if (!listaConceptosEmpresaModificar.contains(filtradoConceptosEmpresa.get(index))) {
-                        listaConceptosEmpresaModificar.add(filtradoConceptosEmpresa.get(index));
-                    }
+            conceptoSeleccionado.setUnidad(unidadSeleccionada);
+            if (!listaConceptosEmpresaCrear.contains(conceptoSeleccionado)) {
+                if (listaConceptosEmpresaModificar.isEmpty()) {
+                    listaConceptosEmpresaModificar.add(conceptoSeleccionado);
+                } else if (!listaConceptosEmpresaModificar.contains(conceptoSeleccionado)) {
+                    listaConceptosEmpresaModificar.add(conceptoSeleccionado);
                 }
             }
             if (guardado) {
@@ -876,15 +700,13 @@ public class ControlConcepto implements Serializable {
             context.update("formularioDialogos:duplicarCodigoUnidad");
             context.update("formularioDialogos:duplicarNombreUnidad");
         }
+
         filtradoUnidades = null;
         unidadSeleccionada = null;
         aceptar = true;
-        //index = -1;
-        //secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         activoDetalle = true;
-
         context.update("form:DETALLES");
         context.reset("formularioDialogos:lovUnidades:globalFilter");
         context.execute("lovUnidades.clearFilters()");
@@ -896,8 +718,6 @@ public class ControlConcepto implements Serializable {
         filtradoUnidades = null;
         unidadSeleccionada = null;
         aceptar = true;
-        //index = -1;
-        //secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         activoDetalle = true;
@@ -911,25 +731,15 @@ public class ControlConcepto implements Serializable {
     public void actualizarTercero() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
-            if (tipoLista == 0) {
-                listaConceptosEmpresa.get(index).setTercero(terceroSeleccionado);
-                if (!listaConceptosEmpresaCrear.contains(listaConceptosEmpresa.get(index))) {
-                    if (listaConceptosEmpresaModificar.isEmpty()) {
-                        listaConceptosEmpresaModificar.add(listaConceptosEmpresa.get(index));
-                    } else if (!listaConceptosEmpresaModificar.contains(listaConceptosEmpresa.get(index))) {
-                        listaConceptosEmpresaModificar.add(listaConceptosEmpresa.get(index));
-                    }
-                }
-            } else {
-                filtradoConceptosEmpresa.get(index).setTercero(terceroSeleccionado);
-                if (!listaConceptosEmpresaCrear.contains(filtradoConceptosEmpresa.get(index))) {
-                    if (listaConceptosEmpresaModificar.isEmpty()) {
-                        listaConceptosEmpresaModificar.add(filtradoConceptosEmpresa.get(index));
-                    } else if (!listaConceptosEmpresaModificar.contains(filtradoConceptosEmpresa.get(index))) {
-                        listaConceptosEmpresaModificar.add(filtradoConceptosEmpresa.get(index));
-                    }
+            conceptoSeleccionado.setTercero(terceroSeleccionado);
+            if (!listaConceptosEmpresaCrear.contains(conceptoSeleccionado)) {
+                if (listaConceptosEmpresaModificar.isEmpty()) {
+                    listaConceptosEmpresaModificar.add(conceptoSeleccionado);
+                } else if (!listaConceptosEmpresaModificar.contains(conceptoSeleccionado)) {
+                    listaConceptosEmpresaModificar.add(conceptoSeleccionado);
                 }
             }
+
             if (guardado) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -945,8 +755,6 @@ public class ControlConcepto implements Serializable {
         filtradoTerceros = null;
         terceroSeleccionado = null;
         aceptar = true;
-        //index = -1;
-        //secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         activoDetalle = true;
@@ -962,8 +770,6 @@ public class ControlConcepto implements Serializable {
         filtradoTerceros = null;
         terceroSeleccionado = null;
         aceptar = true;
-        //index = -1;
-        //secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         activoDetalle = true;
@@ -975,8 +781,7 @@ public class ControlConcepto implements Serializable {
     }
 
     public void lovEmpresas() {
-        index = -1;
-        secRegistro = null;
+        conceptoSeleccionado = null;
         activoDetalle = true;
         RequestContext.getCurrentInstance().update("form:DETALLES");
         cualCelda = -1;
@@ -986,6 +791,7 @@ public class ControlConcepto implements Serializable {
     public void cambiarEmpresa() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (guardado) {
+            backUpEmpresaActual = empresaActual;
             listaConceptosEmpresa = null;
             getListaConceptosEmpresa();
             context.update("form:datosConceptos");
@@ -997,7 +803,6 @@ public class ControlConcepto implements Serializable {
             context.reset("formularioDialogos:lovEmpresas:globalFilter");
             context.execute("lovEmpresas.clearFilters()");
             context.execute("EmpresasDialogo.hide()");
-            backUpEmpresaActual = empresaActual;
             verCambioEmpresa = false;
         } else {
             verCambioEmpresa = true;
@@ -1009,7 +814,7 @@ public class ControlConcepto implements Serializable {
         filtradoListaEmpresas = null;
         verCambioEmpresa = true;
         empresaActual = backUpEmpresaActual;
-        index = -1;
+        conceptoSeleccionado = null;
         activoDetalle = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:DETALLES");
@@ -1022,8 +827,6 @@ public class ControlConcepto implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (quien == 0) {
             if (guardado) {
-                listaConceptosEmpresa = null;
-                getListaConceptosEmpresa();
                 context.update("formularioDialogos:ConceptosDialogo");
                 context.execute("ConceptosDialogo.show()");
                 verSeleccionConcepto = false;
@@ -1033,13 +836,11 @@ public class ControlConcepto implements Serializable {
                 context.execute("confirmarGuardar.show()");
             }
         } else {
-            listaConceptosEmpresa_Estado = administrarConceptos.consultarConceptosEmpresaSinPasivos(empresaActual.getSecuencia());
             context.update("formularioDialogos:ConceptosDialogo");
             context.execute("ConceptosDialogo.show()");
             cambioConcepto = 1;
         }
-        index = -1;
-        secRegistro = null;
+        conceptoSeleccionado = null;
         cualCelda = -1;
         activoDetalle = true;
         RequestContext.getCurrentInstance().update("form:DETALLES");
@@ -1049,45 +850,16 @@ public class ControlConcepto implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (guardado) {
             if (bandera == 1) {
-                FacesContext c = FacesContext.getCurrentInstance();
-                altoTabla = "205";
-                columnaCodigo = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigo");
-                columnaCodigo.setFilterStyle("display: none; visibility: hidden;");
-                columnaDescripción = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaDescripción");
-                columnaDescripción.setFilterStyle("display: none; visibility: hidden;");
-                columnaNaturaleza = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNaturaleza");
-                columnaNaturaleza.setFilterStyle("display: none; visibility: hidden;");
-                columnaCodigoUnidad = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoUnidad");
-                columnaCodigoUnidad.setFilterStyle("display: none; visibility: hidden;");
-                columnaNombreUnidad = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNombreUnidad");
-                columnaNombreUnidad.setFilterStyle("display: none; visibility: hidden;");
-                columnaCodigoDesprendible = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoDesprendible");
-                columnaCodigoDesprendible.setFilterStyle("display: none; visibility: hidden;");
-                columnaDescripcionDesplendible = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaDescripcionDesplendible");
-                columnaDescripcionDesplendible.setFilterStyle("display: none; visibility: hidden;");
-                columnaConjunto = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaConjunto");
-                columnaConjunto.setFilterStyle("display: none; visibility: hidden;");
-                columnaFechaAcumulado = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaFechaAcumulado");
-                columnaFechaAcumulado.setFilterStyle("display: none; visibility: hidden;");
-                columnaNombreTercero = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNombreTercero");
-                columnaNombreTercero.setFilterStyle("display: none; visibility: hidden;");
-                columnaEstado = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaEstado");
-                columnaEstado.setFilterStyle("display: none; visibility: hidden;");
-                columnaEnvio = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaEnvio");
-                columnaEnvio.setFilterStyle("display: none; visibility: hidden;");
-                columnaCodigoAlternativo = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoAlternativo");
-                columnaCodigoAlternativo.setFilterStyle("display: none; visibility: hidden;");
-                columnaIndependienteConcepto = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaIndependienteConcepto");
-                columnaIndependienteConcepto.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosConceptos");
-                bandera = 0;
-                filtradoConceptosEmpresa = null;
-                tipoLista = 0;
+                cargarTablaDefault();
             }
-            listaConceptosEmpresa = null;
+            listaConceptosEmpresa.clear();
+            for (int i = 0; i < listaConceptosEmpresaLOV.size(); i++) {
+                listaConceptosEmpresa.add(listaConceptosEmpresaLOV.get(i));
+            }
+
             mostrarTodos = true;
             verMostrarTodos = false;
-            getListaConceptosEmpresa();
+            conceptoSeleccionado = null;
             context.update("form:datosConceptos");
             context.update("form:mostrarTodos");
         } else {
@@ -1100,57 +872,23 @@ public class ControlConcepto implements Serializable {
     }
 
     public void seleccionConcepto() {
-        index = -1;
-        secRegistro = null;
+        conceptoSeleccionado = null;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cambioConcepto == 0) {
             if (bandera == 1) {
-                FacesContext c = FacesContext.getCurrentInstance();
-                altoTabla = "205";
-                columnaIndependienteConcepto = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaIndependienteConcepto");
-                columnaIndependienteConcepto.setFilterStyle("display: none; visibility: hidden;");
-                columnaCodigo = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigo");
-                columnaCodigo.setFilterStyle("display: none; visibility: hidden;");
-                columnaDescripción = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaDescripción");
-                columnaDescripción.setFilterStyle("display: none; visibility: hidden;");
-                columnaNaturaleza = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNaturaleza");
-                columnaNaturaleza.setFilterStyle("display: none; visibility: hidden;");
-                columnaCodigoUnidad = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoUnidad");
-                columnaCodigoUnidad.setFilterStyle("display: none; visibility: hidden;");
-                columnaNombreUnidad = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNombreUnidad");
-                columnaNombreUnidad.setFilterStyle("display: none; visibility: hidden;");
-                columnaCodigoDesprendible = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoDesprendible");
-                columnaCodigoDesprendible.setFilterStyle("display: none; visibility: hidden;");
-                columnaDescripcionDesplendible = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaDescripcionDesplendible");
-                columnaDescripcionDesplendible.setFilterStyle("display: none; visibility: hidden;");
-                columnaConjunto = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaConjunto");
-                columnaConjunto.setFilterStyle("display: none; visibility: hidden;");
-                columnaFechaAcumulado = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaFechaAcumulado");
-                columnaFechaAcumulado.setFilterStyle("display: none; visibility: hidden;");
-                columnaNombreTercero = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNombreTercero");
-                columnaNombreTercero.setFilterStyle("display: none; visibility: hidden;");
-                columnaEstado = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaEstado");
-                columnaEstado.setFilterStyle("display: none; visibility: hidden;");
-                columnaEnvio = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaEnvio");
-                columnaEnvio.setFilterStyle("display: none; visibility: hidden;");
-                columnaCodigoAlternativo = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoAlternativo");
-                columnaCodigoAlternativo.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosConceptos");
-                bandera = 0;
-                filtradoConceptosEmpresa = null;
-                tipoLista = 0;
+                cargarTablaDefault();
             }
             listaConceptosEmpresa.clear();
-            listaConceptosEmpresa.add(conceptoSeleccionado);
+            listaConceptosEmpresa.add(conceptoSeleccionadoLOV);
             mostrarTodos = false;
             context.update("form:datosConceptos");
             context.update("form:mostrarTodos");
         } else {
-            conceptoOriginal = conceptoSeleccionado;
+            conceptoOriginal = conceptoSeleccionadoLOV;
             context.update("form:descripcionClon");
         }
-        filtradoConceptosEmpresa_Estado = null;
-        conceptoSeleccionado = null;
+        filtradoConceptosEmpresaLOV = null;
+        conceptoSeleccionadoLOV = null;
         aceptar = true;
 
         context.reset("formularioDialogos:lovConceptos:globalFilter");
@@ -1159,8 +897,8 @@ public class ControlConcepto implements Serializable {
     }
 
     public void cancelarSeleccionConcepto() {
-        filtradoConceptosEmpresa_Estado = null;
-        conceptoSeleccionado = null;
+        filtradoConceptosEmpresaLOV = null;
+        conceptoSeleccionadoLOV = null;
         aceptar = true;
         conceptoOriginal.setInformacionConcepto(null);
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1171,39 +909,22 @@ public class ControlConcepto implements Serializable {
 
     public void borrarConcepto() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                if (!listaConceptosEmpresaModificar.isEmpty() && listaConceptosEmpresaModificar.contains(listaConceptosEmpresa.get(index))) {
-                    int modIndex = listaConceptosEmpresaModificar.indexOf(listaConceptosEmpresa.get(index));
-                    listaConceptosEmpresaModificar.remove(modIndex);
-                    listaConceptosBorrar.add(listaConceptosEmpresa.get(index));
-                } else if (!listaConceptosEmpresaCrear.isEmpty() && listaConceptosEmpresaCrear.contains(listaConceptosEmpresa.get(index))) {
-                    int crearIndex = listaConceptosEmpresaCrear.indexOf(listaConceptosEmpresa.get(index));
-                    listaConceptosEmpresaCrear.remove(crearIndex);
-                } else {
-                    listaConceptosBorrar.add(listaConceptosEmpresa.get(index));
-                }
-                listaConceptosEmpresa.remove(index);
+        if (conceptoSeleccionado != null) {
+            if (!listaConceptosEmpresaModificar.isEmpty() && listaConceptosEmpresaModificar.contains(conceptoSeleccionado)) {
+                int modIndex = listaConceptosEmpresaModificar.indexOf(conceptoSeleccionado);
+                listaConceptosEmpresaModificar.remove(modIndex);
+                listaConceptosBorrar.add(conceptoSeleccionado);
+            } else if (!listaConceptosEmpresaCrear.isEmpty() && listaConceptosEmpresaCrear.contains(conceptoSeleccionado)) {
+                int crearIndex = listaConceptosEmpresaCrear.indexOf(conceptoSeleccionado);
+                listaConceptosEmpresaCrear.remove(crearIndex);
+            } else {
+                listaConceptosBorrar.add(conceptoSeleccionado);
             }
-            if (tipoLista == 1) {
-                if (!listaConceptosEmpresaModificar.isEmpty() && listaConceptosEmpresaModificar.contains(filtradoConceptosEmpresa.get(index))) {
-                    int modIndex = listaConceptosEmpresaModificar.indexOf(filtradoConceptosEmpresa.get(index));
-                    listaConceptosEmpresaModificar.remove(modIndex);
-                    listaConceptosBorrar.add(filtradoConceptosEmpresa.get(index));
-                } else if (!listaConceptosEmpresaCrear.isEmpty() && listaConceptosEmpresaCrear.contains(filtradoConceptosEmpresa.get(index))) {
-                    int crearIndex = listaConceptosEmpresaCrear.indexOf(filtradoConceptosEmpresa.get(index));
-                    listaConceptosEmpresaCrear.remove(crearIndex);
-                } else {
-                    listaConceptosBorrar.add(filtradoConceptosEmpresa.get(index));
-                }
-                filtradoConceptosEmpresa.remove(index);
-            }
+            listaConceptosEmpresa.remove(conceptoSeleccionado);
 
-            infoRegistro = "Cantidad de registros : " + listaConceptosEmpresa.size();
             context.update("form:informacionRegistro");
             context.update("form:datosConceptos");
-            index = -1;
-            secRegistro = null;
+            conceptoSeleccionado = null;
             activoDetalle = true;
             RequestContext.getCurrentInstance().update("form:DETALLES");
             if (guardado) {
@@ -1254,8 +975,7 @@ public class ControlConcepto implements Serializable {
                 permitirIndex = true;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 paraNuevoConcepto = 0;
-                index = -1;
-                secRegistro = null;
+                conceptoSeleccionado = null;
                 activoDetalle = true;
                 RequestContext.getCurrentInstance().update("form:DETALLES");
                 if (verCambioEmpresa) {
@@ -1298,8 +1018,7 @@ public class ControlConcepto implements Serializable {
 
     //CTRL + F11 ACTIVAR/DESACTIVAR
     public void activarCtrlF11() {
-        index = -1;
-        secRegistro = null;
+        conceptoSeleccionado = null;
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             altoTabla = "183";
@@ -1335,47 +1054,25 @@ public class ControlConcepto implements Serializable {
             bandera = 1;
 
         } else if (bandera == 1) {
-            altoTabla = "205";
-            columnaIndependienteConcepto = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaIndependienteConcepto");
-            columnaIndependienteConcepto.setFilterStyle("display: none; visibility: hidden;");
-            columnaCodigo = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigo");
-            columnaCodigo.setFilterStyle("display: none; visibility: hidden;");
-            columnaDescripción = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaDescripción");
-            columnaDescripción.setFilterStyle("display: none; visibility: hidden;");
-            columnaNaturaleza = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNaturaleza");
-            columnaNaturaleza.setFilterStyle("display: none; visibility: hidden;");
-            columnaCodigoUnidad = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoUnidad");
-            columnaCodigoUnidad.setFilterStyle("display: none; visibility: hidden;");
-            columnaNombreUnidad = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNombreUnidad");
-            columnaNombreUnidad.setFilterStyle("display: none; visibility: hidden;");
-            columnaCodigoDesprendible = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoDesprendible");
-            columnaCodigoDesprendible.setFilterStyle("display: none; visibility: hidden;");
-            columnaDescripcionDesplendible = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaDescripcionDesplendible");
-            columnaDescripcionDesplendible.setFilterStyle("display: none; visibility: hidden;");
-            columnaConjunto = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaConjunto");
-            columnaConjunto.setFilterStyle("display: none; visibility: hidden;");
-            columnaFechaAcumulado = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaFechaAcumulado");
-            columnaFechaAcumulado.setFilterStyle("display: none; visibility: hidden;");
-            columnaNombreTercero = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNombreTercero");
-            columnaNombreTercero.setFilterStyle("display: none; visibility: hidden;");
-            columnaEstado = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaEstado");
-            columnaEstado.setFilterStyle("display: none; visibility: hidden;");
-            columnaEnvio = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaEnvio");
-            columnaEnvio.setFilterStyle("display: none; visibility: hidden;");
-            columnaCodigoAlternativo = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoAlternativo");
-            columnaCodigoAlternativo.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosConceptos");
-            bandera = 0;
-            filtradoConceptosEmpresa = null;
-            tipoLista = 0;
+            cargarTablaDefault();
         }
+        RequestContext.getCurrentInstance().update("form:datosConceptos");
     }
 
     public boolean validarCodigo(BigInteger cod) {
         int error = 0;
-        for (int i = 0; i < listaConceptosEmpresa_Estado.size(); i++) {
-            if (listaConceptosEmpresa_Estado.get(i).getCodigo().equals(cod)) {
+        for (int i = 0; i < listaConceptosEmpresaLOV.size(); i++) {
+            if (listaConceptosEmpresaLOV.get(i).getCodigo().equals(cod)) {
                 error++;
+            }
+        }
+        if (listaConceptosEmpresaCrear != null) {
+            if (!listaConceptosEmpresaCrear.isEmpty()) {
+                for (int i = 0; i < listaConceptosEmpresaCrear.size(); i++) {
+                    if (listaConceptosEmpresaCrear.get(i).getCodigo().equals(cod)) {
+                        error++;
+                    }
+                }
             }
         }
         if (tipoActualizacion > 0) {
@@ -1432,40 +1129,7 @@ public class ControlConcepto implements Serializable {
 
                 if (pasa == 0) {
                     if (bandera == 1) {
-                        FacesContext c = FacesContext.getCurrentInstance();
-                        altoTabla = "205";
-                        columnaIndependienteConcepto = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaIndependienteConcepto");
-                        columnaIndependienteConcepto.setFilterStyle("display: none; visibility: hidden;");
-                        columnaCodigo = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigo");
-                        columnaCodigo.setFilterStyle("display: none; visibility: hidden;");
-                        columnaDescripción = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaDescripción");
-                        columnaDescripción.setFilterStyle("display: none; visibility: hidden;");
-                        columnaNaturaleza = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNaturaleza");
-                        columnaNaturaleza.setFilterStyle("display: none; visibility: hidden;");
-                        columnaCodigoUnidad = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoUnidad");
-                        columnaCodigoUnidad.setFilterStyle("display: none; visibility: hidden;");
-                        columnaNombreUnidad = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNombreUnidad");
-                        columnaNombreUnidad.setFilterStyle("display: none; visibility: hidden;");
-                        columnaCodigoDesprendible = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoDesprendible");
-                        columnaCodigoDesprendible.setFilterStyle("display: none; visibility: hidden;");
-                        columnaDescripcionDesplendible = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaDescripcionDesplendible");
-                        columnaDescripcionDesplendible.setFilterStyle("display: none; visibility: hidden;");
-                        columnaConjunto = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaConjunto");
-                        columnaConjunto.setFilterStyle("display: none; visibility: hidden;");
-                        columnaFechaAcumulado = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaFechaAcumulado");
-                        columnaFechaAcumulado.setFilterStyle("display: none; visibility: hidden;");
-                        columnaNombreTercero = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNombreTercero");
-                        columnaNombreTercero.setFilterStyle("display: none; visibility: hidden;");
-                        columnaEstado = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaEstado");
-                        columnaEstado.setFilterStyle("display: none; visibility: hidden;");
-                        columnaEnvio = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaEnvio");
-                        columnaEnvio.setFilterStyle("display: none; visibility: hidden;");
-                        columnaCodigoAlternativo = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoAlternativo");
-                        columnaCodigoAlternativo.setFilterStyle("display: none; visibility: hidden;");
-                        context.update("form:datosConceptos");
-                        bandera = 0;
-                        filtradoConceptosEmpresa = null;
-                        tipoLista = 0;
+                        cargarTablaDefault();
                     }
                     paraNuevoConcepto++;
                     nuevoConceptoSecuencia = BigInteger.valueOf(paraNuevoConcepto);
@@ -1506,7 +1170,6 @@ public class ControlConcepto implements Serializable {
                     }
 
                     listaConceptosEmpresaCrear.add(nuevoConcepto);
-
                     listaConceptosEmpresa.add(nuevoConcepto);
                     infoRegistro = "Cantidad de registros : " + listaConceptosEmpresa.size();
                     context.update("form:informacionRegistro");
@@ -1521,8 +1184,7 @@ public class ControlConcepto implements Serializable {
                     }
                     context.execute("NuevoConceptoDialogo.hide()");
                     context.update("formularioDialogos:NuevoConceptoDialogo");
-                    index = -1;
-                    secRegistro = null;
+                    conceptoSeleccionado = null;
                     activoDetalle = true;
                     continuarNuevoNat = false;
                     tipoActualizacion = -1;
@@ -1547,51 +1209,30 @@ public class ControlConcepto implements Serializable {
         nuevoConcepto = new Conceptos();
         nuevoConcepto.setUnidad(new Unidades());
         nuevoConcepto.setTercero(new Terceros());
-        //index = -1;
-        //secRegistro = null;
         activoDetalle = true;
         RequestContext.getCurrentInstance().update("form:DETALLES");
     }
 
     public void duplicarRegistro() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index >= 0) {
+        if (conceptoSeleccionado != null) {
             duplicarConcepto = new Conceptos();
             // duplicarConcepto.setConjunto(Short.parseShort("45"));
-            if (tipoLista == 0) {
-                duplicarConcepto.setEmpresa(listaConceptosEmpresa.get(index).getEmpresa());
-                duplicarConcepto.setCodigo(listaConceptosEmpresa.get(index).getCodigo());
-                duplicarConcepto.setDescripcion(listaConceptosEmpresa.get(index).getDescripcion());
-                duplicarConcepto.setNaturaleza(listaConceptosEmpresa.get(index).getNaturaleza());
-                duplicarConcepto.setUnidad(listaConceptosEmpresa.get(index).getUnidad());
-                duplicarConcepto.setCodigodesprendible(listaConceptosEmpresa.get(index).getCodigodesprendible());
-                duplicarConcepto.setIndependiente(listaConceptosEmpresa.get(index).getIndependiente());
-                duplicarConcepto.setConjunto(listaConceptosEmpresa.get(index).getConjunto());
-                duplicarConcepto.setContenidofechahasta(listaConceptosEmpresa.get(index).getContenidofechahasta());
-                duplicarConcepto.setTercero(listaConceptosEmpresa.get(index).getTercero());
-                duplicarConcepto.setActivo(listaConceptosEmpresa.get(index).getActivo());
-                duplicarConcepto.setEnviotesoreria(listaConceptosEmpresa.get(index).getEnviotesoreria());
-                duplicarConcepto.setCodigoalternativo(listaConceptosEmpresa.get(index).getCodigoalternativo());
-            }
-            if (tipoLista == 1) {
-                duplicarConcepto.setEmpresa(filtradoConceptosEmpresa.get(index).getEmpresa());
-                duplicarConcepto.setCodigo(filtradoConceptosEmpresa.get(index).getCodigo());
-                duplicarConcepto.setDescripcion(filtradoConceptosEmpresa.get(index).getDescripcion());
-                duplicarConcepto.setNaturaleza(filtradoConceptosEmpresa.get(index).getNaturaleza());
-                duplicarConcepto.setUnidad(filtradoConceptosEmpresa.get(index).getUnidad());
-                duplicarConcepto.setCodigodesprendible(filtradoConceptosEmpresa.get(index).getCodigodesprendible());
-                duplicarConcepto.setIndependiente(filtradoConceptosEmpresa.get(index).getIndependiente());
-                duplicarConcepto.setConjunto(filtradoConceptosEmpresa.get(index).getConjunto());
-                duplicarConcepto.setContenidofechahasta(filtradoConceptosEmpresa.get(index).getContenidofechahasta());
-                duplicarConcepto.setTercero(filtradoConceptosEmpresa.get(index).getTercero());
-                duplicarConcepto.setActivo(filtradoConceptosEmpresa.get(index).getActivo());
-                duplicarConcepto.setEnviotesoreria(filtradoConceptosEmpresa.get(index).getEnviotesoreria());
-                duplicarConcepto.setCodigoalternativo(filtradoConceptosEmpresa.get(index).getCodigoalternativo());
-            }
+            duplicarConcepto.setEmpresa(conceptoSeleccionado.getEmpresa());
+            duplicarConcepto.setCodigo(conceptoSeleccionado.getCodigo());
+            duplicarConcepto.setDescripcion(conceptoSeleccionado.getDescripcion());
+            duplicarConcepto.setNaturaleza(conceptoSeleccionado.getNaturaleza());
+            duplicarConcepto.setUnidad(conceptoSeleccionado.getUnidad());
+            duplicarConcepto.setCodigodesprendible(conceptoSeleccionado.getCodigodesprendible());
+            duplicarConcepto.setIndependiente(conceptoSeleccionado.getIndependiente());
+            duplicarConcepto.setConjunto(conceptoSeleccionado.getConjunto());
+            duplicarConcepto.setContenidofechahasta(conceptoSeleccionado.getContenidofechahasta());
+            duplicarConcepto.setTercero(conceptoSeleccionado.getTercero());
+            duplicarConcepto.setActivo(conceptoSeleccionado.getActivo());
+            duplicarConcepto.setEnviotesoreria(conceptoSeleccionado.getEnviotesoreria());
+            duplicarConcepto.setCodigoalternativo(conceptoSeleccionado.getCodigoalternativo());
             context.update("formularioDialogos:duplicarConcepto");
             context.execute("DuplicarConceptoDialogo.show()");
-            //index = -1;
-            //secRegistro = null;
             activoDetalle = true;
             context.update("form:DETALLES");
         } else {
@@ -1649,57 +1290,24 @@ public class ControlConcepto implements Serializable {
                     listaConceptosEmpresa.add(duplicarConcepto);
                     listaConceptosEmpresaCrear.add(duplicarConcepto);
                     infoRegistro = "Cantidad de registros : " + listaConceptosEmpresa.size();
-                    index = -1;
-                    secRegistro = null;
+                    conceptoSeleccionado = null;
                     activoDetalle = true;
                     if (guardado) {
                         guardado = false;
                         context.update("form:ACEPTAR");
                     }
+
                     if (bandera == 1) {
-                        FacesContext c = FacesContext.getCurrentInstance();
-                        altoTabla = "205";
-                        columnaIndependienteConcepto = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaIndependienteConcepto");
-                        columnaIndependienteConcepto.setFilterStyle("display: none; visibility: hidden;");
-                        columnaCodigo = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigo");
-                        columnaCodigo.setFilterStyle("display: none; visibility: hidden;");
-                        columnaDescripción = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaDescripción");
-                        columnaDescripción.setFilterStyle("display: none; visibility: hidden;");
-                        columnaNaturaleza = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNaturaleza");
-                        columnaNaturaleza.setFilterStyle("display: none; visibility: hidden;");
-                        columnaCodigoUnidad = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoUnidad");
-                        columnaCodigoUnidad.setFilterStyle("display: none; visibility: hidden;");
-                        columnaNombreUnidad = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNombreUnidad");
-                        columnaNombreUnidad.setFilterStyle("display: none; visibility: hidden;");
-                        columnaCodigoDesprendible = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoDesprendible");
-                        columnaCodigoDesprendible.setFilterStyle("display: none; visibility: hidden;");
-                        columnaDescripcionDesplendible = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaDescripcionDesplendible");
-                        columnaDescripcionDesplendible.setFilterStyle("display: none; visibility: hidden;");
-                        columnaConjunto = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaConjunto");
-                        columnaConjunto.setFilterStyle("display: none; visibility: hidden;");
-                        columnaFechaAcumulado = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaFechaAcumulado");
-                        columnaFechaAcumulado.setFilterStyle("display: none; visibility: hidden;");
-                        columnaNombreTercero = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNombreTercero");
-                        columnaNombreTercero.setFilterStyle("display: none; visibility: hidden;");
-                        columnaEstado = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaEstado");
-                        columnaEstado.setFilterStyle("display: none; visibility: hidden;");
-                        columnaEnvio = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaEnvio");
-                        columnaEnvio.setFilterStyle("display: none; visibility: hidden;");
-                        columnaCodigoAlternativo = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoAlternativo");
-                        columnaCodigoAlternativo.setFilterStyle("display: none; visibility: hidden;");
-                        context.update("form:datosConceptos");
-                        context.update("form:informacionRegistro");
-                        context.update("form:datosConceptos");
-                        context.update("form:DETALLES");
-                        context.execute("DuplicarConceptoDialogo.hide()");
-                        bandera = 0;
-                        filtradoConceptosEmpresa = null;
-                        tipoLista = 0;
+                        cargarTablaDefault();
                     }
                     tipoActualizacion = -1;
                     continuarNuevoNat = false;
                     duplicarConcepto = new Conceptos();
                     context.update("form:datosConceptos");
+                    context.update("form:informacionRegistro");
+                    context.update("form:datosConceptos");
+                    context.update("form:DETALLES");
+                    context.execute("DuplicarConceptoDialogo.hide()");
                 } else {
                     context.update("formularioDialogos:validacioNaturaleza");
                     context.execute("validacioNaturaleza.show()");
@@ -1730,58 +1338,32 @@ public class ControlConcepto implements Serializable {
     }
 
     public void refrescar() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (bandera == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
-            altoTabla = "205";
-            columnaIndependienteConcepto = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaIndependienteConcepto");
-            columnaIndependienteConcepto.setFilterStyle("display: none; visibility: hidden;");
-            columnaCodigo = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigo");
-            columnaCodigo.setFilterStyle("display: none; visibility: hidden;");
-            columnaDescripción = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaDescripción");
-            columnaDescripción.setFilterStyle("display: none; visibility: hidden;");
-            columnaNaturaleza = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNaturaleza");
-            columnaNaturaleza.setFilterStyle("display: none; visibility: hidden;");
-            columnaCodigoUnidad = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoUnidad");
-            columnaCodigoUnidad.setFilterStyle("display: none; visibility: hidden;");
-            columnaNombreUnidad = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNombreUnidad");
-            columnaNombreUnidad.setFilterStyle("display: none; visibility: hidden;");
-            columnaCodigoDesprendible = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoDesprendible");
-            columnaCodigoDesprendible.setFilterStyle("display: none; visibility: hidden;");
-            columnaDescripcionDesplendible = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaDescripcionDesplendible");
-            columnaDescripcionDesplendible.setFilterStyle("display: none; visibility: hidden;");
-            columnaConjunto = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaConjunto");
-            columnaConjunto.setFilterStyle("display: none; visibility: hidden;");
-            columnaFechaAcumulado = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaFechaAcumulado");
-            columnaFechaAcumulado.setFilterStyle("display: none; visibility: hidden;");
-            columnaNombreTercero = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNombreTercero");
-            columnaNombreTercero.setFilterStyle("display: none; visibility: hidden;");
-            columnaEstado = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaEstado");
-            columnaEstado.setFilterStyle("display: none; visibility: hidden;");
-            columnaEnvio = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaEnvio");
-            columnaEnvio.setFilterStyle("display: none; visibility: hidden;");
-            columnaCodigoAlternativo = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoAlternativo");
-            columnaCodigoAlternativo.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosConceptos");
-            bandera = 0;
-            filtradoConceptosEmpresa = null;
-            tipoLista = 0;
+            cargarTablaDefault();
         }
+        activoDetalle = true;
+        altoTabla = "205";
+        aceptar = true;
         listaConceptosBorrar.clear();
         listaConceptosEmpresaCrear.clear();
         listaConceptosEmpresaModificar.clear();
-        index = -1;
-        secRegistro = null;
-        activoDetalle = true;
-        RequestContext.getCurrentInstance().update("form:DETALLES");
         paraNuevoConcepto = 0;
-        listaConceptosEmpresa = null;
-        getListaConceptosEmpresa();
-        guardado = true;
-        RequestContext.getCurrentInstance().update("form:ACEPTAR");
-        permitirIndex = true;
         mostrarTodos = true;
+        cualCelda = -1;
+        tipoLista = 0;
+        guardado = true;
+        nuevoConcepto = new Conceptos();
+        nuevoConcepto.setUnidad(new Unidades());
+        nuevoConcepto.setTercero(new Terceros());
+        nuevoConcepto.setConjunto(Short.parseShort("45"));
+        duplicarConcepto = new Conceptos();
         conceptoClon = new Conceptos();
         conceptoOriginal = new Conceptos();
+        permitirIndex = true;
+        continuarNuevoNat = false;
+        estadoConceptoEmpresa = "S";
+
         if (verCambioEmpresa) {
             cambiarEmpresa();
         }
@@ -1795,10 +1377,13 @@ public class ControlConcepto implements Serializable {
         if (verMostrarTodos) {
             mostrarTodosConceptos();
         }
-        RequestContext context = RequestContext.getCurrentInstance();
-        getListaConceptosEmpresa();
+        listaConceptosEmpresa.clear();
+        for (int i = 0; i < listaConceptosEmpresaLOV.size(); i++) {
+            listaConceptosEmpresa.add(listaConceptosEmpresaLOV.get(i));
+        }
         if (listaConceptosEmpresa != null) {
             infoRegistro = "Cantidad de registros : " + listaConceptosEmpresa.size();
+            conceptoSeleccionado = null;
         } else {
             infoRegistro = "Cantidad de registros : 0";
         }
@@ -1808,16 +1393,59 @@ public class ControlConcepto implements Serializable {
         context.update("form:codigoConceptoClon");
         context.update("form:descripcioConceptoClon");
         context.update("form:descripcionClon");
+        context.update("form:opciones");
+    }
+
+    public void cargarTablaDefault() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        altoTabla = "205";
+        columnaCodigo = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigo");
+        columnaCodigo.setFilterStyle("display: none; visibility: hidden;");
+        columnaDescripción = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaDescripción");
+        columnaDescripción.setFilterStyle("display: none; visibility: hidden;");
+        columnaNaturaleza = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNaturaleza");
+        columnaNaturaleza.setFilterStyle("display: none; visibility: hidden;");
+        columnaCodigoUnidad = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoUnidad");
+        columnaCodigoUnidad.setFilterStyle("display: none; visibility: hidden;");
+        columnaNombreUnidad = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNombreUnidad");
+        columnaNombreUnidad.setFilterStyle("display: none; visibility: hidden;");
+        columnaCodigoDesprendible = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoDesprendible");
+        columnaCodigoDesprendible.setFilterStyle("display: none; visibility: hidden;");
+        columnaDescripcionDesplendible = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaDescripcionDesplendible");
+        columnaDescripcionDesplendible.setFilterStyle("display: none; visibility: hidden;");
+        columnaConjunto = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaConjunto");
+        columnaConjunto.setFilterStyle("display: none; visibility: hidden;");
+        columnaFechaAcumulado = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaFechaAcumulado");
+        columnaFechaAcumulado.setFilterStyle("display: none; visibility: hidden;");
+        columnaNombreTercero = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaNombreTercero");
+        columnaNombreTercero.setFilterStyle("display: none; visibility: hidden;");
+        columnaEstado = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaEstado");
+        columnaEstado.setFilterStyle("display: none; visibility: hidden;");
+        columnaEnvio = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaEnvio");
+        columnaEnvio.setFilterStyle("display: none; visibility: hidden;");
+        columnaCodigoAlternativo = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaCodigoAlternativo");
+        columnaCodigoAlternativo.setFilterStyle("display: none; visibility: hidden;");
+        columnaIndependienteConcepto = (Column) c.getViewRoot().findComponent("form:datosConceptos:columnaIndependienteConcepto");
+        columnaIndependienteConcepto.setFilterStyle("display: none; visibility: hidden;");
+        bandera = 0;
+        filtradoConceptosEmpresa = null;
+        tipoLista = 0;
     }
 
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index >= 0) {
-            int resultado = administrarRastros.obtenerTabla(secRegistro, "CONCEPTOS");
+        //FacesContext fc = FacesContext.getCurrentInstance(); 
+        //fc.getViewRoot().findComponent("form:datosConceptos").processSaveState(fc);
+        //Object estado = tabla.saveState(fc);
+
+        //context.execute("focusField(InputId);"); 
+        if (conceptoSeleccionado != null) {
+            int resultado = administrarRastros.obtenerTabla(conceptoSeleccionado.getSecuencia(), "CONCEPTOS");
             if (resultado == 1) {
                 context.execute("errorObjetosDB.show()");
             } else if (resultado == 2) {
+
                 context.execute("confirmarRastro.show()");
             } else if (resultado == 3) {
                 context.execute("errorRegistroRastro.show()");
@@ -1833,40 +1461,33 @@ public class ControlConcepto implements Serializable {
                 context.execute("errorRastroHistorico.show()");
             }
         }
-        //index = -1;
         activoDetalle = true;
         RequestContext.getCurrentInstance().update("form:DETALLES");
     }
 
     //EXPORTAR
     public void exportPDF() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosConceptosExportar");
+        DataTable tablaE = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosConceptosExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDFTablasAnchas();
-        exporter.export(context, tabla, "ConceptosPDF", false, false, "UTF-8", null, null);
+        exporter.export(context, tablaE, "ConceptosPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        //index = -1;
-        //secRegistro = null;
         activoDetalle = true;
         RequestContext.getCurrentInstance().update("form:DETALLES");
     }
 
     public void exportXLS() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosConceptosExportar");
+        DataTable tablaE = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosConceptosExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
-        exporter.export(context, tabla, "ConceptosXLS", false, false, "UTF-8", null, null);
+        exporter.export(context, tablaE, "ConceptosXLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        //index = -1;
-        //secRegistro = null;
         activoDetalle = true;
         RequestContext.getCurrentInstance().update("form:DETALLES");
     }
 
     //EVENTO FILTRAR
     public void eventoFiltrar() {
-        index = -1;
-        secRegistro = null;
         if (tipoLista == 0) {
             tipoLista = 1;
         }
@@ -1874,11 +1495,7 @@ public class ControlConcepto implements Serializable {
         infoRegistro = "Cantidad de registros : " + filtradoConceptosEmpresa.size();
         context.update("form:informacionRegistro");
     }
-    
-    public void eventoSort() {
-        index = -1;
-        secRegistro = null;
-    }
+
     public void activarAceptar() {
         aceptar = false;
     }
@@ -1896,11 +1513,6 @@ public class ControlConcepto implements Serializable {
                 conceptoOriginal = new Conceptos();
                 listaConceptosEmpresa = null;
                 getListaConceptosEmpresa();
-                if (listaConceptosEmpresa != null) {
-                    infoRegistro = "Cantidad de registros : " + listaConceptosEmpresa.size();
-                } else {
-                    infoRegistro = "Cantidad de registros : 0";
-                }
                 guardado = false;
                 context.update("form:ACEPTAR");
                 FacesMessage msg = new FacesMessage("Información", "Concepto clonado con exito");
@@ -1920,36 +1532,58 @@ public class ControlConcepto implements Serializable {
         }
         tipoActualizacion = -1;
     }
-    
+
     public void recordarSeleccion() {
-        if (index >= 0) {
-            FacesContext c = FacesContext.getCurrentInstance();
-            tabla = (DataTable) c.getViewRoot().findComponent("form:datosConceptos");
-            seleccionConceptoEmpresa = listaConceptosEmpresa.get(index);
-            tabla.setSelection(seleccionConceptoEmpresa);
+
+        if (conceptoSeleccionado != null) {
+            if (listaConceptosEmpresa.contains(conceptoSeleccionado)) {
+                Conceptos conceptoTemp = listaConceptosEmpresa.get(0);
+                int indSel = listaConceptosEmpresa.indexOf(conceptoSeleccionado);
+                listaConceptosEmpresa.set(0, conceptoSeleccionado);
+                listaConceptosEmpresa.set(indSel, conceptoTemp);
+                
+                FacesContext c = FacesContext.getCurrentInstance();
+                tabla = (DataTable) c.getViewRoot().findComponent("form:datosConceptos");
+                tabla.setSelection(conceptoSeleccionado);
+            } else {
+                conceptoSeleccionado = null;
+            }
         } else {
-            seleccionConceptoEmpresa = null;
+            conceptoSeleccionado = null;
         }
     }
-    
-    public void verDetalle(int indice) {
-        index = indice;
+
+    public void verDetalle(Conceptos conceptoS) {
+        conceptoSeleccionado = conceptoS;
+        //RequestContext context = RequestContext.getCurrentInstance();
         FacesContext fc = FacesContext.getCurrentInstance();
         //((ControlDetalleConcepto) fc.getApplication().evaluateExpressionGet(fc, "#{ControlDetalleConcepto}", ControlDetalleConcepto.class)).obtenerConcepto(secuencia);
-        fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "detalleConcepto");
-    }
-    
-    //GETTER AND SETTER
 
+        fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "detalleConcepto");
+//.getElementById('datosConceptos').scrollTop;
+    }
+
+    //GETTER AND SETTER
     public List<Conceptos> getListaConceptosEmpresa() {
 
         if (listaConceptosEmpresa == null) {
-            if (!estadoConceptoEmpresa.equals("TODOS")) {
+
+            if (!estadoConceptoEmpresa.equals("TODOS")) {//Si la consulta no es para todos los conceptos (activos o inactivos))
                 listaConceptosEmpresa = administrarConceptos.consultarConceptosEmpresaActivos_Inactivos(empresaActual.getSecuencia(), estadoConceptoEmpresa);
-            } else {
+                //LLenamos la lista de valores para todos los conceptos de la empresa solo una vez
+                if (listaConceptosEmpresaLOV == null) {
+                    listaConceptosEmpresaLOV = administrarConceptos.consultarConceptosEmpresa(empresaActual.getSecuencia());
+                }
+            } else {//Si la consulta es para TODOS:
                 listaConceptosEmpresa = administrarConceptos.consultarConceptosEmpresa(empresaActual.getSecuencia());
+                //LLenamos la lista de valores para todos los conceptos de la empresa solo una vez
+                if (listaConceptosEmpresaLOV == null) {
+                    listaConceptosEmpresaLOV = new ArrayList<Conceptos>();
+                    for (int i = 0; i < listaConceptosEmpresa.size(); i++) {
+                        listaConceptosEmpresaLOV.add(listaConceptosEmpresa.get(i));
+                    }
+                }
             }
-            listaConceptosEmpresa_Estado = listaConceptosEmpresa;
         }
         return listaConceptosEmpresa;
     }
@@ -1973,13 +1607,15 @@ public class ControlConcepto implements Serializable {
                 infoRegistroEmpresa = "Cantidad de registros: 0 ";
             } else {
                 infoRegistroEmpresa = "Cantidad de registros: " + listaEmpresas.size();
+
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:infoRegistroEmpresa");
-        } else {
-            empresaActual = listaEmpresas.get(0);
-            backUpEmpresaActual = empresaActual;
         }
+        if (empresaActual == null) {
+            empresaActual = listaEmpresas.get(0);
+        }
+        //backUpEmpresaActual = empresaActual;
         return listaEmpresas;
     }
 
@@ -2076,14 +1712,6 @@ public class ControlConcepto implements Serializable {
         return aceptar;
     }
 
-    public Conceptos getEditarConcepto() {
-        return editarConcepto;
-    }
-
-    public void setEditarConcepto(Conceptos editarConcepto) {
-        this.editarConcepto = editarConcepto;
-    }
-
     public Conceptos getDuplicarConcepto() {
         return duplicarConcepto;
     }
@@ -2108,10 +1736,6 @@ public class ControlConcepto implements Serializable {
         this.mensajeValidacion = mensajeValidacion;
     }
 
-    public BigInteger getSecRegistro() {
-        return secRegistro;
-    }
-
     public List<Empresas> getFiltradoListaEmpresas() {
         return filtradoListaEmpresas;
     }
@@ -2128,28 +1752,28 @@ public class ControlConcepto implements Serializable {
         this.estadoConceptoEmpresa = estadoConceptoEmpresa;
     }
 
-    public List<Conceptos> getListaConceptosEmpresa_Estado() {
-        return listaConceptosEmpresa_Estado;
+    public List<Conceptos> getListaConceptosEmpresaLOV() {
+        return listaConceptosEmpresaLOV;
     }
 
-    public void setListaConceptosEmpresa_Estado(List<Conceptos> listaConceptosEmpresa_Estado) {
-        this.listaConceptosEmpresa_Estado = listaConceptosEmpresa_Estado;
+    public void setListaConceptosEmpresaLOV(List<Conceptos> listaConceptosEmpresaLOV) {
+        this.listaConceptosEmpresaLOV = listaConceptosEmpresaLOV;
     }
 
-    public List<Conceptos> getFiltradoConceptosEmpresa_Estado() {
-        return filtradoConceptosEmpresa_Estado;
+    public List<Conceptos> getFiltradoConceptosEmpresaLOV() {
+        return filtradoConceptosEmpresaLOV;
     }
 
-    public void setFiltradoConceptosEmpresa_Estado(List<Conceptos> filtradoConceptosEmpresa_Estado) {
-        this.filtradoConceptosEmpresa_Estado = filtradoConceptosEmpresa_Estado;
+    public void setFiltradoConceptosEmpresaLOV(List<Conceptos> filtradoConceptosEmpresaLOV) {
+        this.filtradoConceptosEmpresaLOV = filtradoConceptosEmpresaLOV;
     }
 
-    public Conceptos getConceptoSeleccionado() {
-        return conceptoSeleccionado;
+    public Conceptos getConceptoSeleccionadoLOV() {
+        return conceptoSeleccionadoLOV;
     }
 
-    public void setConceptoSeleccionado(Conceptos conceptoSeleccionado) {
-        this.conceptoSeleccionado = conceptoSeleccionado;
+    public void setConceptoSeleccionadoLOV(Conceptos conceptoSeleccionado) {
+        this.conceptoSeleccionadoLOV = conceptoSeleccionado;
     }
 
     public boolean isMostrarTodos() {
@@ -2172,27 +1796,12 @@ public class ControlConcepto implements Serializable {
         this.conceptoClon = conceptoClon;
     }
 
-    public Conceptos getConceptoRegistro() {
-        return conceptoRegistro;
+    public Conceptos getConceptoSeleccionado() {
+        return conceptoSeleccionado;
     }
 
-    public void setConceptoRegistro(Conceptos conceptoRegistro) {
-        this.conceptoRegistro = conceptoRegistro;
-    }
-
-    public Conceptos getSeleccionConceptoEmpresa() {
-        getListaConceptosEmpresa();
-        if (listaConceptosEmpresa != null) {
-            int tam = listaConceptosEmpresa.size();
-            if (tam > 0) {
-                seleccionConceptoEmpresa = listaConceptosEmpresa.get(0);
-            }
-        }
-        return seleccionConceptoEmpresa;
-    }
-
-    public void setSeleccionConceptoEmpresa(Conceptos seleccionConceptoEmpresa) {
-        this.seleccionConceptoEmpresa = seleccionConceptoEmpresa;
+    public void setConceptoSeleccionado(Conceptos seleccionConceptoEmpresa) {
+        this.conceptoSeleccionado = seleccionConceptoEmpresa;
     }
 
     public boolean isGuardado() {
@@ -2212,6 +1821,11 @@ public class ControlConcepto implements Serializable {
     }
 
     public String getInfoRegistro() {
+        if (listaConceptosEmpresa != null) {
+            infoRegistro = "Cantidad de registros : " + listaConceptosEmpresa.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
         return infoRegistro;
     }
 
@@ -2262,9 +1876,8 @@ public class ControlConcepto implements Serializable {
     }
 
     public String getInfoRegistroConcepto() {
-        getListaConceptosEmpresa_Estado();
-        if (listaConceptosEmpresa_Estado != null) {
-            infoRegistroConcepto = "Cantidad de registros : " + listaConceptosEmpresa_Estado.size();
+        if (listaConceptosEmpresaLOV != null) {
+            infoRegistroConcepto = "Cantidad de registros : " + listaConceptosEmpresaLOV.size();
         } else {
             infoRegistroConcepto = "Cantidad de registros : 0";
         }

@@ -121,6 +121,7 @@ public class AdministrarVWVacaPendientesEmpleados implements AdministrarVWVacaPe
         }
     }
 
+    @Override
     public Date obtenerFechaFinalContratacionEmpleado(BigInteger secEmpleado) {
         try {
             Date ultimaFecha = persistenciaVigenciasTiposContratos.fechaFinalContratacionVacaciones(em, secEmpleado);
@@ -129,6 +130,5 @@ public class AdministrarVWVacaPendientesEmpleados implements AdministrarVWVacaPe
             System.out.println("Error obtenerFechaFinalContratacionEmpleado Admi : " + e.toString());
             return null;
         }
-
     }
 }

@@ -226,6 +226,7 @@ public class ControlPeriodosActivos implements Serializable {
                     if ((anito - anitoHoy) != 0 || (mes - mesHoy) != 0) {
                         context.execute("modificacionFechas1.show()");
                     }
+                    //listEmpresa.get(indice).getCentrocosto().setCodigo(empresaSeleccionada.);
                     if (modificarEmpresas.isEmpty()) {
                         modificarEmpresas.add(listEmpresa.get(indice));
                     } else if (!modificarEmpresas.contains(listEmpresa.get(indice))) {
