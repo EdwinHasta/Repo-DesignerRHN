@@ -20,6 +20,7 @@ import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarSoausentismosInterface;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
@@ -214,7 +215,7 @@ public class ControlAusentismos implements Serializable {
         nuevoAusentismo.setTipo(new Tiposausentismos());
         nuevoAusentismo.setClase(new Clasesausentismos());
         nuevoAusentismo.setCausa(new Causasausentismos());
-        nuevoAusentismo.setPorcentajeindividual(BigInteger.valueOf(0));
+        nuevoAusentismo.setPorcentajeindividual(BigDecimal.valueOf(0));
         nuevoAusentismo.setBaseliquidacion(BigInteger.valueOf(0));
         nuevoAusentismo.setRelacionadaBool(false);
         nuevoAusentismo.setAccidente(new Soaccidentes());
@@ -565,7 +566,7 @@ public class ControlAusentismos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                listaAusentismos.get(index).setPorcentajeindividual(new BigInteger(seleccionPorcentajes));
+                listaAusentismos.get(index).setPorcentajeindividual(new BigDecimal(seleccionPorcentajes));
                 if (!listaAusentismosCrear.contains(listaAusentismos.get(index))) {
                     if (listaAusentismosModificar.isEmpty()) {
                         listaAusentismosModificar.add(listaAusentismos.get(index));
@@ -574,7 +575,7 @@ public class ControlAusentismos implements Serializable {
                     }
                 }
             } else {
-                filtradosListaAusentismos.get(index).setPorcentajeindividual(new BigInteger(seleccionPorcentajes));
+                filtradosListaAusentismos.get(index).setPorcentajeindividual(new BigDecimal(seleccionPorcentajes));
                 if (!listaAusentismosCrear.contains(filtradosListaAusentismos.get(index))) {
                     if (listaAusentismosModificar.isEmpty()) {
                         listaAusentismosModificar.add(filtradosListaAusentismos.get(index));
@@ -592,10 +593,10 @@ public class ControlAusentismos implements Serializable {
             permitirIndex = true;
             context.update("form:datosAusentismosEmpleado");
         } else if (tipoActualizacion == 1) {
-            nuevoAusentismo.setPorcentajeindividual(new BigInteger(seleccionPorcentajes));
+            nuevoAusentismo.setPorcentajeindividual(new BigDecimal(seleccionPorcentajes));
             context.update("formularioDialogos:nuevoAusentismo");
         } else if (tipoActualizacion == 2) {
-            duplicarAusentismo.setPorcentajeindividual(new BigInteger(seleccionPorcentajes));
+            duplicarAusentismo.setPorcentajeindividual(new BigDecimal(seleccionPorcentajes));
             context.update("formularioDialogos:duplicarAusentismo");
 
         }
@@ -1289,9 +1290,9 @@ public class ControlAusentismos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("PORCENTAJE")) {
             if (tipoLista == 0) {
-                listaAusentismos.get(indice).setPorcentajeindividual(new BigInteger(Porcentaje));
+                listaAusentismos.get(indice).setPorcentajeindividual(new BigDecimal(Porcentaje));
             } else {
-                filtradosListaAusentismos.get(indice).setPorcentajeindividual(new BigInteger(Porcentaje));
+                filtradosListaAusentismos.get(indice).setPorcentajeindividual(new BigDecimal(Porcentaje));
             }
 
             for (int i = 0; i < listaPorcentaje.size(); i++) {
@@ -1302,9 +1303,9 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listaAusentismos.get(indice).setPorcentajeindividual(new BigInteger(listaPorcentaje.get(indiceUnicoElemento)));
+                    listaAusentismos.get(indice).setPorcentajeindividual(new BigDecimal(listaPorcentaje.get(indiceUnicoElemento)));
                 } else {
-                    filtradosListaAusentismos.get(indice).setPorcentajeindividual(new BigInteger(listaPorcentaje.get(indiceUnicoElemento)));
+                    filtradosListaAusentismos.get(indice).setPorcentajeindividual(new BigDecimal(listaPorcentaje.get(indiceUnicoElemento)));
                 }
                 listaPorcentaje.clear();
                 getListaPorcentaje();
@@ -1970,9 +1971,9 @@ public class ControlAusentismos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("PORCENTAJE")) {
             if (tipoNuevo == 1) {
-                nuevoAusentismo.setPorcentajeindividual(new BigInteger(Porcentaje));
+                nuevoAusentismo.setPorcentajeindividual(new BigDecimal(Porcentaje));
             } else if (tipoNuevo == 2) {
-                duplicarAusentismo.setPorcentajeindividual(new BigInteger(Porcentaje));
+                duplicarAusentismo.setPorcentajeindividual(new BigDecimal(Porcentaje));
             }
 
             for (int i = 0; i < listaPorcentaje.size(); i++) {
@@ -1983,10 +1984,10 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoNuevo == 1) {
-                    nuevoAusentismo.setPorcentajeindividual(new BigInteger(listaPorcentaje.get(indiceUnicoElemento)));
+                    nuevoAusentismo.setPorcentajeindividual(new BigDecimal(listaPorcentaje.get(indiceUnicoElemento)));
                     context.update("formularioDialogos:duplicarPorcentaje");
                 } else if (tipoNuevo == 2) {
-                    duplicarAusentismo.setPorcentajeindividual(new BigInteger(listaPorcentaje.get(indiceUnicoElemento)));
+                    duplicarAusentismo.setPorcentajeindividual(new BigDecimal(listaPorcentaje.get(indiceUnicoElemento)));
                     context.update("formularioDialogos:duplicarPorcentaje");
                 }
                 listaPorcentaje.clear();
@@ -2513,7 +2514,7 @@ public class ControlAusentismos implements Serializable {
             nuevoAusentismo.setTipo(new Tiposausentismos());
             nuevoAusentismo.setClase(new Clasesausentismos());
             nuevoAusentismo.setCausa(new Causasausentismos());
-            nuevoAusentismo.setPorcentajeindividual(BigInteger.valueOf(0));
+            nuevoAusentismo.setPorcentajeindividual(BigDecimal.valueOf(0));
             nuevoAusentismo.setBaseliquidacion(BigInteger.valueOf(0));
             nuevoAusentismo.setFormaliquidacion(" ");
             nuevoAusentismo.setRelacionadaBool(false);

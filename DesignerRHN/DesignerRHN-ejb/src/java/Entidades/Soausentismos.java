@@ -1,6 +1,7 @@
 package Entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -67,7 +68,7 @@ public class Soausentismos implements Serializable {
     @Column(name = "BASELIQUIDACION")
     private BigInteger baseliquidacion;
     @Column(name = "PORCENTAJEINDIVIDUAL")
-    private BigInteger porcentajeindividual;
+    private BigDecimal porcentajeindividual;
     @JoinColumn(name = "TIPO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Tiposausentismos tipo;
@@ -424,14 +425,14 @@ public class Soausentismos implements Serializable {
         return "Entidades.Soausentismos[ secuencia=" + secuencia + " ]";
     }
 
-    public BigInteger getPorcentajeindividual() {
+    public BigDecimal getPorcentajeindividual() {
         if (porcentajeindividual == null) {
-            porcentajeindividual = BigInteger.valueOf(0);
+            porcentajeindividual = BigDecimal.valueOf(0);
         }
         return porcentajeindividual;
     }
 
-    public void setPorcentajeindividual(BigInteger porcentajeindividual) {
+    public void setPorcentajeindividual(BigDecimal porcentajeindividual) {
         this.porcentajeindividual = porcentajeindividual;
     }
 }
