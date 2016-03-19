@@ -330,22 +330,25 @@ public class ControlAusentismos implements Serializable {
 
     public void mostrarTodos() {
 
-        RequestContext context = RequestContext.getCurrentInstance();
+       RequestContext context = RequestContext.getCurrentInstance();
         if (!listaEmpleadosAusentismo.isEmpty()) {
             listaEmpleadosAusentismo.clear();
         }
-        //listaEmpleadosAusentismo = administrarAusentismos.lovEmpleados();
+        //listaEmpleadosNovedad = listaValEmpleados;
         if (listaEmpleadosAusentismo != null) {
             for (int i = 0; i < listaEmpleados.size(); i++) {
                 listaEmpleadosAusentismo.add(listaEmpleados.get(i));
             }
+
         }
         seleccionEmpleados = listaEmpleadosAusentismo.get(0);
         listaAusentismos = administrarAusentismos.ausentismosEmpleado(seleccionEmpleados.getSecuencia());
 
-        listaEmpleadosAusentismo = null;
         context.update("form:datosEmpleados");
         context.update("form:datosAusentismosEmpleado");
+        //getListaConceptosNovedad();
+
+        listaAusentismos = null;
         filtradosListaAusentismos = null;
         aceptar = true;
         index = -1;

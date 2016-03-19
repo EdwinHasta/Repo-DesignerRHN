@@ -4,15 +4,10 @@
  */
 package Controlador;
 
-import Entidades.Conceptos;
-import Entidades.Empleados;
-import Entidades.Formulas;
-import Entidades.Novedades;
-import Entidades.Periodicidades;
-import Entidades.Terceros;
-import Entidades.Usuarios;
+import Entidades.*;
 import Exportar.ExportarPDFTablasAnchas;
 import Exportar.ExportarXLS;
+import InterfaceAdministrar.AdministrarFormulaConceptoInterface;
 import InterfaceAdministrar.AdministrarNovedadesTercerosInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
@@ -47,6 +42,8 @@ public class ControlNovedadesTerceros implements Serializable {
     @EJB
     AdministrarNovedadesTercerosInterface administrarNovedadesTerceros;
     @EJB
+    AdministrarFormulaConceptoInterface administrarFormulaConcepto;
+    @EJB
     AdministrarRastrosInterface administrarRastros;
     //SECUENCIA DEL CONCEPTO
     private BigInteger secuenciaTercero;
@@ -54,6 +51,7 @@ public class ControlNovedadesTerceros implements Serializable {
     private List<Novedades> listaNovedades;
     private List<Novedades> filtradosListaNovedades;
     private Novedades novedadSeleccionada;
+    private Novedades novedadBackup;
     //LISTA DE ARRIBA
     private List<Terceros> listaTercerosNovedad;
     private List<Terceros> filtradosListaTercerosNovedad;
@@ -83,6 +81,7 @@ public class ControlNovedadesTerceros implements Serializable {
     private List<Novedades> listaNovedadesBorrar;
     //Autocompletar
     private String CodigoEmpleado, CodigoConcepto, NitTercero, Formula, DescripcionConcepto, DescripcionPeriodicidad, NombreTercero;
+    private Date FechaInicial;
     private Date FechaFinal;
     private String CodigoPeriodicidad;
     private BigDecimal Saldo;
@@ -120,6 +119,9 @@ public class ControlNovedadesTerceros implements Serializable {
     private boolean todas;
     private boolean actuales;
     private String altoTabla;
+    // Autocompletar formula
+    private BigInteger autoFormula;
+    BigDecimal valor = new BigDecimal(Integer.toString(0));
 
     public ControlNovedadesTerceros() {
         permitirIndex = true;
@@ -128,11 +130,9 @@ public class ControlNovedadesTerceros implements Serializable {
         listaConceptos = null;
         listaPeriodicidades = null;
         listaFormulas = null;
-        listaFormulas = null;
         listaEmpleados = null;
         todas = false;
         actuales = true;
-        listaPeriodicidades = null;
         listaTercerosNovedad = null;
         aceptar = true;
         secRegistro = null;
@@ -149,6 +149,8 @@ public class ControlNovedadesTerceros implements Serializable {
         nuevaNovedad.setFechareporte(new Date());
         nuevaNovedad.setTipo("FIJA");
         altoTabla = "170";
+        autoFormula = null;
+        nuevaNovedad.setValortotal(valor);
     }
 
     @PostConstruct
@@ -157,6 +159,7 @@ public class ControlNovedadesTerceros implements Serializable {
             FacesContext x = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarNovedadesTerceros.obtenerConexion(ses.getId());
+            administrarFormulaConcepto.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
@@ -169,7 +172,7 @@ public class ControlNovedadesTerceros implements Serializable {
         listaNovedadesBorrar.clear();
         listaNovedadesModificar.clear();
         secuenciaTercero = terceroSeleccionado.getSecuencia();
-        listaNovedades = null;
+       // listaNovedades = null;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosNovedadesTercero");
     }
@@ -223,12 +226,15 @@ public class ControlNovedadesTerceros implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
+            novedadBackup = listaNovedades.get(index);
             if (tipoLista == 0) {
                 secRegistro = listaNovedades.get(index).getSecuencia();
                 if (cualCelda == 0) {
                     CodigoEmpleado = listaNovedades.get(index).getEmpleado().getCodigoempleadoSTR();
                 } else if (cualCelda == 2) {
                     CodigoConcepto = listaNovedades.get(index).getConcepto().getCodigoSTR();
+                } else if (cualCelda == 4) {
+                    FechaInicial = listaNovedades.get(index).getFechainicial();
                 } else if (cualCelda == 5) {
                     FechaFinal = listaNovedades.get(index).getFechafinal();
                 } else if (cualCelda == 7) {
@@ -251,7 +257,7 @@ public class ControlNovedadesTerceros implements Serializable {
                 if (cualCelda == 0) {
                     CodigoEmpleado = filtradosListaNovedades.get(index).getEmpleado().getCodigoempleadoSTR();
                 } else if (cualCelda == 2) {
-                    CodigoConcepto = listaNovedades.get(index).getConcepto().getCodigoSTR();
+                    FechaInicial = filtradosListaNovedades.get(index).getFechainicial();
                 } else if (cualCelda == 3) {
                     FechaFinal = filtradosListaNovedades.get(index).getFechafinal();
                 } else if (cualCelda == 5) {
@@ -271,7 +277,7 @@ public class ControlNovedadesTerceros implements Serializable {
                 }
             }
         }
-        System.out.println("Index: " + index + " Celda: " + celda);
+        //System.out.println("Index: " + index + " Celda: " + celda);
     }
 
     public void asignarIndex(Integer indice, int columnLOV, int tipoAct) {
@@ -378,7 +384,7 @@ public class ControlNovedadesTerceros implements Serializable {
             guardado = true;
             permitirIndex = true;
             context.update("form:ACEPTAR");
-            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesMessage msg = new FacesMessage("Información", "Se guardarón los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
         }
@@ -427,7 +433,7 @@ public class ControlNovedadesTerceros implements Serializable {
             index = -1;
             secRegistro = null;
 
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 context.update("form:ACEPTAR");
             }
@@ -442,6 +448,34 @@ public class ControlNovedadesTerceros implements Serializable {
         int pasa2 = 0;
         mensajeValidacion = new String();
         RequestContext context = RequestContext.getCurrentInstance();
+
+        if (nuevaNovedad.getFechafinal() != null) {
+            if (nuevaNovedad.getFechainicial().compareTo(nuevaNovedad.getFechafinal()) > 0) {
+                context.update("formularioDialogos:fechas");
+                context.execute("fechas.show()");
+                pasa2++;
+            }
+        }
+
+        System.out.println("getEmpleado " + nuevaNovedad.getEmpleado());
+        if (nuevaNovedad.getEmpleado() == null) {
+            context.update("formularioDialogos:inconsistencia");
+            context.execute("inconsistencia.show()");
+            pasa2++;
+        }
+
+        if (nuevaNovedad.getEmpleado() != null && pasa == 0) {
+            for (int i = 0; i < listaEmpleados.size(); i++) {
+                if (nuevaNovedad.getEmpleado().getSecuencia().compareTo(listaEmpleados.get(i).getSecuencia()) == 0) {
+
+                    if (nuevaNovedad.getFechainicial().compareTo(nuevaNovedad.getEmpleado().getFechacreacion()) < 0) {
+                        context.update("formularioDialogos:inconsistencia");
+                        context.execute("inconsistencia.show()");
+                        pasa2++;
+                    }
+                }
+            }
+        }
 
         if (nuevaNovedad.getFechainicial() == null) {
             System.out.println("Entro a Fecha Inicial");
@@ -478,25 +512,6 @@ public class ControlNovedadesTerceros implements Serializable {
             pasa++;
         }
 
-        if (nuevaNovedad.getEmpleado() != null && pasa == 0) {
-            for (int i = 0; i < listaEmpleados.size(); i++) {
-                if (nuevaNovedad.getEmpleado().getSecuencia().compareTo(listaEmpleados.get(i).getSecuencia()) == 0) {
-
-                    if (nuevaNovedad.getFechainicial().compareTo(nuevaNovedad.getEmpleado().getFechacreacion()) < 0) {
-                        context.update("formularioDialogos:inconsistencia");
-                        context.execute("inconsistencia.show()");
-                        pasa2++;
-                    }
-                }
-            }
-        }
-        if (nuevaNovedad.getFechafinal() != null) {
-            if (nuevaNovedad.getFechainicial().compareTo(nuevaNovedad.getFechafinal()) > 0) {
-                context.update("formularioDialogos:fechas");
-                context.execute("fechas.show()");
-                pasa2++;
-            }
-        }
         System.out.println("Valor Pasa: " + pasa);
         if (pasa != 0) {
             context.update("formularioDialogos:validacionNuevaNovedadTercero");
@@ -505,43 +520,8 @@ public class ControlNovedadesTerceros implements Serializable {
 
         if (pasa == 0 && pasa2 == 0) {
             if (bandera == 1) {
-                FacesContext c = FacesContext.getCurrentInstance();
-
-                nTEmpleadoCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTEmpleadoCodigo");
-                nTEmpleadoCodigo.setFilterStyle("display: none; visibility: hidden;");
-                nTEmpleadoNombre = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTEmpleadoNombre");
-                nTEmpleadoNombre.setFilterStyle("display: none; visibility: hidden;");
-                nTConceptoCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTConceptoCodigo");
-                nTConceptoCodigo.setFilterStyle("display: none; visibility: hidden;");
-                nTConceptoDescripcion = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTConceptoDescripcion");
-                nTConceptoDescripcion.setFilterStyle("display: none; visibility: hidden;");
-                nTFechasInicial = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTFechasInicial");
-                nTFechasInicial.setFilterStyle("display: none; visibility: hidden;");
-                nTFechasFinal = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTFechasFinal");
-                nTFechasFinal.setFilterStyle("display: none; visibility: hidden;");
-                nTValor = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTValor");
-                nTValor.setFilterStyle("display: none; visibility: hidden;");
-                nTSaldo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTSaldo");
-                nTSaldo.setFilterStyle("display: none; visibility: hidden;");
-                nTPeriodicidadCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTPeriodicidadCodigo");
-                nTPeriodicidadCodigo.setFilterStyle("display: none; visibility: hidden;");
-                nTDescripcionPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTDescripcionPeriodicidad");
-                nTDescripcionPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
-                nTFormulas = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTFormulas");
-                nTFormulas.setFilterStyle("display: none; visibility: hidden;");
-                nTHorasDias = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTHorasDias");
-                nTHorasDias.setFilterStyle("display: none; visibility: hidden;");
-                nTMinutosHoras = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTMinutosHoras");
-                nTMinutosHoras.setFilterStyle("display: none; visibility: hidden;");
-                nTTipo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTTipo");
-                nTTipo.setFilterStyle("display: none; visibility: hidden;");
+                cerrarFiltrado();
                 altoTabla = "170";
-
-                RequestContext.getCurrentInstance().update("form:datosNovedadesTercero");
-                bandera = 0;
-                filtradosListaNovedades = null;
-                tipoLista = 0;
-
             }
             //AGREGAR REGISTRO A LA LISTA NOVEDADES .
             k++;
@@ -579,7 +559,7 @@ public class ControlNovedadesTerceros implements Serializable {
             nuevaNovedad.setTipo("FIJA");
 
             context.update("form:datosNovedadesTercero");
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
@@ -644,7 +624,7 @@ public class ControlNovedadesTerceros implements Serializable {
                 }
             }
         }
-        if (guardado == true) {
+        if (guardado) {
             guardado = false;
             RequestContext.getCurrentInstance().update("form:ACEPTAR");
         }
@@ -664,6 +644,16 @@ public class ControlNovedadesTerceros implements Serializable {
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listaNovedades.get(index).getFechafinal().compareTo(listaNovedades.get(index).getFechainicial()) < 0) {
+            System.out.println("La fecha Final es Menor que la Inicial");
+            context.update("formularioDialogos:fechas");
+            context.execute("fechas.show()");
+//            listaNovedades.get(index).setFechainicial(novedadBackup.getFechainicial());
+//            listaNovedades.get(index).setFechafinal(novedadBackup.getFechafinal());
+            context.update("form:datosNovedadesTercero");
+        }
+
         if (confirmarCambio.equalsIgnoreCase("N")) {
             if (tipoLista == 0) {
                 if (!listaNovedadesCrear.contains(listaNovedades.get(indice))) {
@@ -672,7 +662,7 @@ public class ControlNovedadesTerceros implements Serializable {
                     } else if (!listaNovedadesModificar.contains(listaNovedades.get(indice))) {
                         listaNovedadesModificar.add(listaNovedades.get(indice));
                     }
-                    if (guardado == true) {
+                    if (guardado) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
@@ -686,7 +676,7 @@ public class ControlNovedadesTerceros implements Serializable {
                     } else if (!listaNovedadesModificar.contains(filtradosListaNovedades.get(indice))) {
                         listaNovedadesModificar.add(filtradosListaNovedades.get(indice));
                     }
-                    if (guardado == true) {
+                    if (guardado) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
@@ -701,7 +691,6 @@ public class ControlNovedadesTerceros implements Serializable {
             } else {
                 filtradosListaNovedades.get(indice).getFormula().setNombresFormula(Formula);
             }
-
             for (int i = 0; i < listaFormulas.size(); i++) {
                 if (listaFormulas.get(i).getNombresFormula().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
@@ -780,15 +769,17 @@ public class ControlNovedadesTerceros implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("CODIGOPERIODICIDAD")) {
 
+            System.out.println("modificarNovedades.seleccionarPeriocidades: " + seleccionPeriodicidades);
             if (tipoLista == 0) {
                 listaNovedades.get(indice).getPeriodicidad().setCodigoStr(CodigoPeriodicidad);
+                System.out.println("modificarNovedades.seleccionarPeriocidades: " + seleccionPeriodicidades);
             } else {
                 filtradosListaNovedades.get(indice).getPeriodicidad().setCodigoStr(CodigoPeriodicidad);
             }
 
             for (int i = 0; i < listaPeriodicidades.size(); i++) {
                 if ((listaPeriodicidades.get(i).getCodigoStr()).startsWith(valorConfirmar.toString().toUpperCase())) {
-
+                    System.out.println("modificarNovedades.seleccionarPeriocidades: " + seleccionPeriodicidades);
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
@@ -796,6 +787,7 @@ public class ControlNovedadesTerceros implements Serializable {
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
                     listaNovedades.get(indice).setPeriodicidad(listaPeriodicidades.get(indiceUnicoElemento));
+                    System.out.println("modificarNovedades.seleccionarPeriocidades: " + seleccionPeriodicidades);
                 } else {
                     filtradosListaNovedades.get(indice).setPeriodicidad(listaPeriodicidades.get(indiceUnicoElemento));
                 }
@@ -808,9 +800,9 @@ public class ControlNovedadesTerceros implements Serializable {
                 tipoActualizacion = 0;
             }
         } else if (confirmarCambio.equalsIgnoreCase("CONCEPTO")) {
-
             if (tipoLista == 0) {
                 listaNovedades.get(indice).getConcepto().setCodigoSTR(CodigoConcepto);
+                System.out.println("");
             } else {
                 filtradosListaNovedades.get(indice).getConcepto().setCodigoSTR(CodigoConcepto);
             }
@@ -824,6 +816,7 @@ public class ControlNovedadesTerceros implements Serializable {
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
                     listaNovedades.get(indice).setConcepto(listaConceptos.get(indiceUnicoElemento));
+
                 } else {
                     filtradosListaNovedades.get(indice).setConcepto(listaConceptos.get(indiceUnicoElemento));
                 }
@@ -844,7 +837,7 @@ public class ControlNovedadesTerceros implements Serializable {
                     } else if (!listaNovedadesModificar.contains(listaNovedades.get(indice))) {
                         listaNovedadesModificar.add(listaNovedades.get(indice));
                     }
-                    if (guardado == true) {
+                    if (guardado) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
@@ -859,7 +852,7 @@ public class ControlNovedadesTerceros implements Serializable {
                     } else if (!listaNovedadesModificar.contains(filtradosListaNovedades.get(indice))) {
                         listaNovedadesModificar.add(filtradosListaNovedades.get(indice));
                     }
-                    if (guardado == true) {
+                    if (guardado) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
@@ -954,6 +947,11 @@ public class ControlNovedadesTerceros implements Serializable {
             mensajeValidacion = mensajeValidacion + " * Fecha Inicial\n";
             pasa++;
         }
+        if (duplicarNovedad.getFechainicial().compareTo(duplicarNovedad.getFechafinal()) > 0) {
+            context.update("formularioDialogos:fechas");
+            context.execute("fechas.show()");
+            pasa2++;
+        }
         if (duplicarNovedad.getEmpleado().getPersona().getNombreCompleto().equals(" ")) {
             System.out.println("Entro a Empleado");
             mensajeValidacion = mensajeValidacion + " * Empleado\n";
@@ -993,12 +991,12 @@ public class ControlNovedadesTerceros implements Serializable {
             }
         }
 
-        if (duplicarNovedad.getFechainicial().compareTo(duplicarNovedad.getFechafinal()) > 0) {
-            context.update("formularioDialogos:fechas");
-            context.execute("fechas.show()");
-            pasa2++;
-        }
-
+        /*
+         * if
+         * (duplicarNovedad.getFechainicial().compareTo(duplicarNovedad.getFechafinal())
+         * > 0) { context.update("formularioDialogos:fechas");
+         * context.execute("fechas.show()"); pasa2++; }
+         */
         System.out.println("Valor Pasa: " + pasa);
         if (pasa != 0) {
             context.update("formularioDialogos:validacionNuevaNovedadTercero");
@@ -1011,46 +1009,13 @@ public class ControlNovedadesTerceros implements Serializable {
 
             context.update("form:datosNovedadesTercero");
             index = -1;
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             if (bandera == 1) {
-                FacesContext c = FacesContext.getCurrentInstance();
-
-                nTEmpleadoCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTEmpleadoCodigo");
-                nTEmpleadoCodigo.setFilterStyle("display: none; visibility: hidden;");
-                nTEmpleadoNombre = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTEmpleadoNombre");
-                nTEmpleadoNombre.setFilterStyle("display: none; visibility: hidden;");
-                nTConceptoCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTConceptoCodigo");
-                nTConceptoCodigo.setFilterStyle("display: none; visibility: hidden;");
-                nTConceptoDescripcion = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTConceptoDescripcion");
-                nTConceptoDescripcion.setFilterStyle("display: none; visibility: hidden;");
-                nTFechasInicial = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTFechasInicial");
-                nTFechasInicial.setFilterStyle("display: none; visibility: hidden;");
-                nTFechasFinal = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTFechasFinal");
-                nTFechasFinal.setFilterStyle("display: none; visibility: hidden;");
-                nTValor = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTValor");
-                nTValor.setFilterStyle("display: none; visibility: hidden;");
-                nTSaldo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTSaldo");
-                nTSaldo.setFilterStyle("display: none; visibility: hidden;");
-                nTPeriodicidadCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTPeriodicidadCodigo");
-                nTPeriodicidadCodigo.setFilterStyle("display: none; visibility: hidden;");
-                nTDescripcionPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTDescripcionPeriodicidad");
-                nTDescripcionPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
-                nTFormulas = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTFormulas");
-                nTFormulas.setFilterStyle("display: none; visibility: hidden;");
-                nTHorasDias = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTHorasDias");
-                nTHorasDias.setFilterStyle("display: none; visibility: hidden;");
-                nTMinutosHoras = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTMinutosHoras");
-                nTMinutosHoras.setFilterStyle("display: none; visibility: hidden;");
-                nTTipo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTTipo");
-                nTTipo.setFilterStyle("display: none; visibility: hidden;");
+                cerrarFiltrado();
                 altoTabla = "170";
-                RequestContext.getCurrentInstance().update("form:datosNovedadesTercero");
-                bandera = 0;
-                filtradosListaNovedades = null;
-                tipoLista = 0;
             }
 
             // OBTENER EL TERMINAL 
@@ -1126,7 +1091,7 @@ public class ControlNovedadesTerceros implements Serializable {
                     }
                 }
             }
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
@@ -1294,39 +1259,8 @@ public class ControlNovedadesTerceros implements Serializable {
         } else if (bandera == 1) {
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            nTEmpleadoCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTEmpleadoCodigo");
-            nTEmpleadoCodigo.setFilterStyle("display: none; visibility: hidden;");
-            nTEmpleadoNombre = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTEmpleadoNombre");
-            nTEmpleadoNombre.setFilterStyle("display: none; visibility: hidden;");
-            nTConceptoCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTConceptoCodigo");
-            nTConceptoCodigo.setFilterStyle("display: none; visibility: hidden;");
-            nTConceptoDescripcion = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTConceptoDescripcion");
-            nTConceptoDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            nTFechasInicial = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTFechasInicial");
-            nTFechasInicial.setFilterStyle("display: none; visibility: hidden;");
-            nTFechasFinal = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTFechasFinal");
-            nTFechasFinal.setFilterStyle("display: none; visibility: hidden;");
-            nTValor = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTValor");
-            nTValor.setFilterStyle("display: none; visibility: hidden;");
-            nTSaldo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTSaldo");
-            nTSaldo.setFilterStyle("display: none; visibility: hidden;");
-            nTPeriodicidadCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTPeriodicidadCodigo");
-            nTPeriodicidadCodigo.setFilterStyle("display: none; visibility: hidden;");
-            nTDescripcionPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTDescripcionPeriodicidad");
-            nTDescripcionPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
-            nTFormulas = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTFormulas");
-            nTFormulas.setFilterStyle("display: none; visibility: hidden;");
-            nTHorasDias = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTHorasDias");
-            nTHorasDias.setFilterStyle("display: none; visibility: hidden;");
-            nTMinutosHoras = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTMinutosHoras");
-            nTMinutosHoras.setFilterStyle("display: none; visibility: hidden;");
-            nTTipo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTTipo");
-            nTTipo.setFilterStyle("display: none; visibility: hidden;");
+            cerrarFiltrado();
             altoTabla = "170";
-            RequestContext.getCurrentInstance().update("form:datosNovedadesTercero");
-            bandera = 0;
-            filtradosListaNovedades = null;
-            tipoLista = 0;
         }
     }
 
@@ -1354,6 +1288,7 @@ public class ControlNovedadesTerceros implements Serializable {
     //LIMPIAR NUEVO REGISTRO NOVEDAD
     public void limpiarNuevaNovedad() {
         nuevaNovedad = new Novedades();
+        nuevaNovedad.setValortotal(valor);
         nuevaNovedad.setPeriodicidad(new Periodicidades());
         nuevaNovedad.getPeriodicidad().setNombre(" ");
         nuevaNovedad.setTercero(new Terceros());
@@ -1362,6 +1297,7 @@ public class ControlNovedadesTerceros implements Serializable {
         nuevaNovedad.getEmpleado().getPersona().setNombreCompleto(" ");
         nuevaNovedad.setConcepto(new Conceptos());
         nuevaNovedad.getConcepto().setDescripcion(" ");
+        nuevaNovedad.setFormula(new Formulas());
         nuevaNovedad.setTipo("FIJA");
         nuevaNovedad.setUsuarioreporta(new Usuarios());
         nuevaNovedad.setTerminal(" ");
@@ -1373,6 +1309,7 @@ public class ControlNovedadesTerceros implements Serializable {
 
     public void actualizarFormulas() {
         RequestContext context = RequestContext.getCurrentInstance();
+        System.out.println("actualizarFormulas().seleccionFormulas: " + seleccionFormulas);
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 listaNovedades.get(index).setFormula(seleccionFormulas);
@@ -1393,19 +1330,19 @@ public class ControlNovedadesTerceros implements Serializable {
                     }
                 }
             }
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
             context.update("form:datosNovedadesTercero");
         } else if (tipoActualizacion == 1) {
+            System.out.println("SeleccionPeriocidades: " + seleccionPeriodicidades);
             nuevaNovedad.setFormula(seleccionFormulas);
             context.update("formularioDialogos:nuevaNovedad");
         } else if (tipoActualizacion == 2) {
             duplicarNovedad.setFormula(seleccionFormulas);
             context.update("formularioDialogos:duplicarNovedad");
-
         }
         filtradoslistaFormulas = null;
         seleccionFormulas = null;
@@ -1422,6 +1359,7 @@ public class ControlNovedadesTerceros implements Serializable {
 
     public void actualizarPeriodicidades() {
         RequestContext context = RequestContext.getCurrentInstance();
+        System.out.println("actualizarPeriodicidades().SeleccionPeriocidades: " + seleccionPeriodicidades);
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 listaNovedades.get(index).setPeriodicidad(seleccionPeriodicidades);
@@ -1442,13 +1380,14 @@ public class ControlNovedadesTerceros implements Serializable {
                     }
                 }
             }
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
             context.update("form:datosNovedadesTercero");
         } else if (tipoActualizacion == 1) {
+            System.out.println("SeleccionPeriocidades: " + seleccionPeriodicidades);
             nuevaNovedad.setPeriodicidad(seleccionPeriodicidades);
             context.update("formularioDialogos:nuevaNovedad");
         } else if (tipoActualizacion == 2) {
@@ -1473,11 +1412,14 @@ public class ControlNovedadesTerceros implements Serializable {
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 listaNovedades.get(index).setConcepto(seleccionConceptos);
+                //verificarFormConceptoTabla(seleccionConceptos.getSecuencia());
                 if (!listaNovedadesCrear.contains(listaNovedades.get(index))) {
                     if (listaNovedadesModificar.isEmpty()) {
                         listaNovedadesModificar.add(listaNovedades.get(index));
+                        verificarFormulaConcepto(seleccionConceptos.getSecuencia());
                     } else if (!listaNovedadesModificar.contains(listaNovedades.get(index))) {
                         listaNovedadesModificar.add(listaNovedades.get(index));
+                        // verificarFormConceptoTabla(seleccionConceptos.getSecuencia());
                     }
                 }
             } else {
@@ -1485,12 +1427,14 @@ public class ControlNovedadesTerceros implements Serializable {
                 if (!listaNovedadesCrear.contains(filtradosListaNovedades.get(index))) {
                     if (listaNovedadesModificar.isEmpty()) {
                         listaNovedadesModificar.add(filtradosListaNovedades.get(index));
+                        //verificarFormConceptoTabla(seleccionConceptos.getSecuencia());
                     } else if (!listaNovedadesModificar.contains(filtradosListaNovedades.get(index))) {
                         listaNovedadesModificar.add(filtradosListaNovedades.get(index));
+                        //verificarFormConceptoTabla(seleccionConceptos.getSecuencia());
                     }
                 }
             }
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
@@ -1499,9 +1443,11 @@ public class ControlNovedadesTerceros implements Serializable {
         } else if (tipoActualizacion == 1) {
             nuevaNovedad.setConcepto(seleccionConceptos);
             context.update("formularioDialogos:nuevaNovedad");
+            verificarFormulaConcepto(seleccionConceptos.getSecuencia());
         } else if (tipoActualizacion == 2) {
             duplicarNovedad.setConcepto(seleccionConceptos);
             context.update("formularioDialogos:duplicarNovedad");
+            verificarFormulaConcepto(seleccionConceptos.getSecuencia());
         }
         filtradoslistaConceptos = null;
         seleccionConceptos = null;
@@ -1514,6 +1460,36 @@ public class ControlNovedadesTerceros implements Serializable {
         context.execute("LOVConceptos.clearFilters()");
         context.execute("conceptosDialogo.hide()");
         //context.update("formularioDialogos:LOVConceptos");
+    }
+
+    public void verificarFormulaConcepto(BigInteger secCon) {
+        RequestContext context = RequestContext.getCurrentInstance();
+        List<FormulasConceptos> formulasConceptoSel = administrarFormulaConcepto.cargarFormulasConcepto(secCon);
+        if (formulasConceptoSel != null) {
+            autoFormula = formulasConceptoSel.get(0).getFormula().getSecuencia();
+            for (int i = 0; i < listaFormulas.size(); i++) {
+                if (autoFormula.equals(listaFormulas.get(i).getSecuencia())) {
+                    if (tipoActualizacion == 0) {
+                        System.out.println("La secuencia de la formula es: " + listaFormulas.get(i).getSecuencia());
+                        nuevaNovedad.setFormula(listaFormulas.get(i));
+                        //context.update("form:datosNovedadesTercero");
+                    }else if (tipoActualizacion == 1) {
+                        System.out.println("La secuencia de la formula es: " + listaFormulas.get(i).getSecuencia());
+                        nuevaNovedad.setFormula(listaFormulas.get(i));
+                        context.update("formularioDialogos:nuevaNovedad");
+                    } else if (tipoActualizacion == 2) {
+                        duplicarNovedad.setFormula(listaFormulas.get(i));
+                        context.update("formularioDialogos:duplicarNovedad");
+                    }
+                }
+            }
+        } else {
+            int sec = 4621544;
+            BigInteger secuencia = BigInteger.valueOf(sec);
+            nuevaNovedad.getFormula().setSecuencia(secuencia);
+            System.out.println("ControlNovedadesTerceros.verificarFormulaConcepto: El concepto no tiene formula");
+        }
+        autoFormula = null;
     }
 
     public void cancelarCambioEmpleados() {
@@ -1731,6 +1707,7 @@ public class ControlNovedadesTerceros implements Serializable {
                 }
             }
         } else if (confirmarCambio.equalsIgnoreCase("CODIGO")) {
+            System.out.println("seleccionPeriodicidades: " + seleccionPeriodicidades);
             if (tipoNuevo == 1) {
                 nuevaNovedad.getPeriodicidad().setCodigoStr(CodigoPeriodicidad);
             } else if (tipoNuevo == 2) {
@@ -1762,6 +1739,7 @@ public class ControlNovedadesTerceros implements Serializable {
                 if (tipoNuevo == 1) {
                     context.update("formularioDialogos:nuevaPeriodicidadCodigo");
                     context.update("formularioDialogos:nuevaPeriodicidadDescripcion");
+
                 } else if (tipoNuevo == 2) {
                     context.update("formularioDialogos:duplicarPeriodicidadCodigo");
                     context.update("formularioDialogos:duplicarPeriodicidadDescripcion");
@@ -1810,41 +1788,8 @@ public class ControlNovedadesTerceros implements Serializable {
     //CANCELAR MODIFICACIONES
     public void cancelarModificacion() {
         if (bandera == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
-
-            nTEmpleadoCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTEmpleadoCodigo");
-            nTEmpleadoCodigo.setFilterStyle("display: none; visibility: hidden;");
-            nTEmpleadoNombre = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTEmpleadoNombre");
-            nTEmpleadoNombre.setFilterStyle("display: none; visibility: hidden;");
-            nTConceptoCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTConceptoCodigo");
-            nTConceptoCodigo.setFilterStyle("display: none; visibility: hidden;");
-            nTConceptoDescripcion = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTConceptoDescripcion");
-            nTConceptoDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            nTFechasInicial = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTFechasInicial");
-            nTFechasInicial.setFilterStyle("display: none; visibility: hidden;");
-            nTFechasFinal = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTFechasFinal");
-            nTFechasFinal.setFilterStyle("display: none; visibility: hidden;");
-            nTValor = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTValor");
-            nTValor.setFilterStyle("display: none; visibility: hidden;");
-            nTSaldo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTSaldo");
-            nTSaldo.setFilterStyle("display: none; visibility: hidden;");
-            nTPeriodicidadCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTPeriodicidadCodigo");
-            nTPeriodicidadCodigo.setFilterStyle("display: none; visibility: hidden;");
-            nTDescripcionPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTDescripcionPeriodicidad");
-            nTDescripcionPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
-            nTFormulas = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTFormulas");
-            nTFormulas.setFilterStyle("display: none; visibility: hidden;");
-            nTHorasDias = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTHorasDias");
-            nTHorasDias.setFilterStyle("display: none; visibility: hidden;");
-            nTMinutosHoras = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTMinutosHoras");
-            nTMinutosHoras.setFilterStyle("display: none; visibility: hidden;");
-            nTTipo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTTipo");
-            nTTipo.setFilterStyle("display: none; visibility: hidden;");
             altoTabla = "170";
-            RequestContext.getCurrentInstance().update("form:datosNovedadesTercero");
-            bandera = 0;
-            filtradosListaNovedades = null;
-            tipoLista = 0;
+            cerrarFiltrado();
         }
 
         listaNovedadesBorrar.clear();
@@ -1863,51 +1808,60 @@ public class ControlNovedadesTerceros implements Serializable {
 
     public void salir() {
         if (bandera == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
-
-            nTEmpleadoCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTEmpleadoCodigo");
-            nTEmpleadoCodigo.setFilterStyle("display: none; visibility: hidden;");
-            nTEmpleadoNombre = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTEmpleadoNombre");
-            nTEmpleadoNombre.setFilterStyle("display: none; visibility: hidden;");
-            nTConceptoCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTConceptoCodigo");
-            nTConceptoCodigo.setFilterStyle("display: none; visibility: hidden;");
-            nTConceptoDescripcion = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTConceptoDescripcion");
-            nTConceptoDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            nTFechasInicial = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTFechasInicial");
-            nTFechasInicial.setFilterStyle("display: none; visibility: hidden;");
-            nTFechasFinal = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTFechasFinal");
-            nTFechasFinal.setFilterStyle("display: none; visibility: hidden;");
-            nTValor = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTValor");
-            nTValor.setFilterStyle("display: none; visibility: hidden;");
-            nTSaldo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTSaldo");
-            nTSaldo.setFilterStyle("display: none; visibility: hidden;");
-            nTPeriodicidadCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTPeriodicidadCodigo");
-            nTPeriodicidadCodigo.setFilterStyle("display: none; visibility: hidden;");
-            nTDescripcionPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTDescripcionPeriodicidad");
-            nTDescripcionPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
-            nTFormulas = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTFormulas");
-            nTFormulas.setFilterStyle("display: none; visibility: hidden;");
-            nTHorasDias = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTHorasDias");
-            nTHorasDias.setFilterStyle("display: none; visibility: hidden;");
-            nTMinutosHoras = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTMinutosHoras");
-            nTMinutosHoras.setFilterStyle("display: none; visibility: hidden;");
-            nTTipo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTTipo");
-            nTTipo.setFilterStyle("display: none; visibility: hidden;");
             altoTabla = "170";
-            RequestContext.getCurrentInstance().update("form:datosNovedadesTercero");
-            bandera = 0;
-            filtradosListaNovedades = null;
-            tipoLista = 0;
+            cerrarFiltrado();
         }
         listaNovedadesBorrar.clear();
         listaNovedadesCrear.clear();
         listaNovedadesModificar.clear();
-        index = -1;
+        listaConceptos.clear();
+        listaEmpleados.clear();
+        listaFormulas.clear();
+        listaTerceros.clear();
+        listaPeriodicidades.clear();
+        //index = -1;
         secRegistro = null;
         listaNovedades = null;
         resultado = 0;
         guardado = true;
         permitirIndex = true;
+    }
+
+    public void cerrarFiltrado() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        nTEmpleadoCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTEmpleadoCodigo");
+        nTEmpleadoCodigo.setFilterStyle("display: none; visibility: hidden;");
+        nTEmpleadoNombre = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTEmpleadoNombre");
+        nTEmpleadoNombre.setFilterStyle("display: none; visibility: hidden;");
+        nTConceptoCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTConceptoCodigo");
+        nTConceptoCodigo.setFilterStyle("display: none; visibility: hidden;");
+        nTConceptoDescripcion = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTConceptoDescripcion");
+        nTConceptoDescripcion.setFilterStyle("display: none; visibility: hidden;");
+        nTFechasInicial = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTFechasInicial");
+        nTFechasInicial.setFilterStyle("display: none; visibility: hidden;");
+        nTFechasFinal = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTFechasFinal");
+        nTFechasFinal.setFilterStyle("display: none; visibility: hidden;");
+        nTValor = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTValor");
+        nTValor.setFilterStyle("display: none; visibility: hidden;");
+        nTSaldo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTSaldo");
+        nTSaldo.setFilterStyle("display: none; visibility: hidden;");
+        nTPeriodicidadCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTPeriodicidadCodigo");
+        nTPeriodicidadCodigo.setFilterStyle("display: none; visibility: hidden;");
+        nTDescripcionPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTDescripcionPeriodicidad");
+        nTDescripcionPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
+        nTFormulas = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTFormulas");
+        nTFormulas.setFilterStyle("display: none; visibility: hidden;");
+        nTHorasDias = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTHorasDias");
+        nTHorasDias.setFilterStyle("display: none; visibility: hidden;");
+        nTMinutosHoras = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTMinutosHoras");
+        nTMinutosHoras.setFilterStyle("display: none; visibility: hidden;");
+        nTTipo = (Column) c.getViewRoot().findComponent("form:datosNovedadesTercero:nTTipo");
+        nTTipo.setFilterStyle("display: none; visibility: hidden;");
+        RequestContext.getCurrentInstance().update("form:datosNovedadesTercero");
+        bandera = 0;
+        filtradosListaNovedades = null;
+        tipoLista = 0;
+
     }
 
     public void todasNovedades() {
@@ -1947,6 +1901,19 @@ public class ControlNovedadesTerceros implements Serializable {
     }
 
     public List<Periodicidades> getListaPeriodicidades() {
+
+//        if (listaPeriodicidades == null) {
+//            listaPeriodicidades = administrarNovedadesTerceros.lovPeriodicidades();
+//            RequestContext context = RequestContext.getCurrentInstance();
+//            if (listaPeriodicidades == null || listaPeriodicidades.isEmpty()) {
+//                infoRegistroPeriodicidades = "Cantidad de registros: 0 ";
+//            } else {
+//                infoRegistroPeriodicidades = "Cantidad de registros: " + listaPeriodicidades.size();
+//            }
+//            context.update("formularioDialogos:infoRegistroPeriodicidades");
+//        }
+//        return listaPeriodicidades;
+//        
         if (listaPeriodicidades == null) {
             listaPeriodicidades = administrarNovedadesTerceros.lovPeriodicidades();
         }
@@ -1974,7 +1941,7 @@ public class ControlNovedadesTerceros implements Serializable {
     }
 
     public List<Novedades> getListaNovedades() {
-        if (listaNovedades == null) {
+        if (listaNovedades == null|| listaNovedades.isEmpty()) {
             listaNovedades = administrarNovedadesTerceros.novedadesTercero(terceroSeleccionado.getSecuencia());
         }
         return listaNovedades;

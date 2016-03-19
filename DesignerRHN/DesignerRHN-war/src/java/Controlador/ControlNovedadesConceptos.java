@@ -129,7 +129,6 @@ public class ControlNovedadesConceptos implements Serializable {
     public String infoRegistroTerceros;
     //CARGAR FORMULA DEL CONCEPTO
     private BigInteger autoFormula;
-    
     BigDecimal valor = new BigDecimal(Integer.toString(0));
 
     public ControlNovedadesConceptos() {
@@ -161,7 +160,6 @@ public class ControlNovedadesConceptos implements Serializable {
         nuevaNovedad.setTipo("FIJA");
         altoTabla = "155";
         autoFormula = null;
-        //nuevaNovedad.setValortotal(valor);
         nuevaNovedad.setValortotal(valor);
 
     }
@@ -353,7 +351,7 @@ public class ControlNovedadesConceptos implements Serializable {
                 }
             }
         }
-        if (guardado == true) {
+        if (guardado) {
             guardado = false;
             context.update("form:ACEPTAR");
         }
@@ -479,7 +477,7 @@ public class ControlNovedadesConceptos implements Serializable {
                     } else if (!listaNovedadesModificar.contains(listaNovedades.get(indice))) {
                         listaNovedadesModificar.add(listaNovedades.get(indice));
                     }
-                    if (guardado == true) {
+                    if (guardado) {
                         guardado = false;
                         context.update("form:ACEPTAR");
                     }
@@ -494,7 +492,7 @@ public class ControlNovedadesConceptos implements Serializable {
                     } else if (!listaNovedadesModificar.contains(filtradosListaNovedades.get(indice))) {
                         listaNovedadesModificar.add(filtradosListaNovedades.get(indice));
                     }
-                    if (guardado == true) {
+                    if (guardado) {
                         guardado = false;
                         context.update("form:ACEPTAR");
                     }
@@ -623,7 +621,7 @@ public class ControlNovedadesConceptos implements Serializable {
                     } else if (!listaNovedadesModificar.contains(listaNovedades.get(indice))) {
                         listaNovedadesModificar.add(listaNovedades.get(indice));
                     }
-                    if (guardado == true) {
+                    if (guardado) {
                         guardado = false;
                         context.update("form:ACEPTAR");
                     }
@@ -638,7 +636,7 @@ public class ControlNovedadesConceptos implements Serializable {
                     } else if (!listaNovedadesModificar.contains(filtradosListaNovedades.get(indice))) {
                         listaNovedadesModificar.add(filtradosListaNovedades.get(indice));
                     }
-                    if (guardado == true) {
+                    if (guardado) {
                         guardado = false;
                         context.update("form:ACEPTAR");
                     }
@@ -672,7 +670,7 @@ public class ControlNovedadesConceptos implements Serializable {
                     }
                 }
             }
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 context.update("form:ACEPTAR");
             }
@@ -721,7 +719,7 @@ public class ControlNovedadesConceptos implements Serializable {
                     }
                 }
             }
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 context.update("form:ACEPTAR");
             }
@@ -769,7 +767,7 @@ public class ControlNovedadesConceptos implements Serializable {
                     }
                 }
             }
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 context.update("form:ACEPTAR");
             }
@@ -817,7 +815,7 @@ public class ControlNovedadesConceptos implements Serializable {
                     }
                 }
             }
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 context.update("form:ACEPTAR");
             }
@@ -861,7 +859,6 @@ public class ControlNovedadesConceptos implements Serializable {
                     Saldo = listaNovedades.get(index).getSaldo();
                 } else if (cualCelda == 6) {
                     CodigoPeriodicidad = listaNovedades.get(index).getPeriodicidad().getCodigoStr();
-
                 } else if (cualCelda == 7) {
                     DescripcionPeriodicidad = listaNovedades.get(index).getPeriodicidad().getNombre();
                 } else if (cualCelda == 8) {
@@ -1055,42 +1052,8 @@ public class ControlNovedadesConceptos implements Serializable {
         if (pasa == 0 && pasa2 == 0) {
             System.out.println("Todo esta Bien");
             if (bandera == 1) {
-                FacesContext c = FacesContext.getCurrentInstance();
-
-                nCEmpleadoCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCConceptoCodigo");
-                nCEmpleadoCodigo.setFilterStyle("display: none; visibility: hidden;");
-                nCEmpleadoNombre = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCConceptoDescripcion");
-                nCEmpleadoNombre.setFilterStyle("display: none; visibility: hidden;");
-                nCFechasInicial = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCFechasInicial");
-                nCFechasInicial.setFilterStyle("display: none; visibility: hidden;");
-                nCFechasFinal = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCFechasFinal");
-                nCFechasFinal.setFilterStyle("display: none; visibility: hidden;");
-                nCValor = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCValor");
-                nCValor.setFilterStyle("display: none; visibility: hidden;");
-                nCSaldo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCSaldo");
-                nCSaldo.setFilterStyle("display: none; visibility: hidden;");
-                nCPeriodicidadCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCPeriodicidadCodigo");
-                nCPeriodicidadCodigo.setFilterStyle("display: none; visibility: hidden;");
-                nCDescripcionPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCDescripcionPeriodicidad");
-                nCDescripcionPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
-                nCTercerosNit = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCTercerosNit");
-                nCTercerosNit.setFilterStyle("display: none; visibility: hidden;");
-                nCTercerosNombre = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCTercerosNombre");
-                nCTercerosNombre.setFilterStyle("display: none; visibility: hidden;");
-                nCFormulas = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCFormulas");
-                nCFormulas.setFilterStyle("display: none; visibility: hidden;");
-                nCHorasDias = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCHorasDias");
-                nCHorasDias.setFilterStyle("display: none; visibility: hidden;");
-                nCMinutosHoras = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCMinutosHoras");
-                nCMinutosHoras.setFilterStyle("display: none; visibility: hidden;");
-                nCTipo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCTipo");
-                nCTipo.setFilterStyle("display: none; visibility: hidden;");
+                cerrarFiltrado();
                 altoTabla = "155";
-
-                RequestContext.getCurrentInstance().update("form:datosNovedadesConcepto");
-                bandera = 0;
-                filtradosListaNovedades = null;
-                tipoLista = 0;
             }
             //AGREGAR REGISTRO A LA LISTA NOVEDADES .
             k++;
@@ -1140,7 +1103,7 @@ public class ControlNovedadesConceptos implements Serializable {
             nuevaNovedad.setTipo("FIJA");
 
             context.update("form:datosNovedadesConcepto");
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
@@ -1283,40 +1246,8 @@ public class ControlNovedadesConceptos implements Serializable {
             bandera = 1;
             tipoLista = 1;
         } else if (bandera == 1) {
-            nCEmpleadoCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCEmpleadoCodigo");
-            nCEmpleadoCodigo.setFilterStyle("display: none; visibility: hidden;");
-            nCEmpleadoNombre = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCEmpleadoNombre");
-            nCEmpleadoNombre.setFilterStyle("display: none; visibility: hidden;");
-            nCFechasInicial = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCFechasInicial");
-            nCFechasInicial.setFilterStyle("display: none; visibility: hidden;");
-            nCFechasFinal = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCFechasFinal");
-            nCFechasFinal.setFilterStyle("display: none; visibility: hidden;");
-            nCValor = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCValor");
-            nCValor.setFilterStyle("display: none; visibility: hidden;");
-            nCSaldo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCSaldo");
-            nCSaldo.setFilterStyle("display: none; visibility: hidden;");
-            nCPeriodicidadCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCPeriodicidadCodigo");
-            nCPeriodicidadCodigo.setFilterStyle("display: none; visibility: hidden;");
-            nCDescripcionPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCDescripcionPeriodicidad");
-            nCDescripcionPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
-            nCTercerosNit = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCTercerosNit");
-            nCTercerosNit.setFilterStyle("display: none; visibility: hidden;");
-            nCTercerosNombre = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCTercerosNombre");
-            nCTercerosNombre.setFilterStyle("display: none; visibility: hidden;");
-            nCFormulas = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCFormulas");
-            nCFormulas.setFilterStyle("display: none; visibility: hidden;");
-            nCHorasDias = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCHorasDias");
-            nCHorasDias.setFilterStyle("display: none; visibility: hidden;");
-            nCMinutosHoras = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCMinutosHoras");
-            nCMinutosHoras.setFilterStyle("display: none; visibility: hidden;");
-            nCTipo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCTipo");
-            nCTipo.setFilterStyle("display: none; visibility: hidden;");
+            cerrarFiltrado();
             altoTabla = "155";
-
-            RequestContext.getCurrentInstance().update("form:datosNovedadesConcepto");
-            bandera = 0;
-            filtradosListaNovedades = null;
-            tipoLista = 0;
         }
     }
 
@@ -1415,7 +1346,7 @@ public class ControlNovedadesConceptos implements Serializable {
             context.update("form:datosNovedadesConcepto");
             index = -1;
             secRegistro = null;
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
@@ -1529,46 +1460,13 @@ public class ControlNovedadesConceptos implements Serializable {
 
             context.update("form:datosNovedadesConcepto");
             index = -1;
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             if (bandera == 1) {
-                FacesContext c = FacesContext.getCurrentInstance();
-                nCEmpleadoCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCConceptoCodigo");
-                nCEmpleadoCodigo.setFilterStyle("display: none; visibility: hidden;");
-                nCEmpleadoNombre = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCConceptoDescripcion");
-                nCEmpleadoNombre.setFilterStyle("display: none; visibility: hidden;");
-                nCFechasInicial = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCFechasInicial");
-                nCFechasInicial.setFilterStyle("display: none; visibility: hidden;");
-                nCFechasFinal = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCFechasFinal");
-                nCFechasFinal.setFilterStyle("display: none; visibility: hidden;");
-                nCValor = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCValor");
-                nCValor.setFilterStyle("display: none; visibility: hidden;");
-                nCSaldo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCSaldo");
-                nCSaldo.setFilterStyle("display: none; visibility: hidden;");
-                nCPeriodicidadCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCPeriodicidadCodigo");
-                nCPeriodicidadCodigo.setFilterStyle("display: none; visibility: hidden;");
-                nCDescripcionPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCDescripcionPeriodicidad");
-                nCDescripcionPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
-                nCTercerosNit = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCTercerosNit");
-                nCTercerosNit.setFilterStyle("display: none; visibility: hidden;");
-                nCTercerosNombre = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCTercerosNombre");
-                nCTercerosNombre.setFilterStyle("display: none; visibility: hidden;");
-                nCFormulas = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCFormulas");
-                nCFormulas.setFilterStyle("display: none; visibility: hidden;");
-                nCHorasDias = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCHorasDias");
-                nCHorasDias.setFilterStyle("display: none; visibility: hidden;");
-                nCMinutosHoras = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCMinutosHoras");
-                nCMinutosHoras.setFilterStyle("display: none; visibility: hidden;");
-                nCTipo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCTipo");
-                nCTipo.setFilterStyle("display: none; visibility: hidden;");
+                cerrarFiltrado();
                 altoTabla = "155";
-
-                RequestContext.getCurrentInstance().update("form:datosNovedadesConcepto");
-                bandera = 0;
-                filtradosListaNovedades = null;
-                tipoLista = 0;
             }
 
             // OBTENER EL TERMINAL 
@@ -1823,7 +1721,9 @@ public class ControlNovedadesConceptos implements Serializable {
     }
 
     public void salir() {
-        cerrarFiltrado();
+        if (bandera == 1) {
+            cerrarFiltrado();
+        }
         listaNovedadesBorrar.clear();
         listaNovedadesCrear.clear();
         listaNovedadesModificar.clear();
@@ -1844,44 +1744,42 @@ public class ControlNovedadesConceptos implements Serializable {
     }
 
     public void cerrarFiltrado() {
-        if (bandera == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
+        FacesContext c = FacesContext.getCurrentInstance();
 
-            nCEmpleadoCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCConceptoCodigo");
-            nCEmpleadoCodigo.setFilterStyle("display: none; visibility: hidden;");
-            nCEmpleadoNombre = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCConceptoDescripcion");
-            nCEmpleadoNombre.setFilterStyle("display: none; visibility: hidden;");
-            nCFechasInicial = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCFechasInicial");
-            nCFechasInicial.setFilterStyle("display: none; visibility: hidden;");
-            nCFechasFinal = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCFechasFinal");
-            nCFechasFinal.setFilterStyle("display: none; visibility: hidden;");
-            nCValor = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCValor");
-            nCValor.setFilterStyle("display: none; visibility: hidden;");
-            nCSaldo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCSaldo");
-            nCSaldo.setFilterStyle("display: none; visibility: hidden;");
-            nCPeriodicidadCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCPeriodicidadCodigo");
-            nCPeriodicidadCodigo.setFilterStyle("display: none; visibility: hidden;");
-            nCDescripcionPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCDescripcionPeriodicidad");
-            nCDescripcionPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
-            nCTercerosNit = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCTercerosNit");
-            nCTercerosNit.setFilterStyle("display: none; visibility: hidden;");
-            nCTercerosNombre = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCTercerosNombre");
-            nCTercerosNombre.setFilterStyle("display: none; visibility: hidden;");
-            nCFormulas = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCFormulas");
-            nCFormulas.setFilterStyle("display: none; visibility: hidden;");
-            nCHorasDias = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCHorasDias");
-            nCHorasDias.setFilterStyle("display: none; visibility: hidden;");
-            nCMinutosHoras = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCMinutosHoras");
-            nCMinutosHoras.setFilterStyle("display: none; visibility: hidden;");
-            nCTipo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCTipo");
-            nCTipo.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "155";
+        nCEmpleadoCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCConceptoCodigo");
+        nCEmpleadoCodigo.setFilterStyle("display: none; visibility: hidden;");
+        nCEmpleadoNombre = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCConceptoDescripcion");
+        nCEmpleadoNombre.setFilterStyle("display: none; visibility: hidden;");
+        nCFechasInicial = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCFechasInicial");
+        nCFechasInicial.setFilterStyle("display: none; visibility: hidden;");
+        nCFechasFinal = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCFechasFinal");
+        nCFechasFinal.setFilterStyle("display: none; visibility: hidden;");
+        nCValor = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCValor");
+        nCValor.setFilterStyle("display: none; visibility: hidden;");
+        nCSaldo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCSaldo");
+        nCSaldo.setFilterStyle("display: none; visibility: hidden;");
+        nCPeriodicidadCodigo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCPeriodicidadCodigo");
+        nCPeriodicidadCodigo.setFilterStyle("display: none; visibility: hidden;");
+        nCDescripcionPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCDescripcionPeriodicidad");
+        nCDescripcionPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
+        nCTercerosNit = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCTercerosNit");
+        nCTercerosNit.setFilterStyle("display: none; visibility: hidden;");
+        nCTercerosNombre = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCTercerosNombre");
+        nCTercerosNombre.setFilterStyle("display: none; visibility: hidden;");
+        nCFormulas = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCFormulas");
+        nCFormulas.setFilterStyle("display: none; visibility: hidden;");
+        nCHorasDias = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCHorasDias");
+        nCHorasDias.setFilterStyle("display: none; visibility: hidden;");
+        nCMinutosHoras = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCMinutosHoras");
+        nCMinutosHoras.setFilterStyle("display: none; visibility: hidden;");
+        nCTipo = (Column) c.getViewRoot().findComponent("form:datosNovedadesConcepto:nCTipo");
+        nCTipo.setFilterStyle("display: none; visibility: hidden;");
+        altoTabla = "155";
 
-            RequestContext.getCurrentInstance().update("form:datosNovedadesConcepto");
-            bandera = 0;
-            filtradosListaNovedades = null;
-            tipoLista = 0;
-        }
+        RequestContext.getCurrentInstance().update("form:datosNovedadesConcepto");
+        bandera = 0;
+        filtradosListaNovedades = null;
+        tipoLista = 0;
     }
 
     public void todasNovedades() {
@@ -1981,7 +1879,7 @@ public class ControlNovedadesConceptos implements Serializable {
 //            listaNovedades = administrarNovedadesConceptos.novedadesConcepto(seleccionMostrar.getSecuencia());
 //        }
 //        return listaNovedades;
-        
+
         if (listaNovedades == null) {
             RequestContext context = RequestContext.getCurrentInstance();
             listaNovedades = listaNovedades = administrarNovedadesConceptos.novedadesConcepto(seleccionMostrar.getSecuencia());
