@@ -226,6 +226,7 @@ public class ControlAusentismos implements Serializable {
         bandera = 0;
         banderaBotones = 0;
         banderaBotonesD = 0;
+        index = -1;
     }
 
     @PostConstruct
@@ -320,7 +321,7 @@ public class ControlAusentismos implements Serializable {
             context.update("formularioDialogos:enfermedadesDialogo");
             context.execute("enfermedadesDialogo.show()");
         } else if (dlg == 10) {
-            listaProrrogas = null;
+            //    listaProrrogas = null;
             context.update("formularioDialogos:prorrogasDialogo");
             context.execute("prorrogasDialogo.show()");
         } else if (dlg == 11) {
@@ -331,7 +332,7 @@ public class ControlAusentismos implements Serializable {
 
     public void mostrarTodos() {
 
-       RequestContext context = RequestContext.getCurrentInstance();
+        RequestContext context = RequestContext.getCurrentInstance();
         if (!listaEmpleadosAusentismo.isEmpty()) {
             listaEmpleadosAusentismo.clear();
         }
@@ -1531,49 +1532,52 @@ public class ControlAusentismos implements Serializable {
 
     //BORRAR Novedades
     public void borrarAusentismos() {
-        if (index >= 0) {
-            cambiosPagina = false;
-            if (tipoLista == 0) {
-                if (!listaAusentismosModificar.isEmpty() && listaAusentismosModificar.contains(listaAusentismos.get(index))) {
-                    int modIndex = listaAusentismosModificar.indexOf(listaAusentismos.get(index));
-                    listaAusentismosModificar.remove(modIndex);
-                    listaAusentismosBorrar.add(listaAusentismos.get(index));
-                } else if (!listaAusentismosCrear.isEmpty() && listaAusentismosCrear.contains(listaAusentismos.get(index))) {
-                    int crearIndex = listaAusentismosCrear.indexOf(listaAusentismos.get(index));
-                    listaAusentismosCrear.remove(crearIndex);
-                } else {
-                    listaAusentismosBorrar.add(listaAusentismos.get(index));
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (index < 0) {
+            context.execute("seleccionarRegistro.show()");
+        } else {
+            if (index >= 0) {
+                cambiosPagina = false;
+                if (tipoLista == 0) {
+                    if (!listaAusentismosModificar.isEmpty() && listaAusentismosModificar.contains(listaAusentismos.get(index))) {
+                        int modIndex = listaAusentismosModificar.indexOf(listaAusentismos.get(index));
+                        listaAusentismosModificar.remove(modIndex);
+                        listaAusentismosBorrar.add(listaAusentismos.get(index));
+                    } else if (!listaAusentismosCrear.isEmpty() && listaAusentismosCrear.contains(listaAusentismos.get(index))) {
+                        int crearIndex = listaAusentismosCrear.indexOf(listaAusentismos.get(index));
+                        listaAusentismosCrear.remove(crearIndex);
+                    } else {
+                        listaAusentismosBorrar.add(listaAusentismos.get(index));
+                    }
+                    listaAusentismos.remove(index);
                 }
-                listaAusentismos.remove(index);
-            }
 
-            if (tipoLista == 1) {
-                if (!listaAusentismosModificar.isEmpty() && listaAusentismosModificar.contains(filtradosListaAusentismos.get(index))) {
-                    int modIndex = listaAusentismosModificar.indexOf(filtradosListaAusentismos.get(index));
-                    listaAusentismosModificar.remove(modIndex);
-                    listaAusentismosBorrar.add(filtradosListaAusentismos.get(index));
-                } else if (!listaAusentismosCrear.isEmpty() && listaAusentismosCrear.contains(filtradosListaAusentismos.get(index))) {
-                    int crearIndex = listaAusentismosCrear.indexOf(filtradosListaAusentismos.get(index));
-                    listaAusentismosCrear.remove(crearIndex);
-                } else {
-                    listaAusentismosBorrar.add(filtradosListaAusentismos.get(index));
+                if (tipoLista == 1) {
+                    if (!listaAusentismosModificar.isEmpty() && listaAusentismosModificar.contains(filtradosListaAusentismos.get(index))) {
+                        int modIndex = listaAusentismosModificar.indexOf(filtradosListaAusentismos.get(index));
+                        listaAusentismosModificar.remove(modIndex);
+                        listaAusentismosBorrar.add(filtradosListaAusentismos.get(index));
+                    } else if (!listaAusentismosCrear.isEmpty() && listaAusentismosCrear.contains(filtradosListaAusentismos.get(index))) {
+                        int crearIndex = listaAusentismosCrear.indexOf(filtradosListaAusentismos.get(index));
+                        listaAusentismosCrear.remove(crearIndex);
+                    } else {
+                        listaAusentismosBorrar.add(filtradosListaAusentismos.get(index));
+                    }
+                    int CIndex = listaAusentismos.indexOf(filtradosListaAusentismos.get(index));
+                    listaAusentismos.remove(CIndex);
+                    filtradosListaAusentismos.remove(index);
+                    System.out.println("Realizado");
                 }
-                int CIndex = listaAusentismos.indexOf(filtradosListaAusentismos.get(index));
-                listaAusentismos.remove(CIndex);
-                filtradosListaAusentismos.remove(index);
-                System.out.println("Realizado");
-            }
 
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosAusentismosEmpleado");
-            context.update("form:ACEPTAR");
-            index = -1;
-            secRegistro = null;
-
-            if (guardado == true) {
-                guardado = false;
+                context.update("form:datosAusentismosEmpleado");
                 context.update("form:ACEPTAR");
+                index = -1;
+                secRegistro = null;
 
+                if (guardado == true) {
+                    guardado = false;
+                    context.update("form:ACEPTAR");
+                }
             }
         }
     }
@@ -2851,7 +2855,7 @@ public class ControlAusentismos implements Serializable {
             botonAgregar.setStyle("position: absolute; left: 350px; top: 570px;");
             botonCancelar = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:cancelarNA");
             botonCancelar.setStyle("position: absolute; left: 450px; top: 570px;");
-            altoDialogoNuevo = "530";
+            altoDialogoNuevo = "600";
             banderaBotones = 1;
         } else if (banderaBotones == 1) {
             System.out.println("Entro a Bandera B. 1");

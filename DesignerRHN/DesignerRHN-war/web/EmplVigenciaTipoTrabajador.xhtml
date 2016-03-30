@@ -18,54 +18,54 @@
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">  
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlVigenciaTipoTrabajador.empleado.persona.nombreCompleto}"/>
 
-                        <p:toolbar style=" position: absolute; top: 37px; left: 12px; height: 24px">  
+                        <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 37px; left: 12px; height: 24px">  
                             <p:toolbarGroup align="left"> 
 
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciaTipoTrabajador.guardarGeneral()}" process="@this" />
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciaTipoTrabajador.guardarGeneral()}" process="@this" />
                                 <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
 
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.editarCelda()}" process="@this"/>
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.editarCelda()}" process="@this"/>
                                 <p:tooltip  for="editar" value="#{msg['editar']}" />
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.listaValoresBoton()}" process="@this"/>
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.listaValoresBoton()}" process="@this"/>
                                 <p:tooltip  for="listaValores" value="#{msg['lista']}" />
 
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.activarCtrlF11()}" process="@this"/>
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.activarCtrlF11()}" process="@this"/>
                                 <p:tooltip  for="filtrar" value="#{msg['filtrar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlVigenciaTipoTrabajador.exportXLS()}" process="@this" immediate="true"/>
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlVigenciaTipoTrabajador.exportXLS()}" process="@this" immediate="true"/>
                                 <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
 
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.limpiarNuevaVTT()}" ajax="false" process="@this" immediate="true">
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.limpiarNuevaVTT()}" ajax="false" process="@this" immediate="true">
                                     <p:dataExporter type="xml"  target=":formExportar:datosVTTEmpleadoExportar" fileName="VigenciasTiposTrabajadoresXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
 
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.exportPDF()}" ajax="false" process="@this" immediate="true"/>
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.exportPDF()}" ajax="false" process="@this" immediate="true"/>
                                 <p:tooltip  for="exportarPDF" value="#{msg['pdf']}"/>
 
                                 <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroVTT.show()" update=":formularioDialogos:nuevaVTT" process="@this"/> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroVTT.show()" update=":formularioDialogos:nuevaVTT" process="@this"/> 
                                 <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
 
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.borrarVTT()}" process="@this"/>  
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.borrarVTT()}" process="@this"/>  
                                 <p:tooltip  for="eliminar" value="#{msg['eliminar']}" />
 
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.duplicarVigenciaTT()}"  process="@this"/>  
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.duplicarVigenciaTT()}"  process="@this"/>  
                                 <p:tooltip  for="duplicar" value="#{msg['duplicar']}"/>
                                 <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.verificarRastro()}" process="@this"/>  
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.verificarRastro()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
 
                                 <p:separator style="position: relative; top: -9px"/> 
 
-                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.cancelarModificacion()}" process="@this"/>  
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.salir()}" action="nomina" process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.salir()}" action="nomina" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
 
                             </p:toolbarGroup>  
@@ -201,9 +201,9 @@
                            <!-- <p:commandButton value="" process="@this" icon="ui-icon-search" actionListener="#{controlVigenciaTipoTrabajador.listaValoresBoton()}" style="position: absolute; left: 190px; top: 85px; height: 23px; width: 23px"/>-->
                             <p:commandButton value="" process="@this" icon="ui-icon-search" action="clasepension" style="position: absolute; left: 190px; top: 85px; height: 23px; width: 23px"/>
 
-                              <h:outputText value="#{msg['tipoP']}:" style="position: absolute; left: 230px; top: 70px"/>
-                             <p:inputText onclick="select();" id="tipoPensionado" value="#{controlVigenciaTipoTrabajador.pensionVigencia.tipopensionado.descripcion}" style="position: absolute; left: 230px; top: 85px; width: 120px; height: 13px">
-                               <!-- <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}"  process="@this"/>-->
+                            <h:outputText value="#{msg['tipoP']}:" style="position: absolute; left: 230px; top: 70px"/>
+                            <p:inputText onclick="select();" id="tipoPensionado" value="#{controlVigenciaTipoTrabajador.pensionVigencia.tipopensionado.descripcion}" style="position: absolute; left: 230px; top: 85px; width: 120px; height: 13px">
+                              <!-- <p:ajax event="click" listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoPensionado()}"  process="@this"/>-->
                                 <p:ajax event="change" listener="#{controlVigenciaTipoTrabajador.cambiosPension()}" update="tipoPensionado"/>
                                 <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndex(indice, 1, 0, 1)}" immediate="true"/>
                             </p:inputText>
@@ -265,8 +265,8 @@
                             <p:commandButton value="#{msg['limpiar']}" id="LimpiarRetirado" style="position: absolute; left: 25px; top: 165px;" actionListener="#{controlVigenciaTipoTrabajador.limpiarRetiro()}" update="panelRetiradosInput" process="@this" icon="ui-icon-trash"/>
                         </p:panel>
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 483px;  " id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" process="@this" disabled="#{controlVigenciaTipoTrabajador.cambiosPagina}"  />
-                        <p:commandButton style="position: absolute; left: 775px; top: 483px; " id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlVigenciaTipoTrabajador.salir()}" action="nomina" process="@this" immediate="true"/>
+                        <p:commandButton id="ACEPTAR" style="position: absolute; left: 664px; top: 483px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat;" value=" " onclick="confirmarGuardar.show();" process="@this" disabled="#{controlVigenciaTipoTrabajador.cambiosPagina}"/>
+                        <p:commandButton id="ATRAS" style="position: absolute; left: 765px; top: 483px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat;" value=" " actionListener="#{controlVigenciaTipoTrabajador.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
 

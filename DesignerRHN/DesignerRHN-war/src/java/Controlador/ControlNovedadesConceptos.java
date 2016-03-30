@@ -127,8 +127,6 @@ public class ControlNovedadesConceptos implements Serializable {
     public String infoRegistroEmpleados;
     public String infoRegistroPeriodicidades;
     public String infoRegistroTerceros;
-    //CARGAR FORMULA DEL CONCEPTO
-    private BigInteger autoFormula;
     BigDecimal valor = new BigDecimal(Integer.toString(0));
 
     public ControlNovedadesConceptos() {
@@ -159,7 +157,6 @@ public class ControlNovedadesConceptos implements Serializable {
         nuevaNovedad.setFechareporte(new Date());
         nuevaNovedad.setTipo("FIJA");
         altoTabla = "155";
-        autoFormula = null;
         nuevaNovedad.setValortotal(valor);
 
     }
@@ -697,7 +694,7 @@ public class ControlNovedadesConceptos implements Serializable {
     }
 
     public void actualizarFormulas() {
-        //  verificarFormulaConcepto(seleccionConceptos.getSecuencia());
+       // verificarFormulaConcepto(seleccionConceptos.getSecuencia());
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
@@ -976,7 +973,7 @@ public class ControlNovedadesConceptos implements Serializable {
             guardado = true;
             permitirIndex = true;
             RequestContext.getCurrentInstance().update("form:ACEPTAR");
-            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesMessage msg = new FacesMessage("Información", "Se guardarón los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
         }
@@ -1803,32 +1800,39 @@ public class ControlNovedadesConceptos implements Serializable {
         context.update("form:TODAS");
         context.update("form:ACTUALES");
     }
-
-    //CARGAR FORMULA AUTOMATICAMENTE
-    public void verificarFormulaConcepto(BigInteger secCon) {
+    
+    public void abrirDialogo(){
         RequestContext context = RequestContext.getCurrentInstance();
-        List<FormulasConceptos> formulasConceptoSel = administrarFormulaConcepto.cargarFormulasConcepto(secCon);
+        Formulas formula;
+        formula = verificarFormulaConcepto(seleccionMostrar.getSecuencia());
+        nuevaNovedad.setFormula(formula);
+        context.update("formularioDialogos:nuevaNovedad");
+        context.execute("NuevaNovedadConcepto.show()");
+        
+    }
+    
+    //CARGAR FORMULA AUTOMATICAMENTE
+    public Formulas verificarFormulaConcepto(BigInteger secCon) {
+       List<FormulasConceptos> formulasConceptoSel = administrarFormulaConcepto.cargarFormulasConcepto(secCon);
+        Formulas formulaR = new Formulas();
+        BigInteger autoFormula;
+
         if (formulasConceptoSel != null) {
-            autoFormula = formulasConceptoSel.get(0).getFormula().getSecuencia();
-            for (int i = 0; i < listaFormulas.size(); i++) {
-                if (autoFormula.equals(listaFormulas.get(i).getSecuencia())) {
-                    if (tipoActualizacion == 1) {
-                        System.out.println("La secuencia de la formula es: " + listaFormulas.get(i).getSecuencia());
-                        //nuevaNovedad.getFormula().setNombrelargo(listaFormulas.get(i).getNombrelargo());
-                        nuevaNovedad.setFormula(listaFormulas.get(i));
-                        context.update("formularioDialogos:NuevaNovedadConcepto");
-                    } else if (tipoActualizacion == 2) {
-                        // System.out.println("La secuencia de la formula es: " + listaFormulas.get(i).getSecuencia());
-                        //duplicarNovedad.getFormula().setNombrelargo(listaFormulas.get(i).getNombrelargo());
-                        duplicarNovedad.setFormula(listaFormulas.get(i));
-                        context.update("formularioDialogos:DuplicarRegistroNovedad");
-                    }
-                }
+            if (!formulasConceptoSel.isEmpty()) {
+                autoFormula = formulasConceptoSel.get(0).getFormula().getSecuencia();
+            } else {
+                autoFormula = new BigInteger("4621544");
             }
         } else {
-            System.out.println("ControlNovedadesEmpleados.verificarFormulaConcepto: El concepto no tiene formula");
+            autoFormula = new BigInteger("4621544");
         }
-        autoFormula = null;
+
+        for (int i = 0; i < listaFormulas.size(); i++) {
+            if (autoFormula.equals(listaFormulas.get(i).getSecuencia())) {
+                formulaR = listaFormulas.get(i);
+            }
+        }
+        return formulaR;
     }
     //GETTER & SETTER
 
@@ -1855,9 +1859,9 @@ public class ControlNovedadesConceptos implements Serializable {
     }
 
     public Conceptos getSeleccionMostrar() {
-//        if (seleccionMostrar == null && (listaConceptosNovedad != null && !listaConceptosNovedad.isEmpty())) {
-//            seleccionMostrar = listaConceptosNovedad.get(0);
-//        }
+        if (seleccionMostrar == null && (listaConceptosNovedad != null && !listaConceptosNovedad.isEmpty())) {
+            seleccionMostrar = listaConceptosNovedad.get(0);
+        }
         return seleccionMostrar;
     }
 
@@ -2097,17 +2101,23 @@ public class ControlNovedadesConceptos implements Serializable {
     }
 
     public List<Conceptos> getListaConceptos() {
-        if (listaConceptos == null) {
+//        if (listaConceptos == null) {
+//            listaConceptos = administrarNovedadesConceptos.Conceptos();
+//            RequestContext context = RequestContext.getCurrentInstance();
+//            if (listaConceptos == null || listaConceptos.isEmpty()) {
+//                infoRegistroConceptos = "Cantidad de registros: 0 ";
+//            } else {
+//                infoRegistroConceptos = "Cantidad de registros: " + listaConceptos.size();
+//            }
+//            context.update("formularioDialogos:infoRegistroConceptos");
+//        }
+//        return listaConceptos;
+        
+         if (listaConceptos == null) {
             listaConceptos = administrarNovedadesConceptos.Conceptos();
-            RequestContext context = RequestContext.getCurrentInstance();
-            if (listaConceptos == null || listaConceptos.isEmpty()) {
-                infoRegistroConceptos = "Cantidad de registros: 0 ";
-            } else {
-                infoRegistroConceptos = "Cantidad de registros: " + listaConceptos.size();
-            }
-            context.update("formularioDialogos:infoRegistroConceptos");
         }
         return listaConceptos;
+        
     }
 
     public void setListaConceptos(List<Conceptos> listaConceptos) {

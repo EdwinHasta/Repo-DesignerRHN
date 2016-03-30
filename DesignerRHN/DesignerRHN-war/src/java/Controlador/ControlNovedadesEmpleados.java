@@ -135,8 +135,6 @@ public class ControlNovedadesEmpleados implements Serializable {
     //
     private Novedades actualNovedadTabla;
     private String altoTabla;
-    // Autocompletar formula
-    private BigInteger autoFormula;
     BigDecimal valor = new BigDecimal(Integer.toString(0));
 
     public ControlNovedadesEmpleados() {
@@ -167,7 +165,6 @@ public class ControlNovedadesEmpleados implements Serializable {
         nuevaNovedad.setFechareporte(new Date());
         nuevaNovedad.setTipo("FIJA");
         altoTabla = "155";
-        autoFormula = null;
         nuevaNovedad.setValortotal(valor);
     }
 
@@ -787,8 +784,13 @@ public class ControlNovedadesEmpleados implements Serializable {
 
     //AUTOCOMPLETAR
     public void modificarNovedades(int indice, String confirmarCambio, String valorConfirmar) {
-
         index = indice;
+
+        if (tipoLista == 0) {
+            novedadSeleccionada = listaNovedades.get(index);
+        } else {
+            novedadSeleccionada = filtradosListaNovedades.get(index);
+        }
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -847,8 +849,7 @@ public class ControlNovedadesEmpleados implements Serializable {
                 } else {
                     filtradosListaNovedades.get(indice).setFormula(listaFormulas.get(indiceUnicoElemento));
                 }
-                listaFormulas.clear();
-                getListaFormulas();
+
             } else {
                 permitirIndex = false;
                 context.update("formularioDialogos:formulasDialogo");
@@ -874,8 +875,7 @@ public class ControlNovedadesEmpleados implements Serializable {
                 } else {
                     filtradosListaNovedades.get(indice).setTercero(listaTerceros.get(indiceUnicoElemento));
                 }
-                listaTerceros.clear();
-                getListaTerceros();
+
             } else {
                 permitirIndex = false;
                 context.update("formularioDialogos:tercerosDialogo");
@@ -883,33 +883,6 @@ public class ControlNovedadesEmpleados implements Serializable {
                 tipoActualizacion = 0;
             }
         } else if (confirmarCambio.equalsIgnoreCase("CONCEPTO")) {
-
-            if (tipoLista == 0) {
-                listaNovedades.get(indice).getConcepto().setCodigoSTR(CodigoConcepto);
-            } else {
-                filtradosListaNovedades.get(indice).getConcepto().setCodigoSTR(CodigoConcepto);
-            }
-
-            for (int i = 0; i < listaConceptos.size(); i++) {
-                if (listaConceptos.get(i).getCodigoSTR().startsWith(valorConfirmar.toString().toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                if (tipoLista == 0) {
-                    listaNovedades.get(indice).setConcepto(listaConceptos.get(indiceUnicoElemento));
-                } else {
-                    filtradosListaNovedades.get(indice).setConcepto(listaConceptos.get(indiceUnicoElemento));
-                }
-                listaConceptos.clear();
-                getListaConceptos();
-            } else {
-                permitirIndex = false;
-                context.update("formularioDialogos:empleadosDialogo");
-                context.execute("empleadosDialogo.show()");
-                tipoActualizacion = 0;
-            }
         } else if (confirmarCambio.equalsIgnoreCase("CODIGOPERIODICIDAD")) {
 
             if (tipoLista == 0) {
@@ -931,8 +904,7 @@ public class ControlNovedadesEmpleados implements Serializable {
                 } else {
                     filtradosListaNovedades.get(indice).setPeriodicidad(listaPeriodicidades.get(indiceUnicoElemento));
                 }
-                listaPeriodicidades.clear();
-                getListaPeriodicidades();
+
             } else {
                 permitirIndex = false;
                 context.update("formularioDialogos:periodicidadesDialogo");
@@ -1469,9 +1441,12 @@ public class ControlNovedadesEmpleados implements Serializable {
 
     public void actualizarConceptos() {
         RequestContext context = RequestContext.getCurrentInstance();
+        Formulas formula;
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 listaNovedades.get(index).setConcepto(seleccionConceptos);
+                formula = verificarFormulaConcepto(seleccionConceptos.getSecuencia());
+                listaNovedades.get(index).setFormula(formula);
 
                 if (!listaNovedadesCrear.contains(listaNovedades.get(index))) {
                     if (listaNovedadesModificar.isEmpty()) {
@@ -1482,6 +1457,10 @@ public class ControlNovedadesEmpleados implements Serializable {
                 }
             } else {
                 filtradosListaNovedades.get(index).setConcepto(seleccionConceptos);
+                verificarFormulaConcepto(seleccionConceptos.getSecuencia());
+                formula = verificarFormulaConcepto(seleccionConceptos.getSecuencia());
+                filtradosListaNovedades.get(index).setFormula(formula);
+
                 if (!listaNovedadesCrear.contains(filtradosListaNovedades.get(index))) {
                     if (listaNovedadesModificar.isEmpty()) {
                         listaNovedadesModificar.add(filtradosListaNovedades.get(index));
@@ -1490,6 +1469,7 @@ public class ControlNovedadesEmpleados implements Serializable {
                     }
                 }
             }
+
             if (guardado) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -1498,15 +1478,18 @@ public class ControlNovedadesEmpleados implements Serializable {
             activoBtnAcumulado = true;
             context.update("form:ACUMULADOS");
             context.update("form:datosNovedadesEmpleado");
-
+            
         } else if (tipoActualizacion == 1) {
             nuevaNovedad.setConcepto(seleccionConceptos);
+            formula = verificarFormulaConcepto(seleccionConceptos.getSecuencia());
+            nuevaNovedad.setFormula(formula);
             context.update("formularioDialogos:nuevaNovedad");
-            verificarFormulaConcepto(seleccionConceptos.getSecuencia());
+            
         } else if (tipoActualizacion == 2) {
             duplicarNovedad.setConcepto(seleccionConceptos);
+            formula = verificarFormulaConcepto(seleccionConceptos.getSecuencia());
+            duplicarNovedad.setFormula(formula);
             context.update("formularioDialogos:duplicarNovedad");
-            verificarFormulaConcepto(seleccionConceptos.getSecuencia());
         }
         filtradoslistaConceptos = null;
         seleccionConceptos = null;
@@ -1518,33 +1501,29 @@ public class ControlNovedadesEmpleados implements Serializable {
         context.reset("formularioDialogos:LOVConceptos:globalFilter");
         context.execute("LOVConceptos.clearFilters()");
         context.execute("conceptosDialogo.hide()");
-        //context.update("formularioDialogos:LOVConceptos");
     }
 
-    public void verificarFormulaConcepto(BigInteger secCon) {
-        RequestContext context = RequestContext.getCurrentInstance();
+    public Formulas verificarFormulaConcepto(BigInteger secCon) {
         List<FormulasConceptos> formulasConceptoSel = administrarFormulaConcepto.cargarFormulasConcepto(secCon);
+        Formulas formulaR = new Formulas();
+        BigInteger autoFormula;
+        
         if (formulasConceptoSel != null) {
-            autoFormula = formulasConceptoSel.get(0).getFormula().getSecuencia();
-            for (int i = 0; i < listaFormulas.size(); i++) {
-                if (autoFormula.equals(listaFormulas.get(i).getSecuencia())) {
-                    if (tipoActualizacion == 1) {
-                        System.out.println("La secuencia de la formula es: " + listaFormulas.get(i).getSecuencia());
-                        //nuevaNovedad.getFormula().setNombrelargo(listaFormulas.get(i).getNombrelargo());
-                        nuevaNovedad.setFormula(listaFormulas.get(i));
-                        context.update("formularioDialogos:nuevaNovedad");
-                    } else if (tipoActualizacion == 2) {
-                        // System.out.println("La secuencia de la formula es: " + listaFormulas.get(i).getSecuencia());
-                        //duplicarNovedad.getFormula().setNombrelargo(listaFormulas.get(i).getNombrelargo());
-                        duplicarNovedad.setFormula(listaFormulas.get(i));
-                        context.update("formularioDialogos:duplicarNovedad");
-                    }
-                }
+            if (!formulasConceptoSel.isEmpty()) {
+                autoFormula = formulasConceptoSel.get(0).getFormula().getSecuencia();
+            } else {
+                autoFormula = new BigInteger("4621544");
             }
         } else {
-            System.out.println("ControlNovedadesEmpleados.verificarFormulaConcepto: El concepto no tiene formula");
+            autoFormula = new BigInteger("4621544");
         }
-        autoFormula = null;
+        
+        for (int i = 0; i < listaFormulas.size(); i++) {
+            if (autoFormula.equals(listaFormulas.get(i).getSecuencia())) {
+                formulaR = listaFormulas.get(i);
+            }
+        }
+        return formulaR;
     }
 
     public void actualizarPeriodicidades() {
@@ -1661,10 +1640,10 @@ public class ControlNovedadesEmpleados implements Serializable {
             }
         }
         listaNovedades = null;
-        activoBtnAcumulado = true;
         context.update("form:ACUMULADOS");
         context.update("form:datosEmpleados");
         context.update("form:datosNovedadesEmpleado");
+        activoBtnAcumulado = true;
         filtradosListaEmpleadosNovedad = null;
         aceptar = true;
         index = -1;
@@ -2232,7 +2211,7 @@ public class ControlNovedadesEmpleados implements Serializable {
         }
         return listaEmpleadosNovedad;
     }
-    
+
     public List<PruebaEmpleados> getListaValEmpleados() {
         if (listaValEmpleados == null) {
             listaValEmpleados = administrarNovedadesEmpleados.empleadosNovedad();

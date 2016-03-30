@@ -17,53 +17,53 @@
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left" >  
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlVigenciasTiposContratos.empleado.persona.nombreCompleto}"/>
 
-                        <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">
+                        <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 40px; left: 20px; height: 24px">
                             <p:toolbarGroup align="left"> 
 
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciasTiposContratos.guardarCambiosVTC()}" process="@this" />
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciasTiposContratos.guardarCambiosVTC()}" process="@this" />
                                 <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.editarCelda()}" process="@this"/>
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.editarCelda()}" process="@this"/>
                                 <p:tooltip  for="editar" value="#{msg['editar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.listaValoresBoton()}" process="@this"/>
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.listaValoresBoton()}" process="@this"/>
                                 <p:tooltip  for="listaValores" value="#{msg['lista']}" />
 
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.activarCtrlF11()}" process="@this"/>
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.activarCtrlF11()}" process="@this"/>
                                 <p:tooltip  for="filtrar" value="#{msg['filtrar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlVigenciasTiposContratos.exportXLS()}" />
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlVigenciasTiposContratos.exportXLS()}" />
                                 <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
 
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.limpiarNuevaVTC()}" ajax="false">
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.limpiarNuevaVTC()}" ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportar:datosVTCEmpleadoExportar" fileName="VigenciaTipoContratoXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
 
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.exportPDF()}" ajax="false"/>
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.exportPDF()}" ajax="false"/>
                                 <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroVTC.show()" update=":formularioDialogos:nuevaVTC" process="@this"/> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroVTC.show()" update=":formularioDialogos:nuevaVTC" process="@this"/> 
                                 <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
 
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.borrarVTC()}" process="@this"/>  
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.borrarVTC()}" process="@this"/>  
                                 <p:tooltip  for="eliminar" value="#{msg['eliminar']}" />
 
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.duplicarVigenciaC()}"  process="@this"/>  
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.duplicarVigenciaC()}"  process="@this"/>  
                                 <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.verificarRastro()}" process="@this"/>  
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.verificarRastro()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
 
                                 <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.cancelarModificacion()}" process="@this"/>  
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.salir()}" action="nomina" process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.salir()}" action="nomina" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
                             </p:toolbarGroup>
                         </p:toolbar>
@@ -234,9 +234,6 @@
 
                         <p:commandButton style="background-image: url(Imagenes/proceso.jpg); background-size: 100% 100%; background-repeat: no-repeat;position: absolute; width: 28px; height: 28px; left: 200px; top: 460px;" id="DETALLES" value="" process="@this" action="cambiofechaingreso" actionListener="#{controlCambioFechaIngreso.recibirEmpleado(controlVigenciasTiposContratos.empleado.secuencia,controlVigenciasTiposContratos.vigenciaSeleccionada)}" />
                         <p:tooltip  for="DETALLES" value="Ingrese la Fecha " />
-                        <p:commandButton style="position: absolute; left: 683px; top: 470px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVTCEmpleado" process="@this" disabled="#{controlVigenciasTiposContratos.guardado}"/>
-                        <p:commandButton style="position: absolute; left: 775px; top: 470px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlVigenciasTiposContratos.salir()}" action="nomina" process="@this" />
-
 
                         <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
@@ -245,13 +242,13 @@
                             <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciasTiposContratos.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                             <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                         </p:dialog>
-                        
+
                         <p:dialog id="validacionNuevo" header="#{msg['atencion']}" widgetVar="validacionNuevo"  resizable="false" draggable="false" modal="true" height="95" width="450px"  closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
                             <h:outputText value="#{msg['validacionNuevo']}#{controlVigenciasTiposContratos.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
                             <p:commandButton value="#{msg['aceptar']}" onclick="validacionNuevo.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                         </p:dialog>
-                        
+
                         <p:dialog id="fechas" header="#{msg['atencion']}" widgetVar="fechas"  resizable="false" draggable="false" modal="true" height="110" width="400px" style="" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 20px; top: 20px;"  />
                             <h:outputText value="#{msg['fechas']}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
@@ -311,6 +308,14 @@
                         </p:dialog>
 
                         <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciasTiposContratos.activarCtrlF11()}"/> 
+                        
+                        <p:commandButton id="ACEPTAR" style="position: absolute; left: 664px; top: 470px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat;" 
+                                         value=" " onclick="confirmarGuardar.show();" update=":form:datosVTCEmpleado" process="@this" disabled="#{controlVigenciasTiposContratos.guardado}"/>
+
+
+                        <p:commandButton id="ATRAS" style="position: absolute; left: 765px; top: 470px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat;" 
+                                         value=" " actionListener="#{controlVigenciasTiposContratos.salir()}" action="nomina" process="@this" />
+
                     </p:panel>
                 </h:form>
 
@@ -344,9 +349,9 @@
 
                         <h:outputText id="infoRegistroCiudades" value="#{controlVigenciasTiposContratos.infoRegistroCiudades}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarC" style="position: relative; left: 283px" value="#{msg['aceptar']}" disabled="#{controlVigenciasTiposContratos.aceptar}" actionListener="#{controlVigenciasTiposContratos.actualizarCiudad()}" process="@this" icon="ui-icon-check" onclick="ciudadesDialogo.hide()"/>
+                        <p:commandButton id="aceptarC" style="position: relative; left: 283px;" value="#{msg['aceptar']}" disabled="#{controlVigenciasTiposContratos.aceptar}" actionListener="#{controlVigenciasTiposContratos.actualizarCiudad()}" process="@this" icon="ui-icon-check" onclick="ciudadesDialogo.hide()"/>
 
-                        <p:commandButton id="atrasC" style="position: relative; left: 283px" value="#{msg['atras']}" actionListener="#{controlVigenciasTiposContratos.cancelarCambioCiudad()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" onclick="ciudadesDialogo.hide()"/>
+                        <p:commandButton id="atrasC" style="position: relative; left: 283px;" value="#{msg['atras']}" actionListener="#{controlVigenciasTiposContratos.cancelarCambioCiudad()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" onclick="ciudadesDialogo.hide()"/>
 
                     </p:dialog> 
 
@@ -376,9 +381,9 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:commandButton id="aceptarTC" style="position: relative; left: 170px" value="#{msg['aceptar']}" disabled="#{controlVigenciasTiposContratos.aceptar}" actionListener="#{controlVigenciasTiposContratos.actualizarTipoContrato()}" process="@this" icon="ui-icon-check" onclick="TiposContratoDialogo.hide()"/>
+                        <p:commandButton id="aceptarTC" style="position: relative; left: 170px;" value=" " disabled="#{controlVigenciasTiposContratos.aceptar}" actionListener="#{controlVigenciasTiposContratos.actualizarTipoContrato()}" process="@this" icon="ui-icon-check" onclick="TiposContratoDialogo.hide()"/>
 
-                        <p:commandButton id="atrasTC" style="position: relative; left: 170px" value="#{msg['atras']}" actionListener="#{controlVigenciasTiposContratos.cancelarTipoContrato()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" onclick="TiposContratoDialogo.hide()"/>
+                        <p:commandButton id="atrasTC" style="position: relative; left: 170px;" value=" " actionListener="#{controlVigenciasTiposContratos.cancelarTipoContrato()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" onclick="TiposContratoDialogo.hide()"/>
 
 
                         <h:outputText id="infoRegistroTiposContratos" value="#{controlVigenciasTiposContratos.infoRegistroTiposContratos}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
@@ -409,9 +414,9 @@
                                 <h:outputText  value="#{MotivosC.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarMC" style="position: relative; left: 145px" value="#{msg['aceptar']}" disabled="#{controlVigenciasTiposContratos.aceptar}" actionListener="#{controlVigenciasTiposContratos.actualizarMotivoContrato()}" process="@this" icon="ui-icon-check" onclick="MotivosContratoDialogo.hide()"/>
+                        <p:commandButton id="aceptarMC" style="position: relative; left: 145px;" value="#{msg['aceptar']}" disabled="#{controlVigenciasTiposContratos.aceptar}" actionListener="#{controlVigenciasTiposContratos.actualizarMotivoContrato()}" process="@this" icon="ui-icon-check" onclick="MotivosContratoDialogo.hide()"/>
 
-                        <p:commandButton id="atrasMC" style="position: relative; left: 145px; " value="#{msg['atras']}" actionListener="#{controlVigenciasTiposContratos.cancelarCambioMotivoContrato()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" onclick="MotivosContratoDialogo.hide()"/>
+                        <p:commandButton id="atrasMC" style="position: relative; left: 145px;" value="#{msg['atras']}" actionListener="#{controlVigenciasTiposContratos.cancelarCambioMotivoContrato()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" onclick="MotivosContratoDialogo.hide()"/>
 
                     </p:dialog>
 

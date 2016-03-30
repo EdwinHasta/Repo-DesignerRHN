@@ -14,7 +14,57 @@
                     <p:growl id="growl" showDetail="true"/>
                     <f:loadBundle basename="Recursos.emplibcs" var="msg" />
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">  
+                        
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlEmplIbcs.empleadoSeleccionado.persona.nombreCompleto}"/>
+
+                        <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 40px; left: 20px; height: 24px">  
+                            <p:toolbarGroup align="left"> 
+
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " onclick="botones.show();"  process="@this" disabled="true" />
+                                <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
+
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlEmplIbcs.editarCelda()}" process="@this"/>
+                                <p:tooltip  for="editar" value="#{msg['editar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " onclick="botones.show();" process="@this" disabled="true"/>
+                                <p:tooltip  for="listaValores" value="#{msg['lista']}" />
+
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlEmplIbcs.activarCtrlF11()}" process="@this"/>
+                                <p:tooltip  for="filtrar" value="#{msg['filtrar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplIbcs.exportXLS()}" ajax="false"/>
+                                <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
+
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplIbcs.limpiarNuevaIbcs()}" ajax="false">
+                                    <p:dataExporter type="xml"  target=":formExportar:datosIbcsExportar" fileName="EmplIBCSXML" encoding="UTF-8"/> 
+                                </p:commandButton> 
+                                <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
+
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplIbcs.exportPDF()}" ajax="false"/>
+                                <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png);  background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " onclick="botones.show();" process="@this" disabled="true"/> 
+                                <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
+
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " onclick="botones.show();" process="@this" disabled="true"/>  
+                                <p:tooltip  for="eliminar" value="#{msg['eliminar']}" />
+
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " onclick="botones.show();"  process="@this" disabled="true"/>  
+                                <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " disabled="true"  process="@this"/>  
+                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " action="atrasEmplIbcs" process="@this"/>  
+                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
+
+                            </p:toolbarGroup>  
+                        </p:toolbar>
 
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>#{msg['consultaIBCS']}</strong></legend>
@@ -91,58 +141,9 @@
                             </p:dataTable>
                         </fieldset>
 
-                        <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">  
-                            <p:toolbarGroup align="left"> 
-
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " onclick="botones.show();"  process="@this" disabled="true" />
-                                <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
-
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlEmplIbcs.editarCelda()}" process="@this"/>
-                                <p:tooltip  for="editar" value="#{msg['editar']}" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " onclick="botones.show();" process="@this" disabled="true"/>
-                                <p:tooltip  for="listaValores" value="#{msg['lista']}" />
-
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlEmplIbcs.activarCtrlF11()}" process="@this"/>
-                                <p:tooltip  for="filtrar" value="#{msg['filtrar']}" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplIbcs.exportXLS()}" ajax="false"/>
-                                <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
-
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplIbcs.limpiarNuevaIbcs()}" ajax="false">
-                                    <p:dataExporter type="xml"  target=":formExportar:datosIbcsExportar" fileName="EmplIBCSXML" encoding="UTF-8"/> 
-                                </p:commandButton> 
-                                <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
-
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplIbcs.exportPDF()}" ajax="false"/>
-                                <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg);  background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " onclick="botones.show();" process="@this" disabled="true"/> 
-                                <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
-
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " onclick="botones.show();" process="@this" disabled="true"/>  
-                                <p:tooltip  for="eliminar" value="#{msg['eliminar']}" />
-
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " onclick="botones.show();"  process="@this" disabled="true"/>  
-                                <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " disabled="true"  process="@this"/>  
-                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " action="atrasEmplIbcs" process="@this"/>  
-                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
-
-                            </p:toolbarGroup>  
-                        </p:toolbar>
-
                         <h:outputText id="informacionRegistro" value="#{controlEmplIbcs.infoRegistro}" style="position: absolute; left: 15px; top: 485px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 15px; top: 450px;  " icon="ui-icon-triangle-1-e" action="ibcAuto" actionListener="#{controlIbcAutoliquid.obtenerTipoEntidad(controlEmplIbcs.empleadoSeleccionado.secuencia)}" id="detallesIbcs" value="#{msg['detalleIBCS']}" process="@this" />
-                        <p:commandButton style=" position: absolute; left: 785px; top: 470px;  " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" action="atrasEmplIbcs"   />
+                        <p:commandButton id="ATRAS" style="position: absolute; left: 765px; top: 470px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat;" value=" " action="atrasEmplIbcs" />
                     </p:panel>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlEmplIbcs.activarCtrlF11()}"  /> 
 

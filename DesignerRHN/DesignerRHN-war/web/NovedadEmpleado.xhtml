@@ -40,7 +40,7 @@
                                 <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlNovedadesEmpleados.exportXLS()}" />
                                 <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
 
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/xml.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesEmpleados.limpiarNuevaNovedad()}" ajax="false">
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNovedadesEmpleados.limpiarNuevaNovedad()}" ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportar:datosNovedadesExportar" fileName="NovedadesXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip  for="exportarXML" value="#{msg['xml']}"/>
@@ -74,8 +74,8 @@
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 130px;width: 580px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: #14388B"><strong>#{msg['empleados']}</strong></legend>
 
-                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 30px;  " id="btnBuscarEmpleados" actionListener="#{controlNovedadesEmpleados.asignarIndex(indice, 0, 0)}" value="#{msg['buscar']}" process="@this"/>
-                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 60px;  " id="btnMostrarTodos" actionListener="#{controlNovedadesEmpleados.mostrarTodos()}" value="#{msg['mostrar']}"  process="@this"/>
+                            <p:commandButton id="btnBuscarEmpleados" style="position: absolute; left: 630px; top: 30px; height: 30px; width: 180px; background-image: url(Imagenes/Iconos/buscardbL.png); background-size: 100% 100%; background-repeat: no-repeat;" value=" " actionListener="#{controlNovedadesEmpleados.asignarIndex(indice, 0, 0)}" process="@this"/>
+                            <p:commandButton id="btnMostrarTodos" style="position: absolute; left: 630px; top: 70px; height: 30px; width: 180px; background-image: url(Imagenes/Iconos/todosdbL.png); background-size: 100% 100%; background-repeat: no-repeat;" value=" "  actionListener="#{controlNovedadesEmpleados.mostrarTodos()}" process="@this"/>
 
                             <p:dataTable id="datosEmpleados" var="empleados" value="#{controlNovedadesEmpleados.listaEmpleadosNovedad}"
                                          rowKey="#{empleados.codigo}" rowIndexVar="indiceT" style=" border: 1px; text-align: left; width: 560px"                           
@@ -106,9 +106,8 @@
                         <p:separator style="position: absolute; left: 500px; top: 467px;width: 3px; height: 25px"/> 
                      <!--   <p:commandButton style="position: absolute; left: 510px; top: 470px;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlNovedadesEmpleados.cancelarModificacion()}" process="@this" />-->
 
-                        <p:commandButton style="position: absolute; left: 760px; top: 470px;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlNovedadesEmpleados.salir()}" action="novedad" />
-                        <p:commandButton style="position: absolute; left: 670px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" disabled="#{controlNovedadesEmpleados.guardado}" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosNovedadesEmpleado" process="@this" />
-
+                        <p:commandButton id="ACEPTAR" style="position: absolute; left: 664px; top: 470px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat;" value=" " onclick="confirmarGuardar.show();" update=":form:datosNovedadesEmpleado" process="@this" disabled="#{controlNovedadesEmpleados.aceptar}"/>
+                        <p:commandButton id="ATRAS" style="position: absolute; left: 765px; top: 470px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat;" value=" " actionListener="#{controlNovedadesEmpleados.salir()}" action="novedad" process="@this"/>
 
                         <fieldset style="position: absolute; left: 10px; top: 230px;  width: 100px; height: 220px; border-radius: 10px; ">
                             <legend style="font-size: 14px; color: #14388B"><strong>#{msg['cpd']}</strong></legend>
@@ -126,7 +125,7 @@
                                         <f:facet name="output"><h:outputText value="#{novedades.concepto.codigoSTR}" style=""/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{novedades.concepto.codigoSTR}" id="editarConceptoCodigo" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
-                                                <p:ajax event="change" listener="#{controlNovedadesEmpleados.modificarNovedades(indice, 'CODIGO', novedades.concepto.codigoSTR)}"/>
+                                                <p:ajax event="change" listener="#{controlNovedadesEmpleados.modificarNovedades(indice, 'CONCEPTO', novedades.concepto.codigoSTR)}"/>
                                                 <p:ajax event="select" listener="#{controlNovedadesEmpleados.cambiarIndice(indice, 0)}" process="@this"/>
                                                 <p:ajax event="dblclick" listener="#{controlNovedadesEmpleados.asignarIndex(indice, 1, 0)}"/>
                                             </p:inputText>
@@ -466,8 +465,8 @@
                             </p:selectOneMenu>
 
                             <p:commandButton id="limpiar" value="#{msg['limpiar']}" style=" position: absolute; left: 50px; top: 370px;" icon="ui-icon-trash" actionListener="#{controlNovedadesEmpleados.limpiarNuevaNovedad()}" update="nuevaNovedad" process="@this"/>
-                            <p:commandButton id="agregarNE" value="#{msg['agregar']}" style=" position: absolute; left: 550px; top: 370px;" icon="ui-icon-circle-check" actionListener="#{controlNovedadesEmpleados.agregarNuevaNovedadEmpleado()}" process="@this"/>
-                            <p:commandButton id="cancelarNE" value="#{msg['cancelar']}" style=" position: absolute; left: 650px; top: 370px;" icon="ui-icon-circle-close" actionListener="#{controlNovedadesEmpleados.limpiarNuevaNovedad()}" update="nuevaNovedad" onclick="NuevaNovedadEmpleado.hide();"  process="@this"/>
+                            <p:commandButton id="agregarNE" style="position: absolute; left: 550px; top: 370px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat;" value=" " actionListener="#{controlNovedadesEmpleados.agregarNuevaNovedadEmpleado()}" process="@this"/>
+                            <p:commandButton id="cancelarNE" style="position: absolute; left: 650px; top: 370px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat;" value=" "  actionListener="#{controlNovedadesEmpleados.limpiarNuevaNovedad()}" update="nuevaNovedad" onclick="NuevaNovedadEmpleado.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
@@ -571,8 +570,8 @@
                             </p:selectOneMenu>
 
                             <p:commandButton id="limpiarDuplicadoNovedad" value="#{msg['limpiar']}" style=" position: absolute; left: 50px; top: 370px;" actionListener="#{controlNovedadesEmpleados.limpiarduplicarNovedades()}" update="duplicarNovedad" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoNovedad" value="#{msg['agregar']}" style=" position: absolute; left: 550px; top: 370px;"  process="@this" actionListener="#{controlNovedadesEmpleados.confirmarDuplicar()}" />
-                            <p:commandButton id="cancelarDuplicadoNovedad" value="#{msg['cancelar']}" style=" position: absolute; left: 650px; top: 370px;" actionListener="#{controlNovedadesEmpleados.limpiarduplicarNovedades()}" update="duplicarNovedad" onclick="DuplicarRegistroNovedad.hide();"  process="@this"/>
+                            <p:commandButton id="agregarDuplicadoNovedad" style="position: absolute; left: 550px; top: 370px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat;" value=" " actionListener="#{controlNovedadesEmpleados.confirmarDuplicar()}" process="@this"/>
+                            <p:commandButton id="cancelarDuplicadoNovedad" style="position: absolute; left: 650px; top: 370px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat;" value=" "  actionListener="#{controlNovedadesEmpleados.limpiarduplicarNovedades()}" update="duplicarNovedad" onclick="DuplicarRegistroNovedad.hide();"  process="@this"/>    
                         </p:panel>
                     </p:dialog>
 
