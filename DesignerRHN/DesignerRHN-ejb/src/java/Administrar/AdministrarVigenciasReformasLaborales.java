@@ -54,13 +54,13 @@ public class AdministrarVigenciasReformasLaborales implements AdministrarVigenci
 
     
     private void configurarLog() {
-        PropertyConfigurator.configure("log4j.properties");
+        //PropertyConfigurator.configure("log4j.properties");
     }
 
     @Override
     public void obtenerConexion(String idSesion) {
         em = administrarSesiones.obtenerConexionSesion(idSesion);
-        configurarLog();
+        //configurarLog();
     }
 
     @Override

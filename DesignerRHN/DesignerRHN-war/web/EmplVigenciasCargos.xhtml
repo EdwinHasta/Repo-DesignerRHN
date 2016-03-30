@@ -251,9 +251,9 @@
 
                         <!-- DIALOGO L.O.V ESTATICO DE MOTIVOS CAMBIOS CARGOS -->
                         <p:dialog header="#{msg['motivosM']}" widgetVar="motivosDialog" draggable="false" resizable="false" closable="false" id="dlgMotivos"  
-                                  showEffect="fade" hideEffect="fade" width="405" modal="true" >
-                            <p:dataTable id="motivosCambCargo" style="width: 350px" var="mot" value="#{controlVigenciasCargos.motivosCambiosCargos}" rowKey="#{mot.secuencia}"
-                                         selection="#{controlVigenciasCargos.motivoSeleccionado}" selectionMode="single" widgetVar="datosMotivos" scrollable="true" scrollWidth="367" scrollHeight="250"
+                                  showEffect="fade" hideEffect="fade" height="380" width="440" modal="true" >
+                            <p:dataTable id="motivosCambCargo" style="width: 390px" var="mot" value="#{controlVigenciasCargos.motivosCambiosCargos}" rowKey="#{mot.secuencia}"
+                                         selection="#{controlVigenciasCargos.motivoSeleccionado}" selectionMode="single" widgetVar="datosMotivos" scrollable="true" scrollWidth="410" scrollHeight="250"
                                          filteredValue="#{controlVigenciasCargos.filterMotivos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasCargos.activarAceptar()}" update=":form:aceptarM"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciasCargos.actualizarMotivo()}" process="@this" />
@@ -262,13 +262,13 @@
                                     <p:inputText id="globalFilter" onkeyup="datosMotivos.filter();" style="width:150px; position: relative; left: 15px;" />  
                                     <p:watermark for="globalFilter" value="#{msg['ingreseEJ']}" />
                                 </f:facet>
-                                <p:column filterBy="#{mot.codigo}" width="60" filterMatchMode="contains" filterStyle="width: 40px">
+                                <p:column filterBy="#{mot.codigo}" width="60" filterMatchMode="contains" filterStyle="width: 90%">
                                     <f:facet name="header">
                                         <h:outputText style="text-align: center" value="#{msg['codigoM']}" />
                                     </f:facet>
                                     <h:outputText  value="#{mot.codigo}" />
                                 </p:column>
-                                <p:column filterBy="#{mot.nombre}"  filterMatchMode="contains">
+                                <p:column filterBy="#{mot.nombre}" filterStyle="width: 90%" filterMatchMode="contains">
                                     <f:facet name="header">
                                         <h:outputText value="#{msg['nombreM']}" />
                                     </f:facet>
@@ -277,10 +277,10 @@
                             </p:dataTable>
 
                             <p:commandButton id="aceptarM" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" actionListener="#{controlVigenciasCargos.actualizarMotivo()}" process="@this" onclick="motivosDialog.hide()"
-                                             style="position: relative; left: 210px; width: 100px; height: 33px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat;"/>
+                                             style="position: relative; left: 210px; width: 100px; top: 10px ; height: 33px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat;"/>
                                 
                             <p:commandButton id="atrasM" value="#{msg['atras']}"  actionListener="#{controlVigenciasCargos.cancelarCambioMotivo()}"  process="@this" onclick="motivosDialog.hide()"
-                                             style="position: relative; left: 210px; width: 100px; height: 33px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat;"/>    
+                                             style="position: relative; left: 210px; width: 100px; top: 10px ;height: 33px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat;"/>    
 
                             <h:outputText id="infoRegistroMotivos" value="#{controlVigenciasCargos.infoRegistroMotivos}" style="position: absolute; top: 350px; left: 20px; font-weight: bold"/>
 

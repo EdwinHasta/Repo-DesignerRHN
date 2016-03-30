@@ -48,12 +48,17 @@
                         <h:outputText value="#{msg['nit']}: " style="font-weight: bold; color: #14388B; position: relative; left: 230px; top: 40px" />
                         <h:outputText id="nitEmpresa" value="#{controlConcepto.empresaActual.nit}" style="font-weight: bold; color: #BF1A1A; position: relative; left: 240px; top: 40px" />
 
-                        <p:selectOneRadio id="opciones" value="#{controlConcepto.estadoConceptoEmpresa}" styleClass="ui-radiobutton" style="font-weight: bold; position: absolute; left: 370px; top: 37px">  
-                            <f:selectItem itemLabel="#{msg['activo']}" itemValue="S" />
-                            <f:selectItem itemLabel="#{msg['inactivo']}" itemValue="N" />  
-                            <f:selectItem itemLabel="#{msg['todos']}" itemValue="TODOS" />
-                            <p:ajax listener="#{controlConcepto.cambiarEstado()}" update="@this :form:informacionRegistro"/>
-                        </p:selectOneRadio>
+                        <p:panel styleClass="cssToolbar" style="background-color: transparent; width: 410px; position: absolute; 
+                                 border-radius: 3px; height: 27px; left: 450px; top: 37px; padding: 0px">
+                            <p:selectOneRadio  id="opciones" value="#{controlConcepto.estadoConceptoEmpresa}" styleClass="ui-radiobutton" 
+                                               style="font-weight: bold; position: relative; left: -50px; top: -8px; width: 100%; border-collapse: collapse">  
+                                <f:selectItem itemLabel="#{msg['activo']}" itemValue="S" />
+                                <f:selectItem itemLabel="#{msg['inactivo']}" itemValue="N" />  
+                                <f:selectItem itemLabel="#{msg['todos']}" itemValue="TODOS" />
+                                <p:ajax listener="#{controlConcepto.cambiarEstado()}" update="@this :form:informacionRegistro"/>
+                            </p:selectOneRadio>
+                        </p:panel>
+
                         <p:toolbar styleClass="cssToolbar" style="position: absolute; top: 37px; left: 12px; height: 23px">  
                             <p:toolbarGroup align="left"> 
 
@@ -135,7 +140,7 @@
 
                                 <f:event type="preRenderView" listener="#{controlConcepto.recordarSeleccion()}"/>
                                 <p:ajax event="filter" listener="#{controlConcepto.eventoFiltrar()}"/>
-                             
+
                                 <p:column id="columnaDetalleConcepto" width="19" style="padding-left: 5px;padding: 0px; text-align: center" >                                                              
                                     <f:facet name="header">
                                         <h:outputText id="DetalleC" value="D"/>
@@ -165,7 +170,7 @@
                                         <f:facet name="input">
                                             <p:inputText value="#{concepto.codigo}" id="editarCodigo" maxlength="8" style="border-radius: 0px; width: 93.5%; text-transform: uppercase"> 
                                                 <p:ajax event="change" listener="#{controlConcepto.modificarConcepto(concepto, 'COD', concepto.codigo)}"/>
-                                                <p:ajax event="select" listener="#{controlConcepto.cambiarIndice(concepto, 0)}" />
+                                                <p:ajax event="select" listener="#{controlConcepto.cambiarIndice(concepto, 0)}" process="@this"/>
                                                 <pe:keyFilter for="editarCodigo" mask="num"/>
                                             </p:inputText>
                                         </f:facet>  
@@ -183,7 +188,7 @@
                                         <f:facet name="input">
                                             <p:inputText id="editarDescripcion" value="#{concepto.descripcion}" style="border-radius: 0px; width: 93.5%; text-transform: uppercase">
                                                 <p:ajax event="change" listener="#{controlConcepto.modificarConcepto(concepto, 'N', concepto.descripcion)}"/>
-                                                <p:ajax event="select" listener="#{controlConcepto.cambiarIndice(concepto, 1)}" />
+                                                <p:ajax event="select" listener="#{controlConcepto.cambiarIndice(concepto, 1)}" process="@this" />
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -223,7 +228,7 @@
                                         <f:facet name="input">
                                             <p:inputText maxlength="1" value="#{concepto.unidad.codigo}" id="editarCodigoUnidad" style="border-radius: 0px; width: 93.5%; text-transform: uppercase" >
                                                 <p:ajax event="change" listener="#{controlConcepto.modificarConcepto(concepto, 'UNIDADESCODIGO', concepto.unidad.codigo)}"/>
-                                                <p:ajax event="select" listener="#{controlConcepto.cambiarIndice(concepto, 3)}" />
+                                                <p:ajax event="select" listener="#{controlConcepto.cambiarIndice(concepto, 3)}"/>
                                                 <p:ajax event="dblclick" listener="#{controlConcepto.llamarDialogosLista(concepto, 0)}"/>
                                             </p:inputText> 
                                         </f:facet>  
@@ -240,7 +245,7 @@
                                         <f:facet name="input">
                                             <p:inputText value="#{concepto.unidad.nombre}" id="editarNombreUnidad" style="border-radius: 0px; width: 93.5%; text-transform: uppercase" >
                                                 <p:ajax event="change" listener="#{controlConcepto.modificarConcepto(concepto, 'UNIDADESNOMBRE', concepto.unidad.nombre)}"/>
-                                                <p:ajax event="select" listener="#{controlConcepto.cambiarIndice(concepto, 4)}" />
+                                                <p:ajax event="select" listener="#{controlConcepto.cambiarIndice(concepto, 4)}" process="@this"/>
                                                 <p:ajax event="dblclick" listener="#{controlConcepto.llamarDialogosLista(concepto, 0)}"/>
                                             </p:inputText> 
                                         </f:facet>  
@@ -263,7 +268,7 @@
                                             <p:inputText value="#{concepto.codigodesprendible}" id="editarCodigoDesprendible" style="border-radius: 0px; width: 98%; text-transform: uppercase" >
                                                 <pe:keyFilter for="editarCodigoDesprendible" mask="num"/>
                                                 <p:ajax event="change" listener="#{controlConcepto.modificarConcepto(concepto, 'N', concepto.codigodesprendible)}"/>
-                                                <p:ajax event="select" listener="#{controlConcepto.cambiarIndice(concepto, 5)}" />
+                                                <p:ajax event="select" listener="#{controlConcepto.cambiarIndice(concepto, 5)}" process="@this"/>
                                             </p:inputText> 
                                         </f:facet>  
                                     </p:cellEditor>
@@ -280,7 +285,7 @@
                                             <p:inputText value="#{concepto.descripciondesprendible}" maxlength="100" id="editarDescripcionDesprendible" 
                                                          style="border-radius: 0px; width: 93.5%; text-transform: uppercase" >
                                                 <p:ajax event="change" listener="#{controlConcepto.modificarConcepto(concepto, 'N', concepto.descripciondesprendible)}"/>
-                                                <p:ajax event="select" listener="#{controlConcepto.cambiarIndice(concepto, 6)}" />
+                                                <p:ajax event="select" listener="#{controlConcepto.cambiarIndice(concepto, 6)}" process="@this"/>
                                             </p:inputText> 
                                         </f:facet>  
                                     </p:cellEditor>
@@ -354,7 +359,7 @@
                                         <f:facet name="input">
                                             <p:inputText value="#{concepto.tercero.nombre}" id="editarNombreTercero" style=" border-radius: 0px; width: 93.5%; text-transform: uppercase" >
                                                 <p:ajax event="change" listener="#{controlConcepto.modificarConcepto(concepto, 'TERCERO', concepto.tercero.nombre)}"/>
-                                                <p:ajax event="select" listener="#{controlConcepto.cambiarIndice(concepto, 10)}" />
+                                                <p:ajax event="select" listener="#{controlConcepto.cambiarIndice(concepto, 10)}" process="@this"/>
                                                 <p:ajax event="dblclick" listener="#{controlConcepto.llamarDialogosLista(concepto, 1)}"/>
                                             </p:inputText> 
                                         </f:facet>  
@@ -415,7 +420,7 @@
                                             <p:inputText value="#{concepto.codigoalternativo}"  maxlength="15" id="editarCodigoAlternativo" 
                                                          style="border-radius: 0px; width: 93.5%; text-transform: uppercase" >
                                                 <p:ajax event="change" listener="#{controlConcepto.modificarConcepto(concepto, 'N', concepto.codigoalternativo)}"/>
-                                                <p:ajax event="select" listener="#{controlConcepto.cambiarIndice(concepto, 13)}" />
+                                                <p:ajax event="select" listener="#{controlConcepto.cambiarIndice(concepto, 13)}" process="@this"/>
                                                 <pe:keyFilter for="editarCodigoAlternativo" mask="num"/>
                                             </p:inputText>
                                         </f:facet>  
@@ -430,53 +435,58 @@
                         </fieldset>
                         <br/><br/><br/><br/><br/>
 
-
-                        <fieldset style="position: absolute; left: 5px; top: 410px; width: 835px; height: 70px; border-radius: 10px; ">
-                            <legend style="color: blue"><strong>#{msg['cconcepto']}</strong></legend>
-
-                            <h:outputText value="#{msg['cnnc']}"  style="color: #14388B; font-weight: bold; position: absolute"/>
-                            <p:inputText id="codigoConceptoClon" value="#{controlConcepto.conceptoClon.codigo}" 
-                                         style="position: relative; top: 10px; width: 55px;">
-                                <pe:keyFilter for="codigoConceptoClon" mask="num"/>
-                                <p:ajax event="change" update="@this"/>
-                            </p:inputText>
-                            <p:inputText id="descripcioConceptoClon" value="#{controlConcepto.conceptoClon.descripcion}" 
-                                         style="position: relative; top: 10px; left: 5px; width: 280px;" >
-                                <p:ajax event="change" update="@this"/>
-                            </p:inputText>
-
-                            <h:outputText value="#{msg['cncc']}"  style="color: #14388B; font-weight: bold; position: absolute; left: 375px"/>
-                            <p:inputText id="descripcionClon" widgetVar="descripcionClon" value="#{controlConcepto.conceptoOriginal.informacionConcepto}" 
-                                         style="position: relative; top: 10px; left: 20px; width: 350px;">
-                                <p:ajax event="change" listener="#{controlConcepto.lovConcepto(1)}" update="@this"/>
-                            </p:inputText>
-                            <p:commandButton icon="ui-icon-transfer-e-w" actionListener="#{controlConcepto.lovConcepto(1)}"  
-                                             style="position: relative; top: 10px; left: 25px" process="@this"/>
-
-                            <p:commandButton value="#{msg['clonar']}" actionListener="#{controlConcepto.clonarConcepto()}" 
-                                             style="position: relative; top: -5px; left: 30px; width: 70px; height: 60px" process="@this"/>
-                        </fieldset>
                         <h:outputText id="informacionRegistro" value="#{controlConcepto.infoRegistro}" style="position: absolute; left: 15px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton style="position: absolute; left: 9px; top: 378px;" value="#{msg['grupoconceptos']}" id="grupoConcepto" 
-                                         action="grupoconceptoPag" actionListener="#{controlGrupoConcepto.recibirPagina('atrasgrupoconcepto')}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 155px; top: 378px;" value="#{msg['conceptosredondeos']}" id="conceptoRedondeos" 
-                                         action="conceptoredondeoPag" actionListener="#{controlConceptoRedondeo.recibirPagina('atrasconceptoredondeo') }" process="@this" />
-                        <p:commandButton style="position: absolute; left: 330px; top: 378px;" value="#{msg['unidadconcepto']}" id="unidadesConcepto" 
-                                         action="conceptosoporte" actionListener="#{controlConceptosSoportes.recibirPagina('atrasconceptosporte')}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 620px; top: 378px;" id="buscarConcepto" value="#{msg['buscar']}" 
-                                         actionListener="#{controlConcepto.lovConcepto(0)}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 755px; top: 378px;" disabled="#{controlConcepto.mostrarTodos}" id="mostrarTodos" 
-                                         actionListener="#{controlConcepto.mostrarTodosConceptos()}" value="#{msg['mostrar']}" process="@this" />
+                        <p:commandButton style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; width: 130px; height: 30px; position: absolute; left: 9px; top: 378px; color: white;" value="#{msg['grupoconceptos']}" id="grupoConcepto" 
+                                         action="grupoconceptoPag" immediate="#{controlConcepto.activarSelec()}" actionListener="#{controlGrupoConcepto.recibirPagina('atrasgrupoconcepto')}" process="@this" update="@this"/>
+                        <p:commandButton style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; width: 130px; height: 30px; position: absolute; left: 145px; top: 378px; color: white;" value="#{msg['conceptosredondeos']}" id="conceptoRedondeos" 
+                                         action="conceptoredondeoPag" immediate="#{controlConcepto.activarSelec()}" actionListener="#{controlConceptoRedondeo.recibirPagina('atrasconceptoredondeo') }" process="@this" update="@this"/>
+                        <p:commandButton style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; width: 130px; height: 30px; position: absolute; left: 280px; top: 378px; color: white;" value="#{msg['unidadconcepto']}" id="unidadesConcepto" 
+                                         action="conceptosoporte" immediate="#{controlConcepto.activarSelec()}" actionListener="#{controlConceptosSoportes.recibirPagina('atrasconceptosporte')}" process="@this" update="@this"/>
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 500px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" 
-                                         onclick="confirmarGuardar.show();" disabled="#{controlConcepto.guardado}"  process="@this" />
-                        <!--<p:commandButton disabled="#/{controlConcepto.activoDetalle}" id="DETALLES" value="" process="@this" action="detalleConcepto" 
-                                         actionListener="#/{controlDetalleConcepto.obtenerConcepto(controlConcepto.conceptoRegistro.secuencia)}"
-                                         style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat;position: absolute; width: 28px; height: 28px; left: 590px; top: 378px;" />
-                        <p:tooltip  for="DETALLES" value="#/{msg['detalle']}" />-->
-                        <p:commandButton style="position: absolute; left: 775px; top: 500px;" id="ATRAS" action="#{controlConcepto.redirigir()}" value="#{msg['cancelar']}" 
-                                         icon="ui-icon-closethick" actionListener="#{controlConcepto.refrescar()}" process="@this" />
+                        
+                        <p:commandButton style="width: 90px; height: 30px; background-image: url(Imagenes/Iconos/buscardb.png); background-size: 100% 100%; 
+                                         background-repeat: no-repeat; position: absolute; left: 670px; top: 378px;" 
+                                         id="buscarConcepto" value="" actionListener="#{controlConcepto.lovConcepto(0)}" process="@this" />
+                        <p:commandButton style="width: 90px; height: 30px; background-image: url(Imagenes/Iconos/todosdb.png); background-size: 100% 100%; 
+                                         background-repeat: no-repeat; position: absolute; left: 765px; top: 378px;" 
+                                         disabled="#{controlConcepto.mostrarTodos}" id="mostrarTodos" actionListener="#{controlConcepto.mostrarTodosConceptos()}" value="" process="@this" />
+
+                        <p:commandButton style="position: absolute; left: 670px; top: 500px; height: 30px; width: 90px; 
+                                         background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; 
+                                         background-repeat: no-repeat;" id="ACEPTAR" value="" onclick="confirmarGuardar.show();" 
+                                         disabled="#{controlConcepto.guardado}"  process="@this" />
+                        <p:commandButton style="position: absolute; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; left: 765px; top: 500px;" id="ATRAS" 
+                                         action="#{controlConcepto.redirigir()}" value="" actionListener="#{controlConcepto.refrescar()}" process="@this" />
+
+                        <fieldset style="position: absolute; left: 5px; top: 410px; width: 835px; height: 70px; border-radius: 10px; padding: 0px">
+                            <legend style="color: blue"><strong>#{msg['cconcepto']}</strong></legend>
+
+                            <h:outputText value="#{msg['cnnc']}"  style="color: #14388B; font-weight: bold; position: absolute; left: 20px"/>
+                            <h:outputText value="#{msg['cncc']}"  style="color: #14388B; font-weight: bold; position: absolute; left: 400px"/>
+
+                            <p:panel style=" padding: 1px; position: absolute; padding: 1px; top: 20px; height: 15px; border: none; background-color: transparent" >
+
+                                <p:inputText id="codigoConceptoClon" value="#{controlConcepto.conceptoClon.codigo}" 
+                                             style="position: absolute; height: 14px; top: 5px; width: 55px; margin: 1px; left: 5px">
+                                    <pe:keyFilter for="codigoConceptoClon" mask="num"/>
+                                    <p:ajax event="change" update="@this"/>
+                                </p:inputText>
+                                <p:inputText id="descripcioConceptoClon" value="#{controlConcepto.conceptoClon.descripcion}" 
+                                             style="position: absolute; height: 14px; top: 5px; left: 70px; margin: 1px; width: 280px;" >
+                                    <p:ajax event="change" update="@this"/>
+                                </p:inputText>
+                                <p:inputText id="descripcionClon" widgetVar="descripcionClon" value="#{controlConcepto.conceptoOriginal.informacionConcepto}" 
+                                             style="position: absolute; height: 14px; top: 5px; left: 380px; margin: 1px; width: 350px;">
+                                    <p:ajax event="change" listener="#{controlConcepto.lovConcepto(1)}" update="@this"/>
+                                </p:inputText>
+                                <p:commandButton value="" actionListener="#{controlConcepto.lovConcepto(1)}" style=" background-image: url(Imagenes/Iconos/lupa.png); position: relative; 
+                                                 background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px;  top: 1px; margin: 1px; left: 700px" process="@this"/>
+                            </p:panel>
+                            <p:commandButton value="#{msg['clonar']}" actionListener="#{controlConcepto.clonarConcepto()}" 
+                                             style="position: relative; top: 1px; left: 760px; width: 50px; height: 50px" process="@this"/>
+                        </fieldset>
                     </p:panel>
                 </h:form>
                 <h:form>

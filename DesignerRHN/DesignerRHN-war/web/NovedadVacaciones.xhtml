@@ -8,7 +8,6 @@
       xmlns:lnk="http://java.sun.com/jsf/composite/linkare"
       xmlns:pe="http://primefaces.org/ui/extensions">
 
-
     <h:head>
     </h:head>
     <h:body>
@@ -86,7 +85,6 @@
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 130px;width: 580px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: #14388B"><strong>Empleados</strong></legend>
 
-                            <!-- Botones Buscar Empleado y Mostrar Todos--> 
                             <p:dataTable id="datosEmpleados" var="empleados" value="#{controlNovedadesVacaciones.listaEmpleadosNovedad}"
                                          rowKey="#{empleados.secuencia}" style=" border: 1px; text-align: left; width: 560px"                           
                                          scrollable="true"  scrollHeight="86" scrollWidth="580" filteredValue="#{controlNovedadesVacaciones.filtradosListaEmpleadosNovedad}" 
@@ -114,8 +112,11 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 46px; " id="btnBuscarEmpleados" actionListener="#{controlNovedadesVacaciones.abrirLista(0) }" value="Buscar Empleado" process="@this"/>
-                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 80px; " id="btnMostrarTodos" widgetVar="btnMostrarTodos" actionListener="#{controlNovedadesVacaciones.mostrarTodos()}" disabled="#{controlNovedadesVacaciones.activarMTodos}" value="Mostrar Todos" process="@this"/>
+                            <p:commandButton style="width: 150px; height: 30px; background-image: url(Imagenes/Iconos/buscardbL.png); background-size: 100% 100%; background-repeat: no-repeat; position: relative;
+                                             position: relative; left: 650px; top: -88px; " id="btnBuscarEmpleados" actionListener="#{controlNovedadesVacaciones.abrirLista(0) }" value="" process="@this"/>
+                            <p:commandButton style="width: 150px; height: 30px; background-image: url(Imagenes/Iconos/todosdbL.png); background-size: 100% 100%; background-repeat: no-repeat; 
+                                             position: relative; left: 500px; top: -50px;" id="btnMostrarTodos" widgetVar="btnMostrarTodos" value="" 
+                                             actionListener="#{controlNovedadesVacaciones.mostrarTodos()}" disabled="#{controlNovedadesVacaciones.activarMTodos}" process="@this"/>
                         </fieldset>
 
                         <fieldset style="position: absolute; left: 10px; top: 230px; width: 830px; height: 220px; border-radius: 10px; ">
@@ -309,8 +310,10 @@
                             <h:outputText value="#{controlNovedadesVacaciones.diasAplazadosTotal}" id="diasAplazados" style=" position: relative; top: 15px ; left:360px; border-radius: 0px; width: 50px" /> 
                         </fieldset>
 
-                        <p:commandButton style="position: absolute; left: 695px; top: 474px;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" disabled="#{controlNovedadesVacaciones.guardado}" onclick="confirmarGuardar.show();" update=":form:datosNovedadesEmpleado" process="@this" />
-                        <p:commandButton style="position: absolute; left: 785px; top: 474px;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlNovedadesVacaciones.salir()}" action="#{controlNovedadesVacaciones.volverPagAnterior()}"/>
+                        <p:commandButton style="position: absolute; left: 660px; top: 474px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; 
+                                         background-repeat: no-repeat;" value="" disabled="#{controlNovedadesVacaciones.guardado}" onclick="confirmarGuardar.show();" update=":form:datosNovedadesEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; left: 765px; top: 474px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat;" id="ATRAS" value="" actionListener="#{controlNovedadesVacaciones.salir()}" action="#{controlNovedadesVacaciones.volverPagAnterior()}"/>
 
                     </p:panel>
                 </h:form>
@@ -755,4 +758,3 @@
         </ui:composition>
     </h:body>
 </html>
-

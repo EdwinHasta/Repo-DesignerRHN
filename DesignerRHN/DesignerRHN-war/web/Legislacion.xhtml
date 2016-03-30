@@ -18,55 +18,55 @@
                         <p:toolbar style="position: absolute; top: 37px; left: 12px; height: 23px">  
                             <p:toolbarGroup align="left"> 
 
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlLegislacion.guardarCambios()}" process="@this" />
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlLegislacion.guardarCambios()}" process="@this" />
                                 <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
 
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.editarCelda()}" process="@this"/>
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.editarCelda()}" process="@this"/>
                                 <p:tooltip  for="editar" value="#{msg['editar']}"  />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.listaValoresBoton()}" process="@this"/>
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.listaValoresBoton()}" process="@this"/>
                                 <p:tooltip for="listaValores" value="#{msg['lista']}"  />
 
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.activarCtrlF11()}" process="@this"/>
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.activarCtrlF11()}" process="@this"/>
                                 <p:tooltip  for="filtrar" value="#{msg['filtrar']}"  />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlLegislacion.exportXLS()}" />
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlLegislacion.exportXLS()}" />
                                 <p:tooltip  for="exportarXLS" value="#{msg['xls']}"  />
 
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.limpiarNuevoContrato()}" ajax="false">
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.limpiarNuevoContrato()}" ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportar:datosContratosExportar" fileName="ContratosXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip  for="exportarXML" value="#{msg['xml']}"  />
 
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.exportPDF()}" ajax="false"/>
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.exportPDF()}" ajax="false"/>
                                 <p:tooltip  for="exportarPDF" value="#{msg['pdf']}"  />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.dialogoIngresoNuevoRegistro()}"  process="@this"/> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.dialogoIngresoNuevoRegistro()}"  process="@this"/> 
                                 <p:tooltip  for="insertar" value="#{msg['nuevo']}"  />
 
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.borrarContrato()}" process="@this"/>  
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.borrarContrato()}" process="@this"/>  
                                 <p:tooltip  for="eliminar" value="#{msg['eliminar']}" />
 
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.duplicarRegistro()}"  process="@this"/>  
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.duplicarRegistro()}"  process="@this"/>  
                                 <p:tooltip  for="duplicar" value="#{msg['duplicar']}"  />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.verificarRastro()}" process="@this"/>  
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.verificarRastro()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.refrescar()}" process="@this"/>  
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.refrescar()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.Salir()}" action="#{controlLegislacion.redirigir()}" process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLegislacion.Salir()}" action="#{controlLegislacion.redirigir()}" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
 
                             </p:toolbarGroup>  
@@ -144,22 +144,28 @@
                         <fieldset style="position: absolute; left: 5px; top: 410px; width: 835px; height: 70px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['clonar']}</strong></legend>
                             <h:outputText value="#{msg['contratoaactualizar']}"   style="color: #14388B; font-weight: bold; position: absolute"/>
-                            <p:commandButton icon="ui-icon-transfer-e-w" actionListener="#{controlLegislacion.lovContratos(2)}"  style="position: absolute; top: 32px;" process="@this"/>
-                            <p:inputText id="descripcionContrato1" value="#{controlLegislacion.contratoClon.informacionContrato}" style="position: absolute; top: 35px; width: 320px; left: 37px"/>
+                            <p:inputText id="descripcionContrato1" value="#{controlLegislacion.contratoClon.informacionContrato}" style="position: absolute; top: 35px; width: 340px; left: 7px"/>
+                            <p:commandButton value="" actionListener="#{controlLegislacion.lovContratos(2)}" style="position: absolute; top: 32px; left: 327px; background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 30px; height: 30px;" process="@this"/>
                             <h:outputText value="#{msg['contratodeorigen']}"   style="color: #14388B; font-weight: bold; position: absolute; left: 380px"/>
-                            <p:commandButton icon="ui-icon-transfer-e-w" actionListener="#{controlLegislacion.lovContratos(1)}"  style="position: absolute; top: 32px; left: 380px" process="@this"/>
-                            <p:inputText id="descripcionContrato2" value="#{controlLegislacion.contratoOriginal.informacionContrato}" style="position: absolute; top: 35px; left: 408px; width: 320px;"/>
-                            <p:commandButton value="#{msg['reproducir']}"  actionListener="#{controlLegislacion.reproducirContrato()}" style="position: absolute; top: 25px; left: 747px; height: 40px" process="@this"/>
+                            <p:inputText id="descripcionContrato2" value="#{controlLegislacion.contratoOriginal.informacionContrato}" style="position: absolute; top: 35px; left: 360px; width: 330px;"/>
+                            <p:commandButton value="" actionListener="#{controlLegislacion.lovContratos(1)}" style="position: absolute; top: 32px; left: 670px; background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 30px; height: 30px;" process="@this"/>
+                            
+                            <p:commandButton value="#{msg['reproducir']}"  actionListener="#{controlLegislacion.reproducirContrato()}" style="position: absolute; top: 30px; left: 710px; width: 130px; height: 30px; 
+                                             background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; color: white" process="@this"/>
                         </fieldset>
 
-                        <p:commandButton id="detalleFormula" value="" style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 28px; height: 28px; position: absolute; top: 380px; left: 10px; " disabled="#{controlLegislacion.activoDetalleFormula}" action="detalleLegislacion" actionListener="#{controlDetalleLegislacion.obtenerContrato(controlLegislacion.actualContrato.secuencia)}" process="@this"/>  
+                        <p:commandButton id="detalleFormula" value="" style="background-image: url(Imagenes/Iconos/lupa.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 28px; height: 28px; position: absolute; top: 380px; left: 10px; " disabled="#{controlLegislacion.activoDetalleFormula}" action="detalleLegislacion" actionListener="#{controlDetalleLegislacion.obtenerContrato(controlLegislacion.actualContrato.secuencia)}" process="@this"/>  
                         <p:tooltip for="detalleFormula" value="#{msg['detalle']}"/>
 
-                        <p:commandButton style="position: absolute; left: 615px; top: 378px;" id="buscarContrato" value="#{msg['buscar']}"  actionListener="#{controlLegislacion.lovContratos(0)}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 745px; top: 378px;" disabled="#{controlLegislacion.mostrarTodos}" id="mostrarTodos" actionListener="#{controlLegislacion.mostrarTodosContratos()}" value="#{msg['mostrar']}"  process="@this" />
+                        <p:commandButton style="position: absolute; left: 685px; top: 378px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/buscardb.png); background-size: 100% 100%; 
+                                             background-repeat: no-repeat;" id="buscarContrato" value=""  actionListener="#{controlLegislacion.lovContratos(0)}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 378px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/todosdb.png); background-size: 100% 100%; 
+                                             background-repeat: no-repeat;" disabled="#{controlLegislacion.mostrarTodos}" id="mostrarTodos" actionListener="#{controlLegislacion.mostrarTodosContratos()}" value=""  process="@this" />
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 500px;" id="ACEPTAR" value="#{msg['aceptar']}"  icon="ui-icon-check" actionListener="#{controlLegislacion.dispararDialogoConfirmarGuardar()}" disabled="#{controlLegislacion.guardado}"  process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 500px;" id="ATRAS" value="#{msg['cancelar']}"  icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlLegislacion.Salir()}" action="#{controlLegislacion.redirigir()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 683px; top: 500px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; 
+                                             background-repeat: no-repeat;" id="ACEPTAR" value="" actionListener="#{controlLegislacion.dispararDialogoConfirmarGuardar()}" disabled="#{controlLegislacion.guardado}"  process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 500px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; 
+                                             background-repeat: no-repeat;" id="ATRAS" value="" actionListener="#{controlLegislacion.Salir()}" action="#{controlLegislacion.redirigir()}" process="@this" />
                     </p:panel>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlLegislacion.activarCtrlF11()}"/>
                 </h:form>

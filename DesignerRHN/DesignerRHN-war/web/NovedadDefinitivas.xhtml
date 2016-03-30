@@ -101,10 +101,10 @@
                             </p:dataTable>
 
                             <h:outputText id="informacionRegistro" value="#{controlNovedadesDefinitivas.infoRegistro}" style="position: relative; left: 15px; top: 12px; font-weight: bold"/>
-                            <p:commandButton style="width: 160px; height: 25px; position: relative; left: 345px; top: 12px;" id="btnBuscarEmpleados" 
-                                             actionListener="#{controlNovedadesDefinitivas.asignarIndex(0, 0)}" value="#{msg['buscar']}" process="@this"/>
-                            <p:commandButton style="width: 160px; height: 25px; position: relative; left: 350px; top: 12px;" id="btnMostrarTodos" disabled="#{controlNovedadesDefinitivas.activarMostrarTodos}" 
-                                             actionListener="#{controlNovedadesDefinitivas.mostrarTodos()}" value="#{msg['mostrar']}" process="@this"/>
+                            <p:commandButton style="width: 90px; height: 30px; background-image: url(Imagenes/Iconos/buscardb.png); background-size: 100% 100%; background-repeat: no-repeat; position: relative; left: 472px; top: 15px;" 
+                                             id="btnBuscarEmpleados" actionListener="#{controlNovedadesDefinitivas.asignarIndex(0, 0)}" value="" process="@this"/>
+                            <p:commandButton style="width: 90px; height: 30px; background-image: url(Imagenes/Iconos/todosdb.png); background-size: 100% 100%; background-repeat: no-repeat; position: relative; left: 480px; top: 15px;" 
+                                             id="btnMostrarTodos" disabled="#{controlNovedadesDefinitivas.activarMostrarTodos}" actionListener="#{controlNovedadesDefinitivas.mostrarTodos()}" value="" update="@this :form:informacionRegistro" process="@this"/>
                         </fieldset>
 
                         <p:panel id="formularioNovedades" style="position: absolute; left: 5px;  top: 2px; background-color: transparent; border-color: transparent" >
@@ -183,8 +183,10 @@
                             </fieldset>
                         </p:panel>
 
-                        <p:commandButton style="position: absolute; left: 688px; top: 478px;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:formularioNovedades" process="@this" />
-                        <p:commandButton style="position: absolute; left: 785px; top: 478px;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlNovedadesDefinitivas.refrescar()}" action="#{controlNovedadesDefinitivas.volverPagAnterior()}" />
+                        <p:commandButton style="position: absolute; left: 658px; top: 478px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; 
+                                         background-repeat: no-repeat;" value="" onclick="confirmarGuardar.show();" update=":form:formularioNovedades" process="@this" />
+                        <p:commandButton style="position: absolute; left: 765px; top: 478px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; 
+                                         background-repeat: no-repeat;" id="ATRAS" value="" actionListener="#{controlNovedadesDefinitivas.refrescar()}" action="#{controlNovedadesDefinitivas.volverPagAnterior()}" />
 
                     </p:panel>
                 </h:form>

@@ -102,7 +102,8 @@ public class ControlConcepto implements Serializable {
     //Advertencias
     private boolean continuarNuevoNat;
     private DataTable tabla;
-    //private Object stado;
+    //recordar seleccion
+    private boolean unaVez;
 
     public ControlConcepto() {
 
@@ -152,6 +153,7 @@ public class ControlConcepto implements Serializable {
 
         continuarNuevoNat = false;
         estadoConceptoEmpresa = "S";
+        unaVez = true;
     }
 
     @PostConstruct
@@ -437,6 +439,7 @@ public class ControlConcepto implements Serializable {
 
     //LISTA DE VALORES DINAMICA
     public void listaValoresBoton() {
+        unaVez = true;
         RequestContext context = RequestContext.getCurrentInstance();
         if (conceptoSeleccionado != null) {
             //Si la columna es Unidades
@@ -539,6 +542,7 @@ public class ControlConcepto implements Serializable {
                 }
                 break;
             }
+            unaVez = true;
             cualCelda = -1;
             activoDetalle = true;
             context.update("form:DETALLES");
@@ -658,9 +662,14 @@ public class ControlConcepto implements Serializable {
         context.update("form:datosConceptos");
     }
 
+    public boolean activarSelec() {
+        unaVez = true;
+        return false;
+    }
     //Ubicacion Celda.
+
     public void cambiarIndice(Conceptos conceptoS, int celda) {
-        if (permitirIndex) {
+        if (permitirIndex && unaVez) {
             conceptoSeleccionado = conceptoS;
             cualCelda = celda;
             if (tipoLista == 0) {
@@ -668,9 +677,8 @@ public class ControlConcepto implements Serializable {
                 nombreUnidad = conceptoSeleccionado.getUnidad().getNombre();
                 tercero = conceptoSeleccionado.getTercero().getNombre();
             }
-            RequestContext context = RequestContext.getCurrentInstance();
             activoDetalle = false;
-            context.update("form:DETALLES");
+            unaVez = false;
         }
     }
 
@@ -908,6 +916,7 @@ public class ControlConcepto implements Serializable {
     }
 
     public void borrarConcepto() {
+        unaVez = true;
         RequestContext context = RequestContext.getCurrentInstance();
         if (conceptoSeleccionado != null) {
             if (!listaConceptosEmpresaModificar.isEmpty() && listaConceptosEmpresaModificar.contains(conceptoSeleccionado)) {
@@ -977,6 +986,7 @@ public class ControlConcepto implements Serializable {
                 paraNuevoConcepto = 0;
                 conceptoSeleccionado = null;
                 activoDetalle = true;
+                unaVez = true;
                 RequestContext.getCurrentInstance().update("form:DETALLES");
                 if (verCambioEmpresa) {
                     cambiarEmpresa();
@@ -1018,6 +1028,7 @@ public class ControlConcepto implements Serializable {
 
     //CTRL + F11 ACTIVAR/DESACTIVAR
     public void activarCtrlF11() {
+        unaVez = true;
         conceptoSeleccionado = null;
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
@@ -1214,6 +1225,7 @@ public class ControlConcepto implements Serializable {
     }
 
     public void duplicarRegistro() {
+        unaVez = true;
         RequestContext context = RequestContext.getCurrentInstance();
         if (conceptoSeleccionado != null) {
             duplicarConcepto = new Conceptos();
@@ -1338,6 +1350,7 @@ public class ControlConcepto implements Serializable {
     }
 
     public void refrescar() {
+        unaVez = true;
         RequestContext context = RequestContext.getCurrentInstance();
         if (bandera == 1) {
             cargarTablaDefault();
@@ -1434,6 +1447,7 @@ public class ControlConcepto implements Serializable {
 
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
     public void verificarRastro() {
+        unaVez = true;
         RequestContext context = RequestContext.getCurrentInstance();
         //FacesContext fc = FacesContext.getCurrentInstance(); 
         //fc.getViewRoot().findComponent("form:datosConceptos").processSaveState(fc);
@@ -1537,19 +1551,26 @@ public class ControlConcepto implements Serializable {
 
         if (conceptoSeleccionado != null) {
             if (listaConceptosEmpresa.contains(conceptoSeleccionado)) {
-                Conceptos conceptoTemp = listaConceptosEmpresa.get(0);
-                int indSel = listaConceptosEmpresa.indexOf(conceptoSeleccionado);
-                listaConceptosEmpresa.set(0, conceptoSeleccionado);
-                listaConceptosEmpresa.set(indSel, conceptoTemp);
-                
-                FacesContext c = FacesContext.getCurrentInstance();
-                tabla = (DataTable) c.getViewRoot().findComponent("form:datosConceptos");
-                tabla.setSelection(conceptoSeleccionado);
-            } else {
-                conceptoSeleccionado = null;
+                if (!listaConceptosEmpresa.get(0).equals(conceptoSeleccionado)) {
+
+                    List<Conceptos> listaAux = new ArrayList<Conceptos>();
+                    for (int i = 0; i < listaConceptosEmpresa.size(); i++) {
+                        if (!listaConceptosEmpresa.get(i).equals(conceptoSeleccionado)) {
+                            listaAux.add(listaConceptosEmpresa.get(i));
+                        }
+                    }
+                    listaConceptosEmpresa.set(0, conceptoSeleccionado);
+                    for (int n = 0; n < listaAux.size(); n++) {
+                        listaConceptosEmpresa.set((n + 1), listaAux.get(n));
+                    }
+                }
             }
+            FacesContext c = FacesContext.getCurrentInstance();
+            tabla = (DataTable) c.getViewRoot().findComponent("form:datosConceptos");
+            tabla.setSelection(conceptoSeleccionado);
+            conceptoSeleccionado = listaConceptosEmpresa.get(0);
         } else {
-            conceptoSeleccionado = null;
+            unaVez = true;
         }
     }
 

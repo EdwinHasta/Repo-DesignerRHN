@@ -71,7 +71,7 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <fieldset style="position: absolute; left: 5px; top: 70px; width: 835px; height: 245px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 5px; top: 70px; width: 835px; height: 270px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['formulas']}</strong></legend>
 
 
@@ -100,7 +100,7 @@
                                         <h:outputText value=""/>
                                     </f:facet>
                                 </p:column>
-                                
+
                                 <p:column headerText="#{msg['nombrelargo']}" sortBy="#{formula.nombrelargo}" filterBy="#{formula.nombrelargo}" filterMatchMode="contains" id="columnaNombreLargo" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{formula.nombrelargo}" /></f:facet>  
@@ -195,52 +195,77 @@
                                     </f:facet>
                                 </p:column>
                             </p:dataTable> 
+
+                            <h:outputText id="informacionRegistro" value="#{controlFormula.infoRegistro}" style="position: relative; left: 15px; top: 0px; font-weight: bold"/>
                         </fieldset>
 
-                        <fieldset style="position: absolute; left: 5px; top: 360px; width: 840px; height: 56px; border-radius: 10px; ">
-                            <legend style="color: blue"><strong>#{msg['clonar']}</strong></legend>
-                            <h:outputText value="#{msg['ncnlyo']}"  style="color: #14388B; font-weight: bold; position: absolute"/>
-                            <p:inputText id="nombreCortoFormulaClon" value="#{controlFormula.formulaClon.nombrecorto}" style="position: absolute; top: 35px; width: 50px;">
-                                <p:ajax event="change" update="@this"/>
-                            </p:inputText>
-                            <p:inputText id="nombreLargoFormulaClon" value="#{controlFormula.formulaClon.nombrelargo}" style="position: absolute; top: 35px; left: 80px; width: 120px;" >
-                                <p:ajax event="change" update="@this"/>
-                            </p:inputText>
-                            <p:inputText id="observacionFormulaClon" value="#{controlFormula.formulaClon.observaciones}" style="position: absolute; top: 35px; left: 220px; width: 212px;" >
-                                <p:ajax event="change" update="@this"/>
-                            </p:inputText>
-
-                            <h:outputText value="#{msg['fac']}"  style="color: #14388B; font-weight: bold; position: absolute; left: 460px"/>
-                            <p:commandButton icon="ui-icon-transfer-e-w" actionListener="#{controlFormula.lovFomula(1)}"  style="position: absolute; top: 31px; left: 458px" process="@this"/>
-                            <p:inputText id="descripcionClon" widgetVar="descripcionClon" value="#{controlFormula.formulaOriginal.nombresFormula}" style="position: absolute; top: 35px; left: 488px; width: 270px;">
-                                <p:ajax event="change" listener="#{controlFormula.lovFomula(1)}" update="@this"/>
-                            </p:inputText>
-                            <p:commandButton value="#{msg['clonarboton']}" actionListener="#{controlFormula.clonarFormula()}" style="position: absolute; top: 12px; left: 784px; width: 70px; height: 50px" process="@this"/>
-                        </fieldset>
-
-                        <fieldset style="position: absolute; left: 5px; top: 430px; width: 840px; height: 54px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 5px; top: 355px; width: 560px; height: 34px; border-radius: 10px; padding-left: 0px; padding-right: 0px ">
                             <legend style="color: blue"><strong>#{msg['propiedades']}</strong></legend>
-                            <p:commandButton id="novedadFormula" disabled="#{controlFormula.propiedadesFormula}" value="" style="background-image: url(Imagenes/empresa.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 45px; height: 45px; position: absolute; top: 15px; left: 10px; " action="novedadesFormula" actionListener="#{controlFormulaNovedad.recibirFormula(controlFormula.formulaSeleccionada.secuencia)}" process="@this"/>
-                            <h:outputText value="#{msg['novedades']}" style="position: absolute; top: 15px; font-weight: bold; text-align: justify; left: 60px; width: 160px;"/>
-                            <p:commandButton id="procesoFormula" disabled="#{controlFormula.propiedadesFormula}" value="" style="background-image: url(Imagenes/proceso.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 45px; height: 45px; position: absolute; top: 15px; left: 240px; " action="procesosFormula" actionListener="#{controlFormulaProceso.recibirFormula(controlFormula.formulaSeleccionada.secuencia)}" process="@this"/>  
-                            <h:outputText value="#{msg['procesos']}" style="position: absolute; top: 15px; font-weight: bold; text-align: justify; left: 290px; width: 140px;"/>
-                            <p:commandButton id="conceptoFormula" disabled="#{controlFormula.propiedadesFormula}" value="" style="background-image: url(Imagenes/concepto.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 45px; height: 45px; position: absolute; top: 15px; left: 440px; " action="conceptoFormula" actionListener="#{controlFormulaConcepto.recibirFormula(controlFormula.formulaSeleccionada.secuencia)}" process="@this"/>  
-                            <h:outputText value="#{msg['conceptos']}" style="position: absolute; top: 15px; font-weight: bold; text-align: justify; left: 490px; width: 110px;"/>
-                            <p:commandButton id="legislacionFormula" disabled="#{controlFormula.propiedadesFormula}" value="" style="background-image: url(Imagenes/contrato.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 45px; height: 45px; position: absolute; top: 15px; left: 640px; " action="legislacionFormula" actionListener="#{controlFormulaContrato.recibirFormula(controlFormula.formulaSeleccionada.secuencia)}" process="@this"/>  
-                            <h:outputText value="#{msg['legislacion']}" style="position: absolute; top: 15px; font-weight: bold; text-align: justify; left: 690px; width: 160px;"/>
+
+                            <p:commandButton id="novedadFormula" disabled="#{controlFormula.propiedadesFormula}" value="Novedades"
+                                             style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; width: 130px; height: 30px; position: relative; top: -5px; left: 15px; color: white; " 
+                                             action="novedadesFormula" actionListener="#{controlFormulaNovedad.recibirFormula(controlFormula.formulaSeleccionada.secuencia)}" immediate="#{controlFormula.activarSelec()}" process="@this"/>
+                            <p:tooltip for="novedadFormula" value="#{msg['novedades']}"/>
+
+                            <p:commandButton id="procesoFormula" disabled="#{controlFormula.propiedadesFormula}" value="Procesos" 
+                                             style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; width: 130px; height: 30px; position: relative; top: -5px; left: 15px; color: white; " 
+                                             action="procesosFormula" actionListener="#{controlFormulaProceso.recibirFormula(controlFormula.formulaSeleccionada.secuencia)}" immediate="#{controlFormula.activarSelec()}" process="@this"/>  
+                            <p:tooltip for="procesoFormula" value="#{msg['procesos']}"/>
+
+                            <p:commandButton id="conceptoFormula" disabled="#{controlFormula.propiedadesFormula}" value="Conceptos" 
+                                             style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; width: 130px; height: 30px; position: relative; top: -5px; left: 15px; color: white; " 
+                                             action="conceptoFormula" actionListener="#{controlFormulaConcepto.recibirFormula(controlFormula.formulaSeleccionada.secuencia)}" immediate="#{controlFormula.activarSelec()}" process="@this"/>  
+                            <p:tooltip for="conceptoFormula" value="#{msg['conceptos']}"/>
+
+                            <p:commandButton id="legislacionFormula" disabled="#{controlFormula.propiedadesFormula}" value="Legislación" 
+                                             style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; width: 130px; height: 30px; position: relative; top: -5px; left: 15px; color: white; " 
+                                             action="legislacionFormula" actionListener="#{controlFormulaContrato.recibirFormula(controlFormula.formulaSeleccionada.secuencia)}" immediate="#{controlFormula.activarSelec()}" process="@this"/>  
+                            <p:tooltip for="legislacionFormula" value="#{msg['legislacion']}"/>
+
+                            <!--<p:commandButton id="operandoFormula" value="" 
+                                             style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 30px; height: 30px; position: relative; top: -35px; left: 70px; color: white; " 
+                                             disabled="#/{controlFormula.activoDetalleFormula}" actionListener="#{controlFormula.formulaOperando()}" process="@this"/>                          
+                            <p:tooltip for="operandoFormula" value="#/{msg['operando']}"/>-->
+                            <p:commandButton style="position: relative; left: 670px; top: -35px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/buscardb.png); background-size: 100% 100%; 
+                                             background-repeat: no-repeat;" id="buscarFormula" value="" actionListener="#{controlFormula.lovFomula(0)}" process="@this" />
+                            <p:commandButton style="position: relative; left: 670px; top: -35px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/todosdb.png); background-size: 100% 100%; 
+                                             background-repeat: no-repeat;" disabled="#{controlFormula.mostrarTodos}" id="mostrarTodos" actionListener="#{controlFormula.mostrarTodasFormulas()}" value="" process="@this" />
                         </fieldset>
 
-                        <!--<p:commandButton id="detalleFormula"  value="" style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 28px; height: 28px; position: absolute; top: 332px; left: 575px; " disabled="#/{controlFormula.activoDetalleFormula}" action="historiaFormula" actionListener="#/{controlHistoriaFormula.recibirFormula(controlFormula.actualFormula.secuencia)}" process="@this"/>  -->
-                        <!--<p:tooltip for="detalleFormula" value="#/{msg['detalle']}"/>-->
-                        <p:commandButton id="operandoFormula" value="" style="background-image: url(Imagenes/proceso.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 28px; height: 28px; position: absolute; top: 332px; left: 605px; " disabled="#{controlFormula.activoDetalleFormula}" actionListener="#{controlFormula.formulaOperando()}" process="@this"/>                          
-                        <p:tooltip for="operandoFormula" value="#{msg['operando']}"/>
-                        <h:outputText id="informacionRegistro" value="#{controlFormula.infoRegistro}" style="position: absolute; left: 15px; top: 335px; font-weight: bold"/>
+                        <fieldset style="position: relative; left: -9px; top: 370px; width: 835px; height: 70px; border-radius: 10px; ">
+                            <legend style="color: blue"><strong>#{msg['clonar']}</strong></legend>
+                            <h:outputText value="#{msg['ncnlyo']}"  style="color: #14388B; font-weight: bold; position: relative; top: -2px; left: 5px;"/>
+                            <h:outputText value="#{msg['fac']}"  style="color: #14388B; font-weight: bold; position: relative; left: 110px; top: -2px"/>
 
-                        <p:commandButton style="position: absolute; left: 635px; top: 333px;" id="buscarFormula" value="#{msg['buscar']}" actionListener="#{controlFormula.lovFomula(0)}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 755px; top: 333px;" disabled="#{controlFormula.mostrarTodos}" id="mostrarTodos" actionListener="#{controlFormula.mostrarTodasFormulas()}" value="#{msg['mostrar']}" process="@this" />
+                            <p:panel style=" padding: 1px; position: absolute; padding: 1px; top: 20px; height: 15px; border: none; background-color: transparent" >
+                                <p:inputText id="nombreCortoFormulaClon" value="#{controlFormula.formulaClon.nombrecorto}" 
+                                             style="position: absolute; width: 60px; height: 14px; margin: 1px; left: -2px; text-align: center; top: 15px">
+                                    <p:ajax event="change" update="@this"/>
+                                </p:inputText>
+                                <p:inputText id="nombreLargoFormulaClon" value="#{controlFormula.formulaClon.nombrelargo}" 
+                                             style="position: absolute; width: 180px; height: 14px; margin: 1px; left: 66px; top: 15px" >
+                                    <p:ajax event="change" update="@this"/>
+                                </p:inputText>
+                                <p:inputText id="observacionFormulaClon" value="#{controlFormula.formulaClon.observaciones}" 
+                                             style="position: absolute; width: 210px; height: 14px; margin: 1px; left: 254px; top: 15px" >
+                                    <p:ajax event="change" update="@this"/>
+                                </p:inputText>
+                                <p:inputText id="descripcionClon" value="#{controlFormula.formulaOriginal.nombresFormula}" 
+                                             style="position: absolute; width: 270px; height: 14px; margin: 1px; left: 485px; top: 15px">
+                                    <p:ajax event="change" listener="#{controlFormula.lovFomula(1)}" update="@this"/>
+                                </p:inputText>
+                                <p:commandButton actionListener="#{controlFormula.lovFomula(1)}" value="" style="background-image: url(Imagenes/Iconos/lupa.png); 
+                                                 position: relative ; top: 6px; margin: 1px; background-size: 100% 100%; background-repeat: no-repeat; 
+                                                 width: 25px; height: 25px; left: 725px;" process="@this"/>
+                            </p:panel>
+                            <p:commandButton value="#{msg['clonarboton']}" actionListener="#{controlFormula.clonarFormula()}" 
+                                             style="position: absolute; top: 14px; width: 50px; height: 50px; left: 788px" process="@this"/>
+                        </fieldset>
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 500px;" disabled="#{controlFormula.guardado}" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();"  process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 500px;" id="ATRAS" value="#{msg['cancelar']}" action="#{controlFormula.redirigir()}" icon="ui-icon-closethick" actionListener="#{controlFormula.refrescar()}" process="@this" />
+                        <p:commandButton style="position: relative; left: 665px; top: 378px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat;" disabled="#{controlFormula.guardado}" id="ACEPTAR" value="" onclick="confirmarGuardar.show();"  process="@this" />
+                        <p:commandButton style="position: relative; left: 665px; top: 378px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat;" id="ATRAS" value="" action="#{controlFormula.redirigir()}" actionListener="#{controlFormula.refrescar()}" process="@this" />
                     </p:panel>
                 </h:form>
                 <h:form>

@@ -23,7 +23,6 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -146,7 +145,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
      */
     public void recibirEmpleado(Empleados empl) {
         RequestContext context = RequestContext.getCurrentInstance();
-        PropertyConfigurator.configure("log4j.properties");
+        //PropertyConfigurator.configure("log4j.properties");
         vigenciasReformasLaborales = null;
         listaReformasLaborales = null;
         empleado = empl;

@@ -159,22 +159,37 @@
 
                             </p:dataTable>
 
-                            <p:commandButton style="position: relative; left: 600px; top: 5px; " id="MOSTRARTODOS" value="#{msg['mostrar']}"  process="@this" 
-                                             actionListener="#{controlNReporteNomina.mostrarTodos()}" disabled="#{controlNReporteNomina.activoMostrarTodos}" />
-                            <p:tooltip  for="MOSTRARTODOS" value="#{msg['mostrarTodos']}" />
-                            <p:commandButton style="position: relative; left: 380px; top: 5px; " id="BUSCARREPORTE" value="#{msg['buscar']}"   process="@this" 
+                            <p:commandButton style="position: relative; left: 510px; top: 0px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/buscardb.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat;" id="BUSCARREPORTE" value=""   process="@this" 
                                              actionListener="#{controlNReporteNomina.mostrarDialogoBuscarReporte()}" disabled="#{controlNReporteNomina.activoBuscarReporte}"/>
                             <p:tooltip  for="BUSCARREPORTE" value="#{msg['buscarReporte']}" />
+                            <p:commandButton style="position: relative; left: 510px; top: 0px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/todosdb.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat;" id="MOSTRARTODOS" value=""  process="@this" 
+                                             actionListener="#{controlNReporteNomina.mostrarTodos()}" disabled="#{controlNReporteNomina.activoMostrarTodos}" />
+                            <p:tooltip  for="MOSTRARTODOS" value="#{msg['mostrarTodos']}" />
                             <p:remoteCommand name="validarDescargaReporte" actionListener="#{controlNReporteNomina.validarDescargaReporte()}"/>
                         </fieldset>
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 483px; " icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  actionListener="#{controlNReporteNomina.dispararDialogoGuardarCambios()}" disabled="#{controlNReporteNomina.cambiosReporte}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 483px; " icon="ui-icon-closethick"  id="ATRAS" value="#{msg['cancelar']}" action="nomina" actionListener="#{controlNReporteNomina.cancelarYSalir()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 673px; top: 483px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat;" id="ACEPTAR" value=""  
+                                         actionListener="#{controlNReporteNomina.dispararDialogoGuardarCambios()}" disabled="#{controlNReporteNomina.cambiosReporte}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 763px; top: 483px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat;" id="ATRAS" value="" action="nomina" 
+                                         actionListener="#{controlNReporteNomina.cancelarYSalir()}" process="@this" />
+                        
+                        <p:commandButton style="position: absolute; left: 10px; top: 480px; height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
+                                         background-size: 100% 100%; background-repeat: no-repeat;" id="ENVIOCORREO" value="envio correo" process="@this" 
+                                         oncomplete="EnvioCorreoDialogo.show()" actionListener="#{controlNReporteNomina.defaultPropiedadesParametrosReporte()}"/>
+                        <p:tooltip  for="ENVIOCORREO" value="#{msg['envio']}" />
 
-                        <p:commandButton style="position: absolute; left: 323px; top: 490px; " id="ESTIMACIONES" value="#{msg['estimaciones']}"   process="@this" />
-                        <p:commandButton style="position: absolute; left: 145px; top: 490px; " id="ENVIOLOTE" value="#{msg['lote']}"   process="@this" />
+                        <p:commandButton style="position: absolute; left: 145px; top: 480px; height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
+                                         background-size: 100% 100%; background-repeat: no-repeat; " id="ENVIOLOTE" value="envio lote"   process="@this" />
                         <p:tooltip  for="ENVIOLOTE" value="#{msg['envioLote']}" />
-                        <p:commandButton style="position: absolute; left: 10px; top: 490px; " id="ENVIOCORREO" value="#{msg['envio']}"   process="@this" oncomplete="EnvioCorreoDialogo.show()" actionListener="#{controlNReporteNomina.defaultPropiedadesParametrosReporte()}"/>
+                        
+                        <p:commandButton style="position: absolute; left: 280px; top: 480px; height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
+                                         background-size: 100% 100%; background-repeat: no-repeat;" id="ESTIMACIONES" value="estimacion"   process="@this" />
+                        <p:tooltip  for="ESTIMACIONES" value="#{msg['estimaciones']}" />
+                        
 
                     </p:panel>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlNReporteNomina.activarCtrlF11()}" process="@this"/> 
