@@ -45,6 +45,7 @@ public class ControlBarra implements Serializable {
     private Column corteLA, empresaLA, procesoLA, totalEmpleadosLA, observacionLA;
     private String altoScrollLiquidacionesCerradas, altoScrollLiquidacionesAbiertas;
     private int banderaFiltros;
+    private boolean liquifinalizada;
 
     public ControlBarra() {
         totalEmpleadosParaLiquidar = 0;
@@ -60,13 +61,14 @@ public class ControlBarra implements Serializable {
         formato = new SimpleDateFormat("hh:mm:ss a");
         formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
         mensajeEstado = "Oprima el boton liquidar para iniciar.";
-        imagenEstado = "nom_parametros.gif";
+        imagenEstado = "nom_parametros_liq.png";
         cambioImagen = true;
         liquidacionesAbiertas = null;
         liquidacionesCerradas = null;
         altoScrollLiquidacionesAbiertas = "139";
         altoScrollLiquidacionesCerradas = "139";
         banderaFiltros = 0;
+        liquifinalizada=false;
     }
 
     @PostConstruct
@@ -90,6 +92,7 @@ public class ControlBarra implements Serializable {
     public void liquidar() {
         RequestContext context = RequestContext.getCurrentInstance();
         empezar = true;
+        liquifinalizada=false;
         usuarioBD = administrarBarra.consultarUsuarioBD();
         permisoParaLiquidar = administrarBarra.verificarPermisosLiquidar(usuarioBD);
         if (permisoParaLiquidar == true) {
@@ -97,7 +100,7 @@ public class ControlBarra implements Serializable {
             administrarBarra.liquidarNomina();
             mensajeBarra = "Preparando datos...";
             mensajeEstado = "Un momento mientras se analizan los parametros.";
-            imagenEstado = "hand2.gif";
+            imagenEstado = "hand2.png";
             preparandoDatos = true;
             botonLiquidar = true;
             botonCancelar = false;
@@ -119,11 +122,13 @@ public class ControlBarra implements Serializable {
 
     public void limpiarbarra() {
         barra = null;
-        if (empezar == false) {
+        empezar=!empezar;
+        liquifinalizada=false;
+        /*if (empezar == false) {
             empezar = true;
         } else if (empezar == true) {
             empezar = false;
-        }
+        }*/
     }
 
     public void liquidacionCompleta() {
@@ -132,8 +137,9 @@ public class ControlBarra implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
         mensajeBarra = "Liquidación Completa (" + barra + "%)";
         mensajeEstado = "Liquidación terminada con exito.";
-        imagenEstado = "hand3.gif";
+        imagenEstado = "hand3.png";
         empezar = false;
+        liquifinalizada=true;
         botonCancelar = true;
         botonLiquidar = false;
         totalEmpleadosLiquidados = administrarBarra.contarEmpleadosLiquidados();
@@ -159,12 +165,13 @@ public class ControlBarra implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("barra.cancel()");
         empezar = false;
+        liquifinalizada=true;
         administrarBarra.cancelarLiquidacion(usuarioBD);
         Date horaFinal = new Date();
         horaFinalLiquidacion = formato.format(horaFinal);
         mensajeBarra = "Liquidacion Cancelada (" + barra + "%)";
         mensajeEstado = "El proceso de liquidacion fue cancelado.";
-        imagenEstado = "cancelarLiquidacion.jpg";
+        imagenEstado = "cancelarLiquidacion.png";
         botonCancelar = true;
         botonLiquidar = false;
         FacesMessage msg = new FacesMessage("Información", "Liquidación cancelada.");
@@ -185,6 +192,7 @@ public class ControlBarra implements Serializable {
         totalEmpleadosLiquidados = 0;
         barra = 0;
         empezar = false;
+        liquifinalizada=false;
         bandera = true;
         preparandoDatos = false;
         botonCancelar = true;
@@ -193,7 +201,7 @@ public class ControlBarra implements Serializable {
         horaFinalLiquidacion = "--:--:--";
         formato = new SimpleDateFormat("hh:mm:ss a");
         mensajeEstado = "Oprima el boton liquidar para iniciar.";
-        imagenEstado = "nom_parametros.gif";
+        imagenEstado = "nom_parametros_liq.png";
         cambioImagen = true;
         liquidacionesAbiertas = null;
         liquidacionesCerradas = null;
@@ -375,10 +383,10 @@ public class ControlBarra implements Serializable {
                         if (bandera == true) {
                             if (cambioImagen == true) {
                                 cambioImagen = false;
-                                imagenEstado = "hand2.gif";
+                                imagenEstado = "hand2.png";
                             } else {
                                 cambioImagen = true;
-                                imagenEstado = "hand1.gif";
+                                imagenEstado = "hand1.png";
                             }
                             Date horaFinal = new Date();
                             horaFinalLiquidacion = formato.format(horaFinal);
@@ -393,11 +401,12 @@ public class ControlBarra implements Serializable {
                             System.out.println("Liquidacion Terminada Parcialmente");
                             context.execute("barra.cancel()");
                             empezar = false;
+                            liquifinalizada=true;
                             Date horaFinal = new Date();
                             horaFinalLiquidacion = formato.format(horaFinal);
                             mensajeBarra = "Liquidacion Finalizada (" + barra + "%)";
                             mensajeEstado = "Liquidacion terminada parcialmente.";
-                            imagenEstado = "hand3.gif";
+                            imagenEstado = "hand3.png";
                             botonCancelar = true;
                             botonLiquidar = false;
                             FacesMessage msg = new FacesMessage("Información", "Liquidación terminada parcialmente.");
@@ -498,4 +507,13 @@ public class ControlBarra implements Serializable {
     public String getAltoScrollLiquidacionesAbiertas() {
         return altoScrollLiquidacionesAbiertas;
     }
+
+    public boolean isLiquifinalizada() {
+        return liquifinalizada;
+    }
+
+    public void setLiquifinalizada(boolean liquifinalizada) {
+        this.liquifinalizada = liquifinalizada;
+    }
+    
 }

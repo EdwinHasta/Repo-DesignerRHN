@@ -233,7 +233,8 @@ a:link:hover, a:visited:hover  {
 /*SELECT ON RADIO*/
 
 .ui-radiobutton{
-    padding-left: 50px;
+    padding-left: 10px;
+    margin: 0px;
 }
 
 /*PROGRESS BAR*/
@@ -241,7 +242,18 @@ a:link:hover, a:visited:hover  {
     border: 0px;
     background-image: url("bar.gif"); 
     padding: 0px;
+    border-radius: 0px;
 }
+.finished .ui-progressbar-value {
+    border: 0px;
+    background-image: url("barcomplete.png"); 
+    padding: 0px;
+    border-radius: 0px;
+}
+
+/*.finished .ui-progressbar-label{
+    color: #BF1A1A;
+}*/
 
 /*INPUT TEXT AREA*/
 textarea {
@@ -269,4 +281,7 @@ textarea {
     color: black !important;
     background: none ;
     cursor:  inherit;
+}
+.ui-selectmanycheckbox label, .ui-selectoneradio label{
+    margin-top: 0px;
 }

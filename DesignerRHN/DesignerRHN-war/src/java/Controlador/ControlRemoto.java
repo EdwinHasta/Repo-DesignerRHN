@@ -1032,10 +1032,10 @@ public class ControlRemoto implements Serializable {
     public void llenarBannerDefault() {
         banner.clear();
         //banner.add(new BannerInicioRed("Imagenes/sinPublicidad.JPG", ""));
-        banner.add(new BannerInicioRed("http://www.nomina.com.co/clientes/img/sponsors/tuscany.png", "www.nomina.com.co"));
-        banner.add(new BannerInicioRed("http://www.nomina.com.co/clientes/img/sponsors/VISI-SALUD.png", ""));
-        banner.add(new BannerInicioRed("https://www.nomina.com.co/clientes/img/sponsors/titan-dol.png", ""));
-        banner.add(new BannerInicioRed("https://www.nomina.com.co/clientes/img/sponsors/ni%C3%B1ez.png", ""));
+        banner.add(new BannerInicioRed("http://www.nomina.com.co/images/publicidadInn/pInn01.png", "www.nomina.com.co"));
+        banner.add(new BannerInicioRed("http://www.nomina.com.co/images/publicidadInn/pInn02.png", ""));
+        banner.add(new BannerInicioRed("https://www.nomina.com.co/images/publicidadInn/pInn03.png", ""));
+        banner.add(new BannerInicioRed("https://www.nomina.com.co/images/publicidadInn/pInn04.png", ""));
     }
 
     public List<Tablas> getListTablas() {

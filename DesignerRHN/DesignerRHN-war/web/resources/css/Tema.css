@@ -45,13 +45,24 @@ and open the template in the editor.
 ----------------------------------*/
 .ui-state-default,
 .ui-widget-content .ui-state-default,
-.ui-widget-header .ui-state-default {
-    /*border: 1px solid #cccccc;*/
-    border:none;
+.ui-widget-header .ui-state-default{
+    border: 1px solid #a8a8a8;
     box-shadow:none;
     background-color:transparent;
     color: #1F2429;
+    text-shadow: none;
 }
+
+button .ui-state-default,
+button .ui-widget-content,
+button .ui-widget-header{
+    border: none;
+    box-shadow:none;
+    background-color:transparent;
+    color: #1F2429;
+    text-shadow: none;
+}
+
 .ui-state-default a,
 .ui-state-default a:link,
 .ui-state-default a:visited {

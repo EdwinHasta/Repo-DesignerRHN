@@ -45,7 +45,7 @@
 
                                     <p:commandButton id="TipoPersonal" style="background-image: url(Imagenes/Iconos/#{controlRemoto.imagen}); width: 41px; height: 80px; position: absolute; top: 7px; left: 5px; background-repeat: no-repeat; background-size: 100% 100%;" value="" update=":formularioDialogos" actionListener="#{controlRemoto.pruebita()}"  action="#{controlRemoto.pantallaReintegrar()}" process="@this"/>
                                     <p:tooltip  for="TipoPersonal">
-                                        #{msg['cargosdesempeñados1']} <br/> #{msg['cargosdesempeñados2']}
+                                        #{msg['cargosdesempenados1']} <br/> #{msg['cargosdesempenados2']}
                                     </p:tooltip>
                                     <p:commandButton id="Activos" value="#{msg['activos']}" style="position: absolute; width: 110px; height: 20px; left: 50px; top: 7px; font-size: 11px; " styleClass="#{controlRemoto.styleActivos}" actionListener="#{controlRemoto.activos()}" update=":form:tabMenu:contenedor, :form:alerta, TipoPersonal" />
                                     <p:tooltip  for="Activos" value="#{msg['informacionactivos']}"  />
@@ -151,9 +151,9 @@
 
                                         <!-- Botones Panel Central -->
 
-                                        <p:commandButton id="CargoDesempeñado" value="" styleClass="colorBotones" style="position: absolute; background-image: url(Imagenes/Iconos/cargoDesempleñado.png); width: 40px; height: 40px; top: 5px; left: 5px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 0px;" action="vigenciasC"  disabled="#{controlRemoto.acumulado}" actionListener="#{controlVigenciasCargos.recibirEmpleado(controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado)}" />
+                                        <p:commandButton id="CargoDesempeñado" value="" style="position: absolute; background-image: url(Imagenes/Iconos/cargoDesempleñado.png); width: 40px; height: 40px; top: 5px; left: 5px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 0px;" action="vigenciasC"  disabled="#{controlRemoto.acumulado}" actionListener="#{controlVigenciasCargos.recibirEmpleado(controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado)}" />
                                         <p:tooltip  for="CargoDesempeñado">
-                                            #{msg['cargosdesempeñados1']}<br/>#{msg['cargosdesempeñados2']}
+                                            #{msg['cargosdesempenados1']}<br/>#{msg['cargosdesempenados2']}
                                         </p:tooltip>
 
                                         <p:commandButton id="FechaContratacion" value="" style="position: absolute; background-image: url(Imagenes/Iconos/fechaContratacion.png); width: 40px; height: 40px; top: 50px; left: 5px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 0px;" disabled="#{controlRemoto.acumulado}" action="vigenciasTC" actionListener="#{controlVigenciasTiposContratos.recibirEmpleado(controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado)}"  />
@@ -211,8 +211,6 @@
                                             #{msg['Vacaciones1']}<br/>#{msg['Vacaciones2']}
                                         </p:tooltip>
 
-
-
                                         <p:commandButton id="Sueldo" value="" style="position: absolute; background-image: url(Imagenes/Iconos/sueldo.png); width: 40px; height: 40px; top: 5px; background-repeat: no-repeat; background-size: 100% 100%; left: 550px; border: none;" action="VigenciaSueldo" actionListener="#{controlVigenciaSueldo.recibirEmpleado(controlRemoto.vwActualesTiposTrabajadoresesPosicion.empleado)}" disabled="#{controlRemoto.acumulado}"/>
                                         <p:tooltip  for="Sueldo" >
                                             #{msg['Sueldo1']}<br/> #{msg['Sueldo2']}
@@ -256,14 +254,14 @@
                                         <p:inputText id="VTipoTrabajador" style="position: absolute; left: 325px; top: 65px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesTiposTrabajadores.tipoTrabajador.nombre}" />
                                         <p:inputText id="VLegislacionLaboral" style="position: absolute; left: 325px; top: 110px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesContratos.contrato.descripcion}" />
                                         <p:inputText id="VJornada" style="position: absolute; left: 325px; top: 155px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesJornadas.jornadaTrabajo.descripcion}"  />
-                                        <p:inputText id="VMenorValorRetencio" style="position: absolute; left: 325px; top: 210px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;"  readonly="true" value="#{controlRemoto.actualMVR}"/>
+                                        <p:inputText id="VMenorValorRetencio" style="position: absolute; left: 325px; top: 200px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;"  readonly="true" value="#{controlRemoto.actualMVR}"/>
                                         <p:inputText id="VVacaciones" style="position: absolute; left: 325px; top: 245px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;"  readonly="true" value="#{controlRemoto.estadoVacaciones}"/>
 
                                         <p:inputText id="VSueldo" style="position: absolute; left: 595px; top: 20px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.sueldo}"/>
                                         <p:inputText id="VTipoSalario" style="position: absolute; left: 595px; top: 65px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesReformasLaborales.reformaLaboral.nombre}" />
                                         <p:inputText id="VUbicacion" style="position: absolute; left: 595px; top: 110px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesUbicaciones.ubicacion.descripcion} #{controlRemoto.vwActualesUbicaciones.ubicacion.ciudad.nombre}" />
                                         <p:inputText id="VFormaDePago" style="position: absolute; left: 595px; top: 155px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesFormasPagos.formaPago.nombre}" />
-                                        <p:inputText id="VSET" style="position: absolute; left: 595px; top: 210px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.actualSet}"/>
+                                        <p:inputText id="VSET" style="position: absolute; left: 595px; top: 200px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.actualSet}"/>
                                         <p:inputText id="VComprobantes" style="position: absolute; left: 595px; top: 245px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.actualComprobante}"/>
                                     </fieldset>
                                 </p:panel>
@@ -342,10 +340,10 @@
                                         <!--<em><h:outputText style="position: absolute; top: 474px; ; left: 17px" value="#{msg['bienvenido']}"/></em>-->
                                         <!--<h:outputText id="Usuario" style="position: absolute; top: 475px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>-->
                                         <!--<h:outputText id="Empresa"  style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/> -->
-                                        <p:imageSwitch id="bannerPub" effect="fade" slideshowSpeed="5000" widgetVar="imgswt" style="height: 40px; position: absolute; top: 5px; width: 180px; left: 630px;">
+                                        <p:imageSwitch id="bannerPub" effect="fade" slideshowSpeed="5000" widgetVar="imgswt" style="height: 40px; position: absolute; top: 5px; width: 200px; left: 610px;">
                                             <ui:repeat value="#{controlRemoto.banner}" var="banner">
                                                 <a href="#{banner.urlImagen}" target="_blank">
-                                                    <p:graphicImage value="#{banner.imagen}" style="width: 170px; height: 40px;"/>
+                                                    <p:graphicImage value="#{banner.imagen}" style="width: 200px; height: 40px;"/>
                                                 </a>
                                             </ui:repeat>
                                         </p:imageSwitch>
@@ -401,13 +399,13 @@
 
                                     <fieldset style="position: absolute; border-radius: 10px; width: 250px; height: 130px; top: 7px;">
 
-                                        <p:selectOneRadio id="options" value="#{controlRemoto.pago}" style=" font-weight: bold; position: absolute; top: -2px" layout="pageDirection" >  
+                                        <p:selectOneRadio id="options" value="#{controlRemoto.pago}" style=" font-size: 11px; font-weight: bold; position: absolute; top: -2px; margin: 0px;" layout="pageDirection" >  
                                             <f:selectItem itemLabel="#{msg['pagosautomaticos']}" itemValue="AUTOMATICO"/>  
-                                            <f:selectItem itemLabel="#{msg['pagosnoautomaticos']}" itemValue="NO AUTOMATICO" />
+                                            <f:selectItem  itemLabel="#{msg['pagosnoautomaticos']}" itemValue="NO AUTOMATICO" />
                                             <p:ajax update="@this" listener="#{controlRemoto.cambiarFormaPago()}"/>
                                         </p:selectOneRadio> 
 
-                                        <hr style="position: absolute; top: 50px; width: 254px; left: 5px;"/>
+                                        <hr style="position: absolute; top: 35px; width: 254px; left: 5px;"/>
 
                                         <center><strong><h:outputText id="tipoPago" style=" color: #14388B; position: relative; top: 55px;" value="#{controlRemoto.tituloPago}"/></strong></center>
 
