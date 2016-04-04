@@ -12,68 +12,68 @@
     <h:body>
         <ui:composition template="/Template.xhtml">
             <ui:define name="body"> 
-                
+
                 <h:form id="form">
-                    <f:loadBundle basename="Recursos.nreportenomina" var="msg" />
+                    <f:loadBundle basename="Recursos.nreportenomina" var="msg"/>
                     <p:growl id="growl" showDetail="true"/>
 
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="  position: absolute; width: 874px; height: 510px; text-align: left"> 
 
                         <p:toolbar styleClass="cssToolbar" style="position: absolute; top: 30px; left: 10px;">  
                             <p:toolbarGroup align="left"> 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px;" 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;" 
                                                  id="guardarRapido" value="" actionListener="#{controlNReporteNomina.guardarCambios()}" process="@this" />
                                 <p:tooltip style="font-size: 12px" for="guardarRapido" value="#{msg['guardar']}" />
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px" 
                                                  id="editar" value="" process="@this" actionListener="#{controlNReporteNomina.editarCelda()}"/>
                                 <p:tooltip style="font-size: 12px" for="editar" value="#{msg['editar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/> 
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px" 
                                                  id="listaValores" value="" process="@this" actionListener="#{controlNReporteNomina.listaValoresBoton()}" />
                                 <p:tooltip style="font-size: 12px" for="listaValores" value="#{msg['lista']}" />
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px" 
                                                  id="filtrar" value="" actionListener="#{controlNReporteNomina.activarCtrlF11()}" process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="filtrar" value="#{msg['filtrar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/> 
 
-                                <p:commandButton id="exportarXLS" disabled="true" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" />
+                                <p:commandButton id="exportarXLS" disabled="true" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px" />
                                 <p:tooltip style="font-size: 12px" for="exportarXLS" value="#{msg['xls']}" />
 
-                                <p:commandButton id="exportarXML" disabled="true" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" >
+                                <p:commandButton id="exportarXML" disabled="true" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px" >
                                 </p:commandButton> 
                                 <p:tooltip style="font-size: 12px" for="exportarXML" value="#{msg['xmle']}" />
 
-                                <p:commandButton id="exportarPDF" disabled="true" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" />
+                                <p:commandButton id="exportarPDF" disabled="true" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px" />
                                 <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator style="position: relative; top: -9px"/> 
 
-                                <p:commandButton id="insertar" value="" disabled="true" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" /> 
+                                <p:commandButton id="insertar" value="" disabled="true" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px" /> 
                                 <p:tooltip style="font-size: 12px" for="insertar" value="#{msg['nuevo']}" />
 
-                                <p:commandButton id="eliminar" value="" disabled="true" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px"  />  
+                                <p:commandButton id="eliminar" value="" disabled="true" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px"  />  
                                 <p:tooltip style="font-size: 12px" for="eliminar" value="#{msg['eliminar']}" />
 
-                                <p:commandButton id="duplicar" value="" disabled="true" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px" />  
+                                <p:commandButton id="duplicar" value="" disabled="true" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px" />  
                                 <p:tooltip style="font-size: 12px" for="duplicar" value="#{msg['duplicar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "  
                                                  id="rastro" value="" disabled="true" process="@this"/>  
                                 <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}"/>
 
                                 <p:separator style="position: relative; top: -9px"/> 
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  id="refrescar" value="" actionListener="#{controlNReporteNomina.cancelarModificaciones()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  id="salir" value="" actionListener="#{controlNReporteNomina.cancelarYSalir()}" action="nomina" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
 
@@ -98,7 +98,7 @@
 
 
                         <fieldset style="position: absolute; left: 10px; top: 260px; height: 205px;width: 115px; border-radius: 10px;">
-                            <h:outputText id="btn" style="position: absolute; left: 10px; top: 10px; background-image: url(Imagenes/reporte.jpg); width:115px; height:180px; background-repeat: no-repeat; background-size: 100% 100%"/>
+                            <h:outputText id="btn" style="position: absolute; left: 10px; top: 10px; background-image: url(Imagenes/reporte.jpg); width:115px; height:180px; background-repeat: no-repeat; border: none; background-size: 100% 100%"/>
                         </fieldset>
 
                         <fieldset style="position: absolute; left: 150px; top: 253px; width: 690px; height: 213px; border-radius: 10px">
@@ -160,36 +160,36 @@
                             </p:dataTable>
 
                             <p:commandButton style="position: relative; left: 510px; top: 0px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/buscardb.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat;" id="BUSCARREPORTE" value=""   process="@this" 
+                                             background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="BUSCARREPORTE" value=""   process="@this" 
                                              actionListener="#{controlNReporteNomina.mostrarDialogoBuscarReporte()}" disabled="#{controlNReporteNomina.activoBuscarReporte}"/>
                             <p:tooltip  for="BUSCARREPORTE" value="#{msg['buscarReporte']}" />
                             <p:commandButton style="position: relative; left: 510px; top: 0px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/todosdb.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat;" id="MOSTRARTODOS" value=""  process="@this" 
+                                             background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="MOSTRARTODOS" value=""  process="@this" 
                                              actionListener="#{controlNReporteNomina.mostrarTodos()}" disabled="#{controlNReporteNomina.activoMostrarTodos}" />
                             <p:tooltip  for="MOSTRARTODOS" value="#{msg['mostrarTodos']}" />
                             <p:remoteCommand name="validarDescargaReporte" actionListener="#{controlNReporteNomina.validarDescargaReporte()}"/>
                         </fieldset>
 
                         <p:commandButton style="position: absolute; left: 673px; top: 483px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat;" id="ACEPTAR" value=""  
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value=""  
                                          actionListener="#{controlNReporteNomina.dispararDialogoGuardarCambios()}" disabled="#{controlNReporteNomina.cambiosReporte}" process="@this" />
                         <p:commandButton style="position: absolute; left: 763px; top: 483px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat;" id="ATRAS" value="" action="nomina" 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" action="nomina" 
                                          actionListener="#{controlNReporteNomina.cancelarYSalir()}" process="@this" />
-                        
-                        <p:commandButton style="position: absolute; left: 10px; top: 480px; height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
-                                         background-size: 100% 100%; background-repeat: no-repeat;" id="ENVIOCORREO" value="envio correo" process="@this" 
+
+                        <p:commandButton icon="ui-icon-extlink" style="position: absolute; left: 10px; top: 480px; height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ENVIOCORREO" value="envio correo" process="@this" 
                                          oncomplete="EnvioCorreoDialogo.show()" actionListener="#{controlNReporteNomina.defaultPropiedadesParametrosReporte()}"/>
                         <p:tooltip  for="ENVIOCORREO" value="#{msg['envio']}" />
 
-                        <p:commandButton style="position: absolute; left: 145px; top: 480px; height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
-                                         background-size: 100% 100%; background-repeat: no-repeat; " id="ENVIOLOTE" value="envio lote"   process="@this" />
+                        <p:commandButton icon="ui-icon-extlink" style="position: absolute; left: 145px; top: 480px; height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ENVIOLOTE" value="envio lote"   process="@this" />
                         <p:tooltip  for="ENVIOLOTE" value="#{msg['envioLote']}" />
-                        
-                        <p:commandButton style="position: absolute; left: 280px; top: 480px; height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
-                                         background-size: 100% 100%; background-repeat: no-repeat;" id="ESTIMACIONES" value="estimacion"   process="@this" />
+
+                        <p:commandButton icon="ui-icon-extlink" style="position: absolute; left: 280px; top: 480px; height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ESTIMACIONES" value="estimacion"   process="@this" />
                         <p:tooltip  for="ESTIMACIONES" value="#{msg['estimaciones']}" />
-                        
+
 
                     </p:panel>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlNReporteNomina.activarCtrlF11()}" process="@this"/> 
@@ -222,12 +222,14 @@
                         </p:dataTable>
 
                         <h:outputText id="infoRegistroReportes" value="#{controlNReporteNomina.infoRegistroReportes}" 
-                                      style="position: relative; left: 20px; top: 15px; font-weight: bold"/>
-                        <p:commandButton id="aceptarR" style="position: relative; top: 15px; left: 80px" value="#{msg['aceptar']}" disabled="#{controlNReporteNomina.aceptar}" 
-                                         actionListener="#{controlNReporteNomina.actualizarSeleccionInforeporte()}" process="@this" icon="ui-icon-check"
-                                          />
-                        <p:commandButton id="atrasR" style="position: relative; top: 15px; left: 100px" value="#{msg['atras']}" 
-                                         actionListener="#{controlNReporteNomina.cancelarSeleccionInforeporte()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                                      style="position: relative; left: 20px; top: 5px; font-weight: bold"/>
+                        <p:commandButton id="aceptarR" style="position: relative; top: 15px; left: 80px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlNReporteNomina.aceptar}" 
+                                         actionListener="#{controlNReporteNomina.actualizarSeleccionInforeporte()}" process="@this" 
+                                         />
+                        <p:commandButton id="atrasR" style="position: relative; top: 15px; left: 100px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" 
+                                         actionListener="#{controlNReporteNomina.cancelarSeleccionInforeporte()}" process="@this" />
 
                     </p:dialog>
 
@@ -238,7 +240,7 @@
                         <h:outputText style="position: absolute; top: 70px; left: 10px;font-weight: bold;color: darkblue" value="#{msg['reporte']}"/>
                         <h:outputText style="position: absolute; top: 90px; left: 10px;font-weight: bold;" value="#{msg['seguridadsocial']}"/>
 
-                        <fieldset  style="position: absolute; left: 10px; top: 110px;  width: 400px; height: 150px; border-radius: 10px; text-align: left">
+                        <fieldset  style="position: absolute; left: 15px; top: 120px;  width: 400px; height: 150px; border-radius: 10px; text-align: left">
                             <legend style=" color: blue;text-align: left"><strong>#{msg['envio']}</strong></legend>
                             <strong><h:outputText value="#{msg['de']}" style="position: absolute; left: 10px; top: 25px;font-size: 12px"/></strong>
                             <p:inputText value="nomina@designer.com.co" style="position: absolute; left: 80px; top: 20px;width: 300px"/>
@@ -250,15 +252,19 @@
                             <p:inputText style="position: absolute; left: 80px; top: 125px;width: 300px"/>
 
                         </fieldset>
-                        <p:commandButton icon="ui-icon-mail-closed" id="registroEnvio" style="position: absolute; left: 190px; top: 280px;" value="#{msg['registrodeenvios']}" onclick="EnvioCorreoDialogo.hide()"  process="@this"/>
-                        <p:commandButton icon="ui-icon-closethick" id="atras" style="position: absolute; left: 360px; top: 280px" value="#{msg['atras']}" onclick="EnvioCorreoDialogo.hide()"  process="@this"/>
+                        <p:commandButton icon="ui-icon-extlink" id="registroEnvio" style="position: absolute; left: 15px; top: 288px; height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none; color: white" value="Registros E" onclick="EnvioCorreoDialogo.hide()"  process="@this"/>
+                        <p:tooltip for="registroEnvio" value="#{msg['registrodeenvios']}" />
+
+                        <p:commandButton id="atras" style="position: absolute; left: 360px; top: 290px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" onclick="EnvioCorreoDialogo.hide()"  process="@this"/>
 
                     </p:dialog>
 
                     <p:dialog header="#{msg['codigoEMP']}" widgetVar="EmpleadoDesdeDialogo" draggable="false" resizable="false" closable="false" id="EmpleadoDesdeDialogo"  
-                              showEffect="fade" hideEffect="fade" width="431" modal="true" >
+                              showEffect="fade" hideEffect="fade" height="380" width="440" modal="true" >
                         <p:dataTable id="lovEmpleadoDesde" style=" width: 400px" var="empleadoDesde" value="#{controlNReporteNomina.listValEmpleados}" rowKey="#{empleadoDesde.secuencia}"
-                                     selection="#{controlNReporteNomina.empleadoSeleccionado}" selectionMode="single" widgetVar="lovEmpleadoDesde" scrollable="true" scrollWidth="416" scrollHeight="250"
+                                     selection="#{controlNReporteNomina.empleadoSeleccionado}" selectionMode="single" widgetVar="lovEmpleadoDesde" scrollable="true" scrollWidth="425" scrollHeight="250"
                                      filteredValue="#{controlNReporteNomina.filtrarListEmpleados}" emptyMessage="#{msg['lovvacio']}" liveScroll="true" scrollRows="25">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteNomina.activarAceptar()}" update=":form:aceptarED"/>
                             <p:ajax event="rowDblselect" listener="#{controlNReporteNomina.actualizarEmplDesde()}"  process="@this"  />
@@ -266,33 +272,33 @@
                                 <h:outputText value="#{msg['buscarEMP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpleadoDesde.filter();" style="width:150px; position: relative; left: 30px;" />  
                             </f:facet>
-                            <p:column filterBy="#{empleadoDesde.codigoempleado}" width="60" filterMatchMode="contains" filterStyle="width: 50px">
+                            <p:column filterBy="#{empleadoDesde.codigoempleado}" width="60" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['codigooEMP']}" />
                                 </f:facet>
                                 <h:outputText  value="#{empleadoDesde.codigoempleado}" />
                             </p:column>
-                            <p:column filterBy="#{empleadoDesde.persona.nombreCompleto}" filterMatchMode="contains">
+                            <p:column filterBy="#{empleadoDesde.persona.nombreCompleto}" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText value="#{msg['nombreEMP']}" />
                                 </f:facet>
                                 <h:outputText value="#{empleadoDesde.persona.nombreCompleto}" />
                             </p:column>
-
                         </p:dataTable>
 
-                        <h:outputText id="infoRegistroEmpleadoDesde" value="#{controlNReporteNomina.infoRegistroEmpleadoDesde}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <h:outputText id="infoRegistroEmpleadoDesde" value="#{controlNReporteNomina.infoRegistroEmpleadoDesde}" style="position: absolute; left: 20px; top: 345px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarED" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlNReporteNomina.aceptar}"  actionListener="#{controlNReporteNomina.actualizarEmplDesde()}"  process="@this" icon="ui-icon-check" />
+                        <p:commandButton id="aceptarED" style="position: relative; top: 15px; left: 230px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlNReporteNomina.aceptar}"  actionListener="#{controlNReporteNomina.actualizarEmplDesde()}"  process="@this"/>
 
-                        <p:commandButton id="atrasED" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlNReporteNomina.cancelarCambioEmplDesde()}"  process="@this" icon="ui-icon-arrowreturnthick-1-w" />
-
+                        <p:commandButton id="atrasED" style="position: relative; top: 15px; left: 230px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" actionListener="#{controlNReporteNomina.cancelarCambioEmplDesde()}"  process="@this"  />
                     </p:dialog>
 
                     <p:dialog header="#{msg['codigoEMPH']}" widgetVar="EmpleadoHastaDialogo" draggable="false" resizable="false" closable="false" id="EmpleadoHastaDialogo"  
-                              showEffect="fade" hideEffect="fade" width="431" modal="true" >
+                              showEffect="fade" hideEffect="fade" height="380" width="440" modal="true" >
                         <p:dataTable id="lovEmpleadoHasta" style=" width: 400px" var="empleadoHasta" value="#{controlNReporteNomina.listValEmpleados}" rowKey="#{empleadoHasta.secuencia}"
-                                     selection="#{controlNReporteNomina.empleadoSeleccionado}" selectionMode="single" widgetVar="lovEmpleadoHasta" scrollable="true" scrollWidth="416" scrollHeight="250"
+                                     selection="#{controlNReporteNomina.empleadoSeleccionado}" selectionMode="single" widgetVar="lovEmpleadoHasta" scrollable="true" scrollWidth="425" scrollHeight="250"
                                      filteredValue="#{controlNReporteNomina.filtrarListEmpleados}" emptyMessage="#{msg['lovvacio']}" liveScroll="true" scrollRows="25">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteNomina.activarAceptar()}" update=":form:aceptarEH"/>
                             <p:ajax event="rowDblselect" listener="#{controlNReporteNomina.actualizarEmplHasta()}"  process="@this"   />
@@ -300,31 +306,33 @@
                                 <h:outputText value="#{msg['buscarEMPH']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpleadoHasta.filter();" style="width:150px; position: relative; left: 30px;" />  
                             </f:facet>
-                            <p:column filterBy="#{empleadoHasta.codigoempleado}" width="60" filterMatchMode="contains" filterStyle="width: 50px">
+                            <p:column filterBy="#{empleadoHasta.codigoempleado}" width="60" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['codigooEMPH']}" />
                                 </f:facet>
                                 <h:outputText  value="#{empleadoHasta.codigoempleado}" />
                             </p:column>
-                            <p:column filterBy="#{empleadoHasta.persona.nombreCompleto}" filterMatchMode="contains">
+                            <p:column filterBy="#{empleadoHasta.persona.nombreCompleto}" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText value="#{msg['nombreEMPH']}" />
                                 </f:facet>
                                 <h:outputText value="#{empleadoHasta.persona.nombreCompleto}" />
                             </p:column>
                         </p:dataTable>
-                        <h:outputText id="infoRegistroEmpleadoHasta" value="#{controlNReporteNomina.infoRegistroEmpleadoHasta}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        
+                        <h:outputText id="infoRegistroEmpleadoHasta" value="#{controlNReporteNomina.infoRegistroEmpleadoHasta}" style="position: absolute; left: 20px; top: 345px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarEH" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlNReporteNomina.aceptar}"  actionListener="#{controlNReporteNomina.actualizarEmplHasta()}" process="@this" icon="ui-icon-check" />
+                        <p:commandButton id="aceptarEH" style="position: relative; top: 15px; left: 230px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlNReporteNomina.aceptar}"  actionListener="#{controlNReporteNomina.actualizarEmplHasta()}" process="@this" />
 
-                        <p:commandButton id="atrasEH" style="position: relative; left: 230px" value="#{msg['atras']}"  actionListener="#{controlNReporteNomina.cancelarCambioEmplHasta()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
-
+                        <p:commandButton id="atrasEH" style="position: relative; top: 15px; left: 230px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" actionListener="#{controlNReporteNomina.cancelarCambioEmplHasta()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog header="#{msg['gruposGC']}" widgetVar="GruposConceptosDialogo" draggable="false" resizable="false" closable="false" id="GruposConceptosDialogo"  
-                              showEffect="fade" hideEffect="fade" width="431" modal="true" >
-                        <p:dataTable id="lovGruposConceptos" style=" width: 430px" var="grupoC" value="#{controlNReporteNomina.listValGruposConceptos}" rowKey="#{grupoC.secuencia}"
-                                     selection="#{controlNReporteNomina.grupoCSeleccionado}" selectionMode="single" widgetVar="lovGruposConceptos" scrollable="true" scrollWidth="416" scrollHeight="250"
+                              showEffect="fade" hideEffect="fade" height="370" width="444" modal="true" >
+                        <p:dataTable id="lovGruposConceptos" style=" width: 410px" var="grupoC" value="#{controlNReporteNomina.listValGruposConceptos}" rowKey="#{grupoC.secuencia}"
+                                     selection="#{controlNReporteNomina.grupoCSeleccionado}" selectionMode="single" widgetVar="lovGruposConceptos" scrollable="true" scrollWidth="430" scrollHeight="235"
                                      filteredValue="#{controlNReporteNomina.filtrarListGruposConceptos}" emptyMessage="#{msg['lovvacio']}" liveScroll="true" scrollRows="25">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteNomina.activarAceptar()}" update=":form:aceptarGC"/>
                             <p:ajax event="rowDblselect" listener="#{controlNReporteNomina.actualizarGrupo()}"  process="@this" />
@@ -332,13 +340,13 @@
                                 <h:outputText value="#{msg['buscarGC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovGruposConceptos.filter();" style="width:150px; position: relative; left: 30px;" />  
                             </f:facet>
-                            <p:column filterBy="#{grupoC.codigo}" width="60" filterMatchMode="contains" filterStyle="width: 50px">
+                            <p:column filterBy="#{grupoC.codigo}" width="60" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['codigoGC']}" />
                                 </f:facet>
                                 <h:outputText  value="#{grupoC.codigo}" />
                             </p:column>
-                            <p:column filterBy="#{grupoC.descripcion}" filterMatchMode="contains" >
+                            <p:column filterBy="#{grupoC.descripcion}" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['descripcionGC']}" />
                                 </f:facet>
@@ -346,18 +354,20 @@
                             </p:column>
                         </p:dataTable>
 
-                        <h:outputText id="infoRegistroGrupoConcepto" value="#{controlNReporteNomina.infoRegistroGrupoConcepto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <h:outputText id="infoRegistroGrupoConcepto" value="#{controlNReporteNomina.infoRegistroGrupoConcepto}" style="position: absolute; left: 20px; top: 335px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarGC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlNReporteNomina.aceptar}" actionListener="#{controlNReporteNomina.actualizarGrupo()}" process="@this" icon="ui-icon-check" />
+                        <p:commandButton id="aceptarGC" style="position: relative; left: 230px; top: 15px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlNReporteNomina.aceptar}" actionListener="#{controlNReporteNomina.actualizarGrupo()}" process="@this"/>
 
-                        <p:commandButton id="atrasGC" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlNReporteNomina.cancelarCambioGrupo()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                        <p:commandButton id="atrasGC" style="position: relative; left: 230px; top: 15px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" actionListener="#{controlNReporteNomina.cancelarCambioGrupo()}" process="@this"/>
 
                     </p:dialog>
 
                     <p:dialog header="#{msg['ubicacionUG']}" widgetVar="UbiGeograficaDialogo" draggable="false" resizable="false" closable="false" id="UbiGeograficaDialogo"  
-                              showEffect="fade" hideEffect="fade" width="431" modal="true" >
+                              showEffect="fade" hideEffect="fade" height="380" width="440" modal="true" >
                         <p:dataTable id="lovUbicacionGeografica" style="width: 400px" var="ubicacionG" value="#{controlNReporteNomina.listValUbicacionesGeograficas}" rowKey="#{ubicacionG.secuencia}"
-                                     selection="#{controlNReporteNomina.ubicacionesGSeleccionado}" selectionMode="single" widgetVar="lovUbicacionGeografica" scrollable="true" scrollWidth="416" scrollHeight="250"
+                                     selection="#{controlNReporteNomina.ubicacionesGSeleccionado}" selectionMode="single" widgetVar="lovUbicacionGeografica" scrollable="true" scrollWidth="425" scrollHeight="250"
                                      filteredValue="#{controlNReporteNomina.filtrarListUbicacionesGeograficas}" emptyMessage="#{msg['lovvacio']}" liveScroll="true" scrollRows="25">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteNomina.activarAceptar()}" update=":form:aceptarUG"/>
                             <p:ajax event="rowDblselect" listener="#{controlNReporteNomina.actualizarUbicacionGeografica()}"  process="@this"  />
@@ -365,31 +375,33 @@
                                 <h:outputText value="#{msg['buscarUG']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovUbicacionGeografica.filter();" style="width:150px; position: relative; left: 70px;" />  
                             </f:facet>
-                            <p:column filterBy="#{ubicacionG.empresa.nombre}"  filterMatchMode="contains" >
+                            <p:column filterBy="#{ubicacionG.empresa.nombre}"  filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['ubicacioonUG']}" />
                                 </f:facet>
                                 <h:outputText  value="#{ubicacionG.empresa.nombre}" />
                             </p:column>
-                            <p:column filterBy="#{ubicacionG.ciudad.nombre}" filterMatchMode="contains" >
+                            <p:column filterBy="#{ubicacionG.ciudad.nombre}" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['ciudadUG']}" />
                                 </f:facet>
                                 <h:outputText  value="#{ubicacionG.ciudad.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <h:outputText id="infoRegistroUbicacion" value="#{controlNReporteNomina.infoRegistroUbicacion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <h:outputText id="infoRegistroUbicacion" value="#{controlNReporteNomina.infoRegistroUbicacion}" style="position: absolute; left: 20px; top: 345px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarUG" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlNReporteNomina.aceptar}"  actionListener="#{controlNReporteNomina.actualizarUbicacionGeografica()}" process="@this" icon="ui-icon-check" />
+                        <p:commandButton id="aceptarUG" style="position: relative; left: 230px; top: 15px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlNReporteNomina.aceptar}"  actionListener="#{controlNReporteNomina.actualizarUbicacionGeografica()}" process="@this" />
 
-                        <p:commandButton id="atrasUG" style="position: relative; left: 230px" value="#{msg['atras']}"  actionListener="#{controlNReporteNomina.cancelarCambioUbicacionGeografica()}"  process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                        <p:commandButton id="atrasUG" style="position: relative; left: 230px; top: 15px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value=""  actionListener="#{controlNReporteNomina.cancelarCambioUbicacionGeografica()}"  process="@this" />
 
                     </p:dialog>
 
                     <p:dialog header="#{msg['tipoasociacionTA']}" widgetVar="TipoAsociacionDialogo" draggable="false" resizable="false" closable="false" id="TipoAsociacionDialogo"  
-                              showEffect="fade" hideEffect="fade" width="431" modal="true" >
+                              showEffect="fade" hideEffect="fade" height="380" width="440" modal="true" >
                         <p:dataTable id="lovTipoAsociacion" style=" width: 400px" var="tipoA" value="#{controlNReporteNomina.listValTiposAsociaciones}" rowKey="#{tipoA.secuencia}"
-                                     selection="#{controlNReporteNomina.tiposASeleccionado}" selectionMode="single" widgetVar="lovTipoAsociacion" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                     selection="#{controlNReporteNomina.tiposASeleccionado}" selectionMode="single" widgetVar="lovTipoAsociacion" scrollable="true" scrollWidth="425" scrollHeight="250"
                                      filteredValue="#{controlNReporteNomina.filtrarListTiposAsociaciones}" emptyMessage="#{msg['lovvacio']}" liveScroll="true" scrollRows="25">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteNomina.activarAceptar()}" update=":form:aceptarTA"/>
                             <p:ajax event="rowDblselect" listener="#{controlNReporteNomina.actualizarTipoAsociacion()}"  process="@this"  />
@@ -397,13 +409,13 @@
                                 <h:outputText value="#{msg['buscarTA']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTipoAsociacion.filter();" style="width:150px; position: relative; left: 30px;" />  
                             </f:facet>
-                            <p:column filterBy="#{tipoA.codigo}" width="60" filterMatchMode="contains" filterStyle="width: 50px">
+                            <p:column filterBy="#{tipoA.codigo}" width="60" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['codigoTA']}" />
                                 </f:facet>
                                 <h:outputText  value="#{tipoA.codigo}" />
                             </p:column>
-                            <p:column filterBy="#{tipoA.descripcion}" filterMatchMode="contains" >
+                            <p:column filterBy="#{tipoA.descripcion}" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['descripcionTA']}" />
                                 </f:facet>
@@ -411,18 +423,20 @@
                             </p:column>
                         </p:dataTable>
 
-                        <h:outputText id="infoRegistroTipoAsociacion" value="#{controlNReporteNomina.infoRegistroTipoAsociacion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <h:outputText id="infoRegistroTipoAsociacion" value="#{controlNReporteNomina.infoRegistroTipoAsociacion}" style="position: absolute; left: 20px; top: 335px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarTA" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlNReporteNomina.aceptar}" actionListener="#{controlNReporteNomina.actualizarTipoAsociacion()}" process="@this" icon="ui-icon-check" />
+                        <p:commandButton id="aceptarTA" style="position: relative; left: 220px; top: 5px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlNReporteNomina.aceptar}" actionListener="#{controlNReporteNomina.actualizarTipoAsociacion()}" process="@this"/>
 
-                        <p:commandButton id="atrasTA" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlNReporteNomina.cancelarTipoAsociacion()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                        <p:commandButton id="atrasTA" style="position: relative; left: 220px; top: 5px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" actionListener="#{controlNReporteNomina.cancelarTipoAsociacion()}" process="@this"/>
 
                     </p:dialog>
 
                     <p:dialog header="#{msg['empresaE']}" widgetVar="EmpresaDialogo" draggable="false" resizable="false" closable="false" id="EmpresaDialogo"  
-                              showEffect="fade" hideEffect="fade" width="431" modal="true" >
+                              showEffect="fade" hideEffect="fade" height="320" width="440" modal="true" >
                         <p:dataTable id="lovEmpresa" style=" width: 400px" var="empresa" value="#{controlNReporteNomina.listValEmpresas}" rowKey="#{empresa.secuencia}"
-                                     selection="#{controlNReporteNomina.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresa" scrollable="true" scrollWidth="416" scrollHeight="250"
+                                     selection="#{controlNReporteNomina.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresa" scrollable="true" scrollWidth="425" scrollHeight="180"
                                      filteredValue="#{controlNReporteNomina.filtrarListEmpresas}" emptyMessage="#{msg['lovvacio']}" liveScroll="true" scrollRows="25">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteNomina.activarAceptar()}" update=":form:aceptarE"/>
                             <p:ajax event="rowDblselect" listener="#{controlNReporteNomina.actualizarEmpresa()}"  process="@this"   />
@@ -430,13 +444,13 @@
                                 <h:outputText value="#{msg['buscarE']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpresa.filter();" style="width:150px; position: relative; left: 30px;" />  
                             </f:facet>
-                            <p:column filterBy="#{empresa.nit}" width="60" filterMatchMode="contains" filterStyle="width: 50px">
+                            <p:column filterBy="#{empresa.nit}" width="60" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['nitE']}" />
                                 </f:facet>
                                 <h:outputText  value="#{empresa.nit}" />
                             </p:column>
-                            <p:column filterBy="#{empresa.nombre}" filterMatchMode="contains" >
+                            <p:column filterBy="#{empresa.nombre}" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['nombreE']}" />
                                 </f:facet>
@@ -444,18 +458,20 @@
                             </p:column>
                         </p:dataTable>
 
-                        <h:outputText id="infoRegistroEmpresa" value="#{controlNReporteNomina.infoRegistroEmpresa}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <h:outputText id="infoRegistroEmpresa" value="#{controlNReporteNomina.infoRegistroEmpresa}" style="position: absolute; left: 20px; top: 275px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarE" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlNReporteNomina.aceptar}"  actionListener="#{controlNReporteNomina.actualizarEmpresa()}" process="@this" icon="ui-icon-check" />
+                        <p:commandButton id="aceptarE" style="position: relative; left: 220px; top: 15px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlNReporteNomina.aceptar}"  actionListener="#{controlNReporteNomina.actualizarEmpresa()}" process="@this" />
 
-                        <p:commandButton id="atrasE" style="position: relative; left: 230px" value="#{msg['atras']}"  actionListener="#{controlNReporteNomina.cancelarEmpresa()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                        <p:commandButton id="atrasE" style="position: relative; left: 220px; top: 15px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value=""  actionListener="#{controlNReporteNomina.cancelarEmpresa()}" process="@this" />
 
                     </p:dialog>
 
                     <p:dialog header="#{msg['asociacionesAS']}" widgetVar="AsociacionDialogo" draggable="false" resizable="false" closable="false" id="AsociacionDialogo"  
-                              showEffect="fade" hideEffect="fade" width="431" modal="true" >
+                              showEffect="fade" hideEffect="fade" height="380" width="440" modal="true" >
                         <p:dataTable id="lovAsociacion" style=" width: 400px" var="asociacion" value="#{controlNReporteNomina.listValAsociaciones}" rowKey="#{asociacion.secuencia}"
-                                     selection="#{controlNReporteNomina.asociacionSeleccionado}" selectionMode="single" widgetVar="lovAsociacion" scrollable="true" scrollWidth="416" scrollHeight="250"
+                                     selection="#{controlNReporteNomina.asociacionSeleccionado}" selectionMode="single" widgetVar="lovAsociacion" scrollable="true" scrollWidth="425" scrollHeight="250"
                                      filteredValue="#{controlNReporteNomina.filtrarListAsociaciones}" emptyMessage="#{msg['lovvacio']}" liveScroll="true" scrollRows="25">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteNomina.activarAceptar()}" update=":form:aceptarA"/>
                             <p:ajax event="rowDblselect" listener="#{controlNReporteNomina.actualizarAsociacion()}"  process="@this"  />
@@ -463,13 +479,13 @@
                                 <h:outputText value="#{msg['buscarAS']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovAsociacion.filter();" style="width:150px; position: relative; left: 30px;" />  
                             </f:facet>
-                            <p:column filterBy="#{asociacion.codigo}" width="60" filterMatchMode="contains" filterStyle="width: 50px">
+                            <p:column filterBy="#{asociacion.codigo}" width="60" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['codigoAS']}" />
                                 </f:facet>
                                 <h:outputText  value="#{asociacion.codigo}" />
                             </p:column>
-                            <p:column filterBy="#{asociacion.descripcion}" filterMatchMode="contains" >
+                            <p:column filterBy="#{asociacion.descripcion}" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['descripcionAS']}" />
                                 </f:facet>
@@ -477,18 +493,20 @@
                             </p:column>
                         </p:dataTable>
 
-                        <h:outputText id="infoRegistroAsociacion" value="#{controlNReporteNomina.infoRegistroAsociacion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <h:outputText id="infoRegistroAsociacion" value="#{controlNReporteNomina.infoRegistroAsociacion}" style="position: absolute; left: 20px; top: 345px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarA" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlNReporteNomina.aceptar}"  actionListener="#{controlNReporteNomina.actualizarAsociacion()}" process="@this" icon="ui-icon-check" />
+                        <p:commandButton id="aceptarA" style="position: relative; left: 230px; top: 15px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlNReporteNomina.aceptar}"  actionListener="#{controlNReporteNomina.actualizarAsociacion()}" process="@this" />
 
-                        <p:commandButton id="atrasA" style="position: relative; left: 230px" value="#{msg['atras']}"  actionListener="#{controlNReporteNomina.cancelarAsociacion()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                        <p:commandButton id="atrasA" style="position: relative; left: 230px; top: 15px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value=""  actionListener="#{controlNReporteNomina.cancelarAsociacion()}" process="@this" />
 
                     </p:dialog>
 
                     <p:dialog header="#{msg['tercerosT']}" widgetVar="TerceroDialogo" draggable="false" resizable="false" closable="false" id="TerceroDialogo"  
-                              showEffect="fade" hideEffect="fade" width="460" modal="true" >
+                              showEffect="fade" hideEffect="fade" height="400" width="470" modal="true" >
                         <p:dataTable id="lovTercero" style=" width: 430px" var="tercero" value="#{controlNReporteNomina.listValTerceros}" rowKey="#{tercero.secuencia}"
-                                     selection="#{controlNReporteNomina.terceroSeleccionado}" selectionMode="single" widgetVar="lovTercero" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                     selection="#{controlNReporteNomina.terceroSeleccionado}" selectionMode="single" widgetVar="lovTercero" scrollable="true" scrollWidth="445" scrollHeight="270"
                                      filteredValue="#{controlNReporteNomina.filtrarListTerceros}" emptyMessage="#{msg['lovvacio']}" liveScroll="true" scrollRows="25">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteNomina.activarAceptar()}" update=":form:aceptarT"/>
                             <p:ajax event="rowDblselect" listener="#{controlNReporteNomina.actualizarTercero()}"  process="@this"  />
@@ -496,37 +514,39 @@
                                 <h:outputText value="#{msg['buscarT']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTercero.filter();" style="width:150px; position: relative; left: 30px;" />  
                             </f:facet>
-                            <p:column filterBy="#{tercero.nombre}" width="120" filterMatchMode="contains" filterStyle="width: 80px">
+                            <p:column filterBy="#{tercero.nombre}" width="120" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['nombreT']}" />
                                 </f:facet>
                                 <h:outputText  value="#{tercero.nombre}" />
                             </p:column>
-                            <p:column filterBy="#{tercero.empresa.nombre}" width="120" filterMatchMode="contains" filterStyle="width: 80px">
+                            <p:column filterBy="#{tercero.empresa.nombre}" width="120" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['empresaT']}" />
                                 </f:facet>
                                 <h:outputText  value="#{tercero.empresa.nombre}" />
                             </p:column>
-                            <p:column filterBy="#{tercero.nit}" width="60" filterMatchMode="contains" filterStyle="width: 50px">
+                            <p:column filterBy="#{tercero.nit}" width="60" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['nitT']}" />
                                 </f:facet>
                                 <h:outputText  value="#{tercero.nit}" />
                             </p:column>
                         </p:dataTable>
-                        <h:outputText id="infoRegistroTercero" value="#{controlNReporteNomina.infoRegistroTercero}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <h:outputText id="infoRegistroTercero" value="#{controlNReporteNomina.infoRegistroTercero}" style="position: absolute; left: 20px; top: 360px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarT" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReporteNomina.aceptar}"  actionListener="#{controlNReporteNomina.actualizarTercero()}"  process="@this" icon="ui-icon-check" />
+                        <p:commandButton id="aceptarT" style="position: relative; left: 250px; top: 15px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlNReporteNomina.aceptar}"  actionListener="#{controlNReporteNomina.actualizarTercero()}"  process="@this" icon="ui-icon-check" />
 
-                        <p:commandButton id="atrasT" style="position: relative; left: 280px" value="#{msg['atras']}" actionListener="#{controlNReporteNomina.cancelarTercero()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                        <p:commandButton id="atrasT" style="position: relative; left: 250px; top: 15px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" actionListener="#{controlNReporteNomina.cancelarTercero()}" process="@this" />
 
                     </p:dialog>
 
                     <p:dialog header="#{msg['procesosP']}" widgetVar="ProcesoDialogo" draggable="false" resizable="false" closable="false" id="ProcesoDialogo"  
-                              showEffect="fade" hideEffect="fade" width="431" modal="true" >
+                              showEffect="fade" hideEffect="fade" height="380" width="440" modal="true" >
                         <p:dataTable id="lovProceso" style=" width: 400px" var="proceso" value="#{controlNReporteNomina.listValProcesos}" rowKey="#{proceso.secuencia}"
-                                     selection="#{controlNReporteNomina.procesoSeleccionado}" selectionMode="single" widgetVar="lovProceso" scrollable="true" scrollWidth="416" scrollHeight="250"
+                                     selection="#{controlNReporteNomina.procesoSeleccionado}" selectionMode="single" widgetVar="lovProceso" scrollable="true" scrollWidth="425" scrollHeight="250"
                                      filteredValue="#{controlNReporteNomina.filtrarListProcesos}" emptyMessage="#{msg['lovvacio']}" liveScroll="true" scrollRows="25">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteNomina.activarAceptar()}" update=":form:aceptarP"/>
                             <p:ajax event="rowDblselect" listener="#{controlNReporteNomina.actualizarProceso()}"  process="@this" />
@@ -534,13 +554,13 @@
                                 <h:outputText value="#{msg['buscarP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovProceso.filter();" style="width:150px; position: relative; left: 30px;" />  
                             </f:facet>
-                            <p:column filterBy="#{proceso.codigo}" width="60" filterMatchMode="contains" filterStyle="width: 50px">
+                            <p:column filterBy="#{proceso.codigo}" width="60" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['codigoP']}" />
                                 </f:facet>
                                 <h:outputText  value="#{proceso.codigo}" />
                             </p:column>
-                            <p:column filterBy="#{proceso.descripcion}" filterMatchMode="contains" >
+                            <p:column filterBy="#{proceso.descripcion}" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['procesoP']}" />
                                 </f:facet>
@@ -548,18 +568,20 @@
                             </p:column>
                         </p:dataTable>
 
-                        <h:outputText id="infoRegistroProceso" value="#{controlNReporteNomina.infoRegistroProceso}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <h:outputText id="infoRegistroProceso" value="#{controlNReporteNomina.infoRegistroProceso}" style="position: absolute; left: 20px; top: 345px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarP" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlNReporteNomina.aceptar}"  actionListener="#{controlNReporteNomina.actualizarProceso()}" process="@this" icon="ui-icon-check"/>
+                        <p:commandButton id="aceptarP" style="position: relative; left: 230px; top: 15px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlNReporteNomina.aceptar}"  actionListener="#{controlNReporteNomina.actualizarProceso()}" process="@this"/>
 
-                        <p:commandButton id="atrasP" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlNReporteNomina.cancelarProceso()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                        <p:commandButton id="atrasP" style="position: relative; left: 230px; top: 15px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" actionListener="#{controlNReporteNomina.cancelarProceso()}" process="@this" />
 
                     </p:dialog>
 
                     <p:dialog header="#{msg['tipotrabajadorTT']}" widgetVar="TipoTrabajadorDialogo" draggable="false" resizable="false" closable="false" id="TipoTrabajadorDialogo"  
-                              showEffect="fade" hideEffect="fade" width="460" modal="true" >
-                        <p:dataTable id="lovTipoTrabajador" style=" width: 430px" var="tipoT" value="#{controlNReporteNomina.listValTiposTrabajadores}" rowKey="#{tipoT.secuencia}"
-                                     selection="#{controlNReporteNomina.tipoTSeleccionado}" selectionMode="single" widgetVar="lovTipoTrabajador" scrollable="true" scrollWidth="445" scrollHeight="250"
+                              showEffect="fade" hideEffect="fade" height="380" width="460" modal="true" >
+                        <p:dataTable id="lovTipoTrabajador" style=" width: 420px" var="tipoT" value="#{controlNReporteNomina.listValTiposTrabajadores}" rowKey="#{tipoT.secuencia}"
+                                     selection="#{controlNReporteNomina.tipoTSeleccionado}" selectionMode="single" widgetVar="lovTipoTrabajador" scrollable="true" scrollWidth="440" scrollHeight="250"
                                      filteredValue="#{controlNReporteNomina.filtrarListTiposTrabajadores}" emptyMessage="#{msg['lovvacio']}" liveScroll="true" scrollRows="25">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteNomina.activarAceptar()}" update=":form:aceptarTT"/>
                             <p:ajax event="rowDblselect" listener="#{controlNReporteNomina.actualizarTipoTrabajador()}"  process="@this"  />
@@ -567,19 +589,19 @@
                                 <h:outputText value="#{msg['buscarTT']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTipoTrabajador.filter();" style="width:150px; position: relative; left: 30px;" />  
                             </f:facet>
-                            <p:column filterBy="#{tipoT.codigo}" width="50" filterMatchMode="contains" filterStyle="width: 40px">
+                            <p:column filterBy="#{tipoT.codigo}" width="50" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['codigoTT']}" />
                                 </f:facet>
                                 <h:outputText  value="#{tipoT.codigo}" />
                             </p:column>
-                            <p:column filterBy="#{tipoT.nombre}" width="150" filterMatchMode="contains" filterStyle="width: 100px">
+                            <p:column filterBy="#{tipoT.nombre}" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['nombreTT']}" />
                                 </f:facet>
                                 <h:outputText  value="#{tipoT.nombre}" />
                             </p:column>
-                            <p:column filterBy="#{tipoT.tipo}" width="80" filterMatchMode="contains" filterStyle="width: 50px">
+                            <p:column filterBy="#{tipoT.tipo}" width="80" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['tipoTT']}" />
                                 </f:facet>
@@ -587,18 +609,20 @@
                             </p:column>
                         </p:dataTable>
 
-                        <h:outputText id="infoRegistroTipoTrabajador" value="#{controlNReporteNomina.infoRegistroTipoTrabajador}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <h:outputText id="infoRegistroTipoTrabajador" value="#{controlNReporteNomina.infoRegistroTipoTrabajador}" style="position: absolute; left: 20px; top: 345px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarTT" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReporteNomina.aceptar}" actionListener="#{controlNReporteNomina.actualizarTipoTrabajador()}" process="@this" icon="ui-icon-check"/>
+                        <p:commandButton id="aceptarTT" style="position: relative; left: 250px; top: 15px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlNReporteNomina.aceptar}" actionListener="#{controlNReporteNomina.actualizarTipoTrabajador()}" process="@this"/>
 
-                        <p:commandButton id="atrasTT" style="position: relative; left: 280px" value="#{msg['atras']}" actionListener="#{controlNReporteNomina.cancelarTipoTrabajador()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                        <p:commandButton id="atrasTT" style="position: relative; left: 250px; top: 15px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" actionListener="#{controlNReporteNomina.cancelarTipoTrabajador()}" process="@this"/>
 
                     </p:dialog>
 
                     <p:dialog header="#{msg['estructurasES']}" widgetVar="EstructuraDialogo" draggable="false" resizable="false" closable="false" id="EstructuraDialogo"  
-                              showEffect="fade" hideEffect="fade" width="460" modal="true" >
+                              showEffect="fade" hideEffect="fade" height="390" width="470" modal="true" >
                         <p:dataTable id="lovEstructura" style=" width: 430px" var="estructura" value="#{controlNReporteNomina.listValEstructuras}" rowKey="#{estructura.secuencia}"
-                                     selection="#{controlNReporteNomina.estructuraSeleccionada}" selectionMode="single" widgetVar="lovEstructura" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                     selection="#{controlNReporteNomina.estructuraSeleccionada}" selectionMode="single" widgetVar="lovEstructura" scrollable="true" scrollWidth="450" scrollHeight="250"
                                      filteredValue="#{controlNReporteNomina.filtrarListEstructuras}" emptyMessage="#{msg['lovvacio']}" liveScroll="true" scrollRows="25">              
                             <p:ajax event="rowSelect" listener="#{controlNReporteNomina.activarAceptar()}" update=":form:aceptarEST"/>
                             <p:ajax event="rowDblselect" listener="#{controlNReporteNomina.actualizarEstructura()}"  process="@this"  />
@@ -606,19 +630,19 @@
                                 <h:outputText value="#{msg['buscarES']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEstructura.filter();" style="width:150px; position: relative; left: 30px;" />  
                             </f:facet>
-                            <p:column filterBy="#{estructura.codigo}" width="60" filterMatchMode="contains" filterStyle="width: 50px">
+                            <p:column filterBy="#{estructura.codigo}" width="60" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['codigoES']}" />
                                 </f:facet>
                                 <h:outputText  value="#{estructura.codigo}" />
                             </p:column>
-                            <p:column filterBy="#{estructura.nombre}" width="120" filterMatchMode="contains" filterStyle="width: 80px">
+                            <p:column filterBy="#{estructura.nombre}" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['nombreES']}"/>
                                 </f:facet>
                                 <h:outputText  value="#{estructura.nombre}" />
                             </p:column>
-                            <p:column filterBy="#{estructura.centrocosto.empresa.nombre}" width="100" filterMatchMode="contains" filterStyle="width: 80px">
+                            <p:column filterBy="#{estructura.centrocosto.empresa.nombre}" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['empresaES']}" />
                                 </f:facet>
@@ -626,11 +650,13 @@
                             </p:column>
                         </p:dataTable>
 
-                        <h:outputText id="infoRegistroEstructura" value="#{controlNReporteNomina.infoRegistroEstructura}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <h:outputText id="infoRegistroEstructura" value="#{controlNReporteNomina.infoRegistroEstructura}" style="position: absolute; left: 20px; top: 345px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarEST" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReporteNomina.aceptar}"  actionListener="#{controlNReporteNomina.actualizarEstructura()}"  process="@this" icon="ui-icon-check" />
+                        <p:commandButton id="aceptarEST" style="position: relative; left: 250px; top: 15px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlNReporteNomina.aceptar}"  actionListener="#{controlNReporteNomina.actualizarEstructura()}"  process="@this"/>
 
-                        <p:commandButton id="atrasEST" style="position: relative; left: 280px" value="#{msg['atras']}"  actionListener="#{controlNReporteNomina.cancelarEstructura()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                        <p:commandButton id="atrasEST" style="position: relative; left: 250px; top: 15px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value=""  actionListener="#{controlNReporteNomina.cancelarEstructura()}" process="@this"/>
 
                     </p:dialog>
                 </h:form>
@@ -732,7 +758,7 @@
                             <p:ajax event="dblclick" listener="#{controlNReporteNomina.dialogosParametros(10)}" process="@this"/>
                         </p:inputText>
 
-                       <!-- <p:separator id="separator"  style="vertical-align: central;position: absolute;height: 140px;width: 1px;top: 5px;left: 460px "/>  -->
+                        <!-- <p:separator id="separator"  style="vertical-align: central;position: absolute;height: 140px;width: 1px;top: 5px;left: 460px "/>  -->
 
                         <h:outputText value="#{msg['estructura']}:" style="position: absolute; top: 20px; left: 510px;"/>
                         <p:inputText maxlength="50" value="#{controlNReporteNomina.parametroDeInforme.localizacion.nombre}" id="estructuraParametro" 
@@ -785,29 +811,29 @@
                                     event="change" update="asociacionParametro" process="@this"/>
                             <p:ajax event="dblclick" listener="#{controlNReporteNomina.dialogosParametros(16)}" process="@this"/>
                         </p:inputText>
-                        
+
                     </fieldset> 
-                    
+
                     <!-- Dialogos: -->
-                        <p:dialog id="errorRegNew" header="#{msg['atencion']}" widgetVar="errorRegNew"  resizable="false" draggable="false" modal="true" height="95" width="275px" style="font-size: 12px" closable="true">  
-                            <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                            <h:outputText value="#{msg['errorRegNew']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
-                        </p:dialog>
+                    <p:dialog id="errorRegNew" header="#{msg['atencion']}" widgetVar="errorRegNew"  resizable="false" draggable="false" modal="true" height="95" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorRegNew']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
 
-                        <p:dialog id="errorFechas" header="#{msg['atencion']}" widgetVar="errorFechas"  resizable="false" draggable="false" modal="true" height="80" width="275px" style="font-size: 12px" closable="true">  
-                            <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                            <h:outputText value="#{msg['errorFechas']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
-                        </p:dialog>
+                    <p:dialog id="errorFechas" header="#{msg['atencion']}" widgetVar="errorFechas"  resizable="false" draggable="false" modal="true" height="80" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorFechas']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
 
-                        <p:dialog id="infoReporteCodigoD" header="#{msg['infoReporteCodigoD']}" widgetVar="infoReporteCodigoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                            <p:inputTextarea value="#{controlNReporteNomina.reporteSeleccionado.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        </p:dialog>
+                    <p:dialog id="infoReporteCodigoD" header="#{msg['infoReporteCodigoD']}" widgetVar="infoReporteCodigoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                        <p:inputTextarea value="#{controlNReporteNomina.reporteSeleccionado.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
 
-                        <p:dialog id="infoReporteNombreD" header="#{msg['infoReporteNombreD']}" widgetVar="infoReporteNombreD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                            <p:inputTextarea value="#{controlNReporteNomina.reporteSeleccionado.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        </p:dialog>
+                    <p:dialog id="infoReporteNombreD" header="#{msg['infoReporteNombreD']}" widgetVar="infoReporteNombreD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                        <p:inputTextarea value="#{controlNReporteNomina.reporteSeleccionado.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
                 </h:form>
-                
+
                 <h:form id="formDialogos">
 
                     <p:dialog id="editarFechaDesde" header="#{msg['editarFechaDesde']}" widgetVar="editarFechaDesde" resizable="false" draggable="false" modal="true" height="55" width="240" >  
@@ -903,7 +929,7 @@
 
                     <p:remoteCommand name="reiniciarStreamedContent" actionListener="#{controlNReporteNomina.reiniciarStreamedContent()}"/>
                 </h:form>
-                                
+
             </ui:define>
         </ui:composition>
     </h:body>

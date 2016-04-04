@@ -942,16 +942,13 @@ public class ControlFormula implements Serializable {
     }
 
     //FORMULA OPERANDO
-    public void formulaOperando() {
+    public void formulaOperando(Formulas formula) {
+        formulaSeleccionada = formula;
         unaVez = true;       
         regSolucion = -1;        
         nombreLargoMientras = "0";
         RequestContext context = RequestContext.getCurrentInstance();
-        if (formulaSeleccionada != null) {
             context.execute("confirmarOperandoFormula.show();");
-        } else {
-            context.execute("seleccionarRegistro.show()");
-        }
     }
 
     public void confirmarFormulaOperando() {
@@ -999,11 +996,11 @@ public class ControlFormula implements Serializable {
             FacesContext c = FacesContext.getCurrentInstance();
             tabla = (DataTable) c.getViewRoot().findComponent("form:datosFormulas");
             tabla.setSelection(formulaSeleccionada);
-            formulaSeleccionada = listaFormulas.get(0);
         } else {
             unaVez = true;   
             regSolucion = -1; 
             nombreLargoMientras = "0";
+            formulaSeleccionada = null;
         }
     }
 

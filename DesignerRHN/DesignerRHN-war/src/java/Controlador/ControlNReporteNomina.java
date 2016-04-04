@@ -1475,31 +1475,31 @@ public class ControlNReporteNomina implements Serializable {
         RequestContext.getCurrentInstance().update("formParametros");
 
         empleadoDesdeParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:empleadoDesdeParametro");
-        empleadoDesdeParametro.setStyle("position: absolute; top: 36px; left: 160px; height: 8px; font-size: 11px; width: 90px;");
+        empleadoDesdeParametro.setStyle("position: absolute; top: 41px; left: 150px; height: 10px; font-size: 11px; width: 90px;");
         RequestContext.getCurrentInstance().update("formParametros:empleadoDesdeParametro");
 
         empleadoHastaParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:empleadoHastaParametro");
-        empleadoHastaParametro.setStyle("position: absolute; top: 36px; left: 330px;height: 8px; font-size: 11px; width: 90px;");
+        empleadoHastaParametro.setStyle("position: absolute; top: 41px; left: 330px; height: 10px; font-size: 11px; width: 90px;");
         RequestContext.getCurrentInstance().update("formParametros:empleadoHastaParametro");
 
         grupoParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:grupoParametro");
-        grupoParametro.setStyle("position: absolute; top: 84px; left: 160px; height: 8px; font-size: 11px; width: 130px;");
+        grupoParametro.setStyle("position: absolute; top: 89px; left: 150px; height: 10px; font-size: 11px; width: 130px;");
         RequestContext.getCurrentInstance().update("formParametros:grupoParametro");
 
         estructuraParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:estructuraParametro");
-        estructuraParametro.setStyle("position: absolute; top: 15px; left: 625px;height: 8px; font-size: 11px;width: 180px;");
+        estructuraParametro.setStyle("position: absolute; top: 20px; left: 625px;height: 10px; font-size: 11px;width: 180px;");
         RequestContext.getCurrentInstance().update("formParametros:estructuraParametro");
 
         tipoTrabajadorParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:tipoTrabajadorParametro");
-        tipoTrabajadorParametro.setStyle("position: absolute; top: 38px; left: 625px; height: 8px; font-size: 11px; width: 180px;");
+        tipoTrabajadorParametro.setStyle("position: absolute; top: 43px; left: 625px;height: 10px; font-size: 11px; width: 180px;");
         RequestContext.getCurrentInstance().update("formParametros:tipoTrabajadorParametro");
 
         terceroParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:terceroParametro");
-        terceroParametro.setStyle("position: absolute; top: 61px; left: 625px; height: 8px; font-size: 11px; width: 180px;");
+        terceroParametro.setStyle("position: absolute; top: 66px; left: 625px; height: 10px; font-size: 11px; width: 180px;");
         RequestContext.getCurrentInstance().update("formParametros:terceroParametro");
 
         estadoParametro = (SelectOneMenu) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:estadoParametro");
-        estadoParametro.setStyleClass("position: absolute; top: 57px; left: 160px; width: 97px; text-transform: uppercase;");
+        estadoParametro.setStyleClass("position: absolute; top: 63px; left: 150px; width: 100px; text-transform: uppercase;");
         RequestContext.getCurrentInstance().update("formParametros:estadoParametro");
     }
 

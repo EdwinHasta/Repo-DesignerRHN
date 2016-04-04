@@ -17,55 +17,55 @@
                         <p:toolbar styleClass="cssToolbar" style="position: absolute; top: 37px; left: 12px; height: 23px">  
                             <p:toolbarGroup align="left"> 
 
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlFormula.guardarCambios()}" process="@this" />
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; " actionListener="#{controlFormula.guardarCambios()}" process="@this" />
                                 <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
 
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormula.editarCelda()}" process="@this"/>
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlFormula.editarCelda()}" process="@this"/>
                                 <p:tooltip  for="editar" value="#{msg['editar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " process="@this"/>
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " process="@this"/>
                                 <p:tooltip  for="listaValores" value="#{msg['lista']}" />
 
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormula.activarCtrlF11()}" process="@this"/>
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlFormula.activarCtrlF11()}" process="@this"/>
                                 <p:tooltip  for="filtrar" value="#{msg['filtrar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlFormula.exportXLS()}" process="@this"/>
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " ajax="false" actionListener="#{controlFormula.exportXLS()}" process="@this"/>
                                 <p:tooltip for="exportarXLS" value="#{msg['xls']}" />
 
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormula.limpiarNuevaFormula()}" ajax="false">
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlFormula.limpiarNuevaFormula()}" ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportar:datosFormulasExportar" fileName="FormulasXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip for="exportarXML" value="#{msg['xml']}" />
 
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormula.exportPDF()}" ajax="false"/>
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlFormula.exportPDF()}" ajax="false"/>
                                 <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevaFormulaDialogo.show()"  process="@this"/> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " oncomplete="NuevaFormulaDialogo.show()"  process="@this"/> 
                                 <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
 
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormula.borrarFormula()}" process="@this"/>  
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlFormula.borrarFormula()}" process="@this"/>  
                                 <p:tooltip  for="eliminar" value="#{msg['eliminar']}" />
 
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormula.duplicarRegistro()}"  process="@this"/>  
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlFormula.duplicarRegistro()}"  process="@this"/>  
                                 <p:tooltip  for="duplicar" value="#{msg['duplicar']}"/>
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormula.verificarRastro()}" process="@this"/>  
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlFormula.verificarRastro()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormula.refrescar()}" process="@this"/>  
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlFormula.refrescar()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormula.salir()}" action="#{controlFormula.redirigir()}" process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlFormula.salir()}" action="#{controlFormula.redirigir()}" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
 
                             </p:toolbarGroup>  
@@ -89,7 +89,7 @@
                                         <p:tooltip for="DetalleF" value="Detalle Formula"/>
                                     </f:facet>
                                     <p:cellEditor>  
-                                        <f:facet name="output"><img src="http://icon.medownloads.com/32x32/19/27/4513084.a3d670e290b7639645dceda7795c4222.png" width="18" height="18" /></f:facet>  
+                                        <f:facet name="output"><img src="Imagenes/Iconos/editar.png" width="18" height="18" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="D" maxlength="1" style="background-color: blue; width: 6px; height: 6px" id="editarD">
                                                 <p:ajax event="select" listener="#{controlFormula.verDetalle(formula)}" immediate="#{controlHistoriaFormula.recibirFormula(formula.secuencia)}"/>
@@ -182,7 +182,7 @@
                                 </p:column>
 
                                 <p:column headerText="#{msg['p']}"  sortBy="#{formula.periodicidadindependiente}" filterBy="#{formula.periodicidadindependiente}"
-                                          id="columnaPeriodicidad" filterMatchMode="contains" width="15" filterStyle="display: none; visibility: hidden;" style="padding-left: 5px;padding: 0px" >                                                              
+                                          id="columnaPeriodicidad" filterMatchMode="contains" width="20" filterStyle="display: none; visibility: hidden;" style="padding-left: 5px;padding: 0px" >                                                              
                                     <f:facet name="header">
                                         <h:outputText value="#{msg['p']}" id="textP"/>
                                         <p:tooltip for="textP" value="#{msg['textP']}"/>
@@ -194,6 +194,26 @@
                                         <h:outputText value=""/>
                                     </f:facet>
                                 </p:column>
+                                
+                                <p:column id="operandoFormula" width="19" style="padding-left: 5px;padding: 0px; text-align: center" >                                                              
+                                    <f:facet name="header">
+                                        <h:outputText id="operandoF" value="O"/>
+                                        <p:tooltip for="operandoF" value="#{msg['operando']}"/>
+                                    </f:facet>
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><img src="Imagenes/Iconos/nuevoRegistro.png" width="18" height="18" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="O" maxlength="1" style="background-color: blue; width: 6px; height: 6px" id="editarO">
+                                                <p:ajax event="select" listener="#{controlFormula.formulaOperando(formula)}"/>
+                                            </p:inputText>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                </p:column>
+                                 <!--            style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 30px; height: 30px; position: relative; top: -35px; left: 70px; color: white; " 
+                                             disabled="#/{controlFormula.activoDetalleFormula}" actionListener="#/{controlFormula.formulaOperando()}"/>-->
                             </p:dataTable> 
 
                             <h:outputText id="informacionRegistro" value="#{controlFormula.infoRegistro}" style="position: relative; left: 15px; top: 0px; font-weight: bold"/>
@@ -202,34 +222,30 @@
                         <fieldset style="position: absolute; left: 5px; top: 355px; width: 560px; height: 34px; border-radius: 10px; padding-left: 0px; padding-right: 0px ">
                             <legend style="color: blue"><strong>#{msg['propiedades']}</strong></legend>
 
-                            <p:commandButton id="novedadFormula" disabled="#{controlFormula.propiedadesFormula}" value="Novedades"
-                                             style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; width: 130px; height: 30px; position: relative; top: -5px; left: 15px; color: white; " 
+                            <p:commandButton icon="ui-icon-extlink" id="novedadFormula" disabled="#{controlFormula.propiedadesFormula}" value="Novedades"
+                                             style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 128px; height: 30px;color: white; position: relative; top: -5px; left: 15px;  " 
                                              action="novedadesFormula" actionListener="#{controlFormulaNovedad.recibirFormula(controlFormula.formulaSeleccionada.secuencia)}" immediate="#{controlFormula.activarSelec()}" process="@this"/>
                             <p:tooltip for="novedadFormula" value="#{msg['novedades']}"/>
 
-                            <p:commandButton id="procesoFormula" disabled="#{controlFormula.propiedadesFormula}" value="Procesos" 
-                                             style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; width: 130px; height: 30px; position: relative; top: -5px; left: 15px; color: white; " 
+                            <p:commandButton icon="ui-icon-extlink" id="procesoFormula" disabled="#{controlFormula.propiedadesFormula}" value="Procesos" 
+                                             style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 128px; height: 30px; color: white; position: relative; top: -5px; left: 15px; " 
                                              action="procesosFormula" actionListener="#{controlFormulaProceso.recibirFormula(controlFormula.formulaSeleccionada.secuencia)}" immediate="#{controlFormula.activarSelec()}" process="@this"/>  
                             <p:tooltip for="procesoFormula" value="#{msg['procesos']}"/>
 
-                            <p:commandButton id="conceptoFormula" disabled="#{controlFormula.propiedadesFormula}" value="Conceptos" 
-                                             style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; width: 130px; height: 30px; position: relative; top: -5px; left: 15px; color: white; " 
+                            <p:commandButton icon="ui-icon-extlink" id="conceptoFormula" disabled="#{controlFormula.propiedadesFormula}" value="Conceptos" 
+                                             style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 128px; height: 30px; color: white; position: relative; top: -5px; left: 15px; " 
                                              action="conceptoFormula" actionListener="#{controlFormulaConcepto.recibirFormula(controlFormula.formulaSeleccionada.secuencia)}" immediate="#{controlFormula.activarSelec()}" process="@this"/>  
                             <p:tooltip for="conceptoFormula" value="#{msg['conceptos']}"/>
 
-                            <p:commandButton id="legislacionFormula" disabled="#{controlFormula.propiedadesFormula}" value="Legislación" 
-                                             style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; width: 130px; height: 30px; position: relative; top: -5px; left: 15px; color: white; " 
+                            <p:commandButton icon="ui-icon-extlink" id="legislacionFormula" disabled="#{controlFormula.propiedadesFormula}" value="Legislación" 
+                                             style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 128px; height: 30px; color: white; position: relative; top: -5px; left: 15px; " 
                                              action="legislacionFormula" actionListener="#{controlFormulaContrato.recibirFormula(controlFormula.formulaSeleccionada.secuencia)}" immediate="#{controlFormula.activarSelec()}" process="@this"/>  
                             <p:tooltip for="legislacionFormula" value="#{msg['legislacion']}"/>
-
-                            <!--<p:commandButton id="operandoFormula" value="" 
-                                             style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 30px; height: 30px; position: relative; top: -35px; left: 70px; color: white; " 
-                                             disabled="#/{controlFormula.activoDetalleFormula}" actionListener="#{controlFormula.formulaOperando()}" process="@this"/>                          
-                            <p:tooltip for="operandoFormula" value="#/{msg['operando']}"/>-->
+                            
                             <p:commandButton style="position: relative; left: 670px; top: -35px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/buscardb.png); background-size: 100% 100%; 
-                                             background-repeat: no-repeat;" id="buscarFormula" value="" actionListener="#{controlFormula.lovFomula(0)}" process="@this" />
+                                             background-repeat: no-repeat; border: none;" id="buscarFormula" value="" actionListener="#{controlFormula.lovFomula(0)}" process="@this" />
                             <p:commandButton style="position: relative; left: 670px; top: -35px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/todosdb.png); background-size: 100% 100%; 
-                                             background-repeat: no-repeat;" disabled="#{controlFormula.mostrarTodos}" id="mostrarTodos" actionListener="#{controlFormula.mostrarTodasFormulas()}" value="" process="@this" />
+                                             background-repeat: no-repeat; border: none;" disabled="#{controlFormula.mostrarTodos}" id="mostrarTodos" actionListener="#{controlFormula.mostrarTodasFormulas()}" value="" process="@this" />
                         </fieldset>
 
                         <fieldset style="position: relative; left: -9px; top: 370px; width: 835px; height: 70px; border-radius: 10px; ">
@@ -255,17 +271,17 @@
                                     <p:ajax event="change" listener="#{controlFormula.lovFomula(1)}" update="@this"/>
                                 </p:inputText>
                                 <p:commandButton actionListener="#{controlFormula.lovFomula(1)}" value="" style="background-image: url(Imagenes/Iconos/lupa.png); 
-                                                 position: relative ; top: 6px; margin: 1px; background-size: 100% 100%; background-repeat: no-repeat; 
-                                                 width: 25px; height: 25px; left: 725px;" process="@this"/>
+                                                 position: relative ; top: 8px; margin: 1px; background-size: 100% 100%; background-repeat: no-repeat; border: none; 
+                                                 width: 23px; height: 23px; left: 726px;" process="@this"/>
                             </p:panel>
                             <p:commandButton value="#{msg['clonarboton']}" actionListener="#{controlFormula.clonarFormula()}" 
-                                             style="position: absolute; top: 14px; width: 50px; height: 50px; left: 788px" process="@this"/>
+                                             style="position: absolute; top: 14px; width: 50px; height: 50px; left: 788px; border: none" process="@this"/>
                         </fieldset>
 
                         <p:commandButton style="position: relative; left: 665px; top: 378px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat;" disabled="#{controlFormula.guardado}" id="ACEPTAR" value="" onclick="confirmarGuardar.show();"  process="@this" />
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" disabled="#{controlFormula.guardado}" id="ACEPTAR" value="" onclick="confirmarGuardar.show();"  process="@this" />
                         <p:commandButton style="position: relative; left: 665px; top: 378px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat;" id="ATRAS" value="" action="#{controlFormula.redirigir()}" actionListener="#{controlFormula.refrescar()}" process="@this" />
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" action="#{controlFormula.redirigir()}" actionListener="#{controlFormula.refrescar()}" process="@this" />
                     </p:panel>
                 </h:form>
                 <h:form>
@@ -308,17 +324,20 @@
                             </p:selectOneMenu>
 
                             <strong><h:outputText value="#{msg['periodicidadN']}" style="position: absolute; top: 225px" /></strong>
-                            <p:selectBooleanCheckbox value="#{controlFormula.nuevaFormula.periodicidadFormula}" style="position: absolute; top: 220px; left: 160px">
+                            <p:selectBooleanCheckbox value="#{controlFormula.nuevaFormula.periodicidadFormula}" style="position: absolute; top: 220px; left: 160px; border-radius: 4px; width: 17px;">
                                 <p:ajax update="@this"/>
                             </p:selectBooleanCheckbox>
 
-                            <p:commandButton id="limpiar" icon="ui-icon-trash" value="#{msg['limpiar']}" style="position: absolute; left: 10px; top: 260px;" actionListener="#{controlFormula.limpiarNuevaFormula()}" update="nuevaFormula" process="@this"/>
-                            <p:commandButton id="agregar" icon="ui-icon-circle-check" value="#{msg['agregar']}" style="position: absolute; left: 145px; top: 260px;"  process="@this" actionListener="#{controlFormula.agregarNuevaFormula()}" />
-                            <p:commandButton id="cancelar" icon="ui-icon-circle-close" value="#{msg['cancelar']}" style="position: absolute; left: 235px; top: 260px;"  actionListener="#{controlFormula.limpiarNuevaFormula()}" update="nuevaFormula" onclick="NuevaFormulaDialogo.hide();"  process="@this"/>
+                            <p:commandButton id="limpiar" icon="ui-icon-trash" value="#{msg['limpiar']}" style="position: absolute; left: 0px; top: 260px; background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; 
+                                             background-repeat: no-repeat; border: none; width: 130px; height: 30px; color: white;" actionListener="#{controlFormula.limpiarNuevaFormula()}" update="nuevaFormula" process="@this"/>
+                            <p:commandButton id="agregar" value="" style="position: absolute; left: 160px; top: 260px;height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;"  process="@this" actionListener="#{controlFormula.agregarNuevaFormula()}" />
+                            <p:commandButton id="cancelar" value="" style="position: absolute; left: 250px; top: 260px;height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;"  actionListener="#{controlFormula.limpiarNuevaFormula()}" update="nuevaFormula" onclick="NuevaFormulaDialogo.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="DuplicarFormulaDialogo" header="#{msg['duplicarregistro']}" widgetVar="DuplicarFormulaDialogo" closable="false" resizable="false"  draggable="false" modal="true" height="270" width="350" style="padding: 0px">  
+                    <p:dialog id="DuplicarFormulaDialogo" header="#{msg['duplicarregistro']}" widgetVar="DuplicarFormulaDialogo" closable="false" resizable="false"  draggable="false" modal="true" height="270" width="360" style="padding: 0px">  
 
                         <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="color: blue; position: relative; top: 10px"/></strong></center> 
 
@@ -334,7 +353,7 @@
                             </p:inputText>
 
                             <strong><h:outputText value="*#{msg['estadoN']}" style="position: absolute; top: 135px" /></strong>
-                            <p:selectOneMenu value="#{controlFormula.duplicarFormula.estado}" style="width: 120px; font-weight: bold; position: absolute; top: 130px; left: 180px;" panelStyle="width: 115px" >  
+                            <p:selectOneMenu value="#{controlFormula.duplicarFormula.estado}" style="width: 120px; font-weight: bold; position: absolute; top: 130px; left: 180px;" panelStyle="width: 120px" >  
                                 <f:selectItem itemLabel="#{msg['activo']}" itemValue="ACTIVO" />  
                                 <f:selectItem itemLabel="#{msg['inactivo']}" itemValue="INACTIVO" />
                                 <p:ajax update="@this"/>
@@ -346,27 +365,29 @@
                             </p:inputText>
 
                             <strong><h:outputText value="*#{msg['tipoN']}" style="position: absolute; top: 195px" /></strong>
-                            <p:selectOneMenu value="#{controlFormula.duplicarFormula.tipo}" style="width: 120px; font-weight: bold; position: absolute; top: 190px; left: 180px;" panelStyle="width: 115px" >  
+                            <p:selectOneMenu value="#{controlFormula.duplicarFormula.tipo}" style="width: 120px; font-weight: bold; position: absolute; top: 190px; left: 180px;" panelStyle="width: 120px" >  
                                 <f:selectItem itemLabel="#{msg['final']}" itemValue="FINAL" />  
                                 <f:selectItem itemLabel="#{msg['nofinal']}" itemValue="NOFINAL" />
                                 <p:ajax update="@this"/>
                             </p:selectOneMenu>
 
                             <strong><h:outputText value="#{msg['periodicidadN']}" style="position: absolute; top: 225px" /></strong>
-                            <p:selectBooleanCheckbox value="#{controlFormula.duplicarFormula.periodicidadFormula}" style="position: absolute; top: 220px; left: 180px" >  
+                            <p:selectBooleanCheckbox value="#{controlFormula.duplicarFormula.periodicidadFormula}" style="position: absolute; top: 220px; left: 180px; border-radius: 4px; width: 17px;" >  
                                 <p:ajax update="@this"/>  
                             </p:selectBooleanCheckbox>
 
-                            <p:commandButton id="limpiarDuplicado" icon="ui-icon-trash" value="#{msg['limpiar']}" style="position: absolute; left: 10px; top: 260px;" actionListener="#{controlFormula.limpiarduplicar()}" update="duplicarFormula" process="@this"/>
-                            <p:commandButton id="agregarDuplicado" icon="ui-icon-circle-check" value="#{msg['agregar']}" style="position: absolute; left: 145px; top: 260px;"  process="@this" actionListener="#{controlFormula.confirmarDuplicar()}" />
-                            <p:commandButton id="cancelarDuplicado" icon="ui-icon-circle-close" value="#{msg['cancelar']}" style="position: absolute; left: 235px; top: 260px;"  actionListener="#{controlFormula.limpiarduplicar()}" update="duplicarFormula" onclick="DuplicarFormulaDialogo.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarDuplicado" icon="ui-icon-trash" value="#{msg['limpiar']}" style="position: absolute; left: 0px; top: 260px; background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 130px; height: 30px; color: white;" actionListener="#{controlFormula.limpiarduplicar()}" update="duplicarFormula" process="@this"/>
+                            <p:commandButton id="agregarDuplicado" value="" style="position: absolute; left: 160px; top: 260px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;"  process="@this" actionListener="#{controlFormula.confirmarDuplicar()}" />
+                            <p:commandButton id="cancelarDuplicado" value="" style="position: absolute; left: 250px; top: 260px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;"  actionListener="#{controlFormula.limpiarduplicar()}" update="duplicarFormula" onclick="DuplicarFormulaDialogo.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
                     <!-- LOV FORMULAS-->
                     <p:dialog header="#{msg['formulasF']}" widgetVar="FormulasDialogo" draggable="false" resizable="false" closable="false" id="FormulasDialogo"  
-                              showEffect="fade" hideEffect="fade" width="541" modal="true" >
-                        <p:dataTable id="lovFormulas" style="width: 510px" var="formulaLOV" value="#{controlFormula.listaFormulasLOV}" rowKey="#{formulaLOV.secuencia}"
+                              showEffect="fade" hideEffect="fade" height="390" width="541" modal="true" >
+                        <p:dataTable id="lovFormulas" style="width: 500px" var="formulaLOV" value="#{controlFormula.listaFormulasLOV}" rowKey="#{formulaLOV.secuencia}"
                                      selection="#{controlFormula.formulaSeleccionadaLOV}" selectionMode="single" widgetVar="lovFormulas" scrollable="true" scrollWidth="525" scrollHeight="250"
                                      filteredValue="#{controlFormula.filtradoListaFormulasLOV}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlFormula.activarAceptar()}" update=":formularioDialogos:aceptarF"/>
@@ -397,9 +418,11 @@
 
                         <h:outputText id="infoRegistroFormula" value="#{controlFormula.infoRegistroFormula}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton icon="ui-icon-check" id="aceptarF" style="position: relative; left: 350px" value="#{msg['aceptar']}" disabled="#{controlFormula.aceptar}" actionListener="#{controlFormula.seleccionFormula()}" process="@this" update=":formularioDialogos:lovFormulas"/>
+                        <p:commandButton id="aceptarF" style="position: relative; top: 20px; left: 330px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlFormula.aceptar}" actionListener="#{controlFormula.seleccionFormula()}" process="@this" update=":formularioDialogos:lovFormulas"/>
 
-                        <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasF" style="position: relative; left: 350px" value="#{msg['atras']}" actionListener="#{controlFormula.cancelarSeleccionFormula()}" process="@this" update=":formularioDialogos:lovFormulas"/>
+                        <p:commandButton id="atrasF" style="position: relative; top: 20px; left: 330px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" actionListener="#{controlFormula.cancelarSeleccionFormula()}" process="@this" update=":formularioDialogos:lovFormulas"/>
 
                     </p:dialog>
 

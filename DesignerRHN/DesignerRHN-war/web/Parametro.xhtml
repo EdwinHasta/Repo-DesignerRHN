@@ -19,53 +19,53 @@
                         <p:toolbar style="position: absolute; top: 37px; left: 12px; height: 23px">
                             <p:toolbarGroup align="left"> 
 
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlParametro.validarGuardado('GUARDADO RAPIDO')}" process="@this" />
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; " actionListener="#{controlParametro.validarGuardado('GUARDADO RAPIDO')}" process="@this" />
                                 <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlParametro.editarCelda()}" process="@this"/>
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlParametro.editarCelda()}" process="@this"/>
                                 <p:tooltip  for="editar" value="#{msg['editar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlParametro.listaValoresBoton()}" process="@this"/>
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlParametro.listaValoresBoton()}" process="@this"/>
                                 <p:tooltip  for="listaValores" value="#{msg['lista']}" />
 
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlParametro.activarCtrlF11()}" process="@this"/>
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlParametro.activarCtrlF11()}" process="@this"/>
                                 <p:tooltip  for="filtrar" value="#{msg['filtrar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlParametro.exportXLS()}" process="@this"/>
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " ajax="false" actionListener="#{controlParametro.exportXLS()}" process="@this"/>
                                 <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
 
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  ajax="false" process="@this">
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "  ajax="false" process="@this">
                                     <p:dataExporter type="xml"  target=":formExportar:empleadosParametrosExportar" fileName="EmpleadosParametrosXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
 
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlParametro.exportPDF()}" ajax="false" process="@this"/>
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlParametro.exportPDF()}" ajax="false" process="@this"/>
                                 <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  disabled="true" process="@this"/> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "  disabled="true" process="@this"/> 
                                 <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
 
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " disabled="true" process="@this"/>  
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " disabled="true" process="@this"/>  
                                 <p:tooltip for="eliminar" value="#{msg['eliminar']}" />
 
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  disabled="true" process="@this"/>  
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "  disabled="true" process="@this"/>  
                                 <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " disabled="true" process="@this"/>  
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " disabled="true" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlParametro.cancelarModificacion()}" process="@this"/>  
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlParametro.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " action="nomina" process="@this">
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " action="nomina" process="@this">
                                     <f:actionListener binding="#{controlParametro.salir()}" />
                                     <f:actionListener binding="#{controlRemoto.validarEstadoNominaF()}" />
                                 </p:commandButton>
@@ -73,59 +73,58 @@
 
                             </p:toolbarGroup>  
                         </p:toolbar> 
-
-
+0
                         <fieldset style="position: absolute; left: 5px; top: 70px;  width: 835px; height: 100px; border-radius: 10px; ">
                             <legend style=" color: blue;"><strong>#{msg['departamento']}</strong></legend>
                             <p:panel id="panelParametro" style="border: none;">
 
-                                <h:outputText value="#{msg['fechadesde']}" style="font-weight: bold; color: #14388B; position: absolute; top: 20px; left: 7px;"/>
-                                <div style="position: absolute; top: 35px; left: 7px;">
+                                <h:outputText value="#{msg['fechadesde']}" style="font-weight: bold; color: #14388B; position: absolute; top: 15px; left: 7px;"/>
+                                <div style="position: absolute; top: 30px; left: 7px;">
                                     <lnk:calendar id="fechaDesde" value="#{controlParametro.parametroLiquidacion.fechadesdecausado}" height="12" width="60" onclick="ubicacionC(([{name: 'CAMPO', value: 'FECHA DESDE'}]));">
                                         <p:ajax event="dateSelect" listener="#{controlParametro.cambiosCampos()}" update="@this"/>
                                         <p:ajax event="change" listener="#{controlParametro.cambiosCampos()}" update="@this"/>
                                     </lnk:calendar>
                                 </div>
 
-                                <h:outputText value="#{msg['fechahasta']}" style="font-weight: bold; color: #14388B; position: absolute; top: 20px; left: 109px"/>
-                                <div style="position: absolute; top: 35px; left: 109px">
+                                <h:outputText value="#{msg['fechahasta']}" style="font-weight: bold; color: #14388B; position: absolute; top: 15px; left: 109px"/>
+                                <div style="position: absolute; top: 30px; left: 100px">
                                     <lnk:calendar id="fechaHasta" value="#{controlParametro.parametroLiquidacion.fechahastacausado}" height="12" width="60" onclick="ubicacionC(([{name: 'CAMPO', value: 'FECHA HASTA'}]));">
                                         <p:ajax event="dateSelect" listener="#{controlParametro.cambiosCampos()}" update="@this"/>
                                         <p:ajax event="change" listener="#{controlParametro.cambiosCampos()}" update="@this"/>
                                     </lnk:calendar>
                                 </div>
 
-                                <h:outputText value="#{msg['fechacorte']}" style="font-weight: bold; color: #14388B; position: absolute; top: 20px; left: 210px"/>
-                                <div style="position: absolute; top: 35px; left: 210px">
+                                <h:outputText value="#{msg['fechacorte']}" style="font-weight: bold; color: #14388B; position: absolute; top: 15px; left: 200px"/>
+                                <div style="position: absolute; top: 30px; left: 192px">
                                     <lnk:calendar id="fechaCorte" value="#{controlParametro.parametroLiquidacion.fechasistema}" height="12" width="60" onclick="ubicacionC(([{name: 'CAMPO', value: 'FECHA CORTE'}]));">
                                         <p:ajax event="dateSelect" listener="#{controlParametro.cambiosCampos()}" update="@this"/>
                                         <p:ajax event="change" listener="#{controlParametro.cambiosCampos()}" update="@this"/>
                                     </lnk:calendar>
                                 </div>
-                                <p:commandButton value="|" style="width: 13px; height: 23px;position: absolute;top: 36px;left:298px" actionListener="#{controlPeriodosActivos.recibirEmpresa(controlParametro.parametroLiquidacion.estructura.centrocosto.empresa.secuencia)}" process="@this" action="controlperiodoactivo"/>
-                                <h:outputText value="#{msg['estructura']}" style="font-weight: bold; color: #14388B; position: absolute; top: 20px; left: 311px"/>
-                                <p:inputText id="Estructura" value="#{controlParametro.parametroLiquidacion.estructura.nombre}" style="position: absolute; top: 35px; left: 311px; width: 180px; font-weight: bold; text-transform: uppercase" 
+                                <p:commandButton value="" style="width: 25px; height: 25px;position: absolute;top: 28px; left:282px; background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" actionListener="#{controlPeriodosActivos.recibirEmpresa(controlParametro.parametroLiquidacion.estructura.centrocosto.empresa.secuencia)}" process="@this" action="controlperiodoactivo"/>
+                                <h:outputText value="#{msg['estructura']}" style="font-weight: bold; color: #14388B; position: absolute; top: 15px; left: 316px"/>
+                                <p:inputText id="Estructura" value="#{controlParametro.parametroLiquidacion.estructura.nombre}" style="position: absolute; top: 30px; left: 316px; width: 180px; font-weight: bold; text-transform: uppercase" 
                                              ondblclick="llamarLov(([{name: 'LOV', value: 'ESTRUCTURA'}]));" onclick="select();">
                                     <p:ajax event="click" listener="#{controlParametro.valoresBackupAutocompletar('ESTRUCTURA')}"/>
                                     <p:ajax event="change" listener="#{controlParametro.autocompletar('ESTRUCTURA', controlParametro.parametroLiquidacion.estructura.nombre)}"/>
                                 </p:inputText>
 
-                                <h:outputText value="#{msg['codigocc']}" style="font-weight: bold; color: #14388B; position: absolute; top: 20px; left: 504px"/>
-                                <p:inputText id="codigoCC" value="#{controlParametro.parametroLiquidacion.estructura.centrocosto.codigo}" style="position: absolute; top: 35px; left: 504px; width: 70px" readonly="true"
+                                <h:outputText value="#{msg['codigocc']}" style="font-weight: bold; color: #14388B; position: absolute; top: 15px; left: 509px"/>
+                                <p:inputText id="codigoCC" value="#{controlParametro.parametroLiquidacion.estructura.centrocosto.codigo}" style="position: absolute; top: 30px; left: 509px; width: 70px" readonly="true"
                                              onclick="ubicacionC(([{name: 'CAMPO', value: 'CODIGO CC'}]));"/>
 
-                                <h:outputText value="#{msg['nombrecentrocosto']}" style="font-weight: bold; color: #14388B; position: absolute; top: 20px; left: 587px"/>
-                                <p:inputText id="nombreCC" value="#{controlParametro.parametroLiquidacion.estructura.centrocosto.nombre}" style="position: absolute; top: 35px; left: 587px; width: 240px" readonly="true"
+                                <h:outputText value="#{msg['nombrecentrocosto']}" style="font-weight: bold; color: #14388B; position: absolute; top: 15px; left: 592px"/>
+                                <p:inputText id="nombreCC" value="#{controlParametro.parametroLiquidacion.estructura.centrocosto.nombre}" style="position: absolute; top: 30px; left: 592px; width: 230px" readonly="true"
                                              onclick="ubicacionC(([{name: 'CAMPO', value: 'NOMBRE CC'}]));"/>
 
-                                <h:outputText value="#{msg['tipotrabajador']}" style="font-weight: bold; color: #14388B; position: absolute; top: 62px; left: 7px"/>
-                                <p:inputText id="tipoTrabajador" value="#{controlParametro.parametroLiquidacion.tipotrabajador.nombre}" style="position: absolute; top: 77px; width: 239px; left: 7px; text-transform: uppercase" 
+                                <h:outputText value="#{msg['tipotrabajador']}" style="font-weight: bold; color: #14388B; position: absolute; top: 57px; left: 7px"/>
+                                <p:inputText id="tipoTrabajador" value="#{controlParametro.parametroLiquidacion.tipotrabajador.nombre}" style="position: absolute; top: 72px; width: 239px; left: 7px; text-transform: uppercase" 
                                              ondblclick="llamarLov(([{name: 'LOV', value: 'TIPO TRABAJADOR'}]));" onclick="select();">
                                     <p:ajax event="click" listener="#{controlParametro.valoresBackupAutocompletar('TIPO TRABAJADOR')}"/>
                                     <p:ajax event="change" listener="#{controlParametro.autocompletar('TIPO TRABAJADOR', controlParametro.parametroLiquidacion.tipotrabajador.nombre)}"/>
                                 </p:inputText>
-                                <h:outputText value="#{msg['proceso']}" style="font-weight: bold; color: #14388B; position: absolute; top: 62px; left: 260px"/>
-                                <p:inputText id="proceso" value="#{controlParametro.parametroLiquidacion.proceso.descripcion}" style="position: absolute; top: 77px; left: 260px; width: 240px; text-transform: uppercase" 
+                                <h:outputText value="#{msg['proceso']}" style="font-weight: bold; color: #14388B; position: absolute; top: 57px; left: 260px"/>
+                                <p:inputText id="proceso" value="#{controlParametro.parametroLiquidacion.proceso.descripcion}" style="position: absolute; top: 72px; left: 260px; width: 240px; text-transform: uppercase" 
                                              ondblclick="llamarLov(([{name: 'LOV', value: 'PROCESO'}]));" onclick="select();">
                                     <p:ajax event="click" listener="#{controlParametro.valoresBackupAutocompletar('PROCESO')}"/>
                                     <p:ajax event="change" listener="#{controlParametro.autocompletar('PROCESO', controlParametro.parametroLiquidacion.proceso.descripcion)}"/>
@@ -137,7 +136,7 @@
                         <fieldset style="position: absolute; left: 5px; top: 190px;  width: 835px; height: 277px; border-radius: 10px; ">
                             <legend style=" color: blue;"><strong>#{msg['empleados']}</strong></legend>
 
-                            <p:dataTable id="empleadosParametros" var="empleadoParametro" rowKey="#{empleadoParametro.secuencia}" rowIndexVar="indice" style=" border: 1px; width: 825px"                            
+                            <p:dataTable id="empleadosParametros" var="empleadoParametro" rowKey="#{empleadoParametro.secuencia}" rowIndexVar="indice" style=" border: 1px; width: 810px"                            
                                          value="#{controlParametro.empleadosParametros}" scrollable="true" scrollHeight="#{controlParametro.altoTabla}" scrollWidth="840"
                                          filteredValue="#{controlParametro.filtradoEmpleadosParametros}" emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell" liveScroll="true" scrollRows="30"
@@ -145,8 +144,8 @@
 
                                 <p:ajax event="filter" listener="#{controlParametro.eventoFiltrar()}"/>
 
-                                <p:column headerText="" width="60" style="padding: 0px;">                                  
-                                    <p:commandButton value="#{msg['quitar']}" actionListener="#{controlParametro.eliminarParametros(indice)}" style="margin: 0px; margin-top: -10px; border-radius: 0px; height: 32px; left: -5px; top: 4px" process="@this" />
+                                <p:column headerText="" width="60" style="padding: 0px; text-align: center">                                  
+                                    <p:commandButton value="#{msg['quitar']}" actionListener="#{controlParametro.eliminarParametros(indice)}" style="margin: 0px; margin-top: -10px; border-radius: 0px; height: 32px; left: 2px; top: 4px" process="@this" />
                                 </p:column>  
 
                                 <p:column headerText="#{msg['desde']}" sortBy="#{empleadoParametro.parametroestructura.fechadesdecausado}" filterBy="#{empleadoParametro.parametroestructura.fechadesdecausado}" filterMatchMode="contains"  width="60" id="FechaDesde" filterStyle="display: none; visibility: hidden;"  >  
@@ -247,13 +246,29 @@
                                     </p:cellEditor>
                                 </p:column>  
                             </p:dataTable>
-                            <p:commandButton style="position: absolute; left: 7px; top: 255px;  " disabled="#{controlParametro.borrarTodos}" id="quitarTodos" value="#{msg['quitartodos']}" actionListener="#{controlParametro.borrarParametros()}" process="@this"/>
-                            <p:commandButton style="position: absolute; left: 114px; top: 255px;  " id="cambiosMasivos" value="#{msg['cambiosmasivos']}" process="@this"/>
-                            <p:commandButton style="position: absolute; left: 245px; top: 255px;  " id="verificarEmpleados" value="#{msg['verificarempleados']}" process="@this"/>
-                            <p:commandButton style="position: absolute; left: 700px; top: 255px;  " id="adicionarEmpleado" value="#{msg['adicionarempleado']}" onclick="buscarEmpleadoDialogo.show();" process="@this"/>
+
+                            <p:commandButton icon="ui-icon-extlink" style="position: relative; left: 0px; top: 25px; height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
+                                             background-size: 100% 100%; background-repeat: no-repeat; border: none;" disabled="#{controlParametro.borrarTodos}" id="quitarTodos" value="Quitar Todos" actionListener="#{controlParametro.borrarParametros()}" process="@this"/>
+                            <p:tooltip  for="quitarTodos" value="#{msg['quitartodos']}" />
+
+                            <p:commandButton icon="ui-icon-extlink" style="position: relative; left: 0px; top: 25px; height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
+                                             background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="cambiosMasivos" value="Masivos" process="@this"/>
+                            <p:tooltip  for="cambiosMasivos" value="#{msg['cambiosmasivos']}" />
+
+                            <p:commandButton icon="ui-icon-extlink" style="position: relative; left: 0px; top: 25px; height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
+                                             background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="verificarEmpleados" value="verificar" process="@this"/>
+                            <p:tooltip  for="verificarEmpleados" value="#{msg['verificarempleados']}" />
+
+                            <p:commandButton icon="ui-icon-extlink" style="position: relative; left: 272px; top: 25px; height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
+                                             background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="adicionarEmpleado" value="Adicionar" onclick="buscarEmpleadoDialogo.show();" process="@this"/>
+                            <p:tooltip  for="adicionarEmpleado" value="#{msg['adicionarempleado']}" />
                         </fieldset>
-                        <p:commandButton style="position: absolute; left: 683px; top: 483px;  " id="ACEPTAR" disabled="#{controlParametro.guardado}" value="#{msg['aceptar']}" icon="ui-icon-check"  onclick="confirmarGuardar.show();" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 483px;  " id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" action="nomina" process="@this">
+
+                        <p:commandButton style="position: absolute; left: 683px; top: 483px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png);
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value="" onclick="confirmarGuardar.show();" process="@this" disabled="#{controlParametro.guardado}"/>
+                        <p:commandButton style="position: absolute; left: 775px; top: 483px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" action="nomina" process="@this">
+
                             <f:actionListener binding="#{controlParametro.salir()}" />
                             <f:actionListener binding="#{controlRemoto.validarEstadoNominaF()}" />
                         </p:commandButton>
@@ -268,10 +283,10 @@
 
                 <h:form id="formularioDialogos">
                     <p:dialog header="#{msg['estructurasE']}" widgetVar="estructurasDialogo" draggable="false" resizable="false" id="estructurasDialogo"  
-                              showEffect="fade" hideEffect="fade" modal="true" width="720" height="420"  closable="false">
+                              showEffect="fade" hideEffect="fade" modal="true" width="740" height="420"  closable="false">
 
                         <p:dataTable  id="lOVEstructuras" style=" width: 690px" var="estructura" value="#{controlParametro.lovEstructuras}"
-                                      scrollable="true" scrollHeight="300" scrollWidth="705" widgetVar="lOVEstructuras" 
+                                      scrollable="true" scrollHeight="300" scrollWidth="715" widgetVar="lOVEstructuras" 
                                       filteredValue="#{controlParametro.filtradoLovEstructuras}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{estructura.secuencia}" selection="#{controlParametro.seleccionEstructura}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlParametro.activarAceptar()}" update=":formularioDialogos:aceptarE"/> 
@@ -281,29 +296,31 @@
                                 <h:outputText value="#{msg['buscarE']}"  style="position: absolute; left: 27px; top: 15px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lOVEstructuras.filter();" style="width: 250px; position: relative; left: -80px;" />  
                             </f:facet>                       
-                            <p:column headerText="#{msg['nombreE']}" width="200"  filterBy="#{estructura.nombre}" filterMatchMode="contains" >  
+                            <p:column headerText="#{msg['nombreE']}" width="200" filterBy="#{estructura.nombre}" filterMatchMode="contains" filterStyle="width: 80%" >  
                                 <h:outputText value="#{estructura.nombre}" />  
                             </p:column>  
-                            <p:column headerText="#{msg['codigoE']}" width="70" filterBy="#{estructura.centrocosto.codigo}" filterMatchMode="contains" filterStyle="width: 50px">  
+                            <p:column headerText="#{msg['codigoE']}" width="70" filterBy="#{estructura.centrocosto.codigo}" filterMatchMode="contains" filterStyle="width: 80%">  
                                 <h:outputText value="#{estructura.centrocosto.codigo}" />  
                             </p:column>                             
-                            <p:column headerText="#{msg['nombreccE']}" filterBy="#{estructura.centrocosto.nombre}" filterMatchMode="contains" filterStyle="width: 200px">  
+                            <p:column headerText="#{msg['nombreccE']}" filterBy="#{estructura.centrocosto.nombre}" filterMatchMode="contains" filterStyle="width: 80%">  
                                 <h:outputText value="#{estructura.centrocosto.nombre}" />  
                             </p:column>
                         </p:dataTable>   
 
-                        <h:outputText id="infoRegistroEstructura" value="#{controlParametro.infoRegistroEstructura}" style="position: absolute; left: 20px; top: 405px; font-weight: bold"/>
+                        <h:outputText id="infoRegistroEstructura" value="#{controlParametro.infoRegistroEstructura}" style="position: absolute; left: 20px; top: 390px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarE" value="#{msg['aceptar']}" disabled="#{controlParametro.aceptar}" style="position: absolute; top: 390px; left: 555px; " actionListener="#{controlParametro.actualizarEstructura()}" process="@this" icon="ui-icon-check"/>
+                        <p:commandButton id="aceptarE" value="" disabled="#{controlParametro.aceptar}" style="position: absolute; top: 395px; left: 525px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png);
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" actionListener="#{controlParametro.actualizarEstructura()}" process="@this"/>
 
-                        <p:commandButton id="atrasE" value="#{msg['atras']}" style="position: absolute; top: 390px; left: 644px; " actionListener="#{controlParametro.cancelarCambioEstructura()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                        <p:commandButton id="atrasE" value="" style="position: absolute; top: 395px; left: 614px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png);
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" actionListener="#{controlParametro.cancelarCambioEstructura()}" process="@this"/>
 
                     </p:dialog>
 
                     <p:dialog header="#{msg['tipostrabajadoresTT']}" widgetVar="TipoTrabajadorDialogo" draggable="false" resizable="false" closable="false" id="TipoTrabajadorDialogo"  
-                              showEffect="fade" hideEffect="fade" width="431" modal="true" >
+                              showEffect="fade" hideEffect="fade" width="445" height="370" modal="true" >
                         <p:dataTable id="lovTipoTrabajador" style=" width: 400px" var="tipoTrabajador" value="#{controlParametro.lovTiposTrabajadores}" rowKey="#{tipoTrabajador.secuencia}"
-                                     selection="#{controlParametro.seleccionTipoTrabajador}" selectionMode="single" widgetVar="lovTipoTrabajador" scrollable="true" scrollHeight="250" scrollWidth="415"
+                                     selection="#{controlParametro.seleccionTipoTrabajador}" selectionMode="single" widgetVar="lovTipoTrabajador" scrollable="true" scrollHeight="250" scrollWidth="425"
                                      filteredValue="#{controlParametro.filtradoLovTiposTrabajadores}" emptyMessage="#{msg['lovvacio']}">              
 
                             <p:ajax event="rowSelect" listener="#{controlParametro.activarAceptar()}" update=":formularioDialogos:aceptarTT"/>
@@ -311,15 +328,15 @@
 
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTT']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovTipoTrabajador.filter();" style="width:150px; position: relative; left: 50px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovTipoTrabajador.filter();" style="width:180px; position: relative; left: 50px;" />  
                             </f:facet>
-                            <p:column filterBy="#{tipoTrabajador.codigo}" width="40" filterMatchMode="contains" filterStyle="width: 30px">
+                            <p:column filterBy="#{tipoTrabajador.codigo}" width="40" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['codigoTT']}" />
                                 </f:facet>
                                 <h:outputText  value="#{tipoTrabajador.codigo}" />
                             </p:column>
-                            <p:column filterBy="#{tipoTrabajador.nombre}" filterMatchMode="contains">
+                            <p:column filterBy="#{tipoTrabajador.nombre}" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText value="#{msg['descripcionTT']}" />
                                 </f:facet>
@@ -329,24 +346,25 @@
 
                         <h:outputText id="infoRegistroTipoTrabajador" value="#{controlParametro.infoRegistroTipoTrabajador}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarTT" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlParametro.aceptar}" actionListener="#{controlParametro.actualizarTipoTrabajador()}" process="@this" icon="ui-icon-check"/>
+                        <p:commandButton id="aceptarTT" style="position: relative; left: 230px; top: 10px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png);
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlParametro.aceptar}" actionListener="#{controlParametro.actualizarTipoTrabajador()}" process="@this"/>
 
-                        <p:commandButton id="atrasTT" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlParametro.cancelarCambioTipoTrabajador()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
-
+                        <p:commandButton id="atrasTT" style="position: relative; left: 230px; top: 10px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png);
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" actionListener="#{controlParametro.cancelarCambioTipoTrabajador()}" process="@this"/>
                     </p:dialog> 
 
                     <p:dialog header="#{msg['procesosP']}" widgetVar="ProcesosDialogo" draggable="false" resizable="false" closable="false" id="ProcesosDialogo"  
                               showEffect="fade" hideEffect="fade" width="431" modal="true" >
-                        <p:dataTable id="lovProcesos" style=" width: 400px" var="proceso" value="#{controlParametro.lovProcesos}" rowKey="#{proceso.secuencia}"
+                        <p:dataTable id="lovProcesos" style=" width: 390px" var="proceso" value="#{controlParametro.lovProcesos}" rowKey="#{proceso.secuencia}"
                                      selection="#{controlParametro.seleccionProcesos}" selectionMode="single" widgetVar="lovProcesos" scrollable="true" scrollWidth="415" scrollHeight="255"
                                      filteredValue="#{controlParametro.filtradoLovProcesos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlParametro.activarAceptar()}" update=":formularioDialogos:aceptarP"/>
                             <p:ajax event="rowDblselect" listener="#{controlParametro.actualizarProceso()}" process="@this" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarP']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovProcesos.filter();" style="width:100px; position: relative; left: -10px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovProcesos.filter();" style="width:200px; position: relative; left: -10px;" />  
                             </f:facet>
-                            <p:column filterBy="#{proceso.descripcion}" filterMatchMode="contains">
+                            <p:column filterBy="#{proceso.descripcion}" filterMatchMode="contains" filterStyle="width: 80%">
                                 <f:facet name="header">
                                     <h:outputText value="#{msg['descripcionP']}" />
                                 </f:facet>
@@ -356,15 +374,17 @@
 
                         <h:outputText id="infoRegistroProceso" value="#{controlParametro.infoRegistroProceso}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarP" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlParametro.aceptar}" actionListener="#{controlParametro.actualizarProceso()}" process="@this" icon="ui-icon-check"/>
+                        <p:commandButton id="aceptarP" style="position: relative; left: 230px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png);
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlParametro.aceptar}" actionListener="#{controlParametro.actualizarProceso()}" process="@this"/>
 
-                        <p:commandButton id="atrasP" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlParametro.cancelarCambioProceso()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                        <p:commandButton id="atrasP" style="position: relative; left: 230px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png);
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" actionListener="#{controlParametro.cancelarCambioProceso()}" process="@this"/>
 
                     </p:dialog>
 
                     <p:dialog id="buscarEmpleadoDialogo" header="#{msg['empleadosEM']}" widgetVar="buscarEmpleadoDialogo"  resizable="false" draggable="false" modal="true"  width="740"  closable="false" >  
                         <p:dataTable  id="lovEmpleados" style=" width: 700px" var="empleado" value="#{controlParametro.lovEmpleados}"
-                                      scrollable="true" scrollHeight="225" scrollWidth="715" widgetVar="lovEmpleados" 
+                                      scrollable="true" scrollHeight="225" scrollWidth="725" widgetVar="lovEmpleados" 
                                       filteredValue="#{controlParametro.filtradoLovEmpleados}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{empleado.secuencia}" selection="#{controlParametro.seleccionEmpleado}" selectionMode="single" >
 
@@ -396,9 +416,11 @@
 
                         <h:outputText id="infoRegistroEmpleado" value="#{controlParametro.infoRegistroEmpleado}" style="position: absolute; left: 20px; top: 325px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarEm" style="position: relative; left: 550px" value="#{msg['aceptar']}" disabled="#{controlParametro.aceptar}" actionListener="#{controlParametro.seleccionarEmpleado()}" process="@this" icon="ui-icon-check"/>
+                        <p:commandButton id="aceptarEm" style="position: relative; left: 520px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png);
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlParametro.aceptar}" actionListener="#{controlParametro.seleccionarEmpleado()}" process="@this" />
 
-                        <p:commandButton id="atras" style="position: relative; left: 550px" value="#{msg['atras']}"  actionListener="#{controlParametro.cancelarSeleccionEmpleado()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                        <p:commandButton id="atras" style="position: relative; left: 520px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png);
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value=""  actionListener="#{controlParametro.cancelarSeleccionEmpleado()}" process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="editarFechaDesde" header="#{msg['editarFechaDesde']}" widgetVar="editarFechaDesde" resizable="false" closable="true" draggable="false" modal="true" height="55" width="240" style=" padding: 0px">  

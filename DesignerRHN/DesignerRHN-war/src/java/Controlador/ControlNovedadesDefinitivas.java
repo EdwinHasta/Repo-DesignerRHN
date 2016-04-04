@@ -552,7 +552,7 @@ public class ControlNovedadesDefinitivas implements Serializable {
     //DUPLICAR NOVEDAD
     public void duplicarN() {
 
-        if (novedadMostrar != null) {
+        if (novedadMostrar.getEmpleado() != null) {
             duplicarNovedad = new NovedadesSistema();
             k++;
             l = BigInteger.valueOf(k);
@@ -799,9 +799,9 @@ public class ControlNovedadesDefinitivas implements Serializable {
                 listaNovedades = new ArrayList<NovedadesSistema>();
             }
         }
+        novedadMostrar = null;
         if (listaNovedades == null || listaNovedades.isEmpty()) {
             activate = true;
-            novedadMostrar = null;
         } else {
             activate = false;
             getNovedadMostrar();
