@@ -15,7 +15,7 @@
         </exception-handler-factory>
     </factory>
     <navigation-rule>
-        <from-view-id>/EmplVigenciasCargos.xhtml</from-view-id>
+        <from-view-id>/emplvigenciascargos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
             <to-view-id>/NominaF.xhtml</to-view-id>
@@ -26,7 +26,7 @@
         <from-view-id>/NominaF.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasC</from-outcome>
-            <to-view-id>/EmplVigenciasCargos.xhtml</to-view-id>
+            <to-view-id>/emplvigenciascargos.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
@@ -695,7 +695,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmplVigenciasCargos.xhtml</from-view-id>
+        <from-view-id>/emplvigenciascargos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
             <to-view-id>/Rastro.xhtml</to-view-id>
@@ -706,7 +706,7 @@
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasC</from-outcome>
-            <to-view-id>/EmplVigenciasCargos.xhtml</to-view-id>
+            <to-view-id>/emplvigenciascargos.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
@@ -716,7 +716,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmplVigenciasCargos.xhtml</from-view-id>
+        <from-view-id>/emplvigenciascargos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
             <to-view-id>/Rastro.xhtml</to-view-id>
@@ -727,7 +727,7 @@
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasC</from-outcome>
-            <to-view-id>/EmplVigenciasCargos.xhtml</to-view-id>
+            <to-view-id>/emplvigenciascargos.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
@@ -4412,7 +4412,7 @@
     </navigation-rule>
        
     <navigation-rule>
-        <from-view-id>/EmplVigenciasCargos.xhtml</from-view-id>
+        <from-view-id>/emplvigenciascargos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>motivocambiocargo</from-outcome>
             <to-view-id>/motivocambiocargo.xhtml</to-view-id>
@@ -4423,7 +4423,7 @@
         <from-view-id>/motivocambiocargo.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasmotivocambiocargo</from-outcome>
-            <to-view-id>/EmplVigenciasCargos.xhtml</to-view-id>
+            <to-view-id>/emplvigenciascargos.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -4992,7 +4992,7 @@
     </navigation-rule>
         
     <navigation-rule>
-        <from-view-id>/EmplVigenciasCargos.xhtml</from-view-id>
+        <from-view-id>/emplvigenciascargos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>centrocostoemplvigenciacargo</from-outcome>
             <to-view-id>/centrocosto.xhtml</to-view-id>
@@ -5003,7 +5003,7 @@
         <from-view-id>/centrocosto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrascentrocostoemplvigenciacargo</from-outcome>
-            <to-view-id>/EmplVigenciasCargos.xhtml</to-view-id>
+            <to-view-id>/emplvigenciascargos.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -5531,6 +5531,40 @@
         <navigation-case>
             <from-outcome>novedad</from-outcome>
             <to-view-id>/novedad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/emplvigenciascargos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>cargo</from-outcome>
+            <to-view-id>/cargo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/cargo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasVcargo</from-outcome>
+            <to-view-id>/emplvigenciascargos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/emplvigenciascargos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>estructura</from-outcome>
+            <to-view-id>/Estructura.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Estructura.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasVcargo</from-outcome>
+            <to-view-id>/emplvigenciascargos.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>

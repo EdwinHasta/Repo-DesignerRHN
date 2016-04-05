@@ -22,10 +22,9 @@
                             <legend style="color: blue"><strong>#{msg['organigramas']}</strong></legend>
                             
                             <p:dataTable id="datosOrganigramas" var="organigrama" style="width: 814px;" value="#{controlEstructura.listaOrganigramas}"
-                                         rowKey="#{organigrama.secuencia}" scrollable="true" scrollHeight="#{controlEstructura.altoTabla}" scrollWidth="830" widgetVar="datosOrganigramas" rowIndexVar="indice"
-                                         filteredValue="#{controlEstructura.filtradoListaOrganigramas}" emptyMessage="#{msg['vacio']}" editable="true" editMode="cell"
-                                         selection="#{controlEstructura.organigramaTablaSeleccionado}" selectionMode="single"
-                                         >   
+                                         rowKey="#{organigrama.secuencia}" scrollable="true" scrollHeight="#{controlEstructura.altoTabla}" scrollWidth="830" editable="true" 
+                                         widgetVar="datosOrganigramas" rowIndexVar="indice" filteredValue="#{controlEstructura.filtradoListaOrganigramas}" 
+                                         emptyMessage="#{msg['vacio']}" editMode="cell" selection="#{controlEstructura.organigramaTablaSeleccionado}" selectionMode="single">   
 
                                 <p:ajax event="filter" listener="#{controlEstructura.eventoFiltrar()}"/>
 
