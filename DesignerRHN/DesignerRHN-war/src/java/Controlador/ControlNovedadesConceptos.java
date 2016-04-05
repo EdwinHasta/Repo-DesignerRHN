@@ -1859,9 +1859,9 @@ public class ControlNovedadesConceptos implements Serializable {
     }
 
     public Conceptos getSeleccionMostrar() {
-        if (seleccionMostrar == null && (listaConceptosNovedad != null && !listaConceptosNovedad.isEmpty())) {
-            seleccionMostrar = listaConceptosNovedad.get(0);
-        }
+//        if (seleccionMostrar == null && (listaConceptosNovedad != null && !listaConceptosNovedad.isEmpty())) {
+//            seleccionMostrar = listaConceptosNovedad.get(0);
+//        }
         return seleccionMostrar;
     }
 

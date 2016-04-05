@@ -848,7 +848,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
             context.update("form:datosHvEntrevista");
             k = 0;
             guardado = true;
-            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesMessage msg = new FacesMessage("Información", "Se guardarón los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
         }

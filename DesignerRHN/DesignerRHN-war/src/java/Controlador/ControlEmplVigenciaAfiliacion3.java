@@ -845,13 +845,13 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
                 VigenciasAfiliaciones regN = listAuxiliar.get(tam - 1);
                 ///////////--------////////////
                 cambiosBefore = provisional.getFechainicial().before(reg1.getFechainicial());
-                if (provisional.getFechafinal() != null && cambiosBefore){
+                if (provisional.getFechafinal() != null && cambiosBefore) {
                     cambiosBefore = provisional.getFechafinal().before(reg1.getFechainicial());
                 }
                 ///////////--------////////////
                 if (regN.getFechafinal() != null) {
                     cambiosBefore = provisional.getFechainicial().after(regN.getFechafinal());
-                    if (provisional.getFechafinal() != null && cambiosBefore){
+                    if (provisional.getFechafinal() != null && cambiosBefore) {
                         cambiosBefore = provisional.getFechafinal().after(regN.getFechafinal());
                     }
                 } else {
@@ -899,7 +899,7 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
                     ubico = false;
                 }
             }
-            retorno=ubico;
+            retorno = ubico;
         }
         if (tam == 0) {
             retorno = true;
@@ -1106,7 +1106,7 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
         for (int cont = 0; cont < listaAuxiliar.size(); cont++) {
             if (listaAuxiliar.get(cont).getTipoentidad().getSecuencia() == provisional.getTipoentidad().getSecuencia()) {
                 listAuxiliarTipoESeleccionado.add(listaAuxiliar.get(cont));
-                }
+            }
         }
         int tam = listAuxiliarTipoESeleccionado.size();
         System.out.println("variable tam: " + tam);
@@ -1200,7 +1200,7 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
                     ubico = false;
                 }
             }
-            retorno=ubico;
+            retorno = ubico;
         }
         if (tam == 0) {
             retorno = true;
@@ -1297,7 +1297,7 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
             dialogoCamposNulos();
         }
         //////----------////////////
-        if (!validacionCamposNulos) {
+        if (validacionCamposNulos) {
             validacionFechas = validacionFechasNuevoRegistro(i);
             if (!validacionFechas) {
                 dialogoFechasErroneas();
@@ -1312,7 +1312,7 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
             if (!validacionTiposEntidades) {
                 dialogoTipoERepetida();
             }
-            if (!validacionFechas || !validacionTerceroSucursal || !validacionTiposEntidades ) {
+            if (!validacionFechas || !validacionTerceroSucursal || !validacionTiposEntidades) {
                 mensaje = false;
             }
         } //////----------////////////
@@ -1702,7 +1702,7 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
 
     ///////////////////////////////////////////////////////////////
     /**
-     * Duplica una registro de 
+     * Duplica una registro de
      */
     public void duplicarVigenciaA() {
         duplicarVA = new VigenciasAfiliaciones();

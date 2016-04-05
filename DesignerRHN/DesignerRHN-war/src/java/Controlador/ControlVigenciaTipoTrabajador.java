@@ -1148,7 +1148,6 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         listaPensionados = null;
         motivosRetiros = null;
         listaTiposTrabajadores = null;
-        motivosRetiros = null;
         //context.update("form:ACEPTAR");
     }
 
@@ -1293,11 +1292,11 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
-        /*
-         * context.update("form:TipoTrabajadorDialogo");
-         * context.update("form:lovTipoTrabajador");
-         * context.update("form:aceptarTT");
-         */
+        
+          context.update("form:TipoTrabajadorDialogo");
+          context.update("form:lovTipoTrabajador");
+          context.update("form:aceptarTT");
+         
         context.reset("formLovs:lovTipoTrabajador:globalFilter");
         context.execute("lovTipoTrabajador.clearFilters()");
         context.execute("TipoTrabajadorDialogo.hide()");
@@ -1825,8 +1824,9 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
      */
     public void cancelarMotivoRetiro() {
         motivoRetiroSeleccionado = null;
+        filtradoMotivosRetiros = null;
         aceptar = true;
-        index = -1;
+        indexRetiro = -1;
         secRegistro = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();

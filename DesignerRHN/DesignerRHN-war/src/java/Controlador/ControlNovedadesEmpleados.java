@@ -1791,6 +1791,7 @@ public class ControlNovedadesEmpleados implements Serializable {
     }
 
     public void todasNovedades() {
+        System.out.println("Ingrese a todasNovedades()");
         listaNovedades.clear();
         listaNovedades = administrarNovedadesEmpleados.todasNovedades(seleccionMostrar.getId());
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1801,6 +1802,7 @@ public class ControlNovedadesEmpleados implements Serializable {
         context.update("form:datosNovedadesEmpleado");
         context.update("form:TODAS");
         context.update("form:ACTUALES");
+        System.out.println("Sali de todasNovedades()");
 
     }
 
