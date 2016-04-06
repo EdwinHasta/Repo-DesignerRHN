@@ -27,7 +27,7 @@
                                 <p:commandButton style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; " 
                                                  id="guardarRapido" value="" actionListener="#{controlVigenciasCargos.guardarCambiosVC()}" process="@this" />
                                 <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
-                                
+
                                 <p:commandButton style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  id="editar" value="" actionListener="#{controlVigenciasCargos.editarCelda()}" process="@this"/>
                                 <p:tooltip  for="editar" value="#{msg['editar']}" />
@@ -86,7 +86,7 @@
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
                                 <p:separator style="position: relative; top: -9px"/> 
-                                
+
                                 <p:commandButton style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  id="salir" value="" actionListener="#{controlVigenciasCargos.salir()}" action="nomina" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
@@ -143,7 +143,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton value="" style="width: 170px; margin: -14px; height: 20px; border: none; color: blue;" id="fooEstructuras" action="estructura" actionListener="#{controlEstructura.recibirPaginaEntrante('atrasVcargo')}"/>
+                                        <p:commandButton value="" style="width: 170px; margin: -14px; height: 20px; border: none; color: blue;" id="fooEstructuras" action="estructura" actionListener="#{controlEstructuraPlanta.inicializarPagina('atrasVcargo')}"/>
                                     </f:facet>
                                 </p:column>
 
@@ -215,16 +215,22 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                 </p:column>
-
-                                <p:column headerText="R" width="25" style="height: 16px; padding: 0px;" exportable="false">  
-                                    <f:facet name="header"><h:outputText value="#{msg['r']}" /></f:facet>
-                                    <p:commandButton style=" width:23px; height: 21px; background-repeat: no-repeat; border: none; background-size: 100% 100%;" icon="ui-icon-document"/>                                
+        
+                                <p:column width="25" style="height: 16px; padding: 0px; text-align: center" exportable="false">  
+                                    <f:facet name="header">
+                                        <h:outputText id="rep" value="R" />
+                                        <p:tooltip for="rep" value="#{msg['reporteManual']}"/>
+                                    </f:facet>
+                                    <p:commandButton value="" style=" width:21px; height: 20px; background-repeat: no-repeat; border: none; background-size: 100% 100%; background-image: url(Imagenes/Iconos/editar.png);"/>
+                                    <!--<p:commandButton style=" width:23px; height: 21px; background-repeat: no-repeat; border: none; background-size: 100% 100%;" icon="ui-icon-document"/>-->
                                 </p:column>
 
-                                <p:column headerText="..." width="25" style="height: 16px;padding: 0px;" exportable="false">  
-                                    <f:facet name="header"><h:outputText value="..." /></f:facet>
-                                    <p:commandButton  style="width: 23px; height: 21px;padding: 0px; padding: 0px; padding-bottom: 0px; padding-top: 0px" id="selectButton" 
-                                                      update=":form:display, datosVCEmpleado" oncomplete="datosDialog.show()" icon="ui-icon-search" title="View" >  
+                                <p:column headerText="..." width="25" style="height: 16px;padding: 0px; text-align: center" exportable="false">  
+                                    <f:facet name="header"><h:outputText id="addPorcentaje" value="..." />
+                                        <p:tooltip for="addPorcentaje" value="#{msg['adicionarP']}"/>
+                                    </f:facet>
+                                    <p:commandButton value="" style="width:21px; height: 20px; background-repeat: no-repeat; border: none; background-size: 100% 100%; background-image: url(Imagenes/Iconos/nuevoRegistro.png);" id="selectButton" 
+                                                      update=":form:display, datosVCEmpleado" oncomplete="datosDialog.show()" title="#{msg['adicionarP']}" >  
                                         <f:setPropertyActionListener value="#{info}" target="#{controlVigenciasCargos.vigenciaSeleccionada}" />  
                                     </p:commandButton>  
                                 </p:column>     
@@ -263,10 +269,10 @@
 
                             <p:commandButton id="aceptarE" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar ? true : false }" actionListener="#{controlVigenciasCargos.actualizarEstructura()}" process="@this" onclick="estructurasDialog.hide()"
                                              style="position: absolute; top: 400px; left: 522px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"/>
-                                
+
                             <p:commandButton id="atrasE" value="#{msg['atras']}" actionListener="#{controlVigenciasCargos.cancelarCambioEstructura()}" process="@this" onclick="estructurasDialog.hide()"
                                              style="position: absolute; top: 400px; left: 614px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"/>
-                                
+
                         </p:dialog>
 
                         <!-- DIALOGO L.O.V ESTATICO DE MOTIVOS CAMBIOS CARGOS -->
@@ -298,7 +304,7 @@
 
                             <p:commandButton id="aceptarM" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" actionListener="#{controlVigenciasCargos.actualizarMotivo()}" process="@this" onclick="motivosDialog.hide()"
                                              style="position: relative; left: 220px; width: 90px; top: 10px ; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"/>
-                                
+
                             <p:commandButton id="atrasM" value="#{msg['atras']}"  actionListener="#{controlVigenciasCargos.cancelarCambioMotivo()}"  process="@this" onclick="motivosDialog.hide()"
                                              style="position: relative; left: 220px; width: 90px; top: 10px ;height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"/>    
 
@@ -340,10 +346,10 @@
 
                             <p:commandButton id="aceptarC" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" actionListener="#{controlVigenciasCargos.actualizarCargo()}" process="@this" onclick="cargosDialog.hide()"
                                              style="position: absolute; top: 400px; left: 290px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"/>
-                                
+
                             <p:commandButton id="atrasC" value="#{msg['atras']}"  actionListener="#{controlVigenciasCargos.cancelarCambioCargo()}" process="@this" onclick="cargosDialog.hide()"
                                              style="position: absolute; top: 400px; left: 380px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"/>
-                                
+
                         </p:dialog>
 
                         <!-- DIALOGO DE DETALLES VIGENCIAS CARGOS -->
@@ -403,11 +409,11 @@
 
                             <p:commandButton id="AceptarEmplJ" value="#{msg['aceptar']}" actionListener="#{controlVigenciasCargos.actualizarEmpleadoJefe()}" process="@this" disabled="#{controlVigenciasCargos.aceptar}" onclick="dialogoEmpleadoJefe.hide()"
                                              style="position: absolute; top: 260px; left: 560px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"/>
-                                
+
                             <p:commandButton value="#{msg['atras']}"  actionListener="#{controlVigenciasCargos.cancelarEmpleadoJefe()}" process="@this" onclick="dialogoEmpleadoJefe.hide()"
                                              style="position: absolute; top: 260px; left: 653px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"/>
                         </p:dialog>
-                        
+
                         <h:outputText id="informacionRegistro" value="#{msg['infoRegistro']} #{controlVigenciasCargos.infoRegistro }" style="position: absolute; left: 15px; top: 470px; font-weight: bold"/>
                         <p:commandButton id="ACEPTAR" style="position: absolute; left: 675px; top: 470px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" onclick="confirmarGuardar.show();" update=":form:datosVCEmpleado" process="@this" disabled="#{controlVigenciasCargos.guardado}"/>
                         <p:commandButton id="ATRAS" style="position: absolute; left: 765px; top: 470px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" actionListener="#{controlVigenciasCargos.salir()}" action="nomina" process="@this" />
@@ -491,7 +497,7 @@
                         <center><strong><h:outputText id="informacion" value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaVC" style="border: none;">
-                            
+
                             <strong><h:outputText value="*#{msg['fechaN']}" style=" position: absolute; top: 75px" /></strong>
                             <div style=" position: absolute; top: 70px; left: 120px;">
                                 <lnk:calendar id="nuevaFecha" value="#{controlVigenciasCargos.nuevaVigencia.fechavigencia}" height="12" width="60">

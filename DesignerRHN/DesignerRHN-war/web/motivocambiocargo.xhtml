@@ -13,15 +13,67 @@
                 <h:form id="form"> 
                     <p:growl id="growl" showDetail="true"/> 
                     <p:panel  id="PanelTotal" header="Motivos de Cambios de Cargos" style="position: absolute; width: 874px; height: 510px; text-align: left">  
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
+                        
+                        <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 40px; left: 20px; height: 24px">  
+                            <p:toolbarGroup align="left"> 
+
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; " actionListener="#{controlMotivosCambiosCargos.guardarMotivosCambiosCargos()}" process="@this" />
+                                <p:tooltip style="" for="guardarRapido" value="Guardar" />
+
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlMotivosCambiosCargos.editarCelda()}"  process="@this"/>
+                                <p:tooltip style="" for="editar" value="Editar" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlMotivosCambiosCargos.listaValoresBoton()}"   process="@this"/>
+                                <p:tooltip style="" for="listaValores" value="Lista de Valores" />
+
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlMotivosCambiosCargos.activarCtrlF11()}"  process="@this"/>
+                                <p:tooltip style="" for="filtrar" value="Activar filtrado" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlMotivosCambiosCargos.exportXLS()}"  ajax="false"/>
+                                <p:tooltip style="" for="exportarXLS" value="Exportar a XLS" />
+
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlMotivosCambiosCargos.limpiarNuevoMotivoCambioCargo()}"  ajax="false">
+                                    <p:dataExporter type="xml"  target=":formExportar:datosMotivoCambioCargoExportar" fileName="MotivosCambiosCargosXML" encoding="UTF-8"/> 
+                                </p:commandButton> 
+                                <p:tooltip style="" for="exportarXML" value="Exportar a XML" />
+
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlMotivosCambiosCargos.exportPDF()}" ajax="false"/>
+                                <p:tooltip style="" for="exportarPDF" value="Exportar a PDF" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png);  background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "  oncomplete="nuevoRegistroMotivoCambiosCargos.show()" update=":formularioDialogos:nuevoMotivoCambioCargo" process="@this"/> 
+                                <p:tooltip style="" for="insertar" value="Nuevo Motivos Cambios Cargos" />
+
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "  actionListener="#{controlMotivosCambiosCargos.verificarBorrado()}" process="@this"/>  
+                                <p:tooltip style="" for="eliminar" value="Eliminar Motivos Cambios Cargos" />
+
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlMotivosCambiosCargos.duplicarMotivosCambiosCargos()}" process="@this"/>  
+                                <p:tooltip style="" for="duplicar" value="Duplicar Motivos Cambios Cargos" />
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlMotivosCambiosCargos.verificarRastro()}" process="@this"/>  
+                                <p:tooltip style="" for="rastro" value="Rastro"/>
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlMotivosCambiosCargos.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="Refrescar"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlMotivosCambiosCargos.salir()}" action="atrasmotivocambiocargo"  process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
+                            </p:toolbarGroup>  
+                        </p:toolbar>
+                        
+                        <fieldset style="position: absolute;top: 77px;left: 10px;height: 380px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>Motivos de Cambios Cargos</strong></legend>
 
                             <p:dataTable id="datosMotivoCambioCargo" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 810px ; border: 1px;"                           
                                          value="#{controlMotivosCambiosCargos.listMotivosCambiosCargos}" scrollHeight="#{controlMotivosCambiosCargos.tamano}" 
                                          filteredValue="#{controlMotivosCambiosCargos.filtrarMotivosCambiosCargos}" emptyMessage="No se encontrarón resultados para la búsqueda"
                                          editable="true" editMode="cell"  scrollable="true" liveScroll="true" scrollRows="50"
-                                         scrollWidth="830" selection="#{controlMotivosCambiosCargos.motivoCambioGargoSeleccionado}" selectionMode="single"
-                                         >
+                                         scrollWidth="830" selection="#{controlMotivosCambiosCargos.motivoCambioGargoSeleccionado}" selectionMode="single">
                                 <p:ajax event="filter" listener="#{controlMotivosCambiosCargos.eventoFiltrar()}"/>
 
                                 <p:column headerText="Código" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains" id="codigo" width="20" filterStyle="display: none; visibility: hidden;" >                                  
@@ -48,64 +100,11 @@
                                 </p:column>
                             </p:dataTable>
 
+                        <h:outputText id="informacionRegistro" value="#{controlMotivosCambiosCargos.infoRegistro}" style="position: relative; left: 10px; top: 10px; font-weight: bold"/>
                         </fieldset>
 
-                        <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">  
-                            <p:toolbarGroup align="left"> 
-
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlMotivosCambiosCargos.guardarMotivosCambiosCargos()}" process="@this" />
-                                <p:tooltip style="" for="guardarRapido" value="Guardar" />
-
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlMotivosCambiosCargos.editarCelda()}"  process="@this"/>
-                                <p:tooltip style="" for="editar" value="Editar" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlMotivosCambiosCargos.listaValoresBoton()}"   process="@this"/>
-                                <p:tooltip style="" for="listaValores" value="Lista de Valores" />
-
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlMotivosCambiosCargos.activarCtrlF11()}"  process="@this"/>
-                                <p:tooltip style="" for="filtrar" value="Activar filtrado" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlMotivosCambiosCargos.exportXLS()}"  ajax="false"/>
-                                <p:tooltip style="" for="exportarXLS" value="Exportar a XLS" />
-
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlMotivosCambiosCargos.limpiarNuevoMotivoCambioCargo()}"  ajax="false">
-                                    <p:dataExporter type="xml"  target=":formExportar:datosMotivoCambioCargoExportar" fileName="MotivosCambiosCargosXML" encoding="UTF-8"/> 
-                                </p:commandButton> 
-                                <p:tooltip style="" for="exportarXML" value="Exportar a XML" />
-
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlMotivosCambiosCargos.exportPDF()}" ajax="false"/>
-                                <p:tooltip style="" for="exportarPDF" value="Exportar a PDF" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg);  background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  oncomplete="nuevoRegistroMotivoCambiosCargos.show()" update=":formularioDialogos:nuevoMotivoCambioCargo" process="@this"/> 
-                                <p:tooltip style="" for="insertar" value="Nuevo Motivos Cambios Cargos" />
-
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlMotivosCambiosCargos.verificarBorrado()}" process="@this"/>  
-                                <p:tooltip style="" for="eliminar" value="Eliminar Motivos Cambios Cargos" />
-
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlMotivosCambiosCargos.duplicarMotivosCambiosCargos()}" process="@this"/>  
-                                <p:tooltip style="" for="duplicar" value="Duplicar Motivos Cambios Cargos" />
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlMotivosCambiosCargos.verificarRastro()}" process="@this"/>  
-                                <p:tooltip style="" for="rastro" value="Rastro"/>
-
-                                <p:separator style="position: relative; top: -9px"/>
-
-                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlMotivosCambiosCargos.cancelarModificacion()}" process="@this"/>  
-                                <p:tooltip  for="refrescar" value="Refrescar"/>
-
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlMotivosCambiosCargos.salir()}" action="atrasmotivocambiocargo"  process="@this"/>  
-                                <p:tooltip  for="salir" value="Salir"/>
-                            </p:toolbarGroup>  
-                        </p:toolbar>
-
-                        <h:outputText id="informacionRegistro" value="#{controlMotivosCambiosCargos.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
-                        <p:commandButton style=" position: absolute; left: 690px; top: 470px;  font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  onclick="confirmarGuardar.show();" disabled="#{controlMotivosCambiosCargos.guardado}"  update="datosMotivoCambioCargo"  process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 795px; top: 470px;  font-family: Arial, Helvetica, sans-serif;" action="atrasmotivocambiocargo" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras"    />
-
+                        <p:commandButton style=" position: absolute; left: 680px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value=""  onclick="confirmarGuardar.show();" disabled="#{controlMotivosCambiosCargos.guardado}"  update="datosMotivoCambioCargo"  process="@this"   />
+                        <p:commandButton style=" position: absolute; left: 770px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" action="atrasmotivocambiocargo" id="ATRAS" value=""    />
 
                         <p:dialog id="confirmarGuardar" header="ATENCION...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />

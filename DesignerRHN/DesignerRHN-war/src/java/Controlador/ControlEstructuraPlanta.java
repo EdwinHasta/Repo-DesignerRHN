@@ -115,7 +115,7 @@ public class ControlEstructuraPlanta implements Serializable {
         paginaAnterior = "";
         //altos tablas
         altoTablaOrganigrama = "65";
-        altoTablaEstructura = "220";
+        altoTablaEstructura = "210";
         //Permitir index
         permitirIndexEstructura = true;
         //lovs
@@ -568,7 +568,7 @@ public class ControlEstructuraPlanta implements Serializable {
             getListaEstructuras();
             context.update("form:datosEstructura");
             if (banderaEstructura == 1) {
-                altoTablaEstructura = "220";
+                altoTablaEstructura = "210";
                 estructuraEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructura");
                 estructuraEstructura.setFilterStyle("display: none; visibility: hidden;");
                 estructuraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCodigo");
@@ -732,7 +732,7 @@ public class ControlEstructuraPlanta implements Serializable {
 
     public void cancelarModificacionEstructura() {
         if (banderaEstructura == 1) {
-            altoTablaEstructura = "220";
+            altoTablaEstructura = "210";
             estructuraEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructura");
             estructuraEstructura.setFilterStyle("display: none; visibility: hidden;");
             estructuraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCodigo");
@@ -867,7 +867,7 @@ public class ControlEstructuraPlanta implements Serializable {
         if (respueta == true) {
             if (validarCodigoNoExistente(1) == true) {
                 if (banderaEstructura == 1) {
-                    altoTablaEstructura = "220";
+                    altoTablaEstructura = "210";
                     estructuraEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructura");
                     estructuraEstructura.setFilterStyle("display: none; visibility: hidden;");
                     estructuraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCodigo");
@@ -972,7 +972,7 @@ public class ControlEstructuraPlanta implements Serializable {
         if (respueta == true) {
             if (validarCodigoNoExistente(2) == true) {
                 if (banderaEstructura == 1) {
-                    altoTablaEstructura = "220";
+                    altoTablaEstructura = "210";
                     estructuraEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructura");
                     estructuraEstructura.setFilterStyle("display: none; visibility: hidden;");
                     estructuraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCodigo");
@@ -1131,7 +1131,7 @@ public class ControlEstructuraPlanta implements Serializable {
         }
         if (indexEstructura >= 0) {
             if (banderaEstructura == 0) {
-                altoTablaEstructura = "198";
+                altoTablaEstructura = "188";
                 estructuraEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructura");
                 estructuraEstructura.setFilterStyle("width: 70px");
                 estructuraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCodigo");
@@ -1147,7 +1147,7 @@ public class ControlEstructuraPlanta implements Serializable {
                 RequestContext.getCurrentInstance().update("form:datosEstructura");
                 banderaEstructura = 1;
             } else if (banderaEstructura == 1) {
-                altoTablaEstructura = "220";
+                altoTablaEstructura = "210";
                 estructuraEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructura");
                 estructuraEstructura.setFilterStyle("display: none; visibility: hidden;");
                 estructuraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCodigo");
@@ -1191,7 +1191,7 @@ public class ControlEstructuraPlanta implements Serializable {
             tipoLista = 0;
         }
         if (banderaEstructura == 1) {
-            altoTablaEstructura = "220";
+            altoTablaEstructura = "210";
             estructuraEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructura");
             estructuraEstructura.setFilterStyle("display: none; visibility: hidden;");
             estructuraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCodigo");
@@ -1229,7 +1229,7 @@ public class ControlEstructuraPlanta implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:ACEPTAR");
         altoTablaOrganigrama = "65";
-        altoTablaEstructura = "220";
+        altoTablaEstructura = "210";
         RequestContext.getCurrentInstance().update("form:datosEstructura");
         RequestContext.getCurrentInstance().update("form:datosOrganigrama");
     }

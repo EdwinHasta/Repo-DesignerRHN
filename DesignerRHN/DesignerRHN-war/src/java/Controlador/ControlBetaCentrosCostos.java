@@ -107,7 +107,7 @@ public class ControlBetaCentrosCostos implements Serializable {
         filtradoListaEmpresas = null;
         guardado = true;
         banderaSeleccionCentrosCostosPorEmpresa = false;
-        tamano = 260;
+        tamano = 285;
         buscarCentrocosto = false;
         mostrartodos = true;
     }
@@ -376,7 +376,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                 //7 
                 dimensiones = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:dimensiones");
                 dimensiones.setFilterStyle("display: none; visibility: hidden;");
-                tamano = 260;
+                tamano = 285;
                 bandera = 0;
                 filtrarCentrosCostos = null;
                 tipoLista = 0;
@@ -434,7 +434,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                 codigoCTT.setFilterStyle("display: none; visibility: hidden;");
                 dimensiones = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:dimensiones");
                 dimensiones.setFilterStyle("display: none; visibility: hidden;");
-                tamano = 260;
+                tamano = 285;
                 bandera = 0;
                 filtrarCentrosCostos = null;
                 tipoLista = 0;
@@ -918,7 +918,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                     codigoCTT.setFilterStyle("display: none; visibility: hidden;");
                     dimensiones = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:dimensiones");
                     dimensiones.setFilterStyle("display: none; visibility: hidden;");
-                    tamano = 260;
+                    tamano = 285;
                     RequestContext.getCurrentInstance().update("form:datosCentrosCostos");
 
                     bandera = 0;
@@ -1136,7 +1136,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                 //7 COMBO BOX
                 dimensiones = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:dimensiones");
                 dimensiones.setFilterStyle("display: none; visibility: hidden;");
-                tamano = 260;
+                tamano = 285;
                 RequestContext.getCurrentInstance().update("form:datosCentrosCostos");
                 bandera = 0;
                 filtrarCentrosCostos = null;
@@ -1471,7 +1471,7 @@ public class ControlBetaCentrosCostos implements Serializable {
 
             FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 0) {
-                tamano = 236;
+                tamano = 261;
                 System.out.println("Activar");
                 codigoCC = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoCC");
                 codigoCC.setFilterStyle("width: 40px");
@@ -1510,7 +1510,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                 codigoCTT.setFilterStyle("display: none; visibility: hidden;");
                 dimensiones = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:dimensiones");
                 dimensiones.setFilterStyle("display: none; visibility: hidden;");
-                tamano = 260;
+                tamano = 285;
                 RequestContext.getCurrentInstance().update("form:datosCentrosCostos");
                 bandera = 0;
                 filtrarCentrosCostos = null;

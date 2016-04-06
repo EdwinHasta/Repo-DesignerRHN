@@ -1702,7 +1702,7 @@ public class ControlVigenciasCargos implements Serializable {
             tipoLista = 1;
         }
         RequestContext context = RequestContext.getCurrentInstance();
-        infoRegistro = "Cantidad de registros: " + filterVC.size();
+        //infoRegistro = "Cantidad de registros: " + filterVC.size();
         modificarInfoRegistro(filterVC.size());
         context.update("form:informacionRegistro");
     }

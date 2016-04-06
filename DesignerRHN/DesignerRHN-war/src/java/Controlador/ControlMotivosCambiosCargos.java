@@ -80,7 +80,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
         nuevoMotivoCambioCargo = new MotivosCambiosCargos();
         duplicarMotivoCambioCargo = new MotivosCambiosCargos();
         guardado = true;
-        tamano = 270;
+        tamano = 315;
     }
 
     @PostConstruct
@@ -177,7 +177,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
             filtrarMotivosCambiosCargos = null;
             tipoLista = 0;
         }
-        tamano = 270;
+        tamano = 315;
         borrarMotivoCambioCargo.clear();
         crearMotivoCambioCargo.clear();
         modificarMotivoCambioCargo.clear();
@@ -213,7 +213,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
             filtrarMotivosCambiosCargos = null;
             tipoLista = 0;
         }
-        tamano = 270;
+        tamano = 315;
         borrarMotivoCambioCargo.clear();
         crearMotivoCambioCargo.clear();
         modificarMotivoCambioCargo.clear();
@@ -238,7 +238,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            tamano = 246;
+            tamano = 291;
             codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioCargo:codigo");
             codigo.setFilterStyle("width: 40px");
             descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioCargo:descripcion");
@@ -252,7 +252,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
             codigo.setFilterStyle("display: none; visibility: hidden;");
             descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioCargo:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            tamano = 270;
+            tamano = 315;
             RequestContext.getCurrentInstance().update("form:datosMotivoCambioCargo");
             bandera = 0;
             filtrarMotivosCambiosCargos = null;
@@ -667,7 +667,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 FacesContext c = FacesContext.getCurrentInstance();
-                tamano = 270;
+                tamano = 315;
                 System.out.println("Desactivar");
                 codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioCargo:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
@@ -801,7 +801,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 FacesContext c = FacesContext.getCurrentInstance();
-                tamano = 270;
+                tamano = 315;
                 codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioCargo:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
                 descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioCargo:descripcion");

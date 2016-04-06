@@ -18,8 +18,65 @@
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlCargo.activarCtrlF11()}" process="@this"/> 
                     <p:hotkey bind="alt+p" actionListener="#{controlCargo.lovEmpresas()}" process="@this"/> 
 
+                    <p:panel id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px;  text-align: left" >  
+                        
+                        <p:remoteCommand name="posicionCargo" actionListener="#{controlCargo.posicionCargo()}"/>
 
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px;  text-align: left" >  
+                        <p:toolbar styleClass="cssToolbar" style="position: absolute; top: 33px; left: 12px; height: 23px">  
+                            <p:toolbarGroup align="left"> 
+
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; " actionListener="#{controlCargo.guardarGeneral()}" process="@this" />
+                                <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
+
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlCargo.editarCelda()}" process="@this"/>
+                                <p:tooltip  for="editar" value="#{msg['editar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/> 
+
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlCargo.listaValoresBoton()}"  process="@this"/>
+                                <p:tooltip  for="listaValores" value="#{msg['lista']}" />
+
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlCargo.activarCtrlF11()}" process="@this"/>
+                                <p:tooltip  for="filtrar" value="#{msg['filtrar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/> 
+
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " ajax="false" actionListener="#{controlCargo.validarExportXLS()}" />
+                                <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
+
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " ajax="false">
+                                    <p:dataExporter type="xml"  target="#{controlCargo.exportXML()}" fileName="#{controlCargo.nombreXML}" encoding="UTF-8"/> 
+                                </p:commandButton> 
+                                <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
+
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlCargo.validarExportPDF()}" ajax="false"/>
+                                <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
+
+                                <p:separator style="position: relative; top: -9px"/> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlCargo.dialogoNuevoRegistro()}" process="@this"/> 
+                                <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
+
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlCargo.verificarRegistroBorrar()}" process="@this"/>  
+                                <p:tooltip  for="eliminar" value="#{msg['eliminar']}" />
+
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlCargo.verificarRegistroDuplicar()}" process="@this"/>  
+                                <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/> 
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlCargo.verificarRastro()}" process="@this"/>  
+                                <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
+
+
+                                <p:separator style="position: relative; top: -9px"/> 
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlCargo.cancelarModificacionGeneral()}"   process="@this"/>  
+                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlCargo.salir()}" action="#{controlCargo.valorPaginaAnterior()}"  process="@this"/>  
+                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
+
+                            </p:toolbarGroup>  
+                        </p:toolbar> 
 
                         <h:outputText value="#{msg['empresa']}" style="position: absolute; top: 40px;left: 445px;color: #14388B;font-weight: bold"/>
                         <h:outputText id="nombreEmpresa" value="#{controlCargo.empresaActual.nombre}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 40px;left: 510px;"/>
@@ -27,11 +84,14 @@
                         <h:outputText id="nitEmpresa" value="#{controlCargo.empresaActual.nit}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 40px;left: 790px;"/>
 
 
-                        <p:commandButton style="position: absolute; left: 20px; top: 483px;" id="BUSCARCARGO" value="#{msg['buscarCargo']}"  actionListener="#{controlCargo.dispararDialogoBuscarCargo()}"  process="@this" />
-                        <p:commandButton style="position: absolute; left: 120px; top: 483px;" id="MOSTRARTODOS" value="#{msg['mostrarTodos']}"  actionListener="#{controlCargo.mostrarTodos()}"  process="@this" />
-
-                        <p:commandButton style="position: absolute; left: 690px; top: 483px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" disabled="#{controlCargo.cambiosPagina}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 786px; top: 483px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlCargo.salir()}" action="#{controlCargo.redirigir()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 20px; top: 483px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/buscardb.png); background-size: 100% 100%; 
+                                         background-repeat: no-repeat; border: none;" id="BUSCARCARGO" value=""  actionListener="#{controlCargo.dispararDialogoBuscarCargo()}"  process="@this" />
+                                         <p:tooltip for="BUSCARCARGO" value="#{msg['buscarCargo']}" />
+                        <p:commandButton style="position: absolute; left: 110px; top: 483px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/todosdb.png); background-size: 100% 100%; 
+                                         background-repeat: no-repeat; border: none;" id="MOSTRARTODOS" value=""  actionListener="#{controlCargo.mostrarTodos()}"  process="@this" />
+                                         <p:tooltip for="MOSTRARTODOS" value="#{msg['mostrarTodos']}" />
+                        <p:commandButton style="position: absolute; left: 680px; top: 483px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none;" id="ACEPTAR" value="" onclick="confirmarGuardarSalida.show();" disabled="#{controlCargo.cambiosPagina}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 770px; top: 483px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none;" id="ATRAS" value="" actionListener="#{controlCargo.salir()}" action="#{controlCargo.redirigir()}" process="@this" />
 
 
                         <fieldset style="position: absolute; left: 10px; top: 65px; width: 830px; height: 138px; border-radius: 10px; ">
@@ -237,65 +297,6 @@
                             </p:dataTable>  
                         </fieldset> 
 
-                        <p:remoteCommand name="posicionCargo" actionListener="#{controlCargo.posicionCargo()}"/>
-
-
-                        <p:toolbar style="position: absolute; top: 33px; left: 12px; height: 23px">  
-                            <p:toolbarGroup align="left"> 
-
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlCargo.guardarGeneral()}" process="@this" />
-                                <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
-
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCargo.editarCelda()}" process="@this"/>
-                                <p:tooltip  for="editar" value="#{msg['editar']}" />
-
-                                <p:separator style="position: relative; top: -9px"/> 
-
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCargo.listaValoresBoton()}"  process="@this"/>
-                                <p:tooltip  for="listaValores" value="#{msg['lista']}" />
-
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCargo.activarCtrlF11()}" process="@this"/>
-                                <p:tooltip  for="filtrar" value="#{msg['filtrar']}" />
-
-                                <p:separator style="position: relative; top: -9px"/> 
-
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlCargo.validarExportXLS()}" />
-                                <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
-
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false">
-                                    <p:dataExporter type="xml"  target="#{controlCargo.exportXML()}" fileName="#{controlCargo.nombreXML}" encoding="UTF-8"/> 
-                                </p:commandButton> 
-                                <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
-
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCargo.validarExportPDF()}" ajax="false"/>
-                                <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
-
-                                <p:separator style="position: relative; top: -9px"/> 
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCargo.dialogoNuevoRegistro()}" process="@this"/> 
-                                <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
-
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCargo.verificarRegistroBorrar()}" process="@this"/>  
-                                <p:tooltip  for="eliminar" value="#{msg['eliminar']}" />
-
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCargo.verificarRegistroDuplicar()}" process="@this"/>  
-                                <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
-
-                                <p:separator style="position: relative; top: -9px"/> 
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCargo.verificarRastro()}" process="@this"/>  
-                                <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
-
-
-                                <p:separator style="position: relative; top: -9px"/> 
-
-                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCargo.cancelarModificacionGeneral()}"   process="@this"/>  
-                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
-
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCargo.salir()}" action="#{controlCargo.valorPaginaAnterior()}"  process="@this"/>  
-                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
-
-
-                            </p:toolbarGroup>  
-                        </p:toolbar> 
 
                         <fieldset style="position: absolute; left: 10px; top: 220px; width: 415px; height: 115px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['sueldosMercados']}</strong></legend>
@@ -369,8 +370,6 @@
 
                             </p:dataTable>  
                         </fieldset> 
-
-
 
                         <fieldset style="position: absolute; left: 10px; top: 353px; width: 415px; height: 115px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['competenciasCargos']}</strong></legend>
@@ -471,9 +470,7 @@
                                         <p:commandButton style="width: 130px; margin: -14px; height: 26px; border: none; color: blue" id="fooEnfoque"  action="cargo" value=" "/>
                                     </f:facet>
                                 </p:column>
-
                             </p:dataTable>  
-
 
                             <fieldset style="position: absolute; left: 10px; top: 130px; width: 365px; height: 112px; border-radius: 10px; border: none">
                                 <h:outputText id="legendDetalleCargo"  style="color: blue; font-weight: bold" value="#{controlCargo.legendDetalleCargo}"/>
@@ -482,11 +479,8 @@
                                     <p:ajax event="change" process="@this" listener="#{controlCargo.modificacionesDetalleCargo()}"/>
                                 </p:inputTextarea>
                             </fieldset> 
-
                         </fieldset> 
-
                     </p:panel>
-
 
                     <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 20px; top: 10px;"  />

@@ -16,11 +16,66 @@
                     <f:loadBundle basename="Recursos.estructura" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
 
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px;" >  
+                    <p:panel id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px;" >  
+
+                        <p:toolbar styleClass="cssToolbar" style="position: absolute; top: 37px; left: 12px; height: 24px">
+                            <p:toolbarGroup align="left"> 
+
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; " actionListener="#{controlEstructura.guardarCambiosOrganigramas()}" process="@this" />
+                                <p:tooltip for="guardarRapido" value="#{msg['guardar']}" />
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlEstructura.editarCelda()}" process="@this"/>
+                                <p:tooltip  for="editar" value="#{msg['editar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlEstructura.listaValoresBoton()}" process="@this"/>
+                                <p:tooltip  for="listaValores" value="#{msg['lista']}" />
+
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlEstructura.activarCtrlF11()}" process="@this"/>
+                                <p:tooltip for="filtrar" value="#{msg['filtrar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " ajax="false" actionListener="#{controlEstructura.exportXLS()}" />
+                                <p:tooltip for="exportarXLS" value="#{msg['xls']}" />
+
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "  ajax="false">
+                                    <p:dataExporter type="xml"  target=":formExportar:datosOrganigramasExportar" fileName="OrganigramasXML" encoding="UTF-8"/> 
+                                </p:commandButton> 
+                                <p:tooltip for="exportarXML" value="#{msg['xml']}" />
+
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlEstructura.exportPDF()}" ajax="false"/>
+                                <p:tooltip for="exportarPDF" value="#{msg['pdf']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " oncomplete="NuevoRegistroOrganigramas.show()" update=":formularioDialogos:nuevoOrganigrama"  process="@this"/> 
+                                <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
+
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlEstructura.borrarOrganigrama()}" process="@this"/>  
+                                <p:tooltip for="eliminar" value="#{msg['eliminar']}" />
+
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlEstructura.duplicarOrg()}"  process="@this"/>  
+                                <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlEstructura.verificarRastro()}" process="@this"/>  
+                                <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlEstructura.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlEstructura.salir()}" action="#{controlEstructura.redirigir()}" process="@this"/>  
+                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
+
+                            </p:toolbarGroup>  
+                        </p:toolbar> 
 
                         <fieldset style="position: relative; top: 40px; width: 830px; height: 120px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['organigramas']}</strong></legend>
-                            
+
                             <p:dataTable id="datosOrganigramas" var="organigrama" style="width: 814px;" value="#{controlEstructura.listaOrganigramas}"
                                          rowKey="#{organigrama.secuencia}" scrollable="true" scrollHeight="#{controlEstructura.altoTabla}" scrollWidth="830" editable="true" 
                                          widgetVar="datosOrganigramas" rowIndexVar="indice" filteredValue="#{controlEstructura.filtradoListaOrganigramas}" 
@@ -102,74 +157,25 @@
                                     <f:facet name="header">  
                                         <h:outputText value="#{msg['estado']}" />  
                                     </f:facet> 
-                                    <p:selectOneMenu id="editEstadoOrganigrama" value="#{organigrama.estadoOrg}" style="width: 120px; font-weight: bold;" panelStyle="width: 115px" >  
-                                        <f:selectItem itemLabel="#{msg['activo']}" itemValue="ACTIVO" />  
-                                        <f:selectItem itemLabel="#{msg['inactivo']}" itemValue="INACTIVO" />
-                                        <p:ajax listener="#{controlEstructura.seleccionarEstado(organigrama.estadoOrg, indice, 4)}" update="@this" />
-                                    </p:selectOneMenu>
+                                    <p:cellEditor> 
+                                        <f:facet name="output"><h:outputText value="#{organigrama.estadoOrg}" style="text-transform: uppercase" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:selectOneMenu id="editEstadoOrganigrama" value="#{organigrama.estadoOrg}" style="width: 120px; font-weight: bold;" panelStyle="width: 115px" >  
+                                                <f:selectItem itemLabel="#{msg['activo']}" itemValue="ACTIVO" />  
+                                                <f:selectItem itemLabel="#{msg['inactivo']}" itemValue="INACTIVO" />
+                                                <p:ajax listener="#{controlEstructura.seleccionarEstado(organigrama.estadoOrg, indice, 4)}" update="@this" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                    </p:cellEditor>  
                                 </p:column>
                             </p:dataTable> 
-                            
+
                             <h:outputText id="informacionRegistro" value="#{controlEstructura.infoRegistro}" style="position: absolute; left: 15px; top: 115px; font-weight: bold"/>
-                            
+
                         </fieldset>
-                        
+
                         <p:remoteCommand name="posicionNIT" actionListener="#{controlEstructura.posicionNIT()}"/>
 
-                        <p:toolbar style="position: absolute; top: 37px; left: 12px; height: 23px">
-                            <p:toolbarGroup align="left"> 
-
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlEstructura.guardarCambiosOrganigramas()}" process="@this" />
-                                <p:tooltip for="guardarRapido" value="#{msg['guardar']}" />
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEstructura.editarCelda()}" process="@this"/>
-                                <p:tooltip  for="editar" value="#{msg['editar']}" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEstructura.listaValoresBoton()}" process="@this"/>
-                                <p:tooltip  for="listaValores" value="#{msg['lista']}" />
-
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEstructura.activarCtrlF11()}" process="@this"/>
-                                <p:tooltip for="filtrar" value="#{msg['filtrar']}" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlEstructura.exportXLS()}" />
-                                <p:tooltip for="exportarXLS" value="#{msg['xls']}" />
-
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  ajax="false">
-                                    <p:dataExporter type="xml"  target=":formExportar:datosOrganigramasExportar" fileName="OrganigramasXML" encoding="UTF-8"/> 
-                                </p:commandButton> 
-                                <p:tooltip for="exportarXML" value="#{msg['xml']}" />
-
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEstructura.exportPDF()}" ajax="false"/>
-                                <p:tooltip for="exportarPDF" value="#{msg['pdf']}" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-                                
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroOrganigramas.show()" update=":formularioDialogos:nuevoOrganigrama"  process="@this"/> 
-                                <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
-
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEstructura.borrarOrganigrama()}" process="@this"/>  
-                                <p:tooltip for="eliminar" value="#{msg['eliminar']}" />
-
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEstructura.duplicarOrg()}"  process="@this"/>  
-                                <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
-                                
-                                <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEstructura.verificarRastro()}" process="@this"/>  
-                                <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
-
-                                <p:separator style="position: relative; top: -9px"/>
-                                
-                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEstructura.cancelarModificacion()}" process="@this"/>  
-                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
-                                
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEstructura.salir()}" action="#{controlEstructura.redirigir()}" process="@this"/>  
-                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
-
-                            </p:toolbarGroup>  
-                        </p:toolbar> 
 
                         <fieldset style="position: absolute; top: 210px; width: 830px; height: 254px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['arbol']}</strong></legend>                        
@@ -186,10 +192,10 @@
                             <p:commandButton id="btnRiesgosProfesionales" value="#{msg['riesgosprofesionales']}" style="position: relative; top: 215px;"/>
                             <p:commandButton id="btnReportePlanta" value="#{msg['reporteplantapersonal']}" style="position: relative; top: 215px;"/>
                         </fieldset>
-                        
+
                         <p:commandButton id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" style="position: absolute; top: 480px; left: 683px" onclick="confirmarGuardar.show();" disabled="#{controlEstructura.guardado}" update=":form:datosOrganigramas" process="@this" />
                         <p:commandButton id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" style="position: absolute; top: 480px; left: 775px" actionListener="#{controlEstructura.salir()}"  process="@this" action="#{controlEstructura.redirigir()}" />
-                        
+
                     </p:panel>
 
                     <!-- DIALOGO L.O.V ESTATICO DE EMPRESAS -->
@@ -217,15 +223,15 @@
                                 <h:outputText  value="#{empresa.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroEmpresa" value="#{controlEstructura.infoRegistroEmpresa}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton icon="ui-icon-check" id="aceptarE" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEstructura.aceptar}" actionListener="#{controlEstructura.actualizarEmpresa()}"  process="@this" />
-                            
+
                         <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasE" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlEstructura.cancelarEmpresa()}" process="@this" />
-                            
+
                     </p:dialog>
-                    
+
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarRastro']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
@@ -279,15 +285,15 @@
                         <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlEstructura.salir()}" action="#{controlEstructura.redirigir()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
-                    
+
                     <p:dialog id="validacioNuevoOrganigrama" header="#{msg['atencion']}" widgetVar="validacioNuevoOrganigrama"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['validacionNuevo']} #{controlEstructura.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="validacioNuevoOrganigrama.hide();" style="position: absolute; top: 55px; left: 290px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlEstructura.activarCtrlF11()}"/>
-                    
+
                 </h:form>
                 <h:form id="formularioDialogos" >
                     <p:dialog id="NuevoRegistroOrganigramas" header="#{msg['nuevoregistro']}" widgetVar="NuevoRegistroOrganigramas" closable="false" resizable="false"  draggable="false" modal="true" height="260" width="330" style="padding: 0px">  
@@ -295,7 +301,7 @@
                         <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevoOrganigrama" style="border: none; position: absolute; top: -30px;">
-                            
+
                             <strong><h:outputText value="#{msg['fechaN']}" style="position: absolute; top: 75px" /></strong>
                             <div id="posicionFechaNuevoReg" style=" position: absolute; top: 70px; left: 120px;width: 120px">
                                 <lnk:calendar id="nuevaFecha" value="#{controlEstructura.nuevoOrganigrama.fecha}" >
@@ -343,7 +349,7 @@
                         <center><strong><h:outputText value="#{msg['duplicarinformacion']}" style="color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarOrganigrama" style="border: none; position: absolute; top: -30px;">
-                            
+
                             <strong><h:outputText value="#{msg['fechaN']}" style="position: absolute; top: 75px;" /></strong>
                             <div id="posicionFechaDuplicarReg" style="position: absolute; top: 70px; left: 120px;width: 120px">
                                 <lnk:calendar id="duplicarFecha" value="#{controlEstructura.duplicarOrganigrama.fecha}" >
@@ -407,7 +413,7 @@
                     <p:dialog id="editarEs" header="#{msg['estadoE']}" widgetVar="editarEs" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlEstructura.editarOrganigrama.estado}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>
-                    
+
                 </h:form>
                 <h:form id="formExportar">
                     <p:dataTable id="datosOrganigramasExportar" var="infoExp" style="visibility: hidden; display: none;"                           

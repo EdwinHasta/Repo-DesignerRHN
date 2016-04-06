@@ -62,68 +62,68 @@
                         <p:toolbar styleClass="cssToolbar" style="position: absolute; top: 37px; left: 12px; height: 23px">  
                             <p:toolbarGroup align="left"> 
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none; width: 25px; height: 25px; " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; " 
                                                  id="guardarRapido" value="" actionListener="#{controlConcepto.guardarCambios()}" process="@this" />
                                 <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  id="editar" value="" actionListener="#{controlConcepto.editarCelda()}" process="@this"/>
                                 <!--id="editar" value="" actionListener="#/{controlConcepto.editarCelda()}" process="@this"/>-->
                                 <p:tooltip  for="editar" value="#{msg['editar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  id="listaValores" value="" actionListener="#{controlConcepto.listaValoresBoton()}" process="@this"/>
                                 <p:tooltip  for="listaValores" value="#{msg['lista']}" />
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  id="filtrar" value="" actionListener="#{controlConcepto.activarCtrlF11()}" process="@this"/>
                                 <p:tooltip for="filtrar" value="#{msg['filtrar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  id="exportarXLS" value="" ajax="false" actionListener="#{controlConcepto.exportXLS()}"/>
                                 <p:tooltip for="exportarXLS" value="#{msg['xls']}" />
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  id="exportarXML" value="" actionListener="#{controlConcepto.limpiarNuevoConcepto()}" ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportar:datosConceptosExportar" fileName="ConceptosXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  id="exportarPDF" value="" actionListener="#{controlConcepto.exportPDF()}" ajax="false"/>
                                 <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  id="insertar" value="" oncomplete="NuevoConceptoDialogo.show()"  process="@this"/> 
                                 <p:tooltip for="insertar" value="#{msg['nuevo']}" />
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  id="eliminar" value="" actionListener="#{controlConcepto.borrarConcepto()}" process="@this"/>  
                                 <p:tooltip  for="eliminar" value="#{msg['eliminar']}" />
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  id="duplicar" value="" actionListener="#{controlConcepto.duplicarRegistro()}"  process="@this"/>  
                                 <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  id="rastro" value="" actionListener="#{controlConcepto.verificarRastro()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  id="refrescar" value="" actionListener="#{controlConcepto.refrescar()}" process="@this" update=":form:datosConceptos"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  id="salir" value="" actionListener="#{controlConcepto.refrescar()}" action="#{controlConcepto.redirigir()}" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
 
@@ -437,19 +437,19 @@
 
                         <h:outputText id="informacionRegistro" value="#{controlConcepto.infoRegistro}" style="position: absolute; left: 15px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton icon="ui-icon-extlink" style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none; width: 130px; height: 30px; position: absolute; left: 9px; top: 383px; color: white;" value="#{msg['grupoconceptos']}" id="grupoConcepto" 
+                        <p:commandButton icon="ui-icon-extlink" style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 130px; height: 30px; position: absolute; left: 9px; top: 383px; color: white;" value="#{msg['grupoconceptos']}" id="grupoConcepto" 
                                          action="grupoconceptoPag" immediate="#{controlConcepto.activarSelec()}" actionListener="#{controlGrupoConcepto.recibirPagina('atrasgrupoconcepto')}" process="@this" update="@this"/>
-                        <p:commandButton icon="ui-icon-extlink" style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none; width: 130px; height: 30px; position: absolute; left: 145px; top: 383px; color: white;" value="#{msg['conceptosredondeos']}" id="conceptoRedondeos" 
+                        <p:commandButton icon="ui-icon-extlink" style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 130px; height: 30px; position: absolute; left: 145px; top: 383px; color: white;" value="#{msg['conceptosredondeos']}" id="conceptoRedondeos" 
                                          action="conceptoredondeoPag" immediate="#{controlConcepto.activarSelec()}" actionListener="#{controlConceptoRedondeo.recibirPagina('atrasconceptoredondeo') }" process="@this" update="@this"/>
-                        <p:commandButton icon="ui-icon-extlink" style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none; width: 130px; height: 30px; position: absolute; left: 280px; top: 383px; color: white;" value="#{msg['unidadconcepto']}" id="unidadesConcepto" 
+                        <p:commandButton icon="ui-icon-extlink" style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 130px; height: 30px; position: absolute; left: 280px; top: 383px; color: white;" value="#{msg['unidadconcepto']}" id="unidadesConcepto" 
                                          action="conceptosoporte" immediate="#{controlConcepto.activarSelec()}" actionListener="#{controlConceptosSoportes.recibirPagina('atrasconceptosporte')}" process="@this" update="@this"/>
 
 
                         <p:commandButton style="width: 90px; height: 30px; background-image: url(Imagenes/Iconos/buscardb.png); background-size: 100% 100%; 
-                                         background-repeat: no-repeat; border: none; border: none; position: absolute; left: 670px; top: 383px;" 
+                                         background-repeat: no-repeat; border: none; position: absolute; left: 670px; top: 383px;" 
                                          id="buscarConcepto" value="" actionListener="#{controlConcepto.lovConcepto(0)}" process="@this" />
                         <p:commandButton style="width: 90px; height: 30px; background-image: url(Imagenes/Iconos/todosdb.png); background-size: 100% 100%; 
-                                         background-repeat: no-repeat; border: none; border: none; position: absolute; left: 765px; top: 383px;" 
+                                         background-repeat: no-repeat; border: none; position: absolute; left: 765px; top: 383px;" 
                                          disabled="#{controlConcepto.mostrarTodos}" id="mostrarTodos" actionListener="#{controlConcepto.mostrarTodosConceptos()}" value="" process="@this" />
 
                         <fieldset style="position: absolute; left: 5px; top: 420px; width: 835px; height: 70px; border-radius: 10px; padding: 0px">
@@ -474,7 +474,7 @@
                                     <p:ajax event="change" listener="#{controlConcepto.lovConcepto(1)}" update="@this"/>
                                 </p:inputText>
                                 <p:commandButton value="" actionListener="#{controlConcepto.lovConcepto(1)}" style=" background-image: url(Imagenes/Iconos/lupa.png); position: relative; 
-                                                 background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none; width: 23px; height: 23px;  top: 0px; margin: 1px; left: 700px" process="@this"/>
+                                                 background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px;  top: 0px; margin: 1px; left: 700px" process="@this"/>
                             </p:panel>
                             <p:commandButton value="#{msg['clonar']}" actionListener="#{controlConcepto.clonarConcepto()}" 
                                              style="position: relative; top: 1px; left: 760px; width: 50px; height: 50px; border: none" process="@this"/>
@@ -482,11 +482,11 @@
 
                         <p:commandButton style="position: absolute; left: 670px; top: 500px; height: 30px; width: 90px; 
                                          background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; 
-                                         background-repeat: no-repeat; border: none; border: none;" id="ACEPTAR" value="" onclick="confirmarGuardar.show();" 
+                                         background-repeat: no-repeat; border: none;" id="ACEPTAR" value="" onclick="confirmarGuardar.show();" 
                                          disabled="#{controlConcepto.guardado}"  process="@this" />
                         
                         <p:commandButton style="position: absolute; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none; left: 765px; top: 500px;" id="ATRAS" 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none; left: 765px; top: 500px;" id="ATRAS" 
                                          action="#{controlConcepto.redirigir()}" value="" actionListener="#{controlConcepto.refrescar()}" process="@this" />
                     </p:panel>
                 </h:form>
@@ -529,7 +529,7 @@
                                 <p:ajax event="change" listener="#{controlConcepto.autocompletarNuevoyDuplicado('CODIGOUNIDAD', controlConcepto.nuevoConcepto.unidad.codigo, 1)}" />
                                 <p:ajax event="dblclick" listener="#{controlConcepto.llamarLOVSNuevo_Duplicado(0, 1)}"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 23px; position: absolute; left: 311px; top: 160px; background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none;" 
+                            <p:commandButton style="width: 23px; height: 23px; position: absolute; left: 311px; top: 160px; background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" 
                                              value="" actionListener="#{controlConcepto.llamarLOVSNuevo_Duplicado(0, 1)}" process="@this" />
 
                             <strong><h:outputText value="*#{msg['nombreunidad']}" style="position: absolute; top: 195px" /></strong>
@@ -538,7 +538,7 @@
                                 <p:ajax event="change" listener="#{controlConcepto.autocompletarNuevoyDuplicado('NOMBREUNIDAD', controlConcepto.nuevoConcepto.unidad.nombre, 1)}" />
                                 <p:ajax event="dblclick" listener="#{controlConcepto.llamarLOVSNuevo_Duplicado(0, 1)}"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 23px; position: absolute; left: 311px; top: 190px; background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none;" 
+                            <p:commandButton style="width: 23px; height: 23px; position: absolute; left: 311px; top: 190px; background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" 
                                              value="" actionListener="#{controlConcepto.llamarLOVSNuevo_Duplicado(0, 1)}" process="@this" />
 
                             <strong><h:outputText value="#{msg['codigodesprendible']}" style="position: absolute; top: 225px" /></strong>
@@ -579,7 +579,7 @@
                                 <p:ajax event="change" listener="#{controlConcepto.autocompletarNuevoyDuplicado('TERCERO', controlConcepto.nuevoConcepto.tercero.nombre, 1)}" />
                                 <p:ajax event="dblclick" listener="#{controlConcepto.llamarLOVSNuevo_Duplicado(1, 1)}"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 23px; position: absolute; left: 651px; top: 160px; background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none;" 
+                            <p:commandButton style="width: 23px; height: 23px; position: absolute; left: 651px; top: 160px; background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" 
                                              value="" actionListener="#{controlConcepto.llamarLOVSNuevo_Duplicado(1, 1)}" process="@this" />
 
                             <strong><h:outputText value="#{msg['estadoo']}" style="position: absolute; top: 195px; left: 360px;" /></strong>
@@ -603,13 +603,13 @@
                             </p:inputText>
 
                             <p:commandButton id="limpiar" icon="ui-icon-trash" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 300px; background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; 
-                                             background-repeat: no-repeat; border: none; border: none; width: 130px; height: 30px; color: white;" 
+                                             background-repeat: no-repeat; border: none; width: 130px; height: 30px; color: white;" 
                                              actionListener="#{controlConcepto.limpiarNuevoConcepto()}" update="nuevoConcepto" process="@this"/>
                             <p:commandButton id="agregar" value="" style="position: absolute; left: 470px; top: 300px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none;"  
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;"  
                                              process="@this" actionListener="#{controlConcepto.agregarNuevoConcepto()}" update=":form:datosConceptos"/>
                             <p:commandButton id="cancelar" value="" style="position: absolute; left: 570px; top: 300px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none;"  
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;"  
                                              actionListener="#{controlConcepto.limpiarNuevoConcepto()}" update="nuevoConcepto" onclick="NuevoConceptoDialogo.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
@@ -648,7 +648,7 @@
                                 <p:ajax event="change" listener="#{controlConcepto.autocompletarNuevoyDuplicado('CODIGOUNIDAD', controlConcepto.duplicarConcepto.unidad.codigo, 2)}" />
                                 <p:ajax event="dblclick" listener="#{controlConcepto.llamarLOVSNuevo_Duplicado(0, 2)}"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 23px; position: absolute; left: 311px; top: 160px; background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none;" 
+                            <p:commandButton style="width: 23px; height: 23px; position: absolute; left: 311px; top: 160px; background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" 
                                              value="" actionListener="#{controlConcepto.llamarLOVSNuevo_Duplicado(0, 2)}" process="@this" />
 
                             <strong><h:outputText value="*#{msg['nombreunidad']}" style="position: absolute; top: 195px" /></strong>
@@ -658,7 +658,7 @@
                                 <p:ajax event="change" listener="#{controlConcepto.autocompletarNuevoyDuplicado('NOMBREUNIDAD', controlConcepto.duplicarConcepto.unidad.nombre, 2)}" />
                                 <p:ajax event="dblclick" listener="#{controlConcepto.llamarLOVSNuevo_Duplicado(0, 2)}"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 23px; position: absolute; left: 311px; top: 190px; background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none;" 
+                            <p:commandButton style="width: 23px; height: 23px; position: absolute; left: 311px; top: 190px; background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" 
                                              value="" actionListener="#{controlConcepto.llamarLOVSNuevo_Duplicado(0, 2)}"  process="@this" />
 
                             <strong><h:outputText value="#{msg['codigodesprendible']}" style="position: absolute; top: 225px" /></strong>
@@ -700,7 +700,7 @@
                                 <p:ajax event="change" listener="#{controlConcepto.autocompletarNuevoyDuplicado('TERCERO', controlConcepto.duplicarConcepto.tercero.nombre, 2)}" />
                                 <p:ajax event="dblclick" listener="#{controlConcepto.llamarLOVSNuevo_Duplicado(1, 2)}"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 23px; position: absolute; left: 651px; top: 160px; background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none;" value=""
+                            <p:commandButton style="width: 23px; height: 23px; position: absolute; left: 651px; top: 160px; background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" value=""
                                              actionListener="#{controlConcepto.llamarLOVSNuevo_Duplicado(1, 2)}"  process="@this" />
 
                             <strong><h:outputText value="#{msg['estadoo']}" style="position: absolute; top: 195px; left: 360px;" /></strong>
@@ -723,13 +723,13 @@
                             </p:inputText>
 
                             <p:commandButton id="limpiarDuplicado" icon="ui-icon-trash" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 310px; background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%;
-                                             background-repeat: no-repeat; border: none; border: none; width: 130px; height: 30px; color: white;" 
+                                             background-repeat: no-repeat; border: none; width: 130px; height: 30px; color: white;" 
                                              actionListener="#{controlConcepto.limpiarduplicar()}" update="duplicarConcepto" process="@this"/>
                             <p:commandButton id="agregarDuplicado" value="" style="position: absolute; left: 470px; top: 310px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none;"  
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;"  
                                              process="@this" actionListener="#{controlConcepto.confirmarDuplicar()}"/>
                             <p:commandButton id="cancelarDuplicado" value="" style="position: absolute; left: 570px; top: 310px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none;" update="duplicarConcepto" 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" update="duplicarConcepto" 
                                              actionListener="#{controlConcepto.limpiarduplicar()}"  onclick="DuplicarConceptoDialogo.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
@@ -762,10 +762,10 @@
 
                         <h:outputText id="infoRegistroUnidad" value="#{controlConcepto.infoRegistroUnidad}" style="position: absolute; left: 20px; top: 260px; font-weight: bold"/>
                         <p:commandButton id="aceptarU" style="position: absolute; top: 260px; left: 230px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none;" disabled="#{controlConcepto.aceptar}"  value="" 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" disabled="#{controlConcepto.aceptar}"  value="" 
                                          actionListener="#{controlConcepto.actualizarUnidad()}" process="@this"/>
                         <p:commandButton id="atrasU" style="position: absolute; top: 260px; left: 330px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none;" value=""  
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value=""  
                                          actionListener="#{controlConcepto.cancelarUnidades()}" process="@this"/>
                     </p:dialog>
 
@@ -798,10 +798,10 @@
                         <h:outputText id="infoRegistroTercero" value="#{controlConcepto.infoRegistroTercero}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
                         <p:commandButton id="aceptarT" style="position: relative; top: 15px; left: 230px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none;" value="" disabled="#{controlConcepto.aceptar}" 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlConcepto.aceptar}" 
                                          actionListener="#{controlConcepto.actualizarTercero()}" process="@this"/>
                         <p:commandButton id="atrasT" style="position: relative; top: 15px; left: 230px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none;" value="" 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" 
                                          actionListener="#{controlConcepto.cancelarTercero()}" process="@this"/>
                     </p:dialog>
 
@@ -835,10 +835,10 @@
                         <h:outputText id="infoRegistroEmpresa" value="#{controlConcepto.infoRegistroEmpresa}" style="position: absolute; left: 20px; top: 300px; font-weight: bold"/>
 
                         <p:commandButton id="aceptarE" style="position: relative; left: 230px; top: 10px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none;" value="" disabled="#{controlConcepto.aceptar}" 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlConcepto.aceptar}" 
                                          actionListener="#{controlConcepto.cambiarEmpresa()}" process="@this"/>
                         <p:commandButton id="atrasE" style="position: relative; left: 230px; top: 10px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none;" value="" 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" 
                                          actionListener="#{controlConcepto.cancelarCambioEmpresa()}" process="@this"/>
                     </p:dialog>
 
@@ -873,10 +873,10 @@
                         <h:outputText id="infoRegistroConcepto" value="#{controlConcepto.infoRegistroConcepto}" style="position: absolute; left: 20px; top: 370px; font-weight: bold"/>
 
                         <p:commandButton id="aceptarC" style="position: relative; left: 350px; top: 0px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none;" value="" disabled="#{controlConcepto.aceptar}" 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlConcepto.aceptar}" 
                                          actionListener="#{controlConcepto.seleccionConcepto()}" update=":formularioDialogos:lovConceptos" process="@this"/>
                         <p:commandButton id="atrasC" style="position: relative; left: 350px; top: 0px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none;" value=""
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value=""
                                          actionListener="#{controlConcepto.cancelarSeleccionConcepto()}" update=":formularioDialogos:lovConceptos :form:descripcionClon" process="@this"/>
                     </p:dialog>
 

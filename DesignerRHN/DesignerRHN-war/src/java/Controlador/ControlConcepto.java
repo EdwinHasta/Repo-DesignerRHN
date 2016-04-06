@@ -1063,7 +1063,7 @@ public class ControlConcepto implements Serializable {
             columnaCodigoAlternativo.setFilterStyle("width: 90%;");
             RequestContext.getCurrentInstance().update("form:datosConceptos");
             bandera = 1;
-          
+
         } else if (bandera == 1) {
             cargarTablaDefault();
         }
@@ -1396,10 +1396,11 @@ public class ControlConcepto implements Serializable {
         }
         if (listaConceptosEmpresa != null) {
             infoRegistro = "Cantidad de registros : " + listaConceptosEmpresa.size();
-            conceptoSeleccionado = null;
         } else {
             infoRegistro = "Cantidad de registros : 0";
         }
+
+        conceptoSeleccionado = null;
         context.update("form:informacionRegistro");
         context.update("form:mostrarTodos");
         context.update("form:datosConceptos");

@@ -13,21 +13,54 @@
             <ui:define name="body">      
                 <h:form id="form">
                     <f:loadBundle basename="Recursos.rastro" var="msg" />
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 12px; position: absolute; width: 685px; height: 490px;" >  
 
-                        <fieldset style="position: relative; top: 30px; width: 640px; max-width: 640px; height: 340px; border-radius: 10px; ">
+<!--<p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 12px; position: absolute; width: 685px; height: 490px;" >  -->
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="  position: absolute; width: 874px; height: 510px; text-align: left"> 
+
+                        <p:toolbar styleClass="cssToolbar" style="font-size: 12px; position: absolute; left: 18px; top: 33px; height: 24px;">  
+                            <p:toolbarGroup align="left"> 
+
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlEstructura.editarCelda()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="editar" value="#{msg['editar']}" />
+
+                                <p:separator />
+
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlRastro.activarCtrlF11()}" process="@this"/>
+                                <p:tooltip style="font-size: 12px" for="filtrar" value="#{msg['filtrar']}" />
+
+                                <p:separator />
+
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " ajax="false" actionListener="#{controlRastro.exportXLS()}" />
+                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="#{msg['xls']}" />
+
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "  ajax="false">
+                                    <p:dataExporter type="xml"  target=":formExportar:datosRastroExportar" fileName="RastrosXML" encoding="UTF-8"/> 
+                                </p:commandButton> 
+                                <p:tooltip style="font-size: 12px" for="exportarXML" value="#{msg['xml']}" />
+
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlRastro.exportPDF()}" ajax="false"/>
+                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}" />
+                            </p:toolbarGroup>  
+                        </p:toolbar> 
+
+                        <h:outputText style="position: absolute; left: 450px; top: 40px; width: 15px; height: 15px; background-color: #D1F0FF;"/>
+                        <h:outputText value="#{msg['insertados']}" style="position: absolute; left: 470px; top: 40px; font-weight:bold;"/>
+                        <h:outputText style="position: absolute; left: 660px; top: 40px; width: 15px; height: 15px; background-color: #C6FCD3;"/>
+                        <h:outputText value="#{msg['modificados']}" style="position: absolute; left: 680px; top: 40px; font-weight:bold;"/>
+
+                        <fieldset style="position: relative; top: 30px; width: 830px; max-width: 830px; height: 380px; border-radius: 10px; ">
                             <legend style="font-size: 12px; color: blue"><strong>#{msg['permisos']}</strong></legend>
                         </fieldset>
                         <div style="position: absolute; top: 85px; left: 25px">
                             <p:dataTable  id="datosRastro" style="font-size: 11px; width: 1152px;" var="rastro" value="#{controlRastro.listaRastros}"
-                                          scrollable="true" scrollHeight="277" scrollWidth="642" widgetVar="datosRastro" selection="#{controlRastro.seleccionRastro}" selectionMode="single"
+                                          scrollable="true" scrollHeight="327" scrollWidth="832" widgetVar="datosRastro" selection="#{controlRastro.seleccionRastro}" selectionMode="single"
                                           rowKey="#{rastro.secuencia}" filteredValue="#{controlRastro.filtradoListaRastros}" emptyMessage="#{msg['vacio']}"
                                           rowStyleClass="#{rastro.manipulacion eq 'I' ? 'registroInsertado' : rastro.manipulacion eq 'U' ? 'registroModificado': null}"
                                           liveScroll="true" scrollRows="20">
                                 <p:ajax event="rowSelect"/>
 
                                 <p:column id="btnDetalles" width="22" style="padding: 0px" >  
-                                    <p:commandButton id="btn" value=" " actionListener="#{controlRastro.detallesRastro(rastro)}" update="datosRastro" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 22px; height: 110%; border-radius: 0px" /> 
+                                    <p:commandButton id="btn" value=" " actionListener="#{controlRastro.detallesRastro(rastro)}" update="datosRastro" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 22px; height: 110%; border-radius: 0px" /> 
                                 </p:column> 
                                 <p:column id="nombreTabla" headerText="#{msg['nombredelatabla']}" width="150" sortBy="#{rastro.tabla}"  filterBy="#{rastro.tabla}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">  
                                     <h:outputText value="#{rastro.tabla}" />
@@ -58,41 +91,16 @@
                             </p:dataTable>  
                         </div>
 
-                        <h:outputText style="position: absolute; left: 300px; top: 45px; width: 15px; height: 15px; background-color: #D1F0FF;"/>
-                        <h:outputText value="#{msg['insertados']}" style="position: absolute; left: 320px; top: 45px; font-weight:bold;"/>
-                        <h:outputText style="position: absolute; left: 460px; top: 45px; width: 15px; height: 15px; background-color: #C6FCD3;"/>
-                        <h:outputText value="#{msg['modificados']}" style="position: absolute; left: 480px; top: 45px; font-weight:bold;"/>
+                        <p:commandButton icon="ui-icon-extlink" id="btnBuscarF" value="#{msg['buscar']}"  style="position: relative; top: 42px; height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" process="@this" actionListener="#{controlRastro.lovFecha()}" />
+                        <p:tooltip style="font-size: 12px" for="btnBuscarF" value="#{msg['buscarL']}" />
+                        <p:commandButton icon="ui-icon-extlink" id="btnConsultar" value="#{msg['consultar']}" style="position: relative; top: 42px; height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" process="@this" actionListener="#{controlRastro.btnConsultarDinamico()}" />
+                        <p:tooltip style="font-size: 12px" for="btnConsultar" value="#{msg['consultarL']}" />
+                        <p:commandButton icon="ui-icon-extlink" id="btnMostrarT" value="#{msg['mostrar']}" disabled="#{controlRastro.btnMostrarTodos}" style="position: relative; top: 42px; height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" process="@this" actionListener="#{controlRastro.mostrarTodos()}" update="datosRastro" />
 
-                        <p:toolbar style="font-size: 12px; position: absolute; left: 18px; top: 33px">  
-                            <p:toolbarGroup align="left"> 
-
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEstructura.editarCelda()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="editar" value="#{msg['editar']}" />
-
-                                <p:separator />
-
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlRastro.activarCtrlF11()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="filtrar" value="#{msg['filtrar']}" />
-
-                                <p:separator />
-
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlRastro.exportXLS()}" />
-                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="#{msg['xls']}" />
-
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  ajax="false">
-                                    <p:dataExporter type="xml"  target=":formExportar:datosRastroExportar" fileName="RastrosXML" encoding="UTF-8"/> 
-                                </p:commandButton> 
-                                <p:tooltip style="font-size: 12px" for="exportarXML" value="#{msg['xml']}" />
-
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlRastro.exportPDF()}" ajax="false"/>
-                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}" />
-                            </p:toolbarGroup>  
-                        </p:toolbar> 
-
-                        <p:commandButton id="btnBuscarF" value="#{msg['buscar']}"  style="position: relative; top: 32px;" process="@this" actionListener="#{controlRastro.lovFecha()}" />
-                        <p:commandButton id="btnMostrarT" value="#{msg['mostrar']}" disabled="#{controlRastro.btnMostrarTodos}" style="position: relative; top: 32px;" process="@this" actionListener="#{controlRastro.mostrarTodos()}" update="datosRastro" />
-                        <p:commandButton id="btnConsultar" value="#{controlRastro.btnValor}" style="position: relative; top: 32px;" process="@this" actionListener="#{controlRastro.btnConsultarDinamico()}" />
-                        <p:commandButton id="btnAtras" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 452px; left: 604px" process="@this" action="#{controlRastro.volverPaginaAnterior()}" />
+                        <p:commandButton id="btnAtras" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: absolute; top: 474px; left: 780px" process="@this" action="#{controlRastro.volverPaginaAnterior()}" />
                     </p:panel>
 
                     <!-- DIALOGO L.O.V ESTATICO FECHA -->
@@ -156,7 +164,7 @@
                                 <h:outputText  value="#{valor.valorposterior}"/>
                             </p:column>
                         </p:dataTable>
-                        
+
                         <p:commandButton id="volverVR" onclick="valorRastroDialogo.hide();" style="position: relative; left: 460px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['volver']}" process="@this"/>
                     </p:dialog>
 
@@ -166,25 +174,25 @@
                         <p:commandButton value="#{msg['si']}" onclick="confirmarEliminados.hide();" actionListener="#{controlRastro.seguirDialogos()}" style="position: absolute; top: 60px; left: 230px" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarEliminados.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="confirmarEliminadosEmpleado" header="#{msg['atencion']}" widgetVar="confirmarEliminadosEmpleado"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarEliminadosEmpleado']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarEliminadosEmpleado.hide();" actionListener="#{controlRastro.historicosTablaEliminadosEmpleado()}" style="position: absolute; top: 60px; left: 230px" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarEliminadosEmpleado.hide();" actionListener="#{controlRastro.historicosTablaEliminados()}" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="errorValorRastro" header="#{msg['atencion']}" widgetVar="errorValorRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 25px; top: 10px;"  />
                         <h:outputText value="#{msg['errorValorRastro']}" style="position: absolute; left: 70px; top: 20px; width: 195px; font-weight:bold; text-align: center" />
                     </p:dialog>
-                    
+
                     <p:dialog id="errorEliminados" header="#{msg['atencion']}" widgetVar="errorEliminados"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 15px; top: 10px;"  />
                         <h:outputText value="#{msg['errorEliminados']} #{controlRastro.nombreTablaRastro}." style="position: absolute; left: 70px; top: 20px; width: 195px; font-weight:bold; text-align: center" />
                     </p:dialog>
-                    
-                    
+
+
                 </h:form>
                 <h:form id="formExportar">
                     <p:dataTable id="datosRastroExportar" var="info" style="visibility: hidden; display: none;"                           
