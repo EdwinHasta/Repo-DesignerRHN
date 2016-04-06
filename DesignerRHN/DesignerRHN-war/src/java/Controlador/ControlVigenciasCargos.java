@@ -54,6 +54,7 @@ public class ControlVigenciasCargos implements Serializable {
     private List<VigenciasCargos> vigenciasCargosEmpleado;
     private List<VigenciasCargos> filterVC;
     private VigenciasCargos vigenciaSeleccionada;
+    private DataTable tablaC;
     //private List<VWActualesTiposTrabajadores> vwActualesTiposTrabajadoresesLista;
     private List<VwTiposEmpleados> vwActualesTiposTrabajadoresesLista;
     private List<VwTiposEmpleados> filtradoVWActualesTiposTrabajadoresesLista;
@@ -172,6 +173,7 @@ public class ControlVigenciasCargos implements Serializable {
         //INICIALIZAR FOCO PARA EL PRIMER REGISTRO
         registroFoco = "form:datosVCEmpleado:editFecha";
         altoTabla = "270";
+        vigenciaSeleccionada = null;
     }
 
     @PostConstruct
@@ -549,19 +551,19 @@ public class ControlVigenciasCargos implements Serializable {
         if (dlg == 0) {
             tipoActualizacion = 0;
             context.update("form:motivosDialog");
-            cantidadRegistrosLOV = "Cantidad de registros: " + motivosCambiosCargos.size();
+            cantidadRegistrosLOV = String.valueOf(motivosCambiosCargos.size());
             context.update("form:informacionLOVM");
             context.execute("motivosDialog.show()");
         } else if (dlg == 1) {
             tipoActualizacion = 0;
             context.update("form:cargosDialog");
-            cantidadRegistrosLOV = "Cantidad de registros: " + cargos.size();
+            cantidadRegistrosLOV = String.valueOf(cargos.size());
             context.update("form:informacionLOVC");
             context.execute("cargosDialog.show()");
         } else if (dlg == 2) {
             tipoActualizacion = 0;
             context.update("form:dialogoEmpleadoJefe");
-            cantidadRegistrosLOV = "Cantidad de registros: " + vwActualesTiposTrabajadoresesLista.size();
+            cantidadRegistrosLOV = String.valueOf(vwActualesTiposTrabajadoresesLista.size());
             context.update("form:informacionLOVEJ");
             context.execute("dialogoEmpleadoJefe.show()");
         }
@@ -680,16 +682,10 @@ public class ControlVigenciasCargos implements Serializable {
      * metodo encargado de cambiar de pagina xhtml
      */
 
-    /*public String navega() {
-        //Pruebas
-        //vigenciasCargos
-        //tablaPrueba
-        //pruebaRichFaces
-        //Integracion
-        //Gerencial
-        return "Pruebas.xhtml";
-    }*/
-
+    /*
+     * public String navega() { //Pruebas //vigenciasCargos //tablaPrueba
+     * //pruebaRichFaces //Integracion //Gerencial return "Pruebas.xhtml"; }
+     */
     public void fechaSeleccionada(SelectEvent event) {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         System.out.println("Nueva Fecha: " + format.format(event.getObject()));
@@ -710,14 +706,11 @@ public class ControlVigenciasCargos implements Serializable {
         }
     }
 
-    /*public void unclick() {
-        System.out.println("Un solo Click");
-    }
-
-    public void dobleclick() {
-        System.out.println("Doble Click");
-    }*/
-
+    /*
+     * public void unclick() { System.out.println("Un solo Click"); }
+     *
+     * public void dobleclick() { System.out.println("Doble Click"); }
+     */
     // METODOS DEL TOOLBAR
     public void modificarVC(int indice, String confirmarCambio, String valorConfirmar) {
         index = indice;
@@ -1468,7 +1461,7 @@ public class ControlVigenciasCargos implements Serializable {
 
     //DUPLICAR VC
     public void duplicarVigenciaC() {
-            RequestContext context = RequestContext.getCurrentInstance();
+        RequestContext context = RequestContext.getCurrentInstance();
         if (index >= 0) {
             duplicarVC = new VigenciasCargos();
             k++;
@@ -1738,9 +1731,19 @@ public class ControlVigenciasCargos implements Serializable {
             }
         }
     }
-    
-    private void modificarInfoRegistro(int valor){
+
+    private void modificarInfoRegistro(int valor) {
         infoRegistro = String.valueOf(valor);
+    }
+
+    public void recordarSeleccion() {
+        if (vigenciaSeleccionada != null) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            tablaC = (DataTable) c.getViewRoot().findComponent("form:datosVCEmpleado");
+            tablaC.setSelection(vigenciaSeleccionada);
+        } else {
+            vigenciaSeleccionada = null;
+        }
     }
 
     //------------------------------------------------------------------------------------------
@@ -1752,6 +1755,11 @@ public class ControlVigenciasCargos implements Serializable {
         try {
             if (vigenciasCargosEmpleado == null) {
                 vigenciasCargosEmpleado = administrarVigenciasCargos.vigenciasEmpleado(empleado.getSecuencia());
+                if (vigenciasCargosEmpleado != null) {
+                    if (!vigenciasCargosEmpleado.isEmpty()) {
+                        vigenciaSeleccionada = vigenciasCargosEmpleado.get(0);
+                    }
+                }
             }
             return vigenciasCargosEmpleado;
         } catch (Exception e) {

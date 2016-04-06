@@ -1063,7 +1063,7 @@ public class ControlConcepto implements Serializable {
             columnaCodigoAlternativo.setFilterStyle("width: 90%;");
             RequestContext.getCurrentInstance().update("form:datosConceptos");
             bandera = 1;
-
+          
         } else if (bandera == 1) {
             cargarTablaDefault();
         }
