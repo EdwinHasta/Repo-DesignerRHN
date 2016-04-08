@@ -64,7 +64,7 @@ public class ControlFormula implements Serializable {
     private List<Formulas> listaFormulasBorrar;
     //editar celda
     private Formulas editarFormula;
-    private int cualCelda;
+    private int cualCelda, tipoLista;
     //duplicar
     private Formulas duplicarFormula;
     //RASTRO
@@ -115,6 +115,7 @@ public class ControlFormula implements Serializable {
         unaVez = true;         
         regSolucion = -1;        
         nombreLargoMientras = "0";        
+        tipoLista = 0;
     }
 
     @PostConstruct
@@ -420,6 +421,7 @@ public class ControlFormula implements Serializable {
         nombreLargoMientras = "0";
         RequestContext context = RequestContext.getCurrentInstance();
         if (formulaSeleccionada != null) {
+            
             if (!listaFormulasModificar.isEmpty() && listaFormulasModificar.contains(formulaSeleccionada)) {
                 int modIndex = listaFormulasModificar.indexOf(formulaSeleccionada);
                 listaFormulasModificar.remove(modIndex);
@@ -431,10 +433,11 @@ public class ControlFormula implements Serializable {
                 listaFormulasBorrar.add(formulaSeleccionada);
             }
             listaFormulas.remove(formulaSeleccionada);
+            if (tipoLista == 1) {
+                filtradoListaFormulas.remove(formulaSeleccionada);
+            }
 
             activoDetalleFormula = true;
-            infoRegistro = "Cantidad de registros : " + listaFormulas.size();
-            context.update("form:informacionRegistro");
             infoRegistro = "Cantidad de registros : " + listaFormulas.size();
             context.update("form:informacionRegistro");
             context.update("form:datosFormulas");
@@ -754,7 +757,8 @@ public class ControlFormula implements Serializable {
 
     public void refrescar() {
         unaVez = true;         
-        regSolucion = -1;         
+        regSolucion = -1;   
+        tipoLista = 0;
         nombreLargoMientras = "0";
         RequestContext context = RequestContext.getCurrentInstance();
         if (bandera == 1) {
@@ -798,7 +802,8 @@ public class ControlFormula implements Serializable {
 
     public void cargarTablaDefault() {
         unaVez = true;         
-        regSolucion = -1;         
+        regSolucion = -1;  
+        tipoLista = 0;
         nombreLargoMientras = "0";
         FacesContext c = FacesContext.getCurrentInstance();
         altoTabla = "204";
@@ -883,7 +888,10 @@ public class ControlFormula implements Serializable {
     //EVENTO FILTRAR
     public void eventoFiltrar() {
         unaVez = true;         
-        regSolucion = -1;         
+        regSolucion = -1;
+        if (tipoLista == 0) {
+            tipoLista = 1;
+        }
         nombreLargoMientras = "0";
         formulaSeleccionada = null;
         RequestContext context = RequestContext.getCurrentInstance();

@@ -116,12 +116,11 @@ public class AdministrarTemplate implements AdministrarTemplateInterface {
     }
     @Override
     public DetallesEmpresas consultarDetalleEmpresaUsuario() {
-        System.out.println("AdministrarTemplate.consultarDetalleEmpresaUsuario");
         try {
             Short codigoEmpresa = persistenciaEmpresas.codigoEmpresa(em);
-            System.out.println("Codigo empresa: "+codigoEmpresa);
+            //System.out.println("Codigo empresa: "+codigoEmpresa);
             DetallesEmpresas detallesEmpresas = persistenciaDetallesEmpresas.buscarDetalleEmpresa(em, codigoEmpresa);
-            System.out.println("detallesempresas: "+detallesEmpresas);
+            //System.out.println("detallesempresas: "+detallesEmpresas);
             return detallesEmpresas;
         } catch (Exception e) {
             return null;
@@ -129,7 +128,7 @@ public class AdministrarTemplate implements AdministrarTemplateInterface {
     }
     @Override
     public ParametrosEstructuras consultarParametrosUsuario() {
-        System.out.println("AdministrarTemplate.consultarParametrosUsuario");
+        //System.out.println("AdministrarTemplate.consultarParametrosUsuario");
         try {
             ParametrosEstructuras parametrosEstructuras = persistenciaParametrosEstructuras.buscarParametro(em, consultarActualUsuario().getAlias());
             return parametrosEstructuras;

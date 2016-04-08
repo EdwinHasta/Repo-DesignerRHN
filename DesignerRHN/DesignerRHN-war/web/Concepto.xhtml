@@ -130,16 +130,17 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <fieldset style="position: absolute; left: 5px; top: 95px; width: 835px; height: 265px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 5px; top: 93px; width: 835px; height: 270px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['titulo']}</strong></legend>
 
                             <p:dataTable id="datosConceptos" var="concepto" rowKey="#{concepto.secuencia}" rowIndexVar="indice" style="width: 835px; position: relative;"                           
                                          value="#{controlConcepto.listaConceptosEmpresa}" scrollable="true" scrollWidth="835" scrollHeight="#{controlConcepto.altoTabla}" 
                                          liveScroll="true" scrollRows="40" filteredValue="#{controlConcepto.filtradoConceptosEmpresa}" emptyMessage="#{msg['vacio']}"
-                                         widgetVar="datosConceptos" editable="true" editMode="cell" selection="#{controlConcepto.conceptoSeleccionado}" selectionMode="single" >
+                                         widgetVar="datosConceptos" editable="true" editMode="cell" selection="#{controlConcepto.conceptoSeleccionado}" 
+                                         selectionMode="single"  > <!--<onExpandStart="#/{controlConcepto.recordarSeleccion()}" -->
 
                                 <f:event type="preRenderView" listener="#{controlConcepto.recordarSeleccion()}"/>
-                                <p:ajax event="filter" listener="#{controlConcepto.eventoFiltrar()}"/>
+                                <p:ajax event="filter" listener="#{controlConcepto.eventoFiltrar()}" />
 
                                 <p:column id="columnaDetalleConcepto" width="19" style="padding-left: 5px;padding: 0px; text-align: center" >                                                              
                                     <f:facet name="header">
@@ -435,21 +436,23 @@
                         </fieldset>
                         <br/><br/><br/><br/><br/>
 
-                        <h:outputText id="informacionRegistro" value="#{controlConcepto.infoRegistro}" style="position: absolute; left: 15px; top: 355px; font-weight: bold"/>
+                        <h:outputText id="informacionRegistro" value="#{msg['registros']} #{controlConcepto.infoRegistro}" style="position: absolute; left: 15px; top: 360px; font-weight: bold"/>
 
-                        <p:commandButton icon="ui-icon-extlink" style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 130px; height: 30px; position: absolute; left: 9px; top: 383px; color: white;" value="#{msg['grupoconceptos']}" id="grupoConcepto" 
+                        <p:commandButton icon="ui-icon-extlink" style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; 
+                                         width: 130px; height: 30px; position: absolute; left: 9px; top: 385px; color: white;" value="#{msg['grupoconceptos']}" id="grupoConcepto" 
                                          action="grupoconceptoPag" immediate="#{controlConcepto.activarSelec()}" actionListener="#{controlGrupoConcepto.recibirPagina('atrasgrupoconcepto')}" process="@this" update="@this"/>
-                        <p:commandButton icon="ui-icon-extlink" style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 130px; height: 30px; position: absolute; left: 145px; top: 383px; color: white;" value="#{msg['conceptosredondeos']}" id="conceptoRedondeos" 
+                        <p:commandButton icon="ui-icon-extlink" style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; 
+                                         width: 130px; height: 30px; position: absolute; left: 145px; top: 385px; color: white;" value="#{msg['conceptosredondeos']}" id="conceptoRedondeos" 
                                          action="conceptoredondeoPag" immediate="#{controlConcepto.activarSelec()}" actionListener="#{controlConceptoRedondeo.recibirPagina('atrasconceptoredondeo') }" process="@this" update="@this"/>
-                        <p:commandButton icon="ui-icon-extlink" style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 130px; height: 30px; position: absolute; left: 280px; top: 383px; color: white;" value="#{msg['unidadconcepto']}" id="unidadesConcepto" 
+                        <p:commandButton icon="ui-icon-extlink" style="background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; 
+                                         width: 130px; height: 30px; position: absolute; left: 280px; top: 385px; color: white;" value="#{msg['unidadconcepto']}" id="unidadesConcepto" 
                                          action="conceptosoporte" immediate="#{controlConcepto.activarSelec()}" actionListener="#{controlConceptosSoportes.recibirPagina('atrasconceptosporte')}" process="@this" update="@this"/>
 
-
                         <p:commandButton style="width: 90px; height: 30px; background-image: url(Imagenes/Iconos/buscardb.png); background-size: 100% 100%; 
-                                         background-repeat: no-repeat; border: none; position: absolute; left: 670px; top: 383px;" 
+                                         background-repeat: no-repeat; border: none; position: absolute; left: 670px; top: 385px;" 
                                          id="buscarConcepto" value="" actionListener="#{controlConcepto.lovConcepto(0)}" process="@this" />
                         <p:commandButton style="width: 90px; height: 30px; background-image: url(Imagenes/Iconos/todosdb.png); background-size: 100% 100%; 
-                                         background-repeat: no-repeat; border: none; position: absolute; left: 765px; top: 383px;" 
+                                         background-repeat: no-repeat; border: none; position: absolute; left: 765px; top: 385px;" 
                                          disabled="#{controlConcepto.mostrarTodos}" id="mostrarTodos" actionListener="#{controlConcepto.mostrarTodosConceptos()}" value="" process="@this" />
 
                         <fieldset style="position: absolute; left: 5px; top: 420px; width: 835px; height: 70px; border-radius: 10px; padding: 0px">

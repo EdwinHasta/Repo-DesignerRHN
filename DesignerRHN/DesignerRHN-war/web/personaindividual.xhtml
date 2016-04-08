@@ -643,13 +643,13 @@
                                     <h:outputText value="#{msg['buscarEIP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovEmpresaInformacionPersonalVisible.filter();" style="width:150px; position: relative; left: 40px;" />  
                                 </f:facet>
-                                <p:column filterBy="#{empresaIPV.nombre}" filterMatchMode="contains" >
+                                <p:column filterBy="#{empresaIPV.nombre}" filterMatchMode="contains" filterStyle="width: 85%">
                                     <f:facet name="header">
                                         <h:outputText style="text-align: center" value="#{msg['nombreEmpresa']}" />
                                     </f:facet>
                                     <h:outputText  value="#{empresaIPV.nombre}" />
                                 </p:column>
-                                <p:column filterBy="#{empresaIPV.nit}" filterMatchMode="contains" >
+                                <p:column style="text-align: center" filterBy="#{empresaIPV.nit}" filterMatchMode="contains" width="80" filterStyle="width: 85%" >
                                     <f:facet name="header">
                                         <h:outputText value="#{msg['nitEmpresa']}" />
                                     </f:facet>
@@ -659,7 +659,7 @@
 
                             <h:outputText id="infoRegistroEmpresaInformacionPersonalV" value="#{controlPersonaIndividual.infoRegistroEmpresaInformacionPersonal}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarEIPV" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonalVisible()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="aceptarEIPV" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonalVisible()}" process="@this" icon="ui-icon-check"/>
                             <p:commandButton id="atrasEIPV" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroEmpresaInformacionPersonalVisible()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>
 

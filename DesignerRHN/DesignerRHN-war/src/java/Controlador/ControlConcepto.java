@@ -95,7 +95,7 @@ public class ControlConcepto implements Serializable {
     private String paginaAnterior;
     //
     private String altoTabla;
-    private String infoRegistro;
+    private int infoRegistro;
     private String infoRegistroUnidad, infoRegistroTercero, infoRegistroEmpresa, infoRegistroConcepto;
     //
     private boolean activoDetalle;
@@ -165,8 +165,7 @@ public class ControlConcepto implements Serializable {
             administrarRastros.obtenerConexion(ses.getId());
             estadoConceptoEmpresa = "S";
         } catch (Exception e) {
-            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
-            System.out.println("Causa: " + e.getCause());
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e + " " + "Causa: " + e.getCause());
         }
     }
 
@@ -185,6 +184,11 @@ public class ControlConcepto implements Serializable {
         } else {
             verCambioEstado = true;
             context.execute("confirmarGuardar.show()");
+        }
+        if (listaConceptosEmpresa != null) {
+            infoRegistro = listaConceptosEmpresa.size();
+        } else {
+            infoRegistro = 0;
         }
         activoDetalle = true;
         context.update("form:DETALLES");
@@ -206,9 +210,9 @@ public class ControlConcepto implements Serializable {
         listaConceptosEmpresa = null;
         getListaConceptosEmpresa();
         if (listaConceptosEmpresa != null) {
-            infoRegistro = "Cantidad de registros : " + listaConceptosEmpresa.size();
+            infoRegistro = listaConceptosEmpresa.size();
         } else {
-            infoRegistro = "Cantidad de registros : 0";
+            infoRegistro = 0;
         }
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosConceptos");
@@ -672,11 +676,11 @@ public class ControlConcepto implements Serializable {
         if (permitirIndex && unaVez) {
             conceptoSeleccionado = conceptoS;
             cualCelda = celda;
-            if (tipoLista == 0) {
-                codigoUnidad = conceptoSeleccionado.getUnidad().getCodigo();
-                nombreUnidad = conceptoSeleccionado.getUnidad().getNombre();
-                tercero = conceptoSeleccionado.getTercero().getNombre();
-            }
+
+            codigoUnidad = conceptoSeleccionado.getUnidad().getCodigo();
+            nombreUnidad = conceptoSeleccionado.getUnidad().getNombre();
+            tercero = conceptoSeleccionado.getTercero().getNombre();
+
             activoDetalle = false;
             unaVez = false;
         }
@@ -919,6 +923,7 @@ public class ControlConcepto implements Serializable {
         unaVez = true;
         RequestContext context = RequestContext.getCurrentInstance();
         if (conceptoSeleccionado != null) {
+
             if (!listaConceptosEmpresaModificar.isEmpty() && listaConceptosEmpresaModificar.contains(conceptoSeleccionado)) {
                 int modIndex = listaConceptosEmpresaModificar.indexOf(conceptoSeleccionado);
                 listaConceptosEmpresaModificar.remove(modIndex);
@@ -930,6 +935,9 @@ public class ControlConcepto implements Serializable {
                 listaConceptosBorrar.add(conceptoSeleccionado);
             }
             listaConceptosEmpresa.remove(conceptoSeleccionado);
+            if (tipoLista == 1) {
+                filtradoConceptosEmpresa.remove(conceptoSeleccionado);
+            }
 
             context.update("form:informacionRegistro");
             context.update("form:datosConceptos");
@@ -974,9 +982,9 @@ public class ControlConcepto implements Serializable {
                 listaConceptosEmpresa = null;
                 getListaConceptosEmpresa();
                 if (listaConceptosEmpresa != null) {
-                    infoRegistro = "Cantidad de registros : " + listaConceptosEmpresa.size();
+                    infoRegistro = listaConceptosEmpresa.size();
                 } else {
-                    infoRegistro = "Cantidad de registros : 0";
+                    infoRegistro = 0;
                 }
                 context.update("form:informacionRegistro");
                 context.update("form:datosConceptos");
@@ -1182,7 +1190,7 @@ public class ControlConcepto implements Serializable {
 
                     listaConceptosEmpresaCrear.add(nuevoConcepto);
                     listaConceptosEmpresa.add(nuevoConcepto);
-                    infoRegistro = "Cantidad de registros : " + listaConceptosEmpresa.size();
+                    infoRegistro = listaConceptosEmpresa.size();
                     context.update("form:informacionRegistro");
                     nuevoConcepto = new Conceptos();
                     nuevoConcepto.setUnidad(new Unidades());
@@ -1301,7 +1309,7 @@ public class ControlConcepto implements Serializable {
                     duplicarConcepto.setSecuencia(nuevoConceptoSecuencia);
                     listaConceptosEmpresa.add(duplicarConcepto);
                     listaConceptosEmpresaCrear.add(duplicarConcepto);
-                    infoRegistro = "Cantidad de registros : " + listaConceptosEmpresa.size();
+                    infoRegistro = listaConceptosEmpresa.size();
                     conceptoSeleccionado = null;
                     activoDetalle = true;
                     if (guardado) {
@@ -1395,9 +1403,9 @@ public class ControlConcepto implements Serializable {
             listaConceptosEmpresa.add(listaConceptosEmpresaLOV.get(i));
         }
         if (listaConceptosEmpresa != null) {
-            infoRegistro = "Cantidad de registros : " + listaConceptosEmpresa.size();
+            infoRegistro = listaConceptosEmpresa.size();
         } else {
-            infoRegistro = "Cantidad de registros : 0";
+            infoRegistro = 0;
         }
 
         conceptoSeleccionado = null;
@@ -1501,16 +1509,6 @@ public class ControlConcepto implements Serializable {
         RequestContext.getCurrentInstance().update("form:DETALLES");
     }
 
-    //EVENTO FILTRAR
-    public void eventoFiltrar() {
-        if (tipoLista == 0) {
-            tipoLista = 1;
-        }
-        RequestContext context = RequestContext.getCurrentInstance();
-        infoRegistro = "Cantidad de registros : " + filtradoConceptosEmpresa.size();
-        context.update("form:informacionRegistro");
-    }
-
     public void activarAceptar() {
         aceptar = false;
     }
@@ -1548,6 +1546,17 @@ public class ControlConcepto implements Serializable {
         tipoActualizacion = -1;
     }
 
+    //EVENTO FILTRAR
+    public void eventoFiltrar() {
+        if (tipoLista == 0) {
+            tipoLista = 1;
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        infoRegistro = filtradoConceptosEmpresa.size();
+        System.out.println("EventoFiltrar infoRegistro: " + infoRegistro);
+        context.update("form:informacionRegistro");
+    }
+
     public void recordarSeleccion() {
 
         if (conceptoSeleccionado != null) {
@@ -1573,6 +1582,8 @@ public class ControlConcepto implements Serializable {
         } else {
             unaVez = true;
         }
+        RequestContext.getCurrentInstance().update("form:informacionRegistro");
+        System.out.println("conceptoSeleccionado: " + conceptoSeleccionado);
     }
 
     public void verDetalle(Conceptos conceptoS) {
@@ -1842,16 +1853,11 @@ public class ControlConcepto implements Serializable {
         this.altoTabla = altoTabla;
     }
 
-    public String getInfoRegistro() {
-        if (listaConceptosEmpresa != null) {
-            infoRegistro = "Cantidad de registros : " + listaConceptosEmpresa.size();
-        } else {
-            infoRegistro = "Cantidad de registros : 0";
-        }
+    public int getInfoRegistro() {
         return infoRegistro;
     }
 
-    public void setInfoRegistro(String infoRegistro) {
+    public void setInfoRegistro(int infoRegistro) {
         this.infoRegistro = infoRegistro;
     }
 

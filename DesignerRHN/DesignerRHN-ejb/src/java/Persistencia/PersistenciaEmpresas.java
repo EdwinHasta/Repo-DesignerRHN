@@ -172,7 +172,6 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
 
     @Override
     public Short codigoEmpresa(EntityManager em) {
-        System.out.println("PersistenciaEmpresas.codigoEmpresa");
         Short codigoEmpresa=1;
         try {
             em.clear();
@@ -187,7 +186,6 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
             } /*else {
                 return 1;
             }*/
-            System.out.println("codigo empresa: "+ codigoEmpresa);
             return codigoEmpresa;
         } catch (Exception e) {
             System.out.println("Exepcion en PersistenciaEmpleados.codigoEmpresa" + e);

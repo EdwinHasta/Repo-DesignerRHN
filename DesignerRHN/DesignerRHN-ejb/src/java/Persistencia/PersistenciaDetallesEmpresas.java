@@ -85,7 +85,6 @@ public class PersistenciaDetallesEmpresas implements PersistenciaDetallesEmpresa
 
     @Override
     public DetallesEmpresas buscarDetalleEmpresa(EntityManager em, Short codigoEmpresa) {
-        System.out.println("PersistenciaDetallesEmpresas.buscarDetalleEmpresa.");
         DetallesEmpresas detallesEmpresas;
         try {
             em.clear();
@@ -93,7 +92,6 @@ public class PersistenciaDetallesEmpresas implements PersistenciaDetallesEmpresa
             query.setParameter("codigoEmpresa", codigoEmpresa);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             detallesEmpresas = (DetallesEmpresas) query.getSingleResult();
-            System.out.println("DetalleEmpresa: "+detallesEmpresas);
             return detallesEmpresas;
         } catch (Exception e) {
             System.out.println("Error consultando el detalleempresa.");
