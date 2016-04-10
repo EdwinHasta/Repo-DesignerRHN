@@ -102,16 +102,12 @@ public class VWAcumulados implements Serializable {
     @Column(name = "NIT_NOMBRE")
     @Size(max = 30)
     private String nit_nombre;
-    @JoinColumn(name = "CUENTAC_CODIGO", referencedColumnName = "SECUENCIA")
-    @ManyToOne(optional = false)
     @NotNull
     @Size(max = 20)
-    private Cuentas CuentaC_Codigo;
-    @JoinColumn(name = "CUENTAD_CODIGO", referencedColumnName = "SECUENCIA")
-    @ManyToOne(optional = false)
+    private String CuentaC_Codigo;
     @NotNull
     @Size(max = 20)
-    private Cuentas CuentaD_Codigo;
+    private String CuentaD_Codigo;
     @Column(name = "FECHAPAGO")
     @Temporal(TemporalType.DATE)
     private Date fechaPago;
@@ -349,19 +345,19 @@ public class VWAcumulados implements Serializable {
         this.nit_nombre = nit_nombre;
     }
 
-    public Cuentas getCuentaC_Codigo() {
+    public String getCuentaC_Codigo() {
         return CuentaC_Codigo;
     }
 
-    public void setCuentaC_Codigo(Cuentas CuentaC_Codigo) {
+    public void setCuentaC_Codigo(String CuentaC_Codigo) {
         this.CuentaC_Codigo = CuentaC_Codigo;
     }
 
-    public Cuentas getCuentaD_Codigo() {
+    public String getCuentaD_Codigo() {
         return CuentaD_Codigo;
     }
 
-    public void setCuentaD_Codigo(Cuentas CuentaD_Codigo) {
+    public void setCuentaD_Codigo(String CuentaD_Codigo) {
         this.CuentaD_Codigo = CuentaD_Codigo;
     }
 
