@@ -41,31 +41,12 @@
                 <h:form id="form" > 
                     <f:loadBundle basename="Recursos.concepto" var="msg"/>
                     <p:growl id="growl" showDetail="true"/> 
-
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 530px;" > 
-                        <h:outputText value="#{msg['empresa']}: " style="font-weight: bold; color: #14388B; position: relative; top: 40px; left: 120px" />
-                        <h:outputText id="nombreEmpresa" value="#{controlConcepto.empresaActual.nombre}" style="font-weight: bold; color: #BF1A1A; position: relative; left: 130px; top: 40px"/>
-                        <h:outputText value="#{msg['nit']}: " style="font-weight: bold; color: #14388B; position: relative; left: 230px; top: 40px" />
-                        <h:outputText id="nitEmpresa" value="#{controlConcepto.empresaActual.nit}" style="font-weight: bold; color: #BF1A1A; position: relative; left: 240px; top: 40px" />
-
-                        <p:panel styleClass="cssToolbar" style="background-color: transparent; width: 410px; position: absolute; 
-                                 border-radius: 3px; height: 27px; left: 450px; top: 37px; padding: 0px">
-                            <p:selectOneRadio  id="opciones" value="#{controlConcepto.estadoConceptoEmpresa}" styleClass="ui-radiobutton" 
-                                               style="font-weight: bold; position: relative; left: 70px; top: -2px; width: 100%; border-collapse: collapse;">  
-                                <f:selectItem itemLabel="#{msg['activo']}" itemValue="S" />
-                                <f:selectItem itemLabel="#{msg['inactivo']}" itemValue="N" />  
-                                <f:selectItem itemLabel="#{msg['todos']}" itemValue="TODOS" />
-                                <p:ajax listener="#{controlConcepto.cambiarEstado()}" update="@this :form:informacionRegistro"/>
-                            </p:selectOneRadio>
-                        </p:panel>
-
                         <p:toolbar styleClass="cssToolbar" style="position: absolute; top: 37px; left: 12px; height: 23px">  
                             <p:toolbarGroup align="left"> 
-
                                 <p:commandButton style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; " 
                                                  id="guardarRapido" value="" actionListener="#{controlConcepto.guardarCambios()}" process="@this" />
                                 <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
-
                                 <p:commandButton style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  id="editar" value="" actionListener="#{controlConcepto.editarCelda()}" process="@this"/>
                                 <!--id="editar" value="" actionListener="#/{controlConcepto.editarCelda()}" process="@this"/>-->
@@ -76,7 +57,6 @@
                                 <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  id="listaValores" value="" actionListener="#{controlConcepto.listaValoresBoton()}" process="@this"/>
                                 <p:tooltip  for="listaValores" value="#{msg['lista']}" />
-
                                 <p:commandButton style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  id="filtrar" value="" actionListener="#{controlConcepto.activarCtrlF11()}" process="@this"/>
                                 <p:tooltip for="filtrar" value="#{msg['filtrar']}" />
@@ -86,13 +66,11 @@
                                 <p:commandButton style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  id="exportarXLS" value="" ajax="false" actionListener="#{controlConcepto.exportXLS()}"/>
                                 <p:tooltip for="exportarXLS" value="#{msg['xls']}" />
-
                                 <p:commandButton style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  id="exportarXML" value="" actionListener="#{controlConcepto.limpiarNuevoConcepto()}" ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportar:datosConceptosExportar" fileName="ConceptosXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
-
                                 <p:commandButton style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  id="exportarPDF" value="" actionListener="#{controlConcepto.exportPDF()}" ajax="false"/>
                                 <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
@@ -130,6 +108,22 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
+                        <h:outputText value="#{msg['empresa']}: " style="font-weight: bold; color: #14388B; position: relative; top: 40px; left: 120px" />
+                        <h:outputText id="nombreEmpresa" value="#{controlConcepto.empresaActual.nombre}" style="font-weight: bold; color: #BF1A1A; position: relative; left: 130px; top: 40px"/>
+                        <h:outputText value="#{msg['nit']}: " style="font-weight: bold; color: #14388B; position: relative; left: 230px; top: 40px" />
+                        <h:outputText id="nitEmpresa" value="#{controlConcepto.empresaActual.nit}" style="font-weight: bold; color: #BF1A1A; position: relative; left: 240px; top: 40px" />
+
+                        <p:panel styleClass="cssToolbar" style="background-color: transparent; width: 410px; position: absolute; 
+                                 border-radius: 3px; height: 27px; left: 450px; top: 37px; padding: 0px">
+                            <p:selectOneRadio  id="opciones" value="#{controlConcepto.estadoConceptoEmpresa}" styleClass="ui-radiobutton" 
+                                               style="font-weight: bold; position: relative; left: 70px; top: -2px; width: 100%; border-collapse: collapse;">  
+                                <f:selectItem itemLabel="#{msg['activo']}" itemValue="S" />
+                                <f:selectItem itemLabel="#{msg['inactivo']}" itemValue="N" />  
+                                <f:selectItem itemLabel="#{msg['todos']}" itemValue="TODOS" />
+                                <p:ajax listener="#{controlConcepto.cambiarEstado()}" update="@this :form:informacionRegistro"/>
+                            </p:selectOneRadio>
+                        </p:panel>
+                        
                         <fieldset style="position: absolute; left: 5px; top: 93px; width: 835px; height: 270px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['titulo']}</strong></legend>
 
@@ -142,7 +136,8 @@
                                 <f:event type="preRenderView" listener="#{controlConcepto.recordarSeleccion()}"/>
                                 <p:ajax event="filter" listener="#{controlConcepto.eventoFiltrar()}" />
 
-                                <p:column id="columnaDetalleConcepto" width="19" style="padding-left: 5px;padding: 0px; text-align: center" >                                                              
+                                <p:column id="columnaDetalleConcepto" width="19" 
+                                          style="padding-left: 5px; padding: 0px; text-align: center" >                                                              
                                     <f:facet name="header">
                                         <h:outputText id="DetalleC" value="D"/>
                                         <p:tooltip for="DetalleC" value="Detalle Concepto"/>
@@ -160,7 +155,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column sortBy="#{concepto.codigo}" filterBy="#{concepto.codigo}" filterMatchMode="contains" id="columnaCodigo"
+                                <p:column id="columnaCodigo" sortBy="#{concepto.codigo}" filterBy="#{concepto.codigo}" filterMatchMode="contains" 
                                           width="35" filterStyle="display: none; visibility: hidden;" style="padding-left: 6px" >                                  
                                     <f:facet name="header">
                                         <h:outputText id="headerC" value="#{msg['codigo']}" />

@@ -14,7 +14,7 @@
                 <h:form id="form"> 
                     <f:loadBundle basename="Recursos.nominaf" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
-                    <p:panel id="PanelTotal" header="#{msg['titulo']}" style=" ; position: absolute; width: 874px; height: 530px; box-shadow: 5px 5px 5px 0px rgba(0,12,92,1);"> 
+                    <p:panel id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 530px; box-shadow: 5px 5px 5px 0px rgba(0,12,92,1);"> 
 
                         <p:tabView  id="tabMenu"  dynamic="true" style=" height: 490px;" widgetVar="tabMenu" activeIndex="#{controlRemoto.numPestaña}">  
                             <p:ajax event="tabChange" listener="#{controlRemoto.pestañaActual}"/> 

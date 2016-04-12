@@ -421,4 +421,12 @@ button .ui-widget-header{
     background: transparent;
     /*border-color: #61A0CA;*/
     border-color: #8a8a8a;
+    position: absolute; 
+    top: 37px; 
+    left: 12px; 
+    height: 23px;
+}
+.cssToobarButton{
+    width: 25px; 
+    height: 25px; 
 }

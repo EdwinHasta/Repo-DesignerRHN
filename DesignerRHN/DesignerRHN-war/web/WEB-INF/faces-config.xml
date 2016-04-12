@@ -543,7 +543,7 @@
     
         
     <navigation-rule>
-        <from-view-id>/Cuenta.xhtml</from-view-id>
+        <from-view-id>/cuenta.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>detalleCuenta</from-outcome>
             <to-view-id>/DetalleCuenta.xhtml</to-view-id>
@@ -554,7 +554,7 @@
         <from-view-id>/DetalleCuenta.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>cuentasBack</from-outcome>
-            <to-view-id>/Cuenta.xhtml</to-view-id>
+            <to-view-id>/cuenta.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -579,7 +579,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Cuenta.xhtml</from-view-id>
+        <from-view-id>/cuenta.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
             <to-view-id>/NominaF.xhtml</to-view-id>
@@ -590,7 +590,7 @@
         <from-view-id>/NominaF.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>cuenta</from-outcome>
-            <to-view-id>/Cuenta.xhtml</to-view-id>
+            <to-view-id>/cuenta.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -1986,7 +1986,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Cuenta.xhtml</from-view-id>
+        <from-view-id>/cuenta.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
             <to-view-id>/Rastro.xhtml</to-view-id>
@@ -1997,7 +1997,7 @@
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>cuentaRastro</from-outcome>
-            <to-view-id>/Cuenta.xhtml</to-view-id>
+            <to-view-id>/cuenta.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
