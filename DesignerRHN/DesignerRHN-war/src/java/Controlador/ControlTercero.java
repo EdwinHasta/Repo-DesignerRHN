@@ -200,12 +200,11 @@ public class ControlTercero implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
-    /*public void recibirPagina(String pagina) {
-        paginaAnterior = pagina;
+
+    /*
+     * public void recibirPagina(String pagina) { paginaAnterior = pagina;
     }*/
-    
-    public void recibirPaginaEntrante(String pagina) {
+        public void recibirPaginaEntrante(String pagina) {
         paginaAnterior = pagina;
         index = -1;
         empresaActual = getEmpresaActual();
@@ -213,7 +212,7 @@ public class ControlTercero implements Serializable {
         getListTerceros();
     }
 
-     public String redirigirPaginaAnterior() {
+    public String redirigirPaginaAnterior() {
         return paginaAnterior;
     }
 
@@ -672,7 +671,7 @@ public class ControlTercero implements Serializable {
                 index = -1;
                 secRegistroTercero = null;
                 cambiosTercero = false;
-                FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos de Tercero con éxito");
+                FacesMessage msg = new FacesMessage("Información", "Se guardarón los datos de Tercero con éxito");
                 FacesContext.getCurrentInstance().addMessage(null, msg);
                 context.update("form:growl");
             }
@@ -2026,9 +2025,10 @@ public class ControlTercero implements Serializable {
         secRegistroTercero = null;
         tipoActualizacion = -1;
         /*
-        context.update("form:TerceroDialogo");
-        context.update("form:lovTercero");
-        context.update("form:aceptarT");*/
+         * context.update("form:TerceroDialogo");
+         * context.update("form:lovTercero");
+        context.update("form:aceptarT");
+         */
         context.reset("form:lovTercero:globalFilter");
         context.execute("lovTercero.clearFilters()");
         context.execute("TerceroDialogo.hide()");
@@ -2093,9 +2093,10 @@ public class ControlTercero implements Serializable {
         secRegistroTercero = null;
         tipoActualizacion = -1;
         /*
-        context.update("form:CiudadDialogo");
-        context.update("form:lovCiudad");
-        context.update("form:aceptarC");*/
+         * context.update("form:CiudadDialogo");
+         * context.update("form:lovCiudad");
+        context.update("form:aceptarC");
+         */
         context.reset("form:lovCiudad:globalFilter");
         context.execute("lovCiudad.clearFilters()");
         context.execute("CiudadDialogo.hide()");
@@ -2158,9 +2159,10 @@ public class ControlTercero implements Serializable {
         secRegistroTerceroSucursal = null;
         tipoActualizacion = -1;
         /*
-        context.update("form:CiudadTSDialogo");
-        context.update("form:lovCiudadTS");
-        context.update("form:aceptarCTS");*/
+         * context.update("form:CiudadTSDialogo");
+         * context.update("form:lovCiudadTS");
+        context.update("form:aceptarCTS");
+         */
         context.reset("form:lovCiudadTS:globalFilter");
         context.execute("lovCiudadTS.clearFilters()");
         context.execute("CiudadTSDialogo.hide()");
@@ -2337,8 +2339,9 @@ public class ControlTercero implements Serializable {
             getListTercerosSucursales();
             context.update("form:datosTercerosSucursales");
             /*
-             context.update("form:BuscarTerceroDialogo");
-             context.update("form:aceptarBT");*/
+             * context.update("form:BuscarTerceroDialogo");
+             context.update("form:aceptarBT");
+             */
             context.reset("form:lovBuscarTercero:globalFilter");
             context.execute("lovBuscarTercero.clearFilters()");
             context.execute("BuscarTerceroDialogo.hide()");
@@ -2351,6 +2354,7 @@ public class ControlTercero implements Serializable {
     }
 
     public void mostrarTodos() {
+        System.out.println("ControlTercero.mostrarTodos()");
         RequestContext context = RequestContext.getCurrentInstance();
         if (cambiosTercero == false && cambiosTerceroSucursal == false) {
             listTerceros = null;
@@ -2862,6 +2866,7 @@ public class ControlTercero implements Serializable {
     }
 
     public Terceros getTerceroTablaSeleccionado() {
+        System.out.println("getTerceroSeleccionado");
         getListTerceros();
         if (listTerceros != null) {
             int tam = listTerceros.size();
@@ -2879,6 +2884,7 @@ public class ControlTercero implements Serializable {
     public TercerosSucursales getTerceroSucursalTablaSeleccionado() {
         getListTercerosSucursales();
         if (listTercerosSucursales != null) {
+            terceroSucursalTablaSeleccionado = new TercerosSucursales();
             int tam = listTercerosSucursales.size();
             if (tam > 0) {
                 terceroSucursalTablaSeleccionado = listTercerosSucursales.get(0);
@@ -2934,6 +2940,7 @@ public class ControlTercero implements Serializable {
     }
 
     public String getInfoRegistroTercero() {
+        System.out.println("getInfoRegistroTercero");
         getListTerceros();
         if (listTerceros != null) {
             infoRegistroTercero = "Cantidad de registros : " + listTerceros.size();
@@ -3021,5 +3028,4 @@ public class ControlTercero implements Serializable {
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
     }
-
 }

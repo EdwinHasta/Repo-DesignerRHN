@@ -37,7 +37,7 @@
                                 <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " ajax="false" actionListener="#{controlTipoContrato.validarExportXLS()}" />
                                 <p:tooltip for="exportarXLS" value="#{msg['xls']}" />
 
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/XML.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " ajax="false">
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " ajax="false">
                                     <p:dataExporter type="xml"  target="#{controlTipoContrato.exportXML()}" fileName="#{controlTipoContrato.nombreXML}" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
@@ -70,8 +70,8 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 482px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" disabled="#{controlTipoContrato.cambiosPagina}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px;  top: 482px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" action="#{controlTipoContrato.redirigir()}" actionListener="#{controlTipoContrato.salir()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 683px; top: 482px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value="" onclick="confirmarGuardarSalida.show();" disabled="#{controlTipoContrato.cambiosPagina}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px;  top: 482px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" action="#{controlTipoContrato.redirigir()}" actionListener="#{controlTipoContrato.salir()}" process="@this" />
 
                         <fieldset style="position: absolute; left: 10px; top: 65px; width: 830px; height: 200px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['tipoContrato']}</strong></legend>
@@ -156,8 +156,6 @@
                             </p:dataTable>  
                         </fieldset> 
 
-
-
                         <fieldset style="position: absolute; left: 10px; top: 285px; width: 415px; height: 180px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['diasLaborales']}</strong></legend>
 
@@ -202,8 +200,6 @@
 
                                 </p:column>
 
-
-
                                 <p:column headerText="H.L." sortBy="#{infoD.horaslaborables}" filterBy="#{infoD.horaslaborables}" filterMatchMode="contains" 
                                           id="diasLabHL" width="83" filterStyle="display: none; visibility: hidden;" >   
                                     <f:facet name="header">
@@ -225,7 +221,6 @@
                             </p:dataTable>  
                         </fieldset> 
 
-
                         <fieldset style="position: absolute; left: 450px; top: 285px;width: 390px; height: 180px; border-radius: 10px; ">
                             <legend style="color: blue"><strong>#{msg['clonarTC']}</strong></legend>
 
@@ -237,8 +232,6 @@
                             <p:inputText onclick="select();" id="nombreTipoCClonar" maxlength="30" value="#{controlTipoContrato.nombreTipoCColnar}" style="position: absolute; top : 50px; left: 150px;width: 200px;text-transform: uppercase">
                                 <p:ajax event="change" update="nombreTipoCClonar" process="@this"/>
                             </p:inputText>
-
-
 
                             <h:outputText value="#{msg['codigo']}" style="position: absolute; top : 100px; left: 30px"/> 
                             <p:inputText onclick="select();" id="codigoTipoCClonarBase" value="#{controlTipoContrato.tipoContratoAClonar.codigo}" style="position: absolute; top : 115px; left: 10px;width: 75px">
@@ -253,10 +246,8 @@
                                 <p:ajax event="dblclick" process="@this" listener="#{controlTipoContrato.dispararDialogoClonarTipoContrato()}"/>
                             </p:inputText>
 
-                            <p:commandButton value="#{msg['clonar']}" actionListener="#{controlTipoContrato.clonarTipoContrato()}" style="position: absolute; top : 160px; left: 260px;"/>
+                            <p:commandButton value="#{msg['clonar']}" actionListener="#{controlTipoContrato.clonarTipoContrato()}" style="position: absolute; top : 150px; left: 250px; height: 35px; width: 120px; background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; color: white;" icon="ui-icon-docs"/>
                         </fieldset> 
-
-
 
                     </p:panel>
 
@@ -414,9 +405,9 @@
 
                         <h:outputText id="infoRegistoTipoContrato" value="#{controlTipoContrato.infoRegistoTipoContrato}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarTC" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlTipoContrato.aceptar}" actionListener="#{controlTipoContrato.seleccionarTipoContratoClonar()}" process="@this"/>
+                        <p:commandButton id="aceptarTC" style="position: relative; left: 230px;" value="#{msg['aceptar']}" disabled="#{controlTipoContrato.aceptar}" actionListener="#{controlTipoContrato.seleccionarTipoContratoClonar()}" process="@this"/>
 
-                        <p:commandButton id="atrasTC" icon="ui-icon-arrowreturnthick-1-w"  style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlTipoContrato.cancelarTipoContratoClonar()}" process="@this"/>
+                        <p:commandButton id="atrasTC" style="position: relative; left: 230px; " value="#{msg['atras']}" actionListener="#{controlTipoContrato.cancelarTipoContratoClonar()}" process="@this"/>
                     </p:dialog>
 
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlTipoContrato.activarCtrlF11()}"/> 

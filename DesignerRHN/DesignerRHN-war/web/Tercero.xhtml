@@ -17,67 +17,69 @@
                     
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left;" >  
 
-                        <p:toolbar style="position: absolute; top: 37px; left: 12px; height: 23px">  
+                        <p:toolbar styleClass="cssToolbar" style="position: absolute; top: 37px; left: 12px; height: 23px">  
                             <p:toolbarGroup align="left"> 
 
-                                <p:commandButton id="guardarRapido" value="" style="background-size: 100% 100%;background-image: url(Imagenes/guardar.jpg) ;background-repeat: no-repeat; width: 25px; height: 25px;"  process="@this" actionListener="#{controlTercero.guardadoGeneral()}"/>
+                                <p:commandButton id="guardarRapido" value="" style="background-size: 100% 100%;background-image: url(Imagenes/Iconos/guardar.png) ;background-repeat: no-repeat; border: none; width: 25px; height: 25px;"  process="@this" actionListener="#{controlTercero.guardadoGeneral()}"/>
                                 <p:tooltip for="guardarRapido" value="#{msg['guardar']}" />
 
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTercero.editarCelda()}" process="@this"/>
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTercero.editarCelda()}" process="@this"/>
                                 <p:tooltip  for="editar" value="#{msg['editar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTercero.listaValoresBoton()}" process="@this"/>
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTercero.listaValoresBoton()}" process="@this"/>
                                 <p:tooltip  for="listaValores" value="#{msg['lista']}" />
 
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTercero.activarCtrlF11()}" process="@this"/>
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTercero.activarCtrlF11()}" process="@this"/>
                                 <p:tooltip  for="filtrar" value="#{msg['filtrar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTercero.verificarExportXLS()}" ajax="false"  />
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTercero.verificarExportXLS()}" ajax="false"  />
                                 <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
 
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  ajax="false">
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "  ajax="false">
                                     <p:dataExporter type="xml"  target="#{controlTercero.exportXML()}" fileName="#{controlTercero.nombreXML}" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
 
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTercero.validarExportPDF()}" ajax="false"/>
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTercero.validarExportPDF()}" ajax="false"/>
                                 <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTercero.validarIngresoNuevoRegistro()}"  process="@this"/> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTercero.validarIngresoNuevoRegistro()}"  process="@this"/> 
                                 <p:tooltip for="insertar" value="#{msg['nuevo']}" />
 
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTercero.validarBorradoRegistro()}" process="@this"/>  
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTercero.validarBorradoRegistro()}" process="@this"/>  
                                 <p:tooltip  for="eliminar" value="#{msg['eliminar']}" />
 
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlTercero.validarDuplicadoRegistro()}" process="@this"/>  
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "  actionListener="#{controlTercero.validarDuplicadoRegistro()}" process="@this"/>  
                                 <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTercero.verificarRastroTabla()}" process="@this"/>  
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTercero.verificarRastroTabla()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTercero.cancelarModificacion()}" process="@this"/>  
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTercero.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTercero.salir()}" action="#{controlTercero.redirigirPaginaAnterior()}" process="@this"/>  
+                                <p:separator style="position: relative; top: -9px"/>
+                                
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTercero.salir()}" action="atrasterceroemplvigenciaafiliacion3" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
 
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <h:outputText value="#{msg['empresa']}" style="position: absolute; top: 35px;left: 445px;color: #14388B;font-weight: bold"/>
-                        <h:outputText id="nombreEmpresa" value="#{controlTercero.empresaActual.nombre}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 35px;left: 505px;"/>
-                        <h:outputText value="#{msg['nit']}" style="position: absolute; top: 55px;left: 445px;color: #14388B;font-weight: bold"/>
-                        <h:outputText id="nitEmpresa" value="#{controlTercero.empresaActual.nit}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 55px;left: 505px;"/>
+                        <h:outputText value="#{msg['empresa']}" style="position: absolute; top: 35px;left: 465px;color: #14388B;font-weight: bold"/>
+                        <h:outputText id="nombreEmpresa" value="#{controlTercero.empresaActual.nombre}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 35px;left: 525px;"/>
+                        <h:outputText value="#{msg['nit']}" style="position: absolute; top: 55px;left: 465px;color: #14388B;font-weight: bold"/>
+                        <h:outputText id="nitEmpresa" value="#{controlTercero.empresaActual.nit}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 55px;left: 525px;"/>
 
 
                         <fieldset style="position: absolute; left: 10px; top: 70px; width: 830px; height: 205px; border-radius: 10px; text-align: left">
@@ -86,7 +88,7 @@
                             <p:dataTable id="datosTerceros" var="infoT" widgetVar="datosTerceros" rowIndexVar="indice" style="border: 1px;width: 800px;"   
                                          value="#{controlTercero.listTerceros}" scrollable="true" scrollHeight="#{controlTercero.altoTablaTercero}" scrollWidth="830"
                                          filteredValue="#{controlTercero.filtrarListTercero}" emptyMessage="#{msg['vacio']}" rowKey="#{infoT.secuencia}" 
-                                         editable="true" editMode="cell" liveScroll="true" scrollRows="20" selectionMode="single" selection="#{controlTercero.terceroTablaSeleccionado}">
+                                         editable="true" editMode="cell" liveScroll="true" scrollRows="40" selectionMode="single" selection="#{controlTercero.terceroTablaSeleccionado}">
 
                                 <p:ajax event="filter" listener="#{controlTercero.eventoFiltrar()}"/>
 
@@ -290,8 +292,8 @@
                                 </p:column>
 
                             </p:dataTable>
-                            <p:commandButton value="#{msg['buscar']}" style="position: absolute ; top: 225px; left: 590px" process="@this" actionListener="#{controlTercero.dialogoSeleccionarTercero()}"/>
-                            <p:commandButton value="#{msg['mostrar']}" style="position: absolute ;top: 225px;  left: 720px" process="@this" actionListener="#{controlTercero.mostrarTodos()}"/>
+                            <p:commandButton value="" style="position: absolute ; top: 225px; left: 620px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/buscardb.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" process="@this" actionListener="#{controlTercero.dialogoSeleccionarTercero()}"/>
+                            <p:commandButton value="" style="position: absolute ;top: 225px;  left: 720px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/todosdb.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" process="@this" actionListener="#{controlTercero.mostrarTodos()}"/>
                         </fieldset>
 
 
@@ -361,8 +363,8 @@
                             </p:dataTable>
                         </fieldset>
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 480px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" update=":form:datosTerceros" disabled="#{controlTercero.guardado}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 480px;" id="ATRAS" value="#{msg['cancelar']}" action="#{controlTercero.redirigirPaginaAnterior()}" icon="ui-icon-closethick" actionListener="#{controlTercero.salir()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 683px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value="" onclick="confirmarGuardarSalida.show();" update=":form:datosTerceros" disabled="#{controlTercero.guardado}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" action="atrasterceroemplvigenciaafiliacion3" actionListener="#{controlTercero.salir()}" process="@this" />
                     </p:panel>
 
 

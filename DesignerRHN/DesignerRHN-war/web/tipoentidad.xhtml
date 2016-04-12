@@ -13,6 +13,60 @@
                 <h:form id="form">
                     <p:growl id="growl" showDetail="true"/> 
                     <p:panel  id="PanelTotal" header="Tipos Entidades" style="position: absolute; width: 874px; height: 510px; text-align: left"> 
+                        <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 40px; left: 20px; height: 24px">  
+                            <p:toolbarGroup align="left"> 
+
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; "  actionListener="#{controlTiposEntidades.guardarCambiosTiposEntidades()}" process="@this" />
+                                <p:tooltip style="" for="guardarRapido" value="Guardar" />
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.editarCelda()}" process="@this"/>
+                                <p:tooltip style="" for="editar" value="Editar" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.listaValoresBoton()}" process="@this"/>
+                                <p:tooltip style="" for="listaValores" value="Lista de Valores" />
+
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.activarCtrlF11()}" process="@this"/>
+                                <p:tooltip style="" for="filtrar" value="Activar filtrado" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.exportXLS()}" ajax="false"/>
+                                <p:tooltip style="" for="exportarXLS" value="Exportar a XLS" />
+
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.limpiarNuevoTipoEntidad()}" ajax="false">
+                                    <p:dataExporter type="xml"  target=":formExportar:datosTipoEntidadExportar" fileName="TiposEntidadesXML" encoding="UTF-8"/> 
+                                </p:commandButton> 
+                                <p:tooltip style="" for="exportarXML" value="Exportar a XML" />
+
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.exportPDF()}" ajax="false"/>
+                                <p:tooltip style="" for="exportarPDF" value="Exportar a PDF" />
+
+                                <p:separator style="position: relative; top: -9px"/> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png);  background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "  oncomplete="nuevoRegistroTipoEntidad.show()" update=":formularioDialogos:nuevoTipoEntidad" process="@this"/> 
+                                <p:tooltip style="" for="insertar" value="Nuevo Tipo Entidad" />
+
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.verificarBorrado() }" process="@this"/>  
+                                <p:tooltip style="" for="eliminar" value="Eliminar Tipo Entidad" />
+
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.duplicarTiposEntidades()}" process="@this"/>  
+                                <p:tooltip style="" for="duplicar" value="Duplicar Tipo Entidad" />
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.verificarRastro()}" process="@this"/>  
+                                <p:tooltip style="" for="rastro" value="Rastro"/>
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="Refrescar"/>
+                                
+                                <p:separator style="position: relative; top: -9px"/> 
+                                
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.salir()}" action="#{controlTiposEntidades.redirigirPaginaAnterior()}" process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
+
+                            </p:toolbarGroup>  
+                        </p:toolbar>
+
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>Tipo de Entidad</strong></legend>
 
@@ -68,61 +122,9 @@
 
                         </fieldset>
 
-                        <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">  
-                            <p:toolbarGroup align="left"> 
-
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; "  actionListener="#{controlTiposEntidades.guardarCambiosTiposEntidades()}" process="@this" />
-                                <p:tooltip style="" for="guardarRapido" value="Guardar" />
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.editarCelda()}" process="@this"/>
-                                <p:tooltip style="" for="editar" value="Editar" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.listaValoresBoton()}" process="@this"/>
-                                <p:tooltip style="" for="listaValores" value="Lista de Valores" />
-
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.activarCtrlF11()}" process="@this"/>
-                                <p:tooltip style="" for="filtrar" value="Activar filtrado" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.exportXLS()}" ajax="false"/>
-                                <p:tooltip style="" for="exportarXLS" value="Exportar a XLS" />
-
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.limpiarNuevoTipoEntidad()}" ajax="false">
-                                    <p:dataExporter type="xml"  target=":formExportar:datosTipoEntidadExportar" fileName="TiposEntidadesXML" encoding="UTF-8"/> 
-                                </p:commandButton> 
-                                <p:tooltip style="" for="exportarXML" value="Exportar a XML" />
-
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.exportPDF()}" ajax="false"/>
-                                <p:tooltip style="" for="exportarPDF" value="Exportar a PDF" />
-
-                                <p:separator style="position: relative; top: -9px"/> 
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg);  background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  oncomplete="nuevoRegistroTipoEntidad.show()" update=":formularioDialogos:nuevoTipoEntidad" process="@this"/> 
-                                <p:tooltip style="" for="insertar" value="Nuevo Tipo Entidad" />
-
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.verificarBorrado() }" process="@this"/>  
-                                <p:tooltip style="" for="eliminar" value="Eliminar Tipo Entidad" />
-
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.duplicarTiposEntidades()}" process="@this"/>  
-                                <p:tooltip style="" for="duplicar" value="Duplicar Tipo Entidad" />
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.verificarRastro()}" process="@this"/>  
-                                <p:tooltip style="" for="rastro" value="Rastro"/>
-
-                                <p:separator style="position: relative; top: -9px"/>
-
-                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.cancelarModificacion()}" process="@this"/>  
-                                <p:tooltip  for="refrescar" value="Refrescar"/>
-
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.salir()}" action="#{controlTiposEntidades.redirigirPaginaAnterior()}" process="@this"/>  
-                                <p:tooltip  for="salir" value="Salir"/>
-
-                            </p:toolbarGroup>  
-                        </p:toolbar>
-
                         <h:outputText id="informacionRegistro" value="#{controlTiposEntidades.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
-                        <p:commandButton style=" position: absolute; left: 688px; top: 470px;  font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  onclick="confirmarGuardar.show();" disabled="#{controlTiposEntidades.guardado}" update="datosTipoEntidad"  process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 785px; top: 470px;  font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" action="#{controlTiposEntidades.redirigirPaginaAnterior()}" value="Atras"    />
+                        <p:commandButton style=" position: absolute; left: 688px; top: 470px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;  font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value=""  onclick="confirmarGuardar.show();" disabled="#{controlTiposEntidades.guardado}" update="datosTipoEntidad"  process="@this"   />
+                        <p:commandButton style=" position: absolute; left: 785px; top: 470px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" action="#{controlTiposEntidades.redirigirPaginaAnterior()}" value=""/>
 
 
 
@@ -130,7 +132,7 @@
 
 
                     <p:dialog id="confirmarGuardar" header="ATENCION...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/alerta.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
                         <p:commandButton value="Si" onclick="confirmarGuardar.hide();" action="#{controlTiposEntidades.redirigirPaginaAnterior()}" actionListener="#{controlTiposEntidades.guardarCambiosTiposEntidades()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
                         <p:commandButton value="No" onclick="confirmarGuardar.hide();" action="#{controlTiposEntidades.redirigirPaginaAnterior()}" actionListener="#{controlTiposEntidades.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />

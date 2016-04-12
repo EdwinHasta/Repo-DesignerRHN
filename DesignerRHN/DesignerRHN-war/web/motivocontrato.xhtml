@@ -68,16 +68,13 @@
                             </p:toolbarGroup>  
                         </p:toolbar>
                         
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 365px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>Motivos de los Contratos</strong></legend>
 
                             <p:dataTable id="datosMotivoContrato" var="info" rowKey="#{info.secuencia}" widgetVar="datosMotivoContrato" rowIndexVar="indice" style="width: 810px ; border: 1px;"                           
                                          value="#{controlMotivosContratos.listMotivosContratos}" scrollable="true" scrollHeight="#{controlMotivosContratos.tamano}"  scrollWidth="830"
                                          filteredValue="#{controlMotivosContratos.filtrarMotivosContratos}" emptyMessage="No se encontrarón resultados para la búsqueda"
-                                         editable="true" editMode="cell"   liveScroll="true" scrollRows="50"  
-                                         selection="#{controlMotivosContratos.motivoContratoSeleccionado}"
-                                         selectionMode="single"
-                                         >
+                                         editable="true" editMode="cell" liveScroll="true" scrollRows="50" selection="#{controlMotivosContratos.motivoContratoSeleccionado}" selectionMode="single">
                                 <p:ajax event="filter" listener="#{controlMotivosContratos.eventoFiltrar()}"/>
 
                                 <p:column headerText="Código" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains" id="codigo" width="200" filterStyle="display: none; visibility: hidden;" >                                  
@@ -106,9 +103,9 @@
 
                         </fieldset>
 
-                        <h:outputText id="informacionRegistro" value="#{controlMotivosContratos.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
-                        <p:commandButton style=" position: absolute; left: 683px; top: 470px; " icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  onclick="confirmarGuardar.show();"  disabled="#{controlMotivosContratos.guardado}" update="datosMotivoContrato"  process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 775px; top: 470px; " icon="ui-icon-closethick" id="ATRAS" value="atras" actionListener="#{controlMotivosContratos.redirigir()}" action="atrasmotivocontrato"/>
+                        <h:outputText id="informacionRegistro" value="Registros:  #{controlMotivosContratos.infoRegistro}" style="position: absolute; left: 17px; top: 430px; font-weight: bold"/>
+                        <p:commandButton style=" position: absolute; left: 683px; top: 470px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value=""  onclick="confirmarGuardar.show();"  disabled="#{controlMotivosContratos.guardado}" update="datosMotivoContrato"  process="@this"   />
+                        <p:commandButton style=" position: absolute; left: 775px; top: 470px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" actionListener="#{controlMotivosContratos.redirigir()}" action="atrasmotivocontrato"/>
 
                         <p:dialog id="confirmarGuardar" header="ATENCION...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />

@@ -101,7 +101,8 @@ public class ControlMotivosContratos implements Serializable {
                 tipoLista = 1;
             }
             RequestContext context = RequestContext.getCurrentInstance();
-            infoRegistro = "Cantidad de registros: " + filtrarMotivosContratos.size();
+            //infoRegistro = "Cantidad de registros: " + filtrarMotivosContratos.size();
+            modificarInfoRegistro(filtrarMotivosContratos.size());
             context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlMotiviosCambiosCargos eventoFiltrar ERROR===" + e.getMessage());
@@ -203,9 +204,11 @@ public class ControlMotivosContratos implements Serializable {
         getListMotivosContratos();
         RequestContext context = RequestContext.getCurrentInstance();
         if (listMotivosContratos == null || listMotivosContratos.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
+            //infoRegistro = "Cantidad de registros: 0 ";
+            modificarInfoRegistro(0);
         } else {
-            infoRegistro = "Cantidad de registros: " + listMotivosContratos.size();
+            //infoRegistro = "Cantidad de registros: " + listMotivosContratos.size();
+            modificarInfoRegistro(listMotivosContratos.size());
         }
         context.update("form:datosMotivoContrato");
         context.update("form:informacionRegistro");
@@ -240,9 +243,11 @@ public class ControlMotivosContratos implements Serializable {
         getListMotivosContratos();
         RequestContext context = RequestContext.getCurrentInstance();
         if (listMotivosContratos == null || listMotivosContratos.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
+            //infoRegistro = "Cantidad de registros: 0 ";
+            modificarInfoRegistro(0);
         } else {
-            infoRegistro = "Cantidad de registros: " + listMotivosContratos.size();
+            //infoRegistro = "Cantidad de registros: " + listMotivosContratos.size();
+            modificarInfoRegistro(listMotivosContratos.size());
         }
         context.update("form:datosMotivoContrato");
         context.update("form:informacionRegistro");
@@ -534,7 +539,8 @@ public class ControlMotivosContratos implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosMotivoContrato");
-            infoRegistro = "Cantidad de registros: " + listMotivosContratos.size();
+           //infoRegistro = "Cantidad de registros: " + listMotivosContratos.size();
+            modificarInfoRegistro(listMotivosContratos.size());
             context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
@@ -710,7 +716,8 @@ public class ControlMotivosContratos implements Serializable {
             nuevoMotivoContrato = new MotivosContratos();
 
             context.update("form:datosMotivoContrato");
-            infoRegistro = "Cantidad de registros: " + listMotivosContratos.size();
+            //infoRegistro = "Cantidad de registros: " + listMotivosContratos.size();
+            modificarInfoRegistro(listMotivosContratos.size());
             context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
@@ -812,7 +819,8 @@ public class ControlMotivosContratos implements Serializable {
             listMotivosContratos.add(duplicarMotivoContrato);
             crearMotivoContratos.add(duplicarMotivoContrato);
             context.update("form:datosMotivoContrato");
-            infoRegistro = "Cantidad de registros: " + listMotivosContratos.size();
+            //infoRegistro = "Cantidad de registros: " + listMotivosContratos.size();
+            modificarInfoRegistro(listMotivosContratos.size());
             context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
@@ -899,20 +907,25 @@ public class ControlMotivosContratos implements Serializable {
         }
         index = -1;
     }
+    
+    private void modificarInfoRegistro(int valor) {
+        infoRegistro = String.valueOf(valor);
+        System.out.println("infoRegistro: " + infoRegistro);
+    }
 
 //-----------------------//---------------//----------------------//------------
     public List<MotivosContratos> getListMotivosContratos() {
-        if (listMotivosContratos == null) {
+        
+         if (listMotivosContratos == null) {
             listMotivosContratos = administrarMotivosContratos.consultarMotivosContratos();
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (listMotivosContratos == null || listMotivosContratos.isEmpty()) {
+                infoRegistro = "0";
+            } else {
+                infoRegistro = String.valueOf(listMotivosContratos.size());
+            }
+            context.update("form:informacionRegistro");
         }
-        RequestContext context = RequestContext.getCurrentInstance();
-
-        if (listMotivosContratos == null || listMotivosContratos.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
-        } else {
-            infoRegistro = "Cantidad de registros: " + listMotivosContratos.size();
-        }
-        context.update("form:informacionRegistro");
         return listMotivosContratos;
     }
 

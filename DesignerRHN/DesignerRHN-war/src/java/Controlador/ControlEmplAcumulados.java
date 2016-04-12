@@ -34,7 +34,6 @@ public class ControlEmplAcumulados implements Serializable {
 
     @EJB
     AdministrarEmplAcumuladosInterface administrarEmplAcumulados;
-
     private BigInteger secuenciaEmpleado;
     private Empleados empleadoSeleccionado;
 //valores tablas
@@ -93,17 +92,20 @@ public class ControlEmplAcumulados implements Serializable {
                 //INFORMACION REGISTRO
                 acumuladosPorEmpleadoSeleccionado = listVWAcumuladosPorEmpleado.get(0);
                 //infoRegistro = "Registro 1 de 1";
-                infoRegistro = "Cantidad de registros: 1";
+               // infoRegistro = "Cantidad de registros: 1";
+                modificarInfoRegistro(1);
             } else if (listVWAcumuladosPorEmpleado.size() > 1) {
                 System.out.println("Else If");
                 //INFORMACION REGISTRO
                 acumuladosPorEmpleadoSeleccionado = listVWAcumuladosPorEmpleado.get(0);
                 //infoRegistro = "Registro 1 de " + vigenciasCargosEmpleado.size();
-                infoRegistro = "Cantidad de registros: " + listVWAcumuladosPorEmpleado.size();
+               // infoRegistro = "Cantidad de registros: " + listVWAcumuladosPorEmpleado.size();
+                modificarInfoRegistro(listVWAcumuladosPorEmpleado.size());
             }
 
         } else {
-            infoRegistro = "Cantidad de registros: 0";
+            //infoRegistro = "Cantidad de registros: 0";
+            modificarInfoRegistro(0);
         }
         context.update("form:informacionRegistro");
     }
@@ -113,7 +115,8 @@ public class ControlEmplAcumulados implements Serializable {
             tipoLista = 1;
         }
         RequestContext context = RequestContext.getCurrentInstance();
-        infoRegistro = "Cantidad de Registros: " + filtrarVWAcumuladosPorEmpleado.size();
+       // infoRegistro = "Cantidad de Registros: " + filtrarVWAcumuladosPorEmpleado.size();
+        modificarInfoRegistro(filtrarVWAcumuladosPorEmpleado.size());
         context.update("form:informacionRegistro");
     }
 
@@ -163,47 +166,7 @@ public class ControlEmplAcumulados implements Serializable {
         } else if (bandera == 1) {
             altoTabla = "310";
             System.out.println("Desactivar");
-            conceptoCodigo = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:conceptoCodigo");
-            conceptoCodigo.setFilterStyle("display: none; visibility: hidden;");
-            conceptoDescripcion = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:conceptoDescripcion");
-            conceptoDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            fechaDesde = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:fechaDesde");
-            fechaDesde.setFilterStyle("display: none; visibility: hidden;");
-            fechaPago = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:fechaPago");
-            fechaPago.setFilterStyle("display: none; visibility: hidden;");
-            unidades = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:unidades");
-            unidades.setFilterStyle("display: none; visibility: hidden;");
-            valor = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:valor");
-            valor.setFilterStyle("display: none; visibility: hidden;");
-            saldo = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:saldo");
-            saldo.setFilterStyle("display: none; visibility: hidden;");
-            tipo = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:tipo");
-            tipo.setFilterStyle("display: none; visibility: hidden;");
-            corteProceso = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:corteProceso");
-            corteProceso.setFilterStyle("display: none; visibility: hidden;");
-            tercero = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:tercero");
-            tercero.setFilterStyle("display: none; visibility: hidden;");
-            formula = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:formula");
-            formula.setFilterStyle("display: none; visibility: hidden;");
-            debito = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:debito");
-            debito.setFilterStyle("display: none; visibility: hidden;");
-            centroCostoDebito = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:centroCostoDebito");
-            centroCostoDebito.setFilterStyle("display: none; visibility: hidden;");
-            credito = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:credito");
-            credito.setFilterStyle("display: none; visibility: hidden;");
-            centroCostoCredito = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:centroCostoCredito");
-            centroCostoCredito.setFilterStyle("display: none; visibility: hidden;");
-            ultimaModificacion = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:ultimaModificacion");
-            ultimaModificacion.setFilterStyle("display: none; visibility: hidden;");
-            observaciones = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:observaciones");
-            observaciones.setFilterStyle("display: none; visibility: hidden;");
-            motivoNovedad = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:motivoNovedad");
-            motivoNovedad.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosEmplAcumulados");
-
-            bandera = 0;
-            filtrarVWAcumuladosPorEmpleado = null;
-            tipoLista = 0;
+            cerrarFiltrado();
         }
     }
 
@@ -382,51 +345,7 @@ public class ControlEmplAcumulados implements Serializable {
 
     public void cancelarModificacion() {
         if (bandera == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
-
-            //CERRAR FILTRADO
-            System.out.println("CancelarModificacion");
-            conceptoCodigo = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:conceptoCodigo");
-            conceptoCodigo.setFilterStyle("display: none; visibility: hidden;");
-            conceptoDescripcion = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:conceptoDescripcion");
-            conceptoDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            fechaDesde = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:fechaDesde");
-            fechaDesde.setFilterStyle("display: none; visibility: hidden;");
-            fechaPago = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:fechaPago");
-            fechaPago.setFilterStyle("display: none; visibility: hidden;");
-            unidades = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:unidades");
-            unidades.setFilterStyle("display: none; visibility: hidden;");
-            valor = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:valor");
-            valor.setFilterStyle("display: none; visibility: hidden;");
-            saldo = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:saldo");
-            saldo.setFilterStyle("display: none; visibility: hidden;");
-            tipo = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:tipo");
-            tipo.setFilterStyle("display: none; visibility: hidden;");
-            corteProceso = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:corteProceso");
-            corteProceso.setFilterStyle("display: none; visibility: hidden;");
-            tercero = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:tercero");
-            tercero.setFilterStyle("display: none; visibility: hidden;");
-            formula = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:formula");
-            formula.setFilterStyle("display: none; visibility: hidden;");
-            debito = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:debito");
-            debito.setFilterStyle("display: none; visibility: hidden;");
-            centroCostoDebito = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:centroCostoDebito");
-            centroCostoDebito.setFilterStyle("display: none; visibility: hidden;");
-            credito = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:credito");
-            credito.setFilterStyle("display: none; visibility: hidden;");
-            centroCostoCredito = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:centroCostoCredito");
-            centroCostoCredito.setFilterStyle("display: none; visibility: hidden;");
-            ultimaModificacion = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:ultimaModificacion");
-            ultimaModificacion.setFilterStyle("display: none; visibility: hidden;");
-            observaciones = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:observaciones");
-            observaciones.setFilterStyle("display: none; visibility: hidden;");
-            motivoNovedad = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:motivoNovedad");
-            motivoNovedad.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "310";
-            RequestContext.getCurrentInstance().update("form:datosEmplAcumulados");
-            bandera = 0;
-            filtrarVWAcumuladosPorEmpleado = null;
-            tipoLista = 0;
+            cerrarFiltrado();
         }
 
         index = -1;
@@ -435,6 +354,58 @@ public class ControlEmplAcumulados implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosEmplAcumulados");
     }
+
+    public void cerrarFiltrado() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        System.out.println("CancelarModificacion");
+        conceptoCodigo = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:conceptoCodigo");
+        conceptoCodigo.setFilterStyle("display: none; visibility: hidden;");
+        conceptoDescripcion = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:conceptoDescripcion");
+        conceptoDescripcion.setFilterStyle("display: none; visibility: hidden;");
+        fechaDesde = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:fechaDesde");
+        fechaDesde.setFilterStyle("display: none; visibility: hidden;");
+        fechaPago = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:fechaPago");
+        fechaPago.setFilterStyle("display: none; visibility: hidden;");
+        unidades = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:unidades");
+        unidades.setFilterStyle("display: none; visibility: hidden;");
+        valor = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:valor");
+        valor.setFilterStyle("display: none; visibility: hidden;");
+        saldo = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:saldo");
+        saldo.setFilterStyle("display: none; visibility: hidden;");
+        tipo = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:tipo");
+        tipo.setFilterStyle("display: none; visibility: hidden;");
+        corteProceso = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:corteProceso");
+        corteProceso.setFilterStyle("display: none; visibility: hidden;");
+        tercero = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:tercero");
+        tercero.setFilterStyle("display: none; visibility: hidden;");
+        formula = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:formula");
+        formula.setFilterStyle("display: none; visibility: hidden;");
+        debito = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:debito");
+        debito.setFilterStyle("display: none; visibility: hidden;");
+        centroCostoDebito = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:centroCostoDebito");
+        centroCostoDebito.setFilterStyle("display: none; visibility: hidden;");
+        credito = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:credito");
+        credito.setFilterStyle("display: none; visibility: hidden;");
+        centroCostoCredito = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:centroCostoCredito");
+        centroCostoCredito.setFilterStyle("display: none; visibility: hidden;");
+        ultimaModificacion = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:ultimaModificacion");
+        ultimaModificacion.setFilterStyle("display: none; visibility: hidden;");
+        observaciones = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:observaciones");
+        observaciones.setFilterStyle("display: none; visibility: hidden;");
+        motivoNovedad = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:motivoNovedad");
+        motivoNovedad.setFilterStyle("display: none; visibility: hidden;");
+        altoTabla = "310";
+        RequestContext.getCurrentInstance().update("form:datosEmplAcumulados");
+        bandera = 0;
+        filtrarVWAcumuladosPorEmpleado = null;
+        tipoLista = 0;
+    }
+    
+     private void modificarInfoRegistro(int valor) {
+        infoRegistro = String.valueOf(valor);
+        System.out.println("infoRegistro: " + infoRegistro);
+    }
+
 
     //-----------------------------------------------------------------------------
     public Empleados getEmpleadoSeleccionado() {
@@ -451,16 +422,17 @@ public class ControlEmplAcumulados implements Serializable {
     public List<VWAcumulados> getListVWAcumuladosPorEmpleado() {
         if (listVWAcumuladosPorEmpleado == null) {
             listVWAcumuladosPorEmpleado = administrarEmplAcumulados.consultarVWAcumuladosEmpleado(secuenciaEmpleado);
-//            System.out.println("Lista: " + listVWAcumuladosPorEmpleado.size());
+            System.out.println("Lista: " + listVWAcumuladosPorEmpleado.size());
         }
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (listVWAcumuladosPorEmpleado == null || listVWAcumuladosPorEmpleado.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
-        } else {
-            infoRegistro = "Cantidad de registros: " + listVWAcumuladosPorEmpleado.size();
-        }
-        context.update("form:informacionRegistro");
+//        RequestContext context = RequestContext.getCurrentInstance();
+//        if (listVWAcumuladosPorEmpleado == null || listVWAcumuladosPorEmpleado.isEmpty()) {
+//            infoRegistro = "Cantidad de registros: 0 ";
+//        } else {
+//            infoRegistro = "Cantidad de registros: " + listVWAcumuladosPorEmpleado.size();
+//        }
+//        context.update("form:informacionRegistro");
         return listVWAcumuladosPorEmpleado;
+
     }
 
     public void setListVWAcumuladosPorEmpleado(List<VWAcumulados> listVWAcumuladosPorEmpleado) {
@@ -502,5 +474,4 @@ public class ControlEmplAcumulados implements Serializable {
     public String getInfoRegistro() {
         return infoRegistro;
     }
-
 }

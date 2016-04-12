@@ -124,7 +124,7 @@
 
 
 
-                        <h:outputText id="informacionRegistro" value="#{controlBetaEmplVigenciaNormaLaboral.infoRegistro}" style="position: absolute; left: 15px; top: 470px; font-weight: bold"/>
+                        <h:outputText id="informacionRegistro" value="#{msg['infoRegistro']} #{controlBetaEmplVigenciaNormaLaboral.infoRegistro}" style="position: absolute; left: 15px; top: 470px; font-weight: bold"/>
                         <p:commandButton id="ACEPTAR" style="position: absolute; left: 664px; top: 470px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" value=" " disabled="#{controlBetaEmplVigenciaNormaLaboral.guardado}" actionListener="#{controlBetaEmplVigenciaNormaLaboral.revisarDialogoGuardar()}" process="@this"/>
                         <p:commandButton id="ATRAS" style="position: absolute; left: 765px; top: 470px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" value=" " action="normalaboralNominaF" />
 

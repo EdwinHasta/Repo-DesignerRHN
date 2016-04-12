@@ -107,7 +107,8 @@ public class ControlNormasLaborales implements Serializable {
                 tipoLista = 1;
             }
             RequestContext context = RequestContext.getCurrentInstance();
-            infoRegistro = "Cantidad de registros: " + filtrarNormasLaborales.size();
+            //infoRegistro = "Cantidad de registros: " + filtrarNormasLaborales.size();
+            modificarInfoRegistro(filtrarNormasLaborales.size());
             context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlNormasLaborales eventoFiltrar ERROR===" + e.getMessage());
@@ -198,9 +199,11 @@ public class ControlNormasLaborales implements Serializable {
         getListNormasLaborales();
         RequestContext context = RequestContext.getCurrentInstance();
         if (listNormasLaborales == null || listNormasLaborales.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
+            //infoRegistro = "Cantidad de registros: 0 ";
+            modificarInfoRegistro(0);
         } else {
-            infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+            //infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+            modificarInfoRegistro(listNormasLaborales.size());
         }
         context.update("form:informacionRegistro");
         context.update("form:datosNormaLaboral");
@@ -234,9 +237,11 @@ public class ControlNormasLaborales implements Serializable {
         getListNormasLaborales();
         RequestContext context = RequestContext.getCurrentInstance();
         if (listNormasLaborales == null || listNormasLaborales.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
+           // infoRegistro = "Cantidad de registros: 0 ";
+            modificarInfoRegistro(0);
         } else {
-            infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+           // infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+            modificarInfoRegistro(listNormasLaborales.size());
         }
         context.update("form:informacionRegistro");
         context.update("form:datosNormaLaboral");
@@ -521,7 +526,8 @@ public class ControlNormasLaborales implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosNormaLaboral");
-            infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+            //infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+            modificarInfoRegistro(listNormasLaborales.size());
             context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
@@ -694,7 +700,8 @@ public class ControlNormasLaborales implements Serializable {
             nuevoNormaLaboral = new NormasLaborales();
 
             context.update("form:datosNormaLaboral");
-            infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+            //infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+            modificarInfoRegistro(listNormasLaborales.size());
             context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
@@ -799,7 +806,8 @@ public class ControlNormasLaborales implements Serializable {
             listNormasLaborales.add(duplicarNormaLaboral);
             crearNormaLaboral.add(duplicarNormaLaboral);
             context.update("form:datosNormaLaboral");
-            infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+            //infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+            modificarInfoRegistro(listNormasLaborales.size());
             context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
@@ -888,6 +896,12 @@ public class ControlNormasLaborales implements Serializable {
     }
 
     private String infoRegistro;
+    
+        private void modificarInfoRegistro(int valor) {
+        infoRegistro = String.valueOf(valor);
+        System.out.println("infoRegistro: " + infoRegistro);
+    }
+
 
     //-------------------------------------------------------------------------- 
     public List<NormasLaborales> getListNormasLaborales() {
@@ -896,9 +910,11 @@ public class ControlNormasLaborales implements Serializable {
         }
         RequestContext context = RequestContext.getCurrentInstance();
         if (listNormasLaborales == null || listNormasLaborales.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
+           // infoRegistro = "Cantidad de registros: 0 ";
+            infoRegistro = "0";
         } else {
-            infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+           // infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+             infoRegistro = String.valueOf(listNormasLaborales.size());
         }
         context.update("form:informacionRegistro");
         return listNormasLaborales;

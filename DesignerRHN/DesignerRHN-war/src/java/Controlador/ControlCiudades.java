@@ -122,9 +122,11 @@ public class ControlCiudades implements Serializable {
             administrarRastros.obtenerConexion(ses.getId());
             getListaCiudades();
             if (listaCiudades != null) {
-                infoRegistro = "Cantidad de registros : " + listaCiudades.size();
+               // infoRegistro = "Cantidad de registros : " + listaCiudades.size();
+                modificarInfoRegistro(listaCiudades.size());
             } else {
-                infoRegistro = "Cantidad de registros : 0";
+               // infoRegistro = "Cantidad de registros : 0";
+                modificarInfoRegistro(0);
             }
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
@@ -207,7 +209,8 @@ public class ControlCiudades implements Serializable {
         if (pasa == 0) {
             listaCiudades.add(duplicarCiudad);
             listaCiudadesCrear.add(duplicarCiudad);
-            infoRegistro = "Cantidad de registros: " + listaCiudades.size();
+            //infoRegistro = "Cantidad de registros: " + listaCiudades.size();
+            modificarInfoRegistro(listaCiudades.size());
             context.update("form:informacionRegistro");
             context.update("form:datosCiudades");
             index = -1;
@@ -519,7 +522,8 @@ public class ControlCiudades implements Serializable {
             nuevaCiudad.setSecuencia(l);
             listaCiudadesCrear.add(nuevaCiudad);
             listaCiudades.add(nuevaCiudad);
-            infoRegistro = "Cantidad de registros: " + listaCiudades.size();
+           // infoRegistro = "Cantidad de registros: " + listaCiudades.size();
+            modificarInfoRegistro(listaCiudades.size());
             context.update("form:informacionRegistro");
             nuevaCiudad = new Ciudades();
             //  nuevaCiudad.setNombre(Departamento);
@@ -646,9 +650,11 @@ public class ControlCiudades implements Serializable {
             getListaCiudades();
             if (listaCiudades != null && !listaCiudades.isEmpty()) {
                 ciudadSeleccionada = listaCiudades.get(0);
-                infoRegistro = "Cantidad de registros: " + listaCiudades.size();
+                //infoRegistro = "Cantidad de registros: " + listaCiudades.size();
+                modificarInfoRegistro(listaCiudades.size());
             } else {
-                infoRegistro = "Cantidad de registros: 0";
+                //infoRegistro = "Cantidad de registros: 0";
+                modificarInfoRegistro(0);
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:informacionRegistro");
@@ -693,9 +699,11 @@ public class ControlCiudades implements Serializable {
         getListaCiudades();
         if (listaCiudades != null && !listaCiudades.isEmpty()) {
             ciudadSeleccionada = listaCiudades.get(0);
-            infoRegistro = "Cantidad de registros: " + listaCiudades.size();
+            //infoRegistro = "Cantidad de registros: " + listaCiudades.size();
+            modificarInfoRegistro(listaCiudades.size());
         } else {
-            infoRegistro = "Cantidad de registros: 0";
+            //infoRegistro = "Cantidad de registros: 0";
+            modificarInfoRegistro(0);
         }
         guardado = true;
         permitirIndex = true;
@@ -738,9 +746,11 @@ public class ControlCiudades implements Serializable {
         getListaCiudades();
         if (listaCiudades != null && !listaCiudades.isEmpty()) {
             ciudadSeleccionada = listaCiudades.get(0);
-            infoRegistro = "Cantidad de registros: " + listaCiudades.size();
+            //infoRegistro = "Cantidad de registros: " + listaCiudades.size();
+            modificarInfoRegistro(listaCiudades.size());
         } else {
-            infoRegistro = "Cantidad de registros: 0";
+            //infoRegistro = "Cantidad de registros: 0";
+            modificarInfoRegistro(0);
         }
         guardado = true;
         permitirIndex = true;
@@ -757,9 +767,10 @@ public class ControlCiudades implements Serializable {
             tipoLista = 1;
         }
         System.out.println("Tamaño Lista Filtrada: " + filtradoListaCiudades.size());
-        infoRegistro = "Cantidad de Registros: " + filtradoListaCiudades.size();
-        infoRegistro2 = "Cantidad de Registros: " + filtradoListaCiudades.size();
-        infoRegistro3 = "Cantidad de Registros: " + filtradoListaCiudades.size();
+        //infoRegistro = "Registros: " + filtradoListaCiudades.size();
+        modificarInfoRegistro(filtradoListaCiudades.size());
+        infoRegistro2 = "Registros: " + filtradoListaCiudades.size();
+        infoRegistro3 = "Registros: " + filtradoListaCiudades.size();
         System.out.println("Inforegistro: " + infoRegistro);
         System.out.println("22 Inforegistro: " + infoRegistro2);
         System.out.println("33 Inforegistro: " + infoRegistro3);
@@ -854,7 +865,8 @@ public class ControlCiudades implements Serializable {
                     listaCiudadesBorrar.add(listaCiudades.get(index));
                 }
                 listaCiudades.remove(index);
-                infoRegistro = "Cantidad de registros: " + listaCiudades.size();
+                //infoRegistro = "Cantidad de registros: " + listaCiudades.size();
+                modificarInfoRegistro(listaCiudades.size());
             }
 
             if (tipoLista == 1) {
@@ -871,7 +883,8 @@ public class ControlCiudades implements Serializable {
                 int CIndex = listaCiudades.indexOf(filtradoListaCiudades.get(index));
                 listaCiudades.remove(CIndex);
                 filtradoListaCiudades.remove(index);
-                infoRegistro = "Cantidad de registros: " + listaCiudades.size();
+               //infoRegistro = "Cantidad de registros: " + listaCiudades.size();
+                modificarInfoRegistro(listaCiudades.size());
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -930,6 +943,13 @@ public class ControlCiudades implements Serializable {
         }
         index = -1;
     }
+    
+    private void modificarInfoRegistro(int valor) {
+        infoRegistro = String.valueOf(valor);
+        System.out.println("infoRegistro: " + infoRegistro);
+    }
+    
+    
 //GETTER AND SETTER
 
     public List<Ciudades> getListaCiudades() {
@@ -960,9 +980,11 @@ public class ControlCiudades implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (listaDepartamentos == null || listaDepartamentos.isEmpty()) {
-            infoRegistroDepartamentos = "Cantidad de registros: 0 ";
+            //infoRegistroDepartamentos = "Cantidad de registros: 0 ";
+           infoRegistroDepartamentos = "0";
         } else {
-            infoRegistroDepartamentos = "Cantidad de registros: " + listaDepartamentos.size();
+           // infoRegistroDepartamentos = "Cantidad de registros: " + listaDepartamentos.size();
+            infoRegistroDepartamentos = String.valueOf(listaDepartamentos.size());
         }
         context.update("formularioDialogos:infoRegistroDepartamentos");
         return listaDepartamentos;
