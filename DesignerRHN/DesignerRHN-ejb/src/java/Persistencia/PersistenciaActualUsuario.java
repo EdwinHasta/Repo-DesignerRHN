@@ -40,7 +40,7 @@ public class PersistenciaActualUsuario implements PersistenciaActualUsuarioInter
             actualUsuario = (ActualUsuario) query.getSingleResult();
             return actualUsuario;
         } catch (Exception e) {
-            PropertyConfigurator.configure("log4j.properties");
+          //  PropertyConfigurator.configure("log4j.properties");
             logger.error("Metodo: actualUsuarioBD - PersistenciaActualUsuario - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }

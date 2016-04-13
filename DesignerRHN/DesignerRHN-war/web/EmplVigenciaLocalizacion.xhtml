@@ -18,7 +18,7 @@
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">    
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlVigenciaLocalizacion.empleado.persona.nombreCompleto}"/> 
 
-                        <p:toolbar style=" position: absolute; top: 37px; left: 12px; height: 24px">  
+                        <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 37px; left: 12px; height: 24px">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; " actionListener="#{controlVigenciaLocalizacion.guardadoGeneral()}" process="@this" />
@@ -65,16 +65,17 @@
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlVigenciaLocalizacion.cancelarModificacion()}" process="@this"/>  
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlVigenciaLocalizacion.cancelarModificacion()}" oncomplete="window.location.reload()" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
+                                <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlVigenciaLocalizacion.salir()}" action="nomina" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
 
                             </p:toolbarGroup>
                         </p:toolbar> 
 
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 182px;width: 830px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 70px;left: 10px;height: 182px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>#{msg['localizacion']}</strong></legend>
                             <!-- TABLA EMPLVIGENCIALOCALIZACION -->
 
@@ -101,7 +102,7 @@
                                             <lnk:calendar id="dateFechaVigencia" value="#{infoDVL.fechavigencia}" width="99"> 
                                                 <p:ajax event="dateSelect" listener="#{controlVigenciaLocalizacion.modificarFechas(infoDVL,0)}" update="dateFechaVigencia" process="@this"/>
                                                 <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarFechas(infoDVL,0)}" update="dateFechaVigencia" process="@this"/>
-                                                <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndice(infoDVL,0)}" process="@this"/> 
+                                                <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndice(infoDVL,0)}" update=":form:datosVPVigencia, :form:datosVPPVigencia" process="@this"/> 
                                             </lnk:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
@@ -140,8 +141,10 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoDVL.localizacion.nombre}"/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{infoDVL.localizacion.nombre}" readonly="true" id="editarLocalizacion" style=" border-radius: 0px; width: 95%;text-transform: uppercase; height: 12px" 
-                                                         onselect="posicionLocalizacion([{name: 'n', value: '2'}, {name: 't', value: '#{indice}'}]);"> 
+                                            <p:inputText value="#{infoDVL.localizacion.nombre}" id="editarLocalizacion" style=" border-radius: 0px; width: 95%;text-transform: uppercase; height: 12px">
+                                                <!--onselect="posicionLocalizacion([{name: 'n', value: '2'}, {name: 't', value: '#/{indice}'}]);"> -->
+                                                <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarVL(infoDVL, 'CENTROCOSTO', infoDVL.localizacion.centrocosto.codigoNombre)}"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndice(infoDVL,1)}" />
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -197,9 +200,9 @@
                             </p:dataTable>  
                         </fieldset>
 
-                        <p:remoteCommand name="posicionLocalizacion" actionListener="#{controlVigenciaLocalizacion.posicionLocalizacion()}"/>
+                        <!--<p:remoteCommand name="posicionLocalizacion" actionListener="#/{controlVigenciaLocalizacion.posicionLocalizacion()}"/>-->
 
-                        <fieldset style="position: absolute;top: 277px;left: 10px;height: 180px;width: 450px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 270px;left: 10px;height: 185px;width: 450px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>#{msg['pcc']}</strong></legend>
 
                             <p:dataTable id="datosVPVigencia" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceVP" 
@@ -350,7 +353,7 @@
                         </fieldset>
 
 
-                        <fieldset style="position: absolute;top: 277px;left: 490px;height: 180px;width: 350px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 270px;left: 490px;height: 185px;width: 350px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>#{msg['pp']}</strong></legend>
                             <p:dataTable id="datosVPPVigencia" var="info2" rowKey="#{info2.secuencia}" rowIndexVar="indiceVPP" value="#{controlVigenciaLocalizacion.vigenciasProrrateosProyectos}" 
                                          filteredValue="#{controlVigenciaLocalizacion.filtradoVigenciasProrrateosProyectos}" editable="true" editMode="cell" 
@@ -462,7 +465,7 @@
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciaLocalizacion.actualizarEstructura()}"  process="@this" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarL']}" style="position: absolute; left: 27px; top: 14px"/>  
-                                    <p:inputText id="globalFilter" onkeyup="lovLocalizacion.filter();" style="width:150px; position: relative;left: -125px" />  
+                                    <p:inputText id="globalFilter" onkeyup="lovLocalizacion.filter();" style="width:150px; position: relative;left: -125px"/>  
                                 </f:facet>
                                 <p:column filterBy="#{localizacion.centrocosto.codigoNombre}" filterMatchMode="contains" >
                                     <f:facet name="header">
@@ -485,10 +488,8 @@
                             </p:dataTable>
 
                             <h:outputText id="infoRegistroLocalizacion" value="#{controlVigenciaLocalizacion.infoRegistroEstLocalizacion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            <p:commandButton id="aceptarL" style="position: relative; left: 570px; top:5px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlVigenciaLocalizacion.aceptar}" actionListener="#{controlVigenciaLocalizacion.actualizarEstructura()}" process="@this" />
-                            <p:commandButton id="atrasL" style="position: relative; left: 570px; top:5px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" actionListener="#{controlVigenciaLocalizacion.cancelarCambioEstructura()}" process="@this"  />
+                            <p:commandButton id="aceptarL" style="position: relative; left: 570px; top:5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaLocalizacion.aceptar}" actionListener="#{controlVigenciaLocalizacion.actualizarEstructura()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasL" style="position: relative; left: 570px; top:5px" value="#{msg['atras']}" actionListener="#{controlVigenciaLocalizacion.cancelarCambioEstructura()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
 
                         </p:dialog>
 
@@ -519,10 +520,8 @@
                             </p:dataTable>
 
                             <h:outputText id="infoRegistroMotivoLocalizacion" value="#{controlVigenciaLocalizacion.infoRegistroMotivoLocalizacion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            <p:commandButton id="aceptarM" style="position: relative; left: 280px;top:5px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlVigenciaLocalizacion.aceptar}"  actionListener="#{controlVigenciaLocalizacion.actualizarMotivoLocalizacion()}" process="@this" />
-                            <p:commandButton id="atrasM" style="position: relative; left: 280px;top:5px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" actionListener="#{controlVigenciaLocalizacion.cancelarCambioMotivoLocalizacion()}" process="@this"  />
+                            <p:commandButton id="aceptarM" icon="ui-icon-check" style="position: relative; left: 280px;top:5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaLocalizacion.aceptar}"  actionListener="#{controlVigenciaLocalizacion.actualizarMotivoLocalizacion()}" process="@this" />
+                            <p:commandButton id="atrasM" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 280px;top:5px" value="#{msg['atras']}" actionListener="#{controlVigenciaLocalizacion.cancelarCambioMotivoLocalizacion()}" process="@this"  />
 
                         </p:dialog>
 
@@ -559,10 +558,8 @@
                             </p:dataTable>
 
                             <h:outputText id="infoRegistroProyecto" value="#{controlVigenciaLocalizacion.infoRegistroProyecto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            <p:commandButton id="aceptarP" style="position: relative; left: 440px; top:5px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlVigenciaLocalizacion.aceptar}"  actionListener="#{controlVigenciaLocalizacion.actualizarProyecto()}" process="@this" />
-                            <p:commandButton id="atrasP" style="position: relative; left: 440px;top:5px ; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value=""  actionListener="#{controlVigenciaLocalizacion.cancelarCambioProyecto()}" process="@this"  />
+                            <p:commandButton id="aceptarP" icon="ui-icon-check" style="position: relative; left: 440px; top:5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaLocalizacion.aceptar}"  actionListener="#{controlVigenciaLocalizacion.actualizarProyecto()}" process="@this" />
+                            <p:commandButton id="atrasP" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 440px;top:5px " value="#{msg['atras']}" actionListener="#{controlVigenciaLocalizacion.cancelarCambioProyecto()}" process="@this"  />
 
                         </p:dialog>
 
@@ -600,10 +597,8 @@
                             </p:dataTable>
 
                             <h:outputText id="infoRegistroCentroCosto" value="#{controlVigenciaLocalizacion.infoRegistroCentroCosto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            <p:commandButton id="aceptarCC" style="position: relative; left: 570px;top: 5px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" actionListener="#{controlVigenciaLocalizacion.actualizarCentroCostoVP()}" disabled="#{controlVigenciaLocalizacion.aceptar}" process="@this" />
-                            <p:commandButton id="atrasCC" style="position: relative; left: 570px;top: 5px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" actionListener="#{controlVigenciaLocalizacion.cancelarCambioCentroCostoVP()}" process="@this"  />
+                            <p:commandButton id="aceptarCC" icon="ui-icon-check" style="position: relative; left: 570px;top: 5px" value="#{msg['aceptar']}" actionListener="#{controlVigenciaLocalizacion.actualizarCentroCostoVP()}" disabled="#{controlVigenciaLocalizacion.aceptar}" process="@this" />
+                            <p:commandButton id="atrasCC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 570px;top: 5px" value="#{msg['atras']}" actionListener="#{controlVigenciaLocalizacion.cancelarCambioCentroCostoVP()}" process="@this"  />
 
                         </p:dialog>
 
@@ -640,10 +635,8 @@
                             </p:dataTable>
 
                             <h:outputText id="infoRegistroProyectoVP" value="#{controlVigenciaLocalizacion.infoRegistroProyectoVP}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            <p:commandButton id="aceptarPVP" style="position: relative; left: 450px;top: 5px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlVigenciaLocalizacion.aceptar}" actionListener="#{controlVigenciaLocalizacion.actualizarProyectoVP()}" process="@this" />
-                            <p:commandButton id="atrasPVP" style="position: relative; left: 450px;top: 5px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" actionListener="#{controlVigenciaLocalizacion.cancelarCambioProyectoVP()}" process="@this"  />
+                            <p:commandButton id="aceptarPVP" style="position: relative; left: 450px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaLocalizacion.aceptar}" actionListener="#{controlVigenciaLocalizacion.actualizarProyectoVP()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasPVP" style="position: relative; left: 450px;top: 5px" value="#{msg['atras']}" actionListener="#{controlVigenciaLocalizacion.cancelarCambioProyectoVP()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
 
                         </p:dialog>
 
@@ -680,10 +673,8 @@
                             </p:dataTable>
 
                             <h:outputText id="infoRegistroProyectoVPP" value="#{controlVigenciaLocalizacion.infoRegistroProyectoVPP}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            <p:commandButton id="aceptarPVPP" style="position: relative; left: 450px;top: 5px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlVigenciaLocalizacion.aceptar}" actionListener="#{controlVigenciaLocalizacion.actualizarProyectoVPP()}" process="@this" />
-                            <p:commandButton id="atrasPVPP" style="position: relative; left: 450px;top: 5px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" actionListener="#{controlVigenciaLocalizacion.cancelarCambioProyectoVPP()}"  process="@this"  />
+                            <p:commandButton id="aceptarPVPP" icon="ui-icon-check" style="position: relative; left: 450px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaLocalizacion.aceptar}" actionListener="#{controlVigenciaLocalizacion.actualizarProyectoVPP()}" process="@this" />
+                            <p:commandButton id="atrasPVPP" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 450px;top: 5px" value="#{msg['atras']}" actionListener="#{controlVigenciaLocalizacion.cancelarCambioProyectoVPP()}"  process="@this"  />
 
                         </p:dialog>
 
@@ -692,7 +683,7 @@
                                          background-size: 100% 100%; background-repeat: no-repeat; border: none; " id="ACEPTAR" value="" onclick="confirmarGuardar.show();" update=":form:datosVLEmpleado" process="@this" disabled="#{controlVigenciaLocalizacion.guardado}" />
                         <p:commandButton style="position: absolute; left: 775px; top: 478px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
                                          background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" actionListener="#{controlVigenciaLocalizacion.salir()}" action="nomina" process="@this" />
-                        
+
                         <p:commandButton style="position: absolute; left: 20px; top: 478px; height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); 
                                          background-size: 100% 100%; background-repeat: no-repeat; border: none; color: white" id="ARCHIVOPLANO" value="Archivo Plano" process="@this" icon="ui-icon-extlink"/>
                         <p:tooltip for="ARCHIVOPLANO" value="#{msg['archivo']}" />
@@ -700,35 +691,35 @@
                     </p:panel>
 
                     <p:dialog id="validarNuevoFechas" header="#{msg['atencion']}" widgetVar="validarNuevoFechas"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['validacionNuevo']} #{controlVigenciaLocalizacion.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
                         <p:commandButton value="" onclick="validarNuevoFechas.hide();" style="position: absolute; top: 70px; left: 300px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
                                          background-size: 100% 100%; background-repeat: no-repeat; border: none;" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="validarPorcentajes" header="#{msg['atencion']}" widgetVar="validarPorcentajes"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['errorPorcentaje']}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
                         <p:commandButton value="" onclick="validarPorcentajes.hide();" style="position: absolute; top: 70px; left: 300px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
                                          background-size: 100% 100%; background-repeat: no-repeat; border: none;" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="font-size: 14px; position: absolute; left: 100px; top: 20px; width: 270px;" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciaLocalizacion.guardarYSalir()}" action="nomina" style="position: absolute; top: 60px; left: 155px" process="@this" icon="ui-icon-" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciaLocalizacion.cancelarYSalir()}" action="nomina" style="position: absolute; top: 60px; left: 215px" process="@this" icon="ui-icon-close" />
                         <p:commandButton  value="" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 280px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" process="@this"   />
+                                          background-size: 100% 100%; background-repeat: no-repeat; border: none;" process="@this"   />
                     </p:dialog>
 
                     <p:dialog id="confirmarGuardarSinSalir" header="#{msg['atencion']}" widgetVar="confirmarGuardarSinSalir"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="font-size: 14px; position: absolute; left: 100px; top: 20px; width: 270px;" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarGuardarSinSalir.hide();" actionListener="#{controlVigenciaLocalizacion.guardadoGeneral()}" style="position: absolute; top: 60px; left: 155px" process="@this"  />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarGuardarSinSalir.hide();" actionListener="#{controlVigenciaLocalizacion.cancelarModificacion()}" style="position: absolute; top: 60px; left: 215px" process="@this" icon="ui-icon-close" />
                         <p:commandButton  value="" onclick="confirmarGuardarSinSalir.hide();" style="position: absolute; top: 60px; left: 280px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" process="@this"   />
+                                          background-size: 100% 100%; background-repeat: no-repeat; border: none;" process="@this"   />
                     </p:dialog>
 
                     <p:dialog id="verificarRastrosTablas" widgetVar="verificarRastrosTablas" header="#{msg['rastros']}" resizable="false" draggable="false" modal="true" height="170" width="350px"  >
@@ -739,75 +730,75 @@
                     </p:dialog>
 
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{controlVigenciaLocalizacion.msnConfirmarRastro}" id="msnConfirmarRastro" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciaLocalizacion.backUp, controlVigenciaLocalizacion.nombreTablaRastro , 'vigenciasLocalizaciones')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" actionListener="#{controlVigenciaLocalizacion.limpiarMSNRastros()}" style="position: absolute; top: 63px; left: 270px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="confirmarRastroHistorico" header="#{msg['atencion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{controlVigenciaLocalizacion.msnConfirmarRastroHistorico}" id="msnConfirmarRastroHisttorico" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla(controlVigenciaLocalizacion.nombreTablaRastro , 'vigenciasLocalizaciones')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlVigenciaLocalizacion.limpiarMSNRastros()}" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="errorRastroHistorico" header="#{msg['atencion']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
                     <p:dialog id="errorRegistroRastro" header="#{msg['atencion']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
                     <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTablaConRastro']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciaLocalizacion.backUp, controlVigenciaLocalizacion.nombreTablaRastro , 'vigenciasLocalizaciones')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="errorTablaSinRastro" header="#{msg['atencion']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTablaSinRastro']}" style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
                     <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
                     <p:dialog id="seleccionarRegistroLE" header="#{msg['atencion']}" widgetVar="seleccionarRegistroLE"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['seleccionarRegistroLE']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
                     <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciaLocalizacion.activarCtrlF11()}"/> 
                 </h:form>
-                
+
                 <h:form id="formularioDialogos">
 
                     <p:dialog id="NuevoRegistroPagina" widgetVar="NuevoRegistroPagina" header="#{msg['nuevoregistroparaingreso']}" resizable="false" draggable="false" modal="true" height="170" width="350px"  >
                         <h:outputText value="#{msg['seleccione']}" style="position: absolute; left: 20px; top: 20px;color: blue;font-weight: bold"/>
-                        
+
                         <p:commandButton value="#{msg['vl']}" style="position: absolute; left: 75px; top: 60px; width: 200px"  
                                          actionListener="#{controlVigenciaLocalizacion.validarCualTabla(1)}" onclick="NuevoRegistroPagina.hide();" process="@this" />
-                        
+
                         <p:commandButton value="#{msg['vp']}" style="position: absolute; left: 75px; top: 90px; width: 200px" 
                                          actionListener="#{controlVigenciaLocalizacion.validarCualTabla(2)}" onclick="NuevoRegistroPagina.hide();" process="@this" />
-                        
+
                         <p:commandButton value="#{msg['vpp']}" style="position: absolute; left: 75px; top: 120px; width: 200px" 
                                          actionListener="#{controlVigenciaLocalizacion.validarCualTabla(3)}" onclick="NuevoRegistroPagina.hide();" process="@this" />
-                        
+
                     </p:dialog>
-                    
-                                         
+
+
 
                     <p:dialog id="NuevoRegistroVL" header="#{msg['nuevoregistroVL']}" widgetVar="NuevoRegistroVL" closable="false" resizable="false"  draggable="false" modal="true" height="270" width="340" style=" padding: 0px">  
 
@@ -856,12 +847,9 @@
                                              actionListener="#{controlVigenciaLocalizacion.asignarIndex(null,2,1)}"/>   
                             <p:watermark for="nuevaProyecto" value="#{msg['proyecto']}" />
 
-                            <p:commandButton id="limpiar" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 230px;  height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" actionListener="#{controlVigenciaLocalizacion.limpiarNuevaVL()}" update="nuevaVL" process="@this" icon="ui-icon-trash"/>
-                            <p:commandButton id="agregarVL"  value="" style=" position: absolute; left: 160px; top: 230px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;"  process="@this" actionListener="#{controlVigenciaLocalizacion.agregarNuevaVL()}" onclick="NuevoRegistroVL.hide();" />
-                            <p:commandButton id="cancelarVL"  value="" style=" position: absolute; left: 245px; top: 230px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" actionListener="#{controlVigenciaLocalizacion.limpiarNuevaVL()}" update="nuevaVL" onclick="NuevoRegistroVL.hide();"  process="@this"  />
+                            <p:commandButton id="limpiar" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 230px;" actionListener="#{controlVigenciaLocalizacion.limpiarNuevaVL()}" update="nuevaVL" process="@this" icon="ui-icon-trash"/>
+                            <p:commandButton id="agregarVL" value="#{msg['agregar']}" style=" position: absolute; left: 160px; top: 230px;"  process="@this" actionListener="#{controlVigenciaLocalizacion.agregarNuevaVL()}" onclick="NuevoRegistroVL.hide();" icon="ui-icon-circle-check"/>
+                            <p:commandButton id="cancelarVL" value="#{msg['cancelar']}" style=" position: absolute; left: 245px; top: 230px;" actionListener="#{controlVigenciaLocalizacion.limpiarNuevaVL()}" update="nuevaVL" onclick="NuevoRegistroVL.hide();"  process="@this" icon="ui-icon-circle-close"/>
                         </p:panel>
                     </p:dialog>
 
@@ -912,12 +900,9 @@
                                              actionListener="#{controlVigenciaLocalizacion.asignarIndex(null,2,2)}"/>   
                             <p:watermark for="duplicarProyecto" value="#{msg['proyecto']}" />
 
-                            <p:commandButton id="limpiarDuplicadoVL" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 230px;  height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" actionListener="#{controlVigenciaLocalizacion.limpiarduplicarVL()}" update="duplicarVL" process="@this" icon="ui-icon-trash"/>
-                            <p:commandButton id="agregarDuplicadoVL"  value="" style=" position: absolute; left: 160px; top: 230px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;"  process="@this" actionListener="#{controlVigenciaLocalizacion.confirmarDuplicar()}"   />
-                            <p:commandButton id="cancelarDuplicadoVL"  value="" style=" position: absolute; left: 245px; top: 230px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" actionListener="#{controlVigenciaLocalizacion.limpiarduplicarVL()}" update="duplicarVL" onclick="DuplicarRegistroVL.hide();"  process="@this"  />
+                            <p:commandButton id="limpiarDuplicadoVL" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 230px;" actionListener="#{controlVigenciaLocalizacion.limpiarduplicarVL()}" update="duplicarVL" process="@this" icon="ui-icon-trash"/>
+                            <p:commandButton id="agregarDuplicadoVL" value="#{msg['agregar']}" style=" position: absolute; left: 160px; top: 230px;"  process="@this" actionListener="#{controlVigenciaLocalizacion.confirmarDuplicar()}"  icon="ui-icon-circle-check"/>
+                            <p:commandButton id="cancelarDuplicadoVL" value="#{msg['cancelar']}" style=" position: absolute; left: 245px; top: 230px;" actionListener="#{controlVigenciaLocalizacion.limpiarduplicarVL()}" update="duplicarVL" onclick="DuplicarRegistroVL.hide();"  process="@this" icon="ui-icon-circle-close"/>
                         </p:panel>
                     </p:dialog>
 
@@ -977,12 +962,9 @@
                             </p:inputText>
                             <p:watermark for="nuevaSubPorcentajeVP" value="#{msg['p']}"/>
 
-                            <p:commandButton id="limpiarVP" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 260px;  height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" actionListener="#{controlVigenciaLocalizacion.limpiarNuevaVP()}" update="nuevaVP" process="@this" icon="ui-icon-trash"/>
-                            <p:commandButton id="agregarVP"  value="" style=" position: absolute; left: 160px; top: 260px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" actionListener="#{controlVigenciaLocalizacion.agregarNuevaVP()}" process="@this"    />
-                            <p:commandButton id="cancelarVP"  value="" style=" position: absolute; left: 245px; top: 260px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" actionListener="#{controlVigenciaLocalizacion.limpiarNuevaVP()}" update="nuevaVP" onclick="NuevoRegistroVP.hide();"  process="@this"  />
+                            <p:commandButton id="limpiarVP" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 260px;" actionListener="#{controlVigenciaLocalizacion.limpiarNuevaVP()}" update="nuevaVP" process="@this" icon="ui-icon-trash"/>
+                            <p:commandButton id="agregarVP" value="#{msg['agregar']}" style=" position: absolute; left: 160px; top: 260px;" actionListener="#{controlVigenciaLocalizacion.agregarNuevaVP()}" process="@this"   icon="ui-icon-circle-check"/>
+                            <p:commandButton id="cancelarVP" value="#{msg['cancelar']}" style=" position: absolute; left: 245px; top: 260px;" actionListener="#{controlVigenciaLocalizacion.limpiarNuevaVP()}" update="nuevaVP" onclick="NuevoRegistroVP.hide();"  process="@this" icon="ui-icon-circle-close"/>
                         </p:panel>
                     </p:dialog>
 
@@ -1042,16 +1024,11 @@
                             </p:inputText>
                             <p:watermark for="duplicadoSubPorcentajeVP" value="#{msg['subporcentaje']}" />
 
-                            <p:commandButton id="limpiarDuplicadoVP" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 260px;  height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" actionListener="#{controlVigenciaLocalizacion.limpiarduplicarVP()}" update="duplicadoVP" process="@this" icon="ui-icon-trash"/>
-                            <p:commandButton id="agregarDuplicadoVP"  value="" style=" position: absolute; left: 160px; top: 260px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" actionListener="#{controlVigenciaLocalizacion.confirmarDuplicarVP()}" process="@this"   />
-                            <p:commandButton id="cancelarDuplicadoVP"  value="" style=" position: absolute; left: 245px; top: 260px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" actionListener="#{controlVigenciaLocalizacion.limpiarduplicarVP()}" update="duplicadoVP" onclick="DuplicadoRegistroVP.hide();"  process="@this"  />
+                            <p:commandButton id="limpiarDuplicadoVP" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 260px;" actionListener="#{controlVigenciaLocalizacion.limpiarduplicarVP()}" update="duplicadoVP" process="@this" icon="ui-icon-trash"/>
+                            <p:commandButton id="agregarDuplicadoVP" value="#{msg['agregar']}" style=" position: absolute; left: 160px; top: 260px;" actionListener="#{controlVigenciaLocalizacion.confirmarDuplicarVP()}" process="@this"  icon="ui-icon-circle-check"/>
+                            <p:commandButton id="cancelarDuplicadoVP" value="#{msg['cancelar']}" style=" position: absolute; left: 245px; top: 260px;" actionListener="#{controlVigenciaLocalizacion.limpiarduplicarVP()}" update="duplicadoVP" onclick="DuplicadoRegistroVP.hide();"  process="@this" icon="ui-icon-circle-close"/>
                         </p:panel>
                     </p:dialog>
-
-
 
                     <p:dialog id="NuevoRegistroVPP" header="#{msg['nuevoregistroVPP']}" widgetVar="NuevoRegistroVPP" closable="false" resizable="false"  draggable="false" modal="true" height="230" width="350" style=" padding: 0px">  
 
@@ -1092,12 +1069,9 @@
                             </p:inputText>
                             <p:watermark for="nuevaPorcentajeVPP" value="#{msg['p']}" />
 
-                            <p:commandButton id="limpiarVPP" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 190px;  height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" actionListener="#{controlVigenciaLocalizacion.limpiarNuevaVPP()}" update="nuevaVPP" process="@this" icon="ui-icon-trash"/>
-                            <p:commandButton id="agregarVPP"  value="" style=" position: absolute; left: 160px; top: 190px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" actionListener="#{controlVigenciaLocalizacion.agregarNuevaVPP()}"  process="@this"   />
-                            <p:commandButton id="cancelarVPP"  value="" style=" position: absolute; left: 245px; top: 190px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" actionListener="#{controlVigenciaLocalizacion.limpiarNuevaVPP()}" update="nuevaVPP" onclick="NuevoRegistroVPP.hide();"  process="@this"  />
+                            <p:commandButton id="limpiarVPP" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 190px;" actionListener="#{controlVigenciaLocalizacion.limpiarNuevaVPP()}" update="nuevaVPP" process="@this" icon="ui-icon-trash"/>
+                            <p:commandButton id="agregarVPP" value="#{msg['agregar']}" style=" position: absolute; left: 160px; top: 190px;" actionListener="#{controlVigenciaLocalizacion.agregarNuevaVPP()}"  process="@this"  icon="ui-icon-circle-check"/>
+                            <p:commandButton id="cancelarVPP" value="#{msg['cancelar']}" style=" position: absolute; left: 245px; top: 190px;" actionListener="#{controlVigenciaLocalizacion.limpiarNuevaVPP()}" update="nuevaVPP" onclick="NuevoRegistroVPP.hide();"  process="@this" icon="ui-icon-circle-close"/>
                         </p:panel>
                     </p:dialog>
 
@@ -1140,13 +1114,9 @@
                             </p:inputText>
                             <p:watermark for="duplicarPorcentajeVPP" value="#{msg['p']}" />
 
-
-                            <p:commandButton id="limpiarDuplicarVPP" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 190px;  height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" actionListener="#{controlVigenciaLocalizacion.limpiarduplicarVPP()}" update="duplicarVPP" process="@this" icon="ui-icon-trash"/>
-                            <p:commandButton id="agregarDuplicarVPP"  value="" style=" position: absolute; left: 160px; top: 190px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" actionListener="#{controlVigenciaLocalizacion.confirmarDuplicarVPP()}"  process="@this"  />
-                            <p:commandButton id="cancelarDuplicarVPP"  value="" style=" position: absolute; left: 245px; top: 190px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" actionListener="#{controlVigenciaLocalizacion.limpiarduplicarVPP()}" update="duplicarVPP" onclick="DuplicarRegistroVPP.hide();"  process="@this"  />
+                            <p:commandButton id="limpiarDuplicarVPP" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 190px;" actionListener="#{controlVigenciaLocalizacion.limpiarduplicarVPP()}" update="duplicarVPP" process="@this" icon="ui-icon-trash"/>
+                            <p:commandButton id="agregarDuplicarVPP" value="#{msg['agregar']}" style=" position: absolute; left: 160px; top: 190px;" actionListener="#{controlVigenciaLocalizacion.confirmarDuplicarVPP()}"  process="@this" icon="ui-icon-circle-check"/>
+                            <p:commandButton id="cancelarDuplicarVPP" value="#{msg['cancelar']}" style=" position: absolute; left: 245px; top: 190px;" actionListener="#{controlVigenciaLocalizacion.limpiarduplicarVPP()}" update="duplicarVPP" onclick="DuplicarRegistroVPP.hide();"  process="@this" icon="ui-icon-circle-close"/>
                         </p:panel>
                     </p:dialog>
 
@@ -1226,59 +1196,59 @@
                     </p:dialog>
                     <!--Dialogos-->
                     <p:dialog id="guardarCambiosVigenciaProrrateo" header="#{msg['atencion']}" widgetVar="guardarCambiosVigenciaProrrateo"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['guardarCambiosVigenciaProrrateo']}" style="font-size: 14px; position: absolute; left: 110px; top: 20px; width: 270px;" />
                         <p:commandButton value="#{msg['si']}" onclick="guardarCambiosVigenciaProrrateo.hide();" style="position: absolute; top: 60px; left: 155px" actionListener="#{controlVigenciaLocalizacion.guardarCambiosVP()}" process="@this" icon="ui-icon-check" />
                         <p:commandButton value="#{msg['no']}" onclick="guardarCambiosVigenciaProrrateo.hide();"   style="position: absolute; top: 60px; left: 215px" actionListener="#{controlVigenciaLocalizacion.cancelarModificacionVP()}" process="@this" icon="ui-icon-close" />
                         <p:commandButton  value="" onclick="guardarCambiosVigenciaProrrateo.hide();" style="position: absolute; top: 60px; left: 280px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" process="@this"   />
+                                          background-size: 100% 100%; background-repeat: no-repeat; border: none;" process="@this"   />
                     </p:dialog>
 
                     <p:dialog id="guardarCambiosVigenciaProrrateoProyecto" header="#{msg['atencion']}" widgetVar="guardarCambiosVigenciaProrrateoProyecto"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['guardarCambiosVigenciaProrrateoProyecto']}" style="font-size: 14px; position: absolute; left: 100px; top: 20px; width: 270px;" />
                         <p:commandButton value="#{msg['si']}" onclick="guardarCambiosVigenciaProrrateoProyecto.hide();" style="position: absolute; top: 60px; left: 155px" actionListener="#{controlVigenciaLocalizacion.guardarCambiosVPP()}" process="@this" icon="ui-icon-check" />
                         <p:commandButton value="#{msg['no']}" onclick="guardarCambiosVigenciaProrrateoProyecto.hide();"   style="position: absolute; top: 60px; left: 215px" actionListener="#{controlVigenciaLocalizacion.cancelarModificacionVPP()}" process="@this" icon="ui-icon-close" />
                         <p:commandButton  value="" onclick="guardarCambiosVigenciaProrrateoProyecto.hide();" style="position: absolute; top: 60px; left: 280px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" process="@this"   />
+                                          background-size: 100% 100%; background-repeat: no-repeat; border: none;" process="@this"   />
                     </p:dialog>
 
                     <p:dialog id="negacionNuevoRegistroVPP" header="#{msg['atencion']}" widgetVar="negacionNuevoRegistroVPP"  resizable="false" draggable="false" modal="true" height="110" width="450px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['negacionNuevoRegistroVPP']}" style="font-size: 14px;position: absolute; left: 100px; top: 10px; width: 350px;" />
                         <p:commandButton value="" onclick="negacionNuevoRegistroVPP.hide();" style="position: absolute; top: 70px; left: 300px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
                                          background-size: 100% 100%; background-repeat: no-repeat; border: none;" process="@this"  />
                     </p:dialog>
 
                     <p:dialog id="negacionBorradoVL" header="#{msg['atencion']}" widgetVar="negacionBorradoVL"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['negacionBorradoVL']}" style="font-size: 14px; position: absolute; left: 100px; top: 20px; width: 350px;" />
                         <p:commandButton value="" onclick="negacionBorradoVL.hide();" style="position: absolute; top: 70px; left: 300px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); 
                                          background-size: 100% 100%; background-repeat: no-repeat; border: none;" process="@this"  />
                     </p:dialog>
 
                     <p:dialog id="errorFechaVL" header="#{msg['atencion']}" widgetVar="errorFechaVL"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFecha']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;"  />
                     </p:dialog>
 
                     <p:dialog id="errorFechas" header="#{msg['atencion']}" widgetVar="errorFechas"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFechas']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
                     <p:dialog id="negacionNuevaVL" header="#{msg['atencion']}" widgetVar="negacionNuevaVL"  resizable="false" draggable="false" modal="true" height="80" width="380px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['negacionNuevaVL']}" style="font-size: 14px; position: absolute; left: 70px; top: 15px; width: 300px; font-weight:bold;" />
                     </p:dialog>
 
                     <p:dialog id="negacionNuevaVLP" header="#{msg['atencion']}" widgetVar="negacionNuevaVLP"  resizable="false" draggable="false" modal="true" height="80" width="380px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['negacionNuevaVLP']}" style="font-size: 14px; position: absolute; left: 70px; top: 15px; width: 300px; font-weight:bold;" />
                     </p:dialog>
 
                     <p:dialog id="negacionNuevaVLPP" header="#{msg['atencion']}" widgetVar="negacionNuevaVLPP"  resizable="false" draggable="false" modal="true" height="80" width="380px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['negacionNuevaVLPP']}" style="font-size: 14px; position: absolute; left: 70px; top: 15px; width: 300px; font-weight:bold;" />
                     </p:dialog>
 

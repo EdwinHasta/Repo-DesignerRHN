@@ -22,76 +22,77 @@
                             <f:convertNumber type="number" />
                         </h:outputText>
 
-                        <p:toolbar style=" position: absolute; top: 37px; left: 12px; height: 24px">  
+                        <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 37px; left: 12px; height: 24px">  
                             <p:toolbarGroup align="left"> 
 
-                                <p:commandButton id="guardarRapido" value="" actionListener="#{controlVigenciaSueldo.guardadoGeneral()}" process="@this" 
-                                                 style="background-size: 100% 100%;background-image: url(Imagenes/guardar.jpg) ;background-repeat: no-repeat; width: 25px; height: 25px;"/>
+                                <p:commandButton id="guardarRapido" value="" actionListener="#{controlVigenciaSueldo.guardadoGeneral()}" process="@this" oncomplete="window.location.reload()"
+                                                 style="background-size: 100% 100%;background-image: url(Imagenes/Iconos/guardar.png) ;background-repeat: no-repeat; border: none; width: 25px; height: 25px;"/>
                                 <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
 
                                 <p:commandButton id="editar" value="" actionListener="#{controlVigenciaSueldo.editarCelda()}" process="@this"
-                                                 style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>
+                                                 style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "/>
                                 <p:tooltip  for="editar" value="#{msg['editar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
                                 <p:commandButton id="listaValores" value="" actionListener="#{controlVigenciaSueldo.listaValoresBoton()}" process="@this"
-                                                 style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " />
+                                                 style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " />
                                 <p:tooltip  for="listaValores" value="#{msg['lista']}" />
 
                                 <p:commandButton id="filtrar" value="" actionListener="#{controlVigenciaSueldo.activarCtrlF11()}" process="@this"
-                                                 style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " />
+                                                 style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " />
                                 <p:tooltip  for="filtrar" value="#{msg['filtrar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
                                 <p:commandButton id="exportarXLS" value="" ajax="false" actionListener="#{controlVigenciaSueldo.verificarExportXLS()}" 
-                                                 style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " />
+                                                 style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " />
                                 <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
 
                                 <p:commandButton id="exportarXML" value="" actionListener="#{controlVigenciaSueldo.limpiarNuevaVS()}" ajax="false"
-                                                 style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " >
+                                                 style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " >
                                     <p:dataExporter type="xml"  target="#{controlVigenciaSueldo.exportXML()}" fileName="#{controlVigenciaSueldo.nombreXML}" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
 
                                 <p:commandButton id="exportarPDF" value="" actionListener="#{controlVigenciaSueldo.validarExportPDF()}" ajax="false"
-                                                 style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " />
+                                                 style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " />
                                 <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
-                                
+
                                 <p:commandButton id="insertar" value="" oncomplete="NuevoRegistroPagina.show()" update=":formularioDialogos:NuevoRegistroPagina"  process="@this"
-                                                 style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/> 
+                                                 style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "/> 
                                 <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
 
-                                <p:commandButton id="eliminar" value="" actionListener="#{controlVigenciaSueldo.validarBorradoVigencia()}" process="@this"
-                                                 style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " />  
+                                <p:commandButton id="eliminar" value="" actionListener="#{controlVigenciaSueldo.validarBorradoVigencia()}" process="@this" oncomplete=":form:datosVAVigencia"
+                                                 style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " />  
                                 <p:tooltip  for="eliminar" value="#{msg['eliminar']}" />
 
                                 <p:commandButton id="duplicar" value="" actionListener="#{controlVigenciaSueldo.verificarDuplicarVigencia()}"  process="@this"
-                                                 style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " />  
-                                <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
+                                                 style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " />  
+                                <p:tooltip  for="duplicar" value="#{msg['duplicar']}"/>
 
                                 <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="rastro" value="" actionListener="#{controlVigenciaSueldo.verificarRastroTabla()}" process="@this"
-                                                 style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " />  
+                                                 style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " />  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="refrescar" value="" actionListener="#{controlVigenciaSueldo.cancelarModificacion()}" process="@this"
-                                                 style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " />  
+                                <p:commandButton id="refrescar" value="" actionListener="#{controlVigenciaSueldo.cancelarModificacion()}" process="@this" oncomplete="window.location.reload()"
+                                                 style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " />  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
+                                <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="salir" value="" actionListener="#{controlVigenciaSueldo.salir()}" action="nomina" process="@this"
-                                                 style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " />  
+                                                 style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " />  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
 
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 182px;width: 830px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 75px;left: 10px;height: 182px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>#{msg['sueldo']}</strong></legend>
                             <!-- TABLA EMPLVIGENCIALOCALIZACION -->
 
@@ -104,7 +105,7 @@
                                 <f:event type="preRenderView" listener="#{controlVigenciaSueldo.recordarSeleccionVS()}"/>
                                 <p:ajax event="filter" listener="#{controlVigenciaSueldo.eventoFiltrar()}"/>
 
-                                <p:column  headerText="#{msg['fecha']}" sortBy="#{infoDVS.fechavigencia}" filterBy="#{infoDVS.fechavigencia}" filterMatchMode="contains"  width="68" id="vSFechaVigencia" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column  headerText="#{msg['fecha']}" sortBy="#{infoDVS.fechavigencia}" filterBy="#{infoDVS.fechavigencia}" filterMatchMode="contains"  width="68" id="vSFechaVigencia" filterStyle="display: none; visibility: hidden;" style="text-align: center">  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoDVS.fechavigencia}" >
@@ -113,9 +114,9 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <lnk:calendar id="editFechaVigencia" value="#{infoDVS.fechavigencia}" width="99">  
-                                                <p:ajax event="dateSelect" listener="#{controlVigenciaSueldo.modificarFechasVigenciaSueldo(indice,0)}" update="editFechaVigencia" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarFechasVigenciaSueldo(indice,0)}" update="editFechaVigencia" process="@this"/>
-                                                <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndice(indice,0)}"/> 
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaSueldo.modificarFechasVigenciaSueldo(infoDVS,0)}" update="editFechaVigencia" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarFechasVigenciaSueldo(infoDVS,0)}" update="editFechaVigencia" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndice(infoDVS,0)}" update=":form:datosVAVigencia"/> 
                                             </lnk:calendar> 
                                         </f:facet>   
                                     </p:cellEditor>
@@ -131,9 +132,9 @@
                                         <f:facet name="output"><h:outputText value="#{infoDVS.motivocambiosueldo.nombre}"/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{infoDVS.motivocambiosueldo.nombre}"  id="editarMotivoCambioSueldo" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
-                                                <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarVS(indice, 'MOTIVOCAMBIOSUELDO', infoDVS.motivocambiosueldo.nombre)}" process="@this" update="editarMotivoCambioSueldo"/>
-                                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(indice,0,0,0)}" process="@this" update="editarMotivoCambioSueldo"/>
-                                                <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndice(indice,1)}"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarVS(infoDVS, 'MOTIVOCAMBIOSUELDO', infoDVS.motivocambiosueldo.nombre)}" process="@this" update="editarMotivoCambioSueldo"/>
+                                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(infoDVS,0,0,0)}" process="@this" update="editarMotivoCambioSueldo"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndice(infoDVS,1)}" update=":form:datosVAVigencia"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -148,9 +149,9 @@
                                         <f:facet name="output"><h:outputText value="#{infoDVS.tiposueldo.descripcion}"/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText maxlength="30" value="#{infoDVS.tiposueldo.descripcion}"  id="editarTipoSueldo" style=" border-radius: 0px; width: 94%;text-transform: uppercase; height: 12px"> 
-                                                <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarVS(indice, 'TIPOSUELDO', infoDVS.tiposueldo.descripcion)}" update="editarTipoSueldo" process="@this"/>
-                                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(indice,1,0,0)}" process="@this" update="editarTipoSueldo"/>
-                                                <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndice(indice,2)}"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarVS(infoDVS, 'TIPOSUELDO', infoDVS.tiposueldo.descripcion)}" update="editarTipoSueldo" process="@this"/>
+                                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(infoDVS,1,0,0)}" process="@this" update="editarTipoSueldo"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndice(infoDVS,2)}" update=":form:datosVAVigencia"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -165,7 +166,7 @@
                                         <p:tooltip  for="headerR" value="#{msg['activarRTooltip']}"/> 
                                     </f:facet>
                                     <p:selectBooleanCheckbox id="editarRetroactivo" style="alignment-adjust: central; height: 12px;" value="#{infoDVS.checkRetroactivo}">
-                                        <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarVS(indice)}" process="@this"/>
+                                        <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarVS(infoDVS)}" process="@this" update=":form:datosVAVigencia"/>
                                     </p:selectBooleanCheckbox>  
                                     <f:facet name="footer">
                                         <h:outputText value="" />
@@ -173,7 +174,7 @@
                                 </p:column>
                                 <p:tooltip for="vSRetroactivo" showEvent="focus" hideEvent="blur" value="#{msg['activarRetroactivo']}"/> 
 
-                                <p:column id="vSVigenciaRetroactivo" sortBy="#{infoDVS.fechavigenciaretroactivo}" filterBy="#{infoDVS.fechavigenciaretroactivo}" filterMatchMode="contains" width="68" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column id="vSVigenciaRetroactivo" sortBy="#{infoDVS.fechavigenciaretroactivo}" filterBy="#{infoDVS.fechavigenciaretroactivo}" filterMatchMode="contains" width="68" filterStyle="display: none; visibility: hidden;" style="text-align: center">                                  
                                     <f:facet name="header">
                                         <h:outputText id="headerRF" value="#{msg['vigenciaRetroactivoHeader']}"/>
                                         <p:tooltip  for="headerRF" value="#{msg['viReTooltip']}"/> 
@@ -186,9 +187,9 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <lnk:calendar id="editFechaVigenciaRetroactivo" value="#{infoDVS.fechavigenciaretroactivo}" width="99">  
-                                                <p:ajax event="dateSelect" listener="#{controlVigenciaSueldo.modificarFechasVigenciaSueldo(indice,4)}" update="editFechaVigenciaRetroactivo" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarFechasVigenciaSueldo(indice,4)}" update="editFechaVigenciaRetroactivo" process="@this"/>
-                                                <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndice(indice,4)}" /> 
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaSueldo.modificarFechasVigenciaSueldo(infoDVS,4)}" update="editFechaVigenciaRetroactivo" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarFechasVigenciaSueldo(infoDVS,4)}" update="editFechaVigenciaRetroactivo" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndice(infoDVS,4)}" update=":form:datosVAVigencia"/> 
                                             </lnk:calendar> 
                                         </f:facet>
                                     </p:cellEditor>
@@ -198,7 +199,7 @@
                                 </p:column>
                                 <p:tooltip for="vSVigenciaRetroactivo"  showEvent="focus" value="#{msg['vigenciaretroactivo']}"/> 
 
-                                <p:column  headerText="#{msg['valor']}" sortBy="#{infoDVS.valor}" filterBy="#{infoDVS.valor}" filterMatchMode="contains" id="vSValor" width="120" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column  headerText="#{msg['valor']}" sortBy="#{infoDVS.valor}" filterBy="#{infoDVS.valor}" filterMatchMode="contains" id="vSValor" width="100" filterStyle="display: none; visibility: hidden;" style="text-align: right">                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoDVS.valor}">
@@ -207,8 +208,8 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{infoDVS.valor}" id="editarValor" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
-                                                <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarVS(indice)}" update="editarValor" process="@this"/>
-                                                <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndice(indice, 5)}"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarVS(infoDVS)}" update="editarValor" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndice(infoDVS, 5)}" update=":form:datosVAVigencia"/>
                                                 <f:convertNumber currencySymbol="$" type="currency" />
                                             </p:inputText>
                                         </f:facet>  
@@ -225,8 +226,8 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{infoDVS.observaciones}" id="editarObservaciones" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
-                                                <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarVS(indice)}" process="@this" update="editarObservaciones"/>
-                                                <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndice(indice, 6)}"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarVS(infoDVS)}" process="@this" update="editarObservaciones"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndice(infoDVS, 6)}" update=":form:datosVAVigencia"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -237,7 +238,7 @@
                             </p:dataTable>
                         </fieldset>
 
-                        <fieldset style="position: absolute;top: 277px;left: 10px;height: 182px;width: 830px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 272px;left: 10px;height: 182px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style=" color: blue"><strong>#{msg['distribucion']}</strong></legend>
                             <p:dataTable id="datosVAVigencia" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceVA" value="#{controlVigenciaSueldo.listVigenciasAfiliaciones}" 
                                          filteredValue="#{controlVigenciaSueldo.filtrarVigenciasAfiliaciones}" editable="true" editMode="cell" 
@@ -246,8 +247,8 @@
 
                                 <p:ajax event="filter" listener="#{controlVigenciaSueldo.eventoFiltrar()}"/>
                                 <f:event type="preRenderView" listener="#{controlVigenciaSueldo.recordarSeleccionVA()}"/>
-                                
-                                <p:column headerText="#{msg['inicial']}" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains" id="vAFechaInicial" width="100"
+
+                                <p:column style="text-align: center" headerText="#{msg['inicial']}" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains" id="vAFechaInicial" width="100"
                                           filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
@@ -257,9 +258,9 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <lnk:calendar id="editarFechaInicialVA" value="#{info.fechainicial}" width="99"> 
-                                                <p:ajax event="dateSelect" listener="#{controlVigenciaSueldo.modificarFechasVigenciaAfiliaciones(indiceVA,0)}" update="editarFechaInicialVA" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarFechasVigenciaAfiliaciones(indiceVA,0)}" update="editarFechaInicialVA" process="@this"/>
-                                                <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndiceVA(indiceVA,0)}"/> 
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaSueldo.modificarFechasVigenciaAfiliaciones(info,0)}" update="editarFechaInicialVA" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarFechasVigenciaAfiliaciones(info,0)}" update="editarFechaInicialVA" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndiceVA(info,0)}"/> 
                                             </lnk:calendar>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -268,7 +269,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['final']}" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains" id="vAFechaFinal" width="100"
+                                <p:column style="text-align: center" headerText="#{msg['final']}" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains" id="vAFechaFinal" width="100"
                                           filterStyle="display: none; visibility: hidden;"  >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
@@ -278,9 +279,9 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <lnk:calendar id="editarFechaFinalVA" value="#{info.fechafinal}" width="99"> 
-                                                <p:ajax event="dateSelect" listener="#{controlVigenciaSueldo.modificarFechasVigenciaAfiliaciones(indiceVA,1)}" update="editarFechaFinalVA" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarFechasVigenciaAfiliaciones(indiceVA,1)}" update="editarFechaFinalVA" process="@this"/>
-                                                <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndiceVA(indiceVA,1)}" /> 
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciaSueldo.modificarFechasVigenciaAfiliaciones(info,1)}" update="editarFechaFinalVA" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarFechasVigenciaAfiliaciones(info,1)}" update="editarFechaFinalVA" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndiceVA(info,1)}"/> 
                                             </lnk:calendar>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -295,9 +296,9 @@
                                         <f:facet name="output"><h:outputText value="#{info.tercerosucursal.tercero.nombre}"/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{info.tercerosucursal.tercero.nombre}" id="editarTerceroVA" style=" border-radius: 0px; width: 97%;text-transform: uppercase; height: 12px"> 
-                                                <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndiceVA(indiceVA,2)}"/> 
-                                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(indiceVA,0,0,1)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarVA(indiceVA, 'TERCEROS', info.tercerosucursal.tercero.nombre)}" process="@this" update="editarTerceroVA"/>                                                
+                                                <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndiceVA(info,2)}"/> 
+                                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(info,0,0,1)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarVA(info, 'TERCEROS', info.tercerosucursal.tercero.nombre)}" process="@this" update="editarTerceroVA"/>                                                
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -312,9 +313,9 @@
                                         <f:facet name="output"><h:outputText value="#{info.tipoentidad.nombre}" style="width: 100px; "/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{info.tipoentidad.nombre}" id="editarTipoEntidadVA" style=" border-radius: 0px; width: 97%;text-transform: uppercase; height: 12px"> 
-                                                <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndiceVA(indiceVA,3)}"/> 
-                                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(indiceVA,1,0,1)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarVA(indiceVA, 'TIPOENTIDAD', info.tipoentidad.nombre)}" process="@this" update="editarTipoEntidadVA"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndiceVA(info,3)}"/> 
+                                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(info,1,0,1)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarVA(info, 'TIPOENTIDAD', info.tipoentidad.nombre)}" process="@this" update="editarTipoEntidadVA"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -333,8 +334,8 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{info.valor}" id="editarValorVA" style=" border-radius: 0px; width: 97%;text-transform: uppercase; height: 12px"> 
-                                                <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndiceVA(indiceVA,4)}" /> 
-                                                <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarVA(indiceVA)}" process="@this" update="editarValorVA"/>
+                                                <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndiceVA(info,4)}"/> 
+                                                <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarVA(info)}" process="@this" update="editarValorVA"/>
                                                 <f:convertNumber currencySymbol="$" type="currency" />
                                             </p:inputText>
                                         </f:facet>  
@@ -346,6 +347,18 @@
 
                             </p:dataTable>
                         </fieldset>
+
+                        <p:commandButton id="btnConsultar" icon="ui-icon-extlink" style="position: absolute; top: 476px;left: 15px; height: 30px; width: 130px; background-image:  url(Imagenes/Iconos/boton.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none; color: white" value="#{msg['consultarC']}" actionListener="#{controlVigenciaSueldo.cambioConsultaActual()}" />
+                        <p:tooltip  for="btnConsultar" value="#{msg['consultar']}" />
+                        <p:commandButton id="btnMostrarT" icon="ui-icon-extlink" style="position: absolute; top: 476px;left: 145px; height: 30px; width: 130px; background-image:  url(Imagenes/Iconos/boton.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none; color: white" value="#{msg['todosC']}" actionListener="#{controlVigenciaSueldo.cambioConsultaGlobal()}"/>
+                        <p:tooltip  for="btnMostrarT" value="#{msg['todos']}" />
+
+                        <p:commandButton style="position: absolute; left: 680px; top: 478px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value="" onclick="confirmarGuardar.show();" update=":form:datosVSEmpleado" process="@this" disabled="#{controlVigenciaSueldo.guardado}"/>
+                        <p:commandButton style="position: absolute; left: 770px; top: 478px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" actionListener="#{controlVigenciaSueldo.salir()}" action="nomina" process="@this" />
 
                         <!-- DIALOGO L.O.V ESTATICO MOTIVO CAMBIO SUELDO     -->
                         <p:dialog header="#{msg['motivoM']}" widgetVar="MotivoCambioSueldoDialogo" draggable="false" resizable="false" closable="false" id="MotivoCambioSueldoDialogo"  
@@ -494,16 +507,10 @@
 
                         </p:dialog>
 
-                        <p:commandButton style="position: absolute; top: 478px;left: 20px" value="#{msg['consultar']}" actionListener="#{controlVigenciaSueldo.cambioConsultaActual()}" />
-                        <p:commandButton style="position: absolute; top: 478px;left: 198px" value="#{msg['todos']}" actionListener="#{controlVigenciaSueldo.cambioConsultaGlobal()}"/>
-
-                        <p:commandButton style="position: absolute; left: 683px; top: 478px;  " id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVSEmpleado" process="@this" disabled="#{controlVigenciaSueldo.guardado}"/>
-                        <p:commandButton style="position: absolute; left: 775px; top: 478px;  " id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlVigenciaSueldo.salir()}" action="nomina" process="@this" />
-
                     </p:panel>
 
                     <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciaSueldo.guardadoGeneral()}" action="nomina" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciaSueldo.salir()}" action="nomina" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
@@ -517,53 +524,53 @@
                     </p:dialog>
 
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{controlVigenciaSueldo.msnConfirmarRastro}" id="msnConfirmarRastro" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciaSueldo.backUp, controlVigenciaSueldo.nombreTablaRastro , 'vigenciasSueldos')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" actionListener="#{controlVigenciaSueldo.limpiarMSNRastros()}" style="position: absolute; top: 63px; left: 270px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="confirmarRastroHistorico" header="#{msg['atencion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{controlVigenciaSueldo.msnConfirmarRastroHistorico}" id="msnConfirmarRastroHisttorico" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla(controlVigenciaSueldo.nombreTablaRastro , 'vigenciasSueldos')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlVigenciaSueldo.limpiarMSNRastros()}" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="errorRastroHistorico" header="#{msg['atencion']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
                     <p:dialog id="errorRegistroRastro" header="#{msg['atencion']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
                     <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTablaConRastro']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciaSueldo.backUp, controlVigenciaSueldo.nombreTablaRastro , 'vigenciasSueldos')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="errorTablaSinRastro" header="#{msg['atencion']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTablaSinRastro']}" style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
                     <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
                     </p:dialog>
-                    
+
                     <p:dialog id="seleccionarRegistroSel" header="#{msg['atencion']}" widgetVar="seleccionarRegistroSel"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['seleccionarRegistroSel']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
                     <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciaSueldo.activarCtrlF11()}"/> 
@@ -591,20 +598,20 @@
                             </div>
                             <strong><h:outputText value="#{msg['motivocambiosueldoVS']}" style=" position: absolute; top: 110px; left: 50px" /></strong>
                             <p:inputText id="nuevaMotivoCambioSueldo" value="#{controlVigenciaSueldo.nuevaVigencia.motivocambiosueldo.nombre}" style=" width: 122px; position: absolute; left: 220px; top: 110px; text-transform: uppercase" onclick="select();" >
-                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(indice,0,1,0)}"/>
+                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(infoDVS,0,1,0)}"/>
                                 <p:ajax event="click" listener="#{controlVigenciaSueldo.valoresBackupAutocompletar(1, 'MOTIVOCAMBIOSUELDO')}" />
                                 <p:ajax event="change" listener="#{controlVigenciaSueldo.autocompletarNuevoyDuplicado('MOTIVOCAMBIOSUELDO', controlVigenciaSueldo.nuevaVigencia.motivocambiosueldo.nombre,1)}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 110px;  " id="btnNuevoMotivoCambioSueldo" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaSueldo.asignarIndex(indice,0,1,0)}" update="nuevaMotivoCambioSueldo"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 110px;  " id="btnNuevoMotivoCambioSueldo" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaSueldo.asignarIndex(infoDVS,0,1,0)}" update="nuevaMotivoCambioSueldo"/>   
                             <p:watermark for="nuevaMotivoCambioSueldo" value="#{msg['motivocambiosueldoVS']}" />
 
                             <strong><h:outputText value="#{msg['tiposueldoVS']}" style=" position: absolute; top: 150px; left: 50px" /></strong>
                             <p:inputText maxlength="30" id="nuevaTipoSueldo" value="#{controlVigenciaSueldo.nuevaVigencia.tiposueldo.descripcion}" style=" width: 122px; position: absolute; left: 220px; top: 150px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(indice,1,1,0)}"/>
+                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(infoDVS,1,1,0)}"/>
                                 <p:ajax event="click" listener="#{controlVigenciaSueldo.valoresBackupAutocompletar(1, 'TIPOSUELDO')}" />
                                 <p:ajax event="change" listener="#{controlVigenciaSueldo.autocompletarNuevoyDuplicado('TIPOSUELDO', controlVigenciaSueldo.nuevaVigencia.tiposueldo.descripcion,1)}" update="nuevaTipoSueldo"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnNuevoTipoSueldo" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaSueldo.asignarIndex(indice,1,1,0)}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnNuevoTipoSueldo" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaSueldo.asignarIndex(infoDVS,1,1,0)}"/>   
                             <p:watermark for="nuevaTipoSueldo" value="#{msg['tiposueldoVS']}" />
 
                             <strong><h:outputText  value="#{msg['retroactivoVS']}" style=" position: absolute; top: 190px; left: 50px" /></strong>
@@ -653,20 +660,20 @@
 
                             <strong><h:outputText value="#{msg['motivocambiosueldoVS']}" style=" position: absolute; top: 110px; left: 50px" /></strong>
                             <p:inputText id="duplicarMotivoCambioSueldo" value="#{controlVigenciaSueldo.duplicarVS.motivocambiosueldo.nombre}" style=" width: 122px; position: absolute; left: 220px; top: 110px; text-transform: uppercase" onclick="select();" >
-                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(indice,0,2,0)}"/>
+                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(infoDVS,0,2,0)}"/>
                                 <p:ajax event="click" listener="#{controlVigenciaSueldo.valoresBackupAutocompletar(2, 'MOTIVOCAMBIOSUELDO')}" />
                                 <p:ajax event="change" listener="#{controlVigenciaSueldo.autocompletarNuevoyDuplicado('MOTIVOCAMBIOSUELDO', controlVigenciaSueldo.duplicarVS.motivocambiosueldo.nombre, 2)}" update="duplicarMotivoCambioSueldo"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 110px;  " id="btnDuplicarMotivoCambioSueldo" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaSueldo.asignarIndex(indice,0,2,0)}" update="duplicarMotivoCambioSueldo"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 110px;  " id="btnDuplicarMotivoCambioSueldo" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaSueldo.asignarIndex(infoDVS,0,2,0)}" update="duplicarMotivoCambioSueldo"/>   
                             <p:watermark for="duplicarMotivoCambioSueldo" value="#{msg['motivocambiosueldo']}" />
 
                             <strong><h:outputText value="#{msg['tiposueldoVS']}" style=" position: absolute; top: 150px; left: 50px" /></strong>
                             <p:inputText maxlength="30" id="duplicarTipoSueldo" value="#{controlVigenciaSueldo.duplicarVS.tiposueldo.descripcion}" style=" width: 122px; position: absolute; left: 220px; top: 150px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(indice,1,2,0)}"/>
+                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(infoDVS,1,2,0)}"/>
                                 <p:ajax event="click" listener="#{controlVigenciaSueldo.valoresBackupAutocompletar(2, 'TIPOSUELDO')}" />
                                 <p:ajax event="change" listener="#{controlVigenciaSueldo.autocompletarNuevoyDuplicado('TIPOSUELDO', controlVigenciaSueldo.duplicarVS.tiposueldo.descripcion, 2)}" update="duplicarTipoSueldo"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnDuplicarTipoSueldo" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaSueldo.asignarIndex(indice,1,2,0)}" update="duplicarTipoSueldo"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnDuplicarTipoSueldo" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaSueldo.asignarIndex(infoDVS,1,2,0)}" update="duplicarTipoSueldo"/>   
                             <p:watermark for="duplicarTipoSueldo" value="#{msg['tiposueldo']}" />
 
                             <strong><h:outputText value="#{msg['retroactivoVS']}" style=" position: absolute; top: 190px; left: 50px" /></strong>
@@ -723,20 +730,20 @@
                             </div>
                             <strong><h:outputText value="#{msg['terceroVA']}" style=" position: absolute; top: 150px; left: 50px" /></strong>
                             <p:inputText id="nuevaTerceroVA" value="#{controlVigenciaSueldo.nuevaVigenciaA.tercerosucursal.tercero.nombre}" style=" width: 122px; position: absolute; left: 200px; top: 150px; text-transform: uppercase" onclick="select();" >
-                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(indice,0,1,1)}" process="@this"/>
+                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(infoDVS,0,1,1)}" process="@this"/>
                                 <p:ajax event="click" listener="#{controlVigenciaSueldo.valoresBackupAutocompletarVA(1, 'TERCERO')}" process="@this"/>
                                 <p:ajax event="change" listener="#{controlVigenciaSueldo.autocompletarNuevoyDuplicadoVA('TERCERO', controlVigenciaSueldo.nuevaVigenciaA.tercerosucursal.tercero.nombre,1)}" process="@this" update="nuevaTerceroVA"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 330px; top: 150px;  " id="btnNuevoTerceroVA" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaSueldo.asignarIndex(indice,0,1,1)}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 330px; top: 150px;  " id="btnNuevoTerceroVA" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaSueldo.asignarIndex(infoDVS,0,1,1)}"/>   
                             <p:watermark for="nuevaTerceroVA" value="#{msg['tercero']}" />
 
                             <strong><h:outputText value="#{msg['tipoentidadVA']}" style=" position: absolute; top: 190px; left: 50px" /></strong>
                             <p:inputText id="nuevaTipoEntidadVA" value="#{controlVigenciaSueldo.nuevaVigenciaA.tipoentidad.nombre}" style=" width: 122px; position: absolute; left: 200px; top: 190px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(indice,1,1,1)}"/>
+                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(infoDVS,1,1,1)}"/>
                                 <p:ajax event="click" listener="#{controlVigenciaSueldo.valoresBackupAutocompletarVA(1,'TIPOENTIDAD')}" />
                                 <p:ajax event="change" listener="#{controlVigenciaSueldo.autocompletarNuevoyDuplicadoVA('TIPOENTIDAD', controlVigenciaSueldo.nuevaVigenciaA.tipoentidad.nombre, 1)}" update="nuevaTipoEntidadVA"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 330px; top: 190px;  " id="btnNuevoTipoEntidadVA" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaSueldo.asignarIndex(indice,1,1,1)}" update="nuevaTipoEntidadVA"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 330px; top: 190px;  " id="btnNuevoTipoEntidadVA" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaSueldo.asignarIndex(infoDVS,1,1,1)}" update="nuevaTipoEntidadVA"/>   
                             <p:watermark for="nuevaTipoEntidadVA" value="#{msg['tipodeentidad']}" />
 
                             <strong><h:outputText value="#{msg['valorVA']}" style=" position: absolute; top: 230px; left: 50px" /></strong>
@@ -774,20 +781,20 @@
 
                             <strong><h:outputText value="#{msg['terceroVA']}" style=" position: absolute; top: 150px; left: 50px" /></strong>
                             <p:inputText id="duplicarTerceroVA" value="#{controlVigenciaSueldo.duplicarVA.tercerosucursal.tercero.nombre}" style=" width: 122px; position: absolute; left: 200px; top: 150px; text-transform: uppercase" onclick="select();" >
-                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(indice,0,2,1)}"/>
+                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(infoDVS,0,2,1)}"/>
                                 <p:ajax event="click" listener="#{controlVigenciaSueldo.valoresBackupAutocompletarVA(2,'TERCERO')}" />
                                 <p:ajax event="change" listener="#{controlVigenciaSueldo.autocompletarNuevoyDuplicadoVA('TERCERO', controlVigenciaSueldo.duplicarVA.tercerosucursal.tercero.nombre, 2)}" update="duplicarTerceroVA"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnDuplicarTerceroVA" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaSueldo.asignarIndex(indice,0,2,1)}" update="duplicarTerceroVA"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 150px;  " id="btnDuplicarTerceroVA" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaSueldo.asignarIndex(infoDVS,0,2,1)}" update="duplicarTerceroVA"/>   
                             <p:watermark for="duplicarTerceroVA" value="#{msg['tercero']}" />
 
                             <strong><h:outputText value="#{msg['tipoentidadVA']}" style=" position: absolute; top: 190px; left: 50px" /></strong>
                             <p:inputText id="duplicarTipoEntidadVA" value="#{controlVigenciaSueldo.duplicarVA.tipoentidad.nombre}" style=" width: 122px; position: absolute; left: 200px; top: 190px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(indice,1,2,1)}"/>
+                                <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(infoDVS,1,2,1)}"/>
                                 <p:ajax event="click" listener="#{controlVigenciaSueldo.valoresBackupAutocompletarVA(2, 'TIPOENTIDAD')}" />
                                 <p:ajax event="change" listener="#{controlVigenciaSueldo.autocompletarNuevoyDuplicadoVA('TIPOENTIDAD',controlVigenciaSueldo.duplicarVA.tipoentidad.nombre,2)}" update="duplicarTipoEntidadVA"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 190px;  " id="btnDuplicarTipoEntidadVA" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaSueldo.asignarIndex(indice,1,2,1)}" update="duplicarTipoEntidadVA"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 190px;  " id="btnDuplicarTipoEntidadVA" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciaSueldo.asignarIndex(infoDVS,1,2,1)}" update="duplicarTipoEntidadVA"/>   
                             <p:watermark for="duplicarTipoEntidadVA" value="#{msg['tipodeentidad']}" />
 
                             <strong><h:outputText value="#{msg['valorVA']}" style=" position: absolute; top: 230px; left: 50px" /></strong>
@@ -860,39 +867,38 @@
                     </p:dialog>
 
                     <p:dialog id="guardarCambiosVigenciasAfiliaciones" header="#{msg['atencion']}" widgetVar="guardarCambiosVigenciasAfiliaciones"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="¿Desea guardar los cambios realizados en Vigencias Afiliaciones?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="Si" onclick="guardarCambiosVigenciasAfiliaciones.hide();" style="position: absolute; top: 60px; left: 215px" actionListener="#{controlVigenciaSueldo.guardarCambiosVA()}" process="@this" />
+                        <p:commandButton value="Si" onclick="guardarCambiosVigenciasAfiliaciones.hide();" style="position: absolute; top: 60px; left: 215px" actionListener="#{controlVigenciaSueldo.guardarCambiosVA()}" oncomplete="window.location.reload()" update=":form:growl" process="@this" />
                         <p:commandButton value="No" onclick="guardarCambiosVigenciasAfiliaciones.hide();"   style="position: absolute; top: 60px; left: 255px" actionListener="#{controlVigenciaSueldo.cancelarModificacionVA()}" process="@this" />
-                        <p:commandButton value="Cancelar" onclick="guardarCambiosVigenciasAfiliaciones.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="negacionNuevaS" header="#{msg['atencion']}" widgetVar="negacionNuevaS"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['negacionNuevaS']}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="negacionNuevaS.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="errorFechasVS" header="#{msg['atencion']}" widgetVar="errorFechasVS"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFechasVS']}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="errorFechasVS.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="negacionBorradoVS" header="#{msg['atencion']}" widgetVar="negacionBorradoVS"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['negacionBorradoVS']}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="negacionBorradoVS.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="negacionNuevaVA" header="#{msg['atencion']}" widgetVar="negacionNuevaVA"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['negacionNuevaVA']}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="negacionNuevaVA.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="errorFechasVA" header="#{msg['atencion']}" widgetVar="errorFechasVA"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFechasVA']}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="errorFechasVA.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
                     </p:dialog>
@@ -900,25 +906,25 @@
                     <!--     Agregadas:    -->
 
                     <p:dialog id="nuevaSFechasDuplicadas" header="#{msg['atencion']}" widgetVar="nuevaSFechasDuplicadas"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['validacionNuevoS']} #{controlVigenciaSueldo.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="nuevaSFechasDuplicadas.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="nuevaAFechasDuplicadas" header="#{msg['atencion']}" widgetVar="nuevaAFechasDuplicadas"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['validacionNuevoA']} #{controlVigenciaSueldo.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="nuevaAFechasDuplicadas.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="duplicarSFechasDuplicadas" header="#{msg['atencion']}" widgetVar="duplicarSFechasDuplicadas"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['validacionDuplicarS']} #{controlVigenciaSueldo.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="duplicarSFechasDuplicadas.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="duplicarAFechasDuplicadas" header="#{msg['atencion']}" widgetVar="duplicarAFechasDuplicadas"  resizable="false" draggable="false" modal="true" height="110" width="470px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['validacionDuplicarA']} #{controlVigenciaSueldo.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 350px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="duplicarAFechasDuplicadas.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
                     </p:dialog>

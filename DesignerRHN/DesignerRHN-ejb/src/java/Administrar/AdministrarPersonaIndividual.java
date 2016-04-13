@@ -273,6 +273,17 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
             return null;
         }
     }
+    
+    @Override
+    public List<Cargos> lovCargosXEmpresa(BigInteger secEmpresa) {
+        try {
+            List<Cargos> lista = persistenciaCargos.buscarCargosPorSecuenciaEmpresa(em, secEmpresa);
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error lovCargos Admi : " + e.toString());
+            return null;
+        }
+    }
 
     @Override
     public List<MotivosCambiosCargos> lovMotivosCambiosCargos() {
@@ -717,7 +728,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
             return variable;
         } catch (Exception e) {
             System.out.println("Error obtenerCheckIntegralReformaLaboral Admi : " + e.toString());
-            return "N";
+            return null;
         }
 
     }

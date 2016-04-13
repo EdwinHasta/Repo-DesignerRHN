@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -36,7 +37,7 @@ public class ControlPersonaIndividual implements Serializable {
     //Modulo Informacion Personal
     private Personas nuevaPersona;
     private Empleados nuevoEmpleado;
-    private int indexInformacionPersonal;
+    private int idInformacionPersonal;
     private boolean permitirIndexInformacionPersonal;
     private String auxInformacionPersonaEmpresal, auxInformacionPersonalCiudadNacimiento;
     private String auxInformacionPersonalCiudadDocumento, auxInformacionPersonalTipoDocumento;
@@ -44,102 +45,102 @@ public class ControlPersonaIndividual implements Serializable {
     private Date auxFechaNacimiento, auxFechaIngreso, auxFechaCorte;
     //Modulo Cargo Desempeñado
     private VigenciasCargos nuevaVigenciaCargo;
-    private int indexCargoDesempeñado;
+    private int idCargoDesempeñado;
     private boolean permitirIndexCargoDesempeñado;
     private String auxCargoDesempeñadoNombreCargo, auxCargoDesempeñadoMotivoCargo, auxCargoDesempeñadoNombreEstructura;
     private String auxCargoDesempeñadoPapel, auxCargoDesempeñadoEmpleadoJefe;
     //Modulo Centro de Costo - Localizacion
     private VigenciasLocalizaciones nuevaVigenciaLocalizacion;
-    private int indexCentroCosto;
+    private int idCentroCosto;
     private boolean permitirIndexCentroCosto;
     private String auxCentroCostoMotivo, auxCentroCostoEstructura;
     //Modulo Tipo Trabajador
     private VigenciasTiposTrabajadores nuevaVigenciaTipoTrabajador;
-    private int indexTipoTrabajador;
+    private int idTipoTrabajador;
     private boolean permitirIndexTipoTrabajador;
     private String auxTipoTrabajadorNombreTipoTrabajador;
     //Modulo Reforma Laboral
     private VigenciasReformasLaborales nuevaVigenciaReformaLaboral;
-    private int indexTipoSalario;
+    private int idTipoSalario;
     private boolean permitirIndexTipoSalario;
     private String auxTipoSalarioReformaLaboral;
     //Modulo Sueldo
     private VigenciasSueldos nuevaVigenciaSueldo;
-    private int indexSueldo;
+    private int idSueldo;
     private boolean permitirIndexSueldo;
     private String auxSueldoMotivoSueldo, auxSueldoTipoSueldo, auxSueldoUnidad;
     private BigDecimal valorSueldo;
     private BigDecimal auxSueldoValor;
     //Modulo Tipo Contrato
     private VigenciasTiposContratos nuevaVigenciaTipoContrato;
-    private int indexTipoContrato;
+    private int idTipoContrato;
     private boolean permitirIndexTipoContrato;
     private String auxTipoContratoMotivo, auxTipoContratoTipoContrato;
     private Date auxTipoContratoFecha;
     //Modulo Norma Laboral
     private VigenciasNormasEmpleados nuevaVigenciaNormaEmpleado;
-    private int indexNormaLaboral;
+    private int idNormaLaboral;
     private boolean permitirIndexNormaLaboral;
     private String auxNormaLaboralNorma;
     //Modulo Legislacion Laboral
     private VigenciasContratos nuevaVigenciaContrato;
-    private int indexLegislacionLaboral;
+    private int idLegislacionLaboral;
     private boolean permitirIndexLegislacionLaboral;
     private String auxLegislacionLaboralNombre;
     // Modulo Ubicacion Geografica
     private VigenciasUbicaciones nuevaVigenciaUbicacion;
-    private int indexUbicacionGeografica;
+    private int idUbicacionGeografica;
     private boolean permitirIndexUbicacionGeografica;
     private String auxUbicacionGeograficaUbicacion;
     //Modulo Jornada Laboral
     private VigenciasJornadas nuevaVigenciaJornada;
-    private int indexJornadaLaboral;
+    private int idJornadaLaboral;
     private boolean permitirIndexJornadaLaboral;
     private String auxJornadaLaboralJornada;
     //Modulo Forma Pago
     private VigenciasFormasPagos nuevaVigenciaFormaPago;
-    private int indexFormaPago;
+    private int idFormaPago;
     private boolean permitirIndexFormaPago;
     private String auxFormaPagoPeriodicidad, auxFormaPagoSucursal, auxFormaPagoMetodo;
     //Modulo Afiliaciones
     //EPS
     private VigenciasAfiliaciones nuevaVigenciaAfiliacionEPS;
-    private int indexAfiliacionEPS;
+    private int idAfiliacionEPS;
     private boolean permitirIndexAfiliacionEPS;
     private String auxAfiliacionEPS;
     //AFP
     private VigenciasAfiliaciones nuevaVigenciaAfiliacionAFP;
-    private int indexAfiliacionAFP;
+    private int idAfiliacionAFP;
     private boolean permitirIndexAfiliacionAFP;
     private String auxAfiliacionAFP;
     //Fondo Censantias
     private VigenciasAfiliaciones nuevaVigenciaAfiliacionFondo;
-    private int indexAfiliacionFondo;
+    private int idAfiliacionFondo;
     private boolean permitirIndexAfiliacionFondo;
     private String auxAfiliacionFondo;
     //ARP
     private VigenciasAfiliaciones nuevaVigenciaAfiliacionARP;
-    private int indexAfiliacionARP;
+    private int idAfiliacionARP;
     private boolean permitirIndexAfiliacionARP;
     private String auxAfiliacionARP;
     //Caja
     private VigenciasAfiliaciones nuevaVigenciaAfiliacionCaja;
-    private int indexAfiliacionCaja;
+    private int idAfiliacionCaja;
     private boolean permitirIndexAfiliacionCaja;
     private String auxAfiliacionCaja;
     //Modulo Estado Civil
     private VigenciasEstadosCiviles nuevoEstadoCivil;
-    private int indexEstadoCivil;
+    private int idEstadoCivil;
     private boolean permitirIndexEstadoCivil;
     private String auxEstadoCivilEstado;
     //Modulo Direcciones
     private Direcciones nuevaDireccion;
-    private int indexDireccion;
+    private int idDireccion;
     private boolean permitirIndexDireccion;
     private String auxDireccionCiudad;
     //Modulo Telefonos
     private Telefonos nuevoTelefono;
-    private int indexTelefono;
+    private int idTelefono;
     private boolean permitirIndexTelefono;
     private String auxTelefonoTipo, auxTelefonoCiudad;
     //LOVS
@@ -376,7 +377,7 @@ public class ControlPersonaIndividual implements Serializable {
         lovCargos = null;
         cargoSeleccionado = new Cargos();
         lovEmpresas = null;
-        empresaSeleccionada = new Empresas();
+        empresaSeleccionada = null;
         lovTiposDocumentos = null;
         tipoDocumentoSeleccionado = new TiposDocumentos();
         lovCiudades = null;
@@ -388,26 +389,26 @@ public class ControlPersonaIndividual implements Serializable {
         lovEmpleados = null;
         empleadoSeleccionado = new Empleados();
         //Index
-        indexInformacionPersonal = -1;
-        indexCargoDesempeñado = -1;
-        indexCentroCosto = -1;
-        indexTipoTrabajador = -1;
-        indexTipoSalario = -1;
-        indexSueldo = -1;
-        indexTipoContrato = -1;
-        indexNormaLaboral = -1;
-        indexLegislacionLaboral = -1;
-        indexUbicacionGeografica = -1;
-        indexFormaPago = -1;
-        indexJornadaLaboral = -1;
-        indexAfiliacionAFP = -1;
-        indexAfiliacionARP = -1;
-        indexAfiliacionCaja = -1;
-        indexAfiliacionEPS = -1;
-        indexAfiliacionFondo = -1;
-        indexEstadoCivil = -1;
-        indexDireccion = -1;
-        indexTelefono = -1;
+        idInformacionPersonal = -1;
+        idCargoDesempeñado = -1;
+        idCentroCosto = -1;
+        idTipoTrabajador = -1;
+        idTipoSalario = -1;
+        idSueldo = -1;
+        idTipoContrato = -1;
+        idNormaLaboral = -1;
+        idLegislacionLaboral = -1;
+        idUbicacionGeografica = -1;
+        idFormaPago = -1;
+        idJornadaLaboral = -1;
+        idAfiliacionAFP = -1;
+        idAfiliacionARP = -1;
+        idAfiliacionCaja = -1;
+        idAfiliacionEPS = -1;
+        idAfiliacionFondo = -1;
+        idEstadoCivil = -1;
+        idDireccion = -1;
+        idTelefono = -1;
         //Auxiliares
         auxFechaNacimiento = null;
         auxFechaIngreso = null;
@@ -469,185 +470,184 @@ public class ControlPersonaIndividual implements Serializable {
 
     public void listaValoresInformacionPersonal() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexInformacionPersonal == 0) {
+        if (idInformacionPersonal == 0) {
             getInfoRegistroEmpresaInformacionPersonal();
             context.update("formLovs:formDInformacionPersonal:EmpresaInformacionPersonalDialogo");
             context.execute("EmpresaInformacionPersonalDialogo.show()");
-            indexInformacionPersonal = -1;
+            idInformacionPersonal = -1;
         }
-        if (indexInformacionPersonal == 5) {
+        if (idInformacionPersonal == 5) {
             context.update("formLovs:formDInformacionPersonal:TipoDocumentoInformacionPersonalDialogo");
             context.execute("TipoDocumentoInformacionPersonalDialogo.show()");
-            indexInformacionPersonal = -1;
+            idInformacionPersonal = -1;
         }
-        if (indexInformacionPersonal == 7) {
+        if (idInformacionPersonal == 7) {
             context.update("formLovs:formDInformacionPersonal:CiudadDocumentoInformacionPersonalDialogo");
             context.execute("CiudadDocumentoInformacionPersonalDialogo.show()");
-            indexInformacionPersonal = -1;
+            idInformacionPersonal = -1;
         }
-        if (indexInformacionPersonal == 9) {
+        if (idInformacionPersonal == 9) {
             context.update("formLovs:formDInformacionPersonal:CiudadNacimientoInformacionPersonalDialogo");
             context.execute("CiudadNacimientoInformacionPersonalDialogo.show()");
-            indexInformacionPersonal = -1;
+            idInformacionPersonal = -1;
         }
 
     }
 
     public void listaValoresCargoDesempenado() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexCargoDesempeñado == 0) {
+        if (idCargoDesempeñado == 0) {
             context.update("formLovs:formDCargoDesempenado:CargoCargoDesempeñadoDialogo");
             context.execute("CargoCargoDesempeñadoDialogo.show()");
-            indexCargoDesempeñado = -1;
+            idCargoDesempeñado = -1;
         }
-        if (indexCargoDesempeñado == 1) {
+        if (idCargoDesempeñado == 1) {
             context.update("formLovs:formDCargoDesempenado:MotivoCambioCargoCargoDesempeñadoDialogo");
             context.execute("MotivoCambioCargoCargoDesempeñadoDialogo.show()");
-            indexCargoDesempeñado = -1;
+            idCargoDesempeñado = -1;
         }
-        if (indexCargoDesempeñado == 2) {
+        if (idCargoDesempeñado == 2) {
             context.update("formLovs:formDCargoDesempenado:EstructuraCargoDesempeñadoDialogo");
             context.execute("EstructuraCargoDesempeñadoDialogo.show()");
-            indexCargoDesempeñado = -1;
+            idCargoDesempeñado = -1;
         }
-        if (indexCargoDesempeñado == 3) {
+        if (idCargoDesempeñado == 3) {
             context.update("formLovs:formDCargoDesempenado:PapelCargoDesempeñadoDialogo");
             context.execute("PapelCargoDesempeñadoDialogo.show()");
-            indexCargoDesempeñado = -1;
+            idCargoDesempeñado = -1;
         }
-        if (indexCargoDesempeñado == 4) {
+        if (idCargoDesempeñado == 4) {
             context.update("formLovs:formDCargoDesempenado:EmpleadoJefeCargoDesempeñadoDialogo");
             context.execute("EmpleadoJefeCargoDesempeñadoDialogo.show()");
-            indexCargoDesempeñado = -1;
+            idCargoDesempeñado = -1;
         }
-
     }
 
     public void listaValoresCentroCosto() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexCentroCosto == 0) {
+        if (idCentroCosto == 0) {
             context.update("formLovs:formDCentroCosto:MotivoLocalizacionCentroCostoDialogo");
             context.execute("MotivoLocalizacionCentroCostoDialogo.show()");
-            indexCentroCosto = -1;
+            idCentroCosto = -1;
         }
-        if (indexCentroCosto == 1) {
+        if (idCentroCosto == 1) {
             context.update("formLovs:formDCentroCosto:EstructuraCentroCostoDialogo");
             context.execute("EstructuraCentroCostoDialogo.show()");
-            indexCentroCosto = -1;
+            idCentroCosto = -1;
         }
 
     }
 
     public void listaValoresTipoTrabajador() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexTipoTrabajador == 0) {
+        if (idTipoTrabajador == 0) {
             context.update("formLovs:formDTipoTrabajador:TipoTrabajadorTipoTrabajadorDialogo");
             context.execute("TipoTrabajadorTipoTrabajadorDialogo.show()");
-            indexTipoTrabajador = -1;
+            idTipoTrabajador = -1;
         }
 
     }
 
     public void listaValoresTipoSalario() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexTipoSalario == 0) {
+        if (idTipoSalario == 0) {
             context.update("formLovs:formDTipoSalario:ReformaLaboralTipoSalarioDialogo");
             context.execute("ReformaLaboralTipoSalarioDialogo.show()");
-            indexTipoSalario = -1;
+            idTipoSalario = -1;
         }
     }
 
     public void listaValoresSueldo() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexSueldo == 1) {
+        if (idSueldo == 1) {
             context.update("formLovs:formDSueldo:MotivoCambioSueldoSueldoDialogo");
             context.execute("MotivoCambioSueldoSueldoDialogo.show()");
-            indexSueldo = -1;
+            idSueldo = -1;
         }
-        if (indexSueldo == 2) {
+        if (idSueldo == 2) {
             context.update("formLovs:formDSueldo:TipoSueldoSueldoDialogo");
             context.execute("TipoSueldoSueldoDialogo.show()");
-            indexSueldo = -1;
+            idSueldo = -1;
         }
-        if (indexSueldo == 3) {
+        if (idSueldo == 3) {
             context.update("formLovs:formDSueldo:UnidadSueldoDialogo");
             context.execute("UnidadSueldoDialogo.show()");
-            indexSueldo = -1;
+            idSueldo = -1;
         }
     }
 
     public void listaValoresTipoContrato() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexTipoContrato == 0) {
+        if (idTipoContrato == 0) {
             context.update("formLovs:formDTipoContrato:MotivoContratoTipoContratoDialogo");
             context.execute("MotivoContratoTipoContratoDialogo.show()");
-            indexTipoContrato = -1;
+            idTipoContrato = -1;
         }
-        if (indexTipoContrato == 1) {
+        if (idTipoContrato == 1) {
             context.update("formLovs:formDTipoContrato:TipoContratoTipoContratoDialogo");
             context.execute("TipoContratoTipoContratoDialogo.show()");
-            indexTipoContrato = -1;
+            idTipoContrato = -1;
         }
     }
 
     public void listaValoresNormaLaboral() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexNormaLaboral == 0) {
+        if (idNormaLaboral == 0) {
             context.update("formLovs:formDNormaLaboral:NormaLaboralNormaLaboralDialogo");
             context.execute("NormaLaboralNormaLaboralDialogo.show()");
-            indexNormaLaboral = -1;
+            idNormaLaboral = -1;
         }
     }
 
     public void listaValoresLegislacionLaboral() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexLegislacionLaboral == 0) {
+        if (idLegislacionLaboral == 0) {
             context.update("formLovs:formDLegislacionLaboral:ContratoLegislacionLaboralDialogo");
             context.execute("ContratoLegislacionLaboralDialogo.show()");
-            indexLegislacionLaboral = -1;
+            idLegislacionLaboral = -1;
         }
     }
 
     public void listaValoresUbicacion() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexUbicacionGeografica == 0) {
+        if (idUbicacionGeografica == 0) {
             context.update("formLovs:formDUbicacion:UbicacionUbicacionGeograficaDialogo");
             context.execute("UbicacionUbicacionGeograficaDialogo.show()");
-            indexUbicacionGeografica = -1;
+            idUbicacionGeografica = -1;
         }
     }
 
     public void listaValoresJornadaLaboral() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexJornadaLaboral == 0) {
+        if (idJornadaLaboral == 0) {
             context.update("formLovs:formDJornadaLaboral:JornadaJornadaLaboralDialogo");
             context.execute("JornadaJornadaLaboralDialogo.show()");
-            indexJornadaLaboral = -1;
+            idJornadaLaboral = -1;
         }
     }
 
     public void listaValoresFormaPago() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexFormaPago == 0) {
+        if (idFormaPago == 0) {
             context.update("formLovs:formDFormaPago:PeriodicidadFormaPagoDialogo");
             context.execute("PeriodicidadFormaPagoDialogo.show()");
-            indexFormaPago = -1;
+            idFormaPago = -1;
         }
-        if (indexFormaPago == 3) {
+        if (idFormaPago == 3) {
             context.update("formLovs:formDFormaPago:SucursalFormaPagoDialogo");
             context.execute("SucursalFormaPagoDialogo.show()");
-            indexFormaPago = -1;
+            idFormaPago = -1;
         }
-        if (indexFormaPago == 4) {
+        if (idFormaPago == 4) {
             context.update("formLovs:formDFormaPago:MetodoPagoFormaPagoDialogo");
             context.execute("MetodoPagoFormaPagoDialogo.show()");
-            indexFormaPago = -1;
+            idFormaPago = -1;
         }
     }
 
     public void listaValoresAfiliacionEPS() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexAfiliacionEPS == 0) {
+        if (idAfiliacionEPS == 0) {
             context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
             context.execute("TerceroAfiliacionDialogo.show()");
         }
@@ -655,7 +655,7 @@ public class ControlPersonaIndividual implements Serializable {
 
     public void listaValoresAfiliacionARP() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexAfiliacionARP == 0) {
+        if (idAfiliacionARP == 0) {
             context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
             context.execute("TerceroAfiliacionDialogo.show()");
         }
@@ -663,7 +663,7 @@ public class ControlPersonaIndividual implements Serializable {
 
     public void listaValoresAfiliacionAFP() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexAfiliacionAFP == 0) {
+        if (idAfiliacionAFP == 0) {
             context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
             context.execute("TerceroAfiliacionDialogo.show()");
         }
@@ -671,7 +671,7 @@ public class ControlPersonaIndividual implements Serializable {
 
     public void listaValoresAfiliacionCaja() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexAfiliacionCaja == 0) {
+        if (idAfiliacionCaja == 0) {
             context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
             context.execute("TerceroAfiliacionDialogo.show()");
         }
@@ -679,7 +679,7 @@ public class ControlPersonaIndividual implements Serializable {
 
     public void listaValoresAfiliacionFondo() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexAfiliacionFondo == 0) {
+        if (idAfiliacionFondo == 0) {
             context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
             context.execute("TerceroAfiliacionDialogo.show()");
         }
@@ -687,541 +687,541 @@ public class ControlPersonaIndividual implements Serializable {
 
     public void listaValoresEstadoCivil() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexEstadoCivil == 0) {
+        if (idEstadoCivil == 0) {
             context.update("formLovs:formDEstadoCivil:EstadoCivilEstadoCivilDialogo");
             context.execute("EstadoCivilEstadoCivilDialogo.show()");
-            indexEstadoCivil = -1;
+            idEstadoCivil = -1;
         }
     }
 
     public void listaValoresDireccion() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexDireccion == 1) {
+        if (idDireccion == 1) {
             context.update("formLovs:formDDireccion:CiudadDireccionDialogo");
             context.execute("CiudadDireccionDialogo.show()");
-            indexDireccion = -1;
+            idDireccion = -1;
         }
     }
 
     public void listaValoresTelefono() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexTelefono == 0) {
+        if (idTelefono == 0) {
             context.update("formLovs:formDTelefono:TipoTelefonoTelefonoDialogo");
             context.execute("TipoTelefonoTelefonoDialogo.show()");
-            indexTelefono = -1;
+            idTelefono = -1;
         }
-        if (indexTelefono == 1) {
+        if (idTelefono == 1) {
             context.update("formLovs:formDTelefono:CiudadTelefonoDialogo");
             context.execute("CiudadTelefonoDialogo.show()");
-            indexTelefono = -1;
+            idTelefono = -1;
         }
     }
 
     public void botonListaValores() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexInformacionPersonal >= 0) {
-            if (indexInformacionPersonal == 0) {
+        if (idInformacionPersonal >= 0) {
+            if (idInformacionPersonal == 0) {
                 getInfoRegistroEmpresaInformacionPersonal();
                 context.update("formLovs:formDInformacionPersonal:EmpresaInformacionPersonalDialogo");
                 context.execute("EmpresaInformacionPersonalDialogo.show()");
-                indexInformacionPersonal = -1;
+                idInformacionPersonal = -1;
             }
-            if (indexInformacionPersonal == 5) {
+            if (idInformacionPersonal == 5) {
                 getInfoRegistroTipoDocumentoInformacionPersonal();
                 context.update("formLovs:formDInformacionPersonal:TipoDocumentoInformacionPersonalDialogo");
                 context.execute("TipoDocumentoInformacionPersonalDialogo.show()");
-                indexInformacionPersonal = -1;
+                idInformacionPersonal = -1;
             }
-            if (indexInformacionPersonal == 7) {
+            if (idInformacionPersonal == 7) {
                 getInfoRegistroCiudadDocumentoInformacionPersonal();
                 context.update("formLovs:formDInformacionPersonal:CiudadDocumentoInformacionPersonalDialogo");
                 context.execute("CiudadDocumentoInformacionPersonalDialogo.show()");
-                indexInformacionPersonal = -1;
+                idInformacionPersonal = -1;
             }
-            if (indexInformacionPersonal == 9) {
+            if (idInformacionPersonal == 9) {
                 getInfoRegistroCiudadNacimientoInformacionPersonal();
                 context.update("formLovs:formDInformacionPersonal:CiudadNacimientoInformacionPersonalDialogo");
                 context.execute("CiudadNacimientoInformacionPersonalDialogo.show()");
-                indexInformacionPersonal = -1;
+                idInformacionPersonal = -1;
             }
-        } else if (indexCargoDesempeñado >= 0) {
-            if (indexCargoDesempeñado == 0) {
+        } else if (idCargoDesempeñado >= 0) {
+            if (idCargoDesempeñado == 0) {
                 getInfoRegistroCargoCargoDesempenado();
                 context.update("formLovs:formDCargoDesempenado:CargoCargoDesempeñadoDialogo");
                 context.execute("CargoCargoDesempeñadoDialogo.show()");
-                indexCargoDesempeñado = -1;
+                idCargoDesempeñado = -1;
             }
-            if (indexCargoDesempeñado == 1) {
+            if (idCargoDesempeñado == 1) {
                 getInfoRegistroMotivoCargoCargoDesempenado();
                 context.update("formLovs:formDCargoDesempenado:MotivoCambioCargoCargoDesempeñadoDialogo");
                 context.execute("MotivoCambioCargoCargoDesempeñadoDialogo.show()");
-                indexCargoDesempeñado = -1;
+                idCargoDesempeñado = -1;
             }
-            if (indexCargoDesempeñado == 2) {
+            if (idCargoDesempeñado == 2) {
                 getInfoRegistroEstructuraCargoDesempenado();
                 context.update("formLovs:formDCargoDesempenado:EstructuraCargoDesempeñadoDialogo");
                 context.execute("EstructuraCargoDesempeñadoDialogo.show()");
-                indexCargoDesempeñado = -1;
+                idCargoDesempeñado = -1;
             }
-            if (indexCargoDesempeñado == 3) {
+            if (idCargoDesempeñado == 3) {
                 getInfoRegistroPapelCargoDesempenado();
                 context.update("formLovs:formDCargoDesempenado:PapelCargoDesempeñadoDialogo");
                 context.execute("PapelCargoDesempeñadoDialogo.show()");
-                indexCargoDesempeñado = -1;
+                idCargoDesempeñado = -1;
             }
-            if (indexCargoDesempeñado == 4) {
+            if (idCargoDesempeñado == 4) {
                 getInfoRegistroJefeCargoDesempenado();
                 context.update("formLovs:formDCargoDesempenado:EmpleadoJefeCargoDesempeñadoDialogo");
                 context.execute("EmpleadoJefeCargoDesempeñadoDialogo.show()");
-                indexCargoDesempeñado = -1;
+                idCargoDesempeñado = -1;
             }
-        } else if (indexCentroCosto >= 0) {
-            if (indexCentroCosto == 0) {
+        } else if (idCentroCosto >= 0) {
+            if (idCentroCosto == 0) {
                 getInfoRegistroMotivoCentroCosto();
                 context.update("formLovs:formDCentroCosto:MotivoLocalizacionCentroCostoDialogo");
                 context.execute("MotivoLocalizacionCentroCostoDialogo.show()");
-                indexCentroCosto = -1;
+                idCentroCosto = -1;
             }
-            if (indexCentroCosto == 1) {
+            if (idCentroCosto == 1) {
                 getInfoRegistroEstructuraCentroCosto();
                 context.update("formLovs:formDCentroCosto:EstructuraCentroCostoDialogo");
                 context.execute("EstructuraCentroCostoDialogo.show()");
-                indexCentroCosto = -1;
+                idCentroCosto = -1;
             }
-        } else if (indexTipoTrabajador >= 0) {
-            if (indexTipoTrabajador == 0) {
+        } else if (idTipoTrabajador >= 0) {
+            if (idTipoTrabajador == 0) {
                 getInfoRegistroTipoTrabajadorTipoTrabajador();
                 context.update("formLovs:formDTipoTrabajador:TipoTrabajadorTipoTrabajadorDialogo");
                 context.execute("TipoTrabajadorTipoTrabajadorDialogo.show()");
-                indexTipoTrabajador = -1;
+                idTipoTrabajador = -1;
             }
-        } else if (indexTipoSalario >= 0) {
-            if (indexTipoSalario == 0) {
+        } else if (idTipoSalario >= 0) {
+            if (idTipoSalario == 0) {
                 getInfoRegistroReformaTipoSalario();
                 context.update("formLovs:formDTipoSalario:ReformaLaboralTipoSalarioDialogo");
                 context.execute("ReformaLaboralTipoSalarioDialogo.show()");
-                indexTipoSalario = -1;
+                idTipoSalario = -1;
             }
-        } else if (indexSueldo >= 0) {
-            if (indexSueldo == 1) {
+        } else if (idSueldo >= 0) {
+            if (idSueldo == 1) {
                 getInfoRegistroMotivoSueldo();
                 context.update("formLovs:formDSueldo:MotivoCambioSueldoSueldoDialogo");
                 context.execute("MotivoCambioSueldoSueldoDialogo.show()");
-                indexSueldo = -1;
+                idSueldo = -1;
             }
-            if (indexSueldo == 2) {
+            if (idSueldo == 2) {
                 getInfoRegistroTipoSueldoSueldo();
                 context.update("formLovs:formDSueldo:TipoSueldoSueldoDialogo");
                 context.execute("TipoSueldoSueldoDialogo.show()");
-                indexSueldo = -1;
+                idSueldo = -1;
             }
-            if (indexSueldo == 3) {
+            if (idSueldo == 3) {
                 getInfoRegistroUnidadSueldo();
                 context.update("formLovs:formDSueldo:UnidadSueldoDialogo");
                 context.execute("UnidadSueldoDialogo.show()");
-                indexSueldo = -1;
+                idSueldo = -1;
             }
-        } else if (indexTipoContrato >= 0) {
-            if (indexTipoContrato == 0) {
+        } else if (idTipoContrato >= 0) {
+            if (idTipoContrato == 0) {
                 getInfoRegistroMotivoTipoContrato();
                 context.update("formLovs:formDTipoContrato:MotivoContratoTipoContratoDialogo");
                 context.execute("MotivoContratoTipoContratoDialogo.show()");
-                indexTipoContrato = -1;
+                idTipoContrato = -1;
             }
-            if (indexTipoContrato == 1) {
+            if (idTipoContrato == 1) {
                 getInfoRegistroTipoTipoContrato();
                 context.update("formLovs:formDTipoContrato:TipoContratoTipoContratoDialogo");
                 context.execute("TipoContratoTipoContratoDialogo.show()");
-                indexTipoContrato = -1;
+                idTipoContrato = -1;
             }
-        } else if (indexNormaLaboral >= 0) {
-            if (indexNormaLaboral == 0) {
+        } else if (idNormaLaboral >= 0) {
+            if (idNormaLaboral == 0) {
                 getInfoRegistroNormaNormaLaboral();
                 context.update("formLovs:formDNormaLaboral:NormaLaboralNormaLaboralDialogo");
                 context.execute("NormaLaboralNormaLaboralDialogo.show()");
-                indexNormaLaboral = -1;
+                idNormaLaboral = -1;
             }
-        } else if (indexLegislacionLaboral >= 0) {
-            if (indexLegislacionLaboral == 0) {
+        } else if (idLegislacionLaboral >= 0) {
+            if (idLegislacionLaboral == 0) {
                 getInfoRegistroContratoLegislacionLaboral();
                 context.update("formLovs:formDLegislacionLaboral:ContratoLegislacionLaboralDialogo");
                 context.execute("ContratoLegislacionLaboralDialogo.show()");
-                indexLegislacionLaboral = -1;
+                idLegislacionLaboral = -1;
             }
-        } else if (indexUbicacionGeografica >= 0) {
-            if (indexUbicacionGeografica == 0) {
+        } else if (idUbicacionGeografica >= 0) {
+            if (idUbicacionGeografica == 0) {
                 getInfoRegistroUbicacionUbicacion();
                 context.update("formLovs:formDUbicacion:UbicacionUbicacionGeograficaDialogo");
                 context.execute("UbicacionUbicacionGeograficaDialogo.show()");
-                indexUbicacionGeografica = -1;
+                idUbicacionGeografica = -1;
             }
-        } else if (indexJornadaLaboral >= 0) {
-            if (indexJornadaLaboral == 0) {
+        } else if (idJornadaLaboral >= 0) {
+            if (idJornadaLaboral == 0) {
                 getInfoRegistroJornadaJornadaLaboral();
                 context.update("formLovs:formDJornadaLaboral:JornadaJornadaLaboralDialogo");
                 context.execute("JornadaJornadaLaboralDialogo.show()");
-                indexJornadaLaboral = -1;
+                idJornadaLaboral = -1;
             }
-        } else if (indexFormaPago >= 0) {
-            if (indexFormaPago == 0) {
+        } else if (idFormaPago >= 0) {
+            if (idFormaPago == 0) {
                 getInfoRegistroFormaFormaPago();
                 context.update("formLovs:formDFormaPago:PeriodicidadFormaPagoDialogo");
                 context.execute("PeriodicidadFormaPagoDialogo.show()");
-                indexFormaPago = -1;
+                idFormaPago = -1;
             }
-            if (indexFormaPago == 3) {
+            if (idFormaPago == 3) {
                 getInfoRegistroSucursalFormaPago();
                 context.update("formLovs:formDFormaPago:SucursalFormaPagoDialogo");
                 context.execute("SucursalFormaPagoDialogo.show()");
-                indexFormaPago = -1;
+                idFormaPago = -1;
             }
-            if (indexFormaPago == 4) {
+            if (idFormaPago == 4) {
                 getInfoRegistroMetodoFormaPago();
                 context.update("formLovs:formDFormaPago:MetodoPagoFormaPagoDialogo");
                 context.execute("MetodoPagoFormaPagoDialogo.show()");
-                indexFormaPago = -1;
+                idFormaPago = -1;
             }
-        } else if (indexAfiliacionAFP >= 0) {
-            if (indexAfiliacionAFP == 0) {
+        } else if (idAfiliacionAFP >= 0) {
+            if (idAfiliacionAFP == 0) {
                 getInfoRegistroTerceroAfiliacion();
                 context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
                 context.execute("TerceroAfiliacionDialogo.show()");
             }
-        } else if (indexAfiliacionARP >= 0) {
-            if (indexAfiliacionARP == 0) {
+        } else if (idAfiliacionARP >= 0) {
+            if (idAfiliacionARP == 0) {
                 getInfoRegistroTerceroAfiliacion();
                 context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
                 context.execute("TerceroAfiliacionDialogo.show()");
             }
-        } else if (indexAfiliacionCaja >= 0) {
-            if (indexAfiliacionCaja == 0) {
+        } else if (idAfiliacionCaja >= 0) {
+            if (idAfiliacionCaja == 0) {
                 getInfoRegistroTerceroAfiliacion();
                 context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
                 context.execute("TerceroAfiliacionDialogo.show()");
             }
-        } else if (indexAfiliacionEPS >= 0) {
-            if (indexAfiliacionEPS == 0) {
+        } else if (idAfiliacionEPS >= 0) {
+            if (idAfiliacionEPS == 0) {
                 getInfoRegistroTerceroAfiliacion();
                 context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
                 context.execute("TerceroAfiliacionDialogo.show()");
             }
-        } else if (indexAfiliacionFondo >= 0) {
-            if (indexAfiliacionFondo == 0) {
+        } else if (idAfiliacionFondo >= 0) {
+            if (idAfiliacionFondo == 0) {
                 getInfoRegistroTerceroAfiliacion();
                 context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
                 context.execute("TerceroAfiliacionDialogo.show()");
             }
-        } else if (indexEstadoCivil >= 0) {
-            if (indexEstadoCivil == 0) {
+        } else if (idEstadoCivil >= 0) {
+            if (idEstadoCivil == 0) {
                 getInfoRegistroEstadoCivilEstadoCivil();
                 context.update("formLovs:formDEstadoCivil:EstadoCivilEstadoCivilDialogo");
                 context.execute("EstadoCivilEstadoCivilDialogo.show()");
-                indexEstadoCivil = -1;
+                idEstadoCivil = -1;
             }
-        } else if (indexDireccion >= 0) {
-            if (indexDireccion == 1) {
+        } else if (idDireccion >= 0) {
+            if (idDireccion == 1) {
                 getInfoRegistroCiudadDireccion();
                 context.update("formLovs:formDDireccion:CiudadDireccionDialogo");
                 context.execute("CiudadDireccionDialogo.show()");
-                indexDireccion = -1;
+                idDireccion = -1;
             }
-        } else if (indexTelefono >= 0) {
-            if (indexTelefono == 0) {
+        } else if (idTelefono >= 0) {
+            if (idTelefono == 0) {
                 getInfoRegistroTipoTelefonoTelefono();
                 context.update("formLovs:formDTelefono:TipoTelefonoTelefonoDialogo");
                 context.execute("TipoTelefonoTelefonoDialogo.show()");
-                indexTelefono = -1;
+                idTelefono = -1;
             }
-            if (indexTelefono == 1) {
+            if (idTelefono == 1) {
                 getInfoRegistroCiudadTelefono();
                 context.update("formLovs:formDTelefono:CiudadTelefonoDialogo");
                 context.execute("CiudadTelefonoDialogo.show()");
-                indexTelefono = -1;
+                idTelefono = -1;
             }
         }
     }
 
     public void editarCelda() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexInformacionPersonal >= 0) {
-            if (indexInformacionPersonal == 0) {
+        if (idInformacionPersonal >= 0) {
+            if (idInformacionPersonal == 0) {
                 context.update("formDialogos:editarEmpresaInformacionPersonal");
                 context.execute("editarEmpresaInformacionPersonal.show()");
-                indexInformacionPersonal = -1;
+                idInformacionPersonal = -1;
             }
-            if (indexInformacionPersonal == 1) {
+            if (idInformacionPersonal == 1) {
                 context.update("formDialogos:editarPrimerApellidoInformacionPersonal");
                 context.execute("editarPrimerApellidoInformacionPersonal.show()");
-                indexInformacionPersonal = -1;
+                idInformacionPersonal = -1;
             }
-            if (indexInformacionPersonal == 2) {
+            if (idInformacionPersonal == 2) {
                 context.update("formDialogos:editarSegundoApellidoInformacionPersonal");
                 context.execute("editarSegundoApellidoInformacionPersonal.show()");
-                indexInformacionPersonal = -1;
+                idInformacionPersonal = -1;
             }
-            if (indexInformacionPersonal == 3) {
+            if (idInformacionPersonal == 3) {
                 context.update("formDialogos:editarNombresInformacionPersonal");
                 context.execute("editarNombresInformacionPersonal.show()");
-                indexInformacionPersonal = -1;
+                idInformacionPersonal = -1;
             }
-            if (indexInformacionPersonal == 5) {
+            if (idInformacionPersonal == 5) {
                 context.update("formDialogos:editarTipoDocumentoInformacionPersonal");
                 context.execute("editarTipoDocumentoInformacionPersonal.show()");
-                indexInformacionPersonal = -1;
+                idInformacionPersonal = -1;
             }
-            if (indexInformacionPersonal == 6) {
+            if (idInformacionPersonal == 6) {
                 context.update("formDialogos:editarNumeroDocumentoInformacionPersonal");
                 context.execute("editarNumeroDocumentoInformacionPersonal.show()");
-                indexInformacionPersonal = -1;
+                idInformacionPersonal = -1;
             }
-            if (indexInformacionPersonal == 7) {
+            if (idInformacionPersonal == 7) {
                 context.update("formDialogos:editarCiudadDocumentoInformacionPersonal");
                 context.execute("editarCiudadDocumentoInformacionPersonal.show()");
-                indexInformacionPersonal = -1;
+                idInformacionPersonal = -1;
             }
-            if (indexInformacionPersonal == 8) {
+            if (idInformacionPersonal == 8) {
                 context.update("formDialogos:editarFechaNacimientoInformacionPersonal");
                 context.execute("editarFechaNacimientoInformacionPersonal.show()");
-                indexInformacionPersonal = -1;
+                idInformacionPersonal = -1;
             }
-            if (indexInformacionPersonal == 9) {
+            if (idInformacionPersonal == 9) {
                 context.update("formDialogos:editarCiudadNacimientoInformacionPersonal");
                 context.execute("editarCiudadNacimientoInformacionPersonal.show()");
-                indexInformacionPersonal = -1;
+                idInformacionPersonal = -1;
             }
-            if (indexInformacionPersonal == 10) {
+            if (idInformacionPersonal == 10) {
                 context.update("formDialogos:editarFechaIngresoInformacionPersonal");
                 context.execute("editarFechaIngresoInformacionPersonal.show()");
-                indexInformacionPersonal = -1;
+                idInformacionPersonal = -1;
             }
-            if (indexInformacionPersonal == 11) {
+            if (idInformacionPersonal == 11) {
                 context.update("formDialogos:editarCodigoEmpleadoInformacionPersonal");
                 context.execute("editarCodigoEmpleadoInformacionPersonal.show()");
-                indexInformacionPersonal = -1;
+                idInformacionPersonal = -1;
             }
-            if (indexInformacionPersonal == 12) {
+            if (idInformacionPersonal == 12) {
                 context.update("formDialogos:editarEmailInformacionPersonal");
                 context.execute("editarEmailInformacionPersonal.show()");
-                indexInformacionPersonal = -1;
+                idInformacionPersonal = -1;
             }
-            if (indexInformacionPersonal == 13) {
+            if (idInformacionPersonal == 13) {
                 context.update("formDialogos:editarFechaUltimoPagoInformacionPersonal");
                 context.execute("editarFechaUltimoPagoInformacionPersonal.show()");
-                indexInformacionPersonal = -1;
+                idInformacionPersonal = -1;
             }
         }
-        if (indexCargoDesempeñado >= 0) {
-            if (indexCargoDesempeñado == 0) {
+        if (idCargoDesempeñado >= 0) {
+            if (idCargoDesempeñado == 0) {
                 context.update("formDialogos:editarCargoCargoDesempeñado");
                 context.execute("editarCargoCargoDesempeñado.show()");
-                indexCargoDesempeñado = -1;
+                idCargoDesempeñado = -1;
             }
-            if (indexCargoDesempeñado == 1) {
+            if (idCargoDesempeñado == 1) {
                 context.update("formDialogos:editarMotivoCargoDesempeñado");
                 context.execute("editarMotivoCargoDesempeñado.show()");
-                indexCargoDesempeñado = -1;
+                idCargoDesempeñado = -1;
             }
-            if (indexCargoDesempeñado == 2) {
+            if (idCargoDesempeñado == 2) {
                 getLovEstructuras();
                 context.update("formDialogos:editarEstructuraCargoDesempeñado");
                 context.execute("editarEstructuraCargoDesempeñado.show()");
-                indexCargoDesempeñado = -1;
+                idCargoDesempeñado = -1;
             }
-            if (indexCargoDesempeñado == 3) {
+            if (idCargoDesempeñado == 3) {
                 context.update("formDialogos:editarPapelCargoDesempeñado");
                 context.execute("editarPapelCargoDesempeñado.show()");
-                indexCargoDesempeñado = -1;
+                idCargoDesempeñado = -1;
             }
-            if (indexCargoDesempeñado == 4) {
+            if (idCargoDesempeñado == 4) {
                 context.update("formDialogos:editarEmpleadoJefeCargoDesempeñado");
                 context.execute("editarEmpleadoJefeCargoDesempeñado.show()");
-                indexCargoDesempeñado = -1;
+                idCargoDesempeñado = -1;
             }
         }
-        if (indexCentroCosto >= 0) {
-            if (indexCentroCosto == 0) {
+        if (idCentroCosto >= 0) {
+            if (idCentroCosto == 0) {
                 context.update("formDialogos:editarEstructuraCentroCosto");
                 context.execute("editarEstructuraCentroCosto.show()");
-                indexCentroCosto = -1;
+                idCentroCosto = -1;
             }
-            if (indexCentroCosto == 1) {
+            if (idCentroCosto == 1) {
                 context.update("formDialogos:editarMotivoCentroCosto");
                 context.execute("editarMotivoCentroCosto.show()");
-                indexCentroCosto = -1;
+                idCentroCosto = -1;
             }
         }
-        if (indexTipoTrabajador >= 0) {
-            if (indexTipoTrabajador == 0) {
+        if (idTipoTrabajador >= 0) {
+            if (idTipoTrabajador == 0) {
                 context.update("formDialogos:editarTrabajadorTipoTrabajador");
                 context.execute("editarTrabajadorTipoTrabajador.show()");
-                indexTipoTrabajador = -1;
+                idTipoTrabajador = -1;
             }
         }
-        if (indexTipoSalario >= 0) {
-            if (indexTipoSalario == 0) {
+        if (idTipoSalario >= 0) {
+            if (idTipoSalario == 0) {
                 context.update("formDialogos:editarReformaTipoSalario");
                 context.execute("editarReformaTipoSalario.show()");
-                indexTipoSalario = -1;
+                idTipoSalario = -1;
             }
         }
-        if (indexSueldo >= 0) {
-            if (indexSueldo == 0) {
+        if (idSueldo >= 0) {
+            if (idSueldo == 0) {
                 context.update("formDialogos:editarValorSueldo");
                 context.execute("editarValorSueldo.show()");
-                indexSueldo = -1;
+                idSueldo = -1;
             }
-            if (indexSueldo == 1) {
+            if (idSueldo == 1) {
                 context.update("formDialogos:editarMotivoSueldo");
                 context.execute("editarMotivoSueldo.show()");
-                indexSueldo = -1;
+                idSueldo = -1;
             }
-            if (indexSueldo == 2) {
+            if (idSueldo == 2) {
                 context.update("formDialogos:editarTipoSueldoSueldo");
                 context.execute("editarTipoSueldoSueldo.show()");
-                indexSueldo = -1;
+                idSueldo = -1;
             }
-            if (indexSueldo == 3) {
+            if (idSueldo == 3) {
                 context.update("formDialogos:editarUnidadSueldo");
                 context.execute("editarUnidadSueldo.show()");
-                indexSueldo = -1;
+                idSueldo = -1;
             }
         }
-        if (indexTipoContrato >= 0) {
-            if (indexTipoContrato == 0) {
+        if (idTipoContrato >= 0) {
+            if (idTipoContrato == 0) {
                 context.update("formDialogos:editarMotivoTipoContrato");
                 context.execute("editarMotivoTipoContrato.show()");
-                indexTipoContrato = -1;
+                idTipoContrato = -1;
             }
-            if (indexTipoContrato == 1) {
+            if (idTipoContrato == 1) {
                 context.update("formDialogos:editarTipoTipoContrato");
                 context.execute("editarTipoTipoContrato.show()");
-                indexTipoContrato = -1;
+                idTipoContrato = -1;
             }
-            if (indexTipoContrato == 2) {
+            if (idTipoContrato == 2) {
                 context.update("formDialogos:editarFechaTipoContrato");
                 context.execute("editarFechaTipoContrato.show()");
-                indexTipoContrato = -1;
+                idTipoContrato = -1;
             }
         }
-        if (indexNormaLaboral >= 0) {
-            if (indexNormaLaboral == 0) {
+        if (idNormaLaboral >= 0) {
+            if (idNormaLaboral == 0) {
                 context.update("formDialogos:editarNormaNormaLaboral");
                 context.execute("editarNormaNormaLaboral.show()");
-                indexNormaLaboral = -1;
+                idNormaLaboral = -1;
             }
         }
-        if (indexLegislacionLaboral >= 0) {
-            if (indexLegislacionLaboral == 0) {
+        if (idLegislacionLaboral >= 0) {
+            if (idLegislacionLaboral == 0) {
                 context.update("formDialogos:editarContratoLegislacionLaboral");
                 context.execute("editarContratoLegislacionLaboral.show()");
-                indexLegislacionLaboral = -1;
+                idLegislacionLaboral = -1;
             }
         }
-        if (indexUbicacionGeografica >= 0) {
-            if (indexUbicacionGeografica == 0) {
+        if (idUbicacionGeografica >= 0) {
+            if (idUbicacionGeografica == 0) {
                 context.update("formDialogos:editarUbicacionUbicacionGeografica");
                 context.execute("editarUbicacionUbicacionGeografica.show()");
-                indexUbicacionGeografica = -1;
+                idUbicacionGeografica = -1;
             }
         }
-        if (indexJornadaLaboral >= 0) {
-            if (indexJornadaLaboral == 0) {
+        if (idJornadaLaboral >= 0) {
+            if (idJornadaLaboral == 0) {
                 context.update("formDialogos:editarJornadaJornadaLaboral");
                 context.execute("editarJornadaJornadaLaboral.show()");
-                indexJornadaLaboral = -1;
+                idJornadaLaboral = -1;
             }
         }
-        if (indexFormaPago >= 0) {
-            if (indexFormaPago == 0) {
+        if (idFormaPago >= 0) {
+            if (idFormaPago == 0) {
                 context.update("formDialogos:editarPeriodicidadFormaPago");
                 context.execute("editarPeriodicidadFormaPago.show()");
-                indexFormaPago = -1;
+                idFormaPago = -1;
             }
-            if (indexFormaPago == 1) {
+            if (idFormaPago == 1) {
                 context.update("formDialogos:editarCuentaFormaPago");
                 context.execute("editarCuentaFormaPago.show()");
-                indexFormaPago = -1;
+                idFormaPago = -1;
             }
-            if (indexFormaPago == 3) {
+            if (idFormaPago == 3) {
                 context.update("formDialogos:editarSucursalFormaPago");
                 context.execute("editarSucursalFormaPago.show()");
-                indexFormaPago = -1;
+                idFormaPago = -1;
             }
-            if (indexFormaPago == 4) {
+            if (idFormaPago == 4) {
                 context.update("formDialogos:editarMetodoFormaPago");
                 context.execute("editarMetodoFormaPago.show()");
-                indexFormaPago = -1;
+                idFormaPago = -1;
             }
         }
-        if (indexAfiliacionAFP >= 0) {
-            if (indexAfiliacionAFP == 0) {
+        if (idAfiliacionAFP >= 0) {
+            if (idAfiliacionAFP == 0) {
                 context.update("formDialogos:editarAFPAfiliacion");
                 context.execute("editarAFPAfiliacion.show()");
-                indexAfiliacionAFP = -1;
+                idAfiliacionAFP = -1;
             }
         }
-        if (indexAfiliacionARP >= 0) {
-            if (indexAfiliacionARP == 0) {
+        if (idAfiliacionARP >= 0) {
+            if (idAfiliacionARP == 0) {
                 context.update("formDialogos:editarARPAfiliacion");
                 context.execute("editarARPAfiliacion.show()");
-                indexAfiliacionARP = -1;
+                idAfiliacionARP = -1;
             }
         }
-        if (indexAfiliacionCaja >= 0) {
-            if (indexAfiliacionCaja == 0) {
+        if (idAfiliacionCaja >= 0) {
+            if (idAfiliacionCaja == 0) {
                 context.update("formDialogos:editarCajaAfiliacion");
                 context.execute("editarCajaAfiliacion.show()");
-                indexAfiliacionCaja = -1;
+                idAfiliacionCaja = -1;
             }
         }
-        if (indexAfiliacionEPS >= 0) {
-            if (indexAfiliacionEPS == 0) {
+        if (idAfiliacionEPS >= 0) {
+            if (idAfiliacionEPS == 0) {
                 context.update("formDialogos:editarEPSAfiliacion");
                 context.execute("editarEPSAfiliacion.show()");
-                indexAfiliacionEPS = -1;
+                idAfiliacionEPS = -1;
             }
         }
-        if (indexAfiliacionFondo >= 0) {
-            if (indexAfiliacionFondo == 0) {
+        if (idAfiliacionFondo >= 0) {
+            if (idAfiliacionFondo == 0) {
                 context.update("formDialogos:editarFondoAfiliacion");
                 context.execute("editarFondoAfiliacion.show()");
-                indexAfiliacionFondo = -1;
+                idAfiliacionFondo = -1;
             }
         }
-        if (indexEstadoCivil >= 0) {
-            if (indexEstadoCivil == 0) {
+        if (idEstadoCivil >= 0) {
+            if (idEstadoCivil == 0) {
                 context.update("formDialogos:editarEstadoEstadoCivil");
                 context.execute("editarEstadoEstadoCivil.show()");
-                indexEstadoCivil = -1;
+                idEstadoCivil = -1;
             }
         }
-        if (indexDireccion >= 0) {
-            if (indexDireccion == 0) {
+        if (idDireccion >= 0) {
+            if (idDireccion == 0) {
                 context.update("formDialogos:editarDireccionDireccion");
                 context.execute("editarDireccionDireccion.show()");
-                indexDireccion = -1;
+                idDireccion = -1;
             }
-            if (indexDireccion == 1) {
+            if (idDireccion == 1) {
                 context.update("formDialogos:editarCiudadDireccion");
                 context.execute("editarCiudadDireccion.show()");
-                indexDireccion = -1;
+                idDireccion = -1;
             }
         }
-        if (indexTelefono >= 0) {
-            if (indexTelefono == 0) {
+        if (idTelefono >= 0) {
+            if (idTelefono == 0) {
                 context.update("formDialogos:editarTipoTelefonoTelefono");
                 context.execute("editarTipoTelefonoTelefono.show()");
-                indexTelefono = -1;
+                idTelefono = -1;
             }
-            if (indexTelefono == 1) {
+            if (idTelefono == 1) {
                 context.update("formDialogos:editarCiudadTelefono");
                 context.execute("editarCiudadTelefono.show()");
-                indexTelefono = -1;
+                idTelefono = -1;
             }
-            if (indexTelefono == 2) {
+            if (idTelefono == 2) {
                 context.update("formDialogos:editarNumeroTelTelefono");
                 context.execute("editarNumeroTelTelefono.show()");
-                indexTelefono = -1;
+                idTelefono = -1;
             }
         }
     }
@@ -1294,26 +1294,26 @@ public class ControlPersonaIndividual implements Serializable {
         disableAfiliaciones = true;
         disableCamposDependientesTipoTrabajador = true;
         //Index
-        indexCargoDesempeñado = -1;
-        indexCentroCosto = -1;
-        indexTipoTrabajador = -1;
-        indexTipoSalario = -1;
-        indexSueldo = -1;
-        indexTipoContrato = -1;
-        indexNormaLaboral = -1;
-        indexLegislacionLaboral = -1;
-        indexUbicacionGeografica = -1;
-        indexFormaPago = -1;
-        indexJornadaLaboral = -1;
-        indexAfiliacionAFP = -1;
-        indexAfiliacionARP = -1;
-        indexAfiliacionCaja = -1;
-        indexAfiliacionEPS = -1;
-        indexAfiliacionFondo = -1;
-        indexEstadoCivil = -1;
-        indexDireccion = -1;
-        indexTelefono = -1;
-        indexInformacionPersonal = -1;
+        idCargoDesempeñado = -1;
+        idCentroCosto = -1;
+        idTipoTrabajador = -1;
+        idTipoSalario = -1;
+        idSueldo = -1;
+        idTipoContrato = -1;
+        idNormaLaboral = -1;
+        idLegislacionLaboral = -1;
+        idUbicacionGeografica = -1;
+        idFormaPago = -1;
+        idJornadaLaboral = -1;
+        idAfiliacionAFP = -1;
+        idAfiliacionARP = -1;
+        idAfiliacionCaja = -1;
+        idAfiliacionEPS = -1;
+        idAfiliacionFondo = -1;
+        idEstadoCivil = -1;
+        idDireccion = -1;
+        idTelefono = -1;
+        idInformacionPersonal = -1;
         //Permitir Index
         permitirIndexAfiliacionAFP = true;
         permitirIndexAfiliacionARP = true;
@@ -1922,55 +1922,55 @@ public class ControlPersonaIndividual implements Serializable {
         }
     }
 
-    public void cambiarIndiceInformacionPersonal(int i) {
-        System.out.println("cambiarIndiceInformacionPersonal : " + i);
+    public void cambiarItemInformacionPersonal(int i) {
+        System.out.println("cambiarItemInformacionPersonal : " + i);
         if (permitirIndexInformacionPersonal == true) {
-            indexCargoDesempeñado = -1;
-            indexCentroCosto = -1;
-            indexTipoTrabajador = -1;
-            indexTipoSalario = -1;
-            indexSueldo = -1;
-            indexTipoContrato = -1;
-            indexNormaLaboral = -1;
-            indexLegislacionLaboral = -1;
-            indexUbicacionGeografica = -1;
-            indexFormaPago = -1;
-            indexJornadaLaboral = -1;
-            indexAfiliacionAFP = -1;
-            indexAfiliacionARP = -1;
-            indexAfiliacionCaja = -1;
-            indexAfiliacionEPS = -1;
-            indexAfiliacionFondo = -1;
-            indexEstadoCivil = -1;
-            indexDireccion = -1;
-            indexTelefono = -1;
-            indexInformacionPersonal = i;
+            idCargoDesempeñado = -1;
+            idCentroCosto = -1;
+            idTipoTrabajador = -1;
+            idTipoSalario = -1;
+            idSueldo = -1;
+            idTipoContrato = -1;
+            idNormaLaboral = -1;
+            idLegislacionLaboral = -1;
+            idUbicacionGeografica = -1;
+            idFormaPago = -1;
+            idJornadaLaboral = -1;
+            idAfiliacionAFP = -1;
+            idAfiliacionARP = -1;
+            idAfiliacionCaja = -1;
+            idAfiliacionEPS = -1;
+            idAfiliacionFondo = -1;
+            idEstadoCivil = -1;
+            idDireccion = -1;
+            idTelefono = -1;
+            idInformacionPersonal = i;
 
             auxFechaCorte = fechaCorte;
             auxFechaIngreso = fechaIngreso;
             auxFechaNacimiento = nuevaPersona.getFechanacimiento();
-            if (indexInformacionPersonal == 0) {
+            if (idInformacionPersonal == 0) {
                 if (nuevoEmpleado.getEmpresa().getSecuencia() != null) {
                     auxInformacionPersonaEmpresal = nuevoEmpleado.getEmpresa().getNombre();
                 } else {
                     listaValoresInformacionPersonal();
                 }
             }
-            if (indexInformacionPersonal == 5) {
+            if (idInformacionPersonal == 5) {
                 if (nuevaPersona.getTipodocumento().getSecuencia() != null) {
                     auxInformacionPersonalTipoDocumento = nuevaPersona.getTipodocumento().getNombrelargo();
                 } else {
                     listaValoresInformacionPersonal();
                 }
             }
-            if (indexInformacionPersonal == 7) {
+            if (idInformacionPersonal == 7) {
                 if (nuevaPersona.getCiudaddocumento().getSecuencia() != null) {
                     auxInformacionPersonalCiudadDocumento = nuevaPersona.getCiudaddocumento().getNombre();
                 } else {
                     listaValoresInformacionPersonal();
                 }
             }
-            if (indexInformacionPersonal == 9) {
+            if (idInformacionPersonal == 9) {
                 if (nuevaPersona.getCiudadnacimiento().getSecuencia() != null) {
                     auxInformacionPersonalCiudadNacimiento = nuevaPersona.getCiudadnacimiento().getNombre();
                 } else {
@@ -1981,45 +1981,45 @@ public class ControlPersonaIndividual implements Serializable {
         }
     }
 
-    public void cambiarIndiceCargoDesempeñado(int i) {
+    public void cambiarItemCargoDesempeñado(int itemCargoD) {
         if (permitirIndexCargoDesempeñado == true) {
-            indexInformacionPersonal = -1;
-            indexCentroCosto = -1;
-            indexTipoTrabajador = -1;
-            indexTipoSalario = -1;
-            indexSueldo = -1;
-            indexTipoContrato = -1;
-            indexNormaLaboral = -1;
-            indexLegislacionLaboral = -1;
-            indexUbicacionGeografica = -1;
-            indexFormaPago = -1;
-            indexJornadaLaboral = -1;
-            indexAfiliacionAFP = -1;
-            indexAfiliacionARP = -1;
-            indexAfiliacionCaja = -1;
-            indexAfiliacionEPS = -1;
-            indexAfiliacionFondo = -1;
-            indexEstadoCivil = -1;
-            indexDireccion = -1;
-            indexTelefono = -1;
-            indexCargoDesempeñado = i;
+            idInformacionPersonal = -1;
+            idCentroCosto = -1;
+            idTipoTrabajador = -1;
+            idTipoSalario = -1;
+            idSueldo = -1;
+            idTipoContrato = -1;
+            idNormaLaboral = -1;
+            idLegislacionLaboral = -1;
+            idUbicacionGeografica = -1;
+            idFormaPago = -1;
+            idJornadaLaboral = -1;
+            idAfiliacionAFP = -1;
+            idAfiliacionARP = -1;
+            idAfiliacionCaja = -1;
+            idAfiliacionEPS = -1;
+            idAfiliacionFondo = -1;
+            idEstadoCivil = -1;
+            idDireccion = -1;
+            idTelefono = -1;
+            idCargoDesempeñado = itemCargoD;
             auxCargoDesempeñadoPapel = nuevaVigenciaCargo.getPapel().getDescripcion();
             auxCargoDesempeñadoEmpleadoJefe = nuevaVigenciaCargo.getEmpleadojefe().getPersona().getNombreCompleto();
-            if (indexCargoDesempeñado == 0) {
+            if (idCargoDesempeñado == 0) {
                 if (nuevaVigenciaCargo.getCargo().getSecuencia() != null) {
                     auxCargoDesempeñadoNombreCargo = nuevaVigenciaCargo.getCargo().getNombre();
                 } else {
                     listaValoresCargoDesempenado();
                 }
             }
-            if (indexCargoDesempeñado == 1) {
+            if (idCargoDesempeñado == 1) {
                 if (nuevaVigenciaCargo.getMotivocambiocargo().getSecuencia() != null) {
                     auxCargoDesempeñadoMotivoCargo = nuevaVigenciaCargo.getMotivocambiocargo().getNombre();
                 } else {
                     listaValoresCargoDesempenado();
                 }
             }
-            if (indexCargoDesempeñado == 2) {
+            if (idCargoDesempeñado == 2) {
                 if (nuevaVigenciaCargo.getEstructura().getSecuencia() != null) {
                     auxCargoDesempeñadoNombreEstructura = nuevaVigenciaCargo.getEstructura().getNombre();
                 } else {
@@ -2030,36 +2030,36 @@ public class ControlPersonaIndividual implements Serializable {
         }
     }
 
-    public void cambiarIndiceCentroCosto(int i) {
+    public void cambiarItemCentroCosto(int i) {
         if (permitirIndexCentroCosto == true) {
-            indexInformacionPersonal = -1;
-            indexCargoDesempeñado = -1;
-            indexTipoTrabajador = -1;
-            indexTipoSalario = -1;
-            indexSueldo = -1;
-            indexTipoContrato = -1;
-            indexNormaLaboral = -1;
-            indexLegislacionLaboral = -1;
-            indexUbicacionGeografica = -1;
-            indexFormaPago = -1;
-            indexJornadaLaboral = -1;
-            indexAfiliacionAFP = -1;
-            indexAfiliacionARP = -1;
-            indexAfiliacionCaja = -1;
-            indexAfiliacionEPS = -1;
-            indexAfiliacionFondo = -1;
-            indexEstadoCivil = -1;
-            indexDireccion = -1;
-            indexTelefono = -1;
-            indexCentroCosto = i;
-            if (indexCentroCosto == 0) {
+            idInformacionPersonal = -1;
+            idCargoDesempeñado = -1;
+            idTipoTrabajador = -1;
+            idTipoSalario = -1;
+            idSueldo = -1;
+            idTipoContrato = -1;
+            idNormaLaboral = -1;
+            idLegislacionLaboral = -1;
+            idUbicacionGeografica = -1;
+            idFormaPago = -1;
+            idJornadaLaboral = -1;
+            idAfiliacionAFP = -1;
+            idAfiliacionARP = -1;
+            idAfiliacionCaja = -1;
+            idAfiliacionEPS = -1;
+            idAfiliacionFondo = -1;
+            idEstadoCivil = -1;
+            idDireccion = -1;
+            idTelefono = -1;
+            idCentroCosto = i;
+            if (idCentroCosto == 0) {
                 if (nuevaVigenciaLocalizacion.getMotivo().getSecuencia() != null) {
                     auxCentroCostoMotivo = nuevaVigenciaLocalizacion.getMotivo().getDescripcion();
                 } else {
                     listaValoresCentroCosto();
                 }
             }
-            if (indexCentroCosto == 1) {
+            if (idCentroCosto == 1) {
                 if (nuevaVigenciaLocalizacion.getLocalizacion().getSecuencia() != null) {
                     auxCentroCostoEstructura = nuevaVigenciaLocalizacion.getLocalizacion().getCentrocosto().getNombre();
                 } else {
@@ -2069,29 +2069,29 @@ public class ControlPersonaIndividual implements Serializable {
         }
     }
 
-    public void cambiarIndiceTipoTrabajador(int i) {
+    public void cambiarItemTipoTrabajador(int i) {
         if (permitirIndexTipoTrabajador == true) {
-            indexInformacionPersonal = -1;
-            indexCargoDesempeñado = -1;
-            indexCentroCosto = -1;
-            indexTipoSalario = -1;
-            indexSueldo = -1;
-            indexTipoContrato = -1;
-            indexNormaLaboral = -1;
-            indexLegislacionLaboral = -1;
-            indexUbicacionGeografica = -1;
-            indexFormaPago = -1;
-            indexJornadaLaboral = -1;
-            indexAfiliacionAFP = -1;
-            indexAfiliacionARP = -1;
-            indexAfiliacionCaja = -1;
-            indexAfiliacionEPS = -1;
-            indexAfiliacionFondo = -1;
-            indexEstadoCivil = -1;
-            indexDireccion = -1;
-            indexTelefono = -1;
-            indexTipoTrabajador = i;
-            if (indexTipoTrabajador == 0) {
+            idInformacionPersonal = -1;
+            idCargoDesempeñado = -1;
+            idCentroCosto = -1;
+            idTipoSalario = -1;
+            idSueldo = -1;
+            idTipoContrato = -1;
+            idNormaLaboral = -1;
+            idLegislacionLaboral = -1;
+            idUbicacionGeografica = -1;
+            idFormaPago = -1;
+            idJornadaLaboral = -1;
+            idAfiliacionAFP = -1;
+            idAfiliacionARP = -1;
+            idAfiliacionCaja = -1;
+            idAfiliacionEPS = -1;
+            idAfiliacionFondo = -1;
+            idEstadoCivil = -1;
+            idDireccion = -1;
+            idTelefono = -1;
+            idTipoTrabajador = i;
+            if (idTipoTrabajador == 0) {
                 if (nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia() != null) {
                     auxTipoTrabajadorNombreTipoTrabajador = nuevaVigenciaTipoTrabajador.getTipotrabajador().getNombre();
                 } else {
@@ -2101,29 +2101,29 @@ public class ControlPersonaIndividual implements Serializable {
         }
     }
 
-    public void cambiarIndiceReformaLaboral(int i) {
+    public void cambiarItemReformaLaboral(int i) {
         if (permitirIndexTipoSalario == true) {
-            indexInformacionPersonal = -1;
-            indexCargoDesempeñado = -1;
-            indexCentroCosto = -1;
-            indexTipoTrabajador = -1;
-            indexSueldo = -1;
-            indexTipoContrato = -1;
-            indexNormaLaboral = -1;
-            indexLegislacionLaboral = -1;
-            indexUbicacionGeografica = -1;
-            indexFormaPago = -1;
-            indexJornadaLaboral = -1;
-            indexAfiliacionAFP = -1;
-            indexAfiliacionARP = -1;
-            indexAfiliacionCaja = -1;
-            indexAfiliacionEPS = -1;
-            indexAfiliacionFondo = -1;
-            indexEstadoCivil = -1;
-            indexDireccion = -1;
-            indexTelefono = -1;
-            indexTipoSalario = i;
-            if (indexTipoSalario == 0) {
+            idInformacionPersonal = -1;
+            idCargoDesempeñado = -1;
+            idCentroCosto = -1;
+            idTipoTrabajador = -1;
+            idSueldo = -1;
+            idTipoContrato = -1;
+            idNormaLaboral = -1;
+            idLegislacionLaboral = -1;
+            idUbicacionGeografica = -1;
+            idFormaPago = -1;
+            idJornadaLaboral = -1;
+            idAfiliacionAFP = -1;
+            idAfiliacionARP = -1;
+            idAfiliacionCaja = -1;
+            idAfiliacionEPS = -1;
+            idAfiliacionFondo = -1;
+            idEstadoCivil = -1;
+            idDireccion = -1;
+            idTelefono = -1;
+            idTipoSalario = i;
+            if (idTipoSalario == 0) {
                 if (nuevaVigenciaReformaLaboral.getReformalaboral().getSecuencia() != null) {
                     auxTipoSalarioReformaLaboral = nuevaVigenciaReformaLaboral.getReformalaboral().getNombre();
                 } else {
@@ -2133,44 +2133,44 @@ public class ControlPersonaIndividual implements Serializable {
         }
     }
 
-    public void cambiarIndiceSueldo(int i) {
+    public void cambiarItemSueldo(int i) {
         if (permitirIndexSueldo == true) {
-            indexInformacionPersonal = -1;
-            indexCargoDesempeñado = -1;
-            indexCentroCosto = -1;
-            indexTipoTrabajador = -1;
-            indexTipoSalario = -1;
-            indexTipoContrato = -1;
-            indexNormaLaboral = -1;
-            indexLegislacionLaboral = -1;
-            indexUbicacionGeografica = -1;
-            indexFormaPago = -1;
-            indexJornadaLaboral = -1;
-            indexAfiliacionAFP = -1;
-            indexAfiliacionARP = -1;
-            indexAfiliacionCaja = -1;
-            indexAfiliacionEPS = -1;
-            indexAfiliacionFondo = -1;
-            indexEstadoCivil = -1;
-            indexDireccion = -1;
-            indexTelefono = -1;
-            indexSueldo = i;
+            idInformacionPersonal = -1;
+            idCargoDesempeñado = -1;
+            idCentroCosto = -1;
+            idTipoTrabajador = -1;
+            idTipoSalario = -1;
+            idTipoContrato = -1;
+            idNormaLaboral = -1;
+            idLegislacionLaboral = -1;
+            idUbicacionGeografica = -1;
+            idFormaPago = -1;
+            idJornadaLaboral = -1;
+            idAfiliacionAFP = -1;
+            idAfiliacionARP = -1;
+            idAfiliacionCaja = -1;
+            idAfiliacionEPS = -1;
+            idAfiliacionFondo = -1;
+            idEstadoCivil = -1;
+            idDireccion = -1;
+            idTelefono = -1;
+            idSueldo = i;
             auxSueldoValor = valorSueldo;
-            if (indexSueldo == 1) {
+            if (idSueldo == 1) {
                 if (nuevaVigenciaSueldo.getMotivocambiosueldo().getSecuencia() != null) {
                     auxSueldoMotivoSueldo = nuevaVigenciaSueldo.getMotivocambiosueldo().getNombre();
                 } else {
                     listaValoresSueldo();
                 }
             }
-            if (indexSueldo == 2) {
+            if (idSueldo == 2) {
                 if (nuevaVigenciaSueldo.getTiposueldo().getSecuencia() != null) {
                     auxSueldoTipoSueldo = nuevaVigenciaSueldo.getTiposueldo().getDescripcion();
                 } else {
                     listaValoresSueldo();
                 }
             }
-            if (indexSueldo == 3) {
+            if (idSueldo == 3) {
                 if (nuevaVigenciaSueldo.getUnidadpago().getSecuencia() != null) {
                     auxSueldoUnidad = nuevaVigenciaSueldo.getUnidadpago().getNombre();
                 } else {
@@ -2180,37 +2180,37 @@ public class ControlPersonaIndividual implements Serializable {
         }
     }
 
-    public void cambiarIndiceTipoContrato(int i) {
+    public void cambiarItemTipoContrato(int i) {
         if (permitirIndexTipoContrato == true) {
-            indexInformacionPersonal = -1;
-            indexCargoDesempeñado = -1;
-            indexCentroCosto = -1;
-            indexTipoTrabajador = -1;
-            indexTipoSalario = -1;
-            indexSueldo = -1;
-            indexNormaLaboral = -1;
-            indexLegislacionLaboral = -1;
-            indexUbicacionGeografica = -1;
-            indexFormaPago = -1;
-            indexJornadaLaboral = -1;
-            indexAfiliacionAFP = -1;
-            indexAfiliacionARP = -1;
-            indexAfiliacionCaja = -1;
-            indexAfiliacionEPS = -1;
-            indexAfiliacionFondo = -1;
-            indexEstadoCivil = -1;
-            indexDireccion = -1;
-            indexTelefono = -1;
-            indexTipoContrato = i;
+            idInformacionPersonal = -1;
+            idCargoDesempeñado = -1;
+            idCentroCosto = -1;
+            idTipoTrabajador = -1;
+            idTipoSalario = -1;
+            idSueldo = -1;
+            idNormaLaboral = -1;
+            idLegislacionLaboral = -1;
+            idUbicacionGeografica = -1;
+            idFormaPago = -1;
+            idJornadaLaboral = -1;
+            idAfiliacionAFP = -1;
+            idAfiliacionARP = -1;
+            idAfiliacionCaja = -1;
+            idAfiliacionEPS = -1;
+            idAfiliacionFondo = -1;
+            idEstadoCivil = -1;
+            idDireccion = -1;
+            idTelefono = -1;
+            idTipoContrato = i;
             auxTipoContratoFecha = nuevaVigenciaTipoContrato.getFechavigencia();
-            if (indexTipoContrato == 1) {
+            if (idTipoContrato == 1) {
                 if (nuevaVigenciaTipoContrato.getTipocontrato().getSecuencia() != null) {
                     auxTipoContratoMotivo = nuevaVigenciaTipoContrato.getTipocontrato().getNombre();
                 } else {
                     listaValoresTipoContrato();
                 }
             }
-            if (indexTipoContrato == 0) {
+            if (idTipoContrato == 0) {
                 if (nuevaVigenciaTipoContrato.getMotivocontrato().getSecuencia() != null) {
                     auxTipoContratoTipoContrato = nuevaVigenciaTipoContrato.getMotivocontrato().getNombre();
                 } else {
@@ -2220,29 +2220,29 @@ public class ControlPersonaIndividual implements Serializable {
         }
     }
 
-    public void cambiarIndiceNormaLaboral(int i) {
+    public void cambiarItemNormaLaboral(int i) {
         if (permitirIndexNormaLaboral == true) {
-            indexInformacionPersonal = -1;
-            indexCargoDesempeñado = -1;
-            indexCentroCosto = -1;
-            indexTipoTrabajador = -1;
-            indexTipoSalario = -1;
-            indexSueldo = -1;
-            indexTipoContrato = -1;
-            indexLegislacionLaboral = -1;
-            indexUbicacionGeografica = -1;
-            indexFormaPago = -1;
-            indexJornadaLaboral = -1;
-            indexAfiliacionAFP = -1;
-            indexAfiliacionARP = -1;
-            indexAfiliacionCaja = -1;
-            indexAfiliacionEPS = -1;
-            indexAfiliacionFondo = -1;
-            indexEstadoCivil = -1;
-            indexDireccion = -1;
-            indexTelefono = -1;
-            indexNormaLaboral = i;
-            if (indexNormaLaboral == 0) {
+            idInformacionPersonal = -1;
+            idCargoDesempeñado = -1;
+            idCentroCosto = -1;
+            idTipoTrabajador = -1;
+            idTipoSalario = -1;
+            idSueldo = -1;
+            idTipoContrato = -1;
+            idLegislacionLaboral = -1;
+            idUbicacionGeografica = -1;
+            idFormaPago = -1;
+            idJornadaLaboral = -1;
+            idAfiliacionAFP = -1;
+            idAfiliacionARP = -1;
+            idAfiliacionCaja = -1;
+            idAfiliacionEPS = -1;
+            idAfiliacionFondo = -1;
+            idEstadoCivil = -1;
+            idDireccion = -1;
+            idTelefono = -1;
+            idNormaLaboral = i;
+            if (idNormaLaboral == 0) {
                 if (nuevaVigenciaNormaEmpleado.getNormalaboral().getSecuencia() != null) {
                     auxNormaLaboralNorma = nuevaVigenciaNormaEmpleado.getNormalaboral().getNombre();
                 } else {
@@ -2252,29 +2252,29 @@ public class ControlPersonaIndividual implements Serializable {
         }
     }
 
-    public void cambiarIndiceLegislacionLaboral(int i) {
+    public void cambiarItemLegislacionLaboral(int i) {
         if (permitirIndexLegislacionLaboral == true) {
-            indexInformacionPersonal = -1;
-            indexCargoDesempeñado = -1;
-            indexCentroCosto = -1;
-            indexTipoTrabajador = -1;
-            indexTipoSalario = -1;
-            indexSueldo = -1;
-            indexTipoContrato = -1;
-            indexNormaLaboral = -1;
-            indexUbicacionGeografica = -1;
-            indexFormaPago = -1;
-            indexJornadaLaboral = -1;
-            indexAfiliacionAFP = -1;
-            indexAfiliacionARP = -1;
-            indexAfiliacionCaja = -1;
-            indexAfiliacionEPS = -1;
-            indexAfiliacionFondo = -1;
-            indexEstadoCivil = -1;
-            indexDireccion = -1;
-            indexTelefono = -1;
-            indexLegislacionLaboral = i;
-            if (indexLegislacionLaboral == 0) {
+            idInformacionPersonal = -1;
+            idCargoDesempeñado = -1;
+            idCentroCosto = -1;
+            idTipoTrabajador = -1;
+            idTipoSalario = -1;
+            idSueldo = -1;
+            idTipoContrato = -1;
+            idNormaLaboral = -1;
+            idUbicacionGeografica = -1;
+            idFormaPago = -1;
+            idJornadaLaboral = -1;
+            idAfiliacionAFP = -1;
+            idAfiliacionARP = -1;
+            idAfiliacionCaja = -1;
+            idAfiliacionEPS = -1;
+            idAfiliacionFondo = -1;
+            idEstadoCivil = -1;
+            idDireccion = -1;
+            idTelefono = -1;
+            idLegislacionLaboral = i;
+            if (idLegislacionLaboral == 0) {
                 if (nuevaVigenciaContrato.getContrato().getSecuencia() != null) {
                     auxLegislacionLaboralNombre = nuevaVigenciaContrato.getContrato().getDescripcion();
                 } else {
@@ -2284,29 +2284,29 @@ public class ControlPersonaIndividual implements Serializable {
         }
     }
 
-    public void cambiarIndiceUbicacionGeografica(int i) {
+    public void cambiarItemUbicacionGeografica(int i) {
         if (permitirIndexUbicacionGeografica == true) {
-            indexInformacionPersonal = -1;
-            indexCargoDesempeñado = -1;
-            indexCentroCosto = -1;
-            indexTipoTrabajador = -1;
-            indexTipoSalario = -1;
-            indexSueldo = -1;
-            indexTipoContrato = -1;
-            indexNormaLaboral = -1;
-            indexLegislacionLaboral = -1;
-            indexFormaPago = -1;
-            indexJornadaLaboral = -1;
-            indexAfiliacionAFP = -1;
-            indexAfiliacionARP = -1;
-            indexAfiliacionCaja = -1;
-            indexAfiliacionEPS = -1;
-            indexAfiliacionFondo = -1;
-            indexEstadoCivil = -1;
-            indexDireccion = -1;
-            indexTelefono = -1;
-            indexUbicacionGeografica = i;
-            if (indexUbicacionGeografica == 0) {
+            idInformacionPersonal = -1;
+            idCargoDesempeñado = -1;
+            idCentroCosto = -1;
+            idTipoTrabajador = -1;
+            idTipoSalario = -1;
+            idSueldo = -1;
+            idTipoContrato = -1;
+            idNormaLaboral = -1;
+            idLegislacionLaboral = -1;
+            idFormaPago = -1;
+            idJornadaLaboral = -1;
+            idAfiliacionAFP = -1;
+            idAfiliacionARP = -1;
+            idAfiliacionCaja = -1;
+            idAfiliacionEPS = -1;
+            idAfiliacionFondo = -1;
+            idEstadoCivil = -1;
+            idDireccion = -1;
+            idTelefono = -1;
+            idUbicacionGeografica = i;
+            if (idUbicacionGeografica == 0) {
                 if (nuevaVigenciaUbicacion.getUbicacion().getSecuencia() != null) {
                     auxUbicacionGeograficaUbicacion = nuevaVigenciaUbicacion.getUbicacion().getDescripcion();
                 } else {
@@ -2316,43 +2316,43 @@ public class ControlPersonaIndividual implements Serializable {
         }
     }
 
-    public void cambiarIndiceFormaPago(int i) {
+    public void cambiarItemFormaPago(int i) {
         if (permitirIndexFormaPago == true) {
-            indexInformacionPersonal = -1;
-            indexCargoDesempeñado = -1;
-            indexCentroCosto = -1;
-            indexTipoTrabajador = -1;
-            indexTipoSalario = -1;
-            indexSueldo = -1;
-            indexTipoContrato = -1;
-            indexNormaLaboral = -1;
-            indexLegislacionLaboral = -1;
-            indexUbicacionGeografica = -1;
-            indexJornadaLaboral = -1;
-            indexAfiliacionAFP = -1;
-            indexAfiliacionARP = -1;
-            indexAfiliacionCaja = -1;
-            indexAfiliacionEPS = -1;
-            indexAfiliacionFondo = -1;
-            indexEstadoCivil = -1;
-            indexDireccion = -1;
-            indexTelefono = -1;
-            indexFormaPago = i;
-            if (indexFormaPago == 0) {
+            idInformacionPersonal = -1;
+            idCargoDesempeñado = -1;
+            idCentroCosto = -1;
+            idTipoTrabajador = -1;
+            idTipoSalario = -1;
+            idSueldo = -1;
+            idTipoContrato = -1;
+            idNormaLaboral = -1;
+            idLegislacionLaboral = -1;
+            idUbicacionGeografica = -1;
+            idJornadaLaboral = -1;
+            idAfiliacionAFP = -1;
+            idAfiliacionARP = -1;
+            idAfiliacionCaja = -1;
+            idAfiliacionEPS = -1;
+            idAfiliacionFondo = -1;
+            idEstadoCivil = -1;
+            idDireccion = -1;
+            idTelefono = -1;
+            idFormaPago = i;
+            if (idFormaPago == 0) {
                 if (nuevaVigenciaFormaPago.getFormapago().getSecuencia() != null) {
                     auxFormaPagoPeriodicidad = nuevaVigenciaFormaPago.getFormapago().getNombre();
                 } else {
                     listaValoresFormaPago();
                 }
             }
-            if (indexFormaPago == 3) {
+            if (idFormaPago == 3) {
                 if (nuevaVigenciaFormaPago.getSucursal().getSecuencia() != null) {
                     auxFormaPagoSucursal = nuevaVigenciaFormaPago.getSucursal().getNombre();
                 } else {
                     listaValoresFormaPago();
                 }
             }
-            if (indexFormaPago == 4) {
+            if (idFormaPago == 4) {
                 if (nuevaVigenciaFormaPago.getMetodopago().getSecuencia() != null) {
                     auxFormaPagoMetodo = nuevaVigenciaFormaPago.getMetodopago().getDescripcion();
                 } else {
@@ -2362,29 +2362,29 @@ public class ControlPersonaIndividual implements Serializable {
         }
     }
 
-    public void cambiarIndiceJornadaLaboral(int i) {
+    public void cambiarItemJornadaLaboral(int i) {
         if (permitirIndexJornadaLaboral == true) {
-            indexInformacionPersonal = -1;
-            indexCargoDesempeñado = -1;
-            indexCentroCosto = -1;
-            indexTipoTrabajador = -1;
-            indexTipoSalario = -1;
-            indexSueldo = -1;
-            indexTipoContrato = -1;
-            indexNormaLaboral = -1;
-            indexLegislacionLaboral = -1;
-            indexUbicacionGeografica = -1;
-            indexFormaPago = -1;
-            indexAfiliacionAFP = -1;
-            indexAfiliacionARP = -1;
-            indexAfiliacionCaja = -1;
-            indexAfiliacionEPS = -1;
-            indexAfiliacionFondo = -1;
-            indexEstadoCivil = -1;
-            indexDireccion = -1;
-            indexTelefono = -1;
-            indexJornadaLaboral = i;
-            if (indexJornadaLaboral == 0) {
+            idInformacionPersonal = -1;
+            idCargoDesempeñado = -1;
+            idCentroCosto = -1;
+            idTipoTrabajador = -1;
+            idTipoSalario = -1;
+            idSueldo = -1;
+            idTipoContrato = -1;
+            idNormaLaboral = -1;
+            idLegislacionLaboral = -1;
+            idUbicacionGeografica = -1;
+            idFormaPago = -1;
+            idAfiliacionAFP = -1;
+            idAfiliacionARP = -1;
+            idAfiliacionCaja = -1;
+            idAfiliacionEPS = -1;
+            idAfiliacionFondo = -1;
+            idEstadoCivil = -1;
+            idDireccion = -1;
+            idTelefono = -1;
+            idJornadaLaboral = i;
+            if (idJornadaLaboral == 0) {
                 if (nuevaVigenciaJornada.getJornadatrabajo().getSecuencia() != null) {
                     auxJornadaLaboralJornada = nuevaVigenciaJornada.getJornadatrabajo().getDescripcion();
                 } else {
@@ -2394,57 +2394,57 @@ public class ControlPersonaIndividual implements Serializable {
         }
     }
 
-    public void cambiarIndiceAfiliacionFondo(int i) {
+    public void cambiarItemAfiliacionFondo(int i) {
         if (permitirIndexAfiliacionFondo == true) {
-            indexInformacionPersonal = -1;
-            indexCargoDesempeñado = -1;
-            indexCentroCosto = -1;
-            indexTipoTrabajador = -1;
-            indexTipoSalario = -1;
-            indexSueldo = -1;
-            indexTipoContrato = -1;
-            indexNormaLaboral = -1;
-            indexLegislacionLaboral = -1;
-            indexUbicacionGeografica = -1;
-            indexFormaPago = -1;
-            indexAfiliacionAFP = -1;
-            indexAfiliacionARP = -1;
-            indexAfiliacionCaja = -1;
-            indexAfiliacionEPS = -1;
-            indexJornadaLaboral = -1;
-            indexEstadoCivil = -1;
-            indexDireccion = -1;
-            indexTelefono = -1;
-            indexAfiliacionFondo = i;
+            idInformacionPersonal = -1;
+            idCargoDesempeñado = -1;
+            idCentroCosto = -1;
+            idTipoTrabajador = -1;
+            idTipoSalario = -1;
+            idSueldo = -1;
+            idTipoContrato = -1;
+            idNormaLaboral = -1;
+            idLegislacionLaboral = -1;
+            idUbicacionGeografica = -1;
+            idFormaPago = -1;
+            idAfiliacionAFP = -1;
+            idAfiliacionARP = -1;
+            idAfiliacionCaja = -1;
+            idAfiliacionEPS = -1;
+            idJornadaLaboral = -1;
+            idEstadoCivil = -1;
+            idDireccion = -1;
+            idTelefono = -1;
+            idAfiliacionFondo = i;
 
             auxAfiliacionFondo = nuevaVigenciaAfiliacionFondo.getTercerosucursal().getDescripcion();
 
         }
     }
 
-    public void cambiarIndiceAfiliacionEPS(int i) {
+    public void cambiarItemAfiliacionEPS(int i) {
         if (permitirIndexAfiliacionEPS == true) {
-            indexInformacionPersonal = -1;
-            indexCargoDesempeñado = -1;
-            indexCentroCosto = -1;
-            indexTipoTrabajador = -1;
-            indexTipoSalario = -1;
-            indexSueldo = -1;
-            indexTipoContrato = -1;
-            indexNormaLaboral = -1;
-            indexLegislacionLaboral = -1;
-            indexUbicacionGeografica = -1;
-            indexFormaPago = -1;
-            indexAfiliacionAFP = -1;
-            indexAfiliacionARP = -1;
-            indexAfiliacionCaja = -1;
-            indexJornadaLaboral = -1;
-            indexAfiliacionFondo = -1;
-            indexEstadoCivil = -1;
-            indexDireccion = -1;
-            indexTelefono = -1;
-            indexAfiliacionEPS = i;
-            if (indexAfiliacionEPS == 0) {
+            idInformacionPersonal = -1;
+            idCargoDesempeñado = -1;
+            idCentroCosto = -1;
+            idTipoTrabajador = -1;
+            idTipoSalario = -1;
+            idSueldo = -1;
+            idTipoContrato = -1;
+            idNormaLaboral = -1;
+            idLegislacionLaboral = -1;
+            idUbicacionGeografica = -1;
+            idFormaPago = -1;
+            idAfiliacionAFP = -1;
+            idAfiliacionARP = -1;
+            idAfiliacionCaja = -1;
+            idJornadaLaboral = -1;
+            idAfiliacionFondo = -1;
+            idEstadoCivil = -1;
+            idDireccion = -1;
+            idTelefono = -1;
+            idAfiliacionEPS = i;
+            if (idAfiliacionEPS == 0) {
                 if (nuevaVigenciaAfiliacionEPS.getTercerosucursal().getSecuencia() != null) {
                     auxAfiliacionEPS = nuevaVigenciaAfiliacionEPS.getTercerosucursal().getDescripcion();
                 } else {
@@ -2454,55 +2454,55 @@ public class ControlPersonaIndividual implements Serializable {
         }
     }
 
-    public void cambiarIndiceAfiliacionCaja(int i) {
+    public void cambiarItemAfiliacionCaja(int i) {
         if (permitirIndexAfiliacionCaja == true) {
-            indexInformacionPersonal = -1;
-            indexCargoDesempeñado = -1;
-            indexCentroCosto = -1;
-            indexTipoTrabajador = -1;
-            indexTipoSalario = -1;
-            indexSueldo = -1;
-            indexTipoContrato = -1;
-            indexNormaLaboral = -1;
-            indexLegislacionLaboral = -1;
-            indexUbicacionGeografica = -1;
-            indexFormaPago = -1;
-            indexAfiliacionAFP = -1;
-            indexAfiliacionARP = -1;
-            indexJornadaLaboral = -1;
-            indexAfiliacionFondo = -1;
-            indexAfiliacionEPS = -1;
-            indexEstadoCivil = -1;
-            indexDireccion = -1;
-            indexTelefono = -1;
-            indexAfiliacionCaja = i;
+            idInformacionPersonal = -1;
+            idCargoDesempeñado = -1;
+            idCentroCosto = -1;
+            idTipoTrabajador = -1;
+            idTipoSalario = -1;
+            idSueldo = -1;
+            idTipoContrato = -1;
+            idNormaLaboral = -1;
+            idLegislacionLaboral = -1;
+            idUbicacionGeografica = -1;
+            idFormaPago = -1;
+            idAfiliacionAFP = -1;
+            idAfiliacionARP = -1;
+            idJornadaLaboral = -1;
+            idAfiliacionFondo = -1;
+            idAfiliacionEPS = -1;
+            idEstadoCivil = -1;
+            idDireccion = -1;
+            idTelefono = -1;
+            idAfiliacionCaja = i;
             auxAfiliacionCaja = nuevaVigenciaAfiliacionCaja.getTercerosucursal().getDescripcion();
         }
     }
 
-    public void cambiarIndiceAfiliacionARP(int i) {
+    public void cambiarItemAfiliacionARP(int i) {
         if (permitirIndexAfiliacionARP == true) {
-            indexInformacionPersonal = -1;
-            indexCargoDesempeñado = -1;
-            indexCentroCosto = -1;
-            indexTipoTrabajador = -1;
-            indexTipoSalario = -1;
-            indexSueldo = -1;
-            indexTipoContrato = -1;
-            indexNormaLaboral = -1;
-            indexLegislacionLaboral = -1;
-            indexUbicacionGeografica = -1;
-            indexFormaPago = -1;
-            indexAfiliacionAFP = -1;
-            indexJornadaLaboral = -1;
-            indexAfiliacionFondo = -1;
-            indexAfiliacionEPS = -1;
-            indexAfiliacionCaja = -1;
-            indexEstadoCivil = -1;
-            indexDireccion = -1;
-            indexTelefono = -1;
-            indexAfiliacionARP = i;
-            if (indexAfiliacionARP == 0) {
+            idInformacionPersonal = -1;
+            idCargoDesempeñado = -1;
+            idCentroCosto = -1;
+            idTipoTrabajador = -1;
+            idTipoSalario = -1;
+            idSueldo = -1;
+            idTipoContrato = -1;
+            idNormaLaboral = -1;
+            idLegislacionLaboral = -1;
+            idUbicacionGeografica = -1;
+            idFormaPago = -1;
+            idAfiliacionAFP = -1;
+            idJornadaLaboral = -1;
+            idAfiliacionFondo = -1;
+            idAfiliacionEPS = -1;
+            idAfiliacionCaja = -1;
+            idEstadoCivil = -1;
+            idDireccion = -1;
+            idTelefono = -1;
+            idAfiliacionARP = i;
+            if (idAfiliacionARP == 0) {
                 if (nuevaVigenciaAfiliacionARP.getTercerosucursal().getSecuencia() != null) {
                     auxAfiliacionARP = nuevaVigenciaAfiliacionARP.getTercerosucursal().getDescripcion();
                 } else {
@@ -2512,106 +2512,106 @@ public class ControlPersonaIndividual implements Serializable {
         }
     }
 
-    public void cambiarIndiceAfiliacionAFP(int i) {
+    public void cambiarItemAfiliacionAFP(int i) {
         if (permitirIndexAfiliacionAFP == true) {
-            indexInformacionPersonal = -1;
-            indexCargoDesempeñado = -1;
-            indexCentroCosto = -1;
-            indexTipoTrabajador = -1;
-            indexTipoSalario = -1;
-            indexSueldo = -1;
-            indexTipoContrato = -1;
-            indexNormaLaboral = -1;
-            indexLegislacionLaboral = -1;
-            indexUbicacionGeografica = -1;
-            indexFormaPago = -1;
-            indexJornadaLaboral = -1;
-            indexAfiliacionFondo = -1;
-            indexAfiliacionEPS = -1;
-            indexAfiliacionCaja = -1;
-            indexAfiliacionARP = -1;
-            indexEstadoCivil = -1;
-            indexDireccion = -1;
-            indexTelefono = -1;
-            indexAfiliacionAFP = i;
+            idInformacionPersonal = -1;
+            idCargoDesempeñado = -1;
+            idCentroCosto = -1;
+            idTipoTrabajador = -1;
+            idTipoSalario = -1;
+            idSueldo = -1;
+            idTipoContrato = -1;
+            idNormaLaboral = -1;
+            idLegislacionLaboral = -1;
+            idUbicacionGeografica = -1;
+            idFormaPago = -1;
+            idJornadaLaboral = -1;
+            idAfiliacionFondo = -1;
+            idAfiliacionEPS = -1;
+            idAfiliacionCaja = -1;
+            idAfiliacionARP = -1;
+            idEstadoCivil = -1;
+            idDireccion = -1;
+            idTelefono = -1;
+            idAfiliacionAFP = i;
             auxAfiliacionAFP = nuevaVigenciaAfiliacionAFP.getTercerosucursal().getDescripcion();
         }
     }
 
-    public void cambiarIndiceEstadoCivil(int i) {
+    public void cambiarItemEstadoCivil(int i) {
         if (permitirIndexEstadoCivil == true) {
-            indexInformacionPersonal = -1;
-            indexCargoDesempeñado = -1;
-            indexCentroCosto = -1;
-            indexTipoTrabajador = -1;
-            indexTipoSalario = -1;
-            indexSueldo = -1;
-            indexTipoContrato = -1;
-            indexNormaLaboral = -1;
-            indexLegislacionLaboral = -1;
-            indexUbicacionGeografica = -1;
-            indexFormaPago = -1;
-            indexJornadaLaboral = -1;
-            indexAfiliacionFondo = -1;
-            indexAfiliacionEPS = -1;
-            indexAfiliacionCaja = -1;
-            indexAfiliacionARP = -1;
-            indexAfiliacionAFP = -1;
-            indexDireccion = -1;
-            indexTelefono = -1;
-            indexEstadoCivil = i;
+            idInformacionPersonal = -1;
+            idCargoDesempeñado = -1;
+            idCentroCosto = -1;
+            idTipoTrabajador = -1;
+            idTipoSalario = -1;
+            idSueldo = -1;
+            idTipoContrato = -1;
+            idNormaLaboral = -1;
+            idLegislacionLaboral = -1;
+            idUbicacionGeografica = -1;
+            idFormaPago = -1;
+            idJornadaLaboral = -1;
+            idAfiliacionFondo = -1;
+            idAfiliacionEPS = -1;
+            idAfiliacionCaja = -1;
+            idAfiliacionARP = -1;
+            idAfiliacionAFP = -1;
+            idDireccion = -1;
+            idTelefono = -1;
+            idEstadoCivil = i;
             auxEstadoCivilEstado = nuevoEstadoCivil.getEstadocivil().getDescripcion();
         }
     }
 
-    public void cambiarIndiceDireccion(int i) {
+    public void cambiarItemDireccion(int i) {
         if (permitirIndexDireccion == true) {
-            indexInformacionPersonal = -1;
-            indexCargoDesempeñado = -1;
-            indexCentroCosto = -1;
-            indexTipoTrabajador = -1;
-            indexTipoSalario = -1;
-            indexSueldo = -1;
-            indexTipoContrato = -1;
-            indexNormaLaboral = -1;
-            indexLegislacionLaboral = -1;
-            indexUbicacionGeografica = -1;
-            indexFormaPago = -1;
-            indexJornadaLaboral = -1;
-            indexAfiliacionFondo = -1;
-            indexAfiliacionEPS = -1;
-            indexAfiliacionCaja = -1;
-            indexAfiliacionARP = -1;
-            indexAfiliacionAFP = -1;
-            indexEstadoCivil = -1;
-            indexTelefono = -1;
-            indexDireccion = i;
+            idInformacionPersonal = -1;
+            idCargoDesempeñado = -1;
+            idCentroCosto = -1;
+            idTipoTrabajador = -1;
+            idTipoSalario = -1;
+            idSueldo = -1;
+            idTipoContrato = -1;
+            idNormaLaboral = -1;
+            idLegislacionLaboral = -1;
+            idUbicacionGeografica = -1;
+            idFormaPago = -1;
+            idJornadaLaboral = -1;
+            idAfiliacionFondo = -1;
+            idAfiliacionEPS = -1;
+            idAfiliacionCaja = -1;
+            idAfiliacionARP = -1;
+            idAfiliacionAFP = -1;
+            idEstadoCivil = -1;
+            idTelefono = -1;
+            idDireccion = i;
             auxDireccionCiudad = nuevaDireccion.getCiudad().getNombre();
         }
     }
 
-    public void cambiarIndiceTelefono(int i) {
+    public void cambiarItemTelefono(int i) {
         if (permitirIndexTelefono == true) {
-            indexInformacionPersonal = -1;
-            indexCargoDesempeñado = -1;
-            indexCentroCosto = -1;
-            indexTipoTrabajador = -1;
-            indexTipoSalario = -1;
-            indexSueldo = -1;
-            indexTipoContrato = -1;
-            indexNormaLaboral = -1;
-            indexLegislacionLaboral = -1;
-            indexUbicacionGeografica = -1;
-            indexFormaPago = -1;
-            indexJornadaLaboral = -1;
-            indexAfiliacionFondo = -1;
-            indexAfiliacionEPS = -1;
-            indexAfiliacionCaja = -1;
-            indexAfiliacionARP = -1;
-            indexAfiliacionAFP = -1;
-            indexEstadoCivil = -1;
-            indexDireccion = -1;
-            indexTelefono = i;
+            idInformacionPersonal = -1;
+            idCargoDesempeñado = -1;
+            idCentroCosto = -1;
+            idTipoTrabajador = -1;
+            idTipoSalario = -1;
+            idSueldo = -1;
+            idTipoContrato = -1;
+            idNormaLaboral = -1;
+            idLegislacionLaboral = -1;
+            idUbicacionGeografica = -1;
+            idFormaPago = -1;
+            idJornadaLaboral = -1;
+            idAfiliacionFondo = -1;
+            idAfiliacionEPS = -1;
+            idAfiliacionCaja = -1;
+            idAfiliacionARP = -1;
+            idAfiliacionAFP = -1;
+            idEstadoCivil = -1;
+            idDireccion = -1;
+            idTelefono = i;
             auxTelefonoTipo = nuevoTelefono.getTipotelefono().getNombre();
             auxTelefonoCiudad = nuevoTelefono.getCiudad().getNombre();
         }
@@ -2725,7 +2725,7 @@ public class ControlPersonaIndividual implements Serializable {
     public void modificarFechaNacimientoInformacionPersonal(int i) {
         boolean retorno = validarFechasInformacionPersonal(8);
         if (retorno == true) {
-            cambiarIndiceInformacionPersonal(i);
+            cambiarItemInformacionPersonal(i);
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("errorFechas.show()");
@@ -2740,10 +2740,10 @@ public class ControlPersonaIndividual implements Serializable {
             getFechaHastaParametro();
             if (fechaIngreso != null) {
                 if (fechaIngreso.after(fechaDesdeParametro) && fechaIngreso.before(fechaHastaParametro)) {
-                    cambiarIndiceInformacionPersonal(i);
+                    cambiarItemInformacionPersonal(i);
                 } else {
                     context.execute("advertenciaFechaIngreso.show()");
-                    cambiarIndiceInformacionPersonal(i);
+                    cambiarItemInformacionPersonal(i);
                 }
             }
             modificacionesEmpresaFechaIngresoInformacionPersonal();
@@ -2756,7 +2756,7 @@ public class ControlPersonaIndividual implements Serializable {
     public void modificarFechaUltimoPagoInformacionPersonal(int i) {
         boolean retorno = validarFechasInformacionPersonal(13);
         if (retorno == true) {
-            cambiarIndiceInformacionPersonal(i);
+            cambiarItemInformacionPersonal(i);
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("errorFechas.show()");
@@ -2769,7 +2769,7 @@ public class ControlPersonaIndividual implements Serializable {
         Map<String, String> map = context.getExternalContext().getRequestParameterMap();
         String name = map.get("n"); // name attribute of node
         int posicion = Integer.parseInt(name);
-        cambiarIndiceInformacionPersonal(posicion);
+        cambiarItemInformacionPersonal(posicion);
     }
 
     public void modificarFechaFechaVigenciaTipoContrato(int i) {
@@ -2780,7 +2780,7 @@ public class ControlPersonaIndividual implements Serializable {
                     RequestContext context = RequestContext.getCurrentInstance();
                     context.execute("errorFechaContratoFechaIngreso.show()");
                 } else {
-                    cambiarIndiceTipoContrato(i);
+                    cambiarItemTipoContrato(i);
                 }
             }
         } else {
@@ -2790,7 +2790,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void modificarInformacionPersonal(int indice, String confirmarCambio, String valorConfirmar) {
-        indexInformacionPersonal = indice;
+        idInformacionPersonal = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -2890,8 +2890,8 @@ public class ControlPersonaIndividual implements Serializable {
         }
     }
 
-    public void modificarCargoDesempeñado(int indice, String confirmarCambio, String valorConfirmar) {
-        indexCargoDesempeñado = indice;
+    public void modificarCargoDesempeñado(int itemCargoD, String confirmarCambio, String valorConfirmar) {
+        idCargoDesempeñado = itemCargoD;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -3028,7 +3028,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void modificarCentroCosto(int indice, String confirmarCambio, String valorConfirmar) {
-        indexCentroCosto = indice;
+        idCentroCosto = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -3081,7 +3081,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void modificarTipoTrabajador(int indice, String confirmarCambio, String valorConfirmar) {
-        indexTipoTrabajador = indice;
+        idTipoTrabajador = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -3112,7 +3112,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void modificarTipoSalario(int indice, String confirmarCambio, String valorConfirmar) {
-        indexTipoSalario = indice;
+        idTipoSalario = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -3143,7 +3143,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void modificarSueldo(int indice, String confirmarCambio, String valorConfirmar) {
-        indexTipoSalario = indice;
+        idTipoSalario = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -3221,7 +3221,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void modificarTipoContrato(int indice, String confirmarCambio, String valorConfirmar) {
-        indexTipoContrato = indice;
+        idTipoContrato = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -3277,7 +3277,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void modificarNormaLaboral(int indice, String confirmarCambio, String valorConfirmar) {
-        indexNormaLaboral = indice;
+        idNormaLaboral = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -3308,7 +3308,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void modificarLegislacionLaboral(int indice, String confirmarCambio, String valorConfirmar) {
-        indexLegislacionLaboral = indice;
+        idLegislacionLaboral = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -3339,7 +3339,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void modificarUbicacionGeografica(int indice, String confirmarCambio, String valorConfirmar) {
-        indexUbicacionGeografica = indice;
+        idUbicacionGeografica = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -3369,7 +3369,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void modificarJornadaLaboral(int indice, String confirmarCambio, String valorConfirmar) {
-        indexJornadaLaboral = indice;
+        idJornadaLaboral = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -3399,7 +3399,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void modificarFormaPago(int indice, String confirmarCambio, String valorConfirmar) {
-        indexFormaPago = indice;
+        idFormaPago = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -3482,7 +3482,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void modificarAfiliacionFondo(int indice, String confirmarCambio, String valorConfirmar) {
-        indexAfiliacionFondo = indice;
+        idAfiliacionFondo = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -3521,7 +3521,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void modificarAfiliacionEPS(int indice, String confirmarCambio, String valorConfirmar) {
-        indexAfiliacionEPS = indice;
+        idAfiliacionEPS = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -3554,7 +3554,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void modificarAfiliacionCaja(int indice, String confirmarCambio, String valorConfirmar) {
-        indexAfiliacionCaja = indice;
+        idAfiliacionCaja = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -3593,7 +3593,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void modificarAfiliacionARP(int indice, String confirmarCambio, String valorConfirmar) {
-        indexAfiliacionARP = indice;
+        idAfiliacionARP = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -3626,7 +3626,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void modificarAfiliacionAFP(int indice, String confirmarCambio, String valorConfirmar) {
-        indexAfiliacionAFP = indice;
+        idAfiliacionAFP = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -3666,7 +3666,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void modificarEstadoCivil(int indice, String confirmarCambio, String valorConfirmar) {
-        indexEstadoCivil = indice;
+        idEstadoCivil = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -3703,7 +3703,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void modificarDireccion(int indice, String confirmarCambio, String valorConfirmar) {
-        indexDireccion = indice;
+        idDireccion = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -3738,7 +3738,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void modificarTelefono(int indice, String confirmarCambio, String valorConfirmar) {
-        indexTelefono = indice;
+        idTelefono = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -3805,37 +3805,37 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void actualizarParametroTerceroAfiliacion() {
-        if (indexAfiliacionAFP >= 0) {
+        if (idAfiliacionAFP >= 0) {
             actualizarParametroAFPAfiliacion();
         }
-        if (indexAfiliacionARP >= 0) {
+        if (idAfiliacionARP >= 0) {
             actualizarParametroARPAfiliacion();
         }
-        if (indexAfiliacionCaja >= 0) {
+        if (idAfiliacionCaja >= 0) {
             actualizarParametroCajaAfiliacion();
         }
-        if (indexAfiliacionEPS >= 0) {
+        if (idAfiliacionEPS >= 0) {
             actualizarParametroEPSAfiliacion();
         }
-        if (indexAfiliacionFondo >= 0) {
+        if (idAfiliacionFondo >= 0) {
             actualizarParametroFondoAfiliacion();
         }
     }
 
     public void cancelarParametroTerceroAfiliacion() {
-        if (indexAfiliacionAFP >= 0) {
+        if (idAfiliacionAFP >= 0) {
             cancelarParametroAFPAfiliacion();
         }
-        if (indexAfiliacionARP >= 0) {
+        if (idAfiliacionARP >= 0) {
             cancelarParametroARPAfiliacion();
         }
-        if (indexAfiliacionCaja >= 0) {
+        if (idAfiliacionCaja >= 0) {
             cancelarParametroCajaAfiliacion();
         }
-        if (indexAfiliacionEPS >= 0) {
+        if (idAfiliacionEPS >= 0) {
             cancelarParametroEPSAfiliacion();
         }
-        if (indexAfiliacionFondo >= 0) {
+        if (idAfiliacionFondo >= 0) {
             cancelarParametroFondoAfiliacion();
         }
     }
@@ -4732,15 +4732,15 @@ public class ControlPersonaIndividual implements Serializable {
     public void actualizarParametroEmpresaInformacionPersonalVisible() {
         RequestContext context = RequestContext.getCurrentInstance();
         nuevoEmpleado.setEmpresa(empresaSeleccionada);
+
         empresaSeleccionada = new Empresas();
         filtrarLovEmpresas = null;
         aceptar = true;
         permitirIndexInformacionPersonal = true;
         context.update("form:empresaModPersonal");
-        /*
-         * context.update("formLovs:formDInformacionPersonal:lovEmpresaInformacionPersonalVisible");
-         * context.update("formLovs:formDInformacionPersonal:aceptarEIPV");
-         */
+
+        lovCargos = administrarPersonaIndividual.lovCargosXEmpresa(nuevoEmpleado.getEmpresa().getSecuencia());
+
         context.reset("formLovs:formDInformacionPersonal:lovEmpresaInformacionPersonalVisible:globalFilter");
         context.execute("lovEmpresaInformacionPersonalVisible.clearFilters()");
         context.execute("EmpresaInformacionPersonalDialogoVisible.hide()");
@@ -4749,14 +4749,21 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void cancelarParametroEmpresaInformacionPersonalVisible() {
-        empresaSeleccionada = new Empresas();
-        filtrarLovEmpresas = null;
-        permitirIndexInformacionPersonal = true;
-        aceptar = true;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.reset("formLovs:formDInformacionPersonal:lovEmpresaInformacionPersonalVisible:globalFilter");
-        context.execute("lovEmpresaInformacionPersonalVisible.clearFilters()");
-        context.execute("EmpresaInformacionPersonalDialogoVisible.hide()");
+        if (empresaSeleccionada == null) {
+            filtrarLovEmpresas = null;
+            aceptar = true;
+            context.reset("formLovs:formDInformacionPersonal:lovEmpresaInformacionPersonalVisible:globalFilter");
+            context.execute("lovEmpresaInformacionPersonalVisible.clearFilters()");
+            context.reset("formLovs:formDInformacionPersonal:EmpresaInformacionPersonalDialogoVisible");
+        } else {
+            filtrarLovEmpresas = null;
+            permitirIndexInformacionPersonal = true;
+            aceptar = true;
+            context.reset("formLovs:formDInformacionPersonal:lovEmpresaInformacionPersonalVisible:globalFilter");
+            context.execute("lovEmpresaInformacionPersonalVisible.clearFilters()");
+            context.execute("EmpresaInformacionPersonalDialogoVisible.hide()");
+        }
     }
 
     public void actualizarParametroEmpresaInformacionPersonal() {
@@ -5016,6 +5023,8 @@ public class ControlPersonaIndividual implements Serializable {
                     RequestContext context = RequestContext.getCurrentInstance();
                     context.execute("aletarTiposTrabajadoresRL.show()");
                 }
+            } else {
+                System.out.println("Error en la consulta a la BD");
             }
         }
     }
@@ -5023,9 +5032,13 @@ public class ControlPersonaIndividual implements Serializable {
     public void validarTipoTrabajadorTipoSueldo() {
         if (nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia() != null) {
             String validar = administrarPersonaIndividual.validarTipoTrabajadorTipoSueldo(nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia(), nuevaVigenciaSueldo.getTiposueldo().getSecuencia());
-            if (validar.equalsIgnoreCase("N")) {
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("aletarTiposTrabajadoresTS.show()");
+            if (validar != null) {
+                if (validar.equalsIgnoreCase("N")) {
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.execute("aletarTiposTrabajadoresTS.show()");
+                }
+            } else {
+                System.out.println("Error en la consulta a la BD");
             }
         }
     }
@@ -5033,9 +5046,13 @@ public class ControlPersonaIndividual implements Serializable {
     public void validarTipoTrabajadorTipoContrato() {
         if (nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia() != null) {
             String validar = administrarPersonaIndividual.validarTipoTrabajadorTipoContrato(nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia(), nuevaVigenciaTipoContrato.getTipocontrato().getSecuencia());
-            if (validar.equalsIgnoreCase("N")) {
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("aletarTiposTrabajadoresTC.show()");
+            if (validar != null) {
+                if (validar.equalsIgnoreCase("N")) {
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.execute("aletarTiposTrabajadoresTC.show()");
+                }
+            } else {
+                System.out.println("Error en la consulta a la BD");
             }
         }
     }
@@ -5043,9 +5060,13 @@ public class ControlPersonaIndividual implements Serializable {
     public void validarTipoTrabajadorNormaLaboral() {
         if (nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia() != null) {
             String validar = administrarPersonaIndividual.validarTipoTrabajadorNormaLaboral(nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia(), nuevaVigenciaNormaEmpleado.getNormalaboral().getSecuencia());
-            if (validar.equalsIgnoreCase("N")) {
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("aletarTiposTrabajadoresNL.show()");
+            if (validar != null) {
+                if (validar.equalsIgnoreCase("N")) {
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.execute("aletarTiposTrabajadoresNL.show()");
+                }
+            } else {
+                System.out.println("Error en la consulta a la BD");
             }
         }
     }
@@ -5053,9 +5074,13 @@ public class ControlPersonaIndividual implements Serializable {
     public void validarTipoTrabajadorContrato() {
         if (nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia() != null) {
             String validar = administrarPersonaIndividual.validarTipoTrabajadorContrato(nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia(), nuevaVigenciaContrato.getContrato().getSecuencia());
-            if (validar.equalsIgnoreCase("N")) {
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("aletarTiposTrabajadoresC.show()");
+            if (validar != null) {
+                if (validar.equalsIgnoreCase("N")) {
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.execute("aletarTiposTrabajadoresC.show()");
+                }
+            } else {
+                System.out.println("Error en la consulta a la BD");
             }
         }
     }
@@ -5080,7 +5105,9 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void activarAceptar() {
-        aceptar = false;
+        if (empresaSeleccionada != null) {
+            aceptar = false;
+        }
     }
 
     public Personas getNuevaPersona() {
@@ -5146,7 +5173,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public List<Ciudades> getLovCiudades() {
-        if (lovCiudades == null) {
+        if (lovCiudades == null && nuevoEmpleado.getEmpresa().getSecuencia() != null) {
             lovCiudades = administrarPersonaIndividual.lovCiudades();
         }
         return lovCiudades;
@@ -5245,7 +5272,8 @@ public class ControlPersonaIndividual implements Serializable {
 
     public List<Cargos> getLovCargos() {
         if (lovCargos == null) {
-            lovCargos = administrarPersonaIndividual.lovCargos();
+            //lovCargos = administrarPersonaIndividual.lovCargos();
+            lovCargos = new ArrayList<Cargos>();
         }
         return lovCargos;
     }
@@ -5422,7 +5450,8 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public List<Estructuras> getLovEstructurasCentroCosto() {
-        if (nuevoEmpleado.getEmpresa().getSecuencia() != null && ((lovEstructurasCentroCosto == null || lovEstructurasCentroCosto.isEmpty()) || (!lovEstructurasCentroCosto.isEmpty() && lovEstructurasCentroCosto.get(0).getOrganigrama().getEmpresa().getSecuencia() != nuevoEmpleado.getEmpresa().getSecuencia()))) {
+        if (nuevoEmpleado.getEmpresa().getSecuencia() != null && ((lovEstructurasCentroCosto == null || lovEstructurasCentroCosto.isEmpty())
+                || (!lovEstructurasCentroCosto.isEmpty() && lovEstructurasCentroCosto.get(0).getOrganigrama().getEmpresa().getSecuencia() != nuevoEmpleado.getEmpresa().getSecuencia()))) {
             lovEstructurasCentroCosto = administrarPersonaIndividual.lovEstructurasModCentroCosto(nuevoEmpleado.getEmpresa().getSecuencia());
         }
         return lovEstructurasCentroCosto;
@@ -5465,7 +5494,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public List<TiposTrabajadores> getLovTiposTrabajadores() {
-        if (lovTiposTrabajadores == null) {
+        if (lovTiposTrabajadores == null && nuevoEmpleado.getEmpresa().getSecuencia() != null) {
             lovTiposTrabajadores = administrarPersonaIndividual.lovTiposTrabajadores();
         }
         return lovTiposTrabajadores;
@@ -6077,7 +6106,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroEmpresaInformacionPersonal() {
-        getLovEmpresas();
         if (lovEmpresas != null) {
             infoRegistroEmpresaInformacionPersonal = "Cantidad de registros: " + lovEmpresas.size();
         } else {
@@ -6091,7 +6119,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroTipoDocumentoInformacionPersonal() {
-        getLovTiposDocumentos();
         if (lovTiposDocumentos != null) {
             infoRegistroTipoDocumentoInformacionPersonal = "Cantidad de registros: " + lovTiposDocumentos.size();
         } else {
@@ -6105,7 +6132,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroCiudadDocumentoInformacionPersonal() {
-        getLovCiudades();
         if (lovCiudades != null) {
             infoRegistroCiudadDocumentoInformacionPersonal = "Cantidad de registros: " + lovCiudades.size();
         } else {
@@ -6119,7 +6145,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroCiudadNacimientoInformacionPersonal() {
-        getLovCiudades();
         if (lovCiudades != null) {
             infoRegistroCiudadNacimientoInformacionPersonal = "Cantidad de registros: " + lovCiudades.size();
         } else {
@@ -6133,7 +6158,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroCargoCargoDesempenado() {
-        getLovCargos();
         if (lovCargos != null) {
             infoRegistroCargoCargoDesempenado = "Cantidad de registros: " + lovCargos.size();
         } else {
@@ -6147,7 +6171,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroMotivoCargoCargoDesempenado() {
-        getLovMotivosCambiosCargos();
         if (lovMotivosCambiosCargos != null) {
             infoRegistroMotivoCargoCargoDesempenado = "Cantidad de registros: " + lovMotivosCambiosCargos.size();
         } else {
@@ -6161,7 +6184,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroEstructuraCargoDesempenado() {
-        getLovEstructuras();
         if (lovEstructuras != null) {
             infoRegistroEstructuraCargoDesempenado = "Cantidad de registros: " + lovEstructuras.size();
         } else {
@@ -6203,7 +6225,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroMotivoCentroCosto() {
-        getLovMotivosLocalizaciones();
         if (lovMotivosLocalizaciones != null) {
             infoRegistroMotivoCentroCosto = "Cantidad de registros: " + lovMotivosLocalizaciones.size();
         } else {
@@ -6217,7 +6238,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroEstructuraCentroCosto() {
-        getLovEstructurasCentroCosto();
         if (lovEstructurasCentroCosto != null) {
             infoRegistroEstructuraCentroCosto = "Cantidad de registros: " + lovEstructurasCentroCosto.size();
         } else {
@@ -6231,7 +6251,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroTipoTrabajadorTipoTrabajador() {
-        getLovTiposTrabajadores();
         if (lovTiposTrabajadores != null) {
             infoRegistroTipoTrabajadorTipoTrabajador = "Cantidad de registros: " + lovTiposTrabajadores.size();
         } else {
@@ -6245,7 +6264,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroReformaTipoSalario() {
-        getLovReformasLaborales();
         if (lovReformasLaborales != null) {
             infoRegistroReformaTipoSalario = "Cantidad de registros: " + lovReformasLaborales.size();
         } else {
@@ -6259,7 +6277,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroMotivoSueldo() {
-        getLovMotivosCambiosSueldos();
         if (lovMotivosCambiosSueldos != null) {
             infoRegistroMotivoSueldo = "Cantidad de registros: " + lovMotivosCambiosSueldos.size();
         } else {
@@ -6273,7 +6290,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroTipoSueldoSueldo() {
-        getLovTiposSueldos();
         if (lovTiposSueldos != null) {
             infoRegistroTipoSueldoSueldo = "Cantidad de registros: " + lovTiposSueldos.size();
         } else {
@@ -6287,7 +6303,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroUnidadSueldo() {
-        getLovUnidades();
         if (lovUnidades != null) {
             infoRegistroUnidadSueldo = "Cantidad de registros: " + lovUnidades.size();
         } else {
@@ -6301,7 +6316,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroMotivoTipoContrato() {
-        getLovMotivosContratos();
         if (lovMotivosContratos != null) {
             infoRegistroMotivoTipoContrato = "Cantidad de registros: " + lovMotivosContratos.size();
         } else {
@@ -6315,7 +6329,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroTipoTipoContrato() {
-        getLovTiposContratos();
         if (lovTiposContratos != null) {
             infoRegistroTipoTipoContrato = "Cantidad de registros: " + lovTiposContratos.size();
         } else {
@@ -6329,7 +6342,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroNormaNormaLaboral() {
-        getLovNormasLaborales();
         if (lovNormasLaborales != null) {
             infoRegistroNormaNormaLaboral = "Cantidad de registros: " + lovNormasLaborales.size();
         } else {
@@ -6343,7 +6355,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroContratoLegislacionLaboral() {
-        getLovContratos();
         if (lovContratos != null) {
             infoRegistroContratoLegislacionLaboral = "Cantidad de registros: " + lovContratos.size();
         } else {
@@ -6357,7 +6368,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroUbicacionUbicacion() {
-        getLovUbicacionesGeograficas();
         if (lovUbicacionesGeograficas != null) {
             infoRegistroUbicacionUbicacion = "Cantidad de registros: " + lovUbicacionesGeograficas.size();
         } else {
@@ -6371,7 +6381,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroJornadaJornadaLaboral() {
-        getLovJornadasLaborales();
         if (lovJornadasLaborales != null) {
             infoRegistroJornadaJornadaLaboral = "Cantidad de registros: " + lovJornadasLaborales.size();
         } else {
@@ -6385,7 +6394,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroFormaFormaPago() {
-        getLovPeriodicidades();
         if (lovPeriodicidades != null) {
             infoRegistroFormaFormaPago = "Cantidad de registros: " + lovPeriodicidades.size();
         } else {
@@ -6399,7 +6407,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroSucursalFormaPago() {
-        getLovSucursales();
         if (lovSucursales != null) {
             infoRegistroSucursalFormaPago = "Cantidad de registros: " + lovSucursales.size();
         } else {
@@ -6413,7 +6420,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroMetodoFormaPago() {
-        getLovMetodosPagos();
         if (lovMetodosPagos != null) {
             infoRegistroMetodoFormaPago = "Cantidad de registros: " + lovMetodosPagos.size();
         } else {
@@ -6427,7 +6433,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroTerceroAfiliacion() {
-        getLovTercerosSucursales();
         if (lovTercerosSucursales != null) {
             infoRegistroTerceroAfiliacion = "Cantidad de registros: " + lovTercerosSucursales.size();
         } else {
@@ -6441,7 +6446,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroEstadoCivilEstadoCivil() {
-        getLovEstadosCiviles();
         if (lovEstadosCiviles != null) {
             infoRegistroEstadoCivilEstadoCivil = "Cantidad de registros: " + lovEstadosCiviles.size();
         } else {
@@ -6455,7 +6459,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroCiudadDireccion() {
-        getLovCiudades();
         if (lovCiudades != null) {
             infoRegistroCiudadDireccion = "Cantidad de registros: " + lovCiudades.size();
         } else {
@@ -6469,7 +6472,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroCiudadTelefono() {
-        getLovCiudades();
         if (lovCiudades != null) {
             infoRegistroCiudadTelefono = "Cantidad de registros: " + lovCiudades.size();
         } else {
@@ -6483,7 +6485,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public String getInfoRegistroTipoTelefonoTelefono() {
-        getLovTiposTelefonos();
         if (lovTiposTelefonos != null) {
             infoRegistroTipoTelefonoTelefono = "Cantidad de registros: " + lovTiposTelefonos.size();
         } else {

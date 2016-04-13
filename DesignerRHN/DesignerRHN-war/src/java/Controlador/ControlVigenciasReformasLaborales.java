@@ -55,7 +55,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
     private Column vrlFecha, vrlNombre;
     //Otros
     private boolean aceptar;
-    private int index;
     //modificar
     private List<VigenciasReformasLaborales> listVRLModificar;
     private boolean guardado;
@@ -73,8 +72,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
     private VigenciasReformasLaborales duplicarVRL;
     private String reformaLaboral;
     private boolean permitirIndex;
-    private BigInteger secRegistro;
-    private BigInteger backUpSecRegistro;
     private Date fechaParametro;
     private Date fechaIni;
     private String altoTabla;
@@ -87,6 +84,8 @@ public class ControlVigenciasReformasLaborales implements Serializable {
     //VALIDACION
     private String mensajeValidacion;
     private ActualUsuario actualUsuario;
+    //
+    private DataTable tablaC;
 
     /**
      * Constructor de la clases Controlador
@@ -114,13 +113,10 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         //Crear VC
         nuevaVigencia = new VigenciasReformasLaborales();
         nuevaVigencia.setReformalaboral(new ReformasLaborales());
-        secRegistro = null;
         permitirIndex = true;
-        backUpSecRegistro = null;
         altoTabla = "270";
         mensajeValidacion = "";
-
-        index = -1; 
+        vigenciaSeleccionada = null;
     }
 
     @PostConstruct
@@ -167,69 +163,47 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         context.update("form:informacionRegistro");
     }
 
-    public void modificarVRL(int indice) {
+    public void modificarVRL(VigenciasReformasLaborales vrl) {
+
         RequestContext context = RequestContext.getCurrentInstance();
-        if (tipoLista == 0) {// Si NO tiene Filtro
-            if (!listVRLCrear.contains(vigenciasReformasLaborales.get(indice))) {
-
-                if (listVRLModificar.isEmpty()) {
-                    listVRLModificar.add(vigenciasReformasLaborales.get(indice));
-                } else if (!listVRLModificar.contains(vigenciasReformasLaborales.get(indice))) {
-                    listVRLModificar.add(vigenciasReformasLaborales.get(indice));
-                }
-                if (guardado) {
-                    guardado = false;
-                    context.update("form:ACEPTAR");
-                }
+        if (!listVRLCrear.contains(vigenciaSeleccionada)) {
+            vigenciaSeleccionada = vrl;
+            if (listVRLModificar.isEmpty()) {
+                listVRLModificar.add(vigenciaSeleccionada);
+            } else if (!listVRLModificar.contains(vigenciaSeleccionada)) {
+                listVRLModificar.add(vigenciaSeleccionada);
             }
-            index = -1;
-            secRegistro = null;
-        } else {// Si tiene Filtro
-            if (!listVRLCrear.contains(filtrarVRL.get(indice))) {
-
-                if (listVRLModificar.isEmpty()) {
-                    listVRLModificar.add(filtrarVRL.get(indice));
-                } else if (!listVRLModificar.contains(filtrarVRL.get(indice))) {
-                    listVRLModificar.add(filtrarVRL.get(indice));
-                }
-                if (guardado) {
-                    guardado = false;
-                    context.update("form:ACEPTAR");
-                }
+            if (guardado) {
+                guardado = false;
+                context.update("form:ACEPTAR");
             }
-            index = -1;
-            secRegistro = null;
         }
     }
 
-    public boolean validarFechasRegistro(int i) {
+    public boolean validarFechasRegistro(int campo) {
         fechaParametro = new Date();
         fechaParametro.setYear(0);
         fechaParametro.setMonth(1);
         fechaParametro.setDate(1);
         boolean retorno = true;
-        if (i == 0) {
+        if (campo == 0) {
             VigenciasReformasLaborales auxiliar = null;
-            if (tipoLista == 0) {// Si NO tiene Filtro
-                auxiliar = vigenciasReformasLaborales.get(index);
-            }
-            if (tipoLista == 1) {// Si tiene Filtro
-                auxiliar = filtrarVRL.get(index);
-            }
+            auxiliar = vigenciaSeleccionada;
+
             if (auxiliar.getFechavigencia().after(fechaParametro)) {
                 retorno = true;
             } else {
                 retorno = false;
             }
         }
-        if (i == 1) {
+        if (campo == 1) {
             if (nuevaVigencia.getFechavigencia().after(fechaParametro)) {
                 retorno = true;
             } else {
                 retorno = false;
             }
         }
-        if (i == 2) {
+        if (campo == 2) {
             if (duplicarVRL.getFechavigencia().after(fechaParametro)) {
                 retorno = true;
             } else {
@@ -239,57 +213,39 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         return retorno;
     }
 
-    public void modificarFechas(int i, int c) {
-        VigenciasReformasLaborales auxiliar = null;
-        if (tipoLista == 0) {// Si NO tiene Filtro
-            auxiliar = vigenciasReformasLaborales.get(i);
-        }
-        if (tipoLista == 1) {// Si tiene Filtro
-            auxiliar = filtrarVRL.get(i);
-        }
-        if (auxiliar.getFechavigencia() != null) {
+    public void modificarFechas(VigenciasReformasLaborales vrl, int campo) {
+        vigenciaSeleccionada = vrl;
+
+        if (vigenciaSeleccionada.getFechavigencia() != null) {
             boolean retorno = false;
-            index = i;
             retorno = validarFechasRegistro(0);
             if (retorno) {
-                cambiarIndice(i, c);
-                modificarVRL(i);
+                cambiarIndice(vigenciaSeleccionada, campo);
+                modificarVRL(vigenciaSeleccionada);
             } else {
-                if (tipoLista == 0) {// Si NO tiene Filtro
-                    vigenciasReformasLaborales.get(i).setFechavigencia(fechaIni);
-                }
-                if (tipoLista == 1) {// Si tiene Filtro
-                    filtrarVRL.get(i).setFechavigencia(fechaIni);
+                vigenciaSeleccionada.setFechavigencia(fechaIni);
 
-                }
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:datosVRLEmpleado");
                 context.execute("errorFechas.show()");
             }
         } else {
-            if (tipoLista == 0) {// Si NO tiene Filtro
-                vigenciasReformasLaborales.get(i).setFechavigencia(fechaIni);
-            }
-            if (tipoLista == 1) {// Si tiene Filtro
-                filtrarVRL.get(i).setFechavigencia(fechaIni);
-            }
+            vigenciaSeleccionada.setFechavigencia(fechaIni);
+
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVRLEmpleado");
             context.execute("errorRegNew.show()");
         }
     }
 
-    public void modificarVRL(int indice, String confirmarCambio, String valorConfirmar) {
-        index = indice;
+    public void modificarVRL(VigenciasReformasLaborales vrl, String confirmarCambio, String valorConfirmar) {
+        vigenciaSeleccionada = vrl;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("REFORMALABORAL")) {
-            if (tipoLista == 0) {// Si NO tiene Filtro
-                vigenciasReformasLaborales.get(indice).getReformalaboral().setNombre(reformaLaboral);
-            } else {// Si tiene Filtro
-                filtrarVRL.get(indice).getReformalaboral().setNombre(reformaLaboral);
-            }
+            vigenciaSeleccionada.getReformalaboral().setNombre(reformaLaboral);
+
             for (int i = 0; i < listaReformasLaborales.size(); i++) {
                 if (listaReformasLaborales.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
@@ -297,11 +253,8 @@ public class ControlVigenciasReformasLaborales implements Serializable {
                 }
             }
             if (coincidencias == 1) {
-                if (tipoLista == 0) {// Si NO tiene Filtro
-                    vigenciasReformasLaborales.get(indice).setReformalaboral(listaReformasLaborales.get(indiceUnicoElemento));
-                } else {// Si tiene Filtro
-                    filtrarVRL.get(indice).setReformalaboral(listaReformasLaborales.get(indiceUnicoElemento));
-                }
+                vigenciaSeleccionada.setReformalaboral(listaReformasLaborales.get(indiceUnicoElemento));
+
                 listaReformasLaborales.clear();
                 getListaReformasLaborales();
             } else {
@@ -313,37 +266,19 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             }
         }
         if (coincidencias == 1) {
-            if (tipoLista == 0) {// Si NO tiene Filtro
-                if (!listVRLCrear.contains(vigenciasReformasLaborales.get(indice))) {
+            if (!listVRLCrear.contains(vigenciaSeleccionada)) {
 
-                    if (listVRLModificar.isEmpty()) {
-                        listVRLModificar.add(vigenciasReformasLaborales.get(indice));
-                    } else if (!listVRLModificar.contains(vigenciasReformasLaborales.get(indice))) {
-                        listVRLModificar.add(vigenciasReformasLaborales.get(indice));
-                    }
-                    if (guardado) {
-                        guardado = false;
-                        context.update("form:ACEPTAR");
-                    }
+                if (listVRLModificar.isEmpty()) {
+                    listVRLModificar.add(vigenciaSeleccionada);
+                } else if (!listVRLModificar.contains(vigenciaSeleccionada)) {
+                    listVRLModificar.add(vigenciaSeleccionada);
                 }
-                index = -1;
-                secRegistro = null;
-            } else {// Si tiene Filtro
-                if (!listVRLCrear.contains(filtrarVRL.get(indice))) {
-
-                    if (listVRLModificar.isEmpty()) {
-                        listVRLModificar.add(filtrarVRL.get(indice));
-                    } else if (!listVRLModificar.contains(filtrarVRL.get(indice))) {
-                        listVRLModificar.add(filtrarVRL.get(indice));
-                    }
-                    if (guardado) {
-                        guardado = false;
-                        context.update("form:ACEPTAR");
-                    }
+                if (guardado) {
+                    guardado = false;
+                    context.update("form:ACEPTAR");
                 }
-                index = -1;
-                secRegistro = null;
             }
+
         }
         context.update("form:datosVRLEmpleado");
     }
@@ -405,23 +340,13 @@ public class ControlVigenciasReformasLaborales implements Serializable {
      * @param indice Fila de la tabla
      * @param celda Columna de la tabla
      */
-    public void cambiarIndice(int indice, int celda) {
+    public void cambiarIndice(VigenciasReformasLaborales vrl, int celda) {
+        vigenciaSeleccionada = vrl;
         if (permitirIndex) {
-            index = indice;
             cualCelda = celda;
-            if (tipoLista == 0) {// Si NO tiene Filtro
-                fechaIni = vigenciasReformasLaborales.get(index).getFechavigencia();
-                secRegistro = vigenciasReformasLaborales.get(index).getSecuencia();
-                if (cualCelda == 1) {
-                    reformaLaboral = vigenciasReformasLaborales.get(index).getReformalaboral().getNombre();
-                }
-            }
-            if (tipoLista == 1) {// Si tiene Filtro
-                fechaIni = filtrarVRL.get(index).getFechavigencia();
-                secRegistro = filtrarVRL.get(index).getSecuencia();
-                if (cualCelda == 1) {
-                    reformaLaboral = filtrarVRL.get(index).getReformalaboral().getNombre();
-                }
+            fechaIni = vigenciaSeleccionada.getFechavigencia();
+            if (cualCelda == 1) {
+                reformaLaboral = vigenciaSeleccionada.getReformalaboral().getNombre();
             }
         }
     }
@@ -452,7 +377,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             vigenciasReformasLaborales = null;
             getVigenciasReformasLaboralesEmpleado();
             if (vigenciasReformasLaborales != null && !vigenciasReformasLaborales.isEmpty()) {
-                vigenciaSeleccionada = vigenciasReformasLaborales.get(0);
                 infoRegistro = "Cantidad de registros: " + vigenciasReformasLaborales.size();
             } else {
                 infoRegistro = "Cantidad de registros: 0";
@@ -468,8 +392,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             context.update("form:growl");
             paraNuevaRF = 0;
         }
-        index = -1;
-        secRegistro = null;
+        vigenciaSeleccionada = null;
     }
     //CANCELAR MODIFICACIONES
 
@@ -494,13 +417,11 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         listVRLBorrar.clear();
         listVRLCrear.clear();
         listVRLModificar.clear();
-        index = -1;
-        secRegistro = null;
+        vigenciaSeleccionada = null;
         paraNuevaRF = 0;
         vigenciasReformasLaborales = null;
         getVigenciasReformasLaboralesEmpleado();
         if (vigenciasReformasLaborales != null && !vigenciasReformasLaborales.isEmpty()) {
-            vigenciaSeleccionada = vigenciasReformasLaborales.get(0);
             infoRegistro = "Cantidad de registros: " + vigenciasReformasLaborales.size();
         } else {
             infoRegistro = "Cantidad de registros: 0";
@@ -520,15 +441,10 @@ public class ControlVigenciasReformasLaborales implements Serializable {
      */
     public void editarCelda() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index < 0) {
+        if (vigenciaSeleccionada == null) {
             context.execute("seleccionarRegistro.show()");
         } else {
-            if (tipoLista == 0) {// Si NO tiene Filtro
-                editarVRL = vigenciasReformasLaborales.get(index);
-            }
-            if (tipoLista == 1) {// Si tiene Filtro
-                editarVRL = filtrarVRL.get(index);
-            }
+            editarVRL = vigenciaSeleccionada;
 
             if (cualCelda == 0) {
                 context.update("formularioDialogos:editarFecha");
@@ -540,8 +456,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
                 cualCelda = -1;
             }
         }
-        index = -1;
-        secRegistro = null;
     }
 
     //CREAR VU
@@ -596,8 +510,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
                         guardado = false;
                         context.update("form:ACEPTAR");
                     }
-                    index = -1;
-                    secRegistro = null;
+                    vigenciaSeleccionada = null;
                 } else {
                     context.execute("errorFechas.show()");
                 }
@@ -614,8 +527,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
     public void limpiarNuevaVRL() {
         nuevaVigencia = new VigenciasReformasLaborales();
         nuevaVigencia.setReformalaboral(new ReformasLaborales());
-        index = -1;
-        secRegistro = null;
     }
     //DUPLICAR VC
 
@@ -625,29 +536,19 @@ public class ControlVigenciasReformasLaborales implements Serializable {
      */
     public void duplicarVigenciaRL() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index < 0) {
+        if (vigenciaSeleccionada == null) {
             context.execute("seleccionarRegistro.show()");
         } else {
             duplicarVRL = new VigenciasReformasLaborales();
             paraNuevaRF++;
             nuevaRFSecuencia = BigInteger.valueOf(paraNuevaRF);
 
-            if (tipoLista == 0) {// Si NO tiene Filtro
+            duplicarVRL.setEmpleado(vigenciaSeleccionada.getEmpleado());
+            duplicarVRL.setFechavigencia(vigenciaSeleccionada.getFechavigencia());
+            duplicarVRL.setReformalaboral(vigenciaSeleccionada.getReformalaboral());
 
-                duplicarVRL.setEmpleado(vigenciasReformasLaborales.get(index).getEmpleado());
-                duplicarVRL.setFechavigencia(vigenciasReformasLaborales.get(index).getFechavigencia());
-                duplicarVRL.setReformalaboral(vigenciasReformasLaborales.get(index).getReformalaboral());
-            }
-            if (tipoLista == 1) {// Si tiene Filtro
-
-                duplicarVRL.setEmpleado(filtrarVRL.get(index).getEmpleado());
-                duplicarVRL.setFechavigencia(filtrarVRL.get(index).getFechavigencia());
-                duplicarVRL.setReformalaboral(filtrarVRL.get(index).getReformalaboral());
-            }
             context.update("formularioDialogos:duplicarVRL");
             context.execute("DuplicarRegistroVRL.show()");
-            index = -1;
-            secRegistro = null;
         }
     }
 
@@ -680,8 +581,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
                     context.update("form:informacionRegistro");
                     context.update("form:datosVRLEmpleado");
                     context.execute("DuplicarRegistroVRL.hide()");
-                    index = -1;
-                    secRegistro = null;
+                    vigenciaSeleccionada = null;
                     if (guardado) {
                         guardado = false;
                         context.update("form:ACEPTAR");
@@ -724,45 +624,25 @@ public class ControlVigenciasReformasLaborales implements Serializable {
      */
     public void borrarVRL() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index < 0) {
+        if (vigenciaSeleccionada == null) {
             context.execute("seleccionarRegistro.show()");
         } else {
-            if (tipoLista == 0) {// Si NO tiene Filtro
-                if (!listVRLModificar.isEmpty() && listVRLModificar.contains(vigenciasReformasLaborales.get(index))) {
-                    int modIndex = listVRLModificar.indexOf(vigenciasReformasLaborales.get(index));
-                    listVRLModificar.remove(modIndex);
-                    listVRLBorrar.add(vigenciasReformasLaborales.get(index));
-                } else if (!listVRLCrear.isEmpty() && listVRLCrear.contains(vigenciasReformasLaborales.get(index))) {
-                    int crearIndex = listVRLCrear.indexOf(vigenciasReformasLaborales.get(index));
-                    listVRLCrear.remove(crearIndex);
-                } else {
-                    listVRLBorrar.add(vigenciasReformasLaborales.get(index));
-                }
-                vigenciasReformasLaborales.remove(index);
-                infoRegistro = "Cantidad de registros: " + vigenciasReformasLaborales.size();
-
+            if (!listVRLModificar.isEmpty() && listVRLModificar.contains(vigenciaSeleccionada)) {
+                int modIndex = listVRLModificar.indexOf(vigenciaSeleccionada);
+                listVRLModificar.remove(modIndex);
+                listVRLBorrar.add(vigenciaSeleccionada);
+            } else if (!listVRLCrear.isEmpty() && listVRLCrear.contains(vigenciaSeleccionada)) {
+                int crearIndex = listVRLCrear.indexOf(vigenciaSeleccionada);
+                listVRLCrear.remove(crearIndex);
+            } else {
+                listVRLBorrar.add(vigenciaSeleccionada);
             }
-            if (tipoLista == 1) {// Si tiene Filtro
-                if (!listVRLModificar.isEmpty() && listVRLModificar.contains(filtrarVRL.get(index))) {
-                    int modIndex = listVRLModificar.indexOf(filtrarVRL.get(index));
-                    listVRLModificar.remove(modIndex);
-                    listVRLBorrar.add(filtrarVRL.get(index));
-                } else if (!listVRLCrear.isEmpty() && listVRLCrear.contains(filtrarVRL.get(index))) {
-                    int crearIndex = listVRLCrear.indexOf(filtrarVRL.get(index));
-                    listVRLCrear.remove(crearIndex);
-                } else {
-                    listVRLBorrar.add(filtrarVRL.get(index));
-                }
-                int VCIndex = vigenciasReformasLaborales.indexOf(filtrarVRL.get(index));
-                vigenciasReformasLaborales.remove(VCIndex);
-                filtrarVRL.remove(index);
-                infoRegistro = "Cantidad de registros: " + filtrarVRL.size();
+            vigenciasReformasLaborales.remove(vigenciaSeleccionada);
+            infoRegistro = "Cantidad de registros: " + vigenciasReformasLaborales.size();
 
-            }
             context.update("form:datosVRLEmpleado");
             context.update("form:informacionRegistro");
-            index = -1;
-            secRegistro = null;
+            vigenciaSeleccionada = null;
 
             if (guardado) {
                 guardado = false;
@@ -780,9 +660,9 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             vrlFecha = (Column) c.getViewRoot().findComponent("form:datosVRLEmpleado:vrlFecha");
-            vrlFecha.setFilterStyle("width: 60px");
+            vrlFecha.setFilterStyle("width: 85%");
             vrlNombre = (Column) c.getViewRoot().findComponent("form:datosVRLEmpleado:vrlNombre");
-            vrlNombre.setFilterStyle("width: 500px");
+            vrlNombre.setFilterStyle("width: 85%");
             altoTabla = "246";
             RequestContext.getCurrentInstance().update("form:datosVRLEmpleado");
             bandera = 1;
@@ -820,8 +700,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         listVRLBorrar.clear();
         listVRLCrear.clear();
         listVRLModificar.clear();
-        index = -1;
-        secRegistro = null;
+        vigenciaSeleccionada = null;
         paraNuevaRF = 0;
         vigenciasReformasLaborales = null;
         guardado = true;
@@ -835,19 +714,22 @@ public class ControlVigenciasReformasLaborales implements Serializable {
      * @param list Lista filtrada - Lista real
      * @param LND Tipo actualizacion = LISTA - NUEVO - DUPLICADO
      */
-    public void asignarIndex(Integer indice, int LND) {
-        index = indice;
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (LND == 0) {
-            tipoActualizacion = 0;
-        } else if (LND == 1) {
+    public void asignarIndex(VigenciasReformasLaborales vrl) {
+        vigenciaSeleccionada = vrl;
+        tipoActualizacion = 0;
+
+        RequestContext.getCurrentInstance().update("form:ReformasLaboralesDialogo");
+        RequestContext.getCurrentInstance().execute("ReformasLaboralesDialogo.show()");
+    }
+
+    public void asignarIndex(int LND) {
+        if (LND == 1) {
             tipoActualizacion = 1;
         } else if (LND == 2) {
             tipoActualizacion = 2;
         }
-        getInfoRegistroReformaLaboral();
-        context.update("form:ReformasLaboralesDialogo");
-        context.execute("ReformasLaboralesDialogo.show()");
+        RequestContext.getCurrentInstance().update("form:ReformasLaboralesDialogo");
+        RequestContext.getCurrentInstance().execute("ReformasLaboralesDialogo.show()");
     }
 
     //LOVS
@@ -858,25 +740,15 @@ public class ControlVigenciasReformasLaborales implements Serializable {
     public void actualizarReformaLaboral() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {// Si se trabaja sobre la tabla y no sobre un dialogo
-            if (tipoLista == 0) {// Si NO tiene Filtro
-                vigenciasReformasLaborales.get(index).setReformalaboral(reformaLaboralSelecionada);
-                if (!listVRLCrear.contains(vigenciasReformasLaborales.get(index))) {
-                    if (listVRLModificar.isEmpty()) {
-                        listVRLModificar.add(vigenciasReformasLaborales.get(index));
-                    } else if (!listVRLModificar.contains(vigenciasReformasLaborales.get(index))) {
-                        listVRLModificar.add(vigenciasReformasLaborales.get(index));
-                    }
-                }
-            } else {// Si tiene Filtro
-                filtrarVRL.get(index).setReformalaboral(reformaLaboralSelecionada);
-                if (!listVRLCrear.contains(filtrarVRL.get(index))) {
-                    if (listVRLModificar.isEmpty()) {
-                        listVRLModificar.add(filtrarVRL.get(index));
-                    } else if (!listVRLModificar.contains(filtrarVRL.get(index))) {
-                        listVRLModificar.add(filtrarVRL.get(index));
-                    }
+            vigenciaSeleccionada.setReformalaboral(reformaLaboralSelecionada);
+            if (!listVRLCrear.contains(vigenciaSeleccionada)) {
+                if (listVRLModificar.isEmpty()) {
+                    listVRLModificar.add(vigenciaSeleccionada);
+                } else if (!listVRLModificar.contains(vigenciaSeleccionada)) {
+                    listVRLModificar.add(vigenciaSeleccionada);
                 }
             }
+
             if (guardado) {
                 guardado = false;
                 context.update("form:ACEPTAR");
@@ -891,14 +763,8 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             context.update("formularioDialogos:duplicarReformaLaboral");
         }
         filtradoReformasLaborales = null;
-        reformaLaboralSelecionada = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
-        //context.update("form:ReformasLaboralesDialogo");
-        //context.update("form:lovReformasLaborales");
-        //context.update("form:aceptarRL");
         context.reset("form:lovReformasLaborales:globalFilter");
         context.execute("lovReformasLaborales.clearFilters()");
         context.execute("ReformasLaboralesDialogo.hide()");
@@ -911,8 +777,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         filtradoReformasLaborales = null;
         reformaLaboralSelecionada = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -931,7 +795,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
      */
     public void listaValoresBoton() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index < 0) {
+        if (vigenciaSeleccionada == null) {
             context.execute("seleccionarRegistro.show()");
         } else {
             if (cualCelda == 1) {
@@ -963,8 +827,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "VigenciasReformasLaboralesPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
     }
 
     /**
@@ -979,8 +841,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "VigenciasReformasLaboralesXLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
     }
     //EVENTO FILTRAR
 
@@ -999,29 +859,35 @@ public class ControlVigenciasReformasLaborales implements Serializable {
 
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
-            if (index >= 0 ) {
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "VIGENCIASREFORMASLABORALES");
-                backUpSecRegistro = secRegistro;
-                secRegistro = null;
-                if (resultado == 1) {
-                    context.execute("errorObjetosDB.show()");
-                } else if (resultado == 2) {
-                    context.execute("confirmarRastro.show()");
-                } else if (resultado == 3) {
-                    context.execute("errorRegistroRastro.show()");
-                } else if (resultado == 4) {
-                    context.execute("errorTablaConRastro.show()");
-                } else if (resultado == 5) {
-                    context.execute("errorTablaSinRastro.show()");
-                }
-            } else {
+        if (vigenciaSeleccionada != null) {
+            int resultado = administrarRastros.obtenerTabla(vigenciaSeleccionada.getSecuencia(), "VIGENCIASREFORMASLABORALES");
+            if (resultado == 1) {
+                context.execute("errorObjetosDB.show()");
+            } else if (resultado == 2) {
+                context.execute("confirmarRastro.show()");
+            } else if (resultado == 3) {
+                context.execute("errorRegistroRastro.show()");
+            } else if (resultado == 4) {
+                context.execute("errorTablaConRastro.show()");
+            } else if (resultado == 5) {
+                context.execute("errorTablaSinRastro.show()");
+            }
+        } else {
             if (administrarRastros.verificarHistoricosTabla("VIGENCIASREFORMASLABORALES")) {
                 context.execute("confirmarRastroHistorico.show()");
             } else {
                 context.execute("errorRastroHistorico.show()");
             }
         }
-        index = -1;
+    }
+
+    public void recordarSeleccion() {
+        if (vigenciaSeleccionada != null) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            tablaC = (DataTable) c.getViewRoot().findComponent("form:datosVRLEmpleado");
+            tablaC.setSelection(vigenciaSeleccionada);
+            System.out.println("vigenciaSeleccionada: " + vigenciaSeleccionada);
+        }
     }
     //GETTERS AND SETTERS
 
@@ -1038,8 +904,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             }
             return vigenciasReformasLaborales;
         } catch (Exception e) {
-            //logger.debug("Metodo: getVigenciasReformasLaboralesEmpleado - ControlVigenciasReformasLaborales - Fecha : " + format.format(fechaDia) + " - Usuario : " + actualUsuario.getAlias() + " - Error : " + e.toString());
-            //logger.info("Metodo getVigenciasReformasLaboralesEmpleado - ControlVigenciasReformasLaborales - Fecha : " + format.format(fechaDia));
             logger.error("Metodo: getVigenciasReformasLaboralesEmpleado - ControlVigenciasReformasLaborales - Fecha : " + format.format(fechaDia) + " - Usuario : " + actualUsuario.getAlias() + " - Error : " + e.toString());
             return null;
         }
@@ -1088,13 +952,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
     public List<ReformasLaborales> getListaReformasLaborales() {
         if (listaReformasLaborales == null) {
             listaReformasLaborales = administrarVigenciasReformasLaborales.reformasLaborales();
-            RequestContext context = RequestContext.getCurrentInstance();
-            if (listaReformasLaborales == null || listaReformasLaborales.isEmpty()) {
-                infoRegistroReformaLaboral = "Cantidad de registros: 0 ";
-            } else {
-                infoRegistroReformaLaboral = "Cantidad de registros: " + listaReformasLaborales.size();
-            }
-            context.update("form:infoRegistroReformaLaboral");
         }
         return listaReformasLaborales;
     }
@@ -1135,22 +992,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         this.reformaLaboralSelecionada = reformaLaboralSelecionada;
     }
 
-    public BigInteger getSecRegistro() {
-        return secRegistro;
-    }
-
-    public void setSecRegistro(BigInteger secRegistro) {
-        this.secRegistro = secRegistro;
-    }
-
-    public BigInteger getBackUpSecRegistro() {
-        return backUpSecRegistro;
-    }
-
-    public void setBackUpSecRegistro(BigInteger backUpSecRegistro) {
-        this.backUpSecRegistro = backUpSecRegistro;
-    }
-
     public boolean isGuardado() {
         return guardado;
     }
@@ -1172,7 +1013,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
     }
 
     public String getInfoRegistroReformaLaboral() {
-        getListaReformasLaborales();
         if (listaReformasLaborales != null) {
             infoRegistroReformaLaboral = "Cantidad de registros : " + listaReformasLaborales.size();
         } else {

@@ -207,5 +207,7 @@ public interface AdministrarPersonaIndividualInterface {
     public void crearCortesProcesos(CortesProcesos corte);
     
     public TiposTrabajadores buscarTipoTrabajadorPorCodigo(short codigo);
+
+    public List<Cargos> lovCargosXEmpresa(BigInteger empresa);
    
 }

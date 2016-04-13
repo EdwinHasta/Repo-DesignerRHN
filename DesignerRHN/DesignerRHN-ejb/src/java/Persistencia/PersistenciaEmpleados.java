@@ -375,8 +375,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             Empleados empl = (Empleados) query.getSingleResult();
             return empl;
         } catch (Exception e) {
-            PropertyConfigurator.configure("log4j.properties");
-            logger.error("Metodo: buscarEmpleadoPorCodigoyEmpresa - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
+//            PropertyConfigurator.configure("log4j.properties");
+//            logger.error("Metodo: buscarEmpleadoPorCodigoyEmpresa - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }

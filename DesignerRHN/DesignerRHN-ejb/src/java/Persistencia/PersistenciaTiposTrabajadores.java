@@ -15,9 +15,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br>
- * Clase encargada de realizar operaciones sobre la tabla 'TiposTrabajadores' de
- * la base de datos.
+ * Clase Stateless.<br> Clase encargada de realizar operaciones sobre la tabla
+ * 'TiposTrabajadores' de la base de datos.
  *
  * @author AndresPineda
  */
@@ -27,8 +26,9 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-     private EntityManager em;
+    /*
+     * @PersistenceContext(unitName = "DesignerRHN-ejbPU") private EntityManager
+     * em;
      */
     @Override
     public void crear(EntityManager em, TiposTrabajadores tiposTrabajadores) {
@@ -107,6 +107,8 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
     @Override
     public String plantillaValidarTipoTrabajadorReformaLaboral(EntityManager em, BigInteger tipoTrabajador, BigInteger reformaLaboral) {
         try {
+            System.out.println("tipoTrabajador: " + tipoTrabajador);
+            System.out.println("reformaLaboral: " + reformaLaboral);
             em.clear();
             String sqlQuery = "SELECT tipostrabajadores_PKG.plantillavalidarl(?,?) FROM dual";
             Query query = em.createNativeQuery(sqlQuery);
@@ -114,16 +116,21 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             query.setParameter(2, reformaLaboral);
             String retorno = (String) query.getSingleResult();
             System.out.println("retorno : " + retorno);
+            if (retorno == null) {
+                retorno = "N";
+            }
             return retorno;
         } catch (Exception e) {
             System.out.println("Error plantillaValidarTipoTrabajadorReformaLaboral PersistenciaTiposTrabajadores : " + e.toString());
-            return "N";
+            return null;
         }
     }
 
     @Override
     public String plantillaValidarTipoTrabajadorTipoSueldo(EntityManager em, BigInteger tipoTrabajador, BigInteger tipoSueldo) {
         try {
+            System.out.println("tipoTrabajador: " + tipoTrabajador);
+            System.out.println("tipoSueldo: " + tipoSueldo);
             em.clear();
             String sqlQuery = "SELECT tipostrabajadores_PKG.plantillavalidats(?,?) FROM dual";
             Query query = em.createNativeQuery(sqlQuery);
@@ -131,16 +138,21 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             query.setParameter(2, tipoSueldo);
             String retorno = (String) query.getSingleResult();
             System.out.println("retorno : " + retorno);
+            if (retorno == null) {
+                retorno = "N";
+            }
             return retorno;
         } catch (Exception e) {
             System.out.println("Error plantillaValidarTipoTrabajadorTipoSueldo PersistenciaTiposTrabajadores : " + e.toString());
-            return "N";
+            return null;
         }
     }
 
     @Override
     public String plantillaValidarTipoTrabajadorTipoContrato(EntityManager em, BigInteger tipoTrabajador, BigInteger tipoContrato) {
         try {
+            System.out.println("tipoTrabajador: " + tipoTrabajador);
+            System.out.println("tipoContrato: " + tipoContrato);
             em.clear();
             String sqlQuery = "SELECT tipostrabajadores_PKG.plantillavalidatc(?,?) FROM dual";
             Query query = em.createNativeQuery(sqlQuery);
@@ -148,16 +160,21 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             query.setParameter(2, tipoContrato);
             String retorno = (String) query.getSingleResult();
             System.out.println("retorno : " + retorno);
+            if (retorno == null) {
+                retorno = "N";
+            }
             return retorno;
         } catch (Exception e) {
             System.out.println("Error plantillaValidarTipoTrabajadorTipoContrato PersistenciaTiposTrabajadores : " + e.toString());
-            return "N";
+            return null;
         }
     }
 
     @Override
     public String plantillaValidarTipoTrabajadorContrato(EntityManager em, BigInteger tipoTrabajador, BigInteger contrato) {
         try {
+            System.out.println("tipoTrabajador: " + tipoTrabajador);
+            System.out.println("contrato: " + contrato);
             em.clear();
             String sqlQuery = "SELECT tipostrabajadores_PKG.plantillavalidall(?,?) FROM dual";
             Query query = em.createNativeQuery(sqlQuery);
@@ -165,16 +182,22 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             query.setParameter(2, contrato);
             String retorno = (String) query.getSingleResult();
             System.out.println("retorno : " + retorno);
+            if (retorno == null) {
+                retorno = "N";
+            }
             return retorno;
         } catch (Exception e) {
             System.out.println("Error plantillaValidarTipoTrabajadorContrato PersistenciaTiposTrabajadores : " + e.toString());
-            return "N";
+            return null;
         }
     }
 
     @Override
     public String plantillaValidarTipoTrabajadorNormaLaboral(EntityManager em, BigInteger tipoTrabajador, BigInteger normaLaboral) {
         try {
+            System.out.println("");
+            System.out.println("tipoTrabajador: " + tipoTrabajador);
+            System.out.println("normaLaboral: " + normaLaboral);
             em.clear();
             String sqlQuery = "SELECT tipostrabajadores_PKG.plantillavalidanl(?,?) FROM dual";
             Query query = em.createNativeQuery(sqlQuery);
@@ -182,10 +205,13 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             query.setParameter(2, normaLaboral);
             String retorno = (String) query.getSingleResult();
             System.out.println("retorno : " + retorno);
+            if (retorno == null) {
+                retorno = "N";
+            }
             return retorno;
         } catch (Exception e) {
             System.out.println("Error plantillaValidarTipoTrabajadorNormaLaboral PersistenciaTiposTrabajadores : " + e.toString());
-            return "N";
+            return null;
         }
     }
 
@@ -195,7 +221,9 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             em.clear();
             String sql = "SELECT * FROM TiposTrabajadores WHERE codigo=?";
             /*
-             Query query = em.createQuery("SELECT t FROM TiposTrabajadores t WHERE t.codigo=:codigo");*/
+             * Query query = em.createQuery("SELECT t FROM TiposTrabajadores t
+             * WHERE t.codigo=:codigo");
+             */
             Query query = em.createNativeQuery(sql, TiposTrabajadores.class);
             query.setParameter(1, codigo);
             //query.setHint("javax.persistence.cache.storeMode", "REFRESH");

@@ -82,7 +82,7 @@
                                 <p:separator style="position: relative; top: -9px"/> 
 
                                 <p:commandButton style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
-                                                 id="refrescar" value="" actionListener="#{controlVigenciasCargos.cancelarModificacion()}" update=":form:datosVCEmpleado" process="@this"/>  
+                                                 id="refrescar" value="" actionListener="#{controlVigenciasCargos.cancelarModificacion()}" oncomplete="window.location.reload()" update=":form:datosVCEmpleado" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
                                 <p:separator style="position: relative; top: -9px"/> 
@@ -93,7 +93,7 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <fieldset style="position: absolute; top: 80px; left: 10px; height: 370px; width: 830px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute; top: 77px; left: 10px; height: 370px; width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>#{msg['cargos']}</strong></legend>
                             <!-- TABLA EMPLVIGENCIACARGO -->
                             <p:dataTable id="datosVCEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice"
@@ -272,12 +272,9 @@
 
                             <h:outputText id="infoRegistroEstructuras" value="#{msg['infoRegistro']} #{controlVigenciasCargos.infoRegistroEstructuras}" style="position: relative; top: 15px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarE" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar ? true : false }" actionListener="#{controlVigenciasCargos.actualizarEstructura()}" process="@this" onclick="estructurasDialog.hide()"
-                                             style="position: absolute; top: 400px; left: 522px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"/>
-
-                            <p:commandButton id="atrasE" value="#{msg['atras']}" actionListener="#{controlVigenciasCargos.cancelarCambioEstructura()}" process="@this" onclick="estructurasDialog.hide()"
-                                             style="position: absolute; top: 400px; left: 614px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"/>
-
+                            <p:commandButton id="aceptarE" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar ? true : false }" style="position: absolute; top: 390px; left: 552px; " icon="ui-icon-check" actionListener="#{controlVigenciasCargos.actualizarEstructura()}" process="@this" onclick="estructurasDialog.hide()"/>
+                                
+                            <p:commandButton id="atrasE" value="#{msg['atras']}" style="position: absolute; top: 390px; left: 644px; " actionListener="#{controlVigenciasCargos.cancelarCambioEstructura()}" icon="ui-icon-arrowreturnthick-1-w"  process="@this" onclick="estructurasDialog.hide()"/>
                         </p:dialog>
 
                         <!-- DIALOGO L.O.V ESTATICO DE MOTIVOS CAMBIOS CARGOS -->
@@ -307,11 +304,9 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <p:commandButton id="aceptarM" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" actionListener="#{controlVigenciasCargos.actualizarMotivo()}" process="@this" onclick="motivosDialog.hide()"
-                                             style="position: relative; left: 220px; width: 90px; top: 10px ; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"/>
-
-                            <p:commandButton id="atrasM" value="#{msg['atras']}"  actionListener="#{controlVigenciasCargos.cancelarCambioMotivo()}"  process="@this" onclick="motivosDialog.hide()"
-                                             style="position: relative; left: 220px; width: 90px; top: 10px ;height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"/>    
+                            <p:commandButton id="aceptarM" style="position: relative; left: 210px" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" icon="ui-icon-check"  actionListener="#{controlVigenciasCargos.actualizarMotivo()}" process="@this" onclick="motivosDialog.hide()"/>
+                                
+                            <p:commandButton id="atrasM" style="position: relative; left: 210px" value="#{msg['atras']}"  icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasCargos.cancelarCambioMotivo()}"  process="@this" onclick="motivosDialog.hide()"/>    
 
                             <h:outputText id="infoRegistroMotivos" value="#{msg['infoRegistro']} #{controlVigenciasCargos.infoRegistroMotivos}" style="position: absolute; top: 350px; left: 20px; font-weight: bold"/>
 
@@ -349,12 +344,10 @@
 
                             <h:outputText id="infoRegistroCargos" value="#{msg['infoRegistro']} #{controlVigenciasCargos.infoRegistroCargos}" style="position: relative; top: 15px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarC" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" actionListener="#{controlVigenciasCargos.actualizarCargo()}" process="@this" onclick="cargosDialog.hide()"
-                                             style="position: absolute; top: 400px; left: 290px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"/>
-
-                            <p:commandButton id="atrasC" value="#{msg['atras']}"  actionListener="#{controlVigenciasCargos.cancelarCambioCargo()}" process="@this" onclick="cargosDialog.hide()"
-                                             style="position: absolute; top: 400px; left: 380px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"/>
-
+                            <p:commandButton id="aceptarC" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 390px; left: 308px; " icon="ui-icon-check" actionListener="#{controlVigenciasCargos.actualizarCargo()}" process="@this" onclick="cargosDialog.hide()"/>
+                                
+                            <p:commandButton id="atrasC" value="#{msg['atras']}" style="position: absolute; top: 390px; left: 400px; " icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasCargos.cancelarCambioCargo()}" process="@this" onclick="cargosDialog.hide()"/>
+                            
                         </p:dialog>
 
                         <!-- DIALOGO DE DETALLES VIGENCIAS CARGOS -->
@@ -412,11 +405,10 @@
                             </p:dataTable> 
                             <h:outputText id="informacionLOVEJ" value="#{msg['infoRegistro']} #{controlVigenciasCargos.cantidadRegistrosLOV}" style="position: absolute; top: 265px; left: 20px; font-weight: bold"/>
 
-                            <p:commandButton id="AceptarEmplJ" value="#{msg['aceptar']}" actionListener="#{controlVigenciasCargos.actualizarEmpleadoJefe()}" process="@this" disabled="#{controlVigenciasCargos.aceptar}" onclick="dialogoEmpleadoJefe.hide()"
-                                             style="position: absolute; top: 260px; left: 560px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"/>
-
-                            <p:commandButton value="#{msg['atras']}"  actionListener="#{controlVigenciasCargos.cancelarEmpleadoJefe()}" process="@this" onclick="dialogoEmpleadoJefe.hide()"
-                                             style="position: absolute; top: 260px; left: 653px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"/>
+                            <p:commandButton id="AceptarEmplJ" value="#{msg['aceptar']}" actionListener="#{controlVigenciasCargos.actualizarEmpleadoJefe()}" icon="ui-icon-check"   process="@this" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 260px; left: 560px" onclick="dialogoEmpleadoJefe.hide()"/>
+                                
+                            <p:commandButton value="#{msg['atras']}"  actionListener="#{controlVigenciasCargos.cancelarEmpleadoJefe()}" icon="ui-icon-arrowreturnthick-1-w"  style="position: absolute; top: 260px; left: 653px" process="@this" onclick="dialogoEmpleadoJefe.hide()"/>
+                            
                         </p:dialog>
 
                     </p:panel>
@@ -431,10 +423,9 @@
                     </p:dialog>
 
                     <p:dialog id="validacioNuevaVigencia" header="#{msg['atencion']}" widgetVar="validacioNuevaVigencia"  resizable="false" draggable="false" modal="true" height="95" width="440"  closable="false">  
-                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
                         <h:outputText value="#{msg['validacionNuevo']} #{controlVigenciasCargos.mensajeValidacion}" style="position: absolute; left: 110px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="validacioNuevaVigencia.hide();" process="@this" 
-                                         style="position: absolute; top: 60px; left: 300px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"/>
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacioNuevaVigencia.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="validacionFechaDuplicada" header="#{msg['atencion']}" widgetVar="validacionFechaDuplicada"  resizable="false" draggable="false" modal="true" height="95" width="440"  closable="true">  

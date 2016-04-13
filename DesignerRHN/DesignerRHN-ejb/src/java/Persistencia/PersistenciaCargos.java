@@ -14,9 +14,8 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless. <br>
- * Clase encargada de realizar operaciones sobre la tabla 'Cargos' de la base de
- * datos
+ * Clase Stateless. <br> Clase encargada de realizar operaciones sobre la tabla
+ * 'Cargos' de la base de datos
  *
  * @author Betelgeuse
  */
@@ -26,8 +25,10 @@ public class PersistenciaCargos implements PersistenciaCargosInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-     private EntityManager em;*/
+    /*
+     * @PersistenceContext(unitName = "DesignerRHN-ejbPU") private EntityManager
+     * em;
+     */
     @Override
     public void crear(EntityManager em, Cargos cargos) {
         em.clear();

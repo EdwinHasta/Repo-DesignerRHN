@@ -1525,19 +1525,20 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * Cancela las modificaciones realizas en la pagina
      */
     public void cancelarModificacion() {
+        RequestContext context = RequestContext.getCurrentInstance();
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             restablecerTablaVL();
             //CERRAR FILTRADO
-            RequestContext.getCurrentInstance().update("form:datosVLEmpleado");
+            context.update("form:datosVLEmpleado");
         }
         if (banderaVP == 1) {
             restablecerTablaVP();
-            RequestContext.getCurrentInstance().update("form:datosVPVigencia");
+            context.update("form:datosVPVigencia");
         }
         if (banderaVPP == 1) {
             restablecerTablaVPP();
-            RequestContext.getCurrentInstance().update("form:datosVPPVigencia");
+            context.update("form:datosVPPVigencia");
         }
         listVLBorrar.clear();
         listVPBorrar.clear();
@@ -1557,7 +1558,6 @@ public class ControlVigenciaLocalizacion implements Serializable {
         vigenciasProrrateosCentroC = null;
         vigenciasProrrateosProyectos = null;
         guardado = true;
-        RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:ACEPTAR");
         context.update("form:datosVLEmpleado");
         context.update("form:datosVPVigencia");
@@ -3140,7 +3140,6 @@ public class ControlVigenciaLocalizacion implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         int resultado = administrarRastros.obtenerTabla(vigenciaLocalizacionSeleccionada.getSecuencia(), "VIGENCIASLOCALIZACIONES");
         backUp = vigenciaLocalizacionSeleccionada.getSecuencia();
-        vigenciaLocalizacionSeleccionada = null;
         if (resultado == 1) {
             context.execute("errorObjetosDB.show()");
         } else if (resultado == 2) {
@@ -3172,7 +3171,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
     public void verificarRastroVigenciaProrrateoCC() {
         RequestContext context = RequestContext.getCurrentInstance();
         int resultado = administrarRastros.obtenerTabla(vigenciaProrrateoSeleccionada.getSecuencia(), "VIGENCIASPRORRATEOS");
-        vigenciaProrrateoSeleccionada = null;
+        backUp = vigenciaProrrateoSeleccionada.getSecuencia();
         if (resultado == 1) {
             context.execute("errorObjetosDB.show()");
         } else if (resultado == 2) {
@@ -3204,7 +3203,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
     public void verificarRastroVigenciaProrrateoProyecto() {
         RequestContext context = RequestContext.getCurrentInstance();
         int resultado = administrarRastros.obtenerTabla(vigenciaProrrateoProyectoSeleccionada.getSecuencia(), "VIGENCIASPRORRATEOSPROYECTOS");
-        vigenciaProrrateoProyectoSeleccionada = null;
+        backUp = vigenciaProrrateoProyectoSeleccionada.getSecuencia();
         if (resultado == 1) {
             context.execute("errorObjetosDB.show()");
         } else if (resultado == 2) {
@@ -3238,8 +3237,6 @@ public class ControlVigenciaLocalizacion implements Serializable {
             FacesContext c = FacesContext.getCurrentInstance();
             tabla = (DataTable) c.getViewRoot().findComponent("form:datosVLEmpleado");
             tabla.setSelection(vigenciaLocalizacionSeleccionada);
-        } else {
-            vigenciaLocalizacionSeleccionada = null;
         }
     }
 
@@ -3248,8 +3245,6 @@ public class ControlVigenciaLocalizacion implements Serializable {
             FacesContext c = FacesContext.getCurrentInstance();
             tabla = (DataTable) c.getViewRoot().findComponent("form:datosVPVigencia");
             tabla.setSelection(vigenciaProrrateoSeleccionada);
-        } else {
-            vigenciaProrrateoSeleccionada = null;
         }
     }
 
@@ -3258,8 +3253,6 @@ public class ControlVigenciaLocalizacion implements Serializable {
             FacesContext c = FacesContext.getCurrentInstance();
             tabla = (DataTable) c.getViewRoot().findComponent("form:datosVPPVigencia");
             tabla.setSelection(vigenciaProrrateoProyectoSeleccionada);
-        } else {
-            vigenciaProrrateoProyectoSeleccionada = null;
         }
     }
 
@@ -3329,10 +3322,11 @@ public class ControlVigenciaLocalizacion implements Serializable {
                                 vigenciaLocalizaciones.get(i).setProyecto(new Proyectos());
                             }
                         }
-
-                        if (vigenciaLocalizacionSeleccionada == null) {
-                            vigenciaLocalizacionSeleccionada = vigenciaLocalizaciones.get(0);
-                        }
+                        /*
+                         * if (vigenciaLocalizacionSeleccionada == null) {
+                         * vigenciaLocalizacionSeleccionada =
+                         * vigenciaLocalizaciones.get(0); }
+                         */
                     }
                 }
             }
