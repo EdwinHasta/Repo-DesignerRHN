@@ -151,7 +151,8 @@ button .ui-widget-header{
     background-image: url("images/ui-icons_ffffff_256x240.png");
 }
 .ui-state-highlight .ui-icon {
-    background-image: url("images/ui-icons_255ac2_256x240.png");
+    /*background-image: url("images/ui-icons_255ac2_256x240.png");*/
+    background-image: url("images/ui-icons_ffffff_256x240.png");
 }
 .ui-state-error .ui-icon,
 .ui-state-error-text .ui-icon {

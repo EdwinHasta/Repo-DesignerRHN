@@ -46,7 +46,7 @@ public class ControlCuenta implements Serializable {
     private List<Cuentas> filtrarListCuentas;
     private Cuentas cuentaTablaSeleccionada;
     //
-    private List<Empresas> listEmpresas;
+    private List<Empresas> listaEmpresas;
     private List<Empresas> filtrarListEmpresas;
     private Empresas empresaSeleccionada;
     private Empresas empresaActual;
@@ -101,16 +101,17 @@ public class ControlCuenta implements Serializable {
     private String infoRegistroBuscarCuenta, infoRegistroRubro, infoRegistroContraCuenta, infoRegistroEmpresa;
     //
     private String auxCodigoCuenta, auxDescripcionCuenta;
+    private String paginaAnterior;
 
     public ControlCuenta() {
         empresaSeleccionada = new Empresas();
         activoDetalle = true;
-        altoTabla = "335";
+        altoTabla = "300";
         cuentaActual = null;
         listRubros = null;
         listCuentasTesoreria = null;
         backUpEmpresaActual = new Empresas();
-        listEmpresas = null;
+        listaEmpresas = null;
         nombreTablaRastro = "";
         backUp = null;
         msnConfirmarRastro = "";
@@ -164,18 +165,20 @@ public class ControlCuenta implements Serializable {
         activoDetalle = true;
         listCuentas = null;
         getListEmpresas();
-        if (listEmpresas != null) {
-            if (listEmpresas.size() > 0) {
-                empresaActual = listEmpresas.get(0);
+        if (listaEmpresas != null) {
+            if (listaEmpresas.size() > 0) {
+                empresaActual = listaEmpresas.get(0);
                 backUpEmpresaActual = empresaActual;
             }
         }
         empresaSeleccionada = empresaActual;
         getListCuentas();
         if (listCuentas != null) {
-            infoRegistro = "Cantidad de registros : " + listCuentas.size();
+            //infoRegistro = "Cantidad de registros : " + listCuentas.size();
+            modificarInfoRegistro(listCuentas.size());
         } else {
-            infoRegistro = "Cantidad de registros : 0";
+            //infoRegistro = "Cantidad de registros : 0";
+            modificarInfoRegistro(0);
         }
     }
 
@@ -407,9 +410,11 @@ public class ControlCuenta implements Serializable {
                 listCuentas = null;
                 getListCuentas();
                 if (listCuentas != null) {
-                    infoRegistro = "Cantidad de registros : " + listCuentas.size();
+                    //infoRegistro = "Cantidad de registros : " + listCuentas.size();
+                    modificarInfoRegistro(listCuentas.size());
                 } else {
-                    infoRegistro = "Cantidad de registros : 0";
+                    //infoRegistro = "Cantidad de registros : 0";
+                    modificarInfoRegistro(0);
                 }
                 context.update("form:informacionRegistro");
 
@@ -483,9 +488,11 @@ public class ControlCuenta implements Serializable {
         cuentaActual = null;
         getListCuentas();
         if (listCuentas != null) {
-            infoRegistro = "Cantidad de registros : " + listCuentas.size();
+            //infoRegistro = "Cantidad de registros : " + listCuentas.size();
+            modificarInfoRegistro(listCuentas.size());
         } else {
-            infoRegistro = "Cantidad de registros : 0";
+            //infoRegistro = "Cantidad de registros : 0";
+            modificarInfoRegistro(0);
         }
         RequestContext.getCurrentInstance().update("form:informacionRegistro");
         getListCuentasTesoreria();
@@ -651,7 +658,8 @@ public class ControlCuenta implements Serializable {
             nuevoCuentas.setEmpresa(empresaActual);
             listCuentasCrear.add(nuevoCuentas);
             listCuentas.add(nuevoCuentas);
-            infoRegistro = "Cantidad de registros : " + listCuentas.size();
+            //infoRegistro = "Cantidad de registros : " + listCuentas.size();
+            modificarInfoRegistro(listCuentas.size());
             RequestContext.getCurrentInstance().update("form:informacionRegistro");
             ////------////
             nuevoCuentas = new Cuentas();
@@ -779,7 +787,8 @@ public class ControlCuenta implements Serializable {
             listCuentasCrear.add(duplicarCuentas);
             listCuentas.add(duplicarCuentas);
             duplicarCuentas = new Cuentas();
-            infoRegistro = "Cantidad de registros : " + listCuentas.size();
+            //infoRegistro = "Cantidad de registros : " + listCuentas.size();
+            modificarInfoRegistro(listCuentas.size());
             RequestContext.getCurrentInstance().update("form:informacionRegistro");
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosCuenta");
@@ -822,7 +831,8 @@ public class ControlCuenta implements Serializable {
                     listCuentasBorrar.add(listCuentas.get(index));
                 }
                 listCuentas.remove(index);
-                infoRegistro = "Cantidad de registros : " + listCuentas.size();
+                //infoRegistro = "Cantidad de registros : " + listCuentas.size();
+                modificarInfoRegistro(listCuentas.size());
             }
             if (tipoLista == 1) {
                 if (!listCuentasModificar.isEmpty() && listCuentasModificar.contains(filtrarListCuentas.get(index))) {
@@ -838,7 +848,8 @@ public class ControlCuenta implements Serializable {
                 int VLIndex = listCuentas.indexOf(filtrarListCuentas.get(index));
                 listCuentas.remove(VLIndex);
                 filtrarListCuentas.remove(index);
-                infoRegistro = "Cantidad de registros : " + filtrarListCuentas.size();
+                //infoRegistro = "Cantidad de registros : " + filtrarListCuentas.size();
+                modificarInfoRegistro(filtrarListCuentas.size());
             }
             RequestContext.getCurrentInstance().update("form:informacionRegistro");
             RequestContext context = RequestContext.getCurrentInstance();
@@ -967,7 +978,7 @@ public class ControlCuenta implements Serializable {
         RequestContext.getCurrentInstance().update("form:DETALLES");
         secRegistroCuentas = null;
         listCuentas = null;
-        listEmpresas = null;
+        listaEmpresas = null;
         empresaActual = null;
         k = 0;
         listCuentas = null;
@@ -1315,7 +1326,8 @@ public class ControlCuenta implements Serializable {
             tipoLista = 1;
         }
         RequestContext context = RequestContext.getCurrentInstance();
-        infoRegistro = "Cantidad de Registros: " + filtrarListCuentas.size();
+        //infoRegistro = "Cantidad de Registros: " + filtrarListCuentas.size();
+        modificarInfoRegistro(filtrarListCuentas.size());
         context.update("form:informacionRegistro");
     }
 
@@ -1440,9 +1452,11 @@ public class ControlCuenta implements Serializable {
             listCuentas = null;
             getListCuentas();
             if (listCuentas != null) {
-                infoRegistro = "Cantidad de registros : " + listCuentas.size();
+                //infoRegistro = "Cantidad de registros : " + listCuentas.size();
+                modificarInfoRegistro(listCuentas.size());
             } else {
-                infoRegistro = "Cantidad de registros : 0";
+                //infoRegistro = "Cantidad de registros : 0";
+                modificarInfoRegistro(0);
             }
             getListCuentasTesoreria();
             context.update("form:nombreEmpresa");
@@ -1474,6 +1488,49 @@ public class ControlCuenta implements Serializable {
         msnConfirmarRastro = "";
         msnConfirmarRastroHistorico = "";
         nombreTablaRastro = "";
+    }
+    private void modificarInfoRegistro(int valor) {
+        infoRegistro = String.valueOf(valor);
+        System.out.println("infoRegistro: " + infoRegistro);
+    }
+    
+    public void verDetalle(Cuentas cuentaS) {
+        cuentaSeleccionada = cuentaS;
+        //RequestContext context = RequestContext.getCurrentInstance();
+        FacesContext fc = FacesContext.getCurrentInstance();
+        //((ControlDetalleConcepto) fc.getApplication().evaluateExpressionGet(fc, "#{ControlDetalleConcepto}", ControlDetalleConcepto.class)).obtenerConcepto(secuencia);
+
+        fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "detalleCuenta");
+//.getElementById('datosConceptos').scrollTop;
+    }
+    
+    public void recibirPaginaEntrante(String pagina) {
+        paginaAnterior = pagina;
+        index = -1;
+        activoDetalle = true;
+        listCuentas = null;
+        getListEmpresas();
+        if (listaEmpresas != null) {
+            if (listaEmpresas.size() > 0) {
+                empresaActual = listaEmpresas.get(0);
+                backUpEmpresaActual = empresaActual;
+            }
+        }
+        empresaSeleccionada = empresaActual;
+        getListCuentas();
+        if (listCuentas != null) {
+            //infoRegistro = "Cantidad de registros : " + listCuentas.size();
+            modificarInfoRegistro(listCuentas.size());
+        } else {
+            //infoRegistro = "Cantidad de registros : 0";
+            modificarInfoRegistro(0);
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:datosCuenta");
+    }
+    
+    public String redirigir() {
+        return paginaAnterior;
     }
 
     //GET - SET 
@@ -1638,12 +1695,12 @@ public class ControlCuenta implements Serializable {
     }
 
     public List<Empresas> getListEmpresas() {
-        listEmpresas = administrarCuentas.consultarEmpresas();
-        return listEmpresas;
+        listaEmpresas = administrarCuentas.consultarEmpresas();
+        return listaEmpresas;
     }
 
     public void setListEmpresas(List<Empresas> listEmpresas) {
-        this.listEmpresas = listEmpresas;
+        this.listaEmpresas = listEmpresas;
     }
 
     public List<Empresas> getFiltrarListEmpresas() {
@@ -1766,9 +1823,11 @@ public class ControlCuenta implements Serializable {
     public String getInfoRegistroBuscarCuenta() {
         getListCuentasTesoreria();
         if (listCuentasTesoreria != null) {
-            infoRegistroBuscarCuenta = "Cantidad de registros : " + listCuentasTesoreria.size();
+            //infoRegistroBuscarCuenta = "Cantidad de registros : " + listCuentasTesoreria.size();
+            infoRegistroBuscarCuenta = String.valueOf(listCuentasTesoreria.size());
         } else {
-            infoRegistroBuscarCuenta = "Cantidad de registros : 0";
+            //infoRegistroBuscarCuenta = "Cantidad de registros : 0";
+            infoRegistroBuscarCuenta = "0";
         }
         return infoRegistroBuscarCuenta;
     }
@@ -1780,9 +1839,11 @@ public class ControlCuenta implements Serializable {
     public String getInfoRegistroRubro() {
         getListRubros();
         if (listRubros != null) {
-            infoRegistroRubro = "Cantidad de registros : " + listRubros.size();
+            //infoRegistroRubro = "Cantidad de registros : " + listRubros.size();
+            infoRegistroRubro = String.valueOf(listRubros.size());
         } else {
-            infoRegistroRubro = "Cantidad de registros : 0";
+            //infoRegistroRubro = "Cantidad de registros : 0";
+            infoRegistroRubro = "0";
         }
         return infoRegistroRubro;
     }
@@ -1794,9 +1855,11 @@ public class ControlCuenta implements Serializable {
     public String getInfoRegistroContraCuenta() {
         getListCuentasTesoreria();
         if (listCuentasTesoreria != null) {
-            infoRegistroContraCuenta = "Cantidad de registros : " + listCuentasTesoreria.size();
+            //infoRegistroContraCuenta = "Cantidad de registros : " + listCuentasTesoreria.size();
+            infoRegistroContraCuenta = String.valueOf(listCuentasTesoreria.size());
         } else {
-            infoRegistroContraCuenta = "Cantidad de registros : 0";
+            //infoRegistroContraCuenta = "Cantidad de registros : 0";
+            infoRegistroContraCuenta = "0";
         }
         return infoRegistroContraCuenta;
     }
@@ -1807,10 +1870,12 @@ public class ControlCuenta implements Serializable {
 
     public String getInfoRegistroEmpresa() {
         getListEmpresas();
-        if (listEmpresas != null) {
-            infoRegistroEmpresa = "Cantidad de registros : " + listEmpresas.size();
+        if (listaEmpresas != null) {
+            //infoRegistroEmpresa = "Cantidad de registros : " + listaEmpresas.size();
+            infoRegistroEmpresa = String.valueOf(listaEmpresas.size());
         } else {
-            infoRegistroEmpresa = "Cantidad de registros : 0";
+            //infoRegistroEmpresa = "Cantidad de registros : 0";
+            infoRegistroEmpresa = "0";
         }
         return infoRegistroEmpresa;
     }

@@ -60,8 +60,10 @@ a:link:hover, a:visited:hover  {
 
 
 .ui-datatable tfoot td {
-    padding: 0px 10px !important;
-    height: 10px !important;
+    /*padding: 0px 10px !important;
+    height: 10px !important;*/
+    padding: 0px 10px;
+    height: 10px;
 }
 
 .ui-datagrid .ui-paginator .ui-paginator-next,

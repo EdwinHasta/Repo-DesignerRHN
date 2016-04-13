@@ -664,6 +664,17 @@ public class ControlDetalleCuenta implements Serializable {
         nombreTablaRastro = "";
     }
 
+    public void obtenerCuenta(BigInteger secuencia) {
+        cuentaActual = administrarDetalleCuenta.mostrarCuenta(secuencia);
+        indexCredito = -1;
+        secRegistroCredito = null;
+        indexDebito = -1;
+        secRegistroDebito = null;
+        listCuentasCredito = null;
+        listCuentasDebito = null;
+        guardado = true;
+    }
+    
     public List<VigenciasCuentas> getListCuentasCredito() {
         try {
             if (listCuentasCredito == null) {
