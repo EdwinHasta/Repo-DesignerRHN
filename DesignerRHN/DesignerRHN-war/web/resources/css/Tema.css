@@ -8,12 +8,22 @@ and open the template in the editor.
     Author     : Administrator
 */
 .cssBotonIngreso{
-    font-weight: bold; 
-    border: 1px solid #cccccc;
+    height: 24px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.panelTotal{
+    position: absolute; 
+    width: 874px; 
+    height: 530px;
+    box-shadow: 5px 5px 5px 0px rgba(0,12,92,1);
 }
 .ui-widget {
     font-family: Tahoma;
     font-size: 12px;
+}
+ui-widget-header ui-datatable-scrollable-footer{
+    height: 10px;
 }
 .ui-widget input,
 .ui-widget select,
@@ -399,24 +409,25 @@ button .ui-widget-header{
     padding: 0px 3px;
 }
 
-.cssBotonesPaginadorPersonalizado{
+.cssBotonesEmpleado{
     position: absolute;
-    width: 25px;
-    height: 25px;
-}
-.cssBotonCancelar{
-    font-weight: bold; 
-    border: 1px solid #cccccc;
-    color: red;
-}
-.cssBotonAceptar{
-    font-weight: bold; 
-    border: 1px solid #cccccc;
-    background: red;
+    width: 30px;
+    height: 30px;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
 .ui-button-text-only .ui-button-text{
     padding: 0 0 0;
+}
+.ui-button{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.bticon{
+    padding-left: 0px;
+    padding-right: 0px;
+    border: none;
 }
 .cssToolbar{
     background: transparent;

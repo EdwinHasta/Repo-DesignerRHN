@@ -123,7 +123,7 @@ public class ControlVigenciasCargos implements Serializable {
     //------------------------------------------------------------------------------------------
 
     public ControlVigenciasCargos() {
-        System.out.println("Se creo un nuevo BakingBean YUPI!");
+        System.out.println("ControlVigenciasCargos");
 
         empleado = new Empleados();
         bandera = 0;
@@ -595,9 +595,6 @@ public class ControlVigenciasCargos implements Serializable {
         }
     }
 
-    public void picachu(String a) {
-        System.out.println(a);
-    }
     /*
      * Metodo encargado de accionar un dialogo especifico
      */

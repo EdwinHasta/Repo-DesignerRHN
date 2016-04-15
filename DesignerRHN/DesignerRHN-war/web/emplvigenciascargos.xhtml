@@ -16,9 +16,9 @@
                     <pe:ajaxErrorHandler/>
                     <f:loadBundle basename="Recursos.emplvigenciascargos" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal">  
 
-                        <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 440px;left: 400px;" 
+                        <h:outputText style="position: absolute; top: 50px; height: 12px; position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 440px;left: 400px;" 
                                       id="nombreEmpleado" value="#{controlVigenciasCargos.empleado.persona.nombreCompleto}"/>
 
                         <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 40px; left: 20px; height: 24px">   
