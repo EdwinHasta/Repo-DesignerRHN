@@ -14,7 +14,7 @@
                 <h:form id="form"> 
                     <f:loadBundle basename="Recursos.emplvigenciasueldo" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal">
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlVigenciaSueldo.empleado.persona.nombreCompleto}"/> 
 
                         <h:outputText id="totalConsultarActual" value="#{msg['total']}" style="position: absolute; top: 68px;left: 717px; visibility: #{controlVigenciaSueldo.visibilidadTotal()}; font-weight: bold" />
@@ -103,7 +103,7 @@
                                          selection="#{controlVigenciaSueldo.vigenciaSueldoSeleccionada}" selectionMode="single">
 
                                 <f:event type="preRenderView" listener="#{controlVigenciaSueldo.recordarSeleccionVS()}"/>
-                                <p:ajax event="filter" listener="#{controlVigenciaSueldo.eventoFiltrar()}"/>
+                                <p:ajax event="filter" listener="#{controlVigenciaSueldo.eventoFiltrarS()}"/>
 
                                 <p:column  headerText="#{msg['fecha']}" sortBy="#{infoDVS.fechavigencia}" filterBy="#{infoDVS.fechavigencia}" filterMatchMode="contains"  width="68" id="vSFechaVigencia" filterStyle="display: none; visibility: hidden;" style="text-align: center">  
                                     <p:cellEditor>  
@@ -139,7 +139,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooMotivoCambioSueldo" action="motivocambiosueldo" value=""/>
+                                        <p:commandButton style="width: 100%; height: 10px; border-radius: 0px;" id="fooMotivoCambioSueldo" action="motivocambiosueldo" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -156,7 +156,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooTipoSueldo" value="" action="tipossueldos" actionListener="#{controlTipoSueldo.inicializarPagina('emplVigSueldo')}" />
+                                        <p:commandButton style="width: 100%; height: 10px; border-radius: 0px;" id="fooTipoSueldo" value="" action="tipossueldos" actionListener="#{controlTipoSueldo.inicializarPagina('emplVigSueldo')}" />
                                     </f:facet>
                                 </p:column>
 
@@ -236,6 +236,8 @@
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>
+                            
+                            <h:outputText id="informacionRegistroS" value="#{msg['infoRegistro']} #{controlVigenciaSueldo.infoRegistroS}" style="position: relative; left: 15px; top: 1px; font-weight: bold"/>
                         </fieldset>
 
                         <fieldset style="position: absolute;top: 272px;left: 10px;height: 182px;width: 830px; border-radius: 10px; text-align: left">
@@ -245,7 +247,7 @@
                                          scrollable="true" scrollHeight="#{controlVigenciaSueldo.altoTabla2}" scrollWidth="830" emptyMessage="#{msg['vacio']}" style=" border: 1px; width: 830px;"
                                          selection="#{controlVigenciaSueldo.vigenciaAfiliacioneSeleccionada}" selectionMode="single">
 
-                                <p:ajax event="filter" listener="#{controlVigenciaSueldo.eventoFiltrar()}"/>
+                                <p:ajax event="filter" listener="#{controlVigenciaSueldo.eventoFiltrarD()}"/>
                                 <f:event type="preRenderView" listener="#{controlVigenciaSueldo.recordarSeleccionVA()}"/>
 
                                 <p:column style="text-align: center" headerText="#{msg['inicial']}" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains" id="vAFechaInicial" width="100"
@@ -265,7 +267,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value=""  id="fooFechaInicialVA"/>
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -286,7 +288,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value=""  id="fooFechaFinalVA"/>
+                                        <h:outputText value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -303,7 +305,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 220px; margin: -14px; height: 26px;  border: none; color: blue" id="fooTerceroVA" action="terceroPag" actionListener="#{controlTercero.recibirPaginaEntrante('atrasEmplVigenciaSueldo')}" value=""/>
+                                        <p:commandButton style="width: 100%; height: 10px; border-radius: 0px;" id="fooTerceroVA" action="terceroPag" actionListener="#{controlTercero.recibirPaginaEntrante('atrasEmplVigenciaSueldo')}" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -320,7 +322,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 220px; margin: -14px; height: 26px;  border: none; color: blue" id="fooTipoEntidadVA" action="tipoentidademplvigenciasueldo" actionListener="#{controlTiposEntidades.recibirPagina('atrastipoentidademplvigenciasueldo')}" value=""/>
+                                        <p:commandButton style="width: 100%; height: 10px; border-radius: 0px;" id="fooTipoEntidadVA" action="tipoentidademplvigenciasueldo" actionListener="#{controlTiposEntidades.recibirPagina('atrastipoentidademplvigenciasueldo')}" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -346,6 +348,7 @@
                                 </p:column> 
 
                             </p:dataTable>
+                            <h:outputText id="informacionRegistroD" value="#{msg['infoRegistro']} #{controlVigenciaSueldo.infoRegistroD}" style="position: relative; left: 15px; top: 1px; font-weight: bold"/>
                         </fieldset>
 
                         <p:commandButton id="btnConsultar" icon="ui-icon-extlink" style="position: absolute; top: 476px;left: 15px; height: 30px; width: 130px; background-image:  url(Imagenes/Iconos/boton.png); 
@@ -366,6 +369,8 @@
                             <p:dataTable id="lovMotivoCambioSueldo" style=" width: 420px" var="motivoCS" value="#{controlVigenciaSueldo.listMotivosCambiosSueldos}" rowKey="#{motivoCS.secuencia}"
                                          selection="#{controlVigenciaSueldo.motivoCambioSueldoSeleccionado}" selectionMode="single" widgetVar="lovMotivoCambioSueldo" scrollable="true" scrollHeight="250" scrollWidth="420"
                                          filteredValue="#{controlVigenciaSueldo.filtrarMotivosCambiosSueldos}" emptyMessage="#{msg['lovvacio']}">              
+                                
+                                <p:ajax event="filter" listener="#{controlVigenciaSueldo.eventoFiltrarMCS()}"/>
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaSueldo.activarAceptar()}" update=":form:aceptarMCS"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciaSueldo.actualizarMotivoCambioSueldo()}" process="@this" oncomplete="MotivoCambioSueldoDialogo.hide()"/>
 
@@ -387,7 +392,7 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <h:outputText id="infoRegistroMotivoCambioSueldo" value="#{controlVigenciaSueldo.infoRegistroMotivoCambioSueldo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            <h:outputText id="infoRegistroMotivoCambioSueldo" value="#{msg['infoRegistro']} #{controlVigenciaSueldo.infoRegistroMotivoCambioSueldo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
                             <p:commandButton id="aceptarMCS" style="position: relative; left: 250px" value="#{msg['aceptar']}" disabled="#{controlVigenciaSueldo.aceptar}" actionListener="#{controlVigenciaSueldo.actualizarMotivoCambioSueldo()}" process="@this" icon="ui-icon-check" onclick="MotivoCambioSueldoDialogo.hide()"/>
 
@@ -401,6 +406,8 @@
                             <p:dataTable id="lovTipoSueldo" style=" width: 430px" var="tipoS" value="#{controlVigenciaSueldo.listTiposSueldos}" rowKey="#{tipoS.secuencia}"
                                          selection="#{controlVigenciaSueldo.tipoSueldoSeleccionado}" selectionMode="single" widgetVar="lovTipoSueldo" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlVigenciaSueldo.filtrarTiposSueldos}" emptyMessage="#{msg['lovvacio']}">           
+                                
+                                <p:ajax event="filter" listener="#{controlVigenciaSueldo.eventoFiltrarTS()}"/>
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaSueldo.activarAceptar()}" update=":form:aceptarTS"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciaSueldo.actualizarTipoSueldo()}" process="@this" oncomplete="TipoSueldoDialogo.hide()"/>
 
@@ -422,7 +429,7 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <h:outputText id="infoRegistroTipoSueldo" value="#{controlVigenciaSueldo.infoRegistroTipoSueldo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            <h:outputText id="infoRegistroTipoSueldo" value="#{msg['infoRegistro']} #{controlVigenciaSueldo.infoRegistroTipoSueldo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
                             <p:commandButton id="aceptarTS" style="position: relative; left: 250px" value="#{msg['aceptar']}" disabled="#{controlVigenciaSueldo.aceptar}"  actionListener="#{controlVigenciaSueldo.actualizarTipoSueldo()}" process="@this" icon="ui-icon-check" onclick="TipoSueldoDialogo.hide()"/>
 
@@ -436,6 +443,8 @@
                             <p:dataTable id="lovTipoEntidad" style=" width: 410px" var="tipoE" value="#{controlVigenciaSueldo.listTiposEntidades}" rowKey="#{tipoE.secuencia}"
                                          selection="#{controlVigenciaSueldo.tipoEntidadSeleccionado}" selectionMode="single" widgetVar="lovTipoEntidad" scrollable="true" scrollWidth="430" scrollHeight="250"
                                          filteredValue="#{controlVigenciaSueldo.filtrarTiposEntidades}" emptyMessage="#{msg['lovvacio']}">              
+                                
+                                <p:ajax event="filter" listener="#{controlVigenciaSueldo.eventoFiltrarTE()}"/>
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaSueldo.activarAceptar()}" update=":form:aceptarTE"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciaSueldo.actualizarTipoEntidad()}" process="@this" oncomplete="TipoEntidadDialogo.hide()"/>
 
@@ -472,6 +481,8 @@
                             <p:dataTable id="lovTercero" style=" width: 610px" var="tercero" value="#{controlVigenciaSueldo.listTerceros}" rowKey="#{tercero.secuencia}"
                                          selection="#{controlVigenciaSueldo.terceroSeleccionado}" selectionMode="single" widgetVar="lovTercero" scrollable="true" scrollWidth="630" scrollHeight="250"
                                          filteredValue="#{controlVigenciaSueldo.filtrarTerceros}" emptyMessage="#{msg['lovvacio']}">              
+                                
+                                <p:ajax event="filter" listener="#{controlVigenciaSueldo.eventoFiltrarT()}"/>
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaSueldo.activarAceptar()}" update=":form:aceptarT"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciaSueldo.actualizarTerceros()}" process="@this" oncomplete="TerceroDialogo.hide()"/>
 
@@ -499,7 +510,7 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <h:outputText id="infoRegistroTercero" value="#{controlVigenciaSueldo.infoRegistroTercero}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            <h:outputText id="infoRegistroTercero" value="#{msg['infoRegistro']} #{controlVigenciaSueldo.infoRegistroTercero}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
                             <p:commandButton id="aceptarT" style="position: relative; left: 450px" value="#{msg['aceptar']}" actionListener="#{controlVigenciaSueldo.actualizarTerceros()}" disabled="#{controlVigenciaSueldo.aceptar}" process="@this" icon="ui-icon-check" onclick="TerceroDialogo.hide()"/>
 

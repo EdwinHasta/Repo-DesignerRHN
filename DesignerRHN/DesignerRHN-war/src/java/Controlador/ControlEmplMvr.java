@@ -20,7 +20,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -48,7 +47,7 @@ public class ControlEmplMvr implements Serializable {
     private List<Mvrs> listMvrsEmpleado;
     private List<Mvrs> filtrarListMvrsEmpleado;
     private Mvrs mvrSeleccionado;
-    private List<OtrosCertificados> listOCEmpleado;
+    private List<OtrosCertificados> listOCertificados;
     private List<OtrosCertificados> filtrarListOtrosCertificados;
     private OtrosCertificados otroCertificadoSeleccionado;
     private List<Motivosmvrs> listMotivosMvrs;
@@ -119,13 +118,14 @@ public class ControlEmplMvr implements Serializable {
     private String altoTabla1, altoTabla2;
     private boolean cambiosMvr, cambiosOtros;
     //
+    private String infoRegistroMVR, infoRegistroOtroC;
     private String infoRegistroMotivoMVR, infoRegistroCertificado;
     //
     private DataTable tablaC;
 
     public ControlEmplMvr() {
         listMvrsEmpleado = null;
-        listOCEmpleado = null;
+        listOCertificados = null;
         cambiosMvr = false;
         cambiosOtros = false;
         nombreTablaRastro = "";
@@ -192,6 +192,10 @@ public class ControlEmplMvr implements Serializable {
 
     public void recibirEmpleado(BigInteger empl) {
         empleado = administrarEmplMvrs.empleadoActual(empl);
+        getListMvrsEmpleado();
+        getListOCertificados();
+        contarRegistrosMVR();
+        contarRegistrosOC();
     }
 
     /**
@@ -657,7 +661,7 @@ public class ControlEmplMvr implements Serializable {
         mvrSeleccionado = null;
         otroCertificadoSeleccionado = null;
         mvrSeleccionado = null;
-        listOCEmpleado = null;
+        listOCertificados = null;
         listMvrsEmpleado = null;
         tipoActualizacion = -1;
         permitirIndexMvrs = true;
@@ -711,7 +715,6 @@ public class ControlEmplMvr implements Serializable {
                 administrarEmplMvrs.modificarMvrs(listMvrsModificar);
                 listMvrsModificar.clear();
             }
-            listMvrsEmpleado = null;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosMvrEmpleado");
             paraNuevaMenValRet = 0;
@@ -719,7 +722,10 @@ public class ControlEmplMvr implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
             cambiosMvr = false;
+
+            contarRegistrosMVR();
         }
+        mvrSeleccionado = null;
     }
 
     /**
@@ -739,15 +745,18 @@ public class ControlEmplMvr implements Serializable {
                 administrarEmplMvrs.modificarOtrosCertificados(listOtrosCertificadosModificar);
                 listOtrosCertificadosModificar.clear();
             }
-            listOCEmpleado = null;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosOCEmpleado");
             paraNuevaMenValRet = 0;
             cambiosOtros = false;
+
+            contarRegistrosOC();
+
             FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos de Otros Certificados con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
         }
+        otroCertificadoSeleccionado = null;
     }
 
     //CANCELAR MODIFICACIONES
@@ -802,13 +811,18 @@ public class ControlEmplMvr implements Serializable {
         listOtrosCertificadosModificar.clear();
         paraNuevaMenValRet = 0;
         listMvrsEmpleado = null;
-        listOCEmpleado = null;
+        listOCertificados = null;
         guardado = true;
         cambiosOtros = false;
         cambiosMvr = false;
-        getMvrSeleccionado();
         otroCertificadoSeleccionado = null;
-        getOtroCertificadoSeleccionado();
+        mvrSeleccionado = null;
+        
+        getListMvrsEmpleado();
+        getListOCertificados();
+        contarRegistrosMVR();
+        contarRegistrosOC();
+
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosMvrEmpleado");
         context.update("form:datosOCEmpleado");
@@ -915,8 +929,9 @@ public class ControlEmplMvr implements Serializable {
                 nuevaMvrs.setSecuencia(var);
                 nuevaMvrs.setEmpleado(empleado);
                 listMvrsCrear.add(nuevaMvrs);
-
                 listMvrsEmpleado.add(nuevaMvrs);
+                modificarInfoRegistroMVR(listMvrsEmpleado.size());
+                
                 nuevaMvrs = new Mvrs();
                 nuevaMvrs.setMotivo(new Motivosmvrs());
                 RequestContext context = RequestContext.getCurrentInstance();
@@ -984,7 +999,8 @@ public class ControlEmplMvr implements Serializable {
                 String aux = nuevaOtroCertificado.getEstado().toUpperCase();
                 nuevaOtroCertificado.setEstado(aux);
                 listOtrosCertificadosCrear.add(nuevaOtroCertificado);
-                listOCEmpleado.add(nuevaOtroCertificado);
+                listOCertificados.add(nuevaOtroCertificado);
+                modificarInfoRegistroOtroC(listOCertificados.size());
                 //
                 nuevaOtroCertificado = new OtrosCertificados();
                 nuevaOtroCertificado.setTipocertificado(new TiposCertificados());
@@ -1075,6 +1091,7 @@ public class ControlEmplMvr implements Serializable {
                 cambiosMvr = true;
                 listMvrsEmpleado.add(duplicarMvrs);
                 listMvrsCrear.add(duplicarMvrs);
+                modificarInfoRegistroMVR(listMvrsEmpleado.size());
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:datosMvrEmpleado");
                 mvrSeleccionado = null;
@@ -1159,8 +1176,9 @@ public class ControlEmplMvr implements Serializable {
                 cambiosOtros = true;
                 String aux = duplicarOtrosCertificados.getEstado().toUpperCase();
                 duplicarOtrosCertificados.setEstado(aux);
-                listOCEmpleado.add(duplicarOtrosCertificados);
+                listOCertificados.add(duplicarOtrosCertificados);
                 listOtrosCertificadosCrear.add(duplicarOtrosCertificados);
+                modificarInfoRegistroOtroC(listOCertificados.size());
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:datosOCEmpleado");
                 context.execute("DuplicarRegistroOC.hide();");
@@ -1245,6 +1263,7 @@ public class ControlEmplMvr implements Serializable {
                 listMvrsBorrar.add(mvrSeleccionado);
             }
             listMvrsEmpleado.remove(mvrSeleccionado);
+            modificarInfoRegistroMVR(listMvrsEmpleado.size());
 
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosMvrEmpleado");
@@ -1272,7 +1291,8 @@ public class ControlEmplMvr implements Serializable {
             } else {
                 listOtrosCertificadosBorrar.add(otroCertificadoSeleccionado);
             }
-            listOCEmpleado.remove(otroCertificadoSeleccionado);
+            listOCertificados.remove(otroCertificadoSeleccionado);
+            modificarInfoRegistroOtroC(listOCertificados.size());
 
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosOCEmpleado");
@@ -1439,7 +1459,7 @@ public class ControlEmplMvr implements Serializable {
         otroCertificadoSeleccionado = null;
         paraNuevaMenValRet = 0;
         listMvrsEmpleado = null;
-        listOCEmpleado = null;
+        listOCertificados = null;
         guardado = true;
         cambiosMvr = false;
         cambiosOtros = false;
@@ -1676,8 +1696,8 @@ public class ControlEmplMvr implements Serializable {
             tam1 = listMvrsEmpleado.size();
         }
         int tam2 = 0;
-        if (listOCEmpleado != null) {
-            tam2 = listOCEmpleado.size();
+        if (listOCertificados != null) {
+            tam2 = listOCertificados.size();
         }
         if (tam1 == 0 || tam2 == 0) {
             context.execute("NuevoRegistroPagina.show()");
@@ -1804,23 +1824,78 @@ public class ControlEmplMvr implements Serializable {
     /**
      * Evento que cambia la lista real a la filtrada
      */
-    public void eventoFiltrar() {
-        if (mvrSeleccionado != null) {
-            if (tipoListaMvrs == 0) {
-                tipoListaMvrs = 1;
-            }
+    public void eventoFiltrarMVRS() {
+        if (tipoListaMvrs == 0) {
+            tipoListaMvrs = 1;
         }
-        if (otroCertificadoSeleccionado != null) {
-            if (tipoListaOtrosCertificados == 0) {
-                tipoListaOtrosCertificados = 1;
-            }
+        mvrSeleccionado = null;
+        modificarInfoRegistroMVR(filtrarListMvrsEmpleado.size());
+        RequestContext.getCurrentInstance().update("form:informacionRegistroMVR");
+    }
+
+    public void eventoFiltrarOC() {
+        if (tipoListaMvrs == 0) {
+            tipoListaMvrs = 1;
         }
+        otroCertificadoSeleccionado = null;
+        modificarInfoRegistroOtroC(filtrarListOtrosCertificados.size());
+        RequestContext.getCurrentInstance().update("form:informacionRegistroOtroC");
+    }
+    
+    public void contarRegistrosMVR(){
+        if (listMvrsEmpleado != null) {
+            if (listMvrsEmpleado.size() > 0) {
+                modificarInfoRegistroMVR(listMvrsEmpleado.size());
+            } else {
+                modificarInfoRegistroMVR(0);
+            }
+        } else {
+            modificarInfoRegistroMVR(0);
+        }
+    }
+    
+    public void contarRegistrosOC(){
+        if (listOCertificados != null) {
+            if (listOCertificados.size() > 0) {
+                modificarInfoRegistroOtroC(listOCertificados.size());
+            } else {
+                modificarInfoRegistroOtroC(0);
+            }
+        } else {
+            modificarInfoRegistroOtroC(0);
+        }
+    }
+
+    public void eventoFiltrarC() {
+        modificarInfoRegistroC(filtrarListTiposCertificados.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistroCertificado");
+    }
+
+    public void eventoFiltrarM() {
+        modificarInfoRegistroM(filtrarListMotivosMvrs.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistroMotivoMVR");
+    }
+
+    private void modificarInfoRegistroMVR(int valor) {
+        infoRegistroMVR = String.valueOf(valor);
+    }
+
+    private void modificarInfoRegistroOtroC(int valor) {
+        infoRegistroOtroC = String.valueOf(valor);
+    }
+
+    private void modificarInfoRegistroC(int valor) {
+        infoRegistroCertificado = String.valueOf(valor);
+    }
+
+    private void modificarInfoRegistroM(int valor) {
+        infoRegistroMotivoMVR = String.valueOf(valor);
     }
 
     //METODO RASTROS PARA LAS TABLAS EN EMPLVIGENCIASUELDOS
     public void verificarRastroTabla() {
         //Cuando alguna tabla no tiene datos
-        if (listOCEmpleado == null || listMvrsEmpleado == null) {
+        if (listOCertificados == null || listMvrsEmpleado == null) {
             //Cuando no se ha seleccionado ningun registro
             if (mvrSeleccionado == null && otroCertificadoSeleccionado == null) {
                 //Dialogo para seleccionar el rastro de la tabla deseada
@@ -1836,7 +1911,7 @@ public class ControlEmplMvr implements Serializable {
             }
         }
         //Cuando las dos tablas tienen datos
-        if ((listOCEmpleado != null) && (listMvrsEmpleado != null)) {
+        if ((listOCertificados != null) && (listMvrsEmpleado != null)) {
             //Cuando no se ha seleccionado ningun registro:
             if (mvrSeleccionado == null && otroCertificadoSeleccionado == null) {
                 //Dialogo para seleccionar el rastro de la tabla deseada
@@ -1974,22 +2049,22 @@ public class ControlEmplMvr implements Serializable {
         this.filtrarListMvrsEmpleado = filtrarListMvrsEmpleado;
     }
 
-    public List<OtrosCertificados> getListOtrosCertificadosEmpleado() {
+    public List<OtrosCertificados> getListOCertificados() {
         try {
-            if (listOCEmpleado == null) {
+            if (listOCertificados == null) {
                 if (empleado != null) {
-                    listOCEmpleado = administrarEmplMvrs.listOtrosCertificadosEmpleado(empleado.getSecuencia());
+                    listOCertificados = administrarEmplMvrs.listOtrosCertificadosEmpleado(empleado.getSecuencia());
                 }
             }
-            return listOCEmpleado;
+            return listOCertificados;
         } catch (Exception e) {
             System.out.println("Error getListOtrosCertificadosEmpleado : " + e.toString());
             return null;
         }
     }
 
-    public void setListOtrosCertificadosEmpleado(List<OtrosCertificados> listOtrosCertificadosEmpleado) {
-        this.listOCEmpleado = listOtrosCertificadosEmpleado;
+    public void setListOCertificados(List<OtrosCertificados> listOtrosCertificadosEmpleado) {
+        this.listOCertificados = listOtrosCertificadosEmpleado;
     }
 
     public List<OtrosCertificados> getFiltrarListOtrosCertificados() {
@@ -2003,13 +2078,6 @@ public class ControlEmplMvr implements Serializable {
     public List<Motivosmvrs> getListMotivosMvrs() {
         if (listMotivosMvrs == null) {
             listMotivosMvrs = administrarEmplMvrs.listMotivos();
-            RequestContext context = RequestContext.getCurrentInstance();
-            if (listMotivosMvrs == null || listMotivosMvrs.isEmpty()) {
-                infoRegistroMotivoMVR = "Cantidad de registros: 0 ";
-            } else {
-                infoRegistroMotivoMVR = "Cantidad de registros: " + listMotivosMvrs.size();
-            }
-            context.update("form:infoRegistroMotivoMVR");
         }
         return listMotivosMvrs;
     }
@@ -2037,13 +2105,6 @@ public class ControlEmplMvr implements Serializable {
     public List<TiposCertificados> getListTiposCertificados() {
         if (listTiposCertificados == null) {
             listTiposCertificados = administrarEmplMvrs.listTiposCertificados();
-            RequestContext context = RequestContext.getCurrentInstance();
-            if (listTiposCertificados == null || listTiposCertificados.isEmpty()) {
-                infoRegistroCertificado = "Cantidad de registros: 0 ";
-            } else {
-                infoRegistroCertificado = "Cantidad de registros: " + listTiposCertificados.size();
-            }
-            context.update("form:infoRegistroCertificado");
         }
         return listTiposCertificados;
     }
@@ -2248,28 +2309,6 @@ public class ControlEmplMvr implements Serializable {
         return altoTabla2;
     }
 
-    public String getInfoRegistroMotivoMVR() {
-        return infoRegistroMotivoMVR;
-    }
-
-    public void setInfoRegistroMotivoMVR(String infoRegistroMotivoMVR) {
-        this.infoRegistroMotivoMVR = infoRegistroMotivoMVR;
-    }
-
-    public String getInfoRegistroCertificado() {
-        getListTiposCertificados();
-        if (listTiposCertificados != null) {
-            infoRegistroCertificado = "Cantidad de registros : " + listTiposCertificados.size();
-        } else {
-            infoRegistroCertificado = "Cantidad de registros : 0";
-        }
-        return infoRegistroCertificado;
-    }
-
-    public void setInfoRegistroCertificado(String infoRegistroCertificado) {
-        this.infoRegistroCertificado = infoRegistroCertificado;
-    }
-
     public BigInteger getBackUp() {
         return backUp;
     }
@@ -2277,5 +2316,20 @@ public class ControlEmplMvr implements Serializable {
     public void setBackUp(BigInteger backUp) {
         this.backUp = backUp;
     }
-    
+
+    public String getInfoRegistroMotivoMVR() {
+        return infoRegistroMotivoMVR;
+    }
+
+    public String getInfoRegistroCertificado() {
+        return infoRegistroCertificado;
+    }
+
+    public String getInfoRegistroMVR() {
+        return infoRegistroMVR;
+    }
+
+    public String getInfoRegistroOtroC() {
+        return infoRegistroOtroC;
+    }
 }

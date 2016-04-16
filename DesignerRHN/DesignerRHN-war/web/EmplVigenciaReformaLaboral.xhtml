@@ -15,7 +15,7 @@
                 <h:form id="form">
                     <f:loadBundle basename="Recursos.emplvigenciareformalaboral" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal">
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlVigenciasReformasLaborales.empleado.persona.nombreCompleto}"/>
 
                         <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 37px; left: 12px; height: 24px">  
@@ -116,19 +116,19 @@
                                             <p:inputText value="#{info.reformalaboral.nombre}" id="editarUbicacion" style=" border-radius: 0px; width: 99%;text-transform: uppercase; height: 12px;"> 
                                                 <p:ajax event="change" listener="#{controlVigenciasReformasLaborales.modificarVRL(info, 'REFORMALABORAL', info.reformalaboral.nombre)}"/>
                                                 <p:ajax event="select" listener="#{controlVigenciasReformasLaborales.cambiarIndice(info, 1)}" />
-                                                <p:ajax event="dblclick" listener="#{controlVigenciasReformasLaborales.asignarIndex(info)}"/>
+                                                <p:ajax event="dblclick" listener="#{controlVigenciasReformasLaborales.asignarIndexT(info)}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 800px; left:-50px;margin: -14px; height: 26px; border: none; color: blue" id="fooReformaLaboral" action="reformasLaborales" actionListener="#{controlReformaLaboral.inicializarPagina()}" value=""/>
+                                        <p:commandButton style="width: 100%; height: 10px; border-radius: 0px;" id="fooReformaLaboral" action="reformasLaborales" actionListener="#{controlReformaLaboral.inicializarPagina()}" value=""/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>
                         </fieldset> 
                         
-                        <h:outputText id="informacionRegistro" value="#{controlVigenciasReformasLaborales.infoRegistro}" style="position: absolute; left: 20px; top: 420px; font-weight: bold"/>
+                        <h:outputText id="informacionRegistro" value="#{msg['infoRegistro']} #{controlVigenciasReformasLaborales.infoRegistro}" style="position: absolute; left: 20px; top: 420px; font-weight: bold"/>
                         <p:commandButton style="position: absolute; left: 680px; top: 470px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
                                          background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value="" onclick="confirmarGuardar.show();" process="@this" disabled="#{controlVigenciasReformasLaborales.guardado}"/>
                         <p:commandButton style="position: absolute; left: 770px; top: 470px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/cancelar.png); 
@@ -140,6 +140,8 @@
                             <p:dataTable id="lovReformasLaborales" style=" width: 430px" var="reformasLaborales" value="#{controlVigenciasReformasLaborales.listaReformasLaborales}" rowKey="#{reformasLaborales.secuencia}"
                                          selection="#{controlVigenciasReformasLaborales.reformaLaboralSelecionada}" selectionMode="single" widgetVar="lovReformasLaborales" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlVigenciasReformasLaborales.filtradoReformasLaborales}" emptyMessage="#{msg['lovvacio']}">              
+                                
+                                <p:ajax event="filter" listener="#{controlVigenciasReformasLaborales.eventoFiltrarRL()}"/>
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasReformasLaborales.activarAceptar()}" update=":form:aceptarRL"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciasReformasLaborales.actualizarReformaLaboral()}" process="@this" />
 
@@ -161,7 +163,7 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <h:outputText id="infoRegistroReformaLaboral" value="#{controlVigenciasReformasLaborales.infoRegistroReformaLaboral}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            <h:outputText id="infoRegistroReformaLaboral" value="#{msg['infoRegistro']} #{controlVigenciasReformasLaborales.infoRegistroReformaLaboral}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
                             <p:commandButton id="aceptarRL" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlVigenciasReformasLaborales.aceptar}" actionListener="#{controlVigenciasReformasLaborales.actualizarReformaLaboral()}" process="@this" icon="ui-icon-check"/>
                             

@@ -14,7 +14,7 @@
                 <h:form id="form"> 
                     <f:loadBundle basename="Recursos.emplvigenciajornada" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">    
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal">    
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlVigenciaJornada.empleado.persona.nombreCompleto}"/> 
 
                         <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 37px; left: 12px; height: 24px">  
@@ -79,10 +79,10 @@
 
                             <p:dataTable id="datosVJEmpleado" var="infoVJ" rowKey="#{infoVJ.secuencia}" rowIndexVar="indice" style=" border: 1px;width: 820px"   
                                          value="#{controlVigenciaJornada.listVigenciasJornadas}" scrollable="true" scrollHeight="#{controlVigenciaJornada.altoTabla1}" scrollWidth="820"
-                                         filteredValue="#{controlVigenciaJornada.filtrarVigenciasJornadas}" emptyMessage="#{msg['vacio']}" liveScroll="true" scrollRows="6"
+                                         filteredValue="#{controlVigenciaJornada.filtrarVJ}" emptyMessage="#{msg['vacio']}" liveScroll="true" scrollRows="6"
                                          editable="true" editMode="cell" selection="#{controlVigenciaJornada.vigenciaJornadaSeleccionada}" selectionMode="single">
 
-                                <p:ajax event="filter" listener="#{controlVigenciaJornada.eventoFiltrar()}"/>
+                                <p:ajax event="filter" listener="#{controlVigenciaJornada.eventoFiltrar()}" update=":form:informacionRegistroVJ"/>
                                 <f:event type="preRenderView" listener="#{controlVigenciaJornada.recordarSeleccionVJ()}"/>
 
                                 <p:column  headerText="#{msg['fecha']}" sortBy="#{infoVJ.fechavigencia}" filterBy="#{infoVJ.fechavigencia}" filterMatchMode="contains"  width="65" id="vJFechaVigencia" filterStyle="display: none; visibility: hidden;"  >  
@@ -118,7 +118,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooNombreJornada" action="jornadaslaborales" value=""/>
+                                        <p:commandButton style="width: 100%; height: 10px; border-radius: 0px;" id="fooNombreJornada" action="jornadaslaborales" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -134,10 +134,11 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooTIpoDescanso" action="tipodescanso" actionListener="#{controlTiposDescansos.recibirPagina('atrastipodescanso')}" value=""/>
+                                        <p:commandButton style="width: 100%; height: 10px; border-radius: 0px;" id="fooTIpoDescanso" action="tipodescanso" actionListener="#{controlTiposDescansos.recibirPagina('atrastipodescanso')}" value=""/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>  
+                            <h:outputText id="informacionRegistroVJ" value="#{msg['infoRegistro']} #{controlVigenciaJornada.infoRegistroVJ}" style="position: relative; left: 15px; top: 1px; font-weight: bold"/>
                         </fieldset>
 
                         <fieldset style="position: absolute;top: 270px;left: 10px;height: 185px;width: 400px; border-radius: 10px; text-align: left">
@@ -147,6 +148,7 @@
                                          scrollable="true" scrollHeight="#{controlVigenciaJornada.altoTabla2}" emptyMessage="#{msg['vacio']}" style=" border: 1px;"
                                          selection="#{controlVigenciaJornada.vigenciaTiempoSeleccionada}" selectionMode="single" liveScroll="true" scrollRows="6">
 
+                                <p:ajax event="filter" listener="#{controlVigenciaJornada.eventoFiltrarT()}" update=":form:informacionRegistroVT"/>
                                 <f:event type="preRenderView" listener="#{controlVigenciaJornada.recordarSeleccionVT()}"/>
 
                                 <p:column headerText="#{msg['fechainicial']}" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains" id="vCTFechaInicial"
@@ -166,7 +168,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value=""  id="fooFechaInicialVCT"/>
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -186,7 +188,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="" id="fooFechaFinalVCT"/>
+                                        <h:outputText value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -201,10 +203,11 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="" id="fooComentarioVCT"/>
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>
+                            <h:outputText id="informacionRegistroVT" value="#{msg['infoRegistro']} #{controlVigenciaJornada.infoRegistroVT}" style="position: relative; left: 15px; top: 1px; font-weight: bold"/>
                         </fieldset>
 
 
@@ -215,6 +218,7 @@
                                          scrollable="true" scrollHeight="#{controlVigenciaJornada.altoTabla1}"  emptyMessage="#{msg['vacio']}" style=" border: 1px;"
                                          selection="#{controlVigenciaJornada.vigenciaDineroSeleccionada}" selectionMode="single" liveScroll="true" scrollRows="6">
 
+                                <p:ajax event="filter" listener="#{controlVigenciaJornada.eventoFiltrarD()}" update=":form:informacionRegistroVD"/>
                                 <f:event type="preRenderView" listener="#{controlVigenciaJornada.recordarSeleccionVD()}"/>
 
                                 <p:column headerText="#{msg['fechainicial']}" sortBy="#{info2.fechainicial}" filterBy="#{info2.fechainicial}" filterMatchMode="contains" id="vCDFechaInicial"
@@ -234,7 +238,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value=""  id="fooFechaInicialVCD"/>
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -254,7 +258,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="" id="fooFechaFinalVCD"/>
+                                        <h:outputText value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -271,10 +275,11 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value=""  id="fooComentarioVCD"/>
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>
+                            <h:outputText id="informacionRegistroVD" value="#{msg['infoRegistro']} #{controlVigenciaJornada.infoRegistroVD}" style="position: relative; left: 15px; top: 1px; font-weight: bold"/>
                         </fieldset>
 
                         <!-- Dialogo Jornadas Laborales -->
@@ -283,6 +288,8 @@
                             <p:dataTable id="lovJornadaLaboral" style=" width: 365px" var="jLaboral" value="#{controlVigenciaJornada.listJornadasLaborales}" rowKey="#{jLaboral.secuencia}"
                                          selection="#{controlVigenciaJornada.jornadaLaboralSeleccionada}" selectionMode="single" widgetVar="lovJornadaLaboral" scrollable="true" scrollWidth="383" scrollHeight="250"
                                          filteredValue="#{controlVigenciaJornada.filtrarJornadasLaborales}" emptyMessage="#{msg['lovvacio']}">              
+                                
+                                <p:ajax event="filter" listener="#{controlVigenciaJornada.eventoFiltrarJornadaL()}" update=":form:infoRegistroJornadaLaboral"/>
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaJornada.activarAceptar()}" update=":form:aceptarJL"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciaJornada.actualizarJornadaLaboral()}"  process="@this" />
                                 <f:facet name="header">  
@@ -303,11 +310,11 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <h:outputText id="infoRegistroJornadaLaboral" value="#{controlVigenciaJornada.infoRegistroJornadaLaboral}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            <h:outputText id="infoRegistroJornadaLaboral" value="#{msg['infoRegistro']} #{controlVigenciaJornada.infoRegistroJornadaLaboral}" style="position: relative; left: 15px; top: 1px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarJL" style="position: relative; left: 210px" value="#{msg['aceptar']}" disabled="#{controlVigenciaJornada.aceptar}" actionListener="#{controlVigenciaJornada.actualizarJornadaLaboral()}" process="@this" icon="ui-icon-check" onclick="JornadaLaboralDialogo.hide()"/>
+                            <p:commandButton id="aceptarJL" style="position: relative; left: 130px" value="#{msg['aceptar']}" disabled="#{controlVigenciaJornada.aceptar}" actionListener="#{controlVigenciaJornada.actualizarJornadaLaboral()}" process="@this" icon="ui-icon-check" onclick="JornadaLaboralDialogo.hide()"/>
 
-                            <p:commandButton id="atrasJL" style="position: relative; left: 210px" value="#{msg['atras']}" actionListener="#{controlVigenciaJornada.cancelarCambioJornadaLaboral()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                            <p:commandButton id="atrasJL" style="position: relative; left: 130px" value="#{msg['atras']}" actionListener="#{controlVigenciaJornada.cancelarCambioJornadaLaboral()}" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
 
                         </p:dialog>
 
@@ -317,6 +324,8 @@
                             <p:dataTable id="lovTipoDescanso" style=" width: 365px" var="tDescanso" value="#{controlVigenciaJornada.listTiposDescansos}" rowKey="#{tDescanso.secuencia}"
                                          selection="#{controlVigenciaJornada.tipoDescansoSeleccionado}" selectionMode="single" widgetVar="lovTipoDescanso" scrollable="true" scrollWidth="383" scrollHeight="250"
                                          filteredValue="#{controlVigenciaJornada.filtradoTiposDescansos}" emptyMessage="#{msg['lovvacio']}">              
+                               
+                                <p:ajax event="filter" listener="#{controlVigenciaJornada.eventoFiltrarTipoD()}" update=":form:infoRegistroTipoDescanso"/>
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaJornada.activarAceptar()}" update=":form:aceptarTD"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciaJornada.actualizarTipoDescanso()}"  process="@this"  />
                                 <f:facet name="header">  
@@ -337,11 +346,11 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <h:outputText id="infoRegistroTipoDescanso" value="#{controlVigenciaJornada.infoRegistroTipoDescanso}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            <h:outputText id="infoRegistroTipoDescanso" value="#{msg['infoRegistro']} #{controlVigenciaJornada.infoRegistroTipoDescanso}" style="position: relative; left: 15px; top: 1px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarTD" style="position: relative; left: 210px" value="#{msg['aceptar']}" disabled="#{controlVigenciaJornada.aceptar}"  actionListener="#{controlVigenciaJornada.actualizarTipoDescanso()}"  process="@this" icon="ui-icon-check" onclick="TiposDescansosDialogo.hide()"/>
+                            <p:commandButton id="aceptarTD" style="position: relative; left: 130px" value="#{msg['aceptar']}" disabled="#{controlVigenciaJornada.aceptar}"  actionListener="#{controlVigenciaJornada.actualizarTipoDescanso()}"  process="@this" icon="ui-icon-check" onclick="TiposDescansosDialogo.hide()"/>
 
-                            <p:commandButton id="atrasTD" style="position: relative; left: 210px" value="#{msg['atras']}" actionListener="#{controlVigenciaJornada.cancelarCambioTipoDescanso()}"  process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                            <p:commandButton id="atrasTD" style="position: relative; left: 130px" value="#{msg['atras']}" actionListener="#{controlVigenciaJornada.cancelarCambioTipoDescanso()}"  process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
 
                         </p:dialog>
 

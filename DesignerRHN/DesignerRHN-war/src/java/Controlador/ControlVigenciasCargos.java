@@ -1210,9 +1210,10 @@ public class ControlVigenciasCargos implements Serializable {
                 listVCBorrar.add(vigenciaSeleccionada);
             }
             vigenciasCargosEmpleado.remove(vigenciaSeleccionada);
-            if (tipoLista == 1) {
+            if (tipoLista == 1){
                 filterVC.remove(vigenciaSeleccionada);
             }
+           
             modificarInfoRegistro(vigenciasCargosEmpleado.size());
 
         context.update("form:datosVCEmpleado");

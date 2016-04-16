@@ -14,7 +14,7 @@
                 <h:form id="form">
                     <p:growl id="growl" showDetail="true"/>
                     <f:loadBundle basename="Recursos.empllegislacionlaboral" var="msg"/>
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal">  
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlVigenciasContratos.empleado.persona.nombreCompleto}"/>
 
                         <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 37px; left: 12px; height: 24px">  
@@ -78,7 +78,7 @@
                             <!-- TABLA EMPLVIGENCIACONTRATOS -->
 
                             <p:dataTable id="datosVCEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style=" border: 1px;width: 830px"                           
-                                         value="#{controlVigenciasContratos.vigenciasContratosEmpleado}" scrollable="true" scrollHeight="#{controlVigenciasContratos.altoTabla}" scrollWidth="830"
+                                         value="#{controlVigenciasContratos.vigenciasContratos}" scrollable="true" scrollHeight="#{controlVigenciasContratos.altoTabla}" scrollWidth="830"
                                          filteredValue="#{controlVigenciasContratos.filtrarVC}" emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell"
                                          selection="#{controlVigenciasContratos.vigenciaSeleccionada}" selectionMode="single">
@@ -142,7 +142,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 300px; margin: -14px; height: 26px;  border: none; color: blue" id="fooContratos" action="legislacion" actionListener="#{controlLegislacion.recibirPaginaEntrante('empllegislacionlaboral')}" value=""/>
+                                        <p:commandButton style="width: 100%; height: 10px; border-radius: 0px;" id="fooContratos" action="legislacion" actionListener="#{controlLegislacion.recibirPaginaEntrante('empllegislacionlaboral')}" value=""/>
                                     </f:facet>
                                 </p:column>
                                 <p:column  headerText="#{msg['tipocontrato']}" sortBy="#{info.tipocontrato.nombre}" filterBy="#{info.tipocontrato.nombre}" filterMatchMode="contains" id="vcTipoContrato" filterStyle="display: none; visibility: hidden;" >                                  
@@ -158,16 +158,16 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 360px; margin: -14px; height: 26px;  border: none; color: blue" id="fooTiposContratos" action="tipocontrato" actionListener="#{controlTipoContrato.recibirPaginaEntrante('empllegislacionlaboral')}" value=""/>
+                                        <p:commandButton style="width: 100%; height: 10px; border-radius: 0px;" id="fooTiposContratos" action="tipocontrato" actionListener="#{controlTipoContrato.recibirPaginaEntrante('empllegislacionlaboral')}" value=""/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>  
+                                <h:outputText id="informacionRegistro" value="#{msg['infoRegistro']} #{controlVigenciasContratos.infoRegistro}" style="position: relative; left: 15px; top: 1px; font-weight: bold"/>
 
-                        <h:outputText id="informacionRegistro" value="#{controlVigenciasContratos.infoRegistro}" style="position: absolute; left: 15px; top: 360px; font-weight: bold"/>
-                        <p:commandButton style="position: absolute; left: 665px; top: 395px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value="" onclick="confirmarGuardar.show();" update=":form:datosVCEmpleado" process="@this" disabled="#{controlVigenciasContratos.guardado}"/>
-                        <p:commandButton style="position: absolute; left: 755px; top: 395px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" actionListener="#{controlVigenciasContratos.salir()}" action="nomina" process="@this" />
+                            <p:commandButton style="position: absolute; left: 665px; top: 395px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
+                                             background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value="" onclick="confirmarGuardar.show();" update=":form:datosVCEmpleado" process="@this" disabled="#{controlVigenciasContratos.guardado}"/>
+                            <p:commandButton style="position: absolute; left: 755px; top: 395px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/cancelar.png); 
+                                             background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" actionListener="#{controlVigenciasContratos.salir()}" action="nomina" process="@this" />
                         </fieldset>
 
                         <!-- DIALOGO L.O.V ESTATICO CONTRATOS -->
@@ -176,6 +176,8 @@
                             <p:dataTable id="lovContratos" style=" width: 430px" var="contratos" value="#{controlVigenciasContratos.listaContratos}" rowKey="#{contratos.secuencia}"
                                          selection="#{controlVigenciasContratos.contratoSelecionado}" selectionMode="single" widgetVar="lovContratos" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlVigenciasContratos.filtradoContratos}" emptyMessage="#{msg['lovvacio']}">              
+
+                                <p:ajax event="filter" listener="#{controlVigenciasContratos.eventoFiltrarC()}"/>
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasContratos.activarAceptar()}" update=":form:aceptarC"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciasContratos.actualizarContrato()}" process="@this" />
 
@@ -197,7 +199,7 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <h:outputText id="infoRegistroContrato" value="#{controlVigenciasContratos.infoRegistroContrato}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            <h:outputText id="infoRegistroContrato" value="#{msg['infoRegistro']} #{controlVigenciasContratos.infoRegistroContrato}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
                             <p:commandButton id="aceptarC" icon="ui-icon-check" style="position: relative; left: 260px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciasContratos.aceptar}"  actionListener="#{controlVigenciasContratos.actualizarContrato()}"  process="@this" onclick="ContratosDialogo.hide()"/>
 
@@ -211,6 +213,8 @@
                             <p:dataTable id="lovTiposContratos" style=" width: 430px" var="tiposContratos" value="#{controlVigenciasContratos.listaTiposContratos}" rowKey="#{tiposContratos.secuencia}"
                                          selection="#{controlVigenciasContratos.tipoContratoSelecionado}" selectionMode="single" widgetVar="lovTiposContratos" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlVigenciasContratos.filtradoTiposContratos}" emptyMessage="#{msg['lovvacio']}">              
+
+                                <p:ajax event="filter" listener="#{controlVigenciasContratos.eventoFiltrarTC()}"/>
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasContratos.activarAceptar()}" update=":form:aceptarTC"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciasContratos.actualizarTipoContrato()}" process="@this" />
 
@@ -232,7 +236,7 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <h:outputText id="infoRegistroTipoContrato" value="#{controlVigenciasContratos.infoRegistroTipoContrato}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            <h:outputText id="infoRegistroTipoContrato" value="#{msg['infoRegistro']} #{controlVigenciasContratos.infoRegistroTipoContrato}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
                             <p:commandButton id="aceptarTC" icon="ui-icon-check" style="position: relative; left: 260px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciasContratos.aceptar}" actionListener="#{controlVigenciasContratos.actualizarTipoContrato()}"  process="@this" onclick="TiposContratoDialogo.hide()"/>
 
@@ -420,7 +424,7 @@
                 </h:form>
                 <h:form id="formExportar">
                     <p:dataTable id="datosVCEmpleadoExportar" var="info" style="visibility: hidden; display: none;"                           
-                                 value="#{controlVigenciasContratos.vigenciasContratosEmpleado}"> 
+                                 value="#{controlVigenciasContratos.vigenciasContratos}"> 
                         <!--COLUMNAS TABLA DATOS VIGENCIAS CONTRATOS DE UN EMPLEADO --> 
                         <p:column>  
                             <f:facet name="header">

@@ -92,8 +92,8 @@ public class ControlVigenciasContratos implements Serializable {
 
     public ControlVigenciasContratos() {
         vigenciasContratos = null;
-        listaContratos = new ArrayList<Contratos>();
-        listaTiposContratos = new ArrayList<TiposContratos>();
+        listaContratos = null;
+        listaTiposContratos = null;
         empleado = new Empleados();
         //Otros
         aceptar = true;
@@ -146,30 +146,17 @@ public class ControlVigenciasContratos implements Serializable {
         vigenciasContratos = null;
         empleado = empl;
 
-        listaContratos = null;
-        listaTiposContratos = null;
-
-        vigenciasContratos = null;
-        getVigenciasContratosEmpleado();
+        getVigenciasContratos();
         //INICIALIZAR BOTONES NAVEGACION
-        if (vigenciasContratos != null && !vigenciasContratos.isEmpty()) {
-            System.out.println("Entra al primer IF");
-            if (vigenciasContratos.size() == 1) {
-                System.out.println("Segundo IF");
-                //INFORMACION REGISTRO
+        if (vigenciasContratos != null) {
+            if (vigenciasContratos.size() > 0) {
                 vigenciaSeleccionada = vigenciasContratos.get(0);
-                //infoRegistro = "Registro 1 de 1";
-                infoRegistro = "Cantidad de registros: 1";
-            } else if (vigenciasContratos.size() > 1) {
-                System.out.println("Else If");
-                //INFORMACION REGISTRO
-                vigenciaSeleccionada = vigenciasContratos.get(0);
-                //infoRegistro = "Registro 1 de " + vigenciasCargosEmpleado.size();
-                infoRegistro = "Cantidad de registros: " + vigenciasContratos.size();
+                modificarInfoRegistro(vigenciasContratos.size());
+            } else {
+                modificarInfoRegistro(0);
             }
-
         } else {
-            infoRegistro = "Cantidad de registros: 0";
+            modificarInfoRegistro(0);
         }
         context.update("form:informacionRegistro");
     }
@@ -512,12 +499,16 @@ public class ControlVigenciasContratos implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             vigenciasContratos = null;
-            getVigenciasContratosEmpleado();
-            if (vigenciasContratos != null && !vigenciasContratos.isEmpty()) {
-                vigenciaSeleccionada = vigenciasContratos.get(0);
-                infoRegistro = "Cantidad de registros: " + vigenciasContratos.size();
+            getVigenciasContratos();
+            if (vigenciasContratos != null) {
+                if (vigenciasContratos.size() > 0) {
+                    vigenciaSeleccionada = vigenciasContratos.get(0);
+                    modificarInfoRegistro(vigenciasContratos.size());
+                } else {
+                    modificarInfoRegistro(0);
+                }
             } else {
-                infoRegistro = "Cantidad de registros: 0";
+                modificarInfoRegistro(0);
             }
             context.update("form:datosVCEmpleado");
             context.update("form:informacionRegistro");
@@ -560,11 +551,16 @@ public class ControlVigenciasContratos implements Serializable {
         listVCModificar.clear();
         paraNuevaVContrato = 0;
         vigenciasContratos = null;
-        getVigenciasContratosEmpleado();
-        if (vigenciasContratos != null && !vigenciasContratos.isEmpty()) {
-            infoRegistro = "Cantidad de registros: " + vigenciasContratos.size();
+        getVigenciasContratos();
+        if (vigenciasContratos != null) {
+            if (vigenciasContratos.size() > 0) {
+                vigenciaSeleccionada = vigenciasContratos.get(0);
+                modificarInfoRegistro(vigenciasContratos.size());
+            } else {
+                modificarInfoRegistro(0);
+            }
         } else {
-            infoRegistro = "Cantidad de registros: 0";
+            modificarInfoRegistro(0);
         }
 
         guardado = true;
@@ -646,7 +642,7 @@ public class ControlVigenciasContratos implements Serializable {
                 nuevaVigencia.setContrato(new Contratos());
                 nuevaVigencia.setTipocontrato(new TiposContratos());
                 RequestContext context = RequestContext.getCurrentInstance();
-                infoRegistro = "Cantidad de registros: " + vigenciasContratos.size();
+                modificarInfoRegistro(vigenciasContratos.size());
                 context.update("form:informacionRegistro");
                 context.update("form:datosVCEmpleado");
                 context.execute("NuevoRegistroVC.hide()");
@@ -715,7 +711,7 @@ public class ControlVigenciasContratos implements Serializable {
                 duplicarVC.setSecuencia(nuevaVContratoSecuencia);
                 listVCCrear.add(duplicarVC);
                 RequestContext context = RequestContext.getCurrentInstance();
-                infoRegistro = "Cantidad de registros: " + vigenciasContratos.size();
+                modificarInfoRegistro(vigenciasContratos.size());
                 context.update("form:informacionRegistro");
                 context.update("form:datosVCEmpleado");
                 context.execute("DuplicarRegistroVC.hide()");
@@ -783,7 +779,7 @@ public class ControlVigenciasContratos implements Serializable {
                 listVCBorrar.add(vigenciaSeleccionada);
             }
             vigenciasContratos.remove(vigenciaSeleccionada);
-            infoRegistro = "Cantidad de registros: " + vigenciasContratos.size();
+            modificarInfoRegistro(vigenciasContratos.size());
 
             context.update("form:datosVCEmpleado");
             context.update("form:informacionRegistro");
@@ -885,11 +881,28 @@ public class ControlVigenciasContratos implements Serializable {
         }
 
         if (list == 0) {
-            getInfoRegistroContrato();
+            if (listaContratos != null) {
+                if (listaContratos.size() > 0) {
+                    modificarInfoRegistroC(listaContratos.size());
+                } else {
+                    modificarInfoRegistroC(0);
+                }
+            } else {
+                modificarInfoRegistroC(0);
+            }
             context.update("form:ContratosDialogo");
             context.execute("ContratosDialogo.show()");
+
         } else if (list == 1) {
-            getInfoRegistroTipoContrato();
+            if (listaTiposContratos != null) {
+                if (listaTiposContratos.size() > 0) {
+                    modificarInfoRegistroTC(listaTiposContratos.size());
+                } else {
+                    modificarInfoRegistroTC(0);
+                }
+            } else {
+                modificarInfoRegistroTC(0);
+            }
             context.update("form:TiposContratoDialogo");
             context.execute("TiposContratoDialogo.show()");
         }
@@ -1017,13 +1030,29 @@ public class ControlVigenciasContratos implements Serializable {
             context.execute("seleccionarRegistro.show()");
         } else {
             if (cualCelda == 2) {
-                getInfoRegistroContrato();
+                if (listaContratos != null) {
+                    if (listaContratos.size() > 0) {
+                        modificarInfoRegistroC(listaContratos.size());
+                    } else {
+                        modificarInfoRegistroC(0);
+                    }
+                } else {
+                    modificarInfoRegistroC(0);
+                }
                 context.update("form:ContratosDialogo");
                 context.execute("ContratosDialogo.show()");
                 tipoActualizacion = 0;
             }
             if (cualCelda == 3) {
-                getInfoRegistroTipoContrato();
+                if (listaTiposContratos != null) {
+                    if (listaTiposContratos.size() > 0) {
+                        modificarInfoRegistroTC(listaTiposContratos.size());
+                    } else {
+                        modificarInfoRegistroTC(0);
+                    }
+                } else {
+                    modificarInfoRegistroTC(0);
+                }
                 context.update("form:TiposContratoDialogo");
                 context.execute("TiposContratoDialogo.show()");
                 tipoActualizacion = 0;
@@ -1064,19 +1093,6 @@ public class ControlVigenciasContratos implements Serializable {
         exporter.export(context, tabla, "VigenciasContratosXLS", false, false, "UTF-8", null, null);
         context.responseComplete();
     }
-    //EVENTO FILTRAR
-
-    /**
-     * Evento que cambia la lista reala a la filtrada
-     */
-    public void eventoFiltrar() {
-        if (tipoLista == 0) {
-            tipoLista = 1;
-        }
-        RequestContext context = RequestContext.getCurrentInstance();
-        infoRegistro = "Cantidad de Registros: " + filtrarVC.size();
-        context.update("form:informacionRegistro");
-    }
 
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1104,6 +1120,40 @@ public class ControlVigenciasContratos implements Serializable {
         }
     }
 
+    //EVENTO FILTRAR
+
+    /**
+     * Evento que cambia la lista reala a la filtrada
+     */
+    public void eventoFiltrar() {
+        if (tipoLista == 0) {
+            tipoLista = 1;
+        }
+        modificarInfoRegistro(filtrarVC.size());
+        RequestContext.getCurrentInstance().update("form:informacionRegistro");
+    }
+    
+    public void eventoFiltrarC() {
+        modificarInfoRegistroC(filtradoContratos.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistroContrato");
+    }
+    
+    public void eventoFiltrarTC() {
+        modificarInfoRegistroTC(filtradoTiposContratos.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistroTipoContrato");
+    }
+    private void modificarInfoRegistro(int valor) {
+        infoRegistro = String.valueOf(valor);
+    }
+
+    private void modificarInfoRegistroC(int valor) {
+        infoRegistroContrato = String.valueOf(valor);
+    }
+
+    private void modificarInfoRegistroTC(int valor) {
+        infoRegistroTipoContrato = String.valueOf(valor);
+    }
+
     public void recordarSeleccion() {
         if (vigenciaSeleccionada != null) {
             FacesContext c = FacesContext.getCurrentInstance();
@@ -1113,13 +1163,14 @@ public class ControlVigenciasContratos implements Serializable {
         }
     }
     //GETTERS AND SETTERS
+
     /**
      * Metodo que obtiene las VigenciasContratos de un empleado, en caso de ser
      * null por medio del administrar hace el llamado para almacenarlo
      *
      * @return listVC Lista Vigencias Contratos
      */
-    public List<VigenciasContratos> getVigenciasContratosEmpleado() {
+    public List<VigenciasContratos> getVigenciasContratos() {
 
         try {
             if (vigenciasContratos == null) {
@@ -1132,7 +1183,7 @@ public class ControlVigenciasContratos implements Serializable {
         }
     }
 
-    public void setVigenciasContratosEmpleado(List<VigenciasContratos> vigenciasContratos) {
+    public void setVigenciasContratos(List<VigenciasContratos> vigenciasContratos) {
         this.vigenciasContratos = vigenciasContratos;
     }
 
@@ -1175,13 +1226,6 @@ public class ControlVigenciasContratos implements Serializable {
     public List<Contratos> getListaContratos() {
         if (listaContratos == null) {
             listaContratos = administrarVigenciasContratos.contratos();
-            RequestContext context = RequestContext.getCurrentInstance();
-            if (listaContratos == null || listaContratos.isEmpty()) {
-                infoRegistroContrato = "Cantidad de registros: 0 ";
-            } else {
-                infoRegistroContrato = "Cantidad de registros: " + listaContratos.size();
-            }
-            context.update("form:infoRegistroContrato");
         }
         return listaContratos;
     }
@@ -1198,7 +1242,6 @@ public class ControlVigenciasContratos implements Serializable {
         this.filtradoContratos = filtradoContratos;
     }
 
-
     /**
      * Metodo que obtiene los tipos contratos, en caso de ser null por medio del
      * administrar obtiene los valores
@@ -1208,13 +1251,6 @@ public class ControlVigenciasContratos implements Serializable {
     public List<TiposContratos> getListaTiposContratos() {
         if (listaTiposContratos == null) {
             listaTiposContratos = administrarVigenciasContratos.tiposContratos();
-            RequestContext context = RequestContext.getCurrentInstance();
-            if (listaTiposContratos == null || listaTiposContratos.isEmpty()) {
-                infoRegistroTipoContrato = "Cantidad de registros: 0 ";
-            } else {
-                infoRegistroTipoContrato = "Cantidad de registros: " + listaTiposContratos.size();
-            }
-            context.update("form:infoRegistroTipoContrato");
         }
         return listaTiposContratos;
     }
@@ -1287,15 +1323,7 @@ public class ControlVigenciasContratos implements Serializable {
         return infoRegistroContrato;
     }
 
-    public void setInfoRegistroContrato(String infoRegistroContrato) {
-        this.infoRegistroContrato = infoRegistroContrato;
-    }
-
     public String getInfoRegistroTipoContrato() {
         return infoRegistroTipoContrato;
-    }
-
-    public void setInfoRegistroTipoContrato(String infoRegistroTipoContrato) {
-        this.infoRegistroTipoContrato = infoRegistroTipoContrato;
     }
 }

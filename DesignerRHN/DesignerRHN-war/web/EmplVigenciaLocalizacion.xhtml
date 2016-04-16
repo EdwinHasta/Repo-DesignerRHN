@@ -15,7 +15,7 @@
                 <h:form id="form"> 
                     <f:loadBundle basename="Recursos.emplvigencialocalizacion" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">    
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal">    
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlVigenciaLocalizacion.empleado.persona.nombreCompleto}"/> 
 
                         <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 37px; left: 12px; height: 24px">  
@@ -81,10 +81,10 @@
 
                             <p:dataTable id="datosVLEmpleado" var="infoDVL" rowKey="#{infoDVL.secuencia}" rowIndexVar="indice" style=" border: 1px;width: 820px"   
                                          value="#{controlVigenciaLocalizacion.vigenciaLocalizaciones}" scrollable="true" scrollHeight="#{controlVigenciaLocalizacion.altoTabla1}" scrollWidth="820"
-                                         filteredValue="#{controlVigenciaLocalizacion.filtrarVL}" emptyMessage="#{msg['vacio']}"
+                                         filteredValue="#{controlVigenciaLocalizacion.filtradoVL}" emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell" selection="#{controlVigenciaLocalizacion.vigenciaLocalizacionSeleccionada}" selectionMode="single" >
 
-                                <p:ajax event="filter" listener="#{controlVigenciaLocalizacion.eventoFiltrar()}"/>
+                                <p:ajax event="filter" listener="#{controlVigenciaLocalizacion.eventoFiltrarVL()}"/>
                                 <f:event type="preRenderView" listener="#{controlVigenciaLocalizacion.recordarSeleccionVL()}"/>
 
                                 <p:column style=""  sortBy="#{infoDVL.fechavigencia}" filterBy="#{infoDVL.fechavigencia}" filterMatchMode="contains"  width="72" id="vlFechaVigencia" filterStyle="display: none; visibility: hidden;"  >  
@@ -129,7 +129,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 190px; margin: -14px; height: 26px;  border: none; color: blue" action="centrocostoEmplVigenciaLocalizacion" actionListener="#{controlBetaCentrosCostos.recibirPagina('atrascentrocostoEmplVigenciaLocalizacion')}" id="fooNombreJornada" value=""/>
+                                        <p:commandButton style="width: 100%; height: 10px; border-radius: 0px;" action="centrocostoEmplVigenciaLocalizacion" actionListener="#{controlBetaCentrosCostos.recibirPagina('atrascentrocostoEmplVigenciaLocalizacion')}" id="fooNombreJornada" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -149,7 +149,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooLocalizacion" value=""/>
+                                        <p:commandButton style="width: 100%; height: 10px; border-radius: 0px;" id="fooLocalizacion" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -173,7 +173,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px; border: none; color: blue" id="fooMotivo" action="motivolocalizacion" value=""/>
+                                        <p:commandButton style="width: 100%; height: 10px; border-radius: 0px;" id="fooMotivo" action="motivolocalizacion" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -194,10 +194,11 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooProyecto" value="" action="pageProyectos" actionListener="#{controlProyecto.recibirPaginaEntrante('vigencialocalizacion')}"/>
+                                        <p:commandButton style="width: 100%; height: 10px; border-radius: 0px;" id="fooProyecto" value="" action="pageProyectos" actionListener="#{controlProyecto.recibirPaginaEntrante('vigencialocalizacion')}"/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>  
+                            <h:outputText id="informacionRegistroVL" value="#{msg['infoRegistro']} #{controlVigenciaLocalizacion.infoRegistroVL}" style="position: relative; left: 15px; top: 1px; font-weight: bold"/>
                         </fieldset>
 
                         <!--<p:remoteCommand name="posicionLocalizacion" actionListener="#/{controlVigenciaLocalizacion.posicionLocalizacion()}"/>-->
@@ -207,21 +208,21 @@
 
                             <p:dataTable id="datosVPVigencia" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceVP" 
                                          value="#{controlVigenciaLocalizacion.vigenciasProrrateosCentroC}" style=" border: 1px;width:445px"
-                                         filteredValue="#{controlVigenciaLocalizacion.filtradoVigenciasProrrateosCentroC}" emptyMessage="#{msg['vacio']}" 
+                                         filteredValue="#{controlVigenciaLocalizacion.filtradoVP}" emptyMessage="#{msg['vacio']}" 
                                          scrollable="true" editable="true" editMode="cell" scrollHeight="#{controlVigenciaLocalizacion.altoTabla2}" scrollWidth="445" 
                                          selection="#{controlVigenciaLocalizacion.vigenciaProrrateoSeleccionada}" selectionMode="single">
 
-                                <p:ajax event="filter" listener="#{controlVigenciaLocalizacion.eventoFiltrar()}"/>
+                                <p:ajax event="filter" listener="#{controlVigenciaLocalizacion.eventoFiltrarVP()}"/>
                                 <f:event type="preRenderView" listener="#{controlVigenciaLocalizacion.recordarSeleccionVP()}"/>
 
-                                <p:column sortBy="#{info.centrocosto.nombre}" filterBy="#{info.centrocosto.nombre}" filterMatchMode="contains" id="vPCentroCosto" filterStyle="display: none; visibility: hidden;"  style="width: 110px; " >                                  
+                                <p:column sortBy="#{info.centrocosto.nombre}" filterBy="#{info.centrocosto.nombre}" filterMatchMode="contains" id="vPCentroCosto" filterStyle="display: none; visibility: hidden;" width="110" >                                  
                                     <f:facet name="header">
                                         <h:outputText id="headerCentroCostoVP" value="#{msg['centrodecostos']}" />
                                         <p:tooltip  for="headerCentroCostoVP" value="Ingrese la Localizacion." />
                                     </f:facet>
 
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.centrocosto.nombre}" style="width: 100px; text-transform: uppercase; "/></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{info.centrocosto.nombre}"/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{info.centrocosto.nombre}" id="editarCentroCostoVP" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
                                                 <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndiceVP(info,0)}" process="@this"/> 
@@ -231,18 +232,18 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 130px; margin: -14px; height: 26px;  border: none; color: blue" action="centrocostoEmplVigenciaLocalizacion" actionListener="#{controlBetaCentrosCostos.recibirPagina('atrascentrocostoEmplVigenciaLocalizacion')}" id="fooCentroCostoVP" value=""/>
+                                        <p:commandButton style="width: 100%; height: 10px; border-radius: 0px;" action="centrocostoEmplVigenciaLocalizacion" actionListener="#{controlBetaCentrosCostos.recibirPagina('atrascentrocostoEmplVigenciaLocalizacion')}" id="fooCentroCostoVP" value=""/>
                                     </f:facet>
                                 </p:column>
 
-                                <p:column  sortBy="#{info.porcentaje}" filterBy="#{info.porcentaje}" filterMatchMode="contains" id="vPPorcentaje" filterStyle="display: none; visibility: hidden;"  style="width: 27px; ">                                  
+                                <p:column  sortBy="#{info.porcentaje}" filterBy="#{info.porcentaje}" filterMatchMode="contains" id="vPPorcentaje" filterStyle="display: none; visibility: hidden;" width="70">                                  
                                     <f:facet name="header">
                                         <h:outputText id="headerPorcentajeVP" value="#{msg['p']}" />
                                         <p:tooltip  for="headerPorcentajeVP" value="Ingrese el porcentaje." />
                                     </f:facet>
 
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.porcentaje}" style="width: 100px; "/></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{info.porcentaje}"/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText id="editPorcentaje1" binding="#{vPPorcentajeAux}" maxlength="4" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px "> 
                                                 <pe:keyFilter for="editPorcentaje1" mask="num"/>
@@ -257,7 +258,7 @@
                                 </p:column>
 
                                 <p:column sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains" id="vPFechaInicial"
-                                          filterStyle="display: none; visibility: hidden;"  style="width: 70px; ">                                  
+                                          filterStyle="display: none; visibility: hidden;" width="70">                                  
                                     <f:facet name="header">
                                         <h:outputText id="headerFechaInicialVP" value="#{msg['inicial']}" />
                                         <p:tooltip  for="headerFechaInicialVP" value="Ingrese la fecha inicial en formato(DD-MM-YYYY)." />
@@ -265,7 +266,7 @@
 
                                     <p:cellEditor>  
                                         <f:facet name="output">
-                                            <h:outputText value="#{info.fechainicial}" style="width: 100px; ">
+                                            <h:outputText value="#{info.fechainicial}" >
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:outputText>
                                         </f:facet>  
@@ -282,7 +283,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains" id="vPFechaFinal" filterStyle="display: none; visibility: hidden;"  style="width: 70px; ">                                  
+                                <p:column sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains" id="vPFechaFinal" filterStyle="display: none; visibility: hidden;" width="70">                                  
                                     <f:facet name="header">
                                         <h:outputText id="headerFechaFinalVP" value="#{msg['final']}" />
                                         <p:tooltip  for="headerFechaFinalVP" value="Ingrese la fecha final en formato(DD-MM-YYYY)." />
@@ -290,7 +291,7 @@
 
                                     <p:cellEditor>  
                                         <f:facet name="output">
-                                            <h:outputText value="#{info.fechafinal}" style="width: 100px; ">
+                                            <h:outputText value="#{info.fechafinal}">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:outputText>
                                         </f:facet>  
@@ -307,14 +308,14 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column  sortBy="#{info.proyecto.nombreproyecto}" filterBy="#{info.proyecto.nombreproyecto}" filterMatchMode="contains" id="vPProyecto" filterStyle="display: none; visibility: hidden;"  style="width: 70px; ">                                  
+                                <p:column  sortBy="#{info.proyecto.nombreproyecto}" filterBy="#{info.proyecto.nombreproyecto}" filterMatchMode="contains" id="vPProyecto" filterStyle="display: none; visibility: hidden;"  width="70">                                  
                                     <f:facet name="header">
                                         <h:outputText id="headerProyectoVP" value="#{msg['proyecto']}" />
                                         <p:tooltip  for="headerProyectoVP" value="Proyecto." />
                                     </f:facet>
 
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.proyecto.nombreproyecto}" style="width: 100px; "/></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{info.proyecto.nombreproyecto}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText maxlength="50" value="#{info.proyecto.nombreproyecto}" id="editarProyectoVP" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
                                                 <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndiceVP(info,4)}" process="@this"/> 
@@ -324,18 +325,18 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooProyectoVP" value="" action="pageProyectos" actionListener="#{controlProyecto.recibirPaginaEntrante('vigencialocalizacion')}"/>
+                                        <p:commandButton style="width: 100%; height: 10px; border-radius: 0px;" id="fooProyectoVP" value="" action="pageProyectos" actionListener="#{controlProyecto.recibirPaginaEntrante('vigencialocalizacion')}"/>
                                     </f:facet>
                                 </p:column>
 
-                                <p:column sortBy="#{info.subporcentaje}" filterBy="#{info.subporcentaje}" filterMatchMode="contains" id="vPSubPorcentaje" filterStyle="display: none; visibility: hidden;"  style="width: 90px; ">                                  
+                                <p:column sortBy="#{info.subporcentaje}" filterBy="#{info.subporcentaje}" filterMatchMode="contains" id="vPSubPorcentaje" filterStyle="display: none; visibility: hidden;" width="90">                                  
                                     <f:facet name="header">
                                         <h:outputText id="headerSubPorcentajeVP" value="#{msg['subporcentaje']}" />
                                         <p:tooltip  for="headerSubPorcentajeVP" value="SubPorcentaje." />
                                     </f:facet>
 
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.subporcentaje}" style="width: 100px; "/></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{info.subporcentaje}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText id="editPorcentaje2" binding="#{vPPorcentajeAuxSub}" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
                                                 <pe:keyFilter for="editPorcentaje2" mask="num"/>
@@ -350,17 +351,18 @@
                                 </p:column> 
 
                             </p:dataTable>
+                            <h:outputText id="informacionRegistroVP" value="#{msg['infoRegistro']} #{controlVigenciaLocalizacion.infoRegistroVP}" style="position: relative; left: 15px; top: 1px; font-weight: bold"/>
                         </fieldset>
 
 
                         <fieldset style="position: absolute;top: 270px;left: 490px;height: 185px;width: 350px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>#{msg['pp']}</strong></legend>
                             <p:dataTable id="datosVPPVigencia" var="info2" rowKey="#{info2.secuencia}" rowIndexVar="indiceVPP" value="#{controlVigenciaLocalizacion.vigenciasProrrateosProyectos}" 
-                                         filteredValue="#{controlVigenciaLocalizacion.filtradoVigenciasProrrateosProyectos}" editable="true" editMode="cell" 
+                                         filteredValue="#{controlVigenciaLocalizacion.filtradoPP}" editable="true" editMode="cell" 
                                          scrollable="true" scrollHeight="#{controlVigenciaLocalizacion.altoTabla3}" scrollWidth="345" emptyMessage="#{msg['vacio']}" style=" border: 1px;width:345px"
                                          selection="#{controlVigenciaLocalizacion.vigenciaProrrateoProyectoSeleccionada}" selectionMode="single">
 
-                                <p:ajax event="filter" listener="#{controlVigenciaLocalizacion.eventoFiltrar()}"/>
+                                <p:ajax event="filter" listener="#{controlVigenciaLocalizacion.eventoFiltrarVPP()}"/>
                                 <f:event type="preRenderView" listener="#{controlVigenciaLocalizacion.recordarSeleccionVPP()}"/>
 
                                 <p:column  sortBy="#{info2.proyecto.nombreproyecto}" filterBy="#{info2.proyecto.nombreproyecto}" filterMatchMode="contains" id="vPPProyecto" filterStyle="display: none; visibility: hidden;" >
@@ -369,7 +371,7 @@
                                         <p:tooltip  for="headerProyectoVPP" value="Ingrese el nombre del proyecto." />
                                     </f:facet>
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info2.proyecto.nombreproyecto}" style="width: 100px; "/></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{info2.proyecto.nombreproyecto}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText maxlength="50" value="#{info2.proyecto.nombreproyecto}" id="editarProyectoVPP" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
                                                 <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndiceVPP(indiceVPP,0)}" process="@this"/> 
@@ -379,18 +381,18 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooProyectosPP" value="" action="pageProyectos" actionListener="#{controlProyecto.recibirPaginaEntrante('vigencialocalizacion')}"/>
+                                        <p:commandButton style="width: 100%; height: 10px; border-radius: 0px;" id="fooProyectosPP" value="" action="pageProyectos" actionListener="#{controlProyecto.recibirPaginaEntrante('vigencialocalizacion')}"/>
                                     </f:facet>
                                 </p:column>
 
-                                <p:column sortBy="#{info2.porcentaje}" filterBy="#{info2.porcentaje}" filterMatchMode="contains" id="vPPPorcentaje" filterStyle="display: none; visibility: hidden;"  style="width: 27px; ">                                  
+                                <p:column sortBy="#{info2.porcentaje}" filterBy="#{info2.porcentaje}" filterMatchMode="contains" id="vPPPorcentaje" filterStyle="display: none; visibility: hidden;"  width ="27">                                  
                                     <f:facet name="header">
                                         <h:outputText id="headerPorcentajeVPP" value="#{msg['p']}" />
                                         <p:tooltip  for="headerPorcentajeVPP" value="Ingrese el porcentaje." />
                                     </f:facet>
 
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info2.porcentaje}" style="width: 100px; "/></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{info2.porcentaje}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText id="editPorcentaje2" binding="#{vPPorcentajeAux2}" maxlength="4" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px "> 
                                                 <pe:keyFilter for="editPorcentaje2" mask="num"/>
@@ -404,7 +406,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column  sortBy="#{info2.fechainicial}" filterBy="#{info2.fechainicial}" filterMatchMode="contains" id="vPPFechaInicial" filterStyle="display: none; visibility: hidden;"  style="width: 70px; ">                                  
+                                <p:column  sortBy="#{info2.fechainicial}" filterBy="#{info2.fechainicial}" filterMatchMode="contains" id="vPPFechaInicial" filterStyle="display: none; visibility: hidden;"  width="70">                                  
                                     <f:facet name="header">
                                         <h:outputText id="headerFechaInicialVPP" value="#{msg['inicial']}" />
                                         <p:tooltip  for="headerFechaInicialVPP" value="Ingrese la fecha inicial en formato(DD-MM-YYYY)." />
@@ -412,7 +414,7 @@
 
                                     <p:cellEditor>  
                                         <f:facet name="output">
-                                            <h:outputText value="#{info2.fechainicial}" style="width: 100px; ">
+                                            <h:outputText value="#{info2.fechainicial}">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:outputText>
                                         </f:facet>  
@@ -429,7 +431,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column  sortBy="#{info2.fechafinal}" filterBy="#{info2.fechafinal}" filterMatchMode="contains" id="vPPFechaFinal" filterStyle="display: none; visibility: hidden;"  style="width: 70px; " > 
+                                <p:column  sortBy="#{info2.fechafinal}" filterBy="#{info2.fechafinal}" filterMatchMode="contains" id="vPPFechaFinal" filterStyle="display: none; visibility: hidden;"  width="70" > 
                                     <f:facet name="header">
                                         <h:outputText id="headerFechaFinalVPP" value="#{msg['final']}" />
                                         <p:tooltip  for="headerFechaFinalVPP" value="Ingrese la fecha final en formato(DD-MM-YYYY)." />
@@ -437,7 +439,7 @@
 
                                     <p:cellEditor>   
                                         <f:facet name="output">
-                                            <h:outputText value="#{info2.fechafinal}" style="width: 100px; ">
+                                            <h:outputText value="#{info2.fechafinal}">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:outputText>
                                         </f:facet>  
@@ -454,13 +456,17 @@
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>
+                            <h:outputText id="informacionRegistroVPP" value="#{msg['infoRegistro']} #{controlVigenciaLocalizacion.infoRegistroVPP}" style="position: relative; left: 15px; top: 1px; font-weight: bold"/>
                         </fieldset>
 
+                        <!-- DIALOGO L.O.V ESTATICO Localizacion Estr -->
                         <p:dialog header="#{msg['localizacionL']}" widgetVar="LocalizacionDialogo" draggable="false" resizable="false" closable="false" id="LocalizacionDialogo"  
                                   showEffect="fade" hideEffect="fade" width="755" modal="true" >
                             <p:dataTable id="lovLocalizacion" style=" width: 720px" var="localizacion" value="#{controlVigenciaLocalizacion.listEstructurasCC}" rowKey="#{localizacion.secuencia}"
                                          selection="#{controlVigenciaLocalizacion.estructuraSelecionada}" selectionMode="single" widgetVar="lovLocalizacion" scrollable="true" scrollWidth="737" scrollHeight="250"
                                          filteredValue="#{controlVigenciaLocalizacion.filtradoEstructura}" emptyMessage="#{msg['lovvacio']}">              
+                                
+                                <p:ajax event="filter" listener="#{controlVigenciaLocalizacion.eventoFiltrarEstrLoca()}"/>
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaLocalizacion.activarAceptar()}" update=":form:aceptarL"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciaLocalizacion.actualizarEstructura()}"  process="@this" />
                                 <f:facet name="header">  
@@ -487,7 +493,7 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <h:outputText id="infoRegistroLocalizacion" value="#{controlVigenciaLocalizacion.infoRegistroEstLocalizacion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            <h:outputText id="infoRegistroLocalizacion" value="#{msg['infoRegistro']} #{controlVigenciaLocalizacion.infoRegistroEstLocalizacion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             <p:commandButton id="aceptarL" style="position: relative; left: 570px; top:5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaLocalizacion.aceptar}" actionListener="#{controlVigenciaLocalizacion.actualizarEstructura()}" process="@this" icon="ui-icon-check"/>
                             <p:commandButton id="atrasL" style="position: relative; left: 570px; top:5px" value="#{msg['atras']}" actionListener="#{controlVigenciaLocalizacion.cancelarCambioEstructura()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
 
@@ -499,6 +505,8 @@
                             <p:dataTable id="lovMotivo" style=" width: 430px" var="motivo" value="#{controlVigenciaLocalizacion.listMotivosLocalizaciones}" rowKey="#{motivo.secuencia}"
                                          selection="#{controlVigenciaLocalizacion.motivoLocalizacionSelecionado}" selectionMode="single" widgetVar="lovMotivo" scrollable="true" scrollWidth="448" scrollHeight="250"
                                          filteredValue="#{controlVigenciaLocalizacion.filtradoMotivosLocalizaciones}" emptyMessage="#{msg['lovvacio']}">              
+                                
+                                <p:ajax event="filter" listener="#{controlVigenciaLocalizacion.eventoFiltrarMotiLoc()}"/>
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaLocalizacion.activarAceptar()}" update=":form:aceptarM"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciaLocalizacion.actualizarMotivoLocalizacion()}"  process="@this" />
                                 <f:facet name="header">  
@@ -519,7 +527,7 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <h:outputText id="infoRegistroMotivoLocalizacion" value="#{controlVigenciaLocalizacion.infoRegistroMotivoLocalizacion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            <h:outputText id="infoRegistroMotivoLocalizacion" value="#{msg['infoRegistro']} #{controlVigenciaLocalizacion.infoRegistroMotivoLocalizacion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             <p:commandButton id="aceptarM" icon="ui-icon-check" style="position: relative; left: 280px;top:5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaLocalizacion.aceptar}"  actionListener="#{controlVigenciaLocalizacion.actualizarMotivoLocalizacion()}" process="@this" />
                             <p:commandButton id="atrasM" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 280px;top:5px" value="#{msg['atras']}" actionListener="#{controlVigenciaLocalizacion.cancelarCambioMotivoLocalizacion()}" process="@this"  />
 
@@ -531,6 +539,8 @@
                             <p:dataTable id="lovProyectos" style=" width: 590px" var="proyecto" value="#{controlVigenciaLocalizacion.listProyectos}" rowKey="#{proyecto.secuencia}"
                                          selection="#{controlVigenciaLocalizacion.proyectoSelecionado}" selectionMode="single" widgetVar="lovProyectos" scrollable="true" scrollWidth="608" scrollHeight="250"
                                          filteredValue="#{controlVigenciaLocalizacion.filtradoProyectos}" emptyMessage="#{msg['lovvacio']}">              
+                                
+                                <p:ajax event="filter" listener="#{controlVigenciaLocalizacion.eventoFiltrarProyecto()}"/>
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaLocalizacion.activarAceptar()}" update=":form:aceptarP"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciaLocalizacion.actualizarProyecto()}"  process="@this" />
                                 <f:facet name="header">  
@@ -557,12 +567,10 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <h:outputText id="infoRegistroProyecto" value="#{controlVigenciaLocalizacion.infoRegistroProyecto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            <h:outputText id="infoRegistroProyecto" value="#{msg['infoRegistro']} #{controlVigenciaLocalizacion.infoRegistroProyecto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             <p:commandButton id="aceptarP" icon="ui-icon-check" style="position: relative; left: 440px; top:5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaLocalizacion.aceptar}"  actionListener="#{controlVigenciaLocalizacion.actualizarProyecto()}" process="@this" />
                             <p:commandButton id="atrasP" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 440px;top:5px " value="#{msg['atras']}" actionListener="#{controlVigenciaLocalizacion.cancelarCambioProyecto()}" process="@this"  />
-
                         </p:dialog>
-
 
                         <!-- DIALOGO L.O.V ESTATICO CENTRO COSTO VIGENCIA PRORRATEO -->
                         <p:dialog header="#{msg['localizacionLP']}" widgetVar="CentroCostosDialogo" draggable="false" resizable="false" closable="false" id="CentroCostosDialogo"  
@@ -570,6 +578,8 @@
                             <p:dataTable id="lovCentroCostos" style=" width: 720px" var="centro" value="#{controlVigenciaLocalizacion.listCentrosCostos}" rowKey="#{centro.secuencia}"
                                          selection="#{controlVigenciaLocalizacion.centroCostoSeleccionado}" selectionMode="single" widgetVar="lovCentroCostos" scrollable="true" scrollWidth="737" scrollHeight="250"
                                          filteredValue="#{controlVigenciaLocalizacion.filtradoCentroCostos}" emptyMessage="#{msg['lovvacio']}">              
+                                
+                                <p:ajax event="filter" listener="#{controlVigenciaLocalizacion.eventoFiltrarCentroC()}"/>
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaLocalizacion.activarAceptar()}" update=":form:aceptarCC"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciaLocalizacion.actualizarCentroCostoVP()}"  process="@this" />
                                 <f:facet name="header">  
@@ -596,87 +606,87 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <h:outputText id="infoRegistroCentroCosto" value="#{controlVigenciaLocalizacion.infoRegistroCentroCosto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            <h:outputText id="infoRegistroCentroCosto" value="#{msg['infoRegistro']} #{controlVigenciaLocalizacion.infoRegistroCentroCosto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             <p:commandButton id="aceptarCC" icon="ui-icon-check" style="position: relative; left: 570px;top: 5px" value="#{msg['aceptar']}" actionListener="#{controlVigenciaLocalizacion.actualizarCentroCostoVP()}" disabled="#{controlVigenciaLocalizacion.aceptar}" process="@this" />
                             <p:commandButton id="atrasCC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 570px;top: 5px" value="#{msg['atras']}" actionListener="#{controlVigenciaLocalizacion.cancelarCambioCentroCostoVP()}" process="@this"  />
 
                         </p:dialog>
+                        <!-- DIALOGO L.O.V ESTATICO PROYECTOS VIGENCIA PRORRATEO 
 
-                        <!-- DIALOGO L.O.V ESTATICO PROYECTOS VIGENCIA PRORRATEO -->
-                        <p:dialog header="#{msg['proyectoP']}" widgetVar="ProyectosDialogoVP" draggable="false" resizable="false" closable="false" id="ProyectosDialogoVP"  
+                        <p:dialog header="#/{msg['proyectoP']}" widgetVar="ProyectosDialogoVP" draggable="false" resizable="false" closable="false" id="ProyectosDialogoVP"  
                                   showEffect="fade" hideEffect="fade" width="640" modal="true" >
-                            <p:dataTable id="lovProyectosVP" style=" width: 600px" var="proyecto" value="#{controlVigenciaLocalizacion.listProyectos}" rowKey="#{proyecto.secuencia}"
-                                         selection="#{controlVigenciaLocalizacion.proyectoSelecionado}" selectionMode="single" widgetVar="lovProyectosVP" scrollable="true" scrollWidth="619" scrollHeight="250"
-                                         filteredValue="#{controlVigenciaLocalizacion.filtradoProyectos}" emptyMessage="#{msg['lovvacio']}">              
-                                <p:ajax event="rowSelect" listener="#{controlVigenciaLocalizacion.activarAceptar()}" update=":form:aceptarPVP"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaLocalizacion.actualizarProyectoVP()}"  process="@this" />
+                            <p:dataTable id="lovProyectosVP" style=" width: 600px" var="proyecto" value="#/{controlVigenciaLocalizacion.listProyectos}" rowKey="#/{proyecto.secuencia}"
+                                         selection="#/{controlVigenciaLocalizacion.proyectoSelecionado}" selectionMode="single" widgetVar="lovProyectosVP" scrollable="true" scrollWidth="619" scrollHeight="250"
+                                         filteredValue="#/{controlVigenciaLocalizacion.filtradoProyectos}" emptyMessage="#/{msg['lovvacio']}">              
+                                <p:ajax event="rowSelect" listener="#/{controlVigenciaLocalizacion.activarAceptar()}" update=":form:aceptarPVP"/>
+                                <p:ajax event="rowDblselect" listener="#/{controlVigenciaLocalizacion.actualizarProyectoVP()}"  process="@this" />
                                 <f:facet name="header">  
-                                    <h:outputText value="#{msg['buscarP']}"  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <h:outputText value="#/{msg['buscarP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovProyectosVP.filter();" style="width:150px; position: relative; left: -90px;" />  
                                 </f:facet>
-                                <p:column filterBy="#{proyecto.codigo}" width="160" filterMatchMode="contains" >
+                                <p:column filterBy="#/{proyecto.codigo}" width="160" filterMatchMode="contains" >
                                     <f:facet name="header">
-                                        <h:outputText style="text-align: center" value="#{msg['codigoP']}" />
+                                        <h:outputText style="text-align: center" value="#/{msg['codigoP']}" />
                                     </f:facet>
-                                    <h:outputText  value="#{proyecto.codigo}" />
+                                    <h:outputText  value="#/{proyecto.codigo}" />
                                 </p:column>
-                                <p:column filterBy="#{proyecto.nombreproyecto}" width="160"  filterMatchMode="contains">
+                                <p:column filterBy="#/{proyecto.nombreproyecto}" width="160"  filterMatchMode="contains">
                                     <f:facet name="header">
-                                        <h:outputText value="#{msg['nombreP']}" />
+                                        <h:outputText value="#/{msg['nombreP']}" />
                                     </f:facet>
-                                    <h:outputText value="#{proyecto.nombreproyecto}" />
+                                    <h:outputText value="#/{proyecto.nombreproyecto}" />
                                 </p:column>
-                                <p:column filterBy="#{proyecto.empresa.nombre}" width="160"  filterMatchMode="contains">
+                                <p:column filterBy="#/{proyecto.empresa.nombre}" width="160"  filterMatchMode="contains">
                                     <f:facet name="header">
-                                        <h:outputText value="#{msg['empresaP']}" />
+                                        <h:outputText value="#/{msg['empresaP']}" />
                                     </f:facet>
-                                    <h:outputText value="#{proyecto.empresa.nombre}" />
+                                    <h:outputText value="#/{proyecto.empresa.nombre}" />
                                 </p:column>
                             </p:dataTable>
 
-                            <h:outputText id="infoRegistroProyectoVP" value="#{controlVigenciaLocalizacion.infoRegistroProyectoVP}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            <p:commandButton id="aceptarPVP" style="position: relative; left: 450px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaLocalizacion.aceptar}" actionListener="#{controlVigenciaLocalizacion.actualizarProyectoVP()}" process="@this" icon="ui-icon-check"/>
-                            <p:commandButton id="atrasPVP" style="position: relative; left: 450px;top: 5px" value="#{msg['atras']}" actionListener="#{controlVigenciaLocalizacion.cancelarCambioProyectoVP()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                            <h:outputText id="infoRegistroProyectoVP" value="#/{controlVigenciaLocalizacion.infoRegistroProyectoVP}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            <p:commandButton id="aceptarPVP" style="position: elative; left: 450px;top: 5px" value="#/{msg['aceptar']}" disabled="#/{controlVigenciaLocalizacion.aceptar}" actionListener="#/{controlVigenciaLocalizacion.actualizarProyectoVP()}" process="@this" icon="ui-icon-check"/>
+                            <p:commandButton id="atrasPVP" style="position: relative; left: 450px;top: 5px" value="#/{msg['atras']}" actionListener="#/{controlVigenciaLocalizacion.cancelarCambioProyectoVP()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
 
-                        </p:dialog>
+                        </p:dialog>-->
 
-                        <!-- DIALOGO L.O.V ESTATICO PROYECTOS VIGENCIA PRORRATEO PROYECTO -->
-                        <p:dialog header="#{msg['proyectoP']}" widgetVar="ProyectosDialogoVPP" draggable="false" resizable="false" closable="false" id="ProyectosDialogoVPP"  
+                        <!-- DIALOGO L.O.V ESTATICO PROYECTOS VIGENCIA PRORRATEO PROYECTO 
+                        <p:dialog header="#/{msg['proyectoP']}" widgetVar="ProyectosDialogoVPP" draggable="false" resizable="false" closable="false" id="ProyectosDialogoVPP"  
                                   showEffect="fade" hideEffect="fade" width="640" modal="true" >
-                            <p:dataTable id="lovProyectosVPP" style=" width: 600px" var="proyecto" value="#{controlVigenciaLocalizacion.listProyectos}" rowKey="#{proyecto.secuencia}"
-                                         selection="#{controlVigenciaLocalizacion.proyectoSelecionado}" selectionMode="single" widgetVar="lovProyectosVPP" scrollable="true" scrollWidth="619" scrollHeight="250"
-                                         filteredValue="#{controlVigenciaLocalizacion.filtradoProyectos}" emptyMessage="#{msg['lovvacio']}">              
-                                <p:ajax event="rowSelect" listener="#{controlVigenciaLocalizacion.activarAceptar()}" update=":form:aceptarPVPP"/>
-                                <p:ajax event="rowDblselect" listener="#{controlVigenciaLocalizacion.actualizarProyectoVPP()}"  process="@this" />
+                            <p:dataTable id="lovProyectosVPP" style=" width: 600px" var="proyecto" value="#/{controlVigenciaLocalizacion.listProyectos}" rowKey="#/{proyecto.secuencia}"
+                                         selection="#/{controlVigenciaLocalizacion.proyectoSelecionado}" selectionMode="single" widgetVar="lovProyectosVPP" scrollable="true" scrollWidth="619" scrollHeight="250"
+                                         filteredValue="#/{controlVigenciaLocalizacion.filtradoProyectos}" emptyMessage="#/{msg['lovvacio']}">              
+                                <p:ajax event="rowSelect" listener="#/{controlVigenciaLocalizacion.activarAceptar()}" update=":form:aceptarPVPP"/>
+                                <p:ajax event="rowDblselect" listener="#/{controlVigenciaLocalizacion.actualizarProyectoVPP()}"  process="@this" />
                                 <f:facet name="header">  
-                                    <h:outputText value="#{msg['buscarP']}"  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <h:outputText value="#/{msg['buscarP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovProyectosVPP.filter();" style="width:150px; position: relative; left: -90px;" />  
                                 </f:facet>
-                                <p:column filterBy="#{proyecto.codigo}" width="160" filterMatchMode="contains" >
+                                <p:column filterBy="#/{proyecto.codigo}" width="160" filterMatchMode="contains" >
                                     <f:facet name="header">
-                                        <h:outputText style="text-align: center" value="#{msg['codigoP']}" />
+                                        <h:outputText style="text-align: center" value="#/{msg['codigoP']}" />
                                     </f:facet>
-                                    <h:outputText  value="#{proyecto.codigo}" />
+                                    <h:outputText  value="#/{proyecto.codigo}" />
                                 </p:column>
-                                <p:column filterBy="#{proyecto.nombreproyecto}" width="160"  filterMatchMode="contains">
+                                <p:column filterBy="#/{proyecto.nombreproyecto}" width="160"  filterMatchMode="contains">
                                     <f:facet name="header">
-                                        <h:outputText value="#{msg['nombreP']}" />
+                                        <h:outputText value="#/{msg['nombreP']}" />
                                     </f:facet>
-                                    <h:outputText value="#{proyecto.nombreproyecto}" />
+                                    <h:outputText value="#/{proyecto.nombreproyecto}" />
                                 </p:column>
-                                <p:column filterBy="#{proyecto.empresa.nombre}" width="160"  filterMatchMode="contains">
+                                <p:column filterBy="#/{proyecto.empresa.nombre}" width="160"  filterMatchMode="contains">
                                     <f:facet name="header">
-                                        <h:outputText value="#{msg['empresaP']}" />
+                                        <h:outputText value="#/{msg['empresaP']}" />
                                     </f:facet>
-                                    <h:outputText value="#{proyecto.empresa.nombre}" />
+                                    <h:outputText value="#/{proyecto.empresa.nombre}" />
                                 </p:column>
                             </p:dataTable>
 
-                            <h:outputText id="infoRegistroProyectoVPP" value="#{controlVigenciaLocalizacion.infoRegistroProyectoVPP}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                            <p:commandButton id="aceptarPVPP" icon="ui-icon-check" style="position: relative; left: 450px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlVigenciaLocalizacion.aceptar}" actionListener="#{controlVigenciaLocalizacion.actualizarProyectoVPP()}" process="@this" />
-                            <p:commandButton id="atrasPVPP" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 450px;top: 5px" value="#{msg['atras']}" actionListener="#{controlVigenciaLocalizacion.cancelarCambioProyectoVPP()}"  process="@this"  />
+                            <h:outputText id="infoRegistroProyectoVPP" value="#/{controlVigenciaLocalizacion.infoRegistroProyectoVPP}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            <p:commandButton id="aceptarPVPP" icon="ui-icon-check" style="position: relative; left: 450px;top: 5px" value="#/{msg['aceptar']}" disabled="#/{controlVigenciaLocalizacion.aceptar}" actionListener="#/{controlVigenciaLocalizacion.actualizarProyectoVPP()}" process="@this" />
+                            <p:commandButton id="atrasPVPP" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 450px;top: 5px" value="#/{msg['atras']}" actionListener="#/{controlVigenciaLocalizacion.cancelarCambioProyectoVPP()}"  process="@this"  />
 
-                        </p:dialog>
+                        </p:dialog>-->
 
 
                         <p:commandButton style="position: absolute; left: 683px; top: 478px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 

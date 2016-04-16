@@ -18,7 +18,7 @@
                     <p:growl id="growl" showDetail="true"/>
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal">  
 
-                        <h:outputText style="position: absolute; top: 50px; height: 12px; position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 440px;left: 400px;" 
+                        <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 440px;left: 400px;" 
                                       id="nombreEmpleado" value="#{controlVigenciasCargos.empleado.persona.nombreCompleto}"/>
 
                         <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 40px; left: 20px; height: 24px">   
@@ -119,13 +119,16 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <lnk:calendar id="editFecha" value="#{info.fechavigencia}" height="12" width="99">
+                                            <lnk:calendar id="editFecha" value="#{info.fechavigencia}" height="12">
                                                 <p:ajax event="dateSelect" listener="#{controlVigenciasCargos.modificarVC(info, 'N', info.fechavigencia)}" update="@this"/>
                                                 <p:ajax event="change" listener="#{controlVigenciasCargos.modificarVC(info, 'N', info.fechavigencia)}" update="@this" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlVigenciasCargos.cambiarIndice(info, 0)}" process="@this"/> 
                                             </lnk:calendar>
                                         </f:facet>
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
                                 </p:column>
 
                                 <p:column headerText="Estructura" sortBy="#{info.estructura.nombre}" filterBy="#{info.estructura.nombre}" filterMatchMode="contains" id="vcEstructura" width="150" filterStyle="display: none; visibility: hidden;" >                                  
@@ -143,7 +146,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton value="" style="width: 170px; margin: -10px; height: 20px; border: none; " id="fooEstructuras" action="estructura" actionListener="#{controlEstructuraPlanta.inicializarPagina('atrasVcargo')}"/>
+                                        <p:commandButton value="" style="width: 100%; height: 10px; border-radius: 0px; " id="fooEstructuras" action="estructura" actionListener="#{controlEstructuraPlanta.inicializarPagina('atrasVcargo')}"/>
                                     </f:facet>
                                 </p:column>
 
@@ -162,7 +165,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer" >
-                                        <p:commandButton value="" style="width: 170px; margin: -10px; height: 20px; border: none; color: blue" action="motivocambiocargo" id="fooMotivos" />
+                                        <p:commandButton value="" style="width: 100%; height: 10px; border-radius: 0px; " action="motivocambiocargo" id="fooMotivos" />
                                     </f:facet>
                                 </p:column>
 
@@ -181,7 +184,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer" >
-                                        <p:commandButton value="" style="width: 170px; margin: -10px; height: 20px; border: none; color: blue" id="fooCargos" actionListener="#{controlCargo.recibirPaginaEntrante('atrasVcargo') }" action="cargo"/>
+                                        <p:commandButton value="" style="width: 100%; height: 10px; border-radius: 0px; " id="fooCargos" actionListener="#{controlCargo.recibirPaginaEntrante('atrasVcargo') }" action="cargo"/>
                                     </f:facet>
                                 </p:column>  
 
@@ -197,7 +200,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer" >
-                                        <p:commandButton value="" style="width: 170px; margin: -10px; height: 20px; border: none; color: blue" action="centrocostoemplvigenciacargo" actionListener="#{controlBetaCentrosCostos.recibirPagina('atrascentrocostoemplvigenciacargo')}" id="fooCentrosCostos" />
+                                        <p:commandButton value="" style="width: 100%; height: 10px; border-radius: 0px; " action="centrocostoemplvigenciacargo" actionListener="#{controlBetaCentrosCostos.recibirPagina('atrascentrocostoemplvigenciacargo')}" id="fooCentrosCostos" />
                                     </f:facet>
                                 </p:column>
 
@@ -214,30 +217,40 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer" >
+                                        <p:commandButton value="" style="width: 100%; height: 10px; border-radius: 0px; " id="fooJefe" />
+                                    </f:facet>
+
                                 </p:column>
 
-                                <p:column width="25" style="height: 16px; padding: 0px; text-align: center" exportable="false">  
+                                <p:column width="25" style="padding: 0px; text-align: center" exportable="false">  
                                     <f:facet name="header">
                                         <h:outputText id="rep" value="R" />
                                         <p:tooltip for="rep" value="#{msg['reporteManual']}"/>
                                     </f:facet>
                                     <p:commandButton value="" style=" width:21px; height: 20px; background-repeat: no-repeat; border: none; background-size: 100% 100%; background-image: url(Imagenes/Iconos/editar.png);"/>
                                     <!--<p:commandButton style=" width:23px; height: 21px; background-repeat: no-repeat; border: none; background-size: 100% 100%;" icon="ui-icon-document"/>-->
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
                                 </p:column>
 
-                                <p:column headerText="..." width="25" style="height: 16px;padding: 0px; text-align: center" exportable="false">  
+                                <p:column headerText="..." width="25" style="padding: 0px; text-align: center" exportable="false">  
                                     <f:facet name="header"><h:outputText id="addPorcentaje" value="..." />
                                         <p:tooltip for="addPorcentaje" value="#{msg['adicionarP']}"/>
                                     </f:facet>
                                     <p:commandButton value="" style="width:21px; height: 20px; background-repeat: no-repeat; border: none; background-size: 100% 100%; background-image: url(Imagenes/Iconos/nuevoRegistro.png);" id="selectButton" 
                                                      update=":form:display, datosVCEmpleado" oncomplete="datosDialog.show()" title="#{msg['adicionarP']}" >  
                                         <f:setPropertyActionListener value="#{info}" target="#{controlVigenciasCargos.vigenciaSeleccionada}" />  
-                                    </p:commandButton>  
+                                    </p:commandButton> 
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
                                 </p:column>     
 
                             </p:dataTable>
 
-                            <h:outputText id="informacionRegistro" value="#{msg['infoRegistro']} #{controlVigenciasCargos.infoRegistro }" style="position: absolute; left: 15px; top: 348px; font-weight: bold"/>
+                            <h:outputText id="informacionRegistro" value="#{msg['infoRegistro']} #{controlVigenciasCargos.infoRegistro}" style="position: absolute; left: 15px; top: 348px; font-weight: bold"/>
                         </fieldset>
 
                         <p:commandButton id="ACEPTAR" style="position: absolute; left: 675px; top: 470px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" onclick="confirmarGuardar.show();" update=":form:datosVCEmpleado" process="@this" disabled="#{controlVigenciasCargos.guardado}"/>
@@ -273,7 +286,7 @@
                             <h:outputText id="infoRegistroEstructuras" value="#{msg['infoRegistro']} #{controlVigenciasCargos.infoRegistroEstructuras}" style="position: relative; top: 15px; font-weight: bold"/>
 
                             <p:commandButton id="aceptarE" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar ? true : false }" style="position: absolute; top: 390px; left: 552px; " icon="ui-icon-check" actionListener="#{controlVigenciasCargos.actualizarEstructura()}" process="@this" onclick="estructurasDialog.hide()"/>
-                                
+
                             <p:commandButton id="atrasE" value="#{msg['atras']}" style="position: absolute; top: 390px; left: 644px; " actionListener="#{controlVigenciasCargos.cancelarCambioEstructura()}" icon="ui-icon-arrowreturnthick-1-w"  process="@this" onclick="estructurasDialog.hide()"/>
                         </p:dialog>
 
@@ -305,7 +318,7 @@
                             </p:dataTable>
 
                             <p:commandButton id="aceptarM" style="position: relative; left: 210px" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" icon="ui-icon-check"  actionListener="#{controlVigenciasCargos.actualizarMotivo()}" process="@this" onclick="motivosDialog.hide()"/>
-                                
+
                             <p:commandButton id="atrasM" style="position: relative; left: 210px" value="#{msg['atras']}"  icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasCargos.cancelarCambioMotivo()}"  process="@this" onclick="motivosDialog.hide()"/>    
 
                             <h:outputText id="infoRegistroMotivos" value="#{msg['infoRegistro']} #{controlVigenciasCargos.infoRegistroMotivos}" style="position: absolute; top: 350px; left: 20px; font-weight: bold"/>
@@ -345,9 +358,9 @@
                             <h:outputText id="infoRegistroCargos" value="#{msg['infoRegistro']} #{controlVigenciasCargos.infoRegistroCargos}" style="position: relative; top: 15px; font-weight: bold"/>
 
                             <p:commandButton id="aceptarC" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 390px; left: 308px; " icon="ui-icon-check" actionListener="#{controlVigenciasCargos.actualizarCargo()}" process="@this" onclick="cargosDialog.hide()"/>
-                                
+
                             <p:commandButton id="atrasC" value="#{msg['atras']}" style="position: absolute; top: 390px; left: 400px; " icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasCargos.cancelarCambioCargo()}" process="@this" onclick="cargosDialog.hide()"/>
-                            
+
                         </p:dialog>
 
                         <!-- DIALOGO DE DETALLES VIGENCIAS CARGOS -->
@@ -406,9 +419,9 @@
                             <h:outputText id="informacionLOVEJ" value="#{msg['infoRegistro']} #{controlVigenciasCargos.cantidadRegistrosLOV}" style="position: absolute; top: 265px; left: 20px; font-weight: bold"/>
 
                             <p:commandButton id="AceptarEmplJ" value="#{msg['aceptar']}" actionListener="#{controlVigenciasCargos.actualizarEmpleadoJefe()}" icon="ui-icon-check"   process="@this" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 260px; left: 560px" onclick="dialogoEmpleadoJefe.hide()"/>
-                                
+
                             <p:commandButton value="#{msg['atras']}"  actionListener="#{controlVigenciasCargos.cancelarEmpleadoJefe()}" icon="ui-icon-arrowreturnthick-1-w"  style="position: absolute; top: 260px; left: 653px" process="@this" onclick="dialogoEmpleadoJefe.hide()"/>
-                            
+
                         </p:dialog>
 
                     </p:panel>
