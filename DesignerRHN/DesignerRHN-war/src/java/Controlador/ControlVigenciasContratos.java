@@ -1129,6 +1129,7 @@ public class ControlVigenciasContratos implements Serializable {
         if (tipoLista == 0) {
             tipoLista = 1;
         }
+        vigenciaSeleccionada = null;
         modificarInfoRegistro(filtrarVC.size());
         RequestContext.getCurrentInstance().update("form:informacionRegistro");
     }
