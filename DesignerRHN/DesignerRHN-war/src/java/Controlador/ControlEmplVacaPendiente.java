@@ -40,7 +40,7 @@ public class ControlEmplVacaPendiente implements Serializable {
     private List<VWVacaPendientesEmpleados> listVacaDisfrutadas;
     private List<VWVacaPendientesEmpleados> filtrarListVacaDisfrutadas;
     private VWVacaPendientesEmpleados vacaDisfrutadaSeleccionada;
-    private int tipoTabla, filtrarListaPendientes, filtrarListaDisfrutadas;
+    private int tipoTabla, tipoListaPendientes, tipoListaDisfrutadas;
     private int banderaPendientes, banderaDisfrutadas;
     private int casillaPendiente, casillaDisfrutada;
     //////
@@ -89,8 +89,8 @@ public class ControlEmplVacaPendiente implements Serializable {
         tipoTabla = 0;
         banderaPendientes = 0;
         banderaDisfrutadas = 0;
-        filtrarListaPendientes = 0;
-        filtrarListaDisfrutadas = 0;
+        tipoListaPendientes = 0;
+        tipoListaDisfrutadas = 0;
         casillaPendiente = 0;
         casillaDisfrutada = 0;
         editarVacacion = new VWVacaPendientesEmpleados();
@@ -367,7 +367,7 @@ public class ControlEmplVacaPendiente implements Serializable {
         if (nuevaVacacion.getInicialcausacion() != null && nuevaVacacion.getFinalcausacion() != null && nuevaVacacion.getDiaspendientes() != null) {
             tipoActualizacion = 1;
             if (validarFechasRegistroPendientes()) {
-                if (filtrarListaPendientes == 1) {//Si la tabla tiene filtro
+                if (tipoListaPendientes == 1) {//Si la tabla tiene filtro
                     FacesContext c = FacesContext.getCurrentInstance();
                     vacacionesDP = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesDP");
                     vacacionesDP.setFilterStyle("display: none; visibility: hidden;");
@@ -379,7 +379,7 @@ public class ControlEmplVacaPendiente implements Serializable {
                     RequestContext.getCurrentInstance().update("form:datosVacacionesPEmpleado");
                     banderaPendientes = 0;
                     filtrarListVacaPendientes = null;
-                    filtrarListaPendientes = 0;
+                    tipoListaPendientes = 0;
                 }
                 BigInteger k1;
                 k1 = BigInteger.valueOf(1);
@@ -445,7 +445,7 @@ public class ControlEmplVacaPendiente implements Serializable {
                 k++;
                 BigInteger l = BigInteger.valueOf(k);
                 duplicarVacacion.setSecuencia(l);
-                if (filtrarListaPendientes == 1) {
+                if (tipoListaPendientes == 1) {
                     FacesContext c = FacesContext.getCurrentInstance();
                     vacacionesDP = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesDP");
                     vacacionesDP.setFilterStyle("display: none; visibility: hidden;");
@@ -457,7 +457,7 @@ public class ControlEmplVacaPendiente implements Serializable {
                     RequestContext.getCurrentInstance().update("form:datosVacacionesPEmpleado");
                     banderaPendientes = 0;
                     filtrarListVacaPendientes = null;
-                    filtrarListaPendientes = 0;
+                    tipoListaPendientes = 0;
                 }
                 duplicarVacacion.setEstado("ABIERTO");
                 listCrearTablaPendientes.add(duplicarVacacion);
@@ -503,6 +503,9 @@ public class ControlEmplVacaPendiente implements Serializable {
                     VWVacaPendientesEmpleados vacaPendiente = vacaPendienteSeleccionada;
                     listBorrarTablaPendientes.add(vacaPendiente);
                     listVacaPendientes.remove(vacaPendienteSeleccionada);
+                    if (tipoListaPendientes == 1) {
+                        filtrarListVacaPendientes.remove(vacaPendienteSeleccionada);
+                    }
                     contarRegistrosP();
                 }
 
@@ -524,6 +527,9 @@ public class ControlEmplVacaPendiente implements Serializable {
                     VWVacaPendientesEmpleados vacaDisfrutada = vacaDisfrutadaSeleccionada;
                     listBorrarTablaDisfrutadas.add(vacaDisfrutada);
                     listVacaDisfrutadas.remove(vacaDisfrutadaSeleccionada);
+                    if (tipoListaDisfrutadas == 1) {
+                        filtrarListVacaDisfrutadas.remove(vacaDisfrutadaSeleccionada);
+                    }
                     contarRegistrosD();
                 }
 
@@ -538,7 +544,7 @@ public class ControlEmplVacaPendiente implements Serializable {
 
     public void cancelarModificaciones() {
         FacesContext c = FacesContext.getCurrentInstance();
-        if (filtrarListaDisfrutadas == 1) {
+        if (tipoListaDisfrutadas == 1) {
             vacacionesDPD = (Column) c.getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesDPD");
             vacacionesDPD.setFilterStyle("display: none; visibility: hidden;");
             vacacionesFechaInicialD = (Column) c.getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaInicialD");
@@ -549,9 +555,9 @@ public class ControlEmplVacaPendiente implements Serializable {
             RequestContext.getCurrentInstance().update("form:datosVacacionesDEmpleado");
             banderaDisfrutadas = 0;
             filtrarListVacaDisfrutadas = null;
-            filtrarListaDisfrutadas = 0;
+            tipoListaDisfrutadas = 0;
         }
-        if (filtrarListaPendientes == 1) {
+        if (tipoListaPendientes == 1) {
             vacacionesDP = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesDP");
             vacacionesDP.setFilterStyle("display: none; visibility: hidden;");
             vacacionesFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaFinal");
@@ -562,7 +568,7 @@ public class ControlEmplVacaPendiente implements Serializable {
             RequestContext.getCurrentInstance().update("form:datosVacacionesPEmpleado");
             banderaPendientes = 0;
             filtrarListVacaPendientes = null;
-            filtrarListaPendientes = 0;
+            tipoListaPendientes = 0;
         }
         listBorrarTablaDisfrutadas.clear();
         listBorrarTablaPendientes.clear();
@@ -580,7 +586,7 @@ public class ControlEmplVacaPendiente implements Serializable {
         regVacaAuxiliar = null;
         tipoActualizacion = -1;
         guardado = true;
-        
+
         contarRegistrosD();
         contarRegistrosP();
         RequestContext context = RequestContext.getCurrentInstance();
@@ -625,7 +631,7 @@ public class ControlEmplVacaPendiente implements Serializable {
             RequestContext.getCurrentInstance().update("form:datosVacacionesPEmpleado");
             banderaPendientes = 0;
             filtrarListVacaPendientes = null;
-            filtrarListaPendientes = 0;
+            tipoListaPendientes = 0;
         }
     }
 
@@ -652,7 +658,7 @@ public class ControlEmplVacaPendiente implements Serializable {
             RequestContext.getCurrentInstance().update("form:datosVacacionesDEmpleado");
             banderaDisfrutadas = 0;
             filtrarListVacaDisfrutadas = null;
-            filtrarListaDisfrutadas = 0;
+            tipoListaDisfrutadas = 0;
         }
     }
 
@@ -678,7 +684,7 @@ public class ControlEmplVacaPendiente implements Serializable {
                 RequestContext.getCurrentInstance().update("form:datosVacacionesDEmpleado");
                 banderaDisfrutadas = 0;
                 filtrarListVacaDisfrutadas = null;
-                filtrarListaDisfrutadas = 0;
+                tipoListaDisfrutadas = 0;
             }
         }
         if (tabla == 2) {
@@ -699,7 +705,7 @@ public class ControlEmplVacaPendiente implements Serializable {
                 RequestContext.getCurrentInstance().update("form:datosVacacionesPEmpleado");
                 banderaPendientes = 0;
                 filtrarListVacaPendientes = null;
-                filtrarListaPendientes = 0;
+                tipoListaPendientes = 0;
             }
         }
     }
@@ -718,7 +724,7 @@ public class ControlEmplVacaPendiente implements Serializable {
             RequestContext.getCurrentInstance().update("form:datosVacacionesDEmpleado");
             banderaPendientes = 0;
             filtrarListVacaPendientes = null;
-            filtrarListaPendientes = 0;
+            tipoListaPendientes = 0;
         }
         if (banderaDisfrutadas == 1) {
             vacacionesDPD = (Column) c.getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesDPD");
@@ -731,7 +737,7 @@ public class ControlEmplVacaPendiente implements Serializable {
             context.update("form:datosVacacionesDEmpleado");
             banderaDisfrutadas = 0;
             filtrarListVacaDisfrutadas = null;
-            filtrarListaDisfrutadas = 0;
+            tipoListaDisfrutadas = 0;
         }
         guardarCambiosVPendientes();
         guardarCambiosVDisfrutadas();
@@ -928,8 +934,8 @@ public class ControlEmplVacaPendiente implements Serializable {
      * Evento que cambia la lista real a la filtrada
      */
     public void eventoFiltrarP() {
-        if (filtrarListaPendientes == 0) {
-            filtrarListaPendientes = 1;
+        if (tipoListaPendientes == 0) {
+            tipoListaPendientes = 1;
         }
         vacaPendienteSeleccionada = null;
         modificarInfoRegistroP(filtrarListVacaPendientes.size());
@@ -937,8 +943,8 @@ public class ControlEmplVacaPendiente implements Serializable {
     }
 
     public void eventoFiltrarD() {
-        if (filtrarListaDisfrutadas == 0) {
-            filtrarListaDisfrutadas = 1;
+        if (tipoListaDisfrutadas == 0) {
+            tipoListaDisfrutadas = 1;
         }
         vacaDisfrutadaSeleccionada = null;
         modificarInfoRegistroD(filtrarListVacaDisfrutadas.size());
@@ -947,11 +953,7 @@ public class ControlEmplVacaPendiente implements Serializable {
 
     public void contarRegistrosP() {
         if (listVacaPendientes != null) {
-            if (listVacaPendientes.size() > 0) {
-                modificarInfoRegistroP(listVacaPendientes.size());
-            } else {
-                modificarInfoRegistroP(0);
-            }
+            modificarInfoRegistroP(listVacaPendientes.size());
         } else {
             modificarInfoRegistroP(0);
         }
@@ -959,11 +961,7 @@ public class ControlEmplVacaPendiente implements Serializable {
 
     public void contarRegistrosD() {
         if (listVacaDisfrutadas != null) {
-            if (listVacaDisfrutadas.size() > 0) {
-                modificarInfoRegistroD(listVacaDisfrutadas.size());
-            } else {
-                modificarInfoRegistroD(0);
-            }
+            modificarInfoRegistroD(listVacaDisfrutadas.size());
         } else {
             modificarInfoRegistroD(0);
         }

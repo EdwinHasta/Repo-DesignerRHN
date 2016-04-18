@@ -2213,6 +2213,9 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 listVLBorrar.add(vigenciaLocalizacionSeleccionada);
             }
             vigenciaLocalizaciones.remove(vigenciaLocalizacionSeleccionada);
+            if (tipoLista == 1) {
+                filtradoVL.remove(vigenciaLocalizacionSeleccionada);
+            }
             modificarInfoRegistroVL(vigenciaLocalizaciones.size());
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -2242,6 +2245,9 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 listVPBorrar.add(vigenciaProrrateoSeleccionada);
             }
             vigenciasProrrateosCentroC.remove(vigenciaProrrateoSeleccionada);
+            if (tipoLista == 1) {
+                filtradoVP.remove(vigenciaProrrateoSeleccionada);
+            }
             modificarInfoRegistroVP(vigenciasProrrateosCentroC.size());
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -2271,6 +2277,9 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 listVPPBorrar.add(vigenciaProrrateoProyectoSeleccionada);
             }
             vigenciasProrrateosProyectos.remove(vigenciaProrrateoProyectoSeleccionada);
+            if (tipoLista == 1) {
+                filtradoPP.remove(vigenciaProrrateoProyectoSeleccionada);
+            }
             modificarInfoRegistroVPP(vigenciasProrrateosProyectos.size());
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -3284,11 +3293,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
 
     public void contarRegistrosVL() {
         if (vigenciaLocalizaciones != null) {
-            if (vigenciaLocalizaciones.size() > 0) {
-                modificarInfoRegistroVL(vigenciaLocalizaciones.size());
-            } else {
-                modificarInfoRegistroVL(0);
-            }
+            modificarInfoRegistroVL(vigenciaLocalizaciones.size());
         } else {
             modificarInfoRegistroVL(0);
         }
@@ -3296,11 +3301,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
 
     public void contarRegistrosVP() {
         if (vigenciasProrrateosCentroC != null) {
-            if (vigenciasProrrateosCentroC.size() > 0) {
-                modificarInfoRegistroVP(vigenciasProrrateosCentroC.size());
-            } else {
-                modificarInfoRegistroVP(0);
-            }
+            modificarInfoRegistroVP(vigenciasProrrateosCentroC.size());
         } else {
             modificarInfoRegistroVP(0);
         }
@@ -3308,11 +3309,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
 
     public void contarRegistrosVPP() {
         if (vigenciasProrrateosProyectos != null) {
-            if (vigenciasProrrateosProyectos.size() > 0) {
-                modificarInfoRegistroVPP(vigenciasProrrateosProyectos.size());
-            } else {
-                modificarInfoRegistroVPP(0);
-            }
+            modificarInfoRegistroVPP(vigenciasProrrateosProyectos.size());
         } else {
             modificarInfoRegistroVPP(0);
         }
@@ -3320,11 +3317,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
 
     public void contarRegistrosCentroC() {
         if (listCentrosCostos != null) {
-            if (listCentrosCostos.size() > 0) {
-                modificarInfoRegistroCentroC(listCentrosCostos.size());
-            } else {
-                modificarInfoRegistroCentroC(0);
-            }
+            modificarInfoRegistroCentroC(listCentrosCostos.size());
         } else {
             modificarInfoRegistroCentroC(0);
         }
@@ -3332,11 +3325,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
 
     public void contarRegistrosEstrLoca() {
         if (listEstructurasCC != null) {
-            if (listEstructurasCC.size() > 0) {
-                modificarInfoRegistroEstrLoca(listEstructurasCC.size());
-            } else {
-                modificarInfoRegistroEstrLoca(0);
-            }
+            modificarInfoRegistroEstrLoca(listEstructurasCC.size());
         } else {
             modificarInfoRegistroEstrLoca(0);
         }
@@ -3344,11 +3333,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
 
     public void contarRegistrosMotiLoc() {
         if (listMotivosLocalizaciones != null) {
-            if (listMotivosLocalizaciones.size() > 0) {
-                modificarInfoRegistroMotiLoc(listMotivosLocalizaciones.size());
-            } else {
-                modificarInfoRegistroMotiLoc(0);
-            }
+            modificarInfoRegistroMotiLoc(listMotivosLocalizaciones.size());
         } else {
             modificarInfoRegistroMotiLoc(0);
         }
@@ -3356,11 +3341,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
 
     public void contarRegistrosProyecto() {
         if (listProyectos != null) {
-            if (listProyectos.size() > 0) {
-                modificarInfoRegistroProyecto(listProyectos.size());
-            } else {
-                modificarInfoRegistroProyecto(0);
-            }
+            modificarInfoRegistroProyecto(listProyectos.size());
         } else {
             modificarInfoRegistroProyecto(0);
         }

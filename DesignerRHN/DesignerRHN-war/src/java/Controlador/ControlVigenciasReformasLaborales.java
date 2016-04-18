@@ -147,12 +147,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         empleado = empl;
         getVigenciasReformasLaboralesEmpleado();
         if (vigenciasReformasLaborales != null) {
-            if (vigenciasReformasLaborales.size() > 0) {
-                //INFORMACION REGISTRO
-                modificarInfoRegistro(vigenciasReformasLaborales.size());
-            } else {
-                modificarInfoRegistro(0);
-            }
+            modificarInfoRegistro(vigenciasReformasLaborales.size());
         } else {
             modificarInfoRegistro(0);
         }
@@ -373,15 +368,10 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             vigenciasReformasLaborales = null;
             getVigenciasReformasLaboralesEmpleado();
             if (vigenciasReformasLaborales != null) {
-            if (vigenciasReformasLaborales.size() > 0) {
-                //INFORMACION REGISTRO
                 modificarInfoRegistro(vigenciasReformasLaborales.size());
             } else {
                 modificarInfoRegistro(0);
             }
-        } else {
-            modificarInfoRegistro(0);
-        }
 
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:informacionRegistro");
@@ -423,12 +413,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         vigenciasReformasLaborales = null;
         getVigenciasReformasLaboralesEmpleado();
         if (vigenciasReformasLaborales != null) {
-            if (vigenciasReformasLaborales.size() > 0) {
-                //INFORMACION REGISTRO
-                modificarInfoRegistro(vigenciasReformasLaborales.size());
-            } else {
-                modificarInfoRegistro(0);
-            }
+            modificarInfoRegistro(vigenciasReformasLaborales.size());
         } else {
             modificarInfoRegistro(0);
         }
@@ -644,6 +629,9 @@ public class ControlVigenciasReformasLaborales implements Serializable {
                 listVRLBorrar.add(vigenciaSeleccionada);
             }
             vigenciasReformasLaborales.remove(vigenciaSeleccionada);
+            if (tipoLista == 1) {
+                filtrarVRL.remove(vigenciaSeleccionada);
+            }
             modificarInfoRegistro(vigenciasReformasLaborales.size());
 
             context.update("form:datosVRLEmpleado");
@@ -725,11 +713,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         tipoActualizacion = 0;
 
         if (listaReformasLaborales != null) {
-            if (listaReformasLaborales.size() > 0) {
-                modificarInfoRegistroRefLab(listaReformasLaborales.size());
-            } else {
-                modificarInfoRegistroRefLab(0);
-            }
+            modificarInfoRegistroRefLab(listaReformasLaborales.size());
         } else {
             modificarInfoRegistroRefLab(0);
         }
@@ -744,11 +728,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             tipoActualizacion = 2;
         }
         if (listaReformasLaborales != null) {
-            if (listaReformasLaborales.size() > 0) {
-                modificarInfoRegistroRefLab(listaReformasLaborales.size());
-            } else {
-                modificarInfoRegistroRefLab(0);
-            }
+            modificarInfoRegistroRefLab(listaReformasLaborales.size());
         } else {
             modificarInfoRegistroRefLab(0);
         }
@@ -825,11 +805,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             if (cualCelda == 1) {
 
                 if (listaReformasLaborales != null) {
-                    if (listaReformasLaborales.size() > 0) {
-                        modificarInfoRegistroRefLab(listaReformasLaborales.size());
-                    } else {
-                        modificarInfoRegistroRefLab(0);
-                    }
+                    modificarInfoRegistroRefLab(listaReformasLaborales.size());
                 } else {
                     modificarInfoRegistroRefLab(0);
                 }
@@ -888,7 +864,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         modificarInfoRegistro(filtrarVRL.size());
         context.update("form:informacionRegistro");
     }
-    
+
     public void eventoFiltrarRL() {
         RequestContext context = RequestContext.getCurrentInstance();
         modificarInfoRegistroRefLab(filtradoReformasLaborales.size());

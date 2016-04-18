@@ -230,12 +230,8 @@ public class ControlVigenciaSueldo implements Serializable {
         getListVigenciasSueldos();
         //INICIALIZAR BOTONES NAVEGACION
         if (listVigenciasSueldos != null) {
-            if (listVigenciasSueldos.size() > 0) {
                 vigenciaSueldoSeleccionada = listVigenciasSueldos.get(0);
                 modificarInfoRegistroS(listVigenciasSueldos.size());
-            } else {
-                modificarInfoRegistroS(0);
-            }
         } else {
             modificarInfoRegistroS(0);
         }
@@ -243,11 +239,7 @@ public class ControlVigenciaSueldo implements Serializable {
         getListVigenciasSueldos();
         //INICIALIZAR BOTONES NAVEGACION
         if (listVigenciasAfiliaciones != null) {
-            if (listVigenciasAfiliaciones.size() > 0) {
-                modificarInfoRegistroD(listVigenciasAfiliaciones.size());
-            } else {
-                modificarInfoRegistroD(0);
-            }
+            modificarInfoRegistroD(listVigenciasAfiliaciones.size());
         } else {
             modificarInfoRegistroD(0);
         }
@@ -953,12 +945,8 @@ public class ControlVigenciaSueldo implements Serializable {
             }
 
             if (listVigenciasSueldos != null) {
-                if (listVigenciasSueldos.size() > 0) {
                     vigenciaSueldoSeleccionada = listVigenciasSueldos.get(0);
                     modificarInfoRegistroS(listVigenciasSueldos.size());
-                } else {
-                    modificarInfoRegistroS(0);
-                }
             } else {
                 modificarInfoRegistroS(0);
             }
@@ -1011,11 +999,7 @@ public class ControlVigenciaSueldo implements Serializable {
             paraNuevaVSueldo = 0;
 
             if (listVigenciasAfiliaciones != null) {
-                if (listVigenciasAfiliaciones.size() > 0) {
                     modificarInfoRegistroS(listVigenciasAfiliaciones.size());
-                } else {
-                    modificarInfoRegistroS(0);
-                }
             } else {
                 modificarInfoRegistroS(0);
             }
@@ -1090,12 +1074,8 @@ public class ControlVigenciaSueldo implements Serializable {
         getListVigenciasSueldos();
         //INICIALIZAR BOTONES NAVEGACION
         if (listVigenciasSueldos != null) {
-            if (listVigenciasSueldos.size() > 0) {
                 vigenciaSueldoSeleccionada = listVigenciasSueldos.get(0);
                 modificarInfoRegistroS(listVigenciasSueldos.size());
-            } else {
-                modificarInfoRegistroS(0);
-            }
         } else {
             modificarInfoRegistroS(0);
         }
@@ -1135,11 +1115,7 @@ public class ControlVigenciaSueldo implements Serializable {
         getListVigenciasSueldos();
         //INICIALIZAR BOTONES NAVEGACION
         if (listVigenciasAfiliaciones != null) {
-            if (listVigenciasAfiliaciones.size() > 0) {
-                modificarInfoRegistroD(listVigenciasAfiliaciones.size());
-            } else {
-                modificarInfoRegistroD(0);
-            }
+            modificarInfoRegistroD(listVigenciasAfiliaciones.size());
         } else {
             modificarInfoRegistroD(0);
         }
@@ -1616,6 +1592,9 @@ public class ControlVigenciaSueldo implements Serializable {
                 listVSBorrar.add(vigenciaSueldoSeleccionada);
             }
             listVigenciasSueldos.remove(vigenciaSueldoSeleccionada);
+            if (tipoLista == 1) {
+                filtrarVigenciasSueldos.remove(vigenciaSueldoSeleccionada);
+            }
             modificarInfoRegistroS(listVigenciasSueldos.size());
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVSEmpleado");
@@ -1650,6 +1629,9 @@ public class ControlVigenciaSueldo implements Serializable {
             listVABorrar.add(vigenciaAfiliacioneSeleccionada);
         }
         listVigenciasAfiliaciones.remove(vigenciaAfiliacioneSeleccionada);
+        if (tipoLista == 1) {
+            filtrarVigenciasAfiliaciones.remove(vigenciaAfiliacioneSeleccionada);
+        }
         modificarInfoRegistroD(listVigenciasAfiliaciones.size());
 
         RequestContext.getCurrentInstance().update("form:datosVAVigencia");
@@ -1845,12 +1827,8 @@ public class ControlVigenciaSueldo implements Serializable {
             }
             if (dlg == 0) {
                 if (listMotivosCambiosSueldos != null) {
-                    if (listMotivosCambiosSueldos.size() > 0) {
                         motivoCambioSueldoSeleccionado = listMotivosCambiosSueldos.get(0);
                         modificarInfoRegistroMCS(listMotivosCambiosSueldos.size());
-                    } else {
-                        modificarInfoRegistroMCS(0);
-                    }
                 } else {
                     modificarInfoRegistroMCS(0);
                 }
@@ -1858,12 +1836,8 @@ public class ControlVigenciaSueldo implements Serializable {
                 context.execute("MotivoCambioSueldoDialogo.show()");
             } else if (dlg == 1) {
                 if (listTiposSueldos != null) {
-                    if (listTiposSueldos.size() > 0) {
                         tipoSueldoSeleccionado = listTiposSueldos.get(0);
                         modificarInfoRegistroTS(listTiposSueldos.size());
-                    } else {
-                        modificarInfoRegistroTS(0);
-                    }
                 } else {
                     modificarInfoRegistroTS(0);
                 }
@@ -1882,12 +1856,8 @@ public class ControlVigenciaSueldo implements Serializable {
             }
             if (dlg == 0) {
                 if (listTerceros != null) {
-                    if (listTerceros.size() > 0) {
                         terceroSeleccionado = listTerceros.get(0);
                         modificarInfoRegistroT(listTerceros.size());
-                    } else {
-                        modificarInfoRegistroT(0);
-                    }
                 } else {
                     modificarInfoRegistroT(0);
                 }
@@ -1895,12 +1865,8 @@ public class ControlVigenciaSueldo implements Serializable {
                 context.execute("TerceroDialogo.show()");
             } else if (dlg == 1) {
                 if (listTiposEntidades != null) {
-                    if (listTiposEntidades.size() > 0) {
                         tipoEntidadSeleccionado = listTiposEntidades.get(0);
                         modificarInfoRegistroTE(listTiposEntidades.size());
-                    } else {
-                        modificarInfoRegistroTE(0);
-                    }
                 } else {
                     modificarInfoRegistroTE(0);
                 }
@@ -1923,12 +1889,8 @@ public class ControlVigenciaSueldo implements Serializable {
         } else if (vigenciaAfiliacioneSeleccionada != null) {
             if (cualCeldaVA == 2) {
                 if (listTerceros != null) {
-                    if (listTerceros.size() > 0) {
                         terceroSeleccionado = listTerceros.get(0);
                         modificarInfoRegistroT(listTerceros.size());
-                    } else {
-                        modificarInfoRegistroT(0);
-                    }
                 } else {
                     modificarInfoRegistroT(0);
                 }
@@ -1938,12 +1900,8 @@ public class ControlVigenciaSueldo implements Serializable {
             }
             if (cualCeldaVA == 3) {
                 if (listTiposEntidades != null) {
-                    if (listTiposEntidades.size() > 0) {
                         tipoEntidadSeleccionado = listTiposEntidades.get(0);
                         modificarInfoRegistroTE(listTiposEntidades.size());
-                    } else {
-                        modificarInfoRegistroTE(0);
-                    }
                 } else {
                     modificarInfoRegistroTE(0);
                 }
@@ -1954,12 +1912,8 @@ public class ControlVigenciaSueldo implements Serializable {
         } else if (vigenciaSueldoSeleccionada != null) {
             if (cualCelda == 1) {
                 if (listMotivosCambiosSueldos != null) {
-                    if (listMotivosCambiosSueldos.size() > 0) {
                         motivoCambioSueldoSeleccionado = listMotivosCambiosSueldos.get(0);
                         modificarInfoRegistroMCS(listMotivosCambiosSueldos.size());
-                    } else {
-                        modificarInfoRegistroMCS(0);
-                    }
                 } else {
                     modificarInfoRegistroMCS(0);
                 }
@@ -1969,12 +1923,8 @@ public class ControlVigenciaSueldo implements Serializable {
             }
             if (cualCelda == 2) {
                 if (listTiposSueldos != null) {
-                    if (listTiposSueldos.size() > 0) {
                         tipoSueldoSeleccionado = listTiposSueldos.get(0);
                         modificarInfoRegistroTS(listTiposSueldos.size());
-                    } else {
-                        modificarInfoRegistroTS(0);
-                    }
                 } else {
                     modificarInfoRegistroTS(0);
                 }
@@ -2676,11 +2626,7 @@ public class ControlVigenciaSueldo implements Serializable {
             listVigenciasAfiliaciones = administrarVigenciasSueldos.VigenciasAfiliacionesVigencia(vigenciaSueldoSeleccionada.getSecuencia());
 
             if (listVigenciasAfiliaciones != null) {
-                if (listVigenciasAfiliaciones.size() > 0) {
-                    modificarInfoRegistroD(listVigenciasAfiliaciones.size());
-                } else {
-                    modificarInfoRegistroD(0);
-                }
+                modificarInfoRegistroD(listVigenciasAfiliaciones.size());
             } else {
                 modificarInfoRegistroD(0);
                 listVigenciasAfiliaciones = new ArrayList<VigenciasAfiliaciones>();

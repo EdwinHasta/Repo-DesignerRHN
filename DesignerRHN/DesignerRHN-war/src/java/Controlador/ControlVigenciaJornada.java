@@ -956,7 +956,7 @@ public class ControlVigenciaJornada implements Serializable {
         cambiosDinero = false;
         cambiosJornada = false;
         cambiosTiempo = false;
-        
+
         getListVigenciasJornadas();
         getListVigenciasCompensacionesDinero();
         getListVigenciasCompensacionesTiempo();
@@ -1707,6 +1707,9 @@ public class ControlVigenciaJornada implements Serializable {
                 listVJBorrar.add(vigenciaJornadaSeleccionada);
             }
             listVigenciasJornadas.remove(vigenciaJornadaSeleccionada);
+            if (tipoLista == 1) {
+                filtrarVJ.remove(vigenciaJornadaSeleccionada);
+            }
             modificarInfoRegistroVJ(listVigenciasJornadas.size());
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -1737,6 +1740,9 @@ public class ControlVigenciaJornada implements Serializable {
                 listVCTBorrar.add(vigenciaTiempoSeleccionada);
             }
             listVigenciasCompensacionesTiempo.remove(vigenciaTiempoSeleccionada);
+            if (tipoListaVCT == 1) {
+                filtrarVigenciasCompensacionesTiempo.remove(vigenciaTiempoSeleccionada);
+            }
             modificarInfoRegistroVT(listVigenciasCompensacionesTiempo.size());
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -1766,6 +1772,9 @@ public class ControlVigenciaJornada implements Serializable {
                 listVCDBorrar.add(vigenciaDineroSeleccionada);
             }
             listVigenciasCompensacionesDinero.remove(vigenciaDineroSeleccionada);
+            if (tipoListaVCD == 1) {
+                filtrarVigenciasCompensacionesDinero.remove(vigenciaDineroSeleccionada);
+            }
             modificarInfoRegistroVD(listVigenciasCompensacionesDinero.size());
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -2408,13 +2417,14 @@ public class ControlVigenciaJornada implements Serializable {
             context.execute("errorRastroHistorico.show()");
         }
     }
-    
+
     public void limpiarMSNRastros() {
         msnConfirmarRastro = "";
         msnConfirmarRastroHistorico = "";
         nombreTablaRastro = "";
     }
     //EVENTO FILTRAR
+
     /**
      * Evento que cambia la lista real a la filtrada
      */
@@ -2435,7 +2445,7 @@ public class ControlVigenciaJornada implements Serializable {
         modificarInfoRegistroVT(filtrarVigenciasCompensacionesTiempo.size());
         RequestContext.getCurrentInstance().update("form:informacionRegistroVT");
     }
-    
+
     public void eventoFiltrarD() {
         if (tipoListaVCD == 0) {
             tipoListaVCD = 1;
@@ -2444,12 +2454,12 @@ public class ControlVigenciaJornada implements Serializable {
         modificarInfoRegistroVD(filtrarVigenciasCompensacionesDinero.size());
         RequestContext.getCurrentInstance().update("form:informacionRegistroVD");
     }
-    
+
     public void eventoFiltrarTipoD() {
         modificarInfoRegistroTipoD(filtrarTiposDescansos.size());
         RequestContext.getCurrentInstance().update("form:infoRegistroTipoDescanso");
     }
-    
+
     public void eventoFiltrarJornadaL() {
         modificarInfoRegistroJornadaL(filtrarJornadasLaborales.size());
         RequestContext.getCurrentInstance().update("form:infoRegistroJornadaLaboral");
@@ -2458,36 +2468,32 @@ public class ControlVigenciaJornada implements Serializable {
     private void modificarInfoRegistroVJ(int valor) {
         infoRegistroVJ = String.valueOf(valor);
     }
-    
+
     private void modificarInfoRegistroVD(int valor) {
         infoRegistroVD = String.valueOf(valor);
     }
-    
+
     private void modificarInfoRegistroVT(int valor) {
         infoRegistroVT = String.valueOf(valor);
     }
-    
+
     private void modificarInfoRegistroJornadaL(int valor) {
         infoRegistroJornadaLaboral = String.valueOf(valor);
     }
-    
+
     private void modificarInfoRegistroTipoD(int valor) {
         infoRegistroTipoDescanso = String.valueOf(valor);
     }
 
-    public void contarRegistrosVJ(){
+    public void contarRegistrosVJ() {
         if (listVigenciasJornadas != null) {
-            if (listVigenciasJornadas.size() > 0) {
-                modificarInfoRegistroVJ(listVigenciasJornadas.size());
-            } else {
-                modificarInfoRegistroVJ(0);
-            }
+            modificarInfoRegistroVJ(listVigenciasJornadas.size());
         } else {
             modificarInfoRegistroVJ(0);
         }
     }
-    
-    public void contarRegistrosVT(){
+
+    public void contarRegistrosVT() {
         if (listVigenciasCompensacionesTiempo != null) {
             if (listVigenciasCompensacionesTiempo.size() > 0) {
                 modificarInfoRegistroVT(listVigenciasCompensacionesTiempo.size());
@@ -2498,8 +2504,8 @@ public class ControlVigenciaJornada implements Serializable {
             modificarInfoRegistroVT(0);
         }
     }
-    
-    public void contarRegistrosVD(){
+
+    public void contarRegistrosVD() {
         if (listVigenciasCompensacionesDinero != null) {
             if (listVigenciasCompensacionesDinero.size() > 0) {
                 modificarInfoRegistroVD(listVigenciasCompensacionesDinero.size());
@@ -2510,8 +2516,8 @@ public class ControlVigenciaJornada implements Serializable {
             modificarInfoRegistroVD(0);
         }
     }
-    
-    public void contarRegistrosJornadaL(){
+
+    public void contarRegistrosJornadaL() {
         if (listJornadasLaborales != null) {
             if (listJornadasLaborales.size() > 0) {
                 modificarInfoRegistroJornadaL(listJornadasLaborales.size());
@@ -2522,8 +2528,8 @@ public class ControlVigenciaJornada implements Serializable {
             modificarInfoRegistroJornadaL(0);
         }
     }
-    
-    public void contarRegistrosTipoD(){
+
+    public void contarRegistrosTipoD() {
         if (listTiposDescansos != null) {
             if (listTiposDescansos.size() > 0) {
                 modificarInfoRegistroTipoD(listTiposDescansos.size());
@@ -2542,7 +2548,7 @@ public class ControlVigenciaJornada implements Serializable {
             tablaC.setSelection(vigenciaJornadaSeleccionada);
         }
     }
-    
+
     public void recordarSeleccionVT() {
         if (vigenciaTiempoSeleccionada != null) {
             FacesContext c = FacesContext.getCurrentInstance();
@@ -2985,7 +2991,6 @@ public class ControlVigenciaJornada implements Serializable {
         return infoRegistroVT;
     }
 
-    
     public String getMensajeValidacion() {
         return mensajeValidacion;
     }

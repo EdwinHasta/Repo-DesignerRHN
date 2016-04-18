@@ -391,12 +391,9 @@ public class ControlEmplMvr implements Serializable {
             }
             if (coincidencias == 1) {
                 mvrSeleccionado.setMotivo(listMotivosMvrs.get(indiceUnicoElemento));
-
-                listMotivosMvrs.clear();
-                getListMotivosMvrs();
             } else {
                 permitirIndexMvrs = false;
-                getInfoRegistroMotivoMVR();
+                modificarInfoRegistroM(listMotivosMvrs.size());
                 context.update("form:MotivoDialogo");
                 context.execute("MotivoDialogo.show()");
                 tipoActualizacion = 0;
@@ -466,12 +463,9 @@ public class ControlEmplMvr implements Serializable {
             }
             if (coincidencias == 1) {
                 otroCertificadoSeleccionado.setTipocertificado(listTiposCertificados.get(indiceUnicoElemento));
-
-                listTiposCertificados.clear();
-                getListTiposCertificados();
             } else {
                 permitirIndexOtrosCertificados = false;
-                getInfoRegistroCertificado();
+                modificarInfoRegistroC(listTiposCertificados.size());
                 context.update("form:CertificadosDialogo");
                 context.execute("CertificadosDialogo.show()");
                 tipoActualizacion = 0;
@@ -545,8 +539,6 @@ public class ControlEmplMvr implements Serializable {
                     duplicarMvrs.setMotivo(listMotivosMvrs.get(indiceUnicoElemento));
                     context.update("formularioDialogos:duplicarMotivoMVRS");
                 }
-                listMotivosMvrs.clear();
-                getListMotivosMvrs();
             } else {
                 context.update("form:MotivoDialogo");
                 context.execute("MotivoDialogo.show()");
@@ -612,8 +604,6 @@ public class ControlEmplMvr implements Serializable {
                     duplicarOtrosCertificados.setTipocertificado(listTiposCertificados.get(indiceUnicoElemento));
                     context.update("formularioDialogos:duplicarCertificadoOC");
                 }
-                listTiposCertificados.clear();
-                getListTiposCertificados();
             } else {
                 context.update("form:CertificadosDialogo");
                 context.execute("CertificadosDialogo.show()");
@@ -817,7 +807,7 @@ public class ControlEmplMvr implements Serializable {
         cambiosMvr = false;
         otroCertificadoSeleccionado = null;
         mvrSeleccionado = null;
-        
+
         getListMvrsEmpleado();
         getListOCertificados();
         contarRegistrosMVR();
@@ -931,7 +921,7 @@ public class ControlEmplMvr implements Serializable {
                 listMvrsCrear.add(nuevaMvrs);
                 listMvrsEmpleado.add(nuevaMvrs);
                 modificarInfoRegistroMVR(listMvrsEmpleado.size());
-                
+
                 nuevaMvrs = new Mvrs();
                 nuevaMvrs.setMotivo(new Motivosmvrs());
                 RequestContext context = RequestContext.getCurrentInstance();
@@ -1263,6 +1253,9 @@ public class ControlEmplMvr implements Serializable {
                 listMvrsBorrar.add(mvrSeleccionado);
             }
             listMvrsEmpleado.remove(mvrSeleccionado);
+            if (tipoListaMvrs == 1) {
+                filtrarListMvrsEmpleado.remove(mvrSeleccionado);
+            }
             modificarInfoRegistroMVR(listMvrsEmpleado.size());
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -1292,6 +1285,9 @@ public class ControlEmplMvr implements Serializable {
                 listOtrosCertificadosBorrar.add(otroCertificadoSeleccionado);
             }
             listOCertificados.remove(otroCertificadoSeleccionado);
+            if (tipoListaOtrosCertificados == 1) {
+                filtrarListOtrosCertificados.remove(otroCertificadoSeleccionado);
+            }
             modificarInfoRegistroOtroC(listOCertificados.size());
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -1490,7 +1486,7 @@ public class ControlEmplMvr implements Serializable {
                 tipoActualizacion = 2;
             }
             if (column == 0) {
-                getInfoRegistroMotivoMVR();
+                modificarInfoRegistroM(listMotivosMvrs.size());
                 context.update("form:MotivoDialogo");
                 context.execute("MotivoDialogo.show()");
             }
@@ -1506,8 +1502,7 @@ public class ControlEmplMvr implements Serializable {
                 tipoActualizacion = 2;
             }
             if (column == 0) {
-                System.out.println("entro dlg: " + column);
-                getInfoRegistroCertificado();
+                modificarInfoRegistroC(listTiposCertificados.size());
                 context.update("form:CertificadosDialogo");
                 context.execute("CertificadosDialogo.show()");
             }
@@ -1526,7 +1521,7 @@ public class ControlEmplMvr implements Serializable {
                 tipoActualizacion = 2;
             }
             if (column == 0) {
-                getInfoRegistroMotivoMVR();
+                modificarInfoRegistroM(listMotivosMvrs.size());
                 context.update("form:MotivoDialogo");
                 context.execute("MotivoDialogo.show()");
             }
@@ -1541,8 +1536,7 @@ public class ControlEmplMvr implements Serializable {
                 tipoActualizacion = 2;
             }
             if (column == 0) {
-                System.out.println("entro dlg: " + column);
-                getInfoRegistroCertificado();
+                modificarInfoRegistroC(listTiposCertificados.size());
                 context.update("form:CertificadosDialogo");
                 context.execute("CertificadosDialogo.show()");
             }
@@ -1668,7 +1662,7 @@ public class ControlEmplMvr implements Serializable {
         } else {
             if (mvrSeleccionado != null) {
                 if (cualCeldaMvrs == 3) {
-                    getInfoRegistroMotivoMVR();
+                    modificarInfoRegistroM(listMotivosMvrs.size());
                     context.update("form:MotivoDialogo");
                     context.execute("MotivoDialogo.show()");
                     tipoActualizacion = 0;
@@ -1676,7 +1670,7 @@ public class ControlEmplMvr implements Serializable {
             }
             if (otroCertificadoSeleccionado != null) {
                 if (cualCeldaOtrosCertificados == 4) {
-                    getInfoRegistroCertificado();
+                    modificarInfoRegistroC(listTiposCertificados.size());
                     context.update("form:CertificadosDialogo");
                     context.execute("CertificadosDialogo.show()");
                     tipoActualizacion = 0;
@@ -1841,30 +1835,6 @@ public class ControlEmplMvr implements Serializable {
         modificarInfoRegistroOtroC(filtrarListOtrosCertificados.size());
         RequestContext.getCurrentInstance().update("form:informacionRegistroOtroC");
     }
-    
-    public void contarRegistrosMVR(){
-        if (listMvrsEmpleado != null) {
-            if (listMvrsEmpleado.size() > 0) {
-                modificarInfoRegistroMVR(listMvrsEmpleado.size());
-            } else {
-                modificarInfoRegistroMVR(0);
-            }
-        } else {
-            modificarInfoRegistroMVR(0);
-        }
-    }
-    
-    public void contarRegistrosOC(){
-        if (listOCertificados != null) {
-            if (listOCertificados.size() > 0) {
-                modificarInfoRegistroOtroC(listOCertificados.size());
-            } else {
-                modificarInfoRegistroOtroC(0);
-            }
-        } else {
-            modificarInfoRegistroOtroC(0);
-        }
-    }
 
     public void eventoFiltrarC() {
         modificarInfoRegistroC(filtrarListTiposCertificados.size());
@@ -1890,6 +1860,22 @@ public class ControlEmplMvr implements Serializable {
 
     private void modificarInfoRegistroM(int valor) {
         infoRegistroMotivoMVR = String.valueOf(valor);
+    }
+
+    public void contarRegistrosMVR() {
+        if (listMvrsEmpleado != null) {
+            modificarInfoRegistroMVR(listMvrsEmpleado.size());
+        } else {
+            modificarInfoRegistroMVR(0);
+        }
+    }
+
+    public void contarRegistrosOC() {
+        if (listOCertificados != null) {
+            modificarInfoRegistroOtroC(listOCertificados.size());
+        } else {
+            modificarInfoRegistroOtroC(0);
+        }
     }
 
     //METODO RASTROS PARA LAS TABLAS EN EMPLVIGENCIASUELDOS

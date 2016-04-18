@@ -779,6 +779,9 @@ public class ControlVigenciasTiposContratos implements Serializable {
                     listVTCBorrar.add(vigenciaSeleccionada);
                 }
                 vigenciasTiposContratoEmpleado.remove(vigenciaSeleccionada);
+                if (tipoLista == 1){
+                    filtrarVTC.remove(vigenciaSeleccionada);
+                }
                 modificarInfoRegistro(vigenciasTiposContratoEmpleado.size());
 
                 context.update("form:datosVTCEmpleado");
@@ -1158,11 +1161,7 @@ public class ControlVigenciasTiposContratos implements Serializable {
 
     public void contarRegistrosVTC() {
         if (vigenciasTiposContratoEmpleado != null) {
-            //if (vigenciasTiposContratoEmpleado.size() > 0) {
             modificarInfoRegistro(vigenciasTiposContratoEmpleado.size());
-            //} else {
-            //     modificarInfoRegistro(0);
-            // }
         } else {
             modificarInfoRegistro(0);
         }

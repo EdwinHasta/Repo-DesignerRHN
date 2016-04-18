@@ -56,9 +56,9 @@ public class ControlVigenciasCargos implements Serializable {
     private VigenciasCargos vigenciaSeleccionada;
     private DataTable tablaC;
     //private List<VWActualesTiposTrabajadores> vwActualesTiposTrabajadoresesLista;
-    private List<VwTiposEmpleados> vwActualesTiposTrabajadoresesLista;
-    private List<VwTiposEmpleados> filtradoVWActualesTiposTrabajadoresesLista;
-    private VwTiposEmpleados seleccionVWActualesTiposTrabajadoreses;
+    private List<VwTiposEmpleados> actualesTiposTrabajadores;
+    private List<VwTiposEmpleados> filtradoActualesTiposTrabajadores;
+    private VwTiposEmpleados tiposTrabajadorJefeSeleccionado;
     private Date fechaVigencia;
 //    private BigInteger secuencia;
     private Empleados empleado;
@@ -67,9 +67,8 @@ public class ControlVigenciasCargos implements Serializable {
     //Columnas Tabla VC
     private Column vcFecha, vcEstructura, vcMotivo, vcNombreCargo, vcCentrosC, vcNombreJefe;
     //Estructuras
-    private List<Estructuras> estructuras;
-    private List<Estructuras> estructurasLOV;
-    private List<Estructuras> estructurasfilter;
+    private List<Estructuras> dlgEstructuras;
+    private List<Estructuras> filterEstructuras;
     private Estructuras estructuraSeleccionada;
     //Motivos
     private List<MotivosCambiosCargos> motivosCambiosCargos;
@@ -78,7 +77,7 @@ public class ControlVigenciasCargos implements Serializable {
     private MotivosCambiosCargosConverter motivoConverter;
     //Cargos
     private List<Cargos> cargos;
-    private List<Cargos> cargosFilter;
+    private List<Cargos> filterCargos;
     private Cargos cargoSeleccionado;
     //Otros
     private boolean aceptar;
@@ -114,7 +113,7 @@ public class ControlVigenciasCargos implements Serializable {
     //INFORMACION DEL REGISTRO QUE TIENE EL FOCO
     private String infoRegistro;
     private String altoTabla;
-    private String cantidadRegistrosLOV;
+    private String infoRegistroJefe;
     private String infoRegistroEstructuras;
     private String infoRegistroMotivos;
     private String infoRegistroCargos;
@@ -125,19 +124,21 @@ public class ControlVigenciasCargos implements Serializable {
     public ControlVigenciasCargos() {
         System.out.println("ControlVigenciasCargos");
 
+        actualesTiposTrabajadores = null;
+        motivosCambiosCargos = null;
+        dlgEstructuras = null;
+        cargos = null;
+
         empleado = new Empleados();
         bandera = 0;
         //Vigencias Cargos
         vigenciasCargosEmpleado = null;
         fechaVigencia = new Date();
         //Estructuras
-        estructurasLOV = new ArrayList<Estructuras>();
         //Motivos
-        motivosCambiosCargos = new ArrayList<MotivosCambiosCargos>();
         motivoSeleccionado = null;
         motivoConverter = new MotivosCambiosCargosConverter();
         //Cargos
-        cargos = new ArrayList<Cargos>();
         //Otros
         formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
         aceptar = true;
@@ -162,13 +163,12 @@ public class ControlVigenciasCargos implements Serializable {
         nuevaVigencia.setMotivocambiocargo(new MotivosCambiosCargos());
         nuevaVigencia.setCargo(new Cargos());
         //lista empleados jefe
-        vwActualesTiposTrabajadoresesLista = new ArrayList<VwTiposEmpleados>();
         //AUTOCOMPLETAR
         permitirIndex = true;
         //RASTRO
         //INICIALIZAR FOCO PARA EL PRIMER REGISTRO
         registroFoco = "form:datosVCEmpleado:editFecha";
-        altoTabla = "292";
+        altoTabla = "307";
         vigenciaSeleccionada = null;
     }
 
@@ -192,24 +192,11 @@ public class ControlVigenciasCargos implements Serializable {
     //------------------------------------------------------------------------------------------
     //VIGENCIASCARGOS----------------------------------------------------
     public void recibirEmpleado(Empleados emp) {
-        vigenciasCargosEmpleado = null;
         empleado = emp;
-        vwActualesTiposTrabajadoresesLista = null;
-        motivosCambiosCargos = null;
-        estructurasLOV = null;
-        cargos = null;
         getVigenciasCargosEmpleado();
-        //INICIALIZAR BOTONES NAVEGACION
-        if (vigenciasCargosEmpleado != null && !vigenciasCargosEmpleado.isEmpty()) {
-            if (vigenciasCargosEmpleado.size() == 1) {
-                //INFORMACION REGISTRO
-                vigenciaSeleccionada = vigenciasCargosEmpleado.get(0);
-                modificarInfoRegistro(1);
-            } else if (vigenciasCargosEmpleado.size() > 1) {
-                //INFORMACION REGISTRO
-                vigenciaSeleccionada = vigenciasCargosEmpleado.get(0);
-                modificarInfoRegistro(vigenciasCargosEmpleado.size());
-            }
+        if (vigenciasCargosEmpleado != null) {
+            vigenciaSeleccionada = vigenciasCargosEmpleado.get(0);
+            modificarInfoRegistro(vigenciasCargosEmpleado.size());
         } else {
             modificarInfoRegistro(0);
         }
@@ -231,11 +218,12 @@ public class ControlVigenciasCargos implements Serializable {
 
     public void cargarEstructuras(VigenciasCargos vCargo) {
         String forFecha = formatoFecha.format(vCargo.getFechavigencia());
-        estructurasLOV = administrarEstructuras.consultarNativeQueryEstructuras(forFecha);
+        System.out.println("forFecha : " + forFecha);
+        dlgEstructuras = administrarEstructuras.consultarNativeQueryEstructuras(forFecha);
         vigenciaSeleccionada = vCargo;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:estructurasDialog");
-        context.execute("estructurasDialog.show()");
+        modificarInfoRegistroEstructuras(dlgEstructuras.size());
+        RequestContext.getCurrentInstance().update("form:dlgEstructuras");
+        RequestContext.getCurrentInstance().execute("dlgEstructuras.show()");
         tipoActualizacion = 0;
     }
 
@@ -247,9 +235,10 @@ public class ControlVigenciasCargos implements Serializable {
                 context.execute("necesitaFecha.show()");
             } else {
                 String forFecha = formatoFecha.format(nuevaVigencia.getFechavigencia());
-                estructurasLOV = administrarEstructuras.consultarNativeQueryEstructuras(forFecha);
-                context.update("form:estructurasDialog");
-                context.execute("estructurasDialog.show()");
+                dlgEstructuras = administrarEstructuras.consultarNativeQueryEstructuras(forFecha);
+                modificarInfoRegistroEstructuras(dlgEstructuras.size());
+                context.update("form:dlgEstructuras");
+                context.execute("dlgEstructuras.show()");
             }
         } else if (tipoNuevo == 1) {
             tipoActualizacion = 2;
@@ -258,9 +247,10 @@ public class ControlVigenciasCargos implements Serializable {
                 context.execute("necesitaFecha.show()");
             } else {
                 String forFecha = formatoFecha.format(duplicarVC.getFechavigencia());
-                estructurasLOV = administrarEstructuras.consultarNativeQueryEstructuras(forFecha);
-                context.update("form:estructurasDialog");
-                context.execute("estructurasDialog.show()");
+                dlgEstructuras = administrarEstructuras.consultarNativeQueryEstructuras(forFecha);
+                modificarInfoRegistroEstructuras(dlgEstructuras.size());
+                context.update("form:dlgEstructuras");
+                context.execute("dlgEstructuras.show()");
             }
         }
     }
@@ -293,14 +283,14 @@ public class ControlVigenciasCargos implements Serializable {
             duplicarVC.setEstructura(estructuraSeleccionada);
             context.update("formularioDialogos:duplicarVC");
         }
-        estructurasfilter = null;
+        filterEstructuras = null;
         aceptar = true;
         tipoActualizacion = -1;
         cualCelda = -1;
     }
 
     public void cancelarCambioEstructura() {
-        estructurasfilter = null;
+        //filterEstructuras = null;
         aceptar = true;
         tipoActualizacion = -1;
         permitirIndex = true;
@@ -392,14 +382,14 @@ public class ControlVigenciasCargos implements Serializable {
             duplicarVC.setCargo(cargoSeleccionado);
             context.update("formularioDialogos:duplicarVC");
         }
-        cargosFilter = null;
+        filterCargos = null;
         aceptar = true;
         tipoActualizacion = -1;
         cualCelda = -1;
     }
 
     public void cancelarCambioCargo() {
-        cargosFilter = null;
+        filterCargos = null;
         aceptar = true;
         tipoActualizacion = -1;
         permitirIndex = true;
@@ -408,7 +398,7 @@ public class ControlVigenciasCargos implements Serializable {
     public void actualizarEmpleadoJefe() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
-            vigenciaSeleccionada.setEmpleadojefe(administrarVigenciasCargos.buscarEmpleado(seleccionVWActualesTiposTrabajadoreses.getRfEmpleado()));
+            vigenciaSeleccionada.setEmpleadojefe(administrarVigenciasCargos.buscarEmpleado(tiposTrabajadorJefeSeleccionado.getRfEmpleado()));
             if (!listVCCrear.contains(vigenciaSeleccionada)) {
                 if (listVCModificar.isEmpty()) {
                     listVCModificar.add(vigenciaSeleccionada);
@@ -424,13 +414,13 @@ public class ControlVigenciasCargos implements Serializable {
             permitirIndex = true;
             context.update("form:datosVCEmpleado");
         } else if (tipoActualizacion == 1) {
-            nuevaVigencia.setEmpleadojefe(administrarVigenciasCargos.buscarEmpleado(seleccionVWActualesTiposTrabajadoreses.getRfEmpleado()));
+            nuevaVigencia.setEmpleadojefe(administrarVigenciasCargos.buscarEmpleado(tiposTrabajadorJefeSeleccionado.getRfEmpleado()));
             context.update("formularioDialogos:nuevaVC");
         } else if (tipoActualizacion == 2) {
-            duplicarVC.setEmpleadojefe(administrarVigenciasCargos.buscarEmpleado(seleccionVWActualesTiposTrabajadoreses.getRfEmpleado()));
+            duplicarVC.setEmpleadojefe(administrarVigenciasCargos.buscarEmpleado(tiposTrabajadorJefeSeleccionado.getRfEmpleado()));
             context.update("formularioDialogos:duplicarVC");
         }
-        filtradoVWActualesTiposTrabajadoresesLista = null;
+        //filtradoActualesTiposTrabajadores = null;
         aceptar = true;
         tipoActualizacion = -1;
         cualCelda = -1;
@@ -438,7 +428,7 @@ public class ControlVigenciasCargos implements Serializable {
     }
 
     public void cancelarEmpleadoJefe() {
-        filtradoVWActualesTiposTrabajadoresesLista = null;
+        //filtradoActualesTiposTrabajadores = null;
         //seleccionVWActualesTiposTrabajadoreses = null;
         aceptar = true;
         tipoActualizacion = -1;
@@ -482,24 +472,22 @@ public class ControlVigenciasCargos implements Serializable {
         vigenciaSeleccionada = vCargos;
         RequestContext context = RequestContext.getCurrentInstance();
         if (dlg == 0) {
-            tipoActualizacion = 0;
-            context.update("form:motivosDialog");
-            cantidadRegistrosLOV = String.valueOf(motivosCambiosCargos.size());
-            context.update("form:informacionLOVM");
-            context.execute("motivosDialog.show()");
+            modificarInfoRegistroMotivos(motivosCambiosCargos.size());
+            motivoSeleccionado = null;
+            context.update("form:dlgMotivos");
+            context.execute("dlgMotivos.show()");
         } else if (dlg == 1) {
-            tipoActualizacion = 0;
-            context.update("form:cargosDialog");
-            cantidadRegistrosLOV = String.valueOf(cargos.size());
-            context.update("form:informacionLOVC");
-            context.execute("cargosDialog.show()");
+            cargoSeleccionado = null;
+            modificarInfoRegistroCargos(cargos.size());
+            context.update("form:dlgCargos");
+            context.execute("dlgCargos.show()");
         } else if (dlg == 2) {
-            tipoActualizacion = 0;
+            tiposTrabajadorJefeSeleccionado = null;
+            modificarInfoRegistroJefe(actualesTiposTrabajadores.size());
             context.update("form:dialogoEmpleadoJefe");
-            cantidadRegistrosLOV = String.valueOf(vwActualesTiposTrabajadoresesLista.size());
-            context.update("form:informacionLOVEJ");
             context.execute("dialogoEmpleadoJefe.show()");
         }
+        tipoActualizacion = 0;
     }
 
     public void asignarVariableMotivoCargoNuevo(int tipoNuevo) {
@@ -509,9 +497,10 @@ public class ControlVigenciasCargos implements Serializable {
         if (tipoNuevo == 1) {
             tipoActualizacion = 2;
         }
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:motivosDialog");
-        context.execute("motivosDialog.show()");
+        motivoSeleccionado = null;
+        modificarInfoRegistroMotivos(motivosCambiosCargos.size());
+        RequestContext.getCurrentInstance().update("form:dlgMotivos");
+        RequestContext.getCurrentInstance().execute("dlgMotivos.show()");
     }
 
     public void asignarVariableCargoNuevo(int tipoNuevo) {
@@ -521,9 +510,10 @@ public class ControlVigenciasCargos implements Serializable {
         if (tipoNuevo == 1) {
             tipoActualizacion = 2;
         }
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:cargosDialog");
-        context.execute("cargosDialog.show()");
+        cargoSeleccionado = null;
+        modificarInfoRegistroCargos(cargos.size());
+        RequestContext.getCurrentInstance().update("form:dlgCargos");
+        RequestContext.getCurrentInstance().execute("dlgCargos.show()");
     }
 
     public void asignarVariableEmpleadoJefeNuevo(int tipoNuevo) {
@@ -533,9 +523,10 @@ public class ControlVigenciasCargos implements Serializable {
         if (tipoNuevo == 1) {
             tipoActualizacion = 2;
         }
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:dialogoEmpleadoJefe");
-        context.execute("dialogoEmpleadoJefe.show()");
+        tiposTrabajadorJefeSeleccionado = null;
+        modificarInfoRegistroJefe(actualesTiposTrabajadores.size());
+        RequestContext.getCurrentInstance().update("form:dialogoEmpleadoJefe");
+        RequestContext.getCurrentInstance().execute("dialogoEmpleadoJefe.show()");
     }
 
     public void cancelarModificacion() {
@@ -549,7 +540,7 @@ public class ControlVigenciasCargos implements Serializable {
         guardado = true;
         permitirIndex = true;
         getVigenciasCargosEmpleado();
-        if (vigenciasCargosEmpleado != null && !vigenciasCargosEmpleado.isEmpty()) {
+        if (vigenciasCargosEmpleado != null) {
             modificarInfoRegistro(vigenciasCargosEmpleado.size());
         } else {
             modificarInfoRegistro(0);
@@ -587,7 +578,7 @@ public class ControlVigenciasCargos implements Serializable {
             vcCentrosC.setFilterStyle("display: none; visibility: hidden;");
             vcNombreJefe = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
             vcNombreJefe.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "292";
+            altoTabla = "307";
             RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
             bandera = 0;
             filterVC = null;
@@ -598,7 +589,6 @@ public class ControlVigenciasCargos implements Serializable {
     /*
      * Metodo encargado de accionar un dialogo especifico
      */
-
     public void infoDialog() {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("datosDialog.show()");
@@ -613,7 +603,6 @@ public class ControlVigenciasCargos implements Serializable {
      */
     public void fechaSeleccionada(SelectEvent event) {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        System.out.println("Nueva Fecha: " + format.format(event.getObject()));
         Date nuevaFecha = (Date) event.getObject();
     }
 
@@ -674,21 +663,21 @@ public class ControlVigenciasCargos implements Serializable {
             vigenciaSeleccionada.getEstructura().setNombre(nombreEstructura);
 
 
-            for (int i = 0; i < estructurasLOV.size(); i++) {
-                if (estructurasLOV.get(i).getNombre().startsWith(valor.toUpperCase())) {
+            for (int i = 0; i < dlgEstructuras.size(); i++) {
+                if (dlgEstructuras.get(i).getNombre().startsWith(valor.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
             }
             if (coincidencias == 1) {
-                vigenciaSeleccionada.setEstructura(estructurasLOV.get(indiceUnicoElemento));
+                vigenciaSeleccionada.setEstructura(dlgEstructuras.get(indiceUnicoElemento));
 
-                estructurasLOV.clear();
-                getEstructurasLOV();
+                dlgEstructuras.clear();
+                getdlgEstructuras();
             } else {
                 permitirIndex = false;
-                context.update("form:estructurasDialog");
-                context.execute("estructurasDialog.show()");
+                context.update("form:dlgEstructuras");
+                context.execute("dlgEstructuras.show()");
                 context.update("form:datosVCEmpleado");
                 tipoActualizacion = 0;
             }
@@ -708,8 +697,8 @@ public class ControlVigenciasCargos implements Serializable {
                 getMotivosCambiosCargos();
             } else {
                 permitirIndex = false;
-                context.update("form:motivosDialog");
-                context.execute("motivosDialog.show()");
+                context.update("form:dlgMotivos");
+                context.execute("dlgMotivos.show()");
                 context.update("form:datosVCEmpleado");
                 tipoActualizacion = 0;
             }
@@ -729,8 +718,8 @@ public class ControlVigenciasCargos implements Serializable {
                 getCargos();
             } else {
                 permitirIndex = false;
-                context.update("form:cargosDialog");
-                context.execute("cargosDialog.show()");
+                context.update("form:dlgCargos");
+                context.execute("dlgCargos.show()");
                 context.update("form:datosVCEmpleado");
                 tipoActualizacion = 0;
             }
@@ -738,17 +727,17 @@ public class ControlVigenciasCargos implements Serializable {
             if (!valor.isEmpty()) {
                 vigenciaSeleccionada.getEmpleadojefe().getPersona().setNombreCompleto(nombreCompleto);
 
-                for (int i = 0; i < vwActualesTiposTrabajadoresesLista.size(); i++) {
-                    if (vwActualesTiposTrabajadoresesLista.get(i).getNombreCompleto().startsWith(valor.toUpperCase())) {
+                for (int i = 0; i < actualesTiposTrabajadores.size(); i++) {
+                    if (actualesTiposTrabajadores.get(i).getNombreCompleto().startsWith(valor.toUpperCase())) {
                         indiceUnicoElemento = i;
                         coincidencias++;
                     }
                 }
                 if (coincidencias == 1) {
-                    vigenciaSeleccionada.setEmpleadojefe(administrarVigenciasCargos.buscarEmpleado(vwActualesTiposTrabajadoresesLista.get(indiceUnicoElemento).getRfEmpleado()));
+                    vigenciaSeleccionada.setEmpleadojefe(administrarVigenciasCargos.buscarEmpleado(actualesTiposTrabajadores.get(indiceUnicoElemento).getRfEmpleado()));
 
-                    vwActualesTiposTrabajadoresesLista.clear();
-                    getVwActualesTiposTrabajadoresesLista();
+                    actualesTiposTrabajadores.clear();
+                    getActualesTiposTrabajadores();
                 } else {
                     permitirIndex = false;
                     context.update("form:dialogoEmpleadoJefe");
@@ -822,7 +811,7 @@ public class ControlVigenciasCargos implements Serializable {
                     fechaValida = false;
                 } else {
                     forFecha = formatoFecha.format(nuevaVigencia.getFechavigencia());
-                    estructurasLOV = administrarEstructuras.consultarNativeQueryEstructuras(forFecha);
+                    dlgEstructuras = administrarEstructuras.consultarNativeQueryEstructuras(forFecha);
                     fechaValida = true;
                 }
             } else if (tipoNuevo == 2) {
@@ -831,32 +820,32 @@ public class ControlVigenciasCargos implements Serializable {
                     fechaValida = false;
                 } else {
                     forFecha = formatoFecha.format(duplicarVC.getFechavigencia());
-                    estructurasLOV = administrarEstructuras.consultarNativeQueryEstructuras(forFecha);
+                    dlgEstructuras = administrarEstructuras.consultarNativeQueryEstructuras(forFecha);
                     fechaValida = true;
                 }
             }
             if (fechaValida == true) {
-                for (int i = 0; i < estructurasLOV.size(); i++) {
-                    if (estructurasLOV.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                for (int i = 0; i < dlgEstructuras.size(); i++) {
+                    if (dlgEstructuras.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
                         indiceUnicoElemento = i;
                         coincidencias++;
                     }
                 }
                 if (coincidencias == 1) {
                     if (tipoNuevo == 1) {
-                        nuevaVigencia.setEstructura(estructurasLOV.get(indiceUnicoElemento));
+                        nuevaVigencia.setEstructura(dlgEstructuras.get(indiceUnicoElemento));
                         context.update("formularioDialogos:nuevaEstructura");
                         context.update("formularioDialogos:nuevoCentroC");
                     } else if (tipoNuevo == 2) {
-                        duplicarVC.setEstructura(estructurasLOV.get(indiceUnicoElemento));
+                        duplicarVC.setEstructura(dlgEstructuras.get(indiceUnicoElemento));
                         context.update("formularioDialogos:duplicarEstructura");
                         context.update("formularioDialogos:duplicarCentroC");
                     }
-                    estructurasLOV.clear();
-                    getEstructurasLOV();
+                    dlgEstructuras.clear();
+                    getdlgEstructuras();
                 } else {
-                    context.update("form:estructurasDialog");
-                    context.execute("estructurasDialog.show()");
+                    context.update("form:dlgEstructuras");
+                    context.execute("dlgEstructuras.show()");
                     tipoActualizacion = tipoNuevo;
                     if (tipoNuevo == 1) {
                         context.update("formularioDialogos:nuevaEstructura");
@@ -895,8 +884,8 @@ public class ControlVigenciasCargos implements Serializable {
                 motivosCambiosCargos.clear();
                 getMotivosCambiosCargos();
             } else {
-                context.update("form:motivosDialog");
-                context.execute("motivosDialog.show()");
+                context.update("form:dlgMotivos");
+                context.execute("dlgMotivos.show()");
                 tipoActualizacion = tipoNuevo;
                 if (tipoNuevo == 1) {
                     context.update("formularioDialogos:nuevoMotivo");
@@ -927,8 +916,8 @@ public class ControlVigenciasCargos implements Serializable {
                 cargos.clear();
                 getCargos();
             } else {
-                context.update("form:cargosDialog");
-                context.execute("cargosDialog.show()");
+                context.update("form:dlgCargos");
+                context.execute("dlgCargos.show()");
                 tipoActualizacion = tipoNuevo;
                 if (tipoNuevo == 1) {
                     context.update("formularioDialogos:nuevoNombreCargo");
@@ -943,22 +932,22 @@ public class ControlVigenciasCargos implements Serializable {
                 } else if (tipoNuevo == 2) {
                     duplicarVC.getEmpleadojefe().getPersona().setNombreCompleto(nombreCompleto);
                 }
-                for (int i = 0; i < vwActualesTiposTrabajadoresesLista.size(); i++) {
-                    if (vwActualesTiposTrabajadoresesLista.get(indiceUnicoElemento).getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
+                for (int i = 0; i < actualesTiposTrabajadores.size(); i++) {
+                    if (actualesTiposTrabajadores.get(indiceUnicoElemento).getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
                         indiceUnicoElemento = i;
                         coincidencias++;
                     }
                 }
                 if (coincidencias == 1) {
                     if (tipoNuevo == 1) {
-                        nuevaVigencia.setEmpleadojefe(administrarVigenciasCargos.buscarEmpleado(vwActualesTiposTrabajadoresesLista.get(indiceUnicoElemento).getRfEmpleado()));
+                        nuevaVigencia.setEmpleadojefe(administrarVigenciasCargos.buscarEmpleado(actualesTiposTrabajadores.get(indiceUnicoElemento).getRfEmpleado()));
                         context.update("formularioDialogos:nuevoJefe");
                     } else if (tipoNuevo == 2) {
-                        duplicarVC.setEmpleadojefe(administrarVigenciasCargos.buscarEmpleado(vwActualesTiposTrabajadoresesLista.get(indiceUnicoElemento).getRfEmpleado()));
+                        duplicarVC.setEmpleadojefe(administrarVigenciasCargos.buscarEmpleado(actualesTiposTrabajadores.get(indiceUnicoElemento).getRfEmpleado()));
                         context.update("formularioDialogos:duplicarJefe");
                     }
-                    vwActualesTiposTrabajadoresesLista.clear();
-                    getVwActualesTiposTrabajadoresesLista();
+                    actualesTiposTrabajadores.clear();
+                    getActualesTiposTrabajadores();
                 } else {
                     context.update("form:dialogoEmpleadoJefe");
                     context.execute("dialogoEmpleadoJefe.show()");
@@ -1016,7 +1005,7 @@ public class ControlVigenciasCargos implements Serializable {
             //System.out.println("Se guardaron los datos con exito");
             vigenciasCargosEmpleado = null;
             getVigenciasCargosEmpleado();
-            if (vigenciasCargosEmpleado != null && !vigenciasCargosEmpleado.isEmpty()) {
+            if (vigenciasCargosEmpleado != null) {
                 vigenciaSeleccionada = vigenciasCargosEmpleado.get(0);
                 modificarInfoRegistro(vigenciasCargosEmpleado.size());
             } else {
@@ -1109,7 +1098,7 @@ public class ControlVigenciasCargos implements Serializable {
                     vcCentrosC.setFilterStyle("display: none; visibility: hidden;");
                     vcNombreJefe = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
                     vcNombreJefe.setFilterStyle("display: none; visibility: hidden;");
-                    altoTabla = "292";
+                    altoTabla = "307";
                     RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
                     bandera = 0;
                     filterVC = null;
@@ -1210,47 +1199,45 @@ public class ControlVigenciasCargos implements Serializable {
                 listVCBorrar.add(vigenciaSeleccionada);
             }
             vigenciasCargosEmpleado.remove(vigenciaSeleccionada);
-            if (tipoLista == 1){
+            if (tipoLista == 1) {
                 filterVC.remove(vigenciaSeleccionada);
             }
-           
+
             modificarInfoRegistro(vigenciasCargosEmpleado.size());
 
-        context.update("form:datosVCEmpleado");
-        context.update("form:informacionRegistro");
-        vigenciaSeleccionada = null;
+            context.update("form:datosVCEmpleado");
+            context.update("form:informacionRegistro");
+            vigenciaSeleccionada = null;
 
-        if (guardado == true) {
-            guardado = false;
-            context.update("form:ACEPTAR");
+            if (guardado == true) {
+                guardado = false;
+                context.update("form:ACEPTAR");
+            }
+        } else {
+            context.execute("seleccionarRegistro.show()");
         }
     }
-
-    
-        else {
-            context.execute("seleccionarRegistro.show()");
-    }
-}
 //DUPLICAR VC
-public void duplicarVigenciaC() {
+
+    public void duplicarVigenciaC() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (vigenciaSeleccionada != null) {
             duplicarVC = new VigenciasCargos();
             k++;
             l = BigInteger.valueOf(k);
 
-                duplicarVC.setSecuencia(l);
-                duplicarVC.setFechavigencia(vigenciaSeleccionada.getFechavigencia());
-                duplicarVC.setEstructura(vigenciaSeleccionada.getEstructura());
-                duplicarVC.setMotivocambiocargo(vigenciaSeleccionada.getMotivocambiocargo());
-                duplicarVC.setCargo(vigenciaSeleccionada.getCargo());
-                duplicarVC.setEmpleadojefe(vigenciaSeleccionada.getEmpleadojefe());
-                duplicarVC.setCalificacion(vigenciaSeleccionada.getCalificacion());
-                duplicarVC.setEmpleado(vigenciaSeleccionada.getEmpleado());
-                duplicarVC.setEscalafon(vigenciaSeleccionada.getEscalafon());
-                duplicarVC.setLiquidahe(vigenciaSeleccionada.getLiquidahe());
-                duplicarVC.setTurnorotativo(vigenciaSeleccionada.getTurnorotativo());
-            
+            duplicarVC.setSecuencia(l);
+            duplicarVC.setFechavigencia(vigenciaSeleccionada.getFechavigencia());
+            duplicarVC.setEstructura(vigenciaSeleccionada.getEstructura());
+            duplicarVC.setMotivocambiocargo(vigenciaSeleccionada.getMotivocambiocargo());
+            duplicarVC.setCargo(vigenciaSeleccionada.getCargo());
+            duplicarVC.setEmpleadojefe(vigenciaSeleccionada.getEmpleadojefe());
+            duplicarVC.setCalificacion(vigenciaSeleccionada.getCalificacion());
+            duplicarVC.setEmpleado(vigenciaSeleccionada.getEmpleado());
+            duplicarVC.setEscalafon(vigenciaSeleccionada.getEscalafon());
+            duplicarVC.setLiquidahe(vigenciaSeleccionada.getLiquidahe());
+            duplicarVC.setTurnorotativo(vigenciaSeleccionada.getTurnorotativo());
+
             context.update("formularioDialogos:duplicarVC");
             context.execute("duplicarRegistroVC.show()");
         } else {
@@ -1313,7 +1300,7 @@ public void duplicarVigenciaC() {
                     vcCentrosC.setFilterStyle("display: none; visibility: hidden;");
                     vcNombreJefe = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
                     vcNombreJefe.setFilterStyle("display: none; visibility: hidden;");
-                    altoTabla = "292";
+                    altoTabla = "307";
                     context.update("form:datosVCEmpleado");
                     bandera = 0;
                     filterVC = null;
@@ -1349,20 +1336,28 @@ public void duplicarVigenciaC() {
         if (vigenciaSeleccionada != null) {
             if (cualCelda == 1) {
                 String forFecha = formatoFecha.format(vigenciaSeleccionada.getFechavigencia());
-                estructurasLOV = administrarEstructuras.consultarNativeQueryEstructuras(forFecha);
-                context.update("form:estructurasDialog");
-                context.execute("estructurasDialog.show()");
+                dlgEstructuras = administrarEstructuras.consultarNativeQueryEstructuras(forFecha);
+                estructuraSeleccionada = null;
+                modificarInfoRegistroEstructuras(dlgEstructuras.size());
+                context.update("form:dlgEstructuras");
+                context.execute("dlgEstructuras.show()");
                 tipoActualizacion = 0;
             } else if (cualCelda == 2) {
                 tipoActualizacion = 0;
-                context.update("form:motivosDialog");
-                context.execute("motivosDialog.show()");
+                motivoSeleccionado = null;
+                modificarInfoRegistroMotivos(motivosCambiosCargos.size());
+                context.update("form:dlgMotivos");
+                context.execute("dlgMotivos.show()");
             } else if (cualCelda == 3) {
                 tipoActualizacion = 0;
-                context.update("form:cargosDialog");
-                context.execute("cargosDialog.show()");
+                cargoSeleccionado = null;
+                modificarInfoRegistroCargos(cargos.size());
+                context.update("form:dlgCargos");
+                context.execute("dlgCargos.show()");
             } else if (cualCelda == 5) {
                 tipoActualizacion = 0;
+                tiposTrabajadorJefeSeleccionado = null;
+                modificarInfoRegistroJefe(actualesTiposTrabajadores.size());
                 context.update("form:dialogoEmpleadoJefe");
                 context.execute("dialogoEmpleadoJefe.show()");
             }
@@ -1414,7 +1409,7 @@ public void duplicarVigenciaC() {
         if (bandera == 0) {
             System.out.println("Activar");
             vcFecha = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcFecha");
-            vcFecha.setFilterStyle("width: 60px");
+            vcFecha.setFilterStyle("width: 85%");
             vcEstructura = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcEstructura");
             vcEstructura.setFilterStyle("");
             vcMotivo = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcMotivo");
@@ -1425,7 +1420,7 @@ public void duplicarVigenciaC() {
             vcCentrosC.setFilterStyle("");
             vcNombreJefe = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
             vcNombreJefe.setFilterStyle("");
-            altoTabla = "268";
+            altoTabla = "283";
             RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
             bandera = 1;
         } else if (bandera == 1) {
@@ -1442,22 +1437,13 @@ public void duplicarVigenciaC() {
             vcCentrosC.setFilterStyle("display: none; visibility: hidden;");
             vcNombreJefe = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
             vcNombreJefe.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "292";
+            altoTabla = "307";
             RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
             bandera = 0;
             filterVC = null;
             tipoLista = 0;
         }
-    }
-
-    //EVENTO FILTRAR
-    public void eventoFiltrar() {
-        if (tipoLista == 0) {
-            tipoLista = 1;
-        }
-        RequestContext context = RequestContext.getCurrentInstance();
-        modificarInfoRegistro(filterVC.size());
-        context.update("form:informacionRegistro");
+        cualCelda = -1;
     }
 
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
@@ -1485,9 +1471,53 @@ public void duplicarVigenciaC() {
         }
     }
 
+    //EVENTO FILTRAR
+    public void eventoFiltrar() {
+        if (tipoLista == 0) {
+            tipoLista = 1;
+        }
+        modificarInfoRegistro(filterVC.size());
+        RequestContext.getCurrentInstance().update("form:informacionRegistro");
+    }
+
+    public void eventoFiltrarCargos() {
+        modificarInfoRegistroCargos(filterCargos.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistroCargos");
+    }
+
+    public void eventoFiltrarEstructuras() {
+        modificarInfoRegistroEstructuras(filterEstructuras.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistroEstructuras");
+    }
+
+    public void eventoFiltrarJefe() {
+        modificarInfoRegistroJefe(filtradoActualesTiposTrabajadores.size());
+        RequestContext.getCurrentInstance().update("form:informacionLOVEJ");
+    }
+
+    public void eventoFiltrarMotios() {
+        modificarInfoRegistroMotivos(filterMotivos.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistroMotivos");
+    }
+
     private void modificarInfoRegistro(int valor) {
         infoRegistro = String.valueOf(valor);
-        System.out.println("infoRegistro: " + infoRegistro);
+    }
+
+    private void modificarInfoRegistroCargos(int valor) {
+        infoRegistroCargos = String.valueOf(valor);
+    }
+
+    private void modificarInfoRegistroEstructuras(int valor) {
+        infoRegistroEstructuras = String.valueOf(valor);
+    }
+
+    private void modificarInfoRegistroJefe(int valor) {
+        infoRegistroJefe = String.valueOf(valor);
+    }
+
+    private void modificarInfoRegistroMotivos(int valor) {
+        infoRegistroMotivos = String.valueOf(valor);
     }
 
     public void recordarSeleccion() {
@@ -1495,10 +1525,7 @@ public void duplicarVigenciaC() {
             FacesContext c = FacesContext.getCurrentInstance();
             tablaC = (DataTable) c.getViewRoot().findComponent("form:datosVCEmpleado");
             tablaC.setSelection(vigenciaSeleccionada);
-        } else {
-            vigenciaSeleccionada = null;
         }
-        System.out.println("vigenciaSeleccionada: " + vigenciaSeleccionada);
     }
 
     //------------------------------------------------------------------------------------------
@@ -1510,11 +1537,6 @@ public void duplicarVigenciaC() {
         try {
             if (vigenciasCargosEmpleado == null) {
                 vigenciasCargosEmpleado = administrarVigenciasCargos.vigenciasEmpleado(empleado.getSecuencia());
-//                if (vigenciasCargosEmpleado != null) {
-//                    if (!vigenciasCargosEmpleado.isEmpty()) {
-//                        vigenciaSeleccionada = vigenciasCargosEmpleado.get(0);
-//                    }
-//                }
             }
             return vigenciasCargosEmpleado;
         } catch (Exception e) {
@@ -1556,52 +1578,29 @@ public void duplicarVigenciaC() {
     public void setVigenciaSeleccionada(VigenciasCargos vigenciaSeleccionada) {
         this.vigenciaSeleccionada = vigenciaSeleccionada;
     }
-    //ESTRUCTURAS
-    //Estructuras--------------------------------------------
 
-    public List<Estructuras> getEstructuras() {
-        if (estructuras == null) {
-            return estructuras = administrarEstructuras.consultarTodoEstructuras();
-        } else {
-            return estructuras;
+    //dlgEstructuras-----------------------------------------
+    public List<Estructuras> getdlgEstructuras() {
+        if (dlgEstructuras == null) {
+            dlgEstructuras = administrarEstructuras.consultarTodoEstructuras();
         }
+        return dlgEstructuras;
     }
 
-    public void setEstructuras(List<Estructuras> estructuras) {
-        this.estructuras = estructuras;
-    }
-    //EstructurasLOV-----------------------------------------
-
-    public List<Estructuras> getEstructurasLOV() {
-        if (estructurasLOV == null) {
-            estructurasLOV = administrarEstructuras.consultarTodoEstructuras();
-            RequestContext context = RequestContext.getCurrentInstance();
-            if (estructurasLOV == null || estructurasLOV.isEmpty()) {
-                //infoRegistroEstructuras = "Cantidad de registros: 0 ";
-                infoRegistroEstructuras = "0";
-            } else {
-                //infoRegistroEstructuras = "Cantidad de registros: " + estructurasLOV.size();
-                infoRegistroEstructuras = String.valueOf(estructurasLOV.size());
-            }
-            context.update("form:infoRegistroEstructuras");
-        }
-        return estructurasLOV;
-    }
-
-    public void setEstructurasLOV(List<Estructuras> estructurasLOV) {
-        this.estructurasLOV = estructurasLOV;
+    public void setdlgEstructuras(List<Estructuras> dlgEstructuras) {
+        this.dlgEstructuras = dlgEstructuras;
     }
     //Estructurasfilter--------------------------------------
 
-    public List<Estructuras> getEstructurasfilter() {
-        return estructurasfilter;
+    public List<Estructuras> getFilterEstructuras() {
+        return filterEstructuras;
     }
 
-    public void setEstructurasfilter(List<Estructuras> estructurasfilter) {
-        this.estructurasfilter = estructurasfilter;
+    public void setFilterEstructuras(List<Estructuras> filterEstructuras) {
+        this.filterEstructuras = filterEstructuras;
     }
+
     //EstructuraSeleccionada---------------------------------
-
     public Estructuras getEstructuraSeleccionada() {
         return estructuraSeleccionada;
     }
@@ -1615,13 +1614,6 @@ public void duplicarVigenciaC() {
     public List<MotivosCambiosCargos> getMotivosCambiosCargos() {
         if (motivosCambiosCargos == null) {
             motivosCambiosCargos = administrarMotivosCambiosCargos.consultarMotivosCambiosCargos();
-            RequestContext context = RequestContext.getCurrentInstance();
-            if (motivosCambiosCargos == null || motivosCambiosCargos.isEmpty()) {
-                infoRegistroMotivos = "0";
-            } else {
-                infoRegistroMotivos = String.valueOf(motivosCambiosCargos.size());
-            }
-            context.update("form:infoRegistroMotivos");
         }
         return motivosCambiosCargos;
     }
@@ -1632,10 +1624,6 @@ public void duplicarVigenciaC() {
 
     public String getInfoRegistroMotivos() {
         return infoRegistroMotivos;
-    }
-
-    public void setInfoRegistroMotivos(String infoRegistroMotivos) {
-        this.infoRegistroMotivos = infoRegistroMotivos;
     }
 
     //FilterMotivos---------------------------------------
@@ -1671,13 +1659,6 @@ public void duplicarVigenciaC() {
     public List<Cargos> getCargos() {
         if (cargos == null) {
             cargos = administrarEstructuras.consultarTodoCargos();
-            RequestContext context = RequestContext.getCurrentInstance();
-            if (cargos == null || cargos.isEmpty()) {
-                infoRegistroCargos = "0";
-            } else {
-                infoRegistroCargos = String.valueOf(cargos.size());
-            }
-            context.update("form:infoRegistroCargos");
         }
         return cargos;
     }
@@ -1690,17 +1671,13 @@ public void duplicarVigenciaC() {
         return infoRegistroCargos;
     }
 
-    public void setInfoRegistroCargos(String infoRegistroCargos) {
-        this.infoRegistroCargos = infoRegistroCargos;
-    }
-
     //CargosFilter------------------------------------------
-    public List<Cargos> getCargosFilter() {
-        return cargosFilter;
+    public List<Cargos> getFilterCargos() {
+        return filterCargos;
     }
 
-    public void setCargosFilter(List<Cargos> cargosFilter) {
-        this.cargosFilter = cargosFilter;
+    public void setFilterCargos(List<Cargos> cargosFilter) {
+        this.filterCargos = cargosFilter;
     }
     //CargoSeleccionado-------------------------------------
 
@@ -1754,27 +1731,27 @@ public void duplicarVigenciaC() {
         this.duplicarVC = duplicarVC;
     }
 
-    public List<VwTiposEmpleados> getVwActualesTiposTrabajadoresesLista() {
-        if (vwActualesTiposTrabajadoresesLista == null) {
-            vwActualesTiposTrabajadoresesLista = administrarVigenciasCargos.FiltrarTipoTrabajador();
+    public List<VwTiposEmpleados> getActualesTiposTrabajadores() {
+        if (actualesTiposTrabajadores == null) {
+            actualesTiposTrabajadores = administrarVigenciasCargos.FiltrarTipoTrabajador();
         }
-        return vwActualesTiposTrabajadoresesLista;
+        return actualesTiposTrabajadores;
     }
 
-    public List<VwTiposEmpleados> getFiltradoVWActualesTiposTrabajadoresesLista() {
-        return filtradoVWActualesTiposTrabajadoresesLista;
+    public List<VwTiposEmpleados> getFiltradoActualesTiposTrabajadores() {
+        return filtradoActualesTiposTrabajadores;
     }
 
-    public void setFiltradoVWActualesTiposTrabajadoresesLista(List<VwTiposEmpleados> filtradoVWActualesTiposTrabajadoresesLista) {
-        this.filtradoVWActualesTiposTrabajadoresesLista = filtradoVWActualesTiposTrabajadoresesLista;
+    public void setFiltradoActualesTiposTrabajadores(List<VwTiposEmpleados> filtradoVWActualesTiposTrabajadoresesLista) {
+        this.filtradoActualesTiposTrabajadores = filtradoVWActualesTiposTrabajadoresesLista;
     }
 
-    public VwTiposEmpleados getSeleccionVWActualesTiposTrabajadoreses() {
-        return seleccionVWActualesTiposTrabajadoreses;
+    public VwTiposEmpleados getTiposTrabajadorJefeSeleccionado() {
+        return tiposTrabajadorJefeSeleccionado;
     }
 
-    public void setSeleccionVWActualesTiposTrabajadoreses(VwTiposEmpleados seleccionVWActualesTiposTrabajadoreses) {
-        this.seleccionVWActualesTiposTrabajadoreses = seleccionVWActualesTiposTrabajadoreses;
+    public void setTiposTrabajadorJefeSeleccionado(VwTiposEmpleados tiposTrabajadorJefeSeleccionado) {
+        this.tiposTrabajadorJefeSeleccionado = tiposTrabajadorJefeSeleccionado;
     }
 
     public String getMensajeValidacion() {
@@ -1809,19 +1786,11 @@ public void duplicarVigenciaC() {
         return altoTabla;
     }
 
-    public String getCantidadRegistrosLOV() {
-        return cantidadRegistrosLOV;
-    }
-
-    public void setCantidadRegistrosLOV(String cantidadRegistrosLOV) {
-        this.cantidadRegistrosLOV = cantidadRegistrosLOV;
+    public String getInfoRegistroJefe() {
+        return infoRegistroJefe;
     }
 
     public String getInfoRegistroEstructuras() {
         return infoRegistroEstructuras;
-    }
-
-    public void setInfoRegistroEstructuras(String infoRegistroEstructuras) {
-        this.infoRegistroEstructuras = infoRegistroEstructuras;
     }
 }
