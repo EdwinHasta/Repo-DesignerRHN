@@ -1164,7 +1164,10 @@ public class ControlVigenciasCargos implements Serializable {
                 nuevaVigencia.setMotivocambiocargo(new MotivosCambiosCargos());
                 nuevaVigencia.setCargo(new Cargos());
                 if (vigenciasCargosEmpleado != null) {
-                    vigenciaSeleccionada = vigenciasCargosEmpleado.get(0);
+                    if (!vigenciasCargosEmpleado.isEmpty()) {
+                        vigenciaSeleccionada = vigenciasCargosEmpleado.get(0);
+                    }
+                    vigenciaSeleccionada = null;
                 } else {
                     vigenciaSeleccionada = null;
                 }
@@ -1362,7 +1365,14 @@ public class ControlVigenciasCargos implements Serializable {
                 duplicarVC.setEstructura(new Estructuras());
                 duplicarVC.setMotivocambiocargo(new MotivosCambiosCargos());
                 duplicarVC.setCargo(new Cargos());
-                vigenciaSeleccionada = null;
+                if (vigenciasCargosEmpleado != null) {
+                    if (!vigenciasCargosEmpleado.isEmpty()) {
+                        vigenciaSeleccionada = vigenciasCargosEmpleado.get(0);
+                    }
+                    vigenciaSeleccionada = null;
+                } else {
+                    vigenciaSeleccionada = null;
+                }
                 activarLOV = true;
                 RequestContext.getCurrentInstance().update("form:listaValores");
                 context.update("form:informacionRegistro");
