@@ -18,12 +18,6 @@
                     <p:growl id="growl" showDetail="true"/>
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal">  
 
-                        <h:outputText value="#{msg['empleado']} " style="font-weight: bold; color: #14388B; position: relative; top: 40px; left: 120px" />
-                        <h:outputText id="nombreEmpleado" value="#{controlVigenciasCargos.empleado.persona.nombreCompleto}" style="font-weight: bold; color: #BF1A1A; position: relative; left: 130px; top: 40px"/>
-                        
-                        <h:outputText value="#{msg['codigo']}" style="font-weight: bold; color: #14388B; position: relative; left: 230px; top: 40px" />
-                        <h:outputText id="docEmpleado" value="#{controlVigenciasCargos.empleado.codigoempleado}" style="font-weight: bold; color: #BF1A1A; position: relative; left: 240px; top: 40px" />
-                        
                         <p:toolbar styleClass="cssToolbar">   
                             <p:toolbarGroup align="left"> 
 
@@ -37,8 +31,8 @@
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "
-                                                 id="listaValores" value="" actionListener="#{controlVigenciasCargos.listaValoresBoton()}" update=":form:dlgCargos, :form:dialogoEmpleadoJefe, :form:dlgEstructuras, :form:dlgMotivos" process="@this"/>
+                                <p:commandButton disabled="#{controlVigenciasCargos.activarLOV}" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "
+                                                 id="listaValores" widgetVar="listaValores" value="" actionListener="#{controlVigenciasCargos.listaValoresBoton()}" update=":form:dlgCargos, :form:dialogoEmpleadoJefe, :form:dlgEstructuras, :form:dlgMotivos" process="@this"/>
                                 <p:tooltip  for="listaValores" value="#{msg['lista']}" />
 
                                 <p:commandButton style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
@@ -96,7 +90,18 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <fieldset style="position: absolute; top: 93px; left: 10px; height: 380px; width: 830px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute; top: 73px; left: 10px; height: 18px; width: 833px; border-radius: 3px; text-align: left; border: solid #C7BFBF 1px">
+                            
+                            <h:outputText value="#{msg['empleado']} " style="font-weight: bold; color: #14388B; position: relative; top: 5px; left: 0px" />
+                            <h:outputText id="nombreEmpleado" value="#{controlVigenciasCargos.empleado.persona.nombreCompleto}" 
+                                          style="font-weight: bold; color: #BF1A1A; position: relative; left: 10px; top: 5px"/>
+
+                            <h:outputText value="#{msg['codigo']}" style="font-weight: bold; color: #14388B; position: relative; left: 120px; top: 5px" />
+                            <h:outputText id="docEmpleado" value="#{controlVigenciasCargos.empleado.codigoempleado}" 
+                                          style="font-weight: bold; color: #BF1A1A; position: relative; left: 130px; top: 5px" />
+                        </fieldset>
+
+                        <fieldset style="position: absolute; top: 110px; left: 10px; height: 365px; width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>#{msg['cargos']}</strong></legend>
                             <!-- TABLA EMPLVIGENCIACARGO -->
                             <p:dataTable id="datosVCEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice"
@@ -104,15 +109,14 @@
                                          filteredValue="#{controlVigenciasCargos.filterVC}" emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell" scrollable="true" scrollWidth="830" 
                                          scrollHeight="#{controlVigenciasCargos.altoTabla}" style=" border: 1px; width: 830px"
-                                         selection="#{controlVigenciasCargos.vigenciaSeleccionada}" selectionMode="single"
-                                         styleClass="ui-datatable">
+                                         selection="#{controlVigenciasCargos.vigenciaSeleccionada}" selectionMode="single">
 
                                 <p:ajax event="filter" listener="#{controlVigenciasCargos.eventoFiltrar()}"/>
                                 <f:event type="preRenderView" listener="#{controlVigenciasCargos.recordarSeleccion()}"/>
 
                                 <!--COLUMNAS TABLA DATOS VIGENCIAS CARGOS DE UN EMPLEADO -->
                                 <p:column style="text-align: center"  headerText="#{msg['fecha']}" sortBy="#{info.fechavigencia}" filterBy="#{info.fechavigencia}" filterMatchMode="contains"  
-                                           width="68" id="vcFecha" filterStyle="display: none; visibility: hidden;"  >  
+                                          width="68" id="vcFecha" filterStyle="display: none; visibility: hidden;"  >  
                                     <f:facet name="header">
                                         <h:outputText value="#{msg['fecha']}" />
                                     </f:facet>
@@ -268,7 +272,7 @@
                                           scrollable="true" scrollHeight="300" scrollWidth="707" widgetVar="estructurasLOV" 
                                           filteredValue="#{controlVigenciasCargos.filterEstructuras}" emptyMessage="#{msg['lovvacio']}"
                                           selection="#{controlVigenciasCargos.estructuraSeleccionada}" selectionMode="single">
-                               
+
                                 <p:ajax event="filter" listener="#{controlVigenciasCargos.eventoFiltrarEstructuras()}"/>
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasCargos.activarAceptar()}" update=":form:aceptarE"/> 
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciasCargos.actualizarEstructura()}" oncomplete="dlgEstructuras.hide()" process="@this"/>
@@ -303,7 +307,7 @@
                             <p:dataTable id="motivosCambCargo" style="width: 390px" var="mot" value="#{controlVigenciasCargos.motivosCambiosCargos}" rowKey="#{mot.secuencia}"
                                          selection="#{controlVigenciasCargos.motivoSeleccionado}" selectionMode="single" widgetVar="motivosCambCargo" scrollable="true" scrollWidth="410" scrollHeight="250"
                                          filteredValue="#{controlVigenciasCargos.filterMotivos}" emptyMessage="#{msg['lovvacio']}">              
-                                
+
                                 <p:ajax event="filter" listener="#{controlVigenciasCargos.eventoFiltrarMotios()}"/>
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasCargos.activarAceptar()}" update=":form:aceptarM"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciasCargos.actualizarMotivo()}" oncomplete="dlgMotivos.hide(), motivosCambCargo.reload" process="@this" />
@@ -343,7 +347,7 @@
                                           scrollable="true" scrollHeight="300" scrollWidth="467" widgetVar="lOVCargos" 
                                           filteredValue="#{controlVigenciasCargos.filterCargos}" emptyMessage="#{msg['lovvacio']}"
                                           rowKey="#{carg.secuencia}" selection="#{controlVigenciasCargos.cargoSeleccionado}" selectionMode="single">
-                                
+
                                 <p:ajax event="filter" listener="#{controlVigenciasCargos.eventoFiltrarCargos()}"/>
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasCargos.activarAceptar()}" update=":form:aceptarC"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciasCargos.actualizarCargo()}" oncomplete="dlgCargos.hide(), lOVCargos.reload" process="@this" />
@@ -470,7 +474,7 @@
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarRastro']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciasCargos.vigenciaSeleccionada.secuencia , 'VigenciasCargos', 'vigenciasC')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciasCargos.vigenciaSeleccionada.secuencia , 'VigenciasCargos', 'vigenciasC')}" oncomplete="#{controlVigenciasCargos.anularLOV()}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
@@ -577,7 +581,7 @@
                             <p:watermark for="nuevoJefe" value="#{msg['nombrejefe']}"/>
 
                             <p:commandButton id="limpiar" value="#{msg['limpiar']}" style="position: absolute; left: 15px; top: 285px;" actionListener="#{controlVigenciasCargos.limpiarNuevaVC()}" update="nuevaVC" process="@this" icon="ui-icon-trash"/>
-                            <p:commandButton id="agregarVC" value="#{msg['agregar']}" style="position: absolute; left: 115px; top: 285px;"  process="@this" actionListener="#{controlVigenciasCargos.agregarNuevaVC()}" icon="ui-icon-circle-check" oncomplete="window.location.reload()"/>
+                            <p:commandButton id="agregarVC" value="#{msg['agregar']}" style="position: absolute; left: 115px; top: 285px;"  process="@this" actionListener="#{controlVigenciasCargos.agregarNuevaVC()}" icon="ui-icon-circle-check" update=":form:datosVCEmpleado"/>
                             <p:commandButton id="cancelarVC" value="#{msg['cancelar']}" style=" position: absolute; left: 215px; top: 285px;" actionListener="#{controlVigenciasCargos.limpiarNuevaVC()}" update="nuevaVC" onclick="NuevoRegistroVC.hide();"  process="@this" icon="ui-icon-circle-close"/>
                         </p:panel>
                     </p:dialog>
@@ -639,7 +643,7 @@
                             <p:watermark for="duplicarJefe" value="#{msg['nombrejefe']}"/>
 
                             <p:commandButton id="limpiarDuplicado" value="#{msg['limpiar']}" style="position: absolute; left: 15px; top: 285px;" actionListener="#{controlVigenciasCargos.limpiarduplicarVC()}" update="duplicarVC" process="@this" icon="ui-icon-trash"/>
-                            <p:commandButton id="agregarDuplicadoVC" value="#{msg['agregar']}" style="position: absolute; left: 115px; top: 285px;"  process="@this" actionListener="#{controlVigenciasCargos.confirmarDuplicar()}" oncomplete="window.location.reload()" icon="ui-icon-circle-check" />
+                            <p:commandButton id="agregarDuplicadoVC" value="#{msg['agregar']}" style="position: absolute; left: 115px; top: 285px;"  process="@this" actionListener="#{controlVigenciasCargos.confirmarDuplicar()}" update=":form:datosVCEmpleado" icon="ui-icon-circle-check" />
                             <p:commandButton id="cancelarDuplicadoVC" value="#{msg['cancelar']}" style="position: absolute; left: 215px; top: 285px;" actionListener="#{controlVigenciasCargos.limpiarduplicarVC()}" update="duplicarVC, :form:datosVCEmpleado" onclick="duplicarRegistroVC.hide();"  process="@this" icon="ui-icon-circle-close"/>
                         </p:panel> 
                     </p:dialog>  
