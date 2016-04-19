@@ -154,7 +154,8 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
             }
             return estructuras;
         } catch (Exception ex) {
-            System.out.println("PersistenciaEstructuras: Fallo el nativeQuery");
+            System.out.println("PersistenciaEstructuras: Fallo el nativeQuery, fecha parametro entrante: "+ fechaVigencia);
+            System.out.println("PersistenciaEstructuras: Fallo el nativeQuery, EM: "+ em);
             estructuras = null;
             return estructuras;
         }

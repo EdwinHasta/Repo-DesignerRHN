@@ -221,7 +221,11 @@ public class ControlVigenciasCargos implements Serializable {
         System.out.println("forFecha : " + forFecha);
         dlgEstructuras = administrarEstructuras.consultarNativeQueryEstructuras(forFecha);
         vigenciaSeleccionada = vCargo;
-        modificarInfoRegistroEstructuras(dlgEstructuras.size());
+        if (dlgEstructuras != null) {
+                    modificarInfoRegistroEstructuras(dlgEstructuras.size());
+                } else {
+                    modificarInfoRegistroEstructuras(0);
+                }
         RequestContext.getCurrentInstance().update("form:dlgEstructuras");
         RequestContext.getCurrentInstance().execute("dlgEstructuras.show()");
         tipoActualizacion = 0;
@@ -235,8 +239,13 @@ public class ControlVigenciasCargos implements Serializable {
                 context.execute("necesitaFecha.show()");
             } else {
                 String forFecha = formatoFecha.format(nuevaVigencia.getFechavigencia());
+                System.out.println("forFecha : " + forFecha);
                 dlgEstructuras = administrarEstructuras.consultarNativeQueryEstructuras(forFecha);
-                modificarInfoRegistroEstructuras(dlgEstructuras.size());
+                if (dlgEstructuras != null) {
+                    modificarInfoRegistroEstructuras(dlgEstructuras.size());
+                } else {
+                    modificarInfoRegistroEstructuras(0);
+                }
                 context.update("form:dlgEstructuras");
                 context.execute("dlgEstructuras.show()");
             }
@@ -247,8 +256,13 @@ public class ControlVigenciasCargos implements Serializable {
                 context.execute("necesitaFecha.show()");
             } else {
                 String forFecha = formatoFecha.format(duplicarVC.getFechavigencia());
+                System.out.println("forFecha : " + forFecha);
                 dlgEstructuras = administrarEstructuras.consultarNativeQueryEstructuras(forFecha);
-                modificarInfoRegistroEstructuras(dlgEstructuras.size());
+                if (dlgEstructuras != null) {
+                    modificarInfoRegistroEstructuras(dlgEstructuras.size());
+                } else {
+                    modificarInfoRegistroEstructuras(0);
+                }
                 context.update("form:dlgEstructuras");
                 context.execute("dlgEstructuras.show()");
             }
@@ -287,6 +301,7 @@ public class ControlVigenciasCargos implements Serializable {
         aceptar = true;
         tipoActualizacion = -1;
         cualCelda = -1;
+        estructuraSeleccionada = null;
     }
 
     public void cancelarCambioEstructura() {
@@ -673,7 +688,7 @@ public class ControlVigenciasCargos implements Serializable {
                 vigenciaSeleccionada.setEstructura(dlgEstructuras.get(indiceUnicoElemento));
 
                 dlgEstructuras.clear();
-                getdlgEstructuras();
+                getDlgEstructuras();
             } else {
                 permitirIndex = false;
                 context.update("form:dlgEstructuras");
@@ -842,7 +857,7 @@ public class ControlVigenciasCargos implements Serializable {
                         context.update("formularioDialogos:duplicarCentroC");
                     }
                     dlgEstructuras.clear();
-                    getdlgEstructuras();
+                    getDlgEstructuras();
                 } else {
                     context.update("form:dlgEstructuras");
                     context.execute("dlgEstructuras.show()");
@@ -1113,8 +1128,8 @@ public class ControlVigenciasCargos implements Serializable {
                     nuevaVigencia.setEmpleadojefe(null);
                 }
                 listVCCrear.add(nuevaVigencia);
-
                 vigenciasCargosEmpleado.add(nuevaVigencia);
+                vigenciaSeleccionada = null;
                 nuevaVigencia = new VigenciasCargos();
                 nuevaVigencia.setEstructura(new Estructuras());
                 nuevaVigencia.setMotivocambiocargo(new MotivosCambiosCargos());
@@ -1580,14 +1595,14 @@ public class ControlVigenciasCargos implements Serializable {
     }
 
     //dlgEstructuras-----------------------------------------
-    public List<Estructuras> getdlgEstructuras() {
+    public List<Estructuras> getDlgEstructuras() {
         if (dlgEstructuras == null) {
             dlgEstructuras = administrarEstructuras.consultarTodoEstructuras();
         }
         return dlgEstructuras;
     }
 
-    public void setdlgEstructuras(List<Estructuras> dlgEstructuras) {
+    public void setDlgEstructuras(List<Estructuras> dlgEstructuras) {
         this.dlgEstructuras = dlgEstructuras;
     }
     //Estructurasfilter--------------------------------------
