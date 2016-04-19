@@ -173,6 +173,7 @@ public class AdministarReportes implements AdministarReportesInterface {
         }
     }
 
+    @Override
     public void iniciarLlenadoReporte(String nombreReporte, AsynchronousFilllListener asistenteReporte) {
         if (general == null) {
             general = persistenciaGenerales.obtenerRutas(em);

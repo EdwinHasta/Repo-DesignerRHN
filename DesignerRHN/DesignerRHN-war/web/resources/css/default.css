@@ -73,6 +73,10 @@ a:link:hover, a:visited:hover  {
     height: 15px;
 }
 
+.ui-growl{
+    left: 20px;
+}
+
 .myClass input {
     width: 96%;
     border-radius: 0px;

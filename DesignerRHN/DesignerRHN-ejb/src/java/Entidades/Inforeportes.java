@@ -188,7 +188,8 @@ public class Inforeportes implements Serializable {
         if (nombrereporte == null) {
             nombrereporte = "";
         }
-        return nombrereporte.toUpperCase();
+        //return nombrereporte.toUpperCase();
+        return nombrereporte;
     }
 
     public void setNombrereporte(String nombrereporte) {

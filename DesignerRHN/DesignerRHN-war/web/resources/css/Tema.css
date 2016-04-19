@@ -436,7 +436,8 @@ button .ui-widget-header{
     position: absolute; 
     top: 37px; 
     left: 12px; 
-    height: 23px;
+    height: 25px;
+    width: 96%;
 }
 .cssToobarButton{
     width: 25px; 

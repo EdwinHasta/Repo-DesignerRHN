@@ -55,7 +55,9 @@ public class IniciarReporte implements IniciarReporteInterface, Serializable {
             File archivo = new File(rutaReporte + nombreReporte + ".jasper");
             JasperReport masterReport;
             masterReport = (JasperReport) JRLoader.loadObject(archivo);
+            System.out.println("INICIARREPORTE creo master ");
             JasperPrint imprimir = JasperFillManager.fillReport(masterReport, null, cxn);
+            System.out.println("INICIARREPORTE lleno reporte ");
             //JasperPrint imprimir = JasperFillManager.fillReport(masterReport, null, conexion);
             String outFileName = rutaGenerado + nombreArchivo;
             System.out.println("INICIARREPORTE outFileName: " + outFileName);
