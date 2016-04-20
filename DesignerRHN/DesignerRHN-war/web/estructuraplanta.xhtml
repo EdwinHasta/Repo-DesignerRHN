@@ -23,7 +23,7 @@
                         <p:commandButton style="position: absolute; left: 683px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value="" onclick="confirmarGuardarSalida.show();" disabled="#{controlEstructuraPlanta.cambiosPagina}" process="@this" />
                         <p:commandButton style="position: absolute; left: 773px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" actionListener="#{controlEstructuraPlanta.salir()}" action="#{controlEstructuraPlanta.valorPaginaAnterior()}" process="@this" />
 
-                        <p:toolbar  styleClass="cssToolbar" style="position: absolute; top: 33px; left: 12px; height: 23px">  
+                        <p:toolbar  styleClass="cssToolbar" >  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; " actionListener="#{controlEstructuraPlanta.guardarGeneral()}" process="@this" />
