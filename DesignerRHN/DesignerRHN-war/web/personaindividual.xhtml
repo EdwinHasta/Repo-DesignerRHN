@@ -17,9 +17,9 @@
                 <h:form id="form"> 
                     <f:loadBundle basename="Recursos.personaindividual" var="msg" />
                     <p:growl id="growl" showDetail="true" />
-                    <p:panel id="PanelTotal" header="#{msg['titulo']}" style="font-size: 13px; position: absolute; width: 874px; height: 535px; text-align: left;" >  
+                    <p:panel id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal" >  
 
-                        <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 40px; left: 20px; height: 24px">
+                        <p:toolbar styleClass="cssToolbar">
                             <p:toolbarGroup align="left"> 
                                 <p:commandButton id="guardarRapido" disabled="true" value="" style="background-size: 100% 100%;background-image: url(Imagenes/Iconos/guardar.png) ;background-repeat: no-repeat; border: none; width: 25px; height: 25px;"  process="@this"/>
                                 <p:tooltip style="font-size: 12px" for="guardarRapido" value="#{msg['guardar']}" />
@@ -75,13 +75,13 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <fieldset  style="position: absolute; left: 3px; top: 75px; font-size: 10px; width: 850px; height: 405px; border-radius: 10px; text-align: left;">
+                        <fieldset  style="position: absolute; left: 3px; top: 75px; font-size: 10px; width: 850px; height: 405px; border-radius: 10px; text-align: left; padding-left: initial;">
                             <legend style="font-size: 12px; color: blue"><strong>#{msg['informacionPersona']}</strong></legend>
 
                             <p:scrollPanel id="scrollPrincipal" style="position: relative; left: 3px; top: 0px; width:850px; height:380px; border: none" mode="native">  
                                 <h:outputText value="#{msg['infoBasica']}" style="position: absolute;left: 10px; top: 2px;color: #14388B;font-weight: bold; font-size: 11px; width: 800px; text-align: center; margin-bottom: 10px"/>
 
-                                <fieldset style="position: absolute;font-size: 12px; top: 40px; width: 810px; height: 180px; border-radius: 10px; text-align: left">
+                                <fieldset style="position: absolute;font-size: 12px; top: 40px; width: 810px; height: 180px; border-radius: 10px; text-align: left;">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['modPersonal']}</strong></legend>
 
                                     <h:outputText  value="#{msg['empresa']}*" style="position: absolute; top: 25px; left: 15px;font-weight: bold"/>
@@ -613,8 +613,9 @@
                             </p:scrollPanel>  
                         </fieldset>
 
-                        <p:commandButton style="position: absolute; left: 315px; top: 505px; " id="ACEPTAR" value="#{msg['ingresarPersonal']}" icon="ui-icon-disk" actionListener="#{controlPersonaIndividual.crearNuevoEmpleado()}"  process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 505px; " id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" action="nomina" process="@this">
+                        <p:commandButton style="position: absolute; left: 315px; top: 500px; " id="ACEPTAR" value="#{msg['ingresarPersonal']}" icon="ui-icon-disk" actionListener="#{controlPersonaIndividual.crearNuevoEmpleado()}"  process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 500px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" action="nomina" process="@this">
                             <f:actionListener binding="#{controlPersonaIndividual.cancelarModificaciones()}" />
                             <f:actionListener binding="#{controlRemoto.validarEstadoNominaF()}" />
                         </p:commandButton>

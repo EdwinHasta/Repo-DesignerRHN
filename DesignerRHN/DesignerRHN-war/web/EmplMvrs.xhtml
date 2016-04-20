@@ -86,7 +86,7 @@
                                           style="font-weight: bold; color: #BF1A1A; position: relative; left: 130px; top: 5px" />
                         </fieldset>
 
-                        <fieldset style="position: absolute;top: 105px;left: 10px;height: 180px;width: 830px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 105px;left: 10px;height: 178px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style=" color: blue"><strong>#{msg['menorvalor']}</strong></legend>
                             <!-- TABLA EMPLVIGENCIALOCALIZACION -->
 
@@ -201,10 +201,10 @@
                                 </p:column>
 
                             </p:dataTable>
-                            <h:outputText id="informacionRegistroMVR" value="#{msg['infoRegistro']} #{controlEmplMvr.infoRegistroMVR}" style="position: relative; left: 15px; top: 1px; font-weight: bold"/>
+                            <h:outputText id="informacionRegistroMVR" value="#{msg['infoRegistro']} #{controlEmplMvr.infoRegistroMVR}" style="position: relative; left: 15px; top: 0px; font-weight: bold"/>
                         </fieldset>
 
-                        <fieldset style="position: absolute;top: 300px;left: 10px;height: 180px;width: 830px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 300px;left: 10px;height: 178px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style=" color: blue"><strong>#{msg['otros']}</strong></legend>
                             <p:dataTable id="datosOCEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceOC" value="#{controlEmplMvr.listOCertificados}" 
                                          filteredValue="#{controlEmplMvr.filtrarListOtrosCertificados}" editable="true" editMode="cell" 
@@ -337,13 +337,13 @@
                                 </p:column> 
 
                             </p:dataTable>
-                            <h:outputText id="informacionRegistroOtroC" value="#{msg['infoRegistro']} #{controlEmplMvr.infoRegistroOtroC}" style="position: relative; left: 15px; top: 1px; font-weight: bold"/>
+                            <h:outputText id="informacionRegistroOtroC" value="#{msg['infoRegistro']} #{controlEmplMvr.infoRegistroOtroC}" style="position: relative; left: 15px; top: 0px; font-weight: bold"/>
                             <!--<p:remoteCommand name="posicionOtro" actionListener="#/{controlEmplMvr.posicionOtro()}"/>-->
                         </fieldset>
 
-                        <p:commandButton style="position: absolute; left: 680px; top: 500px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
+                        <p:commandButton style="position: absolute; left: 683px; top: 500px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
                                          background-size: 100% 100%; background-repeat: no-repeat; border: none; " id="ACEPTAR" value="" onclick="confirmarGuardar.show();" process="@this"  disabled="#{controlEmplMvr.guardado}" />
-                        <p:commandButton style="position: absolute; left: 770px; top: 500px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/cancelar.png); 
+                        <p:commandButton style="position: absolute; left: 773px; top: 500px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/cancelar.png); 
                                          background-size: 100% 100%; background-repeat: no-repeat; border: none; " id="ATRAS" value="" actionListener="#{controlEmplMvr.salir()}" action="nomina" process="@this" />
 
                         <!-- DIALOGO L.O.V ESTATICO MOTIVO CAMBIO SUELDO     -->

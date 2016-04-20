@@ -186,8 +186,8 @@ public class ControlEmplComprobantes implements Serializable {
         duplicarComprobante = new Comprobantes();
         secRegistro = null;
         tablaExportar = ":formExportar:datosComprobantesExportar";
-        altoScrollComprobante = "67";
-        altoScrollCortesProcesos = "67";
+        altoScrollComprobante = "61";
+        altoScrollComprobante = "61";
         banderaComprobantes = 0;
         banderaCortesProcesos = 0;
         nombreTabla = "Comprobantes";
@@ -321,7 +321,7 @@ public class ControlEmplComprobantes implements Serializable {
                         fechaCorteCP.setFilterStyle("display: none; visibility: hidden;");
                         procesoCP = (Column) c.getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
                         procesoCP.setFilterStyle("display: none; visibility: hidden;");
-                        altoScrollCortesProcesos = "67";
+                        altoScrollComprobante = "61";
                         RequestContext.getCurrentInstance().update("form:datosCortesProcesos");
                         banderaCortesProcesos = 0;
                         filtradolistaCortesProcesos = null;
@@ -405,7 +405,7 @@ public class ControlEmplComprobantes implements Serializable {
                 fechaC.setFilterStyle("display: none; visibility: hidden;");
                 fechaEntregaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
                 fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
-                altoScrollComprobante = "67";
+                altoScrollComprobante = "61";
                 context.update("form:datosComprobantes");
                 banderaComprobantes = 0;
                 filtradolistaComprobantes = null;
@@ -497,7 +497,7 @@ public class ControlEmplComprobantes implements Serializable {
          fechaC.setFilterStyle("display: none; visibility: hidden;");
          fechaEntregaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
          fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
-         altoScrollComprobante = "67";
+         altoScrollComprobante = "61";
          RequestContext.getCurrentInstance().update("form:datosComprobantes");
          banderaComprobantes = 0;
          filtradolistaComprobantes = null;
@@ -557,7 +557,7 @@ public class ControlEmplComprobantes implements Serializable {
          fechaC.setFilterStyle("display: none; visibility: hidden;");
          fechaEntregaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
          fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
-         altoScrollComprobante = "67";
+         altoScrollComprobante = "61";
          RequestContext.getCurrentInstance().update("form:datosComprobantes");
          banderaComprobantes = 0;
          filtradolistaComprobantes = null;
@@ -1745,7 +1745,7 @@ public class ControlEmplComprobantes implements Serializable {
                 fechaC.setFilterStyle("display: none; visibility: hidden;");
                 fechaEntregaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
                 fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
-                altoScrollComprobante = "67";
+                altoScrollComprobante = "61";
                 RequestContext.getCurrentInstance().update("form:datosComprobantes");
                 banderaComprobantes = 0;
                 filtradolistaComprobantes = null;
@@ -1804,7 +1804,7 @@ public class ControlEmplComprobantes implements Serializable {
                 fechaCorteCP.setFilterStyle("display: none; visibility: hidden;");
                 procesoCP = (Column) c.getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
                 procesoCP.setFilterStyle("display: none; visibility: hidden;");
-                altoScrollCortesProcesos = "67";
+                altoScrollComprobante = "61";
                 RequestContext.getCurrentInstance().update("form:datosCortesProcesos");
                 banderaCortesProcesos = 0;
                 filtradolistaCortesProcesos = null;
@@ -1934,7 +1934,7 @@ public class ControlEmplComprobantes implements Serializable {
                 fechaC.setFilterStyle("display: none; visibility: hidden;");
                 fechaEntregaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
                 fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
-                altoScrollComprobante = "67";
+                altoScrollComprobante = "61";
                 RequestContext.getCurrentInstance().update("form:datosComprobantes");
                 banderaComprobantes = 0;
                 filtradolistaComprobantes = null;
@@ -1989,7 +1989,7 @@ public class ControlEmplComprobantes implements Serializable {
                 fechaCorteCP.setFilterStyle("display: none; visibility: hidden;");
                 procesoCP = (Column) c.getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
                 procesoCP.setFilterStyle("display: none; visibility: hidden;");
-                altoScrollCortesProcesos = "67";
+                altoScrollComprobante = "61";
                 RequestContext.getCurrentInstance().update("form:datosCortesProcesos");
                 banderaCortesProcesos = 0;
                 filtradolistaCortesProcesos = null;
@@ -2020,7 +2020,7 @@ public class ControlEmplComprobantes implements Serializable {
                 fechaC.setFilterStyle("width: 60px;");
                 fechaEntregaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
                 fechaEntregaC.setFilterStyle("width: 60px;");
-                altoScrollComprobante = "43";
+                altoScrollComprobante = "37";
                 RequestContext.getCurrentInstance().update("form:datosComprobantes");
                 banderaComprobantes = 1;
 
@@ -2031,7 +2031,7 @@ public class ControlEmplComprobantes implements Serializable {
                 fechaC.setFilterStyle("display: none; visibility: hidden;");
                 fechaEntregaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
                 fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
-                altoScrollComprobante = "67";
+                altoScrollComprobante = "61";
                 RequestContext.getCurrentInstance().update("form:datosComprobantes");
                 banderaComprobantes = 0;
                 filtradolistaComprobantes = null;
@@ -2043,7 +2043,7 @@ public class ControlEmplComprobantes implements Serializable {
                 fechaCorteCP.setFilterStyle("width: 80px;");
                 procesoCP = (Column) c.getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
                 procesoCP.setFilterStyle("width: 150px;");
-                altoScrollCortesProcesos = "43";
+                altoScrollCortesProcesos = "37";
                 RequestContext.getCurrentInstance().update("form:datosCortesProcesos");
                 banderaCortesProcesos = 1;
 
@@ -2052,7 +2052,7 @@ public class ControlEmplComprobantes implements Serializable {
                 fechaCorteCP.setFilterStyle("display: none; visibility: hidden;");
                 procesoCP = (Column) c.getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
                 procesoCP.setFilterStyle("display: none; visibility: hidden;");
-                altoScrollCortesProcesos = "67";
+                altoScrollComprobante = "61";
                 RequestContext.getCurrentInstance().update("form:datosCortesProcesos");
                 banderaCortesProcesos = 0;
                 filtradolistaCortesProcesos = null;
@@ -2221,7 +2221,7 @@ public class ControlEmplComprobantes implements Serializable {
             fechaCorteCP.setFilterStyle("display: none; visibility: hidden;");
             procesoCP = (Column) c.getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
             procesoCP.setFilterStyle("display: none; visibility: hidden;");
-            altoScrollCortesProcesos = "67";
+            altoScrollComprobante = "61";
             RequestContext.getCurrentInstance().update("form:datosCortesProcesos");
             banderaCortesProcesos = 0;
             filtradolistaCortesProcesos = null;
@@ -2236,7 +2236,7 @@ public class ControlEmplComprobantes implements Serializable {
             fechaC.setFilterStyle("display: none; visibility: hidden;");
             fechaEntregaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
             fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
-            altoScrollComprobante = "67";
+            altoScrollComprobante = "61";
             RequestContext.getCurrentInstance().update("form:datosComprobantes");
             banderaComprobantes = 0;
             filtradolistaComprobantes = null;

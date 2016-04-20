@@ -174,11 +174,12 @@
                             </p:dataTable>  
                                 <h:outputText id="informacionRegistro" value="#{msg['infoRegistro']} #{controlVigenciasContratos.infoRegistro}" style="position: relative; left: 15px; top: 1px; font-weight: bold"/>
 
-                            <p:commandButton style="position: relative; left: 585px; top: 35px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
-                                             background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value="" onclick="confirmarGuardar.show();" update=":form:datosVCEmpleado" process="@this" disabled="#{controlVigenciasContratos.guardado}"/>
-                            <p:commandButton style="position: relative; left: 585px; top: 35px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/cancelar.png); 
-                                             background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" actionListener="#{controlVigenciasContratos.salir()}" action="nomina" process="@this" />
                         </fieldset>
+                        
+                            <p:commandButton style="position: relative; left: 670px; top: 465px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
+                                             background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value="" onclick="confirmarGuardar.show();" update=":form:datosVCEmpleado" process="@this" disabled="#{controlVigenciasContratos.guardado}"/>
+                            <p:commandButton style="position: relative; left: 670px; top: 465px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/cancelar.png); 
+                                             background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" actionListener="#{controlVigenciasContratos.salir()}" action="nomina" process="@this" />
 
                         <!-- DIALOGO L.O.V ESTATICO CONTRATOS -->
                         <p:dialog header="#{msg['legislacionL']}" widgetVar="ContratosDialogo" draggable="false" resizable="false" closable="false" id="ContratosDialogo"  

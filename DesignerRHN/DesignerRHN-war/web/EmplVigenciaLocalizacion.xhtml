@@ -85,7 +85,7 @@
                                           style="font-weight: bold; color: #BF1A1A; position: relative; left: 130px; top: 5px" />
                         </fieldset>
 
-                        <fieldset style="position: absolute;top: 105px;left: 10px;height: 168px;width: 830px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 105px;left: 10px;height: 165px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="color: blue"><strong>#{msg['localizacion']}</strong></legend>
                             <!-- TABLA EMPLVIGENCIALOCALIZACION -->
 
@@ -213,13 +213,13 @@
 
                         <!--<p:remoteCommand name="posicionLocalizacion" actionListener="#/{controlVigenciaLocalizacion.posicionLocalizacion()}"/>-->
 
-                        <fieldset style="position: absolute;top: 288px;left: 10px;height: 168px;width: 450px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 288px;left: 10px;height: 165px;width: 455px; border-radius: 10px; text-align: left">
                             <legend style="color: blue"><strong>#{msg['pcc']}</strong></legend>
 
                             <p:dataTable id="datosVPVigencia" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceVP" 
                                          value="#{controlVigenciaLocalizacion.vigenciasProrrateosCentroC}" style=" border: 1px;width:445px"
                                          filteredValue="#{controlVigenciaLocalizacion.filtradoVP}" emptyMessage="#{msg['vacio']}" 
-                                         scrollable="true" editable="true" editMode="cell" scrollHeight="#{controlVigenciaLocalizacion.altoTabla2}" scrollWidth="445" 
+                                         scrollable="true" editable="true" editMode="cell" scrollHeight="#{controlVigenciaLocalizacion.altoTabla2}" scrollWidth="450" 
                                          selection="#{controlVigenciaLocalizacion.vigenciaProrrateoSeleccionada}" selectionMode="single">
 
                                 <p:ajax event="filter" listener="#{controlVigenciaLocalizacion.eventoFiltrarVP()}"/>
@@ -365,7 +365,7 @@
                         </fieldset>
 
 
-                        <fieldset style="position: absolute;top: 288px;left: 490px;height: 168px;width: 350px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 288px;left: 492px;height: 165px;width: 348px; border-radius: 10px; text-align: left">
                             <legend style="color: blue"><strong>#{msg['pp']}</strong></legend>
                             <p:dataTable id="datosVPPVigencia" var="info2" rowKey="#{info2.secuencia}" rowIndexVar="indiceVPP" value="#{controlVigenciaLocalizacion.vigenciasProrrateosProyectos}" 
                                          filteredValue="#{controlVigenciaLocalizacion.filtradoPP}" editable="true" editMode="cell" 
