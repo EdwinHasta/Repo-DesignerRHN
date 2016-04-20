@@ -196,8 +196,8 @@ public class ControlVigenciaSueldo implements Serializable {
         duplicarVS = new VigenciasSueldos();
         mostrarActual = false;
         cambiosVS = false;
-        altoTabla1 = "115";
-        altoTabla2 = "115";
+        altoTabla1 = "105";
+        altoTabla2 = "105";
 
         uniPago = new Unidades();
         fechaSis = new Date();
@@ -843,7 +843,7 @@ public class ControlVigenciaSueldo implements Serializable {
                 vATipoEntidad.setFilterStyle("display: none; visibility: hidden;");
                 vAValor = (Column) c.getViewRoot().findComponent("form:datosVAVigencia:vAValor");
                 vAValor.setFilterStyle("display: none; visibility: hidden;");
-                altoTabla2 = "115";
+                altoTabla2 = "105";
                 banderaVA = 0;
                 filtrarVigenciasAfiliaciones = null;
                 tipoListaVA = 0;
@@ -887,7 +887,7 @@ public class ControlVigenciaSueldo implements Serializable {
                 vSObservaciones.setFilterStyle("display: none; visibility: hidden;");
                 vSRetroactivo = (Column) c.getViewRoot().findComponent("form:datosVSEmpleado:vSRetroactivo");
                 vSRetroactivo.setFilterStyle("display: none; visibility: hidden;");
-                altoTabla1 = "115";
+                altoTabla1 = "105";
                 RequestContext.getCurrentInstance().update("form:datosVSEmpleado");
                 bandera = 0;
                 filtrarVigenciasSueldos = null;
@@ -1032,7 +1032,7 @@ public class ControlVigenciaSueldo implements Serializable {
             vSObservaciones.setFilterStyle("display: none; visibility: hidden;");
             vSRetroactivo = (Column) c.getViewRoot().findComponent("form:datosVSEmpleado:vSRetroactivo");
             vSRetroactivo.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla1 = "115";
+            altoTabla1 = "105";
             RequestContext.getCurrentInstance().update("form:datosVSEmpleado");
             bandera = 0;
             filtrarVigenciasSueldos = null;
@@ -1049,7 +1049,7 @@ public class ControlVigenciaSueldo implements Serializable {
             vATipoEntidad.setFilterStyle("display: none; visibility: hidden;");
             vAValor = (Column) c.getViewRoot().findComponent("form:datosVAVigencia:vAValor");
             vAValor.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla2 = "115";
+            altoTabla2 = "105";
             RequestContext.getCurrentInstance().update("form:datosVAVigencia");
             banderaVA = 0;
             filtrarVigenciasAfiliaciones = null;
@@ -1104,7 +1104,7 @@ public class ControlVigenciaSueldo implements Serializable {
             vATipoEntidad.setFilterStyle("display: none; visibility: hidden;");
             vAValor = (Column) c.getViewRoot().findComponent("form:datosVAVigencia:vAValor");
             vAValor.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla2 = "115";
+            altoTabla2 = "105";
             RequestContext.getCurrentInstance().update("form:datosVAVigencia");
             banderaVA = 0;
             filtrarVigenciasAfiliaciones = null;
@@ -1181,7 +1181,7 @@ public class ControlVigenciaSueldo implements Serializable {
                         vSObservaciones.setFilterStyle("display: none; visibility: hidden;");
                         vSRetroactivo = (Column) c.getViewRoot().findComponent("form:datosVSEmpleado:vSRetroactivo");
                         vSRetroactivo.setFilterStyle("display: none; visibility: hidden;");
-                        altoTabla1 = "115";
+                        altoTabla1 = "105";
                         RequestContext.getCurrentInstance().update("form:datosVSEmpleado");
                         bandera = 0;
                         filtrarVigenciasSueldos = null;
@@ -1278,7 +1278,7 @@ public class ControlVigenciaSueldo implements Serializable {
                         vATipoEntidad.setFilterStyle("display: none; visibility: hidden;");
                         vAValor = (Column) c.getViewRoot().findComponent("form:datosVAVigencia:vAValor");
                         vAValor.setFilterStyle("display: none; visibility: hidden;");
-                        altoTabla2 = "115";
+                        altoTabla2 = "105";
                         RequestContext.getCurrentInstance().update("form:datosVAVigencia");
                         banderaVA = 0;
                         filtrarVigenciasAfiliaciones = null;
@@ -1426,7 +1426,7 @@ public class ControlVigenciaSueldo implements Serializable {
                         vSObservaciones.setFilterStyle("display: none; visibility: hidden;");
                         vSRetroactivo = (Column) c.getViewRoot().findComponent("form:datosVSEmpleado:vSRetroactivo");
                         vSRetroactivo.setFilterStyle("display: none; visibility: hidden;");
-                        altoTabla1 = "115";
+                        altoTabla1 = "105";
                         RequestContext.getCurrentInstance().update("form:datosVSEmpleado");
                         bandera = 0;
                         filtrarVigenciasSueldos = null;
@@ -1526,7 +1526,7 @@ public class ControlVigenciaSueldo implements Serializable {
                         vATipoEntidad.setFilterStyle("display: none; visibility: hidden;");
                         vAValor = (Column) c.getViewRoot().findComponent("form:datosVAVigencia:vAValor");
                         vAValor.setFilterStyle("display: none; visibility: hidden;");
-                        altoTabla2 = "115";
+                        altoTabla2 = "105";
                         RequestContext.getCurrentInstance().update("form:datosVAVigencia");
                         banderaVA = 0;
                         filtrarVigenciasAfiliaciones = null;
@@ -1679,7 +1679,7 @@ public class ControlVigenciaSueldo implements Serializable {
                 vSObservaciones.setFilterStyle("width: 85%");
                 vSRetroactivo = (Column) c.getViewRoot().findComponent("form:datosVSEmpleado:vSRetroactivo");
                 vSRetroactivo.setFilterStyle("width: 85%");
-                altoTabla1 = "91";
+                altoTabla1 = "81";
                 RequestContext.getCurrentInstance().update("form:datosVSEmpleado");
                 bandera = 1;
             } else if (bandera == 1) {
@@ -1697,7 +1697,7 @@ public class ControlVigenciaSueldo implements Serializable {
                 vSObservaciones.setFilterStyle("display: none; visibility: hidden;");
                 vSRetroactivo = (Column) c.getViewRoot().findComponent("form:datosVSEmpleado:vSRetroactivo");
                 vSRetroactivo.setFilterStyle("display: none; visibility: hidden;");
-                altoTabla1 = "115";
+                altoTabla1 = "105";
                 RequestContext.getCurrentInstance().update("form:datosVSEmpleado");
                 bandera = 0;
                 filtrarVigenciasSueldos = null;
@@ -1724,7 +1724,7 @@ public class ControlVigenciaSueldo implements Serializable {
                 vATipoEntidad.setFilterStyle("width: 85%");
                 vAValor = (Column) c.getViewRoot().findComponent("form:datosVAVigencia:vAValor");
                 vAValor.setFilterStyle("width: 85%");
-                altoTabla2 = "91";
+                altoTabla2 = "81";
                 RequestContext.getCurrentInstance().update("form:datosVAVigencia");
                 banderaVA = 1;
             } else if (banderaVA == 1) {
@@ -1738,7 +1738,7 @@ public class ControlVigenciaSueldo implements Serializable {
                 vATipoEntidad.setFilterStyle("display: none; visibility: hidden;");
                 vAValor = (Column) c.getViewRoot().findComponent("form:datosVAVigencia:vAValor");
                 vAValor.setFilterStyle("display: none; visibility: hidden;");
-                altoTabla2 = "115";
+                altoTabla2 = "105";
                 RequestContext.getCurrentInstance().update("form:datosVAVigencia");
                 banderaVA = 0;
                 filtrarVigenciasAfiliaciones = null;
@@ -1767,7 +1767,7 @@ public class ControlVigenciaSueldo implements Serializable {
             vSValor.setFilterStyle("display: none; visibility: hidden;");
             vSObservaciones = (Column) c.getViewRoot().findComponent("form:datosVSEmpleado:vSObservaciones");
             vSObservaciones.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla1 = "115";
+            altoTabla1 = "105";
             context.update("form:datosVSEmpleado");
             bandera = 0;
             filtrarVigenciasSueldos = null;
@@ -1784,7 +1784,7 @@ public class ControlVigenciaSueldo implements Serializable {
             vATipoEntidad.setFilterStyle("display: none; visibility: hidden;");
             vAValor = (Column) c.getViewRoot().findComponent("form:datosVAVigencia:vAValor");
             vAValor.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla2 = "115";
+            altoTabla2 = "105";
             context.update("form:datosVAVigencia");
             banderaVA = 0;
             filtrarVigenciasAfiliaciones = null;

@@ -15,14 +15,13 @@
                     <f:loadBundle basename="Recursos.emplvigenciasueldo" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal">
-                        <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlVigenciaSueldo.empleado.persona.nombreCompleto}"/> 
 
                         <h:outputText id="totalConsultarActual" value="#{msg['total']}" style="position: absolute; top: 68px;left: 717px; visibility: #{controlVigenciaSueldo.visibilidadTotal()}; font-weight: bold" />
                         <h:outputText id="valorConsultarActual" value="#{controlVigenciaSueldo.valorTotal}" style="position: absolute; top: 68px;left: 797px; visibility: #{controlVigenciaSueldo.visibilidadTotal()}">
                             <f:convertNumber type="number" />
                         </h:outputText>
 
-                        <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 37px; left: 12px; height: 24px">  
+                        <p:toolbar styleClass="cssToolbar">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" actionListener="#{controlVigenciaSueldo.guardadoGeneral()}" process="@this" oncomplete="window.location.reload()"
@@ -91,9 +90,20 @@
 
                             </p:toolbarGroup>  
                         </p:toolbar> 
+                        
+                        <fieldset style="position: absolute; top: 73px; left: 10px; height: 18px; width: 833px; border-radius: 3px; text-align: left; border: solid #C7BFBF 1px">
+                            
+                            <h:outputText value="#{msg['empleado']} " style="font-weight: bold; color: #14388B; position: relative; top: 5px; left: 0px" />
+                            <h:outputText id="nombreEmpleadot" value="#{controlVigenciaSueldo.empleado.persona.nombreCompleto}" 
+                                          style="font-weight: bold; color: #BF1A1A; position: relative; left: 10px; top: 5px"/>
 
-                        <fieldset style="position: absolute;top: 75px;left: 10px;height: 182px;width: 830px; border-radius: 10px; text-align: left">
-                            <legend style="font-size: 14px; color: blue"><strong>#{msg['sueldo']}</strong></legend>
+                            <h:outputText value="#{msg['codigo']}" style="font-weight: bold; color: #14388B; position: relative; left: 120px; top: 5px" />
+                            <h:outputText id="docEmpleado" value="#{controlVigenciaSueldo.empleado.codigoempleado}" 
+                                          style="font-weight: bold; color: #BF1A1A; position: relative; left: 130px; top: 5px" />
+                        </fieldset>
+
+                        <fieldset style="position: absolute;top: 105px;left: 10px;height: 168px;width: 830px; border-radius: 10px; text-align: left">
+                            <legend style=" color: blue"><strong>#{msg['sueldo']}</strong></legend>
                             <!-- TABLA EMPLVIGENCIALOCALIZACION -->
 
                             <p:dataTable id="datosVSEmpleado" var="infoDVS" rowKey="#{infoDVS.secuencia}" rowIndexVar="indice" style=" border: 1px;"   
@@ -139,7 +149,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 10px; border-radius: 0px;" id="fooMotivoCambioSueldo" action="motivocambiosueldo" value=""/>
+                                        <p:commandButton style="width: 170px; height: inherit; border-radius: 0px; margin-left: -10px; margin-right: -10px " id="fooMotivoCambioSueldo" action="motivocambiosueldo" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -156,7 +166,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 10px; border-radius: 0px;" id="fooTipoSueldo" value="" action="tipossueldos" actionListener="#{controlTipoSueldo.inicializarPagina('emplVigSueldo')}" />
+                                        <p:commandButton style="width: 170px; height: inherit; border-radius: 0px; margin-left: -10px; margin-right: -10px " id="fooTipoSueldo" value="" action="tipossueldos" actionListener="#{controlTipoSueldo.inicializarPagina('emplVigSueldo')}" />
                                     </f:facet>
                                 </p:column>
 
@@ -237,10 +247,10 @@
                                 </p:column>
                             </p:dataTable>
                             
-                            <h:outputText id="informacionRegistroS" value="#{msg['infoRegistro']} #{controlVigenciaSueldo.infoRegistroS}" style="position: relative; left: 15px; top: 1px; font-weight: bold"/>
+                            <h:outputText id="informacionRegistroS" value="#{msg['infoRegistro']} #{controlVigenciaSueldo.infoRegistroS}" style="position: relative; left: 15px; top: 0px; font-weight: bold"/>
                         </fieldset>
 
-                        <fieldset style="position: absolute;top: 272px;left: 10px;height: 182px;width: 830px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 288px;left: 10px;height: 168px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style=" color: blue"><strong>#{msg['distribucion']}</strong></legend>
                             <p:dataTable id="datosVAVigencia" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceVA" value="#{controlVigenciaSueldo.listVigenciasAfiliaciones}" 
                                          filteredValue="#{controlVigenciaSueldo.filtrarVigenciasAfiliaciones}" editable="true" editMode="cell" 
@@ -305,7 +315,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 10px; border-radius: 0px;" id="fooTerceroVA" action="terceroPag" actionListener="#{controlTercero.recibirPaginaEntrante('atrasEmplVigenciaSueldo')}" value=""/>
+                                        <p:commandButton style="width: 220px; height: inherit; border-radius: 0px; margin-left: -10px; margin-right: -10px " id="fooTerceroVA" action="terceroPag" actionListener="#{controlTercero.recibirPaginaEntrante('atrasEmplVigenciaSueldo')}" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -322,7 +332,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 10px; border-radius: 0px;" id="fooTipoEntidadVA" action="tipoentidademplvigenciasueldo" actionListener="#{controlTiposEntidades.recibirPagina('atrastipoentidademplvigenciasueldo')}" value=""/>
+                                        <p:commandButton style="width: 220px; height: inherit; border-radius: 0px; margin-left: -10px; margin-right: -10px " id="fooTipoEntidadVA" action="tipoentidademplvigenciasueldo" actionListener="#{controlTiposEntidades.recibirPagina('atrastipoentidademplvigenciasueldo')}" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -343,24 +353,24 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value=""  id="fooValorVA"/>
+                                        <h:outputText value=""/>
                                     </f:facet>
                                 </p:column> 
 
                             </p:dataTable>
-                            <h:outputText id="informacionRegistroD" value="#{msg['infoRegistro']} #{controlVigenciaSueldo.infoRegistroD}" style="position: relative; left: 15px; top: 1px; font-weight: bold"/>
+                            <h:outputText id="informacionRegistroD" value="#{msg['infoRegistro']} #{controlVigenciaSueldo.infoRegistroD}" style="position: relative; left: 15px; top: 0px; font-weight: bold"/>
                         </fieldset>
 
-                        <p:commandButton id="btnConsultar" icon="ui-icon-extlink" style="position: absolute; top: 476px;left: 15px; height: 30px; width: 130px; background-image:  url(Imagenes/Iconos/boton.png); 
+                        <p:commandButton id="btnConsultar" icon="ui-icon-extlink" style="position: absolute; top: 470px;left: 15px; height: 30px; width: 135px; background-image:  url(Imagenes/Iconos/boton.png); 
                                          background-size: 100% 100%; background-repeat: no-repeat; border: none; color: white" value="#{msg['consultarC']}" actionListener="#{controlVigenciaSueldo.cambioConsultaActual()}" />
                         <p:tooltip  for="btnConsultar" value="#{msg['consultar']}" />
-                        <p:commandButton id="btnMostrarT" icon="ui-icon-extlink" style="position: absolute; top: 476px;left: 145px; height: 30px; width: 130px; background-image:  url(Imagenes/Iconos/boton.png); 
+                        <p:commandButton id="btnMostrarT" icon="ui-icon-extlink" style="position: absolute; top: 470px;left: 150px; height: 30px; width: 135px; background-image:  url(Imagenes/Iconos/boton.png); 
                                          background-size: 100% 100%; background-repeat: no-repeat; border: none; color: white" value="#{msg['todosC']}" actionListener="#{controlVigenciaSueldo.cambioConsultaGlobal()}"/>
                         <p:tooltip  for="btnMostrarT" value="#{msg['todos']}" />
 
-                        <p:commandButton style="position: absolute; left: 680px; top: 478px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
+                        <p:commandButton style="position: absolute; left: 680px; top: 500px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
                                          background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value="" onclick="confirmarGuardar.show();" update=":form:datosVSEmpleado" process="@this" disabled="#{controlVigenciaSueldo.guardado}"/>
-                        <p:commandButton style="position: absolute; left: 770px; top: 478px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/cancelar.png); 
+                        <p:commandButton style="position: absolute; left: 770px; top: 500px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/cancelar.png); 
                                          background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" actionListener="#{controlVigenciaSueldo.salir()}" action="nomina" process="@this" />
 
                         <!-- DIALOGO L.O.V ESTATICO MOTIVO CAMBIO SUELDO     -->
@@ -534,53 +544,53 @@
                         <p:commandButton value="#{msg['distribucion']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 220px; top: 50px;" actionListener="#{controlVigenciaSueldo.verificarRastroVigenciaAfiliacionHist()}" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                    <p:dialog id="confirmarRastro" header="#{msg['informacion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{controlVigenciaSueldo.msnConfirmarRastro}" id="msnConfirmarRastro" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciaSueldo.backUp, controlVigenciaSueldo.nombreTablaRastro , 'vigenciasSueldos')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" actionListener="#{controlVigenciaSueldo.limpiarMSNRastros()}" style="position: absolute; top: 63px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="confirmarRastroHistorico" header="#{msg['atencion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                    <p:dialog id="confirmarRastroHistorico" header="#{msg['informacion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{controlVigenciaSueldo.msnConfirmarRastroHistorico}" id="msnConfirmarRastroHisttorico" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla(controlVigenciaSueldo.nombreTablaRastro , 'vigenciasSueldos')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlVigenciaSueldo.limpiarMSNRastros()}" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorRastroHistorico" header="#{msg['atencion']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                    <p:dialog id="errorRastroHistorico" header="#{msg['error']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorRegistroRastro" header="#{msg['atencion']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                    <p:dialog id="errorRegistroRastro" header="#{msg['error']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                    <p:dialog id="errorTablaConRastro" header="#{msg['informacion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTablaConRastro']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciaSueldo.backUp, controlVigenciaSueldo.nombreTablaRastro , 'vigenciasSueldos')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaSinRastro" header="#{msg['atencion']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
+                    <p:dialog id="errorTablaSinRastro" header="#{msg['error']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTablaSinRastro']}" style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                    <p:dialog id="seleccionarRegistro" header="#{msg['error']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="seleccionarRegistroSel" header="#{msg['atencion']}" widgetVar="seleccionarRegistroSel"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                    <p:dialog id="seleccionarRegistroSel" header="#{msg['error']}" widgetVar="seleccionarRegistroSel"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['seleccionarRegistroSel']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                    <p:dialog id="errorObjetosDB" header="#{msg['error']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>

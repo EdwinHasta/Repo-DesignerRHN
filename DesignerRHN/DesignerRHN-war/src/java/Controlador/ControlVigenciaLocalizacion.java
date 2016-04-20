@@ -226,9 +226,9 @@ public class ControlVigenciaLocalizacion implements Serializable {
         cambioVigenciaP = false;
         cambioVigenciaPP = false;
         cambiosVigencia = false;
-        altoTabla1 = "115";
-        altoTabla2 = "115";
-        altoTabla3 = "115";
+        altoTabla1 = "104";
+        altoTabla2 = "104";
+        altoTabla3 = "104";
 
         mensajeValidacion = "";
         tipoActualizacion = 0;
@@ -2328,7 +2328,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
             vlMotivo.setFilterStyle("width: 80%");
             vlProyecto = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlProyecto");
             vlProyecto.setFilterStyle("width: 80%");
-            altoTabla1 = "91";
+            altoTabla1 = "80";
             RequestContext.getCurrentInstance().update("form:datosVLEmpleado");
             bandera = 1;
         } else if (bandera == 1) {
@@ -2356,7 +2356,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
             vPProyecto.setFilterStyle("width: 80%");
             vPSubPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPSubPorcentaje");
             vPSubPorcentaje.setFilterStyle("width: 80%");
-            altoTabla2 = "91";
+            altoTabla2 = "80";
             RequestContext.getCurrentInstance().update("form:datosVPVigencia");
             banderaVP = 1;
         } else if (banderaVP == 1) {
@@ -2380,7 +2380,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
             vPPFechaInicial.setFilterStyle("width: 80%");
             vPPFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaFinal");
             vPPFechaFinal.setFilterStyle("width: 80%");
-            altoTabla3 = "91";
+            altoTabla3 = "80";
             RequestContext.getCurrentInstance().update("form:datosVPPVigencia");
             banderaVPP = 1;
         } else if (banderaVPP == 1) {
@@ -3383,7 +3383,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
         vlMotivo.setFilterStyle("display: none; visibility: hidden;");
         vlProyecto = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlProyecto");
         vlProyecto.setFilterStyle("display: none; visibility: hidden;");
-        altoTabla1 = "115";
+        altoTabla1 = "104";
         bandera = 0;
         filtradoVL = null;
         tipoLista = 0;
@@ -3403,7 +3403,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
         vPProyecto.setFilterStyle("display: none; visibility: hidden;");
         vPSubPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPSubPorcentaje");
         vPSubPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-        altoTabla2 = "115";
+        altoTabla2 = "104";
         banderaVP = 0;
         filtradoVP = null;
         tipoListaVP = 0;
@@ -3419,7 +3419,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
         vPPFechaInicial.setFilterStyle("display: none; visibility: hidden;");
         vPPFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaFinal");
         vPPFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-        altoTabla3 = "115";
+        altoTabla3 = "104";
         banderaVPP = 0;
         filtradoPP = null;
         tipoListaVPP = 0;

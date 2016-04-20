@@ -17,15 +17,13 @@
                     <p:growl id="growl" showDetail="true"/>
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal">    
 
-                        <h:outputText style="position: absolute; top: 38px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: center;width: 400px; left: 450px;" id="nombreEmpleado" value="#{controlEmplVacaPendiente.empleado.persona.nombreCompleto}"/> 
-
-                        <h:outputText id="DPro" style="position: absolute; top: 52px;left: 540px; text-align: left; font-weight: bold; width: 80px;" value="DP: #{controlEmplVacaPendiente.diasProvisionados}"/>
-                        <h:outputText id="DFC" style="position: absolute; top: 52px;left: 650px; text-align: right; font-weight: bold; width: 110px;" value="FC: #{controlEmplVacaPendiente.fechaContratacionText}"/>
+                        <h:outputText id="DPro" style="position: absolute; top: 52px;left: 620px; text-align: left; font-weight: bold; width: 80px;" value="DP: #{controlEmplVacaPendiente.diasProvisionados}"/>
+                        <h:outputText id="DFC" style="position: absolute; top: 52px;left: 700px; text-align: right; font-weight: bold; width: 110px;" value="FC: #{controlEmplVacaPendiente.fechaContratacionText}"/>
                         <p:tooltip for="DPro" value="#{msg['DPro']}" />
                         <p:tooltip for="DFC" value="#{msg['DFC']}" style="position: fixed; margin: 0px;"/>
                         <!--<h:outputText value="" style="position: absolute; top: 50px;left: 740px;width: 50px;text-align: center"/>-->
 
-                        <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 35px; left: 20px; height: 24px">  
+                        <p:toolbar styleClass="cssToolbar">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; " actionListener="#{controlEmplVacaPendiente.guardarGeneral()}"  process="@this" />
@@ -76,8 +74,19 @@
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
                             </p:toolbarGroup>  
                         </p:toolbar>
+                        
+                        <fieldset style="position: absolute; top: 73px; left: 10px; height: 18px; width: 833px; border-radius: 3px; text-align: left; border: solid #C7BFBF 1px">
+                            
+                            <h:outputText value="#{msg['empleado']} " style="font-weight: bold; color: #14388B; position: relative; top: 5px; left: 0px" />
+                            <h:outputText id="nombreEmpleado" value="#{controlEmplVacaPendiente.empleado.persona.nombreCompleto}" 
+                                          style="font-weight: bold; color: #BF1A1A; position: relative; left: 10px; top: 5px"/>
 
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 370px;width: 400px; border-radius: 10px; text-align: left">
+                            <h:outputText value="#{msg['codigo']}" style="font-weight: bold; color: #14388B; position: relative; left: 120px; top: 5px" />
+                            <h:outputText id="docEmpleado" value="#{controlEmplVacaPendiente.empleado.codigoempleado}" 
+                                          style="font-weight: bold; color: #BF1A1A; position: relative; left: 130px; top: 5px" />
+                        </fieldset>
+
+                        <fieldset style="position: absolute;top: 110px;left: 10px;height: 360px;width: 400px; border-radius: 10px; text-align: left">
                             <legend style=" color: blue"><strong>#{msg['pendientes']}</strong></legend>
                             <!-- TABLA EMPLVACACIONESEMPLEADO -->
                             <p:dataTable id="datosVacacionesPEmpleado"  rowIndexVar="indice" style=" position: relative; border: 1px; text-align: center; width: 390px"                           
@@ -152,14 +161,15 @@
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>  
-                            <h:outputText id="informacionRegistroP" value="#{msg['infoRegistro']} #{controlEmplVacaPendiente.infoRegistroP}" style="position: relative; left: 15px; top: 1px; font-weight: bold"/>
-                            <h:outputText id="totalDias" value="Total DP:" style="position: relative; top: 1px; left: 160px; font-weight: bold; "/>  
+                           
+                            <h:outputText id="informacionRegistroP" value="#{msg['infoRegistro']} #{controlEmplVacaPendiente.infoRegistroP}" style="position: relative; left: 15px; top: 5px; font-weight: bold"/>
+                            <h:outputText id="totalDias" value="Total DP:" style="position: relative; top: 5px; left: 160px; font-weight: bold; "/>  
                             <p:tooltip  for="totalDias" value="#{msg['total']}"/>
-                            <h:outputText id="totalDiasP" value="#{controlEmplVacaPendiente.totalDiasPendientes}" style="position: relative; top: 1px; left: 180px; "/>  
+                            <h:outputText id="totalDiasP" value="#{controlEmplVacaPendiente.totalDiasPendientes}" style="position: relative; top: 5px; left: 180px; "/>  
 
                         </fieldset> 
 
-                        <fieldset style="position: absolute;top: 80px;left: 440px;height: 370px;width: 400px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 110px;left: 440px;height: 360px;width: 400px; border-radius: 10px; text-align: left">
                             <legend style=" color: blue"><strong>#{msg['disfrutadas']}</strong></legend>
                             <!-- TABLA EMPLVACACIONESEMPLEADO -->
                             <p:dataTable id="datosVacacionesDEmpleado" var="info2" rowKey="#{info2.secuencia}"  rowIndexVar="indice2" style="border: 1px; text-align: center; width: 390px"                           
@@ -232,22 +242,22 @@
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>  
-                            <h:outputText id="informacionRegistroD" value="#{msg['infoRegistro']} #{controlEmplVacaPendiente.infoRegistroD}" style="position: relative; left: 15px; top: 1px; font-weight: bold"/>
+                            <h:outputText id="informacionRegistroD" value="#{msg['infoRegistro']} #{controlEmplVacaPendiente.infoRegistroD}" style="position: relative; left: 15px; top: 5px; font-weight: bold"/>
                         </fieldset> 
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 478px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
+                        <p:commandButton style="position: absolute; left: 683px; top: 495px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/aceptar.png); 
                                          background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none;" id="ACEPTAR" value="" onclick="confirmarGuardar.show()" process="@this" disabled="#{controlEmplVacaPendiente.guardado}"  />
-                        <p:commandButton style="position: absolute; left: 775px; top: 478px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/cancelar.png); 
+                        <p:commandButton style="position: absolute; left: 775px; top: 495px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/cancelar.png); 
                                          background-size: 100% 100%; background-repeat: no-repeat; border: none; border: none;" id="ATRAS" value="" actionListener="#{controlEmplVacaPendiente.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
 
-                    <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                    <p:dialog id="seleccionarRegistro" header="#{msg['error']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="seleccionarRegistroP" header="#{msg['atencion']}" widgetVar="seleccionarRegistroP"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                    <p:dialog id="seleccionarRegistroP" header="#{msg['error']}" widgetVar="seleccionarRegistroP"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['seleccionarRegistroP']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
                     </p:dialog>
@@ -260,27 +270,27 @@
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
 
-                    <p:dialog id="errorRegNew" header="#{msg['atencion']}" widgetVar="errorRegNew"  resizable="false" draggable="false" modal="true" height="80" width="380px"  closable="true">  
+                    <p:dialog id="errorRegNew" header="#{msg['error']}" widgetVar="errorRegNew"  resizable="false" draggable="false" modal="true" height="80" width="380px"  closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRegNew']}" style="position: absolute; left: 70px; top: 15px; width: 300px; font-weight:bold;" />
                     </p:dialog>
 
-                    <p:dialog id="errorFechas" header="#{msg['atencion']}" widgetVar="errorFechas"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                    <p:dialog id="errorFechas" header="#{msg['error']}" widgetVar="errorFechas"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFechas']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
-                    <p:dialog id="errorFechaContratacion" header="#{msg['atencion']}" widgetVar="errorFechaContratacion"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                    <p:dialog id="errorFechaContratacion" header="#{msg['error']}" widgetVar="errorFechaContratacion"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFechaContratacion']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
-                    <p:dialog id="errorFechaContratacionMargenAnio" header="#{msg['atencion']}" widgetVar="errorFechaContratacionMargenAnio"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                    <p:dialog id="errorFechaContratacionMargenAnio" header="#{msg['error']}" widgetVar="errorFechaContratacionMargenAnio"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFechaContratacionMargenAnio']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
-                    <p:dialog id="errorFechaContratacionTras" header="#{msg['atencion']}" widgetVar="errorFechaContratacionTras"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                    <p:dialog id="errorFechaContratacionTras" header="#{msg['error']}" widgetVar="errorFechaContratacionTras"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFechaContratacionTras']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
                     </p:dialog>
