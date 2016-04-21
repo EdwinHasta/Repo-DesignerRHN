@@ -1158,19 +1158,12 @@ public class ControlVigenciasCargos implements Serializable {
                 }
                 listVCCrear.add(nuevaVigencia);
                 vigenciasCargosEmpleado.add(nuevaVigencia);
+                vigenciaSeleccionada = vigenciasCargosEmpleado.get(vigenciasCargosEmpleado.indexOf(nuevaVigencia));
                 activarLOV = true;
                 nuevaVigencia = new VigenciasCargos();
                 nuevaVigencia.setEstructura(new Estructuras());
                 nuevaVigencia.setMotivocambiocargo(new MotivosCambiosCargos());
                 nuevaVigencia.setCargo(new Cargos());
-                if (vigenciasCargosEmpleado != null) {
-                    if (!vigenciasCargosEmpleado.isEmpty()) {
-                        vigenciaSeleccionada = vigenciasCargosEmpleado.get(0);
-                    }
-                    vigenciaSeleccionada = null;
-                } else {
-                    vigenciaSeleccionada = null;
-                }
                 modificarInfoRegistro(vigenciasCargosEmpleado.size());
                 RequestContext.getCurrentInstance().update("form:informacionRegistro");
                 RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
@@ -1301,7 +1294,6 @@ public class ControlVigenciasCargos implements Serializable {
     }
 
     public void confirmarDuplicar() {
-
         int pasa = 0;
         mensajeValidacion = "";
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1331,14 +1323,13 @@ public class ControlVigenciasCargos implements Serializable {
             }
             if (control == 0) {
                 vigenciasCargosEmpleado.add(duplicarVC);
-                modificarInfoRegistro(vigenciasCargosEmpleado.size());
                 listVCCrear.add(duplicarVC);
+                modificarInfoRegistro(vigenciasCargosEmpleado.size());
+                vigenciaSeleccionada = vigenciasCargosEmpleado.get(vigenciasCargosEmpleado.indexOf(duplicarVC));
+
                 if (guardado == true) {
                     guardado = false;
                     context.update("form:ACEPTAR");
-                }
-                if (guardado == true) {
-                    guardado = false;
                 }
                 if (bandera == 1) {
                     //CERRAR FILTRADO
@@ -1356,28 +1347,21 @@ public class ControlVigenciasCargos implements Serializable {
                     vcNombreJefe = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
                     vcNombreJefe.setFilterStyle("display: none; visibility: hidden;");
                     altoTabla = "292";
-                    context.update("form:datosVCEmpleado");
                     bandera = 0;
                     filterVC = null;
                     tipoLista = 0;
                 }
+                System.out.println("vigenciaSeleccionada : " + vigenciaSeleccionada);
                 duplicarVC = new VigenciasCargos();
                 duplicarVC.setEstructura(new Estructuras());
                 duplicarVC.setMotivocambiocargo(new MotivosCambiosCargos());
                 duplicarVC.setCargo(new Cargos());
-                if (vigenciasCargosEmpleado != null) {
-                    if (!vigenciasCargosEmpleado.isEmpty()) {
-                        vigenciaSeleccionada = vigenciasCargosEmpleado.get(0);
-                    }
-                    vigenciaSeleccionada = null;
-                } else {
-                    vigenciaSeleccionada = null;
-                }
                 activarLOV = true;
                 RequestContext.getCurrentInstance().update("form:listaValores");
-                context.update("form:informacionRegistro");
                 context.execute("duplicarRegistroVC.hide()");
                 context.update("form:datosVCEmpleado");
+                System.out.println("Ya paso por la actualizacion de tabla");
+                context.update("form:informacionRegistro");
             } else {
                 context.execute("validacionFechaDuplicada.show();");
             }
