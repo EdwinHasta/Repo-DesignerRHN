@@ -230,13 +230,15 @@ public class ControlVigenciaSueldo implements Serializable {
         getListVigenciasSueldos();
         //INICIALIZAR BOTONES NAVEGACION
         if (listVigenciasSueldos != null) {
+            modificarInfoRegistroS(listVigenciasSueldos.size());
+            if (!listVigenciasSueldos.isEmpty()) {
                 vigenciaSueldoSeleccionada = listVigenciasSueldos.get(0);
-                modificarInfoRegistroS(listVigenciasSueldos.size());
+            }
         } else {
             modificarInfoRegistroS(0);
         }
 
-        getListVigenciasSueldos();
+        getListVigenciasAfiliaciones();
         //INICIALIZAR BOTONES NAVEGACION
         if (listVigenciasAfiliaciones != null) {
             modificarInfoRegistroD(listVigenciasAfiliaciones.size());
@@ -945,8 +947,7 @@ public class ControlVigenciaSueldo implements Serializable {
             }
 
             if (listVigenciasSueldos != null) {
-                    vigenciaSueldoSeleccionada = listVigenciasSueldos.get(0);
-                    modificarInfoRegistroS(listVigenciasSueldos.size());
+                modificarInfoRegistroS(listVigenciasSueldos.size());
             } else {
                 modificarInfoRegistroS(0);
             }
@@ -999,7 +1000,7 @@ public class ControlVigenciaSueldo implements Serializable {
             paraNuevaVSueldo = 0;
 
             if (listVigenciasAfiliaciones != null) {
-                    modificarInfoRegistroS(listVigenciasAfiliaciones.size());
+                modificarInfoRegistroS(listVigenciasAfiliaciones.size());
             } else {
                 modificarInfoRegistroS(0);
             }
@@ -1061,7 +1062,6 @@ public class ControlVigenciaSueldo implements Serializable {
         listVACrear.clear();
         listVSModificar.clear();
         listVAModificar.clear();
-        vigenciaSueldoSeleccionada = null;
         paraNuevaVSueldo = 0;
         listVigenciasSueldos = null;
         listVigenciasAfiliaciones = null;
@@ -1071,11 +1071,12 @@ public class ControlVigenciaSueldo implements Serializable {
         cambiosVS = false;
         vigenciaAfiliacioneSeleccionada = null;
 
+        vigenciaSueldoSeleccionada = null;
+        
         getListVigenciasSueldos();
         //INICIALIZAR BOTONES NAVEGACION
         if (listVigenciasSueldos != null) {
-                vigenciaSueldoSeleccionada = listVigenciasSueldos.get(0);
-                modificarInfoRegistroS(listVigenciasSueldos.size());
+            modificarInfoRegistroS(listVigenciasSueldos.size());
         } else {
             modificarInfoRegistroS(0);
         }
@@ -1827,8 +1828,8 @@ public class ControlVigenciaSueldo implements Serializable {
             }
             if (dlg == 0) {
                 if (listMotivosCambiosSueldos != null) {
-                        motivoCambioSueldoSeleccionado = listMotivosCambiosSueldos.get(0);
-                        modificarInfoRegistroMCS(listMotivosCambiosSueldos.size());
+                    motivoCambioSueldoSeleccionado = listMotivosCambiosSueldos.get(0);
+                    modificarInfoRegistroMCS(listMotivosCambiosSueldos.size());
                 } else {
                     modificarInfoRegistroMCS(0);
                 }
@@ -1836,8 +1837,8 @@ public class ControlVigenciaSueldo implements Serializable {
                 context.execute("MotivoCambioSueldoDialogo.show()");
             } else if (dlg == 1) {
                 if (listTiposSueldos != null) {
-                        tipoSueldoSeleccionado = listTiposSueldos.get(0);
-                        modificarInfoRegistroTS(listTiposSueldos.size());
+                    tipoSueldoSeleccionado = listTiposSueldos.get(0);
+                    modificarInfoRegistroTS(listTiposSueldos.size());
                 } else {
                     modificarInfoRegistroTS(0);
                 }
@@ -1856,8 +1857,8 @@ public class ControlVigenciaSueldo implements Serializable {
             }
             if (dlg == 0) {
                 if (listTerceros != null) {
-                        terceroSeleccionado = listTerceros.get(0);
-                        modificarInfoRegistroT(listTerceros.size());
+                    terceroSeleccionado = listTerceros.get(0);
+                    modificarInfoRegistroT(listTerceros.size());
                 } else {
                     modificarInfoRegistroT(0);
                 }
@@ -1865,8 +1866,8 @@ public class ControlVigenciaSueldo implements Serializable {
                 context.execute("TerceroDialogo.show()");
             } else if (dlg == 1) {
                 if (listTiposEntidades != null) {
-                        tipoEntidadSeleccionado = listTiposEntidades.get(0);
-                        modificarInfoRegistroTE(listTiposEntidades.size());
+                    tipoEntidadSeleccionado = listTiposEntidades.get(0);
+                    modificarInfoRegistroTE(listTiposEntidades.size());
                 } else {
                     modificarInfoRegistroTE(0);
                 }
@@ -1889,8 +1890,8 @@ public class ControlVigenciaSueldo implements Serializable {
         } else if (vigenciaAfiliacioneSeleccionada != null) {
             if (cualCeldaVA == 2) {
                 if (listTerceros != null) {
-                        terceroSeleccionado = listTerceros.get(0);
-                        modificarInfoRegistroT(listTerceros.size());
+                    terceroSeleccionado = listTerceros.get(0);
+                    modificarInfoRegistroT(listTerceros.size());
                 } else {
                     modificarInfoRegistroT(0);
                 }
@@ -1900,8 +1901,8 @@ public class ControlVigenciaSueldo implements Serializable {
             }
             if (cualCeldaVA == 3) {
                 if (listTiposEntidades != null) {
-                        tipoEntidadSeleccionado = listTiposEntidades.get(0);
-                        modificarInfoRegistroTE(listTiposEntidades.size());
+                    tipoEntidadSeleccionado = listTiposEntidades.get(0);
+                    modificarInfoRegistroTE(listTiposEntidades.size());
                 } else {
                     modificarInfoRegistroTE(0);
                 }
@@ -1912,8 +1913,8 @@ public class ControlVigenciaSueldo implements Serializable {
         } else if (vigenciaSueldoSeleccionada != null) {
             if (cualCelda == 1) {
                 if (listMotivosCambiosSueldos != null) {
-                        motivoCambioSueldoSeleccionado = listMotivosCambiosSueldos.get(0);
-                        modificarInfoRegistroMCS(listMotivosCambiosSueldos.size());
+                    motivoCambioSueldoSeleccionado = listMotivosCambiosSueldos.get(0);
+                    modificarInfoRegistroMCS(listMotivosCambiosSueldos.size());
                 } else {
                     modificarInfoRegistroMCS(0);
                 }
@@ -1923,8 +1924,8 @@ public class ControlVigenciaSueldo implements Serializable {
             }
             if (cualCelda == 2) {
                 if (listTiposSueldos != null) {
-                        tipoSueldoSeleccionado = listTiposSueldos.get(0);
-                        modificarInfoRegistroTS(listTiposSueldos.size());
+                    tipoSueldoSeleccionado = listTiposSueldos.get(0);
+                    modificarInfoRegistroTS(listTiposSueldos.size());
                 } else {
                     modificarInfoRegistroTS(0);
                 }

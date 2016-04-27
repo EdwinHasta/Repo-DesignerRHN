@@ -86,6 +86,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
     private ActualUsuario actualUsuario;
     //
     private DataTable tablaC;
+    private boolean activarLOV;
 
     /**
      * Constructor de la clases Controlador
@@ -117,6 +118,9 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         altoTabla = "270";
         mensajeValidacion = "";
         vigenciaSeleccionada = null;
+
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
     @PostConstruct
@@ -148,7 +152,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         getVigenciasReformasLaboralesEmpleado();
         if (vigenciasReformasLaborales != null) {
             modificarInfoRegistro(vigenciasReformasLaborales.size());
-            if (!vigenciasReformasLaborales.isEmpty()){
+            if (!vigenciasReformasLaborales.isEmpty()) {
                 vigenciaSeleccionada = vigenciasReformasLaborales.get(0);
             }
         } else {
@@ -225,7 +229,8 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             }
         } else {
             vigenciaSeleccionada.setFechavigencia(fechaIni);
-
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVRLEmpleado");
             context.execute("errorRegNew.show()");
@@ -249,11 +254,8 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             if (coincidencias == 1) {
                 vigenciaSeleccionada.setReformalaboral(listaReformasLaborales.get(indiceUnicoElemento));
 
-                listaReformasLaborales.clear();
-                getListaReformasLaborales();
             } else {
                 permitirIndex = false;
-                getInfoRegistroReformaLaboral();
                 context.update("form:ReformasLaboralesDialogo");
                 context.execute("ReformasLaboralesDialogo.show()");
                 tipoActualizacion = 0;
@@ -274,6 +276,8 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             }
 
         }
+        activarLOV = false;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         context.update("form:datosVRLEmpleado");
     }
 
@@ -340,7 +344,12 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             cualCelda = celda;
             fechaIni = vigenciaSeleccionada.getFechavigencia();
             if (cualCelda == 1) {
+                activarLOV = false;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 reformaLaboral = vigenciaSeleccionada.getReformalaboral().getNombre();
+            } else {
+                activarLOV = true;
+                RequestContext.getCurrentInstance().update("form:listaValores");
             }
         }
     }
@@ -380,6 +389,8 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             context.update("form:informacionRegistro");
             context.update("form:datosVRLEmpleado");
             guardado = true;
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             context.update("form:ACEPTAR");
             FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -421,6 +432,8 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             modificarInfoRegistro(0);
         }
         guardado = true;
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosVRLEmpleado");
         context.update("form:ACEPTAR");
@@ -460,17 +473,18 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         int cont = 0;
         mensajeValidacion = "";
-        for (int j = 0; j < vigenciasReformasLaborales.size(); j++) {
-            if (nuevaVigencia.getFechavigencia().equals(vigenciasReformasLaborales.get(j).getFechavigencia())) {
-                cont++;
+        if (nuevaVigencia.getFechavigencia() != null && nuevaVigencia.getReformalaboral().getSecuencia() != null) {
+
+            for (int j = 0; j < vigenciasReformasLaborales.size(); j++) {
+                if (nuevaVigencia.getFechavigencia().equals(vigenciasReformasLaborales.get(j).getFechavigencia())) {
+                    cont++;
+                }
             }
-        }
-        if (cont > 0) {
-            mensajeValidacion = "FECHAS NO REPETIDAS";
-            context.update("form:validacionNuevoF");
-            context.execute("validacionNuevoF.show()");
-        } else {
-            if (nuevaVigencia.getFechavigencia() != null && nuevaVigencia.getReformalaboral().getSecuencia() != null) {
+            if (cont > 0) {
+                mensajeValidacion = "FECHAS NO REPETIDAS";
+                context.update("form:validacionNuevoF");
+                context.execute("validacionNuevoF.show()");
+            } else {
                 if (validarFechasRegistro(1)) {
                     if (bandera == 1) {
                         //CERRAR FILTRADO
@@ -491,8 +505,11 @@ public class ControlVigenciasReformasLaborales implements Serializable {
                     nuevaVigencia.setSecuencia(nuevaRFSecuencia);
                     nuevaVigencia.setEmpleado(empleado);
                     listVRLCrear.add(nuevaVigencia);
-
                     vigenciasReformasLaborales.add(nuevaVigencia);
+
+                    vigenciaSeleccionada = vigenciasReformasLaborales.get(vigenciasReformasLaborales.indexOf(nuevaVigencia));
+                    activarLOV = true;
+                    RequestContext.getCurrentInstance().update("form:listaValores");
                     nuevaVigencia = new VigenciasReformasLaborales();
                     nuevaVigencia.setReformalaboral(new ReformasLaborales());
                     modificarInfoRegistro(vigenciasReformasLaborales.size());
@@ -504,13 +521,12 @@ public class ControlVigenciasReformasLaborales implements Serializable {
                         guardado = false;
                         context.update("form:ACEPTAR");
                     }
-                    vigenciaSeleccionada = null;
                 } else {
                     context.execute("errorFechas.show()");
                 }
-            } else {
-                context.execute("errorRegNew.show()");
             }
+        } else {
+            context.execute("errorRegNew.show()");
         }
     }
 //LIMPIAR NUEVO REGISTRO
@@ -571,11 +587,11 @@ public class ControlVigenciasReformasLaborales implements Serializable {
                     duplicarVRL.setSecuencia(nuevaRFSecuencia);
                     vigenciasReformasLaborales.add(duplicarVRL);
                     listVRLCrear.add(duplicarVRL);
+                    vigenciaSeleccionada = vigenciasReformasLaborales.get(vigenciasReformasLaborales.lastIndexOf(duplicarVRL));
                     modificarInfoRegistro(vigenciasReformasLaborales.size());
                     context.update("form:informacionRegistro");
                     context.update("form:datosVRLEmpleado");
                     context.execute("DuplicarRegistroVRL.hide()");
-                    vigenciaSeleccionada = null;
                     if (guardado) {
                         guardado = false;
                         context.update("form:ACEPTAR");
@@ -593,6 +609,8 @@ public class ControlVigenciasReformasLaborales implements Serializable {
                         filtrarVRL = null;
                         tipoLista = 0;
                     }
+                    activarLOV = true;
+                    RequestContext.getCurrentInstance().update("form:listaValores");
                     duplicarVRL = new VigenciasReformasLaborales();
                 } else {
                     context.execute("errorFechas.show()");
@@ -641,6 +659,8 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             context.update("form:informacionRegistro");
             vigenciaSeleccionada = null;
 
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             if (guardado) {
                 guardado = false;
                 context.update("form:ACEPTAR");
@@ -694,6 +714,8 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             filtrarVRL = null;
             tipoLista = 0;
         }
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         listVRLBorrar.clear();
         listVRLCrear.clear();
         listVRLModificar.clear();
@@ -720,6 +742,8 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         } else {
             modificarInfoRegistroRefLab(0);
         }
+        activarLOV = false;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         RequestContext.getCurrentInstance().update("form:ReformasLaboralesDialogo");
         RequestContext.getCurrentInstance().execute("ReformasLaboralesDialogo.show()");
     }
@@ -735,6 +759,8 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         } else {
             modificarInfoRegistroRefLab(0);
         }
+        activarLOV = false;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         RequestContext.getCurrentInstance().update("form:ReformasLaboralesDialogo");
         RequestContext.getCurrentInstance().execute("ReformasLaboralesDialogo.show()");
     }
@@ -863,6 +889,9 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         if (tipoLista == 0) {
             tipoLista = 1;
         }
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+        vigenciaSeleccionada = null;
         RequestContext context = RequestContext.getCurrentInstance();
         modificarInfoRegistro(filtrarVRL.size());
         context.update("form:informacionRegistro");
@@ -897,6 +926,11 @@ public class ControlVigenciasReformasLaborales implements Serializable {
                 context.execute("errorRastroHistorico.show()");
             }
         }
+    }
+
+    public void anularLOV() {
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
     private void modificarInfoRegistro(int valor) {
@@ -1052,5 +1086,13 @@ public class ControlVigenciasReformasLaborales implements Serializable {
 
     public void setMensajeValidacion(String mensajeValidacion) {
         this.mensajeValidacion = mensajeValidacion;
+    }
+
+    public boolean isActivarLOV() {
+        return activarLOV;
+    }
+
+    public void setActivarLOV(boolean activarLOV) {
+        this.activarLOV = activarLOV;
     }
 }

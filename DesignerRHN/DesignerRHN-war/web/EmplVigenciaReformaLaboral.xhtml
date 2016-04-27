@@ -13,14 +13,14 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form">
-                    <f:loadBundle basename="Recursos.emplvigenciareformalaboral" var="msg" />
+                    <f:loadBundle basename="Recursos.emplvigenciareformalaboral" var="msg"/>
                     <p:growl id="growl" showDetail="true"/>
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal">
 
                         <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 37px; left: 12px; height: 24px">  
                             <p:toolbarGroup align="left"> 
 
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; " actionListener="#{controlVigenciasReformasLaborales.guardarCambiosVRL()}" oncomplete="window.location.reload()" process="@this" />
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; " actionListener="#{controlVigenciasReformasLaborales.guardarCambiosVRL()}" oncomplete="window.location.reload()" process="@this"/>
                                 <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
 
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlVigenciasReformasLaborales.editarCelda()}" process="@this"/>
@@ -28,7 +28,7 @@
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlVigenciasReformasLaborales.listaValoresBoton()}" process="@this"/>
+                                <p:commandButton disabled="#{controlVigenciasReformasLaborales.activarLOV}" id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlVigenciasReformasLaborales.listaValoresBoton()}" process="@this"/>
                                 <p:tooltip  for="listaValores" value="#{msg['lista']}" />
 
                                 <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlVigenciasReformasLaborales.activarCtrlF11()}" process="@this"/>
@@ -36,7 +36,7 @@
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " ajax="false" actionListener="#{controlVigenciasReformasLaborales.exportXLS()}" />
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " ajax="false" actionListener="#{controlVigenciasReformasLaborales.exportXLS()}"/>
                                 <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlVigenciasReformasLaborales.limpiarNuevaVRL()}" ajax="false">
@@ -207,7 +207,7 @@
                     <p:dialog id="confirmarRastro" header="#{msg['informacion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="105" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarRastro']}" style="position: absolute; left: 70px; top: 10px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton icon="ui-icon-check" value="#{msg['si']}" onclick="confirmarRastro.hide();" style="position: relative; top: 70px; left: 185px" 
+                        <p:commandButton icon="ui-icon-check" value="#{msg['si']}" onclick="confirmarRastro.hide();" style="position: relative; top: 70px; left: 185px" oncomplete="#{controlVigenciasReformasLaborales.anularLOV()}" 
                                          actionListener="#{controlRastro.recibirDatosTabla(controlVigenciasReformasLaborales.vigenciaSeleccionada.secuencia, 'VigenciasReformasLaborales', 'reformaLaboral')}" action="rastro" process="@this" />
                         <p:commandButton icon="ui-icon-close" value="#{msg['no']}" onclick="confirmarRastro.hide();" style="position: relative; top: 70px; left: 190px" process="@this" />
                     </p:dialog>
@@ -216,7 +216,7 @@
                         <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarRastroHistorico']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton icon="ui-icon-check" value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('VigenciasReformasLaborales', 'reformaLaboral')}" 
-                                         style="position: relative; top: 60px; left: 185px" action="rastro" process="@this" />
+                                         style="position: relative; top: 60px; left: 185px" action="rastro" oncomplete="#{controlVigenciasReformasLaborales.anularLOV()}" process="@this" />
                         <p:commandButton icon="ui-icon-close" value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" style="position: relative; top: 60px; left: 190px" process="@this" />
                     </p:dialog>
 

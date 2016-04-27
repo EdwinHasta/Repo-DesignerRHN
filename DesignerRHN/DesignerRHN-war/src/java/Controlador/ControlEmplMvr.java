@@ -196,6 +196,24 @@ public class ControlEmplMvr implements Serializable {
         getListOCertificados();
         contarRegistrosMVR();
         contarRegistrosOC();
+        int vacio = 0;
+        if (listMvrsEmpleado != null) {
+            if (!listMvrsEmpleado.isEmpty()) {
+                mvrSeleccionado = listMvrsEmpleado.get(0);
+            } else {
+                vacio++;
+            }
+        } else {
+            vacio++;
+        }
+
+        if (vacio > 0) {
+            if (listOCertificados != null) {
+                if (!listOCertificados.isEmpty()) {
+                    otroCertificadoSeleccionado = listOCertificados.get(0);
+                }
+            }
+        }
     }
 
     /**
@@ -628,13 +646,14 @@ public class ControlEmplMvr implements Serializable {
         mvrSeleccionado = mvrs;
         if (permitirIndexMvrs) {
             cualCeldaMvrs = celda;
-            otroCertificadoSeleccionado = null;
             fechaFin = mvrSeleccionado.getFechafinal();
             fechaIni = mvrSeleccionado.getFechainicial();
             if (cualCeldaMvrs == 3) {
                 motivoMvrs = mvrSeleccionado.getMotivo().getNombre();
             }
         }
+        otroCertificadoSeleccionado = null;
+        RequestContext.getCurrentInstance().update("form:datosOCEmpleado");
     }
     /*
      * public void posicionOtro() { FacesContext context =
@@ -666,13 +685,14 @@ public class ControlEmplMvr implements Serializable {
         otroCertificadoSeleccionado = otroC;
         if (permitirIndexOtrosCertificados) {
             cualCeldaOtrosCertificados = celda;
-            mvrSeleccionado = null;
             fechaFinOC = otroCertificadoSeleccionado.getFechafinal();
             fechaIniOC = otroCertificadoSeleccionado.getFechainicial();
             if (cualCeldaOtrosCertificados == 4) {
                 tipoCertificado = otroCertificadoSeleccionado.getTipocertificado().getDescripcion();
             }
         }
+        mvrSeleccionado = null;
+        RequestContext.getCurrentInstance().update("form:datosMvrEmpleado");
     }
 
     //GUARDAR
@@ -1139,8 +1159,8 @@ public class ControlEmplMvr implements Serializable {
             paraNuevaMenValRet++;
             nuevaMVRSecuencia = BigInteger.valueOf(paraNuevaMenValRet);
             duplicarOtrosCertificados.setSecuencia(nuevaMVRSecuencia);
-            duplicarOtrosCertificados.setFechafinal(otroCertificadoSeleccionado.getFechainicial());
-            duplicarOtrosCertificados.setFechainicial(otroCertificadoSeleccionado.getFechafinal());
+            duplicarOtrosCertificados.setFechafinal(otroCertificadoSeleccionado.getFechafinal());
+            duplicarOtrosCertificados.setFechainicial(otroCertificadoSeleccionado.getFechainicial());
             duplicarOtrosCertificados.setValor(otroCertificadoSeleccionado.getValor());
             duplicarOtrosCertificados.setEstado(otroCertificadoSeleccionado.getEstado());
             duplicarOtrosCertificados.setTipocertificado(otroCertificadoSeleccionado.getTipocertificado());

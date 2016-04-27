@@ -685,7 +685,7 @@
                         <h:outputText value="#{controlVigenciaLocalizacion.msnConfirmarRastro}" id="msnConfirmarRastro" 
                                       style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton icon="ui-icon-check" value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciaLocalizacion.backUp, controlVigenciaLocalizacion.nombreTablaRastro , 'vigenciasLocalizaciones')}" 
-                                         style="position: absolute; top: 67px; left: 200px" action="rastro" process="@this" />
+                                         style="position: absolute; top: 67px; left: 200px" action="rastro" oncomplete="#{controlVigenciaLocalizacion.anularLOV()}" process="@this" />
                         <p:commandButton icon="ui-icon-close" value="#{msg['no']}" onclick="confirmarRastro.hide();" actionListener="#{controlVigenciaLocalizacion.limpiarMSNRastros()}" 
                                          style="position: absolute; top: 67px; left: 262px" process="@this" />
                     </p:dialog>
@@ -695,7 +695,7 @@
                         <h:outputText value="#{controlVigenciaLocalizacion.msnConfirmarRastroHistorico}" id="msnConfirmarRastroHisttorico" 
                                       style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton icon="ui-icon-check" value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla(controlVigenciaLocalizacion.nombreTablaRastro , 'vigenciasLocalizaciones')}" 
-                                         style="position: absolute; top: 65px; left: 200px" action="rastro" process="@this" />
+                                         style="position: absolute; top: 65px; left: 200px" action="rastro" oncomplete="#{controlVigenciaLocalizacion.anularLOV()}" process="@this" />
                         <p:commandButton icon="ui-icon-close" value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlVigenciaLocalizacion.limpiarMSNRastros()}" 
                                          style="position: absolute; top: 65px; left: 262px" process="@this" />
                     </p:dialog>
