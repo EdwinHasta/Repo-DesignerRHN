@@ -12,7 +12,7 @@
             <ui:define name="body">                  
                 <h:form id="form"> 
                     <f:loadBundle basename="Recursos.emplacumulados" var="msg" />
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal">  
                        
                         <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 40px; left: 20px; height: 24px">   
                             <p:toolbarGroup align="left"> 
@@ -62,7 +62,7 @@
                         </p:toolbar>
                         
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlEmplAcumulados.empleadoSeleccionado.persona.nombreCompleto}"/>
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 375px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>#{msg['acumulados']}</strong></legend>
 
                             <p:dataTable id="datosEmplAcumulados" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 830px ; border: 1px;"                           
@@ -319,8 +319,8 @@
                             </p:dataTable>
                         </fieldset>
 
-                        <h:outputText id="informacionRegistro" value="#{msg['infoRegistro']} #{controlEmplAcumulados.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
-                        <p:commandButton style=" position: absolute; left: 760px; top: 470px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" action="nomina"   />
+                        <h:outputText id="informacionRegistro" value="#{msg['infoRegistro']} #{controlEmplAcumulados.infoRegistro}" style="position: absolute; left: 20px; top: 450px; font-weight: bold"/>
+                        <p:commandButton style=" position: absolute; left: 760px; top: 475px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" action="nomina"   />
 
                     </p:panel>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlEmplAcumulados.activarCtrlF11()}"  /> 
@@ -418,8 +418,8 @@
                         <p:inputTextarea value="#{controlEmplAcumulados.editarVWAcumuladosPorEmpleado.motivoNovedad}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editDetallesConcepto" header="#{msg['editDetallesConcepto']}" widgetVar="editDetallesConcepto" resizable="false" draggable="false" modal="true" height="155" width="250" style="">  
-                        <p:inputTextarea value="#{controlEmplAcumulados.editarVWAcumuladosPorEmpleado.parciales}" style="position: relative; left: 10px ;overflow: auto; width: 200px; height: 130px" readonly="true"/>
+                    <p:dialog id="editDetallesConcepto" header="#{msg['editDetallesConcepto']}" widgetVar="editDetallesConcepto" resizable="false" draggable="false" modal="true" height="155" width="300" style="">  
+                        <p:inputTextarea value="#{controlEmplAcumulados.editarVWAcumuladosPorEmpleado.parciales}" style="position: relative; left: 10px ;overflow: auto; width: 250px; height: 130px" readonly="true"/>
                     </p:dialog>
 
                 </h:form>

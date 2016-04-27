@@ -2514,6 +2514,11 @@ public class ControlTercero implements Serializable {
         msnConfirmarRastroHistorico = "";
         nombreTablaRastro = "";
     }
+    
+    private void modificarInfoRegistro(int valor) {
+        infoRegistroTercero = String.valueOf(valor);
+        System.out.println("infoRegistro: " + infoRegistroTercero);
+    }    
 
     //GET - SET 
     public List<Terceros> getListTerceros() {
@@ -2900,9 +2905,9 @@ public class ControlTercero implements Serializable {
     public String getInfoRegistroEmpresa() {
         getListEmpresas();
         if (listEmpresas != null) {
-            infoRegistroEmpresa = "Cantidad de registros : " + listEmpresas.size();
+            infoRegistroEmpresa = String.valueOf(listEmpresas.size());
         } else {
-            infoRegistroEmpresa = "Cantidad de registros : 0";
+            infoRegistroEmpresa = "0";
         }
         return infoRegistroEmpresa;
     }
@@ -2914,9 +2919,9 @@ public class ControlTercero implements Serializable {
     public String getInfoRegistroCiudad2() {
         getListCiudades();
         if (listCiudades != null) {
-            infoRegistroCiudad2 = "Cantidad de registros : " + listCiudades.size();
+            infoRegistroCiudad2 = String.valueOf(listCiudades.size());
         } else {
-            infoRegistroCiudad2 = "Cantidad de registros : 0";
+            infoRegistroCiudad2 = "0";
         }
         return infoRegistroCiudad2;
     }
@@ -2928,9 +2933,9 @@ public class ControlTercero implements Serializable {
     public String getInfoRegistroCiudad1() {
         getListCiudades();
         if (listCiudades != null) {
-            infoRegistroCiudad1 = "Cantidad de registros : " + listCiudades.size();
+            infoRegistroCiudad1 = String.valueOf(listCiudades.size());
         } else {
-            infoRegistroCiudad1 = "Cantidad de registros : 0";
+            infoRegistroCiudad1 = "0";
         }
         return infoRegistroCiudad1;
     }
@@ -2943,9 +2948,9 @@ public class ControlTercero implements Serializable {
         System.out.println("getInfoRegistroTercero");
         getListTerceros();
         if (listTerceros != null) {
-            infoRegistroTercero = "Cantidad de registros : " + listTerceros.size();
+            infoRegistroTercero = String.valueOf(listTerceros.size());
         } else {
-            infoRegistroTercero = "Cantidad de registros : 0";
+            infoRegistroTercero = "0";
         }
         return infoRegistroTercero;
     }
@@ -2957,9 +2962,9 @@ public class ControlTercero implements Serializable {
     public String getInfoRegistroTerceroConsolidador() {
         getListTerceroConsolidador();
         if (listTerceroConsolidador != null) {
-            infoRegistroTerceroConsolidador = "Cantidad de registros : " + listTerceroConsolidador.size();
+            infoRegistroTerceroConsolidador = String.valueOf(listTerceroConsolidador.size());
         } else {
-            infoRegistroTerceroConsolidador = "Cantidad de registros : 0";
+            infoRegistroTerceroConsolidador = "0";
         }
         return infoRegistroTerceroConsolidador;
     }

@@ -14,7 +14,7 @@
                     <f:loadBundle basename="Recursos.ciudades" var="msg"/>
                     <p:growl id="growl" showDetail="true"/>
 
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal">  
 
                         <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 40px; left: 20px; height: 24px">   
                             <p:toolbarGroup align="left"> 
@@ -148,7 +148,7 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <h:outputText id="informacionRegistro" value="#{msg['infoRegistro']} #{controlCiudades.infoRegistro}" style="position: absolute; left: 15px; top: 340px; font-weight: bold"/>
+                            <h:outputText id="informacionRegistro" value="#{msg['infoRegistro']} #{controlCiudades.infoRegistro}" style="position: absolute; left: 15px; top: 347px; font-weight: bold"/>
                         </fieldset>
 
                         <p:commandButton style="position: absolute; left: 683px; top: 470px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value="" onclick="confirmarGuardar.show();" disabled="#{controlCiudades.guardado}" update=":form:datosCiudades" process="@this" />

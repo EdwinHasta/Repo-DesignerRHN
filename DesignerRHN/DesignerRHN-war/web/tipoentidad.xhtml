@@ -67,7 +67,7 @@
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 370px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>Tipo de Entidad</strong></legend>
 
                             <p:dataTable id="datosTipoEntidad" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 810px ; border: 1px;"                           
@@ -122,7 +122,7 @@
 
                         </fieldset>
 
-                        <h:outputText id="informacionRegistro" value="#{controlTiposEntidades.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
+                        <h:outputText id="informacionRegistro" value="Registros: #{controlTiposEntidades.infoRegistro}" style="position: absolute; left: 25px; top: 440px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;  font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value=""  onclick="confirmarGuardar.show();" disabled="#{controlTiposEntidades.guardado}" update="datosTipoEntidad"  process="@this"   />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" action="#{controlTiposEntidades.redirigirPaginaAnterior()}" value=""/>
 

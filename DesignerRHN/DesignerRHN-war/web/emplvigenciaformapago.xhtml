@@ -14,9 +14,8 @@
                 <h:form id="form"> 
                     <p:growl id="growl" showDetail="true"/> 
                     <f:loadBundle basename="Recursos.emplvigenciaformapago" var="msg" />
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">  
-                        <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlVigenciasFormasPagos.empleadoSeleccionado.persona.primerapellido} #{controlVigenciasFormasPagos.empleadoSeleccionado.persona.segundoapellido} #{controlVigenciasFormasPagos.empleadoSeleccionado.persona.nombre}"/>
-                        <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 40px; left: 20px; height: 24px">  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal">  
+                        <p:toolbar styleClass="cssToolbar">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; "  actionListener="#{controlVigenciasFormasPagos.guardarCambiosVigenciasFormasPagos()}" process="@this" />
@@ -60,14 +59,27 @@
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
 
                                 <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlVigenciasFormasPagos.cancelarModificacion()}" process="@this"/>  
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlVigenciasFormasPagos.cancelarModificacion()}" oncomplete="window.location.reload()" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+
+                                <p:separator style="position: relative; top: -9px"/>
+
                                 <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlVigenciasFormasPagos.salir()}" action="nomina" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute; top: 73px; left: 10px; height: 18px; width: 833px; border-radius: 3px; text-align: left; border: solid #C7BFBF 1px">
+                            <h:outputText value="#{msg['empleado']} " style="font-weight: bold; color: #14388B; position: relative; top: 5px; left: 0px" />
+                            <h:outputText id="nombreEmpleado" value="#{controlVigenciasFormasPagos.empleadoSeleccionado.persona.nombreCompleto}" 
+                                          style="font-weight: bold; color: #BF1A1A; position: relative; left: 10px; top: 5px"/>
+
+                            <h:outputText value="#{msg['codigo']}" style="font-weight: bold; color: #14388B; position: relative; left: 120px; top: 5px" />
+                            <h:outputText id="docEmpleado" value="#{controlVigenciasFormasPagos.empleadoSeleccionado.codigoempleado}" 
+                                          style="font-weight: bold; color: #BF1A1A; position: relative; left: 130px; top: 5px" />
+                        </fieldset>
+
+                        <fieldset style="position: absolute;top: 110px;left: 10px;height: 365px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>#{msg['formaPagoEmpleado']}</strong></legend>
 
                             <p:dataTable id="datosVigenciasFormasPagos" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 830px ; border: 1px;"                           
@@ -76,6 +88,7 @@
                                          editable="true" editMode="cell" rows="20" selection="#{controlVigenciasFormasPagos.vigenciaSeleccionada}" selectionMode="single"  
                                          > 
                                 <p:ajax event="filter" listener="#{controlVigenciasFormasPagos.eventoFiltrar()}"/>
+                                <f:event type="preRenderView" listener="#{controlVigenciasFormasPagos.recordarSeleccion()}"/>
 
                                 <p:column id="fechaVigencia" headerText="#{msg['inicial']}" sortBy="#{info.fechavigencia}" filterBy="#{info.fechavigencia}" filterMatchMode="contains"  width="80"  filterStyle="display: none; visibility: hidden;" >
                                     <p:cellEditor>
@@ -86,8 +99,8 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <lnk:calendar id="editFechaVigencia" value="#{info.fechavigencia}" height="12" width="99">
-                                                <p:ajax event="select" listener="#{controlVigenciasFormasPagos.cambiarIndice(indice, 0)}" process="@this"/> 
-                                                <p:ajax event="dateSelect" listener="#{controlVigenciasFormasPagos.modificarVigenciasFormasPagos(indice, 'N', info.fechavigencia)}" update="editFechaVigencia"/>
+                                                <p:ajax event="select" listener="#{controlVigenciasFormasPagos.cambiarIndice(info, 0)}" process="@this"/> 
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciasFormasPagos.modificarVigenciasFormasPagos(info, 'N', info.fechavigencia)}" update="editFechaVigencia"/>
                                             </lnk:calendar>
                                         </f:facet>
                                     </p:cellEditor>
@@ -99,8 +112,8 @@
                                         <f:facet name="output"><h:outputText value="#{info.cuenta}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{info.cuenta}" maxlength="25" id="editarCuenta" style="  border-radius: 0px; width: 210px;; height: 12px; text-transform: uppercase"  > 
-                                                <p:ajax event="select" listener="#{controlVigenciasFormasPagos.cambiarIndice(indice, 1)}" process="@this"/> 
-                                                <p:ajax event="change" listener="#{controlVigenciasFormasPagos.modificarVigenciasFormasPagos(indice, 'N', info.cuenta)}" update="cuenta"/>
+                                                <p:ajax event="select" listener="#{controlVigenciasFormasPagos.cambiarIndice(info, 1)}" process="@this"/> 
+                                                <p:ajax event="change" listener="#{controlVigenciasFormasPagos.modificarVigenciasFormasPagos(info, 'N', info.cuenta)}" update="cuenta"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -117,8 +130,8 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <lnk:calendar id="editFechaCuenta" value="#{info.fechacuenta}" height="12" width="99">
-                                                <p:ajax event="select" listener="#{controlVigenciasFormasPagos.cambiarIndice(indice,2)}" process="@this"/> 
-                                                <p:ajax event="dateSelect" listener="#{controlVigenciasFormasPagos.modificarVigenciasFormasPagos(indice, 'N', info.fechacuenta)}" update="editFechaCuenta" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlVigenciasFormasPagos.cambiarIndice(info,2)}" process="@this"/> 
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciasFormasPagos.modificarVigenciasFormasPagos(info, 'N', info.fechacuenta)}" update="editFechaCuenta" process="@this"/>
                                             </lnk:calendar>
                                         </f:facet>
                                     </p:cellEditor>
@@ -130,9 +143,9 @@
                                         <f:facet name="output"><h:outputText value="#{info.sucursal.nombre}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{info.sucursal.nombre}" id="editarSucursal" style="  border-radius: 0px; width: 210px; height: 12px; text-transform: uppercase"  > 
-                                                <p:ajax event="select" listener="#{controlVigenciasFormasPagos.cambiarIndice(indice, 3)}" process="@this"/> 
-                                                <p:ajax event="dblclick" listener="#{controlVigenciasFormasPagos.asignarIndex(indice, 0,3)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlVigenciasFormasPagos.modificarVigenciasFormasPagos(indice, 'SUCURSAL', info.sucursal.nombre)}" update="sucursal" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlVigenciasFormasPagos.cambiarIndice(info, 3)}" process="@this"/> 
+                                                <p:ajax event="dblclick" listener="#{controlVigenciasFormasPagos.asignarIndex(info, 0,3)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciasFormasPagos.modificarVigenciasFormasPagos(info, 'SUCURSAL', info.sucursal.nombre)}" update="sucursal" process="@this"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -146,9 +159,9 @@
                                         <f:facet name="output"><h:outputText value="#{info.formapago.nombre}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{info.formapago.nombre}" id="editarFormaPago" style="  border-radius: 0px;; height: 12px; width: 210px; text-transform: uppercase"  > 
-                                                <p:ajax event="select" listener="#{controlVigenciasFormasPagos.cambiarIndice(indice, 4)}" process="@this"/> 
-                                                <p:ajax event="dblclick" listener="#{controlVigenciasFormasPagos.asignarIndex(indice, 0,4)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlVigenciasFormasPagos.modificarVigenciasFormasPagos(indice, 'FORMAPAGO', info.formapago.nombre)}"  update="formaPago" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlVigenciasFormasPagos.cambiarIndice(info, 4)}" process="@this"/> 
+                                                <p:ajax event="dblclick" listener="#{controlVigenciasFormasPagos.asignarIndex(info, 0,4)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciasFormasPagos.modificarVigenciasFormasPagos(info, 'FORMAPAGO', info.formapago.nombre)}"  update="formaPago" process="@this"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -167,8 +180,8 @@
                                         <f:facet name="output"><h:outputText value="#{info.tipocuenta}" style=" text-transform: uppercase" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{info.tipocuenta}" maxlength="1" id="editarTC" style="  border-radius: 0px; height: 12px; width: 210px; text-transform: uppercase"  > 
-                                                <p:ajax event="select" listener="#{controlVigenciasFormasPagos.cambiarIndice(indice, 5)}" process="@this"/> 
-                                                <p:ajax event="change" listener="#{controlVigenciasFormasPagos.modificarVigenciasFormasPagos(indice, 'N', info.tipocuenta)}"  update="tc" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlVigenciasFormasPagos.cambiarIndice(info, 5)}" process="@this"/> 
+                                                <p:ajax event="change" listener="#{controlVigenciasFormasPagos.modificarVigenciasFormasPagos(info, 'N', info.tipocuenta)}"  update="tc" process="@this"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -180,9 +193,9 @@
                                         <f:facet name="output"><h:outputText value="#{info.metodopago.descripcion}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{info.metodopago.descripcion}" id="editarMetodoPago" style="  height: 12px; border-radius: 0px; width: 210px; text-transform: uppercase"  > 
-                                                <p:ajax event="select" listener="#{controlVigenciasFormasPagos.cambiarIndice(indice, 6)}" process="@this"/> 
-                                                <p:ajax event="dblclick" listener="#{controlVigenciasFormasPagos.asignarIndex(indice, 0,6)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlVigenciasFormasPagos.modificarVigenciasFormasPagos(indice, 'METODOPAGO', info.metodopago.descripcion)}"/>
+                                                <p:ajax event="select" listener="#{controlVigenciasFormasPagos.cambiarIndice(info, 6)}" process="@this"/> 
+                                                <p:ajax event="dblclick" listener="#{controlVigenciasFormasPagos.asignarIndex(info, 0,6)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciasFormasPagos.modificarVigenciasFormasPagos(info, 'METODOPAGO', info.metodopago.descripcion)}"/>
 
                                             </p:inputText>
                                         </f:facet>  
@@ -197,15 +210,17 @@
 
                         </fieldset>
 
-                        <h:outputText id="informacionRegistro" value="#{controlVigenciasFormasPagos.infoRegistro}" style="position: absolute; left: 15px; top: 470px; font-weight: bold"/>
-                        <p:commandButton id="ACEPTAR" style="position: absolute; left: 664px; top: 470px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" value=" " disabled="#{controlVigenciasFormasPagos.guardado}" onclick="confirmarGuardar.show();"  update="datosVigenciasFormasPagos" process="@this"/>
-                        <p:commandButton id="ATRAS" style="position: absolute; left: 765px; top: 470px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" value=" " action="nomina" />
+                        <h:outputText id="informacionRegistro" value="#{msg['infoRegistro']} #{controlVigenciasFormasPagos.infoRegistro}" style="position: absolute; left: 20px; top: 470px; font-weight: bold"/>
+                        <p:commandButton id="ACEPTAR" style="position: absolute; left: 664px; top: 495px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" value=" " disabled="#{controlVigenciasFormasPagos.guardado}" onclick="confirmarGuardar.show();"  update="datosVigenciasFormasPagos" process="@this"/>
+                        <p:commandButton id="ATRAS" style="position: absolute; left: 765px; top: 495px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" value=" " action="nomina" />
 
                         <p:dialog header="#{msg['sucursalM']}" widgetVar="sucursalesDialogo" draggable="false" resizable="false" closable="false" id="sucursalesDialogo"  
                                   showEffect="fade" hideEffect="fade" width="465" modal="true" style="">
                             <p:dataTable id="lovSucursales" style=" width: 430px" var="sucursal" value="#{controlVigenciasFormasPagos.listaSucursales}" rowKey="#{sucursal.secuencia}"
                                          selection="#{controlVigenciasFormasPagos.sucursalSeleccionada}" selectionMode="single" widgetVar="lovSucursales" scrollable="true" scrollWidth="450" scrollHeight="250"
                                          filteredValue="#{controlVigenciasFormasPagos.filtradoSucursales}" emptyMessage="#{msg['lovvacio']}">              
+
+                                <p:ajax event="filter" listener="#{controlVigenciasFormasPagos.eventoFiltrarSucursales()}"/>
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasFormasPagos.activarAceptar()}" update=":form:aceptarS"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciasFormasPagos.actualizarSucursal()}" process="@this" />
 
@@ -233,7 +248,7 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <h:outputText id="infoRegistroSucursales" value="#{controlVigenciasFormasPagos.infoRegistroSucursales}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
+                            <h:outputText id="infoRegistroSucursales" value="#{msg['infoRegistro']} #{controlVigenciasFormasPagos.infoRegistroSucursales}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
 
                             <p:commandButton id="aceptarS" style="position: relative; left: 260px;height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" disabled="#{controlVigenciasFormasPagos.aceptar}"   actionListener="#{controlVigenciasFormasPagos.actualizarSucursal()}"  process="@this"/>
 
@@ -244,7 +259,9 @@
                                   showEffect="fade" hideEffect="fade" width="410" height="340" modal="true" style="">
                             <p:dataTable id="lovperiodicidades" style=" width: 350px" var="periodicidades" value="#{controlVigenciasFormasPagos.listaPeriodicidades}" rowKey="#{periodicidades.secuencia}"
                                          selection="#{controlVigenciasFormasPagos.periodicidadSeleccionada}" selectionMode="single" widgetVar="lovperiodicidades" scrollable="true" scrollWidth="365" scrollHeight="200"
-                                         filteredValue="#{controlVigenciasFormasPagos.filtradoPeriodicidades}" emptyMessage="#{msg['lovvacio']}">              
+                                         filteredValue="#{controlVigenciasFormasPagos.filtradoPeriodicidades}" emptyMessage="#{msg['lovvacio']}">  
+
+                                <p:ajax event="filter" listener="#{controlVigenciasFormasPagos.eventoFiltrarPeriodicidad()}"/>
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasFormasPagos.activarAceptar()}" update=":form:aceptarP"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciasFormasPagos.actualizarPeriodicidad()}" process="@this" />
 
@@ -261,7 +278,7 @@
 
                             </p:dataTable>
 
-                            <h:outputText id="infoRegistroPeriodicidades" value="#{controlVigenciasFormasPagos.infoRegistroPeriodicidades}" style="position: absolute; left: 15px; top: 300px; font-weight: bold"/>
+                            <h:outputText id="infoRegistroPeriodicidades" value="#{msg['infoRegistro']} #{controlVigenciasFormasPagos.infoRegistroPeriodicidades}" style="position: absolute; left: 15px; top: 300px; font-weight: bold"/>
 
                             <p:commandButton id="aceptarP" value="" disabled="#{controlVigenciasFormasPagos.aceptar}" actionListener="#{controlVigenciasFormasPagos.actualizarPeriodicidad()}" process="@this" style="position: relative; left: 185px; width: 90px; top: 10px ; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"/>
                             <p:commandButton id="atrasP" value=""  actionListener="#{controlVigenciasFormasPagos.cancelarCambioPeriodicidad()}" process="@this" style="position: relative; left: 185px; width: 90px; top: 10px ;height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"/>  
@@ -273,7 +290,9 @@
                                   showEffect="fade" hideEffect="fade" width="390" height="220"   modal="true" style="">
                             <p:dataTable id="lovmetodospagos" style=" width: 360px" var="metodospagos" value="#{controlVigenciasFormasPagos.listaMetodosPagos}" rowKey="#{metodospagos.secuencia}"
                                          selection="#{controlVigenciasFormasPagos.metodoPagoSeleccionado}" selectionMode="single" widgetVar="lovmetodospagos" scrollable="true" scrollWidth="370" scrollHeight="90"
-                                         filteredValue="#{controlVigenciasFormasPagos.filtradoMetodosPagos }" emptyMessage="#{msg['lovvacio']}">              
+                                         filteredValue="#{controlVigenciasFormasPagos.filtradoMetodosPagos }" emptyMessage="#{msg['lovvacio']}"> 
+
+                                <p:ajax event="filter" listener="#{controlVigenciasFormasPagos.eventoFiltrarMetodoPago()}"/>
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasFormasPagos.activarAceptar()}" update=":form:aceptarMP"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciasFormasPagos.actualizarMetodoPago()}" process="@this" />
 
@@ -289,52 +308,52 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <h:outputText id="infoRegistroMetodosPagos" value="#{controlVigenciasFormasPagos.infoRegistroMetodosPagos}" style="position: absolute; left: 15px; top: 193px; font-weight: bold"/>
+                            <h:outputText id="infoRegistroMetodosPagos" value="#{msg['infoRegistro']} #{controlVigenciasFormasPagos.infoRegistroMetodosPagos}" style="position: absolute; left: 15px; top: 193px; font-weight: bold"/>
 
                             <p:commandButton id="aceptarMP" value="" disabled="#{controlVigenciasFormasPagos.aceptar}" actionListener="#{controlVigenciasFormasPagos.actualizarMetodoPago()}" process="@this" style="position: relative; left: 190px; width: 90px; top: 7px ; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"/>
                             <p:commandButton id="atrasMP" value=""  actionListener="#{controlVigenciasFormasPagos.cancelarCambioMetodoPago()}" process="@this" style="position: relative; left: 190px; width: 90px; top: 7px ;height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"/>    
                         </p:dialog>
 
-                        <p:dialog id="validacioNuevaVigencia" header="#{msg['atencion']}" widgetVar="validacioNuevaVigencia"  resizable="false" draggable="false" modal="true" height="110" width="400px" style="" closable="false">  
-                            <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 20px; top: 20px;"  />
+                        <p:dialog id="validacioNuevaVigencia" header="#{msg['precaucion']}" widgetVar="validacioNuevaVigencia"  resizable="false" draggable="false" modal="true" height="110" width="400px" style="" closable="false">  
+                            <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 20px; top: 20px;"  />
                             <h:outputText value="#{msg['validacioNuevaVigencia']} #{controlVigenciasFormasPagos.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
                             <p:commandButton value="#{msg['aceptar']}" onclick="validacioNuevaVigencia.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                         </p:dialog>
 
-                        <p:dialog id="fechas" header="#{msg['atencion']}" widgetVar="fechas"  resizable="false" draggable="false" modal="true" height="110" width="400px" style="" closable="false">  
-                            <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 20px; top: 20px;"  />
+                        <p:dialog id="fechas" header="#{msg['precaucion']}" widgetVar="fechas"  resizable="false" draggable="false" modal="true" height="110" width="400px" style="" closable="false">  
+                            <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 20px; top: 20px;"  />
                             <h:outputText value="#{msg['fechas']}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
                             <p:commandButton value="#{msg['aceptar']}" onclick="fechas.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                         </p:dialog>
 
-                        <p:dialog id="validacioModificarVigenciaFechas" header="#{msg['atencion']}" widgetVar="validacioModificarVigenciaFechas"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="" closable="false">  
-                            <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <p:dialog id="validacioModificarVigenciaFechas" header="#{msg['precaucion']}" widgetVar="validacioModificarVigenciaFechas"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="" closable="false">  
+                            <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="#{msg['validacioModificarVigenciaFechas']} #{controlVigenciasFormasPagos.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
                             <p:commandButton value="#{msg['aceptar']}" onclick="validacioModificarVigenciaFechas.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                         </p:dialog>
 
-                        <p:dialog id="validacionModificarMetodoPago" header="#{msg['atencion']}" widgetVar="validacionModificarMetodoPago"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="" closable="false">  
-                            <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <p:dialog id="validacionModificarMetodoPago" header="#{msg['precaucion']}" widgetVar="validacionModificarMetodoPago"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="" closable="false">  
+                            <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="#{msg['validacionModificarMetodoPago']} #{controlVigenciasFormasPagos.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
                             <p:commandButton value="#{msg['aceptar']}" onclick="validacionModificarMetodoPago.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                         </p:dialog>
 
-                        <p:dialog id="validacioModificarMetodoPago" header="#{msg['atencion']}" widgetVar="validacioModificarMetodoPago"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="" closable="false">  
-                            <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <p:dialog id="validacioModificarMetodoPago" header="#{msg['precaucion']}" widgetVar="validacioModificarMetodoPago"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="" closable="false">  
+                            <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="#{msg['validacioModificarMetodoPago']} #{controlVigenciasFormasPagos.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
                             <p:commandButton value="#{msg['aceptar']}" onclick="validacioModificarMetodoPago.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                         </p:dialog>
 
-                        <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
-                            <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
+                        <p:dialog id="confirmarGuardar" header="#{msg['precaucion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
+                            <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="#{msg['confirmarGuardar']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
                             <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciasFormasPagos.guardarCambiosVigenciasFormasPagos()}" action="normalaboralNominaF" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
                             <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciasFormasPagos.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                             <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                         </p:dialog>
 
-                        <p:dialog id="validacionFechas" header="#{msg['atencion']}" widgetVar="validacionFechas"  resizable="false" draggable="false" modal="true" height="95" width="450px"  closable="false">  
-                            <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
+                        <p:dialog id="validacionFechas" header="#{msg['precaucion']}" widgetVar="validacionFechas"  resizable="false" draggable="false" modal="true" height="95" width="450px"  closable="false">  
+                            <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
                             <h:outputText value="#{msg['validacionFechas']}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
                             <p:commandButton value="#{msg['aceptar']}" onclick="validacionFechas.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                         </p:dialog>
@@ -347,49 +366,49 @@
 
                     <!-- DIALOGOS RASTROS -->
 
-                    <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                    <p:dialog id="confirmarRastro" header="#{msg['informacion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarRastro']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciasFormasPagos.secRegistro, 'VigenciasFormasPagos', 'vigenciasformaspagos')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="confirmarRastroHistorico" header="#{msg['atencion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                    <p:dialog id="confirmarRastroHistorico" header="#{msg['informacion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarRastroHistorico']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('VigenciasFormasPagos', 'vigenciasformaspagos')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorRastroHistorico" header="#{msg['atencion']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                    <p:dialog id="errorRastroHistorico" header="#{msg['error']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorRegistroRastro" header="#{msg['atencion']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                    <p:dialog id="errorRegistroRastro" header="#{msg['error']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                    <p:dialog id="errorTablaConRastro" header="#{msg['informacion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTablaConRastro']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciasFormasPagos.secRegistro, 'VigenciasFormasPagos', 'vigenciasformaspagos')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaSinRastro" header="#{msg['atencion']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                    <p:dialog id="errorTablaSinRastro" header="#{msg['error']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTablaSinRastro']}" style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                    <p:dialog id="seleccionarRegistro" header="#{msg['error']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
-                    <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                    <p:dialog id="errorObjetosDB" header="#{msg['error']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 

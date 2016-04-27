@@ -3319,6 +3319,24 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
+     <navigation-rule>
+        <from-view-id>/emplviajero.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tipoviajero</from-outcome>
+            <to-view-id>/tipoviajero.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/tipoviajero.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>vigenciaviajero</from-outcome>
+            <to-view-id>/emplviajero.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/ubicaciongeografica.xhtml</from-view-id>
         <navigation-case>

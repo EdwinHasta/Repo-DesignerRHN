@@ -114,7 +114,8 @@ public class ControlTiposEntidades implements Serializable {
                 tipoLista = 1;
             }
             RequestContext context = RequestContext.getCurrentInstance();
-            infoRegistro = "Cantidad de registros: " + filtrarTiposEntidades.size();
+            //infoRegistro = "Cantidad de registros: " + filtrarTiposEntidades.size();
+            modificarInfoRegistro(filtrarTiposEntidades.size());
             context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlTiposEntidades eventoFiltrar ERROR===" + e.getMessage());
@@ -631,9 +632,11 @@ public class ControlTiposEntidades implements Serializable {
         getListTiposEntidades();
         RequestContext context = RequestContext.getCurrentInstance();
         if (listTiposEntidades == null || listTiposEntidades.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
+            //infoRegistro = "Cantidad de registros: 0 ";
+            modificarInfoRegistro(0);
         } else {
-            infoRegistro = "Cantidad de registros: " + listTiposEntidades.size();
+            //infoRegistro = "Cantidad de registros: " + listTiposEntidades.size();
+            modificarInfoRegistro(listTiposEntidades.size());
         }
         context.update("form:informacionRegistro");
         context.update("form:datosTipoEntidad");
@@ -669,9 +672,11 @@ public class ControlTiposEntidades implements Serializable {
         getListTiposEntidades();
         RequestContext context = RequestContext.getCurrentInstance();
         if (listTiposEntidades == null || listTiposEntidades.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
+            //infoRegistro = "Cantidad de registros: 0 ";
+            modificarInfoRegistro(0);
         } else {
-            infoRegistro = "Cantidad de registros: " + listTiposEntidades.size();
+           // infoRegistro = "Cantidad de registros: " + listTiposEntidades.size();
+            modificarInfoRegistro(listTiposEntidades.size());
         }
         context.update("form:informacionRegistro");
         context.update("form:datosTipoEntidad");
@@ -776,7 +781,8 @@ public class ControlTiposEntidades implements Serializable {
             listTiposEntidades.add(nuevoTipoEntidad);
             nuevoTipoEntidad = new TiposEntidades();
             nuevoTipoEntidad.setGrupo(new Grupostiposentidades());
-            infoRegistro = "Cantidad de registros: " + listTiposEntidades.size();
+            //infoRegistro = "Cantidad de registros: " + listTiposEntidades.size();
+            modificarInfoRegistro(listTiposEntidades.size());
             context.update("form:informacionRegistro");
             context.update("form:datosTipoEntidad");
             if (guardado == true) {
@@ -911,9 +917,11 @@ public class ControlTiposEntidades implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             if (listTiposEntidades == null || listTiposEntidades.isEmpty()) {
-                infoRegistro = "Cantidad de registros: 0 ";
+                //infoRegistro = "Cantidad de registros: 0 ";
+                modificarInfoRegistro(0);
             } else {
-                infoRegistro = "Cantidad de registros: " + listTiposEntidades.size();
+                //infoRegistro = "Cantidad de registros: " + listTiposEntidades.size();
+                modificarInfoRegistro(listTiposEntidades.size());
             }
             context.update("form:informacionRegistro");
             context.update("form:datosTipoEntidad");
@@ -1007,7 +1015,8 @@ public class ControlTiposEntidades implements Serializable {
             listTiposEntidades.add(duplicarTipoEntidad);
             crearTiposEntidades.add(duplicarTipoEntidad);
             context.update("form:datosTipoEntidad");
-            infoRegistro = "Cantidad de registros: " + listTiposEntidades.size();
+           // infoRegistro = "Cantidad de registros: " + listTiposEntidades.size();
+            modificarInfoRegistro(listTiposEntidades.size());
             context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
@@ -1134,6 +1143,12 @@ public class ControlTiposEntidades implements Serializable {
         }
         index = -1;
     }
+    
+    private void modificarInfoRegistro(int valor) {
+        infoRegistro = String.valueOf(valor);
+        System.out.println("infoRegistro: " + infoRegistro);
+    }
+    
 //----------------------------------------------------------------------------
 
     public List<TiposEntidades> getListTiposEntidades() {
@@ -1142,9 +1157,9 @@ public class ControlTiposEntidades implements Serializable {
         }
         RequestContext context = RequestContext.getCurrentInstance();
         if (listTiposEntidades == null || listTiposEntidades.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
+            infoRegistro = "0";
         } else {
-            infoRegistro = "Cantidad de registros: " + listTiposEntidades.size();
+            infoRegistro = String.valueOf(listTiposEntidades.size());
         }
         context.update("form:informacionRegistro");
         return listTiposEntidades;
@@ -1178,9 +1193,9 @@ public class ControlTiposEntidades implements Serializable {
         }
         RequestContext context = RequestContext.getCurrentInstance();
         if (listaGruposTiposEntidades == null || listaGruposTiposEntidades.isEmpty()) {
-            infoRegistroGruposTiposEntidades = "Cantidad de registros: 0 ";
+            infoRegistroGruposTiposEntidades = "0";
         } else {
-            infoRegistroGruposTiposEntidades = "Cantidad de registros: " + listaGruposTiposEntidades.size();
+            infoRegistroGruposTiposEntidades = String.valueOf(listaGruposTiposEntidades.size());
         }
         context.update("form:infoRegistroGruposTiposEntidades");
         return listaGruposTiposEntidades;

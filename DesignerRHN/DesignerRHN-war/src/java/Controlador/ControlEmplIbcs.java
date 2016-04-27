@@ -35,7 +35,6 @@ public class ControlEmplIbcs implements Serializable {
 
     @EJB
     AdministrarIBCSInterface administrarIBCS;
-
     private List<Ibcs> listIbcsPorEmpleado;
     private List<Ibcs> filtrarIbcsPorEmpleado;
     private Ibcs editarIbcsPorEmpleado;
@@ -44,13 +43,13 @@ public class ControlEmplIbcs implements Serializable {
     private Ibcs dialogoIbcsPorEmpleado;
     private BigInteger secuenciaEmpleado;
     private Empleados empleadoSeleccionado;
-    private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
+    private int cualCelda, tipoLista, tipoActualizacion, k, bandera;
     private BigInteger l;
     private boolean aceptar, guardado;
-    private BigInteger secRegistro;
     private Column fechaFinal, fechaInicial, valor;
     private String altoTabla;
     public String infoRegistro;
+    private DataTable tablaC;
 //*****************************************************************
     //prueba
     private Ibcs selecionIbcs;
@@ -70,7 +69,7 @@ public class ControlEmplIbcs implements Serializable {
         editarIbcsPorEmpleado = new Ibcs();
         empleadoSeleccionado = null;
         selecionIbcs = new Ibcs();
-        altoTabla = "270";
+        altoTabla = "288";
     }
 
     @PostConstruct
@@ -88,7 +87,7 @@ public class ControlEmplIbcs implements Serializable {
     public void recibirEmpleado(BigInteger sec) {
         RequestContext context = RequestContext.getCurrentInstance();
 
-       
+
         empleadoSeleccionado = null;
         secuenciaEmpleado = sec;
         listIbcsPorEmpleado = null;
@@ -98,39 +97,20 @@ public class ControlEmplIbcs implements Serializable {
             if (listIbcsPorEmpleado.size() == 1) {
                 //INFORMACION REGISTRO
                 ibcSeleccionado = listIbcsPorEmpleado.get(0);
-                //infoRegistro = "Registro 1 de 1";
             } else if (listIbcsPorEmpleado.size() > 1) {
                 //INFORMACION REGISTRO
                 ibcSeleccionado = listIbcsPorEmpleado.get(0);
-                //infoRegistro = "Registro 1 de " + vigenciasCargosEmpleado.size();
-                infoRegistro = "Cantidad de registros: " + listIbcsPorEmpleado.size();
+                modificarInfoRegistro(listIbcsPorEmpleado.size());
             }
-
         } else {
-            infoRegistro = "Cantidad de registros: 0";
+            modificarInfoRegistro(0);
         }
         context.update("form:informacionRegistro");
     }
 
     public void cancelarModificacion() {
-        if (bandera == 1) {
-            //CERRAR FILTRADO
-            FacesContext c = FacesContext.getCurrentInstance();
-            fechaInicial = (Column) c.getViewRoot().findComponent("form:datosIbcs:fechaInicial");
-            fechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            fechaFinal = (Column) c.getViewRoot().findComponent("form:datosIbcs:fechaFinal");
-            fechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            valor = (Column) c.getViewRoot().findComponent("form:datosIbcs:valor");
-            valor.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "270";
-            RequestContext.getCurrentInstance().update("form:datosIbcs");
-            bandera = 0;
-            filtrarIbcsPorEmpleado = null;
-            tipoLista = 0;
-        }
-
-        index = -1;
-        secRegistro = null;
+        cerrarFiltrado();
+        ibcSeleccionado = null;
         listIbcsPorEmpleado = null;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosIbcs");
@@ -141,7 +121,7 @@ public class ControlEmplIbcs implements Serializable {
             tipoLista = 1;
         }
         RequestContext context = RequestContext.getCurrentInstance();
-        infoRegistro = "Cantidad de Registros: " + filtrarIbcsPorEmpleado.size();
+        modificarInfoRegistro(filtrarIbcsPorEmpleado.size());
         context.update("form:informacionRegistro");
     }
 
@@ -153,69 +133,63 @@ public class ControlEmplIbcs implements Serializable {
         context.update("form:datosEmplAcumulados");
     }
 
-    
     public void posicionIBCS() {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> map = context.getExternalContext().getRequestParameterMap();
         String name = map.get("n"); // name attribute of node
         String type = map.get("t"); // type attribute of node
-        int indice = Integer.parseInt(type);
+        //int indice = Integer.parseInt(type);
+        Ibcs ibc = new Ibcs();
         int columna = Integer.parseInt(name);
-        cambiarIndice(indice, columna);
+        cambiarIndice(ibc, columna);
     }
-    
-    public void cambiarIndice(int indice, int celda) {
-        System.out.println("Indice : "+indice+" // Celda : "+celda);
-        index = indice;
+
+    public void cambiarIndice(Ibcs ibc, int celda) {
+        ibcSeleccionado = ibc;
         cualCelda = celda;
 
     }
 
     public void limpiarNuevaIbcs() {
         nuevaIbcsPorEmpleado = new Ibcs();
-
-        index = -1;
-        secRegistro = null;
     }
 
     public void activarCtrlF11() {
-        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
+            FacesContext c = FacesContext.getCurrentInstance();
             fechaInicial = (Column) c.getViewRoot().findComponent("form:datosIbcs:fechaInicial");
             fechaInicial.setFilterStyle("width: 50px");
             fechaFinal = (Column) c.getViewRoot().findComponent("form:datosIbcs:fechaFinal");
             fechaFinal.setFilterStyle("width: 50px");
             valor = (Column) c.getViewRoot().findComponent("form:datosIbcs:valor");
             valor.setFilterStyle("width: 40px");
-            altoTabla = "246";
+            altoTabla = "268";
             RequestContext.getCurrentInstance().update("form:datosIbcs");
             bandera = 1;
         } else if (bandera == 1) {
-
-            fechaInicial = (Column) c.getViewRoot().findComponent("form:datosIbcs:fechaInicial");
-            fechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            fechaFinal = (Column) c.getViewRoot().findComponent("form:datosIbcs:fechaFinal");
-            fechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            valor = (Column) c.getViewRoot().findComponent("form:datosIbcs:valor");
-            valor.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "270";
-            RequestContext.getCurrentInstance().update("form:datosIbcs");
-            bandera = 0;
-            filtrarIbcsPorEmpleado = null;
-            tipoLista = 0;
+            cerrarFiltrado();
         }
     }
 
-    public void editarCelda() {
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                editarIbcsPorEmpleado = listIbcsPorEmpleado.get(index);
-            }
-            if (tipoLista == 1) {
-                editarIbcsPorEmpleado = listIbcsPorEmpleado.get(index);
-            }
+    private void cerrarFiltrado() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        fechaInicial = (Column) c.getViewRoot().findComponent("form:datosIbcs:fechaInicial");
+        fechaInicial.setFilterStyle("display: none; visibility: hidden;");
+        fechaFinal = (Column) c.getViewRoot().findComponent("form:datosIbcs:fechaFinal");
+        fechaFinal.setFilterStyle("display: none; visibility: hidden;");
+        valor = (Column) c.getViewRoot().findComponent("form:datosIbcs:valor");
+        valor.setFilterStyle("display: none; visibility: hidden;");
+        altoTabla = "288";
+        RequestContext.getCurrentInstance().update("form:datosIbcs");
+        bandera = 0;
+        filtrarIbcsPorEmpleado = null;
+        tipoLista = 0;
+    }
 
-            RequestContext context = RequestContext.getCurrentInstance();
+    public void editarCelda() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (ibcSeleccionado != null) {
+            editarIbcsPorEmpleado = ibcSeleccionado;
             if (cualCelda == 0) {
                 context.update("formularioDialogos:editFechaInicial");
                 context.execute("editFechaInicial.show()");
@@ -231,29 +205,21 @@ public class ControlEmplIbcs implements Serializable {
                 context.execute("editValor.show()");
                 cualCelda = -1;
             }
-
+        } else {
+            context.execute("seleccionarRegistro.show()");
         }
-        index = -1;
-        secRegistro = null;
     }
 
     public void dialogo() {
 
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                dialogoIbcsPorEmpleado = listIbcsPorEmpleado.get(index);
-            }
-            if (tipoLista == 1) {
-                dialogoIbcsPorEmpleado = filtrarIbcsPorEmpleado.get(index);
-            }
-
+        if (ibcSeleccionado != null) {
+            dialogoIbcsPorEmpleado = ibcSeleccionado;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:dialogoIbcs");
             context.execute("dialogoIbcs.show()");
 
         }
-        index = -1;
-        secRegistro = null;
+        ibcSeleccionado = null;
     }
 
     public void exportPDF() throws IOException {
@@ -264,8 +230,6 @@ public class ControlEmplIbcs implements Serializable {
         exporter.export(context, tabla, "EmplIbcsPDF", false, false, "UTF-8", null, null);
         //exporter.export(context, tabla, "AficionesPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
     }
 
     public void exportXLS() throws IOException {
@@ -276,8 +240,22 @@ public class ControlEmplIbcs implements Serializable {
         exporter.export(context, tabla, "EmplIbcsXLS", false, false, "UTF-8", null, null);
         //exporter.export(context, tabla, "AficionesPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
+    }
+
+    private void modificarInfoRegistro(int valor) {
+        infoRegistro = String.valueOf(valor);
+        System.out.println("infoRegistro: " + infoRegistro);
+    }
+
+    public void recordarSeleccion() {
+        if (ibcSeleccionado != null) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            tablaC = (DataTable) c.getViewRoot().findComponent("form:datosIbcs");
+            tablaC.setSelection(ibcSeleccionado);
+        } else {
+            ibcSeleccionado = null;
+        }
+        System.out.println("ibcSeleccionado: " + ibcSeleccionado);
     }
 
     //datosIbcsExportar
@@ -347,5 +325,4 @@ public class ControlEmplIbcs implements Serializable {
     public String getInfoRegistro() {
         return infoRegistro;
     }
-
 }

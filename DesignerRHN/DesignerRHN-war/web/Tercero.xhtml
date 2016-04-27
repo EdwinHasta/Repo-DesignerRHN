@@ -15,7 +15,7 @@
                     <f:loadBundle basename="Recursos.tercero" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
                     
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left;" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal">  
 
                         <p:toolbar styleClass="cssToolbar" style="position: absolute; top: 37px; left: 12px; height: 23px">  
                             <p:toolbarGroup align="left"> 
@@ -393,7 +393,7 @@
                             </p:column>
                         </p:dataTable>
 
-                        <h:outputText id="infoRegistroTercero" value="#{controlTercero.infoRegistroTercero}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <h:outputText id="infoRegistroTercero" value="#{msg['infoRegistro']} #{controlTercero.infoRegistroTercero}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
                         <p:commandButton id="aceptarBT" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlTercero.validarSeleccionTercero()}" disabled="#{controlTercero.aceptar}" process="@this"/>
                         

@@ -980,10 +980,8 @@ public class ControlCiudades implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (listaDepartamentos == null || listaDepartamentos.isEmpty()) {
-            //infoRegistroDepartamentos = "Cantidad de registros: 0 ";
            infoRegistroDepartamentos = "0";
         } else {
-           // infoRegistroDepartamentos = "Cantidad de registros: " + listaDepartamentos.size();
             infoRegistroDepartamentos = String.valueOf(listaDepartamentos.size());
         }
         context.update("formularioDialogos:infoRegistroDepartamentos");

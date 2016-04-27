@@ -50,7 +50,6 @@ public class ControlVigenciasUbicaciones implements Serializable {
     private Column vuFecha, vuDescripcion, vuCiudad;
     //Otros
     private boolean aceptar;
-    private int index;
     //modificar
     private List<VigenciasUbicaciones> listVUModificar;
     private boolean guardado;
@@ -74,12 +73,11 @@ public class ControlVigenciasUbicaciones implements Serializable {
     private String mensajeValidacion;
     private String altoTabla;
     public String infoRegistro;
-    //RASTROS
-    private BigInteger secRegistro;
     //
     private String infoRegistroUbicacion;
     //CONTROL FECHA
     private Date fechaVigenciaBck;
+    private DataTable tablaC;
 
     public ControlVigenciasUbicaciones() {
         vigenciasUbicaciones = null;
@@ -99,7 +97,7 @@ public class ControlVigenciasUbicaciones implements Serializable {
         editarVU = new VigenciasUbicaciones();
         cambioEditor = false;
         aceptarEditar = true;
-        cualCelda = -1;
+        // cualCelda = 0;
         tipoLista = 0;
         //guardar
         guardado = true;
@@ -108,9 +106,8 @@ public class ControlVigenciasUbicaciones implements Serializable {
         nuevaVigencia.setUbicacion(new UbicacionesGeograficas());
         //Autocompletar
         permitirIndex = true;
-        altoTabla = "270";
-        secRegistro = null;
-        index = -1;
+        altoTabla = "292";
+        vigenciaSeleccionada = null;
     }
 
     @PostConstruct
@@ -133,31 +130,11 @@ public class ControlVigenciasUbicaciones implements Serializable {
         empleado = administrarVigenciasUbicaciones.buscarEmpleado(secuenciaEmpleado);
         vigenciasUbicaciones = null;
         getVigenciasUbicaciones();
-
-        if (vigenciasUbicaciones != null && !vigenciasUbicaciones.isEmpty()) {
-            System.out.println("Entra al primer IF");
-            if (vigenciasUbicaciones.size() == 1) {
-                System.out.println("Segundo IF");
-                //INFORMACION REGISTRO
-                vigenciaSeleccionada = vigenciasUbicaciones.get(0);
-                //infoRegistro = "Registro 1 de 1";
-                infoRegistro = "Cantidad de registros: 1";
-            } else if (vigenciasUbicaciones.size() > 1) {
-                System.out.println("Else If");
-                //INFORMACION REGISTRO
-                vigenciaSeleccionada = vigenciasUbicaciones.get(0);
-                //infoRegistro = "Registro 1 de " + vigenciasCargosEmpleado.size();
-                infoRegistro = "Cantidad de registros: " + vigenciasUbicaciones.size();
-            }
-
-        } else {
-            infoRegistro = "Cantidad de registros: 0";
-        }
-        context.update("form:informacionRegistro");
+        contarRegistrosUbicaciones();
     }
 
-    public void modificarVU(int indice, String confirmarCambio, String valorConfirmar) {
-        index = indice;
+    public void modificarVU(VigenciasUbicaciones vUbicacion, String confirmarCambio, String valorConfirmar) {
+        vigenciaSeleccionada = vUbicacion;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -165,57 +142,29 @@ public class ControlVigenciasUbicaciones implements Serializable {
             System.out.println("valor Confirmar: " + valorConfirmar);
             if (!valorConfirmar.isEmpty()) {
                 int control = 0;
-                if (tipoLista == 0) {
-                    for (int i = 0; i < vigenciasUbicaciones.size(); i++) {
-                        if (i == indice) {
-                            i++;
-                            if (i >= vigenciasUbicaciones.size()) {
-                                break;
-                            }
-                        }
-                        if (vigenciasUbicaciones.get(i).getFechavigencia().compareTo(vigenciasUbicaciones.get(indice).getFechavigencia()) == 0) {
-                            control++;
-                            vigenciasUbicaciones.get(indice).setFechavigencia(fechaVigenciaBck);
+                for (int i = 0; i < vigenciasUbicaciones.size(); i++) {
+                    if (vigenciasUbicaciones.get(i) == vUbicacion) {
+                        i++;
+                        if (i >= vigenciasUbicaciones.size()) {
+                            break;
                         }
                     }
-                } else {
-                    for (int i = 0; i < filtrarVU.size(); i++) {
-                        if (i == indice) {
-                            i++;
-                            if (i >= filtrarVU.size()) {
-                                break;
-                            }
-                        }
-                        if (filtrarVU.get(i).getFechavigencia().compareTo(filtrarVU.get(indice).getFechavigencia()) == 0) {
-                            control++;
-                            filtrarVU.get(indice).setFechavigencia(fechaVigenciaBck);
-                        }
+                    if (vigenciaSeleccionada.getFechavigencia().compareTo(vigenciaSeleccionada.getFechavigencia()) == 0) {
+                        control++;
+                        vigenciaSeleccionada.setFechavigencia(fechaVigenciaBck);
                     }
                 }
+
                 if (control == 0) {
-                    if (tipoLista == 0) {
-                        if (!listVUCrear.contains(vigenciasUbicaciones.get(indice))) {
+                    if (!listVUCrear.contains(vigenciaSeleccionada)) {
 
-                            if (listVUModificar.isEmpty()) {
-                                listVUModificar.add(vigenciasUbicaciones.get(indice));
-                            } else if (!listVUModificar.contains(vigenciasUbicaciones.get(indice))) {
-                                listVUModificar.add(vigenciasUbicaciones.get(indice));
-                            }
+                        if (listVUModificar.isEmpty()) {
+                            listVUModificar.add(vigenciaSeleccionada);
+                        } else if (!listVUModificar.contains(vigenciaSeleccionada)) {
+                            listVUModificar.add(vigenciaSeleccionada);
                         }
-                        index = -1;
-                        secRegistro = null;
-                    } else {
-                        if (!listVUCrear.contains(filtrarVU.get(indice))) {
-
-                            if (listVUModificar.isEmpty()) {
-                                listVUModificar.add(filtrarVU.get(indice));
-                            } else if (!listVUModificar.contains(filtrarVU.get(indice))) {
-                                listVUModificar.add(filtrarVU.get(indice));
-                            }
-                        }
-                        index = -1;
-                        secRegistro = null;
                     }
+
                     if (guardado) {
                         guardado = false;
                         context.update("form:ACEPTAR");
@@ -224,21 +173,11 @@ public class ControlVigenciasUbicaciones implements Serializable {
                     context.execute("validacionFechaDuplicada.show();");
                 }
             } else {
-                if (tipoLista == 0) {
-                    vigenciasUbicaciones.get(indice).setFechavigencia(fechaVigenciaBck);
-                } else {
-                    filtrarVU.get(indice).setFechavigencia(fechaVigenciaBck);
-                }
-                index = -1;
-                secRegistro = null;
+                vigenciaSeleccionada.setFechavigencia(fechaVigenciaBck);
                 context.execute("validacionFechaVacia.show();");
             }
         } else if (confirmarCambio.equalsIgnoreCase("UBICACION")) {
-            if (tipoLista == 0) {
-                vigenciasUbicaciones.get(indice).getUbicacion().setDescripcion(ubicacion);
-            } else {
-                filtrarVU.get(indice).getUbicacion().setDescripcion(ubicacion);
-            }
+            vigenciaSeleccionada.getUbicacion().setDescripcion(ubicacion);
             for (int i = 0; i < listaUbicaciones.size(); i++) {
                 if (listaUbicaciones.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
@@ -246,11 +185,7 @@ public class ControlVigenciasUbicaciones implements Serializable {
                 }
             }
             if (coincidencias == 1) {
-                if (tipoLista == 0) {
-                    vigenciasUbicaciones.get(indice).setUbicacion(listaUbicaciones.get(indiceUnicoElemento));
-                } else {
-                    filtrarVU.get(indice).setUbicacion(listaUbicaciones.get(indiceUnicoElemento));
-                }
+                vigenciaSeleccionada.setUbicacion(listaUbicaciones.get(indiceUnicoElemento));
                 listaUbicaciones.clear();
                 getListaUbicaciones();
             } else {
@@ -262,54 +197,33 @@ public class ControlVigenciasUbicaciones implements Serializable {
             }
         }
         if (coincidencias == 1) {
-            if (tipoLista == 0) {
-                if (!listVUCrear.contains(vigenciasUbicaciones.get(indice))) {
+            if (!listVUCrear.contains(vigenciaSeleccionada)) {
 
-                    if (listVUModificar.isEmpty()) {
-                        listVUModificar.add(vigenciasUbicaciones.get(indice));
-                    } else if (!listVUModificar.contains(vigenciasUbicaciones.get(indice))) {
-                        listVUModificar.add(vigenciasUbicaciones.get(indice));
-                    }
-                }
-            } else {
-                if (!listVUCrear.contains(filtrarVU.get(indice))) {
-
-                    if (listVUModificar.isEmpty()) {
-                        listVUModificar.add(filtrarVU.get(indice));
-                    } else if (!listVUModificar.contains(filtrarVU.get(indice))) {
-                        listVUModificar.add(filtrarVU.get(indice));
-                    }
+                if (listVUModificar.isEmpty()) {
+                    listVUModificar.add(vigenciaSeleccionada);
+                } else if (!listVUModificar.contains(vigenciaSeleccionada)) {
+                    listVUModificar.add(vigenciaSeleccionada);
                 }
             }
+
             if (guardado) {
                 guardado = false;
                 context.update("form:ACEPTAR");
             }
-            index = -1;
-            secRegistro = null;
         }
         context.update("form:datosVUEmpleado");
     }
 
     //Ubicacion Celda.
-    public void cambiarIndice(int indice, int celda) {
+    public void cambiarIndice(VigenciasUbicaciones vUbicaciones, int celda) {
         if (permitirIndex) {
-            index = indice;
+            vigenciaSeleccionada = vUbicaciones;
             cualCelda = celda;
-            secRegistro = vigenciasUbicaciones.get(index).getSecuencia();
             if (cualCelda == 0) {
-                if (tipoLista == 0) {
-                    fechaVigenciaBck = vigenciasUbicaciones.get(index).getFechavigencia();
-                } else {
-                    fechaVigenciaBck = filtrarVU.get(index).getFechavigencia();
-                }
+                fechaVigenciaBck = vigenciaSeleccionada.getFechavigencia();
             }
             if (cualCelda == 1) {
-                if (tipoLista == 0) {
-                    ubicacion = vigenciasUbicaciones.get(index).getUbicacion().getDescripcion();
-                } else {
-                    ubicacion = filtrarVU.get(index).getUbicacion().getDescripcion();
-                }
+                ubicacion = vigenciaSeleccionada.getUbicacion().getDescripcion();
             }
         }
     }
@@ -320,10 +234,9 @@ public class ControlVigenciasUbicaciones implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             Map<String, String> map = contexto.getExternalContext().getRequestParameterMap();
             String campo = map.get("INDEX");
-            index = Integer.parseInt(campo);
-            secRegistro = vigenciasUbicaciones.get(index).getSecuencia();
+            int poss = Integer.parseInt(campo);
+            vigenciaSeleccionada = vigenciasUbicaciones.get(poss);
             cualCelda = 2;
-            System.out.println("Index: " + index);
         }
     }
 
@@ -406,15 +319,8 @@ public class ControlVigenciasUbicaciones implements Serializable {
             System.out.println("Se guardaron los datos con exito");
             vigenciasUbicaciones = null;
             getVigenciasUbicaciones();
-            if (vigenciasUbicaciones != null && !vigenciasUbicaciones.isEmpty()) {
-                vigenciaSeleccionada = vigenciasUbicaciones.get(0);
-                infoRegistro = "Cantidad de registros: " + vigenciasUbicaciones.size();
-            } else {
-                infoRegistro = "Cantidad de registros: 0";
-            }
-
+            contarRegistrosUbicaciones();
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:informacionRegistro");
             context.update("form:datosVUEmpleado");
             guardado = true;
             context.update("form:ACEPTAR");
@@ -423,47 +329,43 @@ public class ControlVigenciasUbicaciones implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
         }
-        index = -1;
-        secRegistro = null;
     }
     //CANCELAR MODIFICACIONES
 
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            FacesContext c = FacesContext.getCurrentInstance();
-            vuFecha = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuFecha");
-            vuFecha.setFilterStyle("display: none; visibility: hidden;");
-            vuDescripcion = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuDescripcion");
-            vuDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            vuCiudad = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuCiudad");
-            vuCiudad.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "270";
-            RequestContext.getCurrentInstance().update("form:datosVUEmpleado");
-            bandera = 0;
-            filtrarVU = null;
-            tipoLista = 0;
+            cerrarFiltrado();
         }
 
         listVUBorrar.clear();
         listVUCrear.clear();
         listVUModificar.clear();
-        index = -1;
-        secRegistro = null;
+        vigenciaSeleccionada = null;
         k = 0;
         vigenciasUbicaciones = null;
         getVigenciasUbicaciones();
-        if (vigenciasUbicaciones != null && !vigenciasUbicaciones.isEmpty()) {
-            vigenciaSeleccionada = vigenciasUbicaciones.get(0);
-            infoRegistro = "Cantidad de registros: " + vigenciasUbicaciones.size();
-        } else {
-            infoRegistro = "Cantidad de registros: 0";
-        }
+        contarRegistrosUbicaciones();
         guardado = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosVUEmpleado");
         context.update("form:ACEPTAR");
-        context.update("form:informacionRegistro");
+
+    }
+
+    private void cerrarFiltrado() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        vuFecha = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuFecha");
+        vuFecha.setFilterStyle("display: none; visibility: hidden;");
+        vuDescripcion = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuDescripcion");
+        vuDescripcion.setFilterStyle("display: none; visibility: hidden;");
+        vuCiudad = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuCiudad");
+        vuCiudad.setFilterStyle("display: none; visibility: hidden;");
+        altoTabla = "292";
+        RequestContext.getCurrentInstance().update("form:datosVUEmpleado");
+        bandera = 0;
+        filtrarVU = null;
+        tipoLista = 0;
 
     }
 
@@ -471,9 +373,9 @@ public class ControlVigenciasUbicaciones implements Serializable {
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
 
-        if (index >= 0) {
+        if (vigenciaSeleccionada != null) {
             System.out.println("lol 2");
-            int result = administrarRastros.obtenerTabla(secRegistro, "VIGENCIASUBICACIONES");
+            int result = administrarRastros.obtenerTabla(vigenciaSeleccionada.getSecuencia(), "VIGENCIASUBICACIONES");
             System.out.println("resultado: " + result);
             if (result == 1) {
                 context.execute("errorObjetosDB.show()");
@@ -494,41 +396,28 @@ public class ControlVigenciasUbicaciones implements Serializable {
             }
 
         }
-        index = -1;
-        //secRegistro = null;
     }
 
     //MOSTRAR DATOS CELDA
     public void editarCelda() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index < 0) {
+        if (vigenciaSeleccionada == null) {
             context.execute("seleccionarRegistro.show()");
         } else {
-            if (index >= 0) {
-                if (tipoLista == 0) {
-                    editarVU = vigenciasUbicaciones.get(index);
-                }
-                if (tipoLista == 1) {
-                    editarVU = filtrarVU.get(index);
-                }
-
-                System.out.println("Entro a editar... valor celda: " + cualCelda);
-                if (cualCelda == 0) {
-                    context.update("formularioDialogos:editarFecha");
-                    context.execute("editarFecha.show()");
-                    cualCelda = -1;
-                } else if (cualCelda == 1) {
-                    context.update("formularioDialogos:editarDescripcion");
-                    context.execute("editarDescripcion.show()");
-                    cualCelda = -1;
-                } else if (cualCelda == 2) {
-                    context.update("formularioDialogos:editarCiudad");
-                    context.execute("editarCiudad.show()");
-                    cualCelda = -1;
-                }
+            editarVU = vigenciaSeleccionada;
+            if (cualCelda == 0) {
+                context.update("formularioDialogos:editarFecha");
+                context.execute("editarFecha.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 1) {
+                context.update("formularioDialogos:editarDescripcion");
+                context.execute("editarDescripcion.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 2) {
+                context.update("formularioDialogos:editarCiudad");
+                context.execute("editarCiudad.show()");
+                cualCelda = -1;
             }
-            index = -1;
-            secRegistro = null;
         }
     }
 
@@ -572,17 +461,7 @@ public class ControlVigenciasUbicaciones implements Serializable {
             FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                vuFecha = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuFecha");
-                vuFecha.setFilterStyle("display: none; visibility: hidden;");
-                vuDescripcion = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuDescripcion");
-                vuDescripcion.setFilterStyle("display: none; visibility: hidden;");
-                vuCiudad = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuCiudad");
-                vuCiudad.setFilterStyle("display: none; visibility: hidden;");
-                altoTabla = "270";
-                RequestContext.getCurrentInstance().update("form:datosVUEmpleado");
-                bandera = 0;
-                filtrarVU = null;
-                tipoLista = 0;
+                cerrarFiltrado();
             }
             //AGREGAR REGISTRO A LA LISTA 
             k++;
@@ -593,7 +472,7 @@ public class ControlVigenciasUbicaciones implements Serializable {
             listVUCrear.add(nuevaVigencia);
 
             vigenciasUbicaciones.add(nuevaVigencia);
-            infoRegistro = "Cantidad de registros: " + vigenciasUbicaciones.size();
+            modificarInfoRegistro(vigenciasUbicaciones.size());
             context.update("form:informacionRegistro");
             nuevaVigencia = new VigenciasUbicaciones();
             nuevaVigencia.setUbicacion(new UbicacionesGeograficas());
@@ -603,8 +482,6 @@ public class ControlVigenciasUbicaciones implements Serializable {
                 context.update("form:ACEPTAR");
             }
             context.execute("NuevoRegistroVU.hide()");
-            index = -1;
-            secRegistro = null;
         } else if (pasa == 0 && contador != 2) {
             context.update("form:validacionNuevo");
             context.execute("validacionNuevo.show()");
@@ -615,49 +492,35 @@ public class ControlVigenciasUbicaciones implements Serializable {
     }
 
 //LIMPIAR NUEVO REGISTRO}
-public void limpiarNuevaVU() {
+    public void limpiarNuevaVU() {
         nuevaVigencia = new VigenciasUbicaciones();
         nuevaVigencia.setUbicacion(new UbicacionesGeograficas());
-        index = -1;
-        secRegistro = null;
     }
     //DUPLICAR VC
 
     public void duplicarVigenciaU() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index < 0) {
+        if (vigenciaSeleccionada == null) {
             context.execute("seleccionarRegistro.show()");
         } else {
-            if (index >= 0) {
+            if (vigenciaSeleccionada != null) {
                 duplicarVU = new VigenciasUbicaciones();
                 k++;
                 l = BigInteger.valueOf(k);
+                duplicarVU.setSecuencia(l);
+                duplicarVU.setEmpleado(vigenciaSeleccionada.getEmpleado());
+                duplicarVU.setFechavigencia(vigenciaSeleccionada.getFechavigencia());
+                duplicarVU.setUbicacion(vigenciaSeleccionada.getUbicacion());
 
-                if (tipoLista == 0) {
-                    duplicarVU.setSecuencia(l);
-                    duplicarVU.setEmpleado(vigenciasUbicaciones.get(index).getEmpleado());
-                    duplicarVU.setFechavigencia(vigenciasUbicaciones.get(index).getFechavigencia());
-                    duplicarVU.setUbicacion(vigenciasUbicaciones.get(index).getUbicacion());
-                }
-                if (tipoLista == 1) {
-                    duplicarVU.setSecuencia(l);
-                    duplicarVU.setEmpleado(filtrarVU.get(index).getEmpleado());
-                    duplicarVU.setFechavigencia(filtrarVU.get(index).getFechavigencia());
-                    duplicarVU.setUbicacion(filtrarVU.get(index).getUbicacion());
-                }
 
                 context.update("formularioDialogos:duplicarVU");
                 context.execute("DuplicarRegistroVU.show()");
-                index = -1;
-                secRegistro = null;
             }
         }
     }
 
     public void confirmarDuplicar() {
-        /*
-         * if (index < 0) { context.execute("seleccionarRegistro.show()"); }
-         */
+
         RequestContext context = RequestContext.getCurrentInstance();
         int contador = 0;
         mensajeValidacion = " ";
@@ -676,34 +539,18 @@ public void limpiarNuevaVU() {
         } else {
             vigenciasUbicaciones.add(duplicarVU);
             listVUCrear.add(duplicarVU);
-            infoRegistro = "Cantidad de registros: " + vigenciasUbicaciones.size();
+            modificarInfoRegistro(vigenciasUbicaciones.size());
             context.update("form:informacionRegistro");
             context.update("form:datosVUEmpleado");
-            index = -1;
-            secRegistro = null;
+            vigenciaSeleccionada = null;
             if (guardado) {
                 guardado = false;
                 context.update("form:ACEPTAR");
             }
-            System.out.println("Fecha: " + vuFecha);
-            System.out.println("Descripcion: " + vuDescripcion);
-            System.out.println("Ciudad: " + vuCiudad);
 
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                FacesContext c = FacesContext.getCurrentInstance();
-                vuFecha = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuFecha");
-                vuFecha.setFilterStyle("display: none; visibility: hidden;");
-                vuDescripcion = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuDescripcion");
-                vuDescripcion.setFilterStyle("display: none; visibility: hidden;");
-                vuCiudad = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuCiudad");
-                vuCiudad.setFilterStyle("display: none; visibility: hidden;");
-
-                altoTabla = "270";
-                RequestContext.getCurrentInstance().update("form:datosVUEmpleado");
-                bandera = 0;
-                filtrarVU = null;
-                tipoLista = 0;
+                cerrarFiltrado();
             }
             duplicarVU = new VigenciasUbicaciones();
             RequestContext.getCurrentInstance().execute("DuplicarRegistroVU.hide()");
@@ -719,48 +566,26 @@ public void limpiarNuevaVU() {
     //BORRAR VC
     public void borrarVU() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index < 0) {
+        if (vigenciaSeleccionada == null) {
             context.execute("seleccionarRegistro.show()");
         } else {
-            if (index >= 0) {
-                if (tipoLista == 0) {
-                    if (!listVUModificar.isEmpty() && listVUModificar.contains(vigenciasUbicaciones.get(index))) {
-                        int modIndex = listVUModificar.indexOf(vigenciasUbicaciones.get(index));
-                        listVUModificar.remove(modIndex);
-                        listVUBorrar.add(vigenciasUbicaciones.get(index));
-                    } else if (!listVUCrear.isEmpty() && listVUCrear.contains(vigenciasUbicaciones.get(index))) {
-                        int crearIndex = listVUCrear.indexOf(vigenciasUbicaciones.get(index));
-                        listVUCrear.remove(crearIndex);
-                    } else {
-                        listVUBorrar.add(vigenciasUbicaciones.get(index));
-                    }
-                    vigenciasUbicaciones.remove(index);
-                    infoRegistro = "Cantidad de registros: " + vigenciasUbicaciones.size();
-
+            if (vigenciaSeleccionada != null) {
+                if (!listVUModificar.isEmpty() && listVUModificar.contains(vigenciaSeleccionada)) {
+                    int modIndex = listVUModificar.indexOf(vigenciaSeleccionada);
+                    listVUModificar.remove(modIndex);
+                    listVUBorrar.add(vigenciaSeleccionada);
+                } else if (!listVUCrear.isEmpty() && listVUCrear.contains(vigenciaSeleccionada)) {
+                    int crearIndex = listVUCrear.indexOf(vigenciaSeleccionada);
+                    listVUCrear.remove(crearIndex);
+                } else {
+                    listVUBorrar.add(vigenciaSeleccionada);
                 }
-                if (tipoLista == 1) {
-                    if (!listVUModificar.isEmpty() && listVUModificar.contains(filtrarVU.get(index))) {
-                        int modIndex = listVUModificar.indexOf(filtrarVU.get(index));
-                        listVUModificar.remove(modIndex);
-                        listVUBorrar.add(filtrarVU.get(index));
-                    } else if (!listVUCrear.isEmpty() && listVUCrear.contains(filtrarVU.get(index))) {
-                        int crearIndex = listVUCrear.indexOf(filtrarVU.get(index));
-                        listVUCrear.remove(crearIndex);
-                    } else {
-                        listVUBorrar.add(filtrarVU.get(index));
-                    }
-                    int VCIndex = vigenciasUbicaciones.indexOf(filtrarVU.get(index));
-                    vigenciasUbicaciones.remove(VCIndex);
-                    filtrarVU.remove(index);
-                    infoRegistro = "Cantidad de registros: " + filtrarVU.size();
-
-                }
-
+                vigenciasUbicaciones.remove(vigenciaSeleccionada);
+                modificarInfoRegistro(vigenciasUbicaciones.size());
                 context.update("form:datosVUEmpleado");
                 context.update("form:informacionRegistro");
 
-                index = -1;
-                secRegistro = null;
+                vigenciaSeleccionada = null;
 
                 if (guardado) {
                     guardado = false;
@@ -781,48 +606,22 @@ public void limpiarNuevaVU() {
             vuDescripcion.setFilterStyle("");
             vuCiudad = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuCiudad");
             vuCiudad.setFilterStyle("");
-            altoTabla = "246";
+            altoTabla = "268";
             RequestContext.getCurrentInstance().update("form:datosVUEmpleado");
             bandera = 1;
         } else if (bandera == 1) {
-            System.out.println("Desactivar");
-            vuFecha = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuFecha");
-            vuFecha.setFilterStyle("display: none; visibility: hidden;");
-            vuDescripcion = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuDescripcion");
-            vuDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            vuCiudad = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuCiudad");
-            vuCiudad.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "270";
-            RequestContext.getCurrentInstance().update("form:datosVUEmpleado");
-            bandera = 0;
-            filtrarVU = null;
-            tipoLista = 0;
+            cerrarFiltrado();
         }
     }
 
     //SALIR
     public void salir() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (bandera == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
-            vuFecha = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuFecha");
-            vuFecha.setFilterStyle("display: none; visibility: hidden;");
-            vuDescripcion = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuDescripcion");
-            vuDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            vuCiudad = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuCiudad");
-            vuCiudad.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "270";
-            context.update("form:datosVUEmpleado");
-            bandera = 0;
-            filtrarVU = null;
-            tipoLista = 0;
-        }
-
+        cerrarFiltrado();
         listVUBorrar.clear();
         listVUCrear.clear();
         listVUModificar.clear();
-        index = -1;
-        secRegistro = null;
+        vigenciaSeleccionada = null;
         k = 0;
         vigenciasUbicaciones = null;
         guardado = true;
@@ -830,20 +629,19 @@ public void limpiarNuevaVU() {
     }
     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO)
 
-    public void asignarIndex(Integer indice, int LND) {
-        index = indice;
+    public void asignarIndex(VigenciasUbicaciones vu, int LND) {
+        vigenciaSeleccionada = vu;
         RequestContext context = RequestContext.getCurrentInstance();
         if (LND == 0) {
             tipoActualizacion = 0;
         } else if (LND == 1) {
             tipoActualizacion = 1;
-            secRegistro = null;
             System.out.println("Tipo Actualizacion: " + tipoActualizacion);
         } else if (LND == 2) {
             tipoActualizacion = 2;
-            secRegistro = null;
         }
-        getInfoRegistroUbicacion();
+        //getInfoRegistroUbicacion();
+        modificarInfoRegistroUbicaciones(listaUbicaciones.size());
         context.update("form:UbicacionesGeograficasDialogo");
         context.execute("UbicacionesGeograficasDialogo.show()");
     }
@@ -853,25 +651,15 @@ public void limpiarNuevaVU() {
     public void actualizarUbicacion() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
-            if (tipoLista == 0) {
-                vigenciasUbicaciones.get(index).setUbicacion(UbicacionSelecionada);
-                if (!listVUCrear.contains(vigenciasUbicaciones.get(index))) {
-                    if (listVUModificar.isEmpty()) {
-                        listVUModificar.add(vigenciasUbicaciones.get(index));
-                    } else if (!listVUModificar.contains(vigenciasUbicaciones.get(index))) {
-                        listVUModificar.add(vigenciasUbicaciones.get(index));
-                    }
-                }
-            } else {
-                filtrarVU.get(index).setUbicacion(UbicacionSelecionada);
-                if (!listVUCrear.contains(filtrarVU.get(index))) {
-                    if (listVUModificar.isEmpty()) {
-                        listVUModificar.add(filtrarVU.get(index));
-                    } else if (!listVUModificar.contains(filtrarVU.get(index))) {
-                        listVUModificar.add(filtrarVU.get(index));
-                    }
+            vigenciaSeleccionada.setUbicacion(UbicacionSelecionada);
+            if (!listVUCrear.contains(vigenciaSeleccionada)) {
+                if (listVUModificar.isEmpty()) {
+                    listVUModificar.add(vigenciaSeleccionada);
+                } else if (!listVUModificar.contains(vigenciaSeleccionada)) {
+                    listVUModificar.add(vigenciaSeleccionada);
                 }
             }
+
             if (guardado) {
                 guardado = false;
                 context.update("form:ACEPTAR");
@@ -888,15 +676,9 @@ public void limpiarNuevaVU() {
         filtradoUbicaciones = null;
         UbicacionSelecionada = null;
         aceptar = true;
-        index = -1;
         tipoActualizacion = -1;
         cualCelda = -1;
-        secRegistro = null;
-        /*
-         * context.update("form:UbicacionesGeograficasDialogo");
-         * context.update("form:lovUbicaciones");
-         * context.update("form:aceptarU");
-         */
+
         context.reset("form:lovUbicaciones:globalFilter");
         context.execute("lovUbicaciones.clearFilters()");
         context.execute("UbicacionesGeograficasDialogo.hide()");
@@ -906,11 +688,8 @@ public void limpiarNuevaVU() {
         filtradoUbicaciones = null;
         UbicacionSelecionada = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
-        secRegistro = null;
         RequestContext context = RequestContext.getCurrentInstance();
         context.reset("form:lovUbicaciones:globalFilter");
         context.execute("lovUbicaciones.clearFilters()");
@@ -920,12 +699,13 @@ public void limpiarNuevaVU() {
     //LISTA DE VALORES DINAMICA
     public void listaValoresBoton() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index < 0) {
+        if (vigenciaSeleccionada == null) {
             context.execute("seleccionarRegistro.show()");
         } else {
-            if (index >= 0) {
+            if (vigenciaSeleccionada != null) {
                 if (cualCelda == 1) {
-                    getInfoRegistroUbicacion();
+                    //getInfoRegistroUbicacion();
+                    modificarInfoRegistroUbicaciones(listaUbicaciones.size());
                     context.update("form:UbicacionesGeograficasDialogo");
                     context.execute("UbicacionesGeograficasDialogo.show()");
                     tipoActualizacion = 0;
@@ -946,8 +726,6 @@ public void limpiarNuevaVU() {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "VigenciasUbicacionesGeograficasPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
     }
 
     public void exportXLS() throws IOException {
@@ -957,8 +735,6 @@ public void limpiarNuevaVU() {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "VigenciasUbicacionesGeograficasXLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
     }
     //EVENTO FILTRAR
 
@@ -966,18 +742,47 @@ public void limpiarNuevaVU() {
         if (tipoLista == 0) {
             tipoLista = 1;
         }
-        RequestContext context = RequestContext.getCurrentInstance();
-        infoRegistro = "Cantidad de Registros: " + filtrarVU.size();
-
-        context.update("form:informacionRegistro");
+        modificarInfoRegistro(filtrarVU.size());
+        RequestContext.getCurrentInstance().update("form:informacionRegistro");
     }
-    //GETTERS AND SETTERS
 
+    public void eventoFiltrarUbicaciones() {
+        modificarInfoRegistroUbicaciones(filtradoUbicaciones.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistroUbicacion");
+    }
+
+    private void modificarInfoRegistro(int valor) {
+        infoRegistro = String.valueOf(valor);
+    }
+
+    private void modificarInfoRegistroUbicaciones(int valor) {
+        infoRegistroUbicacion = String.valueOf(valor);
+    }
+
+    public void contarRegistrosUbicaciones() {
+        if (vigenciasUbicaciones != null) {
+            modificarInfoRegistro(vigenciasUbicaciones.size());
+        } else {
+            modificarInfoRegistro(0);
+        }
+    }
+
+    public void recordarSeleccion() {
+        if (vigenciaSeleccionada != null) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            tablaC = (DataTable) c.getViewRoot().findComponent("form:datosVUEmpleado");
+            tablaC.setSelection(vigenciaSeleccionada);
+        } else {
+            vigenciaSeleccionada = null;
+        }
+        System.out.println("vigenciaSeleccionada: " + vigenciaSeleccionada);
+    }
+
+    //GETTERS AND SETTERS
     public List<VigenciasUbicaciones> getVigenciasUbicaciones() {
         try {
             if (vigenciasUbicaciones == null) {
                 return vigenciasUbicaciones = administrarVigenciasUbicaciones.vigenciasUbicacionesEmpleado(secuenciaEmpleado);
-                //return vigenciasUbicaciones = administrarVigenciasUbicaciones.vigenciasUbicacionesEmpleado(secuenciaEmpleado);
             } else {
                 return vigenciasUbicaciones;
             }
@@ -1020,46 +825,6 @@ public void limpiarNuevaVU() {
         return aceptar;
     }
 
-
-    /*
-     * public void verProceso() { for (int i = 0; i < listVUModificar.size();
-     * i++) { System.out.println("Las que se Modificaron: " + " Fecha: " +
-     * formatoFecha.format(listVUModificar.get(i).getFechavigencia()) + "|
-     * Estructura: " + listVUModificar.get(i).getMotivocontrato().getNombre() +
-     * "| Motivo: " + listVUModificar.get(i).getTipocontrato().getNombre() + "|
-     * Nombre Cargo: " + listVUModificar.get(i).getCiudad().getNombre() + "|
-     * Centro Costo: " + listVUModificar.get(i).getIniciosustitucion()); }
-     * System.out.println(".................................................");
-     * for (int i = 0; i < listVUCrear.size(); i++) { System.out.println("Las
-     * que se van a Crear: " + " Fecha: " +
-     * formatoFecha.format(listVUCrear.get(i).getFechavigencia()) + "|
-     * Estructura: " + listVUCrear.get(i).getMotivocontrato().getNombre() + "|
-     * Motivo: " + listVUCrear.get(i).getTipocontrato().getNombre() + "| Nombre
-     * Cargo: " + listVUCrear.get(i).getCiudad().getNombre() + "| Centro Costo:
-     * " + listVUCrear.get(i).getEstructura().getCentrocosto().getNombre()); }
-     * System.out.println(".................................................");
-     * for (int i = 0; i < listVUBorrar.size(); i++) { System.out.println("Las
-     * que se van a Borrar: " + " Fecha: " +
-     * formatoFecha.format(listVUBorrar.get(i).getFechavigencia()) + "|
-     * Estructura: " + listVUBorrar.get(i).getMotivocontrato().getNombre() + "|
-     * Motivo: " + listVUBorrar.get(i).getTipocontrato().getNombre() + "| Nombre
-     * Cargo: " + listVUBorrar.get(i).getCiudad().getNombre() + "| Centro Costo:
-     * " + listVUBorrar.get(i).getEstructura().getCentrocosto().getNombre()); }
-     * System.out.println(".................................................");
-     * for (int i = 0; i < vigenciasTiposContratoEmpleado.size(); i++) {
-     * System.out.println("lista total: " + " Fecha: " +
-     * formatoFecha.format(vigenciasTiposContratoEmpleado.get(i).getFechavigencia())
-     * + "| Estructura: " +
-     * vigenciasTiposContratoEmpleado.get(i).getMotivocontrato().getNombre() +
-     * "| Motivo: " +
-     * vigenciasTiposContratoEmpleado.get(i).getTipocontrato().getNombre() + "|
-     * Nombre Cargo: " +
-     * vigenciasTiposContratoEmpleado.get(i).getCiudad().getNombre() + "| Centro
-     * Costo: " +
-     * vigenciasTiposContratoEmpleado.get(i).getEstructura().getCentrocosto().getNombre());
-     * } System.out.println(".................................................
-     * FIN."); }
-     */
     public List<UbicacionesGeograficas> getListaUbicaciones() {
         listaUbicaciones = administrarVigenciasUbicaciones.ubicacionesGeograficas();
         return listaUbicaciones;
@@ -1125,25 +890,8 @@ public void limpiarNuevaVU() {
         return infoRegistro;
     }
 
-    public BigInteger getSecRegistro() {
-        return secRegistro;
-    }
-
-    public void setSecRegistro(BigInteger secRegistro) {
-        this.secRegistro = secRegistro;
-    }
-
     public String getInfoRegistroUbicacion() {
-        getListaUbicaciones();
-        if (listaUbicaciones != null) {
-            infoRegistroUbicacion = "Cantidad de registros : " + listaUbicaciones.size();
-        } else {
-            infoRegistroUbicacion = "Cantidad de registros : 0";
-        }
+//        getListaUbicaciones();
         return infoRegistroUbicacion;
-    }
-
-    public void setInfoRegistroUbicacion(String infoRegistroUbicacion) {
-        this.infoRegistroUbicacion = infoRegistroUbicacion;
     }
 }
