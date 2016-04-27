@@ -885,7 +885,7 @@ public class ControlVigenciasContratos implements Serializable {
                     modificarInfoRegistroTC(listaTiposContratos.size());
             } else {
                 modificarInfoRegistroTC(0);
-            }
+            } 
             context.update("form:TiposContratoDialogo");
             context.execute("TiposContratoDialogo.show()");
         }
@@ -984,6 +984,8 @@ public class ControlVigenciasContratos implements Serializable {
         tipoActualizacion = -1;
         context.reset("form:lovTiposContratos:globalFilter");
         context.execute("lovTiposContratos.clearFilters()");
+        context.update("form:lovTiposContratos");
+        context.execute("TiposContratoDialogo.hide()");
     }
 
     /**

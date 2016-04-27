@@ -148,6 +148,9 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         getVigenciasReformasLaboralesEmpleado();
         if (vigenciasReformasLaborales != null) {
             modificarInfoRegistro(vigenciasReformasLaborales.size());
+            if (!vigenciasReformasLaborales.isEmpty()){
+                vigenciaSeleccionada = vigenciasReformasLaborales.get(0);
+            }
         } else {
             modificarInfoRegistro(0);
         }

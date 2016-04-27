@@ -5569,4 +5569,38 @@
         </navigation-case>
     </navigation-rule>
     
+    <navigation-rule>
+        <from-view-id>/EmplVigenciaLocalizacion.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>estructuraPlanta</from-outcome>
+            <to-view-id>/estructuraplanta.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/estructuraplanta.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasVLoca</from-outcome>
+            <to-view-id>/EmplVigenciaLocalizacion.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/EmplVigenciaLocalizacion.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>estructura</from-outcome>
+            <to-view-id>/Estructura.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Estructura.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasVLoca</from-outcome>
+            <to-view-id>/EmplVigenciaLocalizacion.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
 </faces-config>
