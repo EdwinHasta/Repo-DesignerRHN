@@ -174,7 +174,7 @@
 
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlTiposEntidades.activarCtrlF11()}"/> 
 
-                    <p:dialog id="validacioNuevaVigencia" header="ATENCIÓN...!" widgetVar="validacioNuevaVigencia"  resizable="false" draggable="false" modal="true" height="77" width="420px" style="" closable="false">  
+                    <p:dialog id="validacionNuevaVigencia" header="ATENCIÓN...!" widgetVar="validacioNuevaVigencia"  resizable="false" draggable="false" modal="true" height="77" width="420px" style="" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="70" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="Para agregar es necesario adicionar: #{controlTiposEntidades.mensajeValidacion}" style="position: absolute; left: 100px; top: 15px; width: 300px; font-weight:bold" />
                         <p:commandButton value="Aceptar" onclick="validacioNuevaVigencia.hide();" style="position: absolute; top: 50px; left: 325px" process="@this" />

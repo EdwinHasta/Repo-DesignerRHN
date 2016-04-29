@@ -523,23 +523,7 @@ public class ControlDeclarantes implements Serializable {
     public void cancelarModificacion() {
         //CANCELAR MODIFICACIONES
         if (bandera == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
-
-            declarantesFechaInicial = (Column) c.getViewRoot().findComponent("form:datosDeclarantes:declarantesFechaInicial");
-            declarantesFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            declarantesFechaFinal = (Column) c.getViewRoot().findComponent("form:datosDeclarantes:declarantesFechaFinal");
-            declarantesFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            declarantesBooleano = (Column) c.getViewRoot().findComponent("form:datosDeclarantes:declarantesBooleano");
-            declarantesBooleano.setFilterStyle("display: none; visibility: hidden;");
-            declarantesPromedio = (Column) c.getViewRoot().findComponent("form:datosDeclarantes:declarantesPromedio");
-            declarantesPromedio.setFilterStyle("display: none; visibility: hidden;");
-            declarantesTarifa = (Column) c.getViewRoot().findComponent("form:datosDeclarantes:declarantesTarifa");
-            declarantesTarifa.setFilterStyle("display: none; visibility: hidden;");
-            altoScrollDeclarantes = "270";
-            RequestContext.getCurrentInstance().update("form:datosDeclarantes");
-            bandera = 0;
-            filtradoListaDeclarantes = null;
-            tipoLista = 0;
+            cerrarFiltrado();
         }
 
         listaDeclarantesBorrar.clear();
@@ -671,24 +655,7 @@ public class ControlDeclarantes implements Serializable {
                 }
                 if (validacion2 == true) {
                     if (bandera == 1) {
-                        FacesContext c = FacesContext.getCurrentInstance();
-
-                        declarantesFechaInicial = (Column) c.getViewRoot().findComponent("form:datosDeclarantes:declarantesFechaInicial");
-                        declarantesFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                        declarantesFechaFinal = (Column) c.getViewRoot().findComponent("form:datosDeclarantes:declarantesFechaFinal");
-                        declarantesFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                        declarantesBooleano = (Column) c.getViewRoot().findComponent("form:datosDeclarantes:declarantesBooleano");
-                        declarantesBooleano.setFilterStyle("display: none; visibility: hidden;");
-                        declarantesPromedio = (Column) c.getViewRoot().findComponent("form:datosDeclarantes:declarantesPromedio");
-                        declarantesPromedio.setFilterStyle("display: none; visibility: hidden;");
-                        declarantesTarifa = (Column) c.getViewRoot().findComponent("form:datosDeclarantes:declarantesTarifa");
-                        declarantesTarifa.setFilterStyle("display: none; visibility: hidden;");
-                        altoScrollDeclarantes = "270";
-                        RequestContext.getCurrentInstance().update("form:datosDeclarantes");
-                        
-                        bandera = 0;
-                        filtradoListaDeclarantes = null;
-                        tipoLista = 0;
+                        cerrarFiltrado();
                     }
                     //AGREGAR REGISTRO A LA LISTA NOVEDADES .
                     k++;
@@ -853,23 +820,7 @@ public class ControlDeclarantes implements Serializable {
                 }
                 if (validacion2 == true) {
                     if (bandera == 1) {
-                        FacesContext c = FacesContext.getCurrentInstance();
-
-                        declarantesFechaInicial = (Column) c.getViewRoot().findComponent("form:datosDeclarantes:declarantesFechaInicial");
-                        declarantesFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                        declarantesFechaFinal = (Column) c.getViewRoot().findComponent("form:datosDeclarantes:declarantesFechaFinal");
-                        declarantesFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                        declarantesBooleano = (Column) c.getViewRoot().findComponent("form:datosDeclarantes:declarantesBooleano");
-                        declarantesBooleano.setFilterStyle("display: none; visibility: hidden;");
-                        declarantesPromedio = (Column) c.getViewRoot().findComponent("form:datosDeclarantes:declarantesPromedio");
-                        declarantesPromedio.setFilterStyle("display: none; visibility: hidden;");
-                        declarantesTarifa = (Column) c.getViewRoot().findComponent("form:datosDeclarantes:declarantesTarifa");
-                        declarantesTarifa.setFilterStyle("display: none; visibility: hidden;");
-                        altoScrollDeclarantes = "270";
-                        RequestContext.getCurrentInstance().update("form:datosDeclarantes");
-                        bandera = 0;
-                        filtradoListaDeclarantes = null;
-                        tipoLista = 0;
+                       cerrarFiltrado();
                     }
                     //AGREGAR REGISTRO A LA LISTA NOVEDADES .
                     k++;
@@ -987,22 +938,7 @@ public class ControlDeclarantes implements Serializable {
             bandera = 1;
 
         } else if (bandera == 1) {
-            altoScrollDeclarantes = "270";
-            declarantesFechaInicial = (Column) c.getViewRoot().findComponent("form:datosDeclarantes:declarantesFechaInicial");
-            declarantesFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            declarantesFechaFinal = (Column) c.getViewRoot().findComponent("form:datosDeclarantes:declarantesFechaFinal");
-            declarantesFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            declarantesBooleano = (Column) c.getViewRoot().findComponent("form:datosDeclarantes:declarantesBooleano");
-            declarantesBooleano.setFilterStyle("display: none; visibility: hidden;");
-            declarantesPromedio = (Column) c.getViewRoot().findComponent("form:datosDeclarantes:declarantesPromedio");
-            declarantesPromedio.setFilterStyle("display: none; visibility: hidden;");
-            declarantesTarifa = (Column) c.getViewRoot().findComponent("form:datosDeclarantes:declarantesTarifa");
-            declarantesTarifa.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosDeclarantes");
-
-            bandera = 0;
-            filtradoListaDeclarantes = null;
-            tipoLista = 0;
+            cerrarFiltrado();
         }
     }
 
@@ -1012,8 +948,20 @@ public class ControlDeclarantes implements Serializable {
      */
     public void salir() {
         if (bandera == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
-
+            cerrarFiltrado();
+        }
+        listaDeclarantesBorrar.clear();
+        listaDeclarantesCrear.clear();
+        listaDeclarantesModificar.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listaDeclarantes = null;
+        guardado = true;
+    }
+    
+    private void cerrarFiltrado(){
+        FacesContext c = FacesContext.getCurrentInstance();
             declarantesFechaInicial = (Column) c.getViewRoot().findComponent("form:datosDeclarantes:declarantesFechaInicial");
             declarantesFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             declarantesFechaFinal = (Column) c.getViewRoot().findComponent("form:datosDeclarantes:declarantesFechaFinal");
@@ -1029,16 +977,6 @@ public class ControlDeclarantes implements Serializable {
             bandera = 0;
             filtradoListaDeclarantes = null;
             tipoLista = 0;
-        }
-
-        listaDeclarantesBorrar.clear();
-        listaDeclarantesCrear.clear();
-        listaDeclarantesModificar.clear();
-        index = -1;
-        secRegistro = null;
-        k = 0;
-        listaDeclarantes = null;
-        guardado = true;
     }
 
     /**

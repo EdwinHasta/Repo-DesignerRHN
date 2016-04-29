@@ -102,11 +102,11 @@ public class PersistenciaVigenciasViajeros implements PersistenciaVigenciasViaje
             Query query = em.createQuery("SELECT vrl FROM VigenciasViajeros vrl WHERE vrl.empleado.secuencia = :secuenciaEmpl ORDER BY vrl.fechavigencia DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
-            List<VigenciasViajeros> vigenciasRefLab = query.getResultList();
-            if (vigenciasRefLab != null) {
-                System.out.println("TIPO VIAJERO: " + vigenciasRefLab.get(0).getTipoViajero().getNombre());
+            List<VigenciasViajeros> vigenciasViajeros = (List<VigenciasViajeros>) query.getResultList();
+            if (vigenciasViajeros != null) {
+                System.out.println("TIPO VIAJERO: " + vigenciasViajeros.get(0).getTipoViajero().getNombre());
             }
-            return vigenciasRefLab;
+            return vigenciasViajeros;
         } catch (Exception e) {
             System.out.println("Error en Persistencia Vigencias Viajeros" + e);
             return null;

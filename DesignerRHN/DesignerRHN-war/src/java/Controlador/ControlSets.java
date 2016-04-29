@@ -428,7 +428,7 @@ public class ControlSets implements Serializable {
      */
     public void cancelarModificacion() {
         if (bandera == 1) {
-           cerrarFiltrado();
+            cerrarFiltrado();
         }
         listSetsBorrar.clear();
         listSetsCrear.clear();
@@ -437,18 +437,7 @@ public class ControlSets implements Serializable {
         k = 0;
         listSets = null;
         getSetsEmpleado();
-        if (listSets != null && !listSets.isEmpty()) {
-            setSeleccionado = listSets.get(0);
-            modificarInfoRegistro(listSets.size());
-        } else {
-            modificarInfoRegistro(0);
-        }
         guardado = true;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosSetsEmpleado");
-        context.update("form:ACEPTAR");
-        context.update("form:informacionRegistro");
-
     }
 
     //MOSTRAR DATOS CELDA
@@ -497,35 +486,60 @@ public class ControlSets implements Serializable {
      * Metodo que se encarga de agregar un nuevo Set
      */
     public void agregarNuevoSet() {
-        boolean resp = validarDatosRegistro(1);
-        if (nuevoSet.getFechainicial() != null && resp == true) {
-            if (validarFechasRegistro(1) == true) {
-                if (bandera == 1) {
-                    cerrarFiltrado();
-                }
-                k++;
-                l = BigInteger.valueOf(k);
-                nuevoSet.setSecuencia(l);
-                nuevoSet.setEmpleado(empleado);
-                listSetsCrear.add(nuevoSet);
-                listSets.add(nuevoSet);
-                modificarInfoRegistro(listSets.size());
-                nuevoSet = new Sets();
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.update("form:informacionRegistro");
-                context.update("form:datosSetsEmpleado");
-                context.execute("NuevoRegistroSet.hide()");
-                if (guardado == true) {
-                    guardado = false;
-                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
-                }
-            } else {
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("errorFechas.show()");
-            }
+        int fecha = 0;
+        int pasa = 0;
+        int contador = 0;
+        mensajeValidacion = "";
+        nuevoSet.setEmpleado(empleado);
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (nuevoSet.getFechainicial() == null || nuevoSet.getFechainicial().equals("")) {
+            mensajeValidacion = " *Fecha\n";
         } else {
-            RequestContext context = RequestContext.getCurrentInstance();
+            if (listSets != null) {
+                for (int i = 0; i < listSets.size(); i++) {
+                    if (nuevoSet.getFechainicial().equals(listSets.get(i).getFechainicial())) {
+                        fecha++;
+                    }
+                }
+            }
+            if (fecha > 0) {
+                context.update("form:validacionFechas");
+                context.execute("validacionFechas.show()");
+                pasa++;
+            } else {
+                contador++;
+            }
+        }
+        boolean resp = validarDatosRegistro(1);
+        if (contador == 1 && pasa == 0) {
+            if (nuevoSet.getFechainicial() != null && resp == true) {
+                if (validarFechasRegistro(1) == true) {
+                    if (bandera == 1) {
+                        cerrarFiltrado();
+                    }
+                    k++;
+                    l = BigInteger.valueOf(k);
+                    nuevoSet.setSecuencia(l);
+                    nuevoSet.setEmpleado(empleado);
+                    listSetsCrear.add(nuevoSet);
+                    listSets.add(nuevoSet);
+                    setSeleccionado = listSets.get(listSets.indexOf(nuevoSet));
+                    modificarInfoRegistro(listSets.size());
+                    nuevoSet = new Sets();
+                    context.update("form:informacionRegistro");
+                    context.update("form:datosSetsEmpleado");
+                    context.execute("NuevoRegistroSet.hide()");
+                    if (guardado) {
+                        guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                    }
+                } else {
+                    context.execute("errorFechas.show()");
+                }
+            }
+            else {
             context.execute("errorRegNew.show()");
+        } 
         }
     }
 
@@ -608,13 +622,12 @@ public class ControlSets implements Serializable {
                     duplicarSet.setSecuencia(l);
                     listSets.add(duplicarSet);
                     listSetsCrear.add(duplicarSet);
+                    setSeleccionado = listSets.get(listSets.indexOf(duplicarSet));
                     modificarInfoRegistro(listSets.size());
                     context.update("form:datosSetsEmpleado");
                     context.update("form:informacionRegistro");
                     context.execute("DuplicarRegistroSet.hide()");
-                    setSeleccionado = null;
-                    setSeleccionado = null;
-                    if (guardado == true) {
+                    if (guardado) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
@@ -660,11 +673,14 @@ public class ControlSets implements Serializable {
                     listSetsBorrar.add(setSeleccionado);
                 }
                 listSets.remove(setSeleccionado);
+                if (tipoLista == 1) {
+                    filtrarSets.remove(setSeleccionado);
+                }
                 modificarInfoRegistro(listSets.size());
                 context.update("form:datosSetsEmpleado");
                 context.update("form:informacionRegistro");
                 setSeleccionado = null;
-                if (guardado == true) {
+                if (guardado) {
                     guardado = false;
                     RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
@@ -707,7 +723,7 @@ public class ControlSets implements Serializable {
      */
     public void salir() {
         if (bandera == 1) {
-           cerrarFiltrado();
+            cerrarFiltrado();
         }
         listSetsBorrar.clear();
         listSetsCrear.clear();

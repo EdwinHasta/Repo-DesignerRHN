@@ -46,9 +46,9 @@ public class ControlVigenciasFormasPagos implements Serializable {
     private Empleados empleadoSeleccionado;
     private List<VigenciasFormasPagos> listVigenciasFormasPagosPorEmpleado;
     private List<VigenciasFormasPagos> filtrarVigenciasFormasPagosPorEmpleado;
-    private List<VigenciasFormasPagos> borrarVigenciasFormasPagosPorEmpleado;
-    private List<VigenciasFormasPagos> crearVigenciasFormasPagosPorEmpleado;
-    private List<VigenciasFormasPagos> modificarVigenciasFormasPagosPorEmpleado;
+    private List<VigenciasFormasPagos> borrarVFP;
+    private List<VigenciasFormasPagos> crearVFP;
+    private List<VigenciasFormasPagos> modificarVFP;
     private VigenciasFormasPagos editarVigenciaFormasPagoPorEmpleado;
     private VigenciasFormasPagos nuevaVigenciaFormasPago;
     private VigenciasFormasPagos duplicarVigenciaFormasPago;
@@ -76,14 +76,16 @@ public class ControlVigenciasFormasPagos implements Serializable {
     public String infoRegistro;
     private String infoRegistroMetodosPagos;
     private DataTable tablaC;
+    //
+    private boolean activarLOV;
 
     public ControlVigenciasFormasPagos() {
         empleadoSeleccionado = null;
         secuenciaEmpleado = BigInteger.valueOf(10664356);
         listVigenciasFormasPagosPorEmpleado = null;
-        crearVigenciasFormasPagosPorEmpleado = new ArrayList();
-        modificarVigenciasFormasPagosPorEmpleado = new ArrayList();
-        borrarVigenciasFormasPagosPorEmpleado = new ArrayList();
+        crearVFP = new ArrayList();
+        modificarVFP = new ArrayList();
+        borrarVFP = new ArrayList();
         listaSucursales = null;
         listaPeriodicidades = null;
         listaMetodosPagos = null;
@@ -100,6 +102,8 @@ public class ControlVigenciasFormasPagos implements Serializable {
         guardado = true;
         altoTabla = "292";
         aceptar = true;
+        activarLOV = true;
+
     }
 
     @PostConstruct
@@ -119,9 +123,15 @@ public class ControlVigenciasFormasPagos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         empleadoSeleccionado = null;
         secuenciaEmpleado = sec;
-        listVigenciasFormasPagosPorEmpleado = null;
+        //listVigenciasFormasPagosPorEmpleado = null;
         getListVigenciasFormasPagosPorEmpleado();
         contarRegistrosFormaPago();
+        if (listVigenciasFormasPagosPorEmpleado != null) {
+            vigenciaSeleccionada = listVigenciasFormasPagosPorEmpleado.get(0);
+            modificarInfoRegistro(listVigenciasFormasPagosPorEmpleado.size());
+        } else {
+            modificarInfoRegistro(0);
+        }
         context.update("form:informacionRegistro");
     }
 
@@ -151,7 +161,6 @@ public class ControlVigenciasFormasPagos implements Serializable {
 
         }
         vigenciaSeleccionada = null;
-        vigenciaSeleccionada = null;
     }
 
 //Ubicacion Celda.
@@ -165,11 +174,20 @@ public class ControlVigenciasFormasPagos implements Serializable {
         if (permitirIndex) {
             vigenciaSeleccionada = vFormas;
             cualCelda = celda;
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
+
             if (cualCelda == 3) {
+                activarLOV = false;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 backUpSucursales = vigenciaSeleccionada.getSucursal().getNombre();
             } else if (cualCelda == 4) {
+                activarLOV = false;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 periodicidad = vigenciaSeleccionada.getFormapago().getNombre();
             } else if (cualCelda == 6) {
+                activarLOV = false;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 metodosPagos = vigenciaSeleccionada.getMetodopago().getDescripcion();
             }
         }
@@ -182,18 +200,21 @@ public class ControlVigenciasFormasPagos implements Serializable {
         } else {
             if (vigenciaSeleccionada != null) {
                 if (cualCelda == 3) {
+                    sucursalSeleccionada = null;
                     modificarInfoRegistroSucursales(listaSucursales.size());
                     context.update("form:sucursalesDialogo");
                     context.execute("sucursalesDialogo.show()");
                     tipoActualizacion = 0;
                 }
                 if (cualCelda == 4) {
+                    PeriodicidadSeleccionada = null;
                     modificarInfoRegistroPeriodicidad(listaPeriodicidades.size());
                     context.update("form:periodicidadesDialogo");
                     context.execute("periodicidadesDialogo.show()");
                     tipoActualizacion = 0;
                 }
                 if (cualCelda == 6) {
+                    metodoPagoSeleccionado = null;
                     modificarInfoRegistroMetodoPago(listaMetodosPagos.size());
                     context.update("form:metodosPagosialogo");
                     context.execute("metodosPagosialogo.show()");
@@ -215,6 +236,8 @@ public class ControlVigenciasFormasPagos implements Serializable {
         try {
             vigenciaSeleccionada = vFormas;
             RequestContext context = RequestContext.getCurrentInstance();
+            activarLOV = false;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             if (LND == 0) {
                 tipoActualizacion = 0;
             } else if (LND == 1) {
@@ -224,18 +247,21 @@ public class ControlVigenciasFormasPagos implements Serializable {
             }
 
             if (dig == 3) {
+                sucursalSeleccionada = null;
                 modificarInfoRegistroSucursales(listaSucursales.size());
                 context.update("form:sucursalesDialogo");
                 context.execute("sucursalesDialogo.show()");
                 dig = -1;
             }
             if (dig == 4) {
+                PeriodicidadSeleccionada = null;
                 modificarInfoRegistroPeriodicidad(listaPeriodicidades.size());
                 context.update("form:periodicidadesDialogo");
                 context.execute("periodicidadesDialogo.show()");
                 dig = -1;
             }
             if (dig == 6) {
+                metodoPagoSeleccionado = null;
                 modificarInfoRegistroMetodoPago(listaMetodosPagos.size());
                 context.update("form:metodosPagosialogo");
                 context.execute("metodosPagosialogo.show()");
@@ -255,18 +281,18 @@ public class ControlVigenciasFormasPagos implements Serializable {
      */
     public void guardarCambiosVigenciasFormasPagos() {
         if (guardado == false) {
-            if (!borrarVigenciasFormasPagosPorEmpleado.isEmpty()) {
+            if (!borrarVFP.isEmpty()) {
 
-                administrarEmplVigenciasFormasPagos.borrarVigenciasFormasPagos(borrarVigenciasFormasPagosPorEmpleado);
-                borrarVigenciasFormasPagosPorEmpleado.clear();
+                administrarEmplVigenciasFormasPagos.borrarVigenciasFormasPagos(borrarVFP);
+                borrarVFP.clear();
             }
-            if (!crearVigenciasFormasPagosPorEmpleado.isEmpty()) {
-                for (int i = 0; i < crearVigenciasFormasPagosPorEmpleado.size(); i++) {
-                    if (crearVigenciasFormasPagosPorEmpleado.get(i).getSucursal() != null) {
-                        if (crearVigenciasFormasPagosPorEmpleado.get(i).getSucursal().getSecuencia() == null) {
-                            crearVigenciasFormasPagosPorEmpleado.get(i).setSucursal(null);
+            if (!crearVFP.isEmpty()) {
+                for (int i = 0; i < crearVFP.size(); i++) {
+                    if (crearVFP.get(i).getSucursal() != null) {
+                        if (crearVFP.get(i).getSucursal().getSecuencia() == null) {
+                            crearVFP.get(i).setSucursal(null);
                         }
-                        administrarEmplVigenciasFormasPagos.crearVigencasFormasPagos(crearVigenciasFormasPagosPorEmpleado.get(i));
+                        administrarEmplVigenciasFormasPagos.crearVigencasFormasPagos(crearVFP.get(i));
                     } else {
                         mensajeValidacion = "Fecha Inicial";
                         RequestContext context = RequestContext.getCurrentInstance();
@@ -274,15 +300,17 @@ public class ControlVigenciasFormasPagos implements Serializable {
                         context.execute("validacioNuevaVigencia.show()");
                     }
                 }
-                crearVigenciasFormasPagosPorEmpleado.clear();
+                crearVFP.clear();
             }
-            if (!modificarVigenciasFormasPagosPorEmpleado.isEmpty()) {
-                administrarEmplVigenciasFormasPagos.modificarVigenciasFormasPagos(modificarVigenciasFormasPagosPorEmpleado);
-                modificarVigenciasFormasPagosPorEmpleado.clear();
+            if (!modificarVFP.isEmpty()) {
+                administrarEmplVigenciasFormasPagos.modificarVigenciasFormasPagos(modificarVFP);
+                modificarVFP.clear();
             }
             listVigenciasFormasPagosPorEmpleado = null;
             getListVigenciasFormasPagosPorEmpleado();
             contarRegistrosFormaPago();
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVigenciasFormasPagos");
             FacesMessage msg = new FacesMessage("Información", "Se guardarón los datos con éxito");
@@ -291,7 +319,6 @@ public class ControlVigenciasFormasPagos implements Serializable {
             k = 0;
             guardado = true;
         }
-        vigenciaSeleccionada = null;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
     }
@@ -311,6 +338,8 @@ public class ControlVigenciasFormasPagos implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("N")) {
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             System.err.println("Fecha a modificar " + vigenciaSeleccionada.getFechavigencia());
             for (int z = 0; z < listVigenciasFormasPagosPorEmpleado.size(); z++) {
                 System.err.println("Contador vigenciasformas pagos modificar " + z);
@@ -330,6 +359,8 @@ public class ControlVigenciasFormasPagos implements Serializable {
                 banderita = true;
             }
             if (vigenciaSeleccionada.getMetodopago().getDescripcion().equals("TRANSFERENCIA")) {
+                activarLOV = true;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 if (vigenciaSeleccionada.getTipocuenta().equals("")) {
                     mensajeValidacion = "Tipo cuenta";
                     context.update("form:validacioModificarMetodoPago");
@@ -350,11 +381,11 @@ public class ControlVigenciasFormasPagos implements Serializable {
             }
             if (banderita == true) {
 
-                if (!crearVigenciasFormasPagosPorEmpleado.contains(vigenciaSeleccionada)) {
-                    if (modificarVigenciasFormasPagosPorEmpleado.isEmpty()) {
-                        modificarVigenciasFormasPagosPorEmpleado.add(vigenciaSeleccionada);
-                    } else if (!modificarVigenciasFormasPagosPorEmpleado.contains(vigenciaSeleccionada)) {
-                        modificarVigenciasFormasPagosPorEmpleado.add(vigenciaSeleccionada);
+                if (!crearVFP.contains(vigenciaSeleccionada)) {
+                    if (modificarVFP.isEmpty()) {
+                        modificarVFP.add(vigenciaSeleccionada);
+                    } else if (!modificarVFP.contains(vigenciaSeleccionada)) {
+                        modificarVFP.add(vigenciaSeleccionada);
                     }
                     if (guardado) {
                         guardado = false;
@@ -365,6 +396,8 @@ public class ControlVigenciasFormasPagos implements Serializable {
             }
             context.update("form:datosVigenciasFormasPagos");
         } else if (confirmarCambio.equalsIgnoreCase("SUCURSAL")) {
+            activarLOV = false;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             if (!valorConfirmar.isEmpty()) {
                 if (!vigenciaSeleccionada.getSucursal().getNombre().equals("")) {
                     vigenciaSeleccionada.getSucursal().setNombre(backUpSucursales);
@@ -394,11 +427,11 @@ public class ControlVigenciasFormasPagos implements Serializable {
                     tipoActualizacion = 0;
                 }
                 if (coincidencias == 1) {
-                    if (!crearVigenciasFormasPagosPorEmpleado.contains(vigenciaSeleccionada)) {
-                        if (modificarVigenciasFormasPagosPorEmpleado.isEmpty()) {
-                            modificarVigenciasFormasPagosPorEmpleado.add(vigenciaSeleccionada);
-                        } else if (!modificarVigenciasFormasPagosPorEmpleado.contains(vigenciaSeleccionada)) {
-                            modificarVigenciasFormasPagosPorEmpleado.add(vigenciaSeleccionada);
+                    if (!crearVFP.contains(vigenciaSeleccionada)) {
+                        if (modificarVFP.isEmpty()) {
+                            modificarVFP.add(vigenciaSeleccionada);
+                        } else if (!modificarVFP.contains(vigenciaSeleccionada)) {
+                            modificarVFP.add(vigenciaSeleccionada);
                         }
                         if (guardado) {
                             guardado = false;
@@ -420,6 +453,8 @@ public class ControlVigenciasFormasPagos implements Serializable {
                 context.update("form:ACEPTAR");
             }
         } else if (confirmarCambio.equalsIgnoreCase("FORMAPAGO")) {
+            activarLOV = false;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             vigenciaSeleccionada.getFormapago().setNombre(periodicidad);
             for (int i = 0; i < listaPeriodicidades.size(); i++) {
                 if (listaPeriodicidades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
@@ -440,6 +475,8 @@ public class ControlVigenciasFormasPagos implements Serializable {
                 tipoActualizacion = 0;
             }
         } else if (confirmarCambio.equalsIgnoreCase("METODOPAGO")) {
+            activarLOV = false;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             vigenciaSeleccionada.getMetodopago().setDescripcion(metodosPagos);
             for (int i = 0; i < listaMetodosPagos.size(); i++) {
                 if (listaMetodosPagos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
@@ -461,11 +498,11 @@ public class ControlVigenciasFormasPagos implements Serializable {
             }
         }
         if (coincidencias == 1) {
-            if (!crearVigenciasFormasPagosPorEmpleado.contains(vigenciaSeleccionada)) {
-                if (modificarVigenciasFormasPagosPorEmpleado.isEmpty()) {
-                    modificarVigenciasFormasPagosPorEmpleado.add(vigenciaSeleccionada);
-                } else if (!modificarVigenciasFormasPagosPorEmpleado.contains(vigenciaSeleccionada)) {
-                    modificarVigenciasFormasPagosPorEmpleado.add(vigenciaSeleccionada);
+            if (!crearVFP.contains(vigenciaSeleccionada)) {
+                if (modificarVFP.isEmpty()) {
+                    modificarVFP.add(vigenciaSeleccionada);
+                } else if (!modificarVFP.contains(vigenciaSeleccionada)) {
+                    modificarVFP.add(vigenciaSeleccionada);
                 }
                 if (guardado) {
                     guardado = false;
@@ -508,9 +545,11 @@ public class ControlVigenciasFormasPagos implements Serializable {
         if (bandera == 1) {
             cerrarFiltrado();
         }
-        borrarVigenciasFormasPagosPorEmpleado.clear();
-        crearVigenciasFormasPagosPorEmpleado.clear();
-        modificarVigenciasFormasPagosPorEmpleado.clear();
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+        borrarVFP.clear();
+        crearVFP.clear();
+        modificarVFP.clear();
         vigenciaSeleccionada = null;
         k = 0;
         listVigenciasFormasPagosPorEmpleado = null;
@@ -525,27 +564,16 @@ public class ControlVigenciasFormasPagos implements Serializable {
     }
 
     public void salir() {
-            cerrarFiltrado();
-
-        borrarVigenciasFormasPagosPorEmpleado.clear();
-        crearVigenciasFormasPagosPorEmpleado.clear();
-        modificarVigenciasFormasPagosPorEmpleado.clear();
+        cerrarFiltrado();
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+        borrarVFP.clear();
+        crearVFP.clear();
+        modificarVFP.clear();
         vigenciaSeleccionada = null;
         k = 0;
         listVigenciasFormasPagosPorEmpleado = null;
-        getListVigenciasFormasPagosPorEmpleado();
-        if (listVigenciasFormasPagosPorEmpleado != null && !listVigenciasFormasPagosPorEmpleado.isEmpty()) {
-            vigenciaSeleccionada = listVigenciasFormasPagosPorEmpleado.get(0);
-            modificarInfoRegistro(listVigenciasFormasPagosPorEmpleado.size());
-        } else {
-            modificarInfoRegistro(0);
-        }
         guardado = true;
-        permitirIndex = true;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:ACEPTAR");
-        context.update("form:datosVigenciasFormasPagos");
-        context.update("form:informacionRegistro");
     }
 
     private void cerrarFiltrado() {
@@ -560,7 +588,7 @@ public class ControlVigenciasFormasPagos implements Serializable {
         fechaCuenta.setFilterStyle("display: none; visibility: hidden;");
         sucursal = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:sucursal");
         sucursal.setFilterStyle("display: none; visibility: hidden;");
-        formaPago = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagosformaPago");
+        formaPago = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:formaPago");
         formaPago.setFilterStyle("display: none; visibility: hidden;");
         tc = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:tc");
         tc.setFilterStyle("display: none; visibility: hidden;");
@@ -576,11 +604,11 @@ public class ControlVigenciasFormasPagos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             vigenciaSeleccionada.setSucursal(sucursalSeleccionada);
-            if (!crearVigenciasFormasPagosPorEmpleado.contains(vigenciaSeleccionada)) {
-                if (modificarVigenciasFormasPagosPorEmpleado.isEmpty()) {
-                    modificarVigenciasFormasPagosPorEmpleado.add(vigenciaSeleccionada);
-                } else if (!modificarVigenciasFormasPagosPorEmpleado.contains(vigenciaSeleccionada)) {
-                    modificarVigenciasFormasPagosPorEmpleado.add(vigenciaSeleccionada);
+            if (!crearVFP.contains(vigenciaSeleccionada)) {
+                if (modificarVFP.isEmpty()) {
+                    modificarVFP.add(vigenciaSeleccionada);
+                } else if (!modificarVFP.contains(vigenciaSeleccionada)) {
+                    modificarVFP.add(vigenciaSeleccionada);
                 }
             }
             if (guardado) {
@@ -622,11 +650,11 @@ public class ControlVigenciasFormasPagos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             vigenciaSeleccionada.setFormapago(PeriodicidadSeleccionada);
-            if (!crearVigenciasFormasPagosPorEmpleado.contains(vigenciaSeleccionada)) {
-                if (modificarVigenciasFormasPagosPorEmpleado.isEmpty()) {
-                    modificarVigenciasFormasPagosPorEmpleado.add(vigenciaSeleccionada);
-                } else if (!modificarVigenciasFormasPagosPorEmpleado.contains(vigenciaSeleccionada)) {
-                    modificarVigenciasFormasPagosPorEmpleado.add(vigenciaSeleccionada);
+            if (!crearVFP.contains(vigenciaSeleccionada)) {
+                if (modificarVFP.isEmpty()) {
+                    modificarVFP.add(vigenciaSeleccionada);
+                } else if (!modificarVFP.contains(vigenciaSeleccionada)) {
+                    modificarVFP.add(vigenciaSeleccionada);
                 }
             }
             if (guardado) {
@@ -668,11 +696,11 @@ public class ControlVigenciasFormasPagos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             vigenciaSeleccionada.setMetodopago(metodoPagoSeleccionado);
-            if (!crearVigenciasFormasPagosPorEmpleado.contains(vigenciaSeleccionada)) {
-                if (modificarVigenciasFormasPagosPorEmpleado.isEmpty()) {
-                    modificarVigenciasFormasPagosPorEmpleado.add(vigenciaSeleccionada);
-                } else if (!modificarVigenciasFormasPagosPorEmpleado.contains(vigenciaSeleccionada)) {
-                    modificarVigenciasFormasPagosPorEmpleado.add(vigenciaSeleccionada);
+            if (!crearVFP.contains(vigenciaSeleccionada)) {
+                if (modificarVFP.isEmpty()) {
+                    modificarVFP.add(vigenciaSeleccionada);
+                } else if (!modificarVFP.contains(vigenciaSeleccionada)) {
+                    modificarVFP.add(vigenciaSeleccionada);
                 }
             }
             if (guardado) {
@@ -832,7 +860,6 @@ public class ControlVigenciasFormasPagos implements Serializable {
         if (nuevaVigenciaFormasPago.getFormapago().getSecuencia() == null) {
             mensajeValidacion = mensajeValidacion + " * Forma de pago \n";
             pasa++;
-
         }
 
         if (nuevaVigenciaFormasPago.getMetodopago().getSecuencia() == null) {
@@ -887,11 +914,13 @@ public class ControlVigenciasFormasPagos implements Serializable {
         if (nuevaVigenciaFormasPago.getSucursal().getSecuencia() == null) {
             nuevaVigenciaFormasPago.setSucursal(null);
         }
-        crearVigenciasFormasPagosPorEmpleado.add(nuevaVigenciaFormasPago);
-
+        crearVFP.add(nuevaVigenciaFormasPago);
         listVigenciasFormasPagosPorEmpleado.add(nuevaVigenciaFormasPago);
+        vigenciaSeleccionada = listVigenciasFormasPagosPorEmpleado.get(listVigenciasFormasPagosPorEmpleado.indexOf(nuevaVigenciaFormasPago));
         modificarInfoRegistro(listVigenciasFormasPagosPorEmpleado.size());
         context.update("form:informacionRegistro");
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         nuevaVigenciaFormasPago = new VigenciasFormasPagos();
         nuevaVigenciaFormasPago.setSucursal(new Sucursales());
         nuevaVigenciaFormasPago.setFormapago(new Periodicidades());
@@ -1058,6 +1087,7 @@ public class ControlVigenciasFormasPagos implements Serializable {
     }
 
     public void asignarVariableSucursalNueva(int tipoNuevo) {
+        sucursalSeleccionada = null;
         if (tipoNuevo == 0) {
             tipoActualizacion = 1;
         }
@@ -1084,6 +1114,7 @@ public class ControlVigenciasFormasPagos implements Serializable {
     }
 
     public void asignarVariableMetodosPagosNueva(int tipoNuevo) {
+        metodoPagoSeleccionado = null;
         if (tipoNuevo == 0) {
             tipoActualizacion = 1;
         }
@@ -1110,6 +1141,7 @@ public class ControlVigenciasFormasPagos implements Serializable {
     }
 
     public void asignarVariablePeriodicidadNueva(int tipoNuevo) {
+        PeriodicidadSeleccionada = null;
         if (tipoNuevo == 0) {
             tipoActualizacion = 1;
         }
@@ -1122,6 +1154,8 @@ public class ControlVigenciasFormasPagos implements Serializable {
     }
 
     public void cargarPeriodicidadNuevoRegistro(int tipoNuevo) {
+        activarLOV = false;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         if (tipoNuevo == 0) {
             tipoActualizacion = 1;
             RequestContext context = RequestContext.getCurrentInstance();
@@ -1143,23 +1177,27 @@ public class ControlVigenciasFormasPagos implements Serializable {
             context.execute("seleccionarRegistro.show()");
         } else {
             if (vigenciaSeleccionada != null) {
-                if (!modificarVigenciasFormasPagosPorEmpleado.isEmpty() && modificarVigenciasFormasPagosPorEmpleado.contains(vigenciaSeleccionada)) {
-                    int modIndex = modificarVigenciasFormasPagosPorEmpleado.indexOf(vigenciaSeleccionada);
-                    modificarVigenciasFormasPagosPorEmpleado.remove(modIndex);
-                    borrarVigenciasFormasPagosPorEmpleado.add(vigenciaSeleccionada);
-                } else if (!crearVigenciasFormasPagosPorEmpleado.isEmpty() && crearVigenciasFormasPagosPorEmpleado.contains(vigenciaSeleccionada)) {
-                    int crearIndex = crearVigenciasFormasPagosPorEmpleado.indexOf(vigenciaSeleccionada);
-                    crearVigenciasFormasPagosPorEmpleado.remove(crearIndex);
+                if (!modificarVFP.isEmpty() && modificarVFP.contains(vigenciaSeleccionada)) {
+                    int modIndex = modificarVFP.indexOf(vigenciaSeleccionada);
+                    modificarVFP.remove(modIndex);
+                    borrarVFP.add(vigenciaSeleccionada);
+                } else if (!crearVFP.isEmpty() && crearVFP.contains(vigenciaSeleccionada)) {
+                    int crearIndex = crearVFP.indexOf(vigenciaSeleccionada);
+                    crearVFP.remove(crearIndex);
                 } else {
-                    borrarVigenciasFormasPagosPorEmpleado.add(vigenciaSeleccionada);
+                    borrarVFP.add(vigenciaSeleccionada);
                 }
                 listVigenciasFormasPagosPorEmpleado.remove(vigenciaSeleccionada);
+                if (tipoLista == 1) {
+                    filtrarVigenciasFormasPagosPorEmpleado.remove(vigenciaSeleccionada);
+                }
+
                 modificarInfoRegistro(listVigenciasFormasPagosPorEmpleado.size());
+                vigenciaSeleccionada = null;
+                activarLOV = true;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 context.update("form:datosVigenciasFormasPagos");
                 context.update("form:informacionRegistro");
-
-                vigenciaSeleccionada = null;
-
                 if (guardado) {
                     guardado = false;
                     context.update("form:ACEPTAR");
@@ -1191,31 +1229,32 @@ public class ControlVigenciasFormasPagos implements Serializable {
 
     public void confirmarDuplicar() {
         int contador = 0;
+//        int pasa = 0;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         boolean banderaConfirmar = false;
         if (duplicarVigenciaFormasPago.getFormapago().getSecuencia() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Forma de pago \n";
+            mensajeValidacion = mensajeValidacion + "   *Forma de pago \n";
             banderaConfirmar = false;
         }
         if (duplicarVigenciaFormasPago.getMetodopago().getSecuencia() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Metodo de pago \n";
+            mensajeValidacion = mensajeValidacion + "   *Metodo de pago \n";
             banderaConfirmar = false;
         } else {
             if (duplicarVigenciaFormasPago.getMetodopago().getDescripcion().equals("TRANSFERENCIA")) {
                 if (duplicarVigenciaFormasPago.getTipocuenta() == null || duplicarVigenciaFormasPago.getSucursal().getSecuencia() == null || nuevaVigenciaFormasPago.getCuenta() == null) {
 
                     if (duplicarVigenciaFormasPago.getTipocuenta() == null) {
-                        mensajeValidacion = mensajeValidacion + " * Tipo de cuenta \n";
+                        mensajeValidacion = mensajeValidacion + " *Tipo de cuenta \n";
                     } else {
                         banderaConfirmar = true;
                     }
                     if (duplicarVigenciaFormasPago.getSucursal().getSecuencia() == null) {
-                        mensajeValidacion = mensajeValidacion + " * Sucursal \n";
+                        mensajeValidacion = mensajeValidacion + " *Sucursal \n";
                         banderaConfirmar = false;
                     }
                     if (duplicarVigenciaFormasPago.getCuenta() == null) {
-                        mensajeValidacion = mensajeValidacion + " * Cuenta \n";
+                        mensajeValidacion = mensajeValidacion + " *Cuenta \n";
                         banderaConfirmar = false;
                     }
                 }
@@ -1225,22 +1264,25 @@ public class ControlVigenciasFormasPagos implements Serializable {
 
             }
         }
-        for (int j = 0; j < listVigenciasFormasPagosPorEmpleado.size(); j++) {
-            if (duplicarVigenciaFormasPago.getFechavigencia().equals(listVigenciasFormasPagosPorEmpleado.get(j).getFechavigencia())) {
-                contador++;
+            for (int j = 0; j < listVigenciasFormasPagosPorEmpleado.size(); j++) {
+                if (duplicarVigenciaFormasPago.getFechavigencia().equals(listVigenciasFormasPagosPorEmpleado.get(j).getFechavigencia())) {
+                    contador++;
+                }
             }
-        }
+            
         if (contador > 0) {
             mensajeValidacion = "Fechas Repetidas";
-            context.update("form:validacioNuevaVigencia");
-            context.execute("validacioNuevaVigencia.show()");
+            context.update("form:validacionFechas");
+            context.execute("validacionFechas.show()");
         } else {
             listVigenciasFormasPagosPorEmpleado.add(duplicarVigenciaFormasPago);
-            crearVigenciasFormasPagosPorEmpleado.add(duplicarVigenciaFormasPago);
+            crearVFP.add(duplicarVigenciaFormasPago);
+            vigenciaSeleccionada = listVigenciasFormasPagosPorEmpleado.get(listVigenciasFormasPagosPorEmpleado.indexOf(duplicarVigenciaFormasPago));
             modificarInfoRegistro(listVigenciasFormasPagosPorEmpleado.size());
             context.update("form:informacionRegistro");
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             context.update("form:datosVigenciasFormasPagos");
-            vigenciaSeleccionada = null;
             if (guardado) {
                 guardado = false;
                 context.update("form:ACEPTAR");
@@ -1251,8 +1293,8 @@ public class ControlVigenciasFormasPagos implements Serializable {
             duplicarVigenciaFormasPago = new VigenciasFormasPagos();
             RequestContext.getCurrentInstance().execute("duplicarRegistroVigenciasFormasPagos.hide()");
         }
-    }
-
+ }
+    
     public void limpiarduplicarVigenciasFormasPagos() {
         duplicarVigenciaFormasPago = new VigenciasFormasPagos();
     }
@@ -1277,6 +1319,8 @@ public class ControlVigenciasFormasPagos implements Serializable {
         if (tipoLista == 0) {
             tipoLista = 1;
         }
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         modificarInfoRegistro(filtrarVigenciasFormasPagosPorEmpleado.size());
         RequestContext.getCurrentInstance().update("form:informacionRegistro");
     }
@@ -1330,6 +1374,11 @@ public class ControlVigenciasFormasPagos implements Serializable {
         } else {
             modificarInfoRegistro(0);
         }
+    }
+
+    public void anularLOV() {
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
 //GETTERS AND SETTERS
@@ -1542,5 +1591,13 @@ public class ControlVigenciasFormasPagos implements Serializable {
 
     public String getInfoRegistroMetodosPagos() {
         return infoRegistroMetodosPagos;
+    }
+
+    public boolean isActivarLOV() {
+        return activarLOV;
+    }
+
+    public void setActivarLOV(boolean activarLOV) {
+        this.activarLOV = activarLOV;
     }
 }

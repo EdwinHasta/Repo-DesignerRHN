@@ -69,7 +69,7 @@ public class ControlVigenciasViajeros implements Serializable {
     private List<Tiposviajeros> listaTiposviajeros;
     private List<Tiposviajeros> filtradoTiposviajeros;
     private Tiposviajeros viajeroSeleccionado;
-    private String nuevoYduplicarCompletarNormaLaboral;
+    private String nuevoYduplicarCompletarViajero;
     private String altoTabla;
     public String infoRegistro;
     public String infoRegistroTiposViajeros;
@@ -87,9 +87,10 @@ public class ControlVigenciasViajeros implements Serializable {
         editarVigenciasViajeros = new VigenciasViajeros();
         nuevoVigenciasViajeros = new VigenciasViajeros();
         nuevoVigenciasViajeros.setTipoViajero(new Tiposviajeros());
-        duplicarVigenciasViajeros = new VigenciasViajeros();
+        //duplicarVigenciasViajeros = new VigenciasViajeros();
         empleadoSeleccionado = null;
-        secuenciaEmpleado = null;
+        bandera = 0;
+        //secuenciaEmpleado = null;
         listaTiposviajeros = null;
         filtradoTiposviajeros = null;
         guardado = true;
@@ -97,6 +98,7 @@ public class ControlVigenciasViajeros implements Serializable {
         altoTabla = "292";
         vigenciaSeleccionada = null;
         activarLOV = true;
+        viajeroSeleccionado = null;
     }
 
     @PostConstruct
@@ -114,9 +116,8 @@ public class ControlVigenciasViajeros implements Serializable {
 
     public void recibirEmpleado(BigInteger sec) {
         secuenciaEmpleado = sec;
-        getEmpleadoSeleccionado();
         getListVigenciasViajerosPorEmpleado();
-        contarRegistrosTV();
+//        contarRegistrosTV();
         if (listVigenciasViajerosPorEmpleado != null) {
             vigenciaSeleccionada = listVigenciasViajerosPorEmpleado.get(0);
             modificarInfoRegistro(listVigenciasViajerosPorEmpleado.size());
@@ -181,11 +182,11 @@ public class ControlVigenciasViajeros implements Serializable {
             if (cualCelda == 1) {
                 activarLOV = false;
                 RequestContext.getCurrentInstance().update("form:listaValores");
-                 viajeros = vigenciaSeleccionada.getTipoViajero().getNombre();
+                viajeros = vigenciaSeleccionada.getTipoViajero().getNombre();
 
-            } 
+            }
         } else {
-            context.execute("datosVCEmpleado.selectRow(" + vViajeros + ", false); datosVCEmpleado.unselectAllRows()");
+            context.execute("datosViajeros.selectRow(" + vViajeros + ", false); datosViajeros.unselectAllRows()");
         }
         RequestContext.getCurrentInstance().update("form:listaValores");
     }
@@ -194,6 +195,7 @@ public class ControlVigenciasViajeros implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         vigenciaSeleccionada = vViajeros;
         activarLOV = false;
+        viajeroSeleccionado = null;
         RequestContext.getCurrentInstance().update("form:listaValores");
         try {
             if (LND == 0) {
@@ -204,7 +206,6 @@ public class ControlVigenciasViajeros implements Serializable {
                 tipoActualizacion = 2;
             }
             if (dig == 1) {
-                viajeroSeleccionado = null;
                 modificarInfoRegistroViajero(listaTiposviajeros.size());
                 context.update("form:sucursalesDialogo");
                 context.execute("sucursalesDialogo.show()");
@@ -226,6 +227,7 @@ public class ControlVigenciasViajeros implements Serializable {
         } else {
             if (vigenciaSeleccionada != null) {
                 if (cualCelda == 1) {
+                    viajeroSeleccionado = null;
                     context.update("form:sucursalesDialogo");
                     context.execute("sucursalesDialogo.show()");
                     tipoActualizacion = 0;
@@ -381,7 +383,7 @@ public class ControlVigenciasViajeros implements Serializable {
 
     }
 
-    public void actualizarNormaLaboral() {
+    public void actualizarViajero() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             vigenciaSeleccionada.setTipoViajero(viajeroSeleccionado);
@@ -407,7 +409,6 @@ public class ControlVigenciasViajeros implements Serializable {
             context.update("formularioDialogos:duplicarTipoCentroCostos");
         }
         filtradoTiposviajeros = null;
-        viajeroSeleccionado = null;
         aceptar = true;
         tipoActualizacion = -1;
         cualCelda = -1;
@@ -418,7 +419,7 @@ public class ControlVigenciasViajeros implements Serializable {
         //context.update("form:datosViajeros");
     }
 
-    public void cancelarCambioNormaLaboral() {
+    public void cancelarCambioVigenciaViajero() {
         filtradoTiposviajeros = null;
         viajeroSeleccionado = null;
         aceptar = true;
@@ -432,9 +433,9 @@ public class ControlVigenciasViajeros implements Serializable {
 
     public void valoresBackupAutocompletar(int tipoNuevo) {
         if (tipoNuevo == 1) {
-            nuevoYduplicarCompletarNormaLaboral = nuevoVigenciasViajeros.getTipoViajero().getNombre();
+            nuevoYduplicarCompletarViajero = nuevoVigenciasViajeros.getTipoViajero().getNombre();
         } else if (tipoNuevo == 2) {
-            nuevoYduplicarCompletarNormaLaboral = duplicarVigenciasViajeros.getTipoViajero().getNombre();
+            nuevoYduplicarCompletarViajero = duplicarVigenciasViajeros.getTipoViajero().getNombre();
         }
     }
 
@@ -445,7 +446,7 @@ public class ControlVigenciasViajeros implements Serializable {
         if (confirmarCambio.equalsIgnoreCase("VIGENCIASVIAJEROS")) {
 
             if (!nuevoVigenciasViajeros.getTipoViajero().getNombre().equals("")) {
-                nuevoVigenciasViajeros.getTipoViajero().setNombre(nuevoYduplicarCompletarNormaLaboral);
+                nuevoVigenciasViajeros.getTipoViajero().setNombre(nuevoYduplicarCompletarViajero);
                 getListaTiposviajeros();
                 for (int i = 0; i < listaTiposviajeros.size(); i++) {
                     if (listaTiposviajeros.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
@@ -463,7 +464,7 @@ public class ControlVigenciasViajeros implements Serializable {
                     tipoActualizacion = tipoNuevo;
                 }
             } else {
-                nuevoVigenciasViajeros.getTipoViajero().setNombre(nuevoYduplicarCompletarNormaLaboral);
+                nuevoVigenciasViajeros.getTipoViajero().setNombre(nuevoYduplicarCompletarViajero);
                 nuevoVigenciasViajeros.setTipoViajero(new Tiposviajeros());
                 nuevoVigenciasViajeros.getTipoViajero().setNombre(" ");
             }
@@ -478,6 +479,7 @@ public class ControlVigenciasViajeros implements Serializable {
         if (tipoNuevo == 1) {
             tipoActualizacion = 2;
         }
+        viajeroSeleccionado = null;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:sucursalesDialogo");
         context.execute("sucursalesDialogo.show()");
@@ -515,7 +517,7 @@ public class ControlVigenciasViajeros implements Serializable {
         if (confirmarCambio.equalsIgnoreCase("VIGENCIASVIAJEROS")) {
 
             if (!duplicarVigenciasViajeros.getTipoViajero().getNombre().equals("")) {
-                duplicarVigenciasViajeros.getTipoViajero().setNombre(nuevoYduplicarCompletarNormaLaboral);
+                duplicarVigenciasViajeros.getTipoViajero().setNombre(nuevoYduplicarCompletarViajero);
                 for (int i = 0; i < listaTiposviajeros.size(); i++) {
                     if (listaTiposviajeros.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
                         indiceUnicoElemento = i;
@@ -536,7 +538,7 @@ public class ControlVigenciasViajeros implements Serializable {
                     //duplicarVigenciasViajeros.getTipoViajero().setNombre(nuevoYduplicarCompletarNormaLaboral);
                     duplicarVigenciasViajeros.setTipoViajero(new Tiposviajeros());
                     duplicarVigenciasViajeros.getTipoViajero().setNombre(" ");
-                    vigenciaSeleccionada.getTipoViajero().setNombre(nuevoYduplicarCompletarNormaLaboral);
+                    vigenciaSeleccionada.getTipoViajero().setNombre(nuevoYduplicarCompletarViajero);
                 }
 
             }
@@ -591,7 +593,6 @@ public class ControlVigenciasViajeros implements Serializable {
 
     public void guardarVigenciasViajeros() {
         RequestContext context = RequestContext.getCurrentInstance();
-
         if (guardado == false) {
             if (!borrarVigenciasViajerosPorEmpleado.isEmpty()) {
                 for (int i = 0; i < borrarVigenciasViajerosPorEmpleado.size(); i++) {
@@ -603,36 +604,39 @@ public class ControlVigenciasViajeros implements Serializable {
                 context.execute("mostrarBorrados.show()");
                 borrarVigenciasViajerosPorEmpleado.clear();
             }
+            System.out.println("crearVigenciasViajerosPorEmpleado: " + crearVigenciasViajerosPorEmpleado);
+
             if (!crearVigenciasViajerosPorEmpleado.isEmpty()) {
                 for (int i = 0; i < crearVigenciasViajerosPorEmpleado.size(); i++) {
                     administrarVigenciasViajeros.crearVigenciasViajeros(crearVigenciasViajerosPorEmpleado);
-
                 }
                 crearVigenciasViajerosPorEmpleado.clear();
             }
+
             if (!modificarVigenciasViajerosPorEmpleado.isEmpty()) {
                 administrarVigenciasViajeros.modificarVigenciasViajeros(modificarVigenciasViajerosPorEmpleado);
                 modificarVigenciasViajerosPorEmpleado.clear();
             }
+            listVigenciasViajerosPorEmpleado = null;
+            getListVigenciasViajerosPorEmpleado();
+            contarRegistrosTV();
             if (listVigenciasViajerosPorEmpleado != null && !listVigenciasViajerosPorEmpleado.isEmpty()) {
                 vigenciaSeleccionada = listVigenciasViajerosPorEmpleado.get(0);
                 modificarInfoRegistro(listVigenciasViajerosPorEmpleado.size());
             } else {
                 modificarInfoRegistro(0);
             }
+            activarLOV = true;
             context.update("form:datosViajeros");
+            RequestContext.getCurrentInstance().update("form:listaValores");
+            guardado = true;
+            context.update("form:ACEPTAR");
             context.update("form:informacionRegistro");
             k = 0;
-            guardado = true;
-            activarLOV = true;
-            RequestContext.getCurrentInstance().update("form:listaValores");
-            context.update("form:ACEPTAR");
+            permitirIndex = true;
             FacesMessage msg = new FacesMessage("Información", "Se guardarón los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
-            listVigenciasViajerosPorEmpleado = null;
-            getListVigenciasViajerosPorEmpleado();
-            contarRegistrosTV();
         }
         // vigenciaSeleccionada = null;
     }
@@ -662,10 +666,10 @@ public class ControlVigenciasViajeros implements Serializable {
         int contador = 0;
         int fechas = 0;
         int pasa = 0;
-
         mensajeValidacion = " ";
         nuevoVigenciasViajeros.setEmpleado(empleadoSeleccionado);
         RequestContext context = RequestContext.getCurrentInstance();
+        //vigenciaSeleccionada = null;
         if (nuevoVigenciasViajeros.getFechavigencia() == null || nuevoVigenciasViajeros.getFechavigencia().equals("")) {
             mensajeValidacion = " *Fecha\n";
         } else {
@@ -680,31 +684,26 @@ public class ControlVigenciasViajeros implements Serializable {
                 context.update("form:validacionFechas");
                 context.execute("validacionFechas.show()");
                 pasa++;
-
             } else {
                 contador++;
             }
         }
         if (nuevoVigenciasViajeros.getTipoViajero().getSecuencia() == null) {
             mensajeValidacion = mensajeValidacion + "   *Tipo Viajero\n";
-
         } else {
             contador++;
         }
-
         if (contador == 2 && pasa == 0) {
-            FacesContext c = FacesContext.getCurrentInstance();
+            //FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
                 cerrarFiltrado();
             }
-
             k++;
             l = BigInteger.valueOf(k);
             nuevoVigenciasViajeros.setSecuencia(l);
-            nuevoVigenciasViajeros.setEmpleado(empleadoSeleccionado);
-
+            //nuevoVigenciasViajeros.setEmpleado(empleadoSeleccionado);
             crearVigenciasViajerosPorEmpleado.add(nuevoVigenciasViajeros);
-            if (listVigenciasViajerosPorEmpleado == null) {
+            if (listVigenciasViajerosPorEmpleado == null || listVigenciasViajerosPorEmpleado.isEmpty()) {
                 listVigenciasViajerosPorEmpleado = new ArrayList<VigenciasViajeros>();
                 listVigenciasViajerosPorEmpleado.add(nuevoVigenciasViajeros);
             } else {
@@ -714,9 +713,11 @@ public class ControlVigenciasViajeros implements Serializable {
             RequestContext.getCurrentInstance().update("form:listaValores");
             modificarInfoRegistro(listVigenciasViajerosPorEmpleado.size());
             context.update("form:informacionRegistro");
+            System.out.println("nuevoVigenciasViajeros: " + nuevoVigenciasViajeros);
             nuevoVigenciasViajeros = new VigenciasViajeros();
             nuevoVigenciasViajeros.setTipoViajero(new Tiposviajeros());
 
+            context.update("form:datosViajeros");
             if (guardado) {
                 guardado = false;
                 context.update("form:ACEPTAR");
@@ -729,7 +730,9 @@ public class ControlVigenciasViajeros implements Serializable {
             contador = 0;
             pasa = 0;
         }
-        context.update("form:datosViajeros");
+        for (int i = 0; i < crearVigenciasViajerosPorEmpleado.size(); i++) {
+            System.out.println("crearVigenciasViajerosPorEmpleado Poss " + i + " : " + crearVigenciasViajerosPorEmpleado.get(i));
+        }
     }
 
     public void limpiarNuevoVigenciasViajeros() {
@@ -802,9 +805,9 @@ public class ControlVigenciasViajeros implements Serializable {
             RequestContext.getCurrentInstance().update("form:listaValores");
             modificarInfoRegistro(listVigenciasViajerosPorEmpleado.size());
             context.update("form:informacionRegistro");
-
+            vigenciaSeleccionada = listVigenciasViajerosPorEmpleado.get(listVigenciasViajerosPorEmpleado.indexOf(duplicarVigenciasViajeros));
             context.update("form:datosViajeros");
-            vigenciaSeleccionada = null;
+            //vigenciaSeleccionada = null;
 
             if (guardado) {
                 guardado = false;
@@ -910,7 +913,6 @@ public class ControlVigenciasViajeros implements Serializable {
         } else {
             vigenciaSeleccionada = null;
         }
-        System.out.println("vigenciaSeleccionada: " + vigenciaSeleccionada);
     }
 
     public void anularLOV() {

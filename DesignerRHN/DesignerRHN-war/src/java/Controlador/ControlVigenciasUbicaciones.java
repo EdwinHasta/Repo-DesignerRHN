@@ -78,12 +78,14 @@ public class ControlVigenciasUbicaciones implements Serializable {
     //CONTROL FECHA
     private Date fechaVigenciaBck;
     private DataTable tablaC;
+    private boolean activarLOV;
 
     public ControlVigenciasUbicaciones() {
         vigenciasUbicaciones = null;
         listaUbicaciones = new ArrayList<UbicacionesGeograficas>();
         empleado = new Empleados();
-        UbicacionSelecionada = new UbicacionesGeograficas();
+        //UbicacionSelecionada = new UbicacionesGeograficas();
+        UbicacionSelecionada = null;
         //Otros
         aceptar = true;
         //borrar aficiones
@@ -108,6 +110,7 @@ public class ControlVigenciasUbicaciones implements Serializable {
         permitirIndex = true;
         altoTabla = "292";
         vigenciaSeleccionada = null;
+        activarLOV = true;
     }
 
     @PostConstruct
@@ -128,9 +131,15 @@ public class ControlVigenciasUbicaciones implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         secuenciaEmpleado = sec;
         empleado = administrarVigenciasUbicaciones.buscarEmpleado(secuenciaEmpleado);
-        vigenciasUbicaciones = null;
+        //vigenciasUbicaciones = null;
         getVigenciasUbicaciones();
         contarRegistrosUbicaciones();
+        if (vigenciasUbicaciones != null) {
+            vigenciaSeleccionada = vigenciasUbicaciones.get(0);
+            modificarInfoRegistro(vigenciasUbicaciones.size());
+        } else {
+            modificarInfoRegistro(0);
+        }
     }
 
     public void modificarVU(VigenciasUbicaciones vUbicacion, String confirmarCambio, String valorConfirmar) {
@@ -139,6 +148,8 @@ public class ControlVigenciasUbicaciones implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("N")) {
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             System.out.println("valor Confirmar: " + valorConfirmar);
             if (!valorConfirmar.isEmpty()) {
                 int control = 0;
@@ -177,6 +188,8 @@ public class ControlVigenciasUbicaciones implements Serializable {
                 context.execute("validacionFechaVacia.show();");
             }
         } else if (confirmarCambio.equalsIgnoreCase("UBICACION")) {
+            activarLOV = false;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             vigenciaSeleccionada.getUbicacion().setDescripcion(ubicacion);
             for (int i = 0; i < listaUbicaciones.size(); i++) {
                 if (listaUbicaciones.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
@@ -220,9 +233,13 @@ public class ControlVigenciasUbicaciones implements Serializable {
             vigenciaSeleccionada = vUbicaciones;
             cualCelda = celda;
             if (cualCelda == 0) {
+                activarLOV = true;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 fechaVigenciaBck = vigenciaSeleccionada.getFechavigencia();
             }
             if (cualCelda == 1) {
+                activarLOV = false;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 ubicacion = vigenciaSeleccionada.getUbicacion().getDescripcion();
             }
         }
@@ -317,9 +334,11 @@ public class ControlVigenciasUbicaciones implements Serializable {
                 listVUModificar.clear();
             }
             System.out.println("Se guardaron los datos con exito");
-            vigenciasUbicaciones = null;
+//            vigenciasUbicaciones = null;
             getVigenciasUbicaciones();
             contarRegistrosUbicaciones();
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVUEmpleado");
             guardado = true;
@@ -337,7 +356,8 @@ public class ControlVigenciasUbicaciones implements Serializable {
             //CERRAR FILTRADO
             cerrarFiltrado();
         }
-
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         listVUBorrar.clear();
         listVUCrear.clear();
         listVUModificar.clear();
@@ -470,12 +490,14 @@ public class ControlVigenciasUbicaciones implements Serializable {
             nuevaVigencia.setEmpleado(empleado);
 
             listVUCrear.add(nuevaVigencia);
-
             vigenciasUbicaciones.add(nuevaVigencia);
+            vigenciaSeleccionada = vigenciasUbicaciones.get(vigenciasUbicaciones.indexOf(nuevaVigencia));
             modificarInfoRegistro(vigenciasUbicaciones.size());
             context.update("form:informacionRegistro");
             nuevaVigencia = new VigenciasUbicaciones();
             nuevaVigencia.setUbicacion(new UbicacionesGeograficas());
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             context.update("form:datosVUEmpleado");
             if (guardado) {
                 guardado = false;
@@ -539,10 +561,13 @@ public class ControlVigenciasUbicaciones implements Serializable {
         } else {
             vigenciasUbicaciones.add(duplicarVU);
             listVUCrear.add(duplicarVU);
+            vigenciaSeleccionada = vigenciasUbicaciones.get(vigenciasUbicaciones.indexOf(duplicarVU));
             modificarInfoRegistro(vigenciasUbicaciones.size());
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             context.update("form:informacionRegistro");
             context.update("form:datosVUEmpleado");
-            vigenciaSeleccionada = null;
+//            vigenciaSeleccionada = null;
             if (guardado) {
                 guardado = false;
                 context.update("form:ACEPTAR");
@@ -582,6 +607,8 @@ public class ControlVigenciasUbicaciones implements Serializable {
                 }
                 vigenciasUbicaciones.remove(vigenciaSeleccionada);
                 modificarInfoRegistro(vigenciasUbicaciones.size());
+                activarLOV = true;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 context.update("form:datosVUEmpleado");
                 context.update("form:informacionRegistro");
 
@@ -618,6 +645,8 @@ public class ControlVigenciasUbicaciones implements Serializable {
     public void salir() {
         RequestContext context = RequestContext.getCurrentInstance();
         cerrarFiltrado();
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         listVUBorrar.clear();
         listVUCrear.clear();
         listVUModificar.clear();
@@ -632,6 +661,9 @@ public class ControlVigenciasUbicaciones implements Serializable {
     public void asignarIndex(VigenciasUbicaciones vu, int LND) {
         vigenciaSeleccionada = vu;
         RequestContext context = RequestContext.getCurrentInstance();
+        activarLOV = false;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+        UbicacionSelecionada = null;
         if (LND == 0) {
             tipoActualizacion = 0;
         } else if (LND == 1) {
@@ -640,7 +672,6 @@ public class ControlVigenciasUbicaciones implements Serializable {
         } else if (LND == 2) {
             tipoActualizacion = 2;
         }
-        //getInfoRegistroUbicacion();
         modificarInfoRegistroUbicaciones(listaUbicaciones.size());
         context.update("form:UbicacionesGeograficasDialogo");
         context.execute("UbicacionesGeograficasDialogo.show()");
@@ -704,6 +735,7 @@ public class ControlVigenciasUbicaciones implements Serializable {
         } else {
             if (vigenciaSeleccionada != null) {
                 if (cualCelda == 1) {
+                    UbicacionSelecionada = null;
                     //getInfoRegistroUbicacion();
                     modificarInfoRegistroUbicaciones(listaUbicaciones.size());
                     context.update("form:UbicacionesGeograficasDialogo");
@@ -742,6 +774,8 @@ public class ControlVigenciasUbicaciones implements Serializable {
         if (tipoLista == 0) {
             tipoLista = 1;
         }
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         modificarInfoRegistro(filtrarVU.size());
         RequestContext.getCurrentInstance().update("form:informacionRegistro");
     }
@@ -778,14 +812,19 @@ public class ControlVigenciasUbicaciones implements Serializable {
         System.out.println("vigenciaSeleccionada: " + vigenciaSeleccionada);
     }
 
+    public void anularLOV() {
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+    }
+
     //GETTERS AND SETTERS
     public List<VigenciasUbicaciones> getVigenciasUbicaciones() {
         try {
             if (vigenciasUbicaciones == null) {
-                return vigenciasUbicaciones = administrarVigenciasUbicaciones.vigenciasUbicacionesEmpleado(secuenciaEmpleado);
-            } else {
-                return vigenciasUbicaciones;
+                vigenciasUbicaciones = administrarVigenciasUbicaciones.vigenciasUbicacionesEmpleado(secuenciaEmpleado);
             }
+            return vigenciasUbicaciones;
+
         } catch (Exception e) {
             System.out.println("Error...!! getVigenciasUbicacionsEmpleado ");
             return null;
@@ -797,11 +836,11 @@ public class ControlVigenciasUbicaciones implements Serializable {
     }
 
     public Empleados getEmpleado() {
-        try {
-            empleado = administrarVigenciasUbicaciones.buscarEmpleado(secuenciaEmpleado);
-        } catch (Exception e) {
-            System.out.println("Error getEmpleado (ControlVigenciasUbicaciones)");
-        }
+//        try {
+//            empleado = administrarVigenciasUbicaciones.buscarEmpleado(secuenciaEmpleado);
+//        } catch (Exception e) {
+//            System.out.println("Error getEmpleado (ControlVigenciasUbicaciones)");
+//        }
         return empleado;
     }
 
@@ -826,7 +865,10 @@ public class ControlVigenciasUbicaciones implements Serializable {
     }
 
     public List<UbicacionesGeograficas> getListaUbicaciones() {
-        listaUbicaciones = administrarVigenciasUbicaciones.ubicacionesGeograficas();
+        System.out.println("listaUbicaciones: " + listaUbicaciones);
+         if (listaUbicaciones == null || listaUbicaciones.isEmpty()) {
+            listaUbicaciones = administrarVigenciasUbicaciones.ubicacionesGeograficas();
+        }
         return listaUbicaciones;
     }
 
@@ -893,5 +935,13 @@ public class ControlVigenciasUbicaciones implements Serializable {
     public String getInfoRegistroUbicacion() {
 //        getListaUbicaciones();
         return infoRegistroUbicacion;
+    }
+
+    public boolean isActivarLOV() {
+        return activarLOV;
+    }
+
+    public void setActivarLOV(boolean activarLOV) {
+        this.activarLOV = activarLOV;
     }
 }
