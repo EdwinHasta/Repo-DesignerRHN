@@ -345,12 +345,11 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             fechaIni = vigenciaSeleccionada.getFechavigencia();
             if (cualCelda == 1) {
                 activarLOV = false;
-                RequestContext.getCurrentInstance().update("form:listaValores");
                 reformaLaboral = vigenciaSeleccionada.getReformalaboral().getNombre();
             } else {
                 activarLOV = true;
-                RequestContext.getCurrentInstance().update("form:listaValores");
             }
+            RequestContext.getCurrentInstance().update("form:listaValores");
         }
     }
     //GUARDAR

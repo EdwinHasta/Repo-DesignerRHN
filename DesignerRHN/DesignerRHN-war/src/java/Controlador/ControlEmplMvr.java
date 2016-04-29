@@ -17,9 +17,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.security.acl.Group;
+import java.util.*;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -106,10 +105,6 @@ public class ControlEmplMvr implements Serializable {
     private String nombreXML;
     private String nombreTabla;
     private BigInteger backUp;
-    //private BigInteger secRegistroMvrs;
-    //private BigInteger backUpSecRegistroMvrs;
-    //private BigInteger secRegistroOc;
-    //private BigInteger backUpSecRegistroOC;
     private String msnConfirmarRastro, msnConfirmarRastroHistorico;
     private String nombreTablaRastro;
     private Date fechaParametro;
@@ -122,6 +117,9 @@ public class ControlEmplMvr implements Serializable {
     private String infoRegistroMotivoMVR, infoRegistroCertificado;
     //
     private DataTable tablaC;
+    private boolean activarLOV;
+    private String estadoMientras;
+    private HashMap<Integer, String> hMapEstados;
 
     public ControlEmplMvr() {
         listMvrsEmpleado = null;
@@ -175,6 +173,12 @@ public class ControlEmplMvr implements Serializable {
 
         altoTabla1 = "115";
         altoTabla2 = "115";
+
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+
+        estadoMientras = "";
+        hMapEstados = new HashMap<Integer, String>();
     }
 
     @PostConstruct
@@ -247,18 +251,16 @@ public class ControlEmplMvr implements Serializable {
         fechaParametro.setDate(1);
         boolean retorno = true;
         if (i == 0) {
-            Mvrs auxiliar = null;
-            auxiliar = mvrSeleccionado;
 
-            if (auxiliar.getFechafinal() != null) {
-                if (auxiliar.getFechainicial().after(fechaParametro) && auxiliar.getFechainicial().before(auxiliar.getFechafinal())) {
+            if (mvrSeleccionado.getFechafinal() != null) {
+                if (mvrSeleccionado.getFechainicial().after(fechaParametro) && mvrSeleccionado.getFechainicial().before(mvrSeleccionado.getFechafinal())) {
                     retorno = true;
                 } else {
                     retorno = false;
                 }
             }
-            if (auxiliar.getFechafinal() == null) {
-                if (auxiliar.getFechainicial().after(fechaParametro)) {
+            if (mvrSeleccionado.getFechafinal() == null) {
+                if (mvrSeleccionado.getFechainicial().after(fechaParametro)) {
                     retorno = true;
                 } else {
                     retorno = false;
@@ -337,6 +339,7 @@ public class ControlEmplMvr implements Serializable {
     public void modificarFechasMvrs(Mvrs mvrs, int c) {
         mvrSeleccionado = mvrs;
 
+        RequestContext context = RequestContext.getCurrentInstance();
         if (mvrSeleccionado.getFechainicial() != null) {
             boolean retorno = false;
             retorno = validarFechasRegistroMvrs(0);
@@ -347,17 +350,16 @@ public class ControlEmplMvr implements Serializable {
                 mvrSeleccionado.setFechafinal(fechaFin);
                 mvrSeleccionado.setFechainicial(fechaIni);
 
-                RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:datosMvrEmpleado");
                 context.execute("form:errorFechas.show()");
             }
         } else {
             mvrSeleccionado.setFechainicial(fechaIni);
-
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosMvrEmpleado");
             context.execute("errorRegNewMvr.show()");
         }
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
     public void modificarFechasOtros(OtrosCertificados otroC, int c) {
@@ -385,6 +387,8 @@ public class ControlEmplMvr implements Serializable {
             context.update("form:datosOCEmpleado");
             context.execute("errorRegNewOtro.show()");
         }
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
     /**
@@ -416,6 +420,8 @@ public class ControlEmplMvr implements Serializable {
                 context.execute("MotivoDialogo.show()");
                 tipoActualizacion = 0;
             }
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
         }
         if (coincidencias == 1) {
             if (!listMvrsCrear.contains(mvrSeleccionado)) {
@@ -459,6 +465,19 @@ public class ControlEmplMvr implements Serializable {
         }
     }
 
+    public void modificarEstado() {
+        otroCertificadoSeleccionado.setEstado(hMapEstados.get(otroCertificadoSeleccionado.getSecuencia().intValue()));
+        System.out.println("otroCertificadoSeleccionado.getEstado(): " + otroCertificadoSeleccionado.getEstado());
+        System.out.println("hMapEstados.get(otro.getSecuencia().intValue()): " + hMapEstados.get(otroCertificadoSeleccionado.getSecuencia().intValue()));
+        
+        RequestContext.getCurrentInstance().update("form:datosOCEmpleado");
+    }
+/*
+    public String llamarEstado(BigInteger sec) {
+        estadoMientras = hMapEstados.get(sec.intValue());
+        return estadoMientras;
+    }*/
+
     /**
      * Metodo que modifica los cambios efectuados en la tabla VigenciaProrrateo
      * de la pagina
@@ -488,6 +507,8 @@ public class ControlEmplMvr implements Serializable {
                 context.execute("CertificadosDialogo.show()");
                 tipoActualizacion = 0;
             }
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
         }
         if (coincidencias == 1) {
             if (!listOtrosCertificadosCrear.contains(otroCertificadoSeleccionado)) {
@@ -650,20 +671,27 @@ public class ControlEmplMvr implements Serializable {
             fechaIni = mvrSeleccionado.getFechainicial();
             if (cualCeldaMvrs == 3) {
                 motivoMvrs = mvrSeleccionado.getMotivo().getNombre();
+                activarLOV = false;
+            } else {
+                activarLOV = true;
             }
+            RequestContext.getCurrentInstance().update("form:listaValores");
         }
         otroCertificadoSeleccionado = null;
+        RequestContext.getCurrentInstance().execute("datosOCEmpleado.unselectAllRows()");
         RequestContext.getCurrentInstance().update("form:datosOCEmpleado");
     }
-    /*
-     * public void posicionOtro() { FacesContext context =
-     * FacesContext.getCurrentInstance(); Map<String, String> map =
-     * context.getExternalContext().getRequestParameterMap(); String name =
-     * map.get("n"); // name attribute of node String type = map.get("t"); //
-     * type attribute of node int indice = Integer.parseInt(type); int columna =
-     * Integer.parseInt(name);
-     * cambiarIndiceOtrosCertificados(otroCertificadoSeleccionado, columna); }
-     */
+
+    public void posicionOtro() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+        String name = map.get("n"); // name attribute of node 
+        String type = map.get("t"); // type attribute of node 
+        int indice = Integer.parseInt(type);
+        int columna = Integer.parseInt(name);
+        otroCertificadoSeleccionado = listOCertificados.get(indice);
+        cambiarIndiceOtrosCertificados(otroCertificadoSeleccionado, columna);
+    }
 
     public void deseleccionarRow() {
         System.out.println("entro en deseleccionarRow()");
@@ -676,6 +704,8 @@ public class ControlEmplMvr implements Serializable {
         permitirIndexMvrs = true;
         filtrarListMotivosMvrs = null;
         motivoMvrSeleccionado = null;
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosMvrEmpleado");
         context.update("form:datosOCEmpleado");
@@ -688,10 +718,16 @@ public class ControlEmplMvr implements Serializable {
             fechaFinOC = otroCertificadoSeleccionado.getFechafinal();
             fechaIniOC = otroCertificadoSeleccionado.getFechainicial();
             if (cualCeldaOtrosCertificados == 4) {
+                activarLOV = false;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 tipoCertificado = otroCertificadoSeleccionado.getTipocertificado().getDescripcion();
+            } else {
+                activarLOV = true;
+                RequestContext.getCurrentInstance().update("form:listaValores");
             }
         }
         mvrSeleccionado = null;
+        RequestContext.getCurrentInstance().execute("datosMvrEmpleado.unselectAllRows()");
         RequestContext.getCurrentInstance().update("form:datosMvrEmpleado");
     }
 
@@ -703,6 +739,8 @@ public class ControlEmplMvr implements Serializable {
         guardarCambiosMvrs();
         guardarCambiosOtrosCertificados();
         guardado = true;
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:ACEPTAR");
     }
@@ -776,42 +814,10 @@ public class ControlEmplMvr implements Serializable {
     public void cancelarModificacion() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (banderaMvrs == 1) {
-            //CERRAR FILTRADO
-            mvrValorAnual = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:vSFechaVigencia");
-            mvrValorAnual.setFilterStyle("display: none; visibility: hidden;");
-            mvrMotivo = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:vSMotivoCambioSueldo");
-            mvrMotivo.setFilterStyle("display: none; visibility: hidden;");
-            mvrValor = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:vSTipoSueldo");
-            mvrValor.setFilterStyle("display: none; visibility: hidden;");
-            mvrFechaFinal = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:vSVigenciaRetroactivo");
-            mvrFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            mvrFechaInicial = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:vSValor");
-            mvrFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla1 = "115";
-            RequestContext.getCurrentInstance().update("form:datosMvrEmpleado");
-            banderaMvrs = 0;
-            filtrarListMvrsEmpleado = null;
-            tipoListaMvrs = 0;
+            restablecerTablaMVR();
         }
         if (banderaOC == 1) {
-
-            ocDias = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocDias");
-            ocDias.setFilterStyle("display: none; visibility: hidden;");
-            ocCertificado = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocCertificado");
-            ocCertificado.setFilterStyle("display: none; visibility: hidden;");
-            ocEstado = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocEstado");
-            ocEstado.setFilterStyle("display: none; visibility: hidden;");
-            ocValor = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocValor");
-            ocValor.setFilterStyle("display: none; visibility: hidden;");
-            ocFechaFinal = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocFechaFinal");
-            ocFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            ocFechaInicial = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocFechaInicial");
-            ocFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla2 = "115";
-            RequestContext.getCurrentInstance().update("form:datosOCEmpleado");
-            banderaOC = 0;
-            filtrarListOtrosCertificados = null;
-            tipoListaOtrosCertificados = 0;
+            restablecerTablaOC();
         }
         listMvrsBorrar.clear();
         listOtrosCertificadosBorrar.clear();
@@ -827,6 +833,8 @@ public class ControlEmplMvr implements Serializable {
         cambiosMvr = false;
         otroCertificadoSeleccionado = null;
         mvrSeleccionado = null;
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
 
         getListMvrsEmpleado();
         getListOCertificados();
@@ -911,49 +919,47 @@ public class ControlEmplMvr implements Serializable {
      * Metodo que se encarga de agregar un nueva VigenciasLocalizaciones
      */
     public void agregarNuevaMvr() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (nuevaMvrs.getFechainicial() != null && nuevaMvrs.getMotivo() != null) {
-            if (validarFechasRegistroMvrs(1)) {
-                cambiosMvr = true;
-                FacesContext c = FacesContext.getCurrentInstance();
-                if (banderaMvrs == 1) {
-                    //CERRAR FILTRADO
-                    mvrValorAnual = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:vSFechaVigencia");
-                    mvrValorAnual.setFilterStyle("display: none; visibility: hidden;");
-                    mvrMotivo = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:vSMotivoCambioSueldo");
-                    mvrMotivo.setFilterStyle("display: none; visibility: hidden;");
-                    mvrValor = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:vSTipoSueldo");
-                    mvrValor.setFilterStyle("display: none; visibility: hidden;");
-                    mvrFechaFinal = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:vSVigenciaRetroactivo");
-                    mvrFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                    mvrFechaInicial = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:vSValor");
-                    mvrFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                    altoTabla1 = "115";
-                    RequestContext.getCurrentInstance().update("form:datosMvrEmpleado");
-                    banderaMvrs = 0;
-                    filtrarListMvrsEmpleado = null;
-                    tipoListaMvrs = 0;
+            int error = 0;
+            for (int i = 0; i < listMvrsEmpleado.size(); i++) {
+                if (listMvrsEmpleado.get(i).getFechainicial().equals(nuevaMvrs.getFechainicial())) {
+                    error++;
                 }
-                //AGREGAR REGISTRO A LA LISTA VIGENCIAS 
-                paraNuevaMenValRet++;
-                BigInteger var = BigInteger.valueOf(paraNuevaMenValRet);
-                nuevaMvrs.setSecuencia(var);
-                nuevaMvrs.setEmpleado(empleado);
-                listMvrsCrear.add(nuevaMvrs);
-                listMvrsEmpleado.add(nuevaMvrs);
-                modificarInfoRegistroMVR(listMvrsEmpleado.size());
-
-                nuevaMvrs = new Mvrs();
-                nuevaMvrs.setMotivo(new Motivosmvrs());
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.update("form:datosMvrEmpleado");
-                if (guardado) {
-                    guardado = false;
-                    context.update("form:ACEPTAR");
+            }
+            if (error == 0) {
+                if (validarFechasRegistroMvrs(1)) {
+                    cambiosMvr = true;
+                    if (banderaMvrs == 1) {
+                        restablecerTablaMVR();
+                    }
+                    //AGREGAR REGISTRO A LA LISTA VIGENCIAS 
+                    paraNuevaMenValRet++;
+                    BigInteger var = BigInteger.valueOf(paraNuevaMenValRet);
+                    nuevaMvrs.setSecuencia(var);
+                    nuevaMvrs.setEmpleado(empleado);
+                    listMvrsCrear.add(nuevaMvrs);
+                    listMvrsEmpleado.add(nuevaMvrs);
+                    modificarInfoRegistroMVR(listMvrsEmpleado.size());
+                    mvrSeleccionado = listMvrsEmpleado.get(listMvrsEmpleado.indexOf(nuevaMvrs));
+                    activarLOV = true;
+                    RequestContext.getCurrentInstance().update("form:listaValores");
+                    nuevaMvrs = new Mvrs();
+                    nuevaMvrs.setMotivo(new Motivosmvrs());
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.update("form:datosMvrEmpleado");
+                    if (guardado) {
+                        guardado = false;
+                        context.update("form:ACEPTAR");
+                    }
+                    context.execute("NuevoRegistroMVRS.hide()");
+                } else {
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.execute("errorFechas.show()");
                 }
-                context.execute("NuevoRegistroMVRS.hide()");
             } else {
                 RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("errorFechas.show()");
+                context.execute("errorFechasDuplicadas.show()");
             }
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -981,24 +987,7 @@ public class ControlEmplMvr implements Serializable {
             if (validarFechasRegistroOtroC(1)) {
                 cambiosOtros = true;
                 if (banderaOC == 1) {
-                    FacesContext c = FacesContext.getCurrentInstance();
-                    ocDias = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocDias");
-                    ocDias.setFilterStyle("display: none; visibility: hidden;");
-                    ocCertificado = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocCertificado");
-                    ocCertificado.setFilterStyle("display: none; visibility: hidden;");
-                    ocEstado = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocEstado");
-                    ocEstado.setFilterStyle("display: none; visibility: hidden;");
-                    ocValor = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocValor");
-                    ocValor.setFilterStyle("display: none; visibility: hidden;");
-                    ocFechaFinal = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocFechaFinal");
-                    ocFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                    ocFechaInicial = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocFechaInicial");
-                    ocFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                    altoTabla2 = "115";
-                    RequestContext.getCurrentInstance().update("form:datosOCEmpleado");
-                    banderaOC = 0;
-                    filtrarListOtrosCertificados = null;
-                    tipoListaOtrosCertificados = 0;
+                    restablecerTablaOC();
                 }
                 //AGREGAR REGISTRO A LA LISTA VIGENCIAS
                 paraNuevaMenValRet++;
@@ -1011,7 +1000,10 @@ public class ControlEmplMvr implements Serializable {
                 listOtrosCertificadosCrear.add(nuevaOtroCertificado);
                 listOCertificados.add(nuevaOtroCertificado);
                 modificarInfoRegistroOtroC(listOCertificados.size());
-                //
+                otroCertificadoSeleccionado = listOCertificados.get(listOCertificados.indexOf(nuevaOtroCertificado));
+                activarLOV = true;
+                RequestContext.getCurrentInstance().update("form:listaValores");
+
                 nuevaOtroCertificado = new OtrosCertificados();
                 nuevaOtroCertificado.setTipocertificado(new TiposCertificados());
                 RequestContext context = RequestContext.getCurrentInstance();
@@ -1093,46 +1085,43 @@ public class ControlEmplMvr implements Serializable {
      * VigenciasLocalizaciones
      */
     public void confirmarDuplicar() {
-        if (nuevaMvrs.getFechainicial() != null && nuevaMvrs.getMotivo() != null) {
-            if (validarFechasRegistroMvrs(1)) {
-                paraNuevaMenValRet++;
-                BigInteger var = BigInteger.valueOf(paraNuevaMenValRet);
-                duplicarMvrs.setSecuencia(var);
-                cambiosMvr = true;
-                listMvrsEmpleado.add(duplicarMvrs);
-                listMvrsCrear.add(duplicarMvrs);
-                modificarInfoRegistroMVR(listMvrsEmpleado.size());
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.update("form:datosMvrEmpleado");
-                mvrSeleccionado = null;
-                if (guardado) {
-                    guardado = false;
-                    context.update("form:ACEPTAR");
+        if (duplicarMvrs.getFechainicial() != null && duplicarMvrs.getMotivo() != null) {
+            int error = 0;
+            for (int i = 0; i < listMvrsEmpleado.size(); i++) {
+                if (listMvrsEmpleado.get(i).getFechainicial().equals(duplicarMvrs.getFechainicial())) {
+                    error++;
                 }
-                if (banderaMvrs == 1) {
-                    //CERRAR FILTRADO
-                    FacesContext c = FacesContext.getCurrentInstance();
-                    mvrValorAnual = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:vSFechaVigencia");
-                    mvrValorAnual.setFilterStyle("display: none; visibility: hidden;");
-                    mvrMotivo = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:vSMotivoCambioSueldo");
-                    mvrMotivo.setFilterStyle("display: none; visibility: hidden;");
-                    mvrValor = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:vSTipoSueldo");
-                    mvrValor.setFilterStyle("display: none; visibility: hidden;");
-                    mvrFechaFinal = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:vSVigenciaRetroactivo");
-                    mvrFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                    mvrFechaInicial = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:vSValor");
-                    mvrFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                    altoTabla1 = "115";
-                    RequestContext.getCurrentInstance().update("form:datosMvrEmpleado");
-                    banderaMvrs = 0;
-                    filtrarListMvrsEmpleado = null;
-                    tipoListaMvrs = 0;
+            }
+            if (error == 0) {
+                if (validarFechasRegistroMvrs(2)) {
+                    paraNuevaMenValRet++;
+                    BigInteger var = BigInteger.valueOf(paraNuevaMenValRet);
+                    duplicarMvrs.setSecuencia(var);
+                    cambiosMvr = true;
+                    listMvrsEmpleado.add(duplicarMvrs);
+                    listMvrsCrear.add(duplicarMvrs);
+                    mvrSeleccionado = listMvrsEmpleado.get(listMvrsEmpleado.indexOf(duplicarMvrs));
+                    activarLOV = true;
+                    RequestContext.getCurrentInstance().update("form:listaValores");
+                    modificarInfoRegistroMVR(listMvrsEmpleado.size());
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.update("form:datosMvrEmpleado");
+                    if (guardado) {
+                        guardado = false;
+                        context.update("form:ACEPTAR");
+                    }
+                    if (banderaMvrs == 1) {
+                        restablecerTablaMVR();
+                    }
+                    context.execute("DuplicarRegistroMVRS.hide()");
+                    duplicarMvrs = new Mvrs();
+                } else {
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.execute("errorFechas.show()");
                 }
-                context.execute("DuplicarRegistroMVRS.hide()");
-                duplicarMvrs = new Mvrs();
             } else {
                 RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("errorFechas.show()");
+                context.execute("errorFechasDuplicadas.show()");
             }
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -1188,36 +1177,20 @@ public class ControlEmplMvr implements Serializable {
                 duplicarOtrosCertificados.setEstado(aux);
                 listOCertificados.add(duplicarOtrosCertificados);
                 listOtrosCertificadosCrear.add(duplicarOtrosCertificados);
+                otroCertificadoSeleccionado = listOCertificados.get(listOCertificados.indexOf(duplicarOtrosCertificados));
                 modificarInfoRegistroOtroC(listOCertificados.size());
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:datosOCEmpleado");
                 context.execute("DuplicarRegistroOC.hide();");
-                otroCertificadoSeleccionado = null;
                 if (guardado) {
                     guardado = false;
                     context.update("form:ACEPTAR");
                 }
                 if (banderaOC == 1) {
-                    //CERRAR FILTRADO
-                    FacesContext c = FacesContext.getCurrentInstance();
-                    ocDias = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocDias");
-                    ocDias.setFilterStyle("display: none; visibility: hidden;");
-                    ocCertificado = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocCertificado");
-                    ocCertificado.setFilterStyle("display: none; visibility: hidden;");
-                    ocEstado = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocEstado");
-                    ocEstado.setFilterStyle("display: none; visibility: hidden;");
-                    ocValor = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocValor");
-                    ocValor.setFilterStyle("display: none; visibility: hidden;");
-                    ocFechaFinal = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocFechaFinal");
-                    ocFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                    ocFechaInicial = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocFechaInicial");
-                    ocFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                    altoTabla2 = "115";
-                    RequestContext.getCurrentInstance().update("form:datosOCEmpleado");
-                    banderaOC = 0;
-                    filtrarListOtrosCertificados = null;
-                    tipoListaOtrosCertificados = 0;
+                    restablecerTablaOC();
                 }
+                activarLOV = true;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 duplicarOtrosCertificados = new OtrosCertificados();
             } else {
                 RequestContext context = RequestContext.getCurrentInstance();
@@ -1244,6 +1217,8 @@ public class ControlEmplMvr implements Serializable {
      */
     public void validarBorradoRegistro() {
         RequestContext context = RequestContext.getCurrentInstance();
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         if (otroCertificadoSeleccionado == null && mvrSeleccionado == null) {
             context.execute("seleccionarRegistro.show()");
         } else {
@@ -1299,15 +1274,14 @@ public class ControlEmplMvr implements Serializable {
                 listOtrosCertificadosModificar.remove(modIndex);
                 listOtrosCertificadosBorrar.add(otroCertificadoSeleccionado);
             } else if (!listOtrosCertificadosCrear.isEmpty() && listOtrosCertificadosCrear.contains(otroCertificadoSeleccionado)) {
-                int crearIndex = listOtrosCertificadosCrear.indexOf(otroCertificadoSeleccionado);
-                listOtrosCertificadosCrear.remove(crearIndex);
+                listOtrosCertificadosCrear.remove(otroCertificadoSeleccionado);
             } else {
                 listOtrosCertificadosBorrar.add(otroCertificadoSeleccionado);
             }
-            listOCertificados.remove(otroCertificadoSeleccionado);
             if (tipoListaOtrosCertificados == 1) {
-                filtrarListOtrosCertificados.remove(otroCertificadoSeleccionado);
+                filtrarListOtrosCertificados.remove(filtrarListOtrosCertificados.indexOf(otroCertificadoSeleccionado));
             }
+            listOCertificados.remove(otroCertificadoSeleccionado);
             modificarInfoRegistroOtroC(listOCertificados.size());
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -1318,6 +1292,7 @@ public class ControlEmplMvr implements Serializable {
                 guardado = false;
                 context.update("form:ACEPTAR");
             }
+            RequestContext.getCurrentInstance().update("form:datosOCEmpleado");
         }
     }
 
@@ -1339,40 +1314,66 @@ public class ControlEmplMvr implements Serializable {
      * Metodo que acciona el filtrado de la tabla vigencia localizacion
      */
     public void filtradoMvr() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (mvrSeleccionado != null) {
-            FacesContext c = FacesContext.getCurrentInstance();
             if (banderaMvrs == 0) {
                 mvrValorAnual = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:mvrValorAnual");
-                mvrValorAnual.setFilterStyle("width: 60px");
+                mvrValorAnual.setFilterStyle("width: 85%");
                 mvrMotivo = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:mvrMotivo");
-                mvrMotivo.setFilterStyle("width: 60px");
+                mvrMotivo.setFilterStyle("width: 85%");
                 mvrValor = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:mvrValor");
-                mvrValor.setFilterStyle("width: 60px");
+                mvrValor.setFilterStyle("width: 85%");
                 mvrFechaFinal = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:mvrFechaFinal");
-                mvrFechaFinal.setFilterStyle("width: 60px");
+                mvrFechaFinal.setFilterStyle("width: 85%");
                 mvrFechaInicial = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:mvrFechaInicial");
-                mvrFechaInicial.setFilterStyle("width: 60px");
+                mvrFechaInicial.setFilterStyle("width: 85%");
                 altoTabla1 = "91";
                 RequestContext.getCurrentInstance().update("form:datosMvrEmpleado");
                 banderaMvrs = 1;
             } else if (banderaMvrs == 1) {
-                mvrValorAnual = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:mvrValorAnual");
-                mvrValorAnual.setFilterStyle("display: none; visibility: hidden;");
-                mvrMotivo = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:mvrMotivo");
-                mvrMotivo.setFilterStyle("display: none; visibility: hidden;");
-                mvrValor = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:mvrValor");
-                mvrValor.setFilterStyle("display: none; visibility: hidden;");
-                mvrFechaFinal = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:mvrFechaFinal");
-                mvrFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                mvrFechaInicial = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:mvrFechaInicial");
-                mvrFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                altoTabla1 = "115";
-                RequestContext.getCurrentInstance().update("form:datosMvrEmpleado");
-                banderaMvrs = 0;
-                filtrarListMvrsEmpleado = null;
-                tipoListaMvrs = 0;
+                restablecerTablaMVR();
             }
         }
+    }
+
+    public void restablecerTablaMVR() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        mvrValorAnual = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:mvrValorAnual");
+        mvrValorAnual.setFilterStyle("display: none; visibility: hidden;");
+        mvrMotivo = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:mvrMotivo");
+        mvrMotivo.setFilterStyle("display: none; visibility: hidden;");
+        mvrValor = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:mvrValor");
+        mvrValor.setFilterStyle("display: none; visibility: hidden;");
+        mvrFechaFinal = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:mvrFechaFinal");
+        mvrFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+        mvrFechaInicial = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:mvrFechaInicial");
+        mvrFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+        altoTabla1 = "115";
+        banderaMvrs = 0;
+        filtrarListMvrsEmpleado = null;
+        tipoListaMvrs = 0;
+        RequestContext.getCurrentInstance().update("form:datosMvrEmpleado");
+    }
+
+    public void restablecerTablaOC() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        ocDias = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocDias");
+        ocDias.setFilterStyle("display: none; visibility: hidden;");
+        ocCertificado = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocCertificado");
+        ocCertificado.setFilterStyle("display: none; visibility: hidden;");
+        ocEstado = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocEstado");
+        ocEstado.setFilterStyle("display: none; visibility: hidden;");
+        ocValor = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocValor");
+        ocValor.setFilterStyle("display: none; visibility: hidden;");
+        ocFechaFinal = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocFechaFinal");
+        ocFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+        ocFechaInicial = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocFechaInicial");
+        ocFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+        altoTabla2 = "115";
+        banderaOC = 0;
+        filtrarListOtrosCertificados = null;
+        tipoListaOtrosCertificados = 0;
+        RequestContext.getCurrentInstance().update("form:datosOCEmpleado");
     }
 
     /**
@@ -1384,39 +1385,22 @@ public class ControlEmplMvr implements Serializable {
             if (banderaOC == 0) {
                 //Columnas Tabla VPP
                 ocDias = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocDias");
-                ocDias.setFilterStyle("width: 60px");
+                ocDias.setFilterStyle("width: 85%");
                 ocCertificado = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocCertificado");
-                ocCertificado.setFilterStyle("width: 60px");
+                ocCertificado.setFilterStyle("width: 85%");
                 ocEstado = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocEstado");
-                ocEstado.setFilterStyle("width: 60px");
+                ocEstado.setFilterStyle("width: 85%");
                 ocValor = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocValor");
-                ocValor.setFilterStyle("width: 60px");
+                ocValor.setFilterStyle("width: 85%");
                 ocFechaFinal = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocFechaFinal");
-                ocFechaFinal.setFilterStyle("width: 60px");
+                ocFechaFinal.setFilterStyle("width: 85%");
                 ocFechaInicial = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocFechaInicial");
-                ocFechaInicial.setFilterStyle("width: 60px");
+                ocFechaInicial.setFilterStyle("width: 85%");
                 altoTabla2 = "91";
                 RequestContext.getCurrentInstance().update("form:datosOCEmpleado");
                 banderaOC = 1;
             } else if (banderaOC == 1) {
-
-                ocDias = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocDias");
-                ocDias.setFilterStyle("display: none; visibility: hidden;");
-                ocCertificado = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocCertificado");
-                ocCertificado.setFilterStyle("display: none; visibility: hidden;");
-                ocEstado = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocEstado");
-                ocEstado.setFilterStyle("display: none; visibility: hidden;");
-                ocValor = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocValor");
-                ocValor.setFilterStyle("display: none; visibility: hidden;");
-                ocFechaFinal = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocFechaFinal");
-                ocFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                ocFechaInicial = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocFechaInicial");
-                ocFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                altoTabla2 = "115";
-                RequestContext.getCurrentInstance().update("form:datosOCEmpleado");
-                banderaOC = 0;
-                filtrarListOtrosCertificados = null;
-                tipoListaOtrosCertificados = 0;
+                restablecerTablaOC();
             }
         }
     }
@@ -1429,40 +1413,10 @@ public class ControlEmplMvr implements Serializable {
         FacesContext c = FacesContext.getCurrentInstance();
         RequestContext context = RequestContext.getCurrentInstance();
         if (banderaMvrs == 1) {
-            mvrValorAnual = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:vSFechaVigencia");
-            mvrValorAnual.setFilterStyle("display: none; visibility: hidden;");
-            mvrMotivo = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:vSMotivoCambioSueldo");
-            mvrMotivo.setFilterStyle("display: none; visibility: hidden;");
-            mvrValor = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:vSTipoSueldo");
-            mvrValor.setFilterStyle("display: none; visibility: hidden;");
-            mvrFechaFinal = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:vSVigenciaRetroactivo");
-            mvrFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            mvrFechaInicial = (Column) c.getViewRoot().findComponent("form:datosMvrEmpleado:vSValor");
-            mvrFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla1 = "115";
-            RequestContext.getCurrentInstance().update("form:datosMvrEmpleado");
-            banderaMvrs = 0;
-            filtrarListMvrsEmpleado = null;
-            tipoListaMvrs = 0;
+            restablecerTablaMVR();
         }
         if (banderaOC == 1) {
-            ocDias = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocDias");
-            ocDias.setFilterStyle("display: none; visibility: hidden;");
-            ocCertificado = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocCertificado");
-            ocCertificado.setFilterStyle("display: none; visibility: hidden;");
-            ocEstado = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocEstado");
-            ocEstado.setFilterStyle("display: none; visibility: hidden;");
-            ocValor = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocValor");
-            ocValor.setFilterStyle("display: none; visibility: hidden;");
-            ocFechaFinal = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocFechaFinal");
-            ocFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            ocFechaInicial = (Column) c.getViewRoot().findComponent("form:datosOCEmpleado:ocFechaInicial");
-            ocFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla2 = "115";
-            RequestContext.getCurrentInstance().update("form:datosOCEmpleado");
-            banderaOC = 0;
-            filtrarListOtrosCertificados = null;
-            tipoListaOtrosCertificados = 0;
+            restablecerTablaOC();
         }
 
         listMvrsBorrar.clear();
@@ -1479,6 +1433,8 @@ public class ControlEmplMvr implements Serializable {
         guardado = true;
         cambiosMvr = false;
         cambiosOtros = false;
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         context.update("form:ACEPTAR");
     }
     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO) (list = ESTRUCTURAS - MOTIVOSLOCALIZACIONES - PROYECTOS)
@@ -1506,6 +1462,8 @@ public class ControlEmplMvr implements Serializable {
                 tipoActualizacion = 2;
             }
             if (column == 0) {
+                activarLOV = false;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 modificarInfoRegistroM(listMotivosMvrs.size());
                 context.update("form:MotivoDialogo");
                 context.execute("MotivoDialogo.show()");
@@ -1522,6 +1480,8 @@ public class ControlEmplMvr implements Serializable {
                 tipoActualizacion = 2;
             }
             if (column == 0) {
+                activarLOV = false;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 modificarInfoRegistroC(listTiposCertificados.size());
                 context.update("form:CertificadosDialogo");
                 context.execute("CertificadosDialogo.show()");
@@ -1541,6 +1501,8 @@ public class ControlEmplMvr implements Serializable {
                 tipoActualizacion = 2;
             }
             if (column == 0) {
+                activarLOV = false;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 modificarInfoRegistroM(listMotivosMvrs.size());
                 context.update("form:MotivoDialogo");
                 context.execute("MotivoDialogo.show()");
@@ -1556,6 +1518,8 @@ public class ControlEmplMvr implements Serializable {
                 tipoActualizacion = 2;
             }
             if (column == 0) {
+                activarLOV = false;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 modificarInfoRegistroC(listTiposCertificados.size());
                 context.update("form:CertificadosDialogo");
                 context.execute("CertificadosDialogo.show()");
@@ -1594,10 +1558,13 @@ public class ControlEmplMvr implements Serializable {
             context.update("formularioDialogos:duplicarMVRS");
         }
         filtrarListMotivosMvrs = null;
-        //motivoMvrSeleccionado = null;
+        motivoMvrSeleccionado = null;
         aceptar = true;
         tipoActualizacion = -1;
         cualCeldaMvrs = -1;
+        context.reset("form:lovMotivo:globalFilter");
+        context.execute("lovMotivo.clearFilters()");
+        context.execute("MotivoDialogo.hide()");
     }
 
     /**
@@ -1842,6 +1809,8 @@ public class ControlEmplMvr implements Serializable {
         if (tipoListaMvrs == 0) {
             tipoListaMvrs = 1;
         }
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         mvrSeleccionado = null;
         modificarInfoRegistroMVR(filtrarListMvrsEmpleado.size());
         RequestContext.getCurrentInstance().update("form:informacionRegistroMVR");
@@ -1851,6 +1820,8 @@ public class ControlEmplMvr implements Serializable {
         if (tipoListaMvrs == 0) {
             tipoListaMvrs = 1;
         }
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         otroCertificadoSeleccionado = null;
         modificarInfoRegistroOtroC(filtrarListOtrosCertificados.size());
         RequestContext.getCurrentInstance().update("form:informacionRegistroOtroC");
@@ -1896,6 +1867,11 @@ public class ControlEmplMvr implements Serializable {
         } else {
             modificarInfoRegistroOtroC(0);
         }
+    }
+
+    public void anularLOV() {
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
     //METODO RASTROS PARA LAS TABLAS EN EMPLVIGENCIASUELDOS
@@ -2060,6 +2036,13 @@ public class ControlEmplMvr implements Serializable {
             if (listOCertificados == null) {
                 if (empleado != null) {
                     listOCertificados = administrarEmplMvrs.listOtrosCertificadosEmpleado(empleado.getSecuencia());
+                }
+                if (listOCertificados != null) {
+                    if (!listOCertificados.isEmpty()) {
+                        for (int i = 0; i < listOCertificados.size(); i++) {
+                            hMapEstados.put(listOCertificados.get(i).getSecuencia().intValue(), listOCertificados.get(i).getEstado());
+                        }
+                    }
                 }
             }
             return listOCertificados;
@@ -2337,5 +2320,21 @@ public class ControlEmplMvr implements Serializable {
 
     public String getInfoRegistroOtroC() {
         return infoRegistroOtroC;
+    }
+
+    public boolean isActivarLOV() {
+        return activarLOV;
+    }
+
+    public void setActivarLOV(boolean activarLOV) {
+        this.activarLOV = activarLOV;
+    }
+
+    public String getEstadoMientras() {
+        return estadoMientras;
+    }
+
+    public void setEstadoMientras(String estadoMientras) {
+        this.estadoMientras = estadoMientras;
     }
 }

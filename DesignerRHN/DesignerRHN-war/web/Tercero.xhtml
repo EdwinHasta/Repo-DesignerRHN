@@ -70,7 +70,7 @@
 
                                 <p:separator style="position: relative; top: -9px"/>
                                 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTercero.salir()}" action="atrasterceroemplvigenciaafiliacion3" process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTercero.salir()}" action="#{controlTercero.redirigirPaginaAnterior()}" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
 
                             </p:toolbarGroup>  
@@ -364,7 +364,7 @@
                         </fieldset>
 
                         <p:commandButton style="position: absolute; left: 683px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value="" onclick="confirmarGuardarSalida.show();" update=":form:datosTerceros" disabled="#{controlTercero.guardado}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" action="atrasterceroemplvigenciaafiliacion3" actionListener="#{controlTercero.salir()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" action="#{controlTercero.redirigirPaginaAnterior()}" actionListener="#{controlTercero.salir()}" process="@this" />
                     </p:panel>
 
 
