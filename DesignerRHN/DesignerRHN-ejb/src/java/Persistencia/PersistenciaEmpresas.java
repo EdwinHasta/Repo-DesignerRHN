@@ -37,7 +37,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
             em.persist(empresas);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaVigenciasCargos.crear: " + e);
+            System.out.println("Error PersistenciaEmpresas.crear: " + e);
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -53,7 +53,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
             em.merge(empresas);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaVigenciasCargos.crear: " + e);
+            System.out.println("Error PersistenciaEmpresas.editar: " + e);
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -75,7 +75,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
                     tx.rollback();
                 }
             } catch (Exception ex) {
-                System.out.println("Error PersistenciaVigenciasCargos.borrar: " + e);
+                System.out.println("Error PersistenciaEmpresas.borrar: " + e);
             }
         }
     }
@@ -89,7 +89,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
             List<Empresas> empresas = query.getResultList();
             return empresas;
         } catch (Exception e) {
-            System.out.println("Error buscarEmpresas PersistenciaEmpresas : " + e.toString());
+            System.out.println("Error PersistenciaEmpresas.buscarEmpresas : " + e.toString());
             return null;
         }
     }
@@ -107,7 +107,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
             List<Empresas> empresas = query.getResultList();
             return empresas;
         } catch (Exception e) {
-            System.out.println("Error buscarEmpresas PersistenciaEmpresas : " + e.toString());
+            System.out.println("Error PersistenciaEmpresas.buscarEmpresasLista : " + e.toString());
             return null;
         }
     }
@@ -124,7 +124,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
             return empresas;
         } catch (Exception e) {
             empresas = null;
-            System.out.println("Error buscarEmpresasSecuencia PersistenciaEmpresas");
+            System.out.println("Error buscarEmpresasSecuencia buscarEmpresasSecuencia");
             return empresas;
         }
     }
@@ -143,12 +143,12 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
             return estado;
         } catch (Exception e) {
             System.out.println("Error PersistenciaEmpresas.estadoConsultaDatos");
-            return "N";
+            return null;
         }
     }
 
     @Override
-    public String nombreEmpresa(EntityManager entity) {
+    public String nombreEmpresa(EntityManager entity) throws Exception {
         try {
             entity.clear();
             Query query = entity.createQuery("SELECT COUNT(e) FROM Empresas e WHERE e.codigo > 0");
@@ -158,6 +158,9 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
                 query = entity.createQuery("SELECT e.nombre FROM Empresas e WHERE e.codigo > 0");
                 query.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 String nombreE = (String) query.getSingleResult();
+                if (nombreE.length() > 52) {
+                    nombreE = nombreE.substring(0, 52);
+                }
                 return nombreE;
             } else if (resultado > 1) {
                 return "(MULTIEMPRESA)";
@@ -165,14 +168,14 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
                 return "SIN REGISTRAR";
             }
         } catch (Exception e) {
-            System.out.println("Exepcion en PersistenciaEmpleados.nombreEmpresa" + e.toString());
-            return null;
+            System.out.println("Exepcion en PersistenciaEmpresas.nombreEmpresa" + e.toString());
+            throw e;
         }
     }
 
     @Override
     public Short codigoEmpresa(EntityManager em) {
-        Short codigoEmpresa=1;
+        Short codigoEmpresa = 1;
         try {
             em.clear();
             Query query = em.createQuery("SELECT COUNT(e) FROM Empresas e");
@@ -184,8 +187,8 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
                 codigoEmpresa = (Short) query.getSingleResult();
                 //return codigoEmpresa;
             } /*else {
-                return 1;
-            }*/
+             return 1;
+             }*/
             return codigoEmpresa;
         } catch (Exception e) {
             System.out.println("Exepcion en PersistenciaEmpleados.codigoEmpresa" + e);
@@ -211,7 +214,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     public String consultarPrimeraEmpresa(EntityManager em) {
         try {
             em.clear();
-            String retorno = "";
+            String retorno;
             Query query = em.createNativeQuery("SELECT * FROM Empresas e WHERE ROWNUM=1", Empresas.class);
             Empresas empresa = (Empresas) query.getSingleResult();
             if (empresa != null) {
@@ -230,7 +233,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
             return retorno;
         } catch (Exception e) {
             System.out.println("Error consultarPrimeraEmpresa PersistenciaEmpresas : " + e.toString());
-            return "N";
+            return null;
         }
     }
 
@@ -252,7 +255,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
         try {
             em.clear();
             BigInteger contador = null;
-            String sql = "SELECT COUNT(1) FROM vigenciastipostrabajadores vtt, tipostrabajadores tt, empleados e, vigenciascargos vc, estructuras est, organigramas org\n"
+            String sql = "SELECT COUNT(vtt.secuencia) FROM vigenciastipostrabajadores vtt, tipostrabajadores tt, empleados e, vigenciascargos vc, estructuras est, organigramas org\n"
                     + "    WHERE tt.secuencia = vtt.tipotrabajador\n"
                     + "    AND tt.tipo='ACTIVO'\n"
                     + "    AND vtt.EMPLEADO=E.SECUENCIA\n"
@@ -313,6 +316,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
         }
     }
 
+    @Override
     public String obtenerEnvioInterfaseContabilidadEmpresa(EntityManager em, short codigoEmpresa) {
         try {
             em.clear();

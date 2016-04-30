@@ -13,6 +13,7 @@ import InterfacePersistencia.PersistenciaEmpresasInterface;
 import InterfacePersistencia.PersistenciaGeneralesInterface;
 import InterfacePersistencia.PersistenciaParametrosEstructurasInterface;
 import InterfacePersistencia.PersistenciaPerfilesInterface;
+import java.io.Serializable;
 //import java.math.BigInteger;
 //import java.text.SimpleDateFormat;
 import javax.ejb.EJB;
@@ -24,7 +25,7 @@ import javax.persistence.EntityManager;
  * @author -Felipphe-
  */
 @Stateful
-public class AdministrarTemplate implements AdministrarTemplateInterface {
+public class AdministrarTemplate implements AdministrarTemplateInterface, Serializable {
 
     /**
      * Enterprise JavaBeans.<br>

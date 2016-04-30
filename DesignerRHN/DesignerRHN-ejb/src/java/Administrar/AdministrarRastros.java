@@ -9,6 +9,7 @@ import InterfacePersistencia.PersistenciaObjetosDBInterface;
 import InterfacePersistencia.PersistenciaRastrosInterface;
 import InterfacePersistencia.PersistenciaRastrosTablasInterface;
 import InterfacePersistencia.PersistenciaRastrosValoresInterface;
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -17,7 +18,7 @@ import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 
 @Stateful
-public class AdministrarRastros implements AdministrarRastrosInterface {
+public class AdministrarRastros implements AdministrarRastrosInterface, Serializable {
 
     @EJB
     PersistenciaObjetosDBInterface persistenciaObjetosDB;

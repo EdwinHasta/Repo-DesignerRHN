@@ -19,6 +19,7 @@ public interface PersistenciaEmpresasInterface {
     /**
      * Método encargado de insertar una Empresa en la base de datos.
      *
+     * @param em
      * @param empresas Empresa que se quiere crear.
      */
     public void crear(EntityManager em, Empresas empresas);
@@ -79,8 +80,9 @@ public interface PersistenciaEmpresasInterface {
      * datos.
      * @return Retorna un String especificando si en el aplicativo hay
      * registradas cero, una o más empresas
+     * @throws java.lang.Exception
      */
-    public String nombreEmpresa(EntityManager entity);
+    public String nombreEmpresa(EntityManager entity) throws Exception ;
 
     /**
      * Método encargado de obtener el codigo de la empresa. Obtiene el código de

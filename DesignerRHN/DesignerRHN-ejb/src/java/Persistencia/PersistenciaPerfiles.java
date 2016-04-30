@@ -22,7 +22,6 @@ public class PersistenciaPerfiles implements PersistenciaPerfilesInterface {
             return em.find(Perfiles.class, secuencia);
         } catch (Exception e) {
             System.out.println("\n ERROR EN PersistenciaPerfiles buscarPerfil ERROR " + e);
-
             return null;
         }
     }

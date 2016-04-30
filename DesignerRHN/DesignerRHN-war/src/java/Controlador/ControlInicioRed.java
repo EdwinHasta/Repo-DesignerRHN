@@ -5,13 +5,13 @@ import Entidades.Conexiones;
 import Entidades.Recordatorios;
 import InterfaceAdministrar.AdministrarInicioRedInterface;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-//import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -20,6 +20,8 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 @ManagedBean
 @SessionScoped
@@ -47,12 +49,15 @@ public class ControlInicioRed implements Serializable {
     //CAMBIO CLAVE
     private String NClave, Rclave;
     private String msgSesion;
+    private StreamedContent candadoLogin;
 
     public ControlInicioRed() {
         cambioClave = true;
+        System.out.println("estadoinicio constructor: "+estadoInicio);
         estadoInicio = false;
         modulosDesigner = true;
         txtBoton = "Conectar";
+        asignarImagenCandado(false);
         listaConsultas = new ArrayList<Recordatorios>();
         actualizaciones = new ArrayList<String>();
         actualizaciones.add("form:btnLogin");
@@ -84,13 +89,14 @@ public class ControlInicioRed implements Serializable {
         acceso = false;
         msgSesion = "Iniciando sesión, por favor espere...";
     }
-    
+
     public void ingresar() {
         try {
             RequestContext context = RequestContext.getCurrentInstance();
             FacesContext contexto = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) contexto.getExternalContext().getSession(false);
             System.out.println("Ses= " + ses);
+            System.out.println("estado sesion ingreso = " + estadoInicio);
             if (estadoInicio == false) {
                 if (!baseDatos.equals("") && !usuario.equals("") && !contraseña.equals("")) {
                     if (administrarInicioRed.conexionInicial(baseDatos)) {
@@ -101,6 +107,7 @@ public class ControlInicioRed implements Serializable {
                                     estadoInicio = true;
                                     modulosDesigner = false;
                                     txtBoton = "Desconectar";
+                                    asignarImagenCandado(true);
                                     acceso = true;
                                     getNombreEmpresa();
                                     listaRecordatorios = administrarInicioRed.recordatoriosInicio();
@@ -176,6 +183,8 @@ public class ControlInicioRed implements Serializable {
                 cambioClave = true;
                 modulosDesigner = true;
                 txtBoton = "Conectar";
+                asignarImagenCandado(false);
+                System.out.println("estadoinicio ingresar else: "+estadoInicio);
                 estadoInicio = false;
                 getNombreEmpresa();
                 llenarBannerDefaul();
@@ -185,14 +194,16 @@ public class ControlInicioRed implements Serializable {
                 acceso = false;
                 sessionEntradaDefault();
             }
+            System.out.println("estadoinicio ingresar fin: "+estadoInicio);
         } catch (Exception e) {
+            System.out.println("estadoinicio ingresar exception: "+estadoInicio);
             System.out.println(e);
         }
     }
 
     public void validarDialogoSesion() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (estadoInicio == false) {
+        if (!estadoInicio) {
             msgSesion = "Iniciando sesión, por favor espere...";
             context.update("formularioDialogos:estadoSesion");
             context.execute("estadoSesion.show()");
@@ -201,6 +212,8 @@ public class ControlInicioRed implements Serializable {
             context.update("formularioDialogos:estadoSesion");
             context.execute("estadoSesion.show()");
         }
+        System.out.println("ControlInicioRed.validaDialogoSesion");
+        context.update("form:candadoLogin");
     }
 
     public void llenarBannerDefaul() {
@@ -215,7 +228,7 @@ public class ControlInicioRed implements Serializable {
     }
 
     public void sessionEntradaDefault() {
-        if (inicioSession == true) {
+        if (inicioSession) {
             acceso = administrarInicioRed.conexionDefault();
             inicioSession = false;
         }
@@ -265,8 +278,27 @@ public class ControlInicioRed implements Serializable {
         NClave = null;
         Rclave = null;
     }
-    //GETTER AND SETTER
 
+    private void asignarImagenCandado(boolean inicioSesion) {
+        System.out.println("ControlInicioRed.asignarImagenCandado");
+        System.out.println("parametro: "+inicioSesion);
+        String rutaImagenes = "/Imagenes/Iconos/", rutaCandado;
+        InputStream is;
+        if (inicioSesion) {
+            rutaCandado = rutaImagenes + "loginCandadoAbierto.png";
+        } else {
+            rutaCandado = rutaImagenes + "loginCandadoCerrado.png";
+        }
+        //try {
+            is = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream(rutaCandado);
+            candadoLogin = new DefaultStreamedContent(is);
+        /*} catch (IOException e) {
+            rutaCandado = null;
+            System.out.println("Imagen candado no encontrada. \n" + e);
+        }*/
+    }
+
+    //GETTER AND SETTER
     public String getUsuario() {
         return usuario;
     }
@@ -325,32 +357,6 @@ public class ControlInicioRed implements Serializable {
         return recordatorio;
     }
 
-    public void metodo() throws IOException {
-        /* FacesContext context = FacesContext.getCurrentInstance();
-         Map<String, String> map = context.getExternalContext().getRequestParameterMap();
-         String name = map.get("n"); // name attribute of node
-         String type = map.get("t"); // type attribute of node
-         System.out.println(name + " " + type);*/
-        //System.out.println("Sexy Floww!!!");
-        /*BufferedImage img = ImageIO.read(new File("C:\\plantilla.JPG"));
-         Graphics2D g = img.createGraphics();
-         g.setFont(new Font("Book Antiqua", Font.ITALIC, 38));
-         g.setColor(Color.WHITE);
-         g.drawString("Empleados que pronto se", 20, 50);
-         g.drawString("les vencera el contrato", 20, 90);
-         g.drawString("fijo.", 20, 130);
-         g.dispose();
-         ImageIO.write(img, "jpg", new File("C:\\plantillaContrato.JPG"));*/
-
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage("", "Recuerde pagar la nomina el 30 y no el 5 porque o sino lo linchan."));
-        context.addMessage(null, new FacesMessage("", "Recuerde pagar la nomina el 30 y no el 5 porque o sino lo linchan."));
-        context.addMessage(null, new FacesMessage("", "Recuerde pagar la nomina el 30 y no el 5 porque o sino lo linchan."));
-        context.addMessage(null, new FacesMessage("", "Recuerde pagar la nomina el 30 y no el 5 porque o sino lo linchan."));
-        context.addMessage(null, new FacesMessage("", "Recuerde pagar la nomina el 30 y no el 5 porque o sino lo linchan."));
-        RequestContext.getCurrentInstance().update("form:growl");
-    }
-
     public String getNombreEmpresa() {
         if (acceso == true) {
             nombreEmpresa = administrarInicioRed.nombreEmpresaPrincipal();
@@ -389,4 +395,12 @@ public class ControlInicioRed implements Serializable {
     public String getMsgSesion() {
         return msgSesion;
     }
+
+    public StreamedContent getCandadoLogin() {
+        System.out.println("ControlInicioRed.getCandadoLogin");
+        System.out.println("inicio sesion: "+ !modulosDesigner);
+        asignarImagenCandado(!modulosDesigner);
+        return candadoLogin;
+    }
+
 }

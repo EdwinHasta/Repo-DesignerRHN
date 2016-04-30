@@ -820,7 +820,6 @@ public class ControlEmpleadoIndividual implements Serializable {
                     FacesContext fc = FacesContext.getCurrentInstance();
                     fc.addMessage(null, msg);
                     context.update("form:growl");
-
                 } else {
                     FacesMessage msg = new FacesMessage("Información", "Ruta generales ó empleado, nulo.");
                     FacesContext fc = FacesContext.getCurrentInstance();

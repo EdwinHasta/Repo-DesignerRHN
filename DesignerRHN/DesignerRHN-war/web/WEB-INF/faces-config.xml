@@ -654,7 +654,7 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
             <to-view-id>/NominaF.xhtml</to-view-id>
@@ -665,12 +665,12 @@
         <from-view-id>/NominaF.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>hojaVida</from-outcome>
-            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <to-view-id>/empleadoindividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>estadoCivil</from-outcome>
             <to-view-id>/perestadocivil.xhtml</to-view-id>
@@ -681,7 +681,7 @@
         <from-view-id>/perestadocivil.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasPerEstadoCivil</from-outcome>
-            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <to-view-id>/empleadoindividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -1664,7 +1664,7 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>reportePersonal</from-outcome>
             <to-view-id>/NReportePersonal.xhtml</to-view-id>
@@ -1675,12 +1675,12 @@
         <from-view-id>/NReportePersonal.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>individual</from-outcome>
-            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <to-view-id>/empleadoindividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>idiomaPerson</from-outcome>
             <to-view-id>/IdiomaPersona.xhtml</to-view-id>
@@ -1691,7 +1691,7 @@
         <from-view-id>/IdiomaPersona.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>emplIndividual</from-outcome>
-            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <to-view-id>/empleadoindividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -1744,7 +1744,7 @@
         </navigation-case>
     </navigation-rule>    
     <navigation-rule>
-        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>experienciaLabPersona</from-outcome>
             <to-view-id>/perexperiencialaboral.xhtml</to-view-id>
@@ -1755,7 +1755,7 @@
         <from-view-id>/perexperiencialaboral.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>personaIndi</from-outcome>
-            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <to-view-id>/empleadoindividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -1899,7 +1899,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
             <to-view-id>/Rastro.xhtml</to-view-id>
@@ -1910,7 +1910,7 @@
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>hojaVida</from-outcome>
-            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <to-view-id>/empleadoindividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -2349,7 +2349,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadreemplazo</from-outcome>
             <to-view-id>/NovedadesReemplazos.xhtml</to-view-id>
@@ -2360,7 +2360,7 @@
         <from-view-id>/NovedadesReemplazos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>individual</from-outcome>
-            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <to-view-id>/empleadoindividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -2381,7 +2381,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>direccionespersona</from-outcome>
             <to-view-id>/perdireccion.xhtml</to-view-id>
@@ -2392,13 +2392,13 @@
         <from-view-id>/perdireccion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>individual</from-outcome>
-            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <to-view-id>/empleadoindividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>telefonospersona</from-outcome>
             <to-view-id>/PerTelefono.xhtml</to-view-id>
@@ -2409,13 +2409,13 @@
         <from-view-id>/PerTelefono.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>individual</from-outcome>
-            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <to-view-id>/empleadoindividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>personaeducacion</from-outcome>
             <to-view-id>/PersonaEducacion.xhtml</to-view-id>
@@ -2426,13 +2426,13 @@
         <from-view-id>/PersonaEducacion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>individual</from-outcome>
-            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <to-view-id>/empleadoindividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>proyecto</from-outcome>
             <to-view-id>/VigenciasProyectos.xhtml</to-view-id>
@@ -2440,7 +2440,7 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciaaficion</from-outcome>
             <to-view-id>/vigenciaaficion.xhtml</to-view-id>
@@ -2452,7 +2452,7 @@
         <from-view-id>/VigenciasProyectos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>individual</from-outcome>
-            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <to-view-id>/empleadoindividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -2768,7 +2768,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasEvents</from-outcome>
             <to-view-id>/EmplVigenciaEvento.xhtml</to-view-id>
@@ -2779,7 +2779,7 @@
         <from-view-id>/EmplVigenciaEvento.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>emplIndv</from-outcome>
-            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <to-view-id>/empleadoindividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -2835,12 +2835,12 @@
         <from-view-id>/EmplInformacionAdicional.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>individualEmpl</from-outcome>
-            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <to-view-id>/empleadoindividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>infoAdicional</from-outcome>
             <to-view-id>/EmplInformacionAdicional.xhtml</to-view-id>
@@ -2852,12 +2852,12 @@
         <from-view-id>/vigenciadeporte.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigDepEmplInd</from-outcome>
-            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <to-view-id>/empleadoindividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>infoDeportesPersona</from-outcome>
             <to-view-id>/vigenciadeporte.xhtml</to-view-id>
@@ -2869,12 +2869,12 @@
         <from-view-id>/vigenciaaficion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigAfiEmplInd</from-outcome>
-            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <to-view-id>/empleadoindividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>infoAficionesPersona</from-outcome>
             <to-view-id>/vigenciaaficion.xhtml</to-view-id>
@@ -2955,12 +2955,12 @@
         <from-view-id>/emplvigenciaindicador.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>infoEmplIndividual</from-outcome>
-            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <to-view-id>/empleadoindividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasIndicadores</from-outcome>
             <to-view-id>/emplvigenciaindicador.xhtml</to-view-id>
@@ -3025,12 +3025,12 @@
         <from-view-id>/empldemanda.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>infoEmplIndividual</from-outcome>
-            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <to-view-id>/empleadoindividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>demandaEmpl</from-outcome>
             <to-view-id>/empldemanda.xhtml</to-view-id>
@@ -3091,7 +3091,7 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>perReferenciaLaboral</from-outcome>
             <to-view-id>/perreferencialaboral.xhtml</to-view-id>
@@ -3102,12 +3102,12 @@
         <from-view-id>/perreferencialaboral.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasEmpleadoIndividualPersonal</from-outcome>
-            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <to-view-id>/empleadoindividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>perReferenciaFamiliar</from-outcome>
             <to-view-id>/perreferencialaboral1.xhtml</to-view-id>
@@ -3118,7 +3118,7 @@
         <from-view-id>/perreferencialaboral1.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>perReferenciaLaboral1Atras</from-outcome>
-            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <to-view-id>/empleadoindividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -3474,7 +3474,7 @@
         <from-view-id>/PerTelefono.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>individual</from-outcome>
-            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <to-view-id>/empleadoindividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -3902,7 +3902,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>hvEntrevista</from-outcome>
             <to-view-id>/hventrevista.xhtml</to-view-id>
@@ -3913,7 +3913,7 @@
         <from-view-id>/hventrevista.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>hvEntrevistaAtras</from-outcome>
-            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <to-view-id>/empleadoindividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -3928,7 +3928,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>adelanteVigenciaTalla</from-outcome>
             <to-view-id>/vigenciatalla.xhtml</to-view-id>
@@ -3939,7 +3939,7 @@
         <from-view-id>/vigenciatalla.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasVigenciaTalla</from-outcome>
-            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <to-view-id>/empleadoindividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>

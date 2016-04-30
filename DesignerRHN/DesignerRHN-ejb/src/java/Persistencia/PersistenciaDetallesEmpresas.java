@@ -28,6 +28,7 @@ public class PersistenciaDetallesEmpresas implements PersistenciaDetallesEmpresa
 
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
+     * @param em
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
      private EntityManager em;*/
@@ -94,7 +95,7 @@ public class PersistenciaDetallesEmpresas implements PersistenciaDetallesEmpresa
             detallesEmpresas = (DetallesEmpresas) query.getSingleResult();
             return detallesEmpresas;
         } catch (Exception e) {
-            System.out.println("Error consultando el detalleempresa.");
+            System.out.println("error PersistenciaDetallesEmpresas.buscarDetalleEmpresa. ");
             System.out.println(e.getMessage());
             return null;
         }
@@ -104,16 +105,15 @@ public class PersistenciaDetallesEmpresas implements PersistenciaDetallesEmpresa
     public DetallesEmpresas buscarDetalleEmpresaPorSecuencia(EntityManager em, BigInteger secEmpresa) {
         try {
             em.clear();
-            DetallesEmpresas detallesEmpresas = null;
+            DetallesEmpresas detallesEmpresas;
             Query query = em.createQuery("SELECT de FROM DetallesEmpresas de WHERE de.empresa.secuencia =:secEmpresa");
             query.setParameter("secEmpresa", secEmpresa);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             detallesEmpresas = (DetallesEmpresas) query.getSingleResult();
             return detallesEmpresas;
         } catch (Exception e) {
-            System.out.println("Error buscarDetalleEmpresaPorSecuencia PersistenciaDetallesEmpresas : " + e.toString());
-            DetallesEmpresas detallesEmpresas = null;
-            return detallesEmpresas;
+            System.out.println("Error PersistenciaDetallesEmpresas.buscarDetalleEmpresaPorSecuencia. " + e.toString());
+            return null;
         }
     }
 
@@ -125,7 +125,7 @@ public class PersistenciaDetallesEmpresas implements PersistenciaDetallesEmpresa
             cq.select(cq.from(DetallesEmpresas.class));
             return em.createQuery(cq).getResultList();
         } catch (Exception e) {
-            System.out.println("Error buscarBancos PersistenciaDetallesEmpresas : " + e.toString());
+            System.out.println("Error PersistenciaDetallesEmpresas.buscarDetallesEmpresas : " + e.toString());
             return null;
         }
     }

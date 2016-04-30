@@ -35,4 +35,19 @@ root {
     text-shadow: none;
     font-weight: bold;
 }
-
+.columnaPieA{
+    text-align: left;
+}
+.columnaPieB{
+    text-align: right;
+}
+.columnaConectA{
+    text-align: right;
+    width: 30%;
+}
+.columnaConectB{
+    text-align: right;
+}
+.columnaConectC{
+    text-align: left;
+}

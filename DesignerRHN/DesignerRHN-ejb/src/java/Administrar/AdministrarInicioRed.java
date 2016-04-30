@@ -74,6 +74,7 @@ public class AdministrarInicioRed implements AdministrarInicioRedInterface, Seri
         }
     }
 
+    @Override
     public boolean conexionUsuario(String baseDatos, String usuario, String contraseña) {
         try {
             System.out.println("conexionUsuario 1");
@@ -93,6 +94,7 @@ public class AdministrarInicioRed implements AdministrarInicioRedInterface, Seri
         }
     }
 
+    @Override
     public boolean validarUsuario(String usuario) {
         try {
             boolean resultado = persistenciaConexionInicial.validarUsuario(sessionEMF.getEmf().createEntityManager(), usuario);
@@ -103,11 +105,12 @@ public class AdministrarInicioRed implements AdministrarInicioRedInterface, Seri
         }
     }
 
+    @Override
     public boolean validarConexionUsuario(String idSesion) {
         try {
             em = persistenciaConexionInicial.validarConexionUsuario(sessionEMF.getEmf());
             System.out.println("2");
-            
+
             if (em != null) {
                 System.out.println("3");
                 if (em.isOpen()) {
@@ -147,13 +150,20 @@ public class AdministrarInicioRed implements AdministrarInicioRedInterface, Seri
     @Override
     public String nombreEmpresaPrincipal() {
         System.out.println("Admi Nombre Empresa Principal");
-        if (sessionEMF.getEmf() != null && sessionEMF.getEmf().isOpen()) {
-            return persistenciaEmpresas.nombreEmpresa(sessionEMF.getEmf().createEntityManager());
-        } else {
+        try {
+            if (sessionEMF.getEmf() != null && sessionEMF.getEmf().isOpen()) {
+                return persistenciaEmpresas.nombreEmpresa(sessionEMF.getEmf().createEntityManager());
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            System.out.println("AdministrarInicioRed.nombreEmpresaPrincipal excepcion");
+            e.printStackTrace();
             return null;
         }
     }
 
+    @Override
     public List<String> recordatoriosInicio() {
         if (sessionEMF.getEmf() != null && sessionEMF.getEmf().isOpen()) {
             List<String> listaRecordatorios = persistenciaRecordatorios.recordatoriosInicio(sessionEMF.getEmf().createEntityManager());
@@ -182,6 +192,7 @@ public class AdministrarInicioRed implements AdministrarInicioRedInterface, Seri
         }
     }
 
+    @Override
     public void guardarDatosConexion(Conexiones conexion) {
         persistenciaConexiones.verificarSID(em, conexion);
     }
