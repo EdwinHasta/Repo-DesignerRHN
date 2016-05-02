@@ -5,7 +5,7 @@ import Entidades.Conexiones;
 import Entidades.Recordatorios;
 import InterfaceAdministrar.AdministrarInicioRedInterface;
 import java.io.IOException;
-import java.io.InputStream;
+//import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
@@ -20,8 +20,8 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
+//import org.primefaces.model.DefaultStreamedContent;
+//import org.primefaces.model.StreamedContent;
 
 @ManagedBean
 @SessionScoped
@@ -49,7 +49,7 @@ public class ControlInicioRed implements Serializable {
     //CAMBIO CLAVE
     private String NClave, Rclave;
     private String msgSesion;
-    private StreamedContent candadoLogin;
+    private String candadoLogin;
 
     public ControlInicioRed() {
         cambioClave = true;
@@ -80,7 +80,7 @@ public class ControlInicioRed implements Serializable {
         //banner.add(new BannerInicioRed("glassfish_logo.png", ""));
         //banner.add(new BannerInicioRed("java.png", ""));
         //banner.add(new BannerInicioRed("Jsf-logo.png", ""));
-        llenarBannerDefaul();
+        this.llenarBannerDefaul();
         //FECHA ACTUAL
         formatoFechaActual = new SimpleDateFormat("EEEEE dd 'de' MMMMM 'de' yyyy");
         formatoAño = new SimpleDateFormat("yyyy");
@@ -124,7 +124,7 @@ public class ControlInicioRed implements Serializable {
                                             if (listaConsultas.get(j).getNombreimagen() != null) {
                                                 banner.add(new BannerInicioRed(listaConsultas.get(j).getNombreimagen(), ""));
                                             } else {
-                                                banner.add(new BannerInicioRed("publicidad/SinImagen.png", ""));
+                                                banner.add(new BannerInicioRed("Iconos/SinImagen.png", ""));
                                             }
                                         }
                                     } else {
@@ -194,6 +194,7 @@ public class ControlInicioRed implements Serializable {
                 acceso = false;
                 sessionEntradaDefault();
             }
+            context.update("form:btnCandadoLogin");
             System.out.println("estadoinicio ingresar fin: "+estadoInicio);
         } catch (Exception e) {
             System.out.println("estadoinicio ingresar exception: "+estadoInicio);
@@ -213,18 +214,20 @@ public class ControlInicioRed implements Serializable {
             context.execute("estadoSesion.show()");
         }
         System.out.println("ControlInicioRed.validaDialogoSesion");
-        context.update("form:candadoLogin");
+        context.update("form:btnCandadoLogin");
     }
 
     public void llenarBannerDefaul() {
+        String ubicaPublicidad="Iconos/";
         banner.clear();
-        banner.add(new BannerInicioRed("publicidad/publicidad01.png", "https://www.oracle.com/"));
-        banner.add(new BannerInicioRed("publicidad/publicidad02.png", "http://primefaces.org"));
-        banner.add(new BannerInicioRed("publicidad/publicidad03.jpg", "https://www.java.com/"));
-        banner.add(new BannerInicioRed("publicidad/publicidad04.jpeg", "http://www.eclipse.org/eclipselink/"));
-        banner.add(new BannerInicioRed("publicidad/publicidad05.png", "https://glassfish.java.net/"));
-        banner.add(new BannerInicioRed("publicidad/publicidad06.png", "https://www.java.com/"));
-        banner.add(new BannerInicioRed("publicidad/publicidad07.png", "https://javaserverfaces.java.net/"));
+        banner.add(new BannerInicioRed(ubicaPublicidad+"publicidad01.png", "http://www.nomina.com.co/"));
+        banner.add(new BannerInicioRed(ubicaPublicidad+"publicidad02.png", "http://www.nomina.com.co/"));
+        banner.add(new BannerInicioRed(ubicaPublicidad+"publicidad03.png", "http://www.nomina.com.co/"));
+        banner.add(new BannerInicioRed(ubicaPublicidad+"publicidad04.png", "http://www.nomina.com.co/"));
+        /*banner.add(new BannerInicioRed(ubicaPublicidad+"publicidad05.png", "https://glassfish.java.net/"));
+        banner.add(new BannerInicioRed(ubicaPublicidad+"publicidad06.png", "https://www.java.com/"));
+        banner.add(new BannerInicioRed(ubicaPublicidad+"publicidad07.png", "https://javaserverfaces.java.net/"));
+        */
     }
 
     public void sessionEntradaDefault() {
@@ -282,20 +285,11 @@ public class ControlInicioRed implements Serializable {
     private void asignarImagenCandado(boolean inicioSesion) {
         System.out.println("ControlInicioRed.asignarImagenCandado");
         System.out.println("parametro: "+inicioSesion);
-        String rutaImagenes = "/Imagenes/Iconos/", rutaCandado;
-        InputStream is;
         if (inicioSesion) {
-            rutaCandado = rutaImagenes + "loginCandadoAbierto.png";
+            this.candadoLogin="loginCandadoAbierto.png";
         } else {
-            rutaCandado = rutaImagenes + "loginCandadoCerrado.png";
+            this.candadoLogin="loginCandadoCerrado.png";
         }
-        //try {
-            is = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream(rutaCandado);
-            candadoLogin = new DefaultStreamedContent(is);
-        /*} catch (IOException e) {
-            rutaCandado = null;
-            System.out.println("Imagen candado no encontrada. \n" + e);
-        }*/
     }
 
     //GETTER AND SETTER
@@ -396,7 +390,7 @@ public class ControlInicioRed implements Serializable {
         return msgSesion;
     }
 
-    public StreamedContent getCandadoLogin() {
+    public String getCandadoLogin() {
         System.out.println("ControlInicioRed.getCandadoLogin");
         System.out.println("inicio sesion: "+ !modulosDesigner);
         asignarImagenCandado(!modulosDesigner);

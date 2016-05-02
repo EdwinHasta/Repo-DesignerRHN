@@ -3,9 +3,9 @@ root {
 }
 
 .ui-growl{
-    position: absolute;
-    left: 1040px;
-    top: 10px;
+    position: relative;
+    margin: 0 auto;
+    left: -480px;
 }
 .ui-growl-image-info{
     visibility: hidden;
@@ -35,6 +35,11 @@ root {
     text-shadow: none;
     font-weight: bold;
 }
+.cssBotonIngreso{
+    height: 24px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
 .columnaPieA{
     text-align: left;
 }
@@ -50,4 +55,14 @@ root {
 }
 .columnaConectC{
     text-align: left;
+}
+[id*=btnCandadoLogin]:hover{
+    /*background: transparent !important;*/
+    cursor: not-allowed;
+}
+[id*=btnCandadoLogin]:focus {
+    cursor: not-allowed;
+}
+#redessociales > a{
+     color: transparent;
 }

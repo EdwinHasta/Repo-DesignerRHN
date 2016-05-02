@@ -3,8 +3,10 @@ package Reportes;
 import java.io.File;
 import java.io.Serializable;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+//import java.sql.DriverManager;
+//import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.ejb.Stateless;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.export.JExcelApiExporterParameter;
@@ -30,7 +32,7 @@ public class IniciarReporte implements IniciarReporteInterface, Serializable {
 
     @Override
     public void inicarC() {
-        try {
+        /*try {
             Class.forName("oracle.jdbc.OracleDriver");
             conexion = DriverManager.getConnection("jdbc:oracle:thin:@SOPORTE9:1521:SOPORTE9", "PRODUCCION", "PRODUCCION");
             System.out.println("Conexión exitosa");
@@ -40,7 +42,8 @@ public class IniciarReporte implements IniciarReporteInterface, Serializable {
         } catch (SQLException e) {
             System.out.println("Conexión fallida SQLException\n");
             System.out.println(e);
-        }
+        }*/
+        System.out.println("inicarC(). NO IMPLEMENTADO. ");
     }
 
     @Override
@@ -56,7 +59,10 @@ public class IniciarReporte implements IniciarReporteInterface, Serializable {
             JasperReport masterReport;
             masterReport = (JasperReport) JRLoader.loadObject(archivo);
             System.out.println("INICIARREPORTE creo master ");
-            JasperPrint imprimir = JasperFillManager.fillReport(masterReport, null, cxn);
+            Map parametros = new HashMap();
+            parametros.put("RutaReportes", rutaReporte);
+            //JasperPrint imprimir = JasperFillManager.fillReport(masterReport, null, cxn);
+            JasperPrint imprimir = JasperFillManager.fillReport(masterReport, parametros, cxn);
             System.out.println("INICIARREPORTE lleno reporte ");
             //JasperPrint imprimir = JasperFillManager.fillReport(masterReport, null, conexion);
             String outFileName = rutaGenerado + nombreArchivo;
@@ -87,6 +93,7 @@ public class IniciarReporte implements IniciarReporteInterface, Serializable {
                 exporter.setParameter(JRExporterParameter.JASPER_PRINT, imprimir);
                 exporter.exportReport();
             }
+            System.out.println("fin. " + outFileName);
             //cerrarConexion();
             return outFileName;
         } catch (JRException e) {
@@ -165,7 +172,7 @@ public class IniciarReporte implements IniciarReporteInterface, Serializable {
             //cerrarConexion();
             return outFileName;
         } catch (JRException e) {
-            System.out.println("Error IniciarReporte.ejecutarReporte: " + e);
+            System.out.println("Error ejecutarReportinho IniciarReporte.ejecutarReporte: " + e);
             //System.out.println(e.getStackTrace());
             System.out.println("************************************");
             // System.out.println(e.getCause().toString());

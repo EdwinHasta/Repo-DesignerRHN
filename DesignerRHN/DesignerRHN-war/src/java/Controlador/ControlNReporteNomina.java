@@ -1690,7 +1690,7 @@ public class ControlNReporteNomina implements Serializable {
                     if (reporteSeleccionado != null) {
                         cabezeraVisor = "Reporte - " + reporteSeleccionado.getNombre();
                     } else {
-                        cabezeraVisor = "Reporte - " + reporteSeleccionado.getNombre();
+                        cabezeraVisor = "Reporte - " ;
                     }
                     context.update("formDialogos:verReportePDF");
                     context.execute("verReportePDF.show();");
