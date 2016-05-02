@@ -908,15 +908,21 @@ public class ControlNormasLaborales implements Serializable {
         if (listNormasLaborales == null) {
             listNormasLaborales = administrarNormasLaborales.consultarNormasLaborales();
         }
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (listNormasLaborales == null || listNormasLaborales.isEmpty()) {
-           // infoRegistro = "Cantidad de registros: 0 ";
-            infoRegistro = "0";
+//        RequestContext context = RequestContext.getCurrentInstance();
+//        if (listNormasLaborales == null || listNormasLaborales.isEmpty()) {
+//           // infoRegistro = "Cantidad de registros: 0 ";
+//            infoRegistro = "0";
+//        } else {
+//           // infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+//             infoRegistro = String.valueOf(listNormasLaborales.size());
+//        }
+//        context.update("form:informacionRegistro");
+         if (listNormasLaborales != null) {
+            normaLaboralSeleccionada = listNormasLaborales.get(0);
+            modificarInfoRegistro(listNormasLaborales.size());
         } else {
-           // infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
-             infoRegistro = String.valueOf(listNormasLaborales.size());
+            modificarInfoRegistro(0);
         }
-        context.update("form:informacionRegistro");
         return listNormasLaborales;
     }
 
