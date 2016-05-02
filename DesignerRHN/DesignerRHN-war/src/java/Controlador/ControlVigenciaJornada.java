@@ -137,6 +137,7 @@ public class ControlVigenciaJornada implements Serializable {
     private String mensajeValidacion;
     //
     private DataTable tablaC;
+    private boolean activarLOV;
 
     public ControlVigenciaJornada() {
         cambiosJornada = false;
@@ -209,6 +210,8 @@ public class ControlVigenciaJornada implements Serializable {
         altoTabla3 = "115";
 
         mensajeValidacion = "";
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
     @PostConstruct
@@ -234,6 +237,11 @@ public class ControlVigenciaJornada implements Serializable {
     public void recibirEmpleado(Empleados empl) {
         empleado = empl;
         getListVigenciasJornadas();
+        if (listVigenciasJornadas != null) {
+            if (!listVigenciasJornadas.isEmpty()) {
+                vigenciaJornadaSeleccionada = listVigenciasJornadas.get(0);
+            }
+        }
         getListVigenciasCompensacionesDinero();
         getListVigenciasCompensacionesTiempo();
         contarRegistrosVJ();
@@ -296,6 +304,8 @@ public class ControlVigenciaJornada implements Serializable {
                 retorno = false;
             }
         }
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         return retorno;
     }
 
@@ -322,6 +332,8 @@ public class ControlVigenciaJornada implements Serializable {
             context.update("form:datosVJEmpleado");
             context.execute("negacionNuevaVJ.show()");
         }
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
     /**
@@ -365,7 +377,9 @@ public class ControlVigenciaJornada implements Serializable {
                     context.update("form:ACEPTAR");
                 }
             }
-
+            activarLOV = false;
+            RequestContext.getCurrentInstance().update("form:listaValores");
+            RequestContext.getCurrentInstance().update("form:listaValores");
         } else if (confirmarCambio.equalsIgnoreCase("TIPODESCANSO")) {
             if (!valorConfirmar.isEmpty()) {
                 vigenciaJornadaSeleccionada.getTipodescanso().setDescripcion(nombreTipoDescanso);
@@ -394,6 +408,8 @@ public class ControlVigenciaJornada implements Serializable {
                     context.update("form:ACEPTAR");
                 }
             }
+            activarLOV = false;
+            RequestContext.getCurrentInstance().update("form:listaValores");
         }
         if (coincidencias == 1) {
             if (!listVJCrear.contains(vigenciaJornadaSeleccionada)) {
@@ -436,6 +452,8 @@ public class ControlVigenciaJornada implements Serializable {
                 context.update("form:ACEPTAR");
             }
         }
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         String auxiliar = vigenciaTiempoSeleccionada.getComentario();
         vigenciaTiempoSeleccionada.setComentario(auxiliar.toUpperCase());
     }
@@ -465,6 +483,8 @@ public class ControlVigenciaJornada implements Serializable {
                 context.update("form:ACEPTAR");
             }
         }
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         String auxiliar = vigenciaDineroSeleccionada.getComentario();
         vigenciaDineroSeleccionada.setComentario(auxiliar.toUpperCase());
     }
@@ -614,9 +634,16 @@ public class ControlVigenciaJornada implements Serializable {
                 cualCelda = celda;
                 fechaVigenciaVJ = vigenciaJornadaSeleccionada.getFechavigencia();
                 if (cualCelda == 1) {
+                    activarLOV = false;
+                    RequestContext.getCurrentInstance().update("form:listaValores");
                     nombreJornada = vigenciaJornadaSeleccionada.getJornadatrabajo().getDescripcion();
                 } else if (cualCelda == 2) {
+                    activarLOV = false;
+                    RequestContext.getCurrentInstance().update("form:listaValores");
                     nombreTipoDescanso = vigenciaJornadaSeleccionada.getTipodescanso().getDescripcion();
+                } else {
+                    activarLOV = true;
+                    RequestContext.getCurrentInstance().update("form:listaValores");
                 }
 
                 listVigenciasCompensacionesTiempo = null;
@@ -658,8 +685,14 @@ public class ControlVigenciaJornada implements Serializable {
         }
         vigenciaTiempoSeleccionada = null;
         vigenciaDineroSeleccionada = null;
+        RequestContext.getCurrentInstance().execute("datosVigenciaCT.unselectAllRows()");
+        RequestContext.getCurrentInstance().execute("datosVigenciaCD.unselectAllRows()");
         RequestContext.getCurrentInstance().update("form:datosVigenciaCT");
         RequestContext.getCurrentInstance().update("form:datosVigenciaCD");
+        contarRegistrosVD();
+        RequestContext.getCurrentInstance().update("form:informacionRegistroVD");
+        contarRegistrosVT();
+        RequestContext.getCurrentInstance().update("form:informacionRegistroVT");
     }
 
     /**
@@ -695,14 +728,15 @@ public class ControlVigenciaJornada implements Serializable {
             vCDFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaFinal");
             vCDFechaFinal.setFilterStyle("display: none; visibility: hidden;");
             altoTabla3 = "115";
-            RequestContext.getCurrentInstance().update("form:datosVigenciaCD");
             banderaVCD = 0;
             filtrarVigenciasCompensacionesDinero = null;
             tipoListaVCD = 0;
         }
-        vigenciaJornadaSeleccionada = null;
         vigenciaDineroSeleccionada = null;
-
+        RequestContext.getCurrentInstance().execute("datosVigenciaCD.unselectAllRows()");
+        RequestContext.getCurrentInstance().update("form:datosVigenciaCD");
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
     /**
@@ -744,8 +778,11 @@ public class ControlVigenciaJornada implements Serializable {
             filtrarVigenciasCompensacionesTiempo = null;
             tipoListaVCT = 0;
         }
-        vigenciaJornadaSeleccionada = null;
         vigenciaTiempoSeleccionada = null;
+        RequestContext.getCurrentInstance().execute("datosVigenciaCT.unselectAllRows()");
+        RequestContext.getCurrentInstance().update("form:datosVigenciaCT");
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
     }
     //GUARDAR
 
@@ -811,7 +848,11 @@ public class ControlVigenciaJornada implements Serializable {
             FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos de Jornadas con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             contarRegistrosVJ();
+            context.update("form:informacionRegistroVJ");
+
         }
         vigenciaJornadaSeleccionada = null;
     }
@@ -848,7 +889,10 @@ public class ControlVigenciaJornada implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
             contarRegistrosVT();
+            context.update("form:informacionRegistroVT");
         }
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         vigenciaTiempoSeleccionada = null;
     }
 
@@ -885,7 +929,10 @@ public class ControlVigenciaJornada implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
             contarRegistrosVD();
+            context.update("form:informacionRegistroVD");
         }
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         vigenciaDineroSeleccionada = null;
     }
     //CANCELAR MODIFICACIONES
@@ -956,13 +1003,17 @@ public class ControlVigenciaJornada implements Serializable {
         cambiosDinero = false;
         cambiosJornada = false;
         cambiosTiempo = false;
-
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         getListVigenciasJornadas();
         getListVigenciasCompensacionesDinero();
         getListVigenciasCompensacionesTiempo();
         contarRegistrosVJ();
+        context.update("form:informacionRegistroVJ");
         contarRegistrosVD();
+        context.update("form:informacionRegistroVD");
         contarRegistrosVT();
+        context.update("form:informacionRegistroVT");
         context.update("form:datosVJEmpleado");
         context.update("form:datosVigenciaCT");
         context.update("form:datosVigenciaCD");
@@ -998,6 +1049,8 @@ public class ControlVigenciaJornada implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosVigenciaCT");
         context.update("form:ACEPTAR");
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
     /**
@@ -1029,6 +1082,8 @@ public class ControlVigenciaJornada implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosVigenciaCD");
         context.update("form:ACEPTAR");
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
     //MOSTRAR DATOS CELDA
@@ -1042,23 +1097,6 @@ public class ControlVigenciaJornada implements Serializable {
         if (vigenciaJornadaSeleccionada == null && vigenciaDineroSeleccionada == null && vigenciaTiempoSeleccionada == null) {
             context.execute("seleccionarRegistro.show()");
         } else {
-            if (vigenciaJornadaSeleccionada != null) {
-                editarVJ = vigenciaJornadaSeleccionada;
-
-                if (cualCelda == 0) {
-                    context.update("formularioDialogos:editarFechaVigencia");
-                    context.execute("editarFechaVigencia.show()");
-                    cualCelda = -1;
-                } else if (cualCelda == 1) {
-                    context.update("formularioDialogos:editarNombreJornada");
-                    context.execute("editarNombreJornada.show()");
-                    cualCelda = -1;
-                } else if (cualCelda == 2) {
-                    context.update("formularioDialogos:editarTipoDescanso");
-                    context.execute("editarTipoDescanso.show()");
-                    cualCelda = -1;
-                }
-            }
             if (vigenciaTiempoSeleccionada != null) {
                 editarVCT = vigenciaTiempoSeleccionada;
 
@@ -1075,8 +1113,7 @@ public class ControlVigenciaJornada implements Serializable {
                     context.execute("editarComentarioVCT.show()");
                     cualCeldaVCT = -1;
                 }
-            }
-            if (vigenciaDineroSeleccionada != null) {
+            } else if (vigenciaDineroSeleccionada != null) {
                 editarVCD = vigenciaDineroSeleccionada;
 
                 if (cualCeldaVCD == 0) {
@@ -1091,6 +1128,22 @@ public class ControlVigenciaJornada implements Serializable {
                     context.update("formularioDialogos:editarComentarioVCD");
                     context.execute("editarComentarioVCD.show()");
                     cualCeldaVCD = -1;
+                }
+            } else if (vigenciaJornadaSeleccionada != null) {
+                editarVJ = vigenciaJornadaSeleccionada;
+
+                if (cualCelda == 0) {
+                    context.update("formularioDialogos:editarFechaVigencia");
+                    context.execute("editarFechaVigencia.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 1) {
+                    context.update("formularioDialogos:editarNombreJornada");
+                    context.execute("editarNombreJornada.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 2) {
+                    context.update("formularioDialogos:editarTipoDescanso");
+                    context.execute("editarTipoDescanso.show()");
+                    cualCelda = -1;
                 }
             }
         }
@@ -1110,9 +1163,6 @@ public class ControlVigenciaJornada implements Serializable {
         if (tabla == 2) {
             if (vigenciaJornadaSeleccionada != null) {
                 nuevaVigenciaCT = new VigenciasCompensaciones();
-                // nuevaVigenciaCT.setCentrocosto(new CentrosCostos());
-                // nuevaVigenciaCT.setProyecto(new Proyectos());
-                //Dialogo de nuevo registro vigencia prorrateo
                 context.update("form:NuevoRegistroVCT");
                 context.execute("NuevoRegistroVCT.show()");
             } else {
@@ -1122,8 +1172,6 @@ public class ControlVigenciaJornada implements Serializable {
         if (tabla == 3) {
             if (vigenciaJornadaSeleccionada != null) {
                 nuevaVigenciaCD = new VigenciasCompensaciones();
-                // nuevaVigenciaCD.setProyecto(new Proyectos());
-                //Dialogo de nuevo registro vigencia prorrateo proyecto
                 context.update("form:NuevoRegistroVCD");
                 context.execute("NuevoRegistroVCD.show()");
             } else {
@@ -1172,13 +1220,16 @@ public class ControlVigenciaJornada implements Serializable {
                     listVJCrear.add(nuevaVigencia);
                     listVigenciasJornadas.add(nuevaVigencia);
                     modificarInfoRegistroVJ(listVigenciasJornadas.size());
+                    vigenciaJornadaSeleccionada = listVigenciasJornadas.get(listVigenciasJornadas.size() - 1);
+                    activarLOV = true;
+                    RequestContext.getCurrentInstance().update("form:listaValores");
+                    context.update("form:informacionRegistroVJ");
                     context.update("form:datosVJEmpleado");
                     if (guardado) {
                         guardado = false;
                         context.update("form:ACEPTAR");
                     }
                     context.execute("NuevoRegistroVJ.hide()");
-                    vigenciaJornadaSeleccionada = null;
                     nuevaVigencia = new VigenciasJornadas();
                     nuevaVigencia.setJornadatrabajo(new JornadasLaborales());
                     nuevaVigencia.setTipodescanso(new TiposDescansos());
@@ -1253,7 +1304,11 @@ public class ControlVigenciaJornada implements Serializable {
                         listVigenciasCompensacionesTiempo = new ArrayList<VigenciasCompensaciones>();
                     }
                     listVigenciasCompensacionesTiempo.add(nuevaVigenciaCT);
+                    vigenciaTiempoSeleccionada = listVigenciasCompensacionesTiempo.get(listVigenciasCompensacionesTiempo.size() - 1);
+                    activarLOV = true;
+                    RequestContext.getCurrentInstance().update("form:listaValores");
                     modificarInfoRegistroVT(listVigenciasCompensacionesTiempo.size());
+                    context.update("form:informacionRegistroVT");
                     nuevaVigenciaCT = new VigenciasCompensaciones();
                     context.execute("NuevoRegistroVCT.hide();");
                     context.update("form:datosVigenciaCT");
@@ -1261,7 +1316,6 @@ public class ControlVigenciaJornada implements Serializable {
                         guardado = false;
                         context.update("form:ACEPTAR");
                     }
-                    vigenciaTiempoSeleccionada = null;
                 }
             } else {
                 context.execute("errorFechaDescanso.show()");
@@ -1330,7 +1384,12 @@ public class ControlVigenciaJornada implements Serializable {
                         listVigenciasCompensacionesDinero = new ArrayList<VigenciasCompensaciones>();
                     }
                     listVigenciasCompensacionesDinero.add(nuevaVigenciaCD);
+                    vigenciaDineroSeleccionada = null;
+                    vigenciaDineroSeleccionada = listVigenciasCompensacionesDinero.get(listVigenciasCompensacionesDinero.size() - 1);
+                    activarLOV = true;
+                    RequestContext.getCurrentInstance().update("form:listaValores");
                     modificarInfoRegistroVD(listVigenciasCompensacionesDinero.size());
+                    context.update("form:informacionRegistroVD");
                     nuevaVigenciaCT = new VigenciasCompensaciones();
                     context.update("form:datosVigenciaCD");
                     context.execute("NuevoRegistroVCD.hide();");
@@ -1338,7 +1397,6 @@ public class ControlVigenciaJornada implements Serializable {
                         guardado = false;
                         context.update("form:ACEPTAR");
                     }
-                    vigenciaDineroSeleccionada = null;
                 }
             } else {
                 context.execute("errorFechaDescanso.show()");
@@ -1366,14 +1424,12 @@ public class ControlVigenciaJornada implements Serializable {
         if (vigenciaJornadaSeleccionada == null && vigenciaDineroSeleccionada == null && vigenciaTiempoSeleccionada == null) {
             context.execute("seleccionarRegistro.show()");
         } else {
-            if (vigenciaJornadaSeleccionada != null) {
-                duplicarVigenciaJ();
-            }
             if (vigenciaTiempoSeleccionada != null) {
                 duplicarVigenciaCT();
-            }
-            if (vigenciaDineroSeleccionada != null) {
+            } else if (vigenciaDineroSeleccionada != null) {
                 duplicarVigenciaCD();
+            } else if (vigenciaJornadaSeleccionada != null) {
+                duplicarVigenciaJ();
             }
         }
     }
@@ -1430,10 +1486,13 @@ public class ControlVigenciaJornada implements Serializable {
                     cambiosJornada = true;
                     listVigenciasJornadas.add(duplicarVJ);
                     listVJCrear.add(duplicarVJ);
+                    vigenciaJornadaSeleccionada = listVigenciasJornadas.get(listVigenciasJornadas.size() - 1);
+                    activarLOV = true;
+                    RequestContext.getCurrentInstance().update("form:listaValores");
                     modificarInfoRegistroVJ(listVigenciasJornadas.size());
+                    context.update("form:informacionRegistroVJ");
                     context.update("form:datosVJEmpleado");
                     context.execute("DuplicarRegistroVJ.hide()");
-                    vigenciaJornadaSeleccionada = null;
                     if (guardado) {
                         guardado = false;
                         context.update("form:ACEPTAR");
@@ -1524,9 +1583,12 @@ public class ControlVigenciaJornada implements Serializable {
                     }
                     listVigenciasCompensacionesTiempo.add(duplicarVCT);
                     listVCTCrear.add(duplicarVCT);
+                    activarLOV = true;
+                    RequestContext.getCurrentInstance().update("form:listaValores");
                     modificarInfoRegistroVT(listVigenciasCompensacionesTiempo.size());
+                    context.update("form:informacionRegistroVT");
                     context.update("form:datosVigenciaCT");
-                    vigenciaTiempoSeleccionada = null;
+                    vigenciaTiempoSeleccionada = listVigenciasCompensacionesTiempo.get(listVigenciasCompensacionesTiempo.size() - 1);
                     if (guardado) {
                         guardado = false;
                         context.update("form:ACEPTAR");
@@ -1614,9 +1676,12 @@ public class ControlVigenciaJornada implements Serializable {
                     }
                     listVigenciasCompensacionesDinero.add(duplicarVCD);
                     listVCDCrear.add(duplicarVCD);
+                    vigenciaDineroSeleccionada = listVigenciasCompensacionesDinero.get(listVigenciasCompensacionesDinero.size() - 1);
+                    activarLOV = true;
+                    RequestContext.getCurrentInstance().update("form:listaValores");
                     modificarInfoRegistroVD(listVigenciasCompensacionesDinero.size());
+                    context.update("form:informacionRegistroVD");
                     context.update("form:datosVigenciaCD");
-                    vigenciaDineroSeleccionada = null;
                     if (guardado) {
                         guardado = false;
                         context.update("form:ACEPTAR");
@@ -1636,7 +1701,7 @@ public class ControlVigenciaJornada implements Serializable {
                         filtrarVigenciasCompensacionesDinero = null;
                         tipoListaVCD = 0;
                     }
-                    context.execute("NuevoRegistroVCD.hide()");
+                    context.execute("DuplicarRegistroVCD.hide()");
                     duplicarVCD = new VigenciasCompensaciones();
                 }
             } else {
@@ -1664,7 +1729,11 @@ public class ControlVigenciaJornada implements Serializable {
         if (vigenciaJornadaSeleccionada == null && vigenciaDineroSeleccionada == null && vigenciaTiempoSeleccionada == null) {
             context.execute("seleccionarRegistro.show()");
         } else {
-            if (vigenciaJornadaSeleccionada != null) {
+            if (vigenciaTiempoSeleccionada != null) {
+                borrarVCT();
+            } else if (vigenciaDineroSeleccionada != null) {
+                borrarVCD();
+            } else if (vigenciaJornadaSeleccionada != null) {
                 int tam1 = 0;
                 if (listVigenciasCompensacionesDinero != null) {
                     tam1 = listVigenciasCompensacionesDinero.size();
@@ -1679,12 +1748,6 @@ public class ControlVigenciaJornada implements Serializable {
                     context.update("form:negacionBorradoVJ");
                     context.execute("negacionBorradoVJ.show()");
                 }
-            }
-            if (vigenciaTiempoSeleccionada != null) {
-                borrarVCT();
-            }
-            if (vigenciaDineroSeleccionada != null) {
-                borrarVCD();
             }
         }
     }
@@ -1710,7 +1773,11 @@ public class ControlVigenciaJornada implements Serializable {
             if (tipoLista == 1) {
                 filtrarVJ.remove(vigenciaJornadaSeleccionada);
             }
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             modificarInfoRegistroVJ(listVigenciasJornadas.size());
+            RequestContext.getCurrentInstance().update("form:informacionRegistroVJ");
+
 
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVJEmpleado");
@@ -1743,8 +1810,10 @@ public class ControlVigenciaJornada implements Serializable {
             if (tipoListaVCT == 1) {
                 filtrarVigenciasCompensacionesTiempo.remove(vigenciaTiempoSeleccionada);
             }
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             modificarInfoRegistroVT(listVigenciasCompensacionesTiempo.size());
-
+            RequestContext.getCurrentInstance().update("form:informacionRegistroVT");
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVigenciaCT");
             vigenciaTiempoSeleccionada = null;
@@ -1775,7 +1844,10 @@ public class ControlVigenciaJornada implements Serializable {
             if (tipoListaVCD == 1) {
                 filtrarVigenciasCompensacionesDinero.remove(vigenciaDineroSeleccionada);
             }
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             modificarInfoRegistroVD(listVigenciasCompensacionesDinero.size());
+            RequestContext.getCurrentInstance().update("form:informacionRegistroVD");
 
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVigenciaCD");
@@ -1931,6 +2003,8 @@ public class ControlVigenciaJornada implements Serializable {
         paraNuevaVJornada = 0;
         listVigenciasJornadas = null;
         guardado = true;
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         context.update("form:ACEPTAR");
     }
     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO) (list = ESTRUCTURAS - MOTIVOSLOCALIZACIONES - PROYECTOS)
@@ -1942,8 +2016,8 @@ public class ControlVigenciaJornada implements Serializable {
      * @param indice Fila de la tabla
      * @param dlg Dialogo
      * @param LND Tipo actualizacion = LISTA - NUEVO - DUPLICADO
-     * @param tt Tipo Tabla : VigenciaLocalizacion / VigenciaProrrateo /
-     * VigenciaProrrateoProyecto
+     * @param tt Tipo Tabla
+     *
      */
     public void asignarIndex(int dlg, int LND, int tt) {
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1955,25 +2029,25 @@ public class ControlVigenciaJornada implements Serializable {
             } else if (LND == 2) {
                 tipoActualizacion = 2;
             }
-            if (dlg == 0) {
-                //getInfoRegistroJornadaLaboral();
+            if (dlg == 0) { //getInfoRegistroJornadaLaboral();
                 contarRegistrosJornadaL();
                 context.update("form:JornadaLaboralDialogo");
                 context.execute("JornadaLaboralDialogo.show()");
             } else if (dlg == 1) {
-                //getInfoRegistroTipoDescanso();
-                contarRegistrosTipoD();
+                //getInfoRegistroTipoDescanso(); contarRegistrosTipoD();
                 context.update("form:TiposDescansosDialogo");
                 context.execute("TiposDescansosDialogo.show()");
             }
+            activarLOV = false;
+            RequestContext.getCurrentInstance().update("form:listaValores");
         }
+        contarRegistrosVD();
+        context.update("form:informacionRegistroVD");
+        contarRegistrosVT();
+        context.update("form:informacionRegistroVT");
     }
 
-    //LOVS
-    //Estructuras
-    /**
-     * Metodo que actualiza la estructura seleccionada (vigencia localizacion)
-     */
+    //LOVS //Estructuras /** Metodo que actualiza la estructura seleccionada
     public void actualizarJornadaLaboral() {
 
         RequestContext context = RequestContext.getCurrentInstance();
@@ -2173,17 +2247,15 @@ public class ControlVigenciaJornada implements Serializable {
      * @return Nombre del dialogo a exportar en XML
      */
     public String exportXML() {
-        if (vigenciaJornadaSeleccionada != null) {
-            nombreTabla = ":formExportarVJ:datosVJEmpleadoExportar";
-            nombreXML = "VigenciasJornadasXML";
-        }
         if (vigenciaTiempoSeleccionada != null) {
             nombreTabla = ":formExportarVCT:datosVCTVigenciaExportar";
             nombreXML = "VigenciasCompensacionesTiempoXML";
-        }
-        if (vigenciaDineroSeleccionada != null) {
+        } else if (vigenciaDineroSeleccionada != null) {
             nombreTabla = ":formExportarVCD:datosVCDVigenciaExportar";
             nombreXML = "VigenciasCompensacionesDineroXML";
+        } else if (vigenciaJornadaSeleccionada != null) {
+            nombreTabla = ":formExportarVJ:datosVJEmpleadoExportar";
+            nombreXML = "VigenciasJornadasXML";
         }
         return nombreTabla;
     }
@@ -2194,14 +2266,12 @@ public class ControlVigenciaJornada implements Serializable {
      * @throws IOException Excepcion de In-Out de datos
      */
     public void validarExportPDF() throws IOException {
-        if (vigenciaJornadaSeleccionada != null) {
-            exportPDVJ();
-        }
         if (vigenciaTiempoSeleccionada != null) {
             exportPDVCT();
-        }
-        if (vigenciaDineroSeleccionada != null) {
+        } else if (vigenciaDineroSeleccionada != null) {
             exportPDFVCD();
+        } else if (vigenciaJornadaSeleccionada != null) {
+            exportPDVJ();
         }
     }
 
@@ -2250,14 +2320,12 @@ public class ControlVigenciaJornada implements Serializable {
      * @throws IOException
      */
     public void verificarExportXLS() throws IOException {
-        if (vigenciaJornadaSeleccionada != null) {
-            exportXLSVJ();
-        }
         if (vigenciaTiempoSeleccionada != null) {
             exportXLSVCT();
-        }
-        if (vigenciaDineroSeleccionada != null) {
+        } else if (vigenciaDineroSeleccionada != null) {
             exportXLSVCD();
+        } else if (vigenciaJornadaSeleccionada != null) {
+            exportXLSVJ();
         }
     }
 
@@ -2304,16 +2372,15 @@ public class ControlVigenciaJornada implements Serializable {
         //Cuando no se ha seleccionado ningun registro:
         if (vigenciaJornadaSeleccionada == null && vigenciaDineroSeleccionada == null && vigenciaTiempoSeleccionada == null) {
             //Dialogo para seleccionar el rastro Historico de la tabla deseada
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("verificarRastrosTablas.show()");
+            RequestContext.getCurrentInstance().execute("verificarRastrosTablas.show()");
         } else {
             //Cuando se selecciono registro:            
-            if (vigenciaJornadaSeleccionada != null) {
-                verificarRastroVigenciaJornada();
+            if (vigenciaTiempoSeleccionada != null) {
+                verificarRastroVigenciaCompensacionTiempo();
             } else if (vigenciaDineroSeleccionada != null) {
                 verificarRastroVigenciaCompensacionDinero();
-            } else if (vigenciaTiempoSeleccionada != null) {
-                verificarRastroVigenciaCompensacionTiempo();
+            } else if (vigenciaJornadaSeleccionada != null) {
+                verificarRastroVigenciaJornada();
             }
         }
     }
@@ -2434,7 +2501,14 @@ public class ControlVigenciaJornada implements Serializable {
         }
         vigenciaJornadaSeleccionada = null;
         modificarInfoRegistroVJ(filtrarVJ.size());
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         RequestContext.getCurrentInstance().update("form:informacionRegistroVJ");
+    }
+
+    public void anularLOV() {
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
     public void eventoFiltrarT() {
@@ -2452,6 +2526,7 @@ public class ControlVigenciaJornada implements Serializable {
         }
         vigenciaDineroSeleccionada = null;
         modificarInfoRegistroVD(filtrarVigenciasCompensacionesDinero.size());
+        RequestContext.getCurrentInstance().update("form:informacionRegistroVD");
         RequestContext.getCurrentInstance().update("form:informacionRegistroVD");
     }
 
@@ -2488,8 +2563,10 @@ public class ControlVigenciaJornada implements Serializable {
     public void contarRegistrosVJ() {
         if (listVigenciasJornadas != null) {
             modificarInfoRegistroVJ(listVigenciasJornadas.size());
+            RequestContext.getCurrentInstance().update("form:informacionRegistroVJ");
         } else {
             modificarInfoRegistroVJ(0);
+            RequestContext.getCurrentInstance().update("form:informacionRegistroVJ");
         }
     }
 
@@ -2497,11 +2574,14 @@ public class ControlVigenciaJornada implements Serializable {
         if (listVigenciasCompensacionesTiempo != null) {
             if (listVigenciasCompensacionesTiempo.size() > 0) {
                 modificarInfoRegistroVT(listVigenciasCompensacionesTiempo.size());
+                RequestContext.getCurrentInstance().update("form:informacionRegistroVT");
             } else {
                 modificarInfoRegistroVT(0);
+                RequestContext.getCurrentInstance().update("form:informacionRegistroVT");
             }
         } else {
             modificarInfoRegistroVT(0);
+            RequestContext.getCurrentInstance().update("form:informacionRegistroVT");
         }
     }
 
@@ -2509,11 +2589,14 @@ public class ControlVigenciaJornada implements Serializable {
         if (listVigenciasCompensacionesDinero != null) {
             if (listVigenciasCompensacionesDinero.size() > 0) {
                 modificarInfoRegistroVD(listVigenciasCompensacionesDinero.size());
+                RequestContext.getCurrentInstance().update("form:informacionRegistroVD");
             } else {
                 modificarInfoRegistroVD(0);
+                RequestContext.getCurrentInstance().update("form:informacionRegistroVD");
             }
         } else {
             modificarInfoRegistroVD(0);
+            RequestContext.getCurrentInstance().update("form:informacionRegistroVD");
         }
     }
 
@@ -2997,5 +3080,13 @@ public class ControlVigenciaJornada implements Serializable {
 
     public void setMensajeValidacion(String mensajeValidacion) {
         this.mensajeValidacion = mensajeValidacion;
+    }
+
+    public boolean isActivarLOV() {
+        return activarLOV;
+    }
+
+    public void setActivarLOV(boolean activarLOV) {
+        this.activarLOV = activarLOV;
     }
 }

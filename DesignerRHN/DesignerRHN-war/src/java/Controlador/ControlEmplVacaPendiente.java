@@ -184,7 +184,7 @@ public class ControlEmplVacaPendiente implements Serializable {
             //Si nuevaVacacion F Inicial y F Final es despues de 1900
             if (regVacaAuxiliar.getInicialcausacion().after(fechaAño1900) && regVacaAuxiliar.getInicialcausacion().before(regVacaAuxiliar.getFinalcausacion())) {
                 // Si nuevaVacacion F Inicial y F Final son despues de fechaFinalContratacion
-                if (regVacaAuxiliar.getInicialcausacion().after(fechaContratacion) && regVacaAuxiliar.getFinalcausacion().after(fechaContratacion)) {
+                if ((regVacaAuxiliar.getInicialcausacion().after(fechaContratacion) || regVacaAuxiliar.getInicialcausacion().equals(fechaContratacion)) && regVacaAuxiliar.getFinalcausacion().after(fechaContratacion)) {
                     retorno = validarTraslapos(regVacaAuxiliar);
                 } else {
                     retorno = false;
@@ -370,6 +370,7 @@ public class ControlEmplVacaPendiente implements Serializable {
         //Si Fueron ingresados todos los campos obligatorios
         if (nuevaVacacion.getInicialcausacion() != null && nuevaVacacion.getFinalcausacion() != null && nuevaVacacion.getDiaspendientes() != null) {
             tipoActualizacion = 1;
+            regVacaAuxiliar = vacaPendienteSeleccionada;
             if (validarFechasRegistroPendientes()) {
                 if (tipoListaPendientes == 1) {//Si la tabla tiene filtro
                     FacesContext c = FacesContext.getCurrentInstance();
@@ -397,10 +398,10 @@ public class ControlEmplVacaPendiente implements Serializable {
                 }
                 listVacaPendientes.add(nuevaVacacion);
                 listCrearTablaPendientes.add(nuevaVacacion);
+                vacaPendienteSeleccionada = listVacaPendientes.get(listVacaPendientes.size() - 1);
                 contarRegistrosP();
                 contarRegistrosD();
                 nuevaVacacion = new VWVacaPendientesEmpleados();
-                vacaPendienteSeleccionada = null;
                 RequestContext context = RequestContext.getCurrentInstance();
                 getTotalDiasPendientes();
                 tipoActualizacion = -1;
@@ -431,12 +432,12 @@ public class ControlEmplVacaPendiente implements Serializable {
             }
             if (vacaPendienteSeleccionada != null) {
                 duplicarVacacion = new VWVacaPendientesEmpleados();
-                int pos = listVacaPendientes.indexOf(vacaPendienteSeleccionada);
                 duplicarVacacion.setEmpleado(empleado.getSecuencia());
                 duplicarVacacion.setEstado("ABIERTO");
-                duplicarVacacion.setDiaspendientes(listVacaPendientes.get(pos).getDiaspendientes());
-                duplicarVacacion.setInicialcausacion(listVacaPendientes.get(pos).getInicialcausacion());
-                duplicarVacacion.setFinalcausacion(listVacaPendientes.get(pos).getFinalcausacion());
+                System.out.println("vacaPendienteSeleccionada: " + vacaPendienteSeleccionada);
+                duplicarVacacion.setDiaspendientes(vacaPendienteSeleccionada.getDiaspendientes());
+                duplicarVacacion.setInicialcausacion(vacaPendienteSeleccionada.getInicialcausacion());
+                duplicarVacacion.setFinalcausacion(vacaPendienteSeleccionada.getFinalcausacion());
 
                 //Dialogo Duplicar VacaPendiente
                 context.update("formularioDialogos:duplicarVP");
@@ -448,6 +449,7 @@ public class ControlEmplVacaPendiente implements Serializable {
     public void confirmarDuplicarPendientes() {
         if (duplicarVacacion.getInicialcausacion() != null && duplicarVacacion.getFinalcausacion() != null && duplicarVacacion.getDiaspendientes() != null) {
             tipoActualizacion = 2;
+            regVacaAuxiliar = vacaPendienteSeleccionada;
             if (validarFechasRegistroPendientes()) {
                 k++;
                 BigInteger l = BigInteger.valueOf(k);
@@ -469,9 +471,9 @@ public class ControlEmplVacaPendiente implements Serializable {
                 duplicarVacacion.setEstado("ABIERTO");
                 listCrearTablaPendientes.add(duplicarVacacion);
                 listVacaPendientes.add(duplicarVacacion);
+                vacaPendienteSeleccionada = listVacaPendientes.get(listVacaPendientes.size() - 1);
                 contarRegistrosP();
                 contarRegistrosD();
-                vacaPendienteSeleccionada = null;
                 duplicarVacacion = new VWVacaPendientesEmpleados();
                 RequestContext context = RequestContext.getCurrentInstance();
                 getTotalDiasPendientes();
@@ -546,6 +548,8 @@ public class ControlEmplVacaPendiente implements Serializable {
                 }
             }
         }
+        vacaPendienteSeleccionada = null;
+        vacaDisfrutadaSeleccionada = null;
         contarRegistrosP();
         contarRegistrosD();
         context.update("form:informacionRegistroD");
@@ -757,71 +761,82 @@ public class ControlEmplVacaPendiente implements Serializable {
         }
         guardarCambiosVPendientes();
         guardarCambiosVDisfrutadas();
+        vacaPendienteSeleccionada = null;
+        vacaDisfrutadaSeleccionada = null;
+        recargarListas();
         guardado = true;
         context.update("form:ACEPTAR");
-        FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        recargarListas();
         context.update("form:datosVacacionesPEmpleado");
         context.update("form:datosVacacionesDEmpleado");
-        context.update("form:growl");
         context.update("form:totalDiasP");
     }
 
     public void guardarCambiosVPendientes() {
+        int ms = 0;
         if (!listBorrarTablaPendientes.isEmpty()) {
             for (int i = 0; i < listBorrarTablaPendientes.size(); i++) {
                 administrarVWVacaPendientesEmpleados.borrarVacaPendiente(listBorrarTablaPendientes.get(i));
             }
+            ms++;
         }
         if (!listCrearTablaPendientes.isEmpty()) {
             for (int i = 0; i < listCrearTablaPendientes.size(); i++) {
                 administrarVWVacaPendientesEmpleados.crearVacaPendiente(listCrearTablaPendientes.get(i));
             }
+            ms++;
         }
         if (!listModificacionesTablaPendientes.isEmpty()) {
             for (int i = 0; i < listModificacionesTablaPendientes.size(); i++) {
                 administrarVWVacaPendientesEmpleados.editarVacaPendiente(listModificacionesTablaPendientes.get(i));
             }
+            ms++;
         }
+        listBorrarTablaPendientes.clear();
+        listCrearTablaPendientes.clear();
+        listModificacionesTablaPendientes.clear();
         tipoActualizacion = -1;
         contarRegistrosP();
         contarRegistrosD();
-
-        FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos de Otros Certificados con éxito");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        if (ms > 0) {
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos de Otros Certificados con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
+        }
         RequestContext.getCurrentInstance().update("form:informacionRegistroP");
         RequestContext.getCurrentInstance().update("form:informacionRegistroD");
-        RequestContext.getCurrentInstance().update("form:growl");
-        vacaPendienteSeleccionada = null;
     }
 
     public void guardarCambiosVDisfrutadas() {
+        int ms = 0;
         if (!listBorrarTablaDisfrutadas.isEmpty()) {
             for (int i = 0; i < listBorrarTablaDisfrutadas.size(); i++) {
                 administrarVWVacaPendientesEmpleados.borrarVacaPendiente(listBorrarTablaDisfrutadas.get(i));
             }
+            ms++;
         }
         if (!listCrearTablaDisfrutadas.isEmpty()) {
             for (int i = 0; i < listCrearTablaDisfrutadas.size(); i++) {
                 administrarVWVacaPendientesEmpleados.crearVacaPendiente(listCrearTablaDisfrutadas.get(i));
             }
+            ms++;
         }
         if (!listModificacionesTablaDisfrutadas.isEmpty()) {
             for (int i = 0; i < listModificacionesTablaDisfrutadas.size(); i++) {
                 administrarVWVacaPendientesEmpleados.editarVacaPendiente(listModificacionesTablaDisfrutadas.get(i));
             }
+            ms++;
         }
         tipoActualizacion = -1;
         contarRegistrosD();
         contarRegistrosP();
 
-        FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos de Otros Certificados con éxito");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        if (ms > 0) {
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos de Otros Certificados con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
+        }
         RequestContext.getCurrentInstance().update("form:informacionRegistroD");
         RequestContext.getCurrentInstance().update("form:informacionRegistroP");
-        RequestContext.getCurrentInstance().update("form:growl");
-        vacaDisfrutadaSeleccionada = null;
     }
 
     public void salir() {

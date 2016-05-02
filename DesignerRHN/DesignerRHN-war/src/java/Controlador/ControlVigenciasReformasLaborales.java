@@ -120,7 +120,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         vigenciaSeleccionada = null;
 
         activarLOV = true;
-        RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
     @PostConstruct
@@ -229,12 +228,12 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             }
         } else {
             vigenciaSeleccionada.setFechavigencia(fechaIni);
-            activarLOV = true;
-            RequestContext.getCurrentInstance().update("form:listaValores");
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVRLEmpleado");
             context.execute("errorRegNew.show()");
         }
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
     public void modificarVRL(VigenciasReformasLaborales vrl, String confirmarCambio, String valorConfirmar) {
