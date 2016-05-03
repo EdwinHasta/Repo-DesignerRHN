@@ -117,7 +117,7 @@ public class ControlVigenciasViajeros implements Serializable {
     public void recibirEmpleado(BigInteger sec) {
         secuenciaEmpleado = sec;
         getListVigenciasViajerosPorEmpleado();
-//        contarRegistrosTV();
+        contarRegistrosTV();
         if (listVigenciasViajerosPorEmpleado != null) {
             vigenciaSeleccionada = listVigenciasViajerosPorEmpleado.get(0);
             modificarInfoRegistro(listVigenciasViajerosPorEmpleado.size());
@@ -807,8 +807,6 @@ public class ControlVigenciasViajeros implements Serializable {
             context.update("form:informacionRegistro");
             vigenciaSeleccionada = listVigenciasViajerosPorEmpleado.get(listVigenciasViajerosPorEmpleado.indexOf(duplicarVigenciasViajeros));
             context.update("form:datosViajeros");
-            //vigenciaSeleccionada = null;
-
             if (guardado) {
                 guardado = false;
                 context.update("form:ACEPTAR");
