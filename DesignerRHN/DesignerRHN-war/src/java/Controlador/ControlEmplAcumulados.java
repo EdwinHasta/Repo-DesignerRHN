@@ -61,7 +61,7 @@ public class ControlEmplAcumulados implements Serializable {
         listVWAcumuladosPorEmpleado = null;
         editarVWAcumuladosPorEmpleado = new VWAcumulados();
         secRegistro = null;
-        altoTabla = "310";
+        altoTabla = "292";
     }
 
     @PostConstruct
@@ -123,7 +123,7 @@ public class ControlEmplAcumulados implements Serializable {
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            altoTabla = "286";
+            altoTabla = "268";
             conceptoCodigo = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:conceptoCodigo");
             conceptoCodigo.setFilterStyle("width: 90px");
             conceptoDescripcion = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:conceptoDescripcion");
@@ -164,7 +164,7 @@ public class ControlEmplAcumulados implements Serializable {
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
-            altoTabla = "310";
+            altoTabla = "292";
             System.out.println("Desactivar");
             cerrarFiltrado();
         }
@@ -351,6 +351,7 @@ public class ControlEmplAcumulados implements Serializable {
         index = -1;
         secRegistro = null;
         listVWAcumuladosPorEmpleado = null;
+        acumuladosPorEmpleadoSeleccionado = null;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosEmplAcumulados");
     }
@@ -394,7 +395,7 @@ public class ControlEmplAcumulados implements Serializable {
         observaciones.setFilterStyle("display: none; visibility: hidden;");
         motivoNovedad = (Column) c.getViewRoot().findComponent("form:datosEmplAcumulados:motivoNovedad");
         motivoNovedad.setFilterStyle("display: none; visibility: hidden;");
-        altoTabla = "310";
+        altoTabla = "292";
         RequestContext.getCurrentInstance().update("form:datosEmplAcumulados");
         bandera = 0;
         filtrarVWAcumuladosPorEmpleado = null;
@@ -422,15 +423,7 @@ public class ControlEmplAcumulados implements Serializable {
     public List<VWAcumulados> getListVWAcumuladosPorEmpleado() {
         if (listVWAcumuladosPorEmpleado == null) {
             listVWAcumuladosPorEmpleado = administrarEmplAcumulados.consultarVWAcumuladosEmpleado(secuenciaEmpleado);
-            System.out.println("Lista: " + listVWAcumuladosPorEmpleado.size());
         }
-//        RequestContext context = RequestContext.getCurrentInstance();
-//        if (listVWAcumuladosPorEmpleado == null || listVWAcumuladosPorEmpleado.isEmpty()) {
-//            infoRegistro = "Cantidad de registros: 0 ";
-//        } else {
-//            infoRegistro = "Cantidad de registros: " + listVWAcumuladosPorEmpleado.size();
-//        }
-//        context.update("form:informacionRegistro");
         return listVWAcumuladosPorEmpleado;
 
     }
