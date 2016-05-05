@@ -169,19 +169,10 @@
 
                                     <h:outputText  value="#{msg['fechaIngreso']}*" style="position: absolute; top: 25px; left: 580px;font-weight: bold"/>
                                     <div id="divFechaIngresoModPersonal" style="position: absolute; top:20px; left: 705px;">
-                                        <!--<lnk:calendar id="fechaIngresoModPersonal" value="#/{controlPersonaIndividual.mostrarFechaIngreso()}">
-                                        <lnk:calendar id="fechaIngresoModPersonal" value="#/{fechaI}" >
-
-                                            <p:ajax event="dateSelect" listener="#/{controlPersonaIndividual.modificarFechaIngresoInformacionPersonal(10)}" 
+                                        <lnk:calendar id="fechaIngresoModPersonal" value="#{controlPersonaIndividual.fechaIngreso}" >
+                                            <p:ajax event="dateSelect" listener="#{controlPersonaIndividual.modificarFechaIngresoInformacionPersonal(10)}" 
                                                     update="fechaIngresoModPersonal, estructuraModCargoDesempeñado" process="@this"/>
-                                            <p:ajax event="change" listener="#/{controlPersonaIndividual.modificarFechaIngresoInformacionPersonal(10)}" 
-                                                    update="fechaIngresoModPersonal, estructuraModCargoDesempeñado" process="@this"/>
-                                        </lnk:calendar>-->
-                                        <lnk:calendar id="fechaIngresoModPersonal" value="#{fechaI}" >
-
-                                            <p:ajax event="dateSelect" listener="#{controlPersonaIndividual.arreglarFecha()}" 
-                                                    update="fechaIngresoModPersonal, estructuraModCargoDesempeñado" process="@this"/>
-                                            <p:ajax event="change" listener="#{controlPersonaIndividual.arreglarFecha()}" 
+                                            <p:ajax event="change" listener="#{controlPersonaIndividual.modificarFechaIngresoInformacionPersonal(10)}" 
                                                     update="fechaIngresoModPersonal, estructuraModCargoDesempeñado" process="@this"/>
                                         </lnk:calendar>
                                     </div>
