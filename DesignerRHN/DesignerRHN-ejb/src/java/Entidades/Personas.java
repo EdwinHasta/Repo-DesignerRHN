@@ -143,6 +143,7 @@ public class Personas implements Serializable {
     }
 
     public void setFechanacimiento(Date fechanacimiento) {
+        System.out.println("setFechanacimiento fechanacimiento: " + fechanacimiento);
         this.fechanacimiento = fechanacimiento;
     }
 
@@ -194,6 +195,7 @@ public class Personas implements Serializable {
     }
 
     public void setPrimerapellido(String primerapellido) {
+        System.out.println("setPrimerapellido primerapellido : " + primerapellido);
         this.primerapellido = primerapellido.toUpperCase();
     }
 
@@ -409,7 +411,7 @@ public class Personas implements Serializable {
 
     public String getNombreCompletoOrden2() {
         if (nombreCompleto == null) {
-            nombreCompleto = getNombre()+ " " + getPrimerapellido() + " " + getSegundoapellido();
+            nombreCompleto = getNombre() + " " + getPrimerapellido() + " " + getSegundoapellido();
             if (nombreCompleto.equals("  ")) {
                 nombreCompleto = null;
             }
@@ -418,7 +420,7 @@ public class Personas implements Serializable {
             return nombreCompleto;
         }
     }
-    
+
     public void setNombreCompleto(String nombreCompleto) {
         if (nombreCompleto != null) {
             this.nombreCompleto = nombreCompleto.toUpperCase();
