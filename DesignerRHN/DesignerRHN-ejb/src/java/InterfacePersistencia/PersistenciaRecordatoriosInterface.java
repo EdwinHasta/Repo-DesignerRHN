@@ -4,6 +4,7 @@
 package InterfacePersistencia;
 
 import Entidades.Recordatorios;
+import java.math.BigInteger;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -43,4 +44,6 @@ public interface PersistenciaRecordatoriosInterface {
     public void crear(EntityManager em, Recordatorios recordatorios);
     public void borrar(EntityManager em, Recordatorios recordatorios);
     public void editar(EntityManager em, Recordatorios recordatorios);
+    public Recordatorios consultaRecordatorios(EntityManager em, BigInteger secuencia) throws Exception;
+    public List<String> ejecutarConsultaRecordatorio(EntityManager em, BigInteger secuencia) throws Exception;
 }

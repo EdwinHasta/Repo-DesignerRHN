@@ -25,13 +25,13 @@ public class Personas implements Serializable {
     @Column(name = "FACTORRH")
     private String factorrh;
     @Column(name = "FECHANACIMIENTO")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date fechanacimiento;
     @Column(name = "FECHAVENCIMIENTOCERTIFICADO")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date fechavencimientocertificado;
     @Column(name = "FECHAFALLECIMIENTO")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date fechafallecimiento;
     @Size(max = 2)
     @Column(name = "GRUPOSANGUINEO")
@@ -74,7 +74,7 @@ public class Personas implements Serializable {
     @Column(name = "NUMEROMATRICULAPROF")
     private String numeromatriculaprof;
     @Column(name = "FECHAEXPMATRICULA")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date fechaexpmatricula;
     @Column(name = "DIGITOVERIFICACIONDOCUMENTO")
     private Short digitoverificaciondocumento;

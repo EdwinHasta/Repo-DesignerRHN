@@ -342,10 +342,10 @@ public class ControlEmpleadoIndividual implements Serializable {
             aceptar = true;
             dialogo = -1;
             RequestContext context = RequestContext.getCurrentInstance();
-            if (modificacionPersona == false) {
+            if (!modificacionPersona) {
                 modificacionPersona = true;
             }
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 context.update("form:ACEPTAR");
             }
@@ -390,10 +390,10 @@ public class ControlEmpleadoIndividual implements Serializable {
                 persona.setCiudadnacimiento(seleccionCiudad);
                 context.update("form:lugarNacimiento");
             }
-            if (modificacionPersona == false) {
+            if (!modificacionPersona) {
                 modificacionPersona = true;
             }
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 context.update("form:ACEPTAR");
             }
@@ -429,10 +429,10 @@ public class ControlEmpleadoIndividual implements Serializable {
             aceptar = true;
             dialogo = -1;
             RequestContext context = RequestContext.getCurrentInstance();
-            if (modificacionHV == false) {
+            if (!modificacionHV) {
                 modificacionHV = true;
             }
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 context.update("form:ACEPTAR");
             }
@@ -495,10 +495,10 @@ public class ControlEmpleadoIndividual implements Serializable {
                 context.update("form:tipo");
                 listaTiposDocumentos = null;
                 getListaTiposDocumentos();
-                if (modificacionPersona == false) {
+                if (!modificacionPersona) {
                     modificacionPersona = true;
                 }
-                if (guardado == true) {
+                if (guardado ) {
                     guardado = false;
                     context.update("form:ACEPTAR");
                 }
@@ -530,10 +530,10 @@ public class ControlEmpleadoIndividual implements Serializable {
                 listaCiudades = null;
                 getListaCiudades();
 
-                if (modificacionPersona == false) {
+                if (!modificacionPersona) {
                     modificacionPersona = true;
                 }
-                if (guardado == true) {
+                if (guardado) {
                     guardado = false;
                     context.update("form:ACEPTAR");
                 }
@@ -561,10 +561,10 @@ public class ControlEmpleadoIndividual implements Serializable {
                 context.update("form:cargoPostulado");
                 listaCargos = null;
                 getListaCargos();
-                if (modificacionHV == false) {
+                if (!modificacionHV) {
                     modificacionHV = true;
                 }
-                if (guardado == true) {
+                if (guardado) {
                     guardado = false;
                     context.update("form:ACEPTAR");
                 }
@@ -665,7 +665,7 @@ public class ControlEmpleadoIndividual implements Serializable {
 
     //MODIFICACION
     public void eventoDataSelectFechaNacimiento(String tipoCampo) {
-        System.out.println("Here");
+        System.out.println(this.getClass().getName() +".eventoDataSelectFechaNacimiento");
         if (persona.getFechanacimiento() != null) {
             if (tipoCampo.equals("P")) {
                 if (modificacionPersona == false) {
@@ -676,11 +676,11 @@ public class ControlEmpleadoIndividual implements Serializable {
                     modificacionEmpleado = true;
                 }
             } else if (tipoCampo.equals("HV")) {
-                if (modificacionHV == false) {
+                if (!modificacionHV) {
                     modificacionHV = true;
                 }
             }
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:ACEPTAR");
@@ -700,11 +700,11 @@ public class ControlEmpleadoIndividual implements Serializable {
                     modificacionEmpleado = true;
                 }
             } else if (tipoCampo.equals("HV")) {
-                if (modificacionHV == false) {
+                if (!modificacionHV) {
                     modificacionHV = true;
                 }
             }
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:ACEPTAR");
@@ -724,11 +724,11 @@ public class ControlEmpleadoIndividual implements Serializable {
                     modificacionEmpleado = true;
                 }
             } else if (tipoCampo.equals("HV")) {
-                if (modificacionHV == false) {
+                if (!modificacionHV ) {
                     modificacionHV = true;
                 }
             }
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:ACEPTAR");
@@ -739,19 +739,19 @@ public class ControlEmpleadoIndividual implements Serializable {
     public void modificarCampo(String tipoCampo) {
         System.out.println("modificarCampo");
         if (tipoCampo.equals("P")) {
-            if (modificacionPersona == false) {
+            if (!modificacionPersona) {
                 modificacionPersona = true;
             }
         } else if (tipoCampo.equals("E")) {
-            if (modificacionEmpleado == false) {
+            if (!modificacionEmpleado) {
                 modificacionEmpleado = true;
             }
         } else if (tipoCampo.equals("HV")) {
-            if (modificacionHV == false) {
+            if (!modificacionHV) {
                 modificacionHV = true;
             }
         }
-        if (guardado == true) {
+        if (guardado) {
             guardado = false;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:ACEPTAR");

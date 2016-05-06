@@ -8,6 +8,7 @@ import java.io.IOException;
 //import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,7 +54,7 @@ public class ControlInicioRed implements Serializable {
 
     public ControlInicioRed() {
         cambioClave = true;
-        System.out.println("estadoinicio constructor: "+estadoInicio);
+        System.out.println("estadoinicio constructor: " + estadoInicio);
         estadoInicio = false;
         modulosDesigner = true;
         txtBoton = "Conectar";
@@ -73,14 +74,7 @@ public class ControlInicioRed implements Serializable {
         actualizaciones.add("form:baseDatos");
         actualizaciones.add("form:bannerConsultas");
         banner = new ArrayList<BannerInicioRed>();
-        //banner.add(new BannerInicioRed("9091310.png", "http://www.nomina.com.co/"));
-        //banner.add(new BannerInicioRed("primefaces.png", ""));
-        //banner.add(new BannerInicioRed("Java.jpg", ""));
-        //banner.add(new BannerInicioRed("eclipseLink.jpeg", ""));
-        //banner.add(new BannerInicioRed("glassfish_logo.png", ""));
-        //banner.add(new BannerInicioRed("java.png", ""));
-        //banner.add(new BannerInicioRed("Jsf-logo.png", ""));
-        this.llenarBannerDefaul();
+        this.llenarBannerSinEntrar();
         //FECHA ACTUAL
         formatoFechaActual = new SimpleDateFormat("EEEEE dd 'de' MMMMM 'de' yyyy");
         formatoAño = new SimpleDateFormat("yyyy");
@@ -110,26 +104,30 @@ public class ControlInicioRed implements Serializable {
                                     asignarImagenCandado(true);
                                     acceso = true;
                                     getNombreEmpresa();
-                                    listaRecordatorios = administrarInicioRed.recordatoriosInicio();
-                                    if (listaRecordatorios != null) {
-                                        for (int i = 0; i < listaRecordatorios.size(); i++) {
-                                            contexto.addMessage(null, new FacesMessage("", listaRecordatorios.get(i)));
-                                        }
-                                        context.update("form:growl");
-                                    }
-                                    listaConsultas = administrarInicioRed.consultasInicio();
-                                    if (listaConsultas != null && !listaConsultas.isEmpty()) {
-                                        banner.clear();
-                                        for (int j = 0; j < listaConsultas.size(); j++) {
-                                            if (listaConsultas.get(j).getNombreimagen() != null) {
-                                                banner.add(new BannerInicioRed(listaConsultas.get(j).getNombreimagen(), ""));
-                                            } else {
-                                                banner.add(new BannerInicioRed("Iconos/SinImagen.png", ""));
-                                            }
-                                        }
-                                    } else {
-                                        llenarBannerDefaul();
-                                    }
+                                    obtenerRecordatorios(context, contexto);
+                                    /*listaRecordatorios = administrarInicioRed.recordatoriosInicio();
+                                     if (listaRecordatorios != null) {
+                                     for (int i = 0; i < listaRecordatorios.size(); i++) {
+                                     contexto.addMessage(null, new FacesMessage("", listaRecordatorios.get(i)));
+                                     }
+                                     context.update("form:growl");
+                                     }*/
+                                    obtenerConsultas();
+                                    /*listaConsultas = administrarInicioRed.consultasInicio();
+                                     if (listaConsultas != null && !listaConsultas.isEmpty()) {
+                                     banner.clear();
+                                     if (listaConsultas.size() > 0) {
+                                     for (int j = 0; j < listaConsultas.size(); j++) {
+                                     if (listaConsultas.get(j).getNombreimagen() != null) {
+                                     banner.add(new BannerInicioRed("Iconos/" + listaConsultas.get(j).getNombreimagen(), ""));
+                                     }
+                                     }
+                                     } else {
+                                     llenarBannerListaVacia();
+                                     }
+                                     } else {
+                                     llenarBannerSinEntrar();
+                                     }*/
                                     HttpServletRequest request = (HttpServletRequest) (contexto.getExternalContext().getRequest());
                                     String Ip, nombreEquipo;
                                     java.net.InetAddress localMachine;
@@ -184,10 +182,10 @@ public class ControlInicioRed implements Serializable {
                 modulosDesigner = true;
                 txtBoton = "Conectar";
                 asignarImagenCandado(false);
-                System.out.println("estadoinicio ingresar else: "+estadoInicio);
+                System.out.println("estadoinicio ingresar else: " + estadoInicio);
                 estadoInicio = false;
                 getNombreEmpresa();
-                llenarBannerDefaul();
+                llenarBannerSinEntrar();
                 context.update(actualizaciones);
                 context.update("form:growl");
                 inicioSession = true;
@@ -195,9 +193,9 @@ public class ControlInicioRed implements Serializable {
                 sessionEntradaDefault();
             }
             context.update("form:btnCandadoLogin");
-            System.out.println("estadoinicio ingresar fin: "+estadoInicio);
-        } catch (Exception e) {
-            System.out.println("estadoinicio ingresar exception: "+estadoInicio);
+            System.out.println("estadoinicio ingresar fin: " + estadoInicio);
+        } catch (UnknownHostException e) {
+            System.out.println("estadoinicio ingresar exception: " + estadoInicio);
             System.out.println(e);
         }
     }
@@ -217,17 +215,60 @@ public class ControlInicioRed implements Serializable {
         context.update("form:btnCandadoLogin");
     }
 
-    public void llenarBannerDefaul() {
-        String ubicaPublicidad="Iconos/";
+    private void llenarBannerSinEntrar() {
+        String ubicaPublicidad = "Iconos/";
         banner.clear();
-        banner.add(new BannerInicioRed(ubicaPublicidad+"publicidad01.png", "http://www.nomina.com.co/"));
-        banner.add(new BannerInicioRed(ubicaPublicidad+"publicidad02.png", "http://www.nomina.com.co/"));
-        banner.add(new BannerInicioRed(ubicaPublicidad+"publicidad03.png", "http://www.nomina.com.co/"));
-        banner.add(new BannerInicioRed(ubicaPublicidad+"publicidad04.png", "http://www.nomina.com.co/"));
+        banner.add(new BannerInicioRed(ubicaPublicidad + "publicidad01.png", "http://www.nomina.com.co/"));
+        banner.add(new BannerInicioRed(ubicaPublicidad + "publicidad02.png", "http://www.nomina.com.co/"));
+        banner.add(new BannerInicioRed(ubicaPublicidad + "publicidad03.png", "http://www.nomina.com.co/"));
+        banner.add(new BannerInicioRed(ubicaPublicidad + "publicidad04.png", "http://www.nomina.com.co/"));
         /*banner.add(new BannerInicioRed(ubicaPublicidad+"publicidad05.png", "https://glassfish.java.net/"));
-        banner.add(new BannerInicioRed(ubicaPublicidad+"publicidad06.png", "https://www.java.com/"));
-        banner.add(new BannerInicioRed(ubicaPublicidad+"publicidad07.png", "https://javaserverfaces.java.net/"));
-        */
+         banner.add(new BannerInicioRed(ubicaPublicidad+"publicidad06.png", "https://www.java.com/"));
+         banner.add(new BannerInicioRed(ubicaPublicidad+"publicidad07.png", "https://javaserverfaces.java.net/"));
+         */
+    }
+
+    private void llenarBannerListaVacia() {
+        String ubicaPublicidad = "Iconos/";
+        banner.clear();
+        banner.add(new BannerInicioRed(ubicaPublicidad + "SinImagen.png", ""));
+    }
+
+    private void obtenerRecordatorios(RequestContext request, FacesContext contexto) {
+        listaRecordatorios = administrarInicioRed.recordatoriosInicio();
+        if (listaRecordatorios != null) {
+            for (int i = 0; i < listaRecordatorios.size(); i++) {
+                contexto.addMessage(null, new FacesMessage("", listaRecordatorios.get(i)));
+            }
+            request.update("form:growl");
+        }
+    }
+
+    private void obtenerConsultas() {
+        String ubicaPublicidad = "Iconos/";
+        String paginaGeneraListado = "generaconsulta.xhtml";
+        String parametro = "?secuencia=";
+        listaConsultas = administrarInicioRed.consultasInicio();
+        if (listaConsultas != null && !listaConsultas.isEmpty()) {
+            banner.clear();
+            /*for (int j = 0; j < listaConsultas.size(); j++) {
+            
+                if (listaConsultas.get(j).getNombreimagen() != null) {
+                    banner.add(new BannerInicioRed("Iconos/" + listaConsultas.get(j).getNombreimagen(), ""));
+                }
+            }*/
+            for(Recordatorios recor : listaConsultas){
+                if (recor.getNombreimagen() != null){
+                    banner.add(new BannerInicioRed(ubicaPublicidad+recor.getNombreimagen(), 
+                            paginaGeneraListado+parametro+recor.getSecuencia().toString()));
+                }
+            }
+            if (banner.isEmpty() ){
+                llenarBannerListaVacia();
+            }
+        } else {
+            llenarBannerListaVacia();
+        }
     }
 
     public void sessionEntradaDefault() {
@@ -284,11 +325,11 @@ public class ControlInicioRed implements Serializable {
 
     private void asignarImagenCandado(boolean inicioSesion) {
         System.out.println("ControlInicioRed.asignarImagenCandado");
-        System.out.println("parametro: "+inicioSesion);
+        System.out.println("parametro: " + inicioSesion);
         if (inicioSesion) {
-            this.candadoLogin="loginCandadoAbierto.png";
+            this.candadoLogin = "loginCandadoAbierto.png";
         } else {
-            this.candadoLogin="loginCandadoCerrado.png";
+            this.candadoLogin = "loginCandadoCerrado.png";
         }
     }
 
@@ -392,7 +433,7 @@ public class ControlInicioRed implements Serializable {
 
     public String getCandadoLogin() {
         System.out.println("ControlInicioRed.getCandadoLogin");
-        System.out.println("inicio sesion: "+ !modulosDesigner);
+        System.out.println("inicio sesion: " + !modulosDesigner);
         asignarImagenCandado(!modulosDesigner);
         return candadoLogin;
     }

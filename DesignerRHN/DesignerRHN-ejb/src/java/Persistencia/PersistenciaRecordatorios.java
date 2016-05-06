@@ -5,11 +5,12 @@ package Persistencia;
 
 import Entidades.Recordatorios;
 import InterfacePersistencia.PersistenciaRecordatoriosInterface;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
+//import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
@@ -154,6 +155,42 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
         } catch (Exception e) {
             System.out.println("Error: PersistenciaRecordatorios.mensajesRecordatorios : " + e.toString());
             return null;
+        }
+    }
+
+    @Override
+    public Recordatorios consultaRecordatorios(EntityManager em, BigInteger secuencia) throws Exception{
+        /*em.clear();
+         Query query = em.createQuery("SELECT r FROM Recordatorios r WHERE r.secuencia = :secuencia");
+         query.setParameter("secuencia", secuencia);
+         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+         Recordatorios recordatorios = (Recordatorios) query.getSingleResult();
+         return recordatorios;*/
+        try {
+            em.clear();
+            return em.find(Recordatorios.class, secuencia);
+        }catch(Exception e){
+            System.out.println("consultaRecordatorios en "+this.getClass().getName() + ": " );
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    @Override
+    public List<String> ejecutarConsultaRecordatorio(EntityManager em, BigInteger secuencia) throws Exception{
+        System.out.println("PersistenciaRecordatorios.ejecutarConsultaRecordatorio");
+        try{
+        Recordatorios recor = consultaRecordatorios(em, secuencia);
+        em.clear();
+        String consulta = recor.getConsulta();
+        System.out.println("consulta: "+consulta);
+        Query query = em.createNativeQuery(consulta);
+        List<String> listaConsultas = query.getResultList();
+        return listaConsultas;
+        } catch(Exception e) {
+            System.out.println("ejecutarConsultaRecordatorio en "+ this.getClass().getName() + ": " );
+            e.printStackTrace();
+            throw e;
         }
     }
 

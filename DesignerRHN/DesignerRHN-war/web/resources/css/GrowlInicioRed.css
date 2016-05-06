@@ -3,9 +3,11 @@ root {
 }
 
 .ui-growl{
-    position: relative;
+    /*position: relative;
     margin: 0 auto;
-    left: -480px;
+    left: -480px;*/
+    top: 120px;
+    left: 0px;
 }
 .ui-growl-image-info{
     visibility: hidden;

@@ -10,9 +10,9 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
+//import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaQuery;
+//import javax.persistence.criteria.CriteriaQuery;
 
 /**
  * Clase Stateless.<br>
@@ -88,7 +88,7 @@ public class PersistenciaMotivosMvrs implements PersistenciaMotivosMvrsInterface
         }
     }
 
-    //@Override
+    @Override
     public List<Motivosmvrs> buscarMotivosMvrs(EntityManager em) {
         em.clear();
         Query query = em.createQuery("SELECT m FROM Motivosmvrs m");
