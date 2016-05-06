@@ -77,7 +77,7 @@ public class ControlEmplNovedad implements Serializable {
         //guardar
         guardado = true;
         secRegistro = null;
-        altoTabla = "292";
+        altoTabla = "270";
     }
 
     @PostConstruct
@@ -196,7 +196,6 @@ public class ControlEmplNovedad implements Serializable {
      * la lista filtrada y a la columna
      */
     public void editarCelda() {
-        RequestContext context = RequestContext.getCurrentInstance();
         if (index >= 0) {
             if (tipoLista == 0) {
                 editarNovedad = listNovedadesEmpleado.get(index);
@@ -205,6 +204,7 @@ public class ControlEmplNovedad implements Serializable {
                 editarNovedad = filtrarListNovedadesEmpleado.get(index);
             }
 
+            RequestContext context = RequestContext.getCurrentInstance();
             if (cualCelda == 0) {
                 context.update("formularioDialogos:editarCodigoConceptoD");
                 context.execute("editarCodigoConceptoD.show()");
@@ -250,8 +250,6 @@ public class ControlEmplNovedad implements Serializable {
                 context.execute("editarFechaIngreso.show()");
                 cualCelda = -1;
             }
-        } else {
-            context.execute("seleccionarRegistro.show()");
         }
         index = -1;
         secRegistro = null;
@@ -259,7 +257,7 @@ public class ControlEmplNovedad implements Serializable {
 
     public void activarCtrlF11() {
         if (bandera == 0) {
-            altoTabla = "268";
+            altoTabla = "246";
             novedadCodigoConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:novedadCodigoConcepto");
             novedadCodigoConcepto.setFilterStyle("width: 60px");
             novedadDescripcionConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:novedadDescripcionConcepto");
@@ -306,7 +304,7 @@ public class ControlEmplNovedad implements Serializable {
     }
 
     public void cerrarFiltrado() {
-        altoTabla = "292";
+        altoTabla = "270";
         novedadCodigoConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:novedadCodigoConcepto");
         novedadCodigoConcepto.setFilterStyle("display: none; visibility: hidden;");
         novedadDescripcionConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:novedadDescripcionConcepto");
@@ -406,9 +404,6 @@ public class ControlEmplNovedad implements Serializable {
                 } else if (resultado == 5) {
                     context.execute("errorTablaSinRastro.show()");
                 }
-//            } else {
-//                context.execute("seleccionarRegistro.show()");
-//            }
             } else {
                 if (administrarRastros.verificarHistoricosTabla("NOVEDADES")) {
                     context.execute("confirmarRastroHistorico.show()");
