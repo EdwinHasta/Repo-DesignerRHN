@@ -1188,6 +1188,31 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
                 context.execute("tutorDialogo.show()");
             }
         }
+//        if (tt == 2) {
+//            if (LND == 0) {
+//                indexRetiro = true;
+//                tipoActualizacion = 0;
+//            } else if (LND == 1) {
+//                tipoActualizacion = 1;
+//            } else if (LND == 2) {
+//                tipoActualizacion = 2;
+//            }
+//            if (dlg == 0) {
+//                //RetirosDialogo
+//                motivoRetiroSeleccionado = null;
+//                activarLOV = true;
+//                context.update("form:listaValores");
+//                modificarInfoRegistroMotivoRetiros(motivosRetiros.size());
+//                //    dialogoRetiros();
+//                context.update("formLovs:RetirosDialogo");
+//                context.execute("RetirosDialogo.show()");
+//            }
+//        }
+    }
+
+    public void asignarIndex(Retirados retirados, int dlg, int LND, int tt) {
+        RequestContext context = RequestContext.getCurrentInstance();
+        System.out.println("Retirados: " + retirados.toString());
         if (tt == 2) {
             if (LND == 0) {
                 indexRetiro = true;
@@ -1465,17 +1490,25 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
      * Guarda los datos efectuados en el panel retirados
      */
     public void guardarDatosRetiros() {
+        System.out.println("ENTRO guardarDatosRetiros");
         if (retiroVigencia.getFecharetiro() != null) {
+            System.out.println("ControlVigenciaTipoTrabajador.guardarDatosPensiones:");
+            System.out.println("Secuencia: " + retiroVigencia.getSecuencia());
             retiroVigencia.setVigenciatipotrabajador(vigenciaSeleccionada);
 
             k++;
             k = retiroVigencia.getSecuencia().intValue();
+            System.out.println("K: " + k);
             l = BigInteger.valueOf(k);
+            System.out.println("L: " + l);
             retiroVigencia.setSecuencia(l);
+            System.out.println("pensionVigencia.Secuencia: " + retiroVigencia.getSecuencia());
             if (operacionRetiro == false) {
                 if (banderaLimpiarRetiro == true) {
                     administrarVigenciasTiposTrabajadores.borrarRetirado(retiroCopia);
                 } else {
+                    System.out.println("editar");
+                    System.out.println("Secuencia: " + retiroVigencia.getSecuencia());
                     administrarVigenciasTiposTrabajadores.editarRetirado(retiroVigencia);
                 }
             } else {
@@ -1514,6 +1547,12 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
                 panelRetiradosMensaje.setStyle("position: absolute; left: 440px; top: 310px; font-size: 12px; width: 415px; height: 185px; border-radius: 10px; text-align: left; visibility: visible");
 
             }
+            System.err.println("---------------------DATOS GUARDADOS---------------------------------");
+            System.out.println("Fecha Retiro: " + retiroVigencia.getFecharetiro());
+            System.out.println("Motivo de retiro: " + retiroVigencia.getMotivoretiro().getNombre());
+            System.out.println("Descripcion: " + retiroVigencia.getDescripcion());
+            System.err.println("---------------------------------------------------------------------");
+
             cambioRetiros = false;
             retiroVigencia = new Retirados();
             retiroVigencia.setMotivoretiro(new MotivosRetiros());
@@ -1535,10 +1574,12 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
 
             cambiosPagina = true;
             context.update("form:ACEPTAR");
+            System.out.println("SALIO GUARDARDATOSRETIROS");
+
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("errorRegRetiro.show()");
-
+            System.out.println("SALIO CON ERROR");
         }
     }
 
@@ -1727,7 +1768,9 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         aceptar = true;
         filtradoMotivosRetiros = null;
         motivoRetiroSeleccionado = null;
-        vigenciaSeleccionada = null;
+        vigenciaSeleccionada = null;  /*
+         *
+         */
         getMotivosRetiros();
 
 //        context.update("form:RetirosDialogo");
@@ -2148,31 +2191,21 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     public void guardarGeneral() {
         System.out.println("ENTRO GUARDADO GENERAL");
         if (cambiosPagina == false) {
-//            System.err.println("indexRetiro: " + indexRetiro);
-//            if (indexRetiro == true) {
-//                guardarNuevoRegistroRetiro();
-//                System.err.println("almacenarRetirado " + almacenarRetirado + " banderaEliminarRetiro " + banderaEliminarRetiro);
-                if ((almacenarRetirado == true) && (banderaEliminarRetiro == false)) {
-                    System.out.println("ENTRO IF ALMACENAR RETIRADOS");
-                    guardarDatosRetiros();
-//                }
+            if ((almacenarRetirado == true) && (banderaEliminarRetiro == false)) {
+                System.out.println("ENTRO IF ALMACENAR RETIRADOS");
+                guardarDatosRetiros();
             }
 
-//            System.err.println("indexPension: " + indexPension);
-//            if (indexPension == true) {
-//                guardarNuevoRegistroPension();
-//                System.err.println("almacenarPensionado " + almacenarPensionado + " banderaEliminarPension " + banderaEliminarPension);
-                if ((almacenarPensionado == true) && (banderaEliminarPension == false)) {
-                    System.out.println("ENTRO IF ALMACENAR PENSIONADO");
-                    guardarDatosPensiones();
-                }
-//            }
+            if ((almacenarPensionado == true) && (banderaEliminarPension == false)) {
+                System.out.println("ENTRO IF ALMACENAR PENSIONADO");
+                guardarDatosPensiones();
+            }
 
             if (guardado == false) {
                 guardarCambiosVTT();
             }
         }
-        System.out.println("SALIO");
+        System.out.println("SALIO guardarGeneral");
     }
 
     public void verificarRastro() {

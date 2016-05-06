@@ -265,7 +265,7 @@
                                 <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.asignarIndex(info, 0, 0, 2)}" immediate="true" process="@this"/>
                                 <p:ajax event="click"  listener="#{controlVigenciaTipoTrabajador.validarRegistroSeleccionadoRetirados()}" process="@this" immediate="true"/>
                             </p:inputText>
-                            <p:commandButton value="" actionListener="#{controlVigenciaTipoTrabajador.asignarIndex(info, 0, 0, 2)}" style="position: absolute; left: 393px; top: 41px; height: 23px; width: 23px; background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; 
+                            <p:commandButton id="btnMotivosRetiros" value="" actionListener="#{controlVigenciaTipoTrabajador.asignarIndex(info, 0, 0, 2)}" style="position: absolute; left: 393px; top: 41px; height: 23px; width: 23px; background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; 
                                              width: 23px; height: 23px;" immediate="true" process="@this"/>
                             <p:watermark for="motivoRetiro" value="#{msg['motivoretiroR']}" />
 
