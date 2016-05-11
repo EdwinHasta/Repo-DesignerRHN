@@ -53,7 +53,7 @@
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
                             </p:toolbarGroup>  
                         </p:toolbar>
-                        <div id="seca" style="position: absolute; left: 10px; top: 71px;">
+                        <div id="seca" style="position: absolute; left: 10px; top: 80px;">
                             <p:graphicImage id="btnFoto" value="#{controlEmpleadoIndividual.fotoEmpleado}" height="120" width="105" 
                                             alt="Foto empleado" onclick="subirFoto.show();"
                                             style="position: relative; top: 0px; left: 0px;"/>
@@ -65,7 +65,7 @@
                             <p:tooltip for="bntAntContratos" value="#{msg['anteriorescontratostp']}"/>
                         </div>
                         <p:scrollPanel id="panelSuperior" mode="native"
-                                       style="position: absolute; top: 71px; left: 130px; width: 731px; height: 176px;
+                                       style="position: absolute; left: 130px; top: 80px; width: 731px; height: 176px;
                                        background-color: transparent; ">
                             <!-- <fieldset style="position: absolute; top: 71px; left: 12px; font-size: 11px; width: 828px; height: 176px; border-radius: 10px; "> -->
                                 <!-- <legend style="font-size: 12px; font-weight: bold; color: blue;">#{msg['datospersonales']}</legend> -->
@@ -142,7 +142,7 @@
                                 <h:outputText value="#{msg['ciudaddocumento']}" 
                                               style="position: absolute; left: 351px; top: 77px; font-weight: bold; color: #14388B;"/>
                                 <p:inputText id="lugarExpedicion" value="#{controlEmpleadoIndividual.persona.ciudaddocumento.nombre}"
-                                             style="position: absolute; left: 468px; top: 72px; width: 100px; text-transform: uppercase; box-shadow: none; " 
+                                             style="position: absolute; left: 468px; top: 72px; width: 100px; text-transform: uppercase; " 
                                              onclick="select();">
                                     <p:ajax event="dblclick" listener="#{controlEmpleadoIndividual.dialogoCiudad(0)}"/>
                                     <p:ajax event="select" listener="#{controlEmpleadoIndividual.valoresBackupAutocompletar('CIUDADDOCUMENTO')}"/>
@@ -206,7 +206,7 @@
                                 <h:outputText value="#{msg['sexo']}" 
                                               style="position: absolute; left: 432px; top: 149px; font-weight: bold; color: #14388B; " />
                                 <p:selectOneMenu id="sexo" value="#{controlEmpleadoIndividual.persona.sexo}" 
-                                                 style="position: absolute; left: 468px; top: 144px; width: 100px;">  
+                                                 style="position: absolute; left: 468px; top: 144px; width: 100px; border: none;">  
                                     <f:selectItem itemLabel="" itemValue="" />  
                                     <f:selectItem itemLabel="#{msg['sexom']}" itemValue="M" />  
                                     <f:selectItem itemLabel="#{msg['sexof']}" itemValue="F" />
@@ -279,7 +279,7 @@
                                 <h:outputText value="#{msg['viviendapropia']}" 
                                               style="position: absolute; left: 26px; top: 245px; font-weight: bold; color: #14388B;" />
                                 <p:selectOneMenu id="viviendaPropia" value="#{controlEmpleadoIndividual.persona.viviendapropia}" 
-                                                 style="position: absolute; left: 128px; top: 240px; width: 45px;" 
+                                                 style="position: absolute; left: 128px; top: 240px; width: 45px; border: none;" 
                                                  panelStyle="font-size: 14px">  
                                     <f:selectItem itemLabel="" itemValue=""/>
                                     <f:selectItem itemLabel="#{msg['sii']}" itemValue="S"/>  
@@ -289,7 +289,7 @@
                                 <h:outputText value="#{msg['vehiculopropio']}" 
                                               style="position: absolute; left: 367px; top: 245px; font-weight: bold; color: #14388B; " />
                                 <p:selectOneMenu id="vehiculoPropio" value="#{controlEmpleadoIndividual.vehiculoPropio}" 
-                                                 style="position: absolute; left: 468px; top: 240px; width: 45px;" 
+                                                 style="position: absolute; left: 468px; top: 240px; width: 45px; border: none;" 
                                                  panelStyle="font-size: 14px">  
                                     <f:selectItem itemLabel="#{msg['sii']}" itemValue="S" />  
                                     <f:selectItem itemLabel="#{msg['noo']}" itemValue="N" />
@@ -327,7 +327,7 @@
                                 <h:outputText value="#{msg['vehiculoempresa']}" 
                                               style="position: absolute; left: 358px; top: 293px; font-weight: bold; color: #14388B;" />
                                 <p:selectOneMenu id="vehiculoEmpresa" value="#{controlEmpleadoIndividual.persona.vehiculoempresa}"  
-                                                 style="position: absolute; left: 468px; top: 288px; width: 45px;" 
+                                                 style="position: absolute; left: 468px; top: 288px; width: 45px; border: none;" 
                                                  panelStyle="font-size: 14px">  
                                     <f:selectItem itemLabel="" itemValue="" />
                                     <f:selectItem itemLabel="#{msg['sii']}" itemValue="S" />  

@@ -83,6 +83,7 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
                     + "    ORDER BY dbms_random.value)ra\n"
                     + "    WHERE ROWNUM=1";
             Query query = entity.createNativeQuery(consulta, Recordatorios.class);
+            //Query query = entity.createNativeQuery(consulta); // obliga a hacer un casting al usar la lista.
             Recordatorios recordatorio = (Recordatorios) query.getSingleResult();
             return recordatorio;
         } catch (Exception e) {
@@ -114,13 +115,14 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
     public List<Recordatorios> consultasInicio(EntityManager entity) {
         try {
             entity.clear();
-            String consulta = "SELECT * FROM RECORDATORIOS R WHERE R.TIPO='CONSULTA' "
+            String consulta = "SELECT SECUENCIA, TIPO, MENSAJE, USUARIO, CONSULTA, DIA, MES, ANO, DIASPREVIOS, NOMBREIMAGEN FROM RECORDATORIOS R WHERE R.TIPO='CONSULTA' "
                     + "AND (R.DIA=0 OR R.DIA=TO_NUMBER(TO_CHAR(SYSDATE,'DD'))) AND (R.MES=0 "
                     + "OR R.MES=TO_NUMBER(TO_CHAR(SYSDATE,'MM'))) AND (R.ANO=0 "
                     + "OR R.ANO=TO_NUMBER(TO_CHAR(SYSDATE,'YYYY'))) "
                     + "AND (R.USUARIO=(SELECT U.SECUENCIA FROM USUARIOS U "
                     + "WHERE U.ALIAS=USER) OR R.USUARIO IS NULL)";
             Query query = entity.createNativeQuery(consulta, Recordatorios.class);
+            //Query query = entity.createNativeQuery(consulta);
             List<Recordatorios> listaConsultas = query.getResultList();
             return listaConsultas;
         } catch (Exception e) {
@@ -150,6 +152,7 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
             String consulta = "SELECT * FROM RECORDATORIOS R WHERE R.TIPO='RECORDATORIO'and usuario =(SELECT U.SECUENCIA FROM USUARIOS U "
                     + "WHERE U.ALIAS=USER)";
             Query query = em.createNativeQuery(consulta, Recordatorios.class);
+            //Query query = em.createNativeQuery(consulta);  //Obliga a hacer un casting cuando la lista se use.
             List<Recordatorios> listaConsultas = query.getResultList();
             return listaConsultas;
         } catch (Exception e) {

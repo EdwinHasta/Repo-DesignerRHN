@@ -33,6 +33,7 @@ import InterfaceAdministrar.AdministrarEmpleadoIndividualInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -1220,7 +1221,7 @@ public class ControlEmpleadoIndividual implements Serializable {
             try {
                 fis = new FileInputStream(new File(rutaFoto));
                 fotoEmpleado = new DefaultStreamedContent(fis, "image/jpg");
-            } catch (IOException e) {
+            } catch (FileNotFoundException e) {
                 fotoEmpleado = null;
                 System.out.println("Foto del empleado no encontrada. \n" + e);
             }

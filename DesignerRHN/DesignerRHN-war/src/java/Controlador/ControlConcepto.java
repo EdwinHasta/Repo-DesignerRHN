@@ -196,20 +196,24 @@ public class ControlConcepto implements Serializable {
     }
 
     public void recibirPaginaEntrante(String pagina) {
+        System.out.println(this.getClass().getName()+".recibirPaginaEntrante()");
         paginaAnterior = pagina;
         estadoConceptoEmpresa = "S";
         listaConceptosEmpresaLOV = null;
         backUpEstadoConceptoEmpresa = "S";
         if (listaEmpresas == null) {
+            System.out.println("listaEmpresas esta vacia");
             getListaEmpresas();
         }
         getEmpresaActual();
         if (empresaActual == null) {
+            System.out.println("empresaActual esta vacia");
             empresaActual = listaEmpresas.get(0);
         }
         listaConceptosEmpresa = null;
         getListaConceptosEmpresa();
         if (listaConceptosEmpresa != null) {
+            System.out.println("listaConceptosEmpresa no esta vacia");
             infoRegistro = listaConceptosEmpresa.size();
         } else {
             infoRegistro = 0;

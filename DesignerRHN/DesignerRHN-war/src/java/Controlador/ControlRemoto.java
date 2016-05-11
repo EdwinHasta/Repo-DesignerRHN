@@ -946,7 +946,8 @@ public class ControlRemoto implements Serializable {
         try {
             valorImputText();
         } catch (ParseException ex) {
-            Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("error en primerTipoTrabajador");
         }
         actualizarInformacionTipoTrabajador();
         RequestContext context = RequestContext.getCurrentInstance();

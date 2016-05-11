@@ -24,6 +24,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
@@ -47,6 +48,7 @@ public class ControlVigenciasCargos implements Serializable {
     AdministrarEstructurasInterface administrarEstructuras;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    
     //------------------------------------------------------------------------------------------
     //ATRIBUTOS
     //------------------------------------------------------------------------------------------
@@ -119,6 +121,8 @@ public class ControlVigenciasCargos implements Serializable {
     private String infoRegistroCargos;
     //
     private boolean activarLOV;
+    
+    String paginaAnterior;
 
     //------------------------------------------------------------------------------------------
     //CONSTRUCTOR(ES)
@@ -204,6 +208,21 @@ public class ControlVigenciasCargos implements Serializable {
         } else {
             modificarInfoRegistro(0);
         }
+    }
+    
+    public void recibirPaginaEntrante(String pagina, Empleados emp){
+        System.out.println(this.getClass().getName()+"recibirPaginaEntrante()");
+        System.out.println("Recibio la pagina "+ pagina);
+        paginaAnterior = pagina;
+        recibirEmpleado(emp);
+    }
+    
+    public String redirigir(){
+        System.out.println(this.getClass().getName()+".redirigir()");
+        if (paginaAnterior == null){
+            System.out.println("la pagina anterior es nula.");
+        }
+        return paginaAnterior;
     }
 
     /*
@@ -576,6 +595,7 @@ public class ControlVigenciasCargos implements Serializable {
         RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
+    
     public void salir() {
         cerrarFiltrado();
         activarLOV = true;
@@ -586,6 +606,7 @@ public class ControlVigenciasCargos implements Serializable {
         k = 0;
         vigenciasCargosEmpleado = null;
         guardado = true;
+        //administrarVigenciasCargos.salir(); //Esto invalida el administrar pero genera conflictos con el scope.
     }
 
     private void cerrarFiltrado() {

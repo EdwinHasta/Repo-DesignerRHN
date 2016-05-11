@@ -10,7 +10,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
+//import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
@@ -24,14 +24,17 @@ import javax.persistence.criteria.CriteriaQuery;
 @Stateless
 public class PersistenciaTelefonos implements PersistenciaTelefonosInterface {
 
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
-     */
-    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-     private EntityManager em;
+     *
+     * @param em
      */
     @Override
     public void crear(EntityManager em, Telefonos telefonos) {
+        System.out.println(this.getClass().getName() + ".crear()");
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -39,7 +42,8 @@ public class PersistenciaTelefonos implements PersistenciaTelefonosInterface {
             em.persist(telefonos);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaTelefonos.crear: " + e);
+            System.out.println("error en crear");
+            e.printStackTrace();
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -48,6 +52,7 @@ public class PersistenciaTelefonos implements PersistenciaTelefonosInterface {
 
     @Override
     public void editar(EntityManager em, Telefonos telefonos) {
+            System.out.println(this.getClass().getName() + ".editar()");
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -55,15 +60,18 @@ public class PersistenciaTelefonos implements PersistenciaTelefonosInterface {
             em.merge(telefonos);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaTelefonos.editar: " + e);
+            System.out.println("error en editar");
+            e.printStackTrace();
             if (tx.isActive()) {
                 tx.rollback();
             }
+            System.out.println("transaccion cerrada");
         }
     }
 
     @Override
     public void borrar(EntityManager em, Telefonos telefonos) {
+            System.out.println(this.getClass().getName() + ".borrar()");
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -71,41 +79,59 @@ public class PersistenciaTelefonos implements PersistenciaTelefonosInterface {
             em.remove(em.merge(telefonos));
             tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaTelefonos.borrar: " + e);
+            System.out.println("error en borrar()");
+            e.printStackTrace();
             if (tx.isActive()) {
                 tx.rollback();
             }
+            System.out.println("se cerro la transaccion");
         }
     }
 
     @Override
     public Telefonos buscarTelefono(EntityManager em, BigInteger secuencia) {
-        em.clear();
-        return em.find(Telefonos.class, secuencia);
+            System.out.println(this.getClass().getName() + ".buscarTelefono()");
+        try {
+            em.clear();
+            return em.find(Telefonos.class, secuencia);
+        } catch (Exception e) {
+            System.out.println("error en buscarTelefono");
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public List<Telefonos> buscarTelefonos(EntityManager em) {
-        em.clear();
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(Telefonos.class));
-        return em.createQuery(cq).getResultList();
+            System.out.println(this.getClass().getName()+".buscarTelefonos()");
+        try {
+            em.clear();
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Telefonos.class));
+            return em.createQuery(cq).getResultList();
+        } catch (Exception e) {
+            System.out.println("error en buscarTelefonos");
+            return null;
+        }
     }
 
     @Override
     public List<Telefonos> telefonosPersona(EntityManager em, BigInteger secuenciaPersona) {
+            System.out.println(this.getClass().getName()+"telefonosPersona()");
         try {
             em.clear();
-            Query query = em.createQuery("SELECT t "
+            String consulta ="SELECT t "
                     + "FROM Telefonos t "
                     + "WHERE t.persona.secuencia = :secuenciaPersona "
-                    + "ORDER BY t.fechavigencia DESC");
+                    + "ORDER BY t.fechavigencia DESC";
+            Query query = em.createQuery(consulta);
             query.setParameter("secuenciaPersona", secuenciaPersona);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Telefonos> listaTelefonos = query.getResultList();
             return listaTelefonos;
         } catch (Exception e) {
-            System.out.println("Error PersistenciaTelefonos.telefonoPersona" + e);
+            System.out.println("error en telefonosPersona");
+            e.printStackTrace();
             return null;
         }
     }

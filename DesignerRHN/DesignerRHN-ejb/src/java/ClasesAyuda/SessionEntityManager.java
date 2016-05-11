@@ -14,9 +14,9 @@ import javax.persistence.EntityManagerFactory;
  */
 public class SessionEntityManager {
 
-    public String idSession;
-    public EntityManagerFactory emf;
-    public EntityManager em;
+    private String idSession;
+    private EntityManagerFactory emf;
+    private EntityManager em;
 
     public SessionEntityManager(String idSession, EntityManagerFactory emf) {
         this.idSession = idSession;
@@ -29,6 +29,14 @@ public class SessionEntityManager {
 
     public void setIdSession(String idSession) {
         this.idSession = idSession;
+    }
+
+    public EntityManagerFactory getEmf() {
+        return emf;
+    }
+
+    public void setEmf(EntityManagerFactory emf) {
+        this.emf = emf;
     }
 
     public EntityManager getEm() {

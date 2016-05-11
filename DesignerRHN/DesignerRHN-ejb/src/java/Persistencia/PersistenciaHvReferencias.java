@@ -24,13 +24,13 @@ import javax.persistence.Query;
 @Stateless
 public class PersistenciaHvReferencias implements PersistenciaHvReferenciasInterface {
 
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;*/
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      *
      * @param em
      */
-    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-     private EntityManager em;*/
     @Override
     public void crear(EntityManager em, HvReferencias hvReferencias) {
         em.clear();

@@ -9,7 +9,7 @@ import java.math.BigInteger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
+//import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
@@ -22,14 +22,17 @@ import javax.persistence.Query;
 @Stateless
 public class PersistenciaHVHojasDeVida implements PersistenciaHVHojasDeVidaInterface {
 
-    /**
-     * Atributo EntityManager. Representa la comunicación con la base de datos.
-     */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
      private EntityManager em;*/
-
+    /**
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     *
+     * @param em
+     * @param hVHojasDeVida
+     */
     @Override
     public void editar(EntityManager em, HVHojasDeVida hVHojasDeVida) {
+        System.out.println(this.getClass().getName() + ".hvHoaDeVidaPersona()");
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -40,12 +43,14 @@ public class PersistenciaHVHojasDeVida implements PersistenciaHVHojasDeVidaInter
             if (tx.isActive()) {
                 tx.rollback();
             }
-            System.out.println("Error PersistenciaHVHojasDeVida.editar: " + e);
+            System.out.println("error en editar");
+            e.printStackTrace();
         }
     }
 
     @Override
     public HVHojasDeVida hvHojaDeVidaPersona(EntityManager em, BigInteger secuenciaPersona) {
+        System.out.println(this.getClass().getName() + ".hvHojaDeVidaPersona()");
         try {
             em.clear();
             Query query = em.createQuery("SELECT hv from HVHojasDeVida hv where hv.persona.secuencia = :secuenciaPersona");
@@ -54,6 +59,8 @@ public class PersistenciaHVHojasDeVida implements PersistenciaHVHojasDeVidaInter
             HVHojasDeVida hVHojasDeVida = (HVHojasDeVida) query.getSingleResult();
             return hVHojasDeVida;
         } catch (Exception e) {
+            System.out.println("error en hvHojaDeVidaPersona");
+            e.printStackTrace();
             return null;
         }
     }

@@ -15,7 +15,7 @@
         <title>..::Designer.NOM::..</title>
     </h:head>
 
-    <h:body onload="iniciarScrollEmpleado();" >
+    <h:body>
         <div id="left" style="position: absolute; left: 0px; top:0px; width: 220px; height: 600px; padding-left: 5px; padding-right: 5px; background-image: url(Imagenes/Iconos/fondoizq.png); background-size: 100% 100%; background-repeat: repeat;">
             <ui:insert name="left">
                 <h:form>
@@ -23,6 +23,17 @@
                         <p:graphicImage value="Imagenes/Iconos/Designer.png" alt="Logo Designer" style="width: 217px; position: relative; left: 3px; top: 7px;"/>
                     </a>
                     <br/>
+                    <br/>
+                    <p:panel id="izperiodo" header="PERIODO EN EL TIEMPO" style="width: 213px; box-shadow: 5px 5px 5px 0px rgba(0,12,92,1); padding: 0px; ">
+                        <h:panelGrid columns="2" cellpadding="0" style="font-size: 10px;">
+                            <h:outputText id="lfdesde" style="font-weight: bold; color: #14388B;" value="Fecha desde: "/>
+                            <h:outputText id="fdesde" style="font-weight: bold;" value="#{controlTemplate.fechaDesde}"/>
+                            <h:outputText id="lfhasta" style="font-weight: bold; color: #14388B;" value="Fecha hasta: "/>
+                            <h:outputText id="fhasta" style="font-weight: bold;" value="#{controlTemplate.fechaHasta}"/>
+                            <h:outputText id="lfcorte" style="font-weight: bold; color: #14388B;" value="Fecha corte: "/>
+                            <h:outputText id="fcorte" style="font-weight: bold;" value="#{controlTemplate.fechaCorte}"/>
+                        </h:panelGrid>
+                    </p:panel>
                     <br/>
                     <p:panel id="licencia" header="LICENCIA DE USO A:" style="width: 213px; box-shadow: 5px 5px 5px 0px rgba(0,12,92,1); padding: 0px; ">
                         <h:panelGrid columns="1" cellpadding="0" style="font-size: 10px; width: 100%; left: 0px; padding: 0px;">
@@ -54,17 +65,6 @@
                                     <h:outputText value="#{controlTemplate.nombrePerfil}" style="font-weight: bold;"/>
                                 </center>
                             </h:column>
-                        </h:panelGrid>
-                    </p:panel>
-                    <br/>
-                    <p:panel id="izperiodo" header="PERIODO EN EL TIEMPO" style="width: 213px; box-shadow: 5px 5px 5px 0px rgba(0,12,92,1); padding: 0px; ">
-                        <h:panelGrid columns="2" cellpadding="0" style="font-size: 10px;">
-                            <h:outputText id="lfdesde" style="font-weight: bold; color: #14388B;" value="Fecha desde: "/>
-                            <h:outputText id="fdesde" style="font-weight: bold;" value="#{controlTemplate.fechaDesde}"/>
-                            <h:outputText id="lfhasta" style="font-weight: bold; color: #14388B;" value="Fecha hasta: "/>
-                            <h:outputText id="fhasta" style="font-weight: bold;" value="#{controlTemplate.fechaHasta}"/>
-                            <h:outputText id="lfcorte" style="font-weight: bold; color: #14388B;" value="Fecha corte: "/>
-                            <h:outputText id="fcorte" style="font-weight: bold;" value="#{controlTemplate.fechaCorte}"/>
                         </h:panelGrid>
                     </p:panel>
                     <br/>
