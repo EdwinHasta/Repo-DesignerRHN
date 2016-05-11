@@ -172,6 +172,10 @@ public class ControlBusquedaAvanzada implements Serializable {
     private List<PryRoles> lovRoles;
     private List<PryRoles> filtroLovRoles;
     private PryRoles seleccionRol;
+    //LOV Columnas de busqueda
+    List<ColumnasEscenarios> lovColumnasEscenarios;
+    List<ColumnasEscenarios> seleccionColumnasEs;
+    List<ColumnasEscenarios> filtradoColumnasEscenarios;
     //Variables control visibilidad.
     private String vTipoBusqueda;
     private String vTipoFechaCargo;
@@ -194,10 +198,6 @@ public class ControlBusquedaAvanzada implements Serializable {
     private String vTipoFechaEducacionNoFormal;
     //Parametros Busqueda Avanzada
     private List<ParametrosQueryBusquedaAvanzada> listaParametrosQueryModulos;
-    //LOV Columnas de busqueda
-    List<ColumnasEscenarios> lovColumnasEscenarios;
-    List<ColumnasEscenarios> seleccionColumnasEscenarios;
-    List<ColumnasEscenarios> filtradoColumnasEscenarios;
     //Respuesta de la busqueda avanzada
     private List<ResultadoBusquedaAvanzada> listaResultadoBusqueda;
     private List<ResultadoBusquedaAvanzada> filtroResultadoBusqueda;
@@ -205,6 +205,8 @@ public class ControlBusquedaAvanzada implements Serializable {
     private String valorPorDefecto;
     private String valorCopia;
     List<BigInteger> listaCodigosEmpleado;
+    //Para Todos los listados
+    private String infoRegistros;
 
     public ControlBusquedaAvanzada() {
         //Inicializar objeto de negocio
@@ -229,6 +231,7 @@ public class ControlBusquedaAvanzada implements Serializable {
         vTipoFechaCenso = "false";
         vTipoFechaEducacionFormal = "false";
         vTipoFechaEducacionNoFormal = "false";
+        infoRegistros = "";
     }
 
     @PostConstruct
@@ -1314,7 +1317,6 @@ public class ControlBusquedaAvanzada implements Serializable {
                 }
             }
         }
-
     }
 
     //METODOS LISTA DE VALORES
@@ -1322,85 +1324,196 @@ public class ControlBusquedaAvanzada implements Serializable {
         if (vTipoBusqueda.equals("Nomina")) {
             if (tipoLov.equals("CARGO") && lovCargos == null) {
                 lovCargos = administrarBusquedaAvanzada.lovCargos();
+                if (lovCargos != null) {
+                    modificarInfoR(lovCargos.size());
+                }
             } else if (tipoLov.equals("ESTRUCTURA") && lovEstructuras == null) {
                 lovEstructuras = administrarBusquedaAvanzada.lovEstructuras();
+                if (lovEstructuras != null) {
+                    modificarInfoR(lovEstructuras.size());
+                }
             } else if (tipoLov.equals("JEFE") && lovJefe == null) {
                 lovJefe = administrarBusquedaAvanzada.lovJefe();
+                if (lovJefe != null) {
+                    modificarInfoR(lovJefe.size());
+                }
             } else if (tipoLov.equals("MOTIVOCARGO") && lovMotivosCargos == null) {
                 lovMotivosCargos = administrarBusquedaAvanzada.lovMotivosCargos();
+                if (lovMotivosCargos != null) {
+                    modificarInfoR(lovMotivosCargos.size());
+                }
             } else if (tipoLov.equals("PAPEL") && lovPapeles == null) {
                 lovPapeles = administrarBusquedaAvanzada.lovPapeles();
+                if (lovPapeles != null) {
+                    modificarInfoR(lovPapeles.size());
+                }
             } else if (tipoLov.equals("MOTIVOLOCALIZACION") && lovMotivosLocalizaciones == null) {
                 lovMotivosLocalizaciones = administrarBusquedaAvanzada.lovMotivosLocalizaciones();
+                if (lovMotivosLocalizaciones != null) {
+                    modificarInfoR(lovMotivosLocalizaciones.size());
+                }
             } else if (tipoLov.equals("TIPOSUELDO") && lovTiposSueldos == null) {
                 lovTiposSueldos = administrarBusquedaAvanzada.lovTiposSueldos();
+                if (lovTiposSueldos != null) {
+                    modificarInfoR(lovTiposSueldos.size());
+                }
             } else if (tipoLov.equals("MOTIVOSUELDO") && lovMotivosSueldos == null) {
                 lovMotivosSueldos = administrarBusquedaAvanzada.lovMotivosSueldos();
+                if (lovMotivosSueldos != null) {
+                    modificarInfoR(lovMotivosSueldos.size());
+                }
             } else if (tipoLov.equals("TIPOCONTRATO") && lovTiposContratos == null) {
                 lovTiposContratos = administrarBusquedaAvanzada.lovTiposContratos();
+                if (lovTiposContratos != null) {
+                    modificarInfoR(lovTiposContratos.size());
+                }
             } else if (tipoLov.equals("MOTIVOCONTRATO") && lovMotivosContratos == null) {
                 lovMotivosContratos = administrarBusquedaAvanzada.lovMotivosContratos();
+                if (lovMotivosContratos != null) {
+                    modificarInfoR(lovMotivosContratos.size());
+                }
             } else if (tipoLov.equals("TIPOTRABAJADOR") && lovTiposTrabajadores == null) {
                 lovTiposTrabajadores = administrarBusquedaAvanzada.lovTiposTrabajadores();
+                if (lovTiposTrabajadores != null) {
+                    modificarInfoR(lovTiposTrabajadores.size());
+                }
             } else if (tipoLov.equals("REFORMALABORAL") && lovReformasLaborales == null) {
                 lovReformasLaborales = administrarBusquedaAvanzada.lovReformasLaborales();
+                if (lovReformasLaborales != null) {
+                    modificarInfoR(lovReformasLaborales.size());
+                }
             } else if (tipoLov.equals("CONTRATO") && lovContratos == null) {
                 lovContratos = administrarBusquedaAvanzada.lovContratos();
+                if (lovContratos != null) {
+                    modificarInfoR(lovContratos.size());
+                }
             } else if (tipoLov.equals("UBICACION") && lovUbicaciones == null) {
                 lovUbicaciones = administrarBusquedaAvanzada.lovUbicaciones();
+                if (lovUbicaciones != null) {
+                    modificarInfoR(lovUbicaciones.size());
+                }
             } else if (tipoLov.equals("TERCEROSUCURSAL") && lovTercerosSucursales == null) {
                 lovTercerosSucursales = administrarBusquedaAvanzada.lovTercerosSucursales();
+                if (lovTercerosSucursales != null) {
+                    modificarInfoR(lovTercerosSucursales.size());
+                }
             } else if (tipoLov.equals("TIPOENTIDAD") && lovTiposEntidades == null) {
                 lovTiposEntidades = administrarBusquedaAvanzada.lovTiposEntidades();
+                if (lovTiposEntidades != null) {
+                    modificarInfoR(lovTiposEntidades.size());
+                }
             } else if (tipoLov.equals("ESTADOAFILIACION") && lovEstadosAfiliaciones == null) {
                 lovEstadosAfiliaciones = administrarBusquedaAvanzada.lovEstadosAfiliaciones();
+                if (lovEstadosAfiliaciones != null) {
+                    modificarInfoR(lovEstadosAfiliaciones.size());
+                }
             } else if (tipoLov.equals("FORMAPAGO") && lovFormasPagos == null) {
                 lovFormasPagos = administrarBusquedaAvanzada.lovFormasPagos();
+                if (lovFormasPagos != null) {
+                    modificarInfoR(lovFormasPagos.size());
+                }
             } else if (tipoLov.equals("SUCURSAL") && lovSucursales == null) {
                 lovSucursales = administrarBusquedaAvanzada.lovSucursales();
+                if (lovSucursales != null) {
+                    modificarInfoR(lovSucursales.size());
+                }
             } else if (tipoLov.equals("MOTIVOMVR") && lovMotivosMvrs == null) {
                 lovMotivosMvrs = administrarBusquedaAvanzada.lovMotivosMvrs();
+                if (lovMotivosMvrs != null) {
+                    modificarInfoR(lovMotivosMvrs.size());
+                }
             } else if (tipoLov.equals("NORMALABORAL") && lovNormasLaborales == null) {
                 lovNormasLaborales = administrarBusquedaAvanzada.lovNormasLaborales();
+                if (lovNormasLaborales != null) {
+                    modificarInfoR(lovNormasLaborales.size());
+                }
             } else if (tipoLov.equals("JORNADALABORAL") && lovJornadasLaborales == null) {
                 lovJornadasLaborales = administrarBusquedaAvanzada.lovJornadasLaborales();
+                if (lovJornadasLaborales != null) {
+                    modificarInfoR(lovJornadasLaborales.size());
+                }
             } else if (tipoLov.equals("MOTIVORETIRO") && lovMotivosRetiros == null) {
                 lovMotivosRetiros = administrarBusquedaAvanzada.lovMotivosRetiros();
+                if (lovMotivosRetiros != null) {
+                    modificarInfoR(lovMotivosRetiros.size());
+                }
             }
         } else if (vTipoBusqueda.equals("Personal")) {
             if (tipoLov.equals("CIUDAD") && lovCiudades == null) {
                 lovCiudades = administrarBusquedaAvanzada.lovCiudades();
+                if (lovCiudades != null) {
+                    modificarInfoR(lovCiudades.size());
+                }
             } else if (tipoLov.equals("ESTADOCIVIL") && lovEstructuras == null) {
                 lovEstadosCiviles = administrarBusquedaAvanzada.lovEstadosCiviles();
+                if (lovEstadosCiviles != null) {
+                    modificarInfoR(lovEstadosCiviles.size());
+                }
             } else if (tipoLov.equals("IDIOMA") && lovIdiomas == null) {
                 lovIdiomas = administrarBusquedaAvanzada.lovIdiomas();
+                if (lovIdiomas != null) {
+                    modificarInfoR(lovIdiomas.size());
+                }
             } else if (tipoLov.equals("TIPOINDICADOR") && lovTiposIndicadores == null) {
                 lovTiposIndicadores = administrarBusquedaAvanzada.lovTiposIndicadores();
+                if (lovTiposIndicadores != null) {
+                    modificarInfoR(lovTiposIndicadores.size());
+                }
             } else if (tipoLov.equals("INDICADOR") && lovIndicadores == null) {
                 lovIndicadores = administrarBusquedaAvanzada.lovIndicadores();
+                if (lovIndicadores != null) {
+                    modificarInfoR(lovIndicadores.size());
+                }
             } else if (tipoLov.equals("PROFESION") && lovProfesiones == null) {
                 lovProfesiones = administrarBusquedaAvanzada.lovProfesiones();
+                if (lovProfesiones != null) {
+                    modificarInfoR(lovProfesiones.size());
+                }
             } else if (tipoLov.equals("INSTITUCION") && lovInstituciones == null) {
                 lovInstituciones = administrarBusquedaAvanzada.lovInstitucioneses();
+                if (lovInstituciones != null) {
+                    modificarInfoR(lovInstituciones.size());
+                }
             } else if (tipoLov.equals("CURSO") && lovCursos == null) {
                 lovCursos = administrarBusquedaAvanzada.lovCursos();
+                if (lovCursos != null) {
+                    modificarInfoR(lovCursos
+                            .size());
+                }
             } else if (tipoLov.equals("SECTORECONOMICO") && lovSectoresEconomicos == null) {
                 lovSectoresEconomicos = administrarBusquedaAvanzada.lovSectoresEconomicos();
                 System.out.println("SECTOR ECONOMICO: " + lovSectoresEconomicos);
+                if (lovSectoresEconomicos != null) {
+                    modificarInfoR(lovSectoresEconomicos.size());
+                }
             } else if (tipoLov.equals("PROYECTO") && lovProyectos == null) {
                 lovProyectos = administrarBusquedaAvanzada.lovProyectos();
+                if (lovProyectos != null) {
+                    modificarInfoR(lovProyectos.size());
+                }
             } else if (tipoLov.equals("ROL") && lovRoles == null) {
                 lovRoles = administrarBusquedaAvanzada.lovRoles();
+                if (lovRoles != null) {
+                    modificarInfoR(lovRoles.size());
+                }
             } else if (tipoLov.equals("MOTIVORETIRO") && lovMotivosRetiros == null) {
                 lovMotivosRetiros = administrarBusquedaAvanzada.lovMotivosRetiros();
+                if (lovMotivosRetiros != null) {
+                    modificarInfoR(lovMotivosRetiros.size());
+                }
             } else if (tipoLov.equals("CARGO") && lovCargos == null) {
                 lovCargos = administrarBusquedaAvanzada.lovCargos();
+                if (lovCargos != null) {
+                    modificarInfoR(lovCargos.size());
+                }
             }
         }
     }
 
     public void requerirLovColumnasBusqueda() {
         lovColumnasEscenarios = administrarBusquedaAvanzada.buscarColumnasEscenarios();
+        modificarInfoR(lovColumnasEscenarios.size()
+        );
     }
 
     //METODO ACEPTAR - PARAMETROS NOMIMA
@@ -1691,7 +1804,7 @@ public class ControlBusquedaAvanzada implements Serializable {
             seleccionCargo = null;
             filtroLovCargos = null;
         } else if (tipoLov.equals("COLUMNASBUSQUEDA")) {
-            seleccionColumnasEscenarios = null;
+            seleccionColumnasEs = null;
             filtradoColumnasEscenarios = null;
         }
     }
@@ -3071,8 +3184,8 @@ public class ControlBusquedaAvanzada implements Serializable {
     //CONVERTIR LISTA A STRING
     public String convertirListaAString() {
         String columnas = "SECUENCIA, CODIGOEMPLEADO, NOMBRE, PRIMERAPELLIDO, SEGUNDOAPELLIDO";
-        if (seleccionColumnasEscenarios != null && !seleccionColumnasEscenarios.isEmpty()) {
-            for (ColumnasEscenarios columna : seleccionColumnasEscenarios) {
+        if (seleccionColumnasEs != null && !seleccionColumnasEs.isEmpty()) {
+            for (ColumnasEscenarios columna : seleccionColumnasEs) {
                 columnas += "," + columna.getDescripcion();
             }
         }
@@ -3085,7 +3198,355 @@ public class ControlBusquedaAvanzada implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "ResultadosBusquedaAvanzada_PDF", false, false, "UTF-8", null, null);
         context.responseComplete();
+    }
 
+    private void modificarInfoR(int valor) {
+        infoRegistros = String.valueOf(valor);
+    }
+
+    public void eventoFiltrar_Cargos() {
+        if (filtroLovCargos.size() == 1) {
+            seleccionCargo = filtroLovCargos.get(0);
+        } else {
+            seleccionCargo = null;
+        }
+        modificarInfoR(filtroLovCargos.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_Estructuras() {
+        if (filtroLovEstructuras.size() == 1) {
+            seleccionEstructura = filtroLovEstructuras.get(0);
+        } else {
+            seleccionEstructura = null;
+        }
+        modificarInfoR(filtroLovEstructuras.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_Jefe() {
+        if (filtroLovJefe.size() == 1) {
+            seleccionJefe = filtroLovJefe.get(0);
+        } else {
+            seleccionJefe = null;
+        }
+        modificarInfoR(filtroLovJefe.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_MotivosCargos() {
+        if (filtroLovMotivosCargos.size() == 1) {
+            seleccionMotivoCargo = filtroLovMotivosCargos.get(0);
+        } else {
+            seleccionMotivoCargo = null;
+        }
+        modificarInfoR(filtroLovMotivosCargos.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_Papeles() {
+        if (filtroLovPapeles.size() == 1) {
+            seleccionPapel = filtroLovPapeles.get(0);
+        } else {
+            seleccionPapel = null;
+        }
+        modificarInfoR(filtroLovPapeles.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_MotivosLocali() {
+        if (filtroLovMotivosLocalizaciones.size() == 1) {
+            seleccionMotivoLocalizacion = filtroLovMotivosLocalizaciones.get(0);
+        } else {
+            seleccionMotivoLocalizacion = null;
+        }
+        modificarInfoR(filtroLovMotivosLocalizaciones.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_TiposSueldos() {
+        if (filtroLovTiposSueldos.size() == 1) {
+            seleccionTipoSueldo = filtroLovTiposSueldos.get(0);
+        } else {
+            seleccionTipoSueldo = null;
+        }
+        modificarInfoR(filtroLovTiposSueldos.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_MotivosSueldos() {
+        if (filtroLovMotivosSueldos.size() == 1) {
+            seleccionMotivoSueldo = filtroLovMotivosSueldos.get(0);
+        } else {
+            seleccionMotivoSueldo = null;
+        }
+        modificarInfoR(filtroLovMotivosSueldos.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_TiposContratos() {
+        if (filtroLovTiposContratos.size() == 1) {
+            seleccionTipoContrato = filtroLovTiposContratos.get(0);
+        } else {
+            seleccionTipoContrato = null;
+        }
+        modificarInfoR(filtroLovTiposContratos.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_MotivosContratos() {
+        if (filtroLovMotivosContratos.size() == 1) {
+            seleccionMotivoContrato = filtroLovMotivosContratos.get(0);
+        } else {
+            seleccionMotivoContrato = null;
+        }
+        modificarInfoR(filtroLovMotivosContratos.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_TiposTrabajadores() {
+        if (filtroLovTiposTrabajadores.size() == 1) {
+            seleccionTipoTrabajador = filtroLovTiposTrabajadores.get(0);
+        } else {
+            seleccionTipoTrabajador = null;
+        }
+        modificarInfoR(filtroLovTiposTrabajadores.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_ReformasLaborales() {
+        if (filtroLovReformasLaborales.size() == 1) {
+            seleccionReformaLaboral = filtroLovReformasLaborales.get(0);
+        } else {
+            seleccionReformaLaboral = null;
+        }
+        modificarInfoR(filtroLovReformasLaborales.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_Contratos() {
+        if (filtroLovContratos.size() == 1) {
+            seleccionContrato = filtroLovContratos.get(0);
+        } else {
+            seleccionContrato = null;
+        }
+        modificarInfoR(filtroLovContratos.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_Ubicaciones() {
+        if (filtroLovUbicaciones.size() == 1) {
+            seleccionUbicacion = filtroLovUbicaciones.get(0);
+        } else {
+            seleccionUbicacion = null;
+        }
+        modificarInfoR(filtroLovUbicaciones.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_TercerosSucursales() {
+        if (filtroLovTercerosSucursales.size() == 1) {
+            seleccionTerceroSucursal = filtroLovTercerosSucursales.get(0);
+        } else {
+            seleccionTerceroSucursal = null;
+        }
+        modificarInfoR(filtroLovTercerosSucursales.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_TiposEntidades() {
+        if (filtroLovTiposEntidades.size() == 1) {
+            seleccionTipoEntidad = filtroLovTiposEntidades.get(0);
+        } else {
+            seleccionTipoEntidad = null;
+        }
+        modificarInfoR(filtroLovTiposEntidades.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_EstadosAfili() {
+        if (filtroLovEstadosAfiliaciones.size() == 1) {
+            seleccionEstadoAfiliacion = filtroLovEstadosAfiliaciones.get(0);
+        } else {
+            seleccionEstadoAfiliacion = null;
+        }
+        modificarInfoR(filtroLovEstadosAfiliaciones.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_FormasPagos() {
+        if (filtroLovFormasPagos.size() == 1) {
+            seleccionFormaPago = filtroLovFormasPagos.get(0);
+        } else {
+            seleccionFormaPago = null;
+        }
+        modificarInfoR(filtroLovFormasPagos.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_Sucursales() {
+        if (filtroLovSucursales.size() == 1) {
+            seleccionSucursal = filtroLovSucursales.get(0);
+        } else {
+            seleccionSucursal = null;
+        }
+        modificarInfoR(filtroLovSucursales.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_MotivosMvrs() {
+        if (filtroLovMotivosMvrs.size() == 1) {
+            seleccionMotivoMvr = filtroLovMotivosMvrs.get(0);
+        } else {
+            seleccionMotivoMvr = null;
+        }
+        modificarInfoR(filtroLovMotivosMvrs.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_NormasLaborales() {
+        if (filtroLovNormasLaborales.size() == 1) {
+            seleccionNormaLaboral = filtroLovNormasLaborales.get(0);
+        } else {
+            seleccionNormaLaboral = null;
+        }
+        modificarInfoR(filtroLovNormasLaborales.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_JornadasLaborales() {
+        if (filtroLovJornadasLaborales.size() == 1) {
+            seleccionJornadaLaboral = filtroLovJornadasLaborales.get(0);
+        } else {
+            seleccionJornadaLaboral = null;
+        }
+        modificarInfoR(filtroLovJornadasLaborales.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_MotivosRetiros() {
+        if (filtroLovMotivosRetiros.size() == 1) {
+            seleccionMotivoRetiro = filtroLovMotivosRetiros.get(0);
+        } else {
+            seleccionMotivoRetiro = null;
+        }
+        modificarInfoR(filtroLovMotivosRetiros.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_Ciudades() {
+        if (filtroLovCiudades.size() == 1) {
+            seleccionCiudad = filtroLovCiudades.get(0);
+        } else {
+            seleccionCiudad = null;
+        }
+        modificarInfoR(filtroLovCiudades.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_EstadosCiviles() {
+        if (filtroLovEstadosCiviles.size() == 1) {
+            seleccionEstadoCivil = filtroLovEstadosCiviles.get(0);
+        } else {
+            seleccionEstadoCivil = null;
+        }
+        modificarInfoR(filtroLovEstadosCiviles.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_Idiomas() {
+        if (filtroLovIdiomas.size() == 1) {
+            seleccionIdioma = filtroLovIdiomas.get(0);
+        } else {
+            seleccionIdioma = null;
+        }
+        modificarInfoR(filtroLovIdiomas.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_TiposIndicadores() {
+        if (filtroLovTiposIndicadores.size() == 1) {
+            seleccionTipoIndicador = filtroLovTiposIndicadores.get(0);
+        } else {
+            seleccionTipoIndicador = null;
+        }
+        modificarInfoR(filtroLovTiposIndicadores.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_Indicadores() {
+        if (filtroLovIndicadores.size() == 1) {
+            seleccionIndicador = filtroLovIndicadores.get(0);
+        } else {
+            seleccionIndicador = null;
+        }
+        modificarInfoR(filtroLovIndicadores.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_Profesiones() {
+        if (filtroLovProfesiones.size() == 1) {
+            seleccionProfesion = filtroLovProfesiones.get(0);
+        } else {
+            seleccionProfesion = null;
+        }
+        modificarInfoR(filtroLovProfesiones.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_Instituciones() {
+        if (filtroLovInstituciones.size() == 1) {
+            seleccionInstitucion = filtroLovInstituciones.get(0);
+        } else {
+            seleccionInstitucion = null;
+        }
+        modificarInfoR(filtroLovInstituciones.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_Cursos() {
+        if (filtroLovCursos.size() == 1) {
+            seleccionCurso = filtroLovCursos.get(0);
+        } else {
+            seleccionCurso = null;
+        }
+        modificarInfoR(filtroLovCursos.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_SectoresEconomicos() {
+        if (filtroLovSectoresEconomicos.size() == 1) {
+            seleccionSectorEconomico = filtroLovSectoresEconomicos.get(0);
+        } else {
+            seleccionSectorEconomico = null;
+        }
+        modificarInfoR(filtroLovSectoresEconomicos.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_Proyectos() {
+        if (filtroLovProyectos.size() == 1) {
+            seleccionProyecto = filtroLovProyectos.get(0);
+        } else {
+            seleccionProyecto = null;
+        }
+        modificarInfoR(filtroLovProyectos.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_Roles() {
+        if (filtroLovRoles.size() == 1) {
+            seleccionRol = filtroLovRoles.get(0);
+        } else {
+            seleccionRol = null;
+        }
+        modificarInfoR(filtroLovRoles.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
+    }
+
+    public void eventoFiltrar_ColumnasEscenarios() {
+        modificarInfoR(filtradoColumnasEscenarios.size());
+        //RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroTipoDocumentoInformacionPersonal";
     }
 
     /**
@@ -4107,12 +4568,12 @@ public class ControlBusquedaAvanzada implements Serializable {
         this.lovColumnasEscenarios = lovColumnasEscenarios;
     }
 
-    public List<ColumnasEscenarios> getSeleccionColumnasEscenarios() {
-        return seleccionColumnasEscenarios;
+    public List<ColumnasEscenarios> getSeleccionColumnasEs() {
+        return seleccionColumnasEs;
     }
 
     public void setSeleccionColumnasEscenarios(List<ColumnasEscenarios> seleccionColumnasEscenarios) {
-        this.seleccionColumnasEscenarios = seleccionColumnasEscenarios;
+        this.seleccionColumnasEs = seleccionColumnasEscenarios;
     }
 
     public List<ResultadoBusquedaAvanzada> getFiltroResultadoBusqueda() {
@@ -4130,4 +4591,13 @@ public class ControlBusquedaAvanzada implements Serializable {
     public void setListaResultadoBusqueda(List<ResultadoBusquedaAvanzada> listaResultadoBusqueda) {
         this.listaResultadoBusqueda = listaResultadoBusqueda;
     }
+
+    public String getInfoRegistros() {
+        return infoRegistros;
+    }
+
+    public void setInfoRegistros(String infoRegistros) {
+        this.infoRegistros = infoRegistros;
+    }
+
 }

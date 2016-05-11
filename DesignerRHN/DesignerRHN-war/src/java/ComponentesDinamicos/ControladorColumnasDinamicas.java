@@ -33,8 +33,8 @@ public class ControladorColumnasDinamicas implements Serializable {
         columns = new ArrayList<ColumnModel>();
 
         for (int i = 0; i < columnKeys.length; i++) {
-            String columnKey = columnKeys[i];
-            columns.add(new ColumnModel(columnKey.toUpperCase(), NOMBRE_COLUMNAS_VALIDAS.get(i)));
+            //String columnKey = columnKeys[i];
+            columns.add(new ColumnModel(columnKeys[i].toUpperCase(), NOMBRE_COLUMNAS_VALIDAS.get(i)));
         }
     }
 
