@@ -617,7 +617,8 @@
                             </p:scrollPanel>  
                         </fieldset>
 
-                        <p:commandButton style="position: absolute; left: 315px; top: 500px; width: 175px; height: 30px; background-image: url(Imagenes/Iconos/botonL.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;  color: white; " id="ACEPTAR" value="#{msg['ingresarPersonal']}" icon="ui-icon-disk" actionListener="#{controlPersonaIndividual.crearNuevoEmpleado()}"  process="@this" />
+                        <p:commandButton style="position: absolute; left: 315px; top: 500px; width: 175px; height: 30px; background-image: url(Imagenes/Iconos/botonL.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;  color: white; " 
+                                         id="ACEPTAR" value="#{msg['ingresarPersonal']}" icon="ui-icon-disk" actionListener="#{controlPersonaIndividual.crearNuevoEmpleado()}"  process="@this" />
                         <p:commandButton style="position: absolute; left: 775px; top: 500px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/cancelar.png); 
                                          background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" action="nomina" process="@this">
                             <f:actionListener binding="#{controlPersonaIndividual.cancelarModificaciones()}" />
@@ -771,7 +772,7 @@
                             <h:outputText id="infoRegistroCiudadDocumentoInformacionPersonal" value="#{msg['infoRegistro']} #{controlPersonaIndividual.infoRegistroCiudadDocInfoPersonal}" style="position: relative; left: 10px; top: 5px; font-weight: bold"/>
 
                             <p:commandButton id="aceptarCDIP" style="position: relative; left: 120px; top: 20px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="operacionEnProceso.show()" 
-                                             oncomplete="operacionEnProceso.hide(), $(function(){PrimeFaces.focus('form:fechaNacimientoModPersonal');});" actionListener="#{controlPersonaIndividual.actualizarParametroCiudadDocumentoInformacionPersonal()}" process="@this" icon="ui-icon-check"/>
+                                             oncomplete="operacionEnProceso.hide(), $(function(){PrimeFaces.focus('form:divFechaNacimientoModPersonal');});" actionListener="#{controlPersonaIndividual.actualizarParametroCiudadDocumentoInformacionPersonal()}" process="@this" icon="ui-icon-check"/>
                             <p:commandButton id="atrasCDIP" style="position: relative; left: 120px; top: 20px" value="#{msg['atras']}" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()"
                                              actionListener="#{controlPersonaIndividual.cancelarParametroCiudadDocumentoInformacionPersonal()}"  process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                         </p:dialog>

@@ -25,9 +25,11 @@ public class Direcciones implements Serializable {
     @Column(name = "PPAL")
     private String ppal;
     @Size(min = 1, max = 1)
+    @NotNull
     @Column(name = "TIPOPPAL")
     private String tipoppal;
     @Size(min = 1, max = 1)
+    @NotNull
     @Column(name = "TIPOSECUNDARIO")
     private String tiposecundario;
     @Size(max = 15)
@@ -71,6 +73,7 @@ public class Direcciones implements Serializable {
     @JoinColumn(name = "EMPRESA", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Empresas empresa;
+    @NotNull
     @JoinColumn(name = "CIUDAD", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Ciudades ciudad;

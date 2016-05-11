@@ -1899,6 +1899,7 @@ public class ControlPersonaIndividual implements Serializable {
                         nuevaDireccion.setSecuencia(l);
                         nuevaDireccion.setPersona(empleadoAlmacenado.getPersona());
                         nuevaDireccion.setFechavigencia(fechaIngreso);
+                        nuevaDireccion.setPpal(".");
                         administrarPersonaIndividual.crearDireccion(nuevaDireccion);
                     }
 

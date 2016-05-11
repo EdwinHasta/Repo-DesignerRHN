@@ -38,7 +38,6 @@ public class ControlNormasLaborales implements Serializable {
     AdministrarNormasLaboralesInterface administrarNormasLaborales;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-
     private List<NormasLaborales> listNormasLaborales;
     private List<NormasLaborales> filtrarNormasLaborales;
     private List<NormasLaborales> crearNormaLaboral;
@@ -49,13 +48,12 @@ public class ControlNormasLaborales implements Serializable {
     private NormasLaborales editarNormaLaboral;
     private NormasLaborales normaLaboralSeleccionada;
 //otros
-    private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
+    private int cualCelda, tipoLista, tipoActualizacion, k, bandera;
     private BigInteger l;
     private boolean aceptar, guardado;
     //AutoCompletar
     private boolean permitirIndex;
     //RASTRO
-    private BigInteger secRegistro;
     private Column codigo, descripcion;
     //borrado
     private int registrosBorrados;
@@ -65,9 +63,12 @@ public class ControlNormasLaborales implements Serializable {
     private Integer backUpCodigo;
     private int tamano;
     private String paginaAnterior;
+    //    
+    private String infoRegistro;
 
     public ControlNormasLaborales() {
         listNormasLaborales = null;
+        normaLaboralSeleccionada = null;
         crearNormaLaboral = new ArrayList<NormasLaborales>();
         modificarNormaLaboral = new ArrayList<NormasLaborales>();
         borrarNormaLaboral = new ArrayList<NormasLaborales>();
@@ -94,6 +95,15 @@ public class ControlNormasLaborales implements Serializable {
 
     public void recibirPaginaEntrante(String pagina) {
         paginaAnterior = pagina;
+        getListNormasLaborales();
+        if (listNormasLaborales != null) {
+            if (!listNormasLaborales.isEmpty()) {
+                normaLaboralSeleccionada = listNormasLaborales.get(0);
+                modificarInfoRegistro(listNormasLaborales.size());
+            }
+        } else {
+            modificarInfoRegistro(0);
+        }
     }
 
     public String redirigir() {
@@ -107,49 +117,36 @@ public class ControlNormasLaborales implements Serializable {
                 tipoLista = 1;
             }
             RequestContext context = RequestContext.getCurrentInstance();
-            //infoRegistro = "Cantidad de registros: " + filtrarNormasLaborales.size();
             modificarInfoRegistro(filtrarNormasLaborales.size());
+            System.err.println("filtrarNormasLaborales.size(): " + filtrarNormasLaborales.size());
             context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlNormasLaborales eventoFiltrar ERROR===" + e.getMessage());
         }
     }
 
-    public void cambiarIndice(int indice, int celda) {
+    public void cambiarIndice(NormasLaborales normaL, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
 
         if (permitirIndex == true) {
-            index = indice;
+            normaLaboralSeleccionada = normaL;
             cualCelda = celda;
-            if (tipoLista == 0) {
-                if (cualCelda == 0) {
-                    backUpCodigo = listNormasLaborales.get(index).getCodigo();
-                    System.out.println(" backUpCodigo : " + backUpCodigo);
-                } else if (cualCelda == 1) {
-                    backUpDescripcion = listNormasLaborales.get(index).getNombre();
-                    System.out.println(" backUpDescripcion : " + backUpDescripcion);
-                }
-                secRegistro = listNormasLaborales.get(index).getSecuencia();
-            } else {
-                if (cualCelda == 0) {
-                    backUpCodigo = filtrarNormasLaborales.get(index).getCodigo();
-                    System.out.println(" backUpCodigo : " + backUpCodigo);
-
-                } else if (cualCelda == 1) {
-                    backUpDescripcion = filtrarNormasLaborales.get(index).getNombre();
-                    System.out.println(" backUpDescripcion : " + backUpDescripcion);
-
-                }
-                secRegistro = filtrarNormasLaborales.get(index).getSecuencia();
+            if (cualCelda == 0) {
+                backUpCodigo = normaLaboralSeleccionada.getCodigo();
+                System.out.println(" backUpCodigo : " + backUpCodigo);
+            } else if (cualCelda == 1) {
+                backUpDescripcion = normaLaboralSeleccionada.getNombre();
+                System.out.println(" backUpDescripcion : " + backUpDescripcion);
             }
+//                secRegistro = normaLaboralSeleccionada.getSecuencia();
         }
-        System.out.println("Indice: " + index + " Celda: " + cualCelda);
+        System.out.println("Indice: " + normaLaboralSeleccionada + " Celda: " + cualCelda);
     }
 
-    public void asignarIndex(Integer indice, int LND, int dig) {
+    public void asignarIndex(NormasLaborales normaL, int LND, int dig) {
         try {
             System.out.println("\n ENTRE A ControlNormasLaborales.asignarIndex \n");
-            index = indice;
+            normaLaboralSeleccionada = normaL;
             RequestContext context = RequestContext.getCurrentInstance();
             if (LND == 0) {
                 tipoActualizacion = 0;
@@ -173,79 +170,49 @@ public class ControlNormasLaborales implements Serializable {
     }
 
     public void cancelarModificacion() {
-        if (bandera == 1) {
-            //CERRAR FILTRADO
-            FacesContext c = FacesContext.getCurrentInstance();
-
-            codigo = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:codigo");
-            codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:descripcion");
-            descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosNormaLaboral");
-            bandera = 0;
-            filtrarNormasLaborales = null;
-            tipoLista = 0;
-        }
-
+        cerrarFiltrado();
         borrarNormaLaboral.clear();
         crearNormaLaboral.clear();
         modificarNormaLaboral.clear();
-        index = -1;
-        secRegistro = null;
         k = 0;
         listNormasLaborales = null;
+        normaLaboralSeleccionada = null;
         guardado = true;
         permitirIndex = true;
         getListNormasLaborales();
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (listNormasLaborales == null || listNormasLaborales.isEmpty()) {
-            //infoRegistro = "Cantidad de registros: 0 ";
-            modificarInfoRegistro(0);
-        } else {
-            //infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+        if (listNormasLaborales != null) {
             modificarInfoRegistro(listNormasLaborales.size());
+        } else {
+            modificarInfoRegistro(0);
         }
+        RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:informacionRegistro");
         context.update("form:datosNormaLaboral");
         context.update("form:ACEPTAR");
     }
 
     public void salir() {
-        if (bandera == 1) {
-            //CERRAR FILTRADO
-            FacesContext c = FacesContext.getCurrentInstance();
-
-            codigo = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:codigo");
-            codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:descripcion");
-            descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosNormaLaboral");
-            bandera = 0;
-            filtrarNormasLaborales = null;
-            tipoLista = 0;
-        }
-
+        cerrarFiltrado();
         borrarNormaLaboral.clear();
         crearNormaLaboral.clear();
         modificarNormaLaboral.clear();
-        index = -1;
-        secRegistro = null;
+        normaLaboralSeleccionada = null;
         k = 0;
         listNormasLaborales = null;
         guardado = true;
-        permitirIndex = true;
-        getListNormasLaborales();
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (listNormasLaborales == null || listNormasLaborales.isEmpty()) {
-           // infoRegistro = "Cantidad de registros: 0 ";
-            modificarInfoRegistro(0);
-        } else {
-           // infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
-            modificarInfoRegistro(listNormasLaborales.size());
-        }
-        context.update("form:informacionRegistro");
-        context.update("form:datosNormaLaboral");
-        context.update("form:ACEPTAR");
+    }
+
+    public void cerrarFiltrado() {
+        FacesContext c = FacesContext.getCurrentInstance();
+
+        codigo = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:codigo");
+        codigo.setFilterStyle("display: none; visibility: hidden;");
+        descripcion = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:descripcion");
+        descripcion.setFilterStyle("display: none; visibility: hidden;");
+        RequestContext.getCurrentInstance().update("form:datosNormaLaboral");
+        bandera = 0;
+        filtrarNormasLaborales = null;
+        tipoLista = 0;
     }
 
     public void activarCtrlF11() {
@@ -260,279 +227,109 @@ public class ControlNormasLaborales implements Serializable {
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
-            tamano = 270;
-            System.out.println("Desactivar");
-            codigo = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:codigo");
-            codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:descripcion");
-            descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosNormaLaboral");
-            bandera = 0;
-            filtrarNormasLaborales = null;
-            tipoLista = 0;
+            cerrarFiltrado();
         }
     }
 
-    public void modificarNormaLaboral(int indice, String confirmarCambio, String valorConfirmar) {
+    public void modificarNormaLaboral(NormasLaborales normaL, String confirmarCambio, String valorConfirmar) {
         System.err.println("ENTRE A MODIFICAR NORMA LABORAL");
-        index = indice;
+        normaLaboralSeleccionada = normaL;
 
         int contador = 0;
         boolean banderita = false;
-        Integer a;
-        a = null;
+//        Integer a;
+//        a = null;
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);
         if (confirmarCambio.equalsIgnoreCase("N")) {
             System.err.println("ENTRE A MODIFICAR NORMA LABORAL, CONFIRMAR CAMBIO ES N");
-            if (tipoLista == 0) {
-                if (!crearNormaLaboral.contains(listNormasLaborales.get(indice))) {
-                    if (listNormasLaborales.get(indice).getCodigo() == a) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                        listNormasLaborales.get(indice).setCodigo(backUpCodigo);
-                    } else {
-                        for (int j = 0; j < listNormasLaborales.size(); j++) {
-                            if (j != indice) {
-                                if (listNormasLaborales.get(indice).getCodigo().equals(listNormasLaborales.get(j).getCodigo())) {
-                                    contador++;
-                                }
-                            }
-                        }
-                        if (contador > 0) {
-                            mensajeValidacion = "CODIGOS REPETIDOS";
-                            banderita = false;
-                            listNormasLaborales.get(indice).setCodigo(backUpCodigo);
-                        } else {
-                            banderita = true;
-                        }
-
-                    }
-                    if (listNormasLaborales.get(indice).getNombre().isEmpty()) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                        listNormasLaborales.get(indice).setNombre(backUpDescripcion);
-
-                    }
-                    if (listNormasLaborales.get(indice).getNombre().equals(" ")) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        listNormasLaborales.get(indice).setNombre(backUpDescripcion);
-                        banderita = false;
-                    }
-
-                    if (banderita == true) {
-                        if (modificarNormaLaboral.isEmpty()) {
-                            modificarNormaLaboral.add(listNormasLaborales.get(indice));
-                        } else if (!modificarNormaLaboral.contains(listNormasLaborales.get(indice))) {
-                            modificarNormaLaboral.add(listNormasLaborales.get(indice));
-                        }
-                        if (guardado == true) {
-                            guardado = false;
-                        }
-
-                    } else {
-                        context.update("form:validacionModificar");
-                        context.execute("validacionModificar.show()");
-                    }
-                    index = -1;
-                    secRegistro = null;
+                if (!crearNormaLaboral.contains(normaLaboralSeleccionada)) {
+                    if (normaLaboralSeleccionada.getCodigo() == null) {
+                    mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                    banderita = false;
+                        normaLaboralSeleccionada.setCodigo(backUpCodigo);
                 } else {
-                    if (listNormasLaborales.get(indice).getCodigo() == a) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                        listNormasLaborales.get(indice).setCodigo(backUpCodigo);
-                    } else {
-                        for (int j = 0; j < listNormasLaborales.size(); j++) {
-                            if (j != indice) {
-                                if (listNormasLaborales.get(indice).getCodigo().equals(listNormasLaborales.get(j).getCodigo())) {
-                                    contador++;
-                                }
+                    for (int j = 0; j < listNormasLaborales.size(); j++) {
+                                if (listNormasLaborales.get(j).getCodigo().equals(listNormasLaborales.get(j).getCodigo())) {
+                                contador++;
                             }
-                        }
-                        if (contador > 0) {
-                            mensajeValidacion = "CODIGOS REPETIDOS";
-                            banderita = false;
-                            listNormasLaborales.get(indice).setCodigo(backUpCodigo);
-                        } else {
-                            banderita = true;
-                        }
-
+                        
                     }
-                    if (listNormasLaborales.get(indice).getNombre().isEmpty()) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                    if (contador > 0) {
+                        mensajeValidacion = "CODIGOS REPETIDOS";
                         banderita = false;
-                        listNormasLaborales.get(indice).setNombre(backUpDescripcion);
-
-                    }
-                    if (listNormasLaborales.get(indice).getNombre().equals(" ")) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        listNormasLaborales.get(indice).setNombre(backUpDescripcion);
-                        banderita = false;
-                    }
-
-                    if (banderita == true) {
-
-                        if (guardado == true) {
-                            guardado = false;
-                        }
-
+                        normaLaboralSeleccionada.setCodigo(backUpCodigo);
                     } else {
-                        context.update("form:validacionModificar");
-                        context.execute("validacionModificar.show()");
+                        banderita = true;
                     }
-                    index = -1;
-                    secRegistro = null;
+
                 }
+                if (normaLaboralSeleccionada.getNombre().isEmpty()) {
+                    mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                    banderita = false;
+                    normaLaboralSeleccionada.setNombre(backUpDescripcion);
+
+                }
+                if (normaLaboralSeleccionada.getNombre().equals(" ")) {
+                    mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                    normaLaboralSeleccionada.setNombre(backUpDescripcion);
+                    banderita = false;
+                }
+
+                if (banderita == true) {
+                    if (modificarNormaLaboral.isEmpty()) {
+                        modificarNormaLaboral.add(normaLaboralSeleccionada);
+                    } else if (!modificarNormaLaboral.contains(normaLaboralSeleccionada)) {
+                        modificarNormaLaboral.add(normaLaboralSeleccionada);
+                    }
+                    if (guardado) {
+                        guardado = false;
+                    }
+
+                } else {
+                    context.update("form:validacionModificar");
+                    context.execute("validacionModificar.show()");
+                }
+                    normaLaboralSeleccionada = null;
             } else {
-
-                if (!crearNormaLaboral.contains(filtrarNormasLaborales.get(indice))) {
-                    if (filtrarNormasLaborales.get(indice).getCodigo() == a) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                        filtrarNormasLaborales.get(indice).setCodigo(backUpCodigo);
-                    } else {
-                        for (int j = 0; j < filtrarNormasLaborales.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarNormasLaborales.get(indice).getCodigo().equals(filtrarNormasLaborales.get(j).getCodigo())) {
-                                    contador++;
-                                }
-                            }
-                        }
-                        if (contador > 0) {
-                            mensajeValidacion = "CODIGOS REPETIDOS";
-                            filtrarNormasLaborales.get(indice).setCodigo(backUpCodigo);
-                            banderita = false;
-                        } else {
-                            banderita = true;
-                        }
-
-                    }
-
-                    if (filtrarNormasLaborales.get(indice).getNombre().isEmpty()) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                        filtrarNormasLaborales.get(indice).setNombre(backUpDescripcion);
-                    }
-                    if (filtrarNormasLaborales.get(indice).getNombre().equals(" ")) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                        filtrarNormasLaborales.get(indice).setNombre(backUpDescripcion);
-                    }
-
-                    if (banderita == true) {
-                        if (modificarNormaLaboral.isEmpty()) {
-                            modificarNormaLaboral.add(filtrarNormasLaborales.get(indice));
-                        } else if (!modificarNormaLaboral.contains(filtrarNormasLaborales.get(indice))) {
-                            modificarNormaLaboral.add(filtrarNormasLaborales.get(indice));
-                        }
-                        if (guardado == true) {
-                            guardado = false;
-                        }
-
-                    } else {
-                        context.update("form:validacionModificar");
-                        context.execute("validacionModificar.show()");
-                    }
-                    index = -1;
-                    secRegistro = null;
-                } else {
-                    if (filtrarNormasLaborales.get(indice).getCodigo() == a) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                        filtrarNormasLaborales.get(indice).setCodigo(backUpCodigo);
-                    } else {
-                        for (int j = 0; j < filtrarNormasLaborales.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarNormasLaborales.get(indice).getCodigo().equals(filtrarNormasLaborales.get(j).getCodigo())) {
-                                    contador++;
-                                }
-                            }
-                        }
-                        if (contador > 0) {
-                            mensajeValidacion = "CODIGOS REPETIDOS";
-                            filtrarNormasLaborales.get(indice).setCodigo(backUpCodigo);
-                            banderita = false;
-                        } else {
-                            banderita = true;
-                        }
-
-                    }
-
-                    if (filtrarNormasLaborales.get(indice).getNombre().isEmpty()) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                        filtrarNormasLaborales.get(indice).setNombre(backUpDescripcion);
-                    }
-                    if (filtrarNormasLaborales.get(indice).getNombre().equals(" ")) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                        filtrarNormasLaborales.get(indice).setNombre(backUpDescripcion);
-                    }
-
-                    if (banderita == true) {
-                        if (guardado == true) {
-                            guardado = false;
-                        }
-
-                    } else {
-                        context.update("form:validacionModificar");
-                        context.execute("validacionModificar.show()");
-                    }
-                    index = -1;
-                    secRegistro = null;
-                }
-
-            }
+                    if (normaLaboralSeleccionada.getCodigo() == null) {
+                    mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                    banderita = false;
+                        normaLaboralSeleccionada.setCodigo(backUpCodigo);
+                } 
+                normaLaboralSeleccionada = null;
+            }         
             context.update("form:datosNormaLaboral");
             context.update("form:ACEPTAR");
         }
 
     }
-
+        
     public void borrarNormasLaborales() {
 
-        if (index >= 0) {
-
-            if (tipoLista == 0) {
-                System.out.println("Entro a borrarNormasLaborales");
-                if (!modificarNormaLaboral.isEmpty() && modificarNormaLaboral.contains(listNormasLaborales.get(index))) {
-                    int modIndex = modificarNormaLaboral.indexOf(listNormasLaborales.get(index));
-                    modificarNormaLaboral.remove(modIndex);
-                    borrarNormaLaboral.add(listNormasLaborales.get(index));
-                } else if (!crearNormaLaboral.isEmpty() && crearNormaLaboral.contains(listNormasLaborales.get(index))) {
-                    int crearIndex = crearNormaLaboral.indexOf(listNormasLaborales.get(index));
-                    crearNormaLaboral.remove(crearIndex);
-                } else {
-                    borrarNormaLaboral.add(listNormasLaborales.get(index));
-                }
-                listNormasLaborales.remove(index);
+        if (normaLaboralSeleccionada != null) {
+            System.out.println("Entro a borrarNormasLaborales");
+            if (!modificarNormaLaboral.isEmpty() && modificarNormaLaboral.contains(normaLaboralSeleccionada)) {
+                int modIndex = modificarNormaLaboral.indexOf(normaLaboralSeleccionada);
+                modificarNormaLaboral.remove(modIndex);
+                borrarNormaLaboral.add(normaLaboralSeleccionada);
+            } else if (!crearNormaLaboral.isEmpty() && crearNormaLaboral.contains(normaLaboralSeleccionada)) {
+                int crearIndex = crearNormaLaboral.indexOf(normaLaboralSeleccionada);
+                crearNormaLaboral.remove(crearIndex);
+            } else {
+                borrarNormaLaboral.add(normaLaboralSeleccionada);
             }
+            listNormasLaborales.remove(normaLaboralSeleccionada);
             if (tipoLista == 1) {
-                System.out.println("borrarNormasLaborales ");
-                if (!modificarNormaLaboral.isEmpty() && modificarNormaLaboral.contains(filtrarNormasLaborales.get(index))) {
-                    int modIndex = modificarNormaLaboral.indexOf(filtrarNormasLaborales.get(index));
-                    modificarNormaLaboral.remove(modIndex);
-                    borrarNormaLaboral.add(filtrarNormasLaborales.get(index));
-                } else if (!crearNormaLaboral.isEmpty() && crearNormaLaboral.contains(filtrarNormasLaborales.get(index))) {
-                    int crearIndex = crearNormaLaboral.indexOf(filtrarNormasLaborales.get(index));
-                    crearNormaLaboral.remove(crearIndex);
-                } else {
-                    borrarNormaLaboral.add(filtrarNormasLaborales.get(index));
-                }
-                int VCIndex = listNormasLaborales.indexOf(filtrarNormasLaborales.get(index));
-                listNormasLaborales.remove(VCIndex);
-                filtrarNormasLaborales.remove(index);
-
+                filtrarNormasLaborales.remove(normaLaboralSeleccionada);
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosNormaLaboral");
             //infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
             modificarInfoRegistro(listNormasLaborales.size());
             context.update("form:informacionRegistro");
-            index = -1;
-            secRegistro = null;
-
-            if (guardado == true) {
+            normaLaboralSeleccionada = null;
+            if (guardado) {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
@@ -543,11 +340,8 @@ public class ControlNormasLaborales implements Serializable {
     public void verificarBorrado() {
         System.out.println("Estoy en verificarBorrado");
         try {
-            if (tipoLista == 0) {
-                borradoVC = administrarNormasLaborales.contarVigenciasNormasEmpleadoNormaLaboral(listNormasLaborales.get(index).getSecuencia());
-            } else {
-                borradoVC = administrarNormasLaborales.contarVigenciasNormasEmpleadoNormaLaboral(filtrarNormasLaborales.get(index).getSecuencia());
-            }
+            borradoVC = administrarNormasLaborales.contarVigenciasNormasEmpleadoNormaLaboral(normaLaboralSeleccionada.getSecuencia());
+
             if (borradoVC.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrarNormasLaborales();
@@ -557,7 +351,7 @@ public class ControlNormasLaborales implements Serializable {
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
-                index = -1;
+                normaLaboralSeleccionada = null;
                 borradoVC = new BigInteger("-1");
             }
 
@@ -596,20 +390,14 @@ public class ControlNormasLaborales implements Serializable {
             k = 0;
             guardado = true;
         }
-        index = -1;
+        normaLaboralSeleccionada = null;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
     }
 
     public void editarCelda() {
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                editarNormaLaboral = listNormasLaborales.get(index);
-            }
-            if (tipoLista == 1) {
-                editarNormaLaboral = filtrarNormasLaborales.get(index);
-            }
-
+        if (normaLaboralSeleccionada != null) {
+            editarNormaLaboral = normaLaboralSeleccionada;
             RequestContext context = RequestContext.getCurrentInstance();
             System.out.println("Entro a editar... valor celda: " + cualCelda);
             if (cualCelda == 0) {
@@ -623,8 +411,7 @@ public class ControlNormasLaborales implements Serializable {
             }
 
         }
-        index = -1;
-        secRegistro = null;
+        normaLaboralSeleccionada = null;
     }
 
     public void agregarNuevoNormaLaboral() {
@@ -676,17 +463,7 @@ public class ControlNormasLaborales implements Serializable {
         if (contador == 2) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
-
-                FacesContext c = FacesContext.getCurrentInstance();
-                System.out.println("Desactivar");
-                codigo = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:codigo");
-                codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:descripcion");
-                descripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosNormaLaboral");
-                bandera = 0;
-                filtrarNormasLaborales = null;
-                tipoLista = 0;
+                cerrarFiltrado();
             }
             System.out.println("Despues de la bandera");
 
@@ -695,22 +472,20 @@ public class ControlNormasLaborales implements Serializable {
             nuevoNormaLaboral.setSecuencia(l);
 
             crearNormaLaboral.add(nuevoNormaLaboral);
-
             listNormasLaborales.add(nuevoNormaLaboral);
+
             nuevoNormaLaboral = new NormasLaborales();
 
             context.update("form:datosNormaLaboral");
-            //infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
             modificarInfoRegistro(listNormasLaborales.size());
             context.update("form:informacionRegistro");
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
 
             context.execute("nuevoRegistroNormaLaboral.hide()");
-            index = -1;
-            secRegistro = null;
+            normaLaboralSeleccionada = null;
 
         } else {
             context.update("form:validacionNuevaCentroCosto");
@@ -722,35 +497,23 @@ public class ControlNormasLaborales implements Serializable {
     public void limpiarNuevoNormaLaboral() {
         System.out.println("limpiarNuevoNormaLaboral");
         nuevoNormaLaboral = new NormasLaborales();
-        secRegistro = null;
-        index = -1;
+        normaLaboralSeleccionada = null;
 
     }
 
     //------------------------------------------------------------------------------
     public void duplicarNormaLaborales() {
         System.out.println("duplicarNormaLaboral");
-        if (index >= 0) {
+        if (normaLaboralSeleccionada != null) {
             duplicarNormaLaboral = new NormasLaborales();
             k++;
             l = BigInteger.valueOf(k);
-
-            if (tipoLista == 0) {
-                duplicarNormaLaboral.setSecuencia(l);
-                duplicarNormaLaboral.setCodigo(listNormasLaborales.get(index).getCodigo());
-                duplicarNormaLaboral.setNombre(listNormasLaborales.get(index).getNombre());
-            }
-            if (tipoLista == 1) {
-                duplicarNormaLaboral.setSecuencia(l);
-                duplicarNormaLaboral.setCodigo(filtrarNormasLaborales.get(index).getCodigo());
-                duplicarNormaLaboral.setNombre(filtrarNormasLaborales.get(index).getNombre());
-            }
-
+            duplicarNormaLaboral.setSecuencia(l);
+            duplicarNormaLaboral.setCodigo(normaLaboralSeleccionada.getCodigo());
+            duplicarNormaLaboral.setNombre(normaLaboralSeleccionada.getNombre());
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarNormaLaboral");
             context.execute("duplicarRegistroNormasLaborales.show()");
-            index = -1;
-            secRegistro = null;
         }
     }
 
@@ -809,24 +572,12 @@ public class ControlNormasLaborales implements Serializable {
             //infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
             modificarInfoRegistro(listNormasLaborales.size());
             context.update("form:informacionRegistro");
-            index = -1;
-            secRegistro = null;
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 context.update("form:ACEPTAR");
             }
             if (bandera == 1) {
-                //CERRAR FILTRADO
-                FacesContext c = FacesContext.getCurrentInstance();
-
-                codigo = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:codigo");
-                codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:descripcion");
-                descripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosNormaLaboral");
-                bandera = 0;
-                filtrarNormasLaborales = null;
-                tipoLista = 0;
+                cerrarFiltrado();
             }
             duplicarNormaLaboral = new NormasLaborales();
             RequestContext.getCurrentInstance().execute("duplicarRegistroNormasLaborales.hide()");
@@ -848,8 +599,6 @@ public class ControlNormasLaborales implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "NormasLaborales", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
     }
 
     public void exportXLS() throws IOException {
@@ -858,31 +607,23 @@ public class ControlNormasLaborales implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "NormasLaborales", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
     }
 
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("lol");
-        if (!listNormasLaborales.isEmpty()) {
-            if (secRegistro != null) {
-                System.out.println("lol 2");
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "NORMASLABORALES"); //En ENCARGATURAS lo cambia por el nombre de su tabla
-                System.out.println("resultado: " + resultado);
-                if (resultado == 1) {
-                    context.execute("errorObjetosDB.show()");
-                } else if (resultado == 2) {
-                    context.execute("confirmarRastro.show()");
-                } else if (resultado == 3) {
-                    context.execute("errorRegistroRastro.show()");
-                } else if (resultado == 4) {
-                    context.execute("errorTablaConRastro.show()");
-                } else if (resultado == 5) {
-                    context.execute("errorTablaSinRastro.show()");
-                }
-            } else {
-                context.execute("seleccionarRegistro.show()");
+        if (normaLaboralSeleccionada != null) {
+            int resultado = administrarRastros.obtenerTabla(normaLaboralSeleccionada.getSecuencia(), "NORMASLABORALES"); //En ENCARGATURAS lo cambia por el nombre de su tabla
+            System.out.println("resultado: " + resultado);
+            if (resultado == 1) {
+                context.execute("errorObjetosDB.show()");
+            } else if (resultado == 2) {
+                context.execute("confirmarRastro.show()");
+            } else if (resultado == 3) {
+                context.execute("errorRegistroRastro.show()");
+            } else if (resultado == 4) {
+                context.execute("errorTablaConRastro.show()");
+            } else if (resultado == 5) {
+                context.execute("errorTablaSinRastro.show()");
             }
         } else {
             if (administrarRastros.verificarHistoricosTabla("NORMASLABORALES")) { // igual acá
@@ -892,36 +633,17 @@ public class ControlNormasLaborales implements Serializable {
             }
 
         }
-        index = -1;
+        normaLaboralSeleccionada = null;
     }
 
-    private String infoRegistro;
-    
-        private void modificarInfoRegistro(int valor) {
+    private void modificarInfoRegistro(int valor) {
         infoRegistro = String.valueOf(valor);
-        System.out.println("infoRegistro: " + infoRegistro);
     }
-
 
     //-------------------------------------------------------------------------- 
     public List<NormasLaborales> getListNormasLaborales() {
         if (listNormasLaborales == null) {
             listNormasLaborales = administrarNormasLaborales.consultarNormasLaborales();
-        }
-//        RequestContext context = RequestContext.getCurrentInstance();
-//        if (listNormasLaborales == null || listNormasLaborales.isEmpty()) {
-//           // infoRegistro = "Cantidad de registros: 0 ";
-//            infoRegistro = "0";
-//        } else {
-//           // infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
-//             infoRegistro = String.valueOf(listNormasLaborales.size());
-//        }
-//        context.update("form:informacionRegistro");
-         if (listNormasLaborales != null) {
-            normaLaboralSeleccionada = listNormasLaborales.get(0);
-            modificarInfoRegistro(listNormasLaborales.size());
-        } else {
-            modificarInfoRegistro(0);
         }
         return listNormasLaborales;
     }
@@ -978,14 +700,6 @@ public class ControlNormasLaborales implements Serializable {
         this.editarNormaLaboral = editarNormaLaboral;
     }
 
-    public BigInteger getSecRegistro() {
-        return secRegistro;
-    }
-
-    public void setSecRegistro(BigInteger secRegistro) {
-        this.secRegistro = secRegistro;
-    }
-
     public boolean isGuardado() {
         return guardado;
     }
@@ -1017,5 +731,4 @@ public class ControlNormasLaborales implements Serializable {
     public void setInfoRegistro(String infoRegistro) {
         this.infoRegistro = infoRegistro;
     }
-
 }

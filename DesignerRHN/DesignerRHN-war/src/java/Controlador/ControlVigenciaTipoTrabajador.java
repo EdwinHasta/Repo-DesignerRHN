@@ -1126,6 +1126,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         activarLOV = true;
         vigenciaSeleccionada = vtt;
         context.update("form:listaValores");
+        System.out.println("VigenciasTiposTrabajadores: " + vtt.toString());
         if (tt == 0) {
             if (LND == 0) {
                 // vigenciaSeleccionada = vtt;
@@ -1188,31 +1189,6 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
                 context.execute("tutorDialogo.show()");
             }
         }
-//        if (tt == 2) {
-//            if (LND == 0) {
-//                indexRetiro = true;
-//                tipoActualizacion = 0;
-//            } else if (LND == 1) {
-//                tipoActualizacion = 1;
-//            } else if (LND == 2) {
-//                tipoActualizacion = 2;
-//            }
-//            if (dlg == 0) {
-//                //RetirosDialogo
-//                motivoRetiroSeleccionado = null;
-//                activarLOV = true;
-//                context.update("form:listaValores");
-//                modificarInfoRegistroMotivoRetiros(motivosRetiros.size());
-//                //    dialogoRetiros();
-//                context.update("formLovs:RetirosDialogo");
-//                context.execute("RetirosDialogo.show()");
-//            }
-//        }
-    }
-
-    public void asignarIndex(Retirados retirados, int dlg, int LND, int tt) {
-        RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("Retirados: " + retirados.toString());
         if (tt == 2) {
             if (LND == 0) {
                 indexRetiro = true;
@@ -1233,6 +1209,31 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
                 context.execute("RetirosDialogo.show()");
             }
         }
+    }
+
+    public void asignarIndex(Retirados retirados, int dlg, int LND, int tt) {
+//        RequestContext context = RequestContext.getCurrentInstance();
+        System.out.println("Retirados: " + retirados.toString());
+//        if (tt == 2) {
+//            if (LND == 0) {
+//                indexRetiro = true;
+//                tipoActualizacion = 0;
+//            } else if (LND == 1) {
+//                tipoActualizacion = 1;
+//            } else if (LND == 2) {
+//                tipoActualizacion = 2;
+//            }
+//            if (dlg == 0) {
+//                //RetirosDialogo
+//                motivoRetiroSeleccionado = null;
+//                activarLOV = true;
+//                context.update("form:listaValores");
+//                modificarInfoRegistroMotivoRetiros(motivosRetiros.size());
+//                //    dialogoRetiros();
+//                context.update("formLovs:RetirosDialogo");
+//                context.execute("RetirosDialogo.show()");
+//            }
+//        }
     }
 
     //LOVS

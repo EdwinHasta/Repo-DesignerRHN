@@ -53,17 +53,20 @@
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlNormasLaborales.duplicarNormaLaborales()}" process="@this"/>  
                                 <p:tooltip style="" for="duplicar" value="Duplicar Registro" />
+                                
+                                <p:separator style="position: relative; top: -9px"/>
+
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlNormasLaborales.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="" for="rastro" value="Rastro"/>
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlNormasLaborales.cancelarModificacion()}" process="@this"/>  
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlNormasLaborales.cancelarModificacion()}" oncomplete="window.location.reload()" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="Deshacer Cambios no guardados"/>
 
                                 <p:separator style="position: relative; top: -9px"/>
                                 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlNormasLaborales.salir()}" process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlNormasLaborales.salir()}" action="emplvigencianormalaboral" process="@this"/>  
                                 <p:tooltip  for="salir" value="Salir"/>
 
                             </p:toolbarGroup>  
@@ -85,8 +88,8 @@
                                         <f:facet name="output"><h:outputText value="#{info.codigo}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{info.codigo}" maxlength="4" id="editarCodigo" style="height: 12px;   border-radius: 0px; width: 400px; text-transform: uppercase"  > 
-                                                <p:ajax event="select" listener="#{controlNormasLaborales.cambiarIndice(indice, 0)}" process="@this"/> 
-                                                <p:ajax event="change" listener="#{controlNormasLaborales.modificarNormaLaboral(indice, 'N', info.codigo)}"  update="codigo"/>
+                                                <p:ajax event="select" listener="#{controlNormasLaborales.cambiarIndice(info, 0)}" process="@this"/> 
+                                                <p:ajax event="change" listener="#{controlNormasLaborales.modificarNormaLaboral(info, 'N', info.codigo)}"  update="codigo"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -96,8 +99,8 @@
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.nombre}"  /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{info.nombre}" maxlength="40"  id="editarNombre" style="height: 12px;  border-radius: 0px; width: 420px; text-transform: uppercase"  > 
-                                                <p:ajax event="select" listener="#{controlNormasLaborales.cambiarIndice(indice, 1)}" process="@this"/> 
-                                                <p:ajax event="change"  listener="#{controlNormasLaborales.modificarNormaLaboral(indice, 'N', info.nombre)}" update="descripcion"/>
+                                                <p:ajax event="select" listener="#{controlNormasLaborales.cambiarIndice(info, 1)}" process="@this"/> 
+                                                <p:ajax event="change"  listener="#{controlNormasLaborales.modificarNormaLaboral(info, 'N', info.nombre)}" update="descripcion"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -159,7 +162,7 @@
                     <p:dialog id="confirmarRastro" header="¡INFORMACION!" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="" closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla 'NORMASLABORALES' tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" icon="ui-icon-check" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlNormasLaborales.secRegistro, 'NormasLaborales', 'normalaboral')}" style="position: absolute; top: 63px; left: 180px" action="rastro" process="@this" />
+                        <p:commandButton value="Si" icon="ui-icon-check" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlNormasLaborales.normaLaboralSeleccionada.secuencia, 'NormasLaborales', 'normalaboral')}" style="position: absolute; top: 63px; left: 180px" action="rastro" process="@this" />
                         <p:commandButton value="No" icon="ui-icon-close" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 250px" process="@this" />
                     </p:dialog>
 
@@ -183,7 +186,7 @@
                     <p:dialog id="errorTablaConRastro" header="¡INFORMACION!" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="" closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" icon="ui-icon-check" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlNormasLaborales.secRegistro, 'NormasLaborales', 'normalaboral')}" style="position: absolute; top: 70px; left: 180px" action="rastro" process="@this" />
+                        <p:commandButton value="Si" icon="ui-icon-check" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlNormasLaborales.normaLaboralSeleccionada.secuencia, 'NormasLaborales', 'normalaboral')}" style="position: absolute; top: 70px; left: 180px" action="rastro" process="@this" />
                         <p:commandButton value="No" icon="ui-icon-close" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 70px; left: 250px" process="@this" />
                     </p:dialog>
 
@@ -209,7 +212,7 @@
                         <p:inputTextarea value="#{controlNormasLaborales.editarNormaLaboral.nombre}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>                    
                     
-                    <p:dialog id="nuevoRegistroNormaLaboral" header="Nuevo Registro" widgetVar="nuevoRegistroNormaLaboral" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="320" style=" padding: 0px">  
+                    <p:dialog id="nuevoRegistroNormaLaboral" header="Nuevo Registro" widgetVar="nuevoRegistroNormaLaboral" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="350" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacion" value="Nueva Norma Laboral" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaNormaLaboral" style="border: none;">
@@ -227,11 +230,11 @@
                             <p:watermark for="nuevoNombre" value="Descripcion" />
                             <p:commandButton id="limpiar" icon="ui-icon-trash" value="Limpiar" style=" position: absolute; left: 10px; top: 120px;"  actionListener="#{controlNormasLaborales.limpiarNuevoNormaLaboral()}" update="nuevaNormaLaboral" process="@this"/>
                             <p:commandButton id="agregarTE" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 120px; top: 120px;" actionListener="#{controlNormasLaborales.agregarNuevoNormaLaboral()}" process="@this" />
-                            <p:commandButton id="cancelarTE" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 210px; top: 120px;"  update="nuevaNormaLaboral" onclick="nuevoRegistroNormaLaboral.hide();"  actionListener="#{controlNormasLaborales.limpiarNuevoNormaLaboral()}"  process="@this"/>
+                            <p:commandButton id="cancelarTE" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 225px; top: 120px;"  update="nuevaNormaLaboral" onclick="nuevoRegistroNormaLaboral.hide();"  actionListener="#{controlNormasLaborales.limpiarNuevoNormaLaboral()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="duplicarRegistroNormasLaborales" header="duplicar Registro" widgetVar="duplicarRegistroNormasLaborales" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="320" style=" padding: 0px">  
+                    <p:dialog id="duplicarRegistroNormasLaborales" header="duplicar Registro" widgetVar="duplicarRegistroNormasLaborales" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="350" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Norma Laboral" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarNormaLaboral" style="border: none;">
@@ -249,7 +252,7 @@
 
                             <p:commandButton id="limpiarD" icon="ui-icon-trash" value="Limpiar" style=" position: absolute; left: 10px; top: 120px;"  actionListener="#{controlNormasLaborales.limpiarDuplicarNormasLaborales()}" update="duplicarNormaLaboral"  process="@this"/>
                             <p:commandButton id="duplicarVFP" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 120px; top: 120px;" actionListener="#{controlNormasLaborales.confirmarDuplicar()}"  process="@this" />
-                            <p:commandButton id="cancelarDuplicarVFP" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 210px; top: 120px;"  update="duplicarNormaLaboral" onclick="duplicarRegistroNormasLaborales.hide();" actionListener="#{controlNormasLaborales.limpiarDuplicarNormasLaborales()}"  process="@this"/>
+                            <p:commandButton id="cancelarDuplicarVFP" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 225px; top: 120px;"  update="duplicarNormaLaboral" onclick="duplicarRegistroNormasLaborales.hide();" actionListener="#{controlNormasLaborales.limpiarDuplicarNormasLaborales()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
                 </h:form>
@@ -266,8 +269,6 @@
                             <f:facet name="header"><h:outputText value="Descripcion" /></f:facet>
                             <h:outputText value="#{info.nombre}"/>
                         </p:column>
-
-
                     </p:dataTable>
                 </h:form>
             </ui:define>
