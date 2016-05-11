@@ -1897,9 +1897,11 @@ public class ControlPersonaIndividual implements Serializable {
                         k++;
                         l = BigInteger.valueOf(k);
                         nuevaDireccion.setSecuencia(l);
+                        nuevaDireccion.setTipoppal(".");
+                        nuevaDireccion.setTiposecundario(".");
                         nuevaDireccion.setPersona(empleadoAlmacenado.getPersona());
                         nuevaDireccion.setFechavigencia(fechaIngreso);
-                        nuevaDireccion.setPpal(".");
+                        //nuevaDireccion.setPpal(".");
                         administrarPersonaIndividual.crearDireccion(nuevaDireccion);
                     }
 

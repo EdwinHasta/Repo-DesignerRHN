@@ -524,7 +524,7 @@
                                     <fieldset style="position: absolute;font-size: 12px; top: 20px; width: 370px; height: 70px; border-radius: 10px; text-align: left">
                                         <legend style="font-size: 12px; color: blue"><strong>#{msg['modFactorRH']}</strong></legend>
 
-                                        <h:outputText value="" style="position: absolute; background-image: url(Imagenes/Iconos/tipotrabajador.gif); width: 50px; height: 50px; top: 15px; left: 5px; background-repeat: no-repeat; border: none; background-size: 100% 100%; border: outset; border-width: 2px; border-width: 2px;" />
+                                        <h:outputText value="" style="position: absolute; background-image: url(Imagenes/Iconos/tipotrabajador.png); width: 50px; height: 50px; top: 15px; left: 5px; background-repeat: no-repeat; border: none; background-size: 100% 100%; border: outset; border-width: 2px; border-width: 2px;" />
 
                                         <h:outputText  value="#{msg['grupoSanguineo']}" style="position: absolute; top: 20px; left: 65px;font-weight: bold"/>
                                         <p:selectOneMenu id="grupoSanguineoModFactorRH" value="#{controlPersonaIndividual.nuevaPersona.gruposanguineo}" 
@@ -550,7 +550,7 @@
                                     <fieldset style="position: absolute;font-size: 12px;top: 20px;left: 410px; width: 380px;height: 70px; border-radius: 10px; text-align: left">
                                         <legend style="font-size: 12px; color: blue"><strong>#{msg['modEstadoCivil']}</strong></legend>
 
-                                        <h:outputText value="" style="position: absolute; background-image: url(Imagenes/Iconos/estadocivil.gif); width: 50px; height: 50px; top: 15px; left: 5px; background-repeat: no-repeat; border: none; background-size: 100% 100%; border: outset; border-width: 2px; border-width: 2px;" />
+                                        <h:outputText value="" style="position: absolute; background-image: url(Imagenes/Iconos/estadocivil.png); width: 50px; height: 50px; top: 15px; left: 5px; background-repeat: no-repeat; border: none; background-size: 100% 100%; border: outset; border-width: 2px; border-width: 2px;" />
 
                                         <h:outputText  value="#{msg['descripcion']}" style="position: absolute; top: 25px; left: 65px;font-weight: bold"/>
                                         <p:inputText id="estadoCivilModEstadoCivil" onclick="select();" value="#{controlPersonaIndividual.nuevoEstadoCivil.estadocivil.descripcion}" style="position: absolute; top: 20px;left: 205px;width: 155px;text-transform: uppercase">
@@ -565,7 +565,7 @@
                                     <fieldset style="position: absolute;font-size: 12px; top: 110px; width: 370px; height: 100px; border-radius: 10px; text-align: left">
                                         <legend style="font-size: 12px; color: blue"><strong>#{msg['modDireccion']}</strong></legend>
 
-                                        <h:outputText value="" style="position: absolute; background-image: url(Imagenes/Iconos/direccion.gif); width: 50px; height: 50px; top: 15px; left: 5px; background-repeat: no-repeat; border: none; background-size: 100% 100%; border: outset; border-width: 2px; border-width: 2px;" />
+                                        <h:outputText value="" style="position: absolute; background-image: url(Imagenes/Iconos/direccion.png); width: 50px; height: 50px; top: 15px; left: 5px; background-repeat: no-repeat; border: none; background-size: 100% 100%; border: outset; border-width: 2px; border-width: 2px;" />
 
                                         <h:outputText  value="#{msg['direccion']}" style="position: absolute; top: 25px; left: 65px;font-weight: bold"/>
                                         <p:inputText maxlength="100"  id="direccionModDireccion" onclick="select();" value="#{controlPersonaIndividual.nuevaDireccion.direccionalternativa}" style="position: absolute; top: 20px; left: 230px;width: 130px;text-transform: uppercase">
@@ -586,7 +586,7 @@
                                     <fieldset style="position: absolute;font-size: 12px;left: 410px; width: 380px; top: 110px; height: 100px; border-radius: 10px; text-align: left">
                                         <legend style="font-size: 12px; color: blue"><strong>#{msg['modTelefono']}</strong></legend>
 
-                                        <h:outputText value="" style="position: absolute; background-image: url(Imagenes/Iconos/telefono.gif); width: 50px; height: 50px; top: 15px; left: 5px; background-repeat: no-repeat; border: none; background-size: 100% 100%; border: outset; border-width: 2px; border-width: 2px;" />
+                                        <h:outputText value="" style="position: absolute; background-image: url(Imagenes/Iconos/telefono.png); width: 50px; height: 50px; top: 15px; left: 5px; background-repeat: no-repeat; border: none; background-size: 100% 100%; border: outset; border-width: 2px; border-width: 2px;" />
 
                                         <h:outputText  value="#{msg['tipoTelefono']}" style="position: absolute; top: 15px; left: 65px;font-weight: bold"/>
                                         <p:inputText id="tipoTelefonoModTelefono" onclick="select();" value="#{controlPersonaIndividual.nuevoTelefono.tipotelefono.nombre}" 
@@ -2108,7 +2108,7 @@
                     </p:dialog>
 
                     <p:dialog id="operacionEnProceso" header="#{msg['informacion']}" widgetVar="operacionEnProceso"  resizable="false" draggable="false" modal="true" height="65" width="350px" style="font-size: 12px" closable="false">  
-                        <h:graphicImage value="Imagenes/Iconos/cargando.gif" width="50" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/cargando.png" width="50" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['operacionProceso']}" style="font-size: 12px; position: absolute; left: 95px; top: 20px; width: 240px; font-weight:bold;" />
                     </p:dialog>
 
