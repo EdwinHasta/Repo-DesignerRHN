@@ -38,15 +38,14 @@ public class ControlEstructuraPlanta implements Serializable {
     AdministrarEstructurasPlantasInterface administrarEstructuraPlanta;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-
     //
     private List<Organigramas> listaOrganigramas;
     private List<Organigramas> filtrarListaOrganigramas;
-    private Organigramas organigramaTablaSeleccionado;
+    private Organigramas organigramaSeleccionado;
     //
     private List<Estructuras> listaEstructuras;
     private List<Estructuras> filtrarListaEstructuras;
-    private Estructuras estructuraTablaSeleccionado;
+    private Estructuras estructuraSeleccionado;
     //
     //Activo/Desactivo Crtl + F11
     private int bandera, banderaEstructura;
@@ -55,7 +54,6 @@ public class ControlEstructuraPlanta implements Serializable {
     private Column estructuraCodigo, estructuraEstructura, estructuraCantidadControlar, estructuraCantidadActivo, estructuraCentroCosto, estructuraEstructuraPadre;
     //Otros
     private boolean aceptar;
-    private int index, indexEstructura, indexAux;
     //modificar
     private List<Organigramas> listOrganigramasModificar;
     private List<Estructuras> listEstructurasModificar;
@@ -73,23 +71,17 @@ public class ControlEstructuraPlanta implements Serializable {
     private int cualCelda, tipoLista, cualCeldaEstructura, tipoListaEstructura;
     //duplicar
     private Estructuras duplicarEstructura;
-    private BigInteger secRegistro, secRegistroEstructura;
-    private BigInteger backUpSecRegistro, backUpSecRegistroEstructura;
     private String msnConfirmarRastro, msnConfirmarRastroHistorico;
-    private BigInteger backUp;
     private String nombreTablaRastro;
     private String nombreXML, nombreTabla;
     private String centroCosto, estructuraPadre;
-
     ///////////LOV///////////
     private List<CentrosCostos> lovCentrosCostos;
     private List<CentrosCostos> filtrarLovCentrosCostos;
     private CentrosCostos centroCostoSeleccionado;
-
     private List<Estructuras> lovEstructurasPadres;
     private List<Estructuras> filtrarLovEstructurasPadres;
     private Estructuras estructuraPadreSeleccionado;
-
     private boolean permitirIndexEstructura;
     private int tipoActualizacion;
     private Long auxCodigoEstructura;
@@ -105,12 +97,14 @@ public class ControlEstructuraPlanta implements Serializable {
     private Date fechaParametro;
     private Date fechaOrganigrama;
     //
-    private String infoRegistroCentroCosto, infoRegistroEstructura;
+    private String infoRegistroOr, infoRegistroEs, infoRegistroCentroCosto, infoRegistroEstructuraPa;
+    //
+    private DataTable tabla;
+    private boolean activarLOV;
 
     public ControlEstructuraPlanta() {
-        organigramaTablaSeleccionado = new Organigramas();
-        estructuraTablaSeleccionado = new Estructuras();
-        indexAux = -1;
+        organigramaSeleccionado = null;
+        estructuraSeleccionado = null;
         activoEstructura = true;
         paginaAnterior = "";
         //altos tablas
@@ -123,12 +117,14 @@ public class ControlEstructuraPlanta implements Serializable {
         centroCostoSeleccionado = new CentrosCostos();
         lovEstructurasPadres = null;
         estructuraPadreSeleccionado = new Estructuras();
-        //index tablas
-        indexEstructura = -1;
-        index = 0;
         //listas de tablas
         listaOrganigramas = null;
         listaEstructuras = null;
+
+        infoRegistroOr = "";
+        infoRegistroEs = "";
+        infoRegistroCentroCosto = "";
+        infoRegistroEstructuraPa = "";
         //Otros|
         aceptar = true;
         cambiosPagina = true;
@@ -160,15 +156,12 @@ public class ControlEstructuraPlanta implements Serializable {
 
         //Duplicar
         duplicarEstructura = new Estructuras();
-        //Sec Registro
-        secRegistro = null;
-        backUpSecRegistro = null;
-        secRegistroEstructura = null;
-        backUpSecRegistroEstructura = null;
-        secRegistroEstructura = null;
+
         //Banderas
         bandera = 0;
         banderaEstructura = 0;
+
+        activarLOV = true;
     }
 
     @PostConstruct
@@ -190,9 +183,15 @@ public class ControlEstructuraPlanta implements Serializable {
 
     public void inicializarPagina(String paginaLlamado) {
         paginaAnterior = paginaLlamado;
-        index = 0;
-        listaOrganigramas = null;
         getListaOrganigramas();
+        if (listaOrganigramas != null) {
+            if (!listaOrganigramas.isEmpty()) {
+                organigramaSeleccionado = listaOrganigramas.get(0);
+            }
+        } else {
+            System.out.println("El getListaOrganigramas() no trajo datos");
+        }
+        listaOrganigramas = null;
     }
 
     public boolean validarFechasRegistro() {
@@ -201,15 +200,9 @@ public class ControlEstructuraPlanta implements Serializable {
         fechaParametro.setYear(0);
         fechaParametro.setMonth(1);
         fechaParametro.setDate(1);
-        Organigramas auxiliar = new Organigramas();
-        if (tipoLista == 0) {
-            auxiliar = listaOrganigramas.get(index);
-        }
-        if (tipoLista == 1) {
-            auxiliar = filtrarListaOrganigramas.get(index);
-        }
-        if (auxiliar.getFecha() != null) {
-            if (auxiliar.getFecha().after(fechaParametro)) {
+
+        if (organigramaSeleccionado.getFecha() != null) {
+            if (organigramaSeleccionado.getFecha().after(fechaParametro)) {
                 retorno = true;
             } else {
                 retorno = false;
@@ -221,18 +214,14 @@ public class ControlEstructuraPlanta implements Serializable {
         return retorno;
     }
 
-    public void modificacionesFechas(int i, int c) {
+    public void modificacionesFechas(Organigramas organigramas, int c) {
         boolean variable = validarFechasRegistro();
         if (variable == true) {
-            cambiarIndice(i, c);
+            cambiarIndice(organigramas, c);
             modificarOrganigrama();
         } else {
-            if (tipoLista == 0) {
-                listaOrganigramas.get(index).setFecha(fechaOrganigrama);
-            }
-            if (tipoLista == 1) {
-                filtrarListaOrganigramas.get(index).setFecha(fechaOrganigrama);
-            }
+            organigramaSeleccionado.setFecha(fechaOrganigrama);
+
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosOrganigrama");
             context.execute("errorFecha.show()");
@@ -243,12 +232,8 @@ public class ControlEstructuraPlanta implements Serializable {
         boolean retorno = true;
         if (i == 0) {
             Estructuras aux = new Estructuras();
-            if (tipoListaEstructura == 0) {
-                aux = listaEstructuras.get(indexEstructura);
-            }
-            if (tipoListaEstructura == 1) {
-                aux = filtrarListaEstructuras.get(indexEstructura);
-            }
+            aux = estructuraSeleccionado;
+
 
             if (aux.getCodigo() == null) {
                 retorno = false;
@@ -290,12 +275,8 @@ public class ControlEstructuraPlanta implements Serializable {
     }
 
     public void modificarOrganigrama() {
-        if (tipoLista == 0) {
-            listOrganigramasModificar.add(listaOrganigramas.get(index));
-        }
-        if (tipoLista == 1) {
-            listOrganigramasModificar.add(filtrarListaOrganigramas.get(index));
-        }
+        listOrganigramasModificar.add(organigramaSeleccionado);
+
         cambiosPagina = false;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:ACEPTAR");
@@ -306,12 +287,8 @@ public class ControlEstructuraPlanta implements Serializable {
         int conteo = 0;
         if (i == 0) {
             Estructuras temporal = null;
-            if (tipoLista == 0) {
-                temporal = listaEstructuras.get(indexEstructura);
-            }
-            if (tipoLista == 1) {
-                temporal = filtrarListaEstructuras.get(indexEstructura);
-            }
+            temporal = estructuraSeleccionado;
+
             for (int j = 0; j < listaEstructuras.size(); j++) {
                 if (listaEstructuras.get(j).getCodigo() == temporal.getCodigo()) {
                     conteo++;
@@ -344,107 +321,67 @@ public class ControlEstructuraPlanta implements Serializable {
         return retorno;
     }
 
-    public void procesoModificacionEstructura(int i) {
-        index = i;
+    public void procesoModificacionEstructura(Estructuras estructura) {
+        estructuraSeleccionado = estructura;
         boolean respuesta = validarCamposNulosEstructura(0);
         if (respuesta == true) {
             if (validarCodigoNoExistente(0) == true) {
-                modificarEstructura(i);
+                modificarEstructura();
             } else {
-                if (tipoLista == 0) {
-                    listaEstructuras.get(indexEstructura).setCodigo(auxCodigoEstructura);
-                }
-                if (tipoLista == 1) {
-                    filtrarListaEstructuras.get(indexEstructura).setCodigo(auxCodigoEstructura);
-                }
-                indexEstructura = -1;
-                secRegistroEstructura = null;
+                estructuraSeleccionado.setCodigo(auxCodigoEstructura);
+
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:datosEstructura");
                 context.execute("errorCodigo.show()");
             }
         } else {
-            if (tipoLista == 0) {
-                listaEstructuras.get(indexEstructura).setCodigo(auxCodigoEstructura);
-                listaEstructuras.get(indexEstructura).setNombre(auxNombreEstructura);
-            }
-            if (tipoLista == 1) {
-                filtrarListaEstructuras.get(indexEstructura).setCodigo(auxCodigoEstructura);
-                filtrarListaEstructuras.get(indexEstructura).setNombre(auxNombreEstructura);
-            }
-            indexEstructura = -1;
-            secRegistroEstructura = null;
+            estructuraSeleccionado.setCodigo(auxCodigoEstructura);
+            estructuraSeleccionado.setNombre(auxNombreEstructura);
+
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosEstructura");
             context.execute("errorDatosNullEstructura.show()");
         }
     }
 
-    public void modificarEstructura(int indice) {
+    public void modificarEstructura() {
         String aux = "";
-        if (tipoListaEstructura == 0) {
-            aux = listaEstructuras.get(indexEstructura).getNombre();
-        }
-        if (tipoListaEstructura == 1) {
-            aux = filtrarListaEstructuras.get(indexEstructura).getNombre();
-        }
+        aux = estructuraSeleccionado.getNombre();
+
         if (aux.length() >= 1 && aux.length() <= 50) {
-            if (tipoListaEstructura == 0) {
-                if (!listEstructurasCrear.contains(listaEstructuras.get(indice))) {
-                    if (listEstructurasModificar.isEmpty()) {
-                        listEstructurasModificar.add(listaEstructuras.get(indice));
-                    } else if (!listEstructurasModificar.contains(listaEstructuras.get(indice))) {
-                        listEstructurasModificar.add(listaEstructuras.get(indice));
-                    }
-                    if (guardadoEstructura == true) {
-                        guardadoEstructura = false;
-                    }
+            if (!listEstructurasCrear.contains(estructuraSeleccionado)) {
+                if (listEstructurasModificar.isEmpty()) {
+                    listEstructurasModificar.add(estructuraSeleccionado);
+                } else if (!listEstructurasModificar.contains(estructuraSeleccionado)) {
+                    listEstructurasModificar.add(estructuraSeleccionado);
+                }
+                if (guardadoEstructura == true) {
+                    guardadoEstructura = false;
                 }
             }
-            if (tipoListaEstructura == 1) {
-                if (!listEstructurasCrear.contains(filtrarListaEstructuras.get(indice))) {
-                    if (listEstructurasModificar.isEmpty()) {
-                        listEstructurasModificar.add(filtrarListaEstructuras.get(indice));
-                    } else if (!listEstructurasModificar.contains(filtrarListaEstructuras.get(indice))) {
-                        listEstructurasModificar.add(filtrarListaEstructuras.get(indice));
-                    }
-                    if (guardadoEstructura == true) {
-                        guardadoEstructura = false;
-                        //RequestContext.getCurrentInstance().update("form:aceptar");
-                    }
-                }
-            }
-            indexEstructura = -1;
-            secRegistroEstructura = null;
+
+            estructuraSeleccionado = null;
             cambiosPagina = false;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:ACEPTAR");
             context.update("form:datosEstructura");
         } else {
-            if (tipoListaEstructura == 0) {
-                listaEstructuras.get(indexEstructura).setNombre(auxNombreEstructura);
-            }
-            if (tipoListaEstructura == 1) {
-                filtrarListaEstructuras.get(indexEstructura).setNombre(auxNombreEstructura);
-            }
-            indexEstructura = -1;
-            secRegistroEstructura = null;
+            estructuraSeleccionado.setNombre(auxNombreEstructura);
+
+            estructuraSeleccionado = null;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosEstructura");
         }
     }
 
-    public void modificarEstructura(int indice, String confirmarCambio, String valorConfirmar) {
-        indexEstructura = indice;
+    public void modificarEstructura(Estructuras estructura, String confirmarCambio, String valorConfirmar) {
+        estructuraSeleccionado = estructura;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("PADRE")) {
-            if (tipoListaEstructura == 0) {
-                listaEstructuras.get(indice).getEstructurapadre().setNombre(estructuraPadre);
-            } else {
-                filtrarListaEstructuras.get(indice).getEstructurapadre().setNombre(estructuraPadre);
-            }
+            estructuraSeleccionado.getEstructurapadre().setNombre(estructuraPadre);
+
             for (int i = 0; i < lovEstructurasPadres.size(); i++) {
                 if (lovEstructurasPadres.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
@@ -452,13 +389,8 @@ public class ControlEstructuraPlanta implements Serializable {
                 }
             }
             if (coincidencias == 1) {
-                if (tipoListaEstructura == 0) {
-                    listaEstructuras.get(indice).setEstructurapadre(lovEstructurasPadres.get(indiceUnicoElemento));
-                } else {
-                    filtrarListaEstructuras.get(indice).setEstructurapadre(lovEstructurasPadres.get(indiceUnicoElemento));
-                }
-                lovEstructurasPadres = null;
-                getLovEstructurasPadres();
+                estructuraSeleccionado.setEstructurapadre(lovEstructurasPadres.get(indiceUnicoElemento));
+
                 cambiosPagina = false;
                 context.update("form:ACEPTAR");
             } else {
@@ -469,11 +401,8 @@ public class ControlEstructuraPlanta implements Serializable {
             }
         }
         if (confirmarCambio.equalsIgnoreCase("CENTROCOSTO")) {
-            if (tipoLista == 0) {
-                listaEstructuras.get(indice).getCentrocosto().setCodigoNombre(centroCosto);
-            } else {
-                filtrarListaEstructuras.get(indice).getCentrocosto().setCodigoNombre(centroCosto);
-            }
+            estructuraSeleccionado.getCentrocosto().setCodigoNombre(centroCosto);
+
             for (int i = 0; i < lovCentrosCostos.size(); i++) {
                 if (lovCentrosCostos.get(i).getCodigoNombre().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
@@ -481,13 +410,8 @@ public class ControlEstructuraPlanta implements Serializable {
                 }
             }
             if (coincidencias == 1) {
-                if (tipoLista == 0) {
-                    listaEstructuras.get(indice).setCentrocosto(lovCentrosCostos.get(indiceUnicoElemento));
-                } else {
-                    filtrarListaEstructuras.get(indice).setCentrocosto(lovCentrosCostos.get(indiceUnicoElemento));
-                }
-                lovCentrosCostos = null;
-                getLovCentrosCostos();
+                estructuraSeleccionado.setCentrocosto(lovCentrosCostos.get(indiceUnicoElemento));
+
                 cambiosPagina = false;
                 context.update("form:ACEPTAR");
             } else {
@@ -498,31 +422,17 @@ public class ControlEstructuraPlanta implements Serializable {
             }
         }
         if (coincidencias == 1) {
-            if (tipoListaEstructura == 0) {
-                if (!listEstructurasCrear.contains(listaEstructuras.get(indice))) {
-                    if (listEstructurasModificar.isEmpty()) {
-                        listEstructurasModificar.add(listaEstructuras.get(indice));
-                    } else if (!listEstructurasModificar.contains(listaEstructuras.get(indice))) {
-                        listEstructurasModificar.add(listaEstructuras.get(indice));
-                    }
-                    if (guardadoEstructura == true) {
-                        guardadoEstructura = false;
-                    }
+            if (!listEstructurasCrear.contains(estructuraSeleccionado)) {
+                if (listEstructurasModificar.isEmpty()) {
+                    listEstructurasModificar.add(estructuraSeleccionado);
+                } else if (!listEstructurasModificar.contains(estructuraSeleccionado)) {
+                    listEstructurasModificar.add(estructuraSeleccionado);
+                }
+                if (guardadoEstructura == true) {
+                    guardadoEstructura = false;
                 }
             }
-            if (tipoListaEstructura == 1) {
-                if (!listEstructurasCrear.contains(filtrarListaEstructuras.get(indice))) {
-                    if (listEstructurasModificar.isEmpty()) {
-                        listEstructurasModificar.add(filtrarListaEstructuras.get(indice));
-                    } else if (!listEstructurasModificar.contains(filtrarListaEstructuras.get(indice))) {
-                        listEstructurasModificar.add(filtrarListaEstructuras.get(indice));
-                    }
-                    if (guardadoEstructura == true) {
-                        guardadoEstructura = false;
-                        //RequestContext.getCurrentInstance().update("form:aceptar");
-                    }
-                }
-            }
+
         }
         context.update("form:datosEstructura");
     }
@@ -534,7 +444,8 @@ public class ControlEstructuraPlanta implements Serializable {
         String type = map.get("t"); // type attribute of node
         int indice = Integer.parseInt(type);
         int columna = Integer.parseInt(name);
-        cambiarIndice(indice, columna);
+        Organigramas organigrama = listaOrganigramas.get(indice);
+        cambiarIndice(organigrama, columna);
     }
 
     public void posicionEstructura() {
@@ -544,24 +455,18 @@ public class ControlEstructuraPlanta implements Serializable {
         String type = map.get("t"); // type attribute of node
         int indice = Integer.parseInt(type);
         int columna = Integer.parseInt(name);
-        cambiarIndiceEstructura(indice, columna);
+        estructuraSeleccionado = listaEstructuras.get(indice);
+        cambiarIndiceEstructura(estructuraSeleccionado, columna);
     }
 
-    public void cambiarIndice(int indice, int celda) {
+    public void cambiarIndice(Organigramas organigrama, int celda) {
         if (guardadoEstructura == true) {
             RequestContext context = RequestContext.getCurrentInstance();
             cualCelda = celda;
-            indexAux = indice;
-            index = indice;
-            indexEstructura = -1;
-            if (tipoLista == 0) {
-                fechaOrganigrama = listaOrganigramas.get(index).getFecha();
-                secRegistro = listaOrganigramas.get(index).getSecuencia();
-            }
-            if (tipoLista == 1) {
-                fechaOrganigrama = filtrarListaOrganigramas.get(index).getFecha();
-                secRegistro = filtrarListaOrganigramas.get(index).getSecuencia();
-            }
+            organigramaSeleccionado = organigrama;
+            estructuraSeleccionado = null;
+            fechaOrganigrama = organigramaSeleccionado.getFecha();
+
             lovCentrosCostos = null;
             getLovCentrosCostos();
             listaEstructuras = null;
@@ -592,26 +497,16 @@ public class ControlEstructuraPlanta implements Serializable {
         }
     }
 
-    public void cambiarIndiceEstructura(int indice, int celda) {
+    public void cambiarIndiceEstructura(Estructuras estructuras, int celda) {
         if (permitirIndexEstructura == true) {
-            indexEstructura = indice;
-            index = indice;
-            index = -1;
+            estructuraSeleccionado = estructuras;
+            organigramaSeleccionado = null;
             cualCeldaEstructura = celda;
-            if (tipoListaEstructura == 0) {
-                secRegistroEstructura = listaEstructuras.get(indexEstructura).getSecuencia();
-                estructuraPadre = listaEstructuras.get(indexEstructura).getEstructurapadre().getNombre();
-                centroCosto = listaEstructuras.get(indexEstructura).getCentrocosto().getCodigoNombre();
-                auxCodigoEstructura = listaEstructuras.get(indexEstructura).getCodigo();
-                auxNombreEstructura = listaEstructuras.get(indexEstructura).getNombre();
-            }
-            if (tipoListaEstructura == 1) {
-                secRegistroEstructura = filtrarListaEstructuras.get(indexEstructura).getSecuencia();
-                estructuraPadre = filtrarListaEstructuras.get(indexEstructura).getEstructurapadre().getNombre();
-                centroCosto = filtrarListaEstructuras.get(indexEstructura).getCentrocosto().getCodigoNombre();
-                auxCodigoEstructura = filtrarListaEstructuras.get(indexEstructura).getCodigo();
-                auxNombreEstructura = filtrarListaEstructuras.get(indexEstructura).getNombre();
-            }
+            estructuraPadre = estructuraSeleccionado.getEstructurapadre().getNombre();
+            centroCosto = estructuraSeleccionado.getCentrocosto().getCodigoNombre();
+            auxCodigoEstructura = estructuraSeleccionado.getCodigo();
+            auxNombreEstructura = estructuraSeleccionado.getNombre();
+
         }
         lovEstructurasPadres = null;
         getLovEstructurasPadres();
@@ -657,8 +552,7 @@ public class ControlEstructuraPlanta implements Serializable {
         guardado = true;
         RequestContext.getCurrentInstance().update("form:aceptar");
         k = 0;
-        index = -1;
-        secRegistro = null;
+        organigramaSeleccionado = null;
     }
 
     public void guardarCambiosEstructura() {
@@ -680,8 +574,7 @@ public class ControlEstructuraPlanta implements Serializable {
         guardadoEstructura = true;
         RequestContext.getCurrentInstance().update("form:aceptar");
         k = 0;
-        indexEstructura = -1;
-        secRegistroEstructura = null;
+        estructuraSeleccionado = null;
     }
 
     //CANCELAR MODIFICACIONES
@@ -721,8 +614,7 @@ public class ControlEstructuraPlanta implements Serializable {
             tipoLista = 0;
         }
         listOrganigramasModificar.clear();
-        index = -1;
-        secRegistro = null;
+        organigramaSeleccionado = null;
         k = 0;
         listaOrganigramas = null;
         guardado = true;
@@ -753,8 +645,7 @@ public class ControlEstructuraPlanta implements Serializable {
         listEstructurasBorrar.clear();
         listEstructurasCrear.clear();
         listEstructurasModificar.clear();
-        indexEstructura = -1;
-        secRegistroEstructura = null;
+        estructuraSeleccionado = null;
         k = 0;
         listaEstructuras = null;
         guardadoEstructura = true;
@@ -764,13 +655,9 @@ public class ControlEstructuraPlanta implements Serializable {
     }
 
     public void editarCelda() {
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                editarOrganigrama = listaOrganigramas.get(index);
-            }
-            if (tipoLista == 1) {
-                editarOrganigrama = filtrarListaOrganigramas.get(index);
-            }
+        if (organigramaSeleccionado != null) {
+            editarOrganigrama = organigramaSeleccionado;
+
             RequestContext context = RequestContext.getCurrentInstance();
             if (cualCelda == 0) {
                 context.update("formularioDialogos:editarFechaOrganigramaD");
@@ -797,16 +684,12 @@ public class ControlEstructuraPlanta implements Serializable {
                 cualCelda = -1;
 
             }
-            index = -1;
-            secRegistro = null;
+            organigramaSeleccionado = null;
+            organigramaSeleccionado = null;
         }
-        if (indexEstructura >= 0) {
-            if (tipoListaEstructura == 0) {
-                editarEstructura = listaEstructuras.get(indexEstructura);
-            }
-            if (tipoListaEstructura == 1) {
-                editarEstructura = listaEstructuras.get(indexEstructura);
-            }
+        if (estructuraSeleccionado != null) {
+            editarEstructura = estructuraSeleccionado;
+
             RequestContext context = RequestContext.getCurrentInstance();
             if (cualCeldaEstructura == 0) {
                 context.update("formularioDialogos:editarCodigoEstructuraD");
@@ -833,8 +716,8 @@ public class ControlEstructuraPlanta implements Serializable {
                 context.execute("editarEstructuraPadreEstructuraD.show()");
                 cualCeldaEstructura = -1;
             }
-            indexEstructura = -1;
-            secRegistroEstructura = null;
+            estructuraSeleccionado = null;
+            estructuraSeleccionado = null;
         }
     }
 
@@ -888,13 +771,9 @@ public class ControlEstructuraPlanta implements Serializable {
                 k++;
                 l = BigInteger.valueOf(k);
                 nuevoEstructura.setSecuencia(l);
-                if (tipoLista == 0) {
-                    nuevoEstructura.setOrganigrama(listaOrganigramas.get(indexAux));
-                }
-                if (tipoLista == 1) {
-                    nuevoEstructura.setOrganigrama(filtrarListaOrganigramas.get(indexAux));
-                }
-                if (listaEstructuras.size() == 0) {
+                nuevoEstructura.setOrganigrama(organigramaSeleccionado);
+
+                if (listaEstructuras == null) {
                     listaEstructuras = new ArrayList<Estructuras>();
                 }
                 listEstructurasCrear.add(nuevoEstructura);
@@ -902,7 +781,6 @@ public class ControlEstructuraPlanta implements Serializable {
                 cambiosPagina = false;
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:ACEPTAR");
-                index = indexAux;
                 context.update("form:datosEstructura");
                 context.execute("NuevoRegistroEstructura.hide()");
                 nuevoEstructura = new Estructuras();
@@ -912,8 +790,7 @@ public class ControlEstructuraPlanta implements Serializable {
                     guardadoEstructura = false;
                     RequestContext.getCurrentInstance().update("form:aceptar");
                 }
-                indexEstructura = -1;
-                secRegistroEstructura = null;
+                estructuraSeleccionado = null;
             } else {
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.execute("errorCodigo.show()");
@@ -929,42 +806,31 @@ public class ControlEstructuraPlanta implements Serializable {
         nuevoEstructura = new Estructuras();
         nuevoEstructura.setCentrocosto(new CentrosCostos());
         nuevoEstructura.setEstructurapadre(new Estructuras());
-        indexEstructura = -1;
-        secRegistroEstructura = null;
+        estructuraSeleccionado = null;
     }
 
     //DUPLICAR VC
     /**
      */
     public void verificarRegistroDuplicar() {
-        if (indexEstructura >= 0) {
+        if (estructuraSeleccionado != null) {
             duplicarEstructuraM();
         }
     }
 
     public void duplicarEstructuraM() {
         duplicarEstructura = new Estructuras();
-        if (tipoListaEstructura == 0) {
-            duplicarEstructura.setCodigo(listaEstructuras.get(indexEstructura).getCodigo());
-            duplicarEstructura.setNombre(listaEstructuras.get(indexEstructura).getNombre());
-            duplicarEstructura.setCentrocosto(listaEstructuras.get(indexEstructura).getCentrocosto());
-            duplicarEstructura.setEstructurapadre(listaEstructuras.get(indexEstructura).getEstructurapadre());
-            duplicarEstructura.setCantidadCargosControlar(listaEstructuras.get(indexEstructura).getCantidadCargosControlar());
-            duplicarEstructura.setCantidadCargosEmplActivos(listaEstructuras.get(indexEstructura).getCantidadCargosEmplActivos());
-        }
-        if (tipoListaEstructura == 1) {
-            duplicarEstructura.setCodigo(filtrarListaEstructuras.get(indexEstructura).getCodigo());
-            duplicarEstructura.setNombre(filtrarListaEstructuras.get(indexEstructura).getNombre());
-            duplicarEstructura.setCentrocosto(filtrarListaEstructuras.get(indexEstructura).getCentrocosto());
-            duplicarEstructura.setEstructurapadre(filtrarListaEstructuras.get(indexEstructura).getEstructurapadre());
-            duplicarEstructura.setCantidadCargosControlar(filtrarListaEstructuras.get(indexEstructura).getCantidadCargosControlar());
-            duplicarEstructura.setCantidadCargosEmplActivos(filtrarListaEstructuras.get(indexEstructura).getCantidadCargosEmplActivos());
-        }
+        duplicarEstructura.setCodigo(estructuraSeleccionado.getCodigo());
+        duplicarEstructura.setNombre(estructuraSeleccionado.getNombre());
+        duplicarEstructura.setCentrocosto(estructuraSeleccionado.getCentrocosto());
+        duplicarEstructura.setEstructurapadre(estructuraSeleccionado.getEstructurapadre());
+        duplicarEstructura.setCantidadCargosControlar(estructuraSeleccionado.getCantidadCargosControlar());
+        duplicarEstructura.setCantidadCargosEmplActivos(estructuraSeleccionado.getCantidadCargosEmplActivos());
+
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("formularioDialogos:DuplicarRegistroEstructura");
         context.execute("DuplicarRegistroEstructura.show()");
-        indexEstructura = -1;
-        secRegistroEstructura = null;
+        estructuraSeleccionado = null;
     }
 
     public void confirmarDuplicarEstructura() {
@@ -993,12 +859,8 @@ public class ControlEstructuraPlanta implements Serializable {
                 k++;
                 l = BigInteger.valueOf(k);
                 duplicarEstructura.setSecuencia(l);
-                if (tipoLista == 0) {
-                    duplicarEstructura.setOrganigrama(listaOrganigramas.get(indexAux));
-                }
-                if (tipoLista == 1) {
-                    duplicarEstructura.setOrganigrama(filtrarListaOrganigramas.get(indexAux));
-                }
+                duplicarEstructura.setOrganigrama(organigramaSeleccionado);
+
                 listaEstructuras.add(duplicarEstructura);
                 listEstructurasCrear.add(duplicarEstructura);
                 cambiosPagina = false;
@@ -1006,8 +868,7 @@ public class ControlEstructuraPlanta implements Serializable {
                 context.update("form:ACEPTAR");
                 context.update("form:datosEstructura");
                 context.execute("DuplicarRegistroEstructura.hide()");
-                indexEstructura = -1;
-                secRegistroEstructura = null;
+                estructuraSeleccionado = null;
                 if (guardadoEstructura == true) {
                     guardadoEstructura = false;
                     //RequestContext.getCurrentInstance().update("form:aceptar");
@@ -1040,48 +901,33 @@ public class ControlEstructuraPlanta implements Serializable {
     /**
      */
     public void verificarRegistroBorrar() {
-        if (indexEstructura >= 0) {
+        if (estructuraSeleccionado != null) {
             borrarEstructura();
         }
     }
 
     public void borrarEstructura() {
-        if (indexEstructura >= 0) {
-            if (tipoListaEstructura == 0) {
-                if (!listEstructurasModificar.isEmpty() && listEstructurasModificar.contains(listaEstructuras.get(indexEstructura))) {
-                    int modIndex = listEstructurasModificar.indexOf(listaEstructuras.get(indexEstructura));
-                    listEstructurasModificar.remove(modIndex);
-                    listEstructurasBorrar.add(listaEstructuras.get(indexEstructura));
-                } else if (!listEstructurasCrear.isEmpty() && listEstructurasCrear.contains(listaEstructuras.get(indexEstructura))) {
-                    int crearIndex = listEstructurasCrear.indexOf(listaEstructuras.get(indexEstructura));
-                    listEstructurasCrear.remove(crearIndex);
-                } else {
-                    listEstructurasBorrar.add(listaEstructuras.get(indexEstructura));
-                }
-                listaEstructuras.remove(indexEstructura);
+        if (estructuraSeleccionado != null) {
+            if (!listEstructurasModificar.isEmpty() && listEstructurasModificar.contains(estructuraSeleccionado)) {
+                int modIndex = listEstructurasModificar.indexOf(estructuraSeleccionado);
+                listEstructurasModificar.remove(modIndex);
+                listEstructurasBorrar.add(estructuraSeleccionado);
+            } else if (!listEstructurasCrear.isEmpty() && listEstructurasCrear.contains(estructuraSeleccionado)) {
+                int crearIndex = listEstructurasCrear.indexOf(estructuraSeleccionado);
+                listEstructurasCrear.remove(crearIndex);
+            } else {
+                listEstructurasBorrar.add(estructuraSeleccionado);
             }
+            listaEstructuras.remove(estructuraSeleccionado);
             if (tipoListaEstructura == 1) {
-                if (!listEstructurasModificar.isEmpty() && listEstructurasModificar.contains(filtrarListaEstructuras.get(indexEstructura))) {
-                    int modIndex = listEstructurasModificar.indexOf(filtrarListaEstructuras.get(indexEstructura));
-                    listEstructurasModificar.remove(modIndex);
-                    listEstructurasBorrar.add(filtrarListaEstructuras.get(indexEstructura));
-                } else if (!listEstructurasCrear.isEmpty() && listEstructurasCrear.contains(filtrarListaEstructuras.get(indexEstructura))) {
-                    int crearIndex = listEstructurasCrear.indexOf(filtrarListaEstructuras.get(indexEstructura));
-                    listEstructurasCrear.remove(crearIndex);
-                } else {
-                    listEstructurasBorrar.add(filtrarListaEstructuras.get(indexEstructura));
-                }
-                int VCIndex = listaEstructuras.indexOf(filtrarListaEstructuras.get(indexEstructura));
-                listaEstructuras.remove(VCIndex);
-                filtrarListaEstructuras.remove(indexEstructura);
+                filtrarListaEstructuras.remove(estructuraSeleccionado);
             }
 
             cambiosPagina = false;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:ACEPTAR");
             context.update("form:datosEstructura");
-            indexEstructura = -1;
-            secRegistroEstructura = null;
+            estructuraSeleccionado = null;
 
             if (guardadoEstructura == true) {
                 guardadoEstructura = false;
@@ -1096,7 +942,7 @@ public class ControlEstructuraPlanta implements Serializable {
      * medio de la tecla Crtl+F11
      */
     public void activarCtrlF11() {
-        if (index >= 0) {
+        if (organigramaSeleccionado != null) {
             if (bandera == 0) {
                 altoTablaOrganigrama = "43";
                 organigramaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaFecha");
@@ -1129,7 +975,7 @@ public class ControlEstructuraPlanta implements Serializable {
                 tipoLista = 0;
             }
         }
-        if (indexEstructura >= 0) {
+        if (estructuraSeleccionado != null) {
             if (banderaEstructura == 0) {
                 altoTablaEstructura = "188";
                 estructuraEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructura");
@@ -1213,11 +1059,9 @@ public class ControlEstructuraPlanta implements Serializable {
         listEstructurasBorrar.clear();
         listEstructurasCrear.clear();
         listEstructurasModificar.clear();
-        index = -1;
-        indexAux = -1;
-        indexEstructura = -1;
-        secRegistro = null;
-        secRegistroEstructura = null;
+        organigramaSeleccionado = null;
+        organigramaSeleccionado = null;
+        estructuraSeleccionado = null;
         k = 0;
         listaOrganigramas = null;
         listaEstructuras = null;
@@ -1236,7 +1080,7 @@ public class ControlEstructuraPlanta implements Serializable {
 
     public void listaValoresBoton() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexEstructura >= 0) {
+        if (estructuraSeleccionado != null) {
             if (cualCeldaEstructura == 2) {
                 context.update("form:CentroCostoDialogo");
                 context.execute("CentroCostoDialogo.show()");
@@ -1262,23 +1106,32 @@ public class ControlEstructuraPlanta implements Serializable {
         String type = map.get("t"); // type attribute of node
         int indice = Integer.parseInt(type);
         int columna = Integer.parseInt(name);
-        cambiarIndiceEstructura(indice, columna);
+        estructuraSeleccionado = listaEstructuras.get(indice);
+        cambiarIndiceEstructura(estructuraSeleccionado, columna);
         tipoActualizacion = 0;
         RequestContext contextt = RequestContext.getCurrentInstance();
         contextt.update("form:CentroCostoDialogo");
         contextt.execute("CentroCostoDialogo.show()");
     }
 
-    public void asignarIndex(Integer indice, int dlg, int LND) {
+    public void asignarIndex(Estructuras estructura, int dlg, int LND) {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (LND == 0) {
-            indexEstructura = indice;
-            tipoActualizacion = 0;
-        } else if (LND == 1) {
-            tipoActualizacion = 1;
-        } else if (LND == 2) {
-            tipoActualizacion = 2;
+        tipoActualizacion = LND;
+
+        if (dlg == 0) {
+            context.update("form:CentroCostoDialogo");
+            context.execute("CentroCostoDialogo.show()");
         }
+        if (dlg == 1) {
+            context.update("form:EstructuraPadreDialogo");
+            context.execute("EstructuraPadreDialogo.show()");
+        }
+    }
+
+    public void asignarIndex(int dlg, int LND) {
+        RequestContext context = RequestContext.getCurrentInstance();
+        tipoActualizacion = LND;
+
         if (dlg == 0) {
             context.update("form:CentroCostoDialogo");
             context.execute("CentroCostoDialogo.show()");
@@ -1331,8 +1184,6 @@ public class ControlEstructuraPlanta implements Serializable {
                     duplicarEstructura.setCentrocosto(lovCentrosCostos.get(indiceUnicoElemento));
                     context.update("formularioDialogos:duplicarEstructuraCentroCosto");
                 }
-                lovCentrosCostos = null;
-                getLovCentrosCostos();
             } else {
                 context.update("form:ProcesoProductivoDialogo");
                 context.execute("ProcesoProductivoDialogo.show()");
@@ -1364,8 +1215,6 @@ public class ControlEstructuraPlanta implements Serializable {
                     duplicarEstructura.setEstructurapadre(lovEstructurasPadres.get(indiceUnicoElemento));
                     context.update("formularioDialogos:duplicarEstructuraEstructuraPadre");
                 }
-                lovEstructurasPadres = null;
-                getLovEstructurasPadres();
             } else {
                 context.update("form:TipoEmpresaDialogo");
                 context.execute("TipoEmpresaDialogo.show()");
@@ -1382,27 +1231,17 @@ public class ControlEstructuraPlanta implements Serializable {
     public void actualizarCentroCosto() {
         System.out.println("tipoActualizacion : " + tipoActualizacion);
         System.out.println("centroCostoSeleccionado : " + centroCostoSeleccionado.getNombre());
-        System.out.println("indexEstructura : " + indexEstructura);
+        System.out.println("estructuraSeleccionado : " + estructuraSeleccionado);
         if (tipoActualizacion == 0) {
-            if (tipoListaEstructura == 0) {
-                listaEstructuras.get(indexEstructura).setCentrocosto(centroCostoSeleccionado);
-                if (!listEstructurasCrear.contains(listaEstructuras.get(indexEstructura))) {
-                    if (listEstructurasModificar.isEmpty()) {
-                        listEstructurasModificar.add(listaEstructuras.get(indexEstructura));
-                    } else if (!listEstructurasModificar.contains(listaEstructuras.get(indexEstructura))) {
-                        listEstructurasModificar.add(listaEstructuras.get(indexEstructura));
-                    }
-                }
-            } else {
-                filtrarListaEstructuras.get(indexEstructura).setCentrocosto(centroCostoSeleccionado);
-                if (!listEstructurasCrear.contains(filtrarListaEstructuras.get(indexEstructura))) {
-                    if (listEstructurasModificar.isEmpty()) {
-                        listEstructurasModificar.add(filtrarListaEstructuras.get(indexEstructura));
-                    } else if (!listEstructurasModificar.contains(filtrarListaEstructuras.get(indexEstructura))) {
-                        listEstructurasModificar.add(filtrarListaEstructuras.get(indexEstructura));
-                    }
+            estructuraSeleccionado.setCentrocosto(centroCostoSeleccionado);
+            if (!listEstructurasCrear.contains(estructuraSeleccionado)) {
+                if (listEstructurasModificar.isEmpty()) {
+                    listEstructurasModificar.add(estructuraSeleccionado);
+                } else if (!listEstructurasModificar.contains(estructuraSeleccionado)) {
+                    listEstructurasModificar.add(estructuraSeleccionado);
                 }
             }
+
             if (guardadoEstructura == true) {
                 guardadoEstructura = false;
             }
@@ -1423,14 +1262,14 @@ public class ControlEstructuraPlanta implements Serializable {
         filtrarLovCentrosCostos = null;
         centroCostoSeleccionado = null;
         aceptar = true;
-        indexEstructura = -1;
-        secRegistroEstructura = null;
+        estructuraSeleccionado = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        /*
-         context.update("form:CentroCostoDialogo");
-         context.update("form:lovCentroCosto");
-         context.update("form:aceptarCC");*/
+
+        context.update("form:CentroCostoDialogo");
+        context.update("form:lovCentroCosto");
+        context.update("form:aceptarCC");
+
         context.reset("form:lovCentroCosto:globalFilter");
         context.execute("lovCentroCosto.clearFilters()");
         context.execute("CentroCostoDialogo.hide()");
@@ -1440,8 +1279,7 @@ public class ControlEstructuraPlanta implements Serializable {
         filtrarLovCentrosCostos = null;
         centroCostoSeleccionado = null;
         aceptar = true;
-        indexEstructura = -1;
-        secRegistroEstructura = null;
+        estructuraSeleccionado = null;
         tipoActualizacion = -1;
         permitirIndexEstructura = true;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1452,25 +1290,15 @@ public class ControlEstructuraPlanta implements Serializable {
 
     public void actualizarEstructuraPadre() {
         if (tipoActualizacion == 0) {
-            if (tipoListaEstructura == 0) {
-                listaEstructuras.get(indexEstructura).setEstructurapadre(estructuraPadreSeleccionado);
-                if (!listEstructurasCrear.contains(listaEstructuras.get(indexEstructura))) {
-                    if (listEstructurasModificar.isEmpty()) {
-                        listEstructurasModificar.add(listaEstructuras.get(indexEstructura));
-                    } else if (!listEstructurasModificar.contains(listaEstructuras.get(indexEstructura))) {
-                        listEstructurasModificar.add(listaEstructuras.get(indexEstructura));
-                    }
-                }
-            } else {
-                filtrarListaEstructuras.get(indexEstructura).setEstructurapadre(estructuraPadreSeleccionado);
-                if (!listEstructurasCrear.contains(filtrarListaEstructuras.get(indexEstructura))) {
-                    if (listEstructurasModificar.isEmpty()) {
-                        listEstructurasModificar.add(filtrarListaEstructuras.get(indexEstructura));
-                    } else if (!listEstructurasModificar.contains(filtrarListaEstructuras.get(indexEstructura))) {
-                        listEstructurasModificar.add(filtrarListaEstructuras.get(indexEstructura));
-                    }
+            estructuraSeleccionado.setEstructurapadre(estructuraPadreSeleccionado);
+            if (!listEstructurasCrear.contains(estructuraSeleccionado)) {
+                if (listEstructurasModificar.isEmpty()) {
+                    listEstructurasModificar.add(estructuraSeleccionado);
+                } else if (!listEstructurasModificar.contains(estructuraSeleccionado)) {
+                    listEstructurasModificar.add(estructuraSeleccionado);
                 }
             }
+
             if (guardadoEstructura == true) {
                 guardadoEstructura = false;
             }
@@ -1491,14 +1319,14 @@ public class ControlEstructuraPlanta implements Serializable {
         filtrarLovEstructurasPadres = null;
         estructuraPadreSeleccionado = null;
         aceptar = true;
-        indexEstructura = -1;
-        secRegistroEstructura = null;
+        estructuraSeleccionado = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
-        /*
-         context.update("form:EstructuraPadreDialogo");
-         context.update("form:lovEstructuraPadre");
-         context.update("form:aceptarEP");*/
+
+        context.update("form:EstructuraPadreDialogo");
+        context.update("form:lovEstructuraPadre");
+        context.update("form:aceptarEP");
+
         context.reset("form:lovEstructuraPadre:globalFilter");
         context.execute("lovEstructuraPadre.clearFilters()");
         context.execute("EstructuraPadreDialogo.hide()");
@@ -1508,8 +1336,7 @@ public class ControlEstructuraPlanta implements Serializable {
         filtrarLovEstructurasPadres = null;
         estructuraPadreSeleccionado = null;
         aceptar = true;
-        indexEstructura = -1;
-        secRegistroEstructura = null;
+        estructuraSeleccionado = null;
         tipoActualizacion = -1;
         permitirIndexEstructura = true;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1527,11 +1354,11 @@ public class ControlEstructuraPlanta implements Serializable {
     //EXPORTAR
 
     public String exportXML() {
-        if (index >= 0) {
+        if (organigramaSeleccionado != null) {
             nombreTabla = ":formExportarO:datosOrganigramaExportar";
             nombreXML = "Organigramas_XML";
         }
-        if (indexEstructura >= 0) {
+        if (estructuraSeleccionado != null) {
             nombreTabla = ":formExportarE:datosEstructuraExportar";
             nombreXML = "Estructuras_XML";
         }
@@ -1544,10 +1371,10 @@ public class ControlEstructuraPlanta implements Serializable {
      * @throws IOException Excepcion de In-Out de datos
      */
     public void validarExportPDF() throws IOException {
-        if (index >= 0) {
+        if (organigramaSeleccionado != null) {
             exportPDF_O();
         }
-        if (indexEstructura >= 0) {
+        if (estructuraSeleccionado != null) {
             exportPDF_E();
         }
     }
@@ -1558,8 +1385,7 @@ public class ControlEstructuraPlanta implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "Organigramas_PDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
+        organigramaSeleccionado = null;
     }
 
     public void exportPDF_E() throws IOException {
@@ -1568,8 +1394,7 @@ public class ControlEstructuraPlanta implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "Estructuras_PDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        indexEstructura = -1;
-        secRegistroEstructura = null;
+        estructuraSeleccionado = null;
     }
 
     /**
@@ -1578,10 +1403,10 @@ public class ControlEstructuraPlanta implements Serializable {
      * @throws IOException Excepcion de In-Out de datos
      */
     public void validarExportXLS() throws IOException {
-        if (index >= 0) {
+        if (organigramaSeleccionado != null) {
             exportXLS_O();
         }
-        if (indexEstructura >= 0) {
+        if (estructuraSeleccionado != null) {
             exportXLS_E();
         }
     }
@@ -1592,8 +1417,7 @@ public class ControlEstructuraPlanta implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "Organigramas_XLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
+        organigramaSeleccionado = null;
     }
 
     public void exportXLS_E() throws IOException {
@@ -1602,25 +1426,41 @@ public class ControlEstructuraPlanta implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "Estructuras_XLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        indexEstructura = -1;
-        secRegistroEstructura = null;
+        estructuraSeleccionado = null;
     }
 
     //EVENTO FILTRAR
     /**
      * Evento que cambia la lista reala a la filtrada
      */
-    public void eventoFiltrar() {
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                tipoLista = 1;
-            }
+    public void eventoFiltrarO() {
+        if (tipoLista == 0) {
+            tipoLista = 1;
         }
-        if (indexEstructura >= 0) {
-            if (tipoListaEstructura == 0) {
-                tipoListaEstructura = 1;
-            }
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+        organigramaSeleccionado = null;
+        modificarInfoRegistroOr(filtrarListaOrganigramas.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistroOrg");
+    }
+
+    public void eventoFiltrarE() {
+        if (tipoListaEstructura == 0) {
+            tipoListaEstructura = 1;
         }
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+        estructuraSeleccionado = null;
+        modificarInfoRegistroEs(filtrarListaEstructuras.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistroEst");
+    }
+
+    private void modificarInfoRegistroOr(int valor) {
+        infoRegistroOr = String.valueOf(valor);
+    }
+
+    private void modificarInfoRegistroEs(int valor) {
+        infoRegistroEs = String.valueOf(valor);
     }
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
 
@@ -1631,13 +1471,13 @@ public class ControlEstructuraPlanta implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("verificarRastrosTablas.show()");
         } else {
-            if (index >= 0) {
+            if (organigramaSeleccionado != null) {
                 verificarRastroOrganigrama();
-                index = -1;
+                organigramaSeleccionado = null;
             }
-            if (indexEstructura >= 0) {
+            if (estructuraSeleccionado != null) {
                 verificarRastroEstructura();
-                indexEstructura = -1;
+                estructuraSeleccionado = null;
             }
         }
     }
@@ -1645,11 +1485,9 @@ public class ControlEstructuraPlanta implements Serializable {
     public void verificarRastroOrganigrama() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (listaOrganigramas != null) {
-            if (secRegistro != null) {
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "ORGANIGRAMAS");
-                backUpSecRegistro = secRegistro;
-                backUp = secRegistro;
-                secRegistro = null;
+            if (organigramaSeleccionado != null) {
+                int resultado = administrarRastros.obtenerTabla(organigramaSeleccionado.getSecuencia(), "ORGANIGRAMAS");
+                organigramaSeleccionado = null;
                 if (resultado == 1) {
                     context.execute("errorObjetosDB.show()");
                 } else if (resultado == 2) {
@@ -1677,17 +1515,15 @@ public class ControlEstructuraPlanta implements Serializable {
                 context.execute("errorRastroHistorico.show()");
             }
         }
-        index = -1;
+        organigramaSeleccionado = null;
     }
 
     public void verificarRastroEstructura() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (listaEstructuras != null) {
-            if (secRegistroEstructura != null) {
-                int resultado = administrarRastros.obtenerTabla(secRegistroEstructura, "ESTRUCTURAS");
-                backUpSecRegistroEstructura = secRegistroEstructura;
-                backUp = secRegistroEstructura;
-                secRegistroEstructura = null;
+            if (estructuraSeleccionado != null) {
+                int resultado = administrarRastros.obtenerTabla(estructuraSeleccionado.getSecuencia(), "ESTRUCTURAS");
+                estructuraSeleccionado = null;
                 if (resultado == 1) {
                     context.execute("errorObjetosDB.show()");
                 } else if (resultado == 2) {
@@ -1715,17 +1551,31 @@ public class ControlEstructuraPlanta implements Serializable {
                 context.execute("errorRastroHistorico.show()");
             }
         }
-        indexEstructura = -1;
+        estructuraSeleccionado = null;
+    }
+
+    public void recordarSeleccionOr() {
+        if (organigramaSeleccionado != null) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            tabla = (DataTable) c.getViewRoot().findComponent("form:datosOrganigrama");
+            tabla.setSelection(organigramaSeleccionado);
+        }
+    }
+
+    public void recordarSeleccionEx() {
+        if (estructuraSeleccionado != null) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            tabla = (DataTable) c.getViewRoot().findComponent("form:datosEstructura");
+            tabla.setSelection(estructuraSeleccionado);
+        }
     }
 
     //GETTERS AND SETTERS
     public List<Organigramas> getListaOrganigramas() {
         try {
             if (listaOrganigramas == null) {
-                listaOrganigramas = new ArrayList<Organigramas>();
                 listaOrganigramas = administrarEstructuraPlanta.listaOrganigramas();
             }
-
             return listaOrganigramas;
 
         } catch (Exception e) {
@@ -1758,47 +1608,19 @@ public class ControlEstructuraPlanta implements Serializable {
         this.editarOrganigrama = setEditarOrganigrama;
     }
 
-    public BigInteger getSecRegistro() {
-        return secRegistro;
-    }
-
-    public void setSecRegistro(BigInteger setSecRegistro) {
-        this.secRegistro = setSecRegistro;
-    }
-
-    public BigInteger getBackUpSecRegistro() {
-        return backUpSecRegistro;
-    }
-
-    public void setBackUpSecRegistro(BigInteger BackUpSecRegistro) {
-        this.backUpSecRegistro = BackUpSecRegistro;
-    }
-
     public List<Estructuras> getListaEstructuras() {
         if (listaEstructuras == null) {
-            listaEstructuras = new ArrayList<Estructuras>();
-            if (indexAux >= 0) {
-                if (index == -1) {
-                    index = indexAux;
-                }
-                if (tipoLista == 0) {
-                    if (listaOrganigramas.size() > 0) {
-                        listaEstructuras = administrarEstructuraPlanta.listaEstructurasPorSecuenciaOrganigrama(listaOrganigramas.get(index).getSecuencia());
+            if (organigramaSeleccionado != null) {
+                listaEstructuras = administrarEstructuraPlanta.listaEstructurasPorSecuenciaOrganigrama(organigramaSeleccionado.getSecuencia());
+            }
+
+            if (listaEstructuras != null) {
+                for (int i = 0; i < listaEstructuras.size(); i++) {
+                    if (listaEstructuras.get(i).getCentrocosto() == null) {
+                        listaEstructuras.get(i).setCentrocosto(new CentrosCostos());
                     }
-                }
-                if (tipoLista == 1) {
-                    if (filtrarListaOrganigramas.size() > 0) {
-                        listaEstructuras = administrarEstructuraPlanta.listaEstructurasPorSecuenciaOrganigrama(filtrarListaOrganigramas.get(index).getSecuencia());
-                    }
-                }
-                if (listaEstructuras != null) {
-                    for (int i = 0; i < listaEstructuras.size(); i++) {
-                        if (listaEstructuras.get(i).getCentrocosto() == null) {
-                            listaEstructuras.get(i).setCentrocosto(new CentrosCostos());
-                        }
-                        if (listaEstructuras.get(i).getEstructurapadre() == null) {
-                            listaEstructuras.get(i).setEstructurapadre(new Estructuras());
-                        }
+                    if (listaEstructuras.get(i).getEstructurapadre() == null) {
+                        listaEstructuras.get(i).setEstructurapadre(new Estructuras());
                     }
                 }
             }
@@ -1874,22 +1696,6 @@ public class ControlEstructuraPlanta implements Serializable {
         this.duplicarEstructura = setDuplicarEstructura;
     }
 
-    public BigInteger getSecRegistroEstructura() {
-        return secRegistroEstructura;
-    }
-
-    public void setSecRegistroEstructura(BigInteger setSecRegistroEstructura) {
-        this.secRegistroEstructura = setSecRegistroEstructura;
-    }
-
-    public BigInteger getBackUpSecRegistroEstructura() {
-        return backUpSecRegistroEstructura;
-    }
-
-    public void setBackUpSecRegistroEstructura(BigInteger setBackUpSecRegistroEstructura) {
-        this.backUpSecRegistroEstructura = setBackUpSecRegistroEstructura;
-    }
-
     public String getMsnConfirmarRastro() {
         return msnConfirmarRastro;
     }
@@ -1904,14 +1710,6 @@ public class ControlEstructuraPlanta implements Serializable {
 
     public void setMsnConfirmarRastroHistorico(String msnConfirmarRastroHistorico) {
         this.msnConfirmarRastroHistorico = msnConfirmarRastroHistorico;
-    }
-
-    public BigInteger getBackUp() {
-        return backUp;
-    }
-
-    public void setBackUp(BigInteger backUp) {
-        this.backUp = backUp;
     }
 
     public String getNombreTablaRastro() {
@@ -1964,13 +1762,9 @@ public class ControlEstructuraPlanta implements Serializable {
 
     public List<CentrosCostos> getLovCentrosCostos() {
         if (lovCentrosCostos == null) {
-            if (indexAux >= 0) {
-                if (tipoLista == 0) {
-                    lovCentrosCostos = administrarEstructuraPlanta.lovCentrosCostos(listaOrganigramas.get(indexAux).getEmpresa().getSecuencia());
-                }
-                if (tipoLista == 1) {
-                    lovCentrosCostos = administrarEstructuraPlanta.lovCentrosCostos(filtrarListaOrganigramas.get(indexAux).getEmpresa().getSecuencia());
-                }
+            if (organigramaSeleccionado != null) {
+                lovCentrosCostos = administrarEstructuraPlanta.lovCentrosCostos(organigramaSeleccionado.getEmpresa().getSecuencia());
+
             }
         }
         return lovCentrosCostos;
@@ -2000,19 +1794,11 @@ public class ControlEstructuraPlanta implements Serializable {
         if (lovEstructurasPadres == null) {
             Estructuras auxE = null;
             Organigramas auxO = null;
-            if (indexAux >= 0 && indexEstructura >= 0) {
-                if (tipoLista == 0) {
-                    auxO = listaOrganigramas.get(indexAux);
-                }
-                if (tipoLista == 1) {
-                    auxO = filtrarListaOrganigramas.get(indexAux);
-                }
-                if (tipoListaEstructura == 0) {
-                    auxE = listaEstructuras.get(indexEstructura);
-                }
-                if (tipoListaEstructura == 1) {
-                    auxE = filtrarListaEstructuras.get(indexEstructura);
-                }
+            if (organigramaSeleccionado != null && estructuraSeleccionado != null) {
+
+                auxO = organigramaSeleccionado;
+                auxE = estructuraSeleccionado;
+
                 lovEstructurasPadres = administrarEstructuraPlanta.lovEstructurasPadres(auxO.getSecuencia(), auxE.getSecuencia());
             }
 
@@ -2056,43 +1842,23 @@ public class ControlEstructuraPlanta implements Serializable {
         this.activoEstructura = setActivoEstructura;
     }
 
-    public Organigramas getOrganigramaTablaSeleccionado() {
-        getListaOrganigramas();
-        if (listaOrganigramas != null) {
-            int tam = listaOrganigramas.size();
-            if (tam > 0) {
-                organigramaTablaSeleccionado = listaOrganigramas.get(0);
-            }
-        }
-        return organigramaTablaSeleccionado;
+    public Organigramas getOrganigramaSeleccionado() {
+        return organigramaSeleccionado;
     }
 
-    public void setOrganigramaTablaSeleccionado(Organigramas organigramaTablaSeleccionado) {
-        this.organigramaTablaSeleccionado = organigramaTablaSeleccionado;
+    public void setOrganigramaSeleccionado(Organigramas organigramaTablaSeleccionado) {
+        this.organigramaSeleccionado = organigramaTablaSeleccionado;
     }
 
-    public Estructuras getEstructuraTablaSeleccionado() {
-        getListaEstructuras();
-        if (listaEstructuras != null) {
-            int tam = listaEstructuras.size();
-            if (tam > 0) {
-                estructuraTablaSeleccionado = listaEstructuras.get(0);
-            }
-        }
-        return estructuraTablaSeleccionado;
+    public Estructuras getEstructuraSeleccionado() {
+        return estructuraSeleccionado;
     }
 
-    public void setEstructuraTablaSeleccionado(Estructuras estructuraTablaSeleccionado) {
-        this.estructuraTablaSeleccionado = estructuraTablaSeleccionado;
+    public void setEstructuraSeleccionado(Estructuras estructuraTablaSeleccionado) {
+        this.estructuraSeleccionado = estructuraTablaSeleccionado;
     }
 
     public String getInfoRegistroCentroCosto() {
-        getLovCentrosCostos();
-        if (lovCentrosCostos != null) {
-            infoRegistroCentroCosto = "Cantidad de registros : " + lovCentrosCostos.size();
-        } else {
-            infoRegistroCentroCosto = "Cantidad de registros : 0";
-        }
         return infoRegistroCentroCosto;
     }
 
@@ -2100,18 +1866,19 @@ public class ControlEstructuraPlanta implements Serializable {
         this.infoRegistroCentroCosto = infoRegistroCentroCosto;
     }
 
-    public String getInfoRegistroEstructura() {
-        getLovEstructurasPadres();
-        if (lovEstructurasPadres != null) {
-            infoRegistroEstructura = "Cantidad de registros : " + lovEstructurasPadres.size();
-        } else {
-            infoRegistroEstructura = "Cantidad de registros : 0";
-        }
-        return infoRegistroEstructura;
+    public String getInfoRegistroEstructuraPa() {
+        return infoRegistroEstructuraPa;
     }
 
-    public void setInfoRegistroEstructura(String infoRegistroEstructura) {
-        this.infoRegistroEstructura = infoRegistroEstructura;
+    public void setInfoRegistroEstructuraPa(String infoRegistroEstructura) {
+        this.infoRegistroEstructuraPa = infoRegistroEstructura;
     }
 
+    public boolean isActivarLOV() {
+        return activarLOV;
+    }
+
+    public void setActivarLOV(boolean activarLOV) {
+        this.activarLOV = activarLOV;
+    }
 }

@@ -65,6 +65,8 @@ public class ControlNormasLaborales implements Serializable {
     private String paginaAnterior;
     //    
     private String infoRegistro;
+    //
+    private DataTable tablaC;
 
     public ControlNormasLaborales() {
         listNormasLaborales = null;
@@ -243,17 +245,18 @@ public class ControlNormasLaborales implements Serializable {
         System.err.println("TIPO LISTA = " + tipoLista);
         if (confirmarCambio.equalsIgnoreCase("N")) {
             System.err.println("ENTRE A MODIFICAR NORMA LABORAL, CONFIRMAR CAMBIO ES N");
-                if (!crearNormaLaboral.contains(normaLaboralSeleccionada)) {
-                    if (normaLaboralSeleccionada.getCodigo() == null) {
+            if (!crearNormaLaboral.contains(normaLaboralSeleccionada)) {
+                if (normaLaboralSeleccionada.getCodigo() == null) {
                     mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                     banderita = false;
-                        normaLaboralSeleccionada.setCodigo(backUpCodigo);
+                    normaLaboralSeleccionada.setCodigo(backUpCodigo);
                 } else {
                     for (int j = 0; j < listNormasLaborales.size(); j++) {
-                                if (listNormasLaborales.get(j).getCodigo().equals(listNormasLaborales.get(j).getCodigo())) {
+                        if (j != listNormasLaborales.indexOf(normaLaboralSeleccionada)) {
+                            if (normaLaboralSeleccionada.getCodigo().equals(listNormasLaborales.get(j).getCodigo())) {
                                 contador++;
                             }
-                        
+                        }
                     }
                     if (contador > 0) {
                         mensajeValidacion = "CODIGOS REPETIDOS";
@@ -290,21 +293,19 @@ public class ControlNormasLaborales implements Serializable {
                     context.update("form:validacionModificar");
                     context.execute("validacionModificar.show()");
                 }
-                    normaLaboralSeleccionada = null;
             } else {
-                    if (normaLaboralSeleccionada.getCodigo() == null) {
+                if (normaLaboralSeleccionada.getCodigo() == null) {
                     mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                     banderita = false;
-                        normaLaboralSeleccionada.setCodigo(backUpCodigo);
-                } 
-                normaLaboralSeleccionada = null;
-            }         
+                    normaLaboralSeleccionada.setCodigo(backUpCodigo);
+                }
+            }
             context.update("form:datosNormaLaboral");
             context.update("form:ACEPTAR");
         }
 
     }
-        
+
     public void borrarNormasLaborales() {
 
         if (normaLaboralSeleccionada != null) {
@@ -383,14 +384,20 @@ public class ControlNormasLaborales implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listNormasLaborales = null;
+             getListNormasLaborales();
+            if (listNormasLaborales != null) {
+                normaLaboralSeleccionada = listNormasLaborales.get(0);
+                modificarInfoRegistro(listNormasLaborales.size());
+            } else {
+                modificarInfoRegistro(0);
+            }
             context.update("form:datosNormaLaboral");
-            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesMessage msg = new FacesMessage("Información", "Se guardarón los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
             k = 0;
             guardado = true;
         }
-        normaLaboralSeleccionada = null;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
     }
@@ -411,7 +418,6 @@ public class ControlNormasLaborales implements Serializable {
             }
 
         }
-        normaLaboralSeleccionada = null;
     }
 
     public void agregarNuevoNormaLaboral() {
@@ -419,11 +425,9 @@ public class ControlNormasLaborales implements Serializable {
         int contador = 0;
         int duplicados = 0;
 
-        Integer a = 0;
-        a = null;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
-        if (nuevoNormaLaboral.getCodigo() == a) {
+        if (nuevoNormaLaboral.getCodigo() == null) {
             mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
@@ -473,7 +477,7 @@ public class ControlNormasLaborales implements Serializable {
 
             crearNormaLaboral.add(nuevoNormaLaboral);
             listNormasLaborales.add(nuevoNormaLaboral);
-
+            normaLaboralSeleccionada = listNormasLaborales.get(listNormasLaborales.indexOf(nuevoNormaLaboral));
             nuevoNormaLaboral = new NormasLaborales();
 
             context.update("form:datosNormaLaboral");
@@ -485,7 +489,6 @@ public class ControlNormasLaborales implements Serializable {
             }
 
             context.execute("nuevoRegistroNormaLaboral.hide()");
-            normaLaboralSeleccionada = null;
 
         } else {
             context.update("form:validacionNuevaCentroCosto");
@@ -568,6 +571,7 @@ public class ControlNormasLaborales implements Serializable {
             }
             listNormasLaborales.add(duplicarNormaLaboral);
             crearNormaLaboral.add(duplicarNormaLaboral);
+            normaLaboralSeleccionada = listNormasLaborales.get(listNormasLaborales.indexOf(duplicarNormaLaboral));
             context.update("form:datosNormaLaboral");
             //infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
             modificarInfoRegistro(listNormasLaborales.size());
@@ -633,11 +637,19 @@ public class ControlNormasLaborales implements Serializable {
             }
 
         }
-        normaLaboralSeleccionada = null;
     }
 
     private void modificarInfoRegistro(int valor) {
         infoRegistro = String.valueOf(valor);
+    }
+    
+    
+    public void recordarSeleccion() {
+        if (normaLaboralSeleccionada != null) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            tablaC = (DataTable) c.getViewRoot().findComponent("form:datosNormaLaboral");
+            tablaC.setSelection(normaLaboralSeleccionada);
+        }
     }
 
     //-------------------------------------------------------------------------- 

@@ -13,7 +13,7 @@
                 <h:form id="form"> 
                     <p:growl id="growl" showDetail="true"/> 
                     <p:panel  id="PanelTotal" header="Normas Laborales"  styleClass="panelTotal">
-                        
+
                         <p:toolbar styleClass="cssToolbar">  
                             <p:toolbarGroup align="left"> 
 
@@ -53,7 +53,7 @@
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlNormasLaborales.duplicarNormaLaborales()}" process="@this"/>  
                                 <p:tooltip style="" for="duplicar" value="Duplicar Registro" />
-                                
+
                                 <p:separator style="position: relative; top: -9px"/>
 
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlNormasLaborales.verificarRastro()}" process="@this"/>  
@@ -65,13 +65,13 @@
                                 <p:tooltip  for="refrescar" value="Deshacer Cambios no guardados"/>
 
                                 <p:separator style="position: relative; top: -9px"/>
-                                
+
                                 <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlNormasLaborales.salir()}" action="emplvigencianormalaboral" process="@this"/>  
                                 <p:tooltip  for="salir" value="Salir"/>
 
                             </p:toolbarGroup>  
                         </p:toolbar>
-                        
+
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>Norma Laboral</strong></legend>
 
@@ -82,6 +82,7 @@
                                          selection="#{controlNormasLaborales.normaLaboralSeleccionada}"
                                          selectionMode="single">
                                 <p:ajax event="filter" listener="#{controlNormasLaborales.eventoFiltrar()}"/>
+                                <f:event type="preRenderView" listener="#{controlNormasLaborales.recordarSeleccion()}"/>
 
                                 <p:column headerText="Código" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains" id="codigo" width="200" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
@@ -93,7 +94,11 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
                                 </p:column>
+
                                 <p:column headerText="Descripción" sortBy="#{info.nombre}" filterBy="#{info.nombre}" filterMatchMode="contains" id="descripcion" width="275" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.nombre}"  /></f:facet>  
@@ -104,6 +109,9 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
                                 </p:column>
                             </p:dataTable>
 
@@ -204,14 +212,14 @@
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla 'NORMASLABORALES' no se encuentra en ObjetosDB. Por favor comunicarse con soporte." style="position: absolute; left: 70px; top: 15px; width: 205px; font-weight:bold;" />
                     </p:dialog>
-                    
+
                     <p:dialog id="editCodigo" header="Código" widgetVar="editCodigo" resizable="false" draggable="false" modal="true" height="80" width="400" style="text-transform: uppercase">  
                         <p:inputTextarea value="#{controlNormasLaborales.editarNormaLaboral.codigo}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
                     <p:dialog id="editDescripcion" header="Descripcion" widgetVar="editDescripcion" resizable="false" draggable="false" modal="true" height="80" width="400" style="text-transform: uppercase">  
                         <p:inputTextarea value="#{controlNormasLaborales.editarNormaLaboral.nombre}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>                    
-                    
+
                     <p:dialog id="nuevoRegistroNormaLaboral" header="Nuevo Registro" widgetVar="nuevoRegistroNormaLaboral" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="350" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacion" value="Nueva Norma Laboral" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
