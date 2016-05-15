@@ -4,7 +4,6 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>Historico Normas Laborales</title>
     </h:head>
     <h:body>
         <ui:composition template="/Template.xhtml">
@@ -13,72 +12,59 @@
                     <p:panel  id="PanelTotal" header="Novedades" styleClass="panelTotal">    
                         <p:panel style="border-radius: 10px" >
                             <fieldset style="height: 101px; width: 225px; border-radius: 10px">
-                                <legend style=" color: blue; width: 210px; font-weight: bold;">Novedades Fijas y Ocasionales</legend>
-                                <h:graphicImage value="Imagenes/Iconos/IconNFYO.png" style="width: 35px; height: 50px;"/>
-                                <p:commandButton style="width: 160px; height: 28px; background-image: url(Imagenes/Iconos/botonL.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="Por Empleado..." action="novedadempleado"/>
-                                <p:commandButton style="width: 180px; height: 25px;" value="Por Concepto..." action="novedadconcepto" />
-                                <p:commandButton style="width: 180px; height: 25px;" value="Por Tercero..."  action="novedadtercero"/>
-                            </fieldset>
-                            <fieldset style="height: 71px; width: 225px;;height:40px ; border-radius: 10px">
-                                <legend style=" color: blue; font-weight: bold;">Archivo Plano</legend>
-                                <h:graphicImage value="Imagenes/Iconos/archivoplanoNovedad.png" style="width: 25px; height: 31px; "/>
-                                <p:commandButton style="width: 180px; height: 25px; " value="Cargue De Novedades" action="novedadPlano"/>
-                            </fieldset>
-                            <fieldset style="height: 123px; width: 270px; border-radius: 10px;">
-                                <legend style=" color: blue; width: 255px; font-weight: bold;">Novedades de Pago por Fuera de Nómina</legend>
-                                <h:graphicImage value="Imagenes/Iconos/ConstructorPPC.png" style="width: 30px; height: 33px; "/>
-                                <h:graphicImage value="Imagenes/Iconos/Auxilios.png" style="width: 30px  ; height: 33px "/>
-                                <h:graphicImage value="Imagenes/Iconos/LiquidacionDefinitivaNPFN.png" style="width: 30px  ; height: 33px "/>
-                                <p:commandButton style="width: 190px; height: 25px;" value="Pago Parcial De Cesantia" actionListener="#{controlNovedad.recibir('Pago Parcial De Cesantia')}" action="Impresion" ></p:commandButton>
-                                <p:commandButton style="width: 190px; height: 25px;" value="Auxilios" actionListener="#{controlNovedad.recibir('Auxilios')}"  action="Impresion" ></p:commandButton>
-                                <p:commandButton style="width: 190px; height: 25px;" value="Liquidacion Definitiva" actionListener="#{controlNovedadesDefinitivas.recibirPagina('novedad')}" action="definitivas" ></p:commandButton>
-                            </fieldset>
-                            <fieldset style="height: 81px; width: 270px; border-radius: 10px;">
-                                <legend style=" color: blue; width: 65px; font-weight: bold;">Vacaciones</legend>
-                                <h:graphicImage value="Imagenes/Iconos/SolVaciones.png" style="position: absolute; top: 18px; left: 5px; width: 50px  ; height: 60px "/>
+                                <!-- <h:graphicImage value="Imagenes/Iconos/IconNFYO.png" style="width: 35px; height: 50px;"/> -->
+                                <p:commandButton style="width: 160px; height: 28px; background-image: url(Imagenes/Iconos/botonL.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" icon="ui-icon-extlink" value="Por Empleado..." action="novedadempleado"/>
+                                <p:commandButton style="width: 160px; height: 28px; background-image: url(Imagenes/Iconos/botonL.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="Por Concepto..." action="novedadconcepto" />
+                                <p:commandButton style="width: 160px; height: 28px; background-image: url(Imagenes/Iconos/botonL.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="Por Tercero..."  action="novedadtercero"/>
+                                <!-- <h:graphicImage value="Imagenes/Iconos/archivoplanoNovedad.png" style="width: 25px; height: 31px; "/> -->
+                                <p:commandButton style="width: 160px; height: 28px; " value="Cargue De Novedades" action="novedadPlano"/>
+                                <p:commandButton style="width: 160px; height: 28px; " value="Ausentismos..."  action="atausentismos" ></p:commandButton>
+                                <!-- <h:graphicImage value="Imagenes/Iconos/SolVaciones.png" style="position: absolute; top: 18px; left: 5px; width: 50px  ; height: 60px "/> -->
                                 <p:commandButton style="width: 190px; height: 25px ;" value="vacaciones" actionListener="#{controlNovedadesVacaciones.recibirPag('novedad')}" action="vacaciones" ></p:commandButton>
-                                <p:commandButton style="width: 190px; height: 25px ;" value="Programacion Vacaciones" actionListener="#{controlNovedad.recibir('Programacion Vacaciones')}" action="Impresion"></p:commandButton>
-                            </fieldset>
-                            <fieldset style="height: 81px; width: 270px; border-radius: 10px;">
-                            <p:commandButton style="width: 180px; height: 25px; " value="Ausentismos..."  action="atausentismos" ></p:commandButton>
+                                <!-- <p:commandButton style="width: 190px; height: 25px ;" value="Programacion Vacaciones" actionListener="#{controlNovedad.recibir('Programacion Vacaciones')}" action="Impresion"></p:commandButton> -->
+                                <!-- <legend style=" color: blue; width: 255px; font-weight: bold;">Novedades de Pago por Fuera de Nómina</legend> -->
+                                <!-- <h:graphicImage value="Imagenes/Iconos/Auxilios.png" style="width: 30px  ; height: 33px "/> -->
+                                <!-- <h:graphicImage value="Imagenes/Iconos/LiquidacionDefinitivaNPFN.png" style="width: 30px  ; height: 33px "/> -->
+                                <!-- <h:graphicImage value="Imagenes/Iconos/ConstructorPPC.png" style="width: 30px; height: 33px; "/> -->
+                                <!-- <p:commandButton style="width: 190px; height: 28px;" value="Auxilios" actionListener="#{controlNovedad.recibir('Auxilios')}"  action="Impresion" ></p:commandButton> -->
+                                <p:commandButton style="width: 190px; height: 28px;" value="Liquidacion Definitiva" actionListener="#{controlNovedadesDefinitivas.recibirPagina('novedad')}" action="definitivas" ></p:commandButton>
+                                <p:commandButton style="width: 190px; height: 28px;" value="Pago Parcial De Cesantia" actionListener="#{controlNovedad.recibir('Pago Parcial De Cesantia')}" action="Impresion" ></p:commandButton>
                             </fieldset>
                             <fieldset style="height: 101px; width: 225px; border-radius: 10px">
-                                <legend style="color: blue; font-weight: bold;">Viaticos</legend>
-                                <h:graphicImage value="Imagenes/Iconos/Viaticos.png" style="width: 35px; height: 50px;"/>
-                                <p:commandButton style="width: 180px; height: 25px;" value="Conf. de Viaticos" actionListener="#{controlNovedad.recibir('Configuracion De Viaticos...')}" action="Impresion"></p:commandButton>
-                                <p:commandButton style="width: 180px; height: 25px;" value="Tramitar Viaticos" actionListener="#{controlNovedad.recibir('Tramitar Viaticos...')}" action="Impresion"></p:commandButton>
-                                <p:commandButton style="width: 180px; height: 25px;" value="Autorizacion De Viaticos" actionListener="#{controlNovedad.recibir('Autorizacion De Viaticos')}" action="Impresion"></p:commandButton>
-                            </fieldset>
-                            <fieldset style="height: 66px; width: 225px; border-radius: 10px">
+                                <!-- <legend style="color: blue; font-weight: bold;">Viaticos</legend> -->
+                                <!-- <h:graphicImage value="Imagenes/Iconos/Viaticos.png" style="width: 35px; height: 50px;"/> -->
+                                <p:commandButton style="width: 160px; height: 28px;" value="Conf. de Viaticos" actionListener="#{controlNovedad.recibir('Configuracion De Viaticos...')}" action="Impresion"></p:commandButton>
+                                <p:commandButton style="width: 160px; height: 28px;" value="Tramitar Viaticos" actionListener="#{controlNovedad.recibir('Tramitar Viaticos...')}" action="Impresion"></p:commandButton>
+                                <p:commandButton style="width: 160px; height: 28px;" value="Autorizacion De Viaticos" actionListener="#{controlNovedad.recibir('Autorizacion De Viaticos')}" action="Impresion"></p:commandButton>
+                            <!-- </fieldset> -->
+                            <!-- <fieldset style="height: 66px; width: 225px; border-radius: 10px">
                                 <legend style=" color: blue; font-weight: bold;">Anticipos</legend>
                                 <h:graphicImage value="Imagenes/Iconos/Anticipos.png" style="width: 35px; height: 50px;"/>
-                                <p:commandButton style="width: 180px; height: 25px;" value="Tramitar Anticipos" actionListener="#{controlNovedad.recibir('Tramitar Anticipos')}" action="Impresion"></p:commandButton>
-                                <p:commandButton style="width: 180px; height: 25px;" value="Autorizacion Anticipos" actionListener="#{controlNovedad.recibir('Autorizacion Anticipos')}" action="Impresion"></p:commandButton>
-                            </fieldset>
-                            <fieldset style="position: absolute; left: 265px;height: 250px; width: 265px; border-radius: 10px">
-                                <legend style=" color: blue; font-weight: bold;">Administracion De Tiempos</legend>
-                                <h:graphicImage value="Imagenes/Iconos/RelojADT.png" style="width: 60px; height:70px;"/>
-                                <p:commandButton style="width: 180px; height: 25px; " value="Configuración Recargos H. E." actionListener="#{controlATExtraRecargo.recibirPagina('novedad')}" action="atextrarecargo"></p:commandButton>
-                                <p:commandButton style="width: 180px; height: 25px; " value="Configuración Cuadrillas..." actionListener="#{controlATCuadrilla.recibirPagina('novedad')}" action="atcuadrilla"></p:commandButton>
-                                <p:commandButton style="width: 180px; height: 25px; " value="Parametros Tiempos..." actionListener="#{controlATParametroTiempo.recibirPagina('novedad')}" action="atparametrotiempo"></p:commandButton>
-                                <p:commandButton style="width: 180px; height: 25px; " value="Novedad Horas Extras..." actionListener="#{controlATHoraExtra.recibirPagina('novedad')}" action="athoraextra"></p:commandButton>
-                                <p:commandButton style="width: 180px; height: 25px; " value="Aprovación Horas Extras..." actionListener="#{controlATAprobacionHE.recibirPagina('novedad')}" action="ataprobacionhe"></p:commandButton>
+                                <p:commandButton style="width: 160px; height: 28px;" value="Tramitar Anticipos" actionListener="#{controlNovedad.recibir('Tramitar Anticipos')}" action="Impresion"></p:commandButton>
+                                <p:commandButton style="width: 160px; height: 28px;" value="Autorizacion Anticipos" actionListener="#{controlNovedad.recibir('Autorizacion Anticipos')}" action="Impresion"></p:commandButton>
+                            </fieldset> -->
+                            <!-- <fieldset style="position: absolute; left: 265px;height: 250px; width: 265px; border-radius: 10px"> -->
+                                <!-- <legend style=" color: blue; font-weight: bold;">Administracion De Tiempos</legend> -->
+                                <!-- <h:graphicImage value="Imagenes/Iconos/RelojADT.png" style="width: 60px; height:70px;"/> -->
+                                <p:commandButton style="width: 160px; height: 28px; " value="Configuración Recargos H. E." actionListener="#{controlATExtraRecargo.recibirPagina('novedad')}" action="atextrarecargo"></p:commandButton>
+                                <p:commandButton style="width: 160px; height: 28px; " value="Configuración Cuadrillas..." actionListener="#{controlATCuadrilla.recibirPagina('novedad')}" action="atcuadrilla"></p:commandButton>
+                                <p:commandButton style="width: 160px; height: 28px; " value="Parametros Tiempos..." actionListener="#{controlATParametroTiempo.recibirPagina('novedad')}" action="atparametrotiempo"></p:commandButton>
+                                <p:commandButton style="width: 160px; height: 28px; " value="Novedad Horas Extras..." actionListener="#{controlATHoraExtra.recibirPagina('novedad')}" action="athoraextra"></p:commandButton>
+                                <p:commandButton style="width: 160px; height: 28px; " value="Aprovación Horas Extras..." actionListener="#{controlATAprobacionHE.recibirPagina('novedad')}" action="ataprobacionhe"></p:commandButton>
                             </fieldset>
                             <fieldset style="height: 103px; width: 265px; border-radius: 10px">
-                                <legend style=" color: blue; font-weight: bold;">Préstamos</legend>
-                                <h:graphicImage value="Imagenes/Iconos/Prestamos1.png" style="width: 25px  ; height: 35px "/>
-                                <h:graphicImage value="Imagenes/Iconos/Prestamos2.png" style="width: 25px  ; height: 35px "/>
-                                <p:commandButton style="width: 180px; height: 25px; " value="Cartera..." actionListener="#{controlNovedad.recibir('Cartera')}" action="Impresion"></p:commandButton>
-                                <p:commandButton style="width: 180px; height: 25px; " value="Embargos..." actionListener="#{controlNovedad.recibir('Embargos')}" action="Impresion" ></p:commandButton>
-                            </fieldset>
-                            
-                            
-                            <fieldset style="height: 125px; width: 270px; border-radius: 10px;">
-                                <legend style=" color: blue; width: 120px; font-weight: bold;">Otras Novedades</legend>
-                                <h:graphicImage value="Imagenes/Iconos/ManoOtrasNovedades.png" style="width: 50px; height: 60px;"/>
-                                <p:commandButton style="width: 190px; height: 25px;" value="Reemplazos" actionListener="#{controlNovedad.recibir('Reemplazos')}" action="Impresion"></p:commandButton>
-                                <p:commandButton style="width: 190px; height: 25px;" value="Cobro Incapacidades" actionListener="#{controlNovedad.recibir('Cobros Incapacidades')}" action="Impresion" ></p:commandButton>
-                                <p:commandButton style="width: 190px; height: 25px;" value="Cuotas Partes" actionListener="#{controlNovedad.recibir('Cuotas Partes')}" action="Impresion"></p:commandButton>
+                                <!-- <legend style=" color: blue; font-weight: bold;">Préstamos</legend> -->
+                                <!-- <h:graphicImage value="Imagenes/Iconos/Prestamos1.png" style="width: 25px  ; height: 35px "/>
+                                <h:graphicImage value="Imagenes/Iconos/Prestamos2.png" style="width: 25px  ; height: 35px "/> -->
+                                <p:commandButton style="width: 160px; height: 28px; " value="Cartera..." actionListener="#{controlNovedad.recibir('Cartera')}" action="Impresion"></p:commandButton>
+                                <p:commandButton style="width: 160px; height: 28px; " value="Embargos..." actionListener="#{controlNovedad.recibir('Embargos')}" action="Impresion" ></p:commandButton>
+                                <!-- <legend style=" color: blue; width: 120px; font-weight: bold;">Otras Novedades</legend> -->
+                                <!-- <h:graphicImage value="Imagenes/Iconos/ManoOtrasNovedades.png" style="width: 50px; height: 60px;"/> -->
+                                <p:commandButton style="width: 190px; height: 28px;" value="Reemplazos" actionListener="#{controlNovedad.recibir('Reemplazos')}" action="Impresion"></p:commandButton>
+                                <p:commandButton style="width: 190px; height: 28px;" value="Cobro Incapacidades" actionListener="#{controlNovedad.recibir('Cobros Incapacidades')}" action="Impresion" ></p:commandButton>
+                                <p:commandButton style="width: 190px; height: 28px;" value="Unidades producidas" actionListener="#{controlNovedad.recibir('Cuotas Partes')}" action="Impresion"></p:commandButton>
+                                <p:commandButton style="width: 190px; height: 28px;" value="Hora catedra" actionListener="#{controlNovedad.recibir('Cuotas Partes')}" action="Impresion"></p:commandButton>
+                                <p:commandButton style="width: 190px; height: 28px;" value="Cuotas Partes " actionListener="#{controlNovedad.recibir('Cuotas Partes')}" action="Impresion"></p:commandButton>
                             </fieldset>
                             <p:commandButton id="ATRAS" value="" action="nomina" style="width: 90px; height: 30px; 
                                              background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; 
