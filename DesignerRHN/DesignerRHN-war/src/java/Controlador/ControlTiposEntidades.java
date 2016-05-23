@@ -206,8 +206,8 @@ public class ControlTiposEntidades implements Serializable {
     }
 
     public void listaValoresBoton() {
-        if (tipoEntidadSeleccionada != null) {
             RequestContext context = RequestContext.getCurrentInstance();
+        if (tipoEntidadSeleccionada != null) {
             if (cualCelda == 2) {
                 grupoTESeleccionada = null;
                 modificarInfoRegistroGrupo(listaGruposTiposEntidades.size());
@@ -215,7 +215,8 @@ public class ControlTiposEntidades implements Serializable {
                 context.execute("gruposTiposEntidadesDialogo.show()");
                 tipoActualizacion = 0;
             }
-
+        }else {
+            context.execute("seleccionarRegistro.show()");
         }
     }
 // tipo Entidad
@@ -583,9 +584,9 @@ public class ControlTiposEntidades implements Serializable {
     }
 
     public void editarCelda() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoEntidadSeleccionada != null) {
             editarTipoEntidad = tipoEntidadSeleccionada;
-            RequestContext context = RequestContext.getCurrentInstance();
             System.out.println("Entro a editar... valor celda: " + cualCelda);
             if (cualCelda == 0) {
                 context.update("formularioDialogos:editCodigo");
@@ -601,6 +602,8 @@ public class ControlTiposEntidades implements Serializable {
                 cualCelda = -1;
             }
 
+        } else {
+            context.execute("seleccionarRegistro.show()");
         }
     }
 
@@ -634,7 +637,7 @@ public class ControlTiposEntidades implements Serializable {
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
-                tipoEntidadSeleccionada = null;
+                //tipoEntidadSeleccionada = null;
             }
         } catch (Exception e) {
             System.err.println("ERROR ControlTiposEntidades verificarBorrado ERROR " + e);
@@ -680,6 +683,7 @@ public class ControlTiposEntidades implements Serializable {
 
     public void duplicarTiposEntidades() {
         System.out.println("DuplicarVigenciasFormasPagos");
+            RequestContext context = RequestContext.getCurrentInstance();
         if (tipoEntidadSeleccionada != null) {
             duplicarTipoEntidad = new TiposEntidades();
             k++;
@@ -690,10 +694,10 @@ public class ControlTiposEntidades implements Serializable {
             duplicarTipoEntidad.setGrupo(tipoEntidadSeleccionada.getGrupo());
             duplicarTipoEntidad.setNombre(tipoEntidadSeleccionada.getNombre());
 
-
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarTiposEntidades");
             context.execute("duplicarRegistroTiposEntidades.show()");
+        }else {
+            context.execute("seleccionarRegistro.show()");
         }
     }
 

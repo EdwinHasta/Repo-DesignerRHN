@@ -96,7 +96,8 @@
                                          filteredValue="#{controlIbcAutoliquid.filtrarListTiposEntidades}" emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell" liveScroll="true" scrollRows="5" selectionMode="single">
 
-                                <p:ajax event="filter" listener="#{controlIbcAutoliquid.eventoFiltrar()}"/>
+                                <p:ajax event="filter" listener="#{controlIbcAutoliquid.eventoFiltrarTE}"/>
+                                <f:event type="preRenderView" listener="#{controlIbcAutoliquid.recordarSeleccion()}"/>
 
                                 <p:ajax event="rowSelect" listener="#{controlIbcAutoliquid.obtenerDetallesIBCS()}" />
                                 <p:column filterBy="#{infoTE.codigo}" width="40" id="codigoTipoEntidad" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
@@ -123,7 +124,7 @@
                                          filteredValue="#{controlIbcAutoliquid.filtrarListIbcsAutoliquidaciones}" emptyMessage="#{msg['vacio']}" selectionMode="single"
                                          editable="true" editMode="cell" liveScroll="true" scrollRows="9" selection="#{controlIbcAutoliquid.ibcsTablaSeleccionada}">
 
-                                <p:ajax event="filter" listener="#{controlIbcAutoliquid.eventoFiltrar()}"/>
+                                <p:ajax event="filter" listener="#{controlIbcAutoliquid.eventoFiltrarTE}"/>
 
                                 <p:column headerText="#{msg['fechainicial']}" sortBy="#{infoIBC.fechainicial}" filterBy="#{infoIBC.fechainicial}" filterMatchMode="contains"  width="72" id="ibcFechaInicial" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
@@ -134,9 +135,9 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <lnk:calendar id="dateFechaInicial" value="#{infoIBC.fechainicial}" height="12" width="99"> 
-                                                <p:ajax event="dateSelect" listener="#{controlIbcAutoliquid.modificarFechas(indice,0)}" update="dateFechaInicial" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlIbcAutoliquid.modificarFechas(indice,0)}" update="dateFechaInicial" process="@this"/>
-                                                <p:ajax event="select" listener="#{controlIbcAutoliquid.cambiarIndice(indice,0)}" process="@this"/> 
+                                                <p:ajax event="dateSelect" listener="#{controlIbcAutoliquid.modificarFechas(infoIBC,0)}" update="dateFechaInicial" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlIbcAutoliquid.modificarFechas(infoIBC,0)}" update="dateFechaInicial" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlIbcAutoliquid.cambiarIndice(infoIBC,0)}" process="@this"/> 
                                             </lnk:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
@@ -151,9 +152,9 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <lnk:calendar id="dateFechaFinal" value="#{infoIBC.fechafinal}" height="12" width="99"> 
-                                                <p:ajax event="dateSelect" listener="#{controlIbcAutoliquid.modificarFechas(indice,1)}" update="dateFechaFinal" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlIbcAutoliquid.modificarFechas(indice,1)}" update="dateFechaFinal" process="@this"/>
-                                                <p:ajax event="select" listener="#{controlIbcAutoliquid.cambiarIndice(indice,1)}" process="@this"/> 
+                                                <p:ajax event="dateSelect" listener="#{controlIbcAutoliquid.modificarFechas(infoIBC,1)}" update="dateFechaFinal" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlIbcAutoliquid.modificarFechas(infoIBC,1)}" update="dateFechaFinal" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlIbcAutoliquid.cambiarIndice(infoIBC,1)}" process="@this"/> 
                                             </lnk:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
@@ -165,8 +166,8 @@
                                         <f:facet name="output"><h:outputText value="#{infoIBC.estado}"/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{infoIBC.estado}"  id="editarEstadoIBC" style="border-radius: 0px; width: 94%;text-transform: uppercase"> 
-                                                <p:ajax event="select" listener="#{controlIbcAutoliquid.cambiarIndice(indice, 2)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlIbcAutoliquid.modificarIBCS(indice)}" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlIbcAutoliquid.cambiarIndice(infoIBC, 2)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlIbcAutoliquid.modificarIBCS(infoIBC)}" process="@this"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -178,9 +179,9 @@
                                         <f:facet name="output"><h:outputText value="#{infoIBC.proceso.descripcion}"/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{infoIBC.proceso.descripcion}"  id="editarProcesoIBC" style="width: 94%; border-radius: 0px;text-transform: uppercase"> 
-                                                <p:ajax event="select" listener="#{controlIbcAutoliquid.cambiarIndice(indice, 3)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlIbcAutoliquid.modificarIBCSAutocompletar(indice,'PROCESO',infoIBC.proceso.descripcion)}" process="@this" update="editarProcesoIBC"/>
-                                                <p:ajax event="dblclick" listener="#{controlIbcAutoliquid.asignarIndex(indice,0,0)}" process="@this" update="editarProcesoIBC"/>
+                                                <p:ajax event="select" listener="#{controlIbcAutoliquid.cambiarIndice(infoIBC, 3)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlIbcAutoliquid.modificarIBCSAutocompletar(infoIBC,'PROCESO',infoIBC.proceso.descripcion)}" process="@this" update="editarProcesoIBC"/>
+                                                <p:ajax event="dblclick" listener="#{controlIbcAutoliquid.asignarIndex(infoIBC,0,0)}" process="@this" update="editarProcesoIBC"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -196,8 +197,8 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{infoIBC.valor}"  id="editarvalorIBC" style="border-radius: 0px; width: 94%;text-transform: uppercase"> 
-                                                <p:ajax event="select" listener="#{controlIbcAutoliquid.cambiarIndice(indice, 4)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlIbcAutoliquid.modificarIBCS(indice)}" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlIbcAutoliquid.cambiarIndice(infoIBC, 4)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlIbcAutoliquid.modificarIBCS(infoIBC)}" process="@this"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -212,9 +213,9 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <lnk:calendar id="editarFechaPagoIBC" value="#{infoIBC.fechapago}" height="12" width="99"> 
-                                                <p:ajax event="dateSelect" listener="#{controlIbcAutoliquid.modificarIBCS(indice)}" update="editarFechaPagoIBC" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlIbcAutoliquid.modificarIBCS(indice)}" update="editarFechaPagoIBC" process="@this"/>
-                                                <p:ajax event="select" listener="#{controlIbcAutoliquid.cambiarIndice(indice,5)}" process="@this"/> 
+                                                <p:ajax event="dateSelect" listener="#{controlIbcAutoliquid.modificarIBCS(infoIBC)}" update="editarFechaPagoIBC" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlIbcAutoliquid.modificarIBCS(infoIBC)}" update="editarFechaPagoIBC" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlIbcAutoliquid.cambiarIndice(infoIBC,5)}" process="@this"/> 
                                             </lnk:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
@@ -369,11 +370,11 @@
 
                             <strong><h:outputText value="#{msg['procesoN']}" style=" position: absolute; top: 165px; left: 50px" /></strong>
                             <p:inputText id="nuevaProcesoIBCS" value="#{controlIbcAutoliquid.nuevoIBC.proceso.descripcion}" style="width: 122px; position: absolute; left: 170px; top: 160px; text-transform: uppercase">
-                                <p:ajax event="dblclick" listener="#{controlIbcAutoliquid.asignarIndex(indice,0,1)}"/>
+                                <p:ajax event="dblclick" listener="#{controlIbcAutoliquid.asignarIndex(infoIBC,0,1)}"/>
                                 <p:ajax event="click" listener="#{controlIbcAutoliquid.valoresBackupAutocompletar(1, 'PROCESO')}" />
                                 <p:ajax event="change" listener="#{controlIbcAutoliquid.autocompletarNuevoyDuplicadoIBCS('PROCESO',controlIbcAutoliquid.nuevoIBC.proceso.descripcion,1)}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 300px; top: 160px;  " id="btnNuevaProcesoIBCS" actionListener="#{controlIbcAutoliquid.asignarIndex(indice,0,1)}" icon="ui-icon-search" process="@this" />
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 300px; top: 160px;  " id="btnNuevaProcesoIBCS" actionListener="#{controlIbcAutoliquid.asignarIndex(infoIBC,0,1)}" icon="ui-icon-search" process="@this" />
                             <p:watermark for="nuevaProcesoIBCS" value="#{msg['proceso']}" />
 
                             <strong><h:outputText value="*#{msg['valorN']}" style="position: absolute; top: 195px; left: 50px" /></strong>
@@ -391,7 +392,7 @@
                             </div>
 
                             <p:commandButton id="limpiarNIBC" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 270px;" actionListener="#{controlIbcAutoliquid.limpiarNuevoIBCS()}" update="nuevaIBC" process="@this" icon="ui-icon-trash"/>
-                            <p:commandButton id="agregarNIBC" value="#{msg['agregar']}" style="position: absolute; left: 155px; top: 270px;"  process="@this" actionListener="#{controlIbcAutoliquid.agregarNuevoIBCS()}"  icon="ui-icon-circle-check"/>
+                            <p:commandButton id="agregarNIBC" value="#{msg['agregar']}" style="position: absolute; left: 140px; top: 270px;"  process="@this" actionListener="#{controlIbcAutoliquid.agregarNuevoIBCS()}"  icon="ui-icon-circle-check"/>
                             <p:commandButton id="cancelarNIBC" value="#{msg['cancelar']}" style="position: absolute; left: 240px; top: 270px;" actionListener="#{controlIbcAutoliquid.limpiarNuevoIBCS()}" update="nuevaIBC" onclick="NuevoRegistroIBCS.hide();"  process="@this" icon="ui-icon-circle-close"/>
                         </p:panel>
                     </p:dialog>
@@ -424,7 +425,7 @@
 
                             <strong><h:outputText value="#{msg['procesoN']}" style="position: absolute; top: 165px; left: 50px" /></strong>
                             <p:inputText id="duplicaProcesoIBCS" value="#{controlIbcAutoliquid.duplicarIBC.proceso.descripcion}" style="width: 122px; position: absolute; left: 170px; top: 160px; text-transform: uppercase">
-                                <p:ajax event="dblclick" listener="#{controlIbcAutoliquid.asignarIndex(indice,0,2)}"/>
+                                <p:ajax event="dblclick" listener="#{controlIbcAutoliquid.asignarIndex(infoIBC,0,2)}"/>
                                 <p:ajax event="click" listener="#{controlIbcAutoliquid.valoresBackupAutocompletar(1, 'PROCESO')}" />
                                 <p:ajax event="change" listener="#{controlIbcAutoliquid.autocompletarNuevoyDuplicadoIBCS('PROCESO',controlIbcAutoliquid.duplicarIBC.proceso.descripcion,2)}" />
                             </p:inputText>

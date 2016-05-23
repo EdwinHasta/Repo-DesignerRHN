@@ -54,6 +54,8 @@ public class ControlTercero implements Serializable {
     private List<TercerosSucursales> filtrarListTercerosSucursales;
     private TercerosSucursales terceroSucursalTablaSeleccionado;
     //
+    private Empresas empresaSeleccionada;
+    //private Empresas empresaSeleccionada;
     private List<Empresas> listEmpresas;
     private List<Empresas> filtrarListEmpresas;
     private Empresas empresaActual;
@@ -70,14 +72,12 @@ public class ControlTercero implements Serializable {
     private int tipoActualizacion;
     private int bandera;
     private int banderaTS;
-    private Empresas backUpEmpresaActual;
     //Columnas Tabla VL
     private Column terceroNombre, terceroNIT, terceroDigitoVerificacion, terceroNITAlternativo, terceroCodigoSS, terceroCodigoSP, terceroCodigoSC, terceroTConsolidador, terceroNITConsolidado, terceroCiudad, terceroCodigoAlterno;
     //Columnas Tabla VP
     private Column terceroSucursalCodigo, terceroSucursalPatronal, terceroSucursalObservacion, terceroSucursalCiudad;
     //Otros
     private boolean aceptar;
-    private int index;
     private List<Terceros> listTerceroModificar;
     private boolean guardado;
     public Terceros nuevoTercero;
@@ -88,30 +88,25 @@ public class ControlTercero implements Serializable {
     private Terceros editarTercero;
     private TercerosSucursales editarTerceroSucursal;
     private int cualCelda, tipoLista;
-    private boolean cambioEditor, aceptarEditar;
     private Terceros duplicarTercero;
     private boolean permitirIndex, permitirIndexTS;
     //Variables Autompletar
     //private String motivoCambioSueldo, tiposEntidades, tiposSueldos, terceros;
     //Indices VigenciaProrrateo / VigenciaProrrateoProyecto
-    private int indexTS;
     private int cualCeldaTS, tipoListaTS;
     private String nombreXML;
     private String nombreTabla;
     private boolean cambiosTercero, cambiosTerceroSucursal;
-    private BigInteger secRegistroTercero, secRegistroTerceroSucursal;
-    private BigInteger backUpSecRegistroTercero, backUpSecRegistroTerceroSucursal;
     private String msnConfirmarRastro, msnConfirmarRastroHistorico;
     private BigInteger backUp;
     private String nombreTablaRastro;
-    private int indexAux;
     private List<TercerosSucursales> listTerceroSucursalCrear, listTerceroSucursalModificar, listTerceroSucursalBorrar;
     private TercerosSucursales nuevoTerceroSucursal, duplicarTerceroSucursal;
     private String terceroConsolidador, ciudad, ciudadTS;
     private long nitConsolidado;
     private String paginaAnterior;
     //
-    private String infoRegistroEmpresa, infoRegistroCiudad2, infoRegistroCiudad1, infoRegistroTercero, infoRegistroTerceroConsolidador;
+    private String infoRegistroEmpresa, infoRegistroCiudad2, infoRegistroCiudad1, infoRegistroTercero, infoRegistroTerceroConsolidador, infoRegistroTerceroSucursal;
     //
     private String altoTablaTercero, altoTablaSucursal;
     //
@@ -119,20 +114,24 @@ public class ControlTercero implements Serializable {
     private long auxNitTercero;
     //
     private BigInteger auxCodigoSucursal;
+    //
+    private DataTable tablaT;
+    //
+    private boolean activarLOV;
 
     /**
      * Creates a new instance of ControlTercero
      */
     public ControlTercero() {
         altoTablaTercero = "150";
-        altoTablaSucursal = "90";
+        altoTablaSucursal = "70";
         terceroLOVSeleccionado = new Terceros();
         listTercerosLOV = null;
+        listTerceros = null;
         editarTerceroSucursal = new TercerosSucursales();
-        indexAux = 0;
         listCiudades = null;
         listTerceroConsolidador = null;
-        backUpEmpresaActual = new Empresas();
+        empresaSeleccionada = new Empresas();
         empresaActual = new Empresas();
         listEmpresas = null;
         listTercerosSucursales = null;
@@ -140,10 +139,8 @@ public class ControlTercero implements Serializable {
         backUp = null;
         msnConfirmarRastro = "";
         msnConfirmarRastroHistorico = "";
-        secRegistroTercero = null;
-        secRegistroTerceroSucursal = null;
-        backUpSecRegistroTercero = null;
-        backUpSecRegistroTerceroSucursal = null;
+        terceroTablaSeleccionado = null;
+        terceroSucursalTablaSeleccionado = null;
         empleado = new Empleados();
         //Otros
         aceptar = true;
@@ -159,8 +156,6 @@ public class ControlTercero implements Serializable {
         listTerceroModificar = new ArrayList<Terceros>();
         //editar
         editarTercero = new Terceros();
-        cambioEditor = false;
-        aceptarEditar = true;
         cualCelda = -1;
         tipoLista = 0;
         tipoListaTS = 0;
@@ -172,12 +167,10 @@ public class ControlTercero implements Serializable {
         nuevoTercero.setCiudad(new Ciudades());
         nuevoTerceroSucursal = new TercerosSucursales();
         nuevoTerceroSucursal.setCiudad(new Ciudades());
-        index = -1;
         bandera = 0;
         banderaTS = 0;
         permitirIndex = true;
         permitirIndexTS = true;
-        indexTS = -1;
         cualCeldaTS = -1;
 
         nombreTabla = ":formExportarTerceros:datosTercerosExportar";
@@ -186,6 +179,7 @@ public class ControlTercero implements Serializable {
         cambiosTerceroSucursal = false;
         duplicarTercero = new Terceros();
         cambiosTercero = false;
+        activarLOV = true;
     }
 
     @PostConstruct
@@ -201,19 +195,32 @@ public class ControlTercero implements Serializable {
         }
     }
 
-    /*
-     * public void recibirPagina(String pagina) { paginaAnterior = pagina;
-    }*/
-        public void recibirPaginaEntrante(String pagina) {
-        paginaAnterior = pagina;
-        index = -1;
-        empresaActual = getEmpresaActual();
-        listTerceros = null;
-        getListTerceros();
-    }
-
-    public String redirigirPaginaAnterior() {
+    public String valorPaginaAnterior() {
         return paginaAnterior;
+    }
+    /*
+     * public void recibirPagina(String pagina) { paginaAnterior = pagina; }
+     */
+
+    public void recibirPaginaEntrante(String pagina) {
+        paginaAnterior = pagina;
+        listEmpresas = administrarTercero.listEmpresas();
+        int tam = listEmpresas.size();
+        if (tam > 0) {
+            empresaActual = listEmpresas.get(0);
+            empresaSeleccionada = empresaActual;
+            listTerceros = null;
+            getListTerceros();
+            if (listTerceros != null) {
+                if (!listTerceros.isEmpty()) {
+                    terceroTablaSeleccionado = listTerceros.get(0);
+                }
+            }
+            getListTercerosSucursales();
+            contarRegistrosT();
+            contarRegistrosTS();
+            contarRegistrosEmpresa();
+        }
     }
 
     /**
@@ -222,66 +229,44 @@ public class ControlTercero implements Serializable {
      *
      * @param indice Fila donde se efectu el cambio
      */
-    public void modificarTercero(int indice) {
+    public void modificarTercero(Terceros t) {
         RequestContext context = RequestContext.getCurrentInstance();
+        terceroTablaSeleccionado = t;
         if (validarCamposNulosTercero(0) == true) {
-            if (tipoLista == 0) {
-                if (!listTerceroCrear.contains(listTerceros.get(indice))) {
-                    if (listTerceroModificar.isEmpty()) {
-                        listTerceroModificar.add(listTerceros.get(indice));
-                    } else if (!listTerceroModificar.contains(listTerceros.get(indice))) {
-                        listTerceroModificar.add(listTerceros.get(indice));
-                    }
-                    if (guardado == true) {
-                        guardado = false;
-                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
-                    }
+            if (!listTerceroCrear.contains(terceroTablaSeleccionado)) {
+                if (listTerceroModificar.isEmpty()) {
+                    listTerceroModificar.add(terceroTablaSeleccionado);
+                } else if (!listTerceroModificar.contains(terceroTablaSeleccionado)) {
+                    listTerceroModificar.add(terceroTablaSeleccionado);
                 }
-                listTerceros.get(indice).getTerceroconsolidador().setNit(nitConsolidado);
-                index = -1;
-                secRegistroTercero = null;
-            } else {
-                if (!listTerceroCrear.contains(filtrarListTercero.get(indice))) {
-                    if (listTerceroModificar.isEmpty()) {
-                        listTerceroModificar.add(filtrarListTercero.get(indice));
-                    } else if (!listTerceroModificar.contains(filtrarListTercero.get(indice))) {
-                        listTerceroModificar.add(filtrarListTercero.get(indice));
-                    }
-                    if (guardado == true) {
-                        guardado = false;
-                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
-                    }
+                if (guardado) {
+                    guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
-                index = -1;
-                secRegistroTercero = null;
-                filtrarListTercero.get(indice).getTerceroconsolidador().setNit(nitConsolidado);
             }
+            terceroTablaSeleccionado.getTerceroconsolidador().setNit(nitConsolidado);
+
             cambiosTercero = true;
         } else {
-            if (tipoLista == 0) {
-                listTerceros.get(indice).setNit(auxNitTercero);
-                listTerceros.get(indice).setNombre(auxNombreTercero);
-            } else {
-                filtrarListTercero.get(indice).setNit(auxNitTercero);
-                filtrarListTercero.get(indice).setNombre(auxNombreTercero);
-            }
+            terceroTablaSeleccionado.setNit(auxNitTercero);
+            terceroTablaSeleccionado.setNombre(auxNombreTercero);
+
             context.execute("errorDatosNullTerceros.show()");
         }
         context.update("form:datosTerceros");
     }
 
-    public void modificarTerceroAutocompletar(int indice, String confirmarCambio, String valorConfirmar) {
-        index = indice;
+    public void modificarTerceroAutocompletar(Terceros terceros, String confirmarCambio, String valorConfirmar) {
+        terceroTablaSeleccionado = terceros;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("TERCEROCONSOLIDADOR")) {
+            activarLOV = false;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             if (!valorConfirmar.isEmpty()) {
-                if (tipoLista == 0) {
-                    listTerceros.get(indice).getTerceroconsolidador().setNombre(terceroConsolidador);
-                } else {
-                    filtrarListTercero.get(indice).getTerceroconsolidador().setNombre(terceroConsolidador);
-                }
+                terceroTablaSeleccionado.getTerceroconsolidador().setNombre(terceroConsolidador);
+
                 for (int i = 0; i < listTerceroConsolidador.size(); i++) {
                     if (listTerceroConsolidador.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
                         indiceUnicoElemento = i;
@@ -289,11 +274,8 @@ public class ControlTercero implements Serializable {
                     }
                 }
                 if (coincidencias == 1) {
-                    if (tipoLista == 0) {
-                        listTerceros.get(indice).setTerceroconsolidador(listTerceroConsolidador.get(indiceUnicoElemento));
-                    } else {
-                        filtrarListTercero.get(indice).setTerceroconsolidador(listTerceroConsolidador.get(indiceUnicoElemento));
-                    }
+                    terceroTablaSeleccionado.setTerceroconsolidador(listTerceroConsolidador.get(indiceUnicoElemento));
+
                     listTerceroConsolidador.clear();
                     getListTerceroConsolidador();
                 } else {
@@ -304,22 +286,17 @@ public class ControlTercero implements Serializable {
                 }
             } else {
                 coincidencias = 1;
-                if (tipoLista == 0) {
-                    listTerceros.get(indice).setTerceroconsolidador(new Terceros());
-                } else {
-                    filtrarListTercero.get(indice).setTerceroconsolidador(new Terceros());
-                }
+                terceroTablaSeleccionado.setTerceroconsolidador(new Terceros());
+
                 listTerceroConsolidador.clear();
                 getListTerceroConsolidador();
             }
         }
         if (confirmarCambio.equalsIgnoreCase("CIUDAD")) {
+            aceptar = false;
             if (!valorConfirmar.isEmpty()) {
-                if (tipoLista == 0) {
-                    listTerceros.get(indice).getCiudad().setNombre(ciudad);
-                } else {
-                    filtrarListTercero.get(indice).getCiudad().setNombre(ciudad);
-                }
+                terceroTablaSeleccionado.getCiudad().setNombre(ciudad);
+
                 for (int i = 0; i < listCiudades.size(); i++) {
                     if (listCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
                         indiceUnicoElemento = i;
@@ -327,11 +304,8 @@ public class ControlTercero implements Serializable {
                     }
                 }
                 if (coincidencias == 1) {
-                    if (tipoLista == 0) {
-                        listTerceros.get(indice).setCiudad(listCiudades.get(indiceUnicoElemento));
-                    } else {
-                        filtrarListTercero.get(indice).setCiudad(listCiudades.get(indiceUnicoElemento));
-                    }
+                    terceroTablaSeleccionado.setCiudad(listCiudades.get(indiceUnicoElemento));
+
                     listCiudades.clear();
                     getListCiudades();
                 } else {
@@ -342,44 +316,23 @@ public class ControlTercero implements Serializable {
                 }
             } else {
                 coincidencias = 1;
-                if (tipoLista == 0) {
-                    listTerceros.get(indice).setCiudad(new Ciudades());
-                } else {
-                    filtrarListTercero.get(indice).setCiudad(new Ciudades());
-                }
+                terceroTablaSeleccionado.setCiudad(new Ciudades());
+
                 listCiudades.clear();
                 getListCiudades();
             }
         }
         if (coincidencias == 1) {
-            if (tipoLista == 0) {
-                if (!listTerceroCrear.contains(listTerceros.get(indice))) {
-                    if (listTerceroModificar.isEmpty()) {
-                        listTerceroModificar.add(listTerceros.get(indice));
-                    } else if (!listTerceroModificar.contains(listTerceros.get(indice))) {
-                        listTerceroModificar.add(listTerceros.get(indice));
-                    }
-                    if (guardado == true) {
-                        guardado = false;
-                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
-                    }
+            if (!listTerceroCrear.contains(terceroTablaSeleccionado)) {
+                if (listTerceroModificar.isEmpty()) {
+                    listTerceroModificar.add(terceroTablaSeleccionado);
+                } else if (!listTerceroModificar.contains(terceroTablaSeleccionado)) {
+                    listTerceroModificar.add(terceroTablaSeleccionado);
                 }
-                index = -1;
-                secRegistroTercero = null;
-            } else {
-                if (!listTerceroCrear.contains(filtrarListTercero.get(indice))) {
-                    if (listTerceroModificar.isEmpty()) {
-                        listTerceroModificar.add(filtrarListTercero.get(indice));
-                    } else if (!listTerceroModificar.contains(filtrarListTercero.get(indice))) {
-                        listTerceroModificar.add(filtrarListTercero.get(indice));
-                    }
-                    if (guardado == true) {
-                        guardado = false;
-                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
-                    }
+                if (guardado) {
+                    guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
-                index = -1;
-                secRegistroTercero = null;
             }
             cambiosTercero = true;
         }
@@ -389,59 +342,38 @@ public class ControlTercero implements Serializable {
     public void modificarTerceroSucursal(int indice) {
         RequestContext context = RequestContext.getCurrentInstance();
         if (validarCamposNulosTerceroSucursal(0) == true) {
-            if (tipoListaTS == 0) {
-                if (!listTerceroSucursalCrear.contains(listTercerosSucursales.get(indice))) {
-                    if (listTerceroSucursalModificar.isEmpty()) {
-                        listTerceroSucursalModificar.add(listTercerosSucursales.get(indice));
-                    } else if (!listTerceroSucursalModificar.contains(listTercerosSucursales.get(indice))) {
-                        listTerceroSucursalModificar.add(listTercerosSucursales.get(indice));
-                    }
-                    if (guardado == true) {
-                        guardado = false;
-                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
-                    }
+            if (!listTerceroSucursalCrear.contains(terceroSucursalTablaSeleccionado)) {
+                if (listTerceroSucursalModificar.isEmpty()) {
+                    listTerceroSucursalModificar.add(terceroSucursalTablaSeleccionado);
+                } else if (!listTerceroSucursalModificar.contains(terceroSucursalTablaSeleccionado)) {
+                    listTerceroSucursalModificar.add(terceroSucursalTablaSeleccionado);
                 }
-                indexTS = -1;
-                secRegistroTerceroSucursal = null;
-            } else {
-                if (!listTerceroSucursalCrear.contains(filtrarListTercerosSucursales.get(indice))) {
-                    if (listTerceroSucursalModificar.isEmpty()) {
-                        listTerceroSucursalModificar.add(filtrarListTercerosSucursales.get(indice));
-                    } else if (!listTerceroSucursalModificar.contains(filtrarListTercerosSucursales.get(indice))) {
-                        listTerceroSucursalModificar.add(filtrarListTercerosSucursales.get(indice));
-                    }
-                    if (guardado == true) {
-                        guardado = false;
-                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
-                    }
+                if (guardado) {
+                    guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
-                indexTS = -1;
-                secRegistroTerceroSucursal = null;
             }
+
             cambiosTerceroSucursal = true;
         } else {
-            if (tipoListaTS == 0) {
-                listTercerosSucursales.get(indice).setCodigosucursal(auxCodigoSucursal);
-            } else {
-                filtrarListTercerosSucursales.get(indice).setCodigosucursal(auxCodigoSucursal);
-            }
+            terceroSucursalTablaSeleccionado.setCodigosucursal(auxCodigoSucursal);
+
             context.execute("errorDatosNullSucursal.show()");
         }
         context.update("form:datosTercerosSucursales");
     }
 
-    public void modificarTerceroSucursalAutocompletar(int indice, String confirmarCambio, String valorConfirmar) {
-        index = indice;
+    public void modificarTerceroSucursalAutocompletar(Terceros terceros, String confirmarCambio, String valorConfirmar) {
+        terceroTablaSeleccionado = terceros;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("CIUDAD")) {
+            activarLOV = false;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             if (!valorConfirmar.isEmpty()) {
-                if (tipoLista == 0) {
-                    listTercerosSucursales.get(indice).getCiudad().setNombre(ciudadTS);
-                } else {
-                    filtrarListTercerosSucursales.get(indice).getCiudad().setNombre(ciudadTS);
-                }
+                terceroSucursalTablaSeleccionado.getCiudad().setNombre(ciudadTS);
+
                 for (int i = 0; i < listCiudades.size(); i++) {
                     if (listCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
                         indiceUnicoElemento = i;
@@ -449,11 +381,8 @@ public class ControlTercero implements Serializable {
                     }
                 }
                 if (coincidencias == 1) {
-                    if (tipoLista == 0) {
-                        listTercerosSucursales.get(indice).setCiudad(listCiudades.get(indiceUnicoElemento));
-                    } else {
-                        filtrarListTercerosSucursales.get(indice).setCiudad(listCiudades.get(indiceUnicoElemento));
-                    }
+                    terceroSucursalTablaSeleccionado.setCiudad(listCiudades.get(indiceUnicoElemento));
+
                     listCiudades.clear();
                     getListCiudades();
                 } else {
@@ -464,45 +393,25 @@ public class ControlTercero implements Serializable {
                 }
             } else {
                 coincidencias = 1;
-                if (tipoLista == 0) {
-                    listTercerosSucursales.get(indice).setCiudad(new Ciudades());
-                } else {
-                    filtrarListTercerosSucursales.get(indice).setCiudad(new Ciudades());
-                }
+                terceroSucursalTablaSeleccionado.setCiudad(new Ciudades());
+
                 listCiudades.clear();
                 getListCiudades();
             }
         }
         if (coincidencias == 1) {
-            if (tipoListaTS == 0) {
-                if (!listTerceroSucursalCrear.contains(listTercerosSucursales.get(indice))) {
-                    if (listTerceroSucursalModificar.isEmpty()) {
-                        listTerceroSucursalModificar.add(listTercerosSucursales.get(indice));
-                    } else if (!listTerceroSucursalModificar.contains(listTercerosSucursales.get(indice))) {
-                        listTerceroSucursalModificar.add(listTercerosSucursales.get(indice));
-                    }
-                    if (guardado == true) {
-                        guardado = false;
-                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
-                    }
+            if (!listTerceroSucursalCrear.contains(terceroSucursalTablaSeleccionado)) {
+                if (listTerceroSucursalModificar.isEmpty()) {
+                    listTerceroSucursalModificar.add(terceroSucursalTablaSeleccionado);
+                } else if (!listTerceroSucursalModificar.contains(terceroSucursalTablaSeleccionado)) {
+                    listTerceroSucursalModificar.add(terceroSucursalTablaSeleccionado);
                 }
-                indexTS = -1;
-                secRegistroTerceroSucursal = null;
-            } else {
-                if (!listTerceroSucursalCrear.contains(filtrarListTercerosSucursales.get(indice))) {
-                    if (listTerceroSucursalModificar.isEmpty()) {
-                        listTerceroSucursalModificar.add(filtrarListTercerosSucursales.get(indice));
-                    } else if (!listTerceroSucursalModificar.contains(filtrarListTercerosSucursales.get(indice))) {
-                        listTerceroSucursalModificar.add(filtrarListTercerosSucursales.get(indice));
-                    }
-                    if (guardado == true) {
-                        guardado = false;
-                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
-                    }
+                if (guardado) {
+                    guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
-                indexTS = -1;
-                secRegistroTerceroSucursal = null;
             }
+
             cambiosTerceroSucursal = true;
         }
         context.update("form:datosTercerosSucursales");
@@ -522,57 +431,34 @@ public class ControlTercero implements Serializable {
      * @param indice Fila de la tabla
      * @param celda Columna de la tabla
      */
-    public void cambiarIndice(int indice, int celda) {
+    public void cambiarIndice(Terceros terceros, int celda) {
         if (cambiosTerceroSucursal == false) {
             if (permitirIndex == true) {
+                activarLOV = true;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 if (banderaTS == 1) {
-                    FacesContext c = FacesContext.getCurrentInstance();
-                    altoTablaSucursal = "90";
-                    terceroSucursalCodigo = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
-                    terceroSucursalCodigo.setFilterStyle("display: none; visibility: hidden;");
-                    terceroSucursalPatronal = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
-                    terceroSucursalPatronal.setFilterStyle("display: none; visibility: hidden;");
-                    terceroSucursalObservacion = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
-                    terceroSucursalObservacion.setFilterStyle("display: none; visibility: hidden;");
-                    terceroSucursalCiudad = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
-                    terceroSucursalCiudad.setFilterStyle("display: none; visibility: hidden;");
-                    RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
-                    banderaTS = 0;
-                    filtrarListTercerosSucursales = null;
-                    tipoListaTS = 0;
+                    cerrarFiltradoTercero();
                 }
                 cualCelda = celda;
-                index = indice;
-                indexAux = indice;
-                if (tipoLista == 0) {
-                    secRegistroTercero = listTerceros.get(index).getSecuencia();
-                    auxNitTercero = listTerceros.get(index).getNit();
-                    auxNombreTercero = listTerceros.get(index).getNombre();
-                    if (cualCelda == 7) {
-                        terceroConsolidador = listTerceros.get(index).getTerceroconsolidador().getNombre();
-                    }
-                    if (cualCelda == 8) {
-                        nitConsolidado = listTerceros.get(index).getTerceroconsolidador().getNit();
-                    }
-                    if (cualCelda == 9) {
-                        ciudad = listTerceros.get(index).getCiudad().getNombre();
-                    }
-                } else {
-                    secRegistroTercero = filtrarListTercero.get(index).getSecuencia();
-                    auxNitTercero = filtrarListTercero.get(index).getNit();
-                    auxNombreTercero = filtrarListTercero.get(index).getNombre();
-                    if (cualCelda == 7) {
-                        terceroConsolidador = filtrarListTercero.get(index).getTerceroconsolidador().getNombre();
-                    }
-                    if (cualCelda == 8) {
-                        nitConsolidado = filtrarListTercero.get(index).getTerceroconsolidador().getNit();
-                    }
-                    if (cualCelda == 9) {
-                        ciudad = filtrarListTercero.get(index).getCiudad().getNombre();
-                    }
+                terceroTablaSeleccionado = terceros;
+                //indexAux = indice;
+                auxNitTercero = terceroTablaSeleccionado.getNit();
+                auxNombreTercero = terceroTablaSeleccionado.getNombre();
+                if (cualCelda == 7) {
+                    activarLOV = false;
+                    RequestContext.getCurrentInstance().update("form:listaValores");
+                    terceroConsolidador = terceroTablaSeleccionado.getTerceroconsolidador().getNombre();
                 }
-                indexTS = -1;
-                secRegistroTerceroSucursal = null;
+                if (cualCelda == 8) {
+                    activarLOV = false;
+                    RequestContext.getCurrentInstance().update("form:listaValores");
+                    nitConsolidado = terceroTablaSeleccionado.getTerceroconsolidador().getNit();
+                }
+                if (cualCelda == 9) {
+                    activarLOV = false;
+                    RequestContext.getCurrentInstance().update("form:listaValores");
+                    ciudad = terceroTablaSeleccionado.getCiudad().getNombre();
+                }
                 listTercerosSucursales = null;
                 getListTercerosSucursales();
                 RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
@@ -584,26 +470,23 @@ public class ControlTercero implements Serializable {
             context.execute("confirmarGuardar.show()");
         }
 
+        contarRegistrosTS();
+        RequestContext.getCurrentInstance().update("form:infoRegistroTerceroSucursal");
     }
 
-    public void cambiarIndiceTS(int indice, int celda) {
+    public void cambiarIndiceTS(TercerosSucursales tercerosSucursales, int celda) {
         if (permitirIndexTS == true) {
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             cualCeldaTS = celda;
-            indexTS = indice;
-            index = -1;
-            if (tipoListaTS == 0) {
-                auxCodigoSucursal = listTercerosSucursales.get(indice).getCodigosucursal();
-                secRegistroTerceroSucursal = listTercerosSucursales.get(indice).getSecuencia();
-                if (cualCeldaTS == 3) {
-                    ciudadTS = listTercerosSucursales.get(indexTS).getCiudad().getNombre();
-                }
-            } else {
-                secRegistroTerceroSucursal = filtrarListTercerosSucursales.get(indice).getSecuencia();
-                auxCodigoSucursal = filtrarListTercerosSucursales.get(indice).getCodigosucursal();
-                if (cualCeldaTS == 3) {
-                    ciudadTS = filtrarListTercerosSucursales.get(indexTS).getCiudad().getNombre();
-                }
+            terceroSucursalTablaSeleccionado = tercerosSucursales;
+            auxCodigoSucursal = terceroSucursalTablaSeleccionado.getCodigosucursal();
+            if (cualCeldaTS == 3) {
+                activarLOV = false;
+                RequestContext.getCurrentInstance().update("form:listaValores");
+                ciudadTS = terceroSucursalTablaSeleccionado.getCiudad().getNombre();
             }
+
         }
     }
 
@@ -613,18 +496,21 @@ public class ControlTercero implements Serializable {
      */
     public void guardadoGeneral() {
         if (guardado == false) {
-            if (cambiosTercero == true) {
-                guardarCambiosTercero();
-            }
             if (cambiosTerceroSucursal == true) {
                 guardarCambiosTerceroSucursales();
+            } else if (cambiosTercero == true) {
+                guardarCambiosTercero();
             }
             guardado = true;
             RequestContext.getCurrentInstance().update("form:ACEPTAR");
         }
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
     public void guardarCambiosTercero() {
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         RequestContext context = RequestContext.getCurrentInstance();
         try {
             if (guardado == false) {
@@ -664,16 +550,22 @@ public class ControlTercero implements Serializable {
                     }
                     listTerceroModificar.clear();
                 }
-                listTerceros = null;
 
+                if (listTerceros != null) {
+                    modificarInfoRegistro(listTerceros.size());
+                } else {
+                    modificarInfoRegistro(0);
+                }
+
+                //listTerceros = null;
                 context.update("form:datosTerceros");
                 k = 0;
-                index = -1;
-                secRegistroTercero = null;
                 cambiosTercero = false;
                 FacesMessage msg = new FacesMessage("Información", "Se guardarón los datos de Tercero con éxito");
                 FacesContext.getCurrentInstance().addMessage(null, msg);
                 context.update("form:growl");
+                contarRegistrosT();
+                RequestContext.getCurrentInstance().update("form:infoRegistro");
             }
         } catch (Exception e) {
             System.out.println("Error guardarCambiosTercero Controlador : " + e.toString());
@@ -685,6 +577,8 @@ public class ControlTercero implements Serializable {
 
     public void guardarCambiosTerceroSucursales() {
         RequestContext context = RequestContext.getCurrentInstance();
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         try {
             if (guardado == false) {
                 if (!listTerceroSucursalBorrar.isEmpty()) {
@@ -714,16 +608,20 @@ public class ControlTercero implements Serializable {
                     }
                     listTerceroSucursalModificar.clear();
                 }
-                listTercerosSucursales = null;
-                getListTercerosSucursales();
+                if (listTercerosSucursales != null) {
+                    modificarInfoRegistroTS(listTercerosSucursales.size());
+                } else {
+                    modificarInfoRegistroTS(0);
+                }
+                RequestContext.getCurrentInstance().update("form:infoRegistroTerceroSucursal");
                 context.update("form:datosTercerosSucursales");
                 k = 0;
-                indexTS = -1;
-                secRegistroTerceroSucursal = null;
                 cambiosTerceroSucursal = false;
-                FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos de Tercero Sucursal con éxito");
+                FacesMessage msg = new FacesMessage("Información", "Se guardarón los datos de Tercero Sucursal con éxito");
                 FacesContext.getCurrentInstance().addMessage(null, msg);
                 context.update("form:growl");
+                contarRegistrosTS();
+                RequestContext.getCurrentInstance().update("form:infoRegistroTerceroSucursal");
             }
         } catch (Exception e) {
             System.out.println("Error guardarCambiosTercero Controlador : " + e.toString());
@@ -739,51 +637,10 @@ public class ControlTercero implements Serializable {
      */
     public void cancelarModificacion() {
         if (bandera == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
-            altoTablaTercero = "150";
-            terceroNombre = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNombre");
-            terceroNombre.setFilterStyle("display: none; visibility: hidden;");
-            terceroNIT = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNIT");
-            terceroNIT.setFilterStyle("display: none; visibility: hidden;");
-            terceroDigitoVerificacion = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
-            terceroDigitoVerificacion.setFilterStyle("display: none; visibility: hidden;");
-            terceroNITAlternativo = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
-            terceroNITAlternativo.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoSS = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
-            terceroCodigoSS.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoSP = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
-            terceroCodigoSP.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoSC = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
-            terceroCodigoSC.setFilterStyle("display: none; visibility: hidden;");
-            terceroTConsolidador = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
-            terceroTConsolidador.setFilterStyle("display: none; visibility: hidden;");
-            terceroNITConsolidado = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
-            terceroNITConsolidado.setFilterStyle("display: none; visibility: hidden;");
-            terceroCiudad = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
-            terceroCiudad.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoAlterno = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
-            terceroCodigoAlterno.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosTerceros");
-            bandera = 0;
-            filtrarListTercero = null;
-            tipoLista = 0;
+            cerrarFiltradoTercero();
         }
-
         if (banderaTS == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
-            altoTablaSucursal = "90";
-            terceroSucursalCodigo = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
-            terceroSucursalCodigo.setFilterStyle("display: none; visibility: hidden;");
-            terceroSucursalPatronal = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
-            terceroSucursalPatronal.setFilterStyle("display: none; visibility: hidden;");
-            terceroSucursalObservacion = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
-            terceroSucursalObservacion.setFilterStyle("display: none; visibility: hidden;");
-            terceroSucursalCiudad = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
-            terceroSucursalCiudad.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
-            banderaTS = 0;
-            filtrarListTercerosSucursales = null;
-            tipoListaTS = 0;
+            cerrarFiltradoTerceroSucursal();
         }
         listTerceroBorrar.clear();
         listTerceroCrear.clear();
@@ -791,22 +648,75 @@ public class ControlTercero implements Serializable {
         listTerceroSucursalBorrar.clear();
         listTerceroSucursalCrear.clear();
         listTerceroSucursalModificar.clear();
-        index = -1;
-        indexTS = -1;
-        indexAux = -1;
-        secRegistroTercero = null;
+        terceroSucursalTablaSeleccionado = null;
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+        //indexAux = -1;
+        terceroTablaSeleccionado = null;
         k = 0;
         listTerceros = null;
         listTercerosSucursales = null;
         cambiosTerceroSucursal = false;
         guardado = true;
-        RequestContext.getCurrentInstance().update("form:ACEPTAR");
         cambiosTercero = false;
         getListTerceros();
         getListTercerosSucursales();
+        contarRegistrosT();
+        RequestContext.getCurrentInstance().update("form:infoRegistro");
+        contarRegistrosTS();
+        RequestContext.getCurrentInstance().update("form:infoRegistroTerceroSucursal");
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosTerceros");
         context.update("form:datosTercerosSucursales");
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+    }
+
+    public void cerrarFiltradoTercero() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        altoTablaTercero = "150";
+        terceroNombre = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNombre");
+        terceroNombre.setFilterStyle("display: none; visibility: hidden;");
+        terceroNIT = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNIT");
+        terceroNIT.setFilterStyle("display: none; visibility: hidden;");
+        terceroDigitoVerificacion = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
+        terceroDigitoVerificacion.setFilterStyle("display: none; visibility: hidden;");
+        terceroNITAlternativo = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
+        terceroNITAlternativo.setFilterStyle("display: none; visibility: hidden;");
+        terceroCodigoSS = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
+        terceroCodigoSS.setFilterStyle("display: none; visibility: hidden;");
+        terceroCodigoSP = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
+        terceroCodigoSP.setFilterStyle("display: none; visibility: hidden;");
+        terceroCodigoSC = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
+        terceroCodigoSC.setFilterStyle("display: none; visibility: hidden;");
+        terceroTConsolidador = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
+        terceroTConsolidador.setFilterStyle("display: none; visibility: hidden;");
+        terceroNITConsolidado = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
+        terceroNITConsolidado.setFilterStyle("display: none; visibility: hidden;");
+        terceroCiudad = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
+        terceroCiudad.setFilterStyle("display: none; visibility: hidden;");
+        terceroCodigoAlterno = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
+        terceroCodigoAlterno.setFilterStyle("display: none; visibility: hidden;");
+        RequestContext.getCurrentInstance().update("form:datosTerceros");
+        bandera = 0;
+        filtrarListTercero = null;
+        tipoLista = 0;
+    }
+
+    public void cerrarFiltradoTerceroSucursal() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        altoTablaSucursal = "70";
+        terceroSucursalCodigo = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
+        terceroSucursalCodigo.setFilterStyle("display: none; visibility: hidden;");
+        terceroSucursalPatronal = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
+        terceroSucursalPatronal.setFilterStyle("display: none; visibility: hidden;");
+        terceroSucursalObservacion = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
+        terceroSucursalObservacion.setFilterStyle("display: none; visibility: hidden;");
+        terceroSucursalCiudad = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
+        terceroSucursalCiudad.setFilterStyle("display: none; visibility: hidden;");
+        RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
+        banderaTS = 0;
+        filtrarListTercerosSucursales = null;
+        tipoListaTS = 0;
     }
 
     //MOSTRAR DATOS CELDA
@@ -815,13 +725,10 @@ public class ControlTercero implements Serializable {
      * la lista filtrada y a la columna
      */
     public void editarCelda() {
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                editarTercero = listTerceros.get(index);
-            }
-            if (tipoLista == 1) {
-                editarTercero = filtrarListTercero.get(index);
-            }
+        if (terceroTablaSeleccionado != null) {
+            editarTercero = terceroTablaSeleccionado;
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             RequestContext context = RequestContext.getCurrentInstance();
             if (cualCelda == 0) {
                 context.update("formularioDialogos:editarNombreTerceroD");
@@ -869,13 +776,9 @@ public class ControlTercero implements Serializable {
                 cualCelda = -1;
             }
         }
-        if (indexTS >= 0) {
-            if (tipoListaTS == 0) {
-                editarTerceroSucursal = listTercerosSucursales.get(indexTS);
-            }
-            if (tipoListaTS == 1) {
-                editarTerceroSucursal = filtrarListTercerosSucursales.get(indexTS);
-            }
+        if (terceroSucursalTablaSeleccionado != null) {
+            editarTerceroSucursal = terceroSucursalTablaSeleccionado;
+
             RequestContext context = RequestContext.getCurrentInstance();
             if (cualCeldaTS == 0) {
                 context.update("formularioDialogos:editarSucursalTerceroSD");
@@ -895,15 +798,11 @@ public class ControlTercero implements Serializable {
                 cualCeldaTS = -1;
             }
         }
-        index = -1;
-        secRegistroTercero = null;
-        indexTS = -1;
-        secRegistroTerceroSucursal = null;
     }
 
     public void validarIngresoNuevoRegistro() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index >= 0) {
+        if (terceroTablaSeleccionado != null) {
             if (cambiosTerceroSucursal == false) {
                 if (listTercerosSucursales.isEmpty()) {
                     context.execute("NuevoRegistroPagina.show()");
@@ -915,33 +814,30 @@ public class ControlTercero implements Serializable {
                 context.execute("confirmarGuardar.show()");
             }
         }
-        if (indexTS >= 0) {
+        if (terceroSucursalTablaSeleccionado != null) {
             context.update("form:NuevoRegistroTerceroSucursal");
             context.execute("NuevoRegistroTerceroSucursal.show()");
         }
     }
 
     public void validarDuplicadoRegistro() {
-
-        if (index >= 0) {
-            duplicarTercero();
-        }
-        if (indexTS >= 0) {
+        if (terceroSucursalTablaSeleccionado != null) {
             duplicarTerceroS();
+        } else if (terceroTablaSeleccionado != null) {
+            duplicarTercero();
         }
     }
 
     public void validarBorradoRegistro() {
-        if (index >= 0) {
-            if (listTercerosSucursales == null) {
+        if (terceroSucursalTablaSeleccionado != null) {
+            borrarTerceroSucursal();
+        } else if (terceroTablaSeleccionado != null) {
+            if (listTercerosSucursales == null || listTercerosSucursales.isEmpty()) {
                 borrarTercero();
             } else {
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.execute("errorBorradoTercero.show()");
             }
-        }
-        if (indexTS >= 0) {
-            borrarTerceroSucursal();
         }
     }
 
@@ -949,11 +845,8 @@ public class ControlTercero implements Serializable {
         boolean retorno = true;
         if (i == 0) {
             Terceros aux = null;
-            if (tipoLista == 0) {
-                aux = listTerceros.get(index);
-            } else {
-                aux = filtrarListTercero.get(index);
-            }
+            aux = terceroTablaSeleccionado;
+
             if (aux.getNit() < 0) {
                 retorno = false;
             }
@@ -993,28 +886,29 @@ public class ControlTercero implements Serializable {
     }
 
     public boolean validarCamposNulosTerceroSucursal(int i) {
+        System.err.println("Estoy en validarCamposNulosTerceroSucursal()");
         boolean retorno = true;
+        System.out.println("El valor de i: " + i);
         if (i == 0) {
-            TercerosSucursales aux = null;
-            if (tipoListaTS == 0) {
-                aux = listTercerosSucursales.get(indexTS);
-            } else {
-                aux = filtrarListTercerosSucursales.get(indexTS);
-            }
-            if (aux.getCodigosucursal() == null) {
+            System.out.println("Entre a if (i == 0)");
+            if (terceroSucursalTablaSeleccionado.getCodigosucursal() == null) {
                 retorno = false;
             }
         }
         if (i == 1) {
+            System.out.println("Entre a if (i == 1)");
             if (nuevoTerceroSucursal.getCodigosucursal() == null) {
                 retorno = false;
             }
         }
         if (i == 2) {
+            System.out.println("Entre a if (i == 2)");
+            System.out.println("duplicarTerceroSucursal.getCodigosucursal(): " + duplicarTerceroSucursal.getCodigosucursal());
             if (duplicarTerceroSucursal.getCodigosucursal() == null) {
                 retorno = false;
             }
         }
+        System.out.println("retorno: " + retorno);
         return retorno;
     }
 
@@ -1022,50 +916,10 @@ public class ControlTercero implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (validarCamposNulosTercero(1) == true) {
             if (bandera == 1) {
-                FacesContext c = FacesContext.getCurrentInstance();
-                altoTablaTercero = "150";
-                terceroNombre = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNombre");
-                terceroNombre.setFilterStyle("display: none; visibility: hidden;");
-                terceroNIT = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNIT");
-                terceroNIT.setFilterStyle("display: none; visibility: hidden;");
-                terceroDigitoVerificacion = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
-                terceroDigitoVerificacion.setFilterStyle("display: none; visibility: hidden;");
-                terceroNITAlternativo = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
-                terceroNITAlternativo.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSS = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
-                terceroCodigoSS.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSP = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
-                terceroCodigoSP.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSC = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
-                terceroCodigoSC.setFilterStyle("display: none; visibility: hidden;");
-                terceroTConsolidador = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
-                terceroTConsolidador.setFilterStyle("display: none; visibility: hidden;");
-                terceroNITConsolidado = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
-                terceroNITConsolidado.setFilterStyle("display: none; visibility: hidden;");
-                terceroCiudad = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
-                terceroCiudad.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoAlterno = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
-                terceroCodigoAlterno.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosTerceros");
-                bandera = 0;
-                filtrarListTercero = null;
-                tipoLista = 0;
+                cerrarFiltradoTercero();
             }
             if (banderaTS == 1) {
-                FacesContext c = FacesContext.getCurrentInstance();
-                altoTablaSucursal = "90";
-                terceroSucursalCodigo = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
-                terceroSucursalCodigo.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalPatronal = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
-                terceroSucursalPatronal.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalObservacion = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
-                terceroSucursalObservacion.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalCiudad = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
-                terceroSucursalCiudad.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
-                banderaTS = 0;
-                filtrarListTercerosSucursales = null;
-                tipoListaTS = 0;
+                cerrarFiltradoTerceroSucursal();
             }
             //AGREGAR REGISTRO A LA LISTA VIGENCIAS 
             k++;
@@ -1077,6 +931,8 @@ public class ControlTercero implements Serializable {
                 listTerceros = new ArrayList<Terceros>();
             }
             listTerceros.add(nuevoTercero);
+            terceroTablaSeleccionado = listTerceros.get(listTerceros.indexOf(nuevoTercero));
+            modificarInfoRegistro(listTerceros.size());
             ////------////
             nuevoTercero = new Terceros();
             nuevoTercero.setTerceroconsolidador(new Terceros());
@@ -1084,14 +940,12 @@ public class ControlTercero implements Serializable {
             ////-----////
 
             context.update("form:datosTerceros");
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.execute("NuevoRegistroTercero.hide()");
             cambiosTercero = true;
-            index = -1;
-            secRegistroTercero = null;
         } else {
             context.execute("errorDatosNullTerceros.show()");
         }
@@ -1105,91 +959,49 @@ public class ControlTercero implements Serializable {
         nuevoTercero = new Terceros();
         nuevoTercero.setTerceroconsolidador(new Terceros());
         nuevoTercero.setCiudad(new Ciudades());
-        index = -1;
-        secRegistroTercero = null;
     }
 
     ////////--- //// ---////
     public void agregarNuevoTerceroSucursal() {
         RequestContext context = RequestContext.getCurrentInstance();
+
         if (validarCamposNulosTerceroSucursal(1) == true) {
             if (bandera == 1) {
-                FacesContext c = FacesContext.getCurrentInstance();
-                altoTablaTercero = "150";
-                terceroNombre = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNombre");
-                terceroNombre.setFilterStyle("display: none; visibility: hidden;");
-                terceroNIT = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNIT");
-                terceroNIT.setFilterStyle("display: none; visibility: hidden;");
-                terceroDigitoVerificacion = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
-                terceroDigitoVerificacion.setFilterStyle("display: none; visibility: hidden;");
-                terceroNITAlternativo = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
-                terceroNITAlternativo.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSS = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
-                terceroCodigoSS.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSP = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
-                terceroCodigoSP.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSC = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
-                terceroCodigoSC.setFilterStyle("display: none; visibility: hidden;");
-                terceroTConsolidador = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
-                terceroTConsolidador.setFilterStyle("display: none; visibility: hidden;");
-                terceroNITConsolidado = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
-                terceroNITConsolidado.setFilterStyle("display: none; visibility: hidden;");
-                terceroCiudad = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
-                terceroCiudad.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoAlterno = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
-                terceroCodigoAlterno.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosTerceros");
-                bandera = 0;
-                filtrarListTercero = null;
-                tipoLista = 0;
+                cerrarFiltradoTercero();
             }
             if (banderaTS == 1) {
-                FacesContext c = FacesContext.getCurrentInstance();
-                altoTablaSucursal = "90";
-                terceroSucursalCodigo = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
-                terceroSucursalCodigo.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalPatronal = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
-                terceroSucursalPatronal.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalObservacion = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
-                terceroSucursalObservacion.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalCiudad = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
-                terceroSucursalCiudad.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
-                banderaTS = 0;
-                filtrarListTercerosSucursales = null;
-                tipoListaTS = 0;
+                cerrarFiltradoTerceroSucursal();
             }
             //AGREGAR REGISTRO A LA LISTA VIGENCIAS 
             k++;
             BigInteger var = BigInteger.valueOf(k);
             nuevoTerceroSucursal.setSecuencia(var);
-            if (tipoLista == 0) {
-                nuevoTerceroSucursal.setTercero(listTerceros.get(indexAux));
-            } else {
-                nuevoTerceroSucursal.setTercero(filtrarListTercero.get(indexAux));
-            }
+            nuevoTerceroSucursal.setTercero(terceroTablaSeleccionado);
             listTerceroSucursalCrear.add(nuevoTerceroSucursal);
+            listTercerosSucursales.add(nuevoTerceroSucursal);
+
+
             if (listTercerosSucursales == null) {
                 listTercerosSucursales = new ArrayList<TercerosSucursales>();
             }
-            listTercerosSucursales.add(nuevoTerceroSucursal);
+            terceroSucursalTablaSeleccionado = listTercerosSucursales.get(listTercerosSucursales.indexOf(nuevoTerceroSucursal));
+            modificarInfoRegistroTS(listTercerosSucursales.size());
+            RequestContext.getCurrentInstance().update("form:infoRegistroTerceroSucursal");
             ////------////
             nuevoTerceroSucursal = new TercerosSucursales();
             nuevoTerceroSucursal.setCiudad(new Ciudades());
             ////-----////
-
             context.update("form:datosTercerosSucursales");
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.execute("NuevoRegistroTerceroSucursal.hide()");
             cambiosTerceroSucursal = true;
-            indexTS = -1;
-            secRegistroTerceroSucursal = null;
         } else {
             context.execute("errorDatosNullSucursal.show()");
         }
+        terceroSucursalTablaSeleccionado = null;
     }
 
     //LIMPIAR NUEVO REGISTRO
@@ -1197,10 +1009,9 @@ public class ControlTercero implements Serializable {
      * Metodo que limpia las casillas de la nueva vigencia
      */
     public void limpiarNuevoTerceroSucursal() {
+        terceroSucursalTablaSeleccionado = null;
         nuevoTerceroSucursal = new TercerosSucursales();
         nuevoTerceroSucursal.setCiudad(new Ciudades());
-        indexTS = -1;
-        secRegistroTerceroSucursal = null;
     }
     //DUPLICAR VL
 
@@ -1212,36 +1023,21 @@ public class ControlTercero implements Serializable {
      * Duplica una nueva vigencia localizacion
      */
     public void duplicarTercero() {
-        if (index >= 0) {
+        if (terceroTablaSeleccionado != null) {
             duplicarTercero = new Terceros();
-            if (tipoLista == 0) {
-                duplicarTercero.setNombre(listTerceros.get(index).getNombre());
-                duplicarTercero.setNit(listTerceros.get(index).getNit());
-                duplicarTercero.setDigitoverificacion(listTerceros.get(index).getDigitoverificacion());
-                duplicarTercero.setNitalternativo(listTerceros.get(index).getNitalternativo());
-                duplicarTercero.setCodigoss(listTerceros.get(index).getCodigoss());
-                duplicarTercero.setCodigosp(listTerceros.get(index).getCodigosp());
-                duplicarTercero.setCodigosc(listTerceros.get(index).getCodigosc());
-                duplicarTercero.setTerceroconsolidador(listTerceros.get(index).getTerceroconsolidador());
-                duplicarTercero.setCiudad(listTerceros.get(index).getCiudad());
-                duplicarTercero.setCodigoalternativo(listTerceros.get(index).getCodigoalternativo());
-                duplicarTercero.setTiponit(listTerceros.get(index).getTiponit());
-                duplicarTercero.setCodigotercerosap(listTerceros.get(index).getCodigotercerosap());
-            }
-            if (tipoLista == 1) {
-                duplicarTercero.setNombre(filtrarListTercero.get(index).getNombre());
-                duplicarTercero.setNit(filtrarListTercero.get(index).getNit());
-                duplicarTercero.setDigitoverificacion(filtrarListTercero.get(index).getDigitoverificacion());
-                duplicarTercero.setNitalternativo(filtrarListTercero.get(index).getNitalternativo());
-                duplicarTercero.setCodigoss(filtrarListTercero.get(index).getCodigoss());
-                duplicarTercero.setCodigosp(filtrarListTercero.get(index).getCodigosp());
-                duplicarTercero.setCodigosc(filtrarListTercero.get(index).getCodigosc());
-                duplicarTercero.setTerceroconsolidador(filtrarListTercero.get(index).getTerceroconsolidador());
-                duplicarTercero.setCiudad(filtrarListTercero.get(index).getCiudad());
-                duplicarTercero.setCodigoalternativo(filtrarListTercero.get(index).getCodigoalternativo());
-                duplicarTercero.setTiponit(filtrarListTercero.get(index).getTiponit());
-                duplicarTercero.setCodigotercerosap(filtrarListTercero.get(index).getCodigotercerosap());
-            }
+            duplicarTercero.setNombre(terceroTablaSeleccionado.getNombre());
+            duplicarTercero.setNit(terceroTablaSeleccionado.getNit());
+            duplicarTercero.setDigitoverificacion(terceroTablaSeleccionado.getDigitoverificacion());
+            duplicarTercero.setNitalternativo(terceroTablaSeleccionado.getNitalternativo());
+            duplicarTercero.setCodigoss(terceroTablaSeleccionado.getCodigoss());
+            duplicarTercero.setCodigosp(terceroTablaSeleccionado.getCodigosp());
+            duplicarTercero.setCodigosc(terceroTablaSeleccionado.getCodigosc());
+            duplicarTercero.setTerceroconsolidador(terceroTablaSeleccionado.getTerceroconsolidador());
+            duplicarTercero.setCiudad(terceroTablaSeleccionado.getCiudad());
+            duplicarTercero.setCodigoalternativo(terceroTablaSeleccionado.getCodigoalternativo());
+            duplicarTercero.setTiponit(terceroTablaSeleccionado.getTiponit());
+            duplicarTercero.setCodigotercerosap(terceroTablaSeleccionado.getCodigotercerosap());
+
             if (duplicarTercero.getTerceroconsolidador() == null) {
                 duplicarTercero.setTerceroconsolidador(new Terceros());
             }
@@ -1251,8 +1047,6 @@ public class ControlTercero implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:DuplicarRegistroTercero");
             context.execute("DuplicarRegistroTercero.show()");
-            index = -1;
-            secRegistroTercero = null;
         }
     }
 
@@ -1262,52 +1056,14 @@ public class ControlTercero implements Serializable {
      */
     public void confirmarDuplicar() {
         RequestContext context = RequestContext.getCurrentInstance();
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         if (validarCamposNulosTercero(2) == true) {
             if (bandera == 1) {
-                FacesContext c = FacesContext.getCurrentInstance();
-                altoTablaTercero = "150";
-                terceroNombre = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNombre");
-                terceroNombre.setFilterStyle("display: none; visibility: hidden;");
-                terceroNIT = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNIT");
-                terceroNIT.setFilterStyle("display: none; visibility: hidden;");
-                terceroDigitoVerificacion = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
-                terceroDigitoVerificacion.setFilterStyle("display: none; visibility: hidden;");
-                terceroNITAlternativo = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
-                terceroNITAlternativo.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSS = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
-                terceroCodigoSS.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSP = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
-                terceroCodigoSP.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSC = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
-                terceroCodigoSC.setFilterStyle("display: none; visibility: hidden;");
-                terceroTConsolidador = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
-                terceroTConsolidador.setFilterStyle("display: none; visibility: hidden;");
-                terceroNITConsolidado = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
-                terceroNITConsolidado.setFilterStyle("display: none; visibility: hidden;");
-                terceroCiudad = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
-                terceroCiudad.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoAlterno = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
-                terceroCodigoAlterno.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosTerceros");
-                bandera = 0;
-                filtrarListTercero = null;
-                tipoLista = 0;
+                cerrarFiltradoTercero();
             }
             if (banderaTS == 1) {
-                FacesContext c = FacesContext.getCurrentInstance();
-                altoTablaSucursal = "90";
-                terceroSucursalCodigo = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
-                terceroSucursalCodigo.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalPatronal = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
-                terceroSucursalPatronal.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalObservacion = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
-                terceroSucursalObservacion.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalCiudad = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
-                terceroSucursalCiudad.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
-                banderaTS = 0;
-                filtrarListTercerosSucursales = null;
-                tipoListaTS = 0;
+                cerrarFiltradoTerceroSucursal();
             }
             k++;
             BigInteger var = BigInteger.valueOf(k);
@@ -1315,17 +1071,16 @@ public class ControlTercero implements Serializable {
             duplicarTercero.setEmpresa(empresaActual);
             listTerceroCrear.add(duplicarTercero);
             listTerceros.add(duplicarTercero);
+            terceroTablaSeleccionado = listTerceros.get(listTerceros.indexOf(duplicarTercero));
+            modificarInfoRegistro(listTerceros.size());
             duplicarTercero = new Terceros();
-
             context.update("form:datosTerceros");
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.execute("DuplicarRegistroTercero.hide()");
             cambiosTercero = true;
-            index = -1;
-            secRegistroTercero = null;
         } else {
             context.execute("errorDatosNullTerceros.show()");
         }
@@ -1339,30 +1094,19 @@ public class ControlTercero implements Serializable {
 
     ////-- !! --- !! --///
     public void duplicarTerceroS() {
-        if (indexTS >= 0) {
+        if (terceroSucursalTablaSeleccionado != null) {
             duplicarTerceroSucursal = new TercerosSucursales();
-            if (tipoListaTS == 0) {
-                duplicarTerceroSucursal.setCodigosucursal(listTercerosSucursales.get(indexTS).getCodigosucursal());
-                duplicarTerceroSucursal.setCodigopatronal(listTercerosSucursales.get(indexTS).getCodigopatronal());
-                duplicarTerceroSucursal.setDescripcion(listTercerosSucursales.get(indexTS).getDescripcion());
-                duplicarTerceroSucursal.setCiudad(listTercerosSucursales.get(indexTS).getCiudad());
+            duplicarTerceroSucursal.setCodigosucursal(terceroSucursalTablaSeleccionado.getCodigosucursal());
+            duplicarTerceroSucursal.setCodigopatronal(terceroSucursalTablaSeleccionado.getCodigopatronal());
+            duplicarTerceroSucursal.setDescripcion(terceroSucursalTablaSeleccionado.getDescripcion());
+            duplicarTerceroSucursal.setCiudad(terceroSucursalTablaSeleccionado.getCiudad());
 
-            }
-            if (tipoListaTS == 1) {
-                duplicarTerceroSucursal.setCodigosucursal(filtrarListTercerosSucursales.get(indexTS).getCodigosucursal());
-                duplicarTerceroSucursal.setCodigopatronal(filtrarListTercerosSucursales.get(indexTS).getCodigopatronal());
-                duplicarTerceroSucursal.setDescripcion(filtrarListTercerosSucursales.get(indexTS).getDescripcion());
-                duplicarTerceroSucursal.setCiudad(filtrarListTercerosSucursales.get(indexTS).getCiudad());
-
-            }
             if (duplicarTerceroSucursal.getCiudad() == null) {
                 duplicarTerceroSucursal.setCiudad(new Ciudades());
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:DuplicarRegistroTerceroSucursal");
             context.execute("DuplicarRegistroTerceroSucursal.show()");
-            indexTS = -1;
-            secRegistroTercero = null;
         }
     }
 
@@ -1374,71 +1118,27 @@ public class ControlTercero implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (validarCamposNulosTerceroSucursal(2) == true) {
             if (bandera == 1) {
-                FacesContext c = FacesContext.getCurrentInstance();
-                altoTablaTercero = "150";
-                terceroNombre = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNombre");
-                terceroNombre.setFilterStyle("display: none; visibility: hidden;");
-                terceroNIT = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNIT");
-                terceroNIT.setFilterStyle("display: none; visibility: hidden;");
-                terceroDigitoVerificacion = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
-                terceroDigitoVerificacion.setFilterStyle("display: none; visibility: hidden;");
-                terceroNITAlternativo = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
-                terceroNITAlternativo.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSS = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
-                terceroCodigoSS.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSP = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
-                terceroCodigoSP.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSC = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
-                terceroCodigoSC.setFilterStyle("display: none; visibility: hidden;");
-                terceroTConsolidador = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
-                terceroTConsolidador.setFilterStyle("display: none; visibility: hidden;");
-                terceroNITConsolidado = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
-                terceroNITConsolidado.setFilterStyle("display: none; visibility: hidden;");
-                terceroCiudad = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
-                terceroCiudad.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoAlterno = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
-                terceroCodigoAlterno.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosTerceros");
-                bandera = 0;
-                filtrarListTercero = null;
-                tipoLista = 0;
+                cerrarFiltradoTercero();
             }
             if (banderaTS == 1) {
-                FacesContext c = FacesContext.getCurrentInstance();
-                altoTablaSucursal = "90";
-                terceroSucursalCodigo = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
-                terceroSucursalCodigo.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalPatronal = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
-                terceroSucursalPatronal.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalObservacion = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
-                terceroSucursalObservacion.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalCiudad = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
-                terceroSucursalCiudad.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
-                banderaTS = 0;
-                filtrarListTercerosSucursales = null;
-                tipoListaTS = 0;
+                cerrarFiltradoTerceroSucursal();
             }
             k++;
             BigInteger var = BigInteger.valueOf(k);
             duplicarTerceroSucursal.setSecuencia(var);
-            if (tipoLista == 0) {
-                duplicarTerceroSucursal.setTercero(listTerceros.get(indexAux));
-            } else {
-                duplicarTerceroSucursal.setTercero(filtrarListTercero.get(indexAux));
-            }
+            duplicarTerceroSucursal.setTercero(terceroTablaSeleccionado);
+
             listTerceroSucursalCrear.add(duplicarTerceroSucursal);
             listTercerosSucursales.add(duplicarTerceroSucursal);
+            terceroSucursalTablaSeleccionado = listTercerosSucursales.get(listTercerosSucursales.indexOf(duplicarTerceroSucursal));
             duplicarTerceroSucursal = new TercerosSucursales();
-            context.update("form:datosTerceros");
-            if (guardado == true) {
+            context.update("form:datosTercerosSucursales");
+            if (guardado) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.execute("DuplicarRegistroTerceroSucursal.hide()");
             cambiosTerceroSucursal = true;
-            indexTS = -1;
-            secRegistroTerceroSucursal = null;
         } else {
             context.execute("errorDatosNullSucursal.show()");
         }
@@ -1455,43 +1155,28 @@ public class ControlTercero implements Serializable {
      * la pagina
      */
     public void borrarTercero() {
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                if (!listTerceroModificar.isEmpty() && listTerceroModificar.contains(listTerceros.get(index))) {
-                    int modIndex = listTerceroModificar.indexOf(listTerceros.get(index));
-                    listTerceroModificar.remove(modIndex);
-                    listTerceroBorrar.add(listTerceros.get(index));
-                } else if (!listTerceroCrear.isEmpty() && listTerceroCrear.contains(listTerceros.get(index))) {
-                    int crearIndex = listTerceroCrear.indexOf(listTerceros.get(index));
-                    listTerceroCrear.remove(crearIndex);
-                } else {
-                    listTerceroBorrar.add(listTerceros.get(index));
-                }
-                listTerceros.remove(index);
+        System.err.println("Entre a borrarTercero()");
+        if (terceroTablaSeleccionado != null) {
+            if (!listTerceroModificar.isEmpty() && listTerceroModificar.contains(terceroTablaSeleccionado)) {
+                int modIndex = listTerceroModificar.indexOf(terceroTablaSeleccionado);
+                listTerceroModificar.remove(modIndex);
+                listTerceroBorrar.add(terceroTablaSeleccionado);
+            } else if (!listTerceroCrear.isEmpty() && listTerceroCrear.contains(terceroTablaSeleccionado)) {
+                int crearIndex = listTerceroCrear.indexOf(terceroTablaSeleccionado);
+                listTerceroCrear.remove(crearIndex);
+            } else {
+                listTerceroBorrar.add(terceroTablaSeleccionado);
             }
+            listTerceros.remove(terceroTablaSeleccionado);
             if (tipoLista == 1) {
-                if (!listTerceroModificar.isEmpty() && listTerceroModificar.contains(filtrarListTercero.get(index))) {
-                    int modIndex = listTerceroModificar.indexOf(filtrarListTercero.get(index));
-                    listTerceroModificar.remove(modIndex);
-                    listTerceroBorrar.add(filtrarListTercero.get(index));
-                } else if (!listTerceroCrear.isEmpty() && listTerceroCrear.contains(filtrarListTercero.get(index))) {
-                    int crearIndex = listTerceroCrear.indexOf(filtrarListTercero.get(index));
-                    listTerceroCrear.remove(crearIndex);
-                } else {
-                    listTerceroBorrar.add(filtrarListTercero.get(index));
-                }
-                int VLIndex = listTerceros.indexOf(filtrarListTercero.get(index));
-                listTerceros.remove(VLIndex);
-                filtrarListTercero.remove(index);
+                filtrarListTercero.remove(terceroTablaSeleccionado);
             }
-
+            modificarInfoRegistro(listTerceros.size());
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosTerceros");
 
-            index = -1;
-            secRegistroTercero = null;
             cambiosTercero = true;
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
@@ -1500,43 +1185,30 @@ public class ControlTercero implements Serializable {
 
     ////--- !! --- !!! ///
     public void borrarTerceroSucursal() {
-        if (indexTS >= 0) {
-            if (tipoListaTS == 0) {
-                if (!listTerceroSucursalModificar.isEmpty() && listTerceroSucursalModificar.contains(listTercerosSucursales.get(indexTS))) {
-                    int modIndex = listTerceroSucursalModificar.indexOf(listTercerosSucursales.get(indexTS));
-                    listTerceroSucursalModificar.remove(modIndex);
-                    listTerceroSucursalBorrar.add(listTercerosSucursales.get(indexTS));
-                } else if (!listTerceroSucursalCrear.isEmpty() && listTerceroSucursalCrear.contains(listTercerosSucursales.get(indexTS))) {
-                    int crearIndex = listTerceroSucursalCrear.indexOf(listTercerosSucursales.get(indexTS));
-                    listTerceroSucursalCrear.remove(crearIndex);
-                } else {
-                    listTerceroSucursalBorrar.add(listTercerosSucursales.get(indexTS));
-                }
-                listTercerosSucursales.remove(indexTS);
+        if (terceroSucursalTablaSeleccionado != null) {
+            if (!listTerceroSucursalModificar.isEmpty() && listTerceroSucursalModificar.contains(terceroSucursalTablaSeleccionado)) {
+                int modIndex = listTerceroSucursalModificar.indexOf(terceroSucursalTablaSeleccionado);
+                listTerceroSucursalModificar.remove(modIndex);
+                listTerceroSucursalBorrar.add(terceroSucursalTablaSeleccionado);
+            } else if (!listTerceroSucursalCrear.isEmpty() && listTerceroSucursalCrear.contains(terceroSucursalTablaSeleccionado)) {
+                int crearIndex = listTerceroSucursalCrear.indexOf(terceroSucursalTablaSeleccionado);
+                listTerceroSucursalCrear.remove(crearIndex);
+            } else {
+                listTerceroSucursalBorrar.add(terceroSucursalTablaSeleccionado);
             }
-            if (tipoListaTS == 1) {
-                if (!listTerceroSucursalModificar.isEmpty() && listTerceroSucursalModificar.contains(filtrarListTercerosSucursales.get(indexTS))) {
-                    int modIndex = listTerceroSucursalModificar.indexOf(filtrarListTercerosSucursales.get(indexTS));
-                    listTerceroSucursalModificar.remove(modIndex);
-                    listTerceroSucursalBorrar.add(filtrarListTercerosSucursales.get(indexTS));
-                } else if (!listTerceroSucursalCrear.isEmpty() && listTerceroSucursalCrear.contains(filtrarListTercerosSucursales.get(indexTS))) {
-                    int crearIndex = listTerceroSucursalCrear.indexOf(filtrarListTercerosSucursales.get(indexTS));
-                    listTerceroSucursalCrear.remove(crearIndex);
-                } else {
-                    listTerceroSucursalBorrar.add(filtrarListTercerosSucursales.get(indexTS));
-                }
-                int VLIndex = listTerceros.indexOf(filtrarListTercerosSucursales.get(indexTS));
-                listTerceros.remove(VLIndex);
-                filtrarListTercerosSucursales.remove(indexTS);
+            listTercerosSucursales.remove(terceroSucursalTablaSeleccionado);
+            if (tipoLista == 1) {
+                filtrarListTercerosSucursales.remove(terceroSucursalTablaSeleccionado);
             }
-
             RequestContext context = RequestContext.getCurrentInstance();
+            modificarInfoRegistroTS(listTercerosSucursales.size());
+            context.update("form:infoRegistroTerceroSucursal");
             context.update("form:datosTercerosSucursales");
 
-            indexTS = -1;
-            secRegistroTerceroSucursal = null;
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             cambiosTerceroSucursal = true;
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
@@ -1549,10 +1221,12 @@ public class ControlTercero implements Serializable {
      * medio de la tecla Crtl+F11
      */
     public void activarCtrlF11() {
-        if (index >= 0) {
+        System.err.println("Entre a activarCtrlF11");
+        if (terceroTablaSeleccionado != null) {
+            //System.err.println("filtradoTercero");
             filtradoTercero();
         }
-        if (indexTS >= 0) {
+        if (terceroSucursalTablaSeleccionado != null) {
             filtradoTerceroSucursal();
         }
     }
@@ -1561,7 +1235,8 @@ public class ControlTercero implements Serializable {
      * Metodo que acciona el filtrado de la tabla vigencia localizacion
      */
     public void filtradoTercero() {
-        if (index >= 0) {
+        if (terceroTablaSeleccionado != null) {
+            System.err.println("Entre a filtradoTercero()");
             FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 0) {
                 altoTablaTercero = "128";
@@ -1590,42 +1265,16 @@ public class ControlTercero implements Serializable {
                 RequestContext.getCurrentInstance().update("form:datosTerceros");
                 bandera = 1;
             } else if (bandera == 1) {
-                altoTablaTercero = "150";
-                terceroNombre = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNombre");
-                terceroNombre.setFilterStyle("display: none; visibility: hidden;");
-                terceroNIT = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNIT");
-                terceroNIT.setFilterStyle("display: none; visibility: hidden;");
-                terceroDigitoVerificacion = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
-                terceroDigitoVerificacion.setFilterStyle("display: none; visibility: hidden;");
-                terceroNITAlternativo = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
-                terceroNITAlternativo.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSS = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
-                terceroCodigoSS.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSP = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
-                terceroCodigoSP.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoSC = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
-                terceroCodigoSC.setFilterStyle("display: none; visibility: hidden;");
-                terceroTConsolidador = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
-                terceroTConsolidador.setFilterStyle("display: none; visibility: hidden;");
-                terceroNITConsolidado = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
-                terceroNITConsolidado.setFilterStyle("display: none; visibility: hidden;");
-                terceroCiudad = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
-                terceroCiudad.setFilterStyle("display: none; visibility: hidden;");
-                terceroCodigoAlterno = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
-                terceroCodigoAlterno.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosTerceros");
-                bandera = 0;
-                filtrarListTercero = null;
-                tipoLista = 0;
+                cerrarFiltradoTercero();
             }
         }
     }
 
     public void filtradoTerceroSucursal() {
-        if (indexTS >= 0) {
+        if (terceroSucursalTablaSeleccionado != null) {
             FacesContext c = FacesContext.getCurrentInstance();
             if (banderaTS == 0) {
-                altoTablaSucursal = "68";
+                altoTablaSucursal = "45";
                 terceroSucursalCodigo = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
                 terceroSucursalCodigo.setFilterStyle("width: 80px");
                 terceroSucursalPatronal = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
@@ -1637,19 +1286,7 @@ public class ControlTercero implements Serializable {
                 RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
                 banderaTS = 1;
             } else if (banderaTS == 1) {
-                altoTablaSucursal = "90";
-                terceroSucursalCodigo = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
-                terceroSucursalCodigo.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalPatronal = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
-                terceroSucursalPatronal.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalObservacion = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
-                terceroSucursalObservacion.setFilterStyle("display: none; visibility: hidden;");
-                terceroSucursalCiudad = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
-                terceroSucursalCiudad.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
-                banderaTS = 0;
-                filtrarListTercerosSucursales = null;
-                tipoListaTS = 0;
+                cerrarFiltradoTerceroSucursal();
             }
         }
     }
@@ -1660,63 +1297,28 @@ public class ControlTercero implements Serializable {
      */
     public void salir() {
         if (bandera == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
-            altoTablaTercero = "150";
-            terceroNombre = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNombre");
-            terceroNombre.setFilterStyle("display: none; visibility: hidden;");
-            terceroNIT = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNIT");
-            terceroNIT.setFilterStyle("display: none; visibility: hidden;");
-            terceroDigitoVerificacion = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroDigitoVerificacion");
-            terceroDigitoVerificacion.setFilterStyle("display: none; visibility: hidden;");
-            terceroNITAlternativo = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITAlternativo");
-            terceroNITAlternativo.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoSS = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSS");
-            terceroCodigoSS.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoSP = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSP");
-            terceroCodigoSP.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoSC = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCodigoSC");
-            terceroCodigoSC.setFilterStyle("display: none; visibility: hidden;");
-            terceroTConsolidador = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroTConsolidador");
-            terceroTConsolidador.setFilterStyle("display: none; visibility: hidden;");
-            terceroNITConsolidado = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroNITConsolidado");
-            terceroNITConsolidado.setFilterStyle("display: none; visibility: hidden;");
-            terceroCiudad = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
-            terceroCiudad.setFilterStyle("display: none; visibility: hidden;");
-            terceroCodigoAlterno = (Column) c.getViewRoot().findComponent("form:datosTerceros:terceroCiudad");
-            terceroCodigoAlterno.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosTerceros");
-            bandera = 0;
-            filtrarListTercero = null;
-            tipoLista = 0;
+            cerrarFiltradoTercero();
         }
 
         if (banderaTS == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
-            altoTablaSucursal = "90";
-            terceroSucursalCodigo = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCodigo");
-            terceroSucursalCodigo.setFilterStyle("display: none; visibility: hidden;");
-            terceroSucursalPatronal = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalPatronal");
-            terceroSucursalPatronal.setFilterStyle("display: none; visibility: hidden;");
-            terceroSucursalObservacion = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalObservacion");
-            terceroSucursalObservacion.setFilterStyle("display: none; visibility: hidden;");
-            terceroSucursalCiudad = (Column) c.getViewRoot().findComponent("form:datosTercerosSucursales:terceroSucursalCiudad");
-            terceroSucursalCiudad.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
-            banderaTS = 0;
-            filtrarListTercerosSucursales = null;
-            tipoListaTS = 0;
+            cerrarFiltradoTerceroSucursal();
         }
-
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         listTerceroBorrar.clear();
         listTerceroCrear.clear();
         listTerceroModificar.clear();
-        index = -1;
-        secRegistroTercero = null;
-        indexTS = -1;
-        secRegistroTerceroSucursal = null;
+        listTerceroSucursalModificar.clear();
+        listTerceroSucursalCrear.clear();
+        listTerceroSucursalBorrar.clear();
+        terceroTablaSeleccionado = null;
+        terceroSucursalTablaSeleccionado = null;
         k = 0;
         listTerceros = null;
+        listTercerosSucursales = null;
         guardado = true;
+        cambiosTercero = true;
+        cambiosTerceroSucursal = true;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
     }
     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO) (list = ESTRUCTURAS - MOTIVOSLOCALIZACIONES - PROYECTOS)
@@ -1731,11 +1333,13 @@ public class ControlTercero implements Serializable {
      * @param tt Tipo Tabla : VigenciaLocalizacion / VigenciaProrrateo /
      * VigenciaProrrateoProyecto
      */
-    public void asignarIndex(Integer indice, int dlg, int LND, int tt) {
+    public void asignarIndex(Object elemento, int dlg, int LND, int tt) {
         RequestContext context = RequestContext.getCurrentInstance();
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         if (tt == 0) {
             if (LND == 0) {
-                index = indice;
+                terceroTablaSeleccionado = (Terceros) elemento;
                 tipoActualizacion = 0;
             } else if (LND == 1) {
                 tipoActualizacion = 1;
@@ -1743,16 +1347,24 @@ public class ControlTercero implements Serializable {
                 tipoActualizacion = 2;
             }
             if (dlg == 0) {
+                contarRegistrosTerceroC();
+                terceroCSeleccionado = null;
+                activarLOV = false;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 context.update("form:TerceroDialogo");
                 context.execute("TerceroDialogo.show()");
             } else if (dlg == 1) {
+                cancelarCambioCiudad();
+                ciudadSeleccionada = null;
+                activarLOV = false;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 context.update("form:CiudadDialogo");
                 context.execute("CiudadDialogo.show()");
             }
         }
         if (tt == 1) {
+            terceroSucursalTablaSeleccionado = (TercerosSucursales) elemento;
             if (LND == 0) {
-                indexTS = indice;
                 tipoActualizacion = 0;
             } else if (LND == 1) {
                 tipoActualizacion = 1;
@@ -1760,10 +1372,16 @@ public class ControlTercero implements Serializable {
                 tipoActualizacion = 2;
             }
             if (dlg == 0) {
+                contarRegistrosCiudadTS();
+                ciudadSeleccionada = null;
+                activarLOV = false;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 context.update("form:CiudadTSDialogo");
                 context.execute("CiudadTSDialogo.show()");
             }
         }
+        contarRegistrosTS();
+        RequestContext.getCurrentInstance().update("form:infoRegistroTerceroSucursal");
     }
 
     //LISTA DE VALORES DINAMICA
@@ -1773,20 +1391,34 @@ public class ControlTercero implements Serializable {
      */
     public void listaValoresBoton() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index >= 0) {
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+        if (terceroTablaSeleccionado != null) {
             if (cualCelda == 7) {
+                contarRegistrosTerceroC();
+                terceroCSeleccionado = null;
+                activarLOV = false;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 context.update("form:TerceroDialogo");
                 context.execute("TerceroDialogo.show()");
                 tipoActualizacion = 0;
             }
             if (cualCelda == 9) {
+                contarRegistrosCiudadT();
+                ciudadSeleccionada = null;
+                activarLOV = false;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 context.update("form:CiudadDialogo");
                 context.execute("CiudadDialogo.show()");
                 tipoActualizacion = 0;
             }
         }
-        if (indexTS >= 0) {
+        if (terceroSucursalTablaSeleccionado != null) {
             if (cualCeldaTS == 3) {
+                contarRegistrosCiudadTS();
+                ciudadSeleccionada = null;
+                activarLOV = false;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 context.update("form:CiudadTSDialogo");
                 context.execute("CiudadTSDialogo.show()");
                 tipoActualizacion = 0;
@@ -1803,30 +1435,20 @@ public class ControlTercero implements Serializable {
      * Metodo que activa el boton aceptar de la pagina y los dialogos
      */
     public void valoresBackupAutocompletar(int tipoNuevo, String Campo, int tipoLista) {
-        if (tipoLista == 0) {
-            if (Campo.equals("TERCEROCONSOLIDADOR")) {
-                if (tipoNuevo == 1) {
-                    terceroConsolidador = nuevoTercero.getTerceroconsolidador().getNombre();
-                } else if (tipoNuevo == 2) {
-                    terceroConsolidador = duplicarTercero.getTerceroconsolidador().getNombre();
-                }
-            } else if (Campo.equals("CIUDAD")) {
-                if (tipoNuevo == 1) {
-                    ciudad = nuevoTercero.getCiudad().getNombre();
-                } else if (tipoNuevo == 2) {
-                    ciudad = duplicarTercero.getCiudad().getNombre();
-                }
+        if (Campo.equals("TERCEROCONSOLIDADOR")) {
+            if (tipoNuevo == 1) {
+                terceroConsolidador = nuevoTercero.getTerceroconsolidador().getNombre();
+            } else if (tipoNuevo == 2) {
+                terceroConsolidador = duplicarTercero.getTerceroconsolidador().getNombre();
+            }
+        } else if (Campo.equals("CIUDAD")) {
+            if (tipoNuevo == 1) {
+                ciudad = nuevoTercero.getCiudad().getNombre();
+            } else if (tipoNuevo == 2) {
+                ciudad = duplicarTercero.getCiudad().getNombre();
             }
         }
-        if (tipoLista == 1) {
-            if (Campo.equals("CIUDAD")) {
-                if (tipoNuevo == 1) {
-                    ciudadTS = nuevoTerceroSucursal.getCiudad().getNombre();
-                } else if (tipoNuevo == 2) {
-                    ciudadTS = duplicarTerceroSucursal.getCiudad().getNombre();
-                }
-            }
-        }
+
     }
 
     public void autocompletarNuevoyDuplicadoTercero(String confirmarCambio, String valorConfirmar, int tipoNuevo) {
@@ -1982,26 +1604,16 @@ public class ControlTercero implements Serializable {
     public void actualizarTerceros() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
-            if (tipoLista == 0) {
-                listTerceros.get(index).setTerceroconsolidador(terceroCSeleccionado);
-                if (!listTerceroCrear.contains(listTerceros.get(index))) {
-                    if (listTerceroModificar.isEmpty()) {
-                        listTerceroModificar.add(listTerceros.get(index));
-                    } else if (!listTerceroModificar.contains(listTerceros.get(index))) {
-                        listTerceroModificar.add(listTerceros.get(index));
-                    }
-                }
-            } else {
-                filtrarListTercero.get(index).setTerceroconsolidador(terceroCSeleccionado);
-                if (!listTerceroCrear.contains(filtrarListTercero.get(index))) {
-                    if (listTerceroModificar.isEmpty()) {
-                        listTerceroModificar.add(filtrarListTercero.get(index));
-                    } else if (!listTerceroModificar.contains(filtrarListTercero.get(index))) {
-                        listTerceroModificar.add(filtrarListTercero.get(index));
-                    }
+            terceroTablaSeleccionado.setTerceroconsolidador(terceroCSeleccionado);
+            if (!listTerceroCrear.contains(terceroTablaSeleccionado)) {
+                if (listTerceroModificar.isEmpty()) {
+                    listTerceroModificar.add(terceroTablaSeleccionado);
+                } else if (!listTerceroModificar.contains(terceroTablaSeleccionado)) {
+                    listTerceroModificar.add(terceroTablaSeleccionado);
                 }
             }
-            if (guardado == true) {
+
+            if (guardado) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
@@ -2021,13 +1633,10 @@ public class ControlTercero implements Serializable {
         filtrarListTerceroConsolidador = null;
         terceroCSeleccionado = new Terceros();
         aceptar = true;
-        index = -1;
-        secRegistroTercero = null;
         tipoActualizacion = -1;
         /*
          * context.update("form:TerceroDialogo");
-         * context.update("form:lovTercero");
-        context.update("form:aceptarT");
+         * context.update("form:lovTercero"); context.update("form:aceptarT");
          */
         context.reset("form:lovTercero:globalFilter");
         context.execute("lovTercero.clearFilters()");
@@ -2039,8 +1648,7 @@ public class ControlTercero implements Serializable {
         filtrarListTerceroConsolidador = null;
         terceroCSeleccionado = new Terceros();
         aceptar = true;
-        index = -1;
-        secRegistroTercero = null;
+        terceroTablaSeleccionado = null;
         tipoActualizacion = -1;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -2052,26 +1660,16 @@ public class ControlTercero implements Serializable {
     public void actualizarCiudad() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
-            if (tipoLista == 0) {
-                listTerceros.get(index).setCiudad(ciudadSeleccionada);
-                if (!listTerceroCrear.contains(listTerceros.get(index))) {
-                    if (listTerceroModificar.isEmpty()) {
-                        listTerceroModificar.add(listTerceros.get(index));
-                    } else if (!listTerceroModificar.contains(listTerceros.get(index))) {
-                        listTerceroModificar.add(listTerceros.get(index));
-                    }
-                }
-            } else {
-                filtrarListTercero.get(index).setCiudad(ciudadSeleccionada);
-                if (!listTerceroCrear.contains(filtrarListTercero.get(index))) {
-                    if (listTerceroModificar.isEmpty()) {
-                        listTerceroModificar.add(filtrarListTercero.get(index));
-                    } else if (!listTerceroModificar.contains(filtrarListTercero.get(index))) {
-                        listTerceroModificar.add(filtrarListTercero.get(index));
-                    }
+            terceroTablaSeleccionado.setCiudad(ciudadSeleccionada);
+            if (!listTerceroCrear.contains(terceroTablaSeleccionado)) {
+                if (listTerceroModificar.isEmpty()) {
+                    listTerceroModificar.add(terceroTablaSeleccionado);
+                } else if (!listTerceroModificar.contains(terceroTablaSeleccionado)) {
+                    listTerceroModificar.add(terceroTablaSeleccionado);
                 }
             }
-            if (guardado == true) {
+
+            if (guardado) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
@@ -2087,16 +1685,14 @@ public class ControlTercero implements Serializable {
             context.update("formularioDialogos:duplicarTCiudadT");
         }
         filtrarListCiudades = null;
-        ciudadSeleccionada = new Ciudades();
+        ciudadSeleccionada = null;
         aceptar = true;
-        index = -1;
-        secRegistroTercero = null;
         tipoActualizacion = -1;
-        /*
-         * context.update("form:CiudadDialogo");
-         * context.update("form:lovCiudad");
-        context.update("form:aceptarC");
-         */
+//        
+//          context.update("form:CiudadDialogo");
+//          context.update("form:lovCiudad"); 
+//          context.update("form:aceptarC");
+
         context.reset("form:lovCiudad:globalFilter");
         context.execute("lovCiudad.clearFilters()");
         context.execute("CiudadDialogo.hide()");
@@ -2106,8 +1702,6 @@ public class ControlTercero implements Serializable {
         filtrarListCiudades = null;
         ciudadSeleccionada = new Ciudades();
         aceptar = true;
-        index = -1;
-        secRegistroTercero = null;
         tipoActualizacion = -1;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -2119,26 +1713,16 @@ public class ControlTercero implements Serializable {
     public void actualizarCiudadTS() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
-            if (tipoListaTS == 0) {
-                listTercerosSucursales.get(indexTS).setCiudad(ciudadSeleccionada);
-                if (!listTerceroSucursalCrear.contains(listTercerosSucursales.get(indexTS))) {
-                    if (listTerceroSucursalModificar.isEmpty()) {
-                        listTerceroSucursalModificar.add(listTercerosSucursales.get(indexTS));
-                    } else if (!listTerceroSucursalModificar.contains(listTercerosSucursales.get(indexTS))) {
-                        listTerceroSucursalModificar.add(listTercerosSucursales.get(indexTS));
-                    }
-                }
-            } else {
-                filtrarListTercerosSucursales.get(indexTS).setCiudad(ciudadSeleccionada);
-                if (!listTerceroSucursalCrear.contains(filtrarListTercerosSucursales.get(indexTS))) {
-                    if (listTerceroSucursalModificar.isEmpty()) {
-                        listTerceroSucursalModificar.add(filtrarListTercerosSucursales.get(indexTS));
-                    } else if (!listTerceroSucursalModificar.contains(filtrarListTercerosSucursales.get(indexTS))) {
-                        listTerceroSucursalModificar.add(filtrarListTercerosSucursales.get(indexTS));
-                    }
+            terceroSucursalTablaSeleccionado.setCiudad(ciudadSeleccionada);
+            if (!listTerceroSucursalCrear.contains(terceroSucursalTablaSeleccionado)) {
+                if (listTerceroSucursalModificar.isEmpty()) {
+                    listTerceroSucursalModificar.add(terceroSucursalTablaSeleccionado);
+                } else if (!listTerceroSucursalModificar.contains(terceroSucursalTablaSeleccionado)) {
+                    listTerceroSucursalModificar.add(terceroSucursalTablaSeleccionado);
                 }
             }
-            if (guardado == true) {
+
+            if (guardado) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
@@ -2155,14 +1739,12 @@ public class ControlTercero implements Serializable {
         filtrarListCiudades = null;
         ciudadSeleccionada = new Ciudades();
         aceptar = true;
-        indexTS = -1;
-        secRegistroTerceroSucursal = null;
         tipoActualizacion = -1;
-        /*
-         * context.update("form:CiudadTSDialogo");
-         * context.update("form:lovCiudadTS");
+
+        context.update("form:CiudadTSDialogo");
+        context.update("form:lovCiudadTS");
         context.update("form:aceptarCTS");
-         */
+
         context.reset("form:lovCiudadTS:globalFilter");
         context.execute("lovCiudadTS.clearFilters()");
         context.execute("CiudadTSDialogo.hide()");
@@ -2172,8 +1754,6 @@ public class ControlTercero implements Serializable {
         filtrarListCiudades = null;
         ciudadSeleccionada = new Ciudades();
         aceptar = true;
-        indexTS = -1;
-        secRegistroTerceroSucursal = null;
         tipoActualizacion = -1;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -2188,13 +1768,12 @@ public class ControlTercero implements Serializable {
      * @return Nombre del dialogo a exportar en XML
      */
     public String exportXML() {
-        if (index >= 0) {
-            nombreTabla = ":formExportarTerceros:datosTercerosExportar";
-            nombreXML = "TercerosXML";
-        }
-        if (indexTS >= 0) {
+        if (terceroSucursalTablaSeleccionado != null) {
             nombreTabla = ":formExportarTercerosSucursales:datosTercerosSucursalesExportar";
             nombreXML = "TercerosSucursalesXML";
+        } else if (terceroTablaSeleccionado != null) {
+            nombreTabla = ":formExportarTerceros:datosTercerosExportar";
+            nombreXML = "TercerosXML";
         }
         return nombreTabla;
     }
@@ -2205,11 +1784,10 @@ public class ControlTercero implements Serializable {
      * @throws IOException Excepcion de In-Out de datos
      */
     public void validarExportPDF() throws IOException {
-        if (index >= 0) {
-            exportPDFT();
-        }
-        if (indexTS >= 0) {
+        if (terceroSucursalTablaSeleccionado != null) {
             exportPDFTS();
+        } else if (terceroTablaSeleccionado != null) {
+            exportPDFT();
         }
     }
 
@@ -2224,8 +1802,6 @@ public class ControlTercero implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "TercerosPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistroTercero = null;
     }
 
     /**
@@ -2239,8 +1815,6 @@ public class ControlTercero implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "TercerosSucursalesPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        indexTS = -1;
-        secRegistroTerceroSucursal = null;
     }
 
     /**
@@ -2249,11 +1823,10 @@ public class ControlTercero implements Serializable {
      * @throws IOException
      */
     public void verificarExportXLS() throws IOException {
-        if (index >= 0) {
-            exportXLST();
-        }
-        if (indexTS >= 0) {
+        if (terceroSucursalTablaSeleccionado != null) {
             exportXLSTS();
+        } else if (terceroTablaSeleccionado != null) {
+            exportXLST();
         }
     }
 
@@ -2268,8 +1841,6 @@ public class ControlTercero implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "TercerosXLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistroTercero = null;
     }
 
     /**
@@ -2283,28 +1854,12 @@ public class ControlTercero implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "TercerosSucursalesXLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        indexTS = -1;
-        secRegistroTerceroSucursal = null;
-    }
-
-    //EVENTO FILTRAR
-    /**
-     * Evento que cambia la lista real a la filtrada
-     */
-    public void eventoFiltrar() {
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                tipoLista = 1;
-            }
-        }
-        if (indexTS >= 0) {
-            if (tipoListaTS == 0) {
-                tipoListaTS = 1;
-            }
-        }
     }
 
     public void dialogoSeleccionarTercero() {
+        terceroLOVSeleccionado = null;
+        getFiltrarListTerceroLOV();
+        getListTerceros();
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:BuscarTerceroDialogo");
         context.execute("BuscarTerceroDialogo.show()");
@@ -2312,7 +1867,9 @@ public class ControlTercero implements Serializable {
 
     public void cancelarSeleccionTercero() {
         terceroCSeleccionado = new Terceros();
+        terceroLOVSeleccionado = null;
         filtrarListTerceroConsolidador = null;
+        aceptar = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.reset("form:lovBuscarTercero:globalFilter");
         context.execute("lovBuscarTercero.clearFilters()");
@@ -2321,6 +1878,7 @@ public class ControlTercero implements Serializable {
 
     public void validarSeleccionTercero() {
         RequestContext context = RequestContext.getCurrentInstance();
+        terceroTablaSeleccionado = terceroLOVSeleccionado;
         if (cambiosTercero == false && cambiosTerceroSucursal == false) {
             listTerceros = null;
             listTerceros = new ArrayList<Terceros>();
@@ -2331,26 +1889,25 @@ public class ControlTercero implements Serializable {
                 terceroLOVSeleccionado.setTerceroconsolidador(new Terceros());
             }
             listTerceros.add(terceroLOVSeleccionado);
-            terceroLOVSeleccionado = new Terceros();
-            filtrarListTerceroLOV = null;
+//            terceroLOVSeleccionado = new Terceros();
+//            filtrarListTerceroLOV = null;
             listTercerosLOV.clear();
-            getListTercerosLOV();
+            contarRegistrosT();
+//            getListTercerosLOV();
             context.update("form:datosTerceros");
+            listTercerosSucursales = null;
             getListTercerosSucursales();
+            contarRegistrosTS();
             context.update("form:datosTercerosSucursales");
-            /*
-             * context.update("form:BuscarTerceroDialogo");
-             context.update("form:aceptarBT");
-             */
             context.reset("form:lovBuscarTercero:globalFilter");
             context.execute("lovBuscarTercero.clearFilters()");
             context.execute("BuscarTerceroDialogo.hide()");
         } else {
-            terceroLOVSeleccionado = new Terceros();
+            terceroLOVSeleccionado = null;
             filtrarListTerceroLOV = null;
-            listTercerosLOV.clear();
             context.execute("confirmarGuardar.show()");
         }
+        aceptar = true;
     }
 
     public void mostrarTodos() {
@@ -2365,129 +1922,126 @@ public class ControlTercero implements Serializable {
         } else {
             context.execute("confirmarGuardar.show()");
         }
+        contarRegistrosT();
+        contarRegistrosTS();
     }
 
     //METODO RASTROS PARA LAS TABLAS EN EMPLVIGENCIASUELDOS
     public void verificarRastroTabla() {
-        if (listTercerosSucursales.isEmpty() || listTerceros.isEmpty()) {
-            //Dialogo para seleccionar el rato de la tabla deseada
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("verificarRastrosTablas.show()");
+        //Cuando no se ha seleccionado ningun registro:
+        if (terceroTablaSeleccionado == null && terceroSucursalTablaSeleccionado == null) {
+            //Dialogo para seleccionar el rastro Historico de la tabla deseada
+            RequestContext.getCurrentInstance().execute("verificarRastrosTablas.show()");
         } else {
-            if ((!listTercerosSucursales.isEmpty()) && (!listTerceros.isEmpty())) {
-                if (index >= 0) {
-                    verificarRastroTerceros();
-                    index = -1;
-                }
-                if (indexTS >= 0) {
-                    verificarRastroTercerosSucursales();
-                    indexTS = -1;
-                }
+            //Cuando se selecciono registro:            
+            if (terceroSucursalTablaSeleccionado != null) {
+                verificarRastroTercerosSucursales();
+            } else if (terceroTablaSeleccionado != null) {
+                verificarRastroTerceros();
             }
         }
     }
 
-    //Verificar Rastro Vigencia Sueldos
+    //Verificar Rastro Vigencia Terceros
     public void verificarRastroTerceros() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (listTerceros != null) {
-            if (secRegistroTercero != null) {
-                int resultado = administrarRastros.obtenerTabla(secRegistroTercero, "TERCEROS");
-                backUpSecRegistroTercero = secRegistroTercero;
-                backUp = secRegistroTercero;
-                secRegistroTercero = null;
-                if (resultado == 1) {
-                    context.execute("errorObjetosDB.show()");
-                } else if (resultado == 2) {
-                    nombreTablaRastro = "Terceros";
-                    msnConfirmarRastro = "La tabla TERCEROS tiene rastros para el registro seleccionado, ¿desea continuar?";
-                    context.update("form:msnConfirmarRastro");
-                    context.execute("confirmarRastro.show()");
-                } else if (resultado == 3) {
-                    context.execute("errorRegistroRastro.show()");
-                } else if (resultado == 4) {
-                    context.execute("errorTablaConRastro.show()");
-                } else if (resultado == 5) {
-                    context.execute("errorTablaSinRastro.show()");
-                }
-            } else {
-                context.execute("seleccionarRegistro.show()");
-            }
-        } else {
-            if (administrarRastros.verificarHistoricosTabla("TERCEROS")) {
-                nombreTablaRastro = "Terceros";
-                msnConfirmarRastroHistorico = "La tabla TERCEROS tiene rastros historicos, ¿Desea continuar?";
-                context.update("form:confirmarRastroHistorico");
-                context.execute("confirmarRastroHistorico.show()");
-            } else {
-                context.execute("errorRastroHistorico.show()");
-            }
+        int resultado = administrarRastros.obtenerTabla(terceroTablaSeleccionado.getSecuencia(), "TERCEROS");
+        backUp = terceroTablaSeleccionado.getSecuencia();
+        if (resultado == 1) {
+            context.execute("errorObjetosDB.show()");
+        } else if (resultado == 2) {
+            nombreTablaRastro = "Terceros";
+            msnConfirmarRastro = "La tabla TERCEROS tiene rastros para el registro seleccionado, ¿desea continuar?";
+            context.update("form:msnConfirmarRastro");
+            context.execute("confirmarRastro.show()");
+        } else if (resultado == 3) {
+            context.execute("errorRegistroRastro.show()");
+        } else if (resultado == 4) {
+            context.execute("errorTablaConRastro.show()");
+        } else if (resultado == 5) {
+            context.execute("errorTablaSinRastro.show()");
         }
-        index = -1;
+    }
+
+    public void verificarRastroTercerosHist() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (administrarRastros.verificarHistoricosTabla("TERCEROS")) {
+            nombreTablaRastro = "Terceros";
+            msnConfirmarRastroHistorico = "La tabla TERCEROS tiene rastros historicos, ¿Desea continuar?";
+            context.update("form:confirmarRastroHistorico");
+            context.execute("confirmarRastroHistorico.show()");
+        } else {
+            context.execute("errorRastroHistorico.show()");
+        }
     }
 
     public void verificarRastroTercerosSucursales() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (!listTercerosSucursales.isEmpty()) {
-            if (secRegistroTerceroSucursal == null) {
-                context.execute("seleccionarRegistro.show()");
-            } else {
-                int resultado = administrarRastros.obtenerTabla(secRegistroTerceroSucursal, "TERCEROSSUCURSALES");
-                backUpSecRegistroTerceroSucursal = secRegistroTerceroSucursal;
-                backUp = secRegistroTerceroSucursal;
-                secRegistroTerceroSucursal = null;
-                if (resultado == 1) {
-                    context.execute("errorObjetosDB.show()");
-                } else if (resultado == 2) {
-                    nombreTablaRastro = "TercerosSucursales";
-                    msnConfirmarRastro = "La tabla TERCEROSSUCURSALES tiene rastros para el registro seleccionado, ¿desea continuar?";
-                    context.update("form:msnConfirmarRastro");
-                    context.execute("confirmarRastro.show()");
-                } else if (resultado == 3) {
-                    context.execute("errorRegistroRastro.show()");
-                } else if (resultado == 4) {
-                    context.execute("errorTablaConRastro.show()");
-                } else if (resultado == 5) {
-                    context.execute("errorTablaSinRastro.show()");
-                }
-            }
-        } else {
-            if (administrarRastros.verificarHistoricosTabla("TERCEROSSUCURSALES")) {
-                nombreTablaRastro = "TercerosSucursales";
-                msnConfirmarRastroHistorico = "La tabla TERCEROSSUCURSALES tiene rastros historicos, ¿Desea continuar?";
-                context.update("form:confirmarRastroHistorico");
-                context.execute("confirmarRastroHistorico.show()");
-            } else {
-                context.execute("errorRastroHistorico.show()");
-            }
+        int resultado = administrarRastros.obtenerTabla(terceroSucursalTablaSeleccionado.getSecuencia(), "TERCEROSSUCURSALES");
+        backUp = terceroSucursalTablaSeleccionado.getSecuencia();
+        if (resultado == 1) {
+            context.execute("errorObjetosDB.show()");
+        } else if (resultado == 2) {
+            nombreTablaRastro = "TercerosSucursales";
+            msnConfirmarRastro = "La tabla TERCEROSSUCURSALES tiene rastros para el registro seleccionado, ¿desea continuar?";
+            context.update("form:msnConfirmarRastro");
+            context.execute("confirmarRastro.show()");
+        } else if (resultado == 3) {
+            context.execute("errorRegistroRastro.show()");
+        } else if (resultado == 4) {
+            context.execute("errorTablaConRastro.show()");
+        } else if (resultado == 5) {
+            context.execute("errorTablaSinRastro.show()");
         }
-        index = -1;
+    }
+
+    public void verificarRastroTercerosSucursalesHist() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (administrarRastros.verificarHistoricosTabla("TERCEROSSUCURSALES")) {
+            nombreTablaRastro = "TercerosSucursales";
+            msnConfirmarRastroHistorico = "La tabla TERCEROSSUCURSALES tiene rastros historicos, ¿Desea continuar?";
+            context.update("form:confirmarRastroHistorico");
+            context.execute("confirmarRastroHistorico.show()");
+        } else {
+            context.execute("errorRastroHistorico.show()");
+        }
     }
 
     public void lovEmpresas() {
-        index = -1;
-        secRegistroTercero = null;
+        empresaSeleccionada = null;
         cualCelda = -1;
-        indexTS = -1;
         cualCeldaTS = -1;
-        secRegistroTerceroSucursal = null;
         RequestContext.getCurrentInstance().update("formularioDialogos:EmpresasDialogo");
         RequestContext.getCurrentInstance().execute("EmpresasDialogo.show()");
     }
 
     public void actualizarEmpresa() {
         RequestContext context = RequestContext.getCurrentInstance();
+//        terceroTablaSeleccionado = null;
+//        terceroSucursalTablaSeleccionado = null;
+        context.update("form:nombreEmpresa");
+        context.update("form:nitEmpresa");
+        filtrarListEmpresas = null;
+        aceptar = true;
+        context.update("formularioDialogos:EmpresasDialogo");
+        context.update("formularioDialogos:lovEmpresas");
+        context.update("formularioDialogos:aceptarE");
+        context.reset("formularioDialogos:lovEmpresas:globalFilter");
+        context.execute("lovEmpresas.clearFilters()");
+        context.execute("EmpresasDialogo.hide()");
+        empresaActual = empresaSeleccionada;
+        listTerceros = null;
+        getListTerceros();
+        if (listTerceros != null) {
+            if (!listTerceros.isEmpty()) {
+                terceroTablaSeleccionado = listTerceros.get(0);
+            }
+        }
+        context.update("form:datosTerceros");
+        contarRegistrosT();
+        contarRegistrosTS();
         if (cambiosTercero == false && cambiosTerceroSucursal == false) {
-            context.update("form:nombreEmpresa");
-            context.update("form:nitEmpresa");
-            filtrarListEmpresas = null;
-            aceptar = true;
-            context.update("formularioDialogos:EmpresasDialogo");
-            context.update("formularioDialogos:lovEmpresas");
-            context.update("formularioDialogos:aceptarE");
-            context.reset("formularioDialogos:lovEmpresas:globalFilter");
-            context.execute("EmpresasDialogo.hide()");
-            backUpEmpresaActual = empresaActual;
+            empresaSeleccionada = empresaActual;
             listTerceros = null;
             listTercerosSucursales = null;
             getListTerceros();
@@ -2497,16 +2051,19 @@ public class ControlTercero implements Serializable {
         } else {
             context.execute("confirmarGuardar.show()");
         }
+        // empresaSeleccionada = null;
     }
 
     public void cancelarCambioEmpresa() {
-        index = -1;
-        secRegistroTercero = null;
+        RequestContext context = RequestContext.getCurrentInstance();
         cualCelda = -1;
-        indexTS = -1;
         cualCeldaTS = -1;
-        secRegistroTerceroSucursal = null;
+        terceroSucursalTablaSeleccionado = null;
         filtrarListEmpresas = null;
+        empresaSeleccionada = null;
+        context.reset("formularioDialogos:lovEmpresas:globalFilter");
+        context.execute("lovEmpresas.clearFilters()");
+        context.execute("EmpresasDialogo.hide()");
     }
 
     public void limpiarMSNRastros() {
@@ -2514,13 +2071,195 @@ public class ControlTercero implements Serializable {
         msnConfirmarRastroHistorico = "";
         nombreTablaRastro = "";
     }
-    
+
+    //EVENTO FILTRAR
+    /**
+     * Evento que cambia la lista real a la filtrada
+     */
+    public void eventoFiltrarT() {
+        if (tipoLista == 0) {
+            tipoLista = 1;
+        }
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+        terceroTablaSeleccionado = null;
+        modificarInfoRegistro(filtrarListTercero.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistro");
+
+    }
+
+    public void eventoFiltrarTS() {
+        if (tipoListaTS == 0) {
+            tipoListaTS = 1;
+        }
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+        terceroTablaSeleccionado = null;
+        modificarInfoRegistroTS(filtrarListTercerosSucursales.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistroTerceroSucursal");
+
+    }
+
+    public void eventoFiltrarLovTercero() {
+        modificarInfoRegistroLovTercero(filtrarListTerceroLOV.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistroTercero");
+    }
+
+    public void eventoFiltrarTerceroC() {
+        modificarInfoRegistroTerceroC(filtrarListTerceroConsolidador.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistroTerceroConsolidador");
+    }
+
+    public void eventoFiltrarCiudadT() {
+        modificarInfoRegistroCiudadT(filtrarListCiudades.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistroCiudad1");
+    }
+
+    public void eventoFiltrarCiudadTS() {
+        modificarInfoRegistroCiudadTS(filtrarListCiudades.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistroCiudad2");
+    }
+
+    public void eventoFiltrarEmpresa() {
+        modificarInfoRegistroEmpresa(filtrarListEmpresas.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistroEmpresa");
+    }
+
     private void modificarInfoRegistro(int valor) {
         infoRegistroTercero = String.valueOf(valor);
-        System.out.println("infoRegistro: " + infoRegistroTercero);
-    }    
+    }
 
-    //GET - SET 
+    private void modificarInfoRegistroTS(int valor) {
+        infoRegistroTerceroSucursal = String.valueOf(valor);
+    }
+
+    private void modificarInfoRegistroLovTercero(int valor) {
+        infoRegistroTercero = String.valueOf(valor);
+    }
+
+    private void modificarInfoRegistroTerceroC(int valor) {
+        infoRegistroTerceroConsolidador = String.valueOf(valor);
+    }
+
+    private void modificarInfoRegistroCiudadT(int valor) {
+        infoRegistroCiudad1 = String.valueOf(valor);
+    }
+
+    private void modificarInfoRegistroCiudadTS(int valor) {
+        infoRegistroCiudad2 = String.valueOf(valor);
+    }
+
+    private void modificarInfoRegistroEmpresa(int valor) {
+        infoRegistroEmpresa = String.valueOf(valor);
+    }
+
+    public void contarRegistrosT() {
+        if (listTerceros != null) {
+            modificarInfoRegistro(listTerceros.size());
+            RequestContext.getCurrentInstance().update("form:infoRegistro");
+        } else {
+            modificarInfoRegistro(0);
+            RequestContext.getCurrentInstance().update("form:infoRegistro");
+        }
+    }
+
+    public void contarRegistrosTS() {
+        if (listTercerosSucursales != null) {
+            if (listTercerosSucursales.size() > 0) {
+                modificarInfoRegistroTS(listTercerosSucursales.size());
+                RequestContext.getCurrentInstance().update("form:infoRegistroTerceroSucursal");
+            } else {
+                modificarInfoRegistroTS(0);
+                RequestContext.getCurrentInstance().update("form:infoRegistroTerceroSucursal");
+            }
+        } else {
+            modificarInfoRegistroTS(0);
+            RequestContext.getCurrentInstance().update("form:infoRegistroTerceroSucursal");
+        }
+    }
+
+    public void contarRegistrosLovTercero() {
+        if (listTercerosLOV != null) {
+            if (listTercerosLOV.size() > 0) {
+                modificarInfoRegistroLovTercero(listTercerosLOV.size());
+            } else {
+                modificarInfoRegistroLovTercero(0);
+            }
+        } else {
+            modificarInfoRegistroLovTercero(0);
+        }
+    }
+
+    public void contarRegistrosTerceroC() {
+        if (listTerceroConsolidador != null) {
+            if (listTerceroConsolidador.size() > 0) {
+                modificarInfoRegistroTerceroC(listTerceroConsolidador.size());
+            } else {
+                modificarInfoRegistroTerceroC(0);
+            }
+        } else {
+            modificarInfoRegistroTerceroC(0);
+        }
+    }
+
+    public void contarRegistrosCiudadT() {
+        if (listCiudades != null) {
+            if (listCiudades.size() > 0) {
+                modificarInfoRegistroCiudadT(listCiudades.size());
+            } else {
+                modificarInfoRegistroCiudadT(0);
+            }
+        } else {
+            modificarInfoRegistroCiudadT(0);
+        }
+    }
+
+    public void contarRegistrosCiudadTS() {
+        if (listCiudades != null) {
+            if (listCiudades.size() > 0) {
+                modificarInfoRegistroCiudadTS(listCiudades.size());
+            } else {
+                modificarInfoRegistroCiudadTS(0);
+            }
+        } else {
+            modificarInfoRegistroCiudadTS(0);
+        }
+    }
+
+    public void contarRegistrosEmpresa() {
+        if (listEmpresas != null) {
+            if (listEmpresas.size() > 0) {
+                modificarInfoRegistroEmpresa(listEmpresas.size());
+            } else {
+                modificarInfoRegistroEmpresa(0);
+            }
+        } else {
+            modificarInfoRegistroEmpresa(0);
+        }
+    }
+
+    public void recordarSeleccionT() {
+        if (terceroTablaSeleccionado != null) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            tablaT = (DataTable) c.getViewRoot().findComponent("form:datosTerceros");
+            tablaT.setSelection(terceroTablaSeleccionado);
+        }
+    }
+
+    public void anularLOV() {
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+    }
+
+    public void recordarSeleccionTS() {
+        if (terceroSucursalTablaSeleccionado != null) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            tablaT = (DataTable) c.getViewRoot().findComponent("form:datosTercerosSucursales");
+            tablaT.setSelection(terceroSucursalTablaSeleccionado);
+        }
+    }
+
+    //GET - SET ************************************************************************************************************//////////////////////
     public List<Terceros> getListTerceros() {
         try {
             if (listTerceros == null) {
@@ -2589,22 +2328,6 @@ public class ControlTercero implements Serializable {
         this.aceptar = aceptar;
     }
 
-    public BigInteger getSecRegistroVS() {
-        return secRegistroTercero;
-    }
-
-    public void setSecRegistroVS(BigInteger secRegistroVS) {
-        this.secRegistroTercero = secRegistroVS;
-    }
-
-    public BigInteger getBackUpSecRegistroTercero() {
-        return backUpSecRegistroTercero;
-    }
-
-    public void setBackUpSecRegistroTercero(BigInteger b) {
-        this.backUpSecRegistroTercero = b;
-    }
-
     public List<Terceros> getListTerceroModificar() {
         return listTerceroModificar;
     }
@@ -2653,14 +2376,6 @@ public class ControlTercero implements Serializable {
         this.duplicarTercero = duplicarTecero;
     }
 
-    public BigInteger getSecRegistroTercero() {
-        return secRegistroTercero;
-    }
-
-    public void setSecRegistroTercero(BigInteger secRegistroTercero) {
-        this.secRegistroTercero = secRegistroTercero;
-    }
-
     public String getMsnConfirmarRastro() {
         return msnConfirmarRastro;
     }
@@ -2696,12 +2411,8 @@ public class ControlTercero implements Serializable {
     public List<TercerosSucursales> getListTercerosSucursales() {
         try {
             if (listTercerosSucursales == null) {
-                if (index >= 0) {
-                    if (tipoLista == 0) {
-                        listTercerosSucursales = administrarTercero.obtenerListTercerosSucursales(listTerceros.get(index).getSecuencia());
-                    } else {
-                        listTercerosSucursales = administrarTercero.obtenerListTercerosSucursales(filtrarListTercero.get(index).getSecuencia());
-                    }
+                if (terceroTablaSeleccionado != null) {
+                    listTercerosSucursales = administrarTercero.obtenerListTercerosSucursales(terceroTablaSeleccionado.getSecuencia());
                     if (listTercerosSucursales != null) {
                         for (int i = 0; i < listTercerosSucursales.size(); i++) {
                             if (listTercerosSucursales.get(i).getCiudad() == null) {
@@ -2732,12 +2443,6 @@ public class ControlTercero implements Serializable {
 
     public List<Empresas> getListEmpresas() {
         listEmpresas = administrarTercero.listEmpresas();
-        if (listEmpresas != null) {
-            if (listEmpresas.size() > 0) {
-                empresaActual = listEmpresas.get(0);
-                backUpEmpresaActual = empresaActual;
-            }
-        }
         return listEmpresas;
     }
 
@@ -2754,7 +2459,6 @@ public class ControlTercero implements Serializable {
     }
 
     public Empresas getEmpresaActual() {
-        getListEmpresas();
         return empresaActual;
     }
 
@@ -2762,16 +2466,18 @@ public class ControlTercero implements Serializable {
         this.empresaActual = empresaActual;
     }
 
-    public Empresas getBackUpEmpresaActual() {
-        return backUpEmpresaActual;
+    public Empresas getEmpresaSeleccionada() {
+        return empresaSeleccionada;
     }
 
-    public void setBackUpEmpresaActual(Empresas backUpEmpresaActual) {
-        this.backUpEmpresaActual = backUpEmpresaActual;
+    public void setEmpresaSeleccionada(Empresas empresaSeleccionada) {
+        this.empresaSeleccionada = empresaSeleccionada;
     }
 
     public List<Ciudades> getListCiudades() {
-        listCiudades = administrarTercero.listCiudades();
+        if (listCiudades == null) {
+            listCiudades = administrarTercero.listCiudades();
+        }
         return listCiudades;
     }
 
@@ -2838,22 +2544,6 @@ public class ControlTercero implements Serializable {
         this.nitConsolidado = nitConsolidado;
     }
 
-    public BigInteger getSecRegistroTerceroSucursal() {
-        return secRegistroTerceroSucursal;
-    }
-
-    public void setSecRegistroTerceroSucursal(BigInteger secRegistroTerceroSucursal) {
-        this.secRegistroTerceroSucursal = secRegistroTerceroSucursal;
-    }
-
-    public BigInteger getBackUpSecRegistroTerceroSucursal() {
-        return backUpSecRegistroTerceroSucursal;
-    }
-
-    public void setBackUpSecRegistroTerceroSucursal(BigInteger backUpSecRegistroTerceroSucursal) {
-        this.backUpSecRegistroTerceroSucursal = backUpSecRegistroTerceroSucursal;
-    }
-
     public TercerosSucursales getNuevoTerceroSucursal() {
         return nuevoTerceroSucursal;
     }
@@ -2871,14 +2561,6 @@ public class ControlTercero implements Serializable {
     }
 
     public Terceros getTerceroTablaSeleccionado() {
-        System.out.println("getTerceroSeleccionado");
-        getListTerceros();
-        if (listTerceros != null) {
-            int tam = listTerceros.size();
-            if (tam > 0) {
-                terceroTablaSeleccionado = listTerceros.get(0);
-            }
-        }
         return terceroTablaSeleccionado;
     }
 
@@ -2887,14 +2569,6 @@ public class ControlTercero implements Serializable {
     }
 
     public TercerosSucursales getTerceroSucursalTablaSeleccionado() {
-        getListTercerosSucursales();
-        if (listTercerosSucursales != null) {
-            terceroSucursalTablaSeleccionado = new TercerosSucursales();
-            int tam = listTercerosSucursales.size();
-            if (tam > 0) {
-                terceroSucursalTablaSeleccionado = listTercerosSucursales.get(0);
-            }
-        }
         return terceroSucursalTablaSeleccionado;
     }
 
@@ -2903,12 +2577,6 @@ public class ControlTercero implements Serializable {
     }
 
     public String getInfoRegistroEmpresa() {
-        getListEmpresas();
-        if (listEmpresas != null) {
-            infoRegistroEmpresa = String.valueOf(listEmpresas.size());
-        } else {
-            infoRegistroEmpresa = "0";
-        }
         return infoRegistroEmpresa;
     }
 
@@ -2916,13 +2584,15 @@ public class ControlTercero implements Serializable {
         this.infoRegistroEmpresa = infoRegistroEmpresa;
     }
 
+    public String getInfoRegistroTerceroSucursal() {
+        return infoRegistroTerceroSucursal;
+    }
+
+    public void setInfoRegistroTerceroSucursal(String infoRegistroTerceroSucursal) {
+        this.infoRegistroTerceroSucursal = infoRegistroTerceroSucursal;
+    }
+
     public String getInfoRegistroCiudad2() {
-        getListCiudades();
-        if (listCiudades != null) {
-            infoRegistroCiudad2 = String.valueOf(listCiudades.size());
-        } else {
-            infoRegistroCiudad2 = "0";
-        }
         return infoRegistroCiudad2;
     }
 
@@ -2931,12 +2601,7 @@ public class ControlTercero implements Serializable {
     }
 
     public String getInfoRegistroCiudad1() {
-        getListCiudades();
-        if (listCiudades != null) {
-            infoRegistroCiudad1 = String.valueOf(listCiudades.size());
-        } else {
-            infoRegistroCiudad1 = "0";
-        }
+
         return infoRegistroCiudad1;
     }
 
@@ -2945,13 +2610,6 @@ public class ControlTercero implements Serializable {
     }
 
     public String getInfoRegistroTercero() {
-        System.out.println("getInfoRegistroTercero");
-        getListTerceros();
-        if (listTerceros != null) {
-            infoRegistroTercero = String.valueOf(listTerceros.size());
-        } else {
-            infoRegistroTercero = "0";
-        }
         return infoRegistroTercero;
     }
 
@@ -2960,12 +2618,6 @@ public class ControlTercero implements Serializable {
     }
 
     public String getInfoRegistroTerceroConsolidador() {
-        getListTerceroConsolidador();
-        if (listTerceroConsolidador != null) {
-            infoRegistroTerceroConsolidador = String.valueOf(listTerceroConsolidador.size());
-        } else {
-            infoRegistroTerceroConsolidador = "0";
-        }
         return infoRegistroTerceroConsolidador;
     }
 
@@ -2974,18 +2626,8 @@ public class ControlTercero implements Serializable {
     }
 
     public List<Terceros> getListTercerosLOV() {
-        if (empresaActual.getSecuencia() != null) {
+        if (listTercerosLOV == null) {
             listTercerosLOV = administrarTercero.obtenerListTerceros(empresaActual.getSecuencia());
-            if (listTercerosLOV != null) {
-                for (int i = 0; i < listTercerosLOV.size(); i++) {
-                    if (listTercerosLOV.get(i).getCiudad() == null) {
-                        listTercerosLOV.get(i).setCiudad(new Ciudades());
-                    }
-                    if (listTercerosLOV.get(i).getTerceroconsolidador() == null) {
-                        listTercerosLOV.get(i).setTerceroconsolidador(new Terceros());
-                    }
-                }
-            }
         }
         return listTercerosLOV;
     }
@@ -3032,5 +2674,13 @@ public class ControlTercero implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public boolean isActivarLOV() {
+        return activarLOV;
+    }
+
+    public void setActivarLOV(boolean activarLOV) {
+        this.activarLOV = activarLOV;
     }
 }

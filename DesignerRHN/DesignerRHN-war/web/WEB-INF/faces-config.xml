@@ -5534,5 +5534,23 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+      
     
+     <navigation-rule>
+        <from-view-id>/Tercero.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>ciudades</from-outcome>
+            <to-view-id>/Ciudades.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Ciudades.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrastercero</from-outcome>
+            <to-view-id>/Tercero.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+      
 </faces-config>

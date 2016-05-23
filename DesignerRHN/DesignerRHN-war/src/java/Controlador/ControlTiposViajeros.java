@@ -38,7 +38,6 @@ public class ControlTiposViajeros implements Serializable {
     AdministrarTiposViajerosInterface administrarTiposViajeros;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-
     private List<Tiposviajeros> listTiposViajeros;
     private List<Tiposviajeros> filtrarTiposViajeros;
     private List<Tiposviajeros> crearTiposViajeros;
@@ -47,7 +46,7 @@ public class ControlTiposViajeros implements Serializable {
     private Tiposviajeros nuevoTiposViajeros;
     private Tiposviajeros duplicarTiposViajeros;
     private Tiposviajeros editarTiposViajeros;
-    private Tiposviajeros tiposUnidadesSeleccionado;
+    private Tiposviajeros tiposViajeroSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -93,18 +92,25 @@ public class ControlTiposViajeros implements Serializable {
         }
     }
 
-    public void eventoFiltrar() {
-        try {
-            System.out.println("\n ENTRE A ControlTiposViajeros.eventoFiltrar \n");
-            if (tipoLista == 0) {
-                tipoLista = 1;
-            }
-            RequestContext context = RequestContext.getCurrentInstance();
-            infoRegistro = "Cantidad de registros: " + filtrarTiposViajeros.size();
-            context.update("form:informacionRegistro");
-        } catch (Exception e) {
-            System.out.println("ERROR ControlTiposViajeros eventoFiltrar ERROR===" + e.getMessage());
+    public void inicializarLista() {
+        getListTiposViajeros();
+        if (listTiposViajeros != null) {
+            tiposViajeroSeleccionado = listTiposViajeros.get(0);
+            modificarInfoRegistro(listTiposViajeros.size());
+        } else {
+            modificarInfoRegistro(0);
         }
+    }
+
+    public void eventoFiltrar() {
+        System.out.println("\n ENTRE A ControlTiposViajeros.eventoFiltrar \n");
+        if (tipoLista == 0) {
+            tipoLista = 1;
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        modificarInfoRegistro(filtrarTiposViajeros.size());
+        context.update("form:informacionRegistro");
+
     }
 
     public void cambiarIndice(int indice, int celda) {
@@ -166,35 +172,22 @@ public class ControlTiposViajeros implements Serializable {
     private String infoRegistro;
 
     public void cancelarModificacion() {
-        if (bandera == 1) {
-            //CERRAR FILTRADO
-            FacesContext c = FacesContext.getCurrentInstance();
-            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:codigo");
-            codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:descripcion");
-            descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosTiposViajeros");
-            bandera = 0;
-            filtrarTiposViajeros = null;
-            tipoLista = 0;
-            tamano = 270;
-        }
-
+        index = -1;
+        secRegistro = null;
+        cerrarFiltrado();
         borrarTiposViajeros.clear();
         crearTiposViajeros.clear();
         modificarTiposViajeros.clear();
-        index = -1;
-        secRegistro = null;
-        k = 0;
         listTiposViajeros = null;
+        k = 0;
         guardado = true;
         permitirIndex = true;
         getListTiposViajeros();
         RequestContext context = RequestContext.getCurrentInstance();
-        if (listTiposViajeros == null || listTiposViajeros.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
+        if (listTiposViajeros == null) {
+            modificarInfoRegistro(0);
         } else {
-            infoRegistro = "Cantidad de registros: " + listTiposViajeros.size();
+            modificarInfoRegistro(listTiposViajeros.size());
         }
         context.update("form:informacionRegistro");
         context.update("form:datosTiposViajeros");
@@ -202,20 +195,7 @@ public class ControlTiposViajeros implements Serializable {
     }
 
     public void salir() {
-        if (bandera == 1) {
-            //CERRAR FILTRADO
-            FacesContext c = FacesContext.getCurrentInstance();
-            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:codigo");
-            codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:descripcion");
-            descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosTiposViajeros");
-            bandera = 0;
-            filtrarTiposViajeros = null;
-            tipoLista = 0;
-            tamano = 270;
-        }
-
+        cerrarFiltrado();
         borrarTiposViajeros.clear();
         crearTiposViajeros.clear();
         modificarTiposViajeros.clear();
@@ -228,6 +208,19 @@ public class ControlTiposViajeros implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosTiposViajeros");
         context.update("form:ACEPTAR");
+    }
+
+    public void cerrarFiltrado() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        codigo = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:codigo");
+        codigo.setFilterStyle("display: none; visibility: hidden;");
+        descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:descripcion");
+        descripcion.setFilterStyle("display: none; visibility: hidden;");
+        RequestContext.getCurrentInstance().update("form:datosTiposViajeros");
+        bandera = 0;
+        filtrarTiposViajeros = null;
+        tipoLista = 0;
+        tamano = 270;
     }
 
     public void activarCtrlF11() {
@@ -242,16 +235,7 @@ public class ControlTiposViajeros implements Serializable {
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
-            System.out.println("Desactivar");
-            tamano = 270;
-            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:codigo");
-            codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:descripcion");
-            descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosTiposViajeros");
-            bandera = 0;
-            filtrarTiposViajeros = null;
-            tipoLista = 0;
+            cerrarFiltrado();
         }
     }
 
@@ -307,7 +291,7 @@ public class ControlTiposViajeros implements Serializable {
                         } else if (!modificarTiposViajeros.contains(listTiposViajeros.get(indice))) {
                             modificarTiposViajeros.add(listTiposViajeros.get(indice));
                         }
-                        if (guardado == true) {
+                        if (guardado) {
                             guardado = false;
                         }
 
@@ -352,7 +336,7 @@ public class ControlTiposViajeros implements Serializable {
 
                     if (banderita == true) {
 
-                        if (guardado == true) {
+                        if (guardado) {
                             guardado = false;
                         }
 
@@ -406,7 +390,7 @@ public class ControlTiposViajeros implements Serializable {
                         } else if (!modificarTiposViajeros.contains(filtrarTiposViajeros.get(indice))) {
                             modificarTiposViajeros.add(filtrarTiposViajeros.get(indice));
                         }
-                        if (guardado == true) {
+                        if (guardado) {
                             guardado = false;
                         }
 
@@ -452,7 +436,7 @@ public class ControlTiposViajeros implements Serializable {
 
                     if (banderita == true) {
 
-                        if (guardado == true) {
+                        if (guardado) {
                             guardado = false;
                         }
 
@@ -507,13 +491,13 @@ public class ControlTiposViajeros implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosTiposViajeros");
-            infoRegistro = "Cantidad de registros: " + listTiposViajeros.size();
+            modificarInfoRegistro(listTiposViajeros.size());
             context.update("form:informacionRegistro");
 
             index = -1;
             secRegistro = null;
 
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
@@ -590,7 +574,7 @@ public class ControlTiposViajeros implements Serializable {
             context.update("form:datosTiposViajeros");
             k = 0;
             guardado = true;
-            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesMessage msg = new FacesMessage("Información", "Se guardarón los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
         }
@@ -673,17 +657,7 @@ public class ControlTiposViajeros implements Serializable {
 
         if (contador == 2) {
             if (bandera == 1) {
-                FacesContext c = FacesContext.getCurrentInstance();
-                //CERRAR FILTRADO
-                System.out.println("Desactivar");
-                codigo = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:codigo");
-                codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:descripcion");
-                descripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosTiposViajeros");
-                bandera = 0;
-                filtrarTiposViajeros = null;
-                tipoLista = 0;
+                cerrarFiltrado();
             }
             System.out.println("Despues de la bandera");
 
@@ -692,14 +666,14 @@ public class ControlTiposViajeros implements Serializable {
             nuevoTiposViajeros.setSecuencia(l);
 
             crearTiposViajeros.add(nuevoTiposViajeros);
-
             listTiposViajeros.add(nuevoTiposViajeros);
+            tiposViajeroSeleccionado = listTiposViajeros.get(listTiposViajeros.indexOf(nuevoTiposViajeros));
             nuevoTiposViajeros = new Tiposviajeros();
             context.update("form:datosTiposViajeros");
-            infoRegistro = "Cantidad de registros: " + listTiposViajeros.size();
+            modificarInfoRegistro(listTiposViajeros.size());
             context.update("form:informacionRegistro");
 
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
@@ -801,27 +775,19 @@ public class ControlTiposViajeros implements Serializable {
             }
             listTiposViajeros.add(duplicarTiposViajeros);
             crearTiposViajeros.add(duplicarTiposViajeros);
+            tiposViajeroSeleccionado = listTiposViajeros.get(listTiposViajeros.indexOf(duplicarTiposViajeros));
             context.update("form:datosTiposViajeros");
             index = -1;
             secRegistro = null;
-            if (guardado == true) {
+            if (guardado) {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
-            infoRegistro = "Cantidad de registros: " + listTiposViajeros.size();
+            modificarInfoRegistro(listTiposViajeros.size());
             context.update("form:informacionRegistro");
 
             if (bandera == 1) {
-                FacesContext c = FacesContext.getCurrentInstance();
-                //CERRAR FILTRADO
-                codigo = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:codigo");
-                codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:descripcion");
-                descripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosTiposViajeros");
-                bandera = 0;
-                filtrarTiposViajeros = null;
-                tipoLista = 0;
+                cerrarFiltrado();
             }
             duplicarTiposViajeros = new Tiposviajeros();
             RequestContext.getCurrentInstance().execute("duplicarRegistroTiposViajeros.hide()");
@@ -859,25 +825,20 @@ public class ControlTiposViajeros implements Serializable {
 
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("lol");
-        if (!listTiposViajeros.isEmpty()) {
-            if (secRegistro != null) {
-                System.out.println("lol 2");
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "TIPOSVIAJEROS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
-                System.out.println("resultado: " + resultado);
-                if (resultado == 1) {
-                    context.execute("errorObjetosDB.show()");
-                } else if (resultado == 2) {
-                    context.execute("confirmarRastro.show()");
-                } else if (resultado == 3) {
-                    context.execute("errorRegistroRastro.show()");
-                } else if (resultado == 4) {
-                    context.execute("errorTablaConRastro.show()");
-                } else if (resultado == 5) {
-                    context.execute("errorTablaSinRastro.show()");
-                }
-            } else {
-                context.execute("seleccionarRegistro.show()");
+
+        if (secRegistro != null) {
+            int resultado = administrarRastros.obtenerTabla(secRegistro, "TIPOSVIAJEROS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
+            System.out.println("resultado: " + resultado);
+            if (resultado == 1) {
+                context.execute("errorObjetosDB.show()");
+            } else if (resultado == 2) {
+                context.execute("confirmarRastro.show()");
+            } else if (resultado == 3) {
+                context.execute("errorRegistroRastro.show()");
+            } else if (resultado == 4) {
+                context.execute("errorTablaConRastro.show()");
+            } else if (resultado == 5) {
+                context.execute("errorTablaSinRastro.show()");
             }
         } else {
             if (administrarRastros.verificarHistoricosTabla("TIPOSVIAJEROS")) { // igual acá
@@ -890,17 +851,14 @@ public class ControlTiposViajeros implements Serializable {
         index = -1;
     }
 
+    private void modificarInfoRegistro(int valor) {
+        infoRegistro = String.valueOf(valor);
+    }
+
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<Tiposviajeros> getListTiposViajeros() {
         if (listTiposViajeros == null) {
-            System.out.println("ControlTiposViajeros getListTiposViajeros");
             listTiposViajeros = administrarTiposViajeros.consultarTiposViajeros();
-        }
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (listTiposViajeros == null || listTiposViajeros.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
-        } else {
-            infoRegistro = "Cantidad de registros: " + listTiposViajeros.size();
         }
         return listTiposViajeros;
     }
@@ -982,11 +940,11 @@ public class ControlTiposViajeros implements Serializable {
     }
 
     public Tiposviajeros getTiposViajerosSeleccionado() {
-        return tiposUnidadesSeleccionado;
+        return tiposViajeroSeleccionado;
     }
 
-    public void setTiposViajerosSeleccionado(Tiposviajeros clasesPensionesSeleccionado) {
-        this.tiposUnidadesSeleccionado = clasesPensionesSeleccionado;
+    public void setTiposViajerosSeleccionado(Tiposviajeros tiposViajeroSeleccionado) {
+        this.tiposViajeroSeleccionado = tiposViajeroSeleccionado;
     }
 
     public String getInfoRegistro() {
@@ -996,5 +954,4 @@ public class ControlTiposViajeros implements Serializable {
     public void setInfoRegistro(String infoRegistro) {
         this.infoRegistro = infoRegistro;
     }
-
 }
