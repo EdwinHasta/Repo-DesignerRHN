@@ -7,7 +7,6 @@ import Entidades.Organigramas;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import InterfacePersistencia.PersistenciaOrganigramasInterface;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
@@ -16,9 +15,8 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br>
- * Clase encargada de realizar operaciones sobre la tabla 'Organigramas' de la
- * base de datos.
+ * Clase Stateless.<br> Clase encargada de realizar operaciones sobre la tabla
+ * 'Organigramas' de la base de datos.
  *
  * @author Hugo David Sin Gutiérrez.
  */
@@ -91,6 +89,7 @@ public class PersistenciaOrganigramas implements PersistenciaOrganigramasInterfa
     @Override
     public List<Organigramas> buscarOrganigramas(EntityManager em) {
         try {
+            System.out.println("Si entro al EJB PersistenciaOrganigramas");
             em.clear();
             Query query = em.createQuery("SELECT o FROM Organigramas o");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -116,6 +115,31 @@ public class PersistenciaOrganigramas implements PersistenciaOrganigramasInterfa
             return listOrganigramas;
         } catch (Exception e) {
             System.out.println("PersistenciaOrganigramas: Fallo en la busqueda de los organigramas por fecha y por empresa ");
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    @Override
+    public List<Organigramas> buscarOrganigramasEmpresa(EntityManager em, BigInteger secEmpresa) {
+        System.out.println("buscarOrganigramasEmpresa : secEmpresa : " + secEmpresa);
+        System.out.println("buscarOrganigramasEmpresa : em : " + em);
+        try {
+            em.clear();
+            Query query = em.createQuery("SELECT o FROM Organigramas o WHERE o.empresa.secuencia = :secEmpresa");
+            query.setParameter("secEmpresa", secEmpresa);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<Organigramas> listOrganigramas = query.getResultList();
+            System.out.println("buscarOrganigramasEmpresa : listOrganigramas : " + em);
+            /*
+             * if (listOrganigramas != null) { for (Organigramas organigrama :
+             * listOrganigramas) { System.out.println("organigrama : " +
+             * organigrama); } }
+             */
+            System.out.println("Otra empresa");
+            return listOrganigramas;
+        } catch (Exception e) {
+            System.out.println("PersistenciaOrganigramas: Fallo en la busqueda de los organigramas por empresa ");
             System.out.println(e);
             return null;
         }

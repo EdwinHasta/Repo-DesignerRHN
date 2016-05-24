@@ -207,7 +207,7 @@ public class ControlPersonaIndividual implements Serializable {
     private List<Cargos> lovCargos;
     private List<Cargos> filtrarLovCargos;
     private Cargos cargoSeleccionado;
-    private List<MotivosCambiosCargos> lovMotivosCambiosCargos;
+    private List<MotivosCambiosCargos> lovMotivosCargos;
     private List<MotivosCambiosCargos> filtrarLovMotivosCambiosCargos;
     private MotivosCambiosCargos motivoCambioCargoSeleccionado;
     private List<Estructuras> lovEstructuras;
@@ -374,7 +374,7 @@ public class ControlPersonaIndividual implements Serializable {
         papelSeleccionado = new Papeles();
         lovEstructuras = null;
         estructuraSeleccionada = new Estructuras();
-        lovMotivosCambiosCargos = null;
+        lovMotivosCargos = null;
         motivoCambioCargoSeleccionado = new MotivosCambiosCargos();
         lovCargos = null;
         cargoSeleccionado = new Cargos();
@@ -465,12 +465,12 @@ public class ControlPersonaIndividual implements Serializable {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
-        getLovEmpresas();
+        cargarLovEmpresas();
         modificarInfoR_EmpresaInfoP(lovEmpresas.size());
     }
 
     public void procesoDialogoEmpresa() {
-        getLovEmpresas();
+        cargarLovEmpresas();
         modificarInfoR_EmpresaInfoP(lovEmpresas.size());
         RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroEmpresaInformacionPersonal");
         RequestContext.getCurrentInstance().update("formLovs:formDInformacionPersonal:infoRegistroEmpresaInformacionPersonalV");
@@ -483,25 +483,28 @@ public class ControlPersonaIndividual implements Serializable {
     public void listaValoresInformacionPersonal() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idInformacionPersonal == 0) {
-            getLovEmpresas();
+            cargarLovEmpresas();
             modificarInfoR_EmpresaInfoP(lovEmpresas.size());
             context.update("formLovs:formDInformacionPersonal:EmpresaInformacionPersonalDialogo");
             context.execute("EmpresaInformacionPersonalDialogo.show()");
             idInformacionPersonal = -1;
         }
         if (idInformacionPersonal == 5) {
+            cargarLovTiposDocumentos();
             context.update("formLovs:formDInformacionPersonal:TipoDocumentoInformacionPersonalDialogo");
             modificarInfoR_TipoDocInfoP(lovTiposDocumentos.size());
             context.execute("TipoDocumentoInformacionPersonalDialogo.show()");
             idInformacionPersonal = -1;
         }
         if (idInformacionPersonal == 7) {
+            cargarLovCiudades();
             context.update("formLovs:formDInformacionPersonal:CiudadDocumentoInformacionPersonalDialogo");
             modificarInfoR_CiudadDocInfoP(lovCiudades.size());
             context.execute("CiudadDocumentoInformacionPersonalDialogo.show()");
             idInformacionPersonal = -1;
         }
         if (idInformacionPersonal == 9) {
+            cargarLovCiudades();
             context.update("formLovs:formDInformacionPersonal:CiudadNacimientoInformacionPersonalDialogo");
             modificarInfoR_CiudadNacInfoP(lovCiudades.size());
             context.execute("CiudadNacimientoInformacionPersonalDialogo.show()");
@@ -513,7 +516,7 @@ public class ControlPersonaIndividual implements Serializable {
     public void listaValoresCargoDesempenado() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idCargoDesempeñado == 0) {
-            getLovCargos();
+            cargarLovCargos();
             context.update("formLovs:formDCargoDesempenado:CargoCargoDesempeñadoDialogo");
             modificarInfoR_CargoD(lovCargos.size());
             RequestContext.getCurrentInstance().update("formLovs:formDCargoDesempenado:infoRegistroCargoCargoDesempenado");
@@ -521,24 +524,28 @@ public class ControlPersonaIndividual implements Serializable {
             idCargoDesempeñado = -1;
         }
         if (idCargoDesempeñado == 1) {
+            cargarLovMotivosCargos();
             context.update("formLovs:formDCargoDesempenado:MotivoCambioCargoCargoDesempeñadoDialogo");
-            modificarInfoR_MotivoCargoD(lovMotivosCambiosCargos.size());
+            modificarInfoR_MotivoCargoD(lovMotivosCargos.size());
             context.execute("MotivoCambioCargoCargoDesempeñadoDialogo.show()");
             idCargoDesempeñado = -1;
         }
         if (idCargoDesempeñado == 2) {
+            cargarLovEstructuras();
             context.update("formLovs:formDCargoDesempenado:EstructuraCargoDesempeñadoDialogo");
             modificarInfoR_EstrCargoD(lovEstructuras.size());
             context.execute("EstructuraCargoDesempeñadoDialogo.show()");
             idCargoDesempeñado = -1;
         }
         if (idCargoDesempeñado == 3) {
+            cargarLovPapeles();
             context.update("formLovs:formDCargoDesempenado:PapelCargoDesempeñadoDialogo");
             modificarInfoR_PapelCargoD(lovPapeles.size());
             context.execute("PapelCargoDesempeñadoDialogo.show()");
             idCargoDesempeñado = -1;
         }
         if (idCargoDesempeñado == 4) {
+            cargarLovEmpleados();
             context.update("formLovs:formDCargoDesempenado:EmpleadoJefeCargoDesempeñadoDialogo");
             modificarInfoR_JefeCargoD(lovEmpleados.size());
             context.execute("EmpleadoJefeCargoDesempeñadoDialogo.show()");
@@ -549,13 +556,14 @@ public class ControlPersonaIndividual implements Serializable {
     public void listaValoresCentroCosto() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idCentroCosto == 0) {
+            cargarLovMotivosLocalizaciones();
             context.update("formLovs:formDCentroCosto:MotivoLocalizacionCentroCostoDialogo");
             modificarInfoR_MotivoCentroC(lovMotivosLocalizaciones.size());
             context.execute("MotivoLocalizacionCentroCostoDialogo.show()");
             idCentroCosto = -1;
         }
         if (idCentroCosto == 1) {
-            getLovEstructurasCentroCosto();
+            cargarLovEstructurasCentroCosto();
             context.update("formLovs:formDCentroCosto:EstructuraCentroCostoDialogo");
             modificarInfoR_EstrCentroC(lovEstructurasCentroCosto.size());
             context.execute("EstructuraCentroCostoDialogo.show()");
@@ -567,7 +575,7 @@ public class ControlPersonaIndividual implements Serializable {
     public void listaValoresTipoTrabajador() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idTipoTrabajador == 0) {
-            getLovTiposTrabajadores();
+            cargarLovTiposTrabajadores();
             context.update("formLovs:formDTipoTrabajador:TipoTrabajadorTipoTrabajadorDialogo");
             modificarInfoR_TipoTraTT(lovTiposTrabajadores.size());
             context.execute("TipoTrabajadorTipoTrabajadorDialogo.show()");
@@ -579,6 +587,7 @@ public class ControlPersonaIndividual implements Serializable {
     public void listaValoresTipoSalario() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idTipoSalario == 0) {
+            cargarLovReformasLaborales();
             context.update("formLovs:formDTipoSalario:ReformaLaboralTipoSalarioDialogo");
             modificarInfoR_ReformaTipoSa(lovReformasLaborales.size());
             context.execute("ReformaLaboralTipoSalarioDialogo.show()");
@@ -589,12 +598,14 @@ public class ControlPersonaIndividual implements Serializable {
     public void listaValoresSueldo() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idSueldo == 1) {
+            cargarLovMotivosCambiosSueldos();
             context.update("formLovs:formDSueldo:MotivoCambioSueldoSueldoDialogo");
             modificarInfoR_MotivoSu(lovMotivosCambiosSueldos.size());
             context.execute("MotivoCambioSueldoSueldoDialogo.show()");
             idSueldo = -1;
         }
         if (idSueldo == 2) {
+            cargarLovTiposSueldos();
             context.update("formLovs:formDSueldo:TipoSueldoSueldoDialogo");
             modificarInfoR_TipoSuSu(lovTiposSueldos.size());
             context.execute("TipoSueldoSueldoDialogo.show()");
@@ -611,12 +622,14 @@ public class ControlPersonaIndividual implements Serializable {
     public void listaValoresTipoContrato() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idTipoContrato == 0) {
+            cargarLovMotivosContratos();
             context.update("formLovs:formDTipoContrato:MotivoContratoTipoContratoDialogo");
             modificarInfoR_MotivoTipoCo(lovMotivosContratos.size());
             context.execute("MotivoContratoTipoContratoDialogo.show()");
             idTipoContrato = -1;
         }
         if (idTipoContrato == 1) {
+            cargarLovTiposContratos();
             context.update("formLovs:formDTipoContrato:TipoContratoTipoContratoDialogo");
             modificarInfoR_TipoContrato(lovTiposContratos.size());
             context.execute("TipoContratoTipoContratoDialogo.show()");
@@ -627,6 +640,7 @@ public class ControlPersonaIndividual implements Serializable {
     public void listaValoresNormaLaboral() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idNormaLaboral == 0) {
+            cargarLovNormasLaborales();
             context.update("formLovs:formDNormaLaboral:NormaLaboralNormaLaboralDialogo");
             modificarInfoR_ReformaTipoSa(lovNormasLaborales.size());
             context.execute("NormaLaboralNormaLaboralDialogo.show()");
@@ -637,6 +651,7 @@ public class ControlPersonaIndividual implements Serializable {
     public void listaValoresLegislacionLaboral() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idLegislacionLaboral == 0) {
+            cargarLovContratos();
             context.update("formLovs:formDLegislacionLaboral:ContratoLegislacionLaboralDialogo");
             modificarInfoR_ContratoLL(lovContratos.size());
             context.execute("ContratoLegislacionLaboralDialogo.show()");
@@ -647,7 +662,7 @@ public class ControlPersonaIndividual implements Serializable {
     public void listaValoresUbicacion() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idUbicacionGeografica == 0) {
-            getLovUbicacionesGeograficas();
+            cargarLovUbicacionesGeograficas();
             context.update("formLovs:formDUbicacion:UbicacionUbicacionGeograficaDialogo");
             modificarInfoR_UbicacionUb(lovUbicacionesGeograficas.size());
             RequestContext.getCurrentInstance().update("formLovs:formDUbicacion:infoRegistroUbicacionUbicacion");
@@ -659,6 +674,7 @@ public class ControlPersonaIndividual implements Serializable {
     public void listaValoresJornadaLaboral() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idJornadaLaboral == 0) {
+            cargarLovJornadasLaborales();
             context.update("formLovs:formDJornadaLaboral:JornadaJornadaLaboralDialogo");
             modificarInfoR_JornadaL(lovJornadasLaborales.size());
             context.execute("JornadaJornadaLaboralDialogo.show()");
@@ -669,18 +685,21 @@ public class ControlPersonaIndividual implements Serializable {
     public void listaValoresFormaPago() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idFormaPago == 0) {
+            cargarLovPeriodicidades();
             context.update("formLovs:formDFormaPago:PeriodicidadFormaPagoDialogo");
             modificarInfoR_PeriodFormaPago(lovPeriodicidades.size());
             context.execute("PeriodicidadFormaPagoDialogo.show()");
             idFormaPago = -1;
         }
         if (idFormaPago == 3) {
+            cargarLovSucursales();
             context.update("formLovs:formDFormaPago:SucursalFormaPagoDialogo");
             modificarInfoR_SucursalFormaP(lovSucursales.size());
             context.execute("SucursalFormaPagoDialogo.show()");
             idFormaPago = -1;
         }
         if (idFormaPago == 4) {
+            cargarLovMetodosPagos();
             context.update("formLovs:formDFormaPago:MetodoPagoFormaPagoDialogo");
             modificarInfoR_EmpresaInfoP(lovMetodosPagos.size());
             context.execute("MetodoPagoFormaPagoDialogo.show()");
@@ -691,7 +710,7 @@ public class ControlPersonaIndividual implements Serializable {
     public void listaValoresAfiliacionEPS() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idAfiliacionEPS == 0) {
-            getLovTercerosSucursales();
+            cargarLovTercerosSucursales();
             context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
             modificarInfoR_TerceroAfSuc(lovTercerosSucursales.size());
             context.execute("TerceroAfiliacionDialogo.show()");
@@ -701,7 +720,7 @@ public class ControlPersonaIndividual implements Serializable {
     public void listaValoresAfiliacionARP() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idAfiliacionARP == 0) {
-            getLovTercerosSucursales();
+            cargarLovTercerosSucursales();
             context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
             modificarInfoR_TerceroAfSuc(lovTercerosSucursales.size());
             context.execute("TerceroAfiliacionDialogo.show()");
@@ -711,7 +730,7 @@ public class ControlPersonaIndividual implements Serializable {
     public void listaValoresAfiliacionAFP() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idAfiliacionAFP == 0) {
-            getLovTercerosSucursales();
+            cargarLovTercerosSucursales();
             context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
             modificarInfoR_TerceroAfSuc(lovTercerosSucursales.size());
             context.execute("TerceroAfiliacionDialogo.show()");
@@ -721,7 +740,7 @@ public class ControlPersonaIndividual implements Serializable {
     public void listaValoresAfiliacionCaja() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idAfiliacionCaja == 0) {
-            getLovTercerosSucursales();
+            cargarLovTercerosSucursales();
             context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
             modificarInfoR_TerceroAfSuc(lovTercerosSucursales.size());
             context.execute("TerceroAfiliacionDialogo.show()");
@@ -731,7 +750,7 @@ public class ControlPersonaIndividual implements Serializable {
     public void listaValoresAfiliacionFondo() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idAfiliacionFondo == 0) {
-            getLovTercerosSucursales();
+            cargarLovTercerosSucursales();
             context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
             modificarInfoR_TerceroAfSuc(lovTercerosSucursales.size());
             context.execute("TerceroAfiliacionDialogo.show()");
@@ -741,7 +760,7 @@ public class ControlPersonaIndividual implements Serializable {
     public void listaValoresEstadoCivil() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idEstadoCivil == 0) {
-            getLovTercerosSucursales();
+            cargarLovTercerosSucursales();
             context.update("formLovs:formDEstadoCivil:EstadoCivilEstadoCivilDialogo");
             modificarInfoR_EstadoCivil(lovEstadosCiviles.size());
             context.execute("EstadoCivilEstadoCivilDialogo.show()");
@@ -752,7 +771,7 @@ public class ControlPersonaIndividual implements Serializable {
     public void listaValoresDireccion() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idDireccion == 1) {
-            getLovTercerosSucursales();
+            cargarLovTercerosSucursales();
             context.update("formLovs:formDDireccion:CiudadDireccionDialogo");
             modificarInfoR_CiudadDir(lovCiudades.size());
             context.execute("CiudadDireccionDialogo.show()");
@@ -763,12 +782,14 @@ public class ControlPersonaIndividual implements Serializable {
     public void listaValoresTelefono() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idTelefono == 0) {
+            cargarLovTiposTelefonos();
             context.update("formLovs:formDTelefono:TipoTelefonoTelefonoDialogo");
             modificarInfoR_TipoTelT(lovTiposTelefonos.size());
             context.execute("TipoTelefonoTelefonoDialogo.show()");
             idTelefono = -1;
         }
         if (idTelefono == 1) {
+            cargarLovCiudades();
             context.update("formLovs:formDTelefono:CiudadTelefonoDialogo");
             modificarInfoR_CiudadTel(lovCiudades.size());
             context.execute("CiudadTelefonoDialogo.show()");
@@ -780,27 +801,28 @@ public class ControlPersonaIndividual implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idInformacionPersonal >= 0) {
             if (idInformacionPersonal == 0) {
+                cargarLovEmpresas();
                 context.update("formLovs:formDInformacionPersonal:EmpresaInformacionPersonalDialogo");
                 modificarInfoR_EmpresaInfoP(lovEmpresas.size());
                 context.execute("EmpresaInformacionPersonalDialogo.show()");
                 idInformacionPersonal = -1;
             }
             if (idInformacionPersonal == 5) {
-                getLovTiposDocumentos();
+                cargarLovTiposDocumentos();
                 context.update("formLovs:formDInformacionPersonal:TipoDocumentoInformacionPersonalDialogo");
                 modificarInfoR_TipoDocInfoP(lovTiposDocumentos.size());
                 context.execute("TipoDocumentoInformacionPersonalDialogo.show()");
                 idInformacionPersonal = -1;
             }
             if (idInformacionPersonal == 7) {
-                getLovCiudades();
+                cargarLovCiudades();
                 context.update("formLovs:formDInformacionPersonal:CiudadDocumentoInformacionPersonalDialogo");
                 modificarInfoR_CiudadDocInfoP(lovCiudades.size());
                 context.execute("CiudadDocumentoInformacionPersonalDialogo.show()");
                 idInformacionPersonal = -1;
             }
             if (idInformacionPersonal == 9) {
-                getLovCiudades();
+                cargarLovCiudades();
                 context.update("formLovs:formDInformacionPersonal:CiudadNacimientoInformacionPersonalDialogo");
                 modificarInfoR_CiudadNacInfoP(lovCiudades.size());
                 context.execute("CiudadNacimientoInformacionPersonalDialogo.show()");
@@ -808,35 +830,35 @@ public class ControlPersonaIndividual implements Serializable {
             }
         } else if (idCargoDesempeñado >= 0) {
             if (idCargoDesempeñado == 0) {
-                getLovCargos();
+                cargarLovCargos();
                 context.update("formLovs:formDCargoDesempenado:CargoCargoDesempeñadoDialogo");
                 modificarInfoR_CargoD(lovCargos.size());
                 context.execute("CargoCargoDesempeñadoDialogo.show()");
                 idCargoDesempeñado = -1;
             }
             if (idCargoDesempeñado == 1) {
-                getLovMotivosCambiosCargos();
+                cargarLovMotivosCargos();
                 context.update("formLovs:formDCargoDesempenado:MotivoCambioCargoCargoDesempeñadoDialogo");
-                modificarInfoR_MotivoCargoD(lovMotivosCambiosCargos.size());
+                modificarInfoR_MotivoCargoD(lovMotivosCargos.size());
                 context.execute("MotivoCambioCargoCargoDesempeñadoDialogo.show()");
                 idCargoDesempeñado = -1;
             }
             if (idCargoDesempeñado == 2) {
-                getLovEstructuras();
+                cargarLovEstructuras();
                 context.update("formLovs:formDCargoDesempenado:EstructuraCargoDesempeñadoDialogo");
                 modificarInfoR_EstrCargoD(lovEstructuras.size());
                 context.execute("EstructuraCargoDesempeñadoDialogo.show()");
                 idCargoDesempeñado = -1;
             }
             if (idCargoDesempeñado == 3) {
-                getLovPapeles();
+                cargarLovPapeles();
                 context.update("formLovs:formDCargoDesempenado:PapelCargoDesempeñadoDialogo");
                 modificarInfoR_PapelCargoD(lovPapeles.size());
                 context.execute("PapelCargoDesempeñadoDialogo.show()");
                 idCargoDesempeñado = -1;
             }
             if (idCargoDesempeñado == 4) {
-                getLovEmpleados();
+                cargarLovEmpleados();
                 context.update("formLovs:formDCargoDesempenado:EmpleadoJefeCargoDesempeñadoDialogo");
                 modificarInfoR_JefeCargoD(lovEmpleados.size());
                 context.execute("EmpleadoJefeCargoDesempeñadoDialogo.show()");
@@ -844,14 +866,14 @@ public class ControlPersonaIndividual implements Serializable {
             }
         } else if (idCentroCosto >= 0) {
             if (idCentroCosto == 0) {
-                getLovMotivosLocalizaciones();
+                cargarLovMotivosLocalizaciones();
                 context.update("formLovs:formDCentroCosto:MotivoLocalizacionCentroCostoDialogo");
                 modificarInfoR_MotivoCentroC(lovMotivosLocalizaciones.size());
                 context.execute("MotivoLocalizacionCentroCostoDialogo.show()");
                 idCentroCosto = -1;
             }
             if (idCentroCosto == 1) {
-                getLovEstructurasCentroCosto();
+                cargarLovEstructurasCentroCosto();
                 context.update("formLovs:formDCentroCosto:EstructuraCentroCostoDialogo");
                 modificarInfoR_EstrCentroC(lovEstructurasCentroCosto.size());
                 context.execute("EstructuraCentroCostoDialogo.show()");
@@ -859,7 +881,7 @@ public class ControlPersonaIndividual implements Serializable {
             }
         } else if (idTipoTrabajador >= 0) {
             if (idTipoTrabajador == 0) {
-                getLovTiposTrabajadores();
+                cargarLovTiposTrabajadores();
                 context.update("formLovs:formDTipoTrabajador:TipoTrabajadorTipoTrabajadorDialogo");
                 modificarInfoR_TipoTraTT(lovTiposTrabajadores.size());
                 context.execute("TipoTrabajadorTipoTrabajadorDialogo.show()");
@@ -867,7 +889,7 @@ public class ControlPersonaIndividual implements Serializable {
             }
         } else if (idTipoSalario >= 0) {
             if (idTipoSalario == 0) {
-                getLovReformasLaborales();
+                cargarLovReformasLaborales();
                 context.update("formLovs:formDTipoSalario:ReformaLaboralTipoSalarioDialogo");
                 modificarInfoR_ReformaTipoSa(lovReformasLaborales.size());
                 context.execute("ReformaLaboralTipoSalarioDialogo.show()");
@@ -875,14 +897,14 @@ public class ControlPersonaIndividual implements Serializable {
             }
         } else if (idSueldo >= 0) {
             if (idSueldo == 1) {
-                getLovMotivosCambiosSueldos();
+                cargarLovMotivosCambiosSueldos();
                 context.update("formLovs:formDSueldo:MotivoCambioSueldoSueldoDialogo");
                 modificarInfoR_MotivoSu(lovMotivosCambiosSueldos.size());
                 context.execute("MotivoCambioSueldoSueldoDialogo.show()");
                 idSueldo = -1;
             }
             if (idSueldo == 2) {
-                getLovTiposSueldos();
+                cargarLovTiposSueldos();
                 context.update("formLovs:formDSueldo:TipoSueldoSueldoDialogo");
                 modificarInfoR_TipoSuSu(lovTiposSueldos.size());
                 context.execute("TipoSueldoSueldoDialogo.show()");
@@ -897,14 +919,14 @@ public class ControlPersonaIndividual implements Serializable {
             }
         } else if (idTipoContrato >= 0) {
             if (idTipoContrato == 0) {
-                getLovMotivosContratos();
+                cargarLovMotivosContratos();
                 context.update("formLovs:formDTipoContrato:MotivoContratoTipoContratoDialogo");
                 modificarInfoR_MotivoTipoCo(lovMotivosContratos.size());
                 context.execute("MotivoContratoTipoContratoDialogo.show()");
                 idTipoContrato = -1;
             }
             if (idTipoContrato == 1) {
-                getLovTiposContratos();
+                cargarLovTiposContratos();
                 context.update("formLovs:formDTipoContrato:TipoContratoTipoContratoDialogo");
                 modificarInfoR_TipoContrato(lovTiposContratos.size());
                 context.execute("TipoContratoTipoContratoDialogo.show()");
@@ -912,7 +934,7 @@ public class ControlPersonaIndividual implements Serializable {
             }
         } else if (idNormaLaboral >= 0) {
             if (idNormaLaboral == 0) {
-                getLovNormasLaborales();
+                cargarLovNormasLaborales();
                 context.update("formLovs:formDNormaLaboral:NormaLaboralNormaLaboralDialogo");
                 modificarInfoR_NormaL(lovNormasLaborales.size());
                 context.execute("NormaLaboralNormaLaboralDialogo.show()");
@@ -920,7 +942,7 @@ public class ControlPersonaIndividual implements Serializable {
             }
         } else if (idLegislacionLaboral >= 0) {
             if (idLegislacionLaboral == 0) {
-                getLovContratos();
+                cargarLovContratos();
                 context.update("formLovs:formDLegislacionLaboral:ContratoLegislacionLaboralDialogo");
                 modificarInfoR_ContratoLL(lovContratos.size());
                 context.execute("ContratoLegislacionLaboralDialogo.show()");
@@ -928,7 +950,7 @@ public class ControlPersonaIndividual implements Serializable {
             }
         } else if (idUbicacionGeografica >= 0) {
             if (idUbicacionGeografica == 0) {
-                getLovUbicacionesGeograficas();
+                cargarLovUbicacionesGeograficas();
                 context.update("formLovs:formDUbicacion:UbicacionUbicacionGeograficaDialogo");
                 modificarInfoR_UbicacionUb(lovUbicacionesGeograficas.size());
                 context.execute("UbicacionUbicacionGeograficaDialogo.show()");
@@ -936,7 +958,7 @@ public class ControlPersonaIndividual implements Serializable {
             }
         } else if (idJornadaLaboral >= 0) {
             if (idJornadaLaboral == 0) {
-                getLovJornadasLaborales();
+                cargarLovJornadasLaborales();
                 context.update("formLovs:formDJornadaLaboral:JornadaJornadaLaboralDialogo");
                 modificarInfoR_JornadaL(lovJornadasLaborales.size());
                 context.execute("JornadaJornadaLaboralDialogo.show()");
@@ -944,21 +966,21 @@ public class ControlPersonaIndividual implements Serializable {
             }
         } else if (idFormaPago >= 0) {
             if (idFormaPago == 0) {
-                getLovPeriodicidades();
+                cargarLovPeriodicidades();
                 context.update("formLovs:formDFormaPago:PeriodicidadFormaPagoDialogo");
                 modificarInfoR_PeriodFormaPago(lovPeriodicidades.size());
                 context.execute("PeriodicidadFormaPagoDialogo.show()");
                 idFormaPago = -1;
             }
             if (idFormaPago == 3) {
-                getLovSucursales();
+                cargarLovSucursales();
                 context.update("formLovs:formDFormaPago:SucursalFormaPagoDialogo");
                 modificarInfoR_SucursalFormaP(lovSucursales.size());
                 context.execute("SucursalFormaPagoDialogo.show()");
                 idFormaPago = -1;
             }
             if (idFormaPago == 4) {
-                getLovMetodosPagos();
+                cargarLovMetodosPagos();
                 context.update("formLovs:formDFormaPago:MetodoPagoFormaPagoDialogo");
                 modificarInfoR_MetodoFormaP(lovMetodosPagos.size());
                 context.execute("MetodoPagoFormaPagoDialogo.show()");
@@ -966,42 +988,42 @@ public class ControlPersonaIndividual implements Serializable {
             }
         } else if (idAfiliacionAFP >= 0) {
             if (idAfiliacionAFP == 0) {
-                getLovTercerosSucursales();
+                cargarLovTercerosSucursales();
                 context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
                 modificarInfoR_TerceroAfSuc(lovTercerosSucursales.size());
                 context.execute("TerceroAfiliacionDialogo.show()");
             }
         } else if (idAfiliacionARP >= 0) {
             if (idAfiliacionARP == 0) {
-                getLovTercerosSucursales();
+                cargarLovTercerosSucursales();
                 context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
                 modificarInfoR_TerceroAfSuc(lovTercerosSucursales.size());
                 context.execute("TerceroAfiliacionDialogo.show()");
             }
         } else if (idAfiliacionCaja >= 0) {
             if (idAfiliacionCaja == 0) {
-                getLovTercerosSucursales();
+                cargarLovTercerosSucursales();
                 context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
                 modificarInfoR_TerceroAfSuc(lovTercerosSucursales.size());
                 context.execute("TerceroAfiliacionDialogo.show()");
             }
         } else if (idAfiliacionEPS >= 0) {
             if (idAfiliacionEPS == 0) {
-                getLovTercerosSucursales();
+                cargarLovTercerosSucursales();
                 context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
                 modificarInfoR_TerceroAfSuc(lovTercerosSucursales.size());
                 context.execute("TerceroAfiliacionDialogo.show()");
             }
         } else if (idAfiliacionFondo >= 0) {
             if (idAfiliacionFondo == 0) {
-                getLovTercerosSucursales();
+                cargarLovTercerosSucursales();
                 context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
                 modificarInfoR_TerceroAfSuc(lovTercerosSucursales.size());
                 context.execute("TerceroAfiliacionDialogo.show()");
             }
         } else if (idEstadoCivil >= 0) {
             if (idEstadoCivil == 0) {
-                getLovEstadosCiviles();
+                cargarLovEstadosCiviles();
                 context.update("formLovs:formDEstadoCivil:EstadoCivilEstadoCivilDialogo");
                 modificarInfoR_EstadoCivil(lovEstadosCiviles.size());
                 context.execute("EstadoCivilEstadoCivilDialogo.show()");
@@ -1009,7 +1031,7 @@ public class ControlPersonaIndividual implements Serializable {
             }
         } else if (idDireccion >= 0) {
             if (idDireccion == 1) {
-                getLovCiudades();
+                cargarLovCiudades();
                 context.update("formLovs:formDDireccion:CiudadDireccionDialogo");
                 modificarInfoR_CiudadDir(lovCiudades.size());
                 context.execute("CiudadDireccionDialogo.show()");
@@ -1017,14 +1039,14 @@ public class ControlPersonaIndividual implements Serializable {
             }
         } else if (idTelefono >= 0) {
             if (idTelefono == 0) {
-                getLovTiposTelefonos();
+                cargarLovTiposTelefonos();
                 context.update("formLovs:formDTelefono:TipoTelefonoTelefonoDialogo");
                 modificarInfoR_TipoTelT(lovTiposTelefonos.size());
                 context.execute("TipoTelefonoTelefonoDialogo.show()");
                 idTelefono = -1;
             }
             if (idTelefono == 1) {
-                getLovCiudades();
+                cargarLovCiudades();
                 context.update("formLovs:formDTelefono:CiudadTelefonoDialogo");
                 modificarInfoR_CiudadTel(lovCiudades.size());
                 context.execute("CiudadTelefonoDialogo.show()");
@@ -1436,7 +1458,7 @@ public class ControlPersonaIndividual implements Serializable {
         lovTiposDocumentos = null;
         lovCiudades = null;
         lovCargos = null;
-        lovMotivosCambiosCargos = null;
+        lovMotivosCargos = null;
         lovEstructuras = null;
         lovPapeles = null;
         lovEmpleados = null;
@@ -3015,22 +3037,22 @@ public class ControlPersonaIndividual implements Serializable {
         }
         if (confirmarCambio.equalsIgnoreCase("MOTIVO")) {
             nuevaVigenciaCargo.getMotivocambiocargo().setNombre(auxCargoDesempeñadoMotivoCargo);
-            if (lovMotivosCambiosCargos != null) {
-                for (int i = 0; i < lovMotivosCambiosCargos.size(); i++) {
-                    if (lovMotivosCambiosCargos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+            if (lovMotivosCargos != null) {
+                for (int i = 0; i < lovMotivosCargos.size(); i++) {
+                    if (lovMotivosCargos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
                         indiceUnicoElemento = i;
                         coincidencias++;
                     }
                 }
             }
             if (coincidencias == 1) {
-                nuevaVigenciaCargo.setMotivocambiocargo(lovMotivosCambiosCargos.get(indiceUnicoElemento));
+                nuevaVigenciaCargo.setMotivocambiocargo(lovMotivosCargos.get(indiceUnicoElemento));
                 context.update("form:motivoModCargoDesempeñado");
             } else {
                 permitirIndexCargoDesempeñado = false;
                 getInfoRegistroMotivoCargoDesempenado();
                 context.update("formLovs:formDCargoDesempenado:MotivoCambioCargoCargoDesempeñadoDialogo");
-                modificarInfoR_MotivoCargoD(lovMotivosCambiosCargos.size());
+                modificarInfoR_MotivoCargoD(lovMotivosCargos.size());
                 context.execute("MotivoCambioCargoCargoDesempeñadoDialogo.show()");
                 context.update("form:motivoModCargoDesempeñado");
             }
@@ -3276,28 +3298,28 @@ public class ControlPersonaIndividual implements Serializable {
                 context.update("form:tipoSueldoModSueldo");
             }
         }
-       /* if (confirmarCambio.equalsIgnoreCase("UNIDAD")) {
-            nuevaVigenciaSueldo.getUnidadpago().setNombre(auxSueldoUnidad);
-            if (lovUnidades != null) {
-                for (int i = 0; i < lovUnidades.size(); i++) {
-                    if (lovUnidades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                        indiceUnicoElemento = i;
-                        coincidencias++;
-                    }
-                }
-            }
-            if (coincidencias == 1) {
-                nuevaVigenciaSueldo.setUnidadpago(lovUnidades.get(indiceUnicoElemento));
-                context.update("form:unidadPagoModSueldo");
-            } else {
-                permitirIndexSueldo = false;
-                getInfoRegistroUnidadSueldo();
-                context.update("formLovs:formDSueldo:UnidadSueldoDialogo");
-                modificarInfoR_UnidadSu(lovUnidades.size());
-                context.execute("UnidadSueldoDialogo.show()");
-                context.update("form:unidadPagoModSueldo");
-            }
-        }*/
+        /* if (confirmarCambio.equalsIgnoreCase("UNIDAD")) {
+         nuevaVigenciaSueldo.getUnidadpago().setNombre(auxSueldoUnidad);
+         if (lovUnidades != null) {
+         for (int i = 0; i < lovUnidades.size(); i++) {
+         if (lovUnidades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+         indiceUnicoElemento = i;
+         coincidencias++;
+         }
+         }
+         }
+         if (coincidencias == 1) {
+         nuevaVigenciaSueldo.setUnidadpago(lovUnidades.get(indiceUnicoElemento));
+         context.update("form:unidadPagoModSueldo");
+         } else {
+         permitirIndexSueldo = false;
+         getInfoRegistroUnidadSueldo();
+         context.update("formLovs:formDSueldo:UnidadSueldoDialogo");
+         modificarInfoR_UnidadSu(lovUnidades.size());
+         context.execute("UnidadSueldoDialogo.show()");
+         context.update("form:unidadPagoModSueldo");
+         }
+         }*/
     }
 
     public void modificarTipoContrato(int indice, String confirmarCambio, String valorConfirmar) {
@@ -5170,7 +5192,7 @@ public class ControlPersonaIndividual implements Serializable {
             if (fechaIngreso != null) {
                 disableNombreEstructuraCargo = false;
                 lovEstructuras = null;
-                getLovEstructuras();
+                cargarLovEstructuras();
                 System.out.println("disableNombreEstructuraCargo es false");
             } else {
                 disableNombreEstructuraCargo = true;
@@ -5876,88 +5898,6 @@ public class ControlPersonaIndividual implements Serializable {
 
     }
 
-    public List<Empresas> getLovEmpresas() {
-        if (lovEmpresas == null) {
-            lovEmpresas = administrarPersonaIndividual.lovEmpresas();
-        }
-        return lovEmpresas;
-    }
-
-    public void setLovEmpresas(List<Empresas> lovEmpresas) {
-        this.lovEmpresas = lovEmpresas;
-    }
-
-    public List<Empresas> getFiltrarLovEmpresas() {
-        return filtrarLovEmpresas;
-    }
-
-    public void setFiltrarLovEmpresas(List<Empresas> filtrarLovEmpresas) {
-        this.filtrarLovEmpresas = filtrarLovEmpresas;
-    }
-
-    public Empresas getEmpresaSeleccionada() {
-        return empresaSeleccionada;
-    }
-
-    public void setEmpresaSeleccionada(Empresas empresaSeleccionada) {
-        this.empresaSeleccionada = empresaSeleccionada;
-    }
-
-    public List<TiposDocumentos> getLovTiposDocumentos() {
-        if (lovTiposDocumentos == null) {
-            lovTiposDocumentos = administrarPersonaIndividual.lovTiposDocumentos();
-        }
-        return lovTiposDocumentos;
-    }
-
-    public void setLovTiposDocumentos(List<TiposDocumentos> lovTiposDocumentos) {
-        this.lovTiposDocumentos = lovTiposDocumentos;
-    }
-
-    public List<TiposDocumentos> getFiltrarLovTiposDocumentos() {
-        return filtrarLovTiposDocumentos;
-    }
-
-    public void setFiltrarLovTiposDocumentos(List<TiposDocumentos> filtrarLovTiposDocumentos) {
-        this.filtrarLovTiposDocumentos = filtrarLovTiposDocumentos;
-    }
-
-    public TiposDocumentos getTipoDocumentoSeleccionado() {
-        return tipoDocumentoSeleccionado;
-    }
-
-    public void setTipoDocumentoSeleccionado(TiposDocumentos tipoDocumentoSeleccionado) {
-        this.tipoDocumentoSeleccionado = tipoDocumentoSeleccionado;
-    }
-
-    public List<Ciudades> getLovCiudades() {
-        if (lovCiudades == null && nuevoEmpleado.getEmpresa().getSecuencia() != null) {
-            System.out.println("getLovCiudades:   nuevoEmpleado.getEmpresa().getSecuencia(): " + nuevoEmpleado.getEmpresa().getSecuencia());
-            lovCiudades = administrarPersonaIndividual.lovCiudades();
-        }
-        return lovCiudades;
-    }
-
-    public void setLovCiudades(List<Ciudades> lovCiudades) {
-        this.lovCiudades = lovCiudades;
-    }
-
-    public List<Ciudades> getFiltrarLovCiudades() {
-        return filtrarLovCiudades;
-    }
-
-    public void setFiltrarLovCiudades(List<Ciudades> filtrarLovCiudades) {
-        this.filtrarLovCiudades = filtrarLovCiudades;
-    }
-
-    public Ciudades getCiudadSeleccionada() {
-        return ciudadSeleccionada;
-    }
-
-    public void setCiudadSeleccionada(Ciudades ciudadSeleccionada) {
-        this.ciudadSeleccionada = ciudadSeleccionada;
-    }
-
     public boolean isAceptar() {
         return aceptar;
     }
@@ -6031,117 +5971,6 @@ public class ControlPersonaIndividual implements Serializable {
         this.nuevaVigenciaCargo = nuevaVigenciaCargo;
     }
 
-    public List<Cargos> getLovCargos() {
-        if (lovCargos == null) {
-            //lovCargos = administrarPersonaIndividual.lovCargos();
-            lovCargos = new ArrayList<Cargos>();
-        }
-        return lovCargos;
-    }
-
-    public void setLovCargos(List<Cargos> lovCargos) {
-        this.lovCargos = lovCargos;
-    }
-
-    public List<Cargos> getFiltrarLovCargos() {
-        return filtrarLovCargos;
-    }
-
-    public void setFiltrarLovCargos(List<Cargos> filtrarLovCargos) {
-        this.filtrarLovCargos = filtrarLovCargos;
-    }
-
-    public List<MotivosCambiosCargos> getLovMotivosCambiosCargos() {
-        if (lovMotivosCambiosCargos == null) {
-            lovMotivosCambiosCargos = administrarPersonaIndividual.lovMotivosCambiosCargos();
-        }
-        return lovMotivosCambiosCargos;
-    }
-
-    public void setLovMotivosCambiosCargos(List<MotivosCambiosCargos> lovMotivosCambiosCargos) {
-        this.lovMotivosCambiosCargos = lovMotivosCambiosCargos;
-    }
-
-    public List<MotivosCambiosCargos> getFiltrarLovMotivosCambiosCargos() {
-        return filtrarLovMotivosCambiosCargos;
-    }
-
-    public void setFiltrarLovMotivosCambiosCargos(List<MotivosCambiosCargos> filtrarLovMotivosCambiosCargos) {
-        this.filtrarLovMotivosCambiosCargos = filtrarLovMotivosCambiosCargos;
-    }
-
-    public MotivosCambiosCargos getMotivoCambioCargoSeleccionado() {
-        return motivoCambioCargoSeleccionado;
-    }
-
-    public void setMotivoCambioCargoSeleccionado(MotivosCambiosCargos motivoCambioCargoSeleccionado) {
-        this.motivoCambioCargoSeleccionado = motivoCambioCargoSeleccionado;
-    }
-
-    public List<Estructuras> getLovEstructuras() {
-        if (nuevoEmpleado.getEmpresa().getSecuencia() != null && (fechaIngreso != null) && lovEstructuras == null) {
-            System.out.println("getLovEstructuras() : nuevoEmpleado.getEmpresa().getSecuencia(): " + nuevoEmpleado.getEmpresa().getSecuencia());
-            System.out.println("getLovEstructuras() : fechaIngreso: " + fechaIngreso);
-            lovEstructuras = administrarPersonaIndividual.lovEstructurasModCargos(nuevoEmpleado.getEmpresa().getSecuencia(), fechaIngreso);
-        }
-        return lovEstructuras;
-    }
-
-    public void setLovEstructuras(List<Estructuras> lovEstructuras) {
-        this.lovEstructuras = lovEstructuras;
-    }
-
-    public List<Estructuras> getFiltrarLovEstructuras() {
-        return filtrarLovEstructuras;
-    }
-
-    public void setFiltrarLovEstructuras(List<Estructuras> filtrarLovEstructuras) {
-        this.filtrarLovEstructuras = filtrarLovEstructuras;
-    }
-
-    public Estructuras getEstructuraSeleccionada() {
-        return estructuraSeleccionada;
-    }
-
-    public void setEstructuraSeleccionada(Estructuras estructuraSeleccionada) {
-        this.estructuraSeleccionada = estructuraSeleccionada;
-    }
-
-    public List<Papeles> getLovPapeles() {
-        if (lovPapeles == null) {
-            lovPapeles = administrarPersonaIndividual.lovPapeles();
-        }
-        return lovPapeles;
-    }
-
-    public void setLovPapeles(List<Papeles> lovPapeles) {
-        this.lovPapeles = lovPapeles;
-    }
-
-    public List<Papeles> getFiltrarLovPapeles() {
-        return filtrarLovPapeles;
-    }
-
-    public void setFiltrarLovPapeles(List<Papeles> filtrarLovPapeles) {
-        this.filtrarLovPapeles = filtrarLovPapeles;
-    }
-
-    public Papeles getPapelSeleccionado() {
-        return papelSeleccionado;
-    }
-
-    public void setPapelSeleccionado(Papeles papelSeleccionado) {
-        this.papelSeleccionado = papelSeleccionado;
-    }
-
-    public Cargos getCargoSeleccionado() {
-        return cargoSeleccionado;
-    }
-
-    public void setCargoSeleccionado(Cargos cargoSeleccionado) {
-        this.cargoSeleccionado = cargoSeleccionado;
-    }
-
     public boolean isDisableNombreEstructuraCargo() {
         return disableNombreEstructuraCargo;
     }
@@ -6156,88 +5985,6 @@ public class ControlPersonaIndividual implements Serializable {
 
     public void setNuevaVigenciaLocalizacion(VigenciasLocalizaciones nuevaVigenciaLocalizacion) {
         this.nuevaVigenciaLocalizacion = nuevaVigenciaLocalizacion;
-    }
-
-    public List<Empleados> getLovEmpleados() {
-        if (lovEmpleados == null) {
-            lovEmpleados = administrarPersonaIndividual.lovEmpleados();
-        }
-        return lovEmpleados;
-    }
-
-    public void setLovEmpleados(List<Empleados> lovEmpleados) {
-        this.lovEmpleados = lovEmpleados;
-    }
-
-    public List<Empleados> getFiltrarLovEmpleados() {
-        return filtrarLovEmpleados;
-    }
-
-    public void setFiltrarLovEmpleados(List<Empleados> filtrarLovEmpleados) {
-        this.filtrarLovEmpleados = filtrarLovEmpleados;
-    }
-
-    public Empleados getEmpleadoSeleccionado() {
-        return empleadoSeleccionado;
-    }
-
-    public void setEmpleadoSeleccionado(Empleados empleadoSeleccionado) {
-        this.empleadoSeleccionado = empleadoSeleccionado;
-    }
-
-    public List<MotivosLocalizaciones> getLovMotivosLocalizaciones() {
-        if (lovMotivosLocalizaciones == null) {
-            lovMotivosLocalizaciones = administrarPersonaIndividual.lovMotivosLocalizaciones();
-        }
-        return lovMotivosLocalizaciones;
-    }
-
-    public void setLovMotivosLocalizaciones(List<MotivosLocalizaciones> lovMotivosLocalizaciones) {
-        this.lovMotivosLocalizaciones = lovMotivosLocalizaciones;
-    }
-
-    public List<MotivosLocalizaciones> getFiltrarLovMotivosCC() {
-        return filtrarLovMotivosCC;
-    }
-
-    public void setFiltrarLovMotivosCC(List<MotivosLocalizaciones> filtrarLovMotivosLocalizaciones) {
-        this.filtrarLovMotivosCC = filtrarLovMotivosLocalizaciones;
-    }
-
-    public MotivosLocalizaciones getMotivoLocalizacionSeleccionado() {
-        return motivoLocalizacionSeleccionado;
-    }
-
-    public void setMotivoLocalizacionSeleccionado(MotivosLocalizaciones motivoLocalizacionSeleccionado) {
-        this.motivoLocalizacionSeleccionado = motivoLocalizacionSeleccionado;
-    }
-
-    public List<Estructuras> getLovEstructurasCentroCosto() {
-        if (nuevoEmpleado.getEmpresa().getSecuencia() != null && lovEstructurasCentroCosto == null) {
-            System.out.println("getLovEstructurasCentroCosto() : nuevoEmpleado.getEmpresa().getSecuencia() : " + nuevoEmpleado.getEmpresa().getSecuencia());
-            lovEstructurasCentroCosto = administrarPersonaIndividual.lovEstructurasModCentroCosto(nuevoEmpleado.getEmpresa().getSecuencia());
-        }
-        return lovEstructurasCentroCosto;
-    }
-
-    public void setLovEstructurasCentroCosto(List<Estructuras> lovEstructurasCentroCosto) {
-        this.lovEstructurasCentroCosto = lovEstructurasCentroCosto;
-    }
-
-    public List<Estructuras> getFiltrarLovEstructurasCentroCosto() {
-        return filtrarLovEstructurasCentroCosto;
-    }
-
-    public void setFiltrarLovEstructurasCentroCosto(List<Estructuras> filtrarLovEstructurasCentroCosto) {
-        this.filtrarLovEstructurasCentroCosto = filtrarLovEstructurasCentroCosto;
-    }
-
-    public Estructuras getEstructuraCentroCostoSeleccionada() {
-        return estructuraCentroCostoSeleccionada;
-    }
-
-    public void setEstructuraCentroCostoSeleccionada(Estructuras estructuraCentroCostoSeleccionada) {
-        this.estructuraCentroCostoSeleccionada = estructuraCentroCostoSeleccionada;
     }
 
     public boolean isDisableDescripcionEstructura() {
@@ -6256,67 +6003,12 @@ public class ControlPersonaIndividual implements Serializable {
         this.nuevaVigenciaTipoTrabajador = nuevaVigenciaTipoTrabajador;
     }
 
-    public List<TiposTrabajadores> getLovTiposTrabajadores() {
-        if (lovTiposTrabajadores == null && nuevoEmpleado.getEmpresa().getSecuencia() != null) {
-            System.out.println("getLovTiposTrabajadores : nuevoEmpleado.getEmpresa().getSecuencia() : " + nuevoEmpleado.getEmpresa().getSecuencia());
-            lovTiposTrabajadores = administrarPersonaIndividual.lovTiposTrabajadores();
-        }
-        return lovTiposTrabajadores;
-    }
-
-    public void setLovTiposTrabajadores(List<TiposTrabajadores> lovTiposTrabajadores) {
-        this.lovTiposTrabajadores = lovTiposTrabajadores;
-    }
-
-    public List<TiposTrabajadores> getFiltrarLovTiposTrabajadores() {
-        return filtrarLovTiposTrabajadores;
-    }
-
-    public void setFiltrarLovTiposTrabajadores(List<TiposTrabajadores> filtrarLovTiposTrabajadores) {
-        this.filtrarLovTiposTrabajadores = filtrarLovTiposTrabajadores;
-    }
-
-    public TiposTrabajadores getTipoTrabajadorSeleccionado() {
-        return tipoTrabajadorSeleccionado;
-    }
-
-    public void setTipoTrabajadorSeleccionado(TiposTrabajadores tipoTrabajadorSeleccionado) {
-        this.tipoTrabajadorSeleccionado = tipoTrabajadorSeleccionado;
-    }
-
     public VigenciasReformasLaborales getNuevaVigenciaReformaLaboral() {
         return nuevaVigenciaReformaLaboral;
     }
 
     public void setNuevaVigenciaReformaLaboral(VigenciasReformasLaborales nuevaVigenciaReformaLaboral) {
         this.nuevaVigenciaReformaLaboral = nuevaVigenciaReformaLaboral;
-    }
-
-    public List<ReformasLaborales> getLovReformasLaborales() {
-        if (lovReformasLaborales == null) {
-            lovReformasLaborales = administrarPersonaIndividual.lovReformasLaborales();
-        }
-        return lovReformasLaborales;
-    }
-
-    public void setLovReformasLaborales(List<ReformasLaborales> lovReformasLaborales) {
-        this.lovReformasLaborales = lovReformasLaborales;
-    }
-
-    public List<ReformasLaborales> getFiltrarLovReformasLaborales() {
-        return filtrarLovReformasLaborales;
-    }
-
-    public void setFiltrarLovReformasLaborales(List<ReformasLaborales> filtrarLovReformasLaborales) {
-        this.filtrarLovReformasLaborales = filtrarLovReformasLaborales;
-    }
-
-    public ReformasLaborales getReformaLaboralSeleccionada() {
-        return reformaLaboralSeleccionada;
-    }
-
-    public void setReformaLaboralSeleccionada(ReformasLaborales reformaLaboralSeleccionada) {
-        this.reformaLaboralSeleccionada = reformaLaboralSeleccionada;
     }
 
     public VigenciasSueldos getNuevaVigenciaSueldo() {
@@ -6335,157 +6027,12 @@ public class ControlPersonaIndividual implements Serializable {
         this.valorSueldo = valorSueldo;
     }
 
-    public List<MotivosCambiosSueldos> getLovMotivosCambiosSueldos() {
-        if (lovMotivosCambiosSueldos == null) {
-            lovMotivosCambiosSueldos = administrarPersonaIndividual.lovMotivosCambiosSueldos();
-        }
-        return lovMotivosCambiosSueldos;
-    }
-
-    public void setLovMotivosCambiosSueldos(List<MotivosCambiosSueldos> lovMotivosCambiosSueldos) {
-        this.lovMotivosCambiosSueldos = lovMotivosCambiosSueldos;
-    }
-
-    public List<MotivosCambiosSueldos> getFiltrarLovMotivosCambiosSueldos() {
-        return filtrarLovMotivosCambiosSueldos;
-    }
-
-    public void setFiltrarLovMotivosCambiosSueldos(List<MotivosCambiosSueldos> filtrarLovMotivosCambiosSueldos) {
-        this.filtrarLovMotivosCambiosSueldos = filtrarLovMotivosCambiosSueldos;
-    }
-
-    public MotivosCambiosSueldos getMotivoCambioSueldoSeleccionado() {
-        return motivoCambioSueldoSeleccionado;
-    }
-
-    public void setMotivoCambioSueldoSeleccionado(MotivosCambiosSueldos motivoCambioSueldoSeleccionado) {
-        this.motivoCambioSueldoSeleccionado = motivoCambioSueldoSeleccionado;
-    }
-
-    public List<TiposSueldos> getLovTiposSueldos() {
-        if (lovTiposSueldos == null) {
-            lovTiposSueldos = administrarPersonaIndividual.lovTiposSueldos();
-        }
-        return lovTiposSueldos;
-    }
-
-    public void setLovTiposSueldos(List<TiposSueldos> lovTiposSueldos) {
-        this.lovTiposSueldos = lovTiposSueldos;
-    }
-
-    public List<TiposSueldos> getFiltrarLovTiposSueldos() {
-        return filtrarLovTiposSueldos;
-    }
-
-    public void setFiltrarLovTiposSueldos(List<TiposSueldos> filtrarLovTiposSueldos) {
-        this.filtrarLovTiposSueldos = filtrarLovTiposSueldos;
-    }
-
-    public TiposSueldos getTipoSueldoSeleccionado() {
-        return tipoSueldoSeleccionado;
-    }
-
-    public void setTipoSueldoSeleccionado(TiposSueldos tipoSueldoSeleccionado) {
-        this.tipoSueldoSeleccionado = tipoSueldoSeleccionado;
-    }
-
-    public List<Unidades> getLovUnidades() {
-        if (lovUnidades == null) {
-            lovUnidades = administrarPersonaIndividual.lovUnidades();
-            if (lovUnidades != null) {
-                if (!lovUnidades.isEmpty()) {
-                    for (int i = 0; i < lovUnidades.size(); i++) {
-                        if (lovUnidades.get(i).getNombre().equals("PESOS")) {
-                            unidadPesos = lovUnidades.get(i);
-                            System.out.println("unidadPesos = " + unidadPesos.getNombre());
-                        }
-                    }
-                }
-            }
-        }
-        return lovUnidades;
-    }
-
-    public void setLovUnidades(List<Unidades> lovUnidades) {
-        this.lovUnidades = lovUnidades;
-    }
-
-    public List<Unidades> getFiltrarLovUnidades() {
-        return filtrarLovUnidades;
-    }
-
-    public void setFiltrarLovUnidades(List<Unidades> filtrarLovUnidades) {
-        this.filtrarLovUnidades = filtrarLovUnidades;
-    }
-
-    public Unidades getUnidadSeleccionada() {
-        return unidadSeleccionada;
-    }
-
-    public void setUnidadSeleccionada(Unidades unidadSeleccionada) {
-        this.unidadSeleccionada = unidadSeleccionada;
-    }
-
     public VigenciasTiposContratos getNuevaVigenciaTipoContrato() {
         return nuevaVigenciaTipoContrato;
     }
 
     public void setNuevaVigenciaTipoContrato(VigenciasTiposContratos nuevaVigenciaTipoContrato) {
         this.nuevaVigenciaTipoContrato = nuevaVigenciaTipoContrato;
-    }
-
-    public List<MotivosContratos> getLovMotivosContratos() {
-        if (lovMotivosContratos == null) {
-            lovMotivosContratos = administrarPersonaIndividual.lovMotivosContratos();
-        }
-        return lovMotivosContratos;
-    }
-
-    public void setLovMotivosContratos(List<MotivosContratos> lovMotivosContratos) {
-        this.lovMotivosContratos = lovMotivosContratos;
-    }
-
-    public List<MotivosContratos> getFiltrarLovMotivosContratos() {
-        return filtrarLovMotivosContratos;
-    }
-
-    public void setFiltrarLovMotivosContratos(List<MotivosContratos> filtrarLovMotivosContratos) {
-        this.filtrarLovMotivosContratos = filtrarLovMotivosContratos;
-    }
-
-    public MotivosContratos getMotivoContratoSeleccionado() {
-        return motivoContratoSeleccionado;
-    }
-
-    public void setMotivoContratoSeleccionado(MotivosContratos motivoContratoSeleccionado) {
-        this.motivoContratoSeleccionado = motivoContratoSeleccionado;
-    }
-
-    public List<TiposContratos> getLovTiposContratos() {
-        if (lovTiposContratos == null) {
-            lovTiposContratos = administrarPersonaIndividual.lovTiposContratos();
-        }
-        return lovTiposContratos;
-    }
-
-    public void setLovTiposContratos(List<TiposContratos> lovTiposContratos) {
-        this.lovTiposContratos = lovTiposContratos;
-    }
-
-    public List<TiposContratos> getFiltrarLovTiposContratos() {
-        return filtrarLovTiposContratos;
-    }
-
-    public void setFiltrarLovTiposContratos(List<TiposContratos> filtrarLovTiposContratos) {
-        this.filtrarLovTiposContratos = filtrarLovTiposContratos;
-    }
-
-    public TiposContratos getTipoContratoSeleccionado() {
-        return tipoContratoSeleccionado;
-    }
-
-    public void setTipoContratoSeleccionado(TiposContratos tipoContratoSeleccionado) {
-        this.tipoContratoSeleccionado = tipoContratoSeleccionado;
     }
 
     public VigenciasNormasEmpleados getNuevaVigenciaNormaEmpleado() {
@@ -6496,33 +6043,6 @@ public class ControlPersonaIndividual implements Serializable {
         this.nuevaVigenciaNormaEmpleado = nuevaVigenciaNormaEmpleado;
     }
 
-    public List<NormasLaborales> getLovNormasLaborales() {
-        if (lovNormasLaborales == null) {
-            lovNormasLaborales = administrarPersonaIndividual.lovNormasLaborales();
-        }
-        return lovNormasLaborales;
-    }
-
-    public void setLovNormasLaborales(List<NormasLaborales> lovNormasLaborales) {
-        this.lovNormasLaborales = lovNormasLaborales;
-    }
-
-    public List<NormasLaborales> getFiltrarLovNormasLaborales() {
-        return filtrarLovNormasLaborales;
-    }
-
-    public void setFiltrarLovNormasLaborales(List<NormasLaborales> filtrarLovNormasLaborales) {
-        this.filtrarLovNormasLaborales = filtrarLovNormasLaborales;
-    }
-
-    public NormasLaborales getNormaLaboralSeleccionada() {
-        return normaLaboralSeleccionada;
-    }
-
-    public void setNormaLaboralSeleccionada(NormasLaborales normaLaboralSeleccionada) {
-        this.normaLaboralSeleccionada = normaLaboralSeleccionada;
-    }
-
     public VigenciasContratos getNuevaVigenciaContrato() {
         return nuevaVigenciaContrato;
     }
@@ -6531,67 +6051,12 @@ public class ControlPersonaIndividual implements Serializable {
         this.nuevaVigenciaContrato = nuevaVigenciaContrato;
     }
 
-    public List<Contratos> getLovContratos() {
-        if (lovContratos == null) {
-            lovContratos = administrarPersonaIndividual.lovContratos();
-        }
-        return lovContratos;
-    }
-
-    public void setLovContratos(List<Contratos> lovContratos) {
-        this.lovContratos = lovContratos;
-    }
-
-    public List<Contratos> getFiltrarLovContratos() {
-        return filtrarLovContratos;
-    }
-
-    public void setFiltrarLovContratos(List<Contratos> filtrarLovContratos) {
-        this.filtrarLovContratos = filtrarLovContratos;
-    }
-
-    public Contratos getContratoSeleccionado() {
-        return contratoSeleccionado;
-    }
-
-    public void setContratoSeleccionado(Contratos contratoSeleccionado) {
-        this.contratoSeleccionado = contratoSeleccionado;
-    }
-
     public VigenciasUbicaciones getNuevaVigenciaUbicacion() {
         return nuevaVigenciaUbicacion;
     }
 
     public void setNuevaVigenciaUbicacion(VigenciasUbicaciones nuevaVigenciaUbicacion) {
         this.nuevaVigenciaUbicacion = nuevaVigenciaUbicacion;
-    }
-
-    public List<UbicacionesGeograficas> getLovUbicacionesGeograficas() {
-        if (nuevoEmpleado.getEmpresa().getSecuencia() != null && lovUbicacionesGeograficas == null) {
-            System.out.println("getLovUbicacionesGeograficas : nuevoEmpleado.getEmpresa().getSecuencia(): " + nuevoEmpleado.getEmpresa().getSecuencia());
-            lovUbicacionesGeograficas = administrarPersonaIndividual.lovUbicacionesGeograficas(nuevoEmpleado.getEmpresa().getSecuencia());
-        }
-        return lovUbicacionesGeograficas;
-    }
-
-    public void setLovUbicacionesGeograficas(List<UbicacionesGeograficas> lovUbicacionesGeograficas) {
-        this.lovUbicacionesGeograficas = lovUbicacionesGeograficas;
-    }
-
-    public List<UbicacionesGeograficas> getFiltrarLovUbicacionesGeograficas() {
-        return filtrarLovUbicacionesGeograficas;
-    }
-
-    public void setFiltrarLovUbicacionesGeograficas(List<UbicacionesGeograficas> filtrarLovUbicacionesGeograficas) {
-        this.filtrarLovUbicacionesGeograficas = filtrarLovUbicacionesGeograficas;
-    }
-
-    public UbicacionesGeograficas getUbicacionGeograficaSeleccionada() {
-        return ubicacionGeograficaSeleccionada;
-    }
-
-    public void setUbicacionGeograficaSeleccionada(UbicacionesGeograficas ubicacionGeograficaSeleccionada) {
-        this.ubicacionGeograficaSeleccionada = ubicacionGeograficaSeleccionada;
     }
 
     public boolean isDisableUbicacionGeografica() {
@@ -6610,120 +6075,12 @@ public class ControlPersonaIndividual implements Serializable {
         this.nuevaVigenciaFormaPago = nuevaVigenciaFormaPago;
     }
 
-    public List<Periodicidades> getLovPeriodicidades() {
-        if (lovPeriodicidades == null) {
-            lovPeriodicidades = administrarPersonaIndividual.lovPeriodicidades();
-        }
-        return lovPeriodicidades;
-    }
-
-    public void setLovPeriodicidades(List<Periodicidades> lovPeriodicidades) {
-        this.lovPeriodicidades = lovPeriodicidades;
-    }
-
-    public List<Periodicidades> getFiltrarLovPeriodicidades() {
-        return filtrarLovPeriodicidades;
-    }
-
-    public void setFiltrarLovPeriodicidades(List<Periodicidades> filtrarLovPeriodicidades) {
-        this.filtrarLovPeriodicidades = filtrarLovPeriodicidades;
-    }
-
-    public List<Sucursales> getLovSucursales() {
-        if (lovSucursales == null) {
-            lovSucursales = administrarPersonaIndividual.lovSucursales();
-        }
-        return lovSucursales;
-    }
-
-    public void setLovSucursales(List<Sucursales> lovSucursales) {
-        this.lovSucursales = lovSucursales;
-    }
-
-    public List<Sucursales> getFiltrarLovSucursales() {
-        return filtrarLovSucursales;
-    }
-
-    public void setFiltrarLovSucursales(List<Sucursales> filtrarLovSucursales) {
-        this.filtrarLovSucursales = filtrarLovSucursales;
-    }
-
-    public Sucursales getSucursalSeleccionada() {
-        return sucursalSeleccionada;
-    }
-
-    public void setSucursalSeleccionada(Sucursales sucursalSeleccionada) {
-        this.sucursalSeleccionada = sucursalSeleccionada;
-    }
-
-    public List<MetodosPagos> getLovMetodosPagos() {
-        if (lovMetodosPagos == null) {
-            lovMetodosPagos = administrarPersonaIndividual.lovMetodosPagos();
-        }
-        return lovMetodosPagos;
-    }
-
-    public void setLovMetodosPagos(List<MetodosPagos> lovMetodosPagos) {
-        this.lovMetodosPagos = lovMetodosPagos;
-    }
-
-    public List<MetodosPagos> getFiltrarLovMetodosPagos() {
-        return filtrarLovMetodosPagos;
-    }
-
-    public void setFiltrarLovMetodosPagos(List<MetodosPagos> filtrarLovMetodosPagos) {
-        this.filtrarLovMetodosPagos = filtrarLovMetodosPagos;
-    }
-
-    public MetodosPagos getMetodoPagoSeleccionado() {
-        return metodoPagoSeleccionado;
-    }
-
-    public void setMetodoPagoSeleccionado(MetodosPagos metodoPagoSeleccionado) {
-        this.metodoPagoSeleccionado = metodoPagoSeleccionado;
-    }
-
-    public Periodicidades getPeriodicidadSeleccionada() {
-        return periodicidadSeleccionada;
-    }
-
-    public void setPeriodicidadSeleccionada(Periodicidades periodicidadSeleccionada) {
-        this.periodicidadSeleccionada = periodicidadSeleccionada;
-    }
-
     public VigenciasJornadas getNuevaVigenciaJornada() {
         return nuevaVigenciaJornada;
     }
 
     public void setNuevaVigenciaJornada(VigenciasJornadas nuevaVigenciaJornada) {
         this.nuevaVigenciaJornada = nuevaVigenciaJornada;
-    }
-
-    public List<JornadasLaborales> getLovJornadasLaborales() {
-        if (lovJornadasLaborales == null) {
-            lovJornadasLaborales = administrarPersonaIndividual.lovJornadasLaborales();
-        }
-        return lovJornadasLaborales;
-    }
-
-    public void setLovJornadasLaborales(List<JornadasLaborales> lovJornadasLaborales) {
-        this.lovJornadasLaborales = lovJornadasLaborales;
-    }
-
-    public List<JornadasLaborales> getFiltrarLovJornadasLaborales() {
-        return filtrarLovJornadasLaborales;
-    }
-
-    public void setFiltrarLovJornadasLaborales(List<JornadasLaborales> filtrarLovJornadasLaborales) {
-        this.filtrarLovJornadasLaborales = filtrarLovJornadasLaborales;
-    }
-
-    public JornadasLaborales getJornadaLaboralSeleccionada() {
-        return jornadaLaboralSeleccionada;
-    }
-
-    public void setJornadaLaboralSeleccionada(JornadasLaborales jornadaLaboralSeleccionada) {
-        this.jornadaLaboralSeleccionada = jornadaLaboralSeleccionada;
     }
 
     public VigenciasAfiliaciones getNuevaVigenciaAfiliacionEPS() {
@@ -6766,34 +6123,6 @@ public class ControlPersonaIndividual implements Serializable {
         this.nuevaVigenciaAfiliacionCaja = nuevaVigenciaAfiliacionCaja;
     }
 
-    public List<TercerosSucursales> getLovTercerosSucursales() {
-        if (lovTercerosSucursales == null && nuevoEmpleado.getEmpresa().getSecuencia() != null) {
-            System.out.println("getLovTercerosSucursales : nuevoEmpleado.getEmpresa().getSecuencia() : " + nuevoEmpleado.getEmpresa().getSecuencia());
-            lovTercerosSucursales = administrarPersonaIndividual.lovTercerosSucursales(nuevoEmpleado.getEmpresa().getSecuencia());
-        }
-        return lovTercerosSucursales;
-    }
-
-    public void setLovTercerosSucursales(List<TercerosSucursales> lovTercerosSucursales) {
-        this.lovTercerosSucursales = lovTercerosSucursales;
-    }
-
-    public List<TercerosSucursales> getFiltrarLovTercerosSucursales() {
-        return filtrarLovTercerosSucursales;
-    }
-
-    public void setFiltrarLovTercerosSucursales(List<TercerosSucursales> filtrarLovTercerosSucursales) {
-        this.filtrarLovTercerosSucursales = filtrarLovTercerosSucursales;
-    }
-
-    public TercerosSucursales getTerceroSucursalSeleccionado() {
-        return terceroSucursalSeleccionado;
-    }
-
-    public void setTerceroSucursalSeleccionado(TercerosSucursales terceroSucursalSeleccionado) {
-        this.terceroSucursalSeleccionado = terceroSucursalSeleccionado;
-    }
-
     public boolean isDisableAfiliaciones() {
         return disableAfiliaciones;
     }
@@ -6808,33 +6137,6 @@ public class ControlPersonaIndividual implements Serializable {
 
     public void setNuevoEstadoCivil(VigenciasEstadosCiviles nuevoEstadoCivil) {
         this.nuevoEstadoCivil = nuevoEstadoCivil;
-    }
-
-    public List<EstadosCiviles> getLovEstadosCiviles() {
-        if (lovEstadosCiviles == null) {
-            lovEstadosCiviles = administrarPersonaIndividual.lovEstadosCiviles();
-        }
-        return lovEstadosCiviles;
-    }
-
-    public void setLovEstadosCiviles(List<EstadosCiviles> lovEstadosCiviles) {
-        this.lovEstadosCiviles = lovEstadosCiviles;
-    }
-
-    public List<EstadosCiviles> getFiltrarLovEstadosCiviles() {
-        return filtrarLovEstadosCiviles;
-    }
-
-    public void setFiltrarLovEstadosCiviles(List<EstadosCiviles> filtrarLovEstadosCiviles) {
-        this.filtrarLovEstadosCiviles = filtrarLovEstadosCiviles;
-    }
-
-    public EstadosCiviles getEstadoCivilSeleccionado() {
-        return estadoCivilSeleccionado;
-    }
-
-    public void setEstadoCivilSeleccionado(EstadosCiviles estadoCivilSeleccionado) {
-        this.estadoCivilSeleccionado = estadoCivilSeleccionado;
     }
 
     public Direcciones getNuevaDireccion() {
@@ -6853,33 +6155,171 @@ public class ControlPersonaIndividual implements Serializable {
         this.nuevoTelefono = nuevoTelefono;
     }
 
-    public List<TiposTelefonos> getLovTiposTelefonos() {
+    ///////////////////////CARGAR LISTAS////////////////////////
+    public void cargarLovEmpresas() {
+        if (lovEmpresas == null) {
+            lovEmpresas = administrarPersonaIndividual.lovEmpresas();
+        }
+    }
+
+    public void cargarLovTiposDocumentos() {
+        if (lovTiposDocumentos == null) {
+            lovTiposDocumentos = administrarPersonaIndividual.lovTiposDocumentos();
+        }
+    }
+
+    public void cargarLovCiudades() {
+        if (lovCiudades == null && nuevoEmpleado.getEmpresa().getSecuencia() != null) {
+            lovCiudades = administrarPersonaIndividual.lovCiudades();
+        }
+    }
+
+//    public List<Cargos> getLovCargos() {
+//        if (lovCargos == null) {
+//            //lovCargos = administrarPersonaIndividual.lovCargos();
+//            lovCargos = new ArrayList<Cargos>();
+//        }
+//        return lovCargos;
+//    }
+    public void cargarLovCargos() {
+        if (lovCargos == null) {
+            lovCargos = administrarPersonaIndividual.lovCargos();
+        }
+    }
+
+    public void cargarLovMotivosCargos() {
+        if (lovMotivosCargos == null) {
+            lovMotivosCargos = administrarPersonaIndividual.lovMotivosCambiosCargos();
+        }
+    }
+
+    public void cargarLovEstructuras() {
+        if (nuevoEmpleado.getEmpresa().getSecuencia() != null && (fechaIngreso != null) && lovEstructuras == null) {
+            lovEstructuras = administrarPersonaIndividual.lovEstructurasModCargos(nuevoEmpleado.getEmpresa().getSecuencia(), fechaIngreso);
+        }
+    }
+
+    public void cargarLovPapeles() {
+        if (lovPapeles == null) {
+            lovPapeles = administrarPersonaIndividual.lovPapeles();
+        }
+    }
+
+    public void cargarLovEmpleados() {
+        if (lovEmpleados == null) {
+            lovEmpleados = administrarPersonaIndividual.lovEmpleados();
+        }
+    }
+
+    public void cargarLovMotivosLocalizaciones() {
+        if (lovMotivosLocalizaciones == null) {
+            lovMotivosLocalizaciones = administrarPersonaIndividual.lovMotivosLocalizaciones();
+        }
+    }
+
+    public void cargarLovEstructurasCentroCosto() {
+        if (nuevoEmpleado.getEmpresa().getSecuencia() != null && lovEstructurasCentroCosto == null) {
+            lovEstructurasCentroCosto = administrarPersonaIndividual.lovEstructurasModCentroCosto(nuevoEmpleado.getEmpresa().getSecuencia());
+        }
+    }
+
+    public void cargarLovTiposTrabajadores() {
+        if (lovTiposTrabajadores == null && nuevoEmpleado.getEmpresa().getSecuencia() != null) {
+            lovTiposTrabajadores = administrarPersonaIndividual.lovTiposTrabajadores();
+        }
+    }
+
+    public void cargarLovReformasLaborales() {
+        if (lovReformasLaborales == null) {
+            lovReformasLaborales = administrarPersonaIndividual.lovReformasLaborales();
+        }
+    }
+
+    public void cargarLovMotivosCambiosSueldos() {
+        if (lovMotivosCambiosSueldos == null) {
+            lovMotivosCambiosSueldos = administrarPersonaIndividual.lovMotivosCambiosSueldos();
+        }
+    }
+
+    public void cargarLovTiposSueldos() {
+        if (lovTiposSueldos == null) {
+            lovTiposSueldos = administrarPersonaIndividual.lovTiposSueldos();
+        }
+    }
+
+    public void cargarLovMotivosContratos() {
+        if (lovMotivosContratos == null) {
+            lovMotivosContratos = administrarPersonaIndividual.lovMotivosContratos();
+        }
+    }
+
+    public void cargarLovTiposContratos() {
+        if (lovTiposContratos == null) {
+            lovTiposContratos = administrarPersonaIndividual.lovTiposContratos();
+        }
+    }
+
+    public void cargarLovNormasLaborales() {
+        if (lovNormasLaborales == null) {
+            lovNormasLaborales = administrarPersonaIndividual.lovNormasLaborales();
+        }
+    }
+
+    public void cargarLovContratos() {
+        if (lovContratos == null) {
+            lovContratos = administrarPersonaIndividual.lovContratos();
+        }
+    }
+
+    public void cargarLovUbicacionesGeograficas() {
+        if (nuevoEmpleado.getEmpresa().getSecuencia() != null && lovUbicacionesGeograficas == null) {
+            lovUbicacionesGeograficas = administrarPersonaIndividual.lovUbicacionesGeograficas(nuevoEmpleado.getEmpresa().getSecuencia());
+        }
+    }
+
+    public void cargarLovPeriodicidades() {
+        if (lovPeriodicidades == null) {
+            lovPeriodicidades = administrarPersonaIndividual.lovPeriodicidades();
+        }
+    }
+
+    public void cargarLovSucursales() {
+        if (lovSucursales == null) {
+            lovSucursales = administrarPersonaIndividual.lovSucursales();
+        }
+    }
+
+    public void cargarLovMetodosPagos() {
+        if (lovMetodosPagos == null) {
+            lovMetodosPagos = administrarPersonaIndividual.lovMetodosPagos();
+        }
+    }
+
+    public void cargarLovJornadasLaborales() {
+        if (lovJornadasLaborales == null) {
+            lovJornadasLaborales = administrarPersonaIndividual.lovJornadasLaborales();
+        }
+    }
+
+    public void cargarLovTercerosSucursales() {
+        if (lovTercerosSucursales == null && nuevoEmpleado.getEmpresa().getSecuencia() != null) {
+            lovTercerosSucursales = administrarPersonaIndividual.lovTercerosSucursales(nuevoEmpleado.getEmpresa().getSecuencia());
+        }
+    }
+
+    public void cargarLovEstadosCiviles() {
+        if (lovEstadosCiviles == null) {
+            lovEstadosCiviles = administrarPersonaIndividual.lovEstadosCiviles();
+        }
+    }
+
+    public void cargarLovTiposTelefonos() {
         if (lovTiposTelefonos == null) {
             lovTiposTelefonos = administrarPersonaIndividual.lovTiposTelefonos();
         }
-        return lovTiposTelefonos;
     }
 
-    public void setLovTiposTelefonos(List<TiposTelefonos> lovTiposTelefonos) {
-        this.lovTiposTelefonos = lovTiposTelefonos;
-    }
-
-    public List<TiposTelefonos> getFiltrarLovTiposTelefonos() {
-        return filtrarLovTiposTelefonos;
-    }
-
-    public void setFiltrarLovTiposTelefonos(List<TiposTelefonos> filtrarLovTiposTelefonos) {
-        this.filtrarLovTiposTelefonos = filtrarLovTiposTelefonos;
-    }
-
-    public TiposTelefonos getTipoTelefonoSeleccionado() {
-        return tipoTelefonoSeleccionado;
-    }
-
-    public void setTipoTelefonoSeleccionado(TiposTelefonos tipoTelefonoSeleccionado) {
-        this.tipoTelefonoSeleccionado = tipoTelefonoSeleccionado;
-    }
-
+    ///////////CONTEO DE REGISTROS/////////////
     public String getInfoRegistroEmpresaInfoPersonal() {
         return infoRegistroEmpresaInfoPersonal;
     }
@@ -7023,5 +6463,667 @@ public class ControlPersonaIndividual implements Serializable {
     public void setUnidadPesos(Unidades unidadPesos) {
         this.unidadPesos = unidadPesos;
     }
-    
+
+    ///////////////LOVS////////////////
+    public List<TiposTelefonos> getLovTiposTelefonos() {
+        return lovTiposTelefonos;
+    }
+
+    public List<EstadosCiviles> getLovEstadosCiviles() {
+        return lovEstadosCiviles;
+    }
+
+    public List<TercerosSucursales> getLovTercerosSucursales() {
+        return lovTercerosSucursales;
+    }
+
+    public List<JornadasLaborales> getLovJornadasLaborales() {
+        return lovJornadasLaborales;
+    }
+
+    public List<Periodicidades> getLovPeriodicidades() {
+        return lovPeriodicidades;
+    }
+
+    public List<Sucursales> getLovSucursales() {
+        return lovSucursales;
+    }
+
+    public List<MetodosPagos> getLovMetodosPagos() {
+        return lovMetodosPagos;
+    }
+
+    public List<UbicacionesGeograficas> getLovUbicacionesGeograficas() {
+        return lovUbicacionesGeograficas;
+    }
+
+    public List<Contratos> getLovContratos() {
+        return lovContratos;
+    }
+
+    public List<NormasLaborales> getLovNormasLaborales() {
+        return lovNormasLaborales;
+    }
+
+    public List<MotivosContratos> getLovMotivosContratos() {
+        return lovMotivosContratos;
+    }
+
+    public List<TiposContratos> getLovTiposContratos() {
+        return lovTiposContratos;
+    }
+
+    public List<MotivosCambiosSueldos> getLovMotivosCambiosSueldos() {
+        return lovMotivosCambiosSueldos;
+    }
+
+    public List<TiposSueldos> getLovTiposSueldos() {
+        return lovTiposSueldos;
+    }
+
+    public List<ReformasLaborales> getLovReformasLaborales() {
+        return lovReformasLaborales;
+    }
+
+    public List<TiposTrabajadores> getLovTiposTrabajadores() {
+        return lovTiposTrabajadores;
+    }
+
+    public List<Empresas> getLovEmpresas() {
+        return lovEmpresas;
+    }
+
+    public List<TiposDocumentos> getLovTiposDocumentos() {
+        return lovTiposDocumentos;
+    }
+
+    public List<Ciudades> getLovCiudades() {
+        return lovCiudades;
+    }
+
+    public List<Cargos> getLovCargos() {
+        return lovCargos;
+    }
+
+    public List<MotivosCambiosCargos> getLovMotivosCargos() {
+        return lovMotivosCargos;
+    }
+
+    public List<Estructuras> getLovEstructuras() {
+        return lovEstructuras;
+    }
+
+    public List<Papeles> getLovPapeles() {
+        return lovPapeles;
+    }
+
+    public List<Empleados> getLovEmpleados() {
+        return lovEmpleados;
+    }
+
+    public List<MotivosLocalizaciones> getLovMotivosLocalizaciones() {
+        return lovMotivosLocalizaciones;
+    }
+
+    public List<Estructuras> getLovEstructurasCentroCosto() {
+        return lovEstructurasCentroCosto;
+    }
+
+    public List<Unidades> getLovUnidades() {
+        if (lovUnidades == null) {
+            lovUnidades = administrarPersonaIndividual.lovUnidades();
+            if (lovUnidades != null) {
+                if (!lovUnidades.isEmpty()) {
+                    for (int i = 0; i < lovUnidades.size(); i++) {
+                        if (lovUnidades.get(i).getNombre().equals("PESOS")) {
+                            unidadPesos = lovUnidades.get(i);
+                            System.out.println("unidadPesos = " + unidadPesos.getNombre());
+                        }
+                    }
+                }
+            }
+        }
+        return lovUnidades;
+    }
+
+    public void setLovTiposTelefonos(List<TiposTelefonos> lovTiposTelefonos) {
+        this.lovTiposTelefonos = lovTiposTelefonos;
+    }
+
+    public void setLovEstadosCiviles(List<EstadosCiviles> lovEstadosCiviles) {
+        this.lovEstadosCiviles = lovEstadosCiviles;
+    }
+
+    public void setLovTercerosSucursales(List<TercerosSucursales> lovTercerosSucursales) {
+        this.lovTercerosSucursales = lovTercerosSucursales;
+    }
+
+    public void setLovJornadasLaborales(List<JornadasLaborales> lovJornadasLaborales) {
+        this.lovJornadasLaborales = lovJornadasLaborales;
+    }
+
+    public void setLovPeriodicidades(List<Periodicidades> lovPeriodicidades) {
+        this.lovPeriodicidades = lovPeriodicidades;
+    }
+
+    public void setLovSucursales(List<Sucursales> lovSucursales) {
+        this.lovSucursales = lovSucursales;
+    }
+
+    public void setLovMetodosPagos(List<MetodosPagos> lovMetodosPagos) {
+        this.lovMetodosPagos = lovMetodosPagos;
+    }
+
+    public void setLovUbicacionesGeograficas(List<UbicacionesGeograficas> lovUbicacionesGeograficas) {
+        this.lovUbicacionesGeograficas = lovUbicacionesGeograficas;
+    }
+
+    public void setLovContratos(List<Contratos> lovContratos) {
+        this.lovContratos = lovContratos;
+    }
+
+    public void setLovNormasLaborales(List<NormasLaborales> lovNormasLaborales) {
+        this.lovNormasLaborales = lovNormasLaborales;
+    }
+
+    public void setLovMotivosContratos(List<MotivosContratos> lovMotivosContratos) {
+        this.lovMotivosContratos = lovMotivosContratos;
+    }
+
+    public void setLovTiposContratos(List<TiposContratos> lovTiposContratos) {
+        this.lovTiposContratos = lovTiposContratos;
+    }
+
+    public void setLovMotivosCambiosSueldos(List<MotivosCambiosSueldos> lovMotivosCambiosSueldos) {
+        this.lovMotivosCambiosSueldos = lovMotivosCambiosSueldos;
+    }
+
+    public void setLovTiposSueldos(List<TiposSueldos> lovTiposSueldos) {
+        this.lovTiposSueldos = lovTiposSueldos;
+    }
+
+    public void setLovUnidades(List<Unidades> lovUnidades) {
+        this.lovUnidades = lovUnidades;
+    }
+
+    public void setLovReformasLaborales(List<ReformasLaborales> lovReformasLaborales) {
+        this.lovReformasLaborales = lovReformasLaborales;
+    }
+
+    public void setLovTiposTrabajadores(List<TiposTrabajadores> lovTiposTrabajadores) {
+        this.lovTiposTrabajadores = lovTiposTrabajadores;
+    }
+
+    public void setLovEmpresas(List<Empresas> lovEmpresas) {
+        this.lovEmpresas = lovEmpresas;
+    }
+
+    public void setLovTiposDocumentos(List<TiposDocumentos> lovTiposDocumentos) {
+        this.lovTiposDocumentos = lovTiposDocumentos;
+    }
+
+    public void setLovCiudades(List<Ciudades> lovCiudades) {
+        this.lovCiudades = lovCiudades;
+    }
+
+    public void setLovCargos(List<Cargos> lovCargos) {
+        this.lovCargos = lovCargos;
+    }
+
+    public void setLovMotivosCargos(List<MotivosCambiosCargos> lovMotivosCargos) {
+        this.lovMotivosCargos = lovMotivosCargos;
+    }
+
+    public void setLovEstructuras(List<Estructuras> lovEstructuras) {
+        this.lovEstructuras = lovEstructuras;
+    }
+
+    public void setLovPapeles(List<Papeles> lovPapeles) {
+        this.lovPapeles = lovPapeles;
+    }
+
+    public void setLovEmpleados(List<Empleados> lovEmpleados) {
+        this.lovEmpleados = lovEmpleados;
+    }
+
+    public void setLovMotivosLocalizaciones(List<MotivosLocalizaciones> lovMotivosLocalizaciones) {
+        this.lovMotivosLocalizaciones = lovMotivosLocalizaciones;
+    }
+
+    public void setLovEstructurasCentroCosto(List<Estructuras> lovEstructurasCentroCosto) {
+        this.lovEstructurasCentroCosto = lovEstructurasCentroCosto;
+    }
+
+    public TiposTelefonos getTipoTelefonoSeleccionado() {
+        return tipoTelefonoSeleccionado;
+    }
+
+    public void setTipoTelefonoSeleccionado(TiposTelefonos tipoTelefonoSeleccionado) {
+        this.tipoTelefonoSeleccionado = tipoTelefonoSeleccionado;
+    }
+
+    public EstadosCiviles getEstadoCivilSeleccionado() {
+        return estadoCivilSeleccionado;
+    }
+
+    public void setEstadoCivilSeleccionado(EstadosCiviles estadoCivilSeleccionado) {
+        this.estadoCivilSeleccionado = estadoCivilSeleccionado;
+    }
+
+    public TercerosSucursales getTerceroSucursalSeleccionado() {
+        return terceroSucursalSeleccionado;
+    }
+
+    public void setTerceroSucursalSeleccionado(TercerosSucursales terceroSucursalSeleccionado) {
+        this.terceroSucursalSeleccionado = terceroSucursalSeleccionado;
+    }
+
+    public JornadasLaborales getJornadaLaboralSeleccionada() {
+        return jornadaLaboralSeleccionada;
+    }
+
+    public void setJornadaLaboralSeleccionada(JornadasLaborales jornadaLaboralSeleccionada) {
+        this.jornadaLaboralSeleccionada = jornadaLaboralSeleccionada;
+    }
+
+    public Periodicidades getPeriodicidadSeleccionada() {
+        return periodicidadSeleccionada;
+    }
+
+    public void setPeriodicidadSeleccionada(Periodicidades periodicidadSeleccionada) {
+        this.periodicidadSeleccionada = periodicidadSeleccionada;
+    }
+
+    public Sucursales getSucursalSeleccionada() {
+        return sucursalSeleccionada;
+    }
+
+    public void setSucursalSeleccionada(Sucursales sucursalSeleccionada) {
+        this.sucursalSeleccionada = sucursalSeleccionada;
+    }
+
+    public MetodosPagos getMetodoPagoSeleccionado() {
+        return metodoPagoSeleccionado;
+    }
+
+    public void setMetodoPagoSeleccionado(MetodosPagos metodoPagoSeleccionado) {
+        this.metodoPagoSeleccionado = metodoPagoSeleccionado;
+    }
+
+    public UbicacionesGeograficas getUbicacionGeograficaSeleccionada() {
+        return ubicacionGeograficaSeleccionada;
+    }
+
+    public void setUbicacionGeograficaSeleccionada(UbicacionesGeograficas ubicacionGeograficaSeleccionada) {
+        this.ubicacionGeograficaSeleccionada = ubicacionGeograficaSeleccionada;
+    }
+
+    public Contratos getContratoSeleccionado() {
+        return contratoSeleccionado;
+    }
+
+    public void setContratoSeleccionado(Contratos contratoSeleccionado) {
+        this.contratoSeleccionado = contratoSeleccionado;
+    }
+
+    public NormasLaborales getNormaLaboralSeleccionada() {
+        return normaLaboralSeleccionada;
+    }
+
+    public void setNormaLaboralSeleccionada(NormasLaborales normaLaboralSeleccionada) {
+        this.normaLaboralSeleccionada = normaLaboralSeleccionada;
+    }
+
+    public MotivosContratos getMotivoContratoSeleccionado() {
+        return motivoContratoSeleccionado;
+    }
+
+    public void setMotivoContratoSeleccionado(MotivosContratos motivoContratoSeleccionado) {
+        this.motivoContratoSeleccionado = motivoContratoSeleccionado;
+    }
+
+    public TiposContratos getTipoContratoSeleccionado() {
+        return tipoContratoSeleccionado;
+    }
+
+    public void setTipoContratoSeleccionado(TiposContratos tipoContratoSeleccionado) {
+        this.tipoContratoSeleccionado = tipoContratoSeleccionado;
+    }
+
+    public MotivosCambiosSueldos getMotivoCambioSueldoSeleccionado() {
+        return motivoCambioSueldoSeleccionado;
+    }
+
+    public void setMotivoCambioSueldoSeleccionado(MotivosCambiosSueldos motivoCambioSueldoSeleccionado) {
+        this.motivoCambioSueldoSeleccionado = motivoCambioSueldoSeleccionado;
+    }
+
+    public TiposSueldos getTipoSueldoSeleccionado() {
+        return tipoSueldoSeleccionado;
+    }
+
+    public void setTipoSueldoSeleccionado(TiposSueldos tipoSueldoSeleccionado) {
+        this.tipoSueldoSeleccionado = tipoSueldoSeleccionado;
+    }
+
+    public Unidades getUnidadSeleccionada() {
+        return unidadSeleccionada;
+    }
+
+    public void setUnidadSeleccionada(Unidades unidadSeleccionada) {
+        this.unidadSeleccionada = unidadSeleccionada;
+    }
+
+    public ReformasLaborales getReformaLaboralSeleccionada() {
+        return reformaLaboralSeleccionada;
+    }
+
+    public void setReformaLaboralSeleccionada(ReformasLaborales reformaLaboralSeleccionada) {
+        this.reformaLaboralSeleccionada = reformaLaboralSeleccionada;
+    }
+
+    public TiposTrabajadores getTipoTrabajadorSeleccionado() {
+        return tipoTrabajadorSeleccionado;
+    }
+
+    public void setTipoTrabajadorSeleccionado(TiposTrabajadores tipoTrabajadorSeleccionado) {
+        this.tipoTrabajadorSeleccionado = tipoTrabajadorSeleccionado;
+    }
+
+    public Empresas getEmpresaSeleccionada() {
+        return empresaSeleccionada;
+    }
+
+    public void setEmpresaSeleccionada(Empresas empresaSeleccionada) {
+        this.empresaSeleccionada = empresaSeleccionada;
+    }
+
+    public TiposDocumentos getTipoDocumentoSeleccionado() {
+        return tipoDocumentoSeleccionado;
+    }
+
+    public void setTipoDocumentoSeleccionado(TiposDocumentos tipoDocumentoSeleccionado) {
+        this.tipoDocumentoSeleccionado = tipoDocumentoSeleccionado;
+    }
+
+    public Ciudades getCiudadSeleccionada() {
+        return ciudadSeleccionada;
+    }
+
+    public void setCiudadSeleccionada(Ciudades ciudadSeleccionada) {
+        this.ciudadSeleccionada = ciudadSeleccionada;
+    }
+
+    public Cargos getCargoSeleccionado() {
+        return cargoSeleccionado;
+    }
+
+    public void setCargoSeleccionado(Cargos cargoSeleccionado) {
+        this.cargoSeleccionado = cargoSeleccionado;
+    }
+
+    public MotivosCambiosCargos getMotivoCambioCargoSeleccionado() {
+        return motivoCambioCargoSeleccionado;
+    }
+
+    public void setMotivoCambioCargoSeleccionado(MotivosCambiosCargos motivoCambioCargoSeleccionado) {
+        this.motivoCambioCargoSeleccionado = motivoCambioCargoSeleccionado;
+    }
+
+    public Estructuras getEstructuraSeleccionada() {
+        return estructuraSeleccionada;
+    }
+
+    public void setEstructuraSeleccionada(Estructuras estructuraSeleccionada) {
+        this.estructuraSeleccionada = estructuraSeleccionada;
+    }
+
+    public Papeles getPapelSeleccionado() {
+        return papelSeleccionado;
+    }
+
+    public void setPapelSeleccionado(Papeles papelSeleccionado) {
+        this.papelSeleccionado = papelSeleccionado;
+    }
+
+    public Empleados getEmpleadoSeleccionado() {
+        return empleadoSeleccionado;
+    }
+
+    public void setEmpleadoSeleccionado(Empleados empleadoSeleccionado) {
+        this.empleadoSeleccionado = empleadoSeleccionado;
+    }
+
+    public MotivosLocalizaciones getMotivoLocalizacionSeleccionado() {
+        return motivoLocalizacionSeleccionado;
+    }
+
+    public void setMotivoLocalizacionSeleccionado(MotivosLocalizaciones motivoLocalizacionSeleccionado) {
+        this.motivoLocalizacionSeleccionado = motivoLocalizacionSeleccionado;
+    }
+
+    public Estructuras getEstructuraCentroCostoSeleccionada() {
+        return estructuraCentroCostoSeleccionada;
+    }
+
+    public void setEstructuraCentroCostoSeleccionada(Estructuras estructuraCentroCostoSeleccionada) {
+        this.estructuraCentroCostoSeleccionada = estructuraCentroCostoSeleccionada;
+    }
+
+    public List<TiposTelefonos> getFiltrarLovTiposTelefonos() {
+        return filtrarLovTiposTelefonos;
+    }
+
+    public void setFiltrarLovTiposTelefonos(List<TiposTelefonos> filtrarLovTiposTelefonos) {
+        this.filtrarLovTiposTelefonos = filtrarLovTiposTelefonos;
+    }
+
+    public List<EstadosCiviles> getFiltrarLovEstadosCiviles() {
+        return filtrarLovEstadosCiviles;
+    }
+
+    public void setFiltrarLovEstadosCiviles(List<EstadosCiviles> filtrarLovEstadosCiviles) {
+        this.filtrarLovEstadosCiviles = filtrarLovEstadosCiviles;
+    }
+
+    public List<TercerosSucursales> getFiltrarLovTercerosSucursales() {
+        return filtrarLovTercerosSucursales;
+    }
+
+    public void setFiltrarLovTercerosSucursales(List<TercerosSucursales> filtrarLovTercerosSucursales) {
+        this.filtrarLovTercerosSucursales = filtrarLovTercerosSucursales;
+    }
+
+    public List<JornadasLaborales> getFiltrarLovJornadasLaborales() {
+        return filtrarLovJornadasLaborales;
+    }
+
+    public void setFiltrarLovJornadasLaborales(List<JornadasLaborales> filtrarLovJornadasLaborales) {
+        this.filtrarLovJornadasLaborales = filtrarLovJornadasLaborales;
+    }
+
+    public List<Periodicidades> getFiltrarLovPeriodicidades() {
+        return filtrarLovPeriodicidades;
+    }
+
+    public void setFiltrarLovPeriodicidades(List<Periodicidades> filtrarLovPeriodicidades) {
+        this.filtrarLovPeriodicidades = filtrarLovPeriodicidades;
+    }
+
+    public List<Sucursales> getFiltrarLovSucursales() {
+        return filtrarLovSucursales;
+    }
+
+    public void setFiltrarLovSucursales(List<Sucursales> filtrarLovSucursales) {
+        this.filtrarLovSucursales = filtrarLovSucursales;
+    }
+
+    public List<MetodosPagos> getFiltrarLovMetodosPagos() {
+        return filtrarLovMetodosPagos;
+    }
+
+    public void setFiltrarLovMetodosPagos(List<MetodosPagos> filtrarLovMetodosPagos) {
+        this.filtrarLovMetodosPagos = filtrarLovMetodosPagos;
+    }
+
+    public List<UbicacionesGeograficas> getFiltrarLovUbicacionesGeograficas() {
+        return filtrarLovUbicacionesGeograficas;
+    }
+
+    public void setFiltrarLovUbicacionesGeograficas(List<UbicacionesGeograficas> filtrarLovUbicacionesGeograficas) {
+        this.filtrarLovUbicacionesGeograficas = filtrarLovUbicacionesGeograficas;
+    }
+
+    public List<Contratos> getFiltrarLovContratos() {
+        return filtrarLovContratos;
+    }
+
+    public void setFiltrarLovContratos(List<Contratos> filtrarLovContratos) {
+        this.filtrarLovContratos = filtrarLovContratos;
+    }
+
+    public List<NormasLaborales> getFiltrarLovNormasLaborales() {
+        return filtrarLovNormasLaborales;
+    }
+
+    public void setFiltrarLovNormasLaborales(List<NormasLaborales> filtrarLovNormasLaborales) {
+        this.filtrarLovNormasLaborales = filtrarLovNormasLaborales;
+    }
+
+    public List<MotivosContratos> getFiltrarLovMotivosContratos() {
+        return filtrarLovMotivosContratos;
+    }
+
+    public void setFiltrarLovMotivosContratos(List<MotivosContratos> filtrarLovMotivosContratos) {
+        this.filtrarLovMotivosContratos = filtrarLovMotivosContratos;
+    }
+
+    public List<TiposContratos> getFiltrarLovTiposContratos() {
+        return filtrarLovTiposContratos;
+    }
+
+    public void setFiltrarLovTiposContratos(List<TiposContratos> filtrarLovTiposContratos) {
+        this.filtrarLovTiposContratos = filtrarLovTiposContratos;
+    }
+
+    public List<MotivosCambiosSueldos> getFiltrarLovMotivosCambiosSueldos() {
+        return filtrarLovMotivosCambiosSueldos;
+    }
+
+    public void setFiltrarLovMotivosCambiosSueldos(List<MotivosCambiosSueldos> filtrarLovMotivosCambiosSueldos) {
+        this.filtrarLovMotivosCambiosSueldos = filtrarLovMotivosCambiosSueldos;
+    }
+
+    public List<TiposSueldos> getFiltrarLovTiposSueldos() {
+        return filtrarLovTiposSueldos;
+    }
+
+    public void setFiltrarLovTiposSueldos(List<TiposSueldos> filtrarLovTiposSueldos) {
+        this.filtrarLovTiposSueldos = filtrarLovTiposSueldos;
+    }
+
+    public List<Unidades> getFiltrarLovUnidades() {
+        return filtrarLovUnidades;
+    }
+
+    public void setFiltrarLovUnidades(List<Unidades> filtrarLovUnidades) {
+        this.filtrarLovUnidades = filtrarLovUnidades;
+    }
+
+    public List<ReformasLaborales> getFiltrarLovReformasLaborales() {
+        return filtrarLovReformasLaborales;
+    }
+
+    public void setFiltrarLovReformasLaborales(List<ReformasLaborales> filtrarLovReformasLaborales) {
+        this.filtrarLovReformasLaborales = filtrarLovReformasLaborales;
+    }
+
+    public List<TiposTrabajadores> getFiltrarLovTiposTrabajadores() {
+        return filtrarLovTiposTrabajadores;
+    }
+
+    public void setFiltrarLovTiposTrabajadores(List<TiposTrabajadores> filtrarLovTiposTrabajadores) {
+        this.filtrarLovTiposTrabajadores = filtrarLovTiposTrabajadores;
+    }
+
+    public List<Empresas> getFiltrarLovEmpresas() {
+        return filtrarLovEmpresas;
+    }
+
+    public void setFiltrarLovEmpresas(List<Empresas> filtrarLovEmpresas) {
+        this.filtrarLovEmpresas = filtrarLovEmpresas;
+    }
+
+    public List<TiposDocumentos> getFiltrarLovTiposDocumentos() {
+        return filtrarLovTiposDocumentos;
+    }
+
+    public void setFiltrarLovTiposDocumentos(List<TiposDocumentos> filtrarLovTiposDocumentos) {
+        this.filtrarLovTiposDocumentos = filtrarLovTiposDocumentos;
+    }
+
+    public List<Ciudades> getFiltrarLovCiudades() {
+        return filtrarLovCiudades;
+    }
+
+    public void setFiltrarLovCiudades(List<Ciudades> filtrarLovCiudades) {
+        this.filtrarLovCiudades = filtrarLovCiudades;
+    }
+
+    public List<Cargos> getFiltrarLovCargos() {
+        return filtrarLovCargos;
+    }
+
+    public void setFiltrarLovCargos(List<Cargos> filtrarLovCargos) {
+        this.filtrarLovCargos = filtrarLovCargos;
+    }
+
+    public List<MotivosCambiosCargos> getFiltrarLovMotivosCambiosCargos() {
+        return filtrarLovMotivosCambiosCargos;
+    }
+
+    public void setFiltrarLovMotivosCambiosCargos(List<MotivosCambiosCargos> filtrarLovMotivosCambiosCargos) {
+        this.filtrarLovMotivosCambiosCargos = filtrarLovMotivosCambiosCargos;
+    }
+
+    public List<Estructuras> getFiltrarLovEstructuras() {
+        return filtrarLovEstructuras;
+    }
+
+    public void setFiltrarLovEstructuras(List<Estructuras> filtrarLovEstructuras) {
+        this.filtrarLovEstructuras = filtrarLovEstructuras;
+    }
+
+    public List<Papeles> getFiltrarLovPapeles() {
+        return filtrarLovPapeles;
+    }
+
+    public void setFiltrarLovPapeles(List<Papeles> filtrarLovPapeles) {
+        this.filtrarLovPapeles = filtrarLovPapeles;
+    }
+
+    public List<Empleados> getFiltrarLovEmpleados() {
+        return filtrarLovEmpleados;
+    }
+
+    public void setFiltrarLovEmpleados(List<Empleados> filtrarLovEmpleados) {
+        this.filtrarLovEmpleados = filtrarLovEmpleados;
+    }
+
+    public List<MotivosLocalizaciones> getFiltrarLovMotivosCC() {
+        return filtrarLovMotivosCC;
+    }
+
+    public void setFiltrarLovMotivosCC(List<MotivosLocalizaciones> filtrarLovMotivosCC) {
+        this.filtrarLovMotivosCC = filtrarLovMotivosCC;
+    }
+
+    public List<Estructuras> getFiltrarLovEstructurasCentroCosto() {
+        return filtrarLovEstructurasCentroCosto;
+    }
+
+    public void setFiltrarLovEstructurasCentroCosto(List<Estructuras> filtrarLovEstructurasCentroCosto) {
+        this.filtrarLovEstructurasCentroCosto = filtrarLovEstructurasCentroCosto;
+    }
+
 }

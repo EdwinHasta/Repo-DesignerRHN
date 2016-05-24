@@ -45,7 +45,7 @@ public class ControlEstructuraPlanta implements Serializable {
     //
     private List<Estructuras> listaEstructuras;
     private List<Estructuras> filtrarListaEstructuras;
-    private Estructuras estructuraSeleccionado;
+    private Estructuras estructuraSeleccionada;
     //
     //Activo/Desactivo Crtl + F11
     private int bandera, banderaEstructura;
@@ -104,7 +104,7 @@ public class ControlEstructuraPlanta implements Serializable {
 
     public ControlEstructuraPlanta() {
         organigramaSeleccionado = null;
-        estructuraSeleccionado = null;
+        estructuraSeleccionada = null;
         activoEstructura = true;
         paginaAnterior = "";
         //altos tablas
@@ -115,7 +115,7 @@ public class ControlEstructuraPlanta implements Serializable {
         //lovs
         lovCentrosCostos = null;
         centroCostoSeleccionado = new CentrosCostos();
-        lovEstructurasPadres = null;
+        lovEstructurasPadres = new ArrayList<Estructuras>();
         estructuraPadreSeleccionado = new Estructuras();
         //listas de tablas
         listaOrganigramas = null;
@@ -162,6 +162,7 @@ public class ControlEstructuraPlanta implements Serializable {
         banderaEstructura = 0;
 
         activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
     @PostConstruct
@@ -184,9 +185,14 @@ public class ControlEstructuraPlanta implements Serializable {
     public void inicializarPagina(String paginaLlamado) {
         paginaAnterior = paginaLlamado;
         getListaOrganigramas();
+        contarRegistrosOr();
+        RequestContext.getCurrentInstance().update("form:infoRegistroOrg");
         if (listaOrganigramas != null) {
             if (!listaOrganigramas.isEmpty()) {
                 organigramaSeleccionado = listaOrganigramas.get(0);
+                getListaEstructuras();
+                contarRegistrosEs();
+                RequestContext.getCurrentInstance().update("form:infoRegistroEst");
             }
         } else {
             System.out.println("El getListaOrganigramas() no trajo datos");
@@ -232,7 +238,7 @@ public class ControlEstructuraPlanta implements Serializable {
         boolean retorno = true;
         if (i == 0) {
             Estructuras aux = new Estructuras();
-            aux = estructuraSeleccionado;
+            aux = estructuraSeleccionada;
 
 
             if (aux.getCodigo() == null) {
@@ -287,7 +293,7 @@ public class ControlEstructuraPlanta implements Serializable {
         int conteo = 0;
         if (i == 0) {
             Estructuras temporal = null;
-            temporal = estructuraSeleccionado;
+            temporal = estructuraSeleccionada;
 
             for (int j = 0; j < listaEstructuras.size(); j++) {
                 if (listaEstructuras.get(j).getCodigo() == temporal.getCodigo()) {
@@ -322,21 +328,21 @@ public class ControlEstructuraPlanta implements Serializable {
     }
 
     public void procesoModificacionEstructura(Estructuras estructura) {
-        estructuraSeleccionado = estructura;
+        estructuraSeleccionada = estructura;
         boolean respuesta = validarCamposNulosEstructura(0);
         if (respuesta == true) {
             if (validarCodigoNoExistente(0) == true) {
                 modificarEstructura();
             } else {
-                estructuraSeleccionado.setCodigo(auxCodigoEstructura);
+                estructuraSeleccionada.setCodigo(auxCodigoEstructura);
 
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:datosEstructura");
                 context.execute("errorCodigo.show()");
             }
         } else {
-            estructuraSeleccionado.setCodigo(auxCodigoEstructura);
-            estructuraSeleccionado.setNombre(auxNombreEstructura);
+            estructuraSeleccionada.setCodigo(auxCodigoEstructura);
+            estructuraSeleccionada.setNombre(auxNombreEstructura);
 
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosEstructura");
@@ -346,41 +352,41 @@ public class ControlEstructuraPlanta implements Serializable {
 
     public void modificarEstructura() {
         String aux = "";
-        aux = estructuraSeleccionado.getNombre();
+        aux = estructuraSeleccionada.getNombre();
 
         if (aux.length() >= 1 && aux.length() <= 50) {
-            if (!listEstructurasCrear.contains(estructuraSeleccionado)) {
+            if (!listEstructurasCrear.contains(estructuraSeleccionada)) {
                 if (listEstructurasModificar.isEmpty()) {
-                    listEstructurasModificar.add(estructuraSeleccionado);
-                } else if (!listEstructurasModificar.contains(estructuraSeleccionado)) {
-                    listEstructurasModificar.add(estructuraSeleccionado);
+                    listEstructurasModificar.add(estructuraSeleccionada);
+                } else if (!listEstructurasModificar.contains(estructuraSeleccionada)) {
+                    listEstructurasModificar.add(estructuraSeleccionada);
                 }
                 if (guardadoEstructura == true) {
                     guardadoEstructura = false;
                 }
             }
 
-            estructuraSeleccionado = null;
+            estructuraSeleccionada = null;
             cambiosPagina = false;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:ACEPTAR");
             context.update("form:datosEstructura");
         } else {
-            estructuraSeleccionado.setNombre(auxNombreEstructura);
+            estructuraSeleccionada.setNombre(auxNombreEstructura);
 
-            estructuraSeleccionado = null;
+            estructuraSeleccionada = null;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosEstructura");
         }
     }
 
     public void modificarEstructura(Estructuras estructura, String confirmarCambio, String valorConfirmar) {
-        estructuraSeleccionado = estructura;
+        estructuraSeleccionada = estructura;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("PADRE")) {
-            estructuraSeleccionado.getEstructurapadre().setNombre(estructuraPadre);
+            estructuraSeleccionada.getEstructurapadre().setNombre(estructuraPadre);
 
             for (int i = 0; i < lovEstructurasPadres.size(); i++) {
                 if (lovEstructurasPadres.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
@@ -389,7 +395,7 @@ public class ControlEstructuraPlanta implements Serializable {
                 }
             }
             if (coincidencias == 1) {
-                estructuraSeleccionado.setEstructurapadre(lovEstructurasPadres.get(indiceUnicoElemento));
+                estructuraSeleccionada.setEstructurapadre(lovEstructurasPadres.get(indiceUnicoElemento));
 
                 cambiosPagina = false;
                 context.update("form:ACEPTAR");
@@ -401,7 +407,7 @@ public class ControlEstructuraPlanta implements Serializable {
             }
         }
         if (confirmarCambio.equalsIgnoreCase("CENTROCOSTO")) {
-            estructuraSeleccionado.getCentrocosto().setCodigoNombre(centroCosto);
+            estructuraSeleccionada.getCentrocosto().setCodigoNombre(centroCosto);
 
             for (int i = 0; i < lovCentrosCostos.size(); i++) {
                 if (lovCentrosCostos.get(i).getCodigoNombre().startsWith(valorConfirmar.toUpperCase())) {
@@ -410,7 +416,7 @@ public class ControlEstructuraPlanta implements Serializable {
                 }
             }
             if (coincidencias == 1) {
-                estructuraSeleccionado.setCentrocosto(lovCentrosCostos.get(indiceUnicoElemento));
+                estructuraSeleccionada.setCentrocosto(lovCentrosCostos.get(indiceUnicoElemento));
 
                 cambiosPagina = false;
                 context.update("form:ACEPTAR");
@@ -422,11 +428,11 @@ public class ControlEstructuraPlanta implements Serializable {
             }
         }
         if (coincidencias == 1) {
-            if (!listEstructurasCrear.contains(estructuraSeleccionado)) {
+            if (!listEstructurasCrear.contains(estructuraSeleccionada)) {
                 if (listEstructurasModificar.isEmpty()) {
-                    listEstructurasModificar.add(estructuraSeleccionado);
-                } else if (!listEstructurasModificar.contains(estructuraSeleccionado)) {
-                    listEstructurasModificar.add(estructuraSeleccionado);
+                    listEstructurasModificar.add(estructuraSeleccionada);
+                } else if (!listEstructurasModificar.contains(estructuraSeleccionada)) {
+                    listEstructurasModificar.add(estructuraSeleccionada);
                 }
                 if (guardadoEstructura == true) {
                     guardadoEstructura = false;
@@ -455,8 +461,8 @@ public class ControlEstructuraPlanta implements Serializable {
         String type = map.get("t"); // type attribute of node
         int indice = Integer.parseInt(type);
         int columna = Integer.parseInt(name);
-        estructuraSeleccionado = listaEstructuras.get(indice);
-        cambiarIndiceEstructura(estructuraSeleccionado, columna);
+        estructuraSeleccionada = listaEstructuras.get(indice);
+        cambiarIndiceEstructura(estructuraSeleccionada, columna);
     }
 
     public void cambiarIndice(Organigramas organigrama, int celda) {
@@ -464,13 +470,15 @@ public class ControlEstructuraPlanta implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             cualCelda = celda;
             organigramaSeleccionado = organigrama;
-            estructuraSeleccionado = null;
+            estructuraSeleccionada = null;
             fechaOrganigrama = organigramaSeleccionado.getFecha();
 
-            lovCentrosCostos = null;
-            getLovCentrosCostos();
+            //lovCentrosCostos = null;
+            //getLovCentrosCostos();
             listaEstructuras = null;
             getListaEstructuras();
+            contarRegistrosEs();
+            RequestContext.getCurrentInstance().update("form:infoRegistroEst");
             context.update("form:datosEstructura");
             if (banderaEstructura == 1) {
                 altoTablaEstructura = "210";
@@ -499,18 +507,19 @@ public class ControlEstructuraPlanta implements Serializable {
 
     public void cambiarIndiceEstructura(Estructuras estructuras, int celda) {
         if (permitirIndexEstructura == true) {
-            estructuraSeleccionado = estructuras;
-            organigramaSeleccionado = null;
+            estructuraSeleccionada = estructuras;
             cualCeldaEstructura = celda;
-            estructuraPadre = estructuraSeleccionado.getEstructurapadre().getNombre();
-            centroCosto = estructuraSeleccionado.getCentrocosto().getCodigoNombre();
-            auxCodigoEstructura = estructuraSeleccionado.getCodigo();
-            auxNombreEstructura = estructuraSeleccionado.getNombre();
-
+            estructuraPadre = estructuraSeleccionada.getEstructurapadre().getNombre();
+            centroCosto = estructuraSeleccionada.getCentrocosto().getCodigoNombre();
+            auxCodigoEstructura = estructuraSeleccionada.getCodigo();
+            auxNombreEstructura = estructuraSeleccionada.getNombre();
         }
-        lovEstructurasPadres = null;
-        getLovEstructurasPadres();
-
+        if (cualCeldaEstructura == 4 || cualCeldaEstructura == 5) {
+            activarLOV = false;
+        } else {
+            activarLOV = true;
+        }
+        RequestContext.getCurrentInstance().update("form:listaValores");
     }
     //GUARDAR
 
@@ -520,6 +529,7 @@ public class ControlEstructuraPlanta implements Serializable {
     }
 
     public void cancelarYSalir() {
+
         cancelarModificacionGeneral();
         salir();
     }
@@ -533,6 +543,8 @@ public class ControlEstructuraPlanta implements Serializable {
             if (guardadoEstructura == false) {
                 guardarCambiosEstructura();
             }
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
             FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             RequestContext.getCurrentInstance().update("form:growl");
@@ -574,7 +586,7 @@ public class ControlEstructuraPlanta implements Serializable {
         guardadoEstructura = true;
         RequestContext.getCurrentInstance().update("form:aceptar");
         k = 0;
-        estructuraSeleccionado = null;
+        estructuraSeleccionada = null;
     }
 
     //CANCELAR MODIFICACIONES
@@ -587,12 +599,18 @@ public class ControlEstructuraPlanta implements Serializable {
         context.update("form:ACEPTAR");
         if (guardado == false) {
             cancelarModificacionOrganigrama();
+            contarRegistrosOr();
+            RequestContext.getCurrentInstance().update("form:infoRegistroOrg");
             context.update("form:datosOrganigrama");
         }
         if (guardadoEstructura == false) {
             cancelarModificacionEstructura();
+            contarRegistrosEs();
+            RequestContext.getCurrentInstance().update("form:infoRegistroEst");
             context.update("form:datosEstructura");
         }
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
     public void cancelarModificacionOrganigrama() {
@@ -645,7 +663,7 @@ public class ControlEstructuraPlanta implements Serializable {
         listEstructurasBorrar.clear();
         listEstructurasCrear.clear();
         listEstructurasModificar.clear();
-        estructuraSeleccionado = null;
+        estructuraSeleccionada = null;
         k = 0;
         listaEstructuras = null;
         guardadoEstructura = true;
@@ -687,8 +705,8 @@ public class ControlEstructuraPlanta implements Serializable {
             organigramaSeleccionado = null;
             organigramaSeleccionado = null;
         }
-        if (estructuraSeleccionado != null) {
-            editarEstructura = estructuraSeleccionado;
+        if (estructuraSeleccionada != null) {
+            editarEstructura = estructuraSeleccionada;
 
             RequestContext context = RequestContext.getCurrentInstance();
             if (cualCeldaEstructura == 0) {
@@ -716,8 +734,8 @@ public class ControlEstructuraPlanta implements Serializable {
                 context.execute("editarEstructuraPadreEstructuraD.show()");
                 cualCeldaEstructura = -1;
             }
-            estructuraSeleccionado = null;
-            estructuraSeleccionado = null;
+            estructuraSeleccionada = null;
+            estructuraSeleccionada = null;
         }
     }
 
@@ -778,6 +796,9 @@ public class ControlEstructuraPlanta implements Serializable {
                 }
                 listEstructurasCrear.add(nuevoEstructura);
                 listaEstructuras.add(nuevoEstructura);
+                modificarInfoRegistroEs(listaEstructuras.size());
+                RequestContext.getCurrentInstance().update("form:infoRegistroEst");
+                estructuraSeleccionada = listaEstructuras.get(listaEstructuras.indexOf(nuevoEstructura));
                 cambiosPagina = false;
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:ACEPTAR");
@@ -786,11 +807,12 @@ public class ControlEstructuraPlanta implements Serializable {
                 nuevoEstructura = new Estructuras();
                 nuevoEstructura.setCentrocosto(new CentrosCostos());
                 nuevoEstructura.setEstructurapadre(new Estructuras());
+                activarLOV = true;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 if (guardadoEstructura == true) {
                     guardadoEstructura = false;
                     RequestContext.getCurrentInstance().update("form:aceptar");
                 }
-                estructuraSeleccionado = null;
             } else {
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.execute("errorCodigo.show()");
@@ -806,31 +828,31 @@ public class ControlEstructuraPlanta implements Serializable {
         nuevoEstructura = new Estructuras();
         nuevoEstructura.setCentrocosto(new CentrosCostos());
         nuevoEstructura.setEstructurapadre(new Estructuras());
-        estructuraSeleccionado = null;
     }
 
     //DUPLICAR VC
     /**
      */
     public void verificarRegistroDuplicar() {
-        if (estructuraSeleccionado != null) {
+        if (estructuraSeleccionada != null) {
             duplicarEstructuraM();
         }
     }
 
     public void duplicarEstructuraM() {
         duplicarEstructura = new Estructuras();
-        duplicarEstructura.setCodigo(estructuraSeleccionado.getCodigo());
-        duplicarEstructura.setNombre(estructuraSeleccionado.getNombre());
-        duplicarEstructura.setCentrocosto(estructuraSeleccionado.getCentrocosto());
-        duplicarEstructura.setEstructurapadre(estructuraSeleccionado.getEstructurapadre());
-        duplicarEstructura.setCantidadCargosControlar(estructuraSeleccionado.getCantidadCargosControlar());
-        duplicarEstructura.setCantidadCargosEmplActivos(estructuraSeleccionado.getCantidadCargosEmplActivos());
+        duplicarEstructura.setCodigo(estructuraSeleccionada.getCodigo());
+        duplicarEstructura.setNombre(estructuraSeleccionada.getNombre());
+        duplicarEstructura.setCentrocosto(estructuraSeleccionada.getCentrocosto());
+        duplicarEstructura.setEstructurapadre(estructuraSeleccionada.getEstructurapadre());
+        duplicarEstructura.setCantidadCargosControlar(estructuraSeleccionada.getCantidadCargosControlar());
+        duplicarEstructura.setCantidadCargosEmplActivos(estructuraSeleccionada.getCantidadCargosEmplActivos());
 
         RequestContext context = RequestContext.getCurrentInstance();
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
         context.update("formularioDialogos:DuplicarRegistroEstructura");
         context.execute("DuplicarRegistroEstructura.show()");
-        estructuraSeleccionado = null;
     }
 
     public void confirmarDuplicarEstructura() {
@@ -863,12 +885,17 @@ public class ControlEstructuraPlanta implements Serializable {
 
                 listaEstructuras.add(duplicarEstructura);
                 listEstructurasCrear.add(duplicarEstructura);
+                estructuraSeleccionada = listaEstructuras.get(listaEstructuras.indexOf(nuevoEstructura));
+                modificarInfoRegistroEs(listaEstructuras.size());
+                RequestContext.getCurrentInstance().update("form:infoRegistroEst");
                 cambiosPagina = false;
                 RequestContext context = RequestContext.getCurrentInstance();
+                activarLOV = true;
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 context.update("form:ACEPTAR");
                 context.update("form:datosEstructura");
                 context.execute("DuplicarRegistroEstructura.hide()");
-                estructuraSeleccionado = null;
+                estructuraSeleccionada = null;
                 if (guardadoEstructura == true) {
                     guardadoEstructura = false;
                     //RequestContext.getCurrentInstance().update("form:aceptar");
@@ -901,33 +928,36 @@ public class ControlEstructuraPlanta implements Serializable {
     /**
      */
     public void verificarRegistroBorrar() {
-        if (estructuraSeleccionado != null) {
+        if (estructuraSeleccionada != null) {
             borrarEstructura();
         }
     }
 
     public void borrarEstructura() {
-        if (estructuraSeleccionado != null) {
-            if (!listEstructurasModificar.isEmpty() && listEstructurasModificar.contains(estructuraSeleccionado)) {
-                int modIndex = listEstructurasModificar.indexOf(estructuraSeleccionado);
+        if (estructuraSeleccionada != null) {
+            if (!listEstructurasModificar.isEmpty() && listEstructurasModificar.contains(estructuraSeleccionada)) {
+                int modIndex = listEstructurasModificar.indexOf(estructuraSeleccionada);
                 listEstructurasModificar.remove(modIndex);
-                listEstructurasBorrar.add(estructuraSeleccionado);
-            } else if (!listEstructurasCrear.isEmpty() && listEstructurasCrear.contains(estructuraSeleccionado)) {
-                int crearIndex = listEstructurasCrear.indexOf(estructuraSeleccionado);
+                listEstructurasBorrar.add(estructuraSeleccionada);
+            } else if (!listEstructurasCrear.isEmpty() && listEstructurasCrear.contains(estructuraSeleccionada)) {
+                int crearIndex = listEstructurasCrear.indexOf(estructuraSeleccionada);
                 listEstructurasCrear.remove(crearIndex);
             } else {
-                listEstructurasBorrar.add(estructuraSeleccionado);
+                listEstructurasBorrar.add(estructuraSeleccionada);
             }
-            listaEstructuras.remove(estructuraSeleccionado);
+            listaEstructuras.remove(estructuraSeleccionada);
             if (tipoListaEstructura == 1) {
-                filtrarListaEstructuras.remove(estructuraSeleccionado);
+                filtrarListaEstructuras.remove(estructuraSeleccionada);
             }
-
+            modificarInfoRegistroEs(listaEstructuras.size());
+            RequestContext.getCurrentInstance().update("form:infoRegistroEst");
             cambiosPagina = false;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:ACEPTAR");
             context.update("form:datosEstructura");
-            estructuraSeleccionado = null;
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
+            estructuraSeleccionada = null;
 
             if (guardadoEstructura == true) {
                 guardadoEstructura = false;
@@ -946,15 +976,15 @@ public class ControlEstructuraPlanta implements Serializable {
             if (bandera == 0) {
                 altoTablaOrganigrama = "43";
                 organigramaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaFecha");
-                organigramaFecha.setFilterStyle("width: 45px");
+                organigramaFecha.setFilterStyle("width: 85%");
                 organigramaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaCodigo");
-                organigramaCodigo.setFilterStyle("width: 85px");
+                organigramaCodigo.setFilterStyle("width: 85%");
                 organigramaEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaEmpresa");
-                organigramaEmpresa.setFilterStyle("width: 105px");
+                organigramaEmpresa.setFilterStyle("width: 85%");
                 organigramaNIT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaNIT");
-                organigramaNIT.setFilterStyle("width: 95px");
+                organigramaNIT.setFilterStyle("width: 85%");
                 organigramaEstado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaEstado");
-                organigramaEstado.setFilterStyle("width: 45px");
+                organigramaEstado.setFilterStyle("width: 85%");
                 RequestContext.getCurrentInstance().update("form:datosOrganigrama");
                 bandera = 1;
             } else if (bandera == 1) {
@@ -975,21 +1005,21 @@ public class ControlEstructuraPlanta implements Serializable {
                 tipoLista = 0;
             }
         }
-        if (estructuraSeleccionado != null) {
+        if (estructuraSeleccionada != null) {
             if (banderaEstructura == 0) {
                 altoTablaEstructura = "188";
                 estructuraEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructura");
-                estructuraEstructura.setFilterStyle("width: 70px");
+                estructuraEstructura.setFilterStyle("width: 85%");
                 estructuraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCodigo");
-                estructuraCodigo.setFilterStyle("width: 70px");
+                estructuraCodigo.setFilterStyle("width: 85%");
                 estructuraCantidadControlar = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadControlar");
-                estructuraCantidadControlar.setFilterStyle("width: 20px");
+                estructuraCantidadControlar.setFilterStyle("width: 85%");
                 estructuraCantidadActivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadActivo");
-                estructuraCantidadActivo.setFilterStyle("width: 20px");
+                estructuraCantidadActivo.setFilterStyle("width: 85%");
                 estructuraCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCentroCosto");
-                estructuraCentroCosto.setFilterStyle("width: 70px");
+                estructuraCentroCosto.setFilterStyle("width: 85%");
                 estructuraEstructuraPadre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructuraPadre");
-                estructuraEstructuraPadre.setFilterStyle("width: 70px");
+                estructuraEstructuraPadre.setFilterStyle("width: 85%");
                 RequestContext.getCurrentInstance().update("form:datosEstructura");
                 banderaEstructura = 1;
             } else if (banderaEstructura == 1) {
@@ -1022,15 +1052,15 @@ public class ControlEstructuraPlanta implements Serializable {
         if (bandera == 1) {
             altoTablaOrganigrama = "65";
             organigramaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaFecha");
-            organigramaFecha.setFilterStyle("width: 25px");
+            organigramaFecha.setFilterStyle("width: 85%");
             organigramaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaCodigo");
-            organigramaCodigo.setFilterStyle("width: 25px");
+            organigramaCodigo.setFilterStyle("width: 85%");
             organigramaEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaEmpresa");
-            organigramaEmpresa.setFilterStyle("width: 25px");
+            organigramaEmpresa.setFilterStyle("width: 85%");
             organigramaNIT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaNIT");
-            organigramaNIT.setFilterStyle("width: 25px");
+            organigramaNIT.setFilterStyle("width: 85%");
             organigramaEstado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaEstado");
-            organigramaEstado.setFilterStyle("width: 25px");
+            organigramaEstado.setFilterStyle("width: 85%");
             RequestContext.getCurrentInstance().update("form:datosOrganigrama");
             bandera = 0;
             filtrarListaOrganigramas = null;
@@ -1061,7 +1091,7 @@ public class ControlEstructuraPlanta implements Serializable {
         listEstructurasModificar.clear();
         organigramaSeleccionado = null;
         organigramaSeleccionado = null;
-        estructuraSeleccionado = null;
+        estructuraSeleccionada = null;
         k = 0;
         listaOrganigramas = null;
         listaEstructuras = null;
@@ -1080,18 +1110,16 @@ public class ControlEstructuraPlanta implements Serializable {
 
     public void listaValoresBoton() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (estructuraSeleccionado != null) {
-            if (cualCeldaEstructura == 2) {
-                context.update("form:CentroCostoDialogo");
-                context.execute("CentroCostoDialogo.show()");
-                tipoActualizacion = 0;
-            }
-            if (cualCeldaEstructura == 4) {
+        if (estructuraSeleccionada != null) {
+            if (cualCeldaEstructura == 2 || cualCeldaEstructura == 4) {
+                modificarInfoRegistrosCCosto(lovCentrosCostos.size());
                 context.update("form:CentroCostoDialogo");
                 context.execute("CentroCostoDialogo.show()");
                 tipoActualizacion = 0;
             }
             if (cualCeldaEstructura == 5) {
+                cargarLovEstructurasPadres(organigramaSeleccionado.getSecuencia(), estructuraSeleccionada.getSecuencia());
+                modificarInfoRegistroEsPa(lovEstructurasPadres.size());
                 context.update("form:EstructuraPadreDialogo");
                 context.execute("EstructuraPadreDialogo.show()");
                 tipoActualizacion = 0;
@@ -1106,8 +1134,8 @@ public class ControlEstructuraPlanta implements Serializable {
         String type = map.get("t"); // type attribute of node
         int indice = Integer.parseInt(type);
         int columna = Integer.parseInt(name);
-        estructuraSeleccionado = listaEstructuras.get(indice);
-        cambiarIndiceEstructura(estructuraSeleccionado, columna);
+        estructuraSeleccionada = listaEstructuras.get(indice);
+        cambiarIndiceEstructura(estructuraSeleccionada, columna);
         tipoActualizacion = 0;
         RequestContext contextt = RequestContext.getCurrentInstance();
         contextt.update("form:CentroCostoDialogo");
@@ -1118,11 +1146,19 @@ public class ControlEstructuraPlanta implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         tipoActualizacion = LND;
 
+
         if (dlg == 0) {
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
+            modificarInfoRegistrosCCosto(lovCentrosCostos.size());
             context.update("form:CentroCostoDialogo");
             context.execute("CentroCostoDialogo.show()");
         }
         if (dlg == 1) {
+            activarLOV = true;
+            cargarLovEstructurasPadres(organigramaSeleccionado.getSecuencia(), estructuraSeleccionada.getSecuencia());
+            RequestContext.getCurrentInstance().update("form:listaValores");
+            modificarInfoRegistroEsPa(lovEstructurasPadres.size());
             context.update("form:EstructuraPadreDialogo");
             context.execute("EstructuraPadreDialogo.show()");
         }
@@ -1133,10 +1169,16 @@ public class ControlEstructuraPlanta implements Serializable {
         tipoActualizacion = LND;
 
         if (dlg == 0) {
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
+            modificarInfoRegistrosCCosto(lovCentrosCostos.size());
             context.update("form:CentroCostoDialogo");
             context.execute("CentroCostoDialogo.show()");
         }
         if (dlg == 1) {
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
+            modificarInfoRegistroEsPa(lovEstructurasPadres.size());
             context.update("form:EstructuraPadreDialogo");
             context.execute("EstructuraPadreDialogo.show()");
         }
@@ -1231,14 +1273,14 @@ public class ControlEstructuraPlanta implements Serializable {
     public void actualizarCentroCosto() {
         System.out.println("tipoActualizacion : " + tipoActualizacion);
         System.out.println("centroCostoSeleccionado : " + centroCostoSeleccionado.getNombre());
-        System.out.println("estructuraSeleccionado : " + estructuraSeleccionado);
+        System.out.println("estructuraSeleccionado : " + estructuraSeleccionada);
         if (tipoActualizacion == 0) {
-            estructuraSeleccionado.setCentrocosto(centroCostoSeleccionado);
-            if (!listEstructurasCrear.contains(estructuraSeleccionado)) {
+            estructuraSeleccionada.setCentrocosto(centroCostoSeleccionado);
+            if (!listEstructurasCrear.contains(estructuraSeleccionada)) {
                 if (listEstructurasModificar.isEmpty()) {
-                    listEstructurasModificar.add(estructuraSeleccionado);
-                } else if (!listEstructurasModificar.contains(estructuraSeleccionado)) {
-                    listEstructurasModificar.add(estructuraSeleccionado);
+                    listEstructurasModificar.add(estructuraSeleccionada);
+                } else if (!listEstructurasModificar.contains(estructuraSeleccionada)) {
+                    listEstructurasModificar.add(estructuraSeleccionada);
                 }
             }
 
@@ -1262,7 +1304,6 @@ public class ControlEstructuraPlanta implements Serializable {
         filtrarLovCentrosCostos = null;
         centroCostoSeleccionado = null;
         aceptar = true;
-        estructuraSeleccionado = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
 
@@ -1279,7 +1320,6 @@ public class ControlEstructuraPlanta implements Serializable {
         filtrarLovCentrosCostos = null;
         centroCostoSeleccionado = null;
         aceptar = true;
-        estructuraSeleccionado = null;
         tipoActualizacion = -1;
         permitirIndexEstructura = true;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1290,12 +1330,12 @@ public class ControlEstructuraPlanta implements Serializable {
 
     public void actualizarEstructuraPadre() {
         if (tipoActualizacion == 0) {
-            estructuraSeleccionado.setEstructurapadre(estructuraPadreSeleccionado);
-            if (!listEstructurasCrear.contains(estructuraSeleccionado)) {
+            estructuraSeleccionada.setEstructurapadre(estructuraPadreSeleccionado);
+            if (!listEstructurasCrear.contains(estructuraSeleccionada)) {
                 if (listEstructurasModificar.isEmpty()) {
-                    listEstructurasModificar.add(estructuraSeleccionado);
-                } else if (!listEstructurasModificar.contains(estructuraSeleccionado)) {
-                    listEstructurasModificar.add(estructuraSeleccionado);
+                    listEstructurasModificar.add(estructuraSeleccionada);
+                } else if (!listEstructurasModificar.contains(estructuraSeleccionada)) {
+                    listEstructurasModificar.add(estructuraSeleccionada);
                 }
             }
 
@@ -1319,7 +1359,6 @@ public class ControlEstructuraPlanta implements Serializable {
         filtrarLovEstructurasPadres = null;
         estructuraPadreSeleccionado = null;
         aceptar = true;
-        estructuraSeleccionado = null;
         tipoActualizacion = -1;
         RequestContext context = RequestContext.getCurrentInstance();
 
@@ -1336,7 +1375,7 @@ public class ControlEstructuraPlanta implements Serializable {
         filtrarLovEstructurasPadres = null;
         estructuraPadreSeleccionado = null;
         aceptar = true;
-        estructuraSeleccionado = null;
+        estructuraSeleccionada = null;
         tipoActualizacion = -1;
         permitirIndexEstructura = true;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1358,7 +1397,7 @@ public class ControlEstructuraPlanta implements Serializable {
             nombreTabla = ":formExportarO:datosOrganigramaExportar";
             nombreXML = "Organigramas_XML";
         }
-        if (estructuraSeleccionado != null) {
+        if (estructuraSeleccionada != null) {
             nombreTabla = ":formExportarE:datosEstructuraExportar";
             nombreXML = "Estructuras_XML";
         }
@@ -1374,7 +1413,7 @@ public class ControlEstructuraPlanta implements Serializable {
         if (organigramaSeleccionado != null) {
             exportPDF_O();
         }
-        if (estructuraSeleccionado != null) {
+        if (estructuraSeleccionada != null) {
             exportPDF_E();
         }
     }
@@ -1385,7 +1424,6 @@ public class ControlEstructuraPlanta implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "Organigramas_PDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        organigramaSeleccionado = null;
     }
 
     public void exportPDF_E() throws IOException {
@@ -1394,7 +1432,6 @@ public class ControlEstructuraPlanta implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "Estructuras_PDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        estructuraSeleccionado = null;
     }
 
     /**
@@ -1406,7 +1443,7 @@ public class ControlEstructuraPlanta implements Serializable {
         if (organigramaSeleccionado != null) {
             exportXLS_O();
         }
-        if (estructuraSeleccionado != null) {
+        if (estructuraSeleccionada != null) {
             exportXLS_E();
         }
     }
@@ -1417,7 +1454,6 @@ public class ControlEstructuraPlanta implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "Organigramas_XLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        organigramaSeleccionado = null;
     }
 
     public void exportXLS_E() throws IOException {
@@ -1426,10 +1462,13 @@ public class ControlEstructuraPlanta implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "Estructuras_XLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        estructuraSeleccionado = null;
     }
 
+    public void anularLOV() {
+        activarLOV = true;
+    }
     //EVENTO FILTRAR
+
     /**
      * Evento que cambia la lista reala a la filtrada
      */
@@ -1450,7 +1489,7 @@ public class ControlEstructuraPlanta implements Serializable {
         }
         activarLOV = true;
         RequestContext.getCurrentInstance().update("form:listaValores");
-        estructuraSeleccionado = null;
+        estructuraSeleccionada = null;
         modificarInfoRegistroEs(filtrarListaEstructuras.size());
         RequestContext.getCurrentInstance().update("form:infoRegistroEst");
     }
@@ -1462,8 +1501,43 @@ public class ControlEstructuraPlanta implements Serializable {
     private void modificarInfoRegistroEs(int valor) {
         infoRegistroEs = String.valueOf(valor);
     }
-    //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
 
+    public void contarRegistrosOr() {
+        if (listaOrganigramas != null) {
+            modificarInfoRegistroOr(listaOrganigramas.size());
+        } else {
+            modificarInfoRegistroOr(0);
+        }
+    }
+
+    public void contarRegistrosEs() {
+        if (listaEstructuras != null) {
+            modificarInfoRegistroEs(listaEstructuras.size());
+        } else {
+            modificarInfoRegistroEs(0);
+        }
+        RequestContext.getCurrentInstance().update("form:infoRegistroEst");
+    }
+
+    private void modificarInfoRegistrosCCosto(int valor) {
+        infoRegistroCentroCosto = String.valueOf(valor);
+    }
+
+    private void modificarInfoRegistroEsPa(int valor) {
+        infoRegistroEstructuraPa = String.valueOf(valor);
+    }
+
+    public void eventoFiltrarCCosto() {
+        modificarInfoRegistrosCCosto(filtrarLovCentrosCostos.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistroCentroCosto");
+    }
+
+    public void eventoFiltrarEsPa() {
+        modificarInfoRegistroEsPa(filtrarLovEstructurasPadres.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistroEstructura");
+    }
+
+    //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
     public void verificarRastro() {
         int tam = listaOrganigramas.size();
         int tam1 = listaEstructuras.size();
@@ -1473,11 +1547,9 @@ public class ControlEstructuraPlanta implements Serializable {
         } else {
             if (organigramaSeleccionado != null) {
                 verificarRastroOrganigrama();
-                organigramaSeleccionado = null;
             }
-            if (estructuraSeleccionado != null) {
+            if (estructuraSeleccionada != null) {
                 verificarRastroEstructura();
-                estructuraSeleccionado = null;
             }
         }
     }
@@ -1521,9 +1593,9 @@ public class ControlEstructuraPlanta implements Serializable {
     public void verificarRastroEstructura() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (listaEstructuras != null) {
-            if (estructuraSeleccionado != null) {
-                int resultado = administrarRastros.obtenerTabla(estructuraSeleccionado.getSecuencia(), "ESTRUCTURAS");
-                estructuraSeleccionado = null;
+            if (estructuraSeleccionada != null) {
+                int resultado = administrarRastros.obtenerTabla(estructuraSeleccionada.getSecuencia(), "ESTRUCTURAS");
+                estructuraSeleccionada = null;
                 if (resultado == 1) {
                     context.execute("errorObjetosDB.show()");
                 } else if (resultado == 2) {
@@ -1551,7 +1623,7 @@ public class ControlEstructuraPlanta implements Serializable {
                 context.execute("errorRastroHistorico.show()");
             }
         }
-        estructuraSeleccionado = null;
+        estructuraSeleccionada = null;
     }
 
     public void recordarSeleccionOr() {
@@ -1563,10 +1635,10 @@ public class ControlEstructuraPlanta implements Serializable {
     }
 
     public void recordarSeleccionEx() {
-        if (estructuraSeleccionado != null) {
+        if (estructuraSeleccionada != null) {
             FacesContext c = FacesContext.getCurrentInstance();
             tabla = (DataTable) c.getViewRoot().findComponent("form:datosEstructura");
-            tabla.setSelection(estructuraSeleccionado);
+            tabla.setSelection(estructuraSeleccionada);
         }
     }
 
@@ -1763,8 +1835,12 @@ public class ControlEstructuraPlanta implements Serializable {
     public List<CentrosCostos> getLovCentrosCostos() {
         if (lovCentrosCostos == null) {
             if (organigramaSeleccionado != null) {
+                System.out.println("organigramaSeleccionado : " + organigramaSeleccionado);
+                System.out.println("organigramaSeleccionado.getEmpresa() : " + organigramaSeleccionado.getEmpresa());
+                System.out.println("organigramaSeleccionado.getEmpresa().getSecuencia() : " + organigramaSeleccionado.getEmpresa().getSecuencia());
                 lovCentrosCostos = administrarEstructuraPlanta.lovCentrosCostos(organigramaSeleccionado.getEmpresa().getSecuencia());
-
+            } else {
+                lovCentrosCostos = new ArrayList<CentrosCostos>();
             }
         }
         return lovCentrosCostos;
@@ -1790,19 +1866,11 @@ public class ControlEstructuraPlanta implements Serializable {
         this.centroCostoSeleccionado = setCentroCostoSeleccionado;
     }
 
+    public void cargarLovEstructurasPadres(BigInteger secOrganigrama, BigInteger secEstructura) {
+        lovEstructurasPadres = administrarEstructuraPlanta.lovEstructurasPadres(secOrganigrama, secEstructura);
+    }
+
     public List<Estructuras> getLovEstructurasPadres() {
-        if (lovEstructurasPadres == null) {
-            Estructuras auxE = null;
-            Organigramas auxO = null;
-            if (organigramaSeleccionado != null && estructuraSeleccionado != null) {
-
-                auxO = organigramaSeleccionado;
-                auxE = estructuraSeleccionado;
-
-                lovEstructurasPadres = administrarEstructuraPlanta.lovEstructurasPadres(auxO.getSecuencia(), auxE.getSecuencia());
-            }
-
-        }
         return lovEstructurasPadres;
     }
 
@@ -1850,12 +1918,12 @@ public class ControlEstructuraPlanta implements Serializable {
         this.organigramaSeleccionado = organigramaTablaSeleccionado;
     }
 
-    public Estructuras getEstructuraSeleccionado() {
-        return estructuraSeleccionado;
+    public Estructuras getEstructuraSeleccionada() {
+        return estructuraSeleccionada;
     }
 
-    public void setEstructuraSeleccionado(Estructuras estructuraTablaSeleccionado) {
-        this.estructuraSeleccionado = estructuraTablaSeleccionado;
+    public void setEstructuraSeleccionada(Estructuras estructuraTablaSeleccionado) {
+        this.estructuraSeleccionada = estructuraTablaSeleccionado;
     }
 
     public String getInfoRegistroCentroCosto() {
@@ -1872,6 +1940,22 @@ public class ControlEstructuraPlanta implements Serializable {
 
     public void setInfoRegistroEstructuraPa(String infoRegistroEstructura) {
         this.infoRegistroEstructuraPa = infoRegistroEstructura;
+    }
+
+    public String getInfoRegistroEs() {
+        return infoRegistroEs;
+    }
+
+    public void setInfoRegistroEs(String infoRegistroEs) {
+        this.infoRegistroEs = infoRegistroEs;
+    }
+
+    public String getInfoRegistroOr() {
+        return infoRegistroOr;
+    }
+
+    public void setInfoRegistroOr(String infoRegistroOr) {
+        this.infoRegistroOr = infoRegistroOr;
     }
 
     public boolean isActivarLOV() {

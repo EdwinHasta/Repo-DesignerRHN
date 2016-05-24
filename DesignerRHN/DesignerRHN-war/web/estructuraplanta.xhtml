@@ -20,8 +20,8 @@
 
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal" >  
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value="" onclick="confirmarGuardarSalida.show();" disabled="#{controlEstructuraPlanta.cambiosPagina}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 773px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" actionListener="#{controlEstructuraPlanta.salir()}" action="#{controlEstructuraPlanta.valorPaginaAnterior()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 683px; top: 502px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value="" onclick="confirmarGuardarSalida.show();" disabled="#{controlEstructuraPlanta.cambiosPagina}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 773px; top: 502px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" actionListener="#{controlEstructuraPlanta.salir()}" action="#{controlEstructuraPlanta.valorPaginaAnterior()}" process="@this" />
 
                         <p:toolbar  styleClass="cssToolbar" >  
                             <p:toolbarGroup align="left"> 
@@ -34,7 +34,8 @@
 
                                 <p:separator style="position: relative; top: -9px"/> 
 
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlEstructuraPlanta.listaValoresBoton()}"  process="@this"/>
+                                <p:commandButton id="listaValores" widgetVar="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
+                                                 actionListener="#{controlEstructuraPlanta.listaValoresBoton()}" disabled="#{controlEstructuraPlanta.activarLOV}" process="@this"/>
                                 <p:tooltip for="listaValores" value="#{msg['lista']}" />
 
                                 <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlEstructuraPlanta.activarCtrlF11()}" process="@this"/>
@@ -69,7 +70,7 @@
 
                                 <p:separator style="position: relative; top: -9px"/> 
 
-                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlConceptoJuridico.cancelarModificacion()}" oncomplete="window.location.reload()" process="@this"/>  
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlEstructuraPlanta.cancelarModificacionGeneral()}" oncomplete="window.location.reload()" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
                                 <p:separator style="position: relative; top: -9px"/> 
@@ -79,7 +80,8 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <fieldset style="position: absolute; left: 10px; top: 62px;width: 830px; height: 110px; border-radius: 10px;">
+                        <fieldset style="position: absolute; left: 10px; top: 70px;width: 830px; height: 127
+                                  px; border-radius: 10px; padding-top: 1px;">
                             <legend style="color: blue"><strong>#{msg['organigramas']}</strong></legend>
 
                             <p:dataTable id="datosOrganigrama" widgetVar="datosOrganigrama" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="border: 1px; text-align: left;width: 805px;position: relative"                           
@@ -90,8 +92,8 @@
                                 <p:ajax event="filter" listener="#{controlEstructuraPlanta.eventoFiltrarO()}"/>
                                 <f:event type="preRenderView" listener="#{controlEstructuraPlanta.recordarSeleccionOr()}"/>
 
-                                <p:column  headerText="#{msg['fecha']}" sortBy="#{info.fecha}" filterBy="#{info.fecha}" filterMatchMode="contains" 
-                                           id="organigramaFecha" width="35" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="text-align: center;" headerText="#{msg['fecha']}" sortBy="#{info.fecha}" filterBy="#{info.fecha}" filterMatchMode="contains" 
+                                           id="organigramaFecha" width="70" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.fecha}" >
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
@@ -104,10 +106,13 @@
                                             </lnk:calendar>
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="" />
+                                    </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['codigo']}" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains"
-                                          id="organigramaCodigo" width="60" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="text-align: center;" headerText="#{msg['codigo']}" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains"
+                                          id="organigramaCodigo" width="70" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.codigo}" style="text-transform: uppercase"/></f:facet>  
                                         <f:facet name="input">
@@ -116,11 +121,13 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-
+                                    <f:facet name="footer">
+                                        <h:outputText value="" />
+                                    </f:facet>
                                 </p:column>
 
                                 <p:column headerText="#{msg['empresa']}" sortBy="#{info.empresa.nombre}" filterBy="#{info.empresa.nombre}" filterMatchMode="contains" 
-                                          width="100" id="organigramaEmpresa" filterStyle="display: none; visibility: hidden;"  >  
+                                          id="organigramaEmpresa" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.empresa.nombre}" style="text-transform: uppercase">
@@ -132,9 +139,12 @@
                                             </p:inputText>
                                         </f:facet>   
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="" />
+                                    </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['nit']}" sortBy="#{info.empresa.nit}" filterBy="#{info.empresa.nit}" filterMatchMode="contains" 
+                                <p:column style="text-align: center;" headerText="#{msg['nit']}" sortBy="#{info.empresa.nit}" filterBy="#{info.empresa.nit}" filterMatchMode="contains" 
                                           width="100" id="organigramaNIT" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
@@ -147,10 +157,13 @@
                                             </p:inputText>
                                         </f:facet>   
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="" />
+                                    </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['estado']}" sortBy="#{info.estado}" filterBy="#{info.estado}" filterMatchMode="contains" 
-                                          width="100" id="organigramaEstado" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column style="text-align: center;" headerText="#{msg['estado']}" sortBy="#{info.estado}" filterBy="#{info.estado}" filterMatchMode="contains" 
+                                          width="70" id="organigramaEstado" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.estado}" style="text-transform: uppercase">
@@ -162,28 +175,33 @@
                                             </p:inputText>
                                         </f:facet>   
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value="" />
+                                    </f:facet>
                                 </p:column>
 
                             </p:dataTable>  
+                            <h:outputText id="infoRegistroOrg" value="#{msg['infoRegistro']} #{controlEstructuraPlanta.infoRegistroOr}" style="position: relative; left: 10px; top: 1px; font-weight: bold"/>
                         </fieldset> 
 
                         <p:remoteCommand name="posicionOrganigrama" actionListener="#{controlEstructuraPlanta.posicionOrganigrama()}"/>
                         <p:remoteCommand name="posicionEstructura" actionListener="#{controlEstructuraPlanta.posicionEstructura()}"/>
                         <p:remoteCommand name="dispararDialogo" actionListener="#{controlEstructuraPlanta.dispararDialogo()}"/>
 
-                        <fieldset style="position: absolute; left: 10px; top: 188px; width: 830px; height: 272px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 214px; width: 830px; height: 273px; border-radius: 10px; padding-top: 1px;">
                             <legend style="color: blue"><strong>#{msg['estructura']}</strong></legend>
 
-                            <p:dataTable id="datosEstructura" widgetVar="datosEstructura" var="infoE" rowKey="#{infoE.secuencia}" rowIndexVar="indiceE" style="border: 1px; text-align: left;width: 805px"
-                                         value="#{controlEstructuraPlanta.listaEstructuras}" scrollable="true" scrollHeight="#{controlEstructuraPlanta.altoTablaEstructura}" scrollWidth="820"
+                            <p:dataTable id="datosEstructura" widgetVar="datosEstructura" var="infoE" rowKey="#{infoE.secuencia}" rowIndexVar="indiceE" 
+                                         style=" border: 1px; text-align: left;width: 805px" value="#{controlEstructuraPlanta.listaEstructuras}" 
+                                         scrollable="true" scrollHeight="#{controlEstructuraPlanta.altoTablaEstructura}" scrollWidth="820" editable="true" 
                                          filteredValue="#{controlEstructuraPlanta.filtrarListaEstructuras}" emptyMessage="#{msg['vacio']}" selectionMode="single"
-                                         editable="true" editMode="cell" liveScroll="true" scrollRows="15" selection="#{controlEstructuraPlanta.estructuraSeleccionado}">
+                                         editMode="cell" liveScroll="true" scrollRows="15" selection="#{controlEstructuraPlanta.estructuraSeleccionada}">
 
                                 <p:ajax event="filter" listener="#{controlEstructuraPlanta.eventoFiltrarE()}"/>
                                 <f:event type="preRenderView" listener="#{controlEstructuraPlanta.recordarSeleccionEx()}"/>
 
-                                <p:column headerText="#{msg['codigo']}" sortBy="#{infoE.codigo}" filterBy="#{infoE.codigo}" filterMatchMode="contains"  
-                                          width="30" id="estructuraCodigo" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column style="text-align: center;" headerText="#{msg['codigo']}" sortBy="#{infoE.codigo}" filterBy="#{infoE.codigo}" filterMatchMode="contains"  
+                                          width="65" id="estructuraCodigo" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoE.codigo}" style="text-transform: uppercase">
@@ -202,7 +220,7 @@
                                 </p:column>
 
                                 <p:column headerText="#{msg['estructura']}" sortBy="#{infoE.nombre}" filterBy="#{infoE.nombre}" filterMatchMode="contains"  
-                                          width="80" id="estructuraEstructura" filterStyle="display: none; visibility: hidden;"  >  
+                                          id="estructuraEstructura" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText  value="#{infoE.nombre}"  style="text-transform: uppercase"/>
@@ -219,8 +237,8 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['cant']}" sortBy="#{infoE.cantidadCargosControlar}" filterBy="#{infoE.cantidadCargosControlar}" filterMatchMode="contains" 
-                                          width="15" id="estructuraCantidadControlar" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column headerText="#{msg['cant']}" style="text-align: center;" sortBy="#{infoE.cantidadCargosControlar}" filterBy="#{infoE.cantidadCargosControlar}" filterMatchMode="contains" 
+                                          width="35" id="estructuraCantidadControlar" filterStyle="display: none; visibility: hidden;"  >  
                                     <f:facet name="header">
                                         <h:outputText value="#{msg['cant']}" id="headerCant" />
                                         <p:tooltip for="headerCant" value="#{msg['headerCant']}" />
@@ -241,8 +259,8 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Real" sortBy="#{infoE.cantidadCargosEmplActivos}" filterBy="#{infoE.cantidadCargosEmplActivos}" filterMatchMode="contains" 
-                                          width="15" id="estructuraCantidadActivo" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column headerText="Real" style="text-align: center;" sortBy="#{infoE.cantidadCargosEmplActivos}" filterBy="#{infoE.cantidadCargosEmplActivos}" filterMatchMode="contains" 
+                                          width="35" id="estructuraCantidadActivo" filterStyle="display: none; visibility: hidden;"  >  
                                     <f:facet name="header">
                                         <h:outputText value="Real" id="headerReal" />
                                         <p:tooltip for="headerReal" value="#{msg['headerReal']}" />
@@ -264,7 +282,7 @@
                                 </p:column>
 
                                 <p:column headerText="#{msg['centroCosto']}" sortBy="#{infoE.centrocosto.codigoNombre}" filterBy="#{infoE.centrocosto.codigoNombre}" filterMatchMode="contains" 
-                                          width="80" id="estructuraCentroCosto" filterStyle="display: none; visibility: hidden;"  >  
+                                          width="170" id="estructuraCentroCosto" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText  value="#{infoE.centrocosto.codigoNombre}" style="text-transform: uppercase"/>
@@ -278,12 +296,12 @@
                                         </f:facet>   
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 99%; margin: -14px; height: 26px; border: none; color: blue" id="fooCiudad" value=" " />
+                                        <p:commandButton style="width: 190px; height: inherit; border-radius: 0px; margin-left: -10px; margin-right: -10px " id="fooCiudad" value=" " action="centrocostoestructuraplanta" actionListener="#{controlBetaCentrosCostos.recibirPagina('atrascentrocostoestructuraplanta')}" />
                                     </f:facet>
                                 </p:column>
 
                                 <p:column headerText="#{msg['estructuraPadre']}" sortBy="#{infoE.estructurapadre.nombre}" filterBy="#{infoE.estructurapadre.nombre}" filterMatchMode="contains" 
-                                          width="80" id="estructuraEstructuraPadre" filterStyle="display: none; visibility: hidden;"  >  
+                                          width="170" id="estructuraEstructuraPadre" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText  value="#{infoE.estructurapadre.nombre}" style="text-transform: uppercase"/>
@@ -301,125 +319,147 @@
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>  
+                            <h:outputText id="infoRegistroEst" value="#{msg['infoRegistro']} #{controlEstructuraPlanta.infoRegistroEs}" style="position: relative; left: 10px; top: 1px; font-weight: bold"/>
                         </fieldset> 
                     </p:panel>
 
                     <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlEstructuraPlanta.guardarGeneral()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlEstructuraPlanta.cancelarModificacionGeneral()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
-                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
-                    </p:dialog>
-                    
-                    <p:dialog id="confirmarGuardarSalida" header="#{msg['atencion']}" widgetVar="confirmarGuardarSalida"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlEstructuraPlanta.guardarYSalir()}" action="#{controlEstructuraPlanta.valorPaginaAnterior()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlEstructuraPlanta.cancelarYSalir()}" action="#{controlEstructuraPlanta.valorPaginaAnterior()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
-                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardarSalida.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlEstructuraPlanta.guardarGeneral()}" 
+                                         style="position: absolute; top: 50px; left: 157px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlEstructuraPlanta.cancelarModificacionGeneral()}" 
+                                         style="position: absolute; top: 50px; left: 219px" process="@this" icon="ui-icon-close" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" 
+                                         style="position: absolute; top: 50px; left: 285px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
 
-                    <p:dialog id="verificarRastrosTablas" widgetVar="verificarRastrosTablas" header="#{msg['rpter']}" resizable="false" draggable="false" modal="true" height="130" width="530px"  >
+                    <p:dialog id="confirmarGuardarSalida" header="#{msg['atencion']}" widgetVar="confirmarGuardarSalida"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlEstructuraPlanta.guardarYSalir()}" action="#{controlEstructuraPlanta.valorPaginaAnterior()}" 
+                                         style="position: absolute; top: 50px; left: 157px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlEstructuraPlanta.cancelarYSalir()}" action="#{controlEstructuraPlanta.valorPaginaAnterior()}" 
+                                         style="position: absolute; top: 50px; left: 219px" process="@this" icon="ui-icon-close" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardarSalida.hide();" 
+                                         style="position: absolute; top: 50px; left: 285px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                    </p:dialog>
+
+                    <p:dialog id="verificarRastrosTablas" widgetVar="verificarRastrosTablas" header="#{msg['rpter']}" resizable="false" draggable="false" modal="true" height="130" width="380px" >
                         <h:outputText value="#{msg['seleccione']}" style="position: absolute; left: 20px; top: 20px;color: blue;font-weight: bold"/>
-                        <p:commandButton value="#{msg['organigrama']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 20px; top: 50px;" actionListener="#{controlEstructuraPlanta.verificarRastroOrganigrama()}" process="@this" />
-                        <p:commandButton value="#{msg['estructura']}" onclick="verificarRastrosTablas.hide();" style="position: absolute; left: 210px; top: 50px;" actionListener="#{controlEstructuraPlanta.verificarRastroOrganigrama()}" process="@this"/>
+                        <p:commandButton value="#{msg['organigramas']}" onclick="verificarRastrosTablas.hide();" 
+                                         style="position: absolute; left: 90px; top: 50px; width: 200px; height: 28px;" actionListener="#{controlEstructuraPlanta.verificarRastroOrganigrama()}" process="@this" />
+                        <p:commandButton value="#{msg['estructura']}" onclick="verificarRastrosTablas.hide();" 
+                                         style="position: absolute; left: 90px; top: 90px; width: 200px; height: 28px;" actionListener="#{controlEstructuraPlanta.verificarRastroOrganigrama()}" process="@this"/>
                     </p:dialog>
 
 
                     <p:dialog id="confirmarRastro" header="#{msg['informacion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{controlEstructuraPlanta.msnConfirmarRastro}" id="msnConfirmarRastro" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlEstructuraPlanta.backUp, controlEstructuraPlanta.nombreTablaRastro , 'rastroEstructuraPlanta')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" actionListener="#{controlEstructuraPlanta.limpiarMSNRastros()}" style="position: absolute; top: 63px; left: 270px" process="@this" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" oncomplete="#{controlEstructuraPlanta.anularLOV()}" icon="ui-icon-check"
+                                         actionListener="#{controlRastro.recibirDatosTabla(controlEstructuraPlanta.backUp, controlEstructuraPlanta.nombreTablaRastro , 'rastroEstructuraPlanta')}"
+                                         style="position: absolute; top: 63px; left: 190px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" actionListener="#{controlEstructuraPlanta.limpiarMSNRastros()}" icon="ui-icon-close"
+                                         style="position: absolute; top: 63px; left: 251px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="confirmarRastroHistorico" header="#{msg['informacion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{controlEstructuraPlanta.msnConfirmarRastroHistorico}" id="msnConfirmarRastroHisttorico" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla(controlEstructuraPlanta.nombreTablaRastro , 'rastroEstructuraPlanta')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlEstructuraPlanta.limpiarMSNRastros()}" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla(controlEstructuraPlanta.nombreTablaRastro , 'rastroEstructuraPlanta')}"
+                                         oncomplete="#{controlEstructuraPlanta.anularLOV()}" action="rastro" process="@this" icon="ui-icon-check"
+                                         style="position: absolute; top: 63px; left: 190px"  />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlEstructuraPlanta.limpiarMSNRastros()}" icon="ui-icon-close"
+                                         style="position: absolute; top: 63px; left: 251px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="errorRastroHistorico" header="#{msg['error']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
                     <p:dialog id="errorRegistroRastro" header="#{msg['error']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
                     <p:dialog id="errorTablaConRastro" header="#{msg['informacion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTablaConRastro']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlEstructuraPlanta.backUp, controlEstructuraPlanta.nombreTablaRastro , 'rastroEstructuraPlanta')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                        <p:commandButton value="#{msg['si']}" icon="ui-icon-check" onclick="errorTablaConRastro.hide();" 
+                                         actionListener="#{controlRastro.recibirDatosTabla(controlEstructuraPlanta.backUp, controlEstructuraPlanta.nombreTablaRastro , 'rastroEstructuraPlanta')}" 
+                                         style="position: absolute; top: 66px; left: 190px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" icon="ui-icon-close" onclick="errorTablaConRastro.hide();" 
+                                         style="position: absolute; top: 66px; left: 251px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="errorTablaSinRastro" header="#{msg['error']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTablaSinRastro']}" style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
                     <p:dialog id="seleccionarRegistro" header="#{msg['error']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 2px;"  />
+                        <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 8px; width: 185px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
                     <p:dialog id="errorObjetosDB" header="#{msg['error']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 8px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
                     <p:dialog id="errorDatosNullEstructura" header="#{msg['error']}" widgetVar="errorDatosNullEstructura"  resizable="false" draggable="false" modal="true" height="60" width="275px" closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorDatosNullEstructura']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorDatosNullEstructura']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
                     <p:dialog id="errorFecha" header="#{msg['error']}" widgetVar="errorFecha"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFecha']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
                     <p:dialog id="errorCodigo" header="#{msg['error']}" widgetVar="errorCodigo"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorCodigo']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
                     <p:dialog header="#{msg['centroCostoD']}" widgetVar="CentroCostoDialogo" draggable="false" resizable="false" closable="false" id="CentroCostoDialogo"  
-                              showEffect="fade" hideEffect="fade" width="431" modal="true" >
+                              showEffect="fade" hideEffect="fade" width="435" modal="true" height="390" >
                         <p:dataTable id="lovCentroCosto" style="width: 400px" var="centroCosto" value="#{controlEstructuraPlanta.lovCentrosCostos}" rowKey="#{centroCosto.secuencia}"
                                      selection="#{controlEstructuraPlanta.centroCostoSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovCentroCosto" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlEstructuraPlanta.filtrarLovCentrosCostos}" emptyMessage="#{msg['lovvacio']}">              
+
                             <p:ajax event="rowSelect" listener="#{controlEstructuraPlanta.activarAceptar()}" update=":form:aceptarCC"/>
+                            <p:ajax event="filter" listener="#{controlEstructuraPlanta.eventoFiltrarCCosto()}"/>
                             <p:ajax event="rowDblselect" listener="#{controlEstructuraPlanta.actualizarCentroCosto()}"  process="@this"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCentroCosto.filter();" style="width:140px; position: relative; left: 40px;" />  
                             </f:facet>
-                            <p:column filterBy="#{centroCosto.codigoNombre}" filterMatchMode="contains">
+                            <p:column filterBy="#{centroCosto.codigoNombre}" filterMatchMode="contains" filterStyle="width: 85%;">
                                 <f:facet name="header">
                                     <h:outputText value="#{msg['centroCosto']}" />
                                 </f:facet>
                                 <h:outputText value="#{centroCosto.codigoNombre}" />
                             </p:column>
                         </p:dataTable>
-                        
-                        <h:outputText id="infoRegistroCentroCosto" value="#{controlEstructuraPlanta.infoRegistroCentroCosto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
-                        <p:commandButton id="aceptarCC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEstructuraPlanta.aceptar}" actionListener="#{controlEstructuraPlanta.actualizarCentroCosto()}" process="@this" icon="ui-icon-check"/>
-                        
-                        <p:commandButton id="atrasCC" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlEstructuraPlanta.cancelarCambioCentroCosto()}" process="@this"/>
-                        
+
+                        <h:outputText id="infoRegistroCentroCosto" value="#{msg['infoRegistro']} #{controlEstructuraPlanta.infoRegistroCentroCosto}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+
+                        <p:commandButton id="aceptarCC" style="position: relative; left: 230px; top: 15px;" value="#{msg['aceptar']}" disabled="#{controlEstructuraPlanta.aceptar}" actionListener="#{controlEstructuraPlanta.actualizarCentroCosto()}" process="@this" icon="ui-icon-check"/>
+
+                        <p:commandButton id="atrasCC" style="position: relative; left: 230px; top: 15px;" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlEstructuraPlanta.cancelarCambioCentroCosto()}" process="@this"/>
+
                     </p:dialog>
 
                     <p:dialog header="#{msg['estructuraPadreD']}" widgetVar="EstructuraPadreDialogo" draggable="false" resizable="false" closable="false" id="EstructuraPadreDialogo"  
-                              showEffect="fade" hideEffect="fade" width="431" modal="true" >
+                              showEffect="fade" hideEffect="fade" width="435" modal="true" height="390" >
                         <p:dataTable id="lovEstructuraPadre" style="width: 400px" var="ePadre" value="#{controlEstructuraPlanta.lovEstructurasPadres}" rowKey="#{ePadre.secuencia}"
-                                     selection="#{controlEstructuraPlanta.estructuraPadreSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovEstructuraPadre" scrollable="true" scrollHeight="250" 
-                                     filteredValue="#{controlEstructuraPlanta.filtrarLovEstructurasPadres}" emptyMessage="#{msg['lovvacio']}">              
+                                     selection="#{controlEstructuraPlanta.estructuraPadreSeleccionado}" scrollWidth="420" selectionMode="single" widgetVar="lovEstructuraPadre" scrollable="true" scrollHeight="250" 
+                                     filteredValue="#{controlEstructuraPlanta.filtrarLovEstructurasPadres}" emptyMessage="#{msg['lovvacio']}"> 
+
+                            <p:ajax event="filter" listener="#{controlEstructuraPlanta.eventoFiltrarEsPa()}"/>
                             <p:ajax event="rowSelect" listener="#{controlEstructuraPlanta.activarAceptar()}" update=":form:aceptarEP"/>
                             <p:ajax event="rowDblselect" listener="#{controlEstructuraPlanta.actualizarEstructuraPadre()}"  process="@this"  />
                             <f:facet name="header">  
@@ -427,26 +467,27 @@
                                 <p:inputText id="globalFilter" onkeyup="lovEstructuraPadre.filter();" style="width:140px; position: relative; left: 30px;" />  
                             </f:facet>
 
-                            <p:column filterBy="#{ePadre.nombre}" filterMatchMode="contains">
+                            <p:column filterBy="#{ePadre.nombre}" filterMatchMode="contains" filterStyle="width: 85%;">
                                 <f:facet name="header">
                                     <h:outputText value="#{msg['ePadre']}" />
                                 </f:facet>
                                 <h:outputText value="#{ePadre.nombre}" />
                             </p:column>
-                            <p:column filterBy="#{ePadre.codigo}" width="80" filterStyle="width: 60px" filterMatchMode="contains">
+                            <p:column filterBy="#{ePadre.codigo}" width="80" filterStyle="width: 85%" filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="#{msg['codigo']}" />
                                 </f:facet>
                                 <h:outputText value="#{ePadre.codigo}" />
                             </p:column>
+
                         </p:dataTable>
-                        
-                        <h:outputText id="infoRegistroEstructura" value="#{controlEstructuraPlanta.infoRegistroEstructuraPa}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
-                        <p:commandButton id="aceptarEP" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEstructuraPlanta.aceptar}"  actionListener="#{controlEstructuraPlanta.actualizarEstructuraPadre()}"  process="@this" icon="ui-icon-check"/>
-                        
-                        <p:commandButton id="atrasEP" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}"  actionListener="#{controlEstructuraPlanta.cancelarCambioEstructuraPadre()}" process="@this"/>
-                        
+
+                        <h:outputText id="infoRegistroEstructura" value="#{msg['infoRegistro']} #{controlEstructuraPlanta.infoRegistroEstructuraPa}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+
+                        <p:commandButton id="aceptarEP" style="position: relative; left: 230px; top: 15px;" value="#{msg['aceptar']}" disabled="#{controlEstructuraPlanta.aceptar}"  actionListener="#{controlEstructuraPlanta.actualizarEstructuraPadre()}"  process="@this" icon="ui-icon-check"/>
+
+                        <p:commandButton id="atrasEP" style="position: relative; left: 230px; top: 15px;" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}"  actionListener="#{controlEstructuraPlanta.cancelarCambioEstructuraPadre()}" process="@this"/>
+
                     </p:dialog>
 
                 </h:form>
@@ -457,52 +498,58 @@
                         <center><strong><h:outputText value="#{msg['ingresarnuevoE']}" style="color: blue; position: relative; top: 10px" /></strong></center> 
                         <p:panel id="nuevoEstructura" style="border: none;">
 
-                            <strong><h:outputText value="*#{msg['codifoNE']}" style="position: absolute; top: 75px; left: 50px" /></strong>
-                            <p:inputText id="nuevoEstructuraCodigo" onclick="select();" value="#{controlEstructuraPlanta.nuevoEstructura.codigo}" style="width: 122px; position: absolute; left: 200px; top: 70px;text-transform: uppercase">
+                            <strong><h:outputText value="*#{msg['codifoNE']}" style="position: absolute; top: 65px; left: 50px" /></strong>
+                            <p:inputText id="nuevoEstructuraCodigo" onclick="select();" value="#{controlEstructuraPlanta.nuevoEstructura.codigo}" 
+                                         style="width: 122px; position: absolute; left: 200px; top: 60px;text-transform: uppercase">
                                 <p:ajax event="change" update="nuevoEstructuraCodigo"/>
                             </p:inputText>
                             <p:watermark value="#{msg['codigo']}" for="nuevoEstructuraCodigo"/>
 
-                            <strong><h:outputText value="*#{msg['estructuraNE']}" style="position: absolute; top: 105px; left: 50px" /></strong>
-                            <p:inputText id="nuevoEstructuraEstructura" onclick="select();" value="#{controlEstructuraPlanta.nuevoEstructura.nombre}" style="width: 122px; position: absolute; left: 200px; top: 100px;text-transform: uppercase">
+                            <strong><h:outputText value="*#{msg['estructuraNE']}" style="position: absolute; top: 95px; left: 50px" /></strong>
+                            <p:inputText id="nuevoEstructuraEstructura" onclick="select();" value="#{controlEstructuraPlanta.nuevoEstructura.nombre}" 
+                                         style="width: 122px; position: absolute; left: 200px; top: 90px;text-transform: uppercase">
                                 <p:ajax event="change" update="nuevoEstructuraEstructura"/>
                             </p:inputText>
                             <p:watermark value="#{msg['estructura']}" for="nuevoEstructuraEstructura"/>
 
-                            <strong><h:outputText value="#{msg['cantidadCargosControlar']}" style="position: absolute; top: 135px; left: 50px" /></strong>
-                            <p:inputText id="nuevoEstructuraCantidadCargosControlar" onclick="select();" readonly="true" value="#{controlEstructuraPlanta.nuevoEstructura.cantidadCargosControlar}" style="width: 122px; position: absolute; left: 200px; top: 130px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['cantidadCargosControlar']}" style="position: absolute; top: 125px; left: 50px" /></strong>
+                            <p:inputText id="nuevoEstructuraCantidadCargosControlar" onclick="select();" readonly="true" value="#{controlEstructuraPlanta.nuevoEstructura.cantidadCargosControlar}" 
+                                         style="width: 122px; position: absolute; left: 200px; top: 120px;text-transform: uppercase">
                                 <p:ajax event="change" update="nuevoEstructuraCantidadCargosControlar"/>
                             </p:inputText>
                             <p:watermark value="#{msg['infoCantidadCargosControlar']}" for="nuevoEstructuraCantidadCargosControlar"/>
 
-                            <strong><h:outputText value="#{msg['cantidadCargosControlarActivos']}" style="position: absolute; top: 165px; left: 50px" /></strong>
-                            <p:inputText id="nuevoEstructuraCantidadCargosActivos" onclick="select();" readonly="true" value="#{controlEstructuraPlanta.nuevoEstructura.cantidadCargosEmplActivos}" style="width: 122px; position: absolute; left: 200px; top: 160px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['cantidadCargosControlarActivos']}" style="position: absolute; top: 155px; left: 50px" /></strong>
+                            <p:inputText id="nuevoEstructuraCantidadCargosActivos" onclick="select();" readonly="true" value="#{controlEstructuraPlanta.nuevoEstructura.cantidadCargosEmplActivos}"
+                                         style="width: 122px; position: absolute; left: 200px; top: 150px;text-transform: uppercase">
                                 <p:ajax event="change" update="nuevoEstructuraCantidadCargosActivos"/>
                             </p:inputText>
                             <p:watermark value="#{msg['infoCantidadCargosActivos']}" for="nuevoEstructuraCantidadCargosActivos"/>
 
 
-                            <strong><h:outputText value="#{msg['centroCostoNE']}" style="position: absolute; top: 195px; left: 50px" /></strong>
-                            <p:inputText id="nuevoEstructuraCentroCosto" onclick="select();" value="#{controlEstructuraPlanta.nuevoEstructura.centrocosto.nombre}" style="width: 122px; position: absolute; left: 200px; top: 190px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['centroCostoNE']}" style="position: absolute; top: 185px; left: 50px" /></strong>
+                            <p:inputText id="nuevoEstructuraCentroCosto" onclick="select();" value="#{controlEstructuraPlanta.nuevoEstructura.centrocosto.nombre}" style="width: 122px; position: absolute; left: 200px; top: 180px;text-transform: uppercase">
                                 <p:ajax event="dblclick" listener="#{controlEstructuraPlanta.asignarIndex(0,1)}" process="@this" update="nuevoEstructuraCentroCosto"/>
                                 <p:ajax event="click" listener="#{controlEstructuraPlanta.valoresBackupAutocompletarGeneral(1, 'CENTROCOSTO')}" />
                                 <p:ajax event="change" listener="#{controlEstructuraPlanta.autocompletarNuevoyDuplicadoEstructura('CENTROCOSTO', controlEstructuraPlanta.nuevoEstructura.centrocosto.nombre, 1)}" />
                             </p:inputText>
                             <p:watermark value="#{msg['centroCosto']}" for="nuevoEstructuraCentroCosto"/>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 190px;  " id="btnNuevoCentroCostoEstructura" icon="ui-icon-search" process="@this"  actionListener="#{controlEstructuraPlanta.asignarIndex(0,1)}"/>   
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px ; position: absolute; left: 331px; top: 180px;  " 
+                                             value="" id="btnNuevoCentroCostoEstructura" process="@this" actionListener="#{controlEstructuraPlanta.asignarIndex(0,1)}"/>   
 
-                            <strong><h:outputText value="#{msg['estructuraPadreNE']}" style="position: absolute; top: 225px; left: 50px" /></strong>
-                            <p:inputText id="nuevoEstructuraEstructuraPadre" onclick="select();" value="#{controlEstructuraPlanta.nuevoEstructura.estructurapadre.nombre}" style="width: 122px; position: absolute; left: 200px; top: 220px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['estructuraPadreNE']}" style="position: absolute; top: 215px; left: 50px" /></strong>
+                            <p:inputText id="nuevoEstructuraEstructuraPadre" onclick="select();" value="#{controlEstructuraPlanta.nuevoEstructura.estructurapadre.nombre}" style="width: 122px; position: absolute; left: 200px; top: 210px;text-transform: uppercase">
                                 <p:ajax event="dblclick" listener="#{controlEstructuraPlanta.asignarIndex(1,1)}" process="@this" update="nuevoEstructuraCentroCosto"/>
                                 <p:ajax event="click" listener="#{controlEstructuraPlanta.valoresBackupAutocompletarGeneral(1, 'PADRE')}" />
                                 <p:ajax event="change" listener="#{controlEstructuraPlanta.autocompletarNuevoyDuplicadoEstructura('PADRE', controlEstructuraPlanta.nuevoEstructura.estructurapadre.nombre, 1)}" />
                             </p:inputText>
                             <p:watermark value="#{msg['estructuraPadre']}" for="nuevoEstructuraEstructuraPadre"/>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 220px;  " id="btnNuevoEstructuraPadreEstructura" icon="ui-icon-search" process="@this"  actionListener="#{controlEstructuraPlanta.asignarIndex(1,1)}"/>   
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px ; position: absolute; left: 331px; top: 210px;  " 
+                                             value="" id="btnNuevoEstructuraPadreEstructura" process="@this" actionListener="#{controlEstructuraPlanta.asignarIndex(1,1)}"/>   
 
 
                             <p:commandButton id="limpiarNE" value="#{msg['limpiar']}" icon="ui-icon-trash" style="position: absolute; left: 20px; top: 260px;" actionListener="#{controlEstructuraPlanta.limpiarNuevaEstructura()}" update="nuevoEstructura" process="@this"/>
-                            <p:commandButton id="aceptarNE" value="#{msg['agregar']}" icon="ui-icon-circle-check" style="position: absolute; left: 190px; top: 260px;"  actionListener="#{controlEstructuraPlanta.agregarNuevoEstructura()}" process="@this"  />
+                            <p:commandButton id="aceptarNE" value="#{msg['agregar']}" icon="ui-icon-circle-check" style="position: absolute; left: 180px; top: 260px;"  actionListener="#{controlEstructuraPlanta.agregarNuevoEstructura()}" process="@this"  />
                             <p:commandButton id="cancelarNE" value="#{msg['cancelar']}" icon="ui-icon-circle-close" style="position: absolute; left: 280px; top: 260px;" actionListener="#{controlEstructuraPlanta.limpiarNuevaEstructura()}" update="nuevoEstructura" onclick="NuevoRegistroEstructura.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
@@ -512,103 +559,111 @@
                         <p:panel id="duplicarEstructura" style="border: none;">
 
 
-                            <strong><h:outputText value="*#{msg['codifoNE']}" style="position: absolute; top: 75px; left: 50px" /></strong>
-                            <p:inputText id="duplicarEstructuraCodigo" onclick="select();" value="#{controlEstructuraPlanta.duplicarEstructura.codigo}" style="width: 122px; position: absolute; left: 200px; top: 70px;text-transform: uppercase">
+                            <strong><h:outputText value="*#{msg['codifoNE']}" style="position: absolute; top: 65px; left: 50px" /></strong>
+                            <p:inputText id="duplicarEstructuraCodigo" onclick="select();" value="#{controlEstructuraPlanta.duplicarEstructura.codigo}" 
+                                         style="width: 122px; position: absolute; left: 200px; top: 60px;text-transform: uppercase">
                                 <p:ajax event="change" update="duplicarEstructuraCodigo"/>
                             </p:inputText>
                             <p:watermark value="#{msg['codigo']}" for="duplicarEstructuraCodigo"/>
 
-                            <strong><h:outputText value="*#{msg['estructuraNE']}" style="position: absolute; top: 105px; left: 50px" /></strong>
-                            <p:inputText id="duplicarEstructuraEstructura" onclick="select();" value="#{controlEstructuraPlanta.duplicarEstructura.nombre}" style="width: 122px; position: absolute; left: 200px; top: 100px;text-transform: uppercase">
+                            <strong><h:outputText value="*#{msg['estructuraNE']}" style="position: absolute; top: 95px; left: 50px" /></strong>
+                            <p:inputText id="duplicarEstructuraEstructura" onclick="select();" value="#{controlEstructuraPlanta.duplicarEstructura.nombre}" 
+                                         style="width: 122px; position: absolute; left: 200px; top: 90px;text-transform: uppercase">
                                 <p:ajax event="change" update="duplicarEstructuraEstructura"/>
                             </p:inputText>
                             <p:watermark value="#{msg['estructura']}" for="duplicarEstructuraEstructura"/>
 
-                            <strong><h:outputText value="#{msg['cantidadCargosControlar']}" style="position: absolute; top: 135px; left: 50px" /></strong>
-                            <p:inputText id="duplicarEstructuraCantidadCargosControlar" onclick="select();" readonly="true" value="#{controlEstructuraPlanta.duplicarEstructura.cantidadCargosControlar}" style="width: 122px; position: absolute; left: 200px; top: 130px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['cantidadCargosControlar']}" style="position: absolute; top: 125px; left: 50px" /></strong>
+                            <p:inputText id="duplicarEstructuraCantidadCargosControlar" onclick="select();" readonly="true" value="#{controlEstructuraPlanta.duplicarEstructura.cantidadCargosControlar}" 
+                                         style="width: 122px; position: absolute; left: 200px; top: 120px;text-transform: uppercase">
                                 <p:ajax event="change" update="duplicarEstructuraCantidadCargosControlar"/>
                             </p:inputText>
                             <p:watermark value="#{msg['infoCantidadCargosControlar']}" for="duplicarEstructuraCantidadCargosControlar"/>
 
-                            <strong><h:outputText value="#{msg['cantidadCargosControlarActivos']}" style="position: absolute; top: 165px; left: 50px" /></strong>
-                            <p:inputText id="duplicarEstructuraCantidadCargosActivos" onclick="select();" readonly="true" value="#{controlEstructuraPlanta.duplicarEstructura.cantidadCargosEmplActivos}" style="width: 122px; position: absolute; left: 200px; top: 160px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['cantidadCargosControlarActivos']}" style="position: absolute; top: 155px; left: 50px" /></strong>
+                            <p:inputText id="duplicarEstructuraCantidadCargosActivos" onclick="select();" readonly="true" value="#{controlEstructuraPlanta.duplicarEstructura.cantidadCargosEmplActivos}" 
+                                         style="width: 122px; position: absolute; left: 200px; top: 150px;text-transform: uppercase">
                                 <p:ajax event="change" update="duplicarEstructuraCantidadCargosActivos"/>
                             </p:inputText>
                             <p:watermark value="#{msg['infoCantidadCargosActivos']}" for="duplicarEstructuraCantidadCargosActivos"/>
 
-                            <strong><h:outputText value="#{msg['centroCostoNE']}" style="position: absolute; top: 195px; left: 50px" /></strong>
-                            <p:inputText id="duplicarEstructuraCentroCosto" onclick="select();" value="#{controlEstructuraPlanta.duplicarEstructura.centrocosto.nombre}" style="width: 122px; position: absolute; left: 200px; top: 190px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['centroCostoNE']}" style="position: absolute; top: 185px; left: 50px" /></strong>
+                            <p:inputText id="duplicarEstructuraCentroCosto" onclick="select();" value="#{controlEstructuraPlanta.duplicarEstructura.centrocosto.nombre}" 
+                                         style="width: 122px; position: absolute; left: 200px; top: 180px;text-transform: uppercase">
                                 <p:ajax event="dblclick" listener="#{controlEstructuraPlanta.asignarIndex(0,2)}" process="@this" update="duplicarEstructuraCentroCosto"/>
                                 <p:ajax event="click" listener="#{controlEstructuraPlanta.valoresBackupAutocompletarGeneral(2, 'CENTROCOSTO')}" />
                                 <p:ajax event="change" listener="#{controlEstructuraPlanta.autocompletarNuevoyDuplicadoEstructura('CENTROCOSTO', controlEstructuraPlanta.duplicarEstructura.centrocosto.nombre, 2)}" />
                             </p:inputText>
                             <p:watermark value="#{msg['centroCosto']}" for="duplicarEstructuraCentroCosto"/>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 190px;  " id="btnDuplicarCentroCostoEstructura" icon="ui-icon-search" process="@this"  actionListener="#{controlEstructuraPlanta.asignarIndex(0,2)}"/>   
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px ; position: absolute; left: 331px; top: 180px;  " 
+                                             value="" id="btnDuplicarCentroCostoEstructura" process="@this"  actionListener="#{controlEstructuraPlanta.asignarIndex(0,2)}"/>   
 
-                            <strong><h:outputText value="#{msg['estructuraPadreNE']}" style="position: absolute; top: 225px; left: 50px" /></strong>
-                            <p:inputText id="duplicarEstructuraEstructuraPadre" onclick="select();" value="#{controlEstructuraPlanta.duplicarEstructura.estructurapadre.nombre}" style="width: 122px; position: absolute; left: 200px; top: 220px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['estructuraPadreNE']}" style="position: absolute; top: 215px; left: 50px" /></strong>
+                            <p:inputText id="duplicarEstructuraEstructuraPadre" onclick="select();" value="#{controlEstructuraPlanta.duplicarEstructura.estructurapadre.nombre}" 
+                                         style="width: 122px; position: absolute; left: 200px; top: 210px;text-transform: uppercase">
                                 <p:ajax event="dblclick" listener="#{controlEstructuraPlanta.asignarIndex(1,2)}" process="@this" update="duplicarEstructuraCentroCosto"/>
                                 <p:ajax event="click" listener="#{controlEstructuraPlanta.valoresBackupAutocompletarGeneral(2, 'PADRE')}" />
                                 <p:ajax event="change" listener="#{controlEstructuraPlanta.autocompletarNuevoyDuplicadoEstructura('PADRE', controlEstructuraPlanta.duplicarEstructura.estructurapadre.nombre, 2)}" />
                             </p:inputText>
                             <p:watermark value="#{msg['estructuraPadre']}" for="duplicarEstructuraEstructuraPadre"/>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 220px;  " id="btnDuplicarEstructuraPadreEstructura" icon="ui-icon-search" process="@this"  actionListener="#{controlEstructuraPlanta.asignarIndex(1,2)}"/>                              
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px ; position: absolute; left: 331px; top: 210px;  " 
+                                             value="" id="btnDuplicarEstructuraPadreEstructura" process="@this"  actionListener="#{controlEstructuraPlanta.asignarIndex(1,2)}"/>                              
 
                             <p:commandButton id="limpiarDE" value="#{msg['limpiar']}" icon="ui-icon-trash" style="position: absolute; left: 20px; top: 260px;" actionListener="#{controlEstructuraPlanta.limpiarDuplicarEstructura()}" update="duplicarEstructura" process="@this"/>
-                            <p:commandButton id="aceptarDE" value="#{msg['agregar']}"  icon="ui-icon-circle-check" style="position: absolute; left: 190px; top: 260px;"  actionListener="#{controlEstructuraPlanta.confirmarDuplicarEstructura()}" process="@this"/>
+                            <p:commandButton id="aceptarDE" value="#{msg['agregar']}"  icon="ui-icon-circle-check" style="position: absolute; left: 180px; top: 260px;"  actionListener="#{controlEstructuraPlanta.confirmarDuplicarEstructura()}" process="@this"/>
                             <p:commandButton id="cancelarDE" value="#{msg['cancelar']}" icon="ui-icon-circle-close" style="position: absolute; left: 280px; top: 260px;" actionListener="#{controlEstructuraPlanta.limpiarDuplicarEstructura()}" update="duplicarEstructura" onclick="DuplicarRegistroEstructura.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
 
-                    <!-- editar organigrama -->
+                    <!-- edi tar organigrama -->
 
-                    <p:dialog id="editarFechaOrganigramaD" header="#{msg['editarFechaOrganigramaD']}" widgetVar="editarFechaOrganigramaD" resizable="false" draggable="false" modal="true" height="55" width="240" style=" padding: 0px">  
-                        <p:inputTextarea value="#{controlEstructuraPlanta.editarOrganigrama.fecha}" style="overflow: auto; width: 200px; height: 40px" readonly="true">                        
+                    <p:dialog id="editarFechaOrganigramaD" header="#{msg['editarFechaOrganigramaD']}" widgetVar="editarFechaOrganigramaD" resizable="false" draggable="false" modal="true" height="80" width="400" style=" padding: 0px">  
+                        <p:inputTextarea value="#{controlEstructuraPlanta.editarOrganigrama.fecha}" style="overflow: auto; width: 360px; height: 60px" readonly="true">                        
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </p:inputTextarea>
                     </p:dialog>
 
-                    <p:dialog id="editarCodigoOrganigramaD" header="#{msg['editarCodigoOrganigramaD']}" widgetVar="editarCodigoOrganigramaD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlEstructuraPlanta.editarOrganigrama.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarCodigoOrganigramaD" header="#{msg['editarCodigoOrganigramaD']}" widgetVar="editarCodigoOrganigramaD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlEstructuraPlanta.editarOrganigrama.codigo}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarEmpresaOrganigramaD" header="#{msg['editarEmpresaOrganigramaD']}" widgetVar="editarEmpresaOrganigramaD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlEstructuraPlanta.editarOrganigrama.empresa.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarEmpresaOrganigramaD" header="#{msg['editarEmpresaOrganigramaD']}" widgetVar="editarEmpresaOrganigramaD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlEstructuraPlanta.editarOrganigrama.empresa.nombre}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarNITOrganigramaD" header="#{msg['editarNITOrganigramaD']}" widgetVar="editarNITOrganigramaD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlEstructuraPlanta.editarOrganigrama.empresa.nit}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarNITOrganigramaD" header="#{msg['editarNITOrganigramaD']}" widgetVar="editarNITOrganigramaD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlEstructuraPlanta.editarOrganigrama.empresa.nit}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarEstadoOrganigramaD" header="#{msg['editarEstadoOrganigramaD']}" widgetVar="editarEstadoOrganigramaD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlEstructuraPlanta.editarOrganigrama.estado}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarEstadoOrganigramaD" header="#{msg['editarEstadoOrganigramaD']}" widgetVar="editarEstadoOrganigramaD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlEstructuraPlanta.editarOrganigrama.estado}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
                     <!-- editar celdas estructura -->
 
-                    <p:dialog id="editarCodigoEstructuraD" header="#{msg['editarCodigoEstructuraD']}" widgetVar="editarCodigoEstructuraD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlEstructuraPlanta.editarEstructura.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarCodigoEstructuraD" header="#{msg['editarCodigoEstructuraD']}" widgetVar="editarCodigoEstructuraD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlEstructuraPlanta.editarEstructura.codigo}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarEstructuraEstructuraD" header="#{msg['editarEstructuraEstructuraD']}" widgetVar="editarEstructuraEstructuraD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlEstructuraPlanta.editarEstructura.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarEstructuraEstructuraD" header="#{msg['editarEstructuraEstructuraD']}" widgetVar="editarEstructuraEstructuraD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlEstructuraPlanta.editarEstructura.nombre}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarCantidadControlarEstructuraD" header="#{msg['editarCantidadControlarEstructuraD']}" widgetVar="editarCantidadControlarEstructuraD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlEstructuraPlanta.editarEstructura.cantidadCargosControlar}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarCantidadControlarEstructuraD" header="#{msg['editarCantidadControlarEstructuraD']}" widgetVar="editarCantidadControlarEstructuraD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlEstructuraPlanta.editarEstructura.cantidadCargosControlar}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarCantidadActivosEstructuraD" header="#{msg['editarCantidadActivosEstructuraD']}" widgetVar="editarCantidadActivosEstructuraD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlEstructuraPlanta.editarEstructura.cantidadCargosEmplActivos}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarCantidadActivosEstructuraD" header="#{msg['editarCantidadActivosEstructuraD']}" widgetVar="editarCantidadActivosEstructuraD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlEstructuraPlanta.editarEstructura.cantidadCargosEmplActivos}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarCentroCostoEstructuraD" header="#{msg['editarCentroCostoEstructuraD']}" widgetVar="editarCentroCostoEstructuraD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlEstructuraPlanta.editarEstructura.centrocosto.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarCentroCostoEstructuraD" header="#{msg['editarCentroCostoEstructuraD']}" widgetVar="editarCentroCostoEstructuraD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlEstructuraPlanta.editarEstructura.centrocosto.nombre}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarEstructuraPadreEstructuraD" header="#{msg['editarEstructuraPadreEstructuraD']}" widgetVar="editarEstructuraPadreEstructuraD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlEstructuraPlanta.editarEstructura.estructurapadre.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarEstructuraPadreEstructuraD" header="#{msg['editarEstructuraPadreEstructuraD']}" widgetVar="editarEstructuraPadreEstructuraD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlEstructuraPlanta.editarEstructura.estructurapadre.nombre}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
 

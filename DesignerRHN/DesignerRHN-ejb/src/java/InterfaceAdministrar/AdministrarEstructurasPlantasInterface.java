@@ -4,6 +4,7 @@
 package InterfaceAdministrar;
 
 import Entidades.CentrosCostos;
+import Entidades.Empresas;
 import Entidades.Estructuras;
 import Entidades.Organigramas;
 import java.math.BigInteger;
@@ -114,4 +115,7 @@ public interface AdministrarEstructurasPlantasInterface {
      */
     public List<Estructuras> lovEstructuras();
 
+    public List<Empresas> consultarEmpresas();
+
+    public List<Organigramas> listaTodosOrganigramas();
 }
