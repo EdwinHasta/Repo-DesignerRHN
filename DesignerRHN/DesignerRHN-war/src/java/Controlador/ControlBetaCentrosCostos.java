@@ -17,6 +17,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -135,6 +136,7 @@ public class ControlBetaCentrosCostos implements Serializable {
         buscarCentrocosto = false;
         mostrartodos = true;
         activarLOV = true;
+        cualCelda = -1;
     }
 
     @PostConstruct
@@ -170,13 +172,19 @@ public class ControlBetaCentrosCostos implements Serializable {
     }
 
     public void cambiarIndice(CentrosCostos centroCosto, int celda) {
-        System.err.println("BETA CENTRO COSTO TIPO LISTA = " + tipoLista);
-        System.err.println("PERMITIR INDEX = " + permitirIndex);
-
+        System.out.println("cambiarIndice():");
+        System.err.println("cualCeldaEntra = " + cualCelda);
+        if (centroCostoSeleccionado != null) {
+            System.err.println("centroCostoSeleccionado = " + centroCostoSeleccionado.getNombre());
+        } else {
+            System.err.println("centroCostoSeleccionado = NULL");
+        }
+        System.err.println("centroCosto quedo : " + centroCosto.getNombre());
         centroCostoSeleccionado = centroCosto;
+        cualCelda = celda;
+        System.err.println("cualCelda quedo : " + cualCelda + "\n");
+
         if (permitirIndex == true) {
-            cualCelda = celda;
-            System.err.println("CAMBIAR INDICE CUALCELDA = " + cualCelda);
             if (cualCelda == 2) {
                 activarLOV = false;
                 RequestContext.getCurrentInstance().update("form:listaValores");
@@ -188,8 +196,17 @@ public class ControlBetaCentrosCostos implements Serializable {
         }
     }
 
-    public void modificandoCentroCosto(CentrosCostos centroCosto, String confirmarCambio, String valorConfirmar) {
+    public void cambiarIndiceDefault() {
+        System.out.println("cambiarIndiceDefault");
+        System.err.println("cualCelda = " + cualCelda);
+        cualCelda = -1;
+        System.err.println("cualCelda quedo = " + cualCelda);
+        System.err.println("centroCostoSeleccionado = " + centroCostoSeleccionado.getNombre());
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+    }
 
+    public void modificandoCentroCosto(CentrosCostos centroCosto, String confirmarCambio, String valorConfirmar) {
         System.err.println("ENTRE A MODIFICAR CENTROCOSTO");
         centroCostoSeleccionado = centroCosto;
         banderaModificacionEmpresa = 1;
@@ -225,7 +242,6 @@ public class ControlBetaCentrosCostos implements Serializable {
                     } else {
                         banderita = true;
                     }
-
                 }
 
                 if (centroCostoSeleccionado.getNombre().isEmpty()) {
@@ -246,10 +262,8 @@ public class ControlBetaCentrosCostos implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
-
                     }
                     context.update("form:ACEPTAR");
-
                 } else {
                     context.update("form:validacionModificar");
                     context.execute("validacionModificar.show()");
@@ -446,8 +460,8 @@ public class ControlBetaCentrosCostos implements Serializable {
 
             if (dig == 2) {
                 activarLOV = false;
-                RequestContext.getCurrentInstance().update("form:listaValores");
                 modificarInfoRegistroLOVS(lovTiposCentrosCostos.size());
+                RequestContext.getCurrentInstance().update("form:listaValores");
                 RequestContext.getCurrentInstance().update("form:infoRegistroTcc");
                 RequestContext.getCurrentInstance().update("form:tiposCentrosCostosDialogo");
                 RequestContext.getCurrentInstance().execute("tiposCentrosCostosDialogo.show()");
@@ -482,20 +496,19 @@ public class ControlBetaCentrosCostos implements Serializable {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
-
                 }
                 context.update("form:datosCentrosCostos");
                 context.execute("tiposCentrosCostosDialogo.hide()");
             } else if (tipoActualizacion == 1) {
-                context.reset("form:nuevaTipoCentroCostos");
+                context.reset("formularioDialogos:nuevaTipoCentroCostos");
                 System.out.println("Entro actualizar centro costo nuevo rgistro");
                 nuevoCentroCosto.setTipocentrocosto(tipoCentroCostoSeleccionado);
                 System.out.println("Centro Costo Seleccionado: " + nuevoCentroCosto.getTipocentrocosto().getNombre());
-                context.update("form:nuevaTipoCentroCostos");
+                context.update("formularioDialogos:nuevaTipoCentroCostos");
                 context.execute("tiposCentrosCostosDialogo.hide()");
             } else if (tipoActualizacion == 2) {
                 duplicarCentroCosto.setTipocentrocosto(tipoCentroCostoSeleccionado);
-                context.update("form:duplicarTipoCentroCostos");
+                context.update("formularioDialogos:duplicarTipoCentroCostos");
                 context.execute("tiposCentrosCostosDialogo.hide()");
             }
             filtradoTiposCentrosCostos = null;
@@ -506,7 +519,11 @@ public class ControlBetaCentrosCostos implements Serializable {
 
             context.reset("form:lovTipoCentrosCostos:globalFilter");
             context.execute("lovTipoCentrosCostos.clearFilters()");
+            context.update("form:tiposCentrosCostosDialogo");
+            context.update("form:lovTipoCentrosCostos");
+            context.update("form:aceptarTCC");
             context.execute("tiposCentrosCostosDialogo.hide()");
+
         } catch (Exception e) {
             System.out.println("ERROR BETA .actualizarCentroCosto ERROR============" + e.getMessage());
         }
@@ -521,8 +538,12 @@ public class ControlBetaCentrosCostos implements Serializable {
             aceptar = true;
             tipoActualizacion = -1;
             RequestContext context = RequestContext.getCurrentInstance();
+
             context.reset("form:lovTipoCentrosCostos:globalFilter");
             context.execute("lovTipoCentrosCostos.clearFilters()");
+            context.update("form:tiposCentrosCostosDialogo");
+            context.update("form:lovTipoCentrosCostos");
+            context.update("form:aceptarTCC");
             context.execute("tiposCentrosCostosDialogo.hide()");
         } catch (Exception e) {
             System.out.println("ERROR CONTROLBETACENTROSCOSTOS.cancelarCambioCentroCosto ERROR=====" + e.getMessage());
@@ -540,7 +561,6 @@ public class ControlBetaCentrosCostos implements Serializable {
                 RequestContext.getCurrentInstance().update("form:infoRegistroCc");
                 context.update("form:lovCentrosCostos");
                 context.execute("buscarCentrosCostosDialogo.show()");
-
             }
         } catch (Exception e) {
             System.err.println("ERROR LLAMADO DIALOGO BUSCAR CENTROS COSTOS " + e);
@@ -557,48 +577,29 @@ public class ControlBetaCentrosCostos implements Serializable {
                 listCentrosCostosPorEmpresa.clear();
                 System.err.println("seleccionCentrosCostosPorEmpresa " + centrosCostosLovSeleccionado.getNombre());
                 listCentrosCostosPorEmpresa.add(centrosCostosLovSeleccionado);
+                centroCostoSeleccionado = centrosCostosLovSeleccionado;
                 System.err.println("listCentrosCostosPorEmpresa tamaño " + listCentrosCostosPorEmpresa.size());
                 System.err.println("listCentrosCostosPorEmpresa nombre " + listCentrosCostosPorEmpresa.get(0).getNombre());
                 centrosCostosLovSeleccionado = null;
                 filtrarCentrosCostosLOV = null;
                 aceptar = true;
                 banderaModificacionEmpresa = 1;
-                context.update("form:datosCentrosCostos");
-                context.execute("buscarCentrosCostosDialogo.hide()");
-                context.reset("form:lovCentrosCostos:globalFilter");
                 buscarCentrocosto = true;
                 mostrartodos = false;
-                if (listCentrosCostosPorEmpresa == null || listCentrosCostosPorEmpresa.isEmpty()) {
-                    infoRegistro = "Cantidad de registros: 0 ";
-                } else {
-                    infoRegistro = "Cantidad de registros: " + listCentrosCostosPorEmpresa.size();
-                }
+                contarRegistros();
 
                 context.reset("form:lovCentrosCostos:globalFilter");
                 context.execute("lovCentrosCostos.clearFilters()");
+                context.update("form:buscarCentrosCostosDialogo");
+                context.update("form:lovCentrosCostos");
+                context.update("form:aceptarNCC");
                 context.execute("buscarCentrosCostosDialogo.hide()");
+
                 context.update("form:informacionRegistro");
+                context.update("form:datosCentrosCostos");
                 context.update("form:BUSCARCENTROCOSTO");
                 context.update("form:MOSTRARTODOS");
-
-            } /*
-             * else { System.err.println("listCentrosCostosPorEmpresa tamaño " +
-             * listCentrosCostosPorEmpresa.size());
-             * System.err.println("listCentrosCostosPorEmpresa nombre " +
-             * listCentrosCostosPorEmpresa.get(0).getNombre());
-             * banderaSeleccionCentrosCostosPorEmpresa = true;
-             * context.execute("confirmarGuardar.show()");
-             * CentrosCostosPorEmpresaSeleccionado = null;
-             * listCentrosCostosPorEmpresa.clear();
-             * System.err.println("seleccionCentrosCostosPorEmpresa " +
-             * CentrosCostosPorEmpresaSeleccionado.getNombre());
-             * listCentrosCostosPorEmpresa.add(CentrosCostosPorEmpresaSeleccionado);
-             * filterCentrosCostosPorEmpresa = null; aceptar = true;
-             * banderaModificacionEmpresa = 0;
-             * context.execute("buscarCentrosCostosDialogo.hide()");
-             * context.reset("form:lovCentrosCostos:globalFilter");
-             * }
-             */
+            }
             activarLOV = true;
             RequestContext.getCurrentInstance().update("form:listaValores");
 
@@ -617,6 +618,9 @@ public class ControlBetaCentrosCostos implements Serializable {
             context.update("form:aceptarNCC");
             context.reset("form:lovCentrosCostos:globalFilter");
             context.execute("lovCentrosCostos.clearFilters()");
+            context.update("form:buscarCentrosCostosDialogo");
+            context.update("form:lovCentrosCostos");
+            context.update("form:aceptarNCC");
             context.execute("buscarCentrosCostosDialogo.hide()");
         } catch (Exception e) {
             System.out.println("ERROR CONTROLBETACENTROSCOSTOS.cancelarSeleccionVigencia ERROR====" + e.getMessage());
@@ -820,6 +824,9 @@ public class ControlBetaCentrosCostos implements Serializable {
                 listCentrosCostosPorEmpresa.add(nuevoCentroCosto);
                 centroCostoSeleccionado = listCentrosCostosPorEmpresa.get(listCentrosCostosPorEmpresa.indexOf(nuevoCentroCosto));
                 modificarInfoRegistro(listCentrosCostosPorEmpresa.size());
+                if (tipoLista == 1) {
+                    altoTabla = 285;
+                }
                 context.update("form:datosCentrosCostos");
                 nuevoCentroCosto = new CentrosCostos();
                 if (guardado == true) {
@@ -853,7 +860,6 @@ public class ControlBetaCentrosCostos implements Serializable {
                 }
                 mensajeValidacion = " ";
                 context.update("form:datosTipoReemplazo");
-                infoRegistro = "Cantidad de registros: " + listCentrosCostosPorEmpresa.size();
                 RequestContext.getCurrentInstance().execute("NuevoRegistroCentroCostos.hide()");
                 activarLOV = true;
                 RequestContext.getCurrentInstance().update("form:listaValores");
@@ -869,6 +875,8 @@ public class ControlBetaCentrosCostos implements Serializable {
     }
 
     public void cargarTiposCentrosCostosNuevoRegistro(int tipoNuevo) {
+        modificarInfoRegistroLOVS(lovTiposCentrosCostos.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistroTcc");
         if (tipoNuevo == 0) {
             tipoActualizacion = 1;
             RequestContext context = RequestContext.getCurrentInstance();
@@ -918,7 +926,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                 duplicarCentroCosto.setDimensiones(centroCostoSeleccionado.getDimensiones());
                 duplicarCentroCosto.setComodin(centroCostoSeleccionado.getComodin());
 
-                context.update("form:duplicarCentroCostos");
+                context.update("formularioDialogos:duplicarCentroCostos");
                 context.execute("DuplicarRegistroCentroCostos.show()");
             } else {
                 context.execute("seleccionarRegistro.show()");
@@ -1011,6 +1019,9 @@ public class ControlBetaCentrosCostos implements Serializable {
             }
             centroCostoSeleccionado = listCentrosCostosPorEmpresa.get(listCentrosCostosPorEmpresa.indexOf(duplicarCentroCosto));
             modificarInfoRegistro(listCentrosCostosPorEmpresa.size());
+            if (tipoLista == 1) {
+                altoTabla = 285;
+            }
             context.update("form:datosCentrosCostos");
 
             if (guardado == true) {
@@ -1054,7 +1065,6 @@ public class ControlBetaCentrosCostos implements Serializable {
             duplicarCentroCosto = new CentrosCostos();
             duplicarCentroCosto.setTipocentrocosto(new TiposCentrosCostos());
             context.update("form:datosTipoReemplazo");
-            infoRegistro = "Cantidad de registros: " + listCentrosCostosPorEmpresa.size();
             context.update("form:informacionRegistro");
             activarLOV = true;
             RequestContext.getCurrentInstance().update("form:listaValores");
@@ -1176,14 +1186,14 @@ public class ControlBetaCentrosCostos implements Serializable {
                     int crearIndex = crearCentrosCostos.indexOf(centroCostoSeleccionado);
                     crearCentrosCostos.remove(crearIndex);
                 } else {
-
                     borrarCentrosCostos.add(centroCostoSeleccionado);
                 }
                 listCentrosCostosPorEmpresa.remove(centroCostoSeleccionado);
+                modificarInfoRegistro(listCentrosCostosPorEmpresa.size());
                 if (tipoLista == 1) {
                     filtrarCentrosCostos.remove(centroCostoSeleccionado);
+                    modificarInfoRegistro(filtrarCentrosCostos.size());
                 }
-                modificarInfoRegistro(listCentrosCostosPorEmpresa.size());
                 centroCostoSeleccionado = null;
                 System.err.println("verificar Borrado " + guardado);
                 if (guardado == true) {
@@ -1205,13 +1215,10 @@ public class ControlBetaCentrosCostos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (guardado == false) {
-            System.out.println("Realizando Operaciones Vigencias Localizacion");
             if (!borrarCentrosCostos.isEmpty()) {
                 administrarCentroCostos.borrarCentroCostos(borrarCentrosCostos);
                 //mostrarBorrados
                 registrosBorrados = borrarCentrosCostos.size();
-                context.update("form:mostrarBorrados");
-                context.execute("mostrarBorrados.show()");
                 borrarCentrosCostos.clear();
             }
             if (!crearCentrosCostos.isEmpty()) {
@@ -1222,8 +1229,6 @@ public class ControlBetaCentrosCostos implements Serializable {
                 administrarCentroCostos.modificarCentroCostos(modificarCentrosCostos);
                 modificarCentrosCostos.clear();
             }
-            System.out.println("Se guardaron los datos con exito");
-            listCentrosCostosPorEmpresa = null;
             context.update("form:datosTipoCentroCosto");
             k = 0;
             guardado = true;
@@ -1231,7 +1236,6 @@ public class ControlBetaCentrosCostos implements Serializable {
             if (banderaModificacionEmpresa == 0) {
                 cambiarEmpresa();
                 banderaModificacionEmpresa = 1;
-
             }
             if (banderaSeleccionCentrosCostosPorEmpresa == true) {
                 lovCentrosCostosPorEmpresa = null;
@@ -1241,10 +1245,10 @@ public class ControlBetaCentrosCostos implements Serializable {
                 banderaSeleccionCentrosCostosPorEmpresa = false;
             }
         }
+        contarRegistros();
         FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
         FacesContext.getCurrentInstance().addMessage(null, msg);
         context.update("form:growl");
-        contarRegistros();
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
         banderaModificacionEmpresa = 0;
     }
@@ -1383,35 +1387,35 @@ public class ControlBetaCentrosCostos implements Serializable {
                 RequestContext context = RequestContext.getCurrentInstance();
                 System.out.println("CONTROLBETACENTROSCOSTOS: Entro a editar... valor celda: " + cualCelda);
                 if (cualCelda == 0) {
-                    context.update("form:editarCCC");
+                    context.update("formularioDialogos:editarCCC");
                     context.execute("editarCCC.show()");
                     cualCelda = -1;
                 } else if (cualCelda == 1) {
-                    context.update("form:editarNCC");
+                    context.update("formularioDialogos:editarNCC");
                     context.execute("editarNCC.show()");
                     cualCelda = -1;
                 } else if (cualCelda == 2) {
-                    context.update("form:editarTCC");
+                    context.update("formularioDialogos:editarTCC");
                     context.execute("editarTCC.show()");
                     cualCelda = -1;
                 } else if (cualCelda == 3) {
-                    context.update("form:editarMO");
+                    context.update("formularioDialogos:editarMO");
                     context.execute("editarMO.show()");
                     cualCelda = -1;
                 } else if (cualCelda == 4) {
-                    context.update("form:editarCAT");
+                    context.update("formularioDialogos:editarCAT");
                     context.execute("editarCAT.show()");
                     cualCelda = -1;
                 } else if (cualCelda == 5) {
-                    context.update("form:editarO");
+                    context.update("formularioDialogos:editarO");
                     context.execute("editarO.show()");
                     cualCelda = -1;
                 } else if (cualCelda == 6) {
-                    context.update("form:editarCCTT");
+                    context.update("formularioDialogos:editarCCTT");
                     context.execute("editarCCTT.show()");
                     cualCelda = -1;
                 } else if (cualCelda == 7) {
-                    context.update("form:editarD");
+                    context.update("formularioDialogos:editarD");
                     context.execute("editarD.show()");
                     cualCelda = -1;
                 }
@@ -1510,7 +1514,11 @@ public class ControlBetaCentrosCostos implements Serializable {
             aceptar = true;
             context.reset("form:lovEmpresas:globalFilter");
             context.execute("lovEmpresas.clearFilters()");
+            context.update("form:EmpresasDialogo");
+            context.update("form:lovEmpresas");
+            context.update("form:aceptarE");
             context.execute("EmpresasDialogo.hide()");
+
             context.update("form:lovEmpresas");
             banderaModificacionEmpresa = 0;
             context.update("form:datosCentrosCostos");
@@ -1528,9 +1536,23 @@ public class ControlBetaCentrosCostos implements Serializable {
         banderaModificacionEmpresa = 0;
         context.reset("form:lovEmpresas:globalFilter");
         context.execute("lovEmpresas.clearFilters()");
+        context.update("form:EmpresasDialogo");
+        context.update("form:lovEmpresas");
+        context.update("form:aceptarE");
         context.execute("EmpresasDialogo.hide()");
         activarLOV = true;
         RequestContext.getCurrentInstance().update("form:listaValores");
+    }
+
+    public void posicionOtro() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+        String name = map.get("n"); // name attribute of node 
+        String type = map.get("t"); // type attribute of node 
+        int indice = Integer.parseInt(type);
+        int columna = Integer.parseInt(name);
+        centroCostoSeleccionado = listCentrosCostosPorEmpresa.get(indice);
+        cambiarIndice(centroCostoSeleccionado, columna);
     }
 
     public void recordarSeleccion() {

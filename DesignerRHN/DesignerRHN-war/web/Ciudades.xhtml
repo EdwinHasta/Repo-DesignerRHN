@@ -62,6 +62,7 @@
                                 <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlCiudades.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+                                
                                 <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlCiudades.salir()}" action="#{controlCiudades.redirigir()}" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
                             </p:toolbarGroup>  
@@ -70,7 +71,7 @@
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 360px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>#{msg['ciudades']}</strong></legend>
 
-                            <p:dataTable id="datosCiudades" var="ciudades" rowKey="#{ciudades.secuencia}" rowIndexVar="indice"                            
+                            <p:dataTable id="datosCiudades" widgetVar="datosCiudades" var="ciudades" rowKey="#{ciudades.secuencia}" rowIndexVar="indice"                            
                                          value="#{controlCiudades.listaCiudades}" scrollable="true"
                                          filteredValue="#{controlCiudades.filtradoListaCiudades}"
                                          scrollHeight="#{controlCiudades.altoTabla}" scrollWidth="830"
@@ -79,7 +80,8 @@
                                          editable="true" editMode="cell"
                                          selection="#{controlCiudades.ciudadSeleccionada}" selectionMode="single">
 
-                                <p:ajax event="filter" listener="#{controlCiudades.eventoFiltrar()}" update=":form:informacionRegistro" immediate="true" process="@this"/>
+                                <f:event type="preRenderView" listener="#{controlCiudades.recordarSeleccion()}"/>
+                                <p:ajax event="filter" listener="#{controlCiudades.eventoFiltrar()}" process="@this"/>
 
                                 <p:column headerText="#{msg['codigo']}" width="10" sortBy="#{ciudades.codigo}" filterBy="#{ciudades.codigo}" filterMatchMode="contains" id="ciudadesCodigos" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
@@ -89,8 +91,8 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{ciudades.codigo}" id="editarCodigosCiudades" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
-                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(indice, 0)}" />
-                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (indice, 'N', ciudades.codigo)}" update="@this"/>
+                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(ciudades, 0)}" />
+                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades(ciudades, 'N', ciudades.codigo)}" update="@this"/>
                                             </p:inputText> 
                                         </f:facet>   
                                     </p:cellEditor>
@@ -107,8 +109,8 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{ciudades.nombre}" id="editarNombresCiudades" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
-                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(indice, 1)}" />
-                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (indice, 'N', ciudades.nombre)}" update="@this" />
+                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(ciudades, 1)}" />
+                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (ciudades, 'N', ciudades.nombre)}" update="@this" />
                                             </p:inputText> 
                                         </f:facet>   
                                     </p:cellEditor>
@@ -121,9 +123,9 @@
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase;" value="#{ciudades.departamento.nombre}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{ciudades.departamento.nombre}" id="editarDepartamentos" style=" border-radius: 0px; width: 99.5%;text-transform: uppercase;height: 12px"> 
-                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (indice, 'DEPARTAMENTOS', ciudades.departamento.nombre)}"/>
-                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(indice, 2)}" />
-                                                <p:ajax event="dblclick" listener="#{controlCiudades.asignarIndex(indice)}"/>
+                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (ciudades, 'DEPARTAMENTOS', ciudades.departamento.nombre)}"/>
+                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(ciudades, 2)}" />
+                                                <p:ajax event="dblclick" listener="#{controlCiudades.asignarIndex(ciudades)}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -137,8 +139,8 @@
                                         <f:facet name="output"><h:outputText value="#{ciudades.codigoalternativo}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{ciudades.codigoalternativo}" id="editarCodigosAlternativos" style=" border-radius: 0px; width: 99.5%;text-transform: uppercase;height: 12px"  > 
-                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(indice, 3)}" />
-                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (indice, 'N', ciudades.codigoalternativo)}" update="@this"/>
+                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(ciudades, 3)}" />
+                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (ciudades, 'N', ciudades.codigoalternativo)}" update="@this"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -148,15 +150,15 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <h:outputText id="informacionRegistro" value="#{msg['infoRegistro']} #{controlCiudades.infoRegistro}" style="position: absolute; left: 15px; top: 347px; font-weight: bold"/>
+                            <h:outputText id="informacionRegistro" value="#{msg['infoRegistro']} #{controlCiudades.infoRegistroCiudad}" style="position: absolute; left: 15px; top: 347px; font-weight: bold"/>
                         </fieldset>
 
                         <p:commandButton style="position: absolute; left: 683px; top: 470px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value="" onclick="confirmarGuardar.show();" disabled="#{controlCiudades.guardado}" update=":form:datosCiudades" process="@this" />
                         <p:commandButton style="position: absolute; left: 775px; top: 470px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" actionListener="#{controlCiudades.salir()}" action="#{controlCiudades.redirigir()}" process="@this" />
                     </p:panel>
                 </h:form>
-                
-                <h:form id="formularioDialogos" >
+
+                <h:form id="formularioDialogos">
 
                     <p:dialog id="NuevoRegistroCiudad" header="#{msg['nuevoregistro']}" widgetVar="NuevoRegistroCiudad" closable="false" resizable="false"  draggable="false" modal="true" height="290" width="400" style=" padding: 0px">  
 
@@ -232,31 +234,33 @@
                     </p:dialog>
 
                     <p:dialog id="validacionNuevaCiudad" header="#{msg['atencion']}" widgetVar="validacionNuevaCiudad"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['validacionNuevo']} #{controlCiudades.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="validacionNuevaCiudad.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="nombreVacio" header="#{msg['atencion']}" widgetVar="nombreVacio"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['nombreVacio']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="nombreVacio.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlCiudades.guardarCambiosCiudad()}" action="#{controlCiudades.redirigir()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlCiudades.cancelarModificacion()}" action="#{controlCiudades.redirigir()}" style="position: absolute; top: 60px; left: 255px" process="@this" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
-                    <!-- DIALOGO L.O.V ESTATICO DE CIUDADES -->
+                    <!-- DIALOGO L.O.V ESTATICO DE DEPARTAMENTOS -->
                     <p:dialog header="#{msg['departamentos']}"  widgetVar="departamentosDialogo" draggable="false" resizable="false" closable="false" id="departamentosDialogo"  
                               showEffect="fade" hideEffect="fade" width="380" height="350" modal="true" >
                         <p:dataTable id="LOVDepartamentos" style="width: 330px" var="departamentos" value="#{controlCiudades.listaDepartamentos}" rowKey="#{departamentos.secuencia}"
                                      selection="#{controlCiudades.seleccionDepartamento}" selectionMode="single" widgetVar="LOVDepartamentos" scrollable="true" scrollHeight="200" scrollWidth="345"
                                      filteredValue="#{controlCiudades.filtradoListaDepatartamentos}" emptyMessage="#{msg['lovvacio']}">              
+                            
+                            <p:ajax event="filter" listener="#{controlCiudades.eventoFiltrarDep()}" process="@this"/>
                             <p:ajax event="rowSelect" listener="#{controlCiudades.activarAceptar()}" update=":formularioDialogos:aceptarD"/>
                             <p:ajax event="rowDblselect" listener="#{controlCiudades.actualizarDepartamentos()}" process="@this"/>
                             <f:facet name="header">  
@@ -271,18 +275,18 @@
                             </p:column>
                         </p:dataTable>
 
-                        <h:outputText id="infoRegistroDepartamentos" value="#{controlCiudades.infoRegistroDepartamentos}" style="position: absolute; left: 15px; top: 315px; font-weight: bold"/>
+                        <h:outputText id="infoRegistroDepartamentos" value="#{msg['infoRegistro']} #{controlCiudades.infoRegistroDep}" style="position: absolute; left: 15px; top: 315px; font-weight: bold"/>
 
                         <p:commandButton id="aceptarD" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlCiudades.aceptar}" style="position: absolute; top: 305px; left: 180px;" actionListener="#{controlCiudades.actualizarDepartamentos()}"  process="@this"/>
-                            
+
                         <p:commandButton id="atrasD" style="position: absolute; top: 305px; left: 275px; " icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlCiudades.cancelarCambioDepartamentos()}" process="@this"/>
-                            
+
                     </p:dialog> 
 
                     <!-- Ya Existe -->
 
                     <p:dialog id="existe" header="#{msg['atencion']}" widgetVar="existe"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['existe']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="existe.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
@@ -290,48 +294,48 @@
                     <!-- DIALOGOS RASTROS -->
 
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarRastro']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlCiudades.secRegistro, 'Ciudades', 'ciudades')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlCiudades.ciudadSeleccionada.secuencia , 'Ciudades', 'ciudades')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="confirmarRastroHistorico" header="#{msg['atencion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarRastroHistorico']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('Ciudades', 'ciudades')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorRastroHistorico" header="#{msg['atencion']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                    <p:dialog id="errorRastroHistorico" header="#{msg['error']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorRegistroRastro" header="#{msg['atencion']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                    <p:dialog id="errorRegistroRastro" header="#{msg['error']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                    <p:dialog id="errorTablaConRastro" header="#{msg['informacion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTablaConRastro']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlCiudades.secRegistro, 'Ciudades', 'ciudades')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaSinRastro" header="#{msg['atencion']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                    <p:dialog id="errorTablaSinRastro" header="#{msg['error']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTablaSinRastro']}" style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                    <p:dialog id="seleccionarRegistro" header="#{msg['error']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
-                    <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                    <p:dialog id="errorObjetosDB" header="#{msg['error']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 

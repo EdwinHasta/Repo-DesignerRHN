@@ -250,9 +250,9 @@
                                 <fieldset style="display: block; position: relative; left: 5px; top: 0px; margin-top: 3px; font-size: 11px; width: 810px; height: 125px; border-radius: 5px; ">
                                     <legend style="font-size: 11px; color: blue"><strong>#{msg['sueldo']}</strong></legend>
 
-                                    <p:tabView style="position: relative; top: -3px; left: -1px; width: 810px;font-size: 11px;border: none; height: 97%" id="opcionesSueldo"  widgetVar="opcionesSueldo">
-                                        <p:tab id="tabMensajeSueldo" title="#{msg['infoBasica']}" >
-                                            <div style="height: 65px; position: relative; left: 0px; top: 0px;">
+                                    <p:tabView style="position: relative; top: -4px; left: -1px; width: 810px;font-size: 11px;border: none; height: 96%" id="opcionesSueldo"  widgetVar="opcionesSueldo">
+                                        <p:tab id="tabMensajeSueldo" title="#{msg['infoBasica']}">
+                                            <div style="height: 63px; position: relative; left: 0px; top: 0px;">
                                                 <p:scrollPanel style="width: 800px; height: 80px; position: relative; left: 0px; top: -5px; border : none" mode="native" > 
                                                     <h:outputText id="textSueldo"
                                                                   value="#{msg['textSueldo']}" /><br></br>
@@ -1850,22 +1850,22 @@
 
                 <h:form id="formularioDialogos">
 
-                    <p:dialog id="errorFechasIngresadas" header="#{msg['atencion']}" widgetVar="errorFechasIngresadas"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorFechasIngresadas" header="#{msg['error']}" widgetVar="errorFechasIngresadas"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFechasIngresadas']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
-                    <p:dialog id="errorSueldos" header="#{msg['atencion']}" widgetVar="errorSueldos"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorSueldos" header="#{msg['error']}" widgetVar="errorSueldos"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorSueldos']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
-                    <p:dialog id="errorPromedios" header="#{msg['atencion']}" widgetVar="errorPromedios"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorPromedios" header="#{msg['error']}" widgetVar="errorPromedios"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorPromedios']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
-                    <p:dialog id="errorIdiomaPorcentajes" header="#{msg['atencion']}" widgetVar="errorIdiomaPorcentajes"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorIdiomaPorcentajes" header="#{msg['error']}" widgetVar="errorIdiomaPorcentajes"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorIdiomaPorcentajes']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>

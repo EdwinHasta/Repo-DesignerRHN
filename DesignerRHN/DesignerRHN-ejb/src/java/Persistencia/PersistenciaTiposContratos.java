@@ -14,9 +14,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br>
- * Clase encargada de realizar operaciones sobre la tabla 'TiposContratos' de la
- * base de datos.
+ * Clase Stateless.<br> Clase encargada de realizar operaciones sobre la tabla
+ * 'TiposContratos' de la base de datos.
  *
  * @author betelgeuse
  */
@@ -26,8 +25,9 @@ public class PersistenciaTiposContratos implements PersistenciaTiposContratosInt
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-     private EntityManager em;
+    /*
+     * @PersistenceContext(unitName = "DesignerRHN-ejbPU") private EntityManager
+     * em;
      */
     @Override
     public void crear(EntityManager em, TiposContratos tiposContratos) {
@@ -104,6 +104,15 @@ public class PersistenciaTiposContratos implements PersistenciaTiposContratosInt
             return tiposContratos;
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    @Override
+    public void clonarTipoContrato(BigInteger secuenciaClonado, String nuevoNombre, Short nuevoCodigo) {
+        try {
+            System.err.println("No esta clonando nada");
+        } catch (Exception e) {
+            System.out.println("Error en clonarTipoContrato : " + e.toString());
         }
     }
 }

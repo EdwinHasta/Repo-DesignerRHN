@@ -18,47 +18,41 @@ import InterfaceAdministrar.AdministrarSesionesInterface;
 import javax.persistence.EntityManager;
 
 /**
- * Clase Stateful. <br>
- * Clase encargada de realizar las operaciones lógicas para la pantalla
- * 'TipoContrato'.
+ * Clase Stateful. <br> Clase encargada de realizar las operaciones lógicas para
+ * la pantalla 'TipoContrato'.
  *
  * @author AndresPineda
  */
 @Stateful
-public class AdministrarTiposContratos implements AdministrarTiposContratosInterface{
+public class AdministrarTiposContratos implements AdministrarTiposContratosInterface {
 
     //--------------------------------------------------------------------------    
     //ATRIBUTOS
     //--------------------------------------------------------------------------    
     /**
-     * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia
-     * 'persistenciaTiposContratos'.
+     * Enterprise JavaBeans.<br> Atributo que representa la comunicación con la
+     * persistencia 'persistenciaTiposContratos'.
      */
     @EJB
     PersistenciaTiposContratosInterface persistenciaTiposContratos;
     /**
-     * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia
-     * 'persistenciaDiasLaborables'.
+     * Enterprise JavaBeans.<br> Atributo que representa la comunicación con la
+     * persistencia 'persistenciaDiasLaborables'.
      */
     @EJB
     PersistenciaDiasLaborablesInterface persistenciaDiasLaborables;
     /**
-     * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia
-     * 'persistenciaTiposDias'.
+     * Enterprise JavaBeans.<br> Atributo que representa la comunicación con la
+     * persistencia 'persistenciaTiposDias'.
      */
     @EJB
     PersistenciaTiposDiasInterface persistenciaTiposDias;
     /**
-     * Enterprise JavaBean.<br>
-     * Atributo que representa todo lo referente a la conexión del usuario que
-     * está usando el aplicativo.
+     * Enterprise JavaBean.<br> Atributo que representa todo lo referente a la
+     * conexión del usuario que está usando el aplicativo.
      */
     @EJB
     AdministrarSesionesInterface administrarSesiones;
-    
     private EntityManager em;
 
     //--------------------------------------------------------------------------
@@ -68,7 +62,7 @@ public class AdministrarTiposContratos implements AdministrarTiposContratosInter
     public void obtenerConexion(String idSesion) {
         em = administrarSesiones.obtenerConexionSesion(idSesion);
     }
-    
+
     @Override
     public List<TiposContratos> listaTiposContratos() {
         try {
@@ -116,6 +110,7 @@ public class AdministrarTiposContratos implements AdministrarTiposContratosInter
     @Override
     public List<DiasLaborables> listaDiasLaborablesParaTipoContrato(BigInteger secTipoContrato) {
         try {
+            System.out.println("listaDiasLaborablesParaTipoContrato: em : " + em);
             List<DiasLaborables> lista = persistenciaDiasLaborables.diasLaborablesParaSecuenciaTipoContrato(em, secTipoContrato);
             return lista;
         } catch (Exception e) {
@@ -165,6 +160,15 @@ public class AdministrarTiposContratos implements AdministrarTiposContratosInter
         } catch (Exception e) {
             System.out.println("Error lovTiposDias Admi : " + e.toString());
             return null;
+        }
+    }
+
+    @Override
+    public void clonarTC(BigInteger secuenciaClonado, String nuevoNombre, Short nuevoCodigo) {
+        try {
+            persistenciaTiposContratos.clonarTipoContrato(secuenciaClonado, nuevoNombre, nuevoCodigo);
+        } catch (Exception e) {
+            System.out.println("Error clonarTC Admi : " + e.toString());
         }
     }
 }

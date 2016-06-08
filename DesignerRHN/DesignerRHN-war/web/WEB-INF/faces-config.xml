@@ -4829,18 +4829,18 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmplTipoTrabajador.xhtml</from-view-id>
+        <from-view-id>/EmplVigenciaTipoTrabajador.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>tipotrabajadoremplvigenciatipotrabajador</from-outcome>
-            <to-view-id>/tipotrabajador.xhtml</to-view-id>
+            <to-view-id>/tiposTrabajadores.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/tipotrabajador.xhtml</from-view-id>
+        <from-view-id>/tiposTrabajadores.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrastipotrabajadoremplvigenciatipotrabajador</from-outcome>
-            <to-view-id>/EmplTipoTrabajador.xhtml</to-view-id>
+            <to-view-id>/EmplVigenciaTipoTrabajador.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>

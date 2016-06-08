@@ -42,4 +42,7 @@ public interface PersistenciaTiposContratosInterface {
      * @return Retorna una lista de TiposContratos ordenados por código.
      */
     public List<TiposContratos> tiposContratos(EntityManager em);
+    
+    public void clonarTipoContrato(BigInteger secuenciaClonado, String nuevoNombre, Short nuevoCodigo);
+            
 }

@@ -1,0 +1,555 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:lnk="http://java.sun.com/jsf/composite/linkare"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title></title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/Template.xhtml">
+            <ui:define name="body">  
+                <h:form id="form">
+                    <f:loadBundle basename="Recursos.tiposTrabajadores" var="msg"/>
+                    <p:growl id="growl" showDetail="true"/>
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal" >  
+
+                        <p:toolbar styleClass="cssToolbar">
+                            <p:toolbarGroup align="left">
+
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; "/>
+                                <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "/>
+                                <p:tooltip  for="editar" value="#{msg['editar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="listaValores"
+                                                 value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "/>
+                                <p:tooltip  for="listaValores" value="#{msg['lista']}" />
+
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "/>
+                                <p:tooltip  for="filtrar" value="#{msg['filtrar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "/>
+                                <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
+
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px ">
+                                    <p:dataExporter type="xml"  target=":formExportar:datosVTCEmpleadoExportar" fileName="VigenciaTipoContratoXML" encoding="UTF-8"/> 
+                                </p:commandButton> 
+                                <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
+
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "/>
+                                <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "/> 
+                                <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
+
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "/>  
+                                <p:tooltip  for="eliminar" value="#{msg['eliminar']}" />
+
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "/>  
+                                <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "/>  
+                                <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
+
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "/>  
+                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " action="#{controlTiposTrabajadores.retornarPagina()}" process="@this"/>  
+                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+
+                        <fieldset style="position: absolute; top: 70px; left: 10px; height: 259px; width: 835px; border-radius: 10px; text-align: left; padding-top: 0px; padding-left: 10px;">
+                            <legend style="font-size: 12px; color: blue"><strong>#{msg['titulo']}</strong></legend>
+
+                            <p:dataTable id="datosTTrabajadores" widgetVar="datosTTrabajadores" var="infoTT" rowIndexVar="indice" scrollable="true" scrollWidth="830" liveScroll="true" scrollRows="40"
+                                         value="#{controlTiposTrabajadores.listaTiposTrabajadores}"
+                                         rowKey="#{infoTT.secuencia}"                            
+                                         filteredValue="#{controlTiposTrabajadores.filtrarTiposTrabajadores}"
+                                         scrollHeight="#{controlTiposTrabajadores.altoTabla}"
+                                         style="border: 1px; width: 810px;"
+                                         emptyMessage="#{msg['vacio']}"
+                                         editable="true" editMode="cell"
+                                         selection="#{controlTiposTrabajadores.tipoTrabajadorSeleccionado}"
+                                         selectionMode="single">
+
+
+<!--                            <f:event type="preRenderView" listener="#{controlCiudades.recordarSeleccion()}"/>
+                                <p:ajax event="filter" listener="#{controlCiudades.eventoFiltrar()}" process="@this"/>-->
+
+
+                                <p:column width="25" sortBy="#{infoTT.codigo}" filterBy="#{infoTT.codigo}" filterMatchMode="contains" id="TTCodigo" filterStyle="display: none; visibility: hidden;"  >  
+                                    <f:facet name="header">
+                                        <h:outputText id="headercod" value="Cod"/>
+                                        <p:tooltip for="headercod" value="#{msg['codigo']}"/>
+                                    </f:facet>
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{infoTT.codigo}" >
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoTT.codigo}" id="editarCodigosTT" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
+                                                <p:ajax event="select" listener="#{controlTiposTrabajadores.cambiarIndice(infoTT, 0) }" />
+                                                <!--  <p:ajax event="change" listener="#{controlCiudades.modificarCiudades(ciudades, 'N', ciudades.codigo)}" update="@this"/>-->
+                                            </p:inputText> 
+                                        </f:facet>   
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column width="200" headerText="#{msg['descripcion']}" sortBy="#{infoTT.nombre}" filterBy="#{infoTT.nombre}" filterMatchMode="contains" id="TTNombre" filterStyle="display: none; visibility: hidden;"  >  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{infoTT.nombre}"  style="text-transform: uppercase;">
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoTT.nombre}" id="editarNombres" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
+                                                <p:ajax event="select" listener="#{controlTiposTrabajadores.cambiarIndice(infoTT, 1) }" />
+                                               <!-- <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (ciudades, 'N', ciudades.nombre)}" update="@this" />-->
+                                            </p:inputText> 
+                                        </f:facet>   
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column width="25" sortBy="#{infoTT.factordesalarizacion}" filterBy="#{infoTT.factordesalarizacion}" style="text-align: center;" filterMatchMode="contains" id="TTFD" filterStyle="display: none; visibility: hidden;"  >  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerFD" value="#{msg['factorDCorto']}"/>
+                                        <p:tooltip for="headerFD" value="#{msg['factorD']}"/>
+                                    </f:facet>
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{infoTT.factordesalarizacion}"  style="text-transform: uppercase;">
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoTT.factordesalarizacion}" id="editarFD" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
+                                                <p:ajax event="select" listener="#{controlTiposTrabajadores.cambiarIndice(infoTT, 2) }" />
+                                                <!--<p:ajax event="change" listener="#{controlCiudades.modificarCiudades (ciudades, 'N', ciudades.nombre)}" update="@this" />-->
+                                            </p:inputText> 
+                                        </f:facet>   
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="#{msg['tipoCot']}" width="150" sortBy="#{infoTT.tipocotizante.descripcion}" filterBy="#{infoTT.tipocotizante.descripcion}"  filterMatchMode="contains" id="TTTCot" filterStyle="display: none; visibility: hidden;"  >  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{infoTT.tipocotizante.descripcion}"  style="text-transform: uppercase;">
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoTT.tipocotizante.descripcion}" id="editarTipoCot" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
+<!--                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(ciudades, 1)}" />
+                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (ciudades, 'N', ciudades.nombre)}" update="@this" />-->
+                                            </p:inputText> 
+                                        </f:facet>   
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 170px; height: inherit; border-radius: 0px; margin-left: -10px; margin-right: -10px " id="fooTipoCot" value=" "/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column width="25" sortBy="#{infoTT.diasvacacionesnoordinarios}" filterBy="#{infoTT.diasvacacionesnoordinarios}" style="text-align: center;" filterMatchMode="contains" id="TTDNO" filterStyle="display: none; visibility: hidden;"  >  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerDNO" value="#{msg['diasvacNoOrdCorto']}"/>
+                                        <p:tooltip for="headerDNO" value="#{msg['diasvacNoOrd']}"/>
+                                    </f:facet>
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{infoTT.diasvacacionesnoordinarios}"  style="text-transform: uppercase;">
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoTT.diasvacacionesnoordinarios}" id="editarDNO" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
+<!--                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(ciudades, 1)}" />
+                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (ciudades, 'N', ciudades.nombre)}" update="@this" />-->
+                                            </p:inputText> 
+                                        </f:facet>   
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column width="25" sortBy="#{infoTT.derechodiasvacaciones}" filterBy="#{infoTT.derechodiasvacaciones}" style="text-align: center;" filterMatchMode="contains" id="TTDDV" filterStyle="display: none; visibility: hidden;"  >  
+                                    <f:facet name="header">
+                                        <h:outputText id="headerDVac" value="#{msg['diasvacCorto']}"/>
+                                        <p:tooltip for="headerDVac" value="#{msg['diasvac']}"/>
+                                    </f:facet>
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{infoTT.derechodiasvacaciones}"  style="text-transform: uppercase;">
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoTT.derechodiasvacaciones}" id="editarDDV" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
+<!--                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(ciudades, 1)}" />
+                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (ciudades, 'N', ciudades.nombre)}" update="@this" />-->
+                                            </p:inputText> 
+                                        </f:facet>   
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="#{msg['modalidad']}" width="80" sortBy="#{infoTT.modalidad}" filterBy="#{infoTT.modalidad}"  filterMatchMode="contains" id="TTModañidad" filterStyle="display: none; visibility: hidden;"  >  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{infoTT.modalidad}"  style="text-transform: uppercase;">
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoTT.modalidad}" id="editarMod" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
+<!--                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(ciudades, 1)}" />
+                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (ciudades, 'N', ciudades.nombre)}" update="@this" />-->
+                                            </p:inputText> 
+                                        </f:facet>   
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="#{msg['tipo']}" width="80" sortBy="#{infoTT.tipo}" filterBy="#{infoTT.tipo}"  filterMatchMode="contains" id="TTTipo" filterStyle="display: none; visibility: hidden;"  >  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{infoTT.tipo}"  style="text-transform: uppercase;">
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoTT.tipo}" id="editarTipo" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
+<!--                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(ciudades, 1)}" />
+                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (ciudades, 'N', ciudades.nombre)}" update="@this" />-->
+                                            </p:inputText> 
+                                        </f:facet>   
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column width="25" sortBy="#{infoTT.nivelendeudamiento}" filterBy="#{infoTT.nivelendeudamiento}" style="text-align: center;" filterMatchMode="contains" id="TTNivel" filterStyle="display: none; visibility: hidden;"  >  
+                                    <f:facet name="header">
+                                        <h:outputText value="NE" id="headerNEndeuda"/>
+                                        <p:tooltip for="headerNEndeuda" value="#{msg['nivelEndeuda']}"/>
+                                    </f:facet>
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{infoTT.nivelendeudamiento}"  style="text-transform: uppercase;">
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoTT.nivelendeudamiento}" id="editarNivel" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
+<!--                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(ciudades, 1)}" />
+                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (ciudades, 'N', ciudades.nombre)}" update="@this" />-->
+                                            </p:inputText> 
+                                        </f:facet>   
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column width="80" sortBy="#{infoTT.baseendeudamiento}" filterBy="#{infoTT.baseendeudamiento}"  filterMatchMode="contains" id="TTBase" filterStyle="display: none; visibility: hidden;"  >  
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msg['baseEcorto']}" id="headerBEndeuda"/>
+                                        <p:tooltip for="headerBEndeuda" value="#{msg['baseE']}"/>
+                                    </f:facet>
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{infoTT.baseendeudamiento}"  style="text-transform: uppercase;">
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoTT.baseendeudamiento}" id="editarBase" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
+<!--                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(ciudades, 1)}" />
+                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (ciudades, 'N', ciudades.nombre)}" update="@this" />-->
+                                            </p:inputText> 
+                                        </f:facet>   
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column width="25" sortBy="#{infoTT.porcentajesml}" filterBy="#{infoTT.porcentajesml}" style="text-align: center;" filterMatchMode="contains" id="TTPor" filterStyle="display: none; visibility: hidden;"  >  
+                                    <f:facet name="header">
+                                        <h:outputText value="%" id="headerPorc"/>
+                                        <p:tooltip for="headerPorc" value="#{msg['porc']}"/>
+                                    </f:facet>
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{infoTT.porcentajesml}"  style="text-transform: uppercase;">
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoTT.porcentajesml}" id="editarPor" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
+<!--                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(ciudades, 1)}" />
+                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (ciudades, 'N', ciudades.nombre)}" update="@this" />-->
+                                            </p:inputText> 
+                                        </f:facet>   
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column width="25" sortBy="#{infoTT.modalidadpensionsectorsalud}" filterBy="#{infoTT.modalidadpensionsectorsalud}" style="text-align: center;" filterMatchMode="contains" id="TTMPS" filterStyle="display: none; visibility: hidden;"  >  
+                                    <f:facet name="header">
+                                        <h:outputText value="MPS" id="headerMPS"/>
+                                        <p:tooltip for="headerMPS" value="#{msg['MPS']}"/>
+                                    </f:facet>
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{infoTT.modalidadpensionsectorsalud}"  style="text-transform: uppercase;">
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoTT.modalidadpensionsectorsalud}" id="editarMPS" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
+<!--                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(ciudades, 1)}" />
+                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (ciudades, 'N', ciudades.nombre)}" update="@this" />-->
+                                            </p:inputText> 
+                                        </f:facet>   
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column width="25" sortBy="#{infoTT.patronpagasalud}" filterBy="#{infoTT.patronpagasalud}" style="text-align: center;" filterMatchMode="contains" id="TTPatronPS" filterStyle="display: none; visibility: hidden;"  >  
+                                    <f:facet name="header">
+                                        <h:outputText value="PPS" id="headerPPS"/>
+                                        <p:tooltip for="headerPPS" value="#{msg['PPS']}"/>
+                                    </f:facet>
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{infoTT.patronpagasalud}"  style="text-transform: uppercase;">
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoTT.patronpagasalud}" id="editarPatronPS" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
+<!--                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(ciudades, 1)}" />
+                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (ciudades, 'N', ciudades.nombre)}" update="@this" />-->
+                                            </p:inputText> 
+                                        </f:facet>   
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column width="25" sortBy="#{infoTT.patronpagapension}" filterBy="#{infoTT.patronpagapension}" style="text-align: center;" filterMatchMode="contains" id="TTPatronPP" filterStyle="display: none; visibility: hidden;"  >  
+                                    <f:facet name="header">
+                                        <h:outputText value="PPP" id="headerPPP"/>
+                                        <p:tooltip for="headerPPP" value="#{msg['PPP']}"/>
+                                    </f:facet>
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{infoTT.patronpagapension}"  style="text-transform: uppercase;">
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoTT.patronpagapension}" id="editarPatronPP" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
+<!--                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(ciudades, 1)}" />
+                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (ciudades, 'N', ciudades.nombre)}" update="@this" />-->
+                                            </p:inputText> 
+                                        </f:facet>   
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column width="25" sortBy="#{infoTT.patronpagaretencion}" filterBy="#{infoTT.patronpagaretencion}" style="text-align: center;" filterMatchMode="contains" id="TTPatronPR" filterStyle="display: none; visibility: hidden;"  >  
+                                    <f:facet name="header">
+                                        <h:outputText value="PPR" id="headerPPR"/>
+                                        <p:tooltip for="headerPPR" value="#{msg['PPR']}"/>
+                                    </f:facet>
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{infoTT.patronpagaretencion}"  style="text-transform: uppercase;">
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoTT.patronpagaretencion}" id="editarPatronPR" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
+<!--                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(ciudades, 1)}" />
+                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (ciudades, 'N', ciudades.nombre)}" update="@this" />-->
+                                            </p:inputText> 
+                                        </f:facet>   
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column width="25" sortBy="#{infoTT.cesantiasectorconstruccion}" filterBy="#{infoTT.cesantiasectorconstruccion}" style="text-align: center;" filterMatchMode="contains" id="TTCesCC" filterStyle="display: none; visibility: hidden;"  >  
+                                    <f:facet name="header">
+                                        <h:outputText value="CSC" id="headerCSC"/>
+                                        <p:tooltip for="headerCSC" value="#{msg['CSC']}"/>
+                                    </f:facet>
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{infoTT.cesantiasectorconstruccion}"  style="text-transform: uppercase;">
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{infoTT.cesantiasectorconstruccion}" id="editarCesCC" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
+<!--                                                <p:ajax event="select" listener="#{controlCiudades.cambiarIndice(ciudades, 1)}" />
+                                                <p:ajax event="change" listener="#{controlCiudades.modificarCiudades (ciudades, 'N', ciudades.nombre)}" update="@this" />-->
+                                            </p:inputText> 
+                                        </f:facet>   
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                </p:column>
+
+                            </p:dataTable>
+                            <h:outputText id="informacionRegistro" value="#{msg['infoRegistro']} #{controlTiposTrabajadores.infoRegistroTT}" 
+                                          style="position: relative; display: block; left: 10px; top: 0px; font-weight: bold"/>
+                            
+                        <p:commandButton style="width: 90px; height: 30px; background-image: url(Imagenes/Iconos/buscardb.png); background-size: 100% 100%; 
+                                         background-repeat: no-repeat; border: none; position: relative; left: 650px; top: -13px;" 
+                                         id="buscarConcepto" value="" process="@this" />
+                        
+                        <p:commandButton style="width: 90px; height: 30px; background-image: url(Imagenes/Iconos/todosdb.png); background-size: 100% 100%; 
+                                         background-repeat: no-repeat; border: none; position: relative; left: 650px; top: -13px;" 
+                                         id="mostrarTodos" value="" process="@this" />
+                        </fieldset>
+
+                        <fieldset style="position: absolute; top: 343px; left: 10px; height: 113px; width: 295px; border-radius: 10px; text-align: left; padding-top: 0px;">
+                            <legend style="font-size: 12px; color: blue"><strong>#{msg['titulo2']}</strong></legend>
+
+                            <p:dataTable id="datosVigenciasDTT" widgetVar="datosVigenciasDTT" var="info" rowIndexVar="indice2" scrollable="true" 
+                                         scrollWidth="295" value="#{controlTiposTrabajadores.listaVigenciasDiasTT}"
+                                         rowKey="#{info.secuencia}"                            
+                                         filteredValue="#{controlTiposTrabajadores.filtrarVigenciasDiasTT}"
+                                         scrollHeight="50"
+                                         style="border: 1px; width: 280px; height: 11px; position: relative;"
+                                         emptyMessage="#{msg['vacio']}"
+                                         editable="true" editMode="cell"
+                                         selection="#{controlTiposTrabajadores.vigenciaDiaSeleccionado}"
+                                         selectionMode="single">
+
+                                <p:column width="190" headerText="#{msg['fecha']}" style="text-align: center;" sortBy="#{info.fechaVigencia}" filterBy="#{info.fechaVigencia}" filterMatchMode="contains" id="VDTFecha" filterStyle="display: none; visibility: hidden;" >  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info.fechaVigencia}" >
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <lnk:calendar id="editFecha" value="#{info.fechaVigencia}" width="190" height="12" style="width: 99%; border-radius: 0px;">
+<!--                                                <p:ajax event="dateSelect" listener="#{controlVigenciasCargos.modificarVC(info, 'N', info.fechavigencia)}" update="@this"/>
+                                                <p:ajax event="change" listener="#{controlVigenciasCargos.modificarVC(info, 'N', info.fechavigencia)}" update="@this" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlVigenciasCargos.cambiarIndice(info, 0)}" process="@this"/> -->
+                                            </lnk:calendar>
+                                        </f:facet>
+
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="#{msg['dias']}" style=" text-align: center; " sortBy="#{infoVDT.dias}" filterBy="#{info.dias}" filterMatchMode="contains" id="VDTdias" filterStyle="display: none; visibility: hidden;"  >  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info.dias}">
+                                            </h:outputText>
+                                        </f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.dias}" id="editardias"> 
+                                            </p:inputText> 
+                                        </f:facet>   
+                                    </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                </p:column>
+
+                            </p:dataTable>
+                            <h:outputText id="informacionRegistroDias" value="#{msg['infoRegistro']} #{controlTiposTrabajadores.infoRegistroTT}" style="position: relative; left: 10px; top: 80px; font-weight: bold;"/>
+                        </fieldset>
+
+                        <fieldset style="position: absolute; top: 343px; left: 333px; height: 113px; width: 513px; border-radius: 10px; text-align: left; padding-top: 0px;">
+                            <legend style="font-size: 12px; color: blue"><strong>#{msg['clonarTC']}</strong></legend>
+
+
+                            <h:outputText value="#{msg['codigoNClonarTT']}" style="display: inline-block; position: relative; top : 7px; left: 20px"/> 
+                            <h:outputText value="#{msg['nombreNClonarTT']}" style="display: inline-block; position: relative; top : 7px; left: 80px"/>
+
+                            <p:inputText onclick="select();" id="codigoTipoTClonar" value="" 
+                                         style="display: block; position: relative; top : 9px; left: 15px; width: 90px; height: 12px; text-transform: uppercase;">
+                                <pe:keyFilter for="codigoTipoTClonar" mask="num"/>
+                                <p:ajax event="change" update="codigoTipoTClonar" process="@this"/>
+                            </p:inputText>
+                            <p:inputText onclick="select();" id="nombreTipoTClonar" maxlength="30" value="" 
+                                         style="display: inline-block; position: relative; top : -13px; left: 150px; width: 240px; height: 12px; text-transform: uppercase">
+                                <p:ajax event="change" update="nombreTipoTClonar" process="@this"/>
+                            </p:inputText>
+
+                            <h:outputText value="#{msg['codigo']}" style="display: block; position: relative; top : -5px; left: 40px"/> 
+                            <h:outputText value="#{msg['nombreBClonarTT']}" style="display: inline-block; position: relative; top : -20px; left: 153px"/> 
+
+                            <p:inputText onclick="select();" id="codigoTipoTClonarBase" value=""
+                                         style="display: block; position: relative; top : -20px; left: 15px; width: 90px; height: 12px;">
+                                <pe:keyFilter for="codigoTipoTClonarBase" mask="num"/>
+<!--                                <p:ajax event="change" update="codigoTipoCClonarBase" process="@this" listener="#{controlTiposTrabajadores.autoCompletarSeleccionarTipoContratoClonar(controlTipoContrato.tipoContratoAClonar.codigo,0)}"/>
+                                <p:ajax event="select" process="@this" listener="#{controlTiposTrabajadores.posicionTipoContratoClonar()}"/>
+                                <p:ajax event="dblclick" process="@this" listener="#{controlTiposTrabajadores.dispararDialogoClonarTipoContrato()}"/>-->
+                            </p:inputText>
+                            <p:inputText onclick="select();" id="nombreTipoTClonarBase" value="" 
+                                         style="display: inline-block; position: relative; top : -42px; left: 150px; width: 240px; height: 12px; text-transform: uppercase">
+<!--                                <p:ajax event="change" update="nombreTipoTClonarBase" process="@this" listener="#{controlTiposTrabajadores.autoCompletarSeleccionarTipoContratoClonar(controlTipoContrato.tipoContratoAClonar.nombre,1)}"/>
+                                <p:ajax event="select" process="@this" listener="#{controlTiposTrabajadores.posicionTipoContratoClonar()}"/>
+                                <p:ajax event="dblclick" process="@this" listener="#{controlTiposTrabajadores.dispararDialogoClonarTipoContrato()}"/>-->
+                            </p:inputText>
+
+                            <p:commandButton value="#{msg['clonar']}" actionListener="#{controlTiposTrabajadores.verificarclonarTipoContrato}" id="BtnClonar"
+                                             style="position: relative; top : -100px; left: 440px; height: 50px; width: 50px; display: block; 
+                                             background-size: 100% 100%; color: white;"/>
+                            <p:tooltip for="BtnClonar" value="#{msg['clonar']}"/>
+                        </fieldset>
+
+                        <p:commandButton style="position: relative; left: 10px; top: 433px; height: 30px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; color: white;" 
+                                         icon="ui-icon-extlink" value="#{msg['plantillaC']}" id="TTPlantilla" process="@this" />
+                        <p:tooltip for="TTPlantilla" value="#{msg['plantilla']}"/>
+
+                        <p:commandButton style="position: absolute; left: 683px; top: 502px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" 
+                                         value="" id="ACEPTAR" process="@this" />
+    <!--                                         onclick="confirmarGuardar.show();" disabled="#{controlCiudades.guardado}" -->
+                        <p:commandButton style="position: absolute; left: 775px; top: 502px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" 
+                                         value=""  action="#{controlTiposTrabajadores.retornarPagina()}" process="@this" />
+    <!--                                         actionListener="#{controlCiudades.salir()}"-->
+                    </p:panel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

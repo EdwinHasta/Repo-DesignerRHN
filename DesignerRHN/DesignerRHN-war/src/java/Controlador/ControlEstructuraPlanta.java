@@ -469,6 +469,7 @@ public class ControlEstructuraPlanta implements Serializable {
         if (guardadoEstructura == true) {
             RequestContext context = RequestContext.getCurrentInstance();
             cualCelda = celda;
+            cualCeldaEstructura = -1;
             organigramaSeleccionado = organigrama;
             estructuraSeleccionada = null;
             fechaOrganigrama = organigramaSeleccionado.getFecha();
@@ -605,11 +606,15 @@ public class ControlEstructuraPlanta implements Serializable {
         }
         if (guardadoEstructura == false) {
             cancelarModificacionEstructura();
-            contarRegistrosEs();
             RequestContext.getCurrentInstance().update("form:infoRegistroEst");
             context.update("form:datosEstructura");
         }
+        contarRegistrosEs();
         activarLOV = true;
+        estructuraSeleccionada = null;
+        organigramaSeleccionado = null;
+        listaEstructuras = null;
+        contarRegistrosEs();
         RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
@@ -632,7 +637,6 @@ public class ControlEstructuraPlanta implements Serializable {
             tipoLista = 0;
         }
         listOrganigramasModificar.clear();
-        organigramaSeleccionado = null;
         k = 0;
         listaOrganigramas = null;
         guardado = true;
@@ -663,7 +667,6 @@ public class ControlEstructuraPlanta implements Serializable {
         listEstructurasBorrar.clear();
         listEstructurasCrear.clear();
         listEstructurasModificar.clear();
-        estructuraSeleccionada = null;
         k = 0;
         listaEstructuras = null;
         guardadoEstructura = true;
@@ -673,42 +676,10 @@ public class ControlEstructuraPlanta implements Serializable {
     }
 
     public void editarCelda() {
-        if (organigramaSeleccionado != null) {
-            editarOrganigrama = organigramaSeleccionado;
-
-            RequestContext context = RequestContext.getCurrentInstance();
-            if (cualCelda == 0) {
-                context.update("formularioDialogos:editarFechaOrganigramaD");
-                context.execute("editarFechaOrganigramaD.show()");
-                cualCelda = -1;
-            } else if (cualCelda == 1) {
-                context.update("formularioDialogos:editarCodigoOrganigramaD");
-                context.execute("editarCodigoOrganigramaD.show()");
-                cualCelda = -1;
-
-            } else if (cualCelda == 2) {
-                context.update("formularioDialogos:editarEmpresaOrganigramaD");
-                context.execute("editarEmpresaOrganigramaD.show()");
-                cualCelda = -1;
-
-            } else if (cualCelda == 3) {
-                context.update("formularioDialogos:editarNITOrganigramaD");
-                context.execute("editarNITOrganigramaD.show()");
-                cualCelda = -1;
-
-            } else if (cualCelda == 4) {
-                context.update("formularioDialogos:editarEstadoOrganigramaD");
-                context.execute("editarEstadoOrganigramaD.show()");
-                cualCelda = -1;
-
-            }
-            organigramaSeleccionado = null;
-            organigramaSeleccionado = null;
-        }
+        RequestContext context = RequestContext.getCurrentInstance();
         if (estructuraSeleccionada != null) {
             editarEstructura = estructuraSeleccionada;
 
-            RequestContext context = RequestContext.getCurrentInstance();
             if (cualCeldaEstructura == 0) {
                 context.update("formularioDialogos:editarCodigoEstructuraD");
                 context.execute("editarCodigoEstructuraD.show()");
@@ -734,8 +705,36 @@ public class ControlEstructuraPlanta implements Serializable {
                 context.execute("editarEstructuraPadreEstructuraD.show()");
                 cualCeldaEstructura = -1;
             }
-            estructuraSeleccionada = null;
-            estructuraSeleccionada = null;
+        } else if (organigramaSeleccionado != null) {
+            editarOrganigrama = organigramaSeleccionado;
+
+            if (cualCelda == 0) {
+                context.update("formularioDialogos:editarFechaOrganigramaD");
+                context.execute("editarFechaOrganigramaD.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 1) {
+                context.update("formularioDialogos:editarCodigoOrganigramaD");
+                context.execute("editarCodigoOrganigramaD.show()");
+                cualCelda = -1;
+
+            } else if (cualCelda == 2) {
+                context.update("formularioDialogos:editarEmpresaOrganigramaD");
+                context.execute("editarEmpresaOrganigramaD.show()");
+                cualCelda = -1;
+
+            } else if (cualCelda == 3) {
+                context.update("formularioDialogos:editarNITOrganigramaD");
+                context.execute("editarNITOrganigramaD.show()");
+                cualCelda = -1;
+
+            } else if (cualCelda == 4) {
+                context.update("formularioDialogos:editarEstadoOrganigramaD");
+                context.execute("editarEstadoOrganigramaD.show()");
+                cualCelda = -1;
+
+            }
+        } else {
+            context.execute("seleccionarRegistro.show()");
         }
     }
 
@@ -834,25 +833,27 @@ public class ControlEstructuraPlanta implements Serializable {
     /**
      */
     public void verificarRegistroDuplicar() {
-        if (estructuraSeleccionada != null) {
-            duplicarEstructuraM();
-        }
     }
 
     public void duplicarEstructuraM() {
-        duplicarEstructura = new Estructuras();
-        duplicarEstructura.setCodigo(estructuraSeleccionada.getCodigo());
-        duplicarEstructura.setNombre(estructuraSeleccionada.getNombre());
-        duplicarEstructura.setCentrocosto(estructuraSeleccionada.getCentrocosto());
-        duplicarEstructura.setEstructurapadre(estructuraSeleccionada.getEstructurapadre());
-        duplicarEstructura.setCantidadCargosControlar(estructuraSeleccionada.getCantidadCargosControlar());
-        duplicarEstructura.setCantidadCargosEmplActivos(estructuraSeleccionada.getCantidadCargosEmplActivos());
-
         RequestContext context = RequestContext.getCurrentInstance();
-        activarLOV = true;
-        RequestContext.getCurrentInstance().update("form:listaValores");
-        context.update("formularioDialogos:DuplicarRegistroEstructura");
-        context.execute("DuplicarRegistroEstructura.show()");
+        if (estructuraSeleccionada != null) {
+            duplicarEstructuraM();
+            duplicarEstructura = new Estructuras();
+            duplicarEstructura.setCodigo(estructuraSeleccionada.getCodigo());
+            duplicarEstructura.setNombre(estructuraSeleccionada.getNombre());
+            duplicarEstructura.setCentrocosto(estructuraSeleccionada.getCentrocosto());
+            duplicarEstructura.setEstructurapadre(estructuraSeleccionada.getEstructurapadre());
+            duplicarEstructura.setCantidadCargosControlar(estructuraSeleccionada.getCantidadCargosControlar());
+            duplicarEstructura.setCantidadCargosEmplActivos(estructuraSeleccionada.getCantidadCargosEmplActivos());
+
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
+            context.update("formularioDialogos:DuplicarRegistroEstructura");
+            context.execute("DuplicarRegistroEstructura.show()");
+        } else {
+            context.execute("seleccionarRegistro.show()");
+        }
     }
 
     public void confirmarDuplicarEstructura() {
@@ -924,16 +925,8 @@ public class ControlEstructuraPlanta implements Serializable {
         nombreTablaRastro = "";
     }
 
-    //BORRAR VC
-    /**
-     */
-    public void verificarRegistroBorrar() {
-        if (estructuraSeleccionada != null) {
-            borrarEstructura();
-        }
-    }
-
     public void borrarEstructura() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (estructuraSeleccionada != null) {
             if (!listEstructurasModificar.isEmpty() && listEstructurasModificar.contains(estructuraSeleccionada)) {
                 int modIndex = listEstructurasModificar.indexOf(estructuraSeleccionada);
@@ -952,7 +945,6 @@ public class ControlEstructuraPlanta implements Serializable {
             modificarInfoRegistroEs(listaEstructuras.size());
             RequestContext.getCurrentInstance().update("form:infoRegistroEst");
             cambiosPagina = false;
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:ACEPTAR");
             context.update("form:datosEstructura");
             activarLOV = true;
@@ -963,6 +955,8 @@ public class ControlEstructuraPlanta implements Serializable {
                 guardadoEstructura = false;
                 //RequestContext.getCurrentInstance().update("form:aceptar");
             }
+        } else {
+            context.execute("seleccionarRegistro.show()");
         }
     }
 
@@ -972,75 +966,71 @@ public class ControlEstructuraPlanta implements Serializable {
      * medio de la tecla Crtl+F11
      */
     public void activarCtrlF11() {
-        if (organigramaSeleccionado != null) {
-            if (bandera == 0) {
-                altoTablaOrganigrama = "43";
-                organigramaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaFecha");
-                organigramaFecha.setFilterStyle("width: 85%");
-                organigramaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaCodigo");
-                organigramaCodigo.setFilterStyle("width: 85%");
-                organigramaEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaEmpresa");
-                organigramaEmpresa.setFilterStyle("width: 85%");
-                organigramaNIT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaNIT");
-                organigramaNIT.setFilterStyle("width: 85%");
-                organigramaEstado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaEstado");
-                organigramaEstado.setFilterStyle("width: 85%");
-                RequestContext.getCurrentInstance().update("form:datosOrganigrama");
-                bandera = 1;
-            } else if (bandera == 1) {
-                altoTablaOrganigrama = "65";
-                organigramaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaFecha");
-                organigramaFecha.setFilterStyle("display: none; visibility: hidden;");
-                organigramaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaCodigo");
-                organigramaCodigo.setFilterStyle("display: none; visibility: hidden;");
-                organigramaEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaEmpresa");
-                organigramaEmpresa.setFilterStyle("display: none; visibility: hidden;");
-                organigramaNIT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaNIT");
-                organigramaNIT.setFilterStyle("display: none; visibility: hidden;");
-                organigramaEstado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaEstado");
-                organigramaEstado.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosOrganigrama");
-                bandera = 0;
-                filtrarListaOrganigramas = null;
-                tipoLista = 0;
-            }
+        if (bandera == 0) {
+            altoTablaOrganigrama = "43";
+            organigramaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaFecha");
+            organigramaFecha.setFilterStyle("width: 85%");
+            organigramaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaCodigo");
+            organigramaCodigo.setFilterStyle("width: 85%");
+            organigramaEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaEmpresa");
+            organigramaEmpresa.setFilterStyle("width: 85%");
+            organigramaNIT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaNIT");
+            organigramaNIT.setFilterStyle("width: 85%");
+            organigramaEstado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaEstado");
+            organigramaEstado.setFilterStyle("width: 85%");
+            RequestContext.getCurrentInstance().update("form:datosOrganigrama");
+            bandera = 1;
+        } else if (bandera == 1) {
+            altoTablaOrganigrama = "65";
+            organigramaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaFecha");
+            organigramaFecha.setFilterStyle("display: none; visibility: hidden;");
+            organigramaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaCodigo");
+            organigramaCodigo.setFilterStyle("display: none; visibility: hidden;");
+            organigramaEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaEmpresa");
+            organigramaEmpresa.setFilterStyle("display: none; visibility: hidden;");
+            organigramaNIT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaNIT");
+            organigramaNIT.setFilterStyle("display: none; visibility: hidden;");
+            organigramaEstado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaEstado");
+            organigramaEstado.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosOrganigrama");
+            bandera = 0;
+            filtrarListaOrganigramas = null;
+            tipoLista = 0;
         }
-        if (estructuraSeleccionada != null) {
-            if (banderaEstructura == 0) {
-                altoTablaEstructura = "188";
-                estructuraEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructura");
-                estructuraEstructura.setFilterStyle("width: 85%");
-                estructuraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCodigo");
-                estructuraCodigo.setFilterStyle("width: 85%");
-                estructuraCantidadControlar = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadControlar");
-                estructuraCantidadControlar.setFilterStyle("width: 85%");
-                estructuraCantidadActivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadActivo");
-                estructuraCantidadActivo.setFilterStyle("width: 85%");
-                estructuraCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCentroCosto");
-                estructuraCentroCosto.setFilterStyle("width: 85%");
-                estructuraEstructuraPadre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructuraPadre");
-                estructuraEstructuraPadre.setFilterStyle("width: 85%");
-                RequestContext.getCurrentInstance().update("form:datosEstructura");
-                banderaEstructura = 1;
-            } else if (banderaEstructura == 1) {
-                altoTablaEstructura = "210";
-                estructuraEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructura");
-                estructuraEstructura.setFilterStyle("display: none; visibility: hidden;");
-                estructuraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCodigo");
-                estructuraCodigo.setFilterStyle("display: none; visibility: hidden;");
-                estructuraCantidadControlar = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadControlar");
-                estructuraCantidadControlar.setFilterStyle("display: none; visibility: hidden;");
-                estructuraCantidadActivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadActivo");
-                estructuraCantidadActivo.setFilterStyle("display: none; visibility: hidden;");
-                estructuraCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCentroCosto");
-                estructuraCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                estructuraEstructuraPadre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructuraPadre");
-                estructuraEstructuraPadre.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosEstructura");
-                banderaEstructura = 0;
-                filtrarListaEstructuras = null;
-                tipoListaEstructura = 0;
-            }
+        if (banderaEstructura == 0) {
+            altoTablaEstructura = "188";
+            estructuraEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructura");
+            estructuraEstructura.setFilterStyle("width: 85%");
+            estructuraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCodigo");
+            estructuraCodigo.setFilterStyle("width: 85%");
+            estructuraCantidadControlar = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadControlar");
+            estructuraCantidadControlar.setFilterStyle("width: 85%");
+            estructuraCantidadActivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadActivo");
+            estructuraCantidadActivo.setFilterStyle("width: 85%");
+            estructuraCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCentroCosto");
+            estructuraCentroCosto.setFilterStyle("width: 85%");
+            estructuraEstructuraPadre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructuraPadre");
+            estructuraEstructuraPadre.setFilterStyle("width: 85%");
+            RequestContext.getCurrentInstance().update("form:datosEstructura");
+            banderaEstructura = 1;
+        } else if (banderaEstructura == 1) {
+            altoTablaEstructura = "210";
+            estructuraEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructura");
+            estructuraEstructura.setFilterStyle("display: none; visibility: hidden;");
+            estructuraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCodigo");
+            estructuraCodigo.setFilterStyle("display: none; visibility: hidden;");
+            estructuraCantidadControlar = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadControlar");
+            estructuraCantidadControlar.setFilterStyle("display: none; visibility: hidden;");
+            estructuraCantidadActivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadActivo");
+            estructuraCantidadActivo.setFilterStyle("display: none; visibility: hidden;");
+            estructuraCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCentroCosto");
+            estructuraCentroCosto.setFilterStyle("display: none; visibility: hidden;");
+            estructuraEstructuraPadre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructuraPadre");
+            estructuraEstructuraPadre.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosEstructura");
+            banderaEstructura = 0;
+            filtrarListaEstructuras = null;
+            tipoListaEstructura = 0;
         }
     }
 
@@ -1089,7 +1079,6 @@ public class ControlEstructuraPlanta implements Serializable {
         listEstructurasBorrar.clear();
         listEstructurasCrear.clear();
         listEstructurasModificar.clear();
-        organigramaSeleccionado = null;
         organigramaSeleccionado = null;
         estructuraSeleccionada = null;
         k = 0;
@@ -1480,7 +1469,6 @@ public class ControlEstructuraPlanta implements Serializable {
         RequestContext.getCurrentInstance().update("form:listaValores");
         organigramaSeleccionado = null;
         modificarInfoRegistroOr(filtrarListaOrganigramas.size());
-        RequestContext.getCurrentInstance().update("form:infoRegistroOrg");
     }
 
     public void eventoFiltrarE() {
@@ -1491,15 +1479,16 @@ public class ControlEstructuraPlanta implements Serializable {
         RequestContext.getCurrentInstance().update("form:listaValores");
         estructuraSeleccionada = null;
         modificarInfoRegistroEs(filtrarListaEstructuras.size());
-        RequestContext.getCurrentInstance().update("form:infoRegistroEst");
     }
 
     private void modificarInfoRegistroOr(int valor) {
         infoRegistroOr = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:infoRegistroOrg");
     }
 
     private void modificarInfoRegistroEs(int valor) {
         infoRegistroEs = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:infoRegistroEst");
     }
 
     public void contarRegistrosOr() {
@@ -1521,109 +1510,97 @@ public class ControlEstructuraPlanta implements Serializable {
 
     private void modificarInfoRegistrosCCosto(int valor) {
         infoRegistroCentroCosto = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:infoRegistroCentroCosto");
     }
 
     private void modificarInfoRegistroEsPa(int valor) {
         infoRegistroEstructuraPa = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:infoRegistroEstructura");
     }
 
     public void eventoFiltrarCCosto() {
         modificarInfoRegistrosCCosto(filtrarLovCentrosCostos.size());
-        RequestContext.getCurrentInstance().update("form:infoRegistroCentroCosto");
     }
 
     public void eventoFiltrarEsPa() {
         modificarInfoRegistroEsPa(filtrarLovEstructurasPadres.size());
-        RequestContext.getCurrentInstance().update("form:infoRegistroEstructura");
     }
 
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
     public void verificarRastro() {
-        int tam = listaOrganigramas.size();
-        int tam1 = listaEstructuras.size();
-        if (tam == 0 || tam1 == 0) {
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("verificarRastrosTablas.show()");
+        if (organigramaSeleccionado == null && estructuraSeleccionada == null) {
+            RequestContext.getCurrentInstance().execute("verificarRastrosTablasH.show()");
         } else {
-            if (organigramaSeleccionado != null) {
-                verificarRastroOrganigrama();
-            }
             if (estructuraSeleccionada != null) {
                 verificarRastroEstructura();
+            } else if (organigramaSeleccionado != null) {
+                verificarRastroOrganigrama();
             }
         }
     }
 
     public void verificarRastroOrganigrama() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (listaOrganigramas != null) {
-            if (organigramaSeleccionado != null) {
-                int resultado = administrarRastros.obtenerTabla(organigramaSeleccionado.getSecuencia(), "ORGANIGRAMAS");
-                organigramaSeleccionado = null;
-                if (resultado == 1) {
-                    context.execute("errorObjetosDB.show()");
-                } else if (resultado == 2) {
-                    nombreTablaRastro = "Organigramas";
-                    msnConfirmarRastro = "La tabla ORGANIGRAMAS tiene rastros para el registro seleccionado, ¿desea continuar?";
-                    context.update("form:msnConfirmarRastro");
-                    context.execute("confirmarRastro.show()");
-                } else if (resultado == 3) {
-                    context.execute("errorRegistroRastro.show()");
-                } else if (resultado == 4) {
-                    context.execute("errorTablaConRastro.show()");
-                } else if (resultado == 5) {
-                    context.execute("errorTablaSinRastro.show()");
-                }
-            } else {
-                context.execute("seleccionarRegistro.show()");
-            }
-        } else {
-            if (administrarRastros.verificarHistoricosTabla("ORGANIGRAMAS")) {
-                nombreTablaRastro = "Organigramas";
-                msnConfirmarRastroHistorico = "La tabla ORGANIGRAMAS tiene rastros historicos, ¿Desea continuar?";
-                context.update("form:confirmarRastroHistorico");
-                context.execute("confirmarRastroHistorico.show()");
-            } else {
-                context.execute("errorRastroHistorico.show()");
-            }
-        }
+        int resultado = administrarRastros.obtenerTabla(organigramaSeleccionado.getSecuencia(), "ORGANIGRAMAS");
         organigramaSeleccionado = null;
+        if (resultado == 1) {
+            context.execute("errorObjetosDB.show()");
+        } else if (resultado == 2) {
+            nombreTablaRastro = "Organigramas";
+            msnConfirmarRastro = "La tabla ORGANIGRAMAS tiene rastros para el registro seleccionado, ¿desea continuar?";
+            context.update("form:msnConfirmarRastro");
+            context.execute("confirmarRastro.show()");
+        } else if (resultado == 3) {
+            context.execute("errorRegistroRastro.show()");
+        } else if (resultado == 4) {
+            context.execute("errorTablaConRastro.show()");
+        } else if (resultado == 5) {
+            context.execute("errorTablaSinRastro.show()");
+        }
+    }
+
+    public void verificarRastroOrganigramaH() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (administrarRastros.verificarHistoricosTabla("ORGANIGRAMAS")) {
+            nombreTablaRastro = "Organigramas";
+            msnConfirmarRastroHistorico = "La tabla ORGANIGRAMAS tiene rastros historicos, ¿Desea continuar?";
+            context.update("form:confirmarRastroHistorico");
+            context.execute("confirmarRastroHistorico.show()");
+        } else {
+            context.execute("errorRastroHistorico.show()");
+        }
     }
 
     public void verificarRastroEstructura() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (listaEstructuras != null) {
-            if (estructuraSeleccionada != null) {
-                int resultado = administrarRastros.obtenerTabla(estructuraSeleccionada.getSecuencia(), "ESTRUCTURAS");
-                estructuraSeleccionada = null;
-                if (resultado == 1) {
-                    context.execute("errorObjetosDB.show()");
-                } else if (resultado == 2) {
-                    nombreTablaRastro = "Estructuras";
-                    msnConfirmarRastro = "La tabla ESTRUCTURAS tiene rastros para el registro seleccionado, ¿desea continuar?";
-                    context.update("form:msnConfirmarRastro");
-                    context.execute("confirmarRastro.show()");
-                } else if (resultado == 3) {
-                    context.execute("errorRegistroRastro.show()");
-                } else if (resultado == 4) {
-                    context.execute("errorTablaConRastro.show()");
-                } else if (resultado == 5) {
-                    context.execute("errorTablaSinRastro.show()");
-                }
-            } else {
-                context.execute("seleccionarRegistro.show()");
-            }
-        } else {
-            if (administrarRastros.verificarHistoricosTabla("ESTRUCTURAS")) {
-                nombreTablaRastro = "Estructuras";
-                msnConfirmarRastroHistorico = "La tabla ESTRUCTURAS tiene rastros historicos, ¿Desea continuar?";
-                context.update("form:confirmarRastroHistorico");
-                context.execute("confirmarRastroHistorico.show()");
-            } else {
-                context.execute("errorRastroHistorico.show()");
-            }
-        }
+        int resultado = administrarRastros.obtenerTabla(estructuraSeleccionada.getSecuencia(), "ESTRUCTURAS");
         estructuraSeleccionada = null;
+        if (resultado == 1) {
+            context.execute("errorObjetosDB.show()");
+        } else if (resultado == 2) {
+            nombreTablaRastro = "Estructuras";
+            msnConfirmarRastro = "La tabla ESTRUCTURAS tiene rastros para el registro seleccionado, ¿desea continuar?";
+            context.update("form:msnConfirmarRastro");
+            context.execute("confirmarRastro.show()");
+        } else if (resultado == 3) {
+            context.execute("errorRegistroRastro.show()");
+        } else if (resultado == 4) {
+            context.execute("errorTablaConRastro.show()");
+        } else if (resultado == 5) {
+            context.execute("errorTablaSinRastro.show()");
+        }
+    }
+
+    public void verificarRastroEstructuraH() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (administrarRastros.verificarHistoricosTabla("ESTRUCTURAS")) {
+            nombreTablaRastro = "Estructuras";
+            msnConfirmarRastroHistorico = "La tabla ESTRUCTURAS tiene rastros historicos, ¿Desea continuar?";
+            context.update("form:confirmarRastroHistorico");
+            context.execute("confirmarRastroHistorico.show()");
+        } else {
+            context.execute("errorRastroHistorico.show()");
+        }
     }
 
     public void recordarSeleccionOr() {

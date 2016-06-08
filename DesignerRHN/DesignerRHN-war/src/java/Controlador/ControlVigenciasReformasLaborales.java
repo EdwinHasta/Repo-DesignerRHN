@@ -62,7 +62,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
     public VigenciasReformasLaborales nuevaVigencia;
     private List<VigenciasReformasLaborales> listVRLCrear;
     private BigInteger nuevaRFSecuencia;
-    private int paraNuevaRF;
+    private int intNuevaSec;
     //borrar VC
     private List<VigenciasReformasLaborales> listVRLBorrar;
     //editar celda
@@ -102,7 +102,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         listVRLBorrar = new ArrayList<VigenciasReformasLaborales>();
         //crear aficiones
         listVRLCrear = new ArrayList<VigenciasReformasLaborales>();
-        paraNuevaRF = 0;
+        intNuevaSec = 0;
         //modificar aficiones
         listVRLModificar = new ArrayList<VigenciasReformasLaborales>();
         //editar
@@ -393,7 +393,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
-            paraNuevaRF = 0;
+            intNuevaSec = 0;
         }
         vigenciaSeleccionada = null;
     }
@@ -421,7 +421,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         listVRLCrear.clear();
         listVRLModificar.clear();
         vigenciaSeleccionada = null;
-        paraNuevaRF = 0;
+        intNuevaSec = 0;
         vigenciasReformasLaborales = null;
         getVigenciasReformasLaboralesEmpleado();
         if (vigenciasReformasLaborales != null) {
@@ -498,8 +498,8 @@ public class ControlVigenciasReformasLaborales implements Serializable {
                         tipoLista = 0;
                     }
                     //AGREGAR REGISTRO A LA LISTA VIGENCIAS CARGOS EMPLEADO.
-                    paraNuevaRF++;
-                    nuevaRFSecuencia = BigInteger.valueOf(paraNuevaRF);
+                    intNuevaSec++;
+                    nuevaRFSecuencia = BigInteger.valueOf(intNuevaSec);
                     nuevaVigencia.setSecuencia(nuevaRFSecuencia);
                     nuevaVigencia.setEmpleado(empleado);
                     listVRLCrear.add(nuevaVigencia);
@@ -548,8 +548,8 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             context.execute("seleccionarRegistro.show()");
         } else {
             duplicarVRL = new VigenciasReformasLaborales();
-            paraNuevaRF++;
-            nuevaRFSecuencia = BigInteger.valueOf(paraNuevaRF);
+            intNuevaSec++;
+            nuevaRFSecuencia = BigInteger.valueOf(intNuevaSec);
 
             duplicarVRL.setEmpleado(vigenciaSeleccionada.getEmpleado());
             duplicarVRL.setFechavigencia(vigenciaSeleccionada.getFechavigencia());
@@ -580,8 +580,8 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         } else {
             if (duplicarVRL.getFechavigencia() != null && duplicarVRL.getReformalaboral().getSecuencia() != null) {
                 if (validarFechasRegistro(2)) {
-                    paraNuevaRF++;
-                    nuevaRFSecuencia = BigInteger.valueOf(paraNuevaRF);
+                    intNuevaSec++;
+                    nuevaRFSecuencia = BigInteger.valueOf(intNuevaSec);
                     duplicarVRL.setSecuencia(nuevaRFSecuencia);
                     vigenciasReformasLaborales.add(duplicarVRL);
                     listVRLCrear.add(duplicarVRL);
@@ -718,7 +718,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         listVRLCrear.clear();
         listVRLModificar.clear();
         vigenciaSeleccionada = null;
-        paraNuevaRF = 0;
+        intNuevaSec = 0;
         vigenciasReformasLaborales = null;
         guardado = true;
     }
@@ -850,7 +850,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         aceptar = false;
     }
     //EXPORTAR
-
     /**
      * Metodo que exporta datos a PDF
      *
@@ -879,7 +878,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         context.responseComplete();
     }
     //EVENTO FILTRAR
-
     /**
      * Evento que cambia la lista reala a la filtrada
      */
@@ -901,7 +899,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         context.update("form:infoRegistroReformaLaboral");
     }
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
-
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (vigenciaSeleccionada != null) {
@@ -948,7 +945,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         }
     }
     //GETTERS AND SETTERS
-
     /**
      * Metodo que obtiene las VigenciasReformasLaborales de un empleado, en caso
      * de ser null por medio del administrar hace el llamado para almacenarlo

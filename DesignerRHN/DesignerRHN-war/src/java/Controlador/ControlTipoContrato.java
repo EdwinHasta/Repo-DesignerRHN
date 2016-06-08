@@ -39,11 +39,11 @@ public class ControlTipoContrato implements Serializable {
     //
     private List<TiposContratos> listaTiposContratos;
     private List<TiposContratos> filtrarListaTiposContratos;
-    private TiposContratos tipoContratoTablaSeleccionado;
+    private TiposContratos tipoContratoSeleccionado;
     ///////
     private List<DiasLaborables> listaDiasLaborables;
     private List<DiasLaborables> filtrarListaDiasLaborables;
-    private DiasLaborables diaLaborableTablaSeleccionado;
+    private DiasLaborables diaLaborableSeleccionado;
     //Activo/Desactivo Crtl + F11
     private int bandera, banderaDiasLab;
     //Columnas Tabla VC
@@ -51,7 +51,6 @@ public class ControlTipoContrato implements Serializable {
     private Column diasLabTipoDia, diasLabDia, diasLabHL;
     //Otros
     private boolean aceptar;
-    private int index, indexDias, indexAux;
     //modificar
     private List<TiposContratos> listTiposContratosModificar;
     private List<DiasLaborables> listDiasLaborablesModificar;
@@ -61,7 +60,7 @@ public class ControlTipoContrato implements Serializable {
     private DiasLaborables nuevoDiaLaborable;
     private List<TiposContratos> listTiposContratosCrear;
     private List<DiasLaborables> listDiasLaborablesCrear;
-    private BigInteger l;
+    private BigInteger newSecuencia;
     private int k;
     //borrar 
     private List<TiposContratos> listTiposContratosBorrar;
@@ -73,19 +72,15 @@ public class ControlTipoContrato implements Serializable {
     //duplicar
     private TiposContratos duplicarTipoContrato;
     private DiasLaborables duplicarDiaLaborable;
-    private BigInteger secRegistro, secRegistroDias;
-    private BigInteger backUpSecRegistro, backUpSecRegistroDias;
     private String msnConfirmarRastro, msnConfirmarRastroHistorico;
     private BigInteger backUp;
     private String nombreTablaRastro;
     private String nombreXML, nombreTabla;
     private String tipoDia;
-
     //////////////////////
     private List<TiposDias> lovTiposDias;
     private List<TiposDias> filtrarLovTiposDias;
-    private TiposDias tipoDiaSeleccionado;
-
+    private TiposDias tipoDiaLOVSeleccionado;
     private boolean permitirIndexDias;
     private int tipoActualizacion;
     private short auxCodigoTipoContrato;
@@ -95,12 +90,12 @@ public class ControlTipoContrato implements Serializable {
     //
     private String altoTablaTiposC, altoTablaDiasLab;
     //
-    private String nombreTipoCColnar;
+    private String nombreTipoCClonar;
     private short codigoTipoCClonar;
     //
     private List<TiposContratos> lovTiposContratos;
     private List<TiposContratos> filtrarLovTiposContratos;
-    private TiposContratos tipoContratoSeleccionado;
+    private TiposContratos tipoContratoLOVSeleccionado;
     //
     private TiposContratos tipoContratoAClonar;
     //
@@ -108,34 +103,37 @@ public class ControlTipoContrato implements Serializable {
     private short auxCodigoClonar;
     private String paginaAnterior;
     //
-    private String infoRegistroTipoDia, infoRegistoTipoContrato;
+    private String infoRegistroTipoDia, infoRegistroTipoContrato, infoRegistroTipoDiaLOV, infoRegistroTipoContratoLOV;
 
     public ControlTipoContrato() {
+        infoRegistroTipoContrato = "";
+        infoRegistroTipoContratoLOV = "";
+        infoRegistroTipoDia = "";
+        infoRegistroTipoDiaLOV = "";
+
         tipoContratoAClonar = new TiposContratos();
-        tipoContratoSeleccionado = new TiposContratos();
+        tipoContratoLOVSeleccionado = null;
         lovTiposContratos = null;
         altoTablaTiposC = "160";
-        altoTablaDiasLab = "140";
+        altoTablaDiasLab = "105";
         cambiosPagina = true;
         permitirIndexDias = true;
         tipoActualizacion = -1;
         lovTiposDias = null;
         lovTiposDias = null;
-        tipoDiaSeleccionado = new TiposDias();
-        indexDias = -1;
-        backUpSecRegistro = null;
+        tipoDiaLOVSeleccionado = null;
         listaTiposContratos = null;
         //Otros
         aceptar = true;
         //borrar aficiones
         listTiposContratosBorrar = new ArrayList<TiposContratos>();
-        listDiasLaborablesModificar = new ArrayList<DiasLaborables>();
         listDiasLaborablesBorrar = new ArrayList<DiasLaborables>();
         //crear aficiones
         listTiposContratosCrear = new ArrayList<TiposContratos>();
         listDiasLaborablesCrear = new ArrayList<DiasLaborables>();
         k = 0;
         //modificar aficiones
+        listDiasLaborablesModificar = new ArrayList<DiasLaborables>();
         listTiposContratosModificar = new ArrayList<TiposContratos>();
         //editar
         editarTipoContrato = new TiposContratos();
@@ -153,10 +151,8 @@ public class ControlTipoContrato implements Serializable {
         nuevoDiaLaborable.setTipodia(new TiposDias());
         duplicarDiaLaborable = new DiasLaborables();
         duplicarTipoContrato = new TiposContratos();
-        secRegistro = null;
-        secRegistroDias = null;
-        backUpSecRegistroDias = null;
         bandera = 0;
+        listaDiasLaborables = null;
         banderaDiasLab = 0;
     }
 
@@ -175,45 +171,37 @@ public class ControlTipoContrato implements Serializable {
 
     public void recibirPaginaEntrante(String pagina) {
         paginaAnterior = pagina;
+        listaTiposContratos = null;
+        getListaTiposContratos();
+        if (listaTiposContratos.size() >= 1) {
+            contarRegistrosTipoC();
+            tipoContratoSeleccionado = listaTiposContratos.get(0);
+            getListaDiasLaborables();
+            contarRegistrosTipoD();
+        }
     }
 
     public String redirigir() {
         return paginaAnterior;
     }
 
-    public void inicializarPagina() {
-        listaDiasLaborables = null;
-        listaTiposContratos = null;
-        getListaTiposContratos();
-        int tam = listaTiposContratos.size();
-        if (tam >= 1) {
-            index = 0;
-            getListaDiasLaborables();
-        }
-    }
-
     public boolean validarCamposNulosTipoContrato(int i) {
         boolean retorno = true;
         if (i == 0) {
-            TiposContratos aux = new TiposContratos();
-            if (tipoLista == 0) {
-                aux = listaTiposContratos.get(index);
+            if (tipoContratoSeleccionado.getCodigo() < 0) {
+                retorno = false;
             }
-            if (tipoLista == 1) {
-                aux = filtrarListaTiposContratos.get(index);
-            }
-            if (aux.getCodigo() < 0) {
-            }
-            if (aux.getNombre() == null) {
+            if (tipoContratoSeleccionado.getNombre() == null) {
                 retorno = false;
             } else {
-                if (aux.getNombre().isEmpty()) {
+                if (tipoContratoSeleccionado.getNombre().isEmpty()) {
                     retorno = false;
                 }
             }
         }
         if (i == 1) {
             if (nuevoTipoContrato.getCodigo() < 0) {
+                retorno = false;
             }
             if (nuevoTipoContrato.getNombre() == null) {
                 retorno = false;
@@ -225,6 +213,7 @@ public class ControlTipoContrato implements Serializable {
         }
         if (i == 2) {
             if (duplicarTipoContrato.getCodigo() < 0) {
+                retorno = false;
             }
             if (duplicarTipoContrato.getNombre() == null) {
                 retorno = false;
@@ -252,133 +241,79 @@ public class ControlTipoContrato implements Serializable {
         return retorno;
     }
 
-    public void procesoModificacionTipoContrato(int i) {
-        index = i;
+    public void procesoModificacionTipoContrato(TiposContratos tiposContratos) {
+        tipoContratoSeleccionado = tiposContratos;
         boolean respuesta = validarCamposNulosTipoContrato(0);
         if (respuesta == true) {
-            modificarTipoContrato(i);
+            modificarTipoContrato(tipoContratoSeleccionado);
         } else {
-            if (tipoLista == 0) {
-                listaTiposContratos.get(index).setCodigo(auxCodigoTipoContrato);
-                listaTiposContratos.get(index).setNombre(auxNombreTipoContrato);
-            }
-            if (tipoLista == 1) {
-                filtrarListaTiposContratos.get(index).setCodigo(auxCodigoTipoContrato);
-                filtrarListaTiposContratos.get(index).setNombre(auxNombreTipoContrato);
-            }
-            index = -1;
-            secRegistro = null;
+            tipoContratoSeleccionado.setCodigo(auxCodigoTipoContrato);
+            tipoContratoSeleccionado.setNombre(auxNombreTipoContrato);
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosTipoContrato");
             context.execute("errorDatosNullTipoContrato.show()");
         }
     }
 
-    public void modificarTipoContrato(int indice) {
+    public void modificarTipoContrato(TiposContratos tiposContratos) {
         int tamDes = 0;
+        tipoContratoSeleccionado = tiposContratos;
         if (tipoLista == 0) {
-            tamDes = listaTiposContratos.get(indice).getNombre().length();
-        }
-        if (tipoLista == 1) {
-            tamDes = filtrarListaTiposContratos.get(indice).getNombre().length();
-        }
-        if (tamDes >= 1 && tamDes <= 30) {
-            if (tipoLista == 0) {
-                String textM = listaTiposContratos.get(indice).getNombre().toUpperCase();
-                listaTiposContratos.get(indice).setNombre(textM);
-                if (!listTiposContratosCrear.contains(listaTiposContratos.get(indice))) {
-                    if (listTiposContratosModificar.isEmpty()) {
-                        listTiposContratosModificar.add(listaTiposContratos.get(indice));
-                    } else if (!listTiposContratosModificar.contains(listaTiposContratos.get(indice))) {
-                        listTiposContratosModificar.add(listaTiposContratos.get(indice));
-                    }
-                    if (guardado == true) {
-                        guardado = false;
-                    }
-                }
-            }
-            if (tipoLista == 1) {
-                String textM = filtrarListaTiposContratos.get(indice).getNombre().toUpperCase();
-                filtrarListaTiposContratos.get(indice).setNombre(textM);
-                if (!listTiposContratosCrear.contains(filtrarListaTiposContratos.get(indice))) {
-                    if (listTiposContratosModificar.isEmpty()) {
-                        listTiposContratosModificar.add(filtrarListaTiposContratos.get(indice));
-                    } else if (!listTiposContratosModificar.contains(filtrarListaTiposContratos.get(indice))) {
-                        listTiposContratosModificar.add(filtrarListaTiposContratos.get(indice));
-                    }
-                    if (guardado == true) {
-                        guardado = false;
-                        //RequestContext.getCurrentInstance().update("form:aceptar");
-                    }
-                }
-            }
-            index = -1;
-            secRegistro = null;
-            cambiosPagina = false;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:ACEPTAR");
-            context.update("form:datosTipoContrato");
-        } else {
-            if (tipoLista == 0) {
-                listaTiposContratos.get(index).setNombre(auxNombreTipoContrato);
-            }
-            if (tipoLista == 1) {
-                filtrarListaTiposContratos.get(index).setNombre(auxNombreTipoContrato);
-            }
-            index = -1;
-            secRegistro = null;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosTipoContrato");
-            context.execute("errorNombreTipoContrato.show()");
-        }
+            tamDes = tipoContratoSeleccionado.getNombre().length();
 
+            if (tamDes >= 1 && tamDes <= 30) {
+                String textM = tipoContratoSeleccionado.getNombre().toUpperCase();
+                tipoContratoSeleccionado.setNombre(textM);
+                if (!listTiposContratosCrear.contains(tipoContratoSeleccionado)) {
+                    if (listTiposContratosModificar.isEmpty()) {
+                        listTiposContratosModificar.add(tipoContratoSeleccionado);
+                    } else if (!listTiposContratosModificar.contains(tipoContratoSeleccionado)) {
+                        listTiposContratosModificar.add(tipoContratoSeleccionado);
+                    }
+                    if (guardado == true) {
+                        guardado = false;
+                    }
+                }
+                cambiosPagina = false;
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:ACEPTAR");
+                context.update("form:datosTipoContrato");
+            } else {
+                tipoContratoSeleccionado.setNombre(auxNombreTipoContrato);
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosTipoContrato");
+                context.execute("errorNombreTipoContrato.show()");
+            }
+        }
     }
 
-    public void modificarDiaLaborable(int indice) {
-        if (tipoListaDias == 0) {
-            if (!listDiasLaborablesCrear.contains(listaDiasLaborables.get(indice))) {
-                if (listDiasLaborablesModificar.isEmpty()) {
-                    listDiasLaborablesModificar.add(listaDiasLaborables.get(indice));
-                } else if (!listDiasLaborablesModificar.contains(listaDiasLaborables.get(indice))) {
-                    listDiasLaborablesModificar.add(listaDiasLaborables.get(indice));
-                }
-                if (guardadoDias == true) {
-                    guardadoDias = false;
-                }
+    public void modificarDiaLaborable(DiasLaborables diasLaborables) {
+        diaLaborableSeleccionado = diasLaborables;
+        if (!listDiasLaborablesCrear.contains(diaLaborableSeleccionado)) {
+            if (listDiasLaborablesModificar.isEmpty()) {
+                listDiasLaborablesModificar.add(diaLaborableSeleccionado);
+            } else if (!listDiasLaborablesModificar.contains(diaLaborableSeleccionado)) {
+                listDiasLaborablesModificar.add(diaLaborableSeleccionado);
+            }
+            if (guardadoDias == true) {
+                guardadoDias = false;
             }
         }
-        if (tipoListaDias == 1) {
-            if (!listDiasLaborablesCrear.contains(filtrarListaDiasLaborables.get(indice))) {
-                if (listDiasLaborablesModificar.isEmpty()) {
-                    listDiasLaborablesModificar.add(filtrarListaDiasLaborables.get(indice));
-                } else if (!listDiasLaborablesModificar.contains(filtrarListaDiasLaborables.get(indice))) {
-                    listDiasLaborablesModificar.add(filtrarListaDiasLaborables.get(indice));
-                }
-                if (guardadoDias == true) {
-                    guardadoDias = false;
-                    //RequestContext.getCurrentInstance().update("form:aceptar");
-                }
-            }
-        }
-        indexDias = -1;
-        secRegistroDias = null;
+
         cambiosPagina = false;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:ACEPTAR");
         context.update("form:datosDiasLaborables");
     }
 
-    public void modificarDiaLaborable(int indice, String confirmarCambio, String valorConfirmar) {
-        indexDias = indice;
+    public void modificarDiaLaborable(DiasLaborables diasLaborables, String column, String valorConfirmar) {
+        diaLaborableSeleccionado = diasLaborables;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
-        if (confirmarCambio.equalsIgnoreCase("DIAS")) {
-            if (tipoLista == 0) {
-                listaDiasLaborables.get(indice).getTipodia().setDescripcion(tipoDia);
-            } else {
-                filtrarListaDiasLaborables.get(indice).getTipodia().setDescripcion(tipoDia);
-            }
+        if (column.equalsIgnoreCase("DIAS")) {
+            diaLaborableSeleccionado.getTipodia().setDescripcion(tipoDia);
+
             for (int i = 0; i < lovTiposDias.size(); i++) {
                 if (lovTiposDias.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
@@ -386,11 +321,8 @@ public class ControlTipoContrato implements Serializable {
                 }
             }
             if (coincidencias == 1) {
-                if (tipoLista == 0) {
-                    listaDiasLaborables.get(indice).setTipodia(lovTiposDias.get(indiceUnicoElemento));
-                } else {
-                    filtrarListaDiasLaborables.get(indice).setTipodia(lovTiposDias.get(indiceUnicoElemento));
-                }
+                diaLaborableSeleccionado.setTipodia(lovTiposDias.get(indiceUnicoElemento));
+
                 lovTiposDias.clear();
                 getLovTiposDias();
                 cambiosPagina = false;
@@ -403,88 +335,60 @@ public class ControlTipoContrato implements Serializable {
             }
         }
         if (coincidencias == 1) {
-            if (tipoListaDias == 0) {
-                if (!listDiasLaborablesCrear.contains(listaDiasLaborables.get(indice))) {
-                    if (listDiasLaborablesModificar.isEmpty()) {
-                        listDiasLaborablesModificar.add(listaDiasLaborables.get(indice));
-                    } else if (!listDiasLaborablesModificar.contains(listaDiasLaborables.get(indice))) {
-                        listDiasLaborablesModificar.add(listaDiasLaborables.get(indice));
-                    }
-                    if (guardadoDias == true) {
-                        guardadoDias = false;
-                    }
+            if (!listDiasLaborablesCrear.contains(diaLaborableSeleccionado)) {
+                if (listDiasLaborablesModificar.isEmpty()) {
+                    listDiasLaborablesModificar.add(diaLaborableSeleccionado);
+                } else if (!listDiasLaborablesModificar.contains(diaLaborableSeleccionado)) {
+                    listDiasLaborablesModificar.add(diaLaborableSeleccionado);
                 }
-            }
-            if (tipoListaDias == 1) {
-                if (!listDiasLaborablesCrear.contains(filtrarListaDiasLaborables.get(indice))) {
-                    if (listDiasLaborablesModificar.isEmpty()) {
-                        listDiasLaborablesModificar.add(filtrarListaDiasLaborables.get(indice));
-                    } else if (!listDiasLaborablesModificar.contains(filtrarListaDiasLaborables.get(indice))) {
-                        listDiasLaborablesModificar.add(filtrarListaDiasLaborables.get(indice));
-                    }
-                    if (guardadoDias == true) {
-                        guardadoDias = false;
-                        //RequestContext.getCurrentInstance().update("form:aceptar");
-                    }
+                if (guardadoDias == true) {
+                    guardadoDias = false;
                 }
             }
         }
         context.update("form:datosDiasLaborables");
     }
 
-    public void cambiarIndice(int indice, int celda) {
+    public void cambiarIndice(TiposContratos tiposContratos, int celda) {
+        RequestContext context = RequestContext.getCurrentInstance();
+        System.out.println("tipoContratoTablaSeleccionado antes : " + tipoContratoSeleccionado);
+        tipoContratoSeleccionado = tiposContratos;
+        diaLaborableSeleccionado = null;
         if (guardadoDias == true) {
-            index = indice;
             cualCelda = celda;
-            indexAux = indice;
-            indexDias = -1;
-            if (tipoLista == 0) {
-                auxCodigoTipoContrato = listaTiposContratos.get(index).getCodigo();
-                secRegistro = listaTiposContratos.get(index).getSecuencia();
-                auxNombreTipoContrato = listaTiposContratos.get(index).getNombre();
-            }
-            if (tipoLista == 1) {
-                auxCodigoTipoContrato = filtrarListaTiposContratos.get(index).getCodigo();
-                secRegistro = filtrarListaTiposContratos.get(index).getSecuencia();
-                auxNombreTipoContrato = filtrarListaTiposContratos.get(index).getNombre();
-            }
-            listaDiasLaborables = null;
-            getListaDiasLaborables();
-            RequestContext context = RequestContext.getCurrentInstance();
+            auxCodigoTipoContrato = tipoContratoSeleccionado.getCodigo();
+            auxNombreTipoContrato = tipoContratoSeleccionado.getNombre();
+
+            System.out.println("Secuencia : " + tipoContratoSeleccionado.getSecuencia());
+            listaDiasLaborables = administrarTipoContrato.listaDiasLaborablesParaTipoContrato(tipoContratoSeleccionado.getSecuencia());
+            System.out.println("cambiarIndice. listaDiasLaborables : " + listaDiasLaborables);
+
+            modificarInfoRegistroTipoD(listaDiasLaborables.size());
             context.update("form:datosDiasLaborables");
             if (banderaDiasLab == 1) {
-                altoTablaDiasLab = "140";
+                altoTablaDiasLab = "105";
                 diasLabDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabDia");
                 diasLabDia.setFilterStyle("display: none; visibility: hidden;");
                 diasLabTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabTipoDia");
                 diasLabTipoDia.setFilterStyle("display: none; visibility: hidden;");
                 diasLabHL = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabHL");
                 diasLabHL.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosDiasLaborables");
+                context.update("form:datosDiasLaborables");
                 banderaDiasLab = 0;
                 filtrarListaDiasLaborables = null;
                 tipoListaDias = 0;
             }
-
         } else {
-            RequestContext context = RequestContext.getCurrentInstance();
             context.execute("confirmarGuardar.show()");
         }
     }
 
-    public void cambiarIndiceDia(int indice, int celda) {
+    public void cambiarIndiceDia(DiasLaborables diasLaborables, int celda) {
+        diaLaborableSeleccionado = diasLaborables;
         if (permitirIndexDias == true) {
-            indexDias = indice;
-            index = -1;
             cualCeldaDias = celda;
-            if (tipoListaDias == 0) {
-                secRegistroDias = listaDiasLaborables.get(indexDias).getSecuencia();
-                tipoDia = listaDiasLaborables.get(indexDias).getTipodia().getDescripcion();
-            }
-            if (tipoListaDias == 1) {
-                secRegistroDias = filtrarListaDiasLaborables.get(indexDias).getSecuencia();
-                tipoDia = filtrarListaDiasLaborables.get(indexDias).getTipodia().getDescripcion();
-            }
+            tipoDia = diaLaborableSeleccionado.getTipodia().getDescripcion();
+
             if (bandera == 1) {
                 altoTablaTiposC = "160";
                 tipoCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCCodigo");
@@ -525,6 +429,8 @@ public class ControlTipoContrato implements Serializable {
                 guardarCambiosDiasLaborables();
             }
             cambiosPagina = true;
+            contarRegistrosTipoC();
+            contarRegistrosTipoD();
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:ACEPTAR");
         }
@@ -534,12 +440,10 @@ public class ControlTipoContrato implements Serializable {
         try {
             if (!listTiposContratosBorrar.isEmpty()) {
                 administrarTipoContrato.borrarTiposContratos(listTiposContratosBorrar);
-
                 listTiposContratosBorrar.clear();
             }
             if (!listTiposContratosCrear.isEmpty()) {
                 administrarTipoContrato.crearTiposContratos(listTiposContratosCrear);
-
                 listTiposContratosCrear.clear();
             }
             if (!listTiposContratosModificar.isEmpty()) {
@@ -547,14 +451,13 @@ public class ControlTipoContrato implements Serializable {
                 listTiposContratosModificar.clear();
             }
             listaTiposContratos = null;
+            getListaTiposContratos();
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosTipoContrato");
             guardado = true;
             RequestContext.getCurrentInstance().update("form:aceptar");
             k = 0;
 
-            index = -1;
-            secRegistro = null;
             FacesMessage msg = new FacesMessage("Información", "Los datos de Tipo Contrato se guardaron con Éxito.");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             RequestContext.getCurrentInstance().update("form:growl");
@@ -589,8 +492,6 @@ public class ControlTipoContrato implements Serializable {
             RequestContext.getCurrentInstance().update("form:aceptar");
             k = 0;
 
-            indexDias = -1;
-            secRegistroDias = null;
             FacesMessage msg = new FacesMessage("Información", "Los datos de Dias Laborables se guardaron con Éxito.");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             RequestContext.getCurrentInstance().update("form:growl");
@@ -607,25 +508,27 @@ public class ControlTipoContrato implements Serializable {
      * Cancela las modificaciones realizas en la pagina
      */
     public void cancelarModificacionGeneral() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        tipoContratoSeleccionado = null;
+        diaLaborableSeleccionado = null;
         if (guardado == false) {
             cancelarModificacionTipoContrato();
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosTipoContrato");
         }
         if (guardadoDias == false) {
             cancelarModificacionDiaLaborable();
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosDiasLaborables");
         }
         cancelarProcesoClonado();
+        contarRegistrosTipoC();
+        contarRegistrosTipoD();
         cambiosPagina = true;
-        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:datosTipoContrato");
+        context.update("form:datosDiasLaborables");
         context.update("form:ACEPTAR");
     }
 
     public void cancelarProcesoClonado() {
         codigoTipoCClonar = 0;
-        nombreTipoCColnar = "";
+        nombreTipoCClonar = "";
         tipoContratoAClonar = new TiposContratos();
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:codigoTipoCClonar");
@@ -655,8 +558,7 @@ public class ControlTipoContrato implements Serializable {
         listTiposContratosBorrar.clear();
         listTiposContratosCrear.clear();
         listTiposContratosModificar.clear();
-        index = -1;
-        secRegistro = null;
+        tipoContratoSeleccionado = null;
         k = 0;
         listaTiposContratos = null;
         guardado = true;
@@ -666,7 +568,7 @@ public class ControlTipoContrato implements Serializable {
 
     public void cancelarModificacionDiaLaborable() {
         if (banderaDiasLab == 1) {
-            altoTablaDiasLab = "140";
+            altoTablaDiasLab = "105";
             diasLabDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabDia");
             diasLabDia.setFilterStyle("display: none; visibility: hidden;");
             diasLabTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabTipoDia");
@@ -681,8 +583,7 @@ public class ControlTipoContrato implements Serializable {
         listDiasLaborablesBorrar.clear();
         listDiasLaborablesCrear.clear();
         listDiasLaborablesModificar.clear();
-        indexDias = -1;
-        secRegistroDias = null;
+        diaLaborableSeleccionado = null;
         k = 0;
         listaDiasLaborables = null;
         guardadoDias = true;
@@ -692,14 +593,26 @@ public class ControlTipoContrato implements Serializable {
     }
 
     public void editarCelda() {
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                editarTipoContrato = listaTiposContratos.get(index);
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (diaLaborableSeleccionado != null) {
+            editarDiaLaborable = diaLaborableSeleccionado;
+
+            if (cualCeldaDias == 0) {
+                context.update("formularioDialogos:editarTipoDiaDiaLabD");
+                context.execute("editarTipoDiaDiaLabD.show()");
+                cualCeldaDias = -1;
+            } else if (cualCeldaDias == 1) {
+                context.update("formularioDialogos:editarDiaDiaLabD");
+                context.execute("editarDiaDiaLabD.show()");
+                cualCeldaDias = -1;
+            } else if (cualCeldaDias == 2) {
+                context.update("formularioDialogos:editarHorasDiaLabD");
+                context.execute("editarHorasDiaLabD.show()");
+                cualCeldaDias = -1;
             }
-            if (tipoLista == 1) {
-                editarTipoContrato = filtrarListaTiposContratos.get(index);
-            }
-            RequestContext context = RequestContext.getCurrentInstance();
+        } else if (tipoContratoSeleccionado != null) {
+            editarTipoContrato = tipoContratoSeleccionado;
+
             if (cualCelda == 0) {
                 context.update("formularioDialogos:editarCodigoTipoContratoD");
                 context.execute("editarCodigoTipoContratoD.show()");
@@ -717,102 +630,75 @@ public class ControlTipoContrato implements Serializable {
                 context.execute("editarVinculacionTipoContratoD.show()");
                 cualCelda = -1;
             }
-            index = -1;
-            secRegistro = null;
+        } else {
+            context.execute("seleccionarRegistro.show()");
         }
-        if (indexDias >= 0) {
-            if (tipoListaDias == 0) {
-                editarDiaLaborable = listaDiasLaborables.get(indexDias);
-            }
-            if (tipoListaDias == 1) {
-                editarDiaLaborable = listaDiasLaborables.get(indexDias);
-            }
-            RequestContext context = RequestContext.getCurrentInstance();
-            if (cualCeldaDias == 0) {
-                context.update("formularioDialogos:editarTipoDiaDiaLabD");
-                context.execute("editarTipoDiaDiaLabD.show()");
-                cualCeldaDias = -1;
-            } else if (cualCeldaDias == 1) {
-                context.update("formularioDialogos:editarDiaDiaLabD");
-                context.execute("editarDiaDiaLabD.show()");
-                cualCeldaDias = -1;
-            } else if (cualCeldaDias == 2) {
-                context.update("formularioDialogos:editarHorasDiaLabD");
-                context.execute("editarHorasDiaLabD.show()");
-                cualCeldaDias = -1;
-            }
-            indexDias = -1;
-            secRegistroDias = null;
-        }
-
     }
 
-    public void dialogoNuevoRegistro() {
+    public void validarNuevoRegistroDias() {
         RequestContext context = RequestContext.getCurrentInstance();
-        int tam1 = listaTiposContratos.size();
-        int tam2 = listaDiasLaborables.size();
-        if (tam1 == 0 || tam2 == 0) {
-            context.update("formularioDialogos:verificarNuevoRegistro");
-            context.execute("verificarNuevoRegistro.show()");
+        if (tipoContratoSeleccionado != null) {
+            context.update("formularioDialogos:NuevoRegistroDiaLaboral");
+            context.execute("NuevoRegistroDiaLaboral.show()");
         } else {
-            if (index >= 0) {
-                context.update("formularioDialogos:NuevoRegistroTipoContrato");
-                context.execute("NuevoRegistroTipoContrato.show()");
-            }
-            if (indexDias >= 0) {
-                context.update("formularioDialogos:NuevoRegistroDiaLaboral");
-                context.execute("NuevoRegistroDiaLaboral.show()");
-            }
+            context.execute("seleccionarRegistro.show()");
         }
+//        }NuevoRegistroDiaLaboral.show()
     }
 
     //CREAR 
     public void agregarNuevoTipoContrato() {
+
         boolean respueta = validarCamposNulosTipoContrato(1);
         if (respueta == true) {
-            int tamDes = 0;
-            tamDes = nuevoTipoContrato.getNombre().length();
-            if (tamDes >= 1 && tamDes <= 30) {
-                if (bandera == 1) {
-                    altoTablaTiposC = "160";
-                    tipoCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCCodigo");
-                    tipoCCodigo.setFilterStyle("display: none; visibility: hidden;");
-                    tipoCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCNombre");
-                    tipoCNombre.setFilterStyle("display: none; visibility: hidden;");
-                    tipoCPeriodo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCPeriodo");
-                    tipoCPeriodo.setFilterStyle("display: none; visibility: hidden;");
-                    tipoCVE = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCVE");
-                    tipoCVE.setFilterStyle("display: none; visibility: hidden;");
-                    tipoCForza = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCForza");
-                    tipoCForza.setFilterStyle("display: none; visibility: hidden;");
-                    RequestContext.getCurrentInstance().update("form:datosTipoContrato");
-                    bandera = 0;
-                    filtrarListaTiposContratos = null;
-                    tipoLista = 0;
-                }
+            if (validarRepetidosNuevoyDuplicado(1)) {
+                int tamDes = nuevoTipoContrato.getNombre().length();
+                if (tamDes >= 1 && tamDes <= 30) {
+                    if (bandera == 1) {
+                        altoTablaTiposC = "160";
+                        tipoCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCCodigo");
+                        tipoCCodigo.setFilterStyle("display: none; visibility: hidden;");
+                        tipoCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCNombre");
+                        tipoCNombre.setFilterStyle("display: none; visibility: hidden;");
+                        tipoCPeriodo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCPeriodo");
+                        tipoCPeriodo.setFilterStyle("display: none; visibility: hidden;");
+                        tipoCVE = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCVE");
+                        tipoCVE.setFilterStyle("display: none; visibility: hidden;");
+                        tipoCForza = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCForza");
+                        tipoCForza.setFilterStyle("display: none; visibility: hidden;");
+                        RequestContext.getCurrentInstance().update("form:datosTipoContrato");
+                        bandera = 0;
+                        filtrarListaTiposContratos = null;
+                        tipoLista = 0;
+                    }
 
-                k++;
-                l = BigInteger.valueOf(k);
-                String text = nuevoTipoContrato.getNombre().toUpperCase();
-                nuevoTipoContrato.setNombre(text);
-                nuevoTipoContrato.setSecuencia(l);
-                listTiposContratosCrear.add(nuevoTipoContrato);
-                listaTiposContratos.add(nuevoTipoContrato);
-                nuevoTipoContrato = new TiposContratos();
-                cambiosPagina = false;
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.update("form:ACEPTAR");
-                context.update("form:datosTipoContrato");
-                context.execute("NuevoRegistroTipoContrato.hide()");
-                if (guardado == true) {
-                    guardado = false;
-                    RequestContext.getCurrentInstance().update("form:aceptar");
+                    k++;
+                    newSecuencia = BigInteger.valueOf(k);
+                    String text = nuevoTipoContrato.getNombre().toUpperCase();
+                    nuevoTipoContrato.setNombre(text);
+                    nuevoTipoContrato.setSecuencia(newSecuencia);
+                    listTiposContratosCrear.add(nuevoTipoContrato);
+                    listaTiposContratos.add(nuevoTipoContrato);
+                    tipoContratoSeleccionado = listaTiposContratos.get(listaTiposContratos.indexOf(nuevoTipoContrato));
+                    modificarInfoRegistroTipoC(listaTiposContratos.size());
+
+                    nuevoTipoContrato = new TiposContratos();
+                    cambiosPagina = false;
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.update("form:ACEPTAR");
+                    context.update("form:datosTipoContrato");
+                    context.execute("NuevoRegistroTipoContrato.hide()");
+                    if (guardado == true) {
+                        guardado = false;
+                        RequestContext.getCurrentInstance().update("form:aceptar");
+                    }
+                } else {
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.execute("errorNombreTipoContrato.show()");
                 }
-                index = -1;
-                secRegistro = null;
             } else {
                 RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("errorNombreTipoContrato.show()");
+                context.execute("errorRepetidosTipoContrato.show()");
             }
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -824,7 +710,7 @@ public class ControlTipoContrato implements Serializable {
         boolean respueta = validarCamposNulosDiaLaborable(1);
         if (respueta == true) {
             if (banderaDiasLab == 1) {
-                altoTablaDiasLab = "140";
+                altoTablaDiasLab = "105";
                 diasLabDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabDia");
                 diasLabDia.setFilterStyle("display: none; visibility: hidden;");
                 diasLabTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabTipoDia");
@@ -837,23 +723,21 @@ public class ControlTipoContrato implements Serializable {
                 tipoListaDias = 0;
             }
             k++;
-            l = BigInteger.valueOf(k);
-            nuevoDiaLaborable.setSecuencia(l);
-            if (tipoLista == 0) {
-                nuevoDiaLaborable.setTipocontrato(listaTiposContratos.get(indexAux));
-            }
-            if (tipoLista == 1) {
-                nuevoDiaLaborable.setTipocontrato(filtrarListaTiposContratos.get(indexAux));
-            }
+            newSecuencia = BigInteger.valueOf(k);
+            nuevoDiaLaborable.setSecuencia(newSecuencia);
+            nuevoDiaLaborable.setTipocontrato(tipoContratoSeleccionado);
+
             if (listaDiasLaborables.size() == 0) {
                 listaDiasLaborables = new ArrayList<DiasLaborables>();
             }
             listDiasLaborablesCrear.add(nuevoDiaLaborable);
             listaDiasLaborables.add(nuevoDiaLaborable);
+            diaLaborableSeleccionado = listaDiasLaborables.get(listaDiasLaborables.indexOf(nuevoDiaLaborable));
+            modificarInfoRegistroTipoD(listaDiasLaborables.size());
+
             cambiosPagina = false;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:ACEPTAR");
-            index = indexAux;
             context.update("form:datosDiasLaborables");
             context.execute("NuevoRegistroDiaLaboral.hide()");
             nuevoDiaLaborable = new DiasLaborables();
@@ -862,8 +746,6 @@ public class ControlTipoContrato implements Serializable {
                 guardadoDias = false;
                 RequestContext.getCurrentInstance().update("form:aceptar");
             }
-            indexDias = -1;
-            secRegistroDias = null;
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("errorDatosNullDiasLab.show()");
@@ -875,79 +757,83 @@ public class ControlTipoContrato implements Serializable {
      */
     public void limpiarNuevaTipoContrato() {
         nuevoTipoContrato = new TiposContratos();
-        index = -1;
-        secRegistro = null;
     }
 
     public void limpiarNuevaDiaLaborable() {
         nuevoDiaLaborable = new DiasLaborables();
         nuevoDiaLaborable.setTipodia(new TiposDias());
-        indexDias = -1;
-        secRegistroDias = null;
     }
 
     //DUPLICAR VC
     /**
      */
     public void verificarRegistroDuplicar() {
-        if (index >= 0) {
-            duplicarTipoContratoM();
-        }
-        if (indexDias >= 0) {
+        if (diaLaborableSeleccionado != null) {
             duplicarDiaLaborableM();
+        } else if (tipoContratoSeleccionado != null) {
+            duplicarTipoContratoM();
+        } else {
+            RequestContext.getCurrentInstance().execute("seleccionarRegistro.show()");
         }
     }
 
     public void duplicarTipoContratoM() {
-        if (index >= 0) {
-            duplicarTipoContrato = new TiposContratos();
-            k++;
-            l = BigInteger.valueOf(k);
-            if (tipoLista == 0) {
-                duplicarTipoContrato.setSecuencia(l);
-                duplicarTipoContrato.setCodigo(listaTiposContratos.get(index).getCodigo());
-                duplicarTipoContrato.setNombre(listaTiposContratos.get(index).getNombre());
-                duplicarTipoContrato.setDuracionperiodoprueba(listaTiposContratos.get(index).getDuracionperiodoprueba());
-                duplicarTipoContrato.setVinculacionempresa(listaTiposContratos.get(index).getVinculacionempresa());
-                duplicarTipoContrato.setForzacotizacionpila30dias(listaTiposContratos.get(index).getForzacotizacionpila30dias());
-            }
-            if (tipoLista == 1) {
-                duplicarTipoContrato.setSecuencia(l);
-                duplicarTipoContrato.setCodigo(filtrarListaTiposContratos.get(index).getCodigo());
-                duplicarTipoContrato.setNombre(filtrarListaTiposContratos.get(index).getNombre());
-                duplicarTipoContrato.setDuracionperiodoprueba(filtrarListaTiposContratos.get(index).getDuracionperiodoprueba());
-                duplicarTipoContrato.setVinculacionempresa(filtrarListaTiposContratos.get(index).getVinculacionempresa());
-                duplicarTipoContrato.setForzacotizacionpila30dias(filtrarListaTiposContratos.get(index).getForzacotizacionpila30dias());
-            }
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("formularioDialogos:DuplicarRegistroTipoContrato");
-            context.execute("DuplicarRegistroTipoContrato.show()");
-            index = -1;
-            secRegistro = null;
-        }
+        duplicarTipoContrato = new TiposContratos();
+        k++;
+        newSecuencia = BigInteger.valueOf(k);
+        duplicarTipoContrato.setSecuencia(newSecuencia);
+        duplicarTipoContrato.setCodigo(tipoContratoSeleccionado.getCodigo());
+        duplicarTipoContrato.setNombre(tipoContratoSeleccionado.getNombre());
+        duplicarTipoContrato.setDuracionperiodoprueba(tipoContratoSeleccionado.getDuracionperiodoprueba());
+        duplicarTipoContrato.setVinculacionempresa(tipoContratoSeleccionado.getVinculacionempresa());
+        duplicarTipoContrato.setForzacotizacionpila30dias(tipoContratoSeleccionado.getForzacotizacionpila30dias());
+
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("formularioDialogos:DuplicarRegistroTipoContrato");
+        context.execute("DuplicarRegistroTipoContrato.show()");
     }
 
     public void duplicarDiaLaborableM() {
-        if (indexDias >= 0) {
-            duplicarDiaLaborable = new DiasLaborables();
-            if (tipoListaDias == 0) {
-                
-                duplicarDiaLaborable.setDia(listaDiasLaborables.get(indexDias).getDia());
-                duplicarDiaLaborable.setHoraslaborables(listaDiasLaborables.get(indexDias).getHoraslaborables());
-                duplicarDiaLaborable.setTipodia(listaDiasLaborables.get(indexDias).getTipodia());
+        duplicarDiaLaborable = new DiasLaborables();
+
+        duplicarDiaLaborable.setDia(diaLaborableSeleccionado.getDia());
+        duplicarDiaLaborable.setHoraslaborables(diaLaborableSeleccionado.getHoraslaborables());
+        duplicarDiaLaborable.setTipodia(diaLaborableSeleccionado.getTipodia());
+
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("formularioDialogos:DuplicarRegistroDiaLaborable");
+        context.execute("DuplicarRegistroDiaLaborable.show()");
+    }
+
+    public boolean validarRepetidosNuevoyDuplicado(int tipoNuevo) {
+        boolean retorno = true;
+        switch (tipoNuevo) {
+            case 1: {
+                if (listaTiposContratos != null) {
+                    for (int i = 0; i < listaTiposContratos.size(); i++) {
+                        if (nuevoTipoContrato.getCodigo() == listaTiposContratos.get(i).getCodigo()) {
+                            retorno = false;
+                        }
+                        if (nuevoTipoContrato.getNombre().equals(listaTiposContratos.get(i).getNombre())) {
+                            retorno = false;
+                        }
+                    }
+                }
             }
-            if (tipoListaDias == 1) {
-                
-                duplicarDiaLaborable.setDia(filtrarListaDiasLaborables.get(indexDias).getDia());
-                duplicarDiaLaborable.setHoraslaborables(filtrarListaDiasLaborables.get(indexDias).getHoraslaborables());
-                duplicarDiaLaborable.setTipodia(filtrarListaDiasLaborables.get(indexDias).getTipodia());
+            break;
+            case 2: {
+                for (int i = 0; i < listaTiposContratos.size(); i++) {
+                    if (duplicarTipoContrato.getCodigo() == listaTiposContratos.get(i).getCodigo()) {
+                        retorno = false;
+                    }
+                    if (duplicarTipoContrato.getNombre().equals(listaTiposContratos.get(i).getNombre())) {
+                        retorno = false;
+                    }
+                }
             }
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("formularioDialogos:DuplicarRegistroDiaLaborable");
-            context.execute("DuplicarRegistroDiaLaborable.show()");
-            indexDias = -1;
-            secRegistroDias = null;
+            break;
         }
+        return retorno;
     }
 
     /**
@@ -956,48 +842,53 @@ public class ControlTipoContrato implements Serializable {
     public void confirmarDuplicarTipoContrato() {
         boolean respueta = validarCamposNulosTipoContrato(2);
         if (respueta == true) {
-            int tamDes = 0;
-            tamDes = nuevoTipoContrato.getNombre().length();
-            if (tamDes >= 1 && tamDes <= 30) {
-                k++;
-            l = BigInteger.valueOf(k);
-            duplicarDiaLaborable.setSecuencia(l);
-                String text = duplicarTipoContrato.getNombre().toUpperCase();
-                duplicarTipoContrato.setNombre(text);
-                listaTiposContratos.add(duplicarTipoContrato);
-                listTiposContratosCrear.add(duplicarTipoContrato);
-                cambiosPagina = false;
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.update("form:ACEPTAR");
-                context.update("form:datosTipoContrato");
-                context.execute("DuplicarRegistroTipoContrato.hide()");
-                index = -1;
-                secRegistro = null;
-                if (guardado == true) {
-                    guardado = false;
-                    //RequestContext.getCurrentInstance().update("form:aceptar");
+            if (validarRepetidosNuevoyDuplicado(2)) {
+                int tamDes = duplicarTipoContrato.getNombre().length();
+                if (tamDes >= 1 && tamDes <= 30) {
+                    k++;
+                    newSecuencia = BigInteger.valueOf(k);
+                    duplicarDiaLaborable.setSecuencia(newSecuencia);
+                    String text = duplicarTipoContrato.getNombre().toUpperCase();
+                    duplicarTipoContrato.setNombre(text);
+                    listaTiposContratos.add(duplicarTipoContrato);
+                    listTiposContratosCrear.add(duplicarTipoContrato);
+                    tipoContratoSeleccionado = listaTiposContratos.get(listaTiposContratos.indexOf(duplicarTipoContrato));
+                    modificarInfoRegistroTipoC(listaTiposContratos.size());
+
+                    cambiosPagina = false;
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.update("form:ACEPTAR");
+                    context.update("form:datosTipoContrato");
+                    context.execute("DuplicarRegistroTipoContrato.hide()");
+                    if (guardado == true) {
+                        guardado = false;
+                        //RequestContext.getCurrentInstance().update("form:aceptar");
+                    }
+                    if (bandera == 1) {
+                        altoTablaTiposC = "160";
+                        tipoCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCCodigo");
+                        tipoCCodigo.setFilterStyle("display: none; visibility: hidden;");
+                        tipoCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCNombre");
+                        tipoCNombre.setFilterStyle("display: none; visibility: hidden;");
+                        tipoCPeriodo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCPeriodo");
+                        tipoCPeriodo.setFilterStyle("display: none; visibility: hidden;");
+                        tipoCVE = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCVE");
+                        tipoCVE.setFilterStyle("display: none; visibility: hidden;");
+                        tipoCForza = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCForza");
+                        tipoCForza.setFilterStyle("display: none; visibility: hidden;");
+                        RequestContext.getCurrentInstance().update("form:datosTipoContrato");
+                        bandera = 0;
+                        filtrarListaTiposContratos = null;
+                        tipoLista = 0;
+                    }
+                    duplicarTipoContrato = new TiposContratos();
+                } else {
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.execute("errorNombreTipoContrato.show()");
                 }
-                if (bandera == 1) {
-                    altoTablaTiposC = "160";
-                    tipoCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCCodigo");
-                    tipoCCodigo.setFilterStyle("display: none; visibility: hidden;");
-                    tipoCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCNombre");
-                    tipoCNombre.setFilterStyle("display: none; visibility: hidden;");
-                    tipoCPeriodo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCPeriodo");
-                    tipoCPeriodo.setFilterStyle("display: none; visibility: hidden;");
-                    tipoCVE = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCVE");
-                    tipoCVE.setFilterStyle("display: none; visibility: hidden;");
-                    tipoCForza = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCForza");
-                    tipoCForza.setFilterStyle("display: none; visibility: hidden;");
-                    RequestContext.getCurrentInstance().update("form:datosTipoContrato");
-                    bandera = 0;
-                    filtrarListaTiposContratos = null;
-                    tipoLista = 0;
-                }
-                duplicarTipoContrato = new TiposContratos();
             } else {
                 RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("errorNombreTipoContrato.show()");
+                context.execute("errorRepetidosTipoContrato.show()");
             }
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -1008,27 +899,25 @@ public class ControlTipoContrato implements Serializable {
     public void confirmarDuplicarDiaLaborable() {
         boolean respueta = validarCamposNulosDiaLaborable(2);
         if (respueta == true) {
-            if (tipoLista == 0) {
-                duplicarDiaLaborable.setTipocontrato(listaTiposContratos.get(indexAux));
-            }
-            if (tipoLista == 1) {
-                duplicarDiaLaborable.setTipocontrato(filtrarListaTiposContratos.get(indexAux));
-            }
+            duplicarDiaLaborable.setTipocontrato(tipoContratoSeleccionado);
+
             listaDiasLaborables.add(duplicarDiaLaborable);
             listDiasLaborablesCrear.add(duplicarDiaLaborable);
+            diaLaborableSeleccionado = listaDiasLaborables.get(listaDiasLaborables.indexOf(duplicarDiaLaborable));
+            modificarInfoRegistroTipoD(listaDiasLaborables.size());
+
             cambiosPagina = false;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:ACEPTAR");
             context.update("form:datosDiasLaborables");
             context.execute("DuplicarRegistroDiaLaborable.hide()");
-            indexDias = -1;
-            secRegistroDias = null;
+
             if (guardadoDias == true) {
                 guardadoDias = false;
                 //RequestContext.getCurrentInstance().update("form:aceptar");
             }
             if (banderaDiasLab == 1) {
-                altoTablaDiasLab = "140";
+                altoTablaDiasLab = "105";
                 diasLabDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabDia");
                 diasLabDia.setFilterStyle("display: none; visibility: hidden;");
                 diasLabTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabTipoDia");
@@ -1071,106 +960,70 @@ public class ControlTipoContrato implements Serializable {
     /**
      */
     public void verificarRegistroBorrar() {
-        if (index >= 0) {
+        if (diaLaborableSeleccionado != null) {
+            borrarDiasLaborables();
+        } else if (tipoContratoSeleccionado != null) {
             if (listaDiasLaborables.isEmpty()) {
                 borrarTipoContrato();
             } else {
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("errorBorrarRegistro.show()");
+                RequestContext.getCurrentInstance().execute("errorBorrarRegistro.show()");
             }
-        }
-        if (indexDias >= 0) {
-            borrarDiasLaborables();
+        } else {
+            RequestContext.getCurrentInstance().execute("seleccionarRegistro.show()");
         }
     }
 
     public void borrarTipoContrato() {
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                if (!listTiposContratosModificar.isEmpty() && listTiposContratosModificar.contains(listaTiposContratos.get(index))) {
-                    int modIndex = listTiposContratosModificar.indexOf(listaTiposContratos.get(index));
-                    listTiposContratosModificar.remove(modIndex);
-                    listTiposContratosBorrar.add(listaTiposContratos.get(index));
-                } else if (!listTiposContratosCrear.isEmpty() && listTiposContratosCrear.contains(listaTiposContratos.get(index))) {
-                    int crearIndex = listTiposContratosCrear.indexOf(listaTiposContratos.get(index));
-                    listTiposContratosCrear.remove(crearIndex);
-                } else {
-                    listTiposContratosBorrar.add(listaTiposContratos.get(index));
-                }
-                listaTiposContratos.remove(index);
-            }
-            if (tipoLista == 1) {
-                if (!listTiposContratosModificar.isEmpty() && listTiposContratosModificar.contains(filtrarListaTiposContratos.get(index))) {
-                    int modIndex = listTiposContratosModificar.indexOf(filtrarListaTiposContratos.get(index));
-                    listTiposContratosModificar.remove(modIndex);
-                    listTiposContratosBorrar.add(filtrarListaTiposContratos.get(index));
-                } else if (!listTiposContratosCrear.isEmpty() && listTiposContratosCrear.contains(filtrarListaTiposContratos.get(index))) {
-                    int crearIndex = listTiposContratosCrear.indexOf(filtrarListaTiposContratos.get(index));
-                    listTiposContratosCrear.remove(crearIndex);
-                } else {
-                    listTiposContratosBorrar.add(filtrarListaTiposContratos.get(index));
-                }
-                int VCIndex = listaTiposContratos.indexOf(filtrarListaTiposContratos.get(index));
-                listaTiposContratos.remove(VCIndex);
-                filtrarListaTiposContratos.remove(index);
-            }
+        if (!listTiposContratosModificar.isEmpty() && listTiposContratosModificar.contains(tipoContratoSeleccionado)) {
+            listTiposContratosModificar.remove(tipoContratoSeleccionado);
+            listTiposContratosBorrar.add(tipoContratoSeleccionado);
+        } else if (!listTiposContratosCrear.isEmpty() && listTiposContratosCrear.contains(tipoContratoSeleccionado)) {
+            listTiposContratosCrear.remove(tipoContratoSeleccionado);
+        } else {
+            listTiposContratosBorrar.add(tipoContratoSeleccionado);
+        }
+        listaTiposContratos.remove(tipoContratoSeleccionado);
+        if (tipoLista == 1) {
+            filtrarListaTiposContratos.remove(tipoContratoSeleccionado);
+        }
+        modificarInfoRegistroTipoC(listaTiposContratos.size());
 
-            cambiosPagina = false;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:ACEPTAR");
-            context.update("form:datosTipoContrato");
-            index = -1;
-            secRegistro = null;
+        tipoContratoSeleccionado = null;
+        cambiosPagina = false;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
+        context.update("form:datosTipoContrato");
 
-            if (guardado == true) {
-                guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
-            }
+        if (guardado == true) {
+            guardado = false;
+            //RequestContext.getCurrentInstance().update("form:aceptar");
         }
     }
 
     public void borrarDiasLaborables() {
-        if (indexDias >= 0) {
-            if (tipoListaDias == 0) {
-                if (!listDiasLaborablesModificar.isEmpty() && listDiasLaborablesModificar.contains(listaDiasLaborables.get(indexDias))) {
-                    int modIndex = listDiasLaborablesModificar.indexOf(listaDiasLaborables.get(indexDias));
-                    listDiasLaborablesModificar.remove(modIndex);
-                    listDiasLaborablesBorrar.add(listaDiasLaborables.get(indexDias));
-                } else if (!listDiasLaborablesCrear.isEmpty() && listDiasLaborablesCrear.contains(listaDiasLaborables.get(indexDias))) {
-                    int crearIndex = listDiasLaborablesCrear.indexOf(listaDiasLaborables.get(indexDias));
-                    listDiasLaborablesCrear.remove(crearIndex);
-                } else {
-                    listDiasLaborablesBorrar.add(listaDiasLaborables.get(indexDias));
-                }
-                listaDiasLaborables.remove(indexDias);
-            }
-            if (tipoListaDias == 1) {
-                if (!listDiasLaborablesModificar.isEmpty() && listDiasLaborablesModificar.contains(filtrarListaDiasLaborables.get(indexDias))) {
-                    int modIndex = listDiasLaborablesModificar.indexOf(filtrarListaDiasLaborables.get(indexDias));
-                    listDiasLaborablesModificar.remove(modIndex);
-                    listDiasLaborablesBorrar.add(filtrarListaDiasLaborables.get(indexDias));
-                } else if (!listDiasLaborablesCrear.isEmpty() && listDiasLaborablesCrear.contains(filtrarListaDiasLaborables.get(indexDias))) {
-                    int crearIndex = listDiasLaborablesCrear.indexOf(filtrarListaDiasLaborables.get(indexDias));
-                    listDiasLaborablesCrear.remove(crearIndex);
-                } else {
-                    listDiasLaborablesBorrar.add(filtrarListaDiasLaborables.get(indexDias));
-                }
-                int VCIndex = listaDiasLaborables.indexOf(filtrarListaDiasLaborables.get(indexDias));
-                listaDiasLaborables.remove(VCIndex);
-                filtrarListaDiasLaborables.remove(indexDias);
-            }
+        if (!listDiasLaborablesModificar.isEmpty() && listDiasLaborablesModificar.contains(diaLaborableSeleccionado)) {
+            listDiasLaborablesModificar.remove(diaLaborableSeleccionado);
+            listDiasLaborablesBorrar.add(diaLaborableSeleccionado);
+        } else if (!listDiasLaborablesCrear.isEmpty() && listDiasLaborablesCrear.contains(diaLaborableSeleccionado)) {
+            listDiasLaborablesCrear.remove(diaLaborableSeleccionado);
+        } else {
+            listDiasLaborablesBorrar.add(diaLaborableSeleccionado);
+        }
+        listaDiasLaborables.remove(diaLaborableSeleccionado);
+        if (tipoListaDias == 1) {
+            filtrarListaDiasLaborables.remove(diaLaborableSeleccionado);
+        }
+        modificarInfoRegistroTipoD(listaDiasLaborables.size());
 
-            cambiosPagina = false;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:ACEPTAR");
-            context.update("form:datosDiasLaborables");
-            indexDias = -1;
-            secRegistroDias = null;
+        diaLaborableSeleccionado = null;
+        cambiosPagina = false;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
+        context.update("form:datosDiasLaborables");
 
-            if (guardadoDias == true) {
-                guardadoDias = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
-            }
+        if (guardadoDias == true) {
+            guardadoDias = false;
+            //RequestContext.getCurrentInstance().update("form:aceptar");
         }
     }
     //CTRL + F11 ACTIVAR/DESACTIVAR
@@ -1180,19 +1033,43 @@ public class ControlTipoContrato implements Serializable {
      * medio de la tecla Crtl+F11
      */
     public void activarCtrlF11() {
-        if (index >= 0) {
+        if (diaLaborableSeleccionado != null) {
+            if (banderaDiasLab == 0) {
+                altoTablaDiasLab = "183";
+                diasLabDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabDia");
+                diasLabDia.setFilterStyle("width: 85%");
+                diasLabTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabTipoDia");
+                diasLabTipoDia.setFilterStyle("width: 85%");
+                diasLabHL = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabHL");
+                diasLabHL.setFilterStyle("width: 85%");
+                RequestContext.getCurrentInstance().update("form:datosDiasLaborables");
+                banderaDiasLab = 1;
+            } else if (banderaDiasLab == 1) {
+                altoTablaDiasLab = "105";
+                diasLabDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabDia");
+                diasLabDia.setFilterStyle("display: none; visibility: hidden;");
+                diasLabTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabTipoDia");
+                diasLabTipoDia.setFilterStyle("display: none; visibility: hidden;");
+                diasLabHL = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabHL");
+                diasLabHL.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosDiasLaborables");
+                banderaDiasLab = 0;
+                filtrarListaDiasLaborables = null;
+                tipoListaDias = 0;
+            }
+        } else if (tipoContratoSeleccionado != null) {
             if (bandera == 0) {
                 altoTablaTiposC = "138";
                 tipoCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCCodigo");
-                tipoCCodigo.setFilterStyle("width: 65px");
+                tipoCCodigo.setFilterStyle("width: 85%");
                 tipoCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCNombre");
-                tipoCNombre.setFilterStyle("width: 65px");
+                tipoCNombre.setFilterStyle("width: 85%");
                 tipoCPeriodo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCPeriodo");
-                tipoCPeriodo.setFilterStyle("width: 65px");
+                tipoCPeriodo.setFilterStyle("width: 85%");
                 tipoCVE = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCVE");
-                tipoCVE.setFilterStyle("width: 10px");
+                tipoCVE.setFilterStyle("width: 85%");
                 tipoCForza = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCForza");
-                tipoCForza.setFilterStyle("width: 10px");
+                tipoCForza.setFilterStyle("width: 85%");
                 RequestContext.getCurrentInstance().update("form:datosTipoContrato");
                 bandera = 1;
             } else if (bandera == 1) {
@@ -1211,31 +1088,6 @@ public class ControlTipoContrato implements Serializable {
                 bandera = 0;
                 filtrarListaTiposContratos = null;
                 tipoLista = 0;
-            }
-        }
-        if (indexDias >= 0) {
-            if (banderaDiasLab == 0) {
-                altoTablaDiasLab = "118";
-                diasLabDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabDia");
-                diasLabDia.setFilterStyle("width: 80px");
-                diasLabTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabTipoDia");
-                diasLabTipoDia.setFilterStyle("width: 80px");
-                diasLabHL = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabHL");
-                diasLabHL.setFilterStyle("width: 80px");
-                RequestContext.getCurrentInstance().update("form:datosDiasLaborables");
-                banderaDiasLab = 1;
-            } else if (banderaDiasLab == 1) {
-                altoTablaDiasLab = "140";
-                diasLabDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabDia");
-                diasLabDia.setFilterStyle("display: none; visibility: hidden;");
-                diasLabTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabTipoDia");
-                diasLabTipoDia.setFilterStyle("display: none; visibility: hidden;");
-                diasLabHL = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabHL");
-                diasLabHL.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosDiasLaborables");
-                banderaDiasLab = 0;
-                filtrarListaDiasLaborables = null;
-                tipoListaDias = 0;
             }
         }
     }
@@ -1263,7 +1115,7 @@ public class ControlTipoContrato implements Serializable {
             tipoLista = 0;
         }
         if (banderaDiasLab == 1) {
-            altoTablaDiasLab = "140";
+            altoTablaDiasLab = "105";
             diasLabDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabDia");
             diasLabDia.setFilterStyle("display: none; visibility: hidden;");
             diasLabTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabTipoDia");
@@ -1282,11 +1134,8 @@ public class ControlTipoContrato implements Serializable {
         listDiasLaborablesBorrar.clear();
         listDiasLaborablesCrear.clear();
         listDiasLaborablesModificar.clear();
-        index = -1;
-        indexAux = -1;
-        indexDias = -1;
-        secRegistroDias = null;
-        secRegistro = null;
+        diaLaborableSeleccionado = null;
+        tipoContratoSeleccionado = null;
         k = 0;
         listaTiposContratos = null;
         listaDiasLaborables = null;
@@ -1299,8 +1148,9 @@ public class ControlTipoContrato implements Serializable {
 
     public void listaValoresBoton() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (indexDias >= 0) {
+        if (diaLaborableSeleccionado != null) {
             if (cualCeldaDias == 0) {
+                modificarInfoRegistroTipoDLOV(lovTiposDias.size());
                 context.update("form:TipoDiaDialogo");
                 context.execute("TipoDiaDialogo.show()");
                 tipoActualizacion = 0;
@@ -1308,17 +1158,13 @@ public class ControlTipoContrato implements Serializable {
         }
     }
 
-    public void asignarIndex(Integer indice, int dlg, int LND) {
+    public void asignarIndex(DiasLaborables diasLaborables, int column, int LND) {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (LND == 0) {
-            indexDias = indice;
-            tipoActualizacion = 0;
-        } else if (LND == 1) {
-            tipoActualizacion = 1;
-        } else if (LND == 2) {
-            tipoActualizacion = 2;
-        }
-        if (dlg == 0) {
+        diaLaborableSeleccionado = diasLaborables;
+        tipoActualizacion = LND;
+
+        if (column == 0) {
+            modificarInfoRegistroTipoDLOV(lovTiposDias.size());
             context.update("form:TipoDiaDialogo");
             context.execute("TipoDiaDialogo.show()");
         }
@@ -1374,26 +1220,17 @@ public class ControlTipoContrato implements Serializable {
     }
 
     public void actualizarTipoDia() {
+
         if (tipoActualizacion == 0) {
-            if (tipoListaDias == 0) {
-                listaDiasLaborables.get(indexDias).setTipodia(tipoDiaSeleccionado);
-                if (!listDiasLaborablesCrear.contains(listaDiasLaborables.get(indexDias))) {
-                    if (listDiasLaborablesModificar.isEmpty()) {
-                        listDiasLaborablesModificar.add(listaDiasLaborables.get(indexDias));
-                    } else if (!listDiasLaborablesModificar.contains(listaDiasLaborables.get(indexDias))) {
-                        listDiasLaborablesModificar.add(listaDiasLaborables.get(indexDias));
-                    }
-                }
-            } else {
-                filtrarListaDiasLaborables.get(indexDias).setTipodia(tipoDiaSeleccionado);
-                if (!listDiasLaborablesCrear.contains(filtrarListaDiasLaborables.get(indexDias))) {
-                    if (listDiasLaborablesModificar.isEmpty()) {
-                        listDiasLaborablesModificar.add(filtrarListaDiasLaborables.get(indexDias));
-                    } else if (!listDiasLaborablesModificar.contains(filtrarListaDiasLaborables.get(indexDias))) {
-                        listDiasLaborablesModificar.add(filtrarListaDiasLaborables.get(indexDias));
-                    }
+            diaLaborableSeleccionado.setTipodia(tipoDiaLOVSeleccionado);
+            if (!listDiasLaborablesCrear.contains(diaLaborableSeleccionado)) {
+                if (listDiasLaborablesModificar.isEmpty()) {
+                    listDiasLaborablesModificar.add(diaLaborableSeleccionado);
+                } else if (!listDiasLaborablesModificar.contains(diaLaborableSeleccionado)) {
+                    listDiasLaborablesModificar.add(diaLaborableSeleccionado);
                 }
             }
+
             if (guardadoDias == true) {
                 guardadoDias = false;
             }
@@ -1403,42 +1240,41 @@ public class ControlTipoContrato implements Serializable {
             context.update("form:ACEPTAR");
             context.update("form:datosDiasLaborables");
         } else if (tipoActualizacion == 1) {
-            nuevoDiaLaborable.setTipodia(tipoDiaSeleccionado);
+            nuevoDiaLaborable.setTipodia(tipoDiaLOVSeleccionado);
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevoDiaLabTipoDia");
         } else if (tipoActualizacion == 2) {
-            duplicarDiaLaborable.setTipodia(tipoDiaSeleccionado);
+            duplicarDiaLaborable.setTipodia(tipoDiaLOVSeleccionado);
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarDiaLabTipoDia");
         }
         filtrarLovTiposDias = null;
-        tipoDiaSeleccionado = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
+        tipoDiaLOVSeleccionado = null;
         RequestContext context = RequestContext.getCurrentInstance();
-        /*
-        context.update("form:TipoDiaDialogo");
-        context.update("form:lovTipoDia");
-        context.update("form:aceptarTD");*/
+
         context.reset("form:lovTipoDia:globalFilter");
         context.execute("lovTipoDia.clearFilters()");
         context.execute("TipoDiaDialogo.hide()");
+        context.update("form:TipoDiaDialogo");
+        context.update("form:lovTipoDia");
+        context.update("form:aceptarTD");
     }
 
     public void cancelarCambioTipoDia() {
         filtrarLovTiposDias = null;
-        tipoDiaSeleccionado = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
+        tipoDiaLOVSeleccionado = null;
         permitirIndexDias = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.reset("form:lovTipoDia:globalFilter");
         context.execute("lovTipoDia.clearFilters()");
         context.execute("TipoDiaDialogo.hide()");
+        context.update("form:TipoDiaDialogo");
+        context.update("form:lovTipoDia");
+        context.update("form:aceptarTD");
     }
 
     /**
@@ -1450,13 +1286,12 @@ public class ControlTipoContrato implements Serializable {
     //EXPORTAR
 
     public String exportXML() {
-        if (index >= 0) {
-            nombreTabla = ":formExportarTC:datosTipoContratoExportar";
-            nombreXML = "TiposContratos_XML";
-        }
-        if (indexDias >= 0) {
+        if (diaLaborableSeleccionado != null) {
             nombreTabla = ":formExportarDL:datosDiasLaborablesExportar";
             nombreXML = "DiasLaborables_XML";
+        } else if (tipoContratoSeleccionado != null) {
+            nombreTabla = ":formExportarTC:datosTipoContratoExportar";
+            nombreXML = "TiposContratos_XML";
         }
         return nombreTabla;
     }
@@ -1467,11 +1302,10 @@ public class ControlTipoContrato implements Serializable {
      * @throws IOException Excepcion de In-Out de datos
      */
     public void validarExportPDF() throws IOException {
-        if (index >= 0) {
-            exportPDF_TC();
-        }
-        if (indexDias >= 0) {
+        if (diaLaborableSeleccionado != null) {
             exportPDF_DL();
+        } else if (tipoContratoSeleccionado != null) {
+            exportPDF_TC();
         }
     }
 
@@ -1481,8 +1315,6 @@ public class ControlTipoContrato implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "TiposContratos_PDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
     }
 
     public void exportPDF_DL() throws IOException {
@@ -1491,8 +1323,6 @@ public class ControlTipoContrato implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "DiasLaborables_PDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
     }
 
     /**
@@ -1501,10 +1331,10 @@ public class ControlTipoContrato implements Serializable {
      * @throws IOException Excepcion de In-Out de datos
      */
     public void validarExportXLS() throws IOException {
-        if (index >= 0) {
+        if (tipoContratoSeleccionado != null) {
             exportXLS_TC();
         }
-        if (indexDias >= 0) {
+        if (diaLaborableSeleccionado != null) {
             exportXLS_DL();
         }
     }
@@ -1515,8 +1345,6 @@ public class ControlTipoContrato implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "TiposContratos_XLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
     }
 
     public void exportXLS_DL() throws IOException {
@@ -1525,116 +1353,83 @@ public class ControlTipoContrato implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "DiasLaborables_XLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
     }
-    //EVENTO FILTRAR
 
-    /**
-     * Evento que cambia la lista reala a la filtrada
-     */
-    public void eventoFiltrar() {
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                tipoLista = 1;
-            }
-        }
-        if (indexDias >= 0) {
-            if (tipoListaDias == 0) {
-                tipoListaDias = 1;
-            }
-        }
-    }
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
-
     public void verificarRastro() {
-        if (listaDiasLaborables == null || listaTiposContratos == null) {
+        if (diaLaborableSeleccionado == null && tipoContratoSeleccionado == null) {
+            RequestContext.getCurrentInstance().execute("verificarRastrosTablasH.show()");
         } else {
-            if (index >= 0) {
-                verificarRastroTipoContrato();
-                index = -1;
-            }
-            if (indexDias >= 0) {
+            if (diaLaborableSeleccionado != null) {
                 verificarRastroDiaLaborable();
-                indexDias = -1;
+            } else if (tipoContratoSeleccionado != null) {
+                verificarRastroTipoContrato();
             }
         }
     }
 
     public void verificarRastroTipoContrato() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (listaTiposContratos != null) {
-            if (secRegistro != null) {
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "TIPOSCONTRATOS");
-                backUpSecRegistro = secRegistro;
-                backUp = secRegistro;
-                secRegistro = null;
-                if (resultado == 1) {
-                    context.execute("errorObjetosDB.show()");
-                } else if (resultado == 2) {
-                    nombreTablaRastro = "TiposContratos";
-                    msnConfirmarRastro = "La tabla TIPOSCONTRATOS tiene rastros para el registro seleccionado, ¿desea continuar?";
-                    context.update("form:msnConfirmarRastro");
-                    context.execute("confirmarRastro.show()");
-                } else if (resultado == 3) {
-                    context.execute("errorRegistroRastro.show()");
-                } else if (resultado == 4) {
-                    context.execute("errorTablaConRastro.show()");
-                } else if (resultado == 5) {
-                    context.execute("errorTablaSinRastro.show()");
-                }
-            } else {
-                context.execute("seleccionarRegistro.show()");
-            }
-        } else {
-            if (administrarRastros.verificarHistoricosTabla("TIPOSCONTRATOS")) {
-                nombreTablaRastro = "TiposContratos";
-                msnConfirmarRastroHistorico = "La tabla TIPOSCONTRATOS tiene rastros historicos, ¿Desea continuar?";
-                context.update("form:confirmarRastroHistorico");
-                context.execute("confirmarRastroHistorico.show()");
-            } else {
-                context.execute("errorRastroHistorico.show()");
-            }
+        int resultado = administrarRastros.obtenerTabla(tipoContratoSeleccionado.getSecuencia(), "TIPOSCONTRATOS");
+        backUp = tipoContratoSeleccionado.getSecuencia();
+        if (resultado == 1) {
+            context.execute("errorObjetosDB.show()");
+        } else if (resultado == 2) {
+            nombreTablaRastro = "TiposContratos";
+            msnConfirmarRastro = "La tabla TIPOSCONTRATOS tiene rastros para el registro seleccionado, ¿desea continuar?";
+            context.update("form:msnConfirmarRastro");
+            context.execute("confirmarRastro.show()");
+        } else if (resultado == 3) {
+            context.execute("errorRegistroRastro.show()");
+        } else if (resultado == 4) {
+            context.execute("errorTablaConRastro.show()");
+        } else if (resultado == 5) {
+            context.execute("errorTablaSinRastro.show()");
         }
-        index = -1;
+    }
+
+    public void verificarRastroTipoContratoH() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (administrarRastros.verificarHistoricosTabla("TIPOSCONTRATOS")) {
+            nombreTablaRastro = "TiposContratos";
+            msnConfirmarRastroHistorico = "La tabla TIPOSCONTRATOS tiene rastros historicos, ¿Desea continuar?";
+            context.update("form:confirmarRastroHistorico");
+            context.execute("confirmarRastroHistorico.show()");
+        } else {
+            context.execute("errorRastroHistorico.show()");
+        }
     }
 
     public void verificarRastroDiaLaborable() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (listaDiasLaborables != null) {
-            if (secRegistroDias != null) {
-                int resultado = administrarRastros.obtenerTabla(secRegistroDias, "DIASLABORABLES");
-                backUpSecRegistroDias = secRegistroDias;
-                backUp = secRegistroDias;
-                secRegistroDias = null;
-                if (resultado == 1) {
-                    context.execute("errorObjetosDB.show()");
-                } else if (resultado == 2) {
-                    nombreTablaRastro = "DiasLaborables";
-                    msnConfirmarRastro = "La tabla DIASLABORABLES tiene rastros para el registro seleccionado, ¿desea continuar?";
-                    context.update("form:msnConfirmarRastro");
-                    context.execute("confirmarRastro.show()");
-                } else if (resultado == 3) {
-                    context.execute("errorRegistroRastro.show()");
-                } else if (resultado == 4) {
-                    context.execute("errorTablaConRastro.show()");
-                } else if (resultado == 5) {
-                    context.execute("errorTablaSinRastro.show()");
-                }
-            } else {
-                context.execute("seleccionarRegistro.show()");
-            }
-        } else {
-            if (administrarRastros.verificarHistoricosTabla("DIASLABORABLES")) {
-                nombreTablaRastro = "DiasLaborables";
-                msnConfirmarRastroHistorico = "La tabla DIASLABORABLES tiene rastros historicos, ¿Desea continuar?";
-                context.update("form:confirmarRastroHistorico");
-                context.execute("confirmarRastroHistorico.show()");
-            } else {
-                context.execute("errorRastroHistorico.show()");
-            }
+        int resultado = administrarRastros.obtenerTabla(diaLaborableSeleccionado.getSecuencia(), "DIASLABORABLES");
+        backUp = diaLaborableSeleccionado.getSecuencia();
+        if (resultado == 1) {
+            context.execute("errorObjetosDB.show()");
+        } else if (resultado == 2) {
+            nombreTablaRastro = "DiasLaborables";
+            msnConfirmarRastro = "La tabla DIASLABORABLES tiene rastros para el registro seleccionado, ¿desea continuar?";
+            context.update("form:msnConfirmarRastro");
+            context.execute("confirmarRastro.show()");
+        } else if (resultado == 3) {
+            context.execute("errorRegistroRastro.show()");
+        } else if (resultado == 4) {
+            context.execute("errorTablaConRastro.show()");
+        } else if (resultado == 5) {
+            context.execute("errorTablaSinRastro.show()");
         }
-        index = -1;
+    }
+
+    public void verificarRastroDiaLaborableH() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (administrarRastros.verificarHistoricosTabla("DIASLABORABLES")) {
+            nombreTablaRastro = "DiasLaborables";
+            msnConfirmarRastroHistorico = "La tabla DIASLABORABLES tiene rastros historicos, ¿Desea continuar?";
+            context.update("form:confirmarRastroHistorico");
+            context.execute("confirmarRastroHistorico.show()");
+        } else {
+            context.execute("errorRastroHistorico.show()");
+        }
     }
 
     public boolean validarCodigoNuevoClonado() {
@@ -1651,8 +1446,8 @@ public class ControlTipoContrato implements Serializable {
         return retorno;
     }
 
-    public void clonarTipoContrato() {
-        if ((nombreTipoCColnar.isEmpty()) || (codigoTipoCClonar <= 0) || (tipoContratoAClonar.getSecuencia() == null)) {
+    public void verificarclonarTipoContrato() {
+        if ((nombreTipoCClonar.isEmpty()) || (codigoTipoCClonar <= 0) || (tipoContratoAClonar.getSecuencia() == null)) {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:errorClonadoTipoC");
             context.execute("errorClonadoTipoC.show()");
@@ -1671,6 +1466,7 @@ public class ControlTipoContrato implements Serializable {
 
     public void dispararDialogoClonarTipoContrato() {
         RequestContext context = RequestContext.getCurrentInstance();
+        modificarInfoRegistroTipoCLOV(lovTiposContratos.size());
         context.update("form:TipoContratoDialogo");
         context.execute("TipoContratoDialogo.show()");
     }
@@ -1685,31 +1481,64 @@ public class ControlTipoContrato implements Serializable {
         }
     }
 
+    public void clonarTipoContrato() {
+        if (nombreTipoCClonar.length() >= 1 && nombreTipoCClonar.length() <= 30) {
+            String newNombreTC = nombreTipoCClonar.toUpperCase();
+
+            administrarTipoContrato.clonarTC(tipoContratoAClonar.getSecuencia(), newNombreTC, codigoTipoCClonar);
+            listaTiposContratos = null;
+            listaDiasLaborables = null;
+            getListaTiposContratos();
+            contarRegistrosTipoC();
+            contarRegistrosTipoD();
+            tipoContratoSeleccionado = null;
+            tipoContratoAClonar = new TiposContratos();
+            nombreTipoCClonar = "";
+            codigoTipoCClonar = 0;
+
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:codigoTipoCClonar");
+            context.update("form:nombreTipoCClonar");
+            context.update("form:codigoTipoCClonarBase");
+            context.update("form:nombreTipoCClonarBase");
+
+            context.update("form:ACEPTAR");
+            context.update("form:datosTipoContrato");
+            context.update("form:datosDiasLaborables");
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("errorNombreTipoContrato.show()");
+        }
+    }
+
     public void seleccionarTipoContratoClonar() {
-        tipoContratoAClonar = tipoContratoSeleccionado;
+        tipoContratoAClonar = tipoContratoLOVSeleccionado;
         lovTiposContratos.clear();
         getLovTiposContratos();
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:codigoTipoCClonarBase");
         context.update("form:nombreTipoCClonarBase");
-        tipoContratoSeleccionado = new TiposContratos();
+        tipoContratoLOVSeleccionado = null;
         filtrarLovTiposContratos = null;
-        /*
-        context.update("form:TipoContratoDialogo");
-        context.update("form:lovTipoContrato");
-        context.update("form:aceptarTC");*/
+
         context.reset("form:lovTipoContrato:globalFilter");
         context.execute("lovTipoContrato.clearFilters()");
         context.execute("TipoContratoDialogo.hide()");
+        context.update("form:TipoContratoDialogo");
+        context.update("form:lovTipoContrato");
+        context.update("form:aceptarTC");
     }
 
     public void cancelarTipoContratoClonar() {
-        tipoContratoSeleccionado = new TiposContratos();
+        tipoContratoLOVSeleccionado = null;
         filtrarLovTiposContratos = null;
         RequestContext context = RequestContext.getCurrentInstance();
         context.reset("form:lovTipoContrato:globalFilter");
         context.execute("lovTipoContrato.clearFilters()");
         context.execute("TipoContratoDialogo.hide()");
+        context.update("form:TipoContratoDialogo");
+        context.update("form:lovTipoContrato");
+        context.update("form:aceptarTC");
     }
 
     public void autoCompletarSeleccionarTipoContratoClonar(String valorConfirmar, int tipoAutoCompletar) {
@@ -1731,6 +1560,7 @@ public class ControlTipoContrato implements Serializable {
             } else {
                 tipoContratoAClonar.setCodigo(auxCodigoClonar);
                 tipoContratoAClonar.setNombre(auxNombreClonar);
+                modificarInfoRegistroTipoCLOV(lovTiposContratos.size());
                 context.update("form:codigoTipoCClonarBase");
                 context.update("form:nombreTipoCClonarBase");
                 context.update("form:TipoContratoDialogo");
@@ -1751,6 +1581,7 @@ public class ControlTipoContrato implements Serializable {
             } else {
                 tipoContratoAClonar.setCodigo(auxCodigoClonar);
                 tipoContratoAClonar.setNombre(auxNombreClonar);
+                modificarInfoRegistroTipoCLOV(lovTiposContratos.size());
                 context.update("form:nombreTipoCClonarBase");
                 context.update("form:codigoTipoCClonarBase");
                 context.update("form:TipoContratoDialogo");
@@ -1759,11 +1590,76 @@ public class ControlTipoContrato implements Serializable {
         }
     }
 
+    //EVENTO FILTRAR
+    /**
+     * Evento que cambia la lista reala a la filtrada
+     */
+    public void eventoFiltrarTC() {
+        if (tipoListaDias == 0) {
+            tipoListaDias = 1;
+        }
+        tipoContratoSeleccionado = null;
+        modificarInfoRegistroTipoC(filtrarListaTiposContratos.size());
+        listaDiasLaborables = null;
+        contarRegistrosTipoD();
+    }
+
+    public void eventoFiltrarTD() {
+        if (tipoLista == 0) {
+            tipoLista = 1;
+        }
+        diaLaborableSeleccionado = null;
+        modificarInfoRegistroTipoD(filtrarListaDiasLaborables.size());
+    }
+
+    public void eventoFiltrarTipoCLOV() {
+        modificarInfoRegistroTipoCLOV(filtrarLovTiposContratos.size());
+    }
+
+    public void eventoFiltrarTipoDLOV() {
+        modificarInfoRegistroTipoDLOV(filtrarLovTiposDias.size());
+    }
+
+    private void modificarInfoRegistroTipoC(int valor) {
+        infoRegistroTipoContrato = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:informacionRegistroTC");
+    }
+
+    private void modificarInfoRegistroTipoD(int valor) {
+        infoRegistroTipoDia = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:informacionRegistroDias");
+    }
+
+    private void modificarInfoRegistroTipoCLOV(int valor) {
+        infoRegistroTipoContratoLOV = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:infoRegistoTipoContratoLov");
+    }
+
+    private void modificarInfoRegistroTipoDLOV(int valor) {
+        infoRegistroTipoDiaLOV = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:infoRegistroTipoDiaLov");
+    }
+
+    public void contarRegistrosTipoC() {
+        if (listaTiposContratos != null) {
+            modificarInfoRegistroTipoC(listaTiposContratos.size());
+        } else {
+            modificarInfoRegistroTipoC(0);
+        }
+    }
+
+    public void contarRegistrosTipoD() {
+        if (listaDiasLaborables != null) {
+            modificarInfoRegistroTipoD(listaDiasLaborables.size());
+        } else {
+            modificarInfoRegistroTipoD(0);
+        }
+    }
+
     //GETTERS AND SETTERS
     public List<TiposContratos> getListaTiposContratos() {
         try {
             if (listaTiposContratos == null) {
-                listaTiposContratos = new ArrayList<TiposContratos>();
                 listaTiposContratos = administrarTipoContrato.listaTiposContratos();
                 return listaTiposContratos;
             } else {
@@ -1815,33 +1711,10 @@ public class ControlTipoContrato implements Serializable {
         this.duplicarTipoContrato = setDuplicarTipoContrato;
     }
 
-    public BigInteger getSecRegistro() {
-        return secRegistro;
-    }
-
-    public void setSecRegistro(BigInteger secRegistro) {
-        this.secRegistro = secRegistro;
-    }
-
-    public BigInteger getBackUpSecRegistro() {
-        return backUpSecRegistro;
-    }
-
-    public void setBackUpSecRegistro(BigInteger BackUpSecRegistro) {
-        this.backUpSecRegistro = BackUpSecRegistro;
-    }
-
     public List<DiasLaborables> getListaDiasLaborables() {
         if (listaDiasLaborables == null) {
-            listaDiasLaborables = new ArrayList<DiasLaborables>();
-            if (index >= 0) {
-
-                if (tipoLista == 0) {
-                    listaDiasLaborables = administrarTipoContrato.listaDiasLaborablesParaTipoContrato(listaTiposContratos.get(index).getSecuencia());
-                }
-                if (tipoLista == 1) {
-                    listaDiasLaborables = administrarTipoContrato.listaDiasLaborablesParaTipoContrato(filtrarListaTiposContratos.get(index).getSecuencia());
-                }
+            if (tipoContratoSeleccionado != null) {
+                listaDiasLaborables = administrarTipoContrato.listaDiasLaborablesParaTipoContrato(tipoContratoSeleccionado.getSecuencia());
             }
         }
         return listaDiasLaborables;
@@ -1931,22 +1804,6 @@ public class ControlTipoContrato implements Serializable {
         this.duplicarDiaLaborable = setDuplicarDiaLaborable;
     }
 
-    public BigInteger getSecRegistroDias() {
-        return secRegistroDias;
-    }
-
-    public void setSecRegistroDias(BigInteger setSecRegistroDER) {
-        this.secRegistroDias = setSecRegistroDER;
-    }
-
-    public BigInteger getBackUpSecRegistroDias() {
-        return backUpSecRegistroDias;
-    }
-
-    public void setBackUpSecRegistroDias(BigInteger setBackUpSecRegistroDER) {
-        this.backUpSecRegistroDias = setBackUpSecRegistroDER;
-    }
-
     public String getMsnConfirmarRastro() {
         return msnConfirmarRastro;
     }
@@ -2013,12 +1870,12 @@ public class ControlTipoContrato implements Serializable {
         this.filtrarLovTiposDias = setFiltrarLovTiposDias;
     }
 
-    public TiposDias getTipoDiaSeleccionado() {
-        return tipoDiaSeleccionado;
+    public TiposDias getTipoDiaLOVSeleccionado() {
+        return tipoDiaLOVSeleccionado;
     }
 
-    public void setTipoDiaSeleccionado(TiposDias setTipoDiaSeleccionado) {
-        this.tipoDiaSeleccionado = setTipoDiaSeleccionado;
+    public void setTipoDiaLOVSeleccionado(TiposDias setTipoDiaSeleccionado) {
+        this.tipoDiaLOVSeleccionado = setTipoDiaSeleccionado;
     }
 
     public boolean isCambiosPagina() {
@@ -2053,12 +1910,12 @@ public class ControlTipoContrato implements Serializable {
         this.codigoTipoCClonar = codigoTipoCClonar;
     }
 
-    public String getNombreTipoCColnar() {
-        return nombreTipoCColnar;
+    public String getNombreTipoCClonar() {
+        return nombreTipoCClonar;
     }
 
-    public void setNombreTipoCColnar(String nombreTipoCColnar) {
-        this.nombreTipoCColnar = nombreTipoCColnar.toUpperCase();
+    public void setNombreTipoCClonar(String nombreTipoCColnar) {
+        this.nombreTipoCClonar = nombreTipoCColnar.toUpperCase();
     }
 
     public List<TiposContratos> getLovTiposContratos() {
@@ -2078,12 +1935,12 @@ public class ControlTipoContrato implements Serializable {
         this.filtrarLovTiposContratos = filtrarLovTiposContratos;
     }
 
-    public TiposContratos getTipoContratoSeleccionado() {
-        return tipoContratoSeleccionado;
+    public TiposContratos getTipoContratoLOVSeleccionado() {
+        return tipoContratoLOVSeleccionado;
     }
 
-    public void setTipoContratoSeleccionado(TiposContratos tipoContratoSeleccionado) {
-        this.tipoContratoSeleccionado = tipoContratoSeleccionado;
+    public void setTipoContratoLOVSeleccionado(TiposContratos tipoContratoSeleccionado) {
+        this.tipoContratoLOVSeleccionado = tipoContratoSeleccionado;
     }
 
     public TiposContratos getTipoContratoAClonar() {
@@ -2094,62 +1951,35 @@ public class ControlTipoContrato implements Serializable {
         this.tipoContratoAClonar = tipoContratoAClonar;
     }
 
-    public TiposContratos getTipoContratoTablaSeleccionado() {
-        getListaTiposContratos();
-        if (listaTiposContratos != null) {
-            int tam = listaTiposContratos.size();
-            if (tam > 0) {
-                tipoContratoTablaSeleccionado = listaTiposContratos.get(0);
-            }
-        }
-        return tipoContratoTablaSeleccionado;
+    public TiposContratos getTipoContratoSeleccionado() {
+        return tipoContratoSeleccionado;
     }
 
-    public void setTipoContratoTablaSeleccionado(TiposContratos tipoContratoTablaSeleccionado) {
-        this.tipoContratoTablaSeleccionado = tipoContratoTablaSeleccionado;
+    public void setTipoContratoSeleccionado(TiposContratos tipoContratoTablaSeleccionado) {
+        this.tipoContratoSeleccionado = tipoContratoTablaSeleccionado;
     }
 
-    public DiasLaborables getDiaLaborableTablaSeleccionado() {
-        getListaDiasLaborables();
-        if (listaDiasLaborables != null) {
-            int tam = listaDiasLaborables.size();
-            if (tam > 0) {
-                diaLaborableTablaSeleccionado = listaDiasLaborables.get(0);
-            }
-        }
-        return diaLaborableTablaSeleccionado;
+    public DiasLaborables getDiaLaborableSeleccionado() {
+        return diaLaborableSeleccionado;
     }
 
-    public void setDiaLaborableTablaSeleccionado(DiasLaborables diaLaborableTablaSeleccionado) {
-        this.diaLaborableTablaSeleccionado = diaLaborableTablaSeleccionado;
+    public void setDiaLaborableSeleccionado(DiasLaborables diaLaborableTablaSeleccionado) {
+        this.diaLaborableSeleccionado = diaLaborableTablaSeleccionado;
+    }
+
+    public String getInfoRegistroTipoContrato() {
+        return infoRegistroTipoContrato;
+    }
+
+    public String getInfoRegistroTipoContratoLOV() {
+        return infoRegistroTipoContratoLOV;
     }
 
     public String getInfoRegistroTipoDia() {
-        getLovTiposDias();
-        if (lovTiposDias != null) {
-            infoRegistroTipoDia = "Cantidad de registros : " + lovTiposDias.size();
-        } else {
-            infoRegistroTipoDia = "Cantidad de registros : 0";
-        }
         return infoRegistroTipoDia;
     }
 
-    public void setInfoRegistroTipoDia(String infoRegistroTipoDia) {
-        this.infoRegistroTipoDia = infoRegistroTipoDia;
+    public String getInfoRegistroTipoDiaLOV() {
+        return infoRegistroTipoDiaLOV;
     }
-
-    public String getInfoRegistoTipoContrato() {
-        getLovTiposContratos();
-        if (lovTiposContratos != null) {
-            infoRegistoTipoContrato = "Cantidad de registros : " + lovTiposContratos.size();
-        } else {
-            infoRegistoTipoContrato = "Cantidad de registros : 0";
-        }
-        return infoRegistoTipoContrato;
-    }
-
-    public void setInfoRegistoTipoContrato(String infoRegistoTripoContrato) {
-        this.infoRegistoTipoContrato = infoRegistoTripoContrato;
-    }
-
 }

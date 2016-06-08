@@ -38,6 +38,7 @@ public class AdministrarRastros implements AdministrarRastrosInterface, Serializ
 
     private EntityManager em;
 
+    @Override
     public void obtenerConexion(String idSesion) {
         em = administrarSesiones.obtenerConexionSesion(idSesion);
     }

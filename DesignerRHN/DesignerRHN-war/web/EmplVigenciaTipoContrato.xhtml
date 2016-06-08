@@ -17,7 +17,7 @@
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal" >  
 
                         <p:toolbar styleClass="cssToolbar">
-                            <p:toolbarGroup align="left"> 
+                            <p:toolbarGroup align="left">
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; " actionListener="#{controlVigenciasTiposContratos.guardarCambiosVTC()}" process="@this" />
                                 <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
@@ -453,8 +453,6 @@
                                          oncomplete="MotivosContratoDialogo.hide(), lovMotivosContrato.clearFilters()" update=":formularioDialogos:MotivosContratoDialogo" icon="ui-icon-circle-check"/>
                         <p:commandButton id="atrasMC" value="#{msg['cancelar']}" style=" position: absolute; left: 255px; top: 360px;" actionListener="#{controlVigenciasTiposContratos.cancelarCambioMotivoContrato()}"  process="@this" icon="ui-icon-circle-close"
                                          oncomplete="MotivosContratoDialogo.hide(), lovMotivosContrato.clearFilters()" update=":formularioDialogos:MotivosContratoDialogo"/>
-
-
                     </p:dialog>
 
                     <p:dialog id="NuevoRegistroVTC" header="#{msg['nuevoregistro']}" widgetVar="NuevoRegistroVTC" closable="false" resizable="false"  draggable="false" modal="true" height="370" width="400" style=" padding: 0px">  
@@ -477,7 +475,7 @@
                                 <p:ajax event="dblclick" listener="#{controlVigenciasTiposContratos.asignarIndexNueYDup(0, 1)}" />
                             </p:inputText>
                             <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px; position: absolute; left: 331px; top: 115px;  " 
-                                             id="btnNuevoMotivoContrato" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasTiposContratos.asignarIndexNueYDup(0, 1)}"/>   
+                                             id="btnNuevoMotivoContrato" value="" process="@this"  actionListener="#{controlVigenciasTiposContratos.asignarIndexNueYDup(0, 1)}"/>   
                             <p:watermark for="nuevoMotivoContrato" value="#{msg['motivo']}" />
 
                             <strong><h:outputText value="#{msg['tipoN']}" style=" position: absolute; top: 153px" /></strong>
@@ -488,7 +486,7 @@
                             </p:inputText>
                             <p:watermark for="nuevoTipoContrato" value="#{msg['tipo']}" />
                             <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px; position: absolute; left: 331px; top: 150px; " 
-                                             id="btnNuevoTipoContrato" process="@this" icon="ui-icon-search" actionListener="#{controlVigenciasTiposContratos.asignarIndexNueYDup(1, 1)}"/>
+                                             id="btnNuevoTipoContrato" process="@this" value="" actionListener="#{controlVigenciasTiposContratos.asignarIndexNueYDup(1, 1)}"/>
 
                             <strong><h:outputText value="#{msg['ciudadN']}" style=" position: absolute; top: 188px" /></strong>
                             <p:inputText id="nuevaCiudad" value="#{controlVigenciasTiposContratos.nuevaVigencia.ciudad.nombre}" style=" width: 122px; position: absolute; left: 200px; top: 185px; text-transform: uppercase" onclick="select();">
@@ -498,7 +496,7 @@
                             </p:inputText>
                             <p:watermark for="nuevaCiudad" value="#{msg['ciudad']}" />
                             <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px; position: absolute; left: 331px; top: 185px;  " 
-                                             id="btnNuevaCiudad" actionListener="#{controlVigenciasTiposContratos.asignarIndexNueYDup(2, 1)}" icon="ui-icon-search" process="@this" />
+                                             id="btnNuevaCiudad" actionListener="#{controlVigenciasTiposContratos.asignarIndexNueYDup(2, 1)}" value="" process="@this" />
 
                             <strong><h:outputText value="#{msg['fisN']}" style=" position: absolute; top: 223px" /></strong>
                             <div style=" position: absolute; top: 220px; left: 200px;">
@@ -548,7 +546,7 @@
                                 <p:ajax event="dblclick" listener="#{controlVigenciasTiposContratos.asignarIndexNueYDup(0, 2)}" />
                             </p:inputText>
                             <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px; position: absolute; left: 331px; top: 115px;  " 
-                                             id="btnDuplicarMotivoContrato" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasTiposContratos.asignarIndexNueYDup(0, 2)}"/>   
+                                             id="btnDuplicarMotivoContrato" value="" process="@this"  actionListener="#{controlVigenciasTiposContratos.asignarIndexNueYDup(0, 2)}"/>   
                             <p:watermark for="duplicarMotivoContrato" value="#{msg['motivo']}" />
 
                             <strong><h:outputText value="#{msg['tipoN']}" style=" position: absolute; top: 153px" /></strong>
@@ -559,7 +557,7 @@
                             </p:inputText>
                             <p:watermark for="duplicarTipoContrato" value="#{msg['tipo']}" />
                             <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px; position: absolute; left: 331px; top: 150px; " 
-                                             id="btnDuplcarTipoContrato" process="@this" icon="ui-icon-search" actionListener="#{controlVigenciasTiposContratos.asignarIndexNueYDup(1, 2)}"/>
+                                             id="btnDuplcarTipoContrato" process="@this" value="" actionListener="#{controlVigenciasTiposContratos.asignarIndexNueYDup(1, 2)}"/>
 
                             <strong><h:outputText value="#{msg['ciudadN']}" style=" position: absolute; top: 188px" /></strong>
                             <p:inputText id="duplicarCiudad" value="#{controlVigenciasTiposContratos.duplicarVTC.ciudad.nombre}" style=" width: 122px; position: absolute; left: 200px; top: 185px; text-transform: uppercase" onclick="select();">
@@ -569,7 +567,7 @@
                             </p:inputText>
                             <p:watermark for="duplicarCiudad" value="#{msg['ciudad']}" />
                             <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px; position: absolute; left: 331px; top: 185px;" 
-                                             id="btnDuplicarCiudad" actionListener="#{controlVigenciasTiposContratos.asignarIndexNueYDup(2, 2)}" icon="ui-icon-search" process="@this" />
+                                             id="btnDuplicarCiudad" actionListener="#{controlVigenciasTiposContratos.asignarIndexNueYDup(2, 2)}" value="" process="@this" />
 
                             <strong><h:outputText value="#{msg['fisN']}" style=" position: absolute; top: 223px" /></strong>
                             <div style=" position: absolute; top: 220px; left: 200px;">

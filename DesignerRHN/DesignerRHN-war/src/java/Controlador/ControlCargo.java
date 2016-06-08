@@ -1261,22 +1261,22 @@ public class ControlCargo implements Serializable {
         cambiosPagina = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:ACEPTAR");
-        if (guardado == false) {
-            cancelarModificacionCargos();
-            context.update("form:datosCargo");
-        }
-        if (guardadoSueldoMercado == false) {
-            cancelarModificacionSueldosMercados();
-            context.update("form:datosSueldoMercado");
-        }
-        if (guardadoCompetencia == false) {
-            cancelarModificacionCompetenciasCargos();
-            context.update("form:datosCompetenciaCargo");
-        }
-        if (guardadoTipoDetalle == false) {
-            cancelarModificacionTiposDetalles();
-            context.update("form:datosTipoDetalle");
-        }
+//        if (guardado == false) {
+        cancelarModificacionCargos();
+        context.update("form:datosCargo");
+//        }
+//        if (guardadoSueldoMercado == false) {
+        cancelarModificacionSueldosMercados();
+        context.update("form:datosSueldoMercado");
+//        }
+//        if (guardadoCompetencia == false) {
+        cancelarModificacionCompetenciasCargos();
+        context.update("form:datosCompetenciaCargo");
+//        }
+//        if (guardadoTipoDetalle == false) {
+        cancelarModificacionTiposDetalles();
+        context.update("form:datosTipoDetalle");
+//        }
         activoDetalleCargo = true;
         detalleCargo = new DetallesCargos();
         legendDetalleCargo = "";
@@ -1312,6 +1312,7 @@ public class ControlCargo implements Serializable {
 
         k = 0;
         listaCargos = null;
+        getListaCargos();
         guardado = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosCargo");
@@ -1330,6 +1331,7 @@ public class ControlCargo implements Serializable {
         listSueldosMercadosModificar.clear();
         k = 0;
         listaSueldosMercados = null;
+        getListaSueldosMercados();
         guardadoSueldoMercado = true;
         permitirIndexSueldoMercado = true;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1349,6 +1351,7 @@ public class ControlCargo implements Serializable {
         listCompetenciasCargosModificar.clear();
         k = 0;
         listaCompetenciasCargos = null;
+        getListaCompetenciasCargos();
         guardadoCompetencia = true;
         permitirCompetencia = true;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1362,13 +1365,13 @@ public class ControlCargo implements Serializable {
         tipoDetalleSeleccionado = null;
         if (banderaTipoDetalle == 1) {
             restaurarTablaTipoD();
-
         }
         listTiposDetallesBorrar.clear();
         listTiposDetallesCrear.clear();
         listTiposDetallesModificar.clear();
         k = 0;
         listaTiposDetalles = null;
+        getListaTiposDetalles();
         guardadoTipoDetalle = true;
         permitirIndexTipoDetalle = true;
         RequestContext context = RequestContext.getCurrentInstance();

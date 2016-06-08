@@ -46,6 +46,9 @@ public class TiposTrabajadores implements Serializable {
     @Column(name = "DIASVACACIONESNOORDINARIOS")
     private BigInteger diasvacacionesnoordinarios;
     @Size(max = 1)
+    @Column(name = "CESANTIASECTORCONSTRUCCION")
+    private String cesantiasectorconstruccion;
+    @Size(max = 1)
     @Column(name = "PATRONPAGASALUD")
     private String patronpagasalud;
     @Size(max = 1)
@@ -169,6 +172,14 @@ public class TiposTrabajadores implements Serializable {
 
     public void setDiasvacacionesnoordinarios(BigInteger diasvacacionesnoordinarios) {
         this.diasvacacionesnoordinarios = diasvacacionesnoordinarios;
+    }
+
+    public String getCesantiasectorconstruccion() {
+        return cesantiasectorconstruccion;
+    }
+
+    public void setCesantiasectorconstruccion(String cesantiasectorconstruccion) {
+        this.cesantiasectorconstruccion = cesantiasectorconstruccion;
     }
 
     public String getPatronpagasalud() {
