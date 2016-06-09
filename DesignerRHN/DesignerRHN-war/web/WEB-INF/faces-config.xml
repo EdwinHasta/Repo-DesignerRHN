@@ -1045,7 +1045,7 @@
     
     
     <navigation-rule>
-        <from-view-id>/vigenciadeporte.xhtml</from-view-id>
+        <from-view-id>/vigenciasDeportes.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
             <to-view-id>/Rastro.xhtml</to-view-id>
@@ -1056,7 +1056,7 @@
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasDepRastro</from-outcome>
-            <to-view-id>/vigenciadeporte.xhtml</to-view-id>
+            <to-view-id>/vigenciasDeportes.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -2797,7 +2797,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/vigenciadeporte.xhtml</from-view-id>
+        <from-view-id>/vigenciasDeportes.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigDepEmplInd</from-outcome>
             <to-view-id>/empleadoindividual.xhtml</to-view-id>
@@ -2808,7 +2808,7 @@
         <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>infoDeportesPersona</from-outcome>
-            <to-view-id>/vigenciadeporte.xhtml</to-view-id>
+            <to-view-id>/vigenciasDeportes.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -4043,7 +4043,7 @@
     
     
     <navigation-rule>
-        <from-view-id>/vigenciadeporte.xhtml</from-view-id>
+        <from-view-id>/vigenciasDeportes.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>deporte</from-outcome>
             <to-view-id>/deporte.xhtml</to-view-id>
@@ -4054,7 +4054,7 @@
         <from-view-id>/deporte.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasdeporte</from-outcome>
-            <to-view-id>/vigenciadeporte.xhtml</to-view-id>
+            <to-view-id>/vigenciasDeportes.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>

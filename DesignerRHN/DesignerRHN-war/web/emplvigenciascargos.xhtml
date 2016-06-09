@@ -139,7 +139,8 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Estructura" sortBy="#{info.estructura.nombre}" filterBy="#{info.estructura.nombre}" filterMatchMode="contains" id="vcEstructura" width="150" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Estructura" sortBy="#{info.estructura.nombre}" filterBy="#{info.estructura.nombre}" filterMatchMode="contains" 
+                                          id="vcEstructura" width="150" filterStyle="display: none; visibility: hidden;" >                                  
                                     <f:facet name="header"><h:outputText value="#{msg['estructura']}"/> </f:facet> 
 
                                     <p:cellEditor>  
@@ -173,7 +174,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer" >
-                                        <p:commandButton value="" style="width: 170px; height: inherit; border-radius: 0px; margin-left: -10px; margin-right: -10px " action="motivocambiocargo" id="fooMotivos" />
+                                        <p:commandButton value="" style="width: 170px; height: inherit; border-radius: 0px; margin-left: -10px; margin-right: -10px " action="motivocambiocargo" onclick="#{controlMotivosCambiosCargos.recibirPag('atrasmotivocambiocargo')}" id="fooMotivos" />
                                     </f:facet>
                                 </p:column>
 
@@ -208,7 +209,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer" >
-                                        <h:outputText value="" />
+                                        <p:commandButton value="" style="width: 170px; height: inherit; border-radius: 0px; margin-left: -10px; margin-right: -10px " action="centrocostoemplvigenciacargo" actionListener="#{controlBetaCentrosCostos.recibirPagina('atrascentrocostoemplvigenciacargo')}" id="fooCentrosCostos" />
                                     </f:facet>
                                 </p:column>
 
