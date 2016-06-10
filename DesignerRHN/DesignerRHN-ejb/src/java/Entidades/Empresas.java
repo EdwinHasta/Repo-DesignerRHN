@@ -3,7 +3,17 @@ package Entidades;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -48,28 +58,28 @@ public class Empresas implements Serializable {
     @Column(name = "CONTROLEMPLEADOS")
     private BigInteger controlempleados;
     @Column(name = "CONTROLINICIOPERIODOACTIVO")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date controlinicioperiodoactivo;
     @Column(name = "CONTROLFINPERIODOACTIVO")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date controlfinperiodoactivo;
     @Size(max = 50)
     @Column(name = "PRODUCTO")
     private String producto;
     @Column(name = "FECHAINSTALACION")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date fechainstalacion;
     @Column(name = "FECHARENOVARSOPORTE")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date fecharenovarsoporte;
     @Column(name = "CANTIDADUSUARIO")
     private Short cantidadusuario;
     @Column(name = "FECHASALIDAPRODUCCION")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date fechasalidaproduccion;
-    @Size(max = 1)
+    /*@Size(max = 1)
     @Column(name = "PROMEDIOBASICOVACACIONES")
-    private String promediobasicovacaciones;
+    private String promediobasicovacaciones;*/
     @Size(max = 1)
     @Column(name = "FECHAHASTAINIVACA")
     private String fechahastainivaca;
@@ -83,15 +93,15 @@ public class Empresas implements Serializable {
     @Size(max = 1)
     @Column(name = "ENTREGAPARCIALINTERESCESANTIA")
     private String entregaparcialinterescesantia;
-    @Size(max = 1)
+    /*@Size(max = 1)
     @Column(name = "VARIABLEPROMEDIABASICOCESANTIA")
-    private String variablepromediabasicocesantia;
+    private String variablepromediabasicocesantia;*/
     @Size(max = 1)
     @Column(name = "SALUDACTIVOPENSIONADOIGUAL")
     private String saludactivopensionadoigual;
-    @Size(max = 1)
+    /*@Size(max = 1)
     @Column(name = "USAGRUPOVARIABLEINDEMNIZA")
-    private String usagrupovariableindemniza;
+    private String usagrupovariableindemniza;*/
     @Size(max = 1)
     @Column(name = "REDONDEAPARAFISCALES")
     private String redondeaparafiscales;
@@ -101,18 +111,18 @@ public class Empresas implements Serializable {
     @Size(max = 1)
     @Column(name = "RETENCIONDISMINUYESALUDCONTOPE")
     private String retenciondisminuyesaludcontope;
-    @Size(max = 1)
+    /*@Size(max = 1)
     @Column(name = "PROMEDIO3MVARIABLEVACACIONES")
-    private String promedio3mvariablevacaciones;
-    @Size(max = 1)
+    private String promedio3mvariablevacaciones;*/
+    /*@Size(max = 1)
     @Column(name = "VALIDAPARAFISCALESAPORTEMINIMO")
-    private String validaparafiscalesaporteminimo;
-    @Size(max = 1)
+    private String validaparafiscalesaporteminimo;*/
+    /*@Size(max = 1)
     @Column(name = "PRIMAPROMEDIABASICOSEMESTRE")
-    private String primapromediabasicosemestre;
-    @Size(max = 1)
+    private String primapromediabasicosemestre;*/
+    /*@Size(max = 1)
     @Column(name = "SUBTRANSPORTEPROMCESAPRIMA")
-    private String subtransportepromcesaprima;
+    private String subtransportepromcesaprima;*/
     @Size(max = 1)
     @Column(name = "PAGAVACACIONESDIFERENTENOMINA")
     private String pagavacacionesdiferentenomina;
@@ -122,15 +132,15 @@ public class Empresas implements Serializable {
     @Size(max = 1)
     @Column(name = "LIMITAPARAFISCALESMAXIMO25SML")
     private String limitaparafiscalesmaximo25sml;
-    @Size(max = 100)
+    /*@Size(max = 100)
     @Column(name = "ODBCSQLSERVER")
-    private String odbcsqlserver;
+    private String odbcsqlserver;*/
     @Size(max = 1)
     @Column(name = "VERIFICANOVEDADPAGADA")
     private String verificanovedadpagada;
-    @Size(max = 1)
+    /*@Size(max = 1)
     @Column(name = "INTERCONADICIONACENTROCOSTO")
-    private String interconadicionacentrocosto;
+    private String interconadicionacentrocosto;*/
     @Size(max = 1)
     @Column(name = "PAGOINTCES1QUINCENA")
     private String pagointces1quincena;
@@ -143,12 +153,12 @@ public class Empresas implements Serializable {
     @Size(max = 1)
     @Column(name = "PARAFISCALESSECTORGOBIERNO")
     private String parafiscalessectorgobierno;
-    @Size(max = 1)
+    /*@Size(max = 1)
     @Column(name = "EXENTORETEFTEINCLUYEPRIMA")
-    private String exentoretefteincluyeprima;
-    @Size(max = 1)
+    private String exentoretefteincluyeprima;*/
+    /*@Size(max = 1)
     @Column(name = "BASERETEFTEMESINDIVIDUAL")
-    private String basereteftemesindividual;
+    private String basereteftemesindividual;*/
     @Size(max = 60)
     @Column(name = "CADENACONEXIONKIOSKO")
     private String cadenaconexionkiosko;
@@ -167,18 +177,18 @@ public class Empresas implements Serializable {
     @Size(max = 1)
     @Column(name = "PATRONPENSIONSECTORSALUD")
     private String patronpensionsectorsalud;
-    @Size(max = 1)
+    /*@Size(max = 1)
     @Column(name = "PROMEDIO3MVARIABLECESANTIAS")
-    private String promedio3mvariablecesantias;
+    private String promedio3mvariablecesantias;*/
     @Size(max = 1)
     @Column(name = "RETENCIONYSEGSOCXPERSONA")
     private String retencionysegsocxpersona;
     @Size(max = 1)
     @Column(name = "CODIGOEMPLEADOAUTOMATICO")
     private String codigoempleadoautomatico;
-    @Size(max = 1)
+    /*@Size(max = 1)
     @Column(name = "FORZAIBCSALUDPENSIONMINSML")
-    private String forzaibcsaludpensionminsml;
+    private String forzaibcsaludpensionminsml;*/
     @Size(max = 30)
     @Column(name = "LOGOSGS")
     private String logosgs;
@@ -188,96 +198,96 @@ public class Empresas implements Serializable {
     @Size(max = 1)
     @Column(name = "FORZAIBCRIESGOMINSML")
     private String forzaibcriesgominsml;
-    @Size(max = 1)
+    /*@Size(max = 1)
     @Column(name = "DEFINITIVARESTASALDOPROVISION")
-    private String definitivarestasaldoprovision;
-    @Size(max = 20)
+    private String definitivarestasaldoprovision;*/
+    /*@Size(max = 20)
     @Column(name = "ODBCFORMATOFECHA")
-    private String odbcformatofecha;
+    private String odbcformatofecha;*/
     @Size(max = 1)
     @Column(name = "RETMET1EXTRAPOLAINGRESO")
     private String retmet1extrapolaingreso;
     @Size(max = 30)
     @Column(name = "FIRMACIR")
     private String firmacir;
-    @Size(max = 1)
+    /*@Size(max = 1)
     @Column(name = "INTERADICIONACCPREFIJO")
-    private String interadicionaccprefijo;
-    @Size(max = 1)
+    private String interadicionaccprefijo;*/
+    /*@Size(max = 1)
     @Column(name = "RECALCULORETEFTETOPEHISTORICO")
-    private String recalculoreteftetopehistorico;
-    @Size(max = 1)
+    private String recalculoreteftetopehistorico;*/
+    /*@Size(max = 1)
     @Column(name = "RECALCULORETEFTETOPEUSADO")
-    private String recalculoreteftetopeusado;
-    @Size(max = 1)
+    private String recalculoreteftetopeusado;*/
+    /*@Size(max = 1)
     @Column(name = "FECHAPAGOUNIDADPRODUCIDA")
     private String fechapagounidadproducida;
-    @Size(max = 1)
+    /*@Size(max = 1)
     @Column(name = "INTEGRAGESTIONDOCUMENTAL")
-    private String integragestiondocumental;
-    @Size(max = 1)
+    private String integragestiondocumental;*/
+    /*@Size(max = 1)
     @Column(name = "PRIMAUSAPROMEDIOACUMSUELDO")
-    private String primausapromedioacumsueldo;
-    @Size(max = 1)
+    private String primausapromedioacumsueldo;*/
+    /*@Size(max = 1)
     @Column(name = "CESANUSAPROMEDIOACUMSUELDO")
-    private String cesanusapromedioacumsueldo;
-    @Size(max = 1)
+    private String cesanusapromedioacumsueldo;*/
+    /*@Size(max = 1)
     @Column(name = "VACACUSAPROMEDIOACUMSUELDO")
-    private String vacacusapromedioacumsueldo;
-    @Size(max = 1)
+    private String vacacusapromedioacumsueldo;*/
+    /*@Size(max = 1)
     @Column(name = "CESASIEMPREPROMEDIAANO")
-    private String cesasiemprepromediaano;
-    @Size(max = 5)
+    private String cesasiemprepromediaano;*/
+    /*@Size(max = 5)
     @Column(name = "SAPBOPREFIJOEMPLEADO")
-    private String sapboprefijoempleado;
-    @Size(max = 5)
+    private String sapboprefijoempleado;*/
+    /*@Size(max = 5)
     @Column(name = "SAPBOPREFIJOTERCERO")
-    private String sapboprefijotercero;
-    @Size(max = 1)
+    private String sapboprefijotercero;*/
+    /*@Size(max = 1)
     @Column(name = "ENVIOINTERFASECONTABILIDAD")
-    private String enviointerfasecontabilidad;
-    @Size(max = 1)
+    private String enviointerfasecontabilidad;*/
+    /*@Size(max = 1)
     @Column(name = "SAPBODETALLADA")
-    private String sapbodetallada;
+    private String sapbodetallada;*/
     @Size(max = 1)
     @Column(name = "CDIUSAHTTPS")
     private String cdiusahttps;
-    @Size(max = 1)
+    /*@Size(max = 1)
     @Column(name = "USARETENCIONMETODO3")
-    private String usaretencionmetodo3;
+    private String usaretencionmetodo3;*/
     @Size(max = 50)
     @Column(name = "DSNCDI")
     private String dsncdi;
     @Size(max = 1)
     @Column(name = "GENERAREPORTEINGRESO")
     private String generareporteingreso;
-    @Size(max = 5)
+    /*@Size(max = 5)
     @Column(name = "SAPBOSUFIJOEMPLEADO")
-    private String sapbosufijoempleado;
-    @Size(max = 5)
+    private String sapbosufijoempleado;*/
+    /*@Size(max = 5)
     @Column(name = "SAPBOSUFIJOTERCERO")
-    private String sapbosufijotercero;
-    @Size(max = 20)
+    private String sapbosufijotercero;*/
+    /*@Size(max = 20)
     @Column(name = "SAPBOADICIONALCUENTA")
-    private String sapboadicionalcuenta;
-    @Size(max = 1)
+    private String sapboadicionalcuenta;*/
+    /*@Size(max = 1)
     @Column(name = "PERMITEVALORMVRDEPENDIENTE")
-    private String permitevalormvrdependiente;
-    @Size(max = 1)
+    private String permitevalormvrdependiente;*/
+    /*@Size(max = 1)
     @Column(name = "BASEPRFFECHAPAGO")
-    private String baseprffechapago;
-    @Size(max = 1)
+    private String baseprffechapago;*/
+    /*@Size(max = 1)
     @Column(name = "INTERADICIONACCSEPARADOR")
-    private String interadicionaccseparador;
-    @Size(max = 1)
+    private String interadicionaccseparador;*/
+    /*@Size(max = 1)
     @Column(name = "CESAPROMEDIAVARIABLEANOREAL")
-    private String cesapromediavariableanoreal;
-    @Size(max = 1)
+    private String cesapromediavariableanoreal;*/
+    /*@Size(max = 1)
     @Column(name = "RECALCULODEPENDIENTEUSADO")
-    private String recalculodependienteusado;
-    @Size(max = 1)
+    private String recalculodependienteusado;*/
+    /*@Size(max = 1)
     @Column(name = "RETETICKETSUMABASECOMPARA")
-    private String reteticketsumabasecompara;
+    private String reteticketsumabasecompara;*/
     @Size(max = 1)
     @Column(name = "BARRACONSULTADATOS")
     private String barraconsultadatos;
@@ -454,13 +464,13 @@ public class Empresas implements Serializable {
         this.fechasalidaproduccion = fechasalidaproduccion;
     }
 
-    public String getPromediobasicovacaciones() {
+    /*public String getPromediobasicovacaciones() {
         return promediobasicovacaciones;
     }
 
     public void setPromediobasicovacaciones(String promediobasicovacaciones) {
         this.promediobasicovacaciones = promediobasicovacaciones;
-    }
+    }*/
 
     public String getFechahastainivaca() {
         return fechahastainivaca;
@@ -502,13 +512,13 @@ public class Empresas implements Serializable {
         this.entregaparcialinterescesantia = entregaparcialinterescesantia;
     }
 
-    public String getVariablepromediabasicocesantia() {
+    /*public String getVariablepromediabasicocesantia() {
         return variablepromediabasicocesantia;
     }
 
     public void setVariablepromediabasicocesantia(String variablepromediabasicocesantia) {
         this.variablepromediabasicocesantia = variablepromediabasicocesantia;
-    }
+    }*/
 
     public String getSaludactivopensionadoigual() {
         return saludactivopensionadoigual;
@@ -518,13 +528,13 @@ public class Empresas implements Serializable {
         this.saludactivopensionadoigual = saludactivopensionadoigual;
     }
 
-    public String getUsagrupovariableindemniza() {
+    /*public String getUsagrupovariableindemniza() {
         return usagrupovariableindemniza;
     }
 
     public void setUsagrupovariableindemniza(String usagrupovariableindemniza) {
         this.usagrupovariableindemniza = usagrupovariableindemniza;
-    }
+    }*/
 
     public String getRedondeaparafiscales() {
         return redondeaparafiscales;
@@ -550,37 +560,37 @@ public class Empresas implements Serializable {
         this.retenciondisminuyesaludcontope = retenciondisminuyesaludcontope;
     }
 
-    public String getPromedio3mvariablevacaciones() {
+    /*public String getPromedio3mvariablevacaciones() {
         return promedio3mvariablevacaciones;
     }
 
     public void setPromedio3mvariablevacaciones(String promedio3mvariablevacaciones) {
         this.promedio3mvariablevacaciones = promedio3mvariablevacaciones;
-    }
+    }*/
 
-    public String getValidaparafiscalesaporteminimo() {
+    /*public String getValidaparafiscalesaporteminimo() {
         return validaparafiscalesaporteminimo;
     }
 
     public void setValidaparafiscalesaporteminimo(String validaparafiscalesaporteminimo) {
         this.validaparafiscalesaporteminimo = validaparafiscalesaporteminimo;
-    }
+    }*/
 
-    public String getPrimapromediabasicosemestre() {
+    /*public String getPrimapromediabasicosemestre() {
         return primapromediabasicosemestre;
     }
 
     public void setPrimapromediabasicosemestre(String primapromediabasicosemestre) {
         this.primapromediabasicosemestre = primapromediabasicosemestre;
-    }
+    }*/
 
-    public String getSubtransportepromcesaprima() {
+    /*public String getSubtransportepromcesaprima() {
         return subtransportepromcesaprima;
     }
 
     public void setSubtransportepromcesaprima(String subtransportepromcesaprima) {
         this.subtransportepromcesaprima = subtransportepromcesaprima;
-    }
+    }*/
 
     public String getPagavacacionesdiferentenomina() {
         return pagavacacionesdiferentenomina;
@@ -606,13 +616,13 @@ public class Empresas implements Serializable {
         this.limitaparafiscalesmaximo25sml = limitaparafiscalesmaximo25sml;
     }
 
-    public String getOdbcsqlserver() {
+    /*public String getOdbcsqlserver() {
         return odbcsqlserver;
     }
 
     public void setOdbcsqlserver(String odbcsqlserver) {
         this.odbcsqlserver = odbcsqlserver;
-    }
+    }*/
 
     public String getVerificanovedadpagada() {
         return verificanovedadpagada;
@@ -622,13 +632,13 @@ public class Empresas implements Serializable {
         this.verificanovedadpagada = verificanovedadpagada;
     }
 
-    public String getInterconadicionacentrocosto() {
+    /*public String getInterconadicionacentrocosto() {
         return interconadicionacentrocosto;
     }
 
     public void setInterconadicionacentrocosto(String interconadicionacentrocosto) {
         this.interconadicionacentrocosto = interconadicionacentrocosto;
-    }
+    }*/
 
     public String getPagointces1quincena() {
         return pagointces1quincena;
@@ -662,21 +672,21 @@ public class Empresas implements Serializable {
         this.parafiscalessectorgobierno = parafiscalessectorgobierno;
     }
 
-    public String getExentoretefteincluyeprima() {
+    /*public String getExentoretefteincluyeprima() {
         return exentoretefteincluyeprima;
     }
 
     public void setExentoretefteincluyeprima(String exentoretefteincluyeprima) {
         this.exentoretefteincluyeprima = exentoretefteincluyeprima;
-    }
+    }*/
 
-    public String getBasereteftemesindividual() {
+    /*public String getBasereteftemesindividual() {
         return basereteftemesindividual;
     }
 
     public void setBasereteftemesindividual(String basereteftemesindividual) {
         this.basereteftemesindividual = basereteftemesindividual;
-    }
+    }*/
 
     public String getCadenaconexionkiosko() {
         return cadenaconexionkiosko;
@@ -726,13 +736,13 @@ public class Empresas implements Serializable {
         this.patronpensionsectorsalud = patronpensionsectorsalud;
     }
 
-    public String getPromedio3mvariablecesantias() {
+    /*public String getPromedio3mvariablecesantias() {
         return promedio3mvariablecesantias;
     }
 
     public void setPromedio3mvariablecesantias(String promedio3mvariablecesantias) {
         this.promedio3mvariablecesantias = promedio3mvariablecesantias;
-    }
+    }*/
 
     public String getRetencionysegsocxpersona() {
         return retencionysegsocxpersona;
@@ -750,13 +760,13 @@ public class Empresas implements Serializable {
         this.codigoempleadoautomatico = codigoempleadoautomatico;
     }
 
-    public String getForzaibcsaludpensionminsml() {
+    /*public String getForzaibcsaludpensionminsml() {
         return forzaibcsaludpensionminsml;
     }
 
     public void setForzaibcsaludpensionminsml(String forzaibcsaludpensionminsml) {
         this.forzaibcsaludpensionminsml = forzaibcsaludpensionminsml;
-    }
+    }*/
 
     public String getLogosgs() {
         return logosgs;
@@ -782,21 +792,21 @@ public class Empresas implements Serializable {
         this.forzaibcriesgominsml = forzaibcriesgominsml;
     }
 
-    public String getDefinitivarestasaldoprovision() {
+    /*public String getDefinitivarestasaldoprovision() {
         return definitivarestasaldoprovision;
     }
 
     public void setDefinitivarestasaldoprovision(String definitivarestasaldoprovision) {
         this.definitivarestasaldoprovision = definitivarestasaldoprovision;
-    }
+    }*/
 
-    public String getOdbcformatofecha() {
+    /*public String getOdbcformatofecha() {
         return odbcformatofecha;
     }
 
     public void setOdbcformatofecha(String odbcformatofecha) {
         this.odbcformatofecha = odbcformatofecha;
-    }
+    }*/
 
     public String getRetmet1extrapolaingreso() {
         return retmet1extrapolaingreso;
@@ -814,109 +824,109 @@ public class Empresas implements Serializable {
         this.firmacir = firmacir;
     }
 
-    public String getInteradicionaccprefijo() {
+    /*public String getInteradicionaccprefijo() {
         return interadicionaccprefijo;
     }
 
     public void setInteradicionaccprefijo(String interadicionaccprefijo) {
         this.interadicionaccprefijo = interadicionaccprefijo;
-    }
+    }*/
 
-    public String getRecalculoreteftetopehistorico() {
+    /*public String getRecalculoreteftetopehistorico() {
         return recalculoreteftetopehistorico;
     }
 
     public void setRecalculoreteftetopehistorico(String recalculoreteftetopehistorico) {
         this.recalculoreteftetopehistorico = recalculoreteftetopehistorico;
-    }
+    }*/
 
-    public String getRecalculoreteftetopeusado() {
+    /*public String getRecalculoreteftetopeusado() {
         return recalculoreteftetopeusado;
     }
 
     public void setRecalculoreteftetopeusado(String recalculoreteftetopeusado) {
         this.recalculoreteftetopeusado = recalculoreteftetopeusado;
-    }
+    }*/
 
-    public String getFechapagounidadproducida() {
+    /*public String getFechapagounidadproducida() {
         return fechapagounidadproducida;
     }
 
     public void setFechapagounidadproducida(String fechapagounidadproducida) {
         this.fechapagounidadproducida = fechapagounidadproducida;
-    }
+    }*/
 
-    public String getIntegragestiondocumental() {
+    /*public String getIntegragestiondocumental() {
         return integragestiondocumental;
     }
 
     public void setIntegragestiondocumental(String integragestiondocumental) {
         this.integragestiondocumental = integragestiondocumental;
-    }
+    }*/
 
-    public String getPrimausapromedioacumsueldo() {
+    /*public String getPrimausapromedioacumsueldo() {
         return primausapromedioacumsueldo;
     }
 
     public void setPrimausapromedioacumsueldo(String primausapromedioacumsueldo) {
         this.primausapromedioacumsueldo = primausapromedioacumsueldo;
-    }
+    }*/
 
-    public String getCesanusapromedioacumsueldo() {
+    /*public String getCesanusapromedioacumsueldo() {
         return cesanusapromedioacumsueldo;
     }
 
     public void setCesanusapromedioacumsueldo(String cesanusapromedioacumsueldo) {
         this.cesanusapromedioacumsueldo = cesanusapromedioacumsueldo;
-    }
+    }*/
 
-    public String getVacacusapromedioacumsueldo() {
+    /*public String getVacacusapromedioacumsueldo() {
         return vacacusapromedioacumsueldo;
     }
 
     public void setVacacusapromedioacumsueldo(String vacacusapromedioacumsueldo) {
         this.vacacusapromedioacumsueldo = vacacusapromedioacumsueldo;
-    }
+    }*/
 
-    public String getCesasiemprepromediaano() {
+    /*public String getCesasiemprepromediaano() {
         return cesasiemprepromediaano;
     }
 
     public void setCesasiemprepromediaano(String cesasiemprepromediaano) {
         this.cesasiemprepromediaano = cesasiemprepromediaano;
-    }
+    }*/
 
-    public String getSapboprefijoempleado() {
+    /*public String getSapboprefijoempleado() {
         return sapboprefijoempleado;
     }
 
     public void setSapboprefijoempleado(String sapboprefijoempleado) {
         this.sapboprefijoempleado = sapboprefijoempleado;
-    }
+    }*/
 
-    public String getSapboprefijotercero() {
+    /*public String getSapboprefijotercero() {
         return sapboprefijotercero;
     }
 
     public void setSapboprefijotercero(String sapboprefijotercero) {
         this.sapboprefijotercero = sapboprefijotercero;
-    }
+    }*/
 
-    public String getEnviointerfasecontabilidad() {
+    /*public String getEnviointerfasecontabilidad() {
         return enviointerfasecontabilidad;
     }
 
     public void setEnviointerfasecontabilidad(String enviointerfasecontabilidad) {
         this.enviointerfasecontabilidad = enviointerfasecontabilidad;
-    }
+    }*/
 
-    public String getSapbodetallada() {
+    /*public String getSapbodetallada() {
         return sapbodetallada;
     }
 
     public void setSapbodetallada(String sapbodetallada) {
         this.sapbodetallada = sapbodetallada;
-    }
+    }*/
 
     public Periodicidades getMinimaperiodicidad() {
         return minimaperiodicidad;
@@ -936,32 +946,7 @@ public class Empresas implements Serializable {
     public void setCentrocosto(CentrosCostos centrocosto) {
         this.centrocosto = centrocosto;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (secuencia != null ? secuencia.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Empresas)) {
-            return false;
-        }
-        Empresas other = (Empresas) object;
-        if ((this.secuencia == null && other.secuencia != null) || (this.secuencia != null && !this.secuencia.equals(other.secuencia))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Entidades.Empresas[ secuencia=" + secuencia + " ]";
-    }
-
+    
     public String getBarraconsultadatos() {
         return barraconsultadatos;
     }
@@ -978,13 +963,13 @@ public class Empresas implements Serializable {
         this.cdiusahttps = cdiusahttps;
     }
 
-    public String getUsaretencionmetodo3() {
+    /*public String getUsaretencionmetodo3() {
         return usaretencionmetodo3;
     }
 
     public void setUsaretencionmetodo3(String usaretencionmetodo3) {
         this.usaretencionmetodo3 = usaretencionmetodo3;
-    }
+    }*/
 
     public String getDsncdi() {
         return dsncdi;
@@ -1002,75 +987,100 @@ public class Empresas implements Serializable {
         this.generareporteingreso = generareporteingreso;
     }
 
-    public String getSapbosufijoempleado() {
+    /*public String getSapbosufijoempleado() {
         return sapbosufijoempleado;
     }
 
     public void setSapbosufijoempleado(String sapbosufijoempleado) {
         this.sapbosufijoempleado = sapbosufijoempleado;
-    }
+    }*/
 
-    public String getSapbosufijotercero() {
+    /*public String getSapbosufijotercero() {
         return sapbosufijotercero;
     }
 
     public void setSapbosufijotercero(String sapbosufijotercero) {
         this.sapbosufijotercero = sapbosufijotercero;
-    }
+    }*/
 
-    public String getSapboadicionalcuenta() {
+    /*public String getSapboadicionalcuenta() {
         return sapboadicionalcuenta;
     }
 
     public void setSapboadicionalcuenta(String sapboadicionalcuenta) {
         this.sapboadicionalcuenta = sapboadicionalcuenta;
-    }
+    }*/
 
-    public String getPermitevalormvrdependiente() {
+    /*public String getPermitevalormvrdependiente() {
         return permitevalormvrdependiente;
     }
 
     public void setPermitevalormvrdependiente(String permitevalormvrdependiente) {
         this.permitevalormvrdependiente = permitevalormvrdependiente;
-    }
+    }*/
 
-    public String getBaseprffechapago() {
+    /*public String getBaseprffechapago() {
         return baseprffechapago;
     }
 
     public void setBaseprffechapago(String baseprffechapago) {
         this.baseprffechapago = baseprffechapago;
-    }
+    }*/
 
-    public String getInteradicionaccseparador() {
+    /*public String getInteradicionaccseparador() {
         return interadicionaccseparador;
     }
 
     public void setInteradicionaccseparador(String interadicionaccseparador) {
         this.interadicionaccseparador = interadicionaccseparador;
-    }
+    }*/
 
-    public String getCesapromediavariableanoreal() {
+    /*public String getCesapromediavariableanoreal() {
         return cesapromediavariableanoreal;
     }
 
     public void setCesapromediavariableanoreal(String cesapromediavariableanoreal) {
         this.cesapromediavariableanoreal = cesapromediavariableanoreal;
-    }
+    }*/
 
-    public String getRecalculodependienteusado() {
+    /*public String getRecalculodependienteusado() {
         return recalculodependienteusado;
     }
 
     public void setRecalculodependienteusado(String recalculodependienteusado) {
         this.recalculodependienteusado = recalculodependienteusado;
-    }
+    }*/
 
-    public String getReteticketsumabasecompara() {
+    /*public String getReteticketsumabasecompara() {
         return reteticketsumabasecompara;
     }
 
     public void setReteticketsumabasecompara(String reteticketsumabasecompara) {
         this.reteticketsumabasecompara = reteticketsumabasecompara;
+    }*/
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (secuencia != null ? secuencia.hashCode() : 0);
+        return hash;
+    }
+    
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Empresas)) {
+            return false;
+        }
+        Empresas other = (Empresas) object;
+        if ((this.secuencia == null && other.secuencia != null) || (this.secuencia != null && !this.secuencia.equals(other.secuencia))) {
+            return false;
+        }
+        return true;
+    }
+    
+    @Override
+    public String toString() {
+        return "Entidades.Empresas[ secuencia=" + secuencia + " ]";
     }
 }

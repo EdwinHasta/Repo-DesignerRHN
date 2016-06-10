@@ -10,65 +10,182 @@
             <ui:define name="body">
                 <h:form>
                     <p:panel  id="PanelTotal" header="Novedades" styleClass="panelTotal">    
-                        <p:panel style="border-radius: 10px" >
-                            <fieldset style="height: 101px; width: 225px; border-radius: 10px">
-                                <!-- <h:graphicImage value="Imagenes/Iconos/IconNFYO.png" style="width: 35px; height: 50px;"/> -->
-                                <p:commandButton style="width: 160px; height: 28px; background-image: url(Imagenes/Iconos/botonL.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" icon="ui-icon-extlink" value="Por Empleado..." action="novedadempleado"/>
-                                <p:commandButton style="width: 160px; height: 28px; background-image: url(Imagenes/Iconos/botonL.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="Por Concepto..." action="novedadconcepto" />
-                                <p:commandButton style="width: 160px; height: 28px; background-image: url(Imagenes/Iconos/botonL.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="Por Tercero..."  action="novedadtercero"/>
-                                <!-- <h:graphicImage value="Imagenes/Iconos/archivoplanoNovedad.png" style="width: 25px; height: 31px; "/> -->
-                                <p:commandButton style="width: 160px; height: 28px; " value="Cargue De Novedades" action="novedadPlano"/>
-                                <p:commandButton style="width: 160px; height: 28px; " value="Ausentismos..."  action="atausentismos" ></p:commandButton>
-                                <!-- <h:graphicImage value="Imagenes/Iconos/SolVaciones.png" style="position: absolute; top: 18px; left: 5px; width: 50px  ; height: 60px "/> -->
-                                <p:commandButton style="width: 190px; height: 25px ;" value="vacaciones" actionListener="#{controlNovedadesVacaciones.recibirPag('novedad')}" action="vacaciones" ></p:commandButton>
-                                <!-- <p:commandButton style="width: 190px; height: 25px ;" value="Programacion Vacaciones" actionListener="#{controlNovedad.recibir('Programacion Vacaciones')}" action="Impresion"></p:commandButton> -->
-                                <!-- <legend style=" color: blue; width: 255px; font-weight: bold;">Novedades de Pago por Fuera de Nómina</legend> -->
-                                <!-- <h:graphicImage value="Imagenes/Iconos/Auxilios.png" style="width: 30px  ; height: 33px "/> -->
-                                <!-- <h:graphicImage value="Imagenes/Iconos/LiquidacionDefinitivaNPFN.png" style="width: 30px  ; height: 33px "/> -->
-                                <!-- <h:graphicImage value="Imagenes/Iconos/ConstructorPPC.png" style="width: 30px; height: 33px; "/> -->
-                                <!-- <p:commandButton style="width: 190px; height: 28px;" value="Auxilios" actionListener="#{controlNovedad.recibir('Auxilios')}"  action="Impresion" ></p:commandButton> -->
-                                <p:commandButton style="width: 190px; height: 28px;" value="Liquidacion Definitiva" actionListener="#{controlNovedadesDefinitivas.recibirPagina('novedad')}" action="definitivas" ></p:commandButton>
-                                <p:commandButton style="width: 190px; height: 28px;" value="Pago Parcial De Cesantia" actionListener="#{controlNovedad.recibir('Pago Parcial De Cesantia')}" action="Impresion" ></p:commandButton>
-                            </fieldset>
-                            <fieldset style="height: 101px; width: 225px; border-radius: 10px">
-                                <!-- <legend style="color: blue; font-weight: bold;">Viaticos</legend> -->
-                                <!-- <h:graphicImage value="Imagenes/Iconos/Viaticos.png" style="width: 35px; height: 50px;"/> -->
-                                <p:commandButton style="width: 160px; height: 28px;" value="Conf. de Viaticos" actionListener="#{controlNovedad.recibir('Configuracion De Viaticos...')}" action="Impresion"></p:commandButton>
-                                <p:commandButton style="width: 160px; height: 28px;" value="Tramitar Viaticos" actionListener="#{controlNovedad.recibir('Tramitar Viaticos...')}" action="Impresion"></p:commandButton>
-                                <p:commandButton style="width: 160px; height: 28px;" value="Autorizacion De Viaticos" actionListener="#{controlNovedad.recibir('Autorizacion De Viaticos')}" action="Impresion"></p:commandButton>
-                            <!-- </fieldset> -->
-                            <!-- <fieldset style="height: 66px; width: 225px; border-radius: 10px">
-                                <legend style=" color: blue; font-weight: bold;">Anticipos</legend>
-                                <h:graphicImage value="Imagenes/Iconos/Anticipos.png" style="width: 35px; height: 50px;"/>
-                                <p:commandButton style="width: 160px; height: 28px;" value="Tramitar Anticipos" actionListener="#{controlNovedad.recibir('Tramitar Anticipos')}" action="Impresion"></p:commandButton>
-                                <p:commandButton style="width: 160px; height: 28px;" value="Autorizacion Anticipos" actionListener="#{controlNovedad.recibir('Autorizacion Anticipos')}" action="Impresion"></p:commandButton>
-                            </fieldset> -->
-                            <!-- <fieldset style="position: absolute; left: 265px;height: 250px; width: 265px; border-radius: 10px"> -->
-                                <!-- <legend style=" color: blue; font-weight: bold;">Administracion De Tiempos</legend> -->
-                                <!-- <h:graphicImage value="Imagenes/Iconos/RelojADT.png" style="width: 60px; height:70px;"/> -->
-                                <p:commandButton style="width: 160px; height: 28px; " value="Configuración Recargos H. E." actionListener="#{controlATExtraRecargo.recibirPagina('novedad')}" action="atextrarecargo"></p:commandButton>
-                                <p:commandButton style="width: 160px; height: 28px; " value="Configuración Cuadrillas..." actionListener="#{controlATCuadrilla.recibirPagina('novedad')}" action="atcuadrilla"></p:commandButton>
-                                <p:commandButton style="width: 160px; height: 28px; " value="Parametros Tiempos..." actionListener="#{controlATParametroTiempo.recibirPagina('novedad')}" action="atparametrotiempo"></p:commandButton>
-                                <p:commandButton style="width: 160px; height: 28px; " value="Novedad Horas Extras..." actionListener="#{controlATHoraExtra.recibirPagina('novedad')}" action="athoraextra"></p:commandButton>
-                                <p:commandButton style="width: 160px; height: 28px; " value="Aprovación Horas Extras..." actionListener="#{controlATAprobacionHE.recibirPagina('novedad')}" action="ataprobacionhe"></p:commandButton>
-                            </fieldset>
-                            <fieldset style="height: 103px; width: 265px; border-radius: 10px">
-                                <!-- <legend style=" color: blue; font-weight: bold;">Préstamos</legend> -->
-                                <!-- <h:graphicImage value="Imagenes/Iconos/Prestamos1.png" style="width: 25px  ; height: 35px "/>
-                                <h:graphicImage value="Imagenes/Iconos/Prestamos2.png" style="width: 25px  ; height: 35px "/> -->
-                                <p:commandButton style="width: 160px; height: 28px; " value="Cartera..." actionListener="#{controlNovedad.recibir('Cartera')}" action="Impresion"></p:commandButton>
-                                <p:commandButton style="width: 160px; height: 28px; " value="Embargos..." actionListener="#{controlNovedad.recibir('Embargos')}" action="Impresion" ></p:commandButton>
-                                <!-- <legend style=" color: blue; width: 120px; font-weight: bold;">Otras Novedades</legend> -->
-                                <!-- <h:graphicImage value="Imagenes/Iconos/ManoOtrasNovedades.png" style="width: 50px; height: 60px;"/> -->
-                                <p:commandButton style="width: 190px; height: 28px;" value="Reemplazos" actionListener="#{controlNovedad.recibir('Reemplazos')}" action="Impresion"></p:commandButton>
-                                <p:commandButton style="width: 190px; height: 28px;" value="Cobro Incapacidades" actionListener="#{controlNovedad.recibir('Cobros Incapacidades')}" action="Impresion" ></p:commandButton>
-                                <p:commandButton style="width: 190px; height: 28px;" value="Unidades producidas" actionListener="#{controlNovedad.recibir('Cuotas Partes')}" action="Impresion"></p:commandButton>
-                                <p:commandButton style="width: 190px; height: 28px;" value="Hora catedra" actionListener="#{controlNovedad.recibir('Cuotas Partes')}" action="Impresion"></p:commandButton>
-                                <p:commandButton style="width: 190px; height: 28px;" value="Cuotas Partes " actionListener="#{controlNovedad.recibir('Cuotas Partes')}" action="Impresion"></p:commandButton>
-                            </fieldset>
-                            <p:commandButton id="ATRAS" value="" action="nomina" style="width: 90px; height: 30px; 
+                        <p:panel style="border-radius: 10px; position: absolute; width: 842px; height: 445px;" >
+                            <div style="display: inline-flex;">
+                                <fieldset style="position: relative; left: 0px; width: 245px; border-radius: 10px;">
+                                    <div style="height: 50px;">
+                                        <p:commandButton style="width: 40px; height: 40px; background-image: url(Imagenes/Iconos/novedad01.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; vertical-align: top;" value="" action="novedadempleado"/>
+                                        <h:commandLink style="font-weight: bold; color: #14388B;" value="Por Empleado..." action="novedadempleado"/>
+                                        <div style="position: relative; left: 46px; top: -26px; width: 177px; height: 34px;">
+                                            <h:outputText style="color: #000;" value="Novedades manuales y semiautomáticas por empleado"/>
+                                        </div>
+                                    </div>
+                                    <div style="height: 50px;">
+                                        <p:commandButton style="width: 40px; height: 40px; background-image: url(Imagenes/Iconos/novedad02.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; vertical-align: top;" value="" action="novedadconcepto" />
+                                        <h:commandLink style="font-weight: bold; color: #14388B;" value="Por Concepto..."/>
+                                        <div style="position: relative; left: 46px; top: -26px; width: 177px; height: 34px;">
+                                            <h:outputText style="color: #000;" value="Novedades manuales y semiautomáticas por concepto"/>
+                                        </div>
+                                    </div>
+                                    <div style="height: 50px;">
+                                        <p:commandButton style="width: 40px; height: 40px; background-image: url(Imagenes/Iconos/novedad03.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; vertical-align: top;" value=""  action="novedadtercero"/>
+                                        <h:commandLink style="font-weight: bold; color: #14388B;" value="Por Tercero..."/>
+                                        <div style="position: relative; left: 46px; top: -26px; width: 177px; height: 34px;">
+                                            <h:outputText style="color: #000;" value="Novedades manuales y semiautomáticas por tercero"/>
+                                        </div>
+                                    </div>
+                                    <div style="height: 50px;">
+                                        <p:commandButton style="width: 40px; height: 40px; background-image: url(Imagenes/Iconos/novedad04.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; vertical-align: top;" value="" action="novedadPlano"/>
+                                        <h:commandLink style="font-weight: bold; color: #14388B;" value="Cargue de Novedades"/>
+                                        <div style="position: relative; left: 46px; top: -26px; width: 177px; height: 34px;">
+                                            <h:outputText style="color: #000;" value="Cargue de novedades manuales y semiautomáticas"/>
+                                        </div>
+                                    </div>
+                                    <div style="height: 50px;">
+                                        <p:commandButton style="width: 40px; height: 40px; background-image: url(Imagenes/Iconos/novedad05.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; vertical-align: top;" value=""  action="atausentismos" ></p:commandButton>
+                                        <h:commandLink style="font-weight: bold; color: #14388B;" value="Ausentismos..."/>
+                                        <div style="position: relative; left: 46px; top: -26px; width: 177px; height: 34px;">
+                                            <h:outputText style="color: #000;" value="Registro de ausentismo por empleado"/>
+                                        </div>
+                                    </div>
+                                    <div style="height: 50px;">
+                                        <p:commandButton style="width: 40px; height: 40px; background-image: url(Imagenes/Iconos/novedad06.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; vertical-align: top;" value="" actionListener="#{controlNovedadesVacaciones.recibirPag('novedad')}" action="vacaciones" ></p:commandButton>
+                                        <h:commandLink style="font-weight: bold; color: #14388B;" value="Vacaciones"/>
+                                        <div style="position: relative; left: 46px; top: -26px; width: 177px; height: 34px;">
+                                            <h:outputText style="color: #000;" value="Novedades manuales y semiautomáticas por empleado"/>
+                                        </div>
+                                    </div>
+                                    <div style="height: 50px;">
+                                        <p:commandButton style="width: 40px; height: 40px; background-image: url(Imagenes/Iconos/novedad07.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; vertical-align: top;" value="" actionListener="#{controlNovedadesDefinitivas.recibirPagina('novedad')}" action="definitivas" ></p:commandButton>
+                                        <h:commandLink style="font-weight: bold; color: #14388B;" value="Liquidacion Definitiva"/>
+                                        <div style="position: relative; left: 46px; top: -26px; width: 177px; height: 34px;">
+                                            <h:outputText style="color: #000;" value="Registro de retiros por empleado"/>
+                                        </div>
+                                    </div>
+                                    <div style="height: 50px;">
+                                        <p:commandButton style="width: 40px; height: 40px; background-image: url(Imagenes/Iconos/novedad08.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; vertical-align: top;" value="" actionListener="#{controlNovedad.recibir('Pago Parcial De Cesantia')}" action="Impresion" ></p:commandButton>
+                                        <h:commandLink style="font-weight: bold; color: #14388B;" value="Pago Parcial de Cesantia"/>
+                                        <div style="position: relative; left: 46px; top: -26px; width: 177px; height: 34px;">
+                                            <h:outputText style="color: #000;" value="Registro de cesantías anticipadas por empleado"/>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <hr style="float: left; height: 120px;"/>
+                                <fieldset style="position: relative; left: 5px; width: 245px; border-radius: 10px;">
+                                    <div style="height: 50px;">
+                                        <p:commandButton style="width: 40px; height: 40px; background-image: url(Imagenes/Iconos/novedad09.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; vertical-align: top;" value="" actionListener="#{controlNovedad.recibir('Configuracion De Viaticos...')}" action="Impresion"></p:commandButton>
+                                        <h:commandLink style="font-weight: bold; color: #14388B;" value="Conf. de Viaticos" actionListener="#{controlNovedad.recibir('Configuracion De Viaticos...')}" action="Impresion"></h:commandLink>
+                                        <div style="position: relative; left: 46px; top: -26px; width: 177px; height: 34px;">
+                                            <h:outputText style="color: #000;" value="Configuración de viáticos"/>
+                                        </div>
+                                    </div>
+                                    <div style="height: 50px;">
+                                        <p:commandButton style="width: 40px; height: 40px; background-image: url(Imagenes/Iconos/novedad10.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; vertical-align: top;" value="" actionListener="#{controlNovedad.recibir('Tramitar Viaticos...')}" action="Impresion"></p:commandButton>
+                                        <h:commandLink style="font-weight: bold; color: #14388B;" value="Tramitar Viaticos" actionListener="#{controlNovedad.recibir('Tramitar Viaticos...')}" action="Impresion"></h:commandLink>
+                                        <div style="position: relative; left: 46px; top: -26px; width: 177px; height: 34px;">
+                                            <h:outputText style="color: #000;" value="Tramite de viaticos"/>
+                                        </div>
+                                    </div>
+                                    <div style="height: 50px;">
+                                        <p:commandButton style="width: 40px; height: 40px; background-image: url(Imagenes/Iconos/novedad11.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; vertical-align: top;" value="" actionListener="#{controlNovedad.recibir('Autorizacion De Viaticos')}" action="Impresion"></p:commandButton>
+                                        <h:commandLink style="font-weight: bold; color: #14388B;" value="Autorización de Viáticos" actionListener="#{controlNovedad.recibir('Autorizacion De Viaticos')}" action="Impresion"></h:commandLink>
+                                        <div style="position: relative; left: 46px; top: -26px; width: 177px; height: 34px;">
+                                            <h:outputText style="color: #000;" value="Autorización de viáticos"/>
+                                        </div>
+                                    </div>
+                                    <div style="height: 50px;">
+                                        <p:commandButton style="width: 40px; height: 40px; background-image: url(Imagenes/Iconos/novedad12.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; vertical-align: top; " value="" actionListener="#{controlATExtraRecargo.recibirPagina('novedad')}" action="atextrarecargo"></p:commandButton>
+                                        <h:commandLink style="font-weight: bold; color: #14388B; " value="Configuración Recargos H. E." actionListener="#{controlATExtraRecargo.recibirPagina('novedad')}" action="atextrarecargo"></h:commandLink>
+                                        <div style="position: relative; left: 46px; top: -26px; width: 177px; height: 34px;">
+                                            <h:outputText style="color: #000;" value="Configuración general de las cuadrillas"/>
+                                        </div>
+                                    </div>
+                                    <div style="height: 50px;">
+                                        <p:commandButton style="width: 40px; height: 40px; background-image: url(Imagenes/Iconos/novedad13.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; vertical-align: top; " value="" actionListener="#{controlATCuadrilla.recibirPagina('novedad')}" action="atcuadrilla"></p:commandButton>
+                                        <h:commandLink style="font-weight: bold; color: #14388B; " value="Configuración Cuadrillas..." actionListener="#{controlATCuadrilla.recibirPagina('novedad')}" action="atcuadrilla"></h:commandLink>
+                                        <div style="position: relative; left: 46px; top: -26px; width: 177px; height: 34px;">
+                                            <h:outputText style="color: #000;" value="Configuración de cuadrillas y turnos"/>
+                                        </div>
+                                    </div>
+                                    <div style="height: 50px;">
+                                        <p:commandButton style="width: 40px; height: 40px; background-image: url(Imagenes/Iconos/novedad14.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; vertical-align: top; " value="" actionListener="#{controlATParametroTiempo.recibirPagina('novedad')}" action="atparametrotiempo"></p:commandButton>
+                                        <h:commandLink style="font-weight: bold; color: #14388B; " value="Parametros Tiempos..." actionListener="#{controlATParametroTiempo.recibirPagina('novedad')}" action="atparametrotiempo"></h:commandLink>
+                                        <div style="position: relative; left: 46px; top: -26px; width: 177px; height: 34px;">
+                                            <h:outputText style="color: #000;" value="Ejecución de las marcaciones y de las simulaciones"/>
+                                        </div>
+                                    </div>
+                                    <div style="height: 50px;">
+                                        <p:commandButton style="width: 40px; height: 40px; background-image: url(Imagenes/Iconos/novedad15.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; vertical-align: top; " value="" actionListener="#{controlATHoraExtra.recibirPagina('novedad')}" action="athoraextra"></p:commandButton>
+                                        <h:commandLink style="font-weight: bold; color: #14388B; " value="Novedad Horas Extras..." actionListener="#{controlATHoraExtra.recibirPagina('novedad')}" action="athoraextra"></h:commandLink>
+                                        <div style="position: relative; left: 46px; top: -26px; width: 177px; height: 34px;">
+                                            <h:outputText style="color: #000;" value="Horas extra adicionales a las cuadrillas"/>
+                                        </div>
+                                    </div>
+                                    <div style="height: 50px;">
+                                        <p:commandButton style="width: 40px; height: 40px; background-image: url(Imagenes/Iconos/novedad16.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; vertical-align: top; " value="" actionListener="#{controlATAprobacionHE.recibirPagina('novedad')}" action="ataprobacionhe"></p:commandButton>
+                                        <h:commandLink style="font-weight: bold; color: #14388B; " value="Aprobación Horas Extras..." actionListener="#{controlATAprobacionHE.recibirPagina('novedad')}" action="ataprobacionhe"></h:commandLink>
+                                        <div style="position: relative; left: 46px; top: -26px; width: 177px; height: 34px;">
+                                            <h:outputText style="color: #000;" value="Aprobación de las horas extra para las cuadrillas"/>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <hr style="float: left; height: 120px;"/>
+                                <fieldset style="position: relative; left: 10px; width: 245px; border-radius: 10px;">
+                                    <div style="height: 50px;">
+                                        <p:commandButton style="width: 40px; height: 40px; background-image: url(Imagenes/Iconos/novedad17.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; vertical-align: top; " value="" actionListener="#{controlNovedad.recibir('Cartera')}" action="Impresion"></p:commandButton>
+                                        <h:commandLink style="font-weight: bold; color: #14388B; " value="Cartera..." actionListener="#{controlNovedad.recibir('Cartera')}" action="Impresion"></h:commandLink>
+                                        <div style="position: relative; left: 46px; top: -26px; width: 177px; height: 34px;">
+                                            <h:outputText style="color: #000;" value="Información de cartera"/>
+                                        </div>
+                                    </div>
+                                    <div style="height: 50px;">
+                                        <p:commandButton style="width: 40px; height: 40px; background-image: url(Imagenes/Iconos/novedad18.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; vertical-align: top; " value="" actionListener="#{controlNovedad.recibir('Embargos')}" action="Impresion" ></p:commandButton>
+                                        <h:commandLink style="font-weight: bold; color: #14388B; " value="Embargos..." actionListener="#{controlNovedad.recibir('Embargos')}" action="Impresion" ></h:commandLink>
+                                        <div style="position: relative; left: 46px; top: -26px; width: 177px; height: 34px;">
+                                            <h:outputText style="color: #000;" value="Embargos por empleado"/>
+                                        </div>
+                                    </div>
+                                    <div style="height: 50px;">
+                                        <p:commandButton style="width: 40px; height: 40px; background-image: url(Imagenes/Iconos/novedad19.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; vertical-align: top;" value="" actionListener="#{controlNovedad.recibir('Reemplazos')}" action="Impresion"></p:commandButton>
+                                        <h:commandLink style="font-weight: bold; color: #14388B;" value="Reemplazos" actionListener="#{controlNovedad.recibir('Reemplazos')}" action="Impresion"></h:commandLink>
+                                        <div style="position: relative; left: 46px; top: -26px; width: 177px; height: 34px;">
+                                            <h:outputText style="color: #000;" value="Reemplazos por empleado"/>
+                                        </div>
+                                    </div>
+                                    <div style="height: 50px;">
+                                        <p:commandButton style="width: 40px; height: 40px; background-image: url(Imagenes/Iconos/novedad20.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; vertical-align: top;" value="" actionListener="#{controlNovedad.recibir('Cobros Incapacidades')}" action="Impresion" ></p:commandButton>
+                                        <h:commandLink style="font-weight: bold; color: #14388B;" value="Cobro Incapacidades" actionListener="#{controlNovedad.recibir('Cobros Incapacidades')}" action="Impresion" ></h:commandLink>
+                                        <div style="position: relative; left: 46px; top: -26px; width: 177px; height: 34px;">
+                                            <h:outputText style="color: #000;" value="Cobro de incapacidades por empleado"/>
+                                        </div>
+                                    </div>
+                                    <div style="height: 50px;">
+                                        <p:commandButton style="width: 40px; height: 40px; background-image: url(Imagenes/Iconos/novedad21.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; vertical-align: top;" value="" actionListener="#{controlNovedad.recibir('Cuotas Partes')}" action="Impresion"></p:commandButton>
+                                        <h:commandLink style="font-weight: bold; color: #14388B;" value="Unidades producidas" actionListener="#{controlNovedad.recibir('Cuotas Partes')}" action="Impresion"></h:commandLink>
+                                        <div style="position: relative; left: 46px; top: -26px; width: 177px; height: 34px;">
+                                           <h:outputText style="color: #000;" value="Configuración y registro de las unidades producidas "/>
+                                        </div>
+                                    </div>
+                                    <div style="height: 50px;">
+                                        <p:commandButton style="width: 40px; height: 40px; background-image: url(Imagenes/Iconos/novedad22.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; vertical-align: top;" value="" actionListener="#{controlNovedad.recibir('Cuotas Partes')}" action="Impresion"></p:commandButton>
+                                        <h:commandLink style="font-weight: bold; color: #14388B;" value="Hora catedra" actionListener="#{controlNovedad.recibir('Cuotas Partes')}" action="Impresion"></h:commandLink>
+                                        <div style="position: relative; left: 46px; top: -26px; width: 177px; height: 34px;">
+                                            <h:outputText style="color: #000;" value="Registro y configuración de las horas cátedra"/>
+                                        </div>
+                                    </div>
+                                    <div style="height: 50px;">
+                                        <p:commandButton style="width: 40px; height: 40px; background-image: url(Imagenes/Iconos/novedad23.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; vertical-align: top;" value="" actionListener="#{controlNovedad.recibir('Cuotas Partes')}" action="Impresion"></p:commandButton>
+                                        <h:commandLink style="font-weight: bold; color: #14388B;" value="Cuotas Partes" actionListener="#{controlNovedad.recibir('Cuotas Partes')}" action="Impresion"></h:commandLink>
+                                        <div style="position: relative; left: 46px; top: -26px; width: 177px; height: 34px;">
+                                            <h:outputText style="color: #000;" value="Registro y configuración de las cuotas parte"/>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <p:commandButton id="ATRAS" value="" action="nomina" style="position: absolute; left: 760px; top: 462px;
+                                             width: 90px; height: 30px; 
                                              background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; 
-                                             background-repeat: no-repeat; border: none;"></p:commandButton>
+                                             background-repeat: no-repeat; border: none; "></p:commandButton>
                         </p:panel>
                     </p:panel>
                 </h:form>

@@ -2690,6 +2690,8 @@ public class ControlEmplComprobantes implements Serializable {
     public List<Terceros> getListaTerceros() {
         if (empleado.getEmpresa().getSecuencia() != null) {
             listaTerceros = administrarComprobantes.consultarLOVTerceros(empleado.getEmpresa().getSecuencia());
+        //if (empleado.getEmpresa() != null) {
+            //listaTerceros = administrarComprobantes.consultarLOVTerceros(empleado.getEmpresa());
         }
         return listaTerceros;
     }

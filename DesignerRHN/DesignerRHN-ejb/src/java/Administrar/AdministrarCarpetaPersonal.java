@@ -575,6 +575,20 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
             return null;
         }
     }
+    
+    @Override
+    public Empresas obtenerEmpresa(BigInteger secEmpresa){
+        System.out.println(this.getClass().getName()+".obtenerEmpresa()");
+        Empresas empresa = null;
+        try{
+        empresa = persistenciaEmpresas.buscarEmpresasSecuencia(em, secEmpresa);
+        return empresa;
+        } catch(Exception e){
+            System.out.println(this.getClass().getName()+" Error en obtenerEmpresa.");
+            e.printStackTrace();
+            return empresa;
+        }
+    }
 
     @Override
     public Usuarios consultarUsuario(String alias) {

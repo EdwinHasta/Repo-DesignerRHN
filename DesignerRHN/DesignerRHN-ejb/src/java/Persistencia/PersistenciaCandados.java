@@ -79,7 +79,8 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
     public Integer progresoLiquidacion(EntityManager em, Integer totalEmpleadosALiquidar) {
         try {
             em.clear();
-            String sqlQuery = "select conteoliquidados(?) from dual";
+            //String sqlQuery = "select conteoliquidados(?) from dual";
+            String sqlQuery = "call liquidar_pkg.conteoLiquidados(?)";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, totalEmpleadosALiquidar);
             BigDecimal progreso = (BigDecimal) query.getSingleResult();

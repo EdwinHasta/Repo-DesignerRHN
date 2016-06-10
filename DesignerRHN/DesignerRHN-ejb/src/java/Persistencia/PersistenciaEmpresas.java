@@ -114,18 +114,18 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
 
     @Override
     public Empresas buscarEmpresasSecuencia(EntityManager em, BigInteger secuencia) {
-        Empresas empresas;
+        Empresas empresa;
         try {
             em.clear();
             Query query = em.createQuery("SELECT e FROM Empresas e WHERE e.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
-            empresas = (Empresas) query.getSingleResult();
-            return empresas;
+            empresa = (Empresas) query.getSingleResult();
+            return empresa;
         } catch (Exception e) {
-            empresas = null;
+            empresa = null;
             System.out.println("Error buscarEmpresasSecuencia buscarEmpresasSecuencia");
-            return empresas;
+            return empresa;
         }
     }
 

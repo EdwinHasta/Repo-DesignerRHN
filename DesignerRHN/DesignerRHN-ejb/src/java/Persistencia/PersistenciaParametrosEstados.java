@@ -24,6 +24,7 @@ public class PersistenciaParametrosEstados implements PersistenciaParametrosEsta
 
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
+     * @param em
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
@@ -32,7 +33,7 @@ public class PersistenciaParametrosEstados implements PersistenciaParametrosEsta
     public Integer empleadosParaLiquidar(EntityManager em, String usuarioBD) {
         try {
             em.clear();
-            String sqlQuery = "SELECT COUNT(*) FROM PARAMETROSESTADOS pe WHERE exists (select p.secuencia from parametros p, parametrosinstancias pi, usuariosinstancias ui , usuarios u where p.secuencia = pe.parametro and u.secuencia = p.usuario and pi.parametro = p.secuencia and ui.instancia = pi.instancia and u.alias = ? and proceso = (SELECT PROCESO FROM PARAMETROSESTRUCTURAS pe, usuarios u where u.secuencia = pe.usuario and u.alias=?))";
+            String sqlQuery = "SELECT COUNT(*) FROM PARAMETROSESTADOS pe WHERE exists (select p.secuencia from parametros p, parametrosinstancias pi, usuariosinstancias ui , usuarios u where p.secuencia = pe.parametro and u.secuencia = p.usuario and pi.parametro = p.secuencia and ui.instancia = pi.instancia and u.alias = ? and proceso = (SELECT pe.proceso FROM PARAMETROSESTRUCTURAS pe, usuarios u where u.secuencia = pe.usuario and u.alias=?))";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, usuarioBD);
             query.setParameter(2, usuarioBD);
@@ -68,13 +69,13 @@ public class PersistenciaParametrosEstados implements PersistenciaParametrosEsta
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            String sqlQuery = "UPDATE PARAMETROSESTADOS pe SET ESTADO= 'A LIQUIDAR'\n"
-                    + "        where  ESTADO = 'LIQUIDADO'\n"
-                    + "        AND exists (select --+ rule\n"
-                    + "                     'x' from usuariosinstancias ui , usuarios u, parametros p, parametrosinstancias pi\n"
-                    + "                    where p.secuencia = pe.parametro and u.secuencia = p.usuario\n"
-                    + "                    and pi.parametro = p.secuencia and ui.instancia = pi.instancia and u.alias = user\n"
-                    + "                    and proceso = (SELECT PROCESO FROM PARAMETROSESTRUCTURAS pe, usuarios u where u.secuencia = pe.usuario and u.alias=user))";
+            String sqlQuery = "UPDATE PARAMETROSESTADOS pe SET ESTADO= 'A LIQUIDAR' "
+                    + "        where  ESTADO = 'LIQUIDADO' "
+                    + "        AND exists (select --+ rule "
+                    + "                     'x' from usuariosinstancias ui , usuarios u, parametros p, parametrosinstancias pi "
+                    + "                    where p.secuencia = pe.parametro and u.secuencia = p.usuario "
+                    + "                    and pi.parametro = p.secuencia and ui.instancia = pi.instancia and u.alias = user "
+                    + "                    and proceso = (SELECT pe.proceso FROM ParametrosEstructuras pe, usuarios u where u.secuencia = pe.usuario and u.alias=user))";
             Query query = em.createNativeQuery(sqlQuery);
             int i = query.executeUpdate();
             tx.commit();

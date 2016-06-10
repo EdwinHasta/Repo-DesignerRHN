@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+//import javax.ejb.Remove;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -58,6 +59,7 @@ public class ControlNReporteNomina implements Serializable {
     AdministrarNReportesNominaInterface administrarNReportesNomina;
     @EJB
     AdministarReportesInterface administarReportes;
+
     private ParametrosInformes parametroDeInforme;
     private ParametrosInformes nuevoParametroInforme;
     private List<Inforeportes> listaIR;
@@ -145,7 +147,8 @@ public class ControlNReporteNomina implements Serializable {
     //para Recordar
     private DataTable tabla;
 
-    public ControlNReporteNomina() throws FileNotFoundException {
+    public ControlNReporteNomina() {
+        System.out.println(this.getClass().getName() + ".Constructor()");
         activoMostrarTodos = true;
         activoBuscarReporte = false;
         color = "black";
@@ -195,15 +198,19 @@ public class ControlNReporteNomina implements Serializable {
         //reporte = new DefaultStreamedContent();
         cabezeraVisor = null;
         estadoReporte = false;
+        System.out.println(this.getClass().getName() + " fin del Constructor()");
     }
 
     @PostConstruct
     public void iniciarAdministradores() {
+        System.out.println(this.getClass().getName() + ".iniciarAdministradores()");
         try {
             FacesContext contexto = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) contexto.getExternalContext().getSession(false);
             administarReportes.obtenerConexion(ses.getId());
             administrarNReportesNomina.obtenerConexion(ses.getId());
+
+            System.out.println(this.getClass().getName() + " fin de iniciarAdministradores()");
         } catch (Exception e) {
             System.out.println("Error postconstruct controlNReporteNomina" + e);
             System.out.println("Causa: " + e.getCause());
@@ -211,13 +218,16 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void iniciarPagina() {
+        System.out.println(this.getClass().getName() + ".iniciarPagina()");
         activoMostrarTodos = true;
         activoBuscarReporte = false;
         listaIR = null;
         getListaIR();
+        listValEmpleados = new ArrayList<Empleados>();
     }
 
     public void requisitosParaReporte() {
+        System.out.println(this.getClass().getName() + ".requisitosParaReporte()");
         RequestContext context = RequestContext.getCurrentInstance();
         requisitosReporte = "";
         if (reporteSeleccionado.getFecdesde().equals("SI")) {
@@ -254,6 +264,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void seleccionRegistro(Inforeportes reporte) {
+        System.out.println(this.getClass().getName() + ".seleccionRegistro()");
         RequestContext context = RequestContext.getCurrentInstance();
         reporteSeleccionado = reporte;
 
@@ -261,62 +272,80 @@ public class ControlNReporteNomina implements Serializable {
         defaultPropiedadesParametrosReporte();
         if (reporteSeleccionado.getFecdesde().equals("SI")) {
             color = "red";
-            RequestContext.getCurrentInstance().update("formParametros");
+            //RequestContext.getCurrentInstance().update("formParametros");
         }
         if (reporteSeleccionado.getFechasta().equals("SI")) {
             color2 = "red";
-            RequestContext.getCurrentInstance().update("formParametros");
+            //RequestContext.getCurrentInstance().update("formParametros");
         }
         if (reporteSeleccionado.getEmdesde().equals("SI")) {
             empleadoDesdeParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:empleadoDesdeParametro");
-            empleadoDesdeParametro.setStyle("position: absolute; top: 41px; left: 150px; height: 10px; font-size: 11px; width: 90px; color: red;");
-            RequestContext.getCurrentInstance().update("formParametros:empleadoDesdeParametro");
+            //empleadoDesdeParametro.setStyle("position: absolute; top: 41px; left: 150px; height: 10px; font-size: 11px; width: 90px; color: red;");
+            if (!empleadoDesdeParametro.getStyle().contains(" color: red;")) {
+                empleadoDesdeParametro.setStyle(empleadoDesdeParametro.getStyle() + " color: red;");
+            }
+        }else{
+            if (empleadoDesdeParametro.getStyle().contains(" color: red;")) {
+                
+                System.out.println("reeemplazarr "+empleadoDesdeParametro.getStyle().replace(" color: red;", ""));
+                empleadoDesdeParametro.setStyle( empleadoDesdeParametro.getStyle().replace(" color: red;", "") );
+            }
         }
+        RequestContext.getCurrentInstance().update("formParametros:empleadoDesdeParametro");
         if (reporteSeleccionado.getEmhasta().equals("SI")) {
             empleadoHastaParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:empleadoHastaParametro");
-            empleadoHastaParametro.setStyle("position: absolute; top: 41px; left: 330px; height: 10px; font-size: 11px; width: 90px; color: red;");
-            RequestContext.getCurrentInstance().update("formParametros:empleadoHastaParametro");
+            //empleadoHastaParametro.setStyle("position: absolute; top: 41px; left: 330px; height: 10px; font-size: 11px; width: 90px; color: red;");
+            empleadoHastaParametro.setStyle(empleadoHastaParametro.getStyle() + "color: red;");
+            //RequestContext.getCurrentInstance().update("formParametros:empleadoHastaParametro");
         }
         if (reporteSeleccionado.getGrupo() != null && reporteSeleccionado.getGrupo().equals("SI")) {
             grupoParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:grupoParametro");
-            grupoParametro.setStyle("position: absolute; top: 89px; left: 150px; height: 10px; font-size: 11px; width: 130px; color: red;");
-            RequestContext.getCurrentInstance().update("formParametros:grupoParametro");
+            //grupoParametro.setStyle("position: absolute; top: 89px; left: 150px; height: 10px; font-size: 11px; width: 130px; color: red;");
+            grupoParametro.setStyle(grupoParametro.getStyle() + "color: red;");
+            //RequestContext.getCurrentInstance().update("formParametros:grupoParametro");
         }
         if (reporteSeleccionado.getLocalizacion().equals("SI")) {
             estructuraParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:estructuraParametro");
-            estructuraParametro.setStyle("position: absolute; top: 20px; left: 625px;height: 10px; font-size: 11px;width: 180px; color: red;");
-            RequestContext.getCurrentInstance().update("formParametros:estructuraParametro");
+            //estructuraParametro.setStyle("position: absolute; top: 20px; left: 625px;height: 10px; font-size: 11px;width: 180px; color: red;");
+            estructuraParametro.setStyle(estructuraParametro.getStyle() + "color: red;");
+            //RequestContext.getCurrentInstance().update("formParametros:estructuraParametro");
         }
         if (reporteSeleccionado.getTipotrabajador().equals("SI")) {
             tipoTrabajadorParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:tipoTrabajadorParametro");
-            tipoTrabajadorParametro.setStyle("position: absolute; top: 43px; left: 625px;height: 10px; font-size: 11px; width: 180px; color: red;");
-            RequestContext.getCurrentInstance().update("formParametros:tipoTrabajadorParametro");
+            //tipoTrabajadorParametro.setStyle("position: absolute; top: 43px; left: 625px;height: 10px; font-size: 11px; width: 180px; color: red;");
+            tipoTrabajadorParametro.setStyle(tipoTrabajadorParametro.getStyle() + "color: red;");
+            //RequestContext.getCurrentInstance().update("formParametros:tipoTrabajadorParametro");
         }
         if (reporteSeleccionado.getTercero().equals("SI")) {
             terceroParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:terceroParametro");
-            terceroParametro.setStyle("position: absolute; top: 66px; left: 625px; height: 10px; font-size: 11px; width: 180px; color: red;");
-            RequestContext.getCurrentInstance().update("formParametros:terceroParametro");
+            //terceroParametro.setStyle("position: absolute; top: 66px; left: 625px; height: 10px; font-size: 11px; width: 180px; color: red;");
+            terceroParametro.setStyle(terceroParametro.getStyle() + "color: red;");
+            //RequestContext.getCurrentInstance().update("formParametros:terceroParametro");
         }
         if (reporteSeleccionado.getEstado().equals("SI")) {
             estadoParametro = (SelectOneMenu) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:estadoParametro");
             estadoParametro.setStyleClass("selectOneMenuNReporteN");
-            RequestContext.getCurrentInstance().update("formParametros:estadoParametro");
+            //RequestContext.getCurrentInstance().update("formParametros:estadoParametro");
         }
+        RequestContext.getCurrentInstance().update("formParametros");
         context.update("form:reportesLaboral");
     }
 
     public void dispararDialogoGuardarCambios() {
+        System.out.println(this.getClass().getName() + ".dispararDialogoGuardarCambios()");
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("confirmarGuardar.show()");
 
     }
 
     public void guardarYSalir() {
+        System.out.println(this.getClass().getName() + ".guardarYSalir()");
         guardarCambios();
         salir();
     }
 
     public void guardarCambios() {
+        System.out.println(this.getClass().getName() + ".guardarCambios()");
         RequestContext context = RequestContext.getCurrentInstance();
         try {
             if (cambiosReporte == false) {
@@ -366,6 +395,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void modificarParametroInforme() {
+        System.out.println(this.getClass().getName() + ".modificarParametroInforme()");
         if (parametroDeInforme.getCodigoempleadodesde() != null && parametroDeInforme.getCodigoempleadohasta() != null
                 && parametroDeInforme.getFechadesde() != null && parametroDeInforme.getFechahasta() != null) {
             if (parametroDeInforme.getFechadesde().before(parametroDeInforme.getFechahasta())) {
@@ -397,6 +427,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void posicionCelda(int i) {
+        System.out.println(this.getClass().getName() + ".posicionCelda()");
         casilla = i;
         if (permitirIndex == true) {
             casillaInforReporte = -1;
@@ -418,6 +449,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void editarCelda() {
+        System.out.println(this.getClass().getName() + ".editarCelda()");
         RequestContext context = RequestContext.getCurrentInstance();
         if (casilla >= 1) {
             if (casilla == 1) {
@@ -492,6 +524,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void autocompletarGeneral(String campoConfirmar, String valorConfirmar) {
+        System.out.println(this.getClass().getName() + ".autocompletarGeneral()");
         RequestContext context = RequestContext.getCurrentInstance();
         int indiceUnicoElemento = -1;
         int coincidencias = 0;
@@ -783,6 +816,9 @@ public class ControlNReporteNomina implements Serializable {
                     context.update("form:ACEPTAR");
                 } else {
                     permitirIndex = false;
+                    if ((listValEmpleados == null) || listValEmpleados.isEmpty()) {
+                        listValEmpleados = null;
+                    }
                     context.update("form:EmpleadoDesdeDialogo");
                     context.execute("EmpleadoDesdeDialogo.show()");
                 }
@@ -828,8 +864,12 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void listaValoresBoton() {
+        System.out.println(this.getClass().getName() + ".listaValoresBoton()");
         RequestContext context = RequestContext.getCurrentInstance();
         if (casilla == 2) {
+            if ((listValEmpleados == null) || listValEmpleados.isEmpty()) {
+                listValEmpleados = null;
+            }
             context.update("form:EmpleadoDesdeDialogo");
             context.execute("EmpleadoDesdeDialogo.show()");
         }
@@ -876,8 +916,12 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void dialogosParametros(int pos) {
+        System.out.println(this.getClass().getName() + ".dialogosParametros()");
         RequestContext context = RequestContext.getCurrentInstance();
         if (pos == 2) {
+            if ((listValEmpleados == null) || listValEmpleados.isEmpty()) {
+                listValEmpleados = null;
+            }
             context.update("form:EmpleadoDesdeDialogo");
             context.execute("EmpleadoDesdeDialogo.show()");
         }
@@ -925,10 +969,12 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void activarAceptar() {
+        System.out.println(this.getClass().getName() + ".activarAceptar()");
         aceptar = false;
     }
 
     public void actualizarEmplDesde() {
+        System.out.println(this.getClass().getName() + ".actualizarEmplDesde()");
         permitirIndex = true;
         parametroDeInforme.setCodigoempleadodesde(empleadoSeleccionado.getCodigoempleado());
         parametroModificacion = parametroDeInforme;
@@ -947,6 +993,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void cancelarCambioEmplDesde() {
+        System.out.println(this.getClass().getName() + ".cancelarCambioEmplDesde()");
         empleadoSeleccionado = null;
         aceptar = true;
         filtrarListEmpleados = null;
@@ -958,6 +1005,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void actualizarEmplHasta() {
+        System.out.println(this.getClass().getName() + ".actualizarEmplHasta()");
         permitirIndex = true;
         parametroDeInforme.setCodigoempleadohasta(empleadoSeleccionado.getCodigoempleado());
         parametroModificacion = parametroDeInforme;
@@ -975,6 +1023,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void cancelarCambioEmplHasta() {
+        System.out.println(this.getClass().getName() + ".cancelarCambioEmplHasta()");
         empleadoSeleccionado = null;
         aceptar = true;
         filtrarListEmpleados = null;
@@ -986,6 +1035,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void actualizarGrupo() {
+        System.out.println(this.getClass().getName() + ".actualizarGrupo()");
         permitirIndex = true;
         parametroDeInforme.setGrupo(grupoCSeleccionado);
         parametroModificacion = parametroDeInforme;
@@ -1004,6 +1054,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void cancelarCambioGrupo() {
+        System.out.println(this.getClass().getName() + ".cancelarCambioGrupo()");
         grupoCSeleccionado = null;
         aceptar = true;
         filtrarListGruposConceptos = null;
@@ -1015,6 +1066,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void actualizarUbicacionGeografica() {
+        System.out.println(this.getClass().getName() + ".actualizarUbicacionGeografica()");
         permitirIndex = true;
         parametroDeInforme.setUbicaciongeografica(ubicacionesGSeleccionado);
         parametroModificacion = parametroDeInforme;
@@ -1033,6 +1085,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void cancelarCambioUbicacionGeografica() {
+        System.out.println(this.getClass().getName() + ".cancelarCambioUbicacionGeografica()");
         ubicacionesGSeleccionado = null;
         aceptar = true;
         filtrarListUbicacionesGeograficas = null;
@@ -1044,6 +1097,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void actualizarTipoAsociacion() {
+        System.out.println(this.getClass().getName() + ".actualizarTipoAsociacion()");
         permitirIndex = true;
         parametroDeInforme.setTipoasociacion(tiposASeleccionado);
         parametroModificacion = parametroDeInforme;
@@ -1062,6 +1116,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void cancelarTipoAsociacion() {
+        System.out.println(this.getClass().getName() + ".cancelarTipoAsociacion()");
         tiposASeleccionado = null;
         aceptar = true;
         filtrarListTiposAsociaciones = null;
@@ -1073,6 +1128,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void actualizarEmpresa() {
+        System.out.println(this.getClass().getName() + ".actualizarEmpresa()");
         permitirIndex = true;
         parametroDeInforme.setEmpresa(empresaSeleccionada);
         parametroModificacion = parametroDeInforme;
@@ -1091,6 +1147,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void cancelarEmpresa() {
+        System.out.println(this.getClass().getName() + ".cancelarEmpresa()");
         empresaSeleccionada = null;
         aceptar = true;
         filtrarListEmpresas = null;
@@ -1102,6 +1159,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void actualizarEstructura() {
+        System.out.println(this.getClass().getName() + ".actualizarEstructura()");
         parametroDeInforme.setLocalizacion(estructuraSeleccionada);
         parametroModificacion = parametroDeInforme;
         cambiosReporte = false;
@@ -1120,6 +1178,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void cancelarEstructura() {
+        System.out.println(this.getClass().getName() + ".cancelarEstructura()");
         estructuraSeleccionada = null;
         aceptar = true;
         filtrarListEstructuras = null;
@@ -1131,6 +1190,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void actualizarTipoTrabajador() {
+        System.out.println(this.getClass().getName() + ".actualizarTipoTrabajador()");
         parametroDeInforme.setTipotrabajador(tipoTSeleccionado);
         parametroModificacion = parametroDeInforme;
         cambiosReporte = false;
@@ -1149,6 +1209,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void cancelarTipoTrabajador() {
+        System.out.println(this.getClass().getName() + ".cancelarTipoTrabajador()");
         tipoTSeleccionado = null;
         aceptar = true;
         filtrarListTiposTrabajadores = null;
@@ -1160,6 +1221,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void actualizarTercero() {
+        System.out.println(this.getClass().getName() + ".actualizarTercero()");
         permitirIndex = true;
         parametroDeInforme.setTercero(terceroSeleccionado);
         parametroModificacion = parametroDeInforme;
@@ -1178,6 +1240,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void cancelarTercero() {
+        System.out.println(this.getClass().getName() + ".cancelarTercero()");
         terceroSeleccionado = null;
         aceptar = true;
         filtrarListTerceros = null;
@@ -1189,6 +1252,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void actualizarProceso() {
+        System.out.println(this.getClass().getName() + ".actualizarProceso()");
         permitirIndex = true;
         parametroDeInforme.setProceso(procesoSeleccionado);
         parametroModificacion = parametroDeInforme;
@@ -1207,6 +1271,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void cancelarProceso() {
+        System.out.println(this.getClass().getName() + ".cancelarProceso()");
         procesoSeleccionado = null;
         aceptar = true;
         filtrarListProcesos = null;
@@ -1218,6 +1283,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void actualizarAsociacion() {
+        System.out.println(this.getClass().getName() + ".actualizarAsociacion()");
         permitirIndex = true;
         parametroDeInforme.setAsociacion(asociacionSeleccionado);
         parametroModificacion = parametroDeInforme;
@@ -1236,6 +1302,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void cancelarAsociacion() {
+        System.out.println(this.getClass().getName() + ".cancelarAsociacion()");
         asociacionSeleccionado = null;
         aceptar = true;
         filtrarListAsociaciones = null;
@@ -1247,17 +1314,20 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void mostrarDialogoGenerarReporte() {
+        System.out.println(this.getClass().getName() + ".mostrarDialogoGenerarReporte()");
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("formDialogos:reporteAGenerar");
         context.execute("reporteAGenerar.show()");
     }
 
     public void cancelarGenerarReporte() {
+        System.out.println(this.getClass().getName() + ".cancelarGenerarReporte()");
         reporteGenerar = "";
         posicionReporte = -1;
     }
 
     public void mostrarDialogoBuscarReporte() {
+        System.out.println(this.getClass().getName() + ".mostrarDialogoBuscarReporte()");
         try {
             if (cambiosReporte == true) {
                 //getListValInforeportes();
@@ -1279,6 +1349,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void salir() {
+        System.out.println(this.getClass().getName() + ".salir()");
         if (bandera == 1) {
             FacesContext c = FacesContext.getCurrentInstance();
             altoTabla = "170";
@@ -1313,6 +1384,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void actualizarSeleccionInforeporte() {
+        System.out.println(this.getClass().getName() + ".actualizarSeleccionInforeporte()");
         RequestContext context = RequestContext.getCurrentInstance();
         if (bandera == 1) {
             altoTabla = "170";
@@ -1344,6 +1416,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void cancelarSeleccionInforeporte() {
+        System.out.println(this.getClass().getName() + ".cancelarSeleccionInforeporte()");
         filtrarListIRU = null;
         reporteSeleccionadoLOV = null;
         aceptar = true;
@@ -1354,6 +1427,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void mostrarTodos() {
+        System.out.println(this.getClass().getName() + ".mostrarTodos()");
         if (cambiosReporte == true) {
             defaultPropiedadesParametrosReporte();
             listaIR.clear();
@@ -1373,11 +1447,13 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void cancelarYSalir() {
+        System.out.println(this.getClass().getName() + ".cancelarYSalir()");
         cancelarModificaciones();
         salir();
     }
 
     public void cancelarModificaciones() {
+        System.out.println(this.getClass().getName() + ".cancelarModificaciones()");
         if (bandera == 1) {
             altoTabla = "170";
             FacesContext c = FacesContext.getCurrentInstance();
@@ -1424,6 +1500,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void activarCtrlF11() {
+        System.out.println(this.getClass().getName() + ".activarCtrlF11()");
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             altoTabla = "148";
@@ -1446,6 +1523,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void modificacionTipoReporte(Inforeportes reporte) {
+        System.out.println(this.getClass().getName() + ".modificacionTipoReporte()");
         reporteSeleccionado = reporte;
         cambiosReporte = false;
         if (listaInfoReportesModificados.isEmpty()) {
@@ -1462,52 +1540,56 @@ public class ControlNReporteNomina implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void reporteSeleccionado(int i) {
-        System.out.println("Posicion del reporte : " + i);
-    }
-
+    /*public void reporteSeleccionado(int i) {
+     System.out.println(this.getClass().getName() + ".reporteSeleccionado()");
+     System.out.println("Posicion del reporte : " + i);
+     }*/
     public void defaultPropiedadesParametrosReporte() {
-
+        System.out.println(this.getClass().getName() + ".defaultPropiedadesParametrosReporte()");
         color = "black";
         decoracion = "none";
         color2 = "black";
         decoracion2 = "none";
-        RequestContext.getCurrentInstance().update("formParametros");
+        /*
+         RequestContext.getCurrentInstance().update("formParametros");
 
-        empleadoDesdeParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:empleadoDesdeParametro");
-        empleadoDesdeParametro.setStyle("position: absolute; top: 41px; left: 150px; height: 10px; font-size: 11px; width: 90px;");
-        RequestContext.getCurrentInstance().update("formParametros:empleadoDesdeParametro");
+         empleadoDesdeParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:empleadoDesdeParametro");
+         empleadoDesdeParametro.setStyle("position: absolute; top: 41px; left: 150px; height: 10px; font-size: 11px; width: 90px;");
+         RequestContext.getCurrentInstance().update("formParametros:empleadoDesdeParametro");
 
-        empleadoHastaParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:empleadoHastaParametro");
-        empleadoHastaParametro.setStyle("position: absolute; top: 41px; left: 330px; height: 10px; font-size: 11px; width: 90px;");
-        RequestContext.getCurrentInstance().update("formParametros:empleadoHastaParametro");
+         empleadoHastaParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:empleadoHastaParametro");
+         empleadoHastaParametro.setStyle("position: absolute; top: 41px; left: 330px; height: 10px; font-size: 11px; width: 90px;");
+         RequestContext.getCurrentInstance().update("formParametros:empleadoHastaParametro");
 
-        grupoParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:grupoParametro");
-        grupoParametro.setStyle("position: absolute; top: 89px; left: 150px; height: 10px; font-size: 11px; width: 130px;");
-        RequestContext.getCurrentInstance().update("formParametros:grupoParametro");
+         grupoParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:grupoParametro");
+         grupoParametro.setStyle("position: absolute; top: 89px; left: 150px; height: 10px; font-size: 11px; width: 130px;");
+         RequestContext.getCurrentInstance().update("formParametros:grupoParametro");
+        
+         estructuraParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:estructuraParametro");
+         estructuraParametro.setStyle("position: absolute; top: 20px; left: 625px;height: 10px; font-size: 11px;width: 180px;");
+         RequestContext.getCurrentInstance().update("formParametros:estructuraParametro");
 
-        estructuraParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:estructuraParametro");
-        estructuraParametro.setStyle("position: absolute; top: 20px; left: 625px;height: 10px; font-size: 11px;width: 180px;");
-        RequestContext.getCurrentInstance().update("formParametros:estructuraParametro");
+         tipoTrabajadorParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:tipoTrabajadorParametro");
+         tipoTrabajadorParametro.setStyle("position: absolute; top: 43px; left: 625px;height: 10px; font-size: 11px; width: 180px;");
+         RequestContext.getCurrentInstance().update("formParametros:tipoTrabajadorParametro");
 
-        tipoTrabajadorParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:tipoTrabajadorParametro");
-        tipoTrabajadorParametro.setStyle("position: absolute; top: 43px; left: 625px;height: 10px; font-size: 11px; width: 180px;");
-        RequestContext.getCurrentInstance().update("formParametros:tipoTrabajadorParametro");
+         terceroParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:terceroParametro");
+         terceroParametro.setStyle("position: absolute; top: 66px; left: 625px; height: 10px; font-size: 11px; width: 180px;");
+         RequestContext.getCurrentInstance().update("formParametros:terceroParametro");
 
-        terceroParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:terceroParametro");
-        terceroParametro.setStyle("position: absolute; top: 66px; left: 625px; height: 10px; font-size: 11px; width: 180px;");
-        RequestContext.getCurrentInstance().update("formParametros:terceroParametro");
-
-        estadoParametro = (SelectOneMenu) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:estadoParametro");
-        estadoParametro.setStyleClass("position: absolute; top: 63px; left: 150px; width: 100px; text-transform: uppercase;");
-        RequestContext.getCurrentInstance().update("formParametros:estadoParametro");
+         estadoParametro = (SelectOneMenu) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:estadoParametro");
+         estadoParametro.setStyleClass("position: absolute; top: 63px; left: 150px; width: 100px; text-transform: uppercase;");
+         RequestContext.getCurrentInstance().update("formParametros:estadoParametro");
+         */
     }
 
     public void cancelarRequisitosReporte() {
+        System.out.println(this.getClass().getName() + ".cancelarRequisitosReporte()");
         requisitosReporte = "";
     }
 
     public ParametrosInformes getParametroDeInforme() {
+        System.out.println(this.getClass().getName() + ".getParametroDeInforme()");
         try {
             if (parametroDeInforme == null) {
                 parametroDeInforme = new ParametrosInformes();
@@ -1548,6 +1630,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void generarReporte(Inforeportes reporte) {
+        System.out.println(this.getClass().getName() + ".generarReporte()");
         seleccionRegistro(reporte);
         RequestContext context = RequestContext.getCurrentInstance();
         if (reporteSeleccionado != null) {
@@ -1601,11 +1684,13 @@ public class ControlNReporteNomina implements Serializable {
     // }
 
     public AsynchronousFilllListener listener() {
+        System.out.println(this.getClass().getName() + ".listener()");
         return new AsynchronousFilllListener() {
             //RequestContext context = c;
 
             @Override
             public void reportFinished(JasperPrint jp) {
+                System.out.println(this.getClass().getName() + ".listener().reportFinished()");
                 try {
                     estadoReporte = true;
                     resultadoReporte = "Exito";
@@ -1624,12 +1709,14 @@ public class ControlNReporteNomina implements Serializable {
 
             @Override
             public void reportCancelled() {
+                System.out.println(this.getClass().getName() + ".listener().reportCancelled()");
                 estadoReporte = true;
                 resultadoReporte = "Cancelación";
             }
 
             @Override
             public void reportFillError(Throwable e) {
+                System.out.println(this.getClass().getName() + ".listener().reportFillError()");
                 if (e.getCause() != null) {
                     pathReporteGenerado = "ControlNReporteNomina reportFillError Error: " + e.toString() + "\n" + e.getCause().toString();
                 } else {
@@ -1642,6 +1729,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void generarArchivoReporte(JasperPrint print) {
+        System.out.println(this.getClass().getName() + ".generarArchivoReporte()");
         if (print != null && tipoReporte != null) {
             pathReporteGenerado = administarReportes.crearArchivoReporte(print, tipoReporte);
             validarDescargaReporte();
@@ -1649,6 +1737,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void exportarReporte() throws IOException {
+        System.out.println(this.getClass().getName() + ".exportarReporte()");
         if (pathReporteGenerado != null) {
             File reporteF = new File(pathReporteGenerado);
             FacesContext ctx = FacesContext.getCurrentInstance();
@@ -1672,6 +1761,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void validarDescargaReporte() {
+        System.out.println(this.getClass().getName() + ".validarDescargaReporte()");
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("generandoReporte.hide();");
         if (pathReporteGenerado != null && !pathReporteGenerado.startsWith("Error:")) {
@@ -1690,7 +1780,7 @@ public class ControlNReporteNomina implements Serializable {
                     if (reporteSeleccionado != null) {
                         cabezeraVisor = "Reporte - " + reporteSeleccionado.getNombre();
                     } else {
-                        cabezeraVisor = "Reporte - " ;
+                        cabezeraVisor = "Reporte - ";
                     }
                     context.update("formDialogos:verReportePDF");
                     context.execute("verReportePDF.show();");
@@ -1704,21 +1794,26 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void reiniciarStreamedContent() {
+        System.out.println(this.getClass().getName() + ".reiniciarStreamedContent()");
         reporte = null;
     }
 
     public void cancelarReporte() {
+        System.out.println(this.getClass().getName() + ".cancelarReporte()");
         administarReportes.cancelarReporte();
     }
 
     //GETTER AND SETTER
     public void setParametroDeInforme(ParametrosInformes parametroDeInforme) {
+        System.out.println(this.getClass().getName() + ".setParametroDeInforme()");
         this.parametroDeInforme = parametroDeInforme;
     }
 
     public List<Inforeportes> getListaIR() {
+        System.out.println(this.getClass().getName() + ".getListaIR()");
         try {
             if (listaIR == null) {
+                System.out.println(this.getClass().getName() + ".getListaIR() consulta lista");
                 listaIR = administrarNReportesNomina.listInforeportesUsuario();
             }
             return listaIR;
@@ -1729,6 +1824,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void recordarSeleccion() {
+        System.out.println(this.getClass().getName() + ".recordarSeleccion()");
         if (reporteSeleccionado != null) {
             FacesContext c = FacesContext.getCurrentInstance();
             tabla = (DataTable) c.getViewRoot().findComponent("form:reportesNomina");
@@ -1739,50 +1835,62 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void setListaIR(List<Inforeportes> listaIR) {
+        System.out.println(this.getClass().getName() + ".setListaIR()");
         this.listaIR = listaIR;
     }
 
     public List<Inforeportes> getFiltrarListInforeportesUsuario() {
+        System.out.println(this.getClass().getName() + ".getFiltrarListInforeportesUsuario()");
         return filtrarListIRU;
     }
 
     public void setFiltrarListInforeportesUsuario(List<Inforeportes> filtrarListInforeportesUsuario) {
+        System.out.println(this.getClass().getName() + ".setFiltrarListInforeportesUsuario()");
         this.filtrarListIRU = filtrarListInforeportesUsuario;
     }
 
     public Inforeportes getReporteSeleccionadoLOV() {
+        System.out.println(this.getClass().getName() + ".getReporteSeleccionadoLOV()");
         return reporteSeleccionadoLOV;
     }
 
     public void setReporteSeleccionadoLOV(Inforeportes inforreporteSeleccionadoLov) {
+        System.out.println(this.getClass().getName() + ".setReporteSeleccionadoLOV()");
         this.reporteSeleccionadoLOV = inforreporteSeleccionadoLov;
     }
 
     public boolean isAceptar() {
+        System.out.println(this.getClass().getName() + ".isAceptar()");
         return aceptar;
     }
 
     public void setAceptar(boolean aceptar) {
+        System.out.println(this.getClass().getName() + ".setAceptar()");
         this.aceptar = aceptar;
     }
 
     public ParametrosInformes getNuevoParametroInforme() {
+        System.out.println(this.getClass().getName() + ".getNuevoParametroInforme()");
         return nuevoParametroInforme;
     }
 
     public void setNuevoParametroInforme(ParametrosInformes nuevoParametroInforme) {
+        System.out.println(this.getClass().getName() + ".setNuevoParametroInforme()");
         this.nuevoParametroInforme = nuevoParametroInforme;
     }
 
     public ParametrosInformes getParametroModificacion() {
+        System.out.println(this.getClass().getName() + ".getParametroModificacion()");
         return parametroModificacion;
     }
 
     public void setParametroModificacion(ParametrosInformes parametroModificacion) {
+        System.out.println(this.getClass().getName() + ".setParametroModificacion()");
         this.parametroModificacion = parametroModificacion;
     }
 
     public String getReporteGenerar() {
+        System.out.println(this.getClass().getName() + ".getReporteGenerar()");
         if (posicionReporte != -1) {
             reporteGenerar = listaIR.get(posicionReporte).getNombre();
         }
@@ -1790,29 +1898,36 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void setReporteGenerar(String reporteGenerar) {
+        System.out.println(this.getClass().getName() + ".setReporteGenerar()");
         this.reporteGenerar = reporteGenerar;
     }
 
     public String getRequisitosReporte() {
+        System.out.println(this.getClass().getName() + ".getRequisitosReporte()");
         return requisitosReporte;
     }
 
     public void setRequisitosReporte(String requisitosReporte) {
+        System.out.println(this.getClass().getName() + ".setRequisitosReporte()");
         this.requisitosReporte = requisitosReporte;
     }
 
     public List<Empleados> getListValEmpleados() {
+        System.out.println(this.getClass().getName() + ".getListValEmpleados()");
         if (listValEmpleados == null) {
+            System.out.println(this.getClass().getName() + " consulta la lista de empleados");
             listValEmpleados = administrarNReportesNomina.listEmpleados();
         }
         return listValEmpleados;
     }
 
     public void setListValEmpleados(List<Empleados> listEmpleados) {
+        System.out.println(this.getClass().getName() + ".setListValEmpleados()");
         this.listValEmpleados = listEmpleados;
     }
 
     public List<Empresas> getListValEmpresas() {
+        System.out.println(this.getClass().getName() + ".getListValEmpresas()");
         if (listValEmpresas == null) {
             listValEmpresas = administrarNReportesNomina.listEmpresas();
         }
@@ -1820,10 +1935,12 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void setListValEmpresas(List<Empresas> listEmpresas) {
+        System.out.println(this.getClass().getName() + ".setListValEmpresas()");
         this.listValEmpresas = listEmpresas;
     }
 
     public List<GruposConceptos> getListValGruposConceptos() {
+        System.out.println(this.getClass().getName() + ".getListValGruposConceptos()");
         if (listValGruposConceptos == null) {
             listValGruposConceptos = administrarNReportesNomina.listGruposConcetos();
         }
@@ -1831,10 +1948,12 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void setListValGruposConceptos(List<GruposConceptos> listGruposConceptos) {
+        System.out.println(this.getClass().getName() + ".setListValGruposConceptos()");
         this.listValGruposConceptos = listGruposConceptos;
     }
 
     public List<UbicacionesGeograficas> getListValUbicacionesGeograficas() {
+        System.out.println(this.getClass().getName() + ".getListValUbicacionesGeograficas()");
         if (listValUbicacionesGeograficas == null) {
             listValUbicacionesGeograficas = administrarNReportesNomina.listUbicacionesGeograficas();
         }
@@ -1842,10 +1961,12 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void setListValUbicacionesGeograficas(List<UbicacionesGeograficas> listUbicacionesGeograficas) {
+        System.out.println(this.getClass().getName() + ".setListValUbicacionesGeograficas()");
         this.listValUbicacionesGeograficas = listUbicacionesGeograficas;
     }
 
     public List<TiposAsociaciones> getListValTiposAsociaciones() {
+        System.out.println(this.getClass().getName() + ".getListValTiposAsociaciones()");
         if (listValTiposAsociaciones == null) {
             listValTiposAsociaciones = administrarNReportesNomina.listTiposAsociaciones();
         }
@@ -1853,10 +1974,12 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void setListValTiposAsociaciones(List<TiposAsociaciones> listTiposAsociaciones) {
+        System.out.println(this.getClass().getName() + ".setListValTiposAsociaciones()");
         this.listValTiposAsociaciones = listTiposAsociaciones;
     }
 
     public List<Estructuras> getListValEstructuras() {
+        System.out.println(this.getClass().getName() + ".getListValEstructuras()");
         if (listValEstructuras == null) {
             listValEstructuras = administrarNReportesNomina.listEstructuras();
         }
@@ -1864,10 +1987,12 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void setListValEstructuras(List<Estructuras> listEstructuras) {
+        System.out.println(this.getClass().getName() + ".setListValEstructuras()");
         this.listValEstructuras = listEstructuras;
     }
 
     public List<TiposTrabajadores> getListValTiposTrabajadores() {
+        System.out.println(this.getClass().getName() + ".getListValTiposTrabajadores()");
         if (listValTiposTrabajadores == null) {
             listValTiposTrabajadores = administrarNReportesNomina.listTiposTrabajadores();
         }
@@ -1875,10 +2000,12 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void setListValTiposTrabajadores(List<TiposTrabajadores> listTiposTrabajadores) {
+        System.out.println(this.getClass().getName() + ".setListValTiposTrabajadores()");
         this.listValTiposTrabajadores = listTiposTrabajadores;
     }
 
     public List<Terceros> getListValTerceros() {
+        System.out.println(this.getClass().getName() + ".getListValTerceros()");
         if (listValTerceros == null) {
             listValTerceros = administrarNReportesNomina.listTerceros();
         }
@@ -1886,10 +2013,12 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void setListValTerceros(List<Terceros> listTerceros) {
+        System.out.println(this.getClass().getName() + ".setListValTerceros()");
         this.listValTerceros = listTerceros;
     }
 
     public List<Procesos> getListValProcesos() {
+        System.out.println(this.getClass().getName() + ".getListValProcesos()");
         if (listValProcesos == null) {
             listValProcesos = administrarNReportesNomina.listProcesos();
         }
@@ -1897,10 +2026,12 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void setListValProcesos(List<Procesos> listProcesos) {
+        System.out.println(this.getClass().getName() + ".setListValProcesos()");
         this.listValProcesos = listProcesos;
     }
 
     public List<Asociaciones> getListValAsociaciones() {
+        System.out.println(this.getClass().getName() + ".getListValAsociaciones()");
         if (listValAsociaciones == null) {
             listValAsociaciones = administrarNReportesNomina.listAsociaciones();
         }
@@ -1908,246 +2039,307 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void setListValAsociaciones(List<Asociaciones> listAsociaciones) {
+        System.out.println(this.getClass().getName() + ".setListValAsociaciones()");
         this.listValAsociaciones = listAsociaciones;
     }
 
     public Empleados getEmpleadoSeleccionado() {
+        System.out.println(this.getClass().getName() + ".getEmpleadoSeleccionado()");
         return empleadoSeleccionado;
     }
 
     public void setEmpleadoSeleccionado(Empleados empleadoSeleccionado) {
+        System.out.println(this.getClass().getName() + ".setEmpleadoSeleccionado()");
         this.empleadoSeleccionado = empleadoSeleccionado;
     }
 
     public Empresas getEmpresaSeleccionada() {
+        System.out.println(this.getClass().getName() + ".getEmpresaSeleccionada()");
         return empresaSeleccionada;
     }
 
     public void setEmpresaSeleccionada(Empresas empresaSeleccionada) {
+        System.out.println(this.getClass().getName() + ".setEmpresaSeleccionada()");
         this.empresaSeleccionada = empresaSeleccionada;
     }
 
     public GruposConceptos getGrupoCSeleccionado() {
+        System.out.println(this.getClass().getName() + ".getGrupoCSeleccionado()");
         return grupoCSeleccionado;
     }
 
     public void setGrupoCSeleccionado(GruposConceptos grupoCSeleccionado) {
+        System.out.println(this.getClass().getName() + ".setGrupoCSeleccionado()");
         this.grupoCSeleccionado = grupoCSeleccionado;
     }
 
     public Estructuras getEstructuraSeleccionada() {
+        System.out.println(this.getClass().getName() + ".getEstructuraSeleccionada()");
         return estructuraSeleccionada;
     }
 
     public void setEstructuraSeleccionada(Estructuras estructuraSeleccionada) {
+        System.out.println(this.getClass().getName() + ".setEstructuraSeleccionada()");
         this.estructuraSeleccionada = estructuraSeleccionada;
     }
 
     public TiposTrabajadores getTipoTSeleccionado() {
+        System.out.println(this.getClass().getName() + ".getTipoTSeleccionado()");
         return tipoTSeleccionado;
     }
 
     public void setTipoTSeleccionado(TiposTrabajadores tipoTSeleccionado) {
+        System.out.println(this.getClass().getName() + ".setTipoTSeleccionado()");
         this.tipoTSeleccionado = tipoTSeleccionado;
     }
 
     public Terceros getTerceroSeleccionado() {
+        System.out.println(this.getClass().getName() + ".getTerceroSeleccionado()");
         return terceroSeleccionado;
     }
 
     public void setTerceroSeleccionado(Terceros terceroSeleccionado) {
+        System.out.println(this.getClass().getName() + ".setTerceroSeleccionado()");
         this.terceroSeleccionado = terceroSeleccionado;
     }
 
     public Procesos getProcesoSeleccionado() {
+        System.out.println(this.getClass().getName() + ".getProcesoSeleccionado()");
         return procesoSeleccionado;
     }
 
     public void setProcesoSeleccionado(Procesos procesoSeleccionado) {
+        System.out.println(this.getClass().getName() + ".setProcesoSeleccionado()");
         this.procesoSeleccionado = procesoSeleccionado;
     }
 
     public Asociaciones getAsociacionSeleccionado() {
+        System.out.println(this.getClass().getName() + ".getAsociacionSeleccionado()");
         return asociacionSeleccionado;
     }
 
     public void setAsociacionSeleccionado(Asociaciones asociacionSeleccionado) {
+        System.out.println(this.getClass().getName() + ".setAsociacionSeleccionado()");
         this.asociacionSeleccionado = asociacionSeleccionado;
     }
 
     public List<Empleados> getFiltrarListEmpleados() {
+        System.out.println(this.getClass().getName() + ".getFiltrarListEmpleados()");
         return filtrarListEmpleados;
     }
 
     public void setFiltrarListEmpleados(List<Empleados> filtrarListEmpleados) {
+        System.out.println(this.getClass().getName() + ".setFiltrarListEmpleados()");
         this.filtrarListEmpleados = filtrarListEmpleados;
     }
 
     public List<Empresas> getFiltrarListEmpresas() {
+        System.out.println(this.getClass().getName() + ".getFiltrarListEmpresas()");
         return filtrarListEmpresas;
     }
 
     public void setFiltrarListEmpresas(List<Empresas> filtrarListEmpresas) {
+        System.out.println(this.getClass().getName() + ".setFiltrarListEmpresas()");
         this.filtrarListEmpresas = filtrarListEmpresas;
     }
 
     public List<GruposConceptos> getFiltrarListGruposConceptos() {
+        System.out.println(this.getClass().getName() + ".getFiltrarListGruposConceptos()");
         return filtrarListGruposConceptos;
     }
 
     public void setFiltrarListGruposConceptos(List<GruposConceptos> filtrarListGruposConceptos) {
+        System.out.println(this.getClass().getName() + ".setFiltrarListGruposConceptos()");
         this.filtrarListGruposConceptos = filtrarListGruposConceptos;
     }
 
     public List<UbicacionesGeograficas> getFiltrarListUbicacionesGeograficas() {
+        System.out.println(this.getClass().getName() + ".getFiltrarListUbicacionesGeograficas()");
         return filtrarListUbicacionesGeograficas;
     }
 
     public void setFiltrarListUbicacionesGeograficas(List<UbicacionesGeograficas> filtrarListUbicacionesGeograficas) {
+        System.out.println(this.getClass().getName() + ".setFiltrarListUbicacionesGeograficas()");
         this.filtrarListUbicacionesGeograficas = filtrarListUbicacionesGeograficas;
     }
 
     public List<TiposAsociaciones> getFiltrarListTiposAsociaciones() {
+        System.out.println(this.getClass().getName() + ".getFiltrarListTiposAsociaciones()");
         return filtrarListTiposAsociaciones;
     }
 
     public void setFiltrarListTiposAsociaciones(List<TiposAsociaciones> filtrarListTiposAsociaciones) {
+        System.out.println(this.getClass().getName() + ".setFiltrarListTiposAsociaciones()");
         this.filtrarListTiposAsociaciones = filtrarListTiposAsociaciones;
     }
 
     public List<Estructuras> getFiltrarListEstructuras() {
+        System.out.println(this.getClass().getName() + ".getFiltrarListEstructuras()");
         return filtrarListEstructuras;
     }
 
     public void setFiltrarListEstructuras(List<Estructuras> filtrarListEstructuras) {
+        System.out.println(this.getClass().getName() + ".setFiltrarListEstructuras()");
         this.filtrarListEstructuras = filtrarListEstructuras;
     }
 
     public List<Terceros> getFiltrarListTerceros() {
+        System.out.println(this.getClass().getName() + ".getFiltrarListTerceros()");
         return filtrarListTerceros;
     }
 
     public void setFiltrarListTerceros(List<Terceros> filtrarListTerceros) {
+        System.out.println(this.getClass().getName() + ".setFiltrarListTerceros()");
         this.filtrarListTerceros = filtrarListTerceros;
     }
 
     public List<Procesos> getFiltrarListProcesos() {
+        System.out.println(this.getClass().getName() + ".getFiltrarListProcesos()");
         return filtrarListProcesos;
     }
 
     public void setFiltrarListProcesos(List<Procesos> filtrarListProcesos) {
+        System.out.println(this.getClass().getName() + ".setFiltrarListProcesos()");
         this.filtrarListProcesos = filtrarListProcesos;
     }
 
     public List<Asociaciones> getFiltrarListAsociaciones() {
+        System.out.println(this.getClass().getName() + ".getFiltrarListAsociaciones()");
         return filtrarListAsociaciones;
     }
 
     public void setFiltrarListAsociaciones(List<Asociaciones> filtrarListAsociaciones) {
+        System.out.println(this.getClass().getName() + ".setFiltrarListAsociaciones()");
         this.filtrarListAsociaciones = filtrarListAsociaciones;
     }
 
     public UbicacionesGeograficas getUbicacionesGSeleccionado() {
+        System.out.println(this.getClass().getName() + ".getUbicacionesGSeleccionado()");
         return ubicacionesGSeleccionado;
     }
 
     public void setUbicacionesGSeleccionado(UbicacionesGeograficas ubicacionesGSeleccionado) {
+        System.out.println(this.getClass().getName() + ".setUbicacionesGSeleccionado()");
         this.ubicacionesGSeleccionado = ubicacionesGSeleccionado;
     }
 
     public TiposAsociaciones getTiposASeleccionado() {
+        System.out.println(this.getClass().getName() + ".getTiposASeleccionado()");
         return tiposASeleccionado;
     }
 
     public void setTiposASeleccionado(TiposAsociaciones tiposASeleccionado) {
+        System.out.println(this.getClass().getName() + ".setTiposASeleccionado()");
         this.tiposASeleccionado = tiposASeleccionado;
     }
 
     public List<TiposTrabajadores> getFiltrarListTiposTrabajadores() {
+        System.out.println(this.getClass().getName() + ".getFiltrarListTiposTrabajadores()");
         return filtrarListTiposTrabajadores;
     }
 
     public void setFiltrarListTiposTrabajadores(List<TiposTrabajadores> filtrarListTiposTrabajadores) {
+        System.out.println(this.getClass().getName() + ".setFiltrarListTiposTrabajadores()");
         this.filtrarListTiposTrabajadores = filtrarListTiposTrabajadores;
     }
 
     public String getAltoTabla() {
+        System.out.println(this.getClass().getName() + ".getAltoTabla()");
         return altoTabla;
     }
 
     public List<Inforeportes> getListaInfoReportesModificados() {
+        System.out.println(this.getClass().getName() + ".getListaInfoReportesModificados()");
         return listaInfoReportesModificados;
     }
 
     public void setListaInfoReportesModificados(List<Inforeportes> listaInfoReportesModificados) {
+        System.out.println(this.getClass().getName() + ".setListaInfoReportesModificados()");
         this.listaInfoReportesModificados = listaInfoReportesModificados;
     }
 
     public boolean isCambiosReporte() {
+        System.out.println(this.getClass().getName() + ".isCambiosReporte()");
         return cambiosReporte;
     }
 
     public void setCambiosReporte(boolean cambiosReporte) {
+        System.out.println(this.getClass().getName() + ".setCambiosReporte()");
         this.cambiosReporte = cambiosReporte;
     }
 
     public String getColor() {
+        System.out.println(this.getClass().getName() + ".getColor()");
         return color;
     }
 
     public void setColor(String color) {
+        System.out.println(this.getClass().getName() + ".setColor()");
         this.color = color;
     }
 
     public String getDecoracion() {
+        System.out.println(this.getClass().getName() + ".getDecoracion()");
         return decoracion;
     }
 
     public void setDecoracion(String decoracion) {
+        System.out.println(this.getClass().getName() + ".setDecoracion()");
         this.decoracion = decoracion;
     }
 
     public String getColor2() {
+        System.out.println(this.getClass().getName() + ".getColor2()");
         return color2;
     }
 
     public void setColor2(String color) {
+        System.out.println(this.getClass().getName() + ".setColor2()");
         this.color2 = color;
     }
 
     public String getDecoracion2() {
+        System.out.println(this.getClass().getName() + ".getDecoracion2()");
         return decoracion2;
     }
 
     public void setDecoracion2(String decoracion) {
+        System.out.println(this.getClass().getName() + ".setDecoracion2()");
         this.decoracion2 = decoracion;
     }
 
     public boolean isActivoMostrarTodos() {
+        System.out.println(this.getClass().getName() + ".isActivoMostrarTodos()");
         return activoMostrarTodos;
     }
 
     public void setActivoMostrarTodos(boolean activoMostrarTodos) {
+        System.out.println(this.getClass().getName() + ".setActivoMostrarTodos()");
         this.activoMostrarTodos = activoMostrarTodos;
     }
 
     public boolean isActivoBuscarReporte() {
+        System.out.println(this.getClass().getName() + ".isActivoBuscarReporte()");
         return activoBuscarReporte;
     }
 
     public void setActivoBuscarReporte(boolean activoBuscarReporte) {
+        System.out.println(this.getClass().getName() + ".setActivoBuscarReporte()");
         this.activoBuscarReporte = activoBuscarReporte;
     }
 
     public StreamedContent getReporte() {
+        System.out.println(this.getClass().getName() + ".getReporte()");
         return reporte;
     }
 
     public String getCabezeraVisor() {
+        System.out.println(this.getClass().getName() + ".getCabezeraVisor()");
         return cabezeraVisor;
     }
 
     public String getPathReporteGenerado() {
+        System.out.println(this.getClass().getName() + ".getPathReporteGenerado()");
         return pathReporteGenerado;
     }
 
@@ -2180,11 +2372,13 @@ public class ControlNReporteNomina implements Serializable {
     private static abstract class FacesContextWrapper extends FacesContext {
 
         protected static void setCurrentInstance(FacesContext facesContext) {
+            System.out.println("FacesContextWrapper" + ".setCurrentInstance()");
             FacesContext.setCurrentInstance(facesContext);
         }
     }
 
     public String getInfoRegistroEmpleadoDesde() {
+        System.out.println(this.getClass().getName() + ".getInfoRegistroEmpleadoDesde()");
         getListValEmpleados();
         if (listValEmpleados != null) {
             infoRegistroEmpleadoDesde = "Cantidad de registros : " + listValEmpleados.size();
@@ -2195,10 +2389,12 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void setInfoRegistroEmpleadoDesde(String infoRegistroEmpleadoDesde) {
+        System.out.println(this.getClass().getName() + ".setInfoRegistroEmpleadoDesde()");
         this.infoRegistroEmpleadoDesde = infoRegistroEmpleadoDesde;
     }
 
     public String getInfoRegistroEmpleadoHasta() {
+        System.out.println(this.getClass().getName() + ".getInfoRegistroEmpleadoHasta()");
         getListValEmpleados();
         if (listValEmpleados != null) {
             infoRegistroEmpleadoHasta = "Cantidad de registros : " + listValEmpleados.size();
@@ -2209,10 +2405,12 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void setInfoRegistroEmpleadoHasta(String infoRegistroEmpleadoHasta) {
+        System.out.println(this.getClass().getName() + ".setInfoRegistroEmpleadoHasta()");
         this.infoRegistroEmpleadoHasta = infoRegistroEmpleadoHasta;
     }
 
     public String getInfoRegistroGrupoConcepto() {
+        System.out.println(this.getClass().getName() + ".getInfoRegistroGrupoConcepto()");
         getListValGruposConceptos();
         if (listValGruposConceptos != null) {
             infoRegistroGrupoConcepto = "Cantidad de registros : " + listValGruposConceptos.size();
@@ -2223,10 +2421,12 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void setInfoRegistroGrupoConcepto(String infoRegistroGrupoConcepto) {
+        System.out.println(this.getClass().getName() + ".setInfoRegistroGrupoConcepto()");
         this.infoRegistroGrupoConcepto = infoRegistroGrupoConcepto;
     }
 
     public String getInfoRegistroUbicacion() {
+        System.out.println(this.getClass().getName() + ".getInfoRegistroUbicacion()");
         getListValUbicacionesGeograficas();
         if (listValUbicacionesGeograficas != null) {
             infoRegistroUbicacion = "Cantidad de registros : " + listValUbicacionesGeograficas.size();
@@ -2237,10 +2437,12 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void setInfoRegistroUbicacion(String infoRegistroUbicacion) {
+        System.out.println(this.getClass().getName() + ".setInfoRegistroUbicacion()");
         this.infoRegistroUbicacion = infoRegistroUbicacion;
     }
 
     public String getInfoRegistroTipoAsociacion() {
+        System.out.println(this.getClass().getName() + ".getInfoRegistroTipoAsociacion()");
         getListValTiposAsociaciones();
         if (listValTiposAsociaciones != null) {
             infoRegistroTipoAsociacion = "Cantidad de registros : " + listValTiposAsociaciones.size();
@@ -2251,10 +2453,12 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void setInfoRegistroTipoAsociacion(String infoRegistroTipoAsociacion) {
+        System.out.println(this.getClass().getName() + ".setInfoRegistroTipoAsociacion()");
         this.infoRegistroTipoAsociacion = infoRegistroTipoAsociacion;
     }
 
     public String getInfoRegistroEmpresa() {
+        System.out.println(this.getClass().getName() + ".getInfoRegistroEmpresa()");
         getListValEmpresas();
         if (listValEmpresas != null) {
             infoRegistroEmpresa = "Cantidad de registros : " + listValEmpresas.size();
@@ -2265,10 +2469,12 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void setInfoRegistroEmpresa(String infoRegistroEmpresa) {
+        System.out.println(this.getClass().getName() + ".setInfoRegistroEmpresa()");
         this.infoRegistroEmpresa = infoRegistroEmpresa;
     }
 
     public String getInfoRegistroAsociacion() {
+        System.out.println(this.getClass().getName() + ".getInfoRegistroAsociacion()");
         getListValAsociaciones();
         if (listValAsociaciones != null) {
             infoRegistroAsociacion = "Cantidad de registros : " + listValAsociaciones.size();
@@ -2279,10 +2485,12 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void setInfoRegistroAsociacion(String infoRegistroAsociacion) {
+        System.out.println(this.getClass().getName() + ".setInfoRegistroAsociacion()");
         this.infoRegistroAsociacion = infoRegistroAsociacion;
     }
 
     public String getInfoRegistroTercero() {
+        System.out.println(this.getClass().getName() + ".getInfoRegistroTercero()");
         getListValTerceros();
         if (listValTerceros != null) {
             infoRegistroTercero = "Cantidad de registros : " + listValTerceros.size();
@@ -2293,10 +2501,12 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void setInfoRegistroTercero(String infoRegistroTercero) {
+        System.out.println(this.getClass().getName() + ".setInfoRegistroTercero()");
         this.infoRegistroTercero = infoRegistroTercero;
     }
 
     public String getInfoRegistroProceso() {
+        System.out.println(this.getClass().getName() + ".getInfoRegistroProceso()");
         getListValProcesos();
         if (listValProcesos != null) {
             infoRegistroProceso = "Cantidad de registros : " + listValProcesos.size();
@@ -2307,10 +2517,12 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void setInfoRegistroProceso(String infoRegistroProceso) {
+        System.out.println(this.getClass().getName() + ".setInfoRegistroProceso()");
         this.infoRegistroProceso = infoRegistroProceso;
     }
 
     public String getInfoRegistroTipoTrabajador() {
+        System.out.println(this.getClass().getName() + ".getInfoRegistroTipoTrabajador()");
         getListValTiposTrabajadores();
         if (listValTiposTrabajadores != null) {
             infoRegistroTipoTrabajador = "Cantidad de registros : " + listValTiposTrabajadores.size();
@@ -2321,10 +2533,12 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void setInfoRegistroTipoTrabajador(String infoRegistroTipoTrabajador) {
+        System.out.println(this.getClass().getName() + ".setInfoRegistroTipoTrabajador()");
         this.infoRegistroTipoTrabajador = infoRegistroTipoTrabajador;
     }
 
     public String getInfoRegistroEstructura() {
+        System.out.println(this.getClass().getName() + ".getInfoRegistroEstructura()");
         getListValEstructuras();
         if (listValEstructuras != null) {
             infoRegistroEstructura = "Cantidad de registros : " + listValEstructuras.size();
@@ -2336,18 +2550,22 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void setInfoRegistroEstructura(String infoRegistroEstructura) {
+        System.out.println(this.getClass().getName() + ".setInfoRegistroEstructura()");
         this.infoRegistroEstructura = infoRegistroEstructura;
     }
 
     public String getInfoRegistroReportes() {
+        System.out.println(this.getClass().getName() + ".getInfoRegistroReportes()");
         return infoRegistroReportes;
     }
 
     public void setInfoRegistroReportes(String infoRegistroReportes) {
+        System.out.println(this.getClass().getName() + ".setInfoRegistroReportes()");
         this.infoRegistroReportes = infoRegistroReportes;
     }
 
     public List<Inforeportes> getListValInforeportes() {
+        System.out.println(this.getClass().getName() + ".getListValInforeportes()");
         if (listValInforeportes == null) {
             listValInforeportes = administrarNReportesNomina.listInforeportesUsuario();
         }
@@ -2355,22 +2573,27 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void setListValInforeportes(List<Inforeportes> lovInforeportes) {
+        System.out.println(this.getClass().getName() + ".setListValInforeportes()");
         this.listValInforeportes = lovInforeportes;
     }
 
     public List<Inforeportes> getFiltrarLovInforeportes() {
+        System.out.println(this.getClass().getName() + ".getFiltrarLovInforeportes()");
         return filtrarLovInforeportes;
     }
 
     public void setFiltrarLovInforeportes(List<Inforeportes> filtrarLovInforeportes) {
+        System.out.println(this.getClass().getName() + ".setFiltrarLovInforeportes()");
         this.filtrarLovInforeportes = filtrarLovInforeportes;
     }
 
     public Inforeportes getReporteSeleccionado() {
+        System.out.println(this.getClass().getName() + ".getReporteSeleccionado()");
         return reporteSeleccionado;
     }
 
     public void setReporteSeleccionado(Inforeportes inforreporteSeleccionado) {
+        System.out.println(this.getClass().getName() + ".setReporteSeleccionado()");
         this.reporteSeleccionado = inforreporteSeleccionado;
     }
 }

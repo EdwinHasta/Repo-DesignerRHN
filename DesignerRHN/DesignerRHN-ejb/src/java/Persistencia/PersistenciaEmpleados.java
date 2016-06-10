@@ -61,6 +61,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
         } catch (Exception e) {
             //PropertyConfigurator.configure("log4j.properties");
             //logger.error("PersistenciaEmpleados.editar" + format.format(fechaDia) + " - Error : " + e.toString());
+            System.out.println(this.getClass().getName() + ".editar() error " + e.toString());
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -79,6 +80,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
         } catch (Exception e) {
             //PropertyConfigurator.configure("log4j.properties");
             //logger.error("Metodo: borrar - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
+            System.out.println(this.getClass().getName() + ".borrar() error " + e.toString());
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -93,16 +95,45 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
         } catch (Exception e) {
             //PropertyConfigurator.configure("log4j.properties");
             //logger.error("Metodo: buscarEmpleado - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
+            System.out.println(this.getClass().getName() + ".buscarEmpleado() error " + e.toString());
             return null;
         }
 
     }
 
+    /*@Override
+     public List<Empleados> buscarEmpleados(EntityManager em) {
+     System.out.println(this.getClass().getName() + ".buscarEmpleados()");
+     em.clear();
+     List<Empleados> empleadosLista = (List<Empleados>) em.createQuery("SELECT e FROM Empleados e").getResultList();
+     return empleadosLista;
+     }*/
     @Override
     public List<Empleados> buscarEmpleados(EntityManager em) {
-        em.clear();
-        List<Empleados> empleadosLista = (List<Empleados>) em.createQuery("SELECT e FROM Empleados e").getResultList();
-        return empleadosLista;
+        System.out.println(this.getClass().getName() + ".buscarEmpleados()");
+        List<Empleados> listaEmpleados = null;
+        try {
+            em.clear();
+            String sqlQuery = "select "
+                    + "SECUENCIA, "
+                    + "CODIGOEMPLEADO, "
+                    + "RUTATRANSPORTE, "
+                    + "PARQUEADERO, "
+                    + "FECHACREACION, "
+                    + "CODIGOALTERNATIVO, "
+                    + "PAGASUBSIDIOTRANSPORTELEGAL, "
+                    + "PERSONA, "
+                    + "EMPRESA, "
+                    + "USUARIOBD "
+                    + "from empleados e";
+            Query query = em.createNativeQuery(sqlQuery, Empleados.class);
+            listaEmpleados = query.getResultList();
+            return listaEmpleados;
+        } catch (Exception e) {
+            System.out.println(this.getClass().getName() + " error en buscarEmpleados()");
+            e.printStackTrace();
+            return listaEmpleados;
+        }
     }
 
     @Override
@@ -169,7 +200,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     public boolean verificarCodigoEmpleado_Empresa(EntityManager em, BigInteger codigoEmpleado, BigInteger secEmpresa) {
         try {
             em.clear();
-            Query query = em.createQuery("SELECT COUNT(e) FROM Empleados e WHERE e.codigoempleado = :codigo AND e.empresa.secuencia = :secEmpresa");
+            //Query query = em.createQuery("SELECT COUNT(e) FROM Empleados e WHERE e.codigoempleado = :codigo AND e.empresa.secuencia = :secEmpresa");
+            Query query = em.createQuery("SELECT COUNT(e) FROM Empleados e WHERE e.codigoempleado = :codigo AND e.empresa = :secEmpresa");
             query.setParameter("codigo", codigoEmpleado);
             query.setParameter("secEmpresa", secEmpresa);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -186,7 +218,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     public Empleados buscarEmpleadoCodigo_Empresa(EntityManager em, BigInteger codigoEmpleado, BigInteger secEmpresa) {
         try {
             em.clear();
-            Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.codigoempleado = :codigoE AND e.empresa.secuencia = :secEmpresa");
+            //Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.codigoempleado = :codigoE AND e.empresa.secuencia = :secEmpresa");
+            Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.codigoempleado = :codigoE AND e.empresa = :secEmpresa");
             query.setParameter("codigoE", codigoEmpleado);
             query.setParameter("secEmpresa", secEmpresa);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -251,7 +284,18 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     public List<Empleados> empleadosNovedad(EntityManager em) {
         try {
             em.clear();
-            String sqlQuery = "select * from empleados v where EXISTS (SELECT 'X' from  VWACTUALESTIPOSTRABAJADORES vtt, tipostrabajadores  tt\n"
+            String sqlQuery = "select "
+                    + "SECUENCIA, "
+                    + "CODIGOEMPLEADO, "
+                    + "RUTATRANSPORTE, "
+                    + "PARQUEADERO, "
+                    + "FECHACREACION, "
+                    + "CODIGOALTERNATIVO, "
+                    + "PAGASUBSIDIOTRANSPORTELEGAL, "
+                    + "PERSONA, "
+                    + "EMPRESA, "
+                    + "USUARIOBD "
+                    + "from empleados v where EXISTS (SELECT 'X' from  VWACTUALESTIPOSTRABAJADORES vtt, tipostrabajadores  tt\n"
                     + "where tt.secuencia = vtt.tipotrabajador\n"
                     + "and   vtt.empleado = v.secuencia\n"
                     + "and tt.tipo IN ('ACTIVO','PENSIONADO','RETIRADO'))";
@@ -269,7 +313,13 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     public List<Empleados> empleadosVacaciones(EntityManager em) {
         try {
             em.clear();
-            String sqlQuery = "select * from empleados v where EXISTS (SELECT 'X' from  VWACTUALESTIPOSTRABAJADORES vtt, tipostrabajadores  tt\n"
+            String sqlQuery = "select SECUENCIA, CODIGOEMPLEADO, RUTATRANSPORTE, TELEFONO,"
+                    + "EXTENSION, PARQUEADERO, SERVICIORESTAURANTE, NIVELENDEUDAMIENTO, "
+                    + "TOTALULTIMOPAGO, TOTALULTIMODESCUENTO, TOTALULTIMOSOBREGIRO, "
+                    + "EXCLUIRLIQUIDACION, CODIGOALTERNATIVODEUDOR, CODIGOALTERNATIVOACREEDOR, "
+                    + "FECHACREACION, CODIGOALTERNATIVO, TEMPTOTALINGRESOS, EXTRANJERO, "
+                    + "PAGASUBSIDIOTRANSPORTELEGAL, TEMPBASERECALCULO, PERSONA, EMPRESA, USUARIOBD "
+                    + "from empleados v where EXISTS (SELECT 'X' from  VWACTUALESTIPOSTRABAJADORES vtt, tipostrabajadores  tt\n"
                     + "where tt.secuencia = vtt.tipotrabajador\n"
                     + "and vtt.empleado = v.secuencia\n"
                     + "and tt.tipo IN ('ACTIVO'))";
@@ -283,6 +333,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
         }
     }
 
+    @Override
     public List<Empleados> lovEmpleadosParametros(EntityManager em) {
         try {
             em.clear();
@@ -301,10 +352,10 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     public List<Empleados> empleadosAuxilios(EntityManager em) {
         try {
             em.clear();
-            String sqlQuery = "select * from empleados v where EXISTS (SELECT 'X'\n"
-                    + "       from   VWACTUALESTIPOSTRABAJADORES        vtt, tipostrabajadores  tt\n"
-                    + "       where tt.secuencia = vtt.tipotrabajador\n"
-                    + "       and   vtt.empleado = v.secuencia\n"
+            String sqlQuery = "select * from empleados v where EXISTS (SELECT 'x' "
+                    + "       from   VWACTUALESTIPOSTRABAJADORES        vtt, tipostrabajadores  tt "
+                    + "       where tt.secuencia = vtt.tipotrabajador "
+                    + "       and   vtt.empleado = v.secuencia "
                     + "              and tt.tipo='ACTIVO')";
             Query query = em.createNativeQuery(sqlQuery, Empleados.class);
             List<Empleados> listaEmpleados = query.getResultList();
@@ -357,7 +408,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             List<BigInteger> empleado = query.getResultList();
             return empleado;
         } catch (Exception e) {
-  //          PropertyConfigurator.configure("log4j.properties");
+            //          PropertyConfigurator.configure("log4j.properties");
 //            //logger.error("Metodo: buscarEmpleadosBusquedaAvanzadaCodigo - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
@@ -385,7 +436,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     public Empleados obtenerUltimoEmpleadoAlmacenado(EntityManager em, BigInteger secuenciaEmpresa, BigInteger codigoEmpleado) {
         try {
             em.clear();
-            Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.empresa.secuencia=:secuenciaEmpresa AND e.codigoempleado=:codigoEmpleado");
+            //Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.empresa.secuencia=:secuenciaEmpresa AND e.codigoempleado=:codigoEmpleado");
+            Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.empresa=:secuenciaEmpresa AND e.codigoempleado=:codigoEmpleado");
             query.setParameter("secuenciaEmpresa", secuenciaEmpresa);
             query.setParameter("codigoEmpleado", codigoEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -420,6 +472,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
         }
     }
 
+    @Override
     public List<Empleados> consultarEmpleadosParaProyecciones(EntityManager em) {
         try {
             em.clear();
@@ -541,7 +594,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     public List<Empleados> consultarEmpleadosCuadrillas(EntityManager em) {
         try {
             em.clear();
-            String sql = "SELECT E. *\n"
+            String sql = "SELECT E.* \n"
                     + " FROM PERSONAS P, EMPLEADOS E \n"
                     + " WHERE E.PERSONA = P.SECUENCIA \n"
                     + " AND EXISTS (SELECT 1 \n"

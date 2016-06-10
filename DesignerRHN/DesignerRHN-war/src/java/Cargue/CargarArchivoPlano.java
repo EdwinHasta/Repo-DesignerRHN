@@ -695,6 +695,7 @@ public class CargarArchivoPlano implements Serializable {
                     VWActualesTiposContratos vwActualTiposContratos = administrarCargueArchivos.consultarActualTipoContratoEmpleado(empleado.getSecuencia());
 
                     Conceptos concepto = administrarCargueArchivos.verificarConceptoEmpresa(listTempNovedades.get(i).getConcepto(), empleado.getEmpresa().getSecuencia());
+                    //Conceptos concepto = administrarCargueArchivos.verificarConceptoEmpresa(listTempNovedades.get(i).getConcepto(), empleado.getEmpresa());
                     if (concepto != null) {
                         if (concepto.getActivo().equalsIgnoreCase("S")) {
                             String tipoConcepto = administrarCargueArchivos.determinarTipoConcepto(concepto.getSecuencia());
@@ -772,6 +773,7 @@ public class CargarArchivoPlano implements Serializable {
                                 }
                                 if (listTempNovedades.get(i).getTercero() != null) {
                                     validacion = administrarCargueArchivos.verificarTerceroEmpresa(listTempNovedades.get(i).getTercero(), empleado.getEmpresa().getSecuencia());
+                                    //validacion = administrarCargueArchivos.verificarTerceroEmpresa(listTempNovedades.get(i).getTercero(), empleado.getEmpresa());
                                     if (validacion == false) {
                                         errores++;
                                         erroresN.add("El tercero con nit: " + listTempNovedades.get(i).getTercero() + " no existe para la empresa a la cual esta vinculado el empleado.");

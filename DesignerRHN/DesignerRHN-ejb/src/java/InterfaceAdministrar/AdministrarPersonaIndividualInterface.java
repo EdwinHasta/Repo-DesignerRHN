@@ -121,6 +121,8 @@ public interface AdministrarPersonaIndividualInterface {
     public List<TiposDocumentos> lovTiposDocumentos();
 
     public List<Empresas> lovEmpresas();
+    
+    public Empresas obtenerEmpresa(BigInteger secEmpresa);
 
     public TiposEntidades buscarTipoEntidadPorCodigo(Short codigo);
 

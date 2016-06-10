@@ -129,6 +129,8 @@ public interface AdministrarCarpetaPersonalInterface {
      * @return Retorna el DetalleEmpresa con la información de la empresa.
      */
     public DetallesEmpresas consultarDetalleEmpresaUsuario();
+    
+    public Empresas obtenerEmpresa(BigInteger secEmpresa);
     /**
      * Método encargado de recuperar el Usuario cuyo alias coincida con el dado por parámetro.
      * @param alias Alias del Usuario que se quiere encontrar.

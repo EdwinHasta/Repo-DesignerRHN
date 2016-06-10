@@ -1,7 +1,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+//import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.*;
@@ -27,14 +27,14 @@ public class Empleados implements Serializable {
     private BigInteger codigoempleado;
     @Column(name = "RUTATRANSPORTE")
     private Integer rutatransporte;
-    @Column(name = "TELEFONO")
+    /*@Column(name = "TELEFONO")
     private Long telefono;
     @Column(name = "EXTENSION")
-    private Integer extension;
+    private Integer extension;*/
     @Size(max = 6)
     @Column(name = "PARQUEADERO")
     private String parqueadero;
-    @Size(max = 1)
+    /*@Size(max = 1)
     @Column(name = "SERVICIORESTAURANTE")
     private String serviciorestaurante;
     @Column(name = "NIVELENDEUDAMIENTO")
@@ -51,29 +51,32 @@ public class Empleados implements Serializable {
     @Column(name = "CODIGOALTERNATIVODEUDOR")
     private Integer codigoalternativodeudor;
     @Column(name = "CODIGOALTERNATIVOACREEDOR")
-    private Long codigoalternativoacreedor;
+    private Long codigoalternativoacreedor;*/
     @Column(name = "FECHACREACION")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechacreacion;
     @Size(max = 20)
     @Column(name = "CODIGOALTERNATIVO")
     private String codigoalternativo;
-    @Column(name = "TEMPTOTALINGRESOS")
+    /*@Column(name = "TEMPTOTALINGRESOS")
     private BigInteger temptotalingresos;
     @Size(max = 1)
     @Column(name = "EXTRANJERO")
-    private String extranjero;
+    private String extranjero;*/
     @Size(max = 1)
     @Column(name = "PAGASUBSIDIOTRANSPORTELEGAL")
     private String pagasubsidiotransportelegal;
-    @Column(name = "TEMPBASERECALCULO")
-    private BigInteger tempbaserecalculo;
+    /*@Column(name = "TEMPBASERECALCULO")
+    private BigInteger tempbaserecalculo;*/
     @JoinColumn(name = "PERSONA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Personas persona;
     @JoinColumn(name = "EMPRESA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Empresas empresa;
+    /*@Column(name = "EMPRESA")
+    private BigInteger empresa;
+    */
     @Size(max = 30)
     @Column(name = "USUARIOBD")
     private String usuariobd;
@@ -81,6 +84,8 @@ public class Empleados implements Serializable {
     private String estado;
     @Transient
     private String codigoempleadoSTR;
+    /*@Transient
+    private Empresas empresa;*/
 
     public Empleados() {
         persona = new Personas();
@@ -119,7 +124,7 @@ public class Empleados implements Serializable {
         this.rutatransporte = rutatransporte;
     }
 
-    public Long getTelefono() {
+    /*public Long getTelefono() {
         return telefono;
     }
 
@@ -133,7 +138,7 @@ public class Empleados implements Serializable {
 
     public void setExtension(Integer extension) {
         this.extension = extension;
-    }
+    }*/
 
     public String getParqueadero() {
         return parqueadero;
@@ -142,7 +147,7 @@ public class Empleados implements Serializable {
     public void setParqueadero(String parqueadero) {
         this.parqueadero = parqueadero;
     }
-
+/*
     public String getServiciorestaurante() {
         return serviciorestaurante;
     }
@@ -206,7 +211,7 @@ public class Empleados implements Serializable {
     public void setCodigoalternativoacreedor(Long codigoalternativoacreedor) {
         this.codigoalternativoacreedor = codigoalternativoacreedor;
     }
-
+*/
     public Date getFechacreacion() {
         return fechacreacion;
     }
@@ -222,7 +227,7 @@ public class Empleados implements Serializable {
     public void setCodigoalternativo(String codigoalternativo) {
         this.codigoalternativo = codigoalternativo;
     }
-
+/*
     public BigInteger getTemptotalingresos() {
         return temptotalingresos;
     }
@@ -238,7 +243,7 @@ public class Empleados implements Serializable {
     public void setExtranjero(String extranjero) {
         this.extranjero = extranjero;
     }
-
+*/
     public String getPagasubsidiotransportelegal() {
         return pagasubsidiotransportelegal;
     }
@@ -246,7 +251,7 @@ public class Empleados implements Serializable {
     public void setPagasubsidiotransportelegal(String pagasubsidiotransportelegal) {
         this.pagasubsidiotransportelegal = pagasubsidiotransportelegal;
     }
-
+/*
     public BigInteger getTempbaserecalculo() {
         return tempbaserecalculo;
     }
@@ -254,7 +259,7 @@ public class Empleados implements Serializable {
     public void setTempbaserecalculo(BigInteger tempbaserecalculo) {
         this.tempbaserecalculo = tempbaserecalculo;
     }
-
+*/
     public Personas getPersona() {
         return persona;
     }
@@ -264,12 +269,20 @@ public class Empleados implements Serializable {
     }
 
     public Empresas getEmpresa() {
+    return empresa;
+    }
+    public void setEmpresa(Empresas empresa) {
+    this.empresa = empresa;
+    }
+/*     
+    public BigInteger getEmpresa() {
         return empresa;
     }
 
-    public void setEmpresa(Empresas empresa) {
+    public void setEmpresa(BigInteger empresafk) {
         this.empresa = empresa;
     }
+  */  
 
     @Override
     public int hashCode() {

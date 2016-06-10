@@ -42,7 +42,7 @@ import javax.persistence.EntityManager;
  */
 @Stateful
 public class AdministrarNReportesNomina implements AdministrarNReportesNominaInterface {
-    
+
     @EJB
     PersistenciaInforeportesInterface persistenciaInforeportes;
     @EJB
@@ -69,7 +69,7 @@ public class AdministrarNReportesNomina implements AdministrarNReportesNominaInt
     PersistenciaProcesosInterface persistenciaProcesos;
     @EJB
     PersistenciaAsociacionesInterface persistenciaAsociaciones;
-    
+
     List<Inforeportes> listInforeportes;
     ParametrosInformes parametroReporte;
     String usuarioActual;
@@ -84,7 +84,7 @@ public class AdministrarNReportesNomina implements AdministrarNReportesNominaInt
     List<Terceros> listTerceros;
     List<Procesos> listProcesos;
     List<Asociaciones> listAsociaciones;
-        /**
+    /**
      * Enterprise JavaBean.<br>
      * Atributo que representa todo lo referente a la conexión del usuario que
      * está usando el aplicativo.
@@ -98,19 +98,23 @@ public class AdministrarNReportesNomina implements AdministrarNReportesNominaInt
     public void obtenerConexion(String idSesion) {
         em = administrarSesiones.obtenerConexionSesion(idSesion);
     }
-    
+
     @Override
     public ParametrosInformes parametrosDeReporte() {
         try {
-            usuarioActual = persistenciaActualUsuario.actualAliasBD(em);
-            parametroReporte = persistenciaParametrosInformes.buscarParametroInformeUsuario(em, usuarioActual);
+            if (usuarioActual == null) {
+                usuarioActual = persistenciaActualUsuario.actualAliasBD(em);
+            }
+            if (parametroReporte == null) {
+                parametroReporte = persistenciaParametrosInformes.buscarParametroInformeUsuario(em, usuarioActual);
+            }
             return parametroReporte;
         } catch (Exception e) {
             System.out.println("Error parametrosDeReporte Administrar" + e);
             return null;
         }
     }
-    
+
     @Override
     public List<Inforeportes> listInforeportesUsuario() {
         try {
@@ -121,7 +125,7 @@ public class AdministrarNReportesNomina implements AdministrarNReportesNominaInt
             return null;
         }
     }
-    
+
     @Override
     public void modificarParametrosInformes(ParametrosInformes parametroInforme) {
         try {
@@ -130,7 +134,7 @@ public class AdministrarNReportesNomina implements AdministrarNReportesNominaInt
             System.out.println("Error modificarParametrosInformes : " + e.toString());
         }
     }
-    
+
     @Override
     public List<Empresas> listEmpresas() {
         try {
@@ -141,7 +145,7 @@ public class AdministrarNReportesNomina implements AdministrarNReportesNominaInt
             return null;
         }
     }
-    
+
     @Override
     public List<GruposConceptos> listGruposConcetos() {
         try {
@@ -152,18 +156,21 @@ public class AdministrarNReportesNomina implements AdministrarNReportesNominaInt
             return null;
         }
     }
-    
+
     @Override
     public List<Empleados> listEmpleados() {
+        System.out.println(this.getClass().getName() + ".listEmpleados()");
+        System.out.println(this.getClass().getName() + ".listEmpleados() entity manager" + em);
         try {
             listEmpleados = persistenciaEmpleado.buscarEmpleados(em);
+            System.out.println(this.getClass().getName() + ".listEmpleados() fin.");
             return listEmpleados;
         } catch (Exception e) {
-            System.out.println("Error listEmpleados : " + e.toString());
+            System.out.println(this.getClass().getName() + " error " + e.toString());
             return null;
         }
     }
-    
+
     @Override
     public List<UbicacionesGeograficas> listUbicacionesGeograficas() {
         try {
@@ -174,7 +181,7 @@ public class AdministrarNReportesNomina implements AdministrarNReportesNominaInt
             return null;
         }
     }
-    
+
     @Override
     public List<TiposAsociaciones> listTiposAsociaciones() {
         try {
@@ -185,7 +192,7 @@ public class AdministrarNReportesNomina implements AdministrarNReportesNominaInt
             return null;
         }
     }
-    
+
     @Override
     public List<Estructuras> listEstructuras() {
         try {
@@ -196,7 +203,7 @@ public class AdministrarNReportesNomina implements AdministrarNReportesNominaInt
             return null;
         }
     }
-    
+
     @Override
     public List<TiposTrabajadores> listTiposTrabajadores() {
         try {
@@ -207,7 +214,7 @@ public class AdministrarNReportesNomina implements AdministrarNReportesNominaInt
             return null;
         }
     }
-    
+
     @Override
     public List<Terceros> listTerceros() {
         try {
@@ -218,7 +225,7 @@ public class AdministrarNReportesNomina implements AdministrarNReportesNominaInt
             return null;
         }
     }
-    
+
     @Override
     public List<Procesos> listProcesos() {
         try {
@@ -229,7 +236,7 @@ public class AdministrarNReportesNomina implements AdministrarNReportesNominaInt
             return null;
         }
     }
-    
+
     @Override
     public List<Asociaciones> listAsociaciones() {
         try {
@@ -240,8 +247,8 @@ public class AdministrarNReportesNomina implements AdministrarNReportesNominaInt
             return null;
         }
     }
-    
-     @Override 
+
+    @Override
     public void guardarCambiosInfoReportes(List<Inforeportes> listaIR) {
         try {
             for (int i = 0; i < listaIR.size(); i++) {

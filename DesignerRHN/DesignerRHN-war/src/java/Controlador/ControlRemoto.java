@@ -42,6 +42,7 @@ public class ControlRemoto implements Serializable {
 
     @EJB
     AdministrarCarpetaPersonalInterface administrarCarpetaPersonal;
+    
     private Empleados empleado;
     private Personas persona;
     private DetallesEmpresas detallesEmpresas;
@@ -75,9 +76,9 @@ public class ControlRemoto implements Serializable {
     private String FechaDesde, FechaHasta, FechaSistema;
     private String Sueldo;
     private String tipo, tipoBk;
-    private SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-    private Locale locale = new Locale("es", "CO");
-    private NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
+    private final SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+    private final Locale locale = new Locale("es", "CO");
+    private final NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
     private String Mensaje;
     private String Imagen;
     private String fotoEmpleado;
@@ -328,6 +329,7 @@ public class ControlRemoto implements Serializable {
 
         try {
             actualIBC = administrarCarpetaPersonal.actualIBC(secuencia, trabajador.getEmpleado().getEmpresa().getRetencionysegsocxpersona());
+            //actualIBC = administrarCarpetaPersonal.actualIBC(secuencia, administrarCarpetaPersonal.obtenerEmpresa(trabajador.getEmpleado().getEmpresa()).getRetencionysegsocxpersona());
         } catch (Exception e) {
             actualIBC = null;
         }
