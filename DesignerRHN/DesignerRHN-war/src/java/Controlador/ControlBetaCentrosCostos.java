@@ -565,8 +565,6 @@ public class ControlBetaCentrosCostos implements Serializable {
         } catch (Exception e) {
             System.err.println("ERROR LLAMADO DIALOGO BUSCAR CENTROS COSTOS " + e);
         }
-        activarLOV = true;
-        RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
     public void seleccionCentrosCostosPorEmpresa() {

@@ -72,6 +72,18 @@ public class TiposTrabajadores implements Serializable {
     @JoinColumn(name = "TIPOCOTIZANTE", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private TiposCotizantes tipocotizante;
+    @Transient
+    private String modalidadpensionsectorsaludcmp;
+    @Transient
+    private String patronpagasaludcmp;
+    @Transient
+    private String patronpagapensioncmp;
+    @Transient
+    private String patronpagaretencioncmp;
+    @Transient
+    private String cesantiasectorconstruccioncmp;
+    @Transient
+    private String modalidadcmp;
 
     public TiposTrabajadores() {
     }
@@ -236,6 +248,166 @@ public class TiposTrabajadores implements Serializable {
 
     public void setTipocotizante(TiposCotizantes tipocotizante) {
         this.tipocotizante = tipocotizante;
+    }
+
+    public String getModalidadpensionsectorsaludcmp() {
+        if (getModalidadpensionsectorsalud() == null) {
+            modalidadpensionsectorsaludcmp = "";
+        } else if (getModalidadpensionsectorsalud().equals("S")) {
+            modalidadpensionsectorsaludcmp = "SI";
+        } else if (getModalidadpensionsectorsalud().equals("N")) {
+            modalidadpensionsectorsaludcmp = "NO";
+        } else {
+            modalidadpensionsectorsaludcmp = "";
+        }
+        return modalidadpensionsectorsaludcmp;
+    }
+
+    public void setModalidadpensionsectorsaludcmp(String modalidadpensionsectorsaludcmp) {
+        this.modalidadpensionsectorsaludcmp = modalidadpensionsectorsaludcmp;
+        if (this.modalidadpensionsectorsaludcmp.equals("SI")) {
+            setModalidadpensionsectorsalud("S");
+        } else if (this.modalidadpensionsectorsaludcmp.equals("NO")) {
+            setModalidadpensionsectorsalud("N");
+        } else {
+            setModalidadpensionsectorsalud("");
+        }
+    }
+
+    public String getCesantiasectorconstruccioncmp() {
+        if (getCesantiasectorconstruccion() == null) {
+            cesantiasectorconstruccioncmp = "";
+        } else if (getCesantiasectorconstruccion().equals("S")) {
+            cesantiasectorconstruccioncmp = "SI";
+        } else if (getCesantiasectorconstruccion().equals("N")) {
+            cesantiasectorconstruccioncmp = "NO";
+        } else {
+            cesantiasectorconstruccioncmp = "";
+        }
+        return cesantiasectorconstruccioncmp;
+    }
+
+    public void setCesantiasectorconstruccioncmp(String cesantiasectorconstruccioncmp) {
+        this.cesantiasectorconstruccioncmp = cesantiasectorconstruccioncmp;
+        if (this.cesantiasectorconstruccioncmp.equals("SI")) {
+            setCesantiasectorconstruccion("S");
+        } else if (this.cesantiasectorconstruccioncmp.equals("NO")) {
+            setCesantiasectorconstruccion("N");
+        } else {
+            setCesantiasectorconstruccion("");
+        }
+    }
+
+    public String getPatronpagapensioncmp() {
+        if (getPatronpagapension() == null) {
+            patronpagapensioncmp = "";
+        } else if (getPatronpagapension().equals("S")) {
+            patronpagapensioncmp = "SI";
+        } else if (getPatronpagapension().equals("N")) {
+            patronpagapensioncmp = "NO";
+        } else {
+            patronpagapensioncmp = "";
+        }
+        return patronpagapensioncmp;
+    }
+
+    public void setPatronpagapensioncmp(String patronpagapensioncmp) {
+        this.patronpagapensioncmp = patronpagapensioncmp;
+        if (this.patronpagapensioncmp.equals("SI")) {
+            setPatronpagapension("S");
+        } else if (this.patronpagapensioncmp.equals("NO")) {
+            setPatronpagapension("N");
+        } else {
+            setPatronpagapension("");
+        }
+    }
+
+    public String getPatronpagaretencioncmp() {
+        if (getPatronpagaretencion() == null) {
+            patronpagaretencioncmp = "";
+        } else if (getPatronpagaretencion().equals("S")) {
+            patronpagaretencioncmp = "SI";
+        } else if (getPatronpagaretencion().equals("N")) {
+            patronpagaretencioncmp = "NO";
+        } else {
+            patronpagaretencioncmp = "";
+        }
+        return patronpagaretencioncmp;
+    }
+
+    public void setPatronpagaretencioncmp(String patronpagaretencioncmp) {
+        this.patronpagaretencioncmp = patronpagaretencioncmp;
+        if (this.patronpagaretencioncmp.equals("SI")) {
+            setPatronpagaretencion("S");
+        } else if (this.patronpagaretencioncmp.equals("NO")) {
+            setPatronpagaretencion("N");
+        } else {
+            setPatronpagaretencion("");
+        }
+    }
+
+    public String getPatronpagasaludcmp() {
+        if (getPatronpagasalud() == null) {
+            patronpagasaludcmp = "";
+        } else if (getPatronpagasalud().equals("S")) {
+            patronpagasaludcmp = "SI";
+        } else if (getPatronpagasalud().equals("N")) {
+            patronpagasaludcmp = "NO";
+        } else {
+            patronpagasaludcmp = "";
+        }
+        return patronpagasaludcmp;
+    }
+
+    public void setPatronpagasaludcmp(String patronpagasaludcmp) {
+        this.patronpagasaludcmp = patronpagasaludcmp;
+        if (this.patronpagasaludcmp.equals("SI")) {
+            setPatronpagasalud("S");
+        } else if (this.patronpagasaludcmp.equals("NO")) {
+            setPatronpagasalud("N");
+        } else {
+            setPatronpagasalud("");
+        }
+    }
+
+    public String getModalidadcmp() {
+        if (getModalidad() == null) {
+            modalidadcmp = "";
+        } else if (getModalidad().equals("E")) {
+            modalidadcmp = "EMPLEADO";
+        } else if (getModalidad().equals("P")) {
+            modalidadcmp = "PENSIONADO";
+        } else if (getModalidad().equals("C")) {
+            modalidadcmp = "DISPONIBLE";
+        } else if (getModalidad().equals("L")) {
+            modalidadcmp = "LIQUIDADO";
+        } else if (getModalidad().equals("U")) {
+            modalidadcmp = "UNIVERSITARIO";
+        } else if (getModalidad().equals("D")) {
+            modalidadcmp = "DESTAJO";
+        } else {
+            modalidadcmp = "";
+        }
+        return modalidadcmp;
+    }
+
+    public void setModalidadcmp(String modalidadcmp) {
+        this.modalidadcmp = modalidadcmp;
+        if (this.modalidadcmp.equals("EMPLEADO")) {
+            setModalidad("E");
+        } else if (this.modalidadcmp.equals("PENSIONADO")) {
+            setModalidad("P");
+        } else if (this.modalidadcmp.equals("DISPONIBLE")) {
+            setModalidad("C");
+        } else if (this.modalidadcmp.equals("LIQUIDADO")) {
+            setModalidad("L");
+        } else if (this.modalidadcmp.equals("UNIVERSITARIO")) {
+            setModalidad("U");
+        } else if (this.modalidadcmp.equals("DESTAJO")) {
+            setModalidad("D");
+        } else {
+            setModalidad("");
+        }
     }
 
     @Override

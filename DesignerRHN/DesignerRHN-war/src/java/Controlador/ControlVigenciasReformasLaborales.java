@@ -162,9 +162,8 @@ public class ControlVigenciasReformasLaborales implements Serializable {
 
     public void modificarVRL(VigenciasReformasLaborales vrl) {
 
-        RequestContext context = RequestContext.getCurrentInstance();
+        vigenciaSeleccionada = vrl;
         if (!listVRLCrear.contains(vigenciaSeleccionada)) {
-            vigenciaSeleccionada = vrl;
             if (listVRLModificar.isEmpty()) {
                 listVRLModificar.add(vigenciaSeleccionada);
             } else if (!listVRLModificar.contains(vigenciaSeleccionada)) {
@@ -172,7 +171,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             }
             if (guardado) {
                 guardado = false;
-                context.update("form:ACEPTAR");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         }
     }
@@ -314,8 +313,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
                     duplicarVRL.setReformalaboral(listaReformasLaborales.get(indiceUnicoElemento));
                     context.update("formularioDialogos:duplicarReformaLaboral");
                 }
-                listaReformasLaborales.clear();
-                getListaReformasLaborales();
             } else {
                 context.update("form:ReformasLaboralesDialogo");
                 context.execute("ReformasLaboralesDialogo.show()");
@@ -436,7 +433,6 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         context.update("form:datosVRLEmpleado");
         context.update("form:ACEPTAR");
         context.update("form:informacionRegistro");
-
     }
 
     //MOSTRAR DATOS CELDA
@@ -850,6 +846,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         aceptar = false;
     }
     //EXPORTAR
+
     /**
      * Metodo que exporta datos a PDF
      *
@@ -878,6 +875,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         context.responseComplete();
     }
     //EVENTO FILTRAR
+
     /**
      * Evento que cambia la lista reala a la filtrada
      */
@@ -899,6 +897,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         context.update("form:infoRegistroReformaLaboral");
     }
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
+
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (vigenciaSeleccionada != null) {
@@ -945,6 +944,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         }
     }
     //GETTERS AND SETTERS
+
     /**
      * Metodo que obtiene las VigenciasReformasLaborales de un empleado, en caso
      * de ser null por medio del administrar hace el llamado para almacenarlo
