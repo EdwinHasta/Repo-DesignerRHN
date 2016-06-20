@@ -28,6 +28,7 @@ public interface PersistenciaTiposTelefonosInterface {
     public void editar(EntityManager em, TiposTelefonos tiposTelefonos);
     /**
      * Método encargado de eliminar de la base de datos el TipoTelefono que entra por parámetro.
+     * @param em
      * @param tiposTelefonos TipoTelefono que se quiere eliminar.
      */
     public void borrar(EntityManager em, TiposTelefonos tiposTelefonos);

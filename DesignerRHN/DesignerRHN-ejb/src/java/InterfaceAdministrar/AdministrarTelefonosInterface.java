@@ -5,6 +5,7 @@
 package InterfaceAdministrar;
 
 import Entidades.Ciudades;
+import Entidades.Empleados;
 import Entidades.Personas;
 import Entidades.Telefonos;
 import Entidades.TiposTelefonos;
@@ -30,4 +31,5 @@ public interface AdministrarTelefonosInterface {
     public void modificarTelefono(List<Telefonos> listaTelefonosModificar);
     public void borrarTelefono(Telefonos telefonos);
     public void crearTelefono(Telefonos telefonos);
+    public Empleados empleadoActual(BigInteger secuencia);
 }

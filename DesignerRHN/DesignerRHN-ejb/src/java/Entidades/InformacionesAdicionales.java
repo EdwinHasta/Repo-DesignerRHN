@@ -33,6 +33,8 @@ public class InformacionesAdicionales implements Serializable {
     @Size(min = 1, max = 1)
     @Column(name = "TIPODATO")
     private String tipodato;
+    @Transient
+    private String tipodatoTr;
     @Column(name = "RESULTADONUMERICO")
     private Long resultadonumerico;
     @Size(max = 100)
@@ -47,8 +49,8 @@ public class InformacionesAdicionales implements Serializable {
     @JoinColumn(name = "EMPLEADO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Empleados empleado;
-    @Transient
-    private String tipoDatoCompleto;
+//    @Transient
+//    private String tipoDatoCompleto;
 
     public InformacionesAdicionales() {
     }
@@ -143,26 +145,53 @@ public class InformacionesAdicionales implements Serializable {
     public void setEmpleado(Empleados empleado) {
         this.empleado = empleado;
     }
+//
+//    public String getTipoDatoCompleto() {
+//        getTipodato();
+//        if (tipodato == null) {
+//            tipoDatoCompleto = " ";
+//        }
+//        if (tipodato.equalsIgnoreCase("C")) {
+//            tipoDatoCompleto = "CARACTER";
+//        }
+//        if (tipodato.equalsIgnoreCase("F")) {
+//            tipoDatoCompleto = "FECHA";
+//        }
+//        if (tipodato.equalsIgnoreCase("N")) {
+//            tipoDatoCompleto = "NUMERICO";
+//        }
+//        return tipoDatoCompleto;
+//    }
+//
+//    public void setTipoDatoCompleto(String tipoDatoCompleto) {
+//        this.tipoDatoCompleto = tipoDatoCompleto;
+//    }
 
-    public String getTipoDatoCompleto() {
-        getTipodato();
-        if (tipodato == null) {
-            tipoDatoCompleto = " ";
+    public String getTipodatoTr() {
+        if (getTipodato().equalsIgnoreCase("C")) {
+            tipodatoTr = "CARACTER";
         }
-        if (tipodato.equalsIgnoreCase("C")) {
-            tipoDatoCompleto = "CARACTER";
+        if (getTipodato().equalsIgnoreCase("F")) {
+            tipodatoTr = "FECHA";
         }
-        if (tipodato.equalsIgnoreCase("F")) {
-            tipoDatoCompleto = "FECHA";
+        if (getTipodato().equalsIgnoreCase("N")) {
+            tipodatoTr = "NUMERICO";
         }
-        if (tipodato.equalsIgnoreCase("N")) {
-            tipoDatoCompleto = "NUMERICO";
-        }
-        return tipoDatoCompleto;
+        return tipodatoTr;
     }
 
-    public void setTipoDatoCompleto(String tipoDatoCompleto) {
-        this.tipoDatoCompleto = tipoDatoCompleto;
+    public void setTipodatoTr(String tipodatoTr) {
+
+        this.tipodatoTr = tipodatoTr;
+        if (tipodatoTr.equals("CARACTER")) {
+            setTipodatoTr("C");
+        }
+        if (tipodatoTr.equals("FECHA")) {
+            setTipodatoTr("F");
+        }
+        if (tipodatoTr.equals("NUMERICO")) {
+            setTipodatoTr("N");
+        }
     }
 
     @Override

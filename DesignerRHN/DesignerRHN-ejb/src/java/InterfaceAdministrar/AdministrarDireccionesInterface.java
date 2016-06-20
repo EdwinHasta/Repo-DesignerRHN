@@ -5,6 +5,7 @@ package InterfaceAdministrar;
 
 import Entidades.Ciudades;
 import Entidades.Direcciones;
+import Entidades.Empleados;
 import Entidades.Personas;
 import java.math.BigInteger;
 import java.util.List;
@@ -72,4 +73,6 @@ public interface AdministrarDireccionesInterface {
      * @return Retorna una lista de Ciudades.
      */
     public List<Ciudades> consultarLOVCiudades();
+    
+    public Empleados empleadoActual(BigInteger secuencia);
 }

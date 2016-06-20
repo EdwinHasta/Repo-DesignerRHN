@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
     <h:head>
     </h:head>
     <h:body>
@@ -26,7 +27,8 @@
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlMotivosCambiosCargos.listaValoresBoton()}"   process="@this"/>
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "
+                                                 disabled="#{controlMotivosCambiosCargos.activarLOV}" actionListener="#{controlMotivosCambiosCargos.listaValoresBoton()}"   process="@this"/>
                                 <p:tooltip style="" for="listaValores" value="#{msg['lista']}" />
 
                                 <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlMotivosCambiosCargos.activarCtrlF11()}"  process="@this"/>
@@ -49,7 +51,7 @@
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png);  background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "  oncomplete="nuevoRegistroMotivoCambiosCargos.show()" update=":formularioDialogos:nuevoMotivoCambioCargo" process="@this"/> 
                                 <p:tooltip style="" for="insertar" value="#{msg['nuevo']}" />
 
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "  actionListener="#{controlMotivosCambiosCargos.verificarBorrado()}" process="@this"/>  
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "  actionListener="#{controlMotivosCambiosCargos.borrarMotivosCambiosCargos()}" process="@this"/>  
                                 <p:tooltip style="" for="eliminar" value="#{msg['eliminar']}" />
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlMotivosCambiosCargos.duplicarMotivosCambiosCargos()}" process="@this"/>  
@@ -69,6 +71,8 @@
                                 <p:tooltip  for="salir" value="Salir"/>
                             </p:toolbarGroup>  
                         </p:toolbar>
+                        <p:commandButton style=" position: absolute; left: 680px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value=""  onclick="confirmarGuardar.show();" disabled="#{controlMotivosCambiosCargos.guardado}"  update="datosMotivoCambioCargo"  process="@this"   />
+                        <p:commandButton style=" position: absolute; left: 770px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" action="atrasmotivocambiocargo" id="ATRAS" value="" actionListener="#{controlMotivosCambiosCargos.salir()}"   />
                         
                         <fieldset style="position: absolute;top: 77px;left: 10px;height: 380px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>Motivos de Cambios Cargos</strong></legend>
@@ -86,6 +90,7 @@
                                         <f:facet name="output"><h:outputText value="#{info.codigo}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{info.codigo}" maxlength="4" id="editarCodigo" style="  height: 12px; border-radius: 0px; width: 99%; text-transform: uppercase"  > 
+                                                <pe:keyFilter for="editarCodigo" mask="num"/>
                                                 <p:ajax event="select" listener="#{controlMotivosCambiosCargos.cambiarIndice(info, 0)}" process="@this"/> 
                                                 <p:ajax event="change" listener="#{controlMotivosCambiosCargos.modificarMotivosCambiosCargos(info, 'N', info.codigo)}"  update="codigo"/>
                                             </p:inputText>
@@ -107,9 +112,7 @@
 
                         <h:outputText id="infoRegistro" value="#{msg['infoRegistros']} #{controlMotivosCambiosCargos.infoRegistro}" style="position: relative; left: 10px; top: 10px; font-weight: bold"/>
                         </fieldset>
-
-                        <p:commandButton style=" position: absolute; left: 680px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value=""  onclick="confirmarGuardar.show();" disabled="#{controlMotivosCambiosCargos.guardado}"  update="datosMotivoCambioCargo"  process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 770px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" action="atrasmotivocambiocargo" id="ATRAS" value="" actionListener="#{controlMotivosCambiosCargos.salir()}"   />
+                        
 
                         <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
@@ -204,11 +207,11 @@
                         <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 80px; top: 2px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
-                    <p:dialog id="editCodigo" header="Código" widgetVar="editCodigo" resizable="false" draggable="false" modal="true" height="55" width="240" style="">  
-                        <p:inputTextarea value="#{controlMotivosCambiosCargos.editarMotivoCambioCargo.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editCodigo" header="Código" widgetVar="editCodigo" resizable="false" draggable="false" modal="true" height="80" width="400" style="">  
+                        <p:inputTextarea value="#{controlMotivosCambiosCargos.editarMotivoCambioCargo.codigo}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
-                    <p:dialog id="editDescripcion" header="Descripción" widgetVar="editDescripcion" resizable="false" draggable="false" modal="true" height="55" width="240" style="text-transform: uppercase">  
-                        <p:inputTextarea value="#{controlMotivosCambiosCargos.editarMotivoCambioCargo.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editDescripcion" header="Descripción" widgetVar="editDescripcion" resizable="false" draggable="false" modal="true" height="80" width="400" style="text-transform: uppercase">  
+                        <p:inputTextarea value="#{controlMotivosCambiosCargos.editarMotivoCambioCargo.nombre}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
                     <p:dialog id="nuevoRegistroMotivoCambiosCargos" header="Nuevo Registro" widgetVar="nuevoRegistroMotivoCambiosCargos" closable="false" resizable="false"  draggable="false" modal="true" height="155" width="320" style=" padding: 0px">  
@@ -218,6 +221,7 @@
 
                             <strong><h:outputText value="*Código: "  style=" position: absolute; top: 60px;" /></strong>
                             <p:inputText id="nuevoCodigo" maxlength="4" value="#{controlMotivosCambiosCargos.nuevoMotivoCambioCargo.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
+                                <pe:keyFilter for="nuevoCodigo" mask="num"/>
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />
@@ -241,6 +245,7 @@
                         <p:panel id="duplicarMotivosCambiosCargos" style="border: none;">
                             <strong><h:outputText value="*Código :"  style=" position: absolute; top: 60px;" /></strong>
                             <p:inputText id="duplicarCodigo" maxlength="4" value="#{controlMotivosCambiosCargos.duplicarMotivoCambioCargo.codigo}" style="text-transform: uppercase ;width: 135px; position: absolute; left: 150px; top: 55px;">
+                                <pe:keyFilter for="duplicarCodigo" mask="num"/>
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Código" />

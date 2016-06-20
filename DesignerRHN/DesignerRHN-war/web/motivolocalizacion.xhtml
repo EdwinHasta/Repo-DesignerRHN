@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
     <h:head>
     </h:head>
     <h:body>
@@ -26,7 +27,8 @@
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlMotivosLocalizaciones.listaValoresBoton()}"   process="@this"/>
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
+                                                 disabled="#{controlMotivosLocalizaciones.activarLov}" actionListener="#{controlMotivosLocalizaciones.listaValoresBoton()}"   process="@this"/>
                                 <p:tooltip style="" for="listaValores" value="#{msg['lista']}" />
 
                                 <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlMotivosLocalizaciones.activarCtrlF11()}"  process="@this"/>
@@ -49,7 +51,7 @@
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png);  background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "  oncomplete="nuevoRegistroMotivosLocalizaciones.show()" update=":formularioDialogos:nuevoMotivoContrato" process="@this"/> 
                                 <p:tooltip style="" for="insertar" value="#{msg['nuevo']}" />
 
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "  actionListener="#{controlMotivosLocalizaciones.verificarBorrado()}" process="@this"/>  
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "  actionListener="#{controlMotivosLocalizaciones.borrarMotivosLocalizaciones()}" process="@this"/>  
                                 <p:tooltip style="" for="eliminar" value="#{msg['eliminar']}" />
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlMotivosLocalizaciones.duplicarMotivosLocalizaciones()}" process="@this"/>  
@@ -64,12 +66,14 @@
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
                                 <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlMotivosLocalizaciones.salir()}" action="#{controlMotivosLocalizaciones.retornarPagina()}" process="@this"/>  
+                                <p:commandButton id="salir" value=" " style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlMotivosLocalizaciones.salir()}" action="atrasmotivolocalizacion" process="@this"/>  
                                 <p:tooltip  for="salir" value="Salir"/>
 
                             </p:toolbarGroup>  
                         </p:toolbar>
-                        
+                        <p:commandButton style=" position: absolute; left: 680px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value=""  onclick="confirmarGuardar.show();"  disabled="#{controlMotivosLocalizaciones.guardado}" update="datosMotivoContrato"  process="@this"   />
+                        <p:commandButton style=" position: absolute; left: 770px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" action="atrasmotivolocalizacion" id="ATRAS" value=""    />
+
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>Motivo de la Localización</strong></legend>
 
@@ -81,12 +85,14 @@
                                          selectionMode="single"
                                          >
                                 <p:ajax event="filter" listener="#{controlMotivosLocalizaciones.eventoFiltrar()}"/>
+                                <f:event type="preRenderView" listener="#{controlMotivosLocalizaciones.recordarSeleccionMotivoLocalizacion()}"/>
 
                                 <p:column headerText="Código" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains" id="codigo"  filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.codigo}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{info.codigo}"  maxlength="4" id="editarCodigo" style="height: 12px;  border-radius: 0px; width: 400px; text-transform: uppercase"  > 
+                                                <pe:keyFilter for="editarCodigo" mask="num"/>
                                                 <p:ajax event="select" listener="#{controlMotivosLocalizaciones.cambiarIndice(info, 0)}" process="@this"/> 
                                                 <p:ajax event="change" listener="#{controlMotivosLocalizaciones.modificarMotivosContrato(info, 'N', info.codigo)}"  update="codigo"/>
                                             </p:inputText>
@@ -105,11 +111,9 @@
                                     </p:cellEditor>
                                 </p:column>
                             </p:dataTable>
-                        <h:outputText id="infoRegistro" value="#{msg['infoRegistros']} #{controlMotivosLocalizaciones.infoRegistro}" style="position: relative; left: 10px; top: 25px; font-weight: bold"/>
+                            <h:outputText id="infoRegistro" value="#{msg['infoRegistros']} #{controlMotivosLocalizaciones.infoRegistro}" style="position: relative; left: 10px; top: 25px; font-weight: bold"/>
                         </fieldset>
 
-                        <p:commandButton style=" position: absolute; left: 680px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value=""  onclick="confirmarGuardar.show();"  disabled="#{controlMotivosLocalizaciones.guardado}" update="datosMotivoContrato"  process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 770px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" action="atrasmotivolocalizacion" id="ATRAS" value=""    />
                         <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
@@ -119,10 +123,10 @@
                         </p:dialog>
                     </p:panel>
 
-                      <p:dialog id="validacionDuplicarVigencia" header="#{msg['atencion']}" widgetVar="validacionDuplicarVigencia"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="" closable="false">  
+                    <p:dialog id="validacionDuplicarMotivoLocalizacion" header="#{msg['atencion']}" widgetVar="validacionDuplicarMotivoLocalizacion"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="" closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="70" style="position: absolute; left: 10px; top: 15px;"  />
                         <h:outputText value="Necesita : #{controlMotivosLocalizaciones.mensajeValidacion}" style="position: absolute; left: 90px; top: 20px; width: 280px; font-weight:bold" />
-                        <p:commandButton value="Aceptar" onclick="validacionDuplicarVigencia.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
+                        <p:commandButton value="Aceptar" onclick="validacionDuplicarMotivoLocalizacion.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="validacionModificar" header="#{msg['error']}" widgetVar="validacionModificar"  resizable="false" draggable="false" modal="true" height="77" width="330px" style="" closable="false">  
@@ -151,7 +155,7 @@
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlMotivosLocalizaciones.activarCtrlF11()}"/> 
 
                 </h:form>    
-                    
+
 
                 <h:form id="formularioDialogos">
 
@@ -204,11 +208,11 @@
                         <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 2px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
-                    <p:dialog id="editCodigo" header="Código" widgetVar="editCodigo" resizable="false" draggable="false" modal="true" height="55" width="240" style="">  
-                        <p:inputTextarea value="#{controlMotivosLocalizaciones.editarMotivoContrato.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editCodigo" header="Código" widgetVar="editCodigo" resizable="false" draggable="false" modal="true" height="80" width="400" style="">  
+                        <p:inputTextarea value="#{controlMotivosLocalizaciones.editarMotivoContrato.codigo}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
-                    <p:dialog id="editDescripcion" header="Descripción" widgetVar="editDescripcion" resizable="false" draggable="false" modal="true" height="55" width="240" style="text-transform: uppercase">  
-                        <p:inputTextarea value="#{controlMotivosLocalizaciones.editarMotivoContrato.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editDescripcion" header="Descripción" widgetVar="editDescripcion" resizable="false" draggable="false" modal="true" height="80" width="400" style="text-transform: uppercase">  
+                        <p:inputTextarea value="#{controlMotivosLocalizaciones.editarMotivoContrato.descripcion}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
                     <p:dialog id="nuevoRegistroMotivosLocalizaciones" header="Nuevo Registro" widgetVar="nuevoRegistroMotivosLocalizaciones" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="320" style=" padding: 0px">  
@@ -218,7 +222,8 @@
 
                             <strong><h:outputText value="*Codigo: "  style="left: 10px; position: absolute; top: 60px;" /></strong>
                             <p:inputText id="nuevoCodigo" maxlength="4" value="#{controlMotivosLocalizaciones.nuevoMotivoContrato.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
-                             <p:ajax event="change" update="@this"/>
+                                <pe:keyFilter for="nuevoCodigo" mask="num"/> 
+                                <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Codigo" />
 
@@ -233,7 +238,7 @@
                             <p:commandButton id="cancelarTE" value="Cancelar" icon="ui-icon-circle-close" style=" position: absolute; left: 210px; top: 120px;"  update="nuevoMotivoContrato" onclick="nuevoRegistroMotivosLocalizaciones.hide();"  actionListener="#{controlMotivosLocalizaciones.limpiarNuevoMotivosLocalizaciones()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
-                    
+
 
                     <p:dialog id="duplicarRegistroMotivosLocalizaciones" header="duplicar Registro" widgetVar="duplicarRegistroMotivosLocalizaciones" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="320" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Motivo Localización " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
@@ -241,6 +246,7 @@
                         <p:panel id="duplicarMotivosCambiosCargos" style="border: none;">
                             <strong><h:outputText value="*Código:"  style=" position: absolute; top: 60px;" /></strong>
                             <p:inputText id="duplicarCodigo" maxlength="4" value="#{controlMotivosLocalizaciones.duplicarMotivoContrato.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
+                                <pe:keyFilter for="duplicarCodigo" mask="num"/>
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Código" />

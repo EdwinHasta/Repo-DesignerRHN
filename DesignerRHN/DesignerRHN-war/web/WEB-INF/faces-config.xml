@@ -684,6 +684,26 @@
             <to-view-id>/empleadoindividual.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        
+      <navigation-rule>
+        <from-view-id>/estadocivil.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasPerEstadoCivil</from-outcome>
+            <to-view-id>/perestadocivil.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>   
+
+      <navigation-rule>
+        <from-view-id>/perestadocivil.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>estadoCivil</from-outcome>
+            <to-view-id>/estadocivil.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>  
+        
+                        
     </navigation-rule>
     <navigation-rule>
         <from-view-id>/EmplUbicacionGeografica.xhtml</from-view-id>

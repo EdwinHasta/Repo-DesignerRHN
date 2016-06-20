@@ -101,6 +101,7 @@ public class AdministrarVigenciasEstadosCiviles implements AdministrarVigenciasE
         }
     }
 
+    @Override
     public Empleados consultarEmpleado(BigInteger secuencia) {
         Empleados empleado;
         try {

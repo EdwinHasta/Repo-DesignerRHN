@@ -1,6 +1,7 @@
 package Administrar;
 
 import Entidades.Ciudades;
+import Entidades.Empleados;
 import Entidades.Personas;
 import Entidades.Telefonos;
 import Entidades.TiposTelefonos;
@@ -14,6 +15,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import InterfaceAdministrar.AdministrarSesionesInterface;
+import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import javax.persistence.EntityManager;
 
 @Stateful
@@ -27,6 +29,8 @@ public class AdministrarTelefonos implements AdministrarTelefonosInterface{
     PersistenciaTiposTelefonosInterface persistenciaTiposTelefonos;
     @EJB
     PersistenciaCiudadesInterface PersistenciaCiudades;
+     @EJB
+    PersistenciaEmpleadoInterface persistenciaEmpleado;
     /**
      * Enterprise JavaBean.<br>
      * Atributo que representa todo lo referente a la conexión del usuario que
@@ -103,5 +107,15 @@ public class AdministrarTelefonos implements AdministrarTelefonosInterface{
         persistenciaTelefonos.crear(em, telefonos);
     }
 
+     @Override
+    public Empleados empleadoActual(BigInteger secuenciaP){
+        try{
+        Empleados retorno = persistenciaEmpleado.buscarEmpleado(em, secuenciaP);
+        return retorno;
+        }catch(Exception  e){
+            System.out.println("Error empleadoActual Admi : "+e.toString());
+            return null;
+        }
+    }
     
 }

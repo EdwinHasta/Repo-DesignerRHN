@@ -25,6 +25,7 @@ public class PersistenciaTiposTelefonos implements PersistenciaTiposTelefonosInt
 
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
+     * @param em
      */
     /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
      private EntityManager em;
@@ -35,7 +36,8 @@ public class PersistenciaTiposTelefonos implements PersistenciaTiposTelefonosInt
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(tiposTelefonos);
+            //em.remove(em.merge(tiposTelefonos));
+            em.persist(tiposTelefonos);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaTiposTelefonos.crear: " + e);
@@ -66,8 +68,12 @@ public class PersistenciaTiposTelefonos implements PersistenciaTiposTelefonosInt
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
+            System.out.println("em : " + em);
+            System.out.println("tiposTelefonos : "+ tiposTelefonos);
             tx.begin();
-            em.merge(tiposTelefonos);
+            //em.merge(tiposTelefonos);
+            //em.find(TiposTelefonos.class, tiposTelefonos.getSecuencia());
+            em.remove(em.merge(tiposTelefonos));
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaTiposTelefonos.borrar: " + e);

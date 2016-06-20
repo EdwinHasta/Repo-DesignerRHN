@@ -29,7 +29,7 @@
 
                                 <p:commandButton  id="editar" value="" style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                   actionListener="#{controlVigenciaDeporte.editarCelda()}" process="@this"/>
-                                <p:tooltip style="" for="editar" value="Editar" />
+                                <p:tooltip style="" for="editar" value="#{msg['editar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
@@ -39,41 +39,41 @@
 
                                 <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "
                                                  actionListener="#{controlVigenciaDeporte.activarCtrlF11()}" process="@this" />
-                                <p:tooltip style="" for="filtrar" value="Activar filtrado" />
+                                <p:tooltip style="" for="filtrar" value="#{msg['filtrar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
                                 <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "
                                                  ajax="false" actionListener="#{controlVigenciaDeporte.exportXLS()}" />
-                                <p:tooltip style="" for="exportarXLS" value="Exportar a XLS" />
+                                <p:tooltip style="" for="exportarXLS" value="#{msg['xls']}" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "
                                                  actionListener="#{controlVigenciaDeporte.limpiarNuevaVigenciaDeporte()}" ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportar:datosVigenciaExportar" fileName="MotivosCambiosCargosXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
-                                <p:tooltip style="" for="exportarXML" value="Exportar a XML" />
+                                <p:tooltip style="" for="exportarXML" value="#{msg['xml']}" />
 
                                 <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  actionListener="#{controlVigenciaDeporte.exportPDF()}" ajax="false" />
-                                <p:tooltip style="" for="exportarPDF" value="Exportar a PDF" />
+                                <p:tooltip style="" for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png);  background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  oncomplete="NuevoRegistroVigencias.show()" update=":formularioDialogos:nuevaVigencias" process="@this" /> 
-                                <p:tooltip style="" for="insertar" value="Nuevo Registro" />
+                                <p:tooltip style="" for="insertar" value="#{msg['insertar']}" />
 
                                 <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
                                                  actionListener="#{controlVigenciaDeporte.borrarVigenciaDeporte()}" process="@this"  />  
-                                <p:tooltip style="" for="eliminar" value="Eliminar Registro" />
+                                <p:tooltip style="" for="eliminar" value="#{msg['eliminar']}" />
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "
                                                  actionListener="#{controlVigenciaDeporte.duplicarVigenciaDeporteM()}"  process="@this" />  
-                                <p:tooltip style="" for="duplicar" value="Duplicar Registro" />
+                                <p:tooltip style="" for="duplicar" value="#{msg['duplicar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "
                                                  actionListener="#{controlVigenciaDeporte.verificarRastro()}" process="@this" />  
-                                <p:tooltip style="" for="rastro" value="Rastro"/>
+                                <p:tooltip style="" for="rastro" value="#{msg['rastro']}"/>
 
                                 <p:separator style="position: relative; top: -9px"/>
 

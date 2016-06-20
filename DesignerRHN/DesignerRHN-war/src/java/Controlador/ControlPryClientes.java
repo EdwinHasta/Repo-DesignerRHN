@@ -65,6 +65,7 @@ public class ControlPryClientes implements Serializable {
     private String backUpDireccion;
     private String backUpTelefono;
     private String backUpNombreContacto;
+    private boolean activarLOV;
 
     public ControlPryClientes() {
         listPryClientes = null;
@@ -77,6 +78,7 @@ public class ControlPryClientes implements Serializable {
         duplicarPryCliente = new PryClientes();
         guardado = true;
         tamano = 270;
+        activarLOV = true;
     }
 
     @PostConstruct
@@ -424,6 +426,7 @@ public class ControlPryClientes implements Serializable {
 
             if (tipoLista == 1) {
                 filtrarPryClientes.remove(pryClienteSeleccionado);
+                listPryClientes.remove(pryClienteSeleccionado);
             }
             modificarInfoRegistro(listPryClientes.size());
             context.update("form:infoRegistro");
@@ -434,7 +437,7 @@ public class ControlPryClientes implements Serializable {
             }
         } else {
             context.execute("seleccionarRegistro.show()");
-            
+
         }
 
     }
@@ -543,6 +546,8 @@ public class ControlPryClientes implements Serializable {
                 cualCelda = -1;
             }
 
+        } else {
+            RequestContext.getCurrentInstance().execute("seleccionarRegistro.show()");
         }
     }
 
@@ -659,7 +664,7 @@ public class ControlPryClientes implements Serializable {
         System.err.println("ConfirmarDuplicar direccion " + duplicarPryCliente.getDireccion());
 
         if (duplicarPryCliente.getNombre() == null || duplicarPryCliente.getNombre().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   *Nombre \n";
+            mensajeValidacion = mensajeValidacion + " No pueden haber cambios vacios \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -884,6 +889,14 @@ public class ControlPryClientes implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public boolean isActivarLOV() {
+        return activarLOV;
+    }
+
+    public void setActivarLOV(boolean activarLOV) {
+        this.activarLOV = activarLOV;
     }
 
 }

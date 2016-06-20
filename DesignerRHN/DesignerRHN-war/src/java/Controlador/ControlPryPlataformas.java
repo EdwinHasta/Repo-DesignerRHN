@@ -64,6 +64,7 @@ public class ControlPryPlataformas implements Serializable {
     private String backUpDescripcion;
     private String infoRegistro;
     private DataTable tablaC;
+    private boolean activarLOV;
 
     public ControlPryPlataformas() {
         listPryPlataformas = null;
@@ -76,6 +77,7 @@ public class ControlPryPlataformas implements Serializable {
         duplicarPryPlataforma = new PryPlataformas();
         guardado = true;
         tamano = 270;
+        activarLOV=true;
     }
 
     @PostConstruct
@@ -346,7 +348,6 @@ public class ControlPryPlataformas implements Serializable {
     public void borrandoPryPlataformas() {
 
         if (pryPlataformaSeleccionada != null) {
-            if (tipoLista == 0) {
                 System.out.println("Entro a borrandoPryPlataformas");
                 if (!modificarPryPlataformas.isEmpty() && modificarPryPlataformas.contains(pryPlataformaSeleccionada)) {
                     int modIndex = modificarPryPlataformas.indexOf(pryPlataformaSeleccionada);
@@ -359,26 +360,13 @@ public class ControlPryPlataformas implements Serializable {
                     borrarPryPlataformas.add(pryPlataformaSeleccionada);
                 }
                 listPryPlataformas.remove(pryPlataformaSeleccionada);
-            }
             if (tipoLista == 1) {
-                System.out.println("borrandoPryPlataformas");
-                if (!modificarPryPlataformas.isEmpty() && modificarPryPlataformas.contains(pryPlataformaSeleccionada)) {
-                    int modIndex = modificarPryPlataformas.indexOf(pryPlataformaSeleccionada);
-                    modificarPryPlataformas.remove(modIndex);
-                    borrarPryPlataformas.add(pryPlataformaSeleccionada);
-                } else if (!crearPryPlataformas.isEmpty() && crearPryPlataformas.contains(pryPlataformaSeleccionada)) {
-                    int crearIndex = crearPryPlataformas.indexOf(pryPlataformaSeleccionada);
-                    crearPryPlataformas.remove(crearIndex);
-                } else {
-                    borrarPryPlataformas.add(pryPlataformaSeleccionada);
-                }
-                int VCIndex = listPryPlataformas.indexOf(pryPlataformaSeleccionada);
-                listPryPlataformas.remove(VCIndex);
                 filtrarPryPlataformas.remove(pryPlataformaSeleccionada);
-
+                listPryPlataformas.remove(pryPlataformaSeleccionada);
             }
             modificarInfoRegistro(listPryPlataformas.size());
             RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosPryCliente");
             context.update("form:datosPrtPlataforma");
             pryPlataformaSeleccionada = null;
 
@@ -386,6 +374,8 @@ public class ControlPryPlataformas implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+        } else {
+            RequestContext.getCurrentInstance().execute("seleccionarRegistro.show()");
         }
 
     }
@@ -488,6 +478,8 @@ public class ControlPryPlataformas implements Serializable {
                 context.execute("editObservacion.show()");
                 cualCelda = -1;
             }
+        } else {
+            RequestContext.getCurrentInstance().execute("seleccionarRegistro.show()");
         }
     }
 
@@ -499,20 +491,17 @@ public class ControlPryPlataformas implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoPryPlataforma.getCodigo() == a) {
-            mensajeValidacion = " *Codigo \n";
+            mensajeValidacion = " Existen campos vacíos \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
-            System.out.println("codigo en Motivo Cambio Cargo: " + nuevoPryPlataforma.getCodigo());
 
             for (int x = 0; x < listPryPlataformas.size(); x++) {
                 if (listPryPlataformas.get(x).getCodigo() == nuevoPryPlataforma.getCodigo()) {
                     duplicados++;
                 }
             }
-            System.out.println("Antes del if Duplicados eses igual  : " + duplicados);
-
             if (duplicados > 0) {
-                mensajeValidacion = " *Que NO Hayan Codigos Repetidos \n";
+                mensajeValidacion = " *No pueden haber códigos repetidos \n";
                 System.out.println("Mensaje validacion : " + mensajeValidacion);
             } else {
                 System.out.println("bandera");
@@ -520,7 +509,7 @@ public class ControlPryPlataformas implements Serializable {
             }
         }
         if (nuevoPryPlataforma.getDescripcion() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Descripción \n";
+            mensajeValidacion = mensajeValidacion + " Existen campos vacíos \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -529,7 +518,6 @@ public class ControlPryPlataformas implements Serializable {
 
         }
 
-        System.out.println("contador " + contador);
 
         if (contador == 2) {
             if (bandera == 1) {
@@ -620,7 +608,7 @@ public class ControlPryPlataformas implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarPryPlataforma.getDescripcion());
 
         if (duplicarPryPlataforma.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
+            mensajeValidacion = mensajeValidacion + "Existen campos vacíos\n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listPryPlataformas.size(); x++) {
@@ -629,7 +617,7 @@ public class ControlPryPlataformas implements Serializable {
                 }
             }
             if (duplicados > 0) {
-                mensajeValidacion = " *Que NO Existan Codigo Repetidos \n";
+                mensajeValidacion = " Código repetido \n";
                 System.out.println("Mensaje validacion : " + mensajeValidacion);
             } else {
                 System.out.println("bandera");
@@ -638,7 +626,7 @@ public class ControlPryPlataformas implements Serializable {
             }
         }
         if (duplicarPryPlataforma.getDescripcion().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   *Descripcion \n";
+            mensajeValidacion = mensajeValidacion + " Existen campos vacíos \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -758,7 +746,7 @@ public class ControlPryPlataformas implements Serializable {
         }
     }
 
-    public void recordarSeleccionMotivoCambioCargo() {
+    public void recordarSeleccionPryPlataforma() {
         if (pryPlataformaSeleccionada != null) {
             FacesContext c = FacesContext.getCurrentInstance();
             tablaC = (DataTable) c.getViewRoot().findComponent("form:datosPrtPlataforma");
@@ -800,6 +788,14 @@ public class ControlPryPlataformas implements Serializable {
 
     public void setDuplicarPryPlataforma(PryPlataformas duplicarPryPlataforma) {
         this.duplicarPryPlataforma = duplicarPryPlataforma;
+    }
+
+    public boolean isActivarLOV() {
+        return activarLOV;
+    }
+
+    public void setActivarLOV(boolean activarLOV) {
+        this.activarLOV = activarLOV;
     }
 
     public PryPlataformas getEditarPryPlataforma() {

@@ -208,7 +208,7 @@ public class Direcciones implements Serializable {
     }
 
     public void setInterior(String interior) {
-        this.interior = interior.toUpperCase();
+       this.interior = interior.toUpperCase();
     }
 
     public String getZonadir() {

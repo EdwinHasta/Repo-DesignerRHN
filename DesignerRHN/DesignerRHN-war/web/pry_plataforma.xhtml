@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
     <h:head>
     </h:head>
     <h:body>
@@ -13,7 +14,59 @@
                 <h:form id="form"> 
                     <f:loadBundle basename="Recursos.pry_plataforma" var="msg" />
                     <p:growl id="growl" showDetail="true"/> 
-                   <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal" >     
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal" >     
+                        <p:toolbar styleClass="cssToolbar">  
+                            <p:toolbarGroup align="left">  
+
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; " actionListener="#{controlPryPlataformas.guardarPryPlataformas()}" process="@this" />
+                                <p:tooltip style="" for="guardarRapido" value="#{msg['guardar']}" />
+
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPryPlataformas.editarCelda()}"  process="@this"/>
+                                <p:tooltip style="" for="editar" value="#{msg['editar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
+                                                 disabled="#{controlPryPlataformas.activarLOV}" actionListener="#{controlPryPlataformas.listaValoresBoton()}"   process="@this"/>
+                                <p:tooltip style="" for="listaValores" value="#{msg['lista']}" />
+
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPryPlataformas.activarCtrlF11()}"  process="@this"/>
+                                <p:tooltip style="" for="filtrar" value="#{msg['filtrar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPryPlataformas.exportXLS()}"  ajax="false"/>
+                                <p:tooltip style="" for="exportarXLS" value="#{msg['xls']}" />
+
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPryPlataformas.limpiarNuevoPryPlataformas()}"  ajax="false">
+                                    <p:dataExporter type="xml"  target=":formExportar:datosPrtPlataformaExportar" fileName="PRY_PLATAFORMAS" encoding="UTF-8"/> 
+                                </p:commandButton> 
+                                <p:tooltip style="" for="exportarXML" value="#{msg['xml']}" />
+
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPryPlataformas.exportPDF()}" ajax="false"/>
+                                <p:tooltip style="" for="exportarPDF" value="#{msg['pdf']}" />
+
+                                <p:separator style="position: relative; top: -9px"/> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png);  background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "  oncomplete="nuevoRegistroPryPlataforma.show()" update=":formularioDialogos:nuevaaPryPlataforma" process="@this"/> 
+                                <p:tooltip style="" for="insertar" value="#{msg['nuevo']}" />
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "  actionListener="#{controlPryPlataformas.borrandoPryPlataformas()}" process="@this"/>  
+                                <p:tooltip style="" for="eliminar" value="#{msg['eliminar']}" />
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPryPlataformas.duplicandoPryPlataformas()}" process="@this"/>  
+                                <p:tooltip style="" for="duplicar" value="#{msg['duplicar']}" />
+                                <p:separator style="position: relative; top: -9px"/> 
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPryPlataformas.verificarRastro()}" process="@this"/>  
+                                <p:tooltip style="" for="rastro" value="#{msg['rastro']}"/>
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPryPlataformas.cancelarModificacion()}"  process="@this" oncomplete="window.location.reload()"/>  
+                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+                                <p:separator style="position: relative; top: -9px"/> 
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPryPlataformas.salir()}" action="#{controlPryPlataformas.redirigirPaginaAnterior()}" process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
+
+                            </p:toolbarGroup>  
+                        </p:toolbar>
+                        <p:commandButton style=" position: absolute; left: 680px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"  id="ACEPTAR" value=""  actionListener="#{controlPryPlataformas.revisarDialogoGuardar()}" disabled="#{controlPryPlataformas.guardado}"    process="@this"   />
+                        <p:commandButton style=" position: absolute; left: 770px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"  id="ATRAS" action="#{controlPryPlataformas.redirigirPaginaAnterior()}" value=""    />
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>Plataformas Tecnológias</strong></legend>
 
@@ -23,12 +76,14 @@
                                          editable="true" editMode="cell" paginator="false"  selection="#{controlPryPlataformas.pryPlataformaSeleccionada}"
                                          selectionMode="single"   >
                                 <p:ajax event="filter" listener="#{controlPryPlataformas.eventoFiltrar()}"/>
+                                <f:event type="preRenderView" listener="#{controlPryPlataformas.recordarSeleccionPryPlataforma()}"/>
 
                                 <p:column headerText="Código" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains" id="codigo" width="200" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.codigo}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{info.codigo}" id="editarCodigo" style="height: 12px;  border-radius: 0px; width: 400px; text-transform: uppercase"  > 
+                                                <pe:keyFilter for="codigo" mask="num"/>
                                                 <p:ajax event="select" listener="#{controlPryPlataformas.cambiarIndice(info, 0)}" process="@this"/> 
                                                 <p:ajax event="change" listener="#{controlPryPlataformas.modificarEvalPlataforma(info, 'N', info.codigo)}"  update="codigo"/>
                                             </p:inputText>
@@ -63,61 +118,9 @@
 
                                 </p:column>
                             </p:dataTable>
-                        <h:outputText id="infoRegistro" value="Registros: #{controlPryPlataformas.infoRegistro}" style="position: relative; left: 15px; top: 25px; font-weight: bold"/>
+                            <h:outputText id="infoRegistro" value="Registros: #{controlPryPlataformas.infoRegistro}" style="position: relative; left: 15px; top: 25px; font-weight: bold"/>
                         </fieldset>
 
-                        <p:toolbar styleClass="cssToolbar">  
-                            <p:toolbarGroup align="left">  
-
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; " actionListener="#{controlPryPlataformas.guardarPryPlataformas()}" process="@this" />
-                                <p:tooltip style="" for="guardarRapido" value="#{msg['guardar']}" />
-
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPryPlataformas.editarCelda()}"  process="@this"/>
-                                <p:tooltip style="" for="editar" value="#{msg['editar']}" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPryPlataformas.listaValoresBoton()}"   process="@this"/>
-                                <p:tooltip style="" for="listaValores" value="#{msg['lista']}" />
-
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPryPlataformas.activarCtrlF11()}"  process="@this"/>
-                                <p:tooltip style="" for="filtrar" value="#{msg['filtrar']}" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPryPlataformas.exportXLS()}"  ajax="false"/>
-                                <p:tooltip style="" for="exportarXLS" value="#{msg['xls']}" />
-
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPryPlataformas.limpiarNuevoPryPlataformas()}"  ajax="false">
-                                    <p:dataExporter type="xml"  target=":formExportar:datosPrtPlataformaExportar" fileName="PRY_PLATAFORMAS" encoding="UTF-8"/> 
-                                </p:commandButton> 
-                                <p:tooltip style="" for="exportarXML" value="#{msg['xml']}" />
-
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPryPlataformas.exportPDF()}" ajax="false"/>
-                                <p:tooltip style="" for="exportarPDF" value="#{msg['pdf']}" />
-
-                                <p:separator style="position: relative; top: -9px"/> 
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png);  background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "  oncomplete="nuevoRegistroPryPlataforma.show()" update=":formularioDialogos:nuevaaPryPlataforma" process="@this"/> 
-                                <p:tooltip style="" for="insertar" value="#{msg['nuevo']}" />
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "  actionListener="#{controlPryPlataformas.verificarBorrado()}" process="@this"/>  
-                                <p:tooltip style="" for="eliminar" value="#{msg['eliminar']}" />
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPryPlataformas.duplicandoPryPlataformas()}" process="@this"/>  
-                                <p:tooltip style="" for="duplicar" value="#{msg['duplicar']}" />
-                                <p:separator style="position: relative; top: -9px"/> 
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPryPlataformas.verificarRastro()}" process="@this"/>  
-                                <p:tooltip style="" for="rastro" value="#{msg['rastro']}"/>
-                                <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPryPlataformas.cancelarModificacion()}"  process="@this" oncomplete="window.location.reload()"/>  
-                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
-                                <p:separator style="position: relative; top: -9px"/> 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPryPlataformas.salir()}" action="#{controlPryPlataformas.redirigirPaginaAnterior()}" process="@this"/>  
-                                <p:tooltip  for="salir" value="Salir"/>
-
-                            </p:toolbarGroup>  
-                        </p:toolbar>
-
-                        <p:commandButton style=" position: absolute; left: 680px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"  id="ACEPTAR" value=""  actionListener="#{controlPryPlataformas.revisarDialogoGuardar()}" disabled="#{controlPryPlataformas.guardado}"    process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 770px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"  id="ATRAS" action="#{controlPryPlataformas.redirigirPaginaAnterior()}" value=""    />
 
                         <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
@@ -211,11 +214,11 @@
                     <p:dialog id="editCodigo" header="Código" widgetVar="editCodigo" resizable="false" draggable="false" modal="true" height="55" width="240" style="text-transform: uppercase">  
                         <p:inputTextarea value="#{controlPryPlataformas.editarPryPlataforma.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>
-                    <p:dialog id="editDescripcion" header="Descripción" widgetVar="editDescripcion" resizable="false" draggable="false" modal="true" height="55" width="240" style="text-transform: uppercase">  
-                        <p:inputTextarea value="#{controlPryPlataformas.editarPryPlataforma.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editDescripcion" header="Descripción" widgetVar="editDescripcion" resizable="false" draggable="false" modal="true" height="80" width="400" style="text-transform: uppercase">  
+                        <p:inputTextarea value="#{controlPryPlataformas.editarPryPlataforma.descripcion}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
-                    <p:dialog id="editObservacion" header="Observación" widgetVar="editObservacion" resizable="false" draggable="false" modal="true" height="55" width="240" style="text-transform: uppercase">  
-                        <p:inputTextarea value="#{controlPryPlataformas.editarPryPlataforma.observacion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editObservacion" header="Observación" widgetVar="editObservacion" resizable="false" draggable="false" modal="true" height="80" width="400" style="text-transform: uppercase">  
+                        <p:inputTextarea value="#{controlPryPlataformas.editarPryPlataforma.observacion}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
 
@@ -227,6 +230,7 @@
 
                             <strong><h:outputText value="*Código: "  style=" position: absolute; top: 60px;" /></strong>
                             <p:inputText id="nuevoCodigo" value="#{controlPryPlataformas.nuevoPryPlataforma.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
+                                <pe:keyFilter for="nuevoCodigo" mask="num"/>
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />
@@ -256,6 +260,7 @@
                         <p:panel id="duplicarPPL" style="border: none;">
                             <strong><h:outputText value="código "  style=" position: absolute; top: 60px;" /></strong>
                             <p:inputText id="duplicarCodigo" value="#{controlPryPlataformas.duplicarPryPlataforma.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
+                                <pe:keyFilter for="duplicarCodigo" mask="num"/>
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Código" />

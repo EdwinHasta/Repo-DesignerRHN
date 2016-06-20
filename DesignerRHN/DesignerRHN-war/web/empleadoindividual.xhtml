@@ -384,12 +384,12 @@
                         <fieldset id="panelInferior" style="position: absolute; top: 270px; width: 832px; height: 200px; left: 10px; border-radius: 10px;" >
                             <fieldset style="position: absolute; left: -2px; top: 2px; width: 197px; height: 205px; border-radius: 7px; padding: 0px; border: none;">
                                 <!-- <legend style="font-weight: bold; color: blue">#{msg['ubicacion']}</legend> -->
-                                <p:commandButton id="btnTelefono" value=""  action="telefonospersona" actionListener="#{controlPerTelefonos.recibirPersona(controlEmpleadoIndividual.persona.secuencia)}" process="@this"
+                                <p:commandButton id="btnTelefono" value=""  action="telefonospersona" actionListener="#{controlPerTelefonos.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" process="@this"
                                                  style="background-image: url(Imagenes/Iconos/telefono.png); background-size: 100% 100%; background-repeat: no-repeat; width: 40px; height: 40px; position: absolute; border:none;"/>
                                 <h:outputText value="#{msg['telefonos']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B;" />
                                 <p:inputText id="telefonos" value="#{controlEmpleadoIndividual.telefonoP}" style="position: absolute; left: 45px; top: 15px; width: 140px; box-shadow: none; border: none;" readonly="true"/>
-
-                                <p:commandButton id="btnDireccion" value="" style="background-image: url(Imagenes/Iconos/direccion.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 41px; border:none;" action="direccionespersona" actionListener="#{controlPerDirecciones.recibirPersona(controlEmpleadoIndividual.persona.secuencia)}" process="@this"/>
+                     
+                                <p:commandButton id="btnDireccion" value="" style="background-image: url(Imagenes/Iconos/direccion.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 41px; border:none;" action="direccionespersona" actionListener="#{controlPerDirecciones.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" process="@this"/>
                                 <h:outputText value="#{msg['direcciones']}" style="position: absolute; left: 47px; top: 41px; font-weight: bold; color: #14388B; " />
                                 <p:inputText id="direcciones" value="#{controlEmpleadoIndividual.direccionP}" style="position: absolute; left: 45px; top: 56px; width: 140px; box-shadow: none; border: none;" readonly="true"/>
 
@@ -397,9 +397,9 @@
                                 <h:outputText value="#{msg['estadocivil']}" style="position: absolute; left: 47px; top: 82px; font-weight: bold; color: #14388B;" />
                                 <p:inputText id="estadoCivil" value="#{controlEmpleadoIndividual.estadoCivilP}" style="position: absolute; left: 45px; top: 97px; width: 140px; box-shadow: none; border: none;" readonly="true"/>
 
-                                <p:commandButton id="btnInformacionAdicional" value="" style="background-image: url(Imagenes/Iconos/relacione.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 123px; border:none;" process="@this" action="infoAdicional" actionListener="#{controlEmplInformacionAdicional.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
-                                <h:outputText value="#{msg['informacionadicional']}" style="position: absolute; left: 47px; top: 123px; font-weight: bold; color: #14388B; " />
-                                <p:inputText id="informacionAdicional" value="#{controlEmpleadoIndividual.informacionAdicionalP}" style="position: absolute; left: 45px; top: 138px; width: 140px; box-shadow: none; border: none;" readonly="true"/>
+                                <p:commandButton id="btnInformacionAdicional" value="" style="background-image: url(Imagenes/Iconos/relacione.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 123px; border:none; text-transform: uppercase;" process="@this" action="infoAdicional" actionListener="#{controlEmplInformacionAdicional.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
+                                <h:outputText value="#{msg['informacionadicional']}" style="position: absolute; left: 47px; top: 123px; font-weight: bold; color: #14388B; text-transform: uppercase; " />
+                                <p:inputText id="informacionAdicional" value="#{controlEmpleadoIndividual.informacionAdicionalP}" style="position: absolute; left: 45px; top: 138px; width: 140px; box-shadow: none; border: none; text-transform: uppercase;" readonly="true"/>
 
                                 <p:commandButton id="btnReemplazos" value="" action="novedadreemplazo" actionListener="#{controlNovedadesReemplazos.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" process="@this"
                                                  style="background-image: url(Imagenes/Iconos/reemplazo.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 164px; border:none;"/>

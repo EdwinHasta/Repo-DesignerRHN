@@ -63,7 +63,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
     private String backupNombre;
     private int tamano;
     private String infoRegistro, paginaanterior;
-
+    private boolean activarLOV;
 //
     private DataTable tablaC;
 
@@ -83,6 +83,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
         guardado = true;
         tamano = 315;
         paginaanterior = "";
+        activarLOV=true;
     }
 
     @PostConstruct
@@ -331,6 +332,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
 
             if (tipoLista == 1) {
                 filtrarMotivosCambiosCargos.remove(motivoCambioCargoSeleccionado);
+                listMotivosCambiosCargos.remove(motivoCambioCargoSeleccionado);
             }
             modificarinfoRegistro(listMotivosCambiosCargos.size());
             context.update("form:infoRegistro");
@@ -425,7 +427,8 @@ public class ControlMotivosCambiosCargos implements Serializable {
                 context.execute("editDescripcion.show()");
                 cualCelda = -1;
             }
-
+        } else{
+            RequestContext.getCurrentInstance().execute("seleccionarRegistro.show()");
         }
     }
 
@@ -545,7 +548,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
         Short a = 0;
         a = null;
         if (duplicarMotivoCambioCargo.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
+            mensajeValidacion = mensajeValidacion + "Existen campos vacíos \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listMotivosCambiosCargos.size(); x++) {
@@ -554,7 +557,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
                 }
             }
             if (duplicados > 0) {
-                mensajeValidacion = " *Que NO Existan Codigo Repetidos \n";
+                mensajeValidacion = "No puede haber códigos repetidos \n";
                 System.out.println("Mensaje validacion : " + mensajeValidacion);
             } else {
                 System.out.println("bandera");
@@ -563,7 +566,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
             }
         }
         if (duplicarMotivoCambioCargo.getNombre() == null) {
-            mensajeValidacion = mensajeValidacion + "   *Nombre \n";
+            mensajeValidacion = mensajeValidacion + " Existen campos vacíos \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -634,7 +637,6 @@ public class ControlMotivosCambiosCargos implements Serializable {
 
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
-
         if (motivoCambioCargoSeleccionado != null) {
             System.out.println("lol 2");
             int resultado = administrarRastros.obtenerTabla(motivoCambioCargoSeleccionado.getSecuencia(), "MOTIVOSCAMBIOSCARGOS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
@@ -789,4 +791,14 @@ public class ControlMotivosCambiosCargos implements Serializable {
         return infoRegistro;
     }
 
+    public boolean isActivarLOV() {
+        return activarLOV;
+    }
+
+    public void setActivarLOV(boolean activarLOV) {
+        this.activarLOV = activarLOV;
+    }
+
+    
+    
 }

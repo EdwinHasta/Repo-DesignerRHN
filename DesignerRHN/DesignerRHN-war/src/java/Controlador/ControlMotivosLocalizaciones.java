@@ -65,6 +65,7 @@ public class ControlMotivosLocalizaciones implements Serializable {
     private String backUpDescripcion;
     private String infoRegistro, paginaanterior;
     private DataTable tablaC;
+    private boolean activarLov;
 
     public ControlMotivosLocalizaciones() {
 
@@ -79,6 +80,7 @@ public class ControlMotivosLocalizaciones implements Serializable {
         guardado = true;
         tamano = 270;
         paginaanterior = "";
+        activarLov = true;
     }
 
     @PostConstruct
@@ -96,13 +98,10 @@ public class ControlMotivosLocalizaciones implements Serializable {
 
     public void recibirPag(String pagina) {
         paginaanterior = pagina;
+        listMotivosLocalizaciones = null;
         getListMotivosLocalizaciones();
         contarRegistros();
-        if (listMotivosLocalizaciones != null) {
-            if (!listMotivosLocalizaciones.isEmpty()) {
-                motivoLocalizacionSeleccionado = listMotivosLocalizaciones.get(0);
-            }
-        }
+        motivoLocalizacionSeleccionado = listMotivosLocalizaciones.get(0);
     }
 
     public String retornarPagina() {
@@ -326,10 +325,11 @@ public class ControlMotivosLocalizaciones implements Serializable {
 
             if (tipoLista == 1) {
                 filtrarMotivosLocalizaciones.remove(motivoLocalizacionSeleccionado);
-
+                listMotivosLocalizaciones.remove(motivoLocalizacionSeleccionado);
             }
-            context.update("form:datosMotivoContrato");
+            modificarInfoRegistro(listMotivosLocalizaciones.size());
             context.update("form:infoRegistro");
+            context.update("form:datosMotivoContrato");
             motivoLocalizacionSeleccionado = null;
 
             if (guardado == true) {
@@ -422,6 +422,8 @@ public class ControlMotivosLocalizaciones implements Serializable {
                 cualCelda = -1;
             }
 
+        } else {
+            RequestContext.getCurrentInstance().execute("seleccionarRegistro.show()");
         }
     }
 
@@ -553,7 +555,7 @@ public class ControlMotivosLocalizaciones implements Serializable {
         System.err.println("ConfirmarDuplicar nombre " + duplicarMotivoContrato.getDescripcion());
 
         if (duplicarMotivoContrato.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
+            mensajeValidacion = mensajeValidacion + "Existen campos vacíos \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listMotivosLocalizaciones.size(); x++) {
@@ -562,7 +564,7 @@ public class ControlMotivosLocalizaciones implements Serializable {
                 }
             }
             if (duplicados > 0) {
-                mensajeValidacion = " *Que NO Existan Codigo Repetidos \n";
+                mensajeValidacion = " No puede haber códigos repetidos \n";
                 System.out.println("Mensaje validacion : " + mensajeValidacion);
             } else {
                 System.out.println("bandera");
@@ -571,11 +573,10 @@ public class ControlMotivosLocalizaciones implements Serializable {
             }
         }
         if (duplicarMotivoContrato.getDescripcion() == null) {
-            mensajeValidacion = mensajeValidacion + "   *Descripción \n";
+            mensajeValidacion = mensajeValidacion + " Existen campos vacíos \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
-            System.out.println("Bandera : ");
             contador++;
         }
 
@@ -583,14 +584,14 @@ public class ControlMotivosLocalizaciones implements Serializable {
 
             System.out.println("Datos Duplicando: " + duplicarMotivoContrato.getSecuencia() + "  " + duplicarMotivoContrato.getCodigo());
             if (crearMotivosLocalizaciones.contains(duplicarMotivoContrato)) {
-                System.out.println("Ya lo contengo.");
             }
             listMotivosLocalizaciones.add(duplicarMotivoContrato);
             crearMotivosLocalizaciones.add(duplicarMotivoContrato);
-            modificarInfoRegistro(listMotivosLocalizaciones.size());
-            context.update("form:datosMotivoContrato");
-            context.update("form:infoRegistro");
             motivoLocalizacionSeleccionado = duplicarMotivoContrato;
+            duplicarMotivoContrato = new MotivosLocalizaciones();
+            modificarInfoRegistro(listMotivosLocalizaciones.size());
+            context.update("form:infoRegistro");
+            context.update("form:datosMotivoContrato");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -608,7 +609,6 @@ public class ControlMotivosLocalizaciones implements Serializable {
                 filtrarMotivosLocalizaciones = null;
                 tipoLista = 0;
             }
-            duplicarMotivoContrato = new MotivosLocalizaciones();
             RequestContext.getCurrentInstance().execute("duplicarRegistroMotivosLocalizaciones.hide()");
 
         } else {
@@ -799,6 +799,14 @@ public class ControlMotivosLocalizaciones implements Serializable {
 
     public void setResultado(int resultado) {
         this.resultado = resultado;
+    }
+
+    public boolean isActivarLov() {
+        return activarLov;
+    }
+
+    public void setActivarLov(boolean activarLov) {
+        this.activarLov = activarLov;
     }
 
 }

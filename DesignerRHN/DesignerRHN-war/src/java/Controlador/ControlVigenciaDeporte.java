@@ -95,6 +95,7 @@ public class ControlVigenciaDeporte implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarVigenciaDeporte.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
+            vigenciaTablaSeleccionada = listVigenciasDeportes.get(0);
             System.out.println("El nombre del empleado es" + empleado.getPersona().getNombreCompleto());
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
@@ -108,7 +109,10 @@ public class ControlVigenciaDeporte implements Serializable {
         empleado = administrarVigenciaDeporte.empleadoActual(secuencia);
         getListVigenciasDeportes();
         contarRegistrosVD();
-        vigenciaTablaSeleccionada = listVigenciasDeportes.get(0);
+        deshabilitarBotonLov();
+        if (listVigenciasDeportes != null) {
+            vigenciaTablaSeleccionada = listVigenciasDeportes.get(0);
+        }
     }
 
     public void modificarVigenciaDeporte(VigenciasDeportes vigenciaDeportes) {
@@ -340,9 +344,9 @@ public class ControlVigenciaDeporte implements Serializable {
     }
 
     public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
-            //CERRAR FILTRADO
+            
             veFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veFechaInicial");
             veFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             veFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasDeportes:veFechaFinal");
@@ -723,7 +727,6 @@ public class ControlVigenciaDeporte implements Serializable {
     public void borrarVigenciaDeporte() {
 
         if (vigenciaTablaSeleccionada != null) {
-            if (tipoLista == 0) {
                 if (!listVigenciaDeporteModificar.isEmpty() && listVigenciaDeporteModificar.contains(vigenciaTablaSeleccionada)) {
                     int modIndex = listVigenciaDeporteModificar.indexOf(vigenciaTablaSeleccionada);
                     listVigenciaDeporteModificar.remove(modIndex);
@@ -735,10 +738,8 @@ public class ControlVigenciaDeporte implements Serializable {
                     listVigenciaDeporteBorrar.add(vigenciaTablaSeleccionada);
                 }
                 listVigenciasDeportes.remove(vigenciaTablaSeleccionada);
-            }
             if (tipoLista == 1) {
                 filtrarListVigenciasDeportes.remove(vigenciaTablaSeleccionada);
-                listVigenciasDeportes.remove(vigenciaTablaSeleccionada);
             }
             modificarinfoRegistro(listVigenciasDeportes.size());
             RequestContext context = RequestContext.getCurrentInstance();
@@ -927,7 +928,6 @@ public class ControlVigenciaDeporte implements Serializable {
         if (vigenciaTablaSeleccionada != null) {
             RequestContext context = RequestContext.getCurrentInstance();
             if (cualCelda == 2) {
-                contarRegistrosVD();
                 habilitarBotonLov();
                 modificarinfoRegistroDeporte(listDeportes.size());
                 context.update("form:DeportesDialogo");

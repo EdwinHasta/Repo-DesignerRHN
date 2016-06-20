@@ -41,54 +41,41 @@ public class ControlEmplInformacionAdicional implements Serializable {
     AdministrarEmplInformacionAdicionalInterface administrarEmplInformacionAdicional;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    //Vigencias Contratos
     private List<InformacionesAdicionales> listInformacionAdicional;
     private List<InformacionesAdicionales> filtrarListInformacionAdicional;
     private InformacionesAdicionales informacionTablaSeleccionada;
-
     private List<GruposInfAdicionales> listGruposInfAdicional;
     private GruposInfAdicionales grupoSelecionado;
     private List<GruposInfAdicionales> filtrarListGruposInfAdicional;
     private Empleados empleado;
     private int tipoActualizacion;
-    //Activo/Desactivo Crtl + F11
     private int bandera;
-    //Columnas Tabla VC
     private Column infoAdFechaInicial, infoAdFechaFinal, infoAdGrupo, infoAdCaracter, infoAdNumerico, infoAdFecha, infoAdObservacion;
-    //Otros
     private boolean aceptar;
-    private int index;
-    //modificar
     private List<InformacionesAdicionales> listInfoAdicionalModificar;
     private boolean guardado;
-    //crear VC
     public InformacionesAdicionales nuevaInfoAdicional;
     private List<InformacionesAdicionales> listInfoAdicionalCrear;
     private BigInteger l;
     private int k;
-    //borrar VC
     private List<InformacionesAdicionales> listInfoAdicionalBorrar;
-    //editar celda
     private InformacionesAdicionales editarInfoAdicional;
     private int cualCelda, tipoLista;
-    //duplicar
     private InformacionesAdicionales duplicarInfoAdicional;
-    //String Variables AutoCompletar
     private String grupo;
-    //Boolean AutoCompletar
     private boolean permitirIndex;
     private BigInteger backUpSecRegistro;
-    private BigInteger secRegistro;
     private Date fechaParametro;
     private Date fechaIni, fechaFin;
-    //
     private String altoTabla;
     private String infoRegistro;
     private String infoRegistroGrupo;
+    private DataTable tablaC;
+    private boolean activarLov;
 
     public ControlEmplInformacionAdicional() {
-        altoTabla = "310";
-        secRegistro = null;
+        altoTabla = "305";
+        informacionTablaSeleccionada = null;
         grupoSelecionado = new GruposInfAdicionales();
         backUpSecRegistro = null;
         listInformacionAdicional = null;
@@ -113,6 +100,7 @@ public class ControlEmplInformacionAdicional implements Serializable {
         nuevaInfoAdicional = new InformacionesAdicionales();
         nuevaInfoAdicional.setGrupo(new GruposInfAdicionales());
         permitirIndex = true;
+        activarLov = true;
     }
 
     @PostConstruct
@@ -132,71 +120,69 @@ public class ControlEmplInformacionAdicional implements Serializable {
         listInformacionAdicional = null;
         empleado = administrarEmplInformacionAdicional.empleadoActual(empl);
         getListInformacionAdicional();
-        if (listInformacionAdicional != null) {
-            infoRegistro = "Cantidad de registros : " + listInformacionAdicional.size();
-        } else {
-            infoRegistro = "Cantidad de registros : 0";
+        contarRegistros();
+        deshabilitarBotonLov();
+        if(!listInformacionAdicional.isEmpty()){
+            informacionTablaSeleccionada=listInformacionAdicional.get(0);
         }
     }
 
-    public void modificarInfoAd(int indice) {
+    public void modificarInfoAd(InformacionesAdicionales informacionAdicional) {
+        informacionTablaSeleccionada = informacionAdicional;
+        System.out.println("informacionTablaSeleccionada.getTipodato() : "+informacionTablaSeleccionada.getTipodato());
         if (tipoLista == 0) {
-            if (!listInfoAdicionalCrear.contains(listInformacionAdicional.get(indice))) {
+            if (!listInfoAdicionalCrear.contains(informacionTablaSeleccionada)) {
 
                 if (listInfoAdicionalModificar.isEmpty()) {
-                    listInfoAdicionalModificar.add(listInformacionAdicional.get(indice));
-                } else if (!listInfoAdicionalModificar.contains(listInformacionAdicional.get(indice))) {
-                    listInfoAdicionalModificar.add(listInformacionAdicional.get(indice));
+                    listInfoAdicionalModificar.add(informacionTablaSeleccionada);
+                } else if (!listInfoAdicionalModificar.contains(informacionTablaSeleccionada)) {
+                    listInfoAdicionalModificar.add(informacionTablaSeleccionada);
                 }
                 if (guardado == true) {
                     guardado = false;
                     RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
             }
-            index = -1;
-            secRegistro = null;
         }
         if (tipoLista == 1) {
-            if (!listInfoAdicionalCrear.contains(filtrarListInformacionAdicional.get(indice))) {
+            if (!listInfoAdicionalCrear.contains(informacionTablaSeleccionada)) {
 
                 if (listInfoAdicionalModificar.isEmpty()) {
-                    listInfoAdicionalModificar.add(filtrarListInformacionAdicional.get(indice));
-                } else if (!listInfoAdicionalModificar.contains(filtrarListInformacionAdicional.get(indice))) {
-                    listInfoAdicionalModificar.add(filtrarListInformacionAdicional.get(indice));
+                    listInfoAdicionalModificar.add(informacionTablaSeleccionada);
+                } else if (!listInfoAdicionalModificar.contains(informacionTablaSeleccionada)) {
+                    listInfoAdicionalModificar.add(informacionTablaSeleccionada);
                 }
                 if (guardado == true) {
                     guardado = false;
                     RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
             }
-            index = -1;
-            secRegistro = null;
         }
     }
 
-    public void modificarInfoAd(int indice, String confirmarCambio, String valorConfirmar) {
-        index = indice;
+    public void modificarInfoAd(InformacionesAdicionales informacionAdicional, String confirmarCambio, String valorConfirmar) {
+        informacionTablaSeleccionada = informacionAdicional;
         int coincidencias = 0;
-        int indiceUnicoElemento = 0;
+       // int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("GRUPO")) {
             if (!valorConfirmar.isEmpty()) {
                 if (tipoLista == 0) {
-                    listInformacionAdicional.get(indice).getGrupo().setDescripcion(grupo);
+                    informacionTablaSeleccionada.getGrupo().setDescripcion(grupo);
                 } else {
-                    filtrarListInformacionAdicional.get(indice).getGrupo().setDescripcion(grupo);
+                    informacionTablaSeleccionada.getGrupo().setDescripcion(grupo);
                 }
-                for (int i = 0; i < listGruposInfAdicional.size(); i++) {
-                    if (listGruposInfAdicional.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                        indiceUnicoElemento = i;
+             //   for (int i = 0; i < listGruposInfAdicional.size(); i++) {
+                    if (informacionTablaSeleccionada.getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                     //   indiceUnicoElemento = i;
                         coincidencias++;
                     }
-                }
+                //}
                 if (coincidencias == 1) {
                     if (tipoLista == 0) {
-                        listInformacionAdicional.get(indice).setGrupo(listGruposInfAdicional.get(indiceUnicoElemento));
+                        informacionTablaSeleccionada.setGrupo(grupoSelecionado);
                     } else {
-                        filtrarListInformacionAdicional.get(indice).setGrupo(listGruposInfAdicional.get(indiceUnicoElemento));
+                        informacionTablaSeleccionada.setGrupo(grupoSelecionado);
                     }
                     listGruposInfAdicional.clear();
                     getListGruposInfAdicional();
@@ -208,44 +194,40 @@ public class ControlEmplInformacionAdicional implements Serializable {
                 }
             } else {
                 if (tipoLista == 0) {
-                    listInformacionAdicional.get(indice).setGrupo(new GruposInfAdicionales());
+                    informacionTablaSeleccionada.setGrupo(new GruposInfAdicionales());
                 } else {
-                    filtrarListInformacionAdicional.get(indice).setGrupo(new GruposInfAdicionales());
+                    informacionTablaSeleccionada.setGrupo(new GruposInfAdicionales());
                 }
                 coincidencias = 1;
             }
         }
         if (coincidencias == 1) {
             if (tipoLista == 0) {
-                if (!listInfoAdicionalCrear.contains(listInformacionAdicional.get(indice))) {
+                if (!listInfoAdicionalCrear.contains(informacionTablaSeleccionada)) {
 
                     if (listInfoAdicionalModificar.isEmpty()) {
-                        listInfoAdicionalModificar.add(listInformacionAdicional.get(indice));
-                    } else if (!listInfoAdicionalModificar.contains(listInformacionAdicional.get(indice))) {
-                        listInfoAdicionalModificar.add(listInformacionAdicional.get(indice));
+                        listInfoAdicionalModificar.add(informacionTablaSeleccionada);
+                    } else if (!listInfoAdicionalModificar.contains(informacionTablaSeleccionada)) {
+                        listInfoAdicionalModificar.add(informacionTablaSeleccionada);
                     }
                     if (guardado == true) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
-                index = -1;
-                secRegistro = null;
             } else {
-                if (!listInfoAdicionalCrear.contains(filtrarListInformacionAdicional.get(indice))) {
+                if (!listInfoAdicionalCrear.contains(informacionTablaSeleccionada)) {
 
                     if (listInfoAdicionalModificar.isEmpty()) {
-                        listInfoAdicionalModificar.add(filtrarListInformacionAdicional.get(indice));
-                    } else if (!listInfoAdicionalModificar.contains(filtrarListInformacionAdicional.get(indice))) {
-                        listInfoAdicionalModificar.add(filtrarListInformacionAdicional.get(indice));
+                        listInfoAdicionalModificar.add(informacionTablaSeleccionada);
+                    } else if (!listInfoAdicionalModificar.contains(informacionTablaSeleccionada)) {
+                        listInfoAdicionalModificar.add(informacionTablaSeleccionada);
                     }
                     if (guardado == true) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
-                index = -1;
-                secRegistro = null;
             }
         }
         context.update("form:datosInfoAdEmpleado");
@@ -260,10 +242,10 @@ public class ControlEmplInformacionAdicional implements Serializable {
         if (i == 0) {
             InformacionesAdicionales auxiliar = null;
             if (tipoLista == 0) {
-                auxiliar = listInformacionAdicional.get(index);
+                auxiliar = informacionTablaSeleccionada;
             }
             if (tipoLista == 1) {
-                auxiliar = filtrarListInformacionAdicional.get(index);
+                auxiliar = informacionTablaSeleccionada;
             }
             if (auxiliar.getFechainicial().after(fechaParametro) && auxiliar.getFechainicial().before(auxiliar.getFechafinal())) {
                 retorno = true;
@@ -291,28 +273,28 @@ public class ControlEmplInformacionAdicional implements Serializable {
         return retorno;
     }
 
-    public void modificarFechas(int i, int c) {
+    public void modificarFechas(InformacionesAdicionales informacionAdicional, int c) {
         InformacionesAdicionales auxiliar = null;
         if (tipoLista == 0) {
-            auxiliar = listInformacionAdicional.get(i);
+            auxiliar = informacionTablaSeleccionada;
         }
         if (tipoLista == 1) {
-            auxiliar = filtrarListInformacionAdicional.get(i);
+            auxiliar = informacionTablaSeleccionada;
         }
         if (auxiliar.getFechainicial() != null && auxiliar.getFechafinal() != null) {
             boolean retorno = false;
             retorno = validarFechasRegistro(0);
             if (retorno == true) {
-                cambiarIndice(i, c);
-                modificarInfoAd(i);
+                cambiarIndice(informacionAdicional, c);
+                modificarInfoAd(informacionAdicional);
             } else {
                 if (tipoLista == 0) {
-                    listInformacionAdicional.get(i).setFechafinal(fechaFin);
-                    listInformacionAdicional.get(i).setFechainicial(fechaIni);
+                    informacionTablaSeleccionada.setFechafinal(fechaFin);
+                    informacionTablaSeleccionada.setFechainicial(fechaIni);
                 }
                 if (tipoLista == 1) {
-                    filtrarListInformacionAdicional.get(i).setFechafinal(fechaFin);
-                    filtrarListInformacionAdicional.get(i).setFechainicial(fechaIni);
+                    informacionTablaSeleccionada.setFechafinal(fechaFin);
+                    informacionTablaSeleccionada.setFechainicial(fechaIni);
 
                 }
                 RequestContext context = RequestContext.getCurrentInstance();
@@ -321,12 +303,12 @@ public class ControlEmplInformacionAdicional implements Serializable {
             }
         } else {
             if (tipoLista == 0) {
-                listInformacionAdicional.get(i).setFechafinal(fechaFin);
-                listInformacionAdicional.get(i).setFechainicial(fechaIni);
+                informacionTablaSeleccionada.setFechafinal(fechaFin);
+                informacionTablaSeleccionada.setFechainicial(fechaIni);
             }
             if (tipoLista == 1) {
-                filtrarListInformacionAdicional.get(i).setFechafinal(fechaFin);
-                filtrarListInformacionAdicional.get(i).setFechainicial(fechaIni);
+                informacionTablaSeleccionada.setFechafinal(fechaFin);
+                informacionTablaSeleccionada.setFechainicial(fechaIni);
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
@@ -394,24 +376,30 @@ public class ControlEmplInformacionAdicional implements Serializable {
         }
     }
 
-    public void cambiarIndice(int indice, int celda) {
+    public void cambiarIndice(InformacionesAdicionales informacionAdicional, int celda) {
         if (permitirIndex == true) {
-            index = indice;
+            informacionTablaSeleccionada = informacionAdicional;
             cualCelda = celda;
             if (tipoLista == 0) {
-                secRegistro = listInformacionAdicional.get(index).getSecuencia();
-                fechaFin = listInformacionAdicional.get(index).getFechafinal();
-                fechaIni = listInformacionAdicional.get(index).getFechainicial();
+                deshabilitarBotonLov();
+                informacionTablaSeleccionada.getSecuencia();
+                fechaFin = informacionTablaSeleccionada.getFechafinal();
+                fechaIni = informacionTablaSeleccionada.getFechainicial();
                 if (cualCelda == 2) {
-                    grupo = listInformacionAdicional.get(index).getGrupo().getDescripcion();
+                    habilitarBotonLov();
+                    modificarInfoRegistroGrupo(listGruposInfAdicional.size());
+                    grupo = informacionTablaSeleccionada.getGrupo().getDescripcion();
                 }
             }
             if (tipoLista == 1) {
-                secRegistro = filtrarListInformacionAdicional.get(index).getSecuencia();
-                fechaFin = filtrarListInformacionAdicional.get(index).getFechafinal();
-                fechaIni = filtrarListInformacionAdicional.get(index).getFechainicial();
+                deshabilitarBotonLov();
+                informacionTablaSeleccionada.getSecuencia();
+                fechaFin = informacionTablaSeleccionada.getFechafinal();
+                fechaIni = informacionTablaSeleccionada.getFechainicial();
                 if (cualCelda == 2) {
-                    grupo = filtrarListInformacionAdicional.get(index).getGrupo().getDescripcion();
+                    habilitarBotonLov();
+                    modificarInfoRegistroGrupo(listGruposInfAdicional.size());
+                    grupo = informacionTablaSeleccionada.getGrupo().getDescripcion();
                 }
             }
         }
@@ -435,19 +423,14 @@ public class ControlEmplInformacionAdicional implements Serializable {
                 }
                 listInformacionAdicional = null;
                 getListInformacionAdicional();
-                if (listInformacionAdicional != null) {
-                    infoRegistro = "Cantidad de registros : " + listInformacionAdicional.size();
-                } else {
-                    infoRegistro = "Cantidad de registros : 0";
-                }
-                context.update("form:informacionRegistro");
+                contarRegistros();
+                context.update("form:infoRegistro");
                 context.update("form:datosInfoAdEmpleado");
                 guardado = true;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 k = 0;
-                index = -1;
-                secRegistro = null;
-                context.update("form:informacionRegistro");
+                informacionTablaSeleccionada = null;
+                context.update("form:infoRegistro");
                 FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con Éxito");
                 FacesContext.getCurrentInstance().addMessage(null, msg);
                 context.update("form:growl");
@@ -465,7 +448,7 @@ public class ControlEmplInformacionAdicional implements Serializable {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            altoTabla = "310";
+            altoTabla = "305";
             infoAdFechaInicial = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdFechaInicial");
             infoAdFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             infoAdFechaFinal = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdFechaFinal");
@@ -490,66 +473,68 @@ public class ControlEmplInformacionAdicional implements Serializable {
         listInfoAdicionalBorrar.clear();
         listInfoAdicionalCrear.clear();
         listInfoAdicionalModificar.clear();
-        index = -1;
-        secRegistro = null;
         k = 0;
         listInformacionAdicional = null;
+        getListInformacionAdicional();
+        informacionTablaSeleccionada = null;
+        contarRegistros();
         guardado = true;
         RequestContext context = RequestContext.getCurrentInstance();
-        getListInformacionAdicional();
-        if (listInformacionAdicional != null) {
-            infoRegistro = "Cantidad de registros : " + listInformacionAdicional.size();
-        } else {
-            infoRegistro = "Cantidad de registros : 0";
-        }
-        context.update("form:informacionRegistro");
+        context.update("form:infoRegistro");
         context.update("form:datosInfoAdEmpleado");
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
     }
 
     public void editarCelda() {
-        if (index >= 0) {
+        if (informacionTablaSeleccionada != null) {
             if (tipoLista == 0) {
-                editarInfoAdicional = listInformacionAdicional.get(index);
+                editarInfoAdicional = informacionTablaSeleccionada;
             }
             if (tipoLista == 1) {
-                editarInfoAdicional = filtrarListInformacionAdicional.get(index);
+                editarInfoAdicional = informacionTablaSeleccionada;
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
             if (cualCelda == 0) {
+                deshabilitarBotonLov();
                 context.update("formularioDialogos:editarFechaInicialD");
                 context.execute("editarFechaInicialD.show()");
                 cualCelda = -1;
             } else if (cualCelda == 1) {
+                deshabilitarBotonLov();
                 context.update("formularioDialogos:editarFechaFinalD");
                 context.execute("editarFechaFinalD.show()");
                 cualCelda = -1;
             } else if (cualCelda == 2) {
+                habilitarBotonLov();
                 context.update("formularioDialogos:editarGrupoD");
                 context.execute("editarGrupoD.show()");
                 cualCelda = -1;
             } else if (cualCelda == 3) {
+                deshabilitarBotonLov();
                 context.update("formularioDialogos:editarCaracterD");
                 context.execute("editarCaracterD.show()");
                 cualCelda = -1;
             } else if (cualCelda == 4) {
+                deshabilitarBotonLov();
                 context.update("formularioDialogos:editarNumericoD");
                 context.execute("editarNumericoD.show()");
                 cualCelda = -1;
             } else if (cualCelda == 5) {
+                deshabilitarBotonLov();
                 context.update("formularioDialogos:editarFechaD");
                 context.execute("editarFechaD.show()");
                 cualCelda = -1;
             } else if (cualCelda == 6) {
+                deshabilitarBotonLov();
                 context.update("formularioDialogos:editarObservacionD");
                 context.execute("editarObservacionD.show()");
                 cualCelda = -1;
             }
 
+        } else{
+            RequestContext.getCurrentInstance().execute("formularioDialogos:seleccionarRegistro.show()");
         }
-        index = -1;
-        secRegistro = null;
     }
 
     public void agregarNuevaInfoAd() {
@@ -557,7 +542,6 @@ public class ControlEmplInformacionAdicional implements Serializable {
             if (validarFechasRegistro(1) == true) {
                 FacesContext c = FacesContext.getCurrentInstance();
                 if (bandera == 1) {
-                    altoTabla = "310";
                     //CERRAR FILTRADO
                     infoAdFechaInicial = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdFechaInicial");
                     infoAdFechaInicial.setFilterStyle("display: none; visibility: hidden;");
@@ -578,6 +562,7 @@ public class ControlEmplInformacionAdicional implements Serializable {
                     bandera = 0;
                     filtrarListInformacionAdicional = null;
                     tipoLista = 0;
+                    altoTabla = "305";
                 }
                 //AGREGAR REGISTRO A LA LISTA VIGENCIAS CARGOS EMPLEADO.
                 k++;
@@ -586,21 +571,18 @@ public class ControlEmplInformacionAdicional implements Serializable {
                 nuevaInfoAdicional.setEmpleado(empleado);
                 listInfoAdicionalCrear.add(nuevaInfoAdicional);
                 listInformacionAdicional.add(nuevaInfoAdicional);
+                informacionTablaSeleccionada = nuevaInfoAdicional;
                 nuevaInfoAdicional = new InformacionesAdicionales();
                 nuevaInfoAdicional.setGrupo(new GruposInfAdicionales());
                 RequestContext context = RequestContext.getCurrentInstance();
-
-                infoRegistro = "Cantidad de registros : " + listInformacionAdicional.size();
-
-                context.update("form:informacionRegistro");
+                modificarInfoRegistro(listInformacionAdicional.size());
+                context.update("form:infoRegistro");
                 context.update("form:datosInfoAdEmpleado");
                 context.execute("NuevoRegistroInfoAd.hide()");
                 if (guardado == true) {
                     guardado = false;
                     RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
-                index = -1;
-                secRegistro = null;
             } else {
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.execute("errorFechas.show()");
@@ -614,44 +596,43 @@ public class ControlEmplInformacionAdicional implements Serializable {
     public void limpiarNuevaInfoAd() {
         nuevaInfoAdicional = new InformacionesAdicionales();
         nuevaInfoAdicional.setGrupo(new GruposInfAdicionales());
-        index = -1;
-        secRegistro = null;
     }
 
     public void duplicarInfoAd() {
-        if (index >= 0) {
+        if (informacionTablaSeleccionada != null) {
             duplicarInfoAdicional = new InformacionesAdicionales();
 
             if (tipoLista == 0) {
-                duplicarInfoAdicional.setEmpleado(listInformacionAdicional.get(index).getEmpleado());
-                duplicarInfoAdicional.setFechainicial(listInformacionAdicional.get(index).getFechainicial());
-                duplicarInfoAdicional.setFechafinal(listInformacionAdicional.get(index).getFechafinal());
-                duplicarInfoAdicional.setGrupo(listInformacionAdicional.get(index).getGrupo());
-                duplicarInfoAdicional.setTipodato(listInformacionAdicional.get(index).getTipodato());
-                duplicarInfoAdicional.setResultadocaracter(listInformacionAdicional.get(index).getResultadocaracter());
-                duplicarInfoAdicional.setResultadonumerico(listInformacionAdicional.get(index).getResultadonumerico());
-                duplicarInfoAdicional.setResultadofecha(listInformacionAdicional.get(index).getResultadofecha());
-                duplicarInfoAdicional.setDescripcion(listInformacionAdicional.get(index).getDescripcion());
-                duplicarInfoAdicional.setTipoDatoCompleto(listInformacionAdicional.get(index).getTipoDatoCompleto());
+                duplicarInfoAdicional.setEmpleado(informacionTablaSeleccionada.getEmpleado());
+                duplicarInfoAdicional.setFechainicial(informacionTablaSeleccionada.getFechainicial());
+                duplicarInfoAdicional.setFechafinal(informacionTablaSeleccionada.getFechafinal());
+                duplicarInfoAdicional.setGrupo(informacionTablaSeleccionada.getGrupo());
+                duplicarInfoAdicional.setTipodato(informacionTablaSeleccionada.getTipodato());
+                duplicarInfoAdicional.setResultadocaracter(informacionTablaSeleccionada.getResultadocaracter());
+                duplicarInfoAdicional.setResultadonumerico(informacionTablaSeleccionada.getResultadonumerico());
+                duplicarInfoAdicional.setResultadofecha(informacionTablaSeleccionada.getResultadofecha());
+                duplicarInfoAdicional.setDescripcion(informacionTablaSeleccionada.getDescripcion());
+                duplicarInfoAdicional.setTipodatoTr(informacionTablaSeleccionada.getTipodatoTr());
             }
             if (tipoLista == 1) {
-                duplicarInfoAdicional.setEmpleado(filtrarListInformacionAdicional.get(index).getEmpleado());
-                duplicarInfoAdicional.setFechainicial(filtrarListInformacionAdicional.get(index).getFechainicial());
-                duplicarInfoAdicional.setFechafinal(filtrarListInformacionAdicional.get(index).getFechafinal());
-                duplicarInfoAdicional.setGrupo(filtrarListInformacionAdicional.get(index).getGrupo());
-                duplicarInfoAdicional.setTipodato(filtrarListInformacionAdicional.get(index).getTipodato());
-                duplicarInfoAdicional.setResultadocaracter(filtrarListInformacionAdicional.get(index).getResultadocaracter());
-                duplicarInfoAdicional.setResultadonumerico(filtrarListInformacionAdicional.get(index).getResultadonumerico());
-                duplicarInfoAdicional.setResultadofecha(filtrarListInformacionAdicional.get(index).getResultadofecha());
-                duplicarInfoAdicional.setDescripcion(filtrarListInformacionAdicional.get(index).getDescripcion());
-                duplicarInfoAdicional.setTipoDatoCompleto(filtrarListInformacionAdicional.get(index).getTipoDatoCompleto());
+                duplicarInfoAdicional.setEmpleado(informacionTablaSeleccionada.getEmpleado());
+                duplicarInfoAdicional.setFechainicial(informacionTablaSeleccionada.getFechainicial());
+                duplicarInfoAdicional.setFechafinal(informacionTablaSeleccionada.getFechafinal());
+                duplicarInfoAdicional.setGrupo(informacionTablaSeleccionada.getGrupo());
+                duplicarInfoAdicional.setTipodato(informacionTablaSeleccionada.getTipodato());
+                duplicarInfoAdicional.setResultadocaracter(informacionTablaSeleccionada.getResultadocaracter());
+                duplicarInfoAdicional.setResultadonumerico(informacionTablaSeleccionada.getResultadonumerico());
+                duplicarInfoAdicional.setResultadofecha(informacionTablaSeleccionada.getResultadofecha());
+                duplicarInfoAdicional.setDescripcion(informacionTablaSeleccionada.getDescripcion());
+                duplicarInfoAdicional.setTipodatoTr(informacionTablaSeleccionada.getTipodatoTr());
+                altoTabla = "305";
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarInfoAd");
             context.execute("DuplicarRegistroInfoAd.show()");
-            index = -1;
-            secRegistro = null;
+        }else{
+            RequestContext.getCurrentInstance().execute("formularioDialogos:seleccionarRegistro.show()");
         }
     }
 
@@ -663,22 +644,18 @@ public class ControlEmplInformacionAdicional implements Serializable {
                 duplicarInfoAdicional.setSecuencia(l);
                 listInformacionAdicional.add(duplicarInfoAdicional);
                 listInfoAdicionalCrear.add(duplicarInfoAdicional);
+                informacionTablaSeleccionada = duplicarInfoAdicional;
                 RequestContext context = RequestContext.getCurrentInstance();
-
-                infoRegistro = "Cantidad de registros : " + listInformacionAdicional.size();
-
-                context.update("form:informacionRegistro");
+                modificarInfoRegistro(listInformacionAdicional.size());
+                context.update("form:infoRegistro");
                 context.update("form:datosInfoAdEmpleado");
                 context.execute("DuplicarRegistroInfoAd.hide()");
-                index = -1;
-                secRegistro = null;
                 if (guardado == true) {
                     guardado = false;
                     RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
                 FacesContext c = FacesContext.getCurrentInstance();
                 if (bandera == 1) {
-                    altoTabla = "310";
                     //CERRAR FILTRADO
                     infoAdFechaInicial = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdFechaInicial");
                     infoAdFechaInicial.setFilterStyle("display: none; visibility: hidden;");
@@ -699,6 +676,7 @@ public class ControlEmplInformacionAdicional implements Serializable {
                     bandera = 0;
                     filtrarListInformacionAdicional = null;
                     tipoLista = 0;
+                    altoTabla = "305";
                 }
                 duplicarInfoAdicional = new InformacionesAdicionales();
             } else {
@@ -718,75 +696,59 @@ public class ControlEmplInformacionAdicional implements Serializable {
 
     public void borrarInfoAd() {
 
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                if (!listInfoAdicionalModificar.isEmpty() && listInfoAdicionalModificar.contains(listInformacionAdicional.get(index))) {
-                    int modIndex = listInfoAdicionalModificar.indexOf(listInformacionAdicional.get(index));
-                    listInfoAdicionalModificar.remove(modIndex);
-                    listInfoAdicionalBorrar.add(listInformacionAdicional.get(index));
-                } else if (!listInfoAdicionalCrear.isEmpty() && listInfoAdicionalCrear.contains(listInformacionAdicional.get(index))) {
-                    int crearIndex = listInfoAdicionalCrear.indexOf(listInformacionAdicional.get(index));
-                    listInfoAdicionalCrear.remove(crearIndex);
-                } else {
-                    listInfoAdicionalBorrar.add(listInformacionAdicional.get(index));
-                }
-                listInformacionAdicional.remove(index);
+        if (informacionTablaSeleccionada != null) {
+            if (!listInfoAdicionalModificar.isEmpty() && listInfoAdicionalModificar.contains(informacionTablaSeleccionada)) {
+                int modIndex = listInfoAdicionalModificar.indexOf(informacionTablaSeleccionada);
+                listInfoAdicionalModificar.remove(modIndex);
+                listInfoAdicionalBorrar.add(informacionTablaSeleccionada);
+            } else if (!listInfoAdicionalCrear.isEmpty() && listInfoAdicionalCrear.contains(informacionTablaSeleccionada)) {
+                int crearIndex = listInfoAdicionalCrear.indexOf(informacionTablaSeleccionada);
+                listInfoAdicionalCrear.remove(crearIndex);
+            } else {
+                listInfoAdicionalBorrar.add(informacionTablaSeleccionada);
             }
+            listInformacionAdicional.remove(informacionTablaSeleccionada);
             if (tipoLista == 1) {
-                if (!listInfoAdicionalModificar.isEmpty() && listInfoAdicionalModificar.contains(filtrarListInformacionAdicional.get(index))) {
-                    int modIndex = listInfoAdicionalModificar.indexOf(filtrarListInformacionAdicional.get(index));
-                    listInfoAdicionalModificar.remove(modIndex);
-                    listInfoAdicionalBorrar.add(filtrarListInformacionAdicional.get(index));
-                } else if (!listInfoAdicionalCrear.isEmpty() && listInfoAdicionalCrear.contains(filtrarListInformacionAdicional.get(index))) {
-                    int crearIndex = listInfoAdicionalCrear.indexOf(filtrarListInformacionAdicional.get(index));
-                    listInfoAdicionalCrear.remove(crearIndex);
-                } else {
-                    listInfoAdicionalBorrar.add(filtrarListInformacionAdicional.get(index));
-                }
-                int VCIndex = listInformacionAdicional.indexOf(filtrarListInformacionAdicional.get(index));
-                listInformacionAdicional.remove(VCIndex);
-                filtrarListInformacionAdicional.remove(index);
+                filtrarListInformacionAdicional.remove(informacionTablaSeleccionada);
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
-
-            infoRegistro = "Cantidad de registros : " + listInformacionAdicional.size();
-
-            context.update("form:informacionRegistro");
+            modificarInfoRegistro(listInformacionAdicional.size());
+            context.update("form:infoRegistro");
             context.update("form:datosInfoAdEmpleado");
-            index = -1;
-            secRegistro = null;
+            informacionTablaSeleccionada = null;
 
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
+        }else{
+            RequestContext.getCurrentInstance().execute("formularioDialogos:seleccionarRegistro.show()");
         }
     }
 
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            altoTabla = "288";
+            altoTabla ="281";
             infoAdFechaInicial = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdFechaInicial");
-            infoAdFechaInicial.setFilterStyle("width: 60px");
+            infoAdFechaInicial.setFilterStyle("width: 85%");
             infoAdFechaFinal = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdFechaFinal");
-            infoAdFechaFinal.setFilterStyle("width: 60px");
+            infoAdFechaFinal.setFilterStyle("width: 85%");
             infoAdGrupo = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdGrupo");
             infoAdGrupo.setFilterStyle("width: 80px");
             infoAdCaracter = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdCaracter");
             infoAdCaracter.setFilterStyle("width: 80px");
             ////
             infoAdNumerico = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdNumerico");
-            infoAdNumerico.setFilterStyle("width: 60px");
+            infoAdNumerico.setFilterStyle("width: 85%");
             infoAdFecha = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdFecha");
-            infoAdFecha.setFilterStyle("width: 60px");
+            infoAdFecha.setFilterStyle("width: 85%");
             infoAdObservacion = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdObservacion");
-            infoAdObservacion.setFilterStyle("width: 60px");
+            infoAdObservacion.setFilterStyle("width: 85%");
             RequestContext.getCurrentInstance().update("form:datosInfoAdEmpleado");
             bandera = 1;
         } else if (bandera == 1) {
-            altoTabla = "310";
             infoAdFechaInicial = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdFechaInicial");
             infoAdFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             infoAdFechaFinal = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdFechaFinal");
@@ -806,13 +768,15 @@ public class ControlEmplInformacionAdicional implements Serializable {
             bandera = 0;
             filtrarListInformacionAdicional = null;
             tipoLista = 0;
+            altoTabla = "305";
+            
         }
     }
 
     public void salir() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
-            altoTabla = "310";
+            altoTabla = "305";
             infoAdFechaInicial = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdFechaInicial");
             infoAdFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             infoAdFechaFinal = (Column) c.getViewRoot().findComponent("form:datosInfoAdEmpleado:infoAdFechaFinal");
@@ -837,15 +801,16 @@ public class ControlEmplInformacionAdicional implements Serializable {
         listInfoAdicionalBorrar.clear();
         listInfoAdicionalCrear.clear();
         listInfoAdicionalModificar.clear();
-        index = -1;
-        secRegistro = null;
-        k = 0;
+        informacionTablaSeleccionada = null;
         listInformacionAdicional = null;
+        getListInformacionAdicional();
+        contarRegistros();
+        k = 0;
         guardado = true;
     }
 
-    public void asignarIndex(Integer indice, int list, int LND) {
-        index = indice;
+    public void asignarIndex(InformacionesAdicionales informacionAdicional, int list, int LND) {
+        informacionTablaSeleccionada = informacionAdicional;
         RequestContext context = RequestContext.getCurrentInstance();
         if (LND == 0) {
             tipoActualizacion = 0;
@@ -854,8 +819,9 @@ public class ControlEmplInformacionAdicional implements Serializable {
         } else if (LND == 2) {
             tipoActualizacion = 2;
         }
-
         if (list == 0) {
+            habilitarBotonLov();
+            modificarInfoRegistroGrupo(listGruposInfAdicional.size());
             context.update("form:GrupoDialogo");
             context.execute("GrupoDialogo.show()");
         }
@@ -865,21 +831,21 @@ public class ControlEmplInformacionAdicional implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                listInformacionAdicional.get(index).setGrupo(grupoSelecionado);
-                if (!listInfoAdicionalCrear.contains(listInformacionAdicional.get(index))) {
+                informacionTablaSeleccionada.setGrupo(grupoSelecionado);
+                if (!listInfoAdicionalCrear.contains(informacionTablaSeleccionada)) {
                     if (listInfoAdicionalModificar.isEmpty()) {
-                        listInfoAdicionalModificar.add(listInformacionAdicional.get(index));
-                    } else if (!listInfoAdicionalModificar.contains(listInformacionAdicional.get(index))) {
-                        listInfoAdicionalModificar.add(listInformacionAdicional.get(index));
+                        listInfoAdicionalModificar.add(informacionTablaSeleccionada);
+                    } else if (!listInfoAdicionalModificar.contains(informacionTablaSeleccionada)) {
+                        listInfoAdicionalModificar.add(informacionTablaSeleccionada);
                     }
                 }
             } else {
-                filtrarListInformacionAdicional.get(index).setGrupo(grupoSelecionado);
-                if (!listInfoAdicionalCrear.contains(filtrarListInformacionAdicional.get(index))) {
+                informacionTablaSeleccionada.setGrupo(grupoSelecionado);
+                if (!listInfoAdicionalCrear.contains(informacionTablaSeleccionada)) {
                     if (listInfoAdicionalModificar.isEmpty()) {
-                        listInfoAdicionalModificar.add(filtrarListInformacionAdicional.get(index));
-                    } else if (!listInfoAdicionalModificar.contains(filtrarListInformacionAdicional.get(index))) {
-                        listInfoAdicionalModificar.add(filtrarListInformacionAdicional.get(index));
+                        listInfoAdicionalModificar.add(informacionTablaSeleccionada);
+                    } else if (!listInfoAdicionalModificar.contains(informacionTablaSeleccionada)) {
+                        listInfoAdicionalModificar.add(informacionTablaSeleccionada);
                     }
                 }
             }
@@ -898,8 +864,6 @@ public class ControlEmplInformacionAdicional implements Serializable {
         filtrarListGruposInfAdicional = null;
         grupoSelecionado = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         context.update("form:GrupoDialogo");
         context.update("form:lovGrupo");
@@ -912,16 +876,16 @@ public class ControlEmplInformacionAdicional implements Serializable {
         filtrarListGruposInfAdicional = null;
         grupoSelecionado = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
     }
 
     public void listaValoresBoton() {
-        if (index >= 0) {
+        if (informacionTablaSeleccionada != null) {
             RequestContext context = RequestContext.getCurrentInstance();
             if (cualCelda == 2) {
+                habilitarBotonLov();
+                modificarInfoRegistroGrupo(listGruposInfAdicional.size());
                 context.update("form:GrupoDialogo");
                 context.execute("GrupoDialogo.show()");
                 tipoActualizacion = 0;
@@ -945,8 +909,7 @@ public class ControlEmplInformacionAdicional implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "InformacionAdicionalPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
+        informacionTablaSeleccionada = null;
     }
 
     /**
@@ -960,26 +923,15 @@ public class ControlEmplInformacionAdicional implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "InformacionAdicionalXLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
-    }
-
-    public void eventoFiltrar() {
-        if (tipoLista == 0) {
-            tipoLista = 1;
-        }
-        RequestContext context = RequestContext.getCurrentInstance();
-        infoRegistro = "Cantidad de registros : " + filtrarListInformacionAdicional.size();
-        context.update("form:informacionRegistro");
+        informacionTablaSeleccionada = null;
     }
 
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (listInformacionAdicional != null) {
-            if (secRegistro != null) {
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "INFORMACIONESADICIONALES");
-                backUpSecRegistro = secRegistro;
-                secRegistro = null;
+            if (informacionTablaSeleccionada != null) {
+                int resultado = administrarRastros.obtenerTabla(informacionTablaSeleccionada.getSecuencia(), "INFORMACIONESADICIONALES");
+                backUpSecRegistro = informacionTablaSeleccionada.getSecuencia();
                 if (resultado == 1) {
                     context.execute("errorObjetosDB.show()");
                 } else if (resultado == 2) {
@@ -991,9 +943,7 @@ public class ControlEmplInformacionAdicional implements Serializable {
                 } else if (resultado == 5) {
                     context.execute("errorTablaSinRastro.show()");
                 }
-            } else {
-                context.execute("seleccionarRegistro.show()");
-            }
+            } 
         } else {
             if (administrarRastros.verificarHistoricosTabla("INFORMACIONESADICIONALES")) {
                 context.execute("confirmarRastroHistorico.show()");
@@ -1002,9 +952,57 @@ public class ControlEmplInformacionAdicional implements Serializable {
             }
 
         }
-        index = -1;
+        informacionTablaSeleccionada = null;
     }
 
+    public void eventoFiltrar() {
+        if (tipoLista == 0) {
+            tipoLista = 1;
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        modificarInfoRegistro(filtrarListInformacionAdicional.size());
+        context.update("form:infoRegistro");
+    }
+    
+    public void eventoFiltrarGrupo(){
+        modificarInfoRegistroGrupo(filtrarListGruposInfAdicional.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistroGrupo");
+    }
+    
+    public void recordarSeleccion() {
+        if (informacionTablaSeleccionada != null) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            tablaC = (DataTable) c.getViewRoot().findComponent("form:datosInfoAdEmpleado");
+            tablaC.setSelection(informacionTablaSeleccionada);
+        }
+    }
+
+    public void modificarInfoRegistro(int valor) {
+        infoRegistro = String.valueOf(valor);
+    }
+
+    public void modificarInfoRegistroGrupo(int valor) {
+        infoRegistroGrupo = String.valueOf(valor);
+    }
+
+    public void contarRegistros() {
+        if (listInformacionAdicional != null) {
+            modificarInfoRegistro(listInformacionAdicional.size());
+        } else {
+            modificarInfoRegistro(0);
+        }
+    }
+
+    public void habilitarBotonLov(){
+        activarLov = false;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+    }
+
+    public void deshabilitarBotonLov(){
+        activarLov = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+    }
+    ////////////////////////////////GETS Y SETS////////////////////////////////////
     public List<InformacionesAdicionales> getListInformacionAdicional() {
         try {
             if (listInformacionAdicional == null) {
@@ -1109,22 +1107,14 @@ public class ControlEmplInformacionAdicional implements Serializable {
         this.backUpSecRegistro = backUpSecRegistro;
     }
 
-    public BigInteger getSecRegistro() {
-        return secRegistro;
-    }
-
-    public void setSecRegistro(BigInteger secRegistro) {
-        this.secRegistro = secRegistro;
-    }
-
     public InformacionesAdicionales getInformacionTablaSeleccionada() {
-        getListInformacionAdicional();
-        if (listInformacionAdicional != null) {
-            int tam = listInformacionAdicional.size();
-            if (tam > 0) {
-                informacionTablaSeleccionada = listInformacionAdicional.get(0);
-            }
-        }
+//        getListInformacionAdicional();
+//        if (listInformacionAdicional != null) {
+//            int tam = listInformacionAdicional.size();
+//            if (tam > 0) {
+//                informacionTablaSeleccionada = listInformacionAdicional.get(0);
+//            }
+//        }
         return informacionTablaSeleccionada;
     }
 
@@ -1157,12 +1147,6 @@ public class ControlEmplInformacionAdicional implements Serializable {
     }
 
     public String getInfoRegistroGrupo() {
-        getListGruposInfAdicional();
-        if (listGruposInfAdicional != null) {
-            infoRegistroGrupo = "Cantidad de registros : " + listGruposInfAdicional.size();
-        } else {
-            infoRegistroGrupo = "Cantidad de registros : 0";
-        }
         return infoRegistroGrupo;
     }
 
@@ -1170,4 +1154,13 @@ public class ControlEmplInformacionAdicional implements Serializable {
         this.infoRegistroGrupo = infoRegistroGrupo;
     }
 
+    public boolean isActivarLov() {
+        return activarLov;
+    }
+
+    public void setActivarLov(boolean activarLov) {
+        this.activarLov = activarLov;
+    }
+
+    
 }

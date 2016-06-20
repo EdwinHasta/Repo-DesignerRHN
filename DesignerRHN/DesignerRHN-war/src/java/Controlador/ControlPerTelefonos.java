@@ -1,6 +1,7 @@
 package Controlador;
 
 import Entidades.Ciudades;
+import Entidades.Empleados;
 import Entidades.Personas;
 import Entidades.Telefonos;
 import Entidades.TiposTelefonos;
@@ -53,7 +54,6 @@ public class ControlPerTelefonos implements Serializable {
     private Column tFecha, tTipoTelefono, tNumero, tCiudad;
     //OTROS
     private boolean aceptar;
-    private int index;
     private int tipoActualizacion; //Activo/Desactivo Crtl + F11
     private int bandera;
     private boolean permitirIndex;
@@ -77,8 +77,10 @@ public class ControlPerTelefonos implements Serializable {
     //Duplicar
     private Telefonos duplicarTelefono;
     //RASTRO
-    private BigInteger secRegistro;
-    private String altoTabla;
+    private String altoTabla, infoRegistro, infoRegistroTT, infoRegistroCiudad;
+    private DataTable tablaC;
+    private Empleados empleado;
+    private boolean activarLov;
 
     public ControlPerTelefonos() {
         permitirIndex = true;
@@ -91,7 +93,7 @@ public class ControlPerTelefonos implements Serializable {
         //INICIALIZAR LOVS
         listaTiposTelefonos = new ArrayList<TiposTelefonos>();
         listaCiudades = new ArrayList<Ciudades>();
-        secRegistro = null;
+        telefonoSeleccionado = null;
         //editar
         editarTelefono = new Telefonos();
         cambioEditor = false;
@@ -102,11 +104,12 @@ public class ControlPerTelefonos implements Serializable {
         nuevoTelefono = new Telefonos();
         nuevoTelefono.setTipotelefono(new TiposTelefonos());
         nuevoTelefono.setCiudad(new Ciudades());
-        secRegistro = null;
         permitirIndex = true;
         k = 0;
         altoTabla = "270";
         guardado = true;
+        empleado = new Empleados();
+        activarLov = true;
 
     }
 
@@ -122,15 +125,16 @@ public class ControlPerTelefonos implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-    public void recibirPersona(BigInteger secPersona) {
-        secuenciaPersona = secPersona;
-        persona = null;
-        getPersona();
+
+    public void recibirEmpleado(BigInteger secuencia) {
         listaTelefonos = null;
-        getListaTelefonos();
         listaTiposTelefonos = null;
-        getListaTiposTelefonos();
-        aceptar = true;
+        empleado = administrarTelefonos.empleadoActual(secuencia);
+        getListaTelefonos();
+        if (listaTelefonos != null) {
+            telefonoSeleccionado = listaTelefonos.get(0);
+        }
+        contarRegistros();
     }
 
     public void refrescar() {
@@ -145,8 +149,6 @@ public class ControlPerTelefonos implements Serializable {
     public void cancelarModificacion() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
-            System.out.println("Desactivar");
-            System.out.println("TipoLista= " + tipoLista);
             tFecha = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tFecha");
             tFecha.setFilterStyle("display: none; visibility: hidden;");
             tTipoTelefono = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tTipoTelefono");
@@ -155,23 +157,27 @@ public class ControlPerTelefonos implements Serializable {
             tNumero.setFilterStyle("display: none; visibility: hidden;");
             tCiudad = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tCiudad");
             tCiudad.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosTelefonosPersona");
             bandera = 0;
             filtradosListaTelefonos = null;
             tipoLista = 0;
+            altoTabla = "270";
         }
 
         listaTelefonosBorrar.clear();
         listaTelefonosCrear.clear();
         listaTelefonosModificar.clear();
-        index = -1;
-        secRegistro = null;
-//        k = 0;
+        k = 0;
+        contarRegistros();
+        telefonoSeleccionado = null;
         listaTelefonos = null;
         guardado = true;
         permitirIndex = true;
+        getListaTelefonos();
+        contarRegistros();
+        deshabilitarBotonLov();
         RequestContext context = RequestContext.getCurrentInstance();
+        //context.update("form:infoRegistro");
         context.update("form:ACEPTAR");
         context.update("form:datosTelefonosPersona");
     }
@@ -180,21 +186,21 @@ public class ControlPerTelefonos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                listaTelefonos.get(index).setTipotelefono(seleccionTipoTelefono);
-                if (!listaTelefonosCrear.contains(listaTelefonos.get(index))) {
+                telefonoSeleccionado.setTipotelefono(seleccionTipoTelefono);
+                if (!listaTelefonosCrear.contains(telefonoSeleccionado)) {
                     if (listaTelefonosModificar.isEmpty()) {
-                        listaTelefonosModificar.add(listaTelefonos.get(index));
-                    } else if (!listaTelefonosModificar.contains(listaTelefonos.get(index))) {
-                        listaTelefonosModificar.add(listaTelefonos.get(index));
+                        listaTelefonosModificar.add(telefonoSeleccionado);
+                    } else if (!listaTelefonosModificar.contains(telefonoSeleccionado)) {
+                        listaTelefonosModificar.add(telefonoSeleccionado);
                     }
                 }
             } else {
-                filtradosListaTelefonos.get(index).setTipotelefono(seleccionTipoTelefono);
-                if (!listaTelefonosCrear.contains(filtradosListaTelefonos.get(index))) {
+                telefonoSeleccionado.setTipotelefono(seleccionTipoTelefono);
+                if (!listaTelefonosCrear.contains(telefonoSeleccionado)) {
                     if (listaTelefonosModificar.isEmpty()) {
-                        listaTelefonosModificar.add(filtradosListaTelefonos.get(index));
-                    } else if (!listaTelefonosModificar.contains(filtradosListaTelefonos.get(index))) {
-                        listaTelefonosModificar.add(filtradosListaTelefonos.get(index));
+                        listaTelefonosModificar.add(telefonoSeleccionado);
+                    } else if (!listaTelefonosModificar.contains(telefonoSeleccionado)) {
+                        listaTelefonosModificar.add(telefonoSeleccionado);
                     }
                 }
             }
@@ -214,10 +220,12 @@ public class ControlPerTelefonos implements Serializable {
         filtradoslistaTiposTelefonos = null;
         seleccionTipoTelefono = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
-        cualCelda = -1;
+        //cualCelda = -1;
+        context.update("form:tiposTelefonosDialogo");
+        context.update("form:LOVTiposTelefonos");
+        context.update("form:aceptarTT");
+
         context.reset("formularioDialogos:LOVTiposTelefonos:globalFilter");
         context.execute("LOVTiposTelefonos.clearFilters()");
         context.execute("tiposTelefonosDialogo.hide()");
@@ -228,12 +236,13 @@ public class ControlPerTelefonos implements Serializable {
         filtradoslistaTiposTelefonos = null;
         seleccionTipoTelefono = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tiposTelefonosDialogo");
+        context.update("form:LOVTiposTelefonos");
+        context.update("form:aceptarTT");
         context.reset("formularioDialogos:LOVTiposTelefonos:globalFilter");
         context.execute("LOVTiposTelefonos.clearFilters()");
         context.execute("tiposTelefonosDialogo.hide()");
@@ -241,47 +250,55 @@ public class ControlPerTelefonos implements Serializable {
 //MOSTRAR DATOS CELDA
 
     public void editarCelda() {
-        if (index >= 0) {
+        if (telefonoSeleccionado != null) {
             if (tipoLista == 0) {
-                editarTelefono = listaTelefonos.get(index);
+                editarTelefono = telefonoSeleccionado;
             }
             if (tipoLista == 1) {
-                editarTelefono = filtradosListaTelefonos.get(index);
+                editarTelefono = telefonoSeleccionado;
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
-            System.out.println("Entro a editar... valor celda: " + cualCelda);
             if (cualCelda == 0) {
                 context.update("formularioDialogos:editarFecha");
                 context.execute("editarFecha.show()");
                 cualCelda = -1;
+                deshabilitarBotonLov();
             } else if (cualCelda == 1) {
                 context.update("formularioDialogos:editarTT");
                 context.execute("editarTT.show()");
+                habilitarBotonLov();
                 cualCelda = -1;
             } else if (cualCelda == 2) {
                 context.update("formularioDialogos:editarNumeroTelefono");
                 context.execute("editarNumeroTelefono.show()");
                 cualCelda = -1;
+                deshabilitarBotonLov();
             } else if (cualCelda == 3) {
                 context.update("formularioDialogos:editarCiudad");
                 context.execute("editarCiudad.show()");
                 cualCelda = -1;
+                habilitarBotonLov();
             }
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("seleccionarRegistro.show()");
         }
-        index = -1;
-        secRegistro = null;
     }
 
     //LISTA DE VALORES DINAMICA
     public void listaValoresBoton() {
-        if (index >= 0) {
+        if (telefonoSeleccionado != null) {
             RequestContext context = RequestContext.getCurrentInstance();
             if (cualCelda == 1) {
+                habilitarBotonLov();
+                modificarInfoRegistroTT(listaTiposTelefonos.size());
                 context.update("formularioDialogos:tiposTelefonosDialogo");
                 context.execute("tiposTelefonosDialogo.show()");
                 tipoActualizacion = 0;
             } else if (cualCelda == 3) {
+                habilitarBotonLov();
+                modificarInfoRegistroCiudad(listaCiudades.size());
                 context.update("formularioDialogos:ciudadesDialogo");
                 context.execute("ciudadesDialogo.show()");
                 tipoActualizacion = 0;
@@ -292,124 +309,107 @@ public class ControlPerTelefonos implements Serializable {
     //BORRAR CIUDADES
     public void borrarTelefonos() {
 
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                if (!listaTelefonosModificar.isEmpty() && listaTelefonosModificar.contains(listaTelefonos.get(index))) {
-                    int modIndex = listaTelefonosModificar.indexOf(listaTelefonos.get(index));
-                    listaTelefonosModificar.remove(modIndex);
-                    listaTelefonosBorrar.add(listaTelefonos.get(index));
-                } else if (!listaTelefonosCrear.isEmpty() && listaTelefonosCrear.contains(listaTelefonos.get(index))) {
-                    int crearIndex = listaTelefonosCrear.indexOf(listaTelefonos.get(index));
-                    listaTelefonosCrear.remove(crearIndex);
-                } else {
-                    listaTelefonosBorrar.add(listaTelefonos.get(index));
-                }
-                listaTelefonos.remove(index);
+        if (telefonoSeleccionado != null) {
+            if (!listaTelefonosModificar.isEmpty() && listaTelefonosModificar.contains(telefonoSeleccionado)) {
+                listaTelefonosModificar.remove(listaTelefonosModificar.indexOf(telefonoSeleccionado));
+                listaTelefonosBorrar.add(telefonoSeleccionado);
+            } else if (!listaTelefonosCrear.isEmpty() && listaTelefonosCrear.contains(telefonoSeleccionado)) {
+                listaTelefonosCrear.remove(listaTelefonosCrear.indexOf(telefonoSeleccionado));
+            } else {
+                listaTelefonosBorrar.add(telefonoSeleccionado);
             }
-
+            listaTelefonos.remove(telefonoSeleccionado);
             if (tipoLista == 1) {
-                if (!listaTelefonosModificar.isEmpty() && listaTelefonosModificar.contains(filtradosListaTelefonos.get(index))) {
-                    int modIndex = listaTelefonosModificar.indexOf(filtradosListaTelefonos.get(index));
-                    listaTelefonosModificar.remove(modIndex);
-                    listaTelefonosBorrar.add(filtradosListaTelefonos.get(index));
-                } else if (!listaTelefonosCrear.isEmpty() && listaTelefonosCrear.contains(filtradosListaTelefonos.get(index))) {
-                    int crearIndex = listaTelefonosCrear.indexOf(filtradosListaTelefonos.get(index));
-                    listaTelefonosCrear.remove(crearIndex);
-                } else {
-                    listaTelefonosBorrar.add(filtradosListaTelefonos.get(index));
-                }
-                int CIndex = listaTelefonos.indexOf(filtradosListaTelefonos.get(index));
-                listaTelefonos.remove(CIndex);
-                filtradosListaTelefonos.remove(index);
-                System.out.println("Realizado");
+                filtradosListaTelefonos.remove(telefonoSeleccionado);
             }
-
+            modificarInfoRegistro(listaTelefonos.size());
             RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:infoRegistro");
             context.update("form:datosTelefonosPersona");
-            index = -1;
-            secRegistro = null;
+            telefonoSeleccionado = null;
 
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
+        } else {
+            RequestContext.getCurrentInstance().execute("seleccionarRegistro.show()");
         }
     }
 
     //DUPLICAR TELEFONO
     public void duplicarT() {
-        if (index >= 0) {
+        if (telefonoSeleccionado != null) {
             duplicarTelefono = new Telefonos();
             k++;
             l = BigInteger.valueOf(k);
-
             if (tipoLista == 0) {
                 duplicarTelefono.setSecuencia(l);
-                duplicarTelefono.setFechavigencia(listaTelefonos.get(index).getFechavigencia());
-                duplicarTelefono.setTipotelefono(listaTelefonos.get(index).getTipotelefono());
-                duplicarTelefono.setNumerotelefono(listaTelefonos.get(index).getNumerotelefono());
-                duplicarTelefono.setCiudad(listaTelefonos.get(index).getCiudad());
-                duplicarTelefono.setPersona(listaTelefonos.get(index).getPersona());
+                duplicarTelefono.setFechavigencia(telefonoSeleccionado.getFechavigencia());
+                duplicarTelefono.setTipotelefono(telefonoSeleccionado.getTipotelefono());
+                duplicarTelefono.setNumerotelefono(telefonoSeleccionado.getNumerotelefono());
+                duplicarTelefono.setCiudad(telefonoSeleccionado.getCiudad());
+                duplicarTelefono.setPersona(telefonoSeleccionado.getPersona());
             }
             if (tipoLista == 1) {
                 duplicarTelefono.setSecuencia(l);
-                duplicarTelefono.setFechavigencia(filtradosListaTelefonos.get(index).getFechavigencia());
-                duplicarTelefono.setTipotelefono(filtradosListaTelefonos.get(index).getTipotelefono());
-                duplicarTelefono.setNumerotelefono(filtradosListaTelefonos.get(index).getNumerotelefono());
-                duplicarTelefono.setCiudad(filtradosListaTelefonos.get(index).getCiudad());
-                duplicarTelefono.setPersona(filtradosListaTelefonos.get(index).getPersona());
+                duplicarTelefono.setFechavigencia(telefonoSeleccionado.getFechavigencia());
+                duplicarTelefono.setTipotelefono(telefonoSeleccionado.getTipotelefono());
+                duplicarTelefono.setNumerotelefono(telefonoSeleccionado.getNumerotelefono());
+                duplicarTelefono.setCiudad(telefonoSeleccionado.getCiudad());
+                duplicarTelefono.setPersona(telefonoSeleccionado.getPersona());
+                altoTabla = "270";
             }
-
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarTelefono");
             context.execute("DuplicarRegistroTelefono.show()");
-            index = -1;
-            secRegistro = null;
+        } else {
+            RequestContext.getCurrentInstance().execute("seleccionarRegistro.show()");
         }
     }
 
     public void confirmarDuplicar() {
-
         int pasa = 0;
         int pasaA = 0;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
-
         if (duplicarTelefono.getFechavigencia() == null) {
             System.out.println("Entro a Fecha");
-            mensajeValidacion = " * Fecha \n";
+            mensajeValidacion = " Campo fecha vacío \n";
             pasa++;
+
         }
         if (duplicarTelefono.getTipotelefono().getSecuencia() == null) {
             System.out.println("Entro a TipoTelefono");
-            mensajeValidacion = mensajeValidacion + " * Tipo de Telefono\n";
+            mensajeValidacion = mensajeValidacion + " Campo Tipo Teléfono vacío \n";
             pasa++;
         }
         if (duplicarTelefono.getNumerotelefono() == 0) {
             System.out.println("Entro a Numero");
-            mensajeValidacion = mensajeValidacion + " * Numero de Telefono\n";
+            mensajeValidacion = mensajeValidacion + " * Campo Número Teléfono vacío \n";
             pasa++;
         }
         for (int i = 0; i < listaTelefonos.size(); i++) {
             if ((listaTelefonos.get(i).getTipotelefono().getNombre().equals(duplicarTelefono.getTipotelefono().getNombre())) && (!(listaTelefonos.get(i).getFechavigencia().before(duplicarTelefono.getFechavigencia())) && !(duplicarTelefono.getFechavigencia().before(listaTelefonos.get(i).getFechavigencia())))) {
-                System.out.println("Entro al IF Tipo Telefono");
+                context.update("formularioDialogos:existeTipoTelefono");
                 context.execute("existeTipoTelefono.show()");
                 pasaA++;
             }
             if (pasa != 0) {
                 context.update("formularioDialogos:validacionNuevoTelefono");
                 context.execute("validacionNuevoTelefono.show()");
-
             }
         }
 
         if (pasa == 0 && pasaA == 0) {
             listaTelefonos.add(duplicarTelefono);
             listaTelefonosCrear.add(duplicarTelefono);
-
+            telefonoSeleccionado = duplicarTelefono;
+            getListaTelefonos();
+            modificarInfoRegistro(listaTelefonos.size());
             context.update("form:datosTelefonosPersona");
-            index = -1;
-            secRegistro = null;
+            context.update("form:infoRegistro");
+            RequestContext.getCurrentInstance().update("form:datosTelefonosPersona");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -431,8 +431,9 @@ public class ControlPerTelefonos implements Serializable {
                 bandera = 0;
                 filtradosListaTelefonos = null;
                 tipoLista = 0;
-
             }
+            duplicarTelefono = new Telefonos();
+            RequestContext.getCurrentInstance().execute("DuplicarRegistroTelefono.hide()");
         }
 
     }
@@ -440,6 +441,8 @@ public class ControlPerTelefonos implements Serializable {
 
     public void limpiarduplicarTelefono() {
         duplicarTelefono = new Telefonos();
+        duplicarTelefono.setTipotelefono(new TiposTelefonos());
+        duplicarTelefono.setCiudad(new Ciudades());
     }
 
     //EXPORTAR
@@ -449,8 +452,7 @@ public class ControlPerTelefonos implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "TelefonosPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
+        telefonoSeleccionado = null;
     }
 
     public void exportXLS() throws IOException {
@@ -459,8 +461,7 @@ public class ControlPerTelefonos implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "TelefonosXLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
+        telefonoSeleccionado = null;
     }
     //LIMPIAR NUEVO REGISTRO
 
@@ -468,8 +469,6 @@ public class ControlPerTelefonos implements Serializable {
         nuevoTelefono = new Telefonos();
         nuevoTelefono.setTipotelefono(new TiposTelefonos());
         nuevoTelefono.setCiudad(new Ciudades());
-        index = -1;
-        secRegistro = null;
     }
     //FILTRADO
 
@@ -481,13 +480,13 @@ public class ControlPerTelefonos implements Serializable {
             System.out.println("Activar");
             System.out.println("TipoLista= " + tipoLista);
             tFecha = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tFecha");
-            tFecha.setFilterStyle("width: 60px");
+            tFecha.setFilterStyle("width: 85%");
             tTipoTelefono = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tTipoTelefono");
-            tTipoTelefono.setFilterStyle("");
+            tTipoTelefono.setFilterStyle("width: 85%");
             tNumero = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tNumero");
-            tNumero.setFilterStyle("");
+            tNumero.setFilterStyle("width: 85%");
             tCiudad = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tCiudad");
-            tCiudad.setFilterStyle("width: 60px");
+            tCiudad.setFilterStyle("width: 85%");
             altoTabla = "246";
             RequestContext.getCurrentInstance().update("form:datosTelefonosPersona");
             bandera = 1;
@@ -513,47 +512,48 @@ public class ControlPerTelefonos implements Serializable {
 //CREAR TELEFONO
 
     public void agregarNuevoTelefono() {
+        Long a = null;
         int pasa = 0;
         int pasaA = 0;
         mensajeValidacion = " ";
+        FacesContext c = FacesContext.getCurrentInstance();
         RequestContext context = RequestContext.getCurrentInstance();
+
+        if (nuevoTelefono.getFechavigencia() == null && nuevoTelefono.getTipotelefono().getSecuencia() == null && nuevoTelefono.getNumerotelefono() == 0) {
+            System.out.println("Entro a Fecha");
+            mensajeValidacion = " Existen campos vacíos \n";
+            pasa++;
+        }
 
         if (nuevoTelefono.getFechavigencia() == null) {
             System.out.println("Entro a Fecha");
-            mensajeValidacion = " * Fecha \n";
+            mensajeValidacion = " Campo fecha vacío \n";
             pasa++;
         }
         if (nuevoTelefono.getTipotelefono().getSecuencia() == null) {
             System.out.println("Entro a TipoTelefono");
-            mensajeValidacion = mensajeValidacion + " * Tipo de Telefono\n";
+            mensajeValidacion = " Campo Tipo Teléfono vacío\n";
             pasa++;
         }
         if (nuevoTelefono.getNumerotelefono() == 0) {
             System.out.println("Entro a Numero");
-            mensajeValidacion = mensajeValidacion + " * Numero de Telefono\n";
+            mensajeValidacion = " Campo Número de Teléfono vacío\n";
             pasa++;
         }
         for (int i = 0; i < listaTelefonos.size(); i++) {
             if ((listaTelefonos.get(i).getTipotelefono().getNombre().equals(nuevoTelefono.getTipotelefono().getNombre())) && (!(listaTelefonos.get(i).getFechavigencia().before(nuevoTelefono.getFechavigencia())) && !(nuevoTelefono.getFechavigencia().before(listaTelefonos.get(i).getFechavigencia())))) {
-                System.out.println("Entro al IF Tipo Telefono");
                 context.update("formularioDialogos:existeTipoTelefono");
                 context.execute("existeTipoTelefono.show()");
                 pasaA++;
             }
-            if (pasa != 0) {
-                context.update("formularioDialogos:validacionNuevoTelefono");
-                context.execute("validacionNuevoTelefono.show()");
-
-            }
+//            if (pasa != 0) {
+//                context.update("formularioDialogos:validacionNuevoTelefono");
+//                context.execute("validacionNuevoTelefono.show()");
+//            }
         }
 
         if (pasa == 0 && pasaA == 0) {
-            FacesContext c = FacesContext.getCurrentInstance();
-
             if (bandera == 1) {
-                //CERRAR FILTRADO
-                //System.out.println("Desactivar");
-                //System.out.println("TipoLista= " + tipoLista);
                 tFecha = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tFecha");
                 tFecha.setFilterStyle("display: none; visibility: hidden;");
                 tTipoTelefono = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tTipoTelefono");
@@ -567,33 +567,33 @@ public class ControlPerTelefonos implements Serializable {
                 filtradosListaTelefonos = null;
                 tipoLista = 0;
                 altoTabla = "270";
-
             }
-            //AGREGAR REGISTRO A LA LISTA TELEFONOS.
             k++;
             l = BigInteger.valueOf(k);
             nuevoTelefono.setSecuencia(l);
-            nuevoTelefono.setPersona(persona);
+            nuevoTelefono.setPersona(empleado.getPersona());
             if (nuevoTelefono.getCiudad().getSecuencia() == null) {
                 nuevoTelefono.setCiudad(null);
             }
             listaTelefonosCrear.add(nuevoTelefono);
-
             listaTelefonos.add(nuevoTelefono);
+            telefonoSeleccionado = nuevoTelefono;
             nuevoTelefono = new Telefonos();
             nuevoTelefono.setTipotelefono(new TiposTelefonos());
             nuevoTelefono.setCiudad(new Ciudades());
+            getListaTelefonos();
+            modificarInfoRegistro(listaTelefonos.size());
+            deshabilitarBotonLov();
+            context.update("form:infoRegistro");
             context.update("form:datosTelefonosPersona");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.execute("NuevoRegistroTelefono.hide()");
-            index = -1;
-            secRegistro = null;
         } else {
-            //      context.update("formularioDialogos:validacionNuevoTelefono");
-            //    context.execute("validacionNuevoTelefono.show()");
+            context.update("formularioDialogos:validacionNuevoTelefono");
+            context.execute("validacionNuevoTelefono.show()");
         }
     }
 
@@ -602,21 +602,21 @@ public class ControlPerTelefonos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                listaTelefonos.get(index).setCiudad(seleccionCiudades);
-                if (!listaTelefonosCrear.contains(listaTelefonos.get(index))) {
+                telefonoSeleccionado.setCiudad(seleccionCiudades);
+                if (!listaTelefonosCrear.contains(telefonoSeleccionado)) {
                     if (listaTelefonosModificar.isEmpty()) {
-                        listaTelefonosModificar.add(listaTelefonos.get(index));
-                    } else if (!listaTelefonosModificar.contains(listaTelefonos.get(index))) {
-                        listaTelefonosModificar.add(listaTelefonos.get(index));
+                        listaTelefonosModificar.add(telefonoSeleccionado);
+                    } else if (!listaTelefonosModificar.contains(telefonoSeleccionado)) {
+                        listaTelefonosModificar.add(telefonoSeleccionado);
                     }
                 }
             } else {
-                filtradosListaTelefonos.get(index).setCiudad(seleccionCiudades);
-                if (!listaTelefonosCrear.contains(filtradosListaTelefonos.get(index))) {
+                telefonoSeleccionado.setCiudad(seleccionCiudades);
+                if (!listaTelefonosCrear.contains(telefonoSeleccionado)) {
                     if (listaTelefonosModificar.isEmpty()) {
-                        listaTelefonosModificar.add(filtradosListaTelefonos.get(index));
-                    } else if (!listaTelefonosModificar.contains(filtradosListaTelefonos.get(index))) {
-                        listaTelefonosModificar.add(filtradosListaTelefonos.get(index));
+                        listaTelefonosModificar.add(telefonoSeleccionado);
+                    } else if (!listaTelefonosModificar.contains(telefonoSeleccionado)) {
+                        listaTelefonosModificar.add(telefonoSeleccionado);
                     }
                 }
             }
@@ -636,8 +636,6 @@ public class ControlPerTelefonos implements Serializable {
         filtradoslistaCiudades = null;
         seleccionCiudades = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         context.reset("formularioDialogos:LOVCiudades:globalFilter");
@@ -650,8 +648,6 @@ public class ControlPerTelefonos implements Serializable {
         filtradoslistaCiudades = null;
         seleccionCiudades = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -662,73 +658,83 @@ public class ControlPerTelefonos implements Serializable {
     }
 
     //Ubicacion Celda.
-    public void cambiarIndice(int indice, int celda) {
+    public void cambiarIndice(Telefonos telefono, int celda) {
         if (permitirIndex == true) {
-            index = indice;
+            telefonoSeleccionado = telefono;
             cualCelda = celda;
+            deshabilitarBotonLov();
             if (tipoLista == 0) {
-                secRegistro = listaTelefonos.get(index).getSecuencia();
+                telefonoSeleccionado.getSecuencia();
                 if (cualCelda == 1) {
-                    TipoTelefono = listaTelefonos.get(index).getTipotelefono().getNombre();
+                    modificarInfoRegistroTT(listaTiposTelefonos.size());
+                    TipoTelefono = telefonoSeleccionado.getTipotelefono().getNombre();
+                    habilitarBotonLov();
                 } else if (cualCelda == 3) {
-                    Ciudad = listaTelefonos.get(index).getCiudad().getNombre();
+                    habilitarBotonLov();
+                    modificarInfoRegistroCiudad(listaCiudades.size());
+                    Ciudad = telefonoSeleccionado.getCiudad().getNombre();
                 }
             } else {
-                secRegistro = filtradosListaTelefonos.get(index).getSecuencia();
+                telefonoSeleccionado.getSecuencia();
+                deshabilitarBotonLov();
                 if (cualCelda == 1) {
-                    TipoTelefono = filtradosListaTelefonos.get(index).getTipotelefono().getNombre();
+                    habilitarBotonLov();
+                    modificarInfoRegistroTT(listaTiposTelefonos.size());
+                    TipoTelefono = telefonoSeleccionado.getTipotelefono().getNombre();
                 } else if (cualCelda == 3) {
-                    Ciudad = filtradosListaTelefonos.get(index).getCiudad().getNombre();
+                    habilitarBotonLov();
+                    modificarInfoRegistroCiudad(listaCiudades.size());
+                    Ciudad = telefonoSeleccionado.getCiudad().getNombre();
                 }
             }
         }
     }
 
     //AUTOCOMPLETAR
-    public void modificarTelefonos(int indice, String confirmarCambio, String valorConfirmar) {
-        index = indice;
+    public void modificarTelefonos(Telefonos telefono, String confirmarCambio, String valorConfirmar) {
+        telefonoSeleccionado = telefono;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("N")) {
             if (tipoLista == 0) {
-                if (!listaTelefonosCrear.contains(listaTelefonos.get(indice))) {
+                if (!listaTelefonosCrear.contains(telefonoSeleccionado)) {
 
                     if (listaTelefonosModificar.isEmpty()) {
-                        listaTelefonosModificar.add(listaTelefonos.get(indice));
-                    } else if (!listaTelefonosModificar.contains(listaTelefonos.get(indice))) {
-                        listaTelefonosModificar.add(listaTelefonos.get(indice));
+                        listaTelefonosModificar.add(telefonoSeleccionado);
+                    } else if (!listaTelefonosModificar.contains(telefonoSeleccionado)) {
+                        listaTelefonosModificar.add(telefonoSeleccionado);
                     }
                     if (guardado == true) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
-                index = -1;
-                secRegistro = null;
+                deshabilitarBotonLov();
+                telefonoSeleccionado = null;
 
             } else {
-                if (!listaTelefonosCrear.contains(filtradosListaTelefonos.get(indice))) {
+                if (!listaTelefonosCrear.contains(telefonoSeleccionado)) {
 
                     if (listaTelefonosModificar.isEmpty()) {
-                        listaTelefonosModificar.add(filtradosListaTelefonos.get(indice));
-                    } else if (!listaTelefonosModificar.contains(filtradosListaTelefonos.get(indice))) {
-                        listaTelefonosModificar.add(filtradosListaTelefonos.get(indice));
+                        listaTelefonosModificar.add(telefonoSeleccionado);
+                    } else if (!listaTelefonosModificar.contains(telefonoSeleccionado)) {
+                        listaTelefonosModificar.add(telefonoSeleccionado);
                     }
                     if (guardado == true) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
-                index = -1;
-                secRegistro = null;
+                deshabilitarBotonLov();
+                telefonoSeleccionado = null;
             }
             context.update("form:datosTelefonosPersona");
         } else if (confirmarCambio.equalsIgnoreCase("TIPOTELEFONO")) {
             if (tipoLista == 0) {
-                listaTelefonos.get(indice).getTipotelefono().setNombre(TipoTelefono);
+                telefonoSeleccionado.getTipotelefono().setNombre(TipoTelefono);
             } else {
-                filtradosListaTelefonos.get(indice).getTipotelefono().setNombre(TipoTelefono);
+                telefonoSeleccionado.getTipotelefono().setNombre(TipoTelefono);
             }
 
             for (int i = 0; i < listaTiposTelefonos.size(); i++) {
@@ -739,10 +745,11 @@ public class ControlPerTelefonos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listaTelefonos.get(indice).setTipotelefono(listaTiposTelefonos.get(indiceUnicoElemento));
+                    telefonoSeleccionado.setTipotelefono(listaTiposTelefonos.get(indiceUnicoElemento));
                 } else {
-                    filtradosListaTelefonos.get(indice).setTipotelefono(listaTiposTelefonos.get(indiceUnicoElemento));
+                    telefonoSeleccionado.setTipotelefono(listaTiposTelefonos.get(indiceUnicoElemento));
                 }
+                deshabilitarBotonLov();
                 listaTiposTelefonos.clear();
                 getListaTiposTelefonos();
             } else {
@@ -753,9 +760,9 @@ public class ControlPerTelefonos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("CIUDAD")) {
             if (tipoLista == 0) {
-                listaTelefonos.get(indice).getCiudad().setNombre(Ciudad);
+                telefonoSeleccionado.getCiudad().setNombre(Ciudad);
             } else {
-                filtradosListaTelefonos.get(indice).getCiudad().setNombre(Ciudad);
+                telefonoSeleccionado.getCiudad().setNombre(Ciudad);
             }
             for (int i = 0; i < listaCiudades.size(); i++) {
                 if (listaCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
@@ -765,9 +772,9 @@ public class ControlPerTelefonos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listaTelefonos.get(indice).setCiudad(listaCiudades.get(indiceUnicoElemento));
+                    telefonoSeleccionado.setCiudad(listaCiudades.get(indiceUnicoElemento));
                 } else {
-                    filtradosListaTelefonos.get(indice).setCiudad(listaCiudades.get(indiceUnicoElemento));
+                    telefonoSeleccionado.setCiudad(listaCiudades.get(indiceUnicoElemento));
                 }
                 listaCiudades.clear();
                 getListaCiudades();
@@ -780,34 +787,33 @@ public class ControlPerTelefonos implements Serializable {
         }
         if (coincidencias == 1) {
             if (tipoLista == 0) {
-                if (!listaTelefonosCrear.contains(listaTelefonos.get(indice))) {
+                if (!listaTelefonosCrear.contains(telefonoSeleccionado)) {
                     if (listaTelefonosModificar.isEmpty()) {
-                        listaTelefonosModificar.add(listaTelefonos.get(indice));
-                    } else if (!listaTelefonosModificar.contains(listaTelefonos.get(indice))) {
-                        listaTelefonosModificar.add(listaTelefonos.get(indice));
+                        listaTelefonosModificar.add(telefonoSeleccionado);
+                    } else if (!listaTelefonosModificar.contains(telefonoSeleccionado)) {
+                        listaTelefonosModificar.add(telefonoSeleccionado);
                     }
                     if (guardado == true) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
-                index = -1;
-                secRegistro = null;
+                deshabilitarBotonLov();
+                telefonoSeleccionado = null;
             } else {
-                if (!listaTelefonosCrear.contains(filtradosListaTelefonos.get(indice))) {
+                if (!listaTelefonosCrear.contains(telefonoSeleccionado)) {
 
                     if (listaTelefonosModificar.isEmpty()) {
-                        listaTelefonosModificar.add(filtradosListaTelefonos.get(indice));
-                    } else if (!listaTelefonosModificar.contains(filtradosListaTelefonos.get(indice))) {
-                        listaTelefonosModificar.add(filtradosListaTelefonos.get(indice));
+                        listaTelefonosModificar.add(telefonoSeleccionado);
+                    } else if (!listaTelefonosModificar.contains(telefonoSeleccionado)) {
+                        listaTelefonosModificar.add(telefonoSeleccionado);
                     }
                     if (guardado == true) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
-                index = -1;
-                secRegistro = null;
+                telefonoSeleccionado = null;
             }
         }
         context.update("form:datosTelefonosPersona");
@@ -816,10 +822,8 @@ public class ControlPerTelefonos implements Serializable {
     //GUARDAR
     public void guardarCambiosTelefono() {
         if (guardado == false) {
-            System.out.println("Realizando Operaciones Telefonos");
             if (!listaTelefonosBorrar.isEmpty()) {
                 for (int i = 0; i < listaTelefonosBorrar.size(); i++) {
-                    System.out.println("Borrando...");
                     if (listaTelefonosBorrar.get(i).getTipotelefono().getSecuencia() == null) {
                         listaTelefonosBorrar.get(i).setTipotelefono(null);
                         administrarTelefonos.borrarTelefono(listaTelefonosBorrar.get(i));
@@ -830,11 +834,8 @@ public class ControlPerTelefonos implements Serializable {
                         } else {
                             administrarTelefonos.borrarTelefono(listaTelefonosBorrar.get(i));
                         }
-
                     }
-
                 }
-                System.out.println("Entra");
                 listaTelefonosBorrar.clear();
             }
 
@@ -850,42 +851,39 @@ public class ControlPerTelefonos implements Serializable {
                             administrarTelefonos.crearTelefono(listaTelefonosCrear.get(i));
                         } else {
                             administrarTelefonos.crearTelefono(listaTelefonosCrear.get(i));
-
                         }
-
                     }
                 }
-                System.out.println("LimpiaLista");
                 listaTelefonosCrear.clear();
             }
             if (!listaTelefonosModificar.isEmpty()) {
                 administrarTelefonos.modificarTelefono(listaTelefonosModificar);
                 listaTelefonosModificar.clear();
             }
-            System.out.println("Se guardaron los datos con exito");
             listaTelefonos = null;
+            getListaTelefonos();
+            contarRegistros();
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosTelefonosPersona");
-            guardado = true;
-            permitirIndex = true;
             RequestContext.getCurrentInstance().update("form:ACEPTAR");
-            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            k = 0;
+            FacesMessage msg = new FacesMessage("Información", "Se guardaron los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
-            //  k = 0;
         }
-        System.out.println("Tamaño lista: " + listaTelefonosCrear.size());
-        System.out.println("Valor k: " + k);
-        index = -1;
-        secRegistro = null;
+        deshabilitarBotonLov();
+        guardado = true;
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+        RequestContext.getCurrentInstance().update("form:datosTelefonosPersona");
+        permitirIndex = true;
+        telefonoSeleccionado = null;
+
     }
 
     public void salir() {
         FacesContext c = FacesContext.getCurrentInstance();
 
         if (bandera == 1) {
-            System.out.println("Desactivar");
-            System.out.println("TipoLista= " + tipoLista);
+
             tFecha = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tFecha");
             tFecha.setFilterStyle("display: none; visibility: hidden;");
             tTipoTelefono = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tTipoTelefono");
@@ -904,9 +902,9 @@ public class ControlPerTelefonos implements Serializable {
         listaTelefonosBorrar.clear();
         listaTelefonosCrear.clear();
         listaTelefonosModificar.clear();
-        index = -1;
-        secRegistro = null;
-        //  k = 0;
+        contarRegistros();
+        telefonoSeleccionado = null;
+        k = 0;
         listaTelefonos = null;
         guardado = true;
         permitirIndex = true;
@@ -1005,29 +1003,63 @@ public class ControlPerTelefonos implements Serializable {
     }
 
     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO)
-    public void asignarIndex(Integer indice, int dlg, int LND) {
-        index = indice;
+    public void asignarIndex(Telefonos telefono, int dlg, int LND) {
+        telefonoSeleccionado = telefono;
         RequestContext context = RequestContext.getCurrentInstance();
         if (LND == 0) {
             tipoActualizacion = 0;
         } else if (LND == 1) {
             tipoActualizacion = 1;
-            index = -1;
-            secRegistro = null;
+            telefonoSeleccionado = null;
             System.out.println("Tipo Actualizacion: " + tipoActualizacion);
         } else if (LND == 2) {
-            index = -1;
-            secRegistro = null;
+            telefonoSeleccionado = null;
             tipoActualizacion = 2;
         }
         if (dlg == 0) {
-            context.update("form:tiposTelefonosDialogo");
+            modificarInfoRegistroTT(listaTiposTelefonos.size());
+            context.update("formularioDialogos:tiposTelefonosDialogo");
             context.execute("tiposTelefonosDialogo.show()");
         } else if (dlg == 1) {
-            context.update("form:ciudadesDialogo");
+            modificarInfoRegistroCiudad(listaCiudades.size());
+            //contarRegistros();
+            context.update("formularioDialogos:ciudadesDialogo");
             context.execute("ciudadesDialogo.show()");
         }
 
+    }
+
+    public void verificarRastro() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (telefonoSeleccionado != null) {
+            int resultado = administrarRastros.obtenerTabla(telefonoSeleccionado.getSecuencia(), "TELEFONOS");
+            if (resultado == 1) {
+                context.execute("errorObjetosDB.show()");
+            } else if (resultado == 2) {
+                context.execute("confirmarRastro.show()");
+            } else if (resultado == 3) {
+                context.execute("errorRegistroRastro.show()");
+            } else if (resultado == 4) {
+                context.execute("errorTablaConRastro.show()");
+            } else if (resultado == 5) {
+                context.execute("errorTablaSinRastro.show()");
+            }
+            deshabilitarBotonLov();
+        } else {
+            if (administrarRastros.verificarHistoricosTabla("TELEFONOS")) {
+                context.execute("confirmarRastroHistorico.show()");
+            } else {
+                context.execute("errorRastroHistorico.show()");
+            }
+        }
+    }
+
+    public void recordarSeleccion() {
+        if (telefonoSeleccionado != null) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            tablaC = (DataTable) c.getViewRoot().findComponent("form:datosTelefonosPersona");
+            tablaC.setSelection(telefonoSeleccionado);
+        }
     }
 
     //EVENTO FILTRAR
@@ -1035,39 +1067,49 @@ public class ControlPerTelefonos implements Serializable {
         if (tipoLista == 0) {
             tipoLista = 1;
         }
+        telefonoSeleccionado = null;
+        modificarInfoRegistro(filtradosListaTelefonos.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistro");
     }
 
-    public void verificarRastro() {
-        RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("lol");
-        if (!listaCiudades.isEmpty()) {
-            if (secRegistro != null) {
-                System.out.println("lol 2");
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "TELEFONOS");
-                System.out.println("resultado: " + resultado);
-                if (resultado == 1) {
-                    context.execute("errorObjetosDB.show()");
-                } else if (resultado == 2) {
-                    context.execute("confirmarRastro.show()");
-                } else if (resultado == 3) {
-                    context.execute("errorRegistroRastro.show()");
-                } else if (resultado == 4) {
-                    context.execute("errorTablaConRastro.show()");
-                } else if (resultado == 5) {
-                    context.execute("errorTablaSinRastro.show()");
-                }
-            } else {
-                context.execute("seleccionarRegistro.show()");
-            }
-        } else {
-            if (administrarRastros.verificarHistoricosTabla("TELEFONOS")) {
-                context.execute("confirmarRastroHistorico.show()");
-            } else {
-                context.execute("errorRastroHistorico.show()");
-            }
+    public void eventoFiltrarTT() {
+        modificarInfoRegistroTT(filtradoslistaTiposTelefonos.size());
+        RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroTT");
+    }
 
+    public void eventoFiltrarCiudad() {
+        modificarInfoRegistroCiudad(filtradoslistaCiudades.size());
+        RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroCiudades");
+    }
+
+    public void modificarInfoRegistro(int valor) {
+        infoRegistro = String.valueOf(valor);
+    }
+
+    public void modificarInfoRegistroTT(int valor) {
+        infoRegistroTT = String.valueOf(valor);
+    }
+
+    public void modificarInfoRegistroCiudad(int valor) {
+        infoRegistroCiudad = String.valueOf(valor);
+    }
+
+    public void contarRegistros() {
+        if (listaTelefonos != null) {
+            modificarInfoRegistro(listaTelefonos.size());
+        } else {
+            modificarInfoRegistro(0);
         }
-        index = -1;
+    }
+
+    public void habilitarBotonLov() {
+        activarLov = false;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+    }
+
+    public void deshabilitarBotonLov() {
+        activarLov = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
     //GETTER AND SETTER
@@ -1078,9 +1120,15 @@ public class ControlPerTelefonos implements Serializable {
         return persona;
     }
 
+    public void setPersona(Personas persona) {
+        this.persona = persona;
+    }
+
     public List<Telefonos> getListaTelefonos() {
         if (listaTelefonos == null) {
-            listaTelefonos = administrarTelefonos.telefonosPersona(secuenciaPersona);
+            if (empleado.getPersona().getSecuencia() != null) {
+                listaTelefonos = administrarTelefonos.telefonosPersona(empleado.getPersona().getSecuencia());
+            }
         }
         return listaTelefonos;
     }
@@ -1110,6 +1158,10 @@ public class ControlPerTelefonos implements Serializable {
 
     public List<TiposTelefonos> getFiltradoslistaTiposTelefonos() {
         return filtradoslistaTiposTelefonos;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
     }
 
     public void setFiltradoslistaTiposTelefonos(List<TiposTelefonos> filtradoslistaTiposTelefonos) {
@@ -1180,14 +1232,6 @@ public class ControlPerTelefonos implements Serializable {
         this.mensajeValidacion = mensajeValidacion;
     }
 
-    public BigInteger getSecRegistro() {
-        return secRegistro;
-    }
-
-    public void setSecRegistro(BigInteger secRegistro) {
-        this.secRegistro = secRegistro;
-    }
-
     public Telefonos getDuplicarTelefono() {
         return duplicarTelefono;
     }
@@ -1215,7 +1259,29 @@ public class ControlPerTelefonos implements Serializable {
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
     }
-    
-    
+
+    public Empleados getEmpleado() {
+        return empleado;
+    }
+
+    public void setEmpleado(Empleados empleado) {
+        this.empleado = empleado;
+    }
+
+    public String getInfoRegistroTT() {
+        return infoRegistroTT;
+    }
+
+    public String getInfoRegistroCiudad() {
+        return infoRegistroCiudad;
+    }
+
+    public boolean isActivarLov() {
+        return activarLov;
+    }
+
+    public void setActivarLov(boolean activarLov) {
+        this.activarLov = activarLov;
+    }
 
 }

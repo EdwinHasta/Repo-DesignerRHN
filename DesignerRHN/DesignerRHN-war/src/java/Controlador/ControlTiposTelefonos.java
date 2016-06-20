@@ -57,13 +57,10 @@ public class ControlTiposTelefonos implements Serializable {
     private int bandera;
     //Otros
     private boolean aceptar;
-    private int index;
     private int tipoActualizacion;
     private boolean permitirIndex;
     private int tipoLista;
     private int cualCelda;
-    //RASTRO
-    private BigInteger secRegistro;
     //editar celda
     private TiposTelefonos editarTipoTelefono;
     private boolean cambioEditor, aceptarEditar;
@@ -76,6 +73,9 @@ public class ControlTiposTelefonos implements Serializable {
     private TiposTelefonos duplicarTipoTelefono;
     private String altoTabla;
     private String paginaAnterior;
+    private boolean activarLov;
+    private String infoRegistro;
+    private DataTable tablaC;
 
     public ControlTiposTelefonos() {
         listaTiposTelefonosCrear = new ArrayList<TiposTelefonos>();
@@ -84,7 +84,7 @@ public class ControlTiposTelefonos implements Serializable {
         permitirIndex = true;
         aceptar = true;
         tipoLista = 0;
-        secRegistro = null;
+        tipoTelefonoSeleccionado = null;
         //editar
         editarTipoTelefono = new TiposTelefonos();
         cambioEditor = false;
@@ -94,9 +94,9 @@ public class ControlTiposTelefonos implements Serializable {
         nuevoTipoTelefono = new TiposTelefonos();
         altoTabla = "270";
         guardado = true;
-
+        activarLov = true;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -105,23 +105,22 @@ public class ControlTiposTelefonos implements Serializable {
             administrarTiposTelefonos.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     //MOSTRAR DATOS CELDA
     public void editarCelda() {
-        if (index >= 0) {
+        if (tipoTelefonoSeleccionado != null) {
             if (tipoLista == 0) {
-                editarTipoTelefono = listaTiposTelefonos.get(index);
+                editarTipoTelefono = tipoTelefonoSeleccionado;
             }
             if (tipoLista == 1) {
-                editarTipoTelefono = filtradoListaTiposTelefonos.get(index);
+                editarTipoTelefono = tipoTelefonoSeleccionado;
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
-            System.out.println("Entro a editar... valor celda: " + cualCelda);
             if (cualCelda == 0) {
                 context.update("formularioDialogos:editarCodigosTiposTelefonos");
                 context.execute("editarCodigosTiposTelefonos.show()");
@@ -133,61 +132,71 @@ public class ControlTiposTelefonos implements Serializable {
                 System.out.println("2");
                 cualCelda = -1;
             }
+        } else {
+            RequestContext.getCurrentInstance().execute("seleccionarRegistro.show()");
         }
-        index = -1;
-        secRegistro = null;
     }
-    
-    public void recibirPaginaEntrante(String pagina){
+
+    public void recibirPaginaEntrante(String pagina) {
         paginaAnterior = pagina;
-        
+        listaTiposTelefonos = null;
+        getListaTiposTelefonos();
+        deshabilitarBotonLov();
+        if (listaTiposTelefonos != null) {
+            tipoTelefonoSeleccionado = listaTiposTelefonos.get(0);
         }
-    
-    public String redirigir(){
+        contarRegistros();
+    }
+
+    public String redirigir() {
         return paginaAnterior;
     }
 
     //GUARDAR
     public void guardarCambiosTipoTelefono() {
-        if (guardado == false) {
-            System.out.println("Realizando Operaciones Ciudades");
-            if (!listaTiposTelefonosBorrar.isEmpty()) {
-                for (int i = 0; i < listaTiposTelefonosBorrar.size(); i++) {
-                    System.out.println("Borrando...");
-                    administrarTiposTelefonos.borrarTipoTelefono(listaTiposTelefonosBorrar.get(i));
+        try {
+            if (guardado == false) {
+                System.out.println("listaTiposTelefonosBorrar: " + listaTiposTelefonosBorrar);
+                System.out.println("listaTiposTelefonosModificar: " + listaTiposTelefonosModificar);
+                System.out.println("listaTiposTelefonosCrear: " + listaTiposTelefonosCrear);
+                if (!listaTiposTelefonosBorrar.isEmpty()) {
+                    for (int i = 0; i < listaTiposTelefonosBorrar.size(); i++) {
+                        administrarTiposTelefonos.borrarTipoTelefono(listaTiposTelefonosBorrar.get(i));
+                    }
+                    listaTiposTelefonosBorrar.clear();
                 }
-                System.out.println("Entra");
-                listaTiposTelefonosBorrar.clear();
-            }
-            if (!listaTiposTelefonosCrear.isEmpty()) {
-                for (int i = 0; i < listaTiposTelefonosCrear.size(); i++) {
-                    System.out.println("Creando...");
-                    administrarTiposTelefonos.crearTipoTelefono(listaTiposTelefonosCrear.get(i));
+                if (!listaTiposTelefonosCrear.isEmpty()) {
+                    for (int i = 0; i < listaTiposTelefonosCrear.size(); i++) {
+                        administrarTiposTelefonos.crearTipoTelefono(listaTiposTelefonosCrear.get(i));
+                    }
                 }
+                listaTiposTelefonosCrear.clear();
+                if (!listaTiposTelefonosModificar.isEmpty()) {
+                    administrarTiposTelefonos.modificarTipoTelefono(listaTiposTelefonosModificar);
+                    listaTiposTelefonosModificar.clear();
+                }
+
+                listaTiposTelefonos = null;
+                getListaTiposTelefonos();
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                k = 0;
+                FacesMessage msg = new FacesMessage("Información", "Se guardaron los datos con éxito");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                RequestContext.getCurrentInstance().update("form:growl");
+                contarRegistros();
+                tipoTelefonoSeleccionado = null;
             }
-            listaTiposTelefonosCrear.clear();
+            guardado = true;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+            RequestContext.getCurrentInstance().update("form:datosTiposTelefonos");
+            deshabilitarBotonLov();
+        } catch (Exception e) {
+            System.out.println("Error guardarCambios : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
         }
-        if (!listaTiposTelefonosModificar.isEmpty()) {
-            administrarTiposTelefonos.modificarTipoTelefono(listaTiposTelefonosModificar);
-            listaTiposTelefonosModificar.clear();
-        }
-        System.out.println("Se guardaron los datos con exito");
-        listaTiposTelefonos = null;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosTiposTelefonos");
-        guardado = true;
-        context.update("form:ACEPTAR");
-        k = 0;
-        permitirIndex = true;
-        FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        context.update("form:growl");
-        permitirIndex = true;
 
-        k = 0;
-
-        index = -1;
-        secRegistro = null;
     }
 
     public void salir() {
@@ -210,8 +219,8 @@ public class ControlTiposTelefonos implements Serializable {
         listaTiposTelefonosBorrar.clear();
         listaTiposTelefonosCrear.clear();
         listaTiposTelefonosModificar.clear();
-        index = -1;
-        secRegistro = null;
+        tipoTelefonoSeleccionado = null;
+        contarRegistros();
         k = 0;
         listaTiposTelefonos = null;
         guardado = true;
@@ -296,6 +305,8 @@ public class ControlTiposTelefonos implements Serializable {
             nuevoTipoTelefono.setSecuencia(l);
             listaTiposTelefonosCrear.add(nuevoTipoTelefono);
             listaTiposTelefonos.add(nuevoTipoTelefono);
+            modificarInfoRegistro(listaTiposTelefonos.size());
+            tipoTelefonoSeleccionado = nuevoTipoTelefono;
             nuevoTipoTelefono = new TiposTelefonos();
 
             context.update("form:datosTiposTelefonos");
@@ -305,19 +316,15 @@ public class ControlTiposTelefonos implements Serializable {
 
             }
             context.execute("NuevoRegistroTipoTelefono.hide()");
-            index = -1;
-            secRegistro = null;
         } else {
-            //     context.update("formularioDialogos:validacionNuevoTipoTelefono");
-            //     context.execute("validacionNuevoTipoTelefono.show()");
+            context.update("formularioDialogos:validacionNuevoTipoTelefono");
+            context.execute("validacionNuevoTipoTelefono.show()");
         }
     }
     //LIMPIAR NUEVO REGISTRO TIPO TELEFONO
 
     public void limpiarNuevoTipoTelefono() {
         nuevoTipoTelefono = new TiposTelefonos();
-        index = -1;
-        secRegistro = null;
     }
 
     //FILTRADO
@@ -328,9 +335,9 @@ public class ControlTiposTelefonos implements Serializable {
             System.out.println("TipoLista= " + tipoLista);
             FacesContext c = FacesContext.getCurrentInstance();
             tiposTelefonosCodigos = (Column) c.getViewRoot().findComponent("form:datosTiposTelefonos:tiposTelefonosCodigos");
-            tiposTelefonosCodigos.setFilterStyle("width:30px");
+            tiposTelefonosCodigos.setFilterStyle("width:75%");
             tiposTelefonosNombres = (Column) c.getViewRoot().findComponent("form:datosTiposTelefonos:tiposTelefonosNombres");
-            tiposTelefonosNombres.setFilterStyle("");
+            tiposTelefonosNombres.setFilterStyle("width:75%");
             altoTabla = "246";
             RequestContext.getCurrentInstance().update("form:datosTiposTelefonos");
             bandera = 1;
@@ -358,8 +365,8 @@ public class ControlTiposTelefonos implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "TiposTelefonosPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
+        tipoTelefonoSeleccionado = null;
+        tipoTelefonoSeleccionado = null;
     }
 
     public void exportXLS() throws IOException {
@@ -368,74 +375,61 @@ public class ControlTiposTelefonos implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "TiposTelefonosXLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
+        tipoTelefonoSeleccionado = null;
+        tipoTelefonoSeleccionado = null;
     }
 
     //LIMPIAR NUEVO REGISTRO DE TIPO DE TELEFONO
     public void limpiarNuevoTiposTelefonos() {
         nuevoTipoTelefono = new TiposTelefonos();
-        index = -1;
-        secRegistro = null;
+        tipoTelefonoSeleccionado = null;
+        tipoTelefonoSeleccionado = null;
     }
 
     //BORRAR TIPO DE TELEFONO
     public void borrarTiposTelefonos() {
 
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                if (!listaTiposTelefonosModificar.isEmpty() && listaTiposTelefonosModificar.contains(listaTiposTelefonos.get(index))) {
-                    int modIndex = listaTiposTelefonosModificar.indexOf(listaTiposTelefonos.get(index));
-                    listaTiposTelefonosModificar.remove(modIndex);
-                    listaTiposTelefonosBorrar.add(listaTiposTelefonos.get(index));
-                } else if (!listaTiposTelefonosCrear.isEmpty() && listaTiposTelefonosCrear.contains(listaTiposTelefonos.get(index))) {
-                    int crearIndex = listaTiposTelefonosCrear.indexOf(listaTiposTelefonos.get(index));
-                    listaTiposTelefonosCrear.remove(crearIndex);
-                } else {
-                    listaTiposTelefonosBorrar.add(listaTiposTelefonos.get(index));
-                }
-                listaTiposTelefonos.remove(index);
+        if (tipoTelefonoSeleccionado != null) {
+
+            if (!listaTiposTelefonosModificar.isEmpty() && listaTiposTelefonosModificar.contains(tipoTelefonoSeleccionado)) {
+                listaTiposTelefonosModificar.remove(listaTiposTelefonosModificar.indexOf(tipoTelefonoSeleccionado));
+                listaTiposTelefonosBorrar.add(tipoTelefonoSeleccionado);
+            } else if (!listaTiposTelefonosCrear.isEmpty() && listaTiposTelefonosCrear.contains(tipoTelefonoSeleccionado)) {
+                listaTiposTelefonosCrear.remove(listaTiposTelefonosCrear.indexOf(tipoTelefonoSeleccionado));
+            } else {
+                listaTiposTelefonosBorrar.add(tipoTelefonoSeleccionado);
             }
+            listaTiposTelefonos.remove(tipoTelefonoSeleccionado);
 
             if (tipoLista == 1) {
-                if (!listaTiposTelefonosModificar.isEmpty() && listaTiposTelefonosModificar.contains(filtradoListaTiposTelefonos.get(index))) {
-                    int modIndex = listaTiposTelefonosModificar.indexOf(filtradoListaTiposTelefonos.get(index));
-                    listaTiposTelefonosModificar.remove(modIndex);
-                    listaTiposTelefonosBorrar.add(filtradoListaTiposTelefonos.get(index));
-                } else if (!listaTiposTelefonosCrear.isEmpty() && listaTiposTelefonosCrear.contains(filtradoListaTiposTelefonos.get(index))) {
-                    int crearIndex = listaTiposTelefonosCrear.indexOf(filtradoListaTiposTelefonos.get(index));
-                    listaTiposTelefonosCrear.remove(crearIndex);
-                } else {
-                    listaTiposTelefonosBorrar.add(filtradoListaTiposTelefonos.get(index));
-                }
-                int CIndex = listaTiposTelefonos.indexOf(filtradoListaTiposTelefonos.get(index));
-                listaTiposTelefonos.remove(CIndex);
-                filtradoListaTiposTelefonos.remove(index);
-                System.out.println("Realizado");
+                filtradoListaTiposTelefonos.remove(tipoTelefonoSeleccionado);
             }
-
             RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:infoRegistro");
             context.update("form:datosTiposTelefonos");
-            index = -1;
-            secRegistro = null;
+            modificarInfoRegistro(listaTiposTelefonos.size());
+            tipoTelefonoSeleccionado = null;
+            guardado = true;
 
             if (guardado == true) {
                 guardado = false;
                 context.update("form:ACEPTAR");
             }
+        } else {
+            RequestContext.getCurrentInstance().execute("seleccionarRegistro.show()");
         }
     }
 
     //UBICACION CELDA
-    public void cambiarIndice(int indice, int celda) {
+    public void cambiarIndice(TiposTelefonos tiposTelefonos, int celda) {
         if (permitirIndex == true) {
-            index = indice;
+            tipoTelefonoSeleccionado = tiposTelefonos;
             cualCelda = celda;
             if (tipoLista == 0) {
-                secRegistro = listaTiposTelefonos.get(index).getSecuencia();
+                tipoTelefonoSeleccionado.getSecuencia();
 
             } else {
-                secRegistro = filtradoListaTiposTelefonos.get(index).getSecuencia();
+                tipoTelefonoSeleccionado.getSecuencia();
 
             }
         }
@@ -443,27 +437,29 @@ public class ControlTiposTelefonos implements Serializable {
 
     //DUPLICAR TIPO TELEFONO
     public void duplicarTT() {
-        if (index >= 0) {
+        if (tipoTelefonoSeleccionado != null) {
             duplicarTipoTelefono = new TiposTelefonos();
             k++;
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
                 duplicarTipoTelefono.setSecuencia(l);
-                duplicarTipoTelefono.setCodigo(listaTiposTelefonos.get(index).getCodigo());
-                duplicarTipoTelefono.setNombre(listaTiposTelefonos.get(index).getNombre());
+                duplicarTipoTelefono.setCodigo(tipoTelefonoSeleccionado.getCodigo());
+                duplicarTipoTelefono.setNombre(tipoTelefonoSeleccionado.getNombre());
             }
             if (tipoLista == 1) {
                 duplicarTipoTelefono.setSecuencia(l);
-                duplicarTipoTelefono.setCodigo(filtradoListaTiposTelefonos.get(index).getCodigo());
-                duplicarTipoTelefono.setNombre(filtradoListaTiposTelefonos.get(index).getNombre());
+                duplicarTipoTelefono.setCodigo(tipoTelefonoSeleccionado.getCodigo());
+                duplicarTipoTelefono.setNombre(tipoTelefonoSeleccionado.getNombre());
+                altoTabla = "270";
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarTipoTelefono");
             context.execute("DuplicarRegistroTipoTelefono.show()");
-            index = -1;
-            secRegistro = null;
+            tipoTelefonoSeleccionado = null;
+        } else {
+            RequestContext.getCurrentInstance().execute("seleccionarRegistro.show()");
         }
     }
 
@@ -479,13 +475,11 @@ public class ControlTiposTelefonos implements Serializable {
 
         for (int i = 0; i < listaTiposTelefonos.size(); i++) {
             if (duplicarTipoTelefono.getNombre().equals(listaTiposTelefonos.get(i).getNombre())) {
-                System.out.println("Entro al IF");
                 context.update("formularioDialogos:existeNombre");
                 context.execute("existeNombre.show()");
                 pasa++;
             }
             if (duplicarTipoTelefono.getCodigo().compareTo(listaTiposTelefonos.get(i).getCodigo()) == 0) {
-                System.out.println("Entro al IF");
                 context.update("formularioDialogos:existeCodigo");
                 context.execute("existeCodigo.show()");
                 pasa++;
@@ -496,10 +490,9 @@ public class ControlTiposTelefonos implements Serializable {
 
             listaTiposTelefonos.add(duplicarTipoTelefono);
             listaTiposTelefonosCrear.add(duplicarTipoTelefono);
-
+            tipoTelefonoSeleccionado = duplicarTipoTelefono;
+            modificarInfoRegistro(listaTiposTelefonos.size());
             context.update("form:datosTiposTelefonos");
-            index = -1;
-            secRegistro = null;
             if (guardado == true) {
                 guardado = false;
                 context.update("form:ACEPTAR");
@@ -544,8 +537,8 @@ public class ControlTiposTelefonos implements Serializable {
         listaTiposTelefonosBorrar.clear();
         listaTiposTelefonosCrear.clear();
         listaTiposTelefonosModificar.clear();
-        index = -1;
-        secRegistro = null;
+        contarRegistros();
+        tipoTelefonoSeleccionado = null;
         k = 0;
         listaTiposTelefonos = null;
         guardado = true;
@@ -555,19 +548,19 @@ public class ControlTiposTelefonos implements Serializable {
     }
 
     //AUTOCOMPLETAR
-    public void modificarTiposTelefonos(int indice, String confirmarCambio, String valorConfirmar) {
-        index = indice;
+    public void modificarTiposTelefonos(TiposTelefonos tiposTelefonos, String confirmarCambio, String valorConfirmar) {
+        tipoTelefonoSeleccionado = tiposTelefonos;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("N")) {
             if (tipoLista == 0) {
-                if (!listaTiposTelefonosCrear.contains(listaTiposTelefonos.get(indice))) {
+                if (!listaTiposTelefonosCrear.contains(tipoTelefonoSeleccionado)) {
 
                     if (listaTiposTelefonosModificar.isEmpty()) {
-                        listaTiposTelefonosModificar.add(listaTiposTelefonos.get(indice));
-                    } else if (!listaTiposTelefonosModificar.contains(listaTiposTelefonos.get(indice))) {
-                        listaTiposTelefonosModificar.add(listaTiposTelefonos.get(indice));
+                        listaTiposTelefonosModificar.add(tipoTelefonoSeleccionado);
+                    } else if (!listaTiposTelefonosModificar.contains(tipoTelefonoSeleccionado)) {
+                        listaTiposTelefonosModificar.add(tipoTelefonoSeleccionado);
                     }
                     if (guardado == true) {
                         guardado = false;
@@ -575,16 +568,16 @@ public class ControlTiposTelefonos implements Serializable {
 
                     }
                 }
-                index = -1;
-                secRegistro = null;
+                tipoTelefonoSeleccionado = null;
+                tipoTelefonoSeleccionado = null;
 
             } else {
-                if (!listaTiposTelefonosCrear.contains(filtradoListaTiposTelefonos.get(indice))) {
+                if (!listaTiposTelefonosCrear.contains(tipoTelefonoSeleccionado)) {
 
                     if (listaTiposTelefonosModificar.isEmpty()) {
-                        listaTiposTelefonosModificar.add(filtradoListaTiposTelefonos.get(indice));
-                    } else if (!listaTiposTelefonosModificar.contains(filtradoListaTiposTelefonos.get(indice))) {
-                        listaTiposTelefonosModificar.add(filtradoListaTiposTelefonos.get(indice));
+                        listaTiposTelefonosModificar.add(tipoTelefonoSeleccionado);
+                    } else if (!listaTiposTelefonosModificar.contains(tipoTelefonoSeleccionado)) {
+                        listaTiposTelefonosModificar.add(tipoTelefonoSeleccionado);
                     }
                     if (guardado == true) {
                         guardado = false;
@@ -592,8 +585,8 @@ public class ControlTiposTelefonos implements Serializable {
 
                     }
                 }
-                index = -1;
-                secRegistro = null;
+                tipoTelefonoSeleccionado = null;
+                tipoTelefonoSeleccionado = null;
             }
             context.update("form:datosTiposTelefonos");
         }
@@ -603,10 +596,9 @@ public class ControlTiposTelefonos implements Serializable {
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("lol");
-        if (!listaTiposTelefonos.isEmpty()) {
-            if (secRegistro != null) {
+            if (tipoTelefonoSeleccionado != null) {
                 System.out.println("lol 2");
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "TIPOSTELEFONOS");
+                int resultado = administrarRastros.obtenerTabla(tipoTelefonoSeleccionado.getSecuencia(), "TIPOSTELEFONOS");
                 System.out.println("resultado: " + resultado);
                 if (resultado == 1) {
                     context.execute("errorObjetosDB.show()");
@@ -619,10 +611,8 @@ public class ControlTiposTelefonos implements Serializable {
                 } else if (resultado == 5) {
                     context.execute("errorTablaSinRastro.show()");
                 }
-            } else {
-                context.execute("seleccionarRegistro.show()");
             }
-        } else {
+         else {
             if (administrarRastros.verificarHistoricosTabla("TIPOSTELEFONOS")) {
                 context.execute("confirmarRastroHistorico.show()");
             } else {
@@ -630,7 +620,41 @@ public class ControlTiposTelefonos implements Serializable {
             }
 
         }
-        index = -1;
+        tipoTelefonoSeleccionado = null;
+    }
+
+    public void recordarSeleccionTT() {
+        if (tipoTelefonoSeleccionado != null) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            tablaC = (DataTable) c.getViewRoot().findComponent("form:datosTiposTelefonos");
+            tablaC.setSelection(tipoTelefonoSeleccionado);
+        }
+    }
+
+    public void eventoFiltrar() {
+        if (tipoLista == 0) {
+            tipoLista = 1;
+        }
+        deshabilitarBotonLov();
+        tipoTelefonoSeleccionado = null;
+        modificarInfoRegistro(filtradoListaTiposTelefonos.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistro");
+    }
+
+    public void modificarInfoRegistro(int valor) {
+        infoRegistro = String.valueOf(valor);
+    }
+
+    public void contarRegistros() {
+        if (listaTiposTelefonos != null) {
+            modificarInfoRegistro(listaTiposTelefonos.size());
+        } else {
+            modificarInfoRegistro(0);
+        }
+    }
+
+    public void deshabilitarBotonLov() {
+        activarLov = true;
     }
 
     //GETTER AND SETTERS
@@ -687,14 +711,6 @@ public class ControlTiposTelefonos implements Serializable {
         this.mensajeValidacion = mensajeValidacion;
     }
 
-    public BigInteger getSecRegistro() {
-        return secRegistro;
-    }
-
-    public void setSecRegistro(BigInteger secRegistro) {
-        this.secRegistro = secRegistro;
-    }
-
     public TiposTelefonos getTipoTelefonoSeleccionado() {
         return tipoTelefonoSeleccionado;
     }
@@ -713,6 +729,22 @@ public class ControlTiposTelefonos implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public boolean isActivarLov() {
+        return activarLov;
+    }
+
+    public void setActivarLov(boolean activarLov) {
+        this.activarLov = activarLov;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

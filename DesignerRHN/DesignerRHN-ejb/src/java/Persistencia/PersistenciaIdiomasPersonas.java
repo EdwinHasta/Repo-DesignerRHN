@@ -105,9 +105,9 @@ public class PersistenciaIdiomasPersonas implements PersistenciaIdiomasPersonasI
 
     @Override
     public List<IdiomasPersonas> idiomasPersona(EntityManager em, BigInteger secuenciaPersona) {
-        System.out.println(this.getClass().getName() + ".idiomasPersona()");
-        Long resultado = this.contarIdiomasPersona(em, secuenciaPersona);
-        if (resultado != null && resultado > 0) {
+        System.out.println("secuencia persona:" + secuenciaPersona);
+//        Long resultado = this.contarIdiomasPersona(em, secuenciaPersona);
+//        if (resultado != null && resultado > 0) {
             try {
                 /*em.clear();
                  Query query = em.createQuery("SELECT COUNT(ip) FROM IdiomasPersonas ip WHERE ip.persona.secuencia = :secuenciaPersona");
@@ -118,15 +118,16 @@ public class PersistenciaIdiomasPersonas implements PersistenciaIdiomasPersonasI
                 queryFinal.setParameter("secuenciaPersona", secuenciaPersona);
                 queryFinal.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 List<IdiomasPersonas> listaIdiomasPersonas = queryFinal.getResultList();
+                System.out.println("retorna listaIdiomasPersonas: " + listaIdiomasPersonas);
                 return listaIdiomasPersonas;
             } catch (Exception e) {
-                System.out.println("Error PersistenciaIdiomasPersonas.idiomasPersona" + e);
+                System.out.println("Error PersistenciaIdiomasPersonas.idiomasPersona" + e.toString());
                 return null;
             }
-        } else {
-            System.out.println("el conteo no proporcionó datos validos");
-            return null;
-        }
+//        } else {
+//            System.out.println("el conteo no proporcionó datos validos");
+//            return null;
+//        }
     }
 
     @Override

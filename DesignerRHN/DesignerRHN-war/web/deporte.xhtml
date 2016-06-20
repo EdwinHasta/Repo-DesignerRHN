@@ -14,48 +14,8 @@
                 <h:form id="form">
                     <p:growl id="growl" showDetail="true"/> 
                     <f:loadBundle basename="Recursos.deporte" var="msg" />
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal" >  
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
-                            <legend style="font-size: 14px; color: blue"><strong>#{msg['deportes']}</strong></legend>
-
-                            <p:dataTable id="datosDeporte" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 810px ; border: 1px;"                           
-                                         value="#{controlDeportes.listDeportes}" scrollHeight="#{controlDeportes.tamano}"  
-                                         filteredValue="#{controlDeportes.filtrarDeportes }" emptyMessage="#{msg['vacio']}"
-                                         selection="#{controlDeportes.deporteSeleccionado}" selectionMode="single"
-                                         editable="true" editMode="cell" scrollable="true" liveScroll="true" scrollRows="50"  scrollWidth="830"
-                                         >
-                                <p:ajax event="filter" listener="#{controlDeportes.eventoFiltrar()}"/>
-
-                                <p:column headerText="#{msg['codigo']}" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains" id="codigo" width="200" filterStyle="display: none; visibility: hidden;" >                                  
-                                    <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.codigo}" /></f:facet>  
-                                        <f:facet name="input">
-                                            <p:inputText value="#{info.codigo}"  maxlength="4" id="editarCodigo" style="height: 12px;  border-radius: 0px; width: 400px; text-transform: uppercase"  > 
-                                                <pe:keyFilter for="editarCodigo" mask="num"/>
-                                                <p:ajax event="select" listener="#{controlDeportes.cambiarIndice(info, 0)}" process="@this"/> 
-                                                <p:ajax event="change" listener="#{controlDeportes.modificarDeporte(info, 'N', info.codigo)}"  update="codigo"/>
-                                            </p:inputText>
-                                        </f:facet>  
-                                    </p:cellEditor>
-
-
-                                </p:column>
-                                <p:column headerText="#{msg['nombre']}" sortBy="#{info.nombre}" filterBy="#{info.nombre}" filterMatchMode="contains" id="descripcion" width="275" filterStyle="display: none; visibility: hidden;" >                                  
-                                    <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.nombre}"  /></f:facet>  
-                                        <f:facet name="input">
-                                            <p:inputText value="#{info.nombre}" maxlength="30" id="editarNombre" style="height: 12px;  border-radius: 0px; width: 420px; text-transform: uppercase"  > 
-                                                <p:ajax event="select" listener="#{controlDeportes.cambiarIndice(info, 1)}" process="@this"/> 
-                                                <p:ajax event="change"  listener="#{controlDeportes.modificarDeporte(info, 'M', info.nombre)}" update="descripcion"/>
-                                            </p:inputText>
-                                        </f:facet>  
-                                    </p:cellEditor>
-                                </p:column>
-                            </p:dataTable>
-                            <h:outputText id="infoRegistro" value="#{msg['infoRegistros']} #{controlDeportes.infoRegistro}" style="position:relative; left: 15px; top: 5px; font-weight: bold"/>
-                        </fieldset>
-
-                        <p:toolbar styleClass="cssToolbar" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal" > 
+                         <p:toolbar styleClass="cssToolbar" >  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; " actionListener="#{controlDeportes.guardarDeportes()}" process="@this" />
@@ -90,7 +50,7 @@
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png);  background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; "  oncomplete="nuevoRegistroDeporte.show()" update=":formularioDialogos:nuevaDeporte" process="@this"/> 
                                 <p:tooltip style="" for="insertar" value="#{msg['nuevo']}"/>
 
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; "  actionListener="#{controlDeportes.verificarBorrado()}" process="@this"/>  
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; "  actionListener="#{controlDeportes.borrarDeporte()}" process="@this"/>  
                                 <p:tooltip style="" for="eliminar" value="#{msg['eliminar']}" />
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; " actionListener="#{controlDeportes.duplicarDeportes()}" process="@this"/>  
@@ -112,8 +72,48 @@
 
                         <p:commandButton style=" position: absolute; left: 680px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value=" " disabled="#{controlDeportes.guardado}" onclick="confirmarGuardar.show();"   update="datosDeporte"  process="@this"   />
                         <p:commandButton style=" position: absolute; left: 770px; top: 480px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;"  id="ATRAS" action="atrasdeporte" value=" "    />
+                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
+                            <legend style="font-size: 14px; color: blue"><strong>#{msg['deportes']}</strong></legend>
 
-                        <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
+                            <p:dataTable id="datosDeporte" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 810px ; border: 1px;"                           
+                                         value="#{controlDeportes.listDeportes}" scrollHeight="#{controlDeportes.tamano}"  
+                                         filteredValue="#{controlDeportes.filtrarDeportes }" emptyMessage="#{msg['vacio']}"
+                                         selection="#{controlDeportes.deporteSeleccionado}" selectionMode="single"
+                                         editable="true" editMode="cell" scrollable="true" liveScroll="true" scrollRows="50"  scrollWidth="830"
+                                         >
+                                <p:ajax event="filter" listener="#{controlDeportes.eventoFiltrar()}"/>
+                                <f:event type="preRenderView" listener="#{controlDeportes.recordarSeleccionDeporte()}"/>
+
+                                <p:column headerText="#{msg['codigo']}" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains" id="codigo" width="200" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.codigo}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.codigo}"  maxlength="4" id="editarCodigo" style="height: 12px;  border-radius: 0px; width: 400px; text-transform: uppercase"  > 
+                                                <pe:keyFilter for="editarCodigo" mask="num"/>
+                                                <p:ajax event="select" listener="#{controlDeportes.cambiarIndice(info, 0)}" process="@this"/> 
+                                                <p:ajax event="change" listener="#{controlDeportes.modificarDeporte(info, 'N', info.codigo)}"  update="codigo"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+
+                                </p:column>
+                                <p:column headerText="#{msg['nombre']}" sortBy="#{info.nombre}" filterBy="#{info.nombre}" filterMatchMode="contains" id="descripcion" width="275" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.nombre}"  /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.nombre}" maxlength="30" id="editarNombre" style="height: 12px;  border-radius: 0px; width: 420px; text-transform: uppercase"  > 
+                                                <p:ajax event="select" listener="#{controlDeportes.cambiarIndice(info, 1)}" process="@this"/> 
+                                                <p:ajax event="change"  listener="#{controlDeportes.modificarDeporte(info, 'M', info.nombre)}" update="descripcion"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
+                            </p:dataTable>
+                            <h:outputText id="infoRegistro" value="#{msg['infoRegistros']} #{controlDeportes.infoRegistro}" style="position:relative; left: 15px; top: 5px; font-weight: bold"/>
+                        </fieldset>
+
+                       <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
                             <p:commandButton value="#{msg['si']}" action="atrasdeporte" onclick="confirmarGuardar.hide();" actionListener="#{controlDeportes.guardarDeportes()}" style="position: absolute; top: 50px; left: 160px" process="@this" icon="ui-icon-check" />

@@ -14,12 +14,71 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
+                    <f:loadBundle basename="Recursos.perdireccion" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
-                    <p:panel  id="PanelTotal" header="Direcciones" style="position: absolute; width: 874px; height: 510px; text-align: left">  
+                    <p:panel  id="PanelTotal" header="Direcciones" styleClass="panelTotal">  
+                        <p:toolbar styleClass="cssToolbar" >
+                            <p:toolbarGroup align="left">
 
-                        <h:outputText style="position: absolute; left: 570px; top: 50px; position: absolute; color: red; font-weight: bold; width: 285px; text-align: right; " id="nombreEmpleado" value="#{controlPerDirecciones.persona.nombreCompleto}"/>
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; " actionListener="#{controlPerDirecciones.guardarCambiosDireccion()}" process="@this" />
+                                <p:tooltip  for="guardarRapido" value="Guardar" />
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPerDirecciones.editarCelda()}" process="@this"/>
+                                <p:tooltip  for="editar" value="Editar" />
 
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "
+                                                 disabled="#{controlPerDirecciones.activarLOV}" actionListener="#{controlPerDirecciones.listaValoresBoton()}" process="@this"/>
+                                <p:tooltip  for="listaValores" value="Lista de Valores" />
+
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPerDirecciones.activarCtrlF11()}" process="@this"/>
+                                <p:tooltip  for="filtrar" value="Activar filtrado" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " ajax="false" actionListener="#{controlPerDirecciones.exportXLS()}" />
+                                <p:tooltip  for="exportarXLS" value="Exportar a XLS" />
+
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPerDirecciones.limpiarNuevaDireccion()}" ajax="false">
+                                    <p:dataExporter type="xml"  target=":formExportar:datosDireccionesExportar" fileName="DireccionesXML" encoding="UTF-8"/> 
+                                </p:commandButton> 
+                                <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
+
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPerDirecciones.exportPDF()}" ajax="false"/>
+                                <p:tooltip  for="exportarPDF" value="Exportar a PDF" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " oncomplete="NuevoRegistroDireccion.show()" update=":formularioDialogos:nuevaDireccion" process="@this"/> 
+                                <p:tooltip  for="insertar" value="Nueva Direccion" />
+
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPerDirecciones.borrarDirecciones()}" process="@this"/>  
+                                <p:tooltip  for="eliminar" value="Eliminar Direccion" />
+
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPerDirecciones.duplicarD()}"  process="@this"/>  
+                                <p:tooltip  for="duplicar" value="Duplicar Direccion" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlPerDirecciones.verificarRastro()}" process="@this"/>  
+                                <p:tooltip  for="rastro" value="Rastro"/>
+                                
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "
+                                                 oncomplete="window.location.reload()" actionListener="#{controlPerDirecciones.cancelarModificacion()}" process="@this" />  
+                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px "
+                                                 action="#{controlPerDirecciones.salir()}"  process="@this" />  
+                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
+                                
+                            </p:toolbarGroup>  
+                        </p:toolbar> 
+
+                        <p:commandButton style=" position: absolute; left: 675px; top: 485px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value="" onclick="confirmarGuardar.show();" update=":form:datosDireccionesPersona" disabled="#{controlPerDirecciones.guardado}" process="@this" />
+                        <p:commandButton style=" position: absolute; left: 765px; top: 485px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" actionListener="#{controlPerDirecciones.salir()}" action="individual" process="@this" /> 
+
+                        <fieldset style="position: absolute;top: 110px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: #14388B"><strong>Direcciones donde ubicar al empleado</strong></legend>
 
                             <p:dataTable id="datosDireccionesPersona" var="direccion" value="#{controlPerDirecciones.listaDirecciones}"
@@ -31,6 +90,7 @@
                                          selection="#{controlPerDirecciones.direccionSeleccionada}" selectionMode="single">
 
                                 <p:ajax event="filter" listener="#{controlPerDirecciones.eventoFiltrar()}"/>
+                                <f:event type="preRenderView" listener="#{controlPerDirecciones.recordarSeleccion()}"/>
 
                                 <p:column headerText="Fecha" sortBy="#{direccion.fechavigencia}" filterBy="#{direccion.fechavigencia}" filterMatchMode="contains"  width="72" id="dFecha" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
@@ -43,17 +103,17 @@
                                             <lnk:calendar id="editFecha" value="#{direccion.fechavigencia}" height="12" width="99">
                                                 <p:ajax event="dateSelect"  update="editFecha"/>
                                                 <p:ajax event="change" />
-                                                <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(indice, 0)}" />
+                                                <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(direccion, 0)}" />
                                             </lnk:calendar>
                                         </f:facet>
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Fecha" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Ubicacion Principal" sortBy="#{direccion.estadoTipoPpal}" filterBy="#{direccion.estadoTipoPpal}" filterMatchMode="contains" id="dUbicacionPrincipal" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Ubicación Principal" sortBy="#{direccion.estadoTipoPpal}" filterBy="#{direccion.estadoTipoPpal}" filterMatchMode="contains" id="dUbicacionPrincipal" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText id="OutUbicacionPrincipal" value="#{direccion.estadoTipoPpal}" style="text-transform: uppercase"/></f:facet>  
                                         <f:facet name="input">
@@ -65,37 +125,37 @@
                                                 <f:selectItem itemLabel="Diagonal" itemValue="DIAGONAL" />  
                                                 <f:selectItem itemLabel="Transversal" itemValue="TRANSVERSAL" />  
                                                 <f:selectItem itemLabel="Otros" itemValue="OTROS" />
-                                                <p:ajax listener="#{controlPerDirecciones.seleccionarTipoPpal(direccion.estadoTipoPpal, indice, 1)}" update="@this" />
+                                                <p:ajax listener="#{controlPerDirecciones.seleccionarTipoPpal(direccion.estadoTipoPpal, direccion, 1)}" update="@this" />
                                             </p:selectOneMenu>
                                         </f:facet>  
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Ubicacion Principal" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
                                 <p:column sortBy="#{direccion.ppal}" filterBy="#{direccion.ppal}" filterMatchMode="contains" id="dDescripcionUbicacionPrincipal" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <f:facet name="header">
-                                        <h:outputText id="ppalHead" value="Descripcion " />
+                                        <h:outputText id="ppalHead" value="Descripción " />
                                         <p:tooltip for="ppalHead" value="Descripcion Ubicacion Principal"/>
                                     </f:facet>
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{direccion.ppal}" style="text-transform: uppercase " /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{direccion.ppal}" id="editarDescripcionUbicacionPrincipal" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px" > 
-                                                <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(indice, 2)}" />
-                                                <p:ajax event="change" listener="#{controlPerDirecciones.modificarDirecciones(indice, 'N', direccion.ppal)}"/>
+                                                <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(direccion, 2)}" />
+                                                <p:ajax event="change" listener="#{controlPerDirecciones.modificarDirecciones(direccion, 'N', direccion.ppal)}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Descripcion" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column> 
 
-                                <p:column headerText="Ubicacion Secundaria" sortBy="#{direccion.estadoTipoSecundario}" filterBy="#{direccion.estadoTipoSecundario}" filterMatchMode="contains" id="dUbicacionSecundaria" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Ubicación Secundaria" sortBy="#{direccion.estadoTipoSecundario}" filterBy="#{direccion.estadoTipoSecundario}" filterMatchMode="contains" id="dUbicacionSecundaria" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText id="OutUbicacionSecundaria" value="#{direccion.estadoTipoSecundario}" style="text-transform: uppercase"/></f:facet>  
                                         <f:facet name="input">
@@ -107,13 +167,13 @@
                                                 <f:selectItem itemLabel="Diagonal" itemValue="DIAGONAL" />  
                                                 <f:selectItem itemLabel="Transversal" itemValue="TRANSVERSAL" />  
                                                 <f:selectItem itemLabel="Otros" itemValue="OTROS" />
-                                                <p:ajax listener="#{controlPerDirecciones.seleccionarTipoSecundario(direccion.estadoTipoSecundario, indice, 3)}" update="@this" />
+                                                <p:ajax listener="#{controlPerDirecciones.seleccionarTipoSecundario(direccion.estadoTipoSecundario, direccion, 3)}" update="@this" />
                                             </p:selectOneMenu>
                                         </f:facet>  
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Ubicacion Secundaria" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column> 
 
@@ -126,14 +186,14 @@
                                         <f:facet name="output"><h:outputText value="#{direccion.secundario}" style="text-transform: uppercase "/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{direccion.secundario}" id="editarDescripcionUbicacionSecundaria" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px" > 
-                                                <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(indice, 4)}" />
-                                                <p:ajax event="change" listener="#{controlPerDirecciones.modificarDirecciones(indice, 'N', direccion.secundario)}"/>
+                                                <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(direccion, 4)}" />
+                                                <p:ajax event="change" listener="#{controlPerDirecciones.modificarDirecciones(direccion, 'N', direccion.secundario)}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Descripcion" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -146,14 +206,14 @@
                                         <f:facet name="output"><h:outputText value="#{direccion.interior}" style="text-transform: uppercase "/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{direccion.interior}" id="editarInterior" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px" > 
-                                                <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(indice, 5)}" />
-                                                <p:ajax event="change" listener="#{controlPerDirecciones.modificarDirecciones(indice, 'N', direccion.interior)}"/>
+                                                <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(direccion, 5)}" />
+                                                <p:ajax event="change" listener="#{controlPerDirecciones.modificarDirecciones(direccion, 'N', direccion.interior)}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Barrio" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -163,15 +223,15 @@
                                         <f:facet name="output"><h:outputText value="#{direccion.ciudad.nombre}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{direccion.ciudad.nombre}" id="editarCiudad" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px" > 
-                                                <p:ajax event="change" listener="#{controlPerDirecciones.modificarDirecciones(indice, 'CIUDAD', direccion.ciudad.nombre)}"/>
-                                                <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(indice, 6)}" />
-                                                <p:ajax event="dblclick" listener="#{controlPerDirecciones.asignarIndex(indice)}"/>
+                                                <p:ajax event="change" listener="#{controlPerDirecciones.modificarDirecciones(direccion, 'CIUDAD', direccion.ciudad.nombre)}"/>
+                                                <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(direccion, 6)}" />
+                                                <p:ajax event="dblclick" listener="#{controlPerDirecciones.asignarIndex(direccion)}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooCiudad" value="Ciudad"/>
+                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooCiudad" value=""/>
                                     </f:facet>
                                 </p:column> 
 
@@ -183,13 +243,13 @@
                                                 <f:selectItem itemLabel="Casa" itemValue="CASA" />  
                                                 <f:selectItem itemLabel="Apartamento" itemValue="APARTAMENTO" /> 
                                                 <f:selectItem itemLabel="Finca" itemValue="FINCA" />  
-                                                <p:ajax listener="#{controlPerDirecciones.seleccionarTipoVivienda(direccion.estadoTipoVivienda, indice, 7)}" update="@this" />
+                                                <p:ajax listener="#{controlPerDirecciones.seleccionarTipoVivienda(direccion.estadoTipoVivienda, direccion, 7)}" update="@this" />
                                             </p:selectOneMenu>
                                         </f:facet>  
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Tipo Vivienda" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column> 
 
@@ -201,13 +261,13 @@
                                             <p:selectOneMenu id="editarHipoteca" value="#{direccion.estadoHipoteca}" style="width: 100%; height: 20px">  
                                                 <f:selectItem itemLabel="Si" itemValue="SI" />  
                                                 <f:selectItem itemLabel="No" itemValue="NO" />  
-                                                <p:ajax listener="#{controlPerDirecciones.seleccionarHipoteca(direccion.estadoHipoteca, indice, 8)}" update="@this" />
+                                                <p:ajax listener="#{controlPerDirecciones.seleccionarHipoteca(direccion.estadoHipoteca, direccion, 8)}" update="@this" />
                                             </p:selectOneMenu>
                                         </f:facet>  
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Hipoteca" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column> 
 
@@ -216,87 +276,50 @@
                                         <f:facet name="output"><h:outputText value="#{direccion.direccionalternativa}" style="text-transform: uppercase"/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{direccion.direccionalternativa}" id="editarDireccionAlternativa" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px" > 
-                                                <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(indice, 9)}" />
-                                                <p:ajax event="change" listener="#{controlPerDirecciones.modificarDirecciones(indice, 'N', direccion.direccionalternativa)}"/>
+                                                <p:ajax event="select" listener="#{controlPerDirecciones.cambiarIndice(direccion, 9)}" />
+                                                <p:ajax event="change" listener="#{controlPerDirecciones.modificarDirecciones(direccion, 'N', direccion.direccionalternativa)}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="Direccion Alternativa" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
-
+                                
                             </p:dataTable>  
+                            <h:outputText id="infoRegistro" value="#{msg['infoRegistros']} #{controlPerDirecciones.infoRegistro}" style="position: relative; left: 15px; top: 1px; font-weight: bold"/>
                         </fieldset>
 
-                        <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">
-                            <p:toolbarGroup align="left"> 
-
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlPerDirecciones.guardarCambiosDireccion()}" process="@this" />
-                                <p:tooltip  for="guardarRapido" value="Guardar" />
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerDirecciones.editarCelda()}" process="@this"/>
-                                <p:tooltip  for="editar" value="Editar" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerDirecciones.listaValoresBoton()}" process="@this"/>
-                                <p:tooltip  for="listaValores" value="Lista de Valores" />
-
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerDirecciones.activarCtrlF11()}" process="@this"/>
-                                <p:tooltip  for="filtrar" value="Activar filtrado" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlPerDirecciones.exportXLS()}" />
-                                <p:tooltip  for="exportarXLS" value="Exportar a XLS" />
-
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerDirecciones.limpiarNuevaDireccion()}" ajax="false">
-                                    <p:dataExporter type="xml"  target=":formExportar:datosDireccionesExportar" fileName="DireccionesXML" encoding="UTF-8"/> 
-                                </p:commandButton> 
-                                <p:tooltip  for="exportarXML" value="Exportar a XML" />
-
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerDirecciones.exportPDF()}" ajax="false"/>
-                                <p:tooltip  for="exportarPDF" value="Exportar a PDF" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroDireccion.show()" update=":formularioDialogos:nuevaDireccion" process="@this"/> 
-                                <p:tooltip  for="insertar" value="Nueva Direccion" />
-
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerDirecciones.borrarDirecciones()}" process="@this"/>  
-                                <p:tooltip  for="eliminar" value="Eliminar Direccion" />
-
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerDirecciones.duplicarD()}"  process="@this"/>  
-                                <p:tooltip  for="duplicar" value="Duplicar Direccion" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerDirecciones.verificarRastro()}" process="@this"/>  
-                                <p:tooltip  for="rastro" value="Rastro"/>
-                            </p:toolbarGroup>  
-                        </p:toolbar> 
-
-                        <p:commandButton style="position: absolute; left: 688px; top: 470px; " icon="ui-icon-check" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" update=":form:datosDireccionesPersona" disabled="#{controlPerDirecciones.guardado}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 15px; top: 470px; " icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlPerDirecciones.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 785px; top: 470px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" actionListener="#{controlPerDirecciones.salir()}" action="individual" process="@this" /> 
 
 
                     </p:panel>
                 </h:form>
+                
+                <fieldset style="position: absolute; top: 80px; left: 16px; height: 18px; width: 830px; border-radius: 3px; text-align: left; border: solid #C7BFBF 1px">
+                            <h:outputText value="#{msg['empleado']} " style="font-weight: bold; color: #14388B; position: relative; top: 5px; left: 0px" />
+                            <h:outputText id="nombreEmpleado" value="#{controlPerDirecciones.empleado.persona.nombreCompleto}" 
+                                          style="font-weight: bold; color: #BF1A1A; position: relative; left: 10px; top: 5px"/>
+
+                            <h:outputText value="#{msg['codigo']}" style="font-weight: bold; color: #14388B; position: relative; left: 120px; top: 5px" />
+                            <h:outputText id="docEmpleado" value="#{controlPerDirecciones.empleado.codigoempleado}" 
+                                          style="font-weight: bold; color: #BF1A1A; position: relative; left: 130px; top: 5px" />
+                        </fieldset>
                 <!-- NUEVO REGISTRO --> 
                 <h:form id="formularioDialogos" >
 
-                    <p:dialog id="pregunta" header="ATENCIÓN...!" widgetVar="pregunta"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                    <p:dialog id="pregunta" header="#{msg['atencion']}" widgetVar="pregunta"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
+                        <h:graphicImage value="Imagenes/Iconos//alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="¿Desea copiar la direccion principal?" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="Si" onclick="pregunta.hide();" actionListener="#{controlPerDirecciones.copiarDireccion(1)}" style="position: absolute; top: 60px; left: 215px" process="@this" />
-                        <p:commandButton value="No" onclick="pregunta.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="Si" onclick="pregunta.hide();" actionListener="#{controlPerDirecciones.copiarDireccion(1)}" style="position: absolute; top: 60px; left: 150px" icon="ui-icon-circle-check"  process="@this" />
+                        <p:commandButton value="No" onclick="pregunta.hide();" style="position: absolute; top: 60px; left: 220px" process="@this" icon="ui-icon-circle-close" />
                     </p:dialog>
 
                     <p:dialog id="NuevoRegistroDireccion" header="Nuevo Registro" widgetVar="NuevoRegistroDireccion" closable="false" resizable="false"  draggable="false" modal="true" height="485" width="400" style=" padding: 0px">  
                         <center><strong><h:outputText value="Ingresar una nueva Direccion" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
                         <p:panel id="nuevaDireccion" style="border: none;">
 
-                            <strong><h:outputText value="Fecha: " style=" position: absolute; top: 85px" /></strong>
+                            <strong><h:outputText value="*Fecha: " style=" position: absolute; top: 85px" /></strong>
                             <div style=" position: absolute; top: 80px; left: 200px;">
                                 <lnk:calendar id="nuevaFecha" value="#{controlPerDirecciones.nuevaDireccion.fechavigencia}" height="12" width="60">
                                     <p:ajax event="dateSelect" update="@this"/>
@@ -304,7 +327,7 @@
                                 </lnk:calendar>
                             </div>
 
-                            <strong><h:outputText value="Ubicacion Principal:  " style=" position: absolute; top: 120px" /></strong>
+                            <strong><h:outputText value="*Ubicacion Principal:  " style=" position: absolute; top: 120px" /></strong>
                             <p:selectOneMenu id="nuevaUbicacionPrincipal" value="#{controlPerDirecciones.nuevaDireccion.estadoTipoPpal}"  style=" width: 122px; position: absolute; left: 200px; top: 115px; text-transform: uppercase">
                                 <f:selectItem itemLabel="Calle" itemValue="CALLE" />  
                                 <f:selectItem itemLabel="Carrera" itemValue="CARRERA" />  
@@ -317,13 +340,13 @@
                             </p:selectOneMenu>
                             <p:watermark for="nuevaUbicacionPrincipal" value="Ubicacion Principal" />
 
-                            <strong><h:outputText value="Descripcion U. Principal:  " style=" position: absolute; top: 155px" /></strong>
+                            <strong><h:outputText value="*Descripcion U. Principal:  " style=" position: absolute; top: 155px" /></strong>
                             <p:inputText id="nuevaDescripcionUbicacionPrincipal" value="#{controlPerDirecciones.nuevaDireccion.ppal}" style=" width: 122px; position: absolute; left: 200px; top: 150px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="nuevaDescripcionUbicacionPrincipal"/>
                             </p:inputText>
                             <p:watermark for="nuevaDescripcionUbicacionPrincipal" value="Descripcion Ubicacion Principal" />
 
-                            <strong><h:outputText value="Ubicacion Secundaria: " style=" position: absolute; top: 190px" /></strong>
+                            <strong><h:outputText value="*Ubicacion Secundaria: " style=" position: absolute; top: 190px" /></strong>
                             <p:selectOneMenu id="nuevaUbicacionSecundaria" value="#{controlPerDirecciones.nuevaDireccion.estadoTipoSecundario}"  style=" width: 122px; position: absolute; left: 200px; top: 185px; text-transform: uppercase">
                                 <f:selectItem itemLabel="Calle" itemValue="CALLE" />  
                                 <f:selectItem itemLabel="Carrera" itemValue="CARRERA" />  
@@ -336,26 +359,26 @@
                             </p:selectOneMenu>
                             <p:watermark for="nuevaUbicacionSecundaria" value="Ubicacion Secundaria" />
 
-                            <strong><h:outputText value="Descripcion U. Secundaria: " style=" position: absolute; top: 225px" /></strong>
+                            <strong><h:outputText value="*Descripcion U. Secundaria: " style=" position: absolute; top: 225px" /></strong>
                             <p:inputText id="nuevaDescripcionUbicacionSecundaria" value="#{controlPerDirecciones.nuevaDireccion.secundario}" style=" width: 122px; position: absolute; left: 200px; top: 220px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="nuevaDescripcionUbicacionSecundaria"/>
                             </p:inputText>
                             <p:watermark for="nuevaDescripcionUbicacionSecundaria" value="Descripcion Ubicacion Secundaria" />
 
-                            <strong><h:outputText value="Barrio: " style=" position: absolute; top: 260px" /></strong>
+                            <strong><h:outputText value="* Barrio: " style=" position: absolute; top: 260px" /></strong>
                             <p:inputText id="nuevoInterior" value="#{controlPerDirecciones.nuevaDireccion.interior}" style=" width: 122px; position: absolute; left: 200px; top: 255px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="nuevoInterior"/>
                             </p:inputText>
                             <p:watermark for="nuevoInterior" value="Barrio" />                            
 
-                            <strong><h:outputText value="Ciudad: " style=" position: absolute; top: 295px" /></strong>
+                            <strong><h:outputText value="*Ciudad: " style=" position: absolute; top: 295px" /></strong>
                             <p:inputText id="nuevaCiudad" value="#{controlPerDirecciones.nuevaDireccion.ciudad.nombre}" style=" width: 122px; position: absolute; left: 200px; top: 290px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlPerDirecciones.valoresBackupAutocompletar(1)}" />
                                 <p:ajax event="change" listener="#{controlPerDirecciones.autocompletarNuevoyDuplicado(controlPerDirecciones.nuevaDireccion.ciudad.nombre, 1)}" />
                                 <p:ajax event="dblclick" listener="#{controlPerDirecciones.llamarLovCiudad(1)}" />
                             </p:inputText>
                             <p:watermark for="nuevaCiudad" value="Ciudad" />
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 290px; " id="btnNuevaCiudad" process="@this" icon="ui-icon-search" actionListener="#{controlPerDirecciones.llamarLovCiudad(1)}"/>
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px; position: absolute; left: 331px; top: 290px; " id="btnNuevaCiudad" process="@this"  actionListener="#{controlPerDirecciones.llamarLovCiudad(1)}" value=" "/>
 
                             <strong><h:outputText value="Tipo Vivienda: "  style=" position: absolute; top: 330px" /></strong>
                             <p:selectOneMenu id="nuevoTipoVivienda" value="#{controlPerDirecciones.nuevaDireccion.estadoTipoVivienda}" style=" width: 122px; position: absolute; left: 200px; top: 325px; text-transform: uppercase">  
@@ -382,8 +405,8 @@
                             <p:watermark for="nuevaDireccionAlternativa" value="Direccion Alternativa" />
 
                             <p:commandButton id="limpiar" value="Limpiar" icon="ui-icon-trash" style=" position: absolute; left: 20px; top: 435px;" actionListener="#{controlPerDirecciones.limpiarNuevaDireccion()}" update="nuevaCiudad" process="@this"/>
-                            <p:commandButton id="agregarDir" value="Agregar" icon="ui-icon-circle-check" style=" position: absolute; left: 170px; top: 435px;"  actionListener="#{controlPerDirecciones.agregarNuevaDireccion()}" process="@this"/>
-                            <p:commandButton id="cancelarDir" value="Cancelar" icon="ui-icon-circle-close" style=" position: absolute; left: 260px; top: 435px;" actionListener="#{controlPerDirecciones.limpiarNuevaDireccion()}" update="nuevaCiudad" onclick="NuevoRegistroDireccion.hide();"  process="@this"/>
+                            <p:commandButton id="agregarDir" value="Agregar" icon="ui-icon-circle-check" style=" position: absolute; left: 125px; top: 435px;"  actionListener="#{controlPerDirecciones.agregarNuevaDireccion()}" process="@this"/>
+                            <p:commandButton id="cancelarDir" value="Cancelar" icon="ui-icon-circle-close" style=" position: absolute; left: 230px; top: 435px;" actionListener="#{controlPerDirecciones.limpiarNuevaDireccion()}" update="nuevaCiudad" onclick="NuevoRegistroDireccion.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
                     
@@ -395,7 +418,7 @@
 
                         <p:panel id="duplicarDireccion" style="border: none;">
                             
-                            <strong><h:outputText value="Fecha: " style=" position: absolute; top: 85px" /></strong>
+                            <strong><h:outputText value="*Fecha: " style=" position: absolute; top: 85px" /></strong>
                             <div style=" position: absolute; top: 80px; left: 200px;">
                                 <lnk:calendar id="duplicarFecha" value="#{controlPerDirecciones.duplicarDireccion.fechavigencia}" height="12" width="60">
                                     <p:ajax event="dateSelect" update="@this"/>
@@ -403,7 +426,7 @@
                                 </lnk:calendar>
                             </div>
 
-                            <strong><h:outputText value="Ubicacion Principal:  " style=" position: absolute; top: 120px" /></strong>
+                            <strong><h:outputText value="*Ubicacion Principal:  " style=" position: absolute; top: 120px" /></strong>
                             <p:selectOneMenu id="duplicarUbicacionPrincipal" value="#{controlPerDirecciones.duplicarDireccion.estadoTipoPpal}"  style=" width: 122px; position: absolute; left: 200px; top: 115px; text-transform: uppercase">
                                 <f:selectItem itemLabel="Calle" itemValue="CALLE" />  
                                 <f:selectItem itemLabel="Carrera" itemValue="CARRERA" />  
@@ -416,13 +439,13 @@
                             </p:selectOneMenu>
                             <p:watermark for="duplicarUbicacionPrincipal" value="Ubicacion Principal" />
 
-                            <strong><h:outputText value="Descripcion U. Principal:  " style=" position: absolute; top: 155px" /></strong>
+                            <strong><h:outputText value="*Descripcion U. Principal:  " style=" position: absolute; top: 155px" /></strong>
                             <p:inputText id="duplicarDescripcionUbicacionPrincipal" value="#{controlPerDirecciones.duplicarDireccion.ppal}" style=" width: 122px; position: absolute; left: 200px; top: 150px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="duplicarDescripcionUbicacionPrincipal"/>
                             </p:inputText>
                             <p:watermark for="duplicarDescripcionUbicacionPrincipal" value="Descripcion Ubicacion Principal" />
 
-                            <strong><h:outputText value="Ubicacion Secundaria: " style=" position: absolute; top: 190px" /></strong>
+                            <strong><h:outputText value="*Ubicacion Secundaria: " style=" position: absolute; top: 190px" /></strong>
                             <p:selectOneMenu id="duplicarUbicacionSecundaria" value="#{controlPerDirecciones.duplicarDireccion.estadoTipoSecundario}"  style=" width: 122px; position: absolute; left: 200px; top: 185px; text-transform: uppercase">
                                 <f:selectItem itemLabel="Calle" itemValue="CALLE" />  
                                 <f:selectItem itemLabel="Carrera" itemValue="CARRERA" />  
@@ -435,26 +458,26 @@
                             </p:selectOneMenu>
                             <p:watermark for="duplicarUbicacionSecundaria" value="Ubicacion Secundaria" />
 
-                            <strong><h:outputText value="Descripcion U. Secundaria: " style=" position: absolute; top: 225px" /></strong>
+                            <strong><h:outputText value="*Descripcion U. Secundaria: " style=" position: absolute; top: 225px" /></strong>
                             <p:inputText id="duplicarDescripcionUbicacionSecundaria" value="#{controlPerDirecciones.duplicarDireccion.secundario}" style=" width: 122px; position: absolute; left: 200px; top: 220px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="duplicarDescripcionUbicacionSecundaria"/>
                             </p:inputText>
                             <p:watermark for="duplicarDescripcionUbicacionSecundaria" value="Descripcion Ubicacion Secundaria" />
 
-                            <strong><h:outputText value="Barrio: " style=" position: absolute; top: 260px" /></strong>
+                            <strong><h:outputText value="* Barrio: " style=" position: absolute; top: 260px" /></strong>
                             <p:inputText id="duplicarInterior" value="#{controlPerDirecciones.duplicarDireccion.interior}" style=" width: 122px; position: absolute; left: 200px; top: 255px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="duplicarInterior"/>
                             </p:inputText>
                             <p:watermark for="duplicarInterior" value="Barrio" />                            
 
-                            <strong><h:outputText value="Ciudad: " style=" position: absolute; top: 295px" /></strong>
+                            <strong><h:outputText value="*Ciudad: " style=" position: absolute; top: 295px" /></strong>
                             <p:inputText id="duplicarCiudad" value="#{controlPerDirecciones.duplicarDireccion.ciudad.nombre}" style=" width: 122px; position: absolute; left: 200px; top: 290px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlPerDirecciones.valoresBackupAutocompletar(2)}" />
                                 <p:ajax event="change" listener="#{controlPerDirecciones.autocompletarNuevoyDuplicado(controlPerDirecciones.duplicarDireccion.ciudad.nombre, 2)}" />
                                 <p:ajax event="dblclick" listener="#{controlPerDirecciones.llamarLovCiudad(2)}" />
                             </p:inputText>
                             <p:watermark for="duplicarCiudad" value="Ciudad" />
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 290px; " id="btnDuplicarCiudad" process="@this" icon="ui-icon-search" actionListener="#{controlPerDirecciones.llamarLovCiudad(1)}"/>
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; position: absolute; left: 331px; top: 290px; " id="btnDuplicarCiudad" process="@this"  actionListener="#{controlPerDirecciones.llamarLovCiudad(1)}" value=" "/>
 
                             <strong><h:outputText value="Tipo Vivienda: "  style=" position: absolute; top: 330px" /></strong>
                             <p:selectOneMenu id="duplicarTipoVivienda" value="#{controlPerDirecciones.duplicarDireccion.estadoTipoVivienda}" style=" width: 122px; position: absolute; left: 200px; top: 325px; text-transform: uppercase">  
@@ -481,23 +504,23 @@
                             <p:watermark for="duplicarDireccionAlternativa" value="Direccion Alternativa" />
 
                             <p:commandButton id="limpiarDuplicarDireccion" value="Limpiar" icon="ui-icon-trash" style=" position: absolute; left: 20px; top: 435px;" actionListener="#{controlPerDirecciones.limpiarDuplicarDireccion()}" update="duplicarDireccion" process="@this"/>
-                            <p:commandButton id="agregarDuplicarDireccion" value="Agregar" icon="ui-icon-circle-check" style=" position: absolute; left: 170px; top: 435px;"  process="@this" actionListener="#{controlPerDirecciones.confirmarDuplicar()}" onclick="DuplicarRegistroDireccion.hide();"  />
-                            <p:commandButton id="cancelarDuplicarDireccion" value="Cancelar" icon="ui-icon-circle-close" style=" position: absolute; left: 260px; top: 435px;" actionListener="#{controlPerDirecciones.limpiarDuplicarDireccion()}" update="duplicarDireccion" onclick="DuplicarRegistroDireccion.hide();"  process="@this"/>
+                            <p:commandButton id="agregarDuplicarDireccion" value="Agregar" icon="ui-icon-circle-check" style=" position: absolute; left: 125px; top: 435px;"  process="@this" actionListener="#{controlPerDirecciones.confirmarDuplicar()}" onclick="DuplicarRegistroDireccion.hide();"  />
+                            <p:commandButton id="cancelarDuplicarDireccion" value="Cancelar" icon="ui-icon-circle-close" style=" position: absolute; left: 230px; top: 435px;" actionListener="#{controlPerDirecciones.limpiarDuplicarDireccion()}" update="duplicarDireccion" onclick="DuplicarRegistroDireccion.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="validacionNuevaDireccion" header="ATENCIÓN...!" widgetVar="validacionNuevaDireccion"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="Para agregar una nueva dirección es necesario adicionar: #{controlPerDirecciones.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="Aceptar" onclick="validacionNuevaDireccion.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    <p:dialog id="validacionNuevaDireccion" header="#{msg['atencion']}" widgetVar="validacionNuevaDireccion"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{controlPerDirecciones.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Aceptar" onclick="validacionNuevaDireccion.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" icon="ui-icon-check" />
                     </p:dialog>
 
-                    <p:dialog id="confirmarGuardar" header="ATENCIÓN...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
+                    <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="¿Desea guardar los cambios realizados?"  style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlPerDirecciones.guardarCambiosDireccion()}" action="nomina" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
-                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" actionListener="#{controlPerDirecciones.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
-                        <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                        <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlPerDirecciones.guardarCambiosDireccion()}" action="nomina" style="position: absolute; top: 50px; left: 130px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="No" onclick="confirmarGuardar.hide();" actionListener="#{controlPerDirecciones.cancelarModificacion()}" style="position: absolute; top: 50px; left: 200px" process="@this" icon="ui-icon-close" />
+                        <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 275px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
 
                     <!--DIALOGO CIUDADES-->    
@@ -508,6 +531,7 @@
                                       scrollable="true" scrollHeight="117" scrollWidth="315" liveScroll="true" scrollRows="8" widgetVar="LOVCiudades" 
                                       filteredValue="#{controlPerDirecciones.filtradoslistaCiudades}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{ciudad.secuencia}" selection="#{controlPerDirecciones.seleccionCiudades}" selectionMode="single">
+                            <p:ajax event="filter" listener="#{controlPerDirecciones.eventoFiltrarCiudades()}"/>
                             <p:ajax event="rowSelect" listener="#{controlPerDirecciones.activarAceptar()}" update=":formularioDialogos:aceptarC"/>
                             <p:ajax event="rowDblselect" listener="#{controlPerDirecciones.actualizarCiudades()}" process="@this" />
                             <f:facet name="header">  
@@ -515,110 +539,115 @@
                                 <p:inputText id="globalFilter" onkeyup="LOVCiudades.filter();" style="width:150px; position: relative; left: 60px;" />  
                             </f:facet>
 
-                            <p:column  filterBy="#{ciudad.nombre}" width="50" filterMatchMode="contains" filterStyle="width: 40px;" > 
+                            <p:column  filterBy="#{ciudad.nombre}" width="50" filterMatchMode="contains" filterStyle="width: 100px;" > 
                                 <f:facet name="header">
                                     <h:outputText value="#{msg['nombreC']}" />
                                 </f:facet>
                                 <h:outputText value="#{ciudad.nombre}" />  
                             </p:column>  
                         </p:dataTable>   
-                        
-                        <p:commandButton id="aceptarC" value="#{msg['aceptar']}" disabled="#{controlPerDirecciones.aceptar}" style="position: absolute; top: 215px; left: 142px;" icon="ui-icon-check" actionListener="#{controlPerDirecciones.actualizarCiudades()}" process="@this"/>
-                        
-                        <p:commandButton id="atrasC" value="#{msg['atras']}" style="position: absolute; top: 215px; left: 235px; " icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlPerDirecciones.cancelarCambioCiudades()}" process="@this"/>
+                        <h:outputText id="infoRegistroCiudades" value="#{msg['infoRegistros']} #{controlPerDirecciones.infoRegistroCiudades}" style="position: relative; left: 15px; top: 1px; font-weight: bold"/>
+                        <p:commandButton id="aceptarC" value="#{msg['aceptar']}" disabled="#{controlPerDirecciones.aceptar}" style="position: absolute; top: 215px; left: 130px;" icon="ui-icon-check" actionListener="#{controlPerDirecciones.actualizarCiudades()}" process="@this"/>
+                        <p:commandButton id="atrasC" value="#{msg['atras']}" style="position: absolute; top: 215px; left: 230px; " icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlPerDirecciones.cancelarCambioCiudades()}" process="@this"/>
                     </p:dialog>
 
                     <!-- DIALOGOS RASTROS -->
 
-                    <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla 'DIRECCIONES' tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlPerDirecciones.secRegistro, 'Direcciones', 'direcciones')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="No" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
+                    <p:dialog id="confirmarRastro" header="#{msg['informacion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['confirmarRastro']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlPerDirecciones.direccionSeleccionada.getSecuencia(), 'Direcciones', 'direcciones')}" style="position: absolute; top: 65px; left: 175px" action="rastro" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="No" onclick="confirmarRastro.hide();" style="position: absolute; top: 65px; left: 240px" process="@this" icon="ui-icon-close" />
                     </p:dialog>
 
-                    <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla DIRECCIONES tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('Direcciones', 'direcciones')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="No" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    <p:dialog id="confirmarRastroHistorico" header="#{msg['informacion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['confirmarRastroHistorico']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('Direcciones', 'direcciones')}" style="position: absolute; top: 60px; left: 175px" action="rastro" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="No" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 240px" process="@this" icon="ui-icon-close" />
                     </p:dialog>
 
-                    <p:dialog id="errorRastroHistorico" header="ATENCIÓN" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla no tiene rastros historicos." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    <p:dialog id="errorRastroHistorico" header="#{msg['error']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorRegistroRastro" header="ATENCIÓN" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="El registro seleccionado no tiene rastros." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    <p:dialog id="errorRegistroRastro" header="#{msg['error']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaConRastro" header="ATENCIÓN" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlPerDirecciones.secRegistro, 'Direcciones', 'direcciones')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="No" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    <p:dialog id="errorTablaConRastro" header="#{msg['informacion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorTablaConRastro']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlPerDirecciones.direccionSeleccionada.getSecuencia(), 'Direcciones', 'direcciones')}" style="position: absolute; top: 65px; left: 175px" action="rastro" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="No" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 65px; left: 240px" process="@this" icon="ui-icon-close" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaSinRastro" header="ATENCIÓN" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla no existe en RASTROSTABLAS, y no tiene registros asociados." style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold; text-align: center" />
+                    <p:dialog id="errorTablaSinRastro" header="#{msg['error']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorTablaSinRastro']}" style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="seleccionarRegistro" header="ATENCIÓN" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="Por favor seleccione un registro." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                    <p:dialog id="seleccionarRegistro" header="#{msg['error']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['seleccionarRegistro']} " style="position: absolute; left: 70px; top: 12px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
-                    <p:dialog id="errorObjetosDB" header="ATENCIÓN" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla 'DIRECCIONES' no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                    <p:dialog id="errorObjetosDB" header="#{msg['error']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 5px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+                    
+                    <p:dialog id="existeDireccion" header="#{msg['error']}" widgetVar="existeDireccion"  resizable="false" draggable="false" modal="true" height="85" width="425"  closable ="false">  
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['existeDireccion']}" style="position: absolute; left: 70px; top: 10px; width: 300px; font-weight:bold;" />
+                        <p:commandButton value="#{msg['aceptar']}" icon="ui-icon-check" onclick="existeDireccion.hide();" style="position: absolute; top: 50px; left: 260px" process="@this" />
                     </p:dialog>
 
 
                     <!-- DIALOGOS EDITAR -->
 
-                    <p:dialog id="editarFecha" header="Fecha" widgetVar="editarFecha" resizable="false" draggable="false" modal="true" height="55" width="240" style="padding: 0px;">  
-                        <p:inputTextarea value="#{controlPerDirecciones.editarDireccion.fechavigencia}" style="overflow: auto; width: 200px; height: 40px" readonly="true">                        
+                    <p:dialog id="editarFecha" header="Fecha" widgetVar="editarFecha" resizable="false" draggable="false" modal="true" height="80" width="400" style="padding: 0px;">  
+                        <p:inputTextarea value="#{controlPerDirecciones.editarDireccion.fechavigencia}" style="overflow: auto; width: 360px; height: 60px" readonly="true">                        
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </p:inputTextarea>
                     </p:dialog>
 
-                    <p:dialog id="editarUbicacionesPrincipales" header="Ubicacione Principale" widgetVar="editarUbicacionesPrincipales" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlPerDirecciones.editarDireccion.tipoppal}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarUbicacionesPrincipales" header="Ubicacione Principale" widgetVar="editarUbicacionesPrincipales" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlPerDirecciones.editarDireccion.tipoppal}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarDescripcionesUbicacionesPrincipales" header="Descripcion Ubicacion Principal" widgetVar="editarDescripcionesUbicacionesPrincipales" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlPerDirecciones.editarDireccion.ppal}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarDescripcionesUbicacionesPrincipales" header="Descripcion Ubicacion Principal" widgetVar="editarDescripcionesUbicacionesPrincipales" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlPerDirecciones.editarDireccion.ppal}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarUbicacionesSecundarias" header="Ubicacion Secundaria" widgetVar="Ubicacion Secundaria" resizable="false" draggable="false" modal="true" height="55" width="240"  >  
-                        <p:inputTextarea value="#{controlPerDirecciones.editarDireccion.tiposecundario}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarUbicacionesSecundarias" header="Ubicacion Secundaria" widgetVar="Ubicacion Secundaria" resizable="false" draggable="false" modal="true" height="80" width="400"  >  
+                        <p:inputTextarea value="#{controlPerDirecciones.editarDireccion.tiposecundario}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog> 
 
-                    <p:dialog id="editarDescripcionesUbicacionesSecundarias" header="Descripcion ubicacion Secundaria" widgetVar="editarDescripcionesUbicacionesSecundarias" resizable="false" draggable="false" modal="true" height="55" width="240" style=" padding: 0px">  
-                        <p:inputTextarea value="#{controlPerDirecciones.editarDireccion.secundario}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarDescripcionesUbicacionesSecundarias" header="Descripcion ubicacion Secundaria" widgetVar="editarDescripcionesUbicacionesSecundarias" resizable="false" draggable="false" modal="true" height="80" width="400" style=" padding: 0px">  
+                        <p:inputTextarea value="#{controlPerDirecciones.editarDireccion.secundario}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarBarrios" header="Barrio" widgetVar="editarBarrios" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlPerDirecciones.editarDireccion.interior}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarBarrios" header="Barrio" widgetVar="editarBarrios" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlPerDirecciones.editarDireccion.interior}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarCiudades" header="Ciudad" widgetVar="editarCiudades" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlPerDirecciones.editarDireccion.ciudad.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarCiudades" header="Ciudad" widgetVar="editarCiudades" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlPerDirecciones.editarDireccion.ciudad.nombre}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTiposViviendas" header="Tipo de Vivienda" widgetVar="editarTiposViviendas" resizable="false" draggable="false" modal="true" height="55" width="240"  >  
-                        <p:inputTextarea value="#{controlPerDirecciones.editarDireccion.tipovivienda}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarTiposViviendas" header="Tipo de Vivienda" widgetVar="editarTiposViviendas" resizable="false" draggable="false" modal="true" height="80" width="400"  >  
+                        <p:inputTextarea value="#{controlPerDirecciones.editarDireccion.tipovivienda}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog> 
 
-                    <p:dialog id="editarHipotecas" header="Hipoteca" widgetVar="editarHipotecas" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlPerDirecciones.editarDireccion.hipoteca}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarHipotecas" header="Hipoteca" widgetVar="editarHipotecas" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlPerDirecciones.editarDireccion.hipoteca}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarDireccionesAlternativas" header="Direccion Alternativa" widgetVar="editarDireccionesAlternativas" resizable="false" draggable="false" modal="true" height="55" width="240"  >  
-                        <p:inputTextarea value="#{controlPerDirecciones.editarDireccion.direccionalternativa}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarDireccionesAlternativas" header="Direccion Alternativa" widgetVar="editarDireccionesAlternativas" resizable="false" draggable="false" modal="true" height="80" width="400"  >  
+                        <p:inputTextarea value="#{controlPerDirecciones.editarDireccion.direccionalternativa}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog> 
 
 

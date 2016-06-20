@@ -48,13 +48,12 @@ public class ControlEventos implements Serializable {
     private Eventos editarEvento;
     private Eventos eventoSeleccionado;
     //otros
-    private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
+    private int cualCelda, tipoLista, tipoActualizacion, k, bandera;
     private BigInteger l;
-    private boolean aceptar, guardado;
+    private boolean aceptar, guardado, activarLov;
     //AutoCompletar
     private boolean permitirIndex;
     //RASTRO
-    private BigInteger secRegistro;
     private Column codigo, descripcion, organizador, objetivo;
     //borrado
     private int registrosBorrados;
@@ -62,6 +61,12 @@ public class ControlEventos implements Serializable {
     private BigInteger vigenciasEventos;
     private Integer a;
     private int tamano;
+    private DataTable tablaC;
+    private String infoRegistro;
+    private Integer backUpCodigo;
+    private String backUpDescripcion;
+    private String backUpOrganizador;
+    private String backUpObjetivo, paginaanterior;
 
     public ControlEventos() {
         listEventos = null;
@@ -90,68 +95,65 @@ public class ControlEventos implements Serializable {
         }
     }
 
-    public void eventoFiltrar() {
-        try {
-            System.out.println("\n ENTRE A ControlEventos.eventoFiltrar \n");
-            if (tipoLista == 0) {
-                tipoLista = 1;
-            }
-            RequestContext context = RequestContext.getCurrentInstance();
-            infoRegistro = "Cantidad de registros: " + filtrarEventos.size();
-            context.update("form:informacionRegistro");
-        } catch (Exception e) {
-            System.out.println("ERROR ControlEventos eventoFiltrar ERROR===" + e.getMessage());
+    public void recibirPag(String pagina) {
+        paginaanterior = pagina;
+        listEventos = null;
+        getListEventos();
+        contarRegistros();
+        deshabilitarBotonLov();
+        if (!listEventos.isEmpty()) {
+            eventoSeleccionado = listEventos.get(0);
         }
     }
-    private Integer backUpCodigo;
-    private String backUpDescripcion;
-    private String backUpOrganizador;
-    private String backUpObjetivo;
 
-    public void cambiarIndice(int indice, int celda) {
+    public String retornarPagina() {
+        return paginaanterior;
+    }
+
+    public void cambiarIndice(Eventos evento, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
 
         if (permitirIndex == true) {
-            index = indice;
+            eventoSeleccionado = evento;
             cualCelda = celda;
             if (cualCelda == 0) {
                 if (tipoLista == 0) {
-                    backUpCodigo = listEventos.get(index).getCodigo();
+                    backUpCodigo = eventoSeleccionado.getCodigo();
                 } else {
-                    backUpCodigo = filtrarEventos.get(index).getCodigo();
+                    backUpCodigo = eventoSeleccionado.getCodigo();
                 }
             }
             if (cualCelda == 1) {
                 if (tipoLista == 0) {
-                    backUpDescripcion = listEventos.get(index).getDescripcion();
+                    backUpDescripcion = eventoSeleccionado.getDescripcion();
                 } else {
-                    backUpDescripcion = filtrarEventos.get(index).getDescripcion();
+                    backUpDescripcion = eventoSeleccionado.getDescripcion();
                 }
             }
             if (cualCelda == 2) {
                 if (tipoLista == 0) {
-                    backUpOrganizador = listEventos.get(index).getOrganizador();
+                    backUpOrganizador = eventoSeleccionado.getOrganizador();
                 } else {
-                    backUpOrganizador = filtrarEventos.get(index).getOrganizador();
+                    backUpOrganizador = eventoSeleccionado.getOrganizador();
                 }
             }
             if (cualCelda == 3) {
                 if (tipoLista == 0) {
-                    backUpObjetivo = listEventos.get(index).getObjetivo();
+                    backUpObjetivo = eventoSeleccionado.getObjetivo();
                 } else {
-                    backUpObjetivo = filtrarEventos.get(index).getObjetivo();
+                    backUpObjetivo = eventoSeleccionado.getObjetivo();
                 }
             }
-            secRegistro = listEventos.get(index).getSecuencia();
+            eventoSeleccionado.getSecuencia();
 
         }
-        System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
 
-    public void asignarIndex(Integer indice, int LND, int dig) {
+    public void asignarIndex(Eventos evento, int LND, int dig) {
         try {
             System.out.println("\n ENTRE A ControlEventos.asignarIndex \n");
-            index = indice;
+            eventoSeleccionado = evento;
+            deshabilitarBotonLov();
             if (LND == 0) {
                 tipoActualizacion = 0;
             } else if (LND == 1) {
@@ -171,8 +173,8 @@ public class ControlEventos implements Serializable {
     }
 
     public void listaValoresBoton() {
+        deshabilitarBotonLov();
     }
-    private String infoRegistro;
 
     public void cancelarModificacion() {
         FacesContext c = FacesContext.getCurrentInstance();
@@ -196,19 +198,14 @@ public class ControlEventos implements Serializable {
         borrarEventos.clear();
         crearEventos.clear();
         modificarEventos.clear();
-        index = -1;
-        secRegistro = null;
+        eventoSeleccionado = null;
         k = 0;
         listEventos = null;
         guardado = true;
         permitirIndex = true;
         getListEventos();
         RequestContext context = RequestContext.getCurrentInstance();
-        if (listEventos == null || listEventos.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
-        } else {
-            infoRegistro = "Cantidad de registros: " + listEventos.size();
-        }
+        contarRegistros();
         context.update("form:informacionRegistro");
         context.update("form:datosEvento");
         context.update("form:ACEPTAR");
@@ -236,19 +233,14 @@ public class ControlEventos implements Serializable {
         borrarEventos.clear();
         crearEventos.clear();
         modificarEventos.clear();
-        index = -1;
-        secRegistro = null;
+        eventoSeleccionado = null;
         k = 0;
         listEventos = null;
         guardado = true;
         permitirIndex = true;
         getListEventos();
         RequestContext context = RequestContext.getCurrentInstance();
-        if (listEventos == null || listEventos.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
-        } else {
-            infoRegistro = "Cantidad de registros: " + listEventos.size();
-        }
+        contarRegistros();
         context.update("form:informacionRegistro");
         context.update("form:datosEvento");
         context.update("form:ACEPTAR");
@@ -260,13 +252,13 @@ public class ControlEventos implements Serializable {
         if (bandera == 0) {
             tamano = 246;
             codigo = (Column) c.getViewRoot().findComponent("form:datosEvento:codigo");
-            codigo.setFilterStyle("width: 50px");
+            codigo.setFilterStyle("width: 85%");
             descripcion = (Column) c.getViewRoot().findComponent("form:datosEvento:descripcion");
-            descripcion.setFilterStyle("width: 290px");
+            descripcion.setFilterStyle("width: 85%");
             organizador = (Column) c.getViewRoot().findComponent("form:datosEvento:organizador");
-            organizador.setFilterStyle("width: 95px");
+            organizador.setFilterStyle("width: 85%");
             objetivo = (Column) c.getViewRoot().findComponent("form:datosEvento:objetivo");
-            objetivo.setFilterStyle("width: 280px");
+            objetivo.setFilterStyle("width: 85%");
 
             RequestContext.getCurrentInstance().update("form:datosEvento");
             System.out.println("Activar");
@@ -289,9 +281,9 @@ public class ControlEventos implements Serializable {
         }
     }
 
-    public void modificarEventos(int indice, String confirmarCambio, String valorConfirmar) {
+    public void modificarEventos(Eventos evento, String confirmarCambio, String valorConfirmar) {
         System.err.println("ENTRE A MODIFICAR Eventos");
-        index = indice;
+        eventoSeleccionado = evento;
 
         int contador = 0;
         boolean banderita = false;
@@ -301,21 +293,19 @@ public class ControlEventos implements Serializable {
         if (confirmarCambio.equalsIgnoreCase("N")) {
             System.err.println("ENTRE A MODIFICAR Eventos, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
-                if (!crearEventos.contains(listEventos.get(indice))) {
-                    if (listEventos.get(indice).getCodigo() == a) {
+                if (!crearEventos.contains(eventoSeleccionado)) {
+                    if (eventoSeleccionado.getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        listEventos.get(indice).setCodigo(backUpCodigo);
+                        eventoSeleccionado.setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listEventos.size(); j++) {
-                            if (j != indice) {
-                                if (listEventos.get(indice).getCodigo() == listEventos.get(j).getCodigo()) {
-                                    contador++;
-                                }
+                            if (eventoSeleccionado.getCodigo() == listEventos.get(j).getCodigo()) {
+                                contador++;
                             }
                         }
                         if (contador > 0) {
-                            listEventos.get(indice).setCodigo(backUpCodigo);
+                            eventoSeleccionado.setCodigo(backUpCodigo);
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
                         } else {
@@ -323,43 +313,43 @@ public class ControlEventos implements Serializable {
                         }
 
                     }
-                    if (listEventos.get(indice).getDescripcion().isEmpty()) {
-                        listEventos.get(indice).setDescripcion(backUpDescripcion);
+                    if (eventoSeleccionado.getDescripcion().isEmpty()) {
+                        eventoSeleccionado.setDescripcion(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
-                    if (listEventos.get(indice).getDescripcion().equals(" ")) {
-                        listEventos.get(indice).setDescripcion(backUpDescripcion);
+                    if (eventoSeleccionado.getDescripcion().equals(" ")) {
+                        eventoSeleccionado.setDescripcion(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
 
-                    if (listEventos.get(indice).getOrganizador().isEmpty()) {
-                        listEventos.get(indice).setOrganizador(backUpOrganizador);
+                    if (eventoSeleccionado.getOrganizador().isEmpty()) {
+                        eventoSeleccionado.setOrganizador(backUpOrganizador);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
-                    if (listEventos.get(indice).getOrganizador().equals(" ")) {
-                        listEventos.get(indice).setOrganizador(backUpOrganizador);
+                    if (eventoSeleccionado.getOrganizador().equals(" ")) {
+                        eventoSeleccionado.setOrganizador(backUpOrganizador);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
-                    if (listEventos.get(indice).getObjetivo().isEmpty()) {
-                        listEventos.get(indice).setObjetivo(backUpObjetivo);
+                    if (eventoSeleccionado.getObjetivo().isEmpty()) {
+                        eventoSeleccionado.setObjetivo(backUpObjetivo);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
-                    if (listEventos.get(indice).getObjetivo().equals(" ")) {
-                        listEventos.get(indice).setObjetivo(backUpObjetivo);
+                    if (eventoSeleccionado.getObjetivo().equals(" ")) {
+                        eventoSeleccionado.setObjetivo(backUpObjetivo);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
 
                     if (banderita == true) {
                         if (modificarEventos.isEmpty()) {
-                            modificarEventos.add(listEventos.get(indice));
-                        } else if (!modificarEventos.contains(listEventos.get(indice))) {
-                            modificarEventos.add(listEventos.get(indice));
+                            modificarEventos.add(eventoSeleccionado);
+                        } else if (!modificarEventos.contains(eventoSeleccionado)) {
+                            modificarEventos.add(eventoSeleccionado);
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -370,23 +360,19 @@ public class ControlEventos implements Serializable {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
                     }
-                    index = -1;
-                    secRegistro = null;
                 } else {
-                    if (listEventos.get(indice).getCodigo() == a) {
+                    if (eventoSeleccionado.getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        listEventos.get(indice).setCodigo(backUpCodigo);
+                        eventoSeleccionado.setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listEventos.size(); j++) {
-                            if (j != indice) {
-                                if (listEventos.get(indice).getCodigo() == listEventos.get(j).getCodigo()) {
-                                    contador++;
-                                }
+                            if (eventoSeleccionado.getCodigo() == listEventos.get(j).getCodigo()) {
+                                contador++;
                             }
                         }
                         if (contador > 0) {
-                            listEventos.get(indice).setCodigo(backUpCodigo);
+                            eventoSeleccionado.setCodigo(backUpCodigo);
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
                         } else {
@@ -394,34 +380,34 @@ public class ControlEventos implements Serializable {
                         }
 
                     }
-                    if (listEventos.get(indice).getDescripcion().isEmpty()) {
-                        listEventos.get(indice).setDescripcion(backUpDescripcion);
+                    if (eventoSeleccionado.getDescripcion().isEmpty()) {
+                        eventoSeleccionado.setDescripcion(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
-                    if (listEventos.get(indice).getDescripcion().equals(" ")) {
-                        listEventos.get(indice).setDescripcion(backUpDescripcion);
+                    if (eventoSeleccionado.getDescripcion().equals(" ")) {
+                        eventoSeleccionado.setDescripcion(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
 
-                    if (listEventos.get(indice).getOrganizador().isEmpty()) {
-                        listEventos.get(indice).setOrganizador(backUpOrganizador);
+                    if (eventoSeleccionado.getOrganizador().isEmpty()) {
+                        eventoSeleccionado.setOrganizador(backUpOrganizador);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
-                    if (listEventos.get(indice).getOrganizador().equals(" ")) {
-                        listEventos.get(indice).setOrganizador(backUpOrganizador);
+                    if (eventoSeleccionado.getOrganizador().equals(" ")) {
+                        eventoSeleccionado.setOrganizador(backUpOrganizador);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
-                    if (listEventos.get(indice).getObjetivo().isEmpty()) {
-                        listEventos.get(indice).setObjetivo(backUpObjetivo);
+                    if (eventoSeleccionado.getObjetivo().isEmpty()) {
+                        eventoSeleccionado.setObjetivo(backUpObjetivo);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
-                    if (listEventos.get(indice).getObjetivo().equals(" ")) {
-                        listEventos.get(indice).setObjetivo(backUpObjetivo);
+                    if (eventoSeleccionado.getObjetivo().equals(" ")) {
+                        eventoSeleccionado.setObjetivo(backUpObjetivo);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
@@ -437,33 +423,28 @@ public class ControlEventos implements Serializable {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
                     }
-                    index = -1;
-                    secRegistro = null;
+
                 }
             } else {
 
-                if (!crearEventos.contains(filtrarEventos.get(indice))) {
-                    if (filtrarEventos.get(indice).getCodigo() == a) {
+                if (!crearEventos.contains(eventoSeleccionado)) {
+                    if (eventoSeleccionado.getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        filtrarEventos.get(indice).setCodigo(backUpCodigo);
+                        eventoSeleccionado.setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listEventos.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarEventos.get(indice).getCodigo() == listEventos.get(j).getCodigo()) {
-                                    contador++;
-                                }
+                            if (eventoSeleccionado.getCodigo() == listEventos.get(j).getCodigo()) {
+                                contador++;
                             }
                         }
                         for (int j = 0; j < filtrarEventos.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarEventos.get(indice).getCodigo() == filtrarEventos.get(j).getCodigo()) {
-                                    contador++;
-                                }
+                            if (eventoSeleccionado.getCodigo() == filtrarEventos.get(j).getCodigo()) {
+                                contador++;
                             }
                         }
                         if (contador > 0) {
-                            filtrarEventos.get(indice).setCodigo(backUpCodigo);
+                            eventoSeleccionado.setCodigo(backUpCodigo);
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
                         } else {
@@ -472,42 +453,42 @@ public class ControlEventos implements Serializable {
 
                     }
 
-                    if (filtrarEventos.get(indice).getDescripcion().isEmpty()) {
+                    if (eventoSeleccionado.getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        filtrarEventos.get(indice).setDescripcion(backUpDescripcion);
+                        eventoSeleccionado.setDescripcion(backUpDescripcion);
                     }
-                    if (filtrarEventos.get(indice).getDescripcion().equals(" ")) {
+                    if (eventoSeleccionado.getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        filtrarEventos.get(indice).setDescripcion(backUpDescripcion);
+                        eventoSeleccionado.setDescripcion(backUpDescripcion);
                         banderita = false;
                     }
-                    if (filtrarEventos.get(indice).getObjetivo().isEmpty()) {
+                    if (eventoSeleccionado.getObjetivo().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        filtrarEventos.get(indice).setObjetivo(backUpObjetivo);
+                        eventoSeleccionado.setObjetivo(backUpObjetivo);
                     }
-                    if (filtrarEventos.get(indice).getObjetivo().equals(" ")) {
+                    if (eventoSeleccionado.getObjetivo().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        filtrarEventos.get(indice).setObjetivo(backUpObjetivo);
+                        eventoSeleccionado.setObjetivo(backUpObjetivo);
                         banderita = false;
                     }
-                    if (filtrarEventos.get(indice).getOrganizador().isEmpty()) {
+                    if (eventoSeleccionado.getOrganizador().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        filtrarEventos.get(indice).setOrganizador(backUpOrganizador);
+                        eventoSeleccionado.setOrganizador(backUpOrganizador);
                     }
-                    if (filtrarEventos.get(indice).getOrganizador().equals(" ")) {
-                        filtrarEventos.get(indice).setOrganizador(backUpOrganizador);
+                    if (eventoSeleccionado.getOrganizador().equals(" ")) {
+                        eventoSeleccionado.setOrganizador(backUpOrganizador);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
 
                     if (banderita == true) {
                         if (modificarEventos.isEmpty()) {
-                            modificarEventos.add(filtrarEventos.get(indice));
-                        } else if (!modificarEventos.contains(filtrarEventos.get(indice))) {
-                            modificarEventos.add(filtrarEventos.get(indice));
+                            modificarEventos.add(eventoSeleccionado);
+                        } else if (!modificarEventos.contains(eventoSeleccionado)) {
+                            modificarEventos.add(eventoSeleccionado);
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -519,30 +500,24 @@ public class ControlEventos implements Serializable {
                         context.execute("validacionModificar.show()");
                         contador = 0;
                     }
-                    index = -1;
-                    secRegistro = null;
                 } else {
-                    if (filtrarEventos.get(indice).getCodigo() == a) {
+                    if (eventoSeleccionado.getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        filtrarEventos.get(indice).setCodigo(backUpCodigo);
+                        eventoSeleccionado.setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listEventos.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarEventos.get(indice).getCodigo() == listEventos.get(j).getCodigo()) {
-                                    contador++;
-                                }
+                            if (eventoSeleccionado.getCodigo() == listEventos.get(j).getCodigo()) {
+                                contador++;
                             }
                         }
                         for (int j = 0; j < filtrarEventos.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarEventos.get(indice).getCodigo() == filtrarEventos.get(j).getCodigo()) {
-                                    contador++;
-                                }
+                            if (eventoSeleccionado.getCodigo() == filtrarEventos.get(j).getCodigo()) {
+                                contador++;
                             }
                         }
                         if (contador > 0) {
-                            filtrarEventos.get(indice).setCodigo(backUpCodigo);
+                            eventoSeleccionado.setCodigo(backUpCodigo);
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
                         } else {
@@ -551,42 +526,42 @@ public class ControlEventos implements Serializable {
 
                     }
 
-                    if (filtrarEventos.get(indice).getDescripcion().isEmpty()) {
+                    if (eventoSeleccionado.getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        filtrarEventos.get(indice).setDescripcion(backUpDescripcion);
+                        eventoSeleccionado.setDescripcion(backUpDescripcion);
                     }
-                    if (filtrarEventos.get(indice).getDescripcion().equals(" ")) {
+                    if (eventoSeleccionado.getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        filtrarEventos.get(indice).setDescripcion(backUpDescripcion);
+                        eventoSeleccionado.setDescripcion(backUpDescripcion);
                         banderita = false;
                     }
-                    if (filtrarEventos.get(indice).getObjetivo().isEmpty()) {
+                    if (eventoSeleccionado.getObjetivo().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        filtrarEventos.get(indice).setObjetivo(backUpObjetivo);
+                        eventoSeleccionado.setObjetivo(backUpObjetivo);
                     }
-                    if (filtrarEventos.get(indice).getObjetivo().equals(" ")) {
+                    if (eventoSeleccionado.getObjetivo().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        filtrarEventos.get(indice).setObjetivo(backUpObjetivo);
+                        eventoSeleccionado.setObjetivo(backUpObjetivo);
                         banderita = false;
                     }
-                    if (filtrarEventos.get(indice).getOrganizador().isEmpty()) {
+                    if (eventoSeleccionado.getOrganizador().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        filtrarEventos.get(indice).setOrganizador(backUpOrganizador);
+                        eventoSeleccionado.setOrganizador(backUpOrganizador);
                     }
-                    if (filtrarEventos.get(indice).getOrganizador().equals(" ")) {
-                        filtrarEventos.get(indice).setOrganizador(backUpOrganizador);
+                    if (eventoSeleccionado.getOrganizador().equals(" ")) {
+                        eventoSeleccionado.setOrganizador(backUpOrganizador);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
 
                     if (banderita == true) {
                         if (modificarEventos.isEmpty()) {
-                            modificarEventos.add(filtrarEventos.get(indice));
-                        } else if (!modificarEventos.contains(filtrarEventos.get(indice))) {
-                            modificarEventos.add(filtrarEventos.get(indice));
+                            modificarEventos.add(eventoSeleccionado);
+                        } else if (!modificarEventos.contains(eventoSeleccionado)) {
+                            modificarEventos.add(eventoSeleccionado);
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -598,8 +573,6 @@ public class ControlEventos implements Serializable {
                         context.execute("validacionModificar.show()");
                         contador = 0;
                     }
-                    index = -1;
-                    secRegistro = null;
                 }
 
             }
@@ -610,51 +583,36 @@ public class ControlEventos implements Serializable {
 
     public void borrarEventos() {
 
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                System.out.println("Entro a borrarEventos");
-                if (!modificarEventos.isEmpty() && modificarEventos.contains(listEventos.get(index))) {
-                    int modIndex = modificarEventos.indexOf(listEventos.get(index));
-                    modificarEventos.remove(modIndex);
-                    borrarEventos.add(listEventos.get(index));
-                } else if (!crearEventos.isEmpty() && crearEventos.contains(listEventos.get(index))) {
-                    int crearIndex = crearEventos.indexOf(listEventos.get(index));
-                    crearEventos.remove(crearIndex);
-                } else {
-                    borrarEventos.add(listEventos.get(index));
-                }
-                listEventos.remove(index);
+        if (eventoSeleccionado != null) {
+            System.out.println("Entro a borrarEventos");
+            if (!modificarEventos.isEmpty() && modificarEventos.contains(eventoSeleccionado)) {
+                int modIndex = modificarEventos.indexOf(eventoSeleccionado);
+                modificarEventos.remove(modIndex);
+                borrarEventos.add(eventoSeleccionado);
+            } else if (!crearEventos.isEmpty() && crearEventos.contains(eventoSeleccionado)) {
+                int crearIndex = crearEventos.indexOf(eventoSeleccionado);
+                crearEventos.remove(crearIndex);
+            } else {
+                borrarEventos.add(eventoSeleccionado);
             }
+            listEventos.remove(eventoSeleccionado);
             if (tipoLista == 1) {
-                System.out.println("borrarGrupoInfAdicional ");
-                if (!modificarEventos.isEmpty() && modificarEventos.contains(filtrarEventos.get(index))) {
-                    int modIndex = modificarEventos.indexOf(filtrarEventos.get(index));
-                    modificarEventos.remove(modIndex);
-                    borrarEventos.add(filtrarEventos.get(index));
-                } else if (!crearEventos.isEmpty() && crearEventos.contains(filtrarEventos.get(index))) {
-                    int crearIndex = crearEventos.indexOf(filtrarEventos.get(index));
-                    crearEventos.remove(crearIndex);
-                } else {
-                    borrarEventos.add(filtrarEventos.get(index));
-                }
-                int VCIndex = listEventos.indexOf(filtrarEventos.get(index));
-                listEventos.remove(VCIndex);
-                filtrarEventos.remove(index);
+                filtrarEventos.remove(eventoSeleccionado);
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosEvento");
-            infoRegistro = "Cantidad de registros: " + listEventos.size();
+            modificarInfoRegistro(listEventos.size());
             context.update("form:informacionRegistro");
 
-            index = -1;
-            secRegistro = null;
-
+            eventoSeleccionado = null;
             if (guardado == true) {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
 
+        } else {
+            RequestContext.getCurrentInstance().execute("formularioDialogos:seleccionarRegistro.show()");
         }
 
     }
@@ -663,7 +621,7 @@ public class ControlEventos implements Serializable {
         System.out.println("Estoy en verificarBorrado");
         try {
             System.err.println("Control Secuencia de verificarBorrado  a borrar");
-            vigenciasEventos = administrarEventos.verificarVigenciasEventos(listEventos.get(index).getSecuencia());
+            vigenciasEventos = administrarEventos.verificarVigenciasEventos(eventoSeleccionado.getSecuencia());
 
             if (vigenciasEventos.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
@@ -674,7 +632,7 @@ public class ControlEventos implements Serializable {
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
-                index = -1;
+                eventoSeleccionado = null;
 
                 vigenciasEventos = new BigInteger("-1");
 
@@ -730,25 +688,29 @@ public class ControlEventos implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listEventos = null;
+            getListEventos();
+            contarRegistros();
             FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
             context.update("form:datosEvento");
             k = 0;
         }
-        index = -1;
+        eventoSeleccionado = null;
         guardado = true;
         context.update("form:ACEPTAR");
 
     }
 
     public void editarCelda() {
-        if (index >= 0) {
+        if (eventoSeleccionado != null) {
             if (tipoLista == 0) {
-                editarEvento = listEventos.get(index);
+                deshabilitarBotonLov();
+                editarEvento = eventoSeleccionado;
             }
             if (tipoLista == 1) {
-                editarEvento = filtrarEventos.get(index);
+                deshabilitarBotonLov();
+                editarEvento = eventoSeleccionado;
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -771,9 +733,9 @@ public class ControlEventos implements Serializable {
                 cualCelda = -1;
             }
 
+        } else {
+            RequestContext.getCurrentInstance().execute("formularioDialogos:seleccionarRegistro.show()");
         }
-        index = -1;
-        secRegistro = null;
     }
 
     public void agregarNuevoEventos() {
@@ -784,7 +746,7 @@ public class ControlEventos implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoEvento.getCodigo() == a) {
-            mensajeValidacion = " *Codigo \n";
+            mensajeValidacion = " El campo código está vacío \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoEvento.getCodigo());
@@ -794,10 +756,9 @@ public class ControlEventos implements Serializable {
                     duplicados++;
                 }
             }
-            System.out.println("Antes del if Duplicados eses igual  : " + duplicados);
 
             if (duplicados > 0) {
-                mensajeValidacion = " *Que NO Hayan Codigos Repetidos \n";
+                mensajeValidacion = "No pueden haber códigos repetidos \n";
                 System.out.println("Mensaje validacion : " + mensajeValidacion);
             } else {
                 System.out.println("bandera");
@@ -805,7 +766,7 @@ public class ControlEventos implements Serializable {
             }
         }
         if (nuevoEvento.getDescripcion() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
+            mensajeValidacion = "El campo Descripción está vacío \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -814,7 +775,7 @@ public class ControlEventos implements Serializable {
 
         }
         if (nuevoEvento.getOrganizador() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Organizardor \n";
+            mensajeValidacion = "El campo organizador está vacío\n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -832,8 +793,6 @@ public class ControlEventos implements Serializable {
             contador++;
 
         }
-
-        System.out.println("contador " + contador);
 
         if (contador == 4) {
             FacesContext c = FacesContext.getCurrentInstance();
@@ -853,20 +812,21 @@ public class ControlEventos implements Serializable {
                 bandera = 0;
                 filtrarEventos = null;
                 tipoLista = 0;
+                tamano = 270;
             }
             System.out.println("Despues de la bandera");
 
             k++;
             l = BigInteger.valueOf(k);
             nuevoEvento.setSecuencia(l);
-
             crearEventos.add(nuevoEvento);
-
             listEventos.add(nuevoEvento);
+            eventoSeleccionado = nuevoEvento;
+
             nuevoEvento = new Eventos();
 
             context.update("form:datosEvento");
-            infoRegistro = "Cantidad de registros: " + listEventos.size();
+            modificarInfoRegistro(listEventos.size());
             context.update("form:informacionRegistro");
 
             if (guardado == true) {
@@ -875,12 +835,10 @@ public class ControlEventos implements Serializable {
             }
 
             context.execute("nuevoRegistroEvento.hide()");
-            index = -1;
-            secRegistro = null;
 
         } else {
-            context.update("form:validacionNuevaCentroCosto");
-            context.execute("validacionNuevaCentroCosto.show()");
+            context.update("form:validacionNuevoEvento");
+            context.execute("validacionNuevoEvento.show()");
             contador = 0;
         }
     }
@@ -888,39 +846,37 @@ public class ControlEventos implements Serializable {
     public void limpiarNuevoEventos() {
         System.out.println("limpiarNuevoEstadosCiviles");
         nuevoEvento = new Eventos();
-        secRegistro = null;
-        index = -1;
 
     }
 
     //------------------------------------------------------------------------------
     public void duplicarEventos() {
         System.out.println("duplicarEstadosCiviles");
-        if (index >= 0) {
+        if (eventoSeleccionado != null) {
             duplicarEvento = new Eventos();
             k++;
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
                 duplicarEvento.setSecuencia(l);
-                duplicarEvento.setCodigo(listEventos.get(index).getCodigo());
-                duplicarEvento.setDescripcion(listEventos.get(index).getDescripcion());
-                duplicarEvento.setOrganizador(listEventos.get(index).getOrganizador());
-                duplicarEvento.setObjetivo(listEventos.get(index).getObjetivo());
+                duplicarEvento.setCodigo(eventoSeleccionado.getCodigo());
+                duplicarEvento.setDescripcion(eventoSeleccionado.getDescripcion());
+                duplicarEvento.setOrganizador(eventoSeleccionado.getOrganizador());
+                duplicarEvento.setObjetivo(eventoSeleccionado.getObjetivo());
             }
             if (tipoLista == 1) {
                 duplicarEvento.setSecuencia(l);
-                duplicarEvento.setCodigo(filtrarEventos.get(index).getCodigo());
-                duplicarEvento.setDescripcion(filtrarEventos.get(index).getDescripcion());
-                duplicarEvento.setOrganizador(listEventos.get(index).getOrganizador());
-                duplicarEvento.setObjetivo(listEventos.get(index).getObjetivo());
+                duplicarEvento.setCodigo(eventoSeleccionado.getCodigo());
+                duplicarEvento.setDescripcion(eventoSeleccionado.getDescripcion());
+                duplicarEvento.setOrganizador(eventoSeleccionado.getOrganizador());
+                duplicarEvento.setObjetivo(eventoSeleccionado.getObjetivo());
             }
-
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarE");
             context.execute("duplicarRegistroEvento.show()");
-            index = -1;
-            secRegistro = null;
+
+        } else {
+            RequestContext.getCurrentInstance().execute("formularioDialogos:seleccionarRegistro.show()");
         }
     }
 
@@ -934,7 +890,7 @@ public class ControlEventos implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarEvento.getDescripcion());
 
         if (duplicarEvento.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
+            mensajeValidacion = "El campo código está vacío \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listEventos.size(); x++) {
@@ -943,7 +899,7 @@ public class ControlEventos implements Serializable {
                 }
             }
             if (duplicados > 0) {
-                mensajeValidacion = " *Que NO Existan Codigo Repetidos \n";
+                mensajeValidacion = "No puede haber códigos repetidos\n";
                 System.out.println("Mensaje validacion : " + mensajeValidacion);
             } else {
                 System.out.println("bandera");
@@ -952,7 +908,7 @@ public class ControlEventos implements Serializable {
             }
         }
         if (duplicarEvento.getDescripcion() == null) {
-            mensajeValidacion = mensajeValidacion + "   *Nombre \n";
+            mensajeValidacion = "El campo Descripción  está vacío \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -960,7 +916,7 @@ public class ControlEventos implements Serializable {
             contador++;
         }
         if (duplicarEvento.getOrganizador() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Un Organizador \n";
+            mensajeValidacion = "El campo organizador está vacío \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -968,7 +924,7 @@ public class ControlEventos implements Serializable {
             contador++;
         }
         if (duplicarEvento.getObjetivo() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Un Objetivo \n";
+            mensajeValidacion = "El campo Objetivo está vacío \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -985,13 +941,12 @@ public class ControlEventos implements Serializable {
             listEventos.add(duplicarEvento);
             crearEventos.add(duplicarEvento);
             context.update("form:datosEvento");
-            index = -1;
-            secRegistro = null;
+            eventoSeleccionado = duplicarEvento;
             if (guardado == true) {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
-            infoRegistro = "Cantidad de registros: " + listEventos.size();
+            modificarInfoRegistro(listEventos.size());
             context.update("form:informacionRegistro");
 
             if (bandera == 1) {
@@ -1010,14 +965,15 @@ public class ControlEventos implements Serializable {
                 bandera = 0;
                 filtrarEventos = null;
                 tipoLista = 0;
+                tamano = 270;
             }
             duplicarEvento = new Eventos();
             RequestContext.getCurrentInstance().execute("duplicarRegistroEvento.hide()");
 
         } else {
             contador = 0;
-            context.update("form:validacionDuplicarVigencia");
-            context.execute("validacionDuplicarVigencia.show()");
+            context.update("form:validacionDuplicarEvento");
+            context.execute("validacionDuplicarEvento.show()");
         }
     }
 
@@ -1031,8 +987,7 @@ public class ControlEventos implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "EVENTOS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
+        eventoSeleccionado = null;
     }
 
     public void exportXLS() throws IOException {
@@ -1041,31 +996,26 @@ public class ControlEventos implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "EVENTOS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
+        eventoSeleccionado = null;
     }
 
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("lol");
-        if (!listEventos.isEmpty()) {
-            if (secRegistro != null) {
-                System.out.println("lol 2");
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "EVENTOS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
-                System.out.println("resultado: " + resultado);
-                if (resultado == 1) {
-                    context.execute("errorObjetosDB.show()");
-                } else if (resultado == 2) {
-                    context.execute("confirmarRastro.show()");
-                } else if (resultado == 3) {
-                    context.execute("errorRegistroRastro.show()");
-                } else if (resultado == 4) {
-                    context.execute("errorTablaConRastro.show()");
-                } else if (resultado == 5) {
-                    context.execute("errorTablaSinRastro.show()");
-                }
-            } else {
-                context.execute("seleccionarRegistro.show()");
+        if (eventoSeleccionado != null) {
+            System.out.println("lol 2");
+            int resultado = administrarRastros.obtenerTabla(eventoSeleccionado.getSecuencia(), "EVENTOS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
+            System.out.println("resultado: " + resultado);
+            if (resultado == 1) {
+                context.execute("errorObjetosDB.show()");
+            } else if (resultado == 2) {
+                context.execute("confirmarRastro.show()");
+            } else if (resultado == 3) {
+                context.execute("errorRegistroRastro.show()");
+            } else if (resultado == 4) {
+                context.execute("errorTablaConRastro.show()");
+            } else if (resultado == 5) {
+                context.execute("errorTablaSinRastro.show()");
             }
         } else {
             if (administrarRastros.verificarHistoricosTabla("EVENTOS")) { // igual acá
@@ -1075,20 +1025,57 @@ public class ControlEventos implements Serializable {
             }
 
         }
-        index = -1;
     }
 
+    public void eventoFiltrar() {
+        try {
+            System.out.println("\n ENTRE A ControlEventos.eventoFiltrar \n");
+            if (tipoLista == 0) {
+                tipoLista = 1;
+            }
+            RequestContext context = RequestContext.getCurrentInstance();
+            modificarInfoRegistro(filtrarEventos.size());
+            context.update("form:informacionRegistro");
+        } catch (Exception e) {
+            System.out.println("ERROR ControlEventos eventoFiltrar ERROR===" + e.getMessage());
+        }
+    }
+
+    public void modificarInfoRegistro(int valor) {
+        infoRegistro = String.valueOf(valor);
+    }
+
+    public void contarRegistros() {
+        if (listEventos != null) {
+            modificarInfoRegistro(listEventos.size());
+        } else {
+            modificarInfoRegistro(0);
+        }
+    }
+
+    public void recordarSeleccion() {
+        if (eventoSeleccionado != null) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            tablaC = (DataTable) c.getViewRoot().findComponent("form:datosEvento");
+            tablaC.setSelection(eventoSeleccionado);
+        }
+    }
+
+    public void habilitarBotonLov() {
+        activarLov = false;
+        RequestContext.getCurrentInstance().update("info:listaValores");
+    }
+
+    public void deshabilitarBotonLov() {
+        activarLov = true;
+        RequestContext.getCurrentInstance().update("info:listaValores");
+    }
+
+    /////////////////////////////GETS Y SETS///////////////////////////////
     public List<Eventos> getListEventos() {
         if (listEventos == null) {
             listEventos = administrarEventos.consultarEventos();
         }
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (listEventos == null || listEventos.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
-        } else {
-            infoRegistro = "Cantidad de registros: " + listEventos.size();
-        }
-        context.update("form:informacionRegistro");
         return listEventos;
     }
 
@@ -1126,14 +1113,6 @@ public class ControlEventos implements Serializable {
 
     public void setEditarEvento(Eventos editarEvento) {
         this.editarEvento = editarEvento;
-    }
-
-    public BigInteger getSecRegistro() {
-        return secRegistro;
-    }
-
-    public void setSecRegistro(BigInteger secRegistro) {
-        this.secRegistro = secRegistro;
     }
 
     public int getRegistrosBorrados() {
@@ -1182,6 +1161,22 @@ public class ControlEventos implements Serializable {
 
     public void setInfoRegistro(String infoRegistro) {
         this.infoRegistro = infoRegistro;
+    }
+
+    public boolean isActivarLov() {
+        return activarLov;
+    }
+
+    public void setActivarLov(boolean activarLov) {
+        this.activarLov = activarLov;
+    }
+
+    public String getPaginaanterior() {
+        return paginaanterior;
+    }
+
+    public void setPaginaanterior(String paginaanterior) {
+        this.paginaanterior = paginaanterior;
     }
 
 }

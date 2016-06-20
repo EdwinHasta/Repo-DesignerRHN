@@ -80,7 +80,7 @@ public class ControlDeportes implements Serializable {
         guardado = true;
         tamano = 270;
         paginaanterior = "";
-        activarLOV=true;
+        activarLOV = true;
     }
 
     @PostConstruct
@@ -349,7 +349,7 @@ public class ControlDeportes implements Serializable {
 
             if (guardado == true) {
                 guardado = false;
-            context.update("form:ACEPTAR");
+                context.update("form:ACEPTAR");
             }
         } else {
             context.execute("seleccionarRegistro.show()");
@@ -417,7 +417,6 @@ public class ControlDeportes implements Serializable {
                 administrarDeportes.modificarDeportes(modificarDeportes);
                 modificarDeportes.clear();
             }
-            System.out.println("Se guardaron los datos con exito");
             listDeportes = null;
             FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -632,8 +631,7 @@ public class ControlDeportes implements Serializable {
                 tipoLista = 0;
             }
             duplicarDeporte = new Deportes();
-            infoRegistro = "Cantidad de registros: " + listDeportes.size();
-            context.update("form:infoRegistro");
+            modificarinfoRegistro(listDeportes.size());
             RequestContext.getCurrentInstance().execute("duplicarRegistroDeporte.hide()");
 
         } else {
@@ -668,7 +666,6 @@ public class ControlDeportes implements Serializable {
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (deporteSeleccionado != null) {
-            System.out.println("lol 2");
             int resultado = administrarRastros.obtenerTabla(deporteSeleccionado.getSecuencia(), "DEPORTES");
             System.out.println("resultado: " + resultado);
             if (resultado == 1) {

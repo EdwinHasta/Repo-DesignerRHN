@@ -5,11 +5,13 @@ package Administrar;
 
 import Entidades.Ciudades;
 import Entidades.Direcciones;
+import Entidades.Empleados;
 import Entidades.Personas;
 import InterfaceAdministrar.AdministrarDireccionesInterface;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaCiudadesInterface;
 import InterfacePersistencia.PersistenciaDireccionesInterface;
+import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaPersonasInterface;
 import java.math.BigInteger;
 import java.util.List;
@@ -59,6 +61,8 @@ public class AdministrarDirecciones implements AdministrarDireccionesInterface {
      */
     @EJB
     AdministrarSesionesInterface administrarSesiones;
+    @EJB
+    PersistenciaEmpleadoInterface persistenciaEmpleado;
 
     private EntityManager em;
 
@@ -126,4 +130,16 @@ public class AdministrarDirecciones implements AdministrarDireccionesInterface {
             persistenciaDirecciones.crear(em,listaDirecciones.get(i));
         }
     }
+    
+     @Override
+    public Empleados empleadoActual(BigInteger secuenciaP){
+        try{
+        Empleados retorno = persistenciaEmpleado.buscarEmpleado(em, secuenciaP);
+        return retorno;
+        }catch(Exception  e){
+            System.out.println("Error empleadoActual Admi : "+e.toString());
+            return null;
+        }
+    }
+    
 }
