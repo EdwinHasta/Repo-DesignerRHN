@@ -5573,4 +5573,38 @@
         </navigation-case>
     </navigation-rule>
       
+    <navigation-rule>
+        <from-view-id>/tiposTrabajadores.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tiposcotizantes</from-outcome>
+            <to-view-id>/tipocotizante.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/tipocotizante.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasTiposTrabajadores</from-outcome>
+            <to-view-id>/tiposTrabajadores.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+        
+    <navigation-rule>
+        <from-view-id>/Legislacion.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tiposcotizantes</from-outcome>
+            <to-view-id>/tipocotizante.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/tipocotizante.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasLegislacion</from-outcome>
+            <to-view-id>/Legislacion.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+      
 </faces-config>
