@@ -118,4 +118,10 @@ public interface AdministrarEstructurasPlantasInterface {
     public List<Empresas> consultarEmpresas();
 
     public List<Organigramas> listaTodosOrganigramas();
+
+    public void modificarOrganigrama(List<Organigramas> listOrganigramasModificados);
+
+    public void borrarOrganigrama(Organigramas organigrama);
+
+    public void crearOrganigrama(Organigramas organigrama);
 }

@@ -102,6 +102,16 @@ public class AdministrarTiposTrabajadores implements AdministrarTiposTrabajadore
             return null;
         }
     }
+    
+    @Override
+    public String clonarTT(String nuevoNombre, Short nuevoCodigo, BigInteger secTipoTAClonar){
+        try {
+            return persistenciaTiposTrabajadores.clonarTipoT(em, nuevoNombre, nuevoCodigo, secTipoTAClonar);
+        } catch (Exception e) {
+            System.err.println("AdministrarTiposTrabajadores.crearVD ERROR: " + e);
+            return ("ERROR AdministrarTiposTrabajadores.clonarTT : " + e.toString());
+        }
+    }
 
     // Vigencias Dias Tipos Trabajadores: //
     @Override
@@ -141,4 +151,6 @@ public class AdministrarTiposTrabajadores implements AdministrarTiposTrabajadore
             return null;
         }
     }
+   
+    
 }

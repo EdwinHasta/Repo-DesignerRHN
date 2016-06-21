@@ -28,4 +28,6 @@ public interface AdministrarTiposTrabajadoresInterface {
     public void editarVD(VigenciasDiasTT vigenciasDiasTT);
     public void borrarVD(VigenciasDiasTT vigenciasDiasTT);
     public List<VigenciasDiasTT> consultarDiasPorTipoT(BigInteger secuenciaTT);
+
+    public String clonarTT(String nombreNuevo, Short codigoNuevo, BigInteger secTTClonado);
 }

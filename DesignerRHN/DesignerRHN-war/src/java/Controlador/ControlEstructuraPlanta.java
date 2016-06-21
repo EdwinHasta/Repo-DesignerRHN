@@ -1,6 +1,7 @@
 package Controlador;
 
 import Entidades.CentrosCostos;
+import Entidades.Empresas;
 import Entidades.Estructuras;
 import Entidades.Organigramas;
 import Exportar.ExportarPDF;
@@ -54,8 +55,13 @@ public class ControlEstructuraPlanta implements Serializable {
     private Column estructuraCodigo, estructuraEstructura, estructuraCantidadControlar, estructuraCantidadActivo, estructuraCentroCosto, estructuraEstructuraPadre;
     //Otros
     private boolean aceptar;
-    //modificar
+    //Organigramas
+    private Organigramas nuevoOrganigrama;
+    private Organigramas duplicarOrganigrama;
+    private List<Organigramas> listOrganigramasCrear;
     private List<Organigramas> listOrganigramasModificar;
+    private List<Organigramas> listOrganigramasBorrar;
+    //modificar
     private List<Estructuras> listEstructurasModificar;
     private boolean guardado, guardadoEstructura;
     //crear 
@@ -86,7 +92,13 @@ public class ControlEstructuraPlanta implements Serializable {
     private int tipoActualizacion;
     private Long auxCodigoEstructura;
     private String auxNombreEstructura;
+    //LOVS
+    private List<Empresas> lovEmpresas;
+    private List<Empresas> filtradoEmpresas;
+    private Empresas empresaSeleccionada;
+    private String infoRegistroEmpresa;
     //
+    public boolean tablaActiva;
     private boolean cambiosPagina;
     private String altoTablaOrganigrama, altoTablaEstructura;
     //
@@ -101,6 +113,12 @@ public class ControlEstructuraPlanta implements Serializable {
     //
     private DataTable tabla;
     private boolean activarLOV;
+    //AUTOCOMPLETAR
+    private String auxEmpresa;
+    private Short auxCodigo;
+    private Date auxFecha;
+    private Short codigoEmpresa;
+    public String permitirCambioBotonLov;
 
     public ControlEstructuraPlanta() {
         organigramaSeleccionado = null;
@@ -137,6 +155,8 @@ public class ControlEstructuraPlanta implements Serializable {
         //modificar 
         listEstructurasModificar = new ArrayList<Estructuras>();
         listOrganigramasModificar = new ArrayList<Organigramas>();
+        listOrganigramasCrear = new ArrayList<Organigramas>();
+        listOrganigramasBorrar = new ArrayList<Organigramas>();
         //editar
         editarOrganigrama = new Organigramas();
         editarEstructura = new Estructuras();
@@ -162,7 +182,21 @@ public class ControlEstructuraPlanta implements Serializable {
         banderaEstructura = 0;
 
         activarLOV = true;
-        RequestContext.getCurrentInstance().update("form:listaValores");
+        auxCodigo = new Short("0");
+        codigoEmpresa = new Short("0");
+        auxEmpresa = "";
+        auxFecha = new Date();
+        auxCodigoEstructura = new Long("0000");
+        auxNombreEstructura = "";
+        permitirCambioBotonLov = "SIapagarCelda";
+
+        nuevoOrganigrama = new Organigramas();
+        nuevoOrganigrama.setEmpresa(new Empresas());
+        nuevoOrganigrama.setEstado("A");
+
+        duplicarOrganigrama = new Organigramas();
+        duplicarOrganigrama.setEmpresa(new Empresas());
+        duplicarOrganigrama.setEstado("A");
     }
 
     @PostConstruct
@@ -192,12 +226,10 @@ public class ControlEstructuraPlanta implements Serializable {
                 organigramaSeleccionado = listaOrganigramas.get(0);
                 getListaEstructuras();
                 contarRegistrosEs();
-                RequestContext.getCurrentInstance().update("form:infoRegistroEst");
             }
         } else {
             System.out.println("El getListaOrganigramas() no trajo datos");
         }
-        listaOrganigramas = null;
     }
 
     public boolean validarFechasRegistro() {
@@ -221,15 +253,16 @@ public class ControlEstructuraPlanta implements Serializable {
     }
 
     public void modificacionesFechas(Organigramas organigramas, int c) {
+        organigramaSeleccionado = organigramas;
         boolean variable = validarFechasRegistro();
         if (variable == true) {
             cambiarIndice(organigramas, c);
-            modificarOrganigrama();
+            modificarOrganigrama(organigramas);
         } else {
             organigramaSeleccionado.setFecha(fechaOrganigrama);
 
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosOrganigrama");
+            context.update("form:datosOrganigramas");
             context.execute("errorFecha.show()");
         }
     }
@@ -237,17 +270,13 @@ public class ControlEstructuraPlanta implements Serializable {
     public boolean validarCamposNulosEstructura(int i) {
         boolean retorno = true;
         if (i == 0) {
-            Estructuras aux = new Estructuras();
-            aux = estructuraSeleccionada;
-
-
-            if (aux.getCodigo() == null) {
+            if (estructuraSeleccionada.getCodigo() == null) {
                 retorno = false;
             }
-            if (aux.getNombre() == null) {
+            if (estructuraSeleccionada.getNombre() == null) {
                 retorno = false;
             } else {
-                if (aux.getNombre().isEmpty()) {
+                if (estructuraSeleccionada.getNombre().isEmpty()) {
                     retorno = false;
                 }
             }
@@ -280,8 +309,115 @@ public class ControlEstructuraPlanta implements Serializable {
         return retorno;
     }
 
-    public void modificarOrganigrama() {
+    //AUTOCOMPLETAR
+    public void modificarOrganigrama(Organigramas organigrama, String column, Object valor) {
+        organigramaSeleccionado = organigrama;
+        int coincidencias = 0;
+        int indiceUnicoElemento = 0;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (column.equalsIgnoreCase("N")) {
+            if (!listOrganigramasCrear.contains(organigramaSeleccionado)) {
+                if (listOrganigramasModificar.isEmpty()) {
+                    listOrganigramasModificar.add(organigramaSeleccionado);
+                } else if (!listOrganigramasModificar.contains(organigramaSeleccionado)) {
+                    listOrganigramasModificar.add(organigramaSeleccionado);
+                }
+                if (guardado == true) {
+                    guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                }
+            }
+            context.update("form:datosOrganigramas");
+        } else if (column.equalsIgnoreCase("EMPRESA")) {
+            activarBotonLOV();
+            organigramaSeleccionado.getEmpresa().setNombre(auxEmpresa);
+            for (int i = 0; i < lovEmpresas.size(); i++) {
+                String empresa = (String) valor;
+                if (lovEmpresas.get(i).getNombre().startsWith(empresa.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                organigramaSeleccionado.setEmpresa(lovEmpresas.get(indiceUnicoElemento));
+                lovEmpresas.clear();
+                getLovEmpresas();
+            } else {
+                contarRegistrosLovEmp(0);
+                context.update("form:EmpresasDialogo");
+                context.execute("EmpresasDialogo.show()");
+                tipoActualizacion = 0;
+            }
+        } else if (column.equalsIgnoreCase("COD")) {
+            organigramaSeleccionado.setCodigo(auxCodigo);
+            Short cod = (Short) valor;
+            System.out.println(" modificar cod = " + cod);
+            for (int i = 0; i < listaOrganigramas.size(); i++) {
+                if (listaOrganigramas.get(i).getCodigo().equals(cod)) {
+                    System.out.println(" modificar codigo 1 igual");
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias > 0) {
+                context.update("formularioDialogos:validacionCodigoRepetido");
+                context.execute("validacionCodigoRepetido.show()");
+                tipoActualizacion = 0;
+            } else {
+                organigramaSeleccionado.setCodigo(cod);
+                coincidencias = 1;
+            }
+        } else if (column.equalsIgnoreCase("F")) {
+            organigramaSeleccionado.setFecha(auxFecha);
+            Date fecha = (Date) valor;
+            System.out.println(" modificar fecha = " + fecha);
+            for (int i = 0; i < listaOrganigramas.size(); i++) {
+                if (listaOrganigramas.get(i).getFecha().equals(fecha)
+                        && listaOrganigramas.get(i).getEmpresa().equals(organigramaSeleccionado.getEmpresa())) {
+                    System.out.println(" modificar fecha 1 igual para Empresa");
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias > 0) {
+                context.update("formularioDialogos:validacionFechaRepetida");
+                context.execute("validacionFechaRepetida.show()");
+                tipoActualizacion = 0;
+            } else {
+                organigramaSeleccionado.setFecha(fecha);
+                coincidencias = 1;
+            }
+        }
+        if (coincidencias == 1) {
+            if (!listOrganigramasCrear.contains(organigramaSeleccionado)) {
+                if (listOrganigramasModificar.isEmpty()) {
+                    listOrganigramasModificar.add(organigramaSeleccionado);
+                } else if (!listOrganigramasModificar.contains(organigramaSeleccionado)) {
+                    listOrganigramasModificar.add(organigramaSeleccionado);
+                }
+                if (guardado == true) {
+                    guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                }
+            }
+        }
+        context.update("form:datosOrganigramas");
+    }
+
+    public void modificarOrganigrama(Organigramas organigrama) {
         listOrganigramasModificar.add(organigramaSeleccionado);
+
+        if (!listOrganigramasCrear.contains(organigramaSeleccionado)) {
+            if (listOrganigramasModificar.isEmpty()) {
+                listOrganigramasModificar.add(organigramaSeleccionado);
+            } else if (!listOrganigramasModificar.contains(organigramaSeleccionado)) {
+                listOrganigramasModificar.add(organigramaSeleccionado);
+            }
+            if (guardado == true) {
+                guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+            }
+        }
 
         cambiosPagina = false;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -351,10 +487,8 @@ public class ControlEstructuraPlanta implements Serializable {
     }
 
     public void modificarEstructura() {
-        String aux = "";
-        aux = estructuraSeleccionada.getNombre();
 
-        if (aux.length() >= 1 && aux.length() <= 50) {
+        if (estructuraSeleccionada.getNombre().length() >= 1 && estructuraSeleccionada.getNombre().length() <= 50) {
             if (!listEstructurasCrear.contains(estructuraSeleccionada)) {
                 if (listEstructurasModificar.isEmpty()) {
                     listEstructurasModificar.add(estructuraSeleccionada);
@@ -468,42 +602,49 @@ public class ControlEstructuraPlanta implements Serializable {
     public void cambiarIndice(Organigramas organigrama, int celda) {
         if (guardadoEstructura == true) {
             RequestContext context = RequestContext.getCurrentInstance();
+            organigramaSeleccionado = organigrama;
             cualCelda = celda;
             cualCeldaEstructura = -1;
-            organigramaSeleccionado = organigrama;
             estructuraSeleccionada = null;
+            if (cualCelda == 2) {
+                activarBotonLOV();
+                permitirCambioBotonLov = "NOapagarCelda";
+            } else {
+                permitirCambioBotonLov = "SoloHacerNull";
+            }
+            if (cualCelda == 0) {
+                auxFecha = organigramaSeleccionado.getFecha();
+            }
+            auxEmpresa = organigramaSeleccionado.getEmpresa().getNombre();
+            auxCodigo = organigramaSeleccionado.getCodigo();
             fechaOrganigrama = organigramaSeleccionado.getFecha();
+            codigoEmpresa = organigramaSeleccionado.getEmpresa().getCodigo();
 
-            //lovCentrosCostos = null;
-            //getLovCentrosCostos();
             listaEstructuras = null;
             getListaEstructuras();
             contarRegistrosEs();
             RequestContext.getCurrentInstance().update("form:infoRegistroEst");
             context.update("form:datosEstructura");
             if (banderaEstructura == 1) {
-                altoTablaEstructura = "210";
-                estructuraEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructura");
-                estructuraEstructura.setFilterStyle("display: none; visibility: hidden;");
-                estructuraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCodigo");
-                estructuraCodigo.setFilterStyle("display: none; visibility: hidden;");
-                estructuraCantidadControlar = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadControlar");
-                estructuraCantidadControlar.setFilterStyle("display: none; visibility: hidden;");
-                estructuraCantidadActivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadActivo");
-                estructuraCantidadActivo.setFilterStyle("display: none; visibility: hidden;");
-                estructuraCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCentroCosto");
-                estructuraCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                estructuraEstructuraPadre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructuraPadre");
-                estructuraEstructuraPadre.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosEstructura");
-                banderaEstructura = 0;
-                filtrarListaEstructuras = null;
-                tipoListaEstructura = 0;
+                restaurarTablaEstr();
             }
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("confirmarGuardar.show()");
         }
+    }
+
+    public void cambiarIndiceDefault() {
+        System.out.println("cambiarIndiceDefault()");
+        if (permitirCambioBotonLov.equals("SoloHacerNull")) {
+            anularBotonLOV();
+        } else if (permitirCambioBotonLov.equals("SIapagarCelda")) {
+            anularBotonLOV();
+            cualCelda = -1;
+        } else if (permitirCambioBotonLov.equals("NOapagarCelda")) {
+            activarBotonLOV();
+        }
+        permitirCambioBotonLov = "SIapagarCelda";
     }
 
     public void cambiarIndiceEstructura(Estructuras estructuras, int celda) {
@@ -561,7 +702,7 @@ public class ControlEstructuraPlanta implements Serializable {
         }
         listaOrganigramas = null;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosOrganigrama");
+        context.update("form:datosOrganigramas");
         guardado = true;
         RequestContext.getCurrentInstance().update("form:aceptar");
         k = 0;
@@ -602,7 +743,7 @@ public class ControlEstructuraPlanta implements Serializable {
             cancelarModificacionOrganigrama();
             contarRegistrosOr();
             RequestContext.getCurrentInstance().update("form:infoRegistroOrg");
-            context.update("form:datosOrganigrama");
+            context.update("form:datosOrganigramas");
         }
         if (guardadoEstructura == false) {
             cancelarModificacionEstructura();
@@ -620,49 +761,23 @@ public class ControlEstructuraPlanta implements Serializable {
 
     public void cancelarModificacionOrganigrama() {
         if (bandera == 1) {
-            altoTablaOrganigrama = "65";
-            organigramaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaFecha");
-            organigramaFecha.setFilterStyle("display: none; visibility: hidden;");
-            organigramaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaCodigo");
-            organigramaCodigo.setFilterStyle("display: none; visibility: hidden;");
-            organigramaEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaEmpresa");
-            organigramaEmpresa.setFilterStyle("display: none; visibility: hidden;");
-            organigramaNIT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaNIT");
-            organigramaNIT.setFilterStyle("display: none; visibility: hidden;");
-            organigramaEstado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaEstado");
-            organigramaEstado.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosOrganigrama");
-            bandera = 0;
-            filtrarListaOrganigramas = null;
-            tipoLista = 0;
+            restaurarTabla();
         }
+        listOrganigramasBorrar.clear();
+        listOrganigramasCrear.clear();
         listOrganigramasModificar.clear();
+        organigramaSeleccionado = null;
         k = 0;
         listaOrganigramas = null;
+        getListaOrganigramas();
         guardado = true;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosOrganigrama");
+        context.update("form:datosOrganigramas");
     }
 
     public void cancelarModificacionEstructura() {
         if (banderaEstructura == 1) {
-            altoTablaEstructura = "210";
-            estructuraEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructura");
-            estructuraEstructura.setFilterStyle("display: none; visibility: hidden;");
-            estructuraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCodigo");
-            estructuraCodigo.setFilterStyle("display: none; visibility: hidden;");
-            estructuraCantidadControlar = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadControlar");
-            estructuraCantidadControlar.setFilterStyle("display: none; visibility: hidden;");
-            estructuraCantidadActivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadActivo");
-            estructuraCantidadActivo.setFilterStyle("display: none; visibility: hidden;");
-            estructuraCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCentroCosto");
-            estructuraCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-            estructuraEstructuraPadre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructuraPadre");
-            estructuraEstructuraPadre.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosEstructura");
-            banderaEstructura = 0;
-            filtrarListaEstructuras = null;
-            tipoListaEstructura = 0;
+            restaurarTablaEstr();
         }
         listEstructurasBorrar.clear();
         listEstructurasCrear.clear();
@@ -673,6 +788,44 @@ public class ControlEstructuraPlanta implements Serializable {
         permitirIndexEstructura = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosEstructura");
+    }
+
+    public void restaurarTabla() {
+        altoTablaOrganigrama = "65";
+        organigramaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigramas:organigramaFecha");
+        organigramaFecha.setFilterStyle("display: none; visibility: hidden;");
+        organigramaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigramas:organigramaCodigo");
+        organigramaCodigo.setFilterStyle("display: none; visibility: hidden;");
+        organigramaEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigramas:organigramaEmpresa");
+        organigramaEmpresa.setFilterStyle("display: none; visibility: hidden;");
+        organigramaNIT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigramas:organigramaNIT");
+        organigramaNIT.setFilterStyle("display: none; visibility: hidden;");
+        organigramaEstado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigramas:organigramaEstado");
+        organigramaEstado.setFilterStyle("display: none; visibility: hidden;");
+        RequestContext.getCurrentInstance().update("form:datosOrganigramas");
+        bandera = 0;
+        filtrarListaOrganigramas = null;
+        tipoLista = 0;
+    }
+
+    public void restaurarTablaEstr() {
+        altoTablaEstructura = "210";
+        estructuraEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructura");
+        estructuraEstructura.setFilterStyle("display: none; visibility: hidden;");
+        estructuraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCodigo");
+        estructuraCodigo.setFilterStyle("display: none; visibility: hidden;");
+        estructuraCantidadControlar = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadControlar");
+        estructuraCantidadControlar.setFilterStyle("display: none; visibility: hidden;");
+        estructuraCantidadActivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadActivo");
+        estructuraCantidadActivo.setFilterStyle("display: none; visibility: hidden;");
+        estructuraCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCentroCosto");
+        estructuraCentroCosto.setFilterStyle("display: none; visibility: hidden;");
+        estructuraEstructuraPadre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructuraPadre");
+        estructuraEstructuraPadre.setFilterStyle("display: none; visibility: hidden;");
+        RequestContext.getCurrentInstance().update("form:datosEstructura");
+        banderaEstructura = 0;
+        filtrarListaEstructuras = null;
+        tipoListaEstructura = 0;
     }
 
     public void editarCelda() {
@@ -744,9 +897,8 @@ public class ControlEstructuraPlanta implements Serializable {
         codigoNuevoEstructura();
         lovEstructurasPadres = null;
         lovEstructurasPadres = administrarEstructuraPlanta.lovEstructuras();
-        context.update("formularioDialogos:NuevoRegistroEstructura");
-        context.execute("NuevoRegistroEstructura.show()");
-
+        context.update("formularioDialogos:DialogNuevaEstructura");
+        context.execute("DialogNuevaEstructura.show()");
     }
 
     public void codigoNuevoEstructura() {
@@ -767,23 +919,7 @@ public class ControlEstructuraPlanta implements Serializable {
         if (respueta == true) {
             if (validarCodigoNoExistente(1) == true) {
                 if (banderaEstructura == 1) {
-                    altoTablaEstructura = "210";
-                    estructuraEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructura");
-                    estructuraEstructura.setFilterStyle("display: none; visibility: hidden;");
-                    estructuraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCodigo");
-                    estructuraCodigo.setFilterStyle("display: none; visibility: hidden;");
-                    estructuraCantidadControlar = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadControlar");
-                    estructuraCantidadControlar.setFilterStyle("display: none; visibility: hidden;");
-                    estructuraCantidadActivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadActivo");
-                    estructuraCantidadActivo.setFilterStyle("display: none; visibility: hidden;");
-                    estructuraCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCentroCosto");
-                    estructuraCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                    estructuraEstructuraPadre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructuraPadre");
-                    estructuraEstructuraPadre.setFilterStyle("display: none; visibility: hidden;");
-                    RequestContext.getCurrentInstance().update("form:datosEstructura");
-                    banderaEstructura = 0;
-                    filtrarListaEstructuras = null;
-                    tipoListaEstructura = 0;
+                    restaurarTablaEstr();
                 }
                 k++;
                 l = BigInteger.valueOf(k);
@@ -802,7 +938,7 @@ public class ControlEstructuraPlanta implements Serializable {
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:ACEPTAR");
                 context.update("form:datosEstructura");
-                context.execute("NuevoRegistroEstructura.hide()");
+                context.execute("DialogNuevaEstructura.hide()");
                 nuevoEstructura = new Estructuras();
                 nuevoEstructura.setCentrocosto(new CentrosCostos());
                 nuevoEstructura.setEstructurapadre(new Estructuras());
@@ -833,27 +969,29 @@ public class ControlEstructuraPlanta implements Serializable {
     /**
      */
     public void verificarRegistroDuplicar() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (estructuraSeleccionada != null) {
+            duplicarEstructuraM();
+        } else if (organigramaSeleccionado != null) {
+            duplicarOrg();
+        } else {
+            context.execute("seleccionarRegistro.show()");
+        }
     }
 
     public void duplicarEstructuraM() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (estructuraSeleccionada != null) {
-            duplicarEstructuraM();
-            duplicarEstructura = new Estructuras();
-            duplicarEstructura.setCodigo(estructuraSeleccionada.getCodigo());
-            duplicarEstructura.setNombre(estructuraSeleccionada.getNombre());
-            duplicarEstructura.setCentrocosto(estructuraSeleccionada.getCentrocosto());
-            duplicarEstructura.setEstructurapadre(estructuraSeleccionada.getEstructurapadre());
-            duplicarEstructura.setCantidadCargosControlar(estructuraSeleccionada.getCantidadCargosControlar());
-            duplicarEstructura.setCantidadCargosEmplActivos(estructuraSeleccionada.getCantidadCargosEmplActivos());
-
-            activarLOV = true;
-            RequestContext.getCurrentInstance().update("form:listaValores");
-            context.update("formularioDialogos:DuplicarRegistroEstructura");
-            context.execute("DuplicarRegistroEstructura.show()");
-        } else {
-            context.execute("seleccionarRegistro.show()");
-        }
+        duplicarEstructura = new Estructuras();
+        duplicarEstructura.setCodigo(estructuraSeleccionada.getCodigo());
+        duplicarEstructura.setNombre(estructuraSeleccionada.getNombre());
+        duplicarEstructura.setCentrocosto(estructuraSeleccionada.getCentrocosto());
+        duplicarEstructura.setEstructurapadre(estructuraSeleccionada.getEstructurapadre());
+        duplicarEstructura.setCantidadCargosControlar(estructuraSeleccionada.getCantidadCargosControlar());
+        duplicarEstructura.setCantidadCargosEmplActivos(estructuraSeleccionada.getCantidadCargosEmplActivos());
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+        context.update("formularioDialogos:DialogDuplicarEstructura");
+        context.execute("DialogDuplicarEstructura.show()");
     }
 
     public void confirmarDuplicarEstructura() {
@@ -861,23 +999,7 @@ public class ControlEstructuraPlanta implements Serializable {
         if (respueta == true) {
             if (validarCodigoNoExistente(2) == true) {
                 if (banderaEstructura == 1) {
-                    altoTablaEstructura = "210";
-                    estructuraEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructura");
-                    estructuraEstructura.setFilterStyle("display: none; visibility: hidden;");
-                    estructuraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCodigo");
-                    estructuraCodigo.setFilterStyle("display: none; visibility: hidden;");
-                    estructuraCantidadControlar = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadControlar");
-                    estructuraCantidadControlar.setFilterStyle("display: none; visibility: hidden;");
-                    estructuraCantidadActivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadActivo");
-                    estructuraCantidadActivo.setFilterStyle("display: none; visibility: hidden;");
-                    estructuraCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCentroCosto");
-                    estructuraCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                    estructuraEstructuraPadre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructuraPadre");
-                    estructuraEstructuraPadre.setFilterStyle("display: none; visibility: hidden;");
-                    RequestContext.getCurrentInstance().update("form:datosEstructura");
-                    banderaEstructura = 0;
-                    filtrarListaEstructuras = null;
-                    tipoListaEstructura = 0;
+                    restaurarTablaEstr();
                 }
                 k++;
                 l = BigInteger.valueOf(k);
@@ -895,7 +1017,7 @@ public class ControlEstructuraPlanta implements Serializable {
                 RequestContext.getCurrentInstance().update("form:listaValores");
                 context.update("form:ACEPTAR");
                 context.update("form:datosEstructura");
-                context.execute("DuplicarRegistroEstructura.hide()");
+                context.execute("DialogDuplicarEstructura.hide()");
                 estructuraSeleccionada = null;
                 if (guardadoEstructura == true) {
                     guardadoEstructura = false;
@@ -927,36 +1049,282 @@ public class ControlEstructuraPlanta implements Serializable {
 
     public void borrarEstructura() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (estructuraSeleccionada != null) {
-            if (!listEstructurasModificar.isEmpty() && listEstructurasModificar.contains(estructuraSeleccionada)) {
-                int modIndex = listEstructurasModificar.indexOf(estructuraSeleccionada);
-                listEstructurasModificar.remove(modIndex);
-                listEstructurasBorrar.add(estructuraSeleccionada);
-            } else if (!listEstructurasCrear.isEmpty() && listEstructurasCrear.contains(estructuraSeleccionada)) {
-                int crearIndex = listEstructurasCrear.indexOf(estructuraSeleccionada);
-                listEstructurasCrear.remove(crearIndex);
-            } else {
-                listEstructurasBorrar.add(estructuraSeleccionada);
-            }
-            listaEstructuras.remove(estructuraSeleccionada);
-            if (tipoListaEstructura == 1) {
-                filtrarListaEstructuras.remove(estructuraSeleccionada);
-            }
-            modificarInfoRegistroEs(listaEstructuras.size());
-            RequestContext.getCurrentInstance().update("form:infoRegistroEst");
-            cambiosPagina = false;
-            context.update("form:ACEPTAR");
-            context.update("form:datosEstructura");
-            activarLOV = true;
-            RequestContext.getCurrentInstance().update("form:listaValores");
-            estructuraSeleccionada = null;
-
-            if (guardadoEstructura == true) {
-                guardadoEstructura = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
-            }
+        if (!listEstructurasModificar.isEmpty() && listEstructurasModificar.contains(estructuraSeleccionada)) {
+            int modIndex = listEstructurasModificar.indexOf(estructuraSeleccionada);
+            listEstructurasModificar.remove(modIndex);
+            listEstructurasBorrar.add(estructuraSeleccionada);
+        } else if (!listEstructurasCrear.isEmpty() && listEstructurasCrear.contains(estructuraSeleccionada)) {
+            int crearIndex = listEstructurasCrear.indexOf(estructuraSeleccionada);
+            listEstructurasCrear.remove(crearIndex);
         } else {
-            context.execute("seleccionarRegistro.show()");
+            listEstructurasBorrar.add(estructuraSeleccionada);
+        }
+        listaEstructuras.remove(estructuraSeleccionada);
+        if (tipoListaEstructura == 1) {
+            filtrarListaEstructuras.remove(estructuraSeleccionada);
+        }
+        modificarInfoRegistroEs(listaEstructuras.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistroEst");
+        cambiosPagina = false;
+        context.update("form:ACEPTAR");
+        context.update("form:datosEstructura");
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+        estructuraSeleccionada = null;
+
+        if (guardadoEstructura == true) {
+            guardadoEstructura = false;
+            //RequestContext.getCurrentInstance().update("form:aceptar");
+        }
+    }
+    //CREAR ORGANIGRAMA
+
+    public void agregarNuevoOrganigrama() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (nuevoOrganigrama.getEmpresa().getSecuencia() == null || nuevoOrganigrama.getCodigo() == null) {
+            context.update("form:validacioNuevoOrganigrama");
+            context.execute("validacioNuevoOrganigrama.show()");
+        } else {
+            boolean continuar = true;
+            for (int i = 0; i < listaOrganigramas.size(); i++) {
+                if (listaOrganigramas.get(i).getCodigo().equals(nuevoOrganigrama.getCodigo())) {
+                    System.out.println(" nuevo codigo 1 igual");
+                    context.update("formularioDialogos:validacionCodigoRepetido");
+                    context.execute("validacionCodigoRepetido.show()");
+                    continuar = false;
+                    break;
+                } else if (listaOrganigramas.get(i).getFecha().equals(nuevoOrganigrama.getFecha())
+                        && listaOrganigramas.get(i).getEmpresa().equals(nuevoOrganigrama.getEmpresa())) {
+                    System.out.println(" nuevo fecha 1 igual para Empresa");
+                    context.update("formularioDialogos:validacionFechaRepetida");
+                    context.execute("validacionFechaRepetida.show()");
+                    continuar = false;
+                    break;
+                }
+            }
+            if (continuar) {
+                //AGREGAR REGISTRO A LA LISTA ORGANIGRAMAS.
+                k++;
+                l = BigInteger.valueOf(k);
+                nuevoOrganigrama.setSecuencia(l);
+                listOrganigramasCrear.add(nuevoOrganigrama);
+                listaOrganigramas.add(nuevoOrganigrama);
+                organigramaSeleccionado = listaOrganigramas.get(listaOrganigramas.indexOf(nuevoOrganigrama));
+                contarRegistrosOr();
+                anularBotonLOV();
+                nuevoOrganigrama = new Organigramas();
+                nuevoOrganigrama.setEmpresa(new Empresas());
+                nuevoOrganigrama.setEstado("A");
+                if (bandera == 1) {
+                    restaurarTabla();
+                }
+                if (guardado == true) {
+                    guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                }
+                context.update("form:datosOrganigramas");
+                context.execute("NuevoRegistroOrganigramas.hide()");
+                context.update("form:arbolEstructuras");
+            }
+        }
+    }
+
+    //LIMPIAR NUEVO REGISTRO
+    public void limpiarNuevoOrganigrama() {
+        nuevoOrganigrama = new Organigramas();
+        nuevoOrganigrama.setEmpresa(new Empresas());
+        nuevoOrganigrama.setEstado("A");
+    }
+
+    //DUPLICAR
+    public void duplicarOrg() {
+        duplicarOrganigrama = new Organigramas();
+        duplicarOrganigrama.setFecha(organigramaSeleccionado.getFecha());
+        duplicarOrganigrama.setCodigo(organigramaSeleccionado.getCodigo());
+        duplicarOrganigrama.setEmpresa(organigramaSeleccionado.getEmpresa());
+        duplicarOrganigrama.setEstado(organigramaSeleccionado.getEstado());
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("formularioDialogos:duplicarOrganigrama");
+        context.execute("DuplicarRegistroOrganigramas.show()");
+    }
+
+    public void confirmarDuplicar() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (duplicarOrganigrama.getEmpresa().getSecuencia() == null || duplicarOrganigrama.getCodigo() == null) {
+            context.update("form:validacioNuevoOrganigrama");
+            context.execute("validacioNuevoOrganigrama.show()");
+        } else {
+            boolean continuar = true;
+            for (int i = 0; i < listaOrganigramas.size(); i++) {
+                if (listaOrganigramas.get(i).getCodigo().equals(duplicarOrganigrama.getCodigo())) {
+                    System.out.println(" nuevo codigo 1 igual");
+                    context.update("formularioDialogos:validacionCodigoRepetido");
+                    context.execute("validacionCodigoRepetido.show()");
+                    continuar = false;
+                    break;
+                } else if (listaOrganigramas.get(i).getFecha().equals(duplicarOrganigrama.getFecha())
+                        && listaOrganigramas.get(i).getEmpresa().equals(duplicarOrganigrama.getEmpresa())) {
+                    System.out.println(" nuevo fecha 1 igual para Empresa");
+                    context.update("formularioDialogos:validacionFechaRepetida");
+                    context.execute("validacionFechaRepetida.show()");
+                    continuar = false;
+                    break;
+                }
+            }
+            if (continuar) {
+                k++;
+                l = BigInteger.valueOf(k);
+                duplicarOrganigrama.setSecuencia(l);
+                listaOrganigramas.add(duplicarOrganigrama);
+                listOrganigramasCrear.add(duplicarOrganigrama);
+                organigramaSeleccionado = listaOrganigramas.get(listaOrganigramas.indexOf(duplicarOrganigrama));
+                contarRegistrosOr();
+                anularBotonLOV();
+                if (guardado == true) {
+                    guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                }
+                if (bandera == 1) {
+                    restaurarTabla();
+                }
+                context.update("form:datosOrganigramas");
+                duplicarOrganigrama = new Organigramas();
+                context.execute("DuplicarRegistroOrganigramas.hide()");
+                contarRegistrosOr();
+            }
+        }
+    }
+    //LIMPIAR DUPLICAR
+
+    public void limpiarduplicarVTC() {
+        duplicarOrganigrama = new Organigramas();
+        duplicarOrganigrama.setEmpresa(new Empresas());
+    }
+
+    //BORRAR
+    public void borrarOrganigrama() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (!listOrganigramasModificar.isEmpty() && listOrganigramasModificar.contains(organigramaSeleccionado)) {
+            listOrganigramasModificar.remove(organigramaSeleccionado);
+            listOrganigramasBorrar.add(organigramaSeleccionado);
+        } else if (!listOrganigramasCrear.isEmpty() && listOrganigramasCrear.contains(organigramaSeleccionado)) {
+            listOrganigramasCrear.remove(organigramaSeleccionado);
+        } else {
+            listOrganigramasBorrar.add(organigramaSeleccionado);
+        }
+        listaOrganigramas.remove(organigramaSeleccionado);
+        if (tipoLista == 1) {
+            filtrarListaOrganigramas.remove(organigramaSeleccionado);
+        }
+        contarRegistrosOr();
+        anularBotonLOV();
+        context.update("form:datosOrganigramas");
+        organigramaSeleccionado = null;
+        if (guardado == true) {
+            guardado = false;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+        }
+    }
+
+    public void borradoGeneral() {
+        if (estructuraSeleccionada != null) {
+            borrarEstructura();
+        } else if (organigramaSeleccionado != null) {
+            borrarOrganigrama();
+        } else {
+            RequestContext.getCurrentInstance().execute("seleccionarRegistro.show()");
+        }
+    }
+
+    //LOV EMPRESAS
+    public void actualizarEmpresa() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (tipoActualizacion == 0) {
+            organigramaSeleccionado.setEmpresa(empresaSeleccionada);
+            if (!listOrganigramasCrear.contains(organigramaSeleccionado)) {
+                if (listOrganigramasModificar.isEmpty()) {
+                    listOrganigramasModificar.add(organigramaSeleccionado);
+                } else if (!listOrganigramasModificar.contains(organigramaSeleccionado)) {
+                    listOrganigramasModificar.add(organigramaSeleccionado);
+                }
+            }
+            if (guardado == true) {
+                guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+            }
+            context.update("form:datosOrganigramas");
+        } else if (tipoActualizacion == 1) {
+            nuevoOrganigrama.setEmpresa(empresaSeleccionada);
+            context.update("formularioDialogos:nuevoOrganigrama");
+        } else if (tipoActualizacion == 2) {
+            duplicarOrganigrama.setEmpresa(empresaSeleccionada);
+            context.update("formularioDialogos:duplicarOrganigrama");
+        }
+        filtradoEmpresas = null;
+        empresaSeleccionada = null;
+        aceptar = true;
+        tipoActualizacion = -1;
+
+        context.reset("form:lovEmpresas:globalFilter");
+        context.execute("lovEmpresas.clearFilters()");
+        context.execute("EmpresasDialogo.hide()");
+        context.update("form:EmpresasDialogo");
+        context.update("form:lovEmpresas");
+        context.update("form:aceptarE");
+    }
+
+    public void cancelarEmpresa() {
+        filtradoEmpresas = null;
+        empresaSeleccionada = null;
+        aceptar = true;
+        tipoActualizacion = -1;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.reset("form:lovEmpresas:globalFilter");
+        context.execute("lovEmpresas.clearFilters()");
+        context.execute("EmpresasDialogo.hide()");
+        context.update("form:EmpresasDialogo");
+        context.update("form:lovEmpresas");
+        context.update("form:aceptarE");
+    }
+
+    //GUARDAR
+    public void guardarCambiosOrganigramas() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        try {
+            if (guardado == false) {
+                if (!listOrganigramasBorrar.isEmpty()) {
+                    for (int i = 0; i < listOrganigramasBorrar.size(); i++) {
+                        administrarEstructuraPlanta.borrarOrganigrama(listOrganigramasBorrar.get(i));
+                    }
+                    listOrganigramasBorrar.clear();
+                }
+                if (!listOrganigramasCrear.isEmpty()) {
+                    for (int i = 0; i < listOrganigramasCrear.size(); i++) {
+                        administrarEstructuraPlanta.crearOrganigrama(listOrganigramasCrear.get(i));
+                    }
+                    listOrganigramasCrear.clear();
+                }
+                if (!listOrganigramasModificar.isEmpty()) {
+                    administrarEstructuraPlanta.modificarOrganigrama(listOrganigramasModificar);
+                    listOrganigramasModificar.clear();
+                }
+                listaOrganigramas = null;
+                getListaOrganigramas();
+                organigramaSeleccionado = null;
+                context.update("form:datosOrganigramas");
+                contarRegistrosOr();
+                guardado = true;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                k = 0;
+                FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                context.update("form:growl");
+            }
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosOrganigramas Controlador : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
     }
 
@@ -967,38 +1335,24 @@ public class ControlEstructuraPlanta implements Serializable {
      */
     public void activarCtrlF11() {
         if (bandera == 0) {
-            altoTablaOrganigrama = "43";
-            organigramaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaFecha");
+            altoTablaOrganigrama = "41";
+            organigramaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigramas:organigramaFecha");
             organigramaFecha.setFilterStyle("width: 85%");
-            organigramaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaCodigo");
+            organigramaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigramas:organigramaCodigo");
             organigramaCodigo.setFilterStyle("width: 85%");
-            organigramaEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaEmpresa");
+            organigramaEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigramas:organigramaEmpresa");
             organigramaEmpresa.setFilterStyle("width: 85%");
-            organigramaNIT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaNIT");
+            organigramaNIT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigramas:organigramaNIT");
             organigramaNIT.setFilterStyle("width: 85%");
-            organigramaEstado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaEstado");
+            organigramaEstado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigramas:organigramaEstado");
             organigramaEstado.setFilterStyle("width: 85%");
-            RequestContext.getCurrentInstance().update("form:datosOrganigrama");
+            RequestContext.getCurrentInstance().update("form:datosOrganigramas");
             bandera = 1;
         } else if (bandera == 1) {
-            altoTablaOrganigrama = "65";
-            organigramaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaFecha");
-            organigramaFecha.setFilterStyle("display: none; visibility: hidden;");
-            organigramaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaCodigo");
-            organigramaCodigo.setFilterStyle("display: none; visibility: hidden;");
-            organigramaEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaEmpresa");
-            organigramaEmpresa.setFilterStyle("display: none; visibility: hidden;");
-            organigramaNIT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaNIT");
-            organigramaNIT.setFilterStyle("display: none; visibility: hidden;");
-            organigramaEstado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaEstado");
-            organigramaEstado.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosOrganigrama");
-            bandera = 0;
-            filtrarListaOrganigramas = null;
-            tipoLista = 0;
+            restaurarTabla();
         }
         if (banderaEstructura == 0) {
-            altoTablaEstructura = "188";
+            altoTablaEstructura = "186";
             estructuraEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructura");
             estructuraEstructura.setFilterStyle("width: 85%");
             estructuraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCodigo");
@@ -1014,23 +1368,7 @@ public class ControlEstructuraPlanta implements Serializable {
             RequestContext.getCurrentInstance().update("form:datosEstructura");
             banderaEstructura = 1;
         } else if (banderaEstructura == 1) {
-            altoTablaEstructura = "210";
-            estructuraEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructura");
-            estructuraEstructura.setFilterStyle("display: none; visibility: hidden;");
-            estructuraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCodigo");
-            estructuraCodigo.setFilterStyle("display: none; visibility: hidden;");
-            estructuraCantidadControlar = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadControlar");
-            estructuraCantidadControlar.setFilterStyle("display: none; visibility: hidden;");
-            estructuraCantidadActivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadActivo");
-            estructuraCantidadActivo.setFilterStyle("display: none; visibility: hidden;");
-            estructuraCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCentroCosto");
-            estructuraCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-            estructuraEstructuraPadre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructuraPadre");
-            estructuraEstructuraPadre.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosEstructura");
-            banderaEstructura = 0;
-            filtrarListaEstructuras = null;
-            tipoListaEstructura = 0;
+            restaurarTablaEstr();
         }
     }
 
@@ -1040,40 +1378,10 @@ public class ControlEstructuraPlanta implements Serializable {
      */
     public void salir() {
         if (bandera == 1) {
-            altoTablaOrganigrama = "65";
-            organigramaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaFecha");
-            organigramaFecha.setFilterStyle("width: 85%");
-            organigramaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaCodigo");
-            organigramaCodigo.setFilterStyle("width: 85%");
-            organigramaEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaEmpresa");
-            organigramaEmpresa.setFilterStyle("width: 85%");
-            organigramaNIT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaNIT");
-            organigramaNIT.setFilterStyle("width: 85%");
-            organigramaEstado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOrganigrama:organigramaEstado");
-            organigramaEstado.setFilterStyle("width: 85%");
-            RequestContext.getCurrentInstance().update("form:datosOrganigrama");
-            bandera = 0;
-            filtrarListaOrganigramas = null;
-            tipoLista = 0;
+            restaurarTabla();
         }
         if (banderaEstructura == 1) {
-            altoTablaEstructura = "210";
-            estructuraEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructura");
-            estructuraEstructura.setFilterStyle("display: none; visibility: hidden;");
-            estructuraCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCodigo");
-            estructuraCodigo.setFilterStyle("display: none; visibility: hidden;");
-            estructuraCantidadControlar = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadControlar");
-            estructuraCantidadControlar.setFilterStyle("display: none; visibility: hidden;");
-            estructuraCantidadActivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCantidadActivo");
-            estructuraCantidadActivo.setFilterStyle("display: none; visibility: hidden;");
-            estructuraCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraCentroCosto");
-            estructuraCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-            estructuraEstructuraPadre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstructura:estructuraEstructuraPadre");
-            estructuraEstructuraPadre.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosEstructura");
-            banderaEstructura = 0;
-            filtrarListaEstructuras = null;
-            tipoListaEstructura = 0;
+            restaurarTablaEstr();
         }
         listOrganigramasModificar.clear();
         listEstructurasBorrar.clear();
@@ -1094,7 +1402,7 @@ public class ControlEstructuraPlanta implements Serializable {
         altoTablaOrganigrama = "65";
         altoTablaEstructura = "210";
         RequestContext.getCurrentInstance().update("form:datosEstructura");
-        RequestContext.getCurrentInstance().update("form:datosOrganigrama");
+        RequestContext.getCurrentInstance().update("form:datosOrganigramas");
     }
 
     public void listaValoresBoton() {
@@ -1112,6 +1420,13 @@ public class ControlEstructuraPlanta implements Serializable {
                 context.update("form:EstructuraPadreDialogo");
                 context.execute("EstructuraPadreDialogo.show()");
                 tipoActualizacion = 0;
+            }
+        } else if (organigramaSeleccionado != null) {
+            if (cualCelda == 2) {
+                activarBotonLOV();
+                contarRegistrosLovEmp(0);
+                context.update("form:EmpresasDialogo");
+                context.execute("EmpresasDialogo.show()");
             }
         }
     }
@@ -1173,6 +1488,26 @@ public class ControlEstructuraPlanta implements Serializable {
         }
     }
 
+    //ASIGNAR INDEX PARA LA TABLA PRINCIPAL
+    public void asignarIndexTabla(Organigramas organigrama) {
+        organigramaSeleccionado = organigrama;
+        tipoActualizacion = 0;
+        activarBotonLOV();
+        contarRegistrosLovEmp(0);
+        RequestContext.getCurrentInstance().update("form:EmpresasDialogo");
+        RequestContext.getCurrentInstance().execute("EmpresasDialogo.show()");
+    }
+
+    //ASIGNAR INDEX PARA DIALOGOS COMUNES (tipoAct = NUEVO - DUPLICADO)
+    public void asignarIndexDialogos(int tipoAct) {
+        RequestContext context = RequestContext.getCurrentInstance();
+        tipoActualizacion = tipoAct;
+        anularBotonLOV();
+        contarRegistrosLovEmp(0);
+        context.update("form:EmpresasDialogo");
+        context.execute("EmpresasDialogo.show()");
+    }
+
     public void valoresBackupAutocompletarGeneral(int tipoNuevo, String Campo) {
 
         if (Campo.equals("PROCESOPRODUCTIVO")) {
@@ -1187,6 +1522,47 @@ public class ControlEstructuraPlanta implements Serializable {
                 estructuraPadre = nuevoEstructura.getEstructurapadre().getNombre();
             } else if (tipoNuevo == 2) {
                 estructuraPadre = duplicarEstructura.getEstructurapadre().getNombre();
+            }
+        }
+    }
+
+    public void autocompletarNuevoyDuplicado(String valorConfirmar, int tipoNuevo) {
+        int coincidencias = 0;
+        int indiceUnicoElemento = 0;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (tipoNuevo == 1) {
+            nuevoOrganigrama.getEmpresa().setNombre(auxEmpresa);
+        } else if (tipoNuevo == 2) {
+            duplicarOrganigrama.getEmpresa().setNombre(auxEmpresa);
+        }
+        for (int i = 0; i < lovEmpresas.size(); i++) {
+            if (lovEmpresas.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                indiceUnicoElemento = i;
+                coincidencias++;
+            }
+        }
+        if (coincidencias == 1) {
+            if (tipoNuevo == 1) {
+                nuevoOrganigrama.setEmpresa(lovEmpresas.get(indiceUnicoElemento));
+                context.update("formularioDialogos:nuevaEmpresa");
+                context.update("formularioDialogos:nuevoNit");
+            } else if (tipoNuevo == 2) {
+                duplicarOrganigrama.setEmpresa(lovEmpresas.get(indiceUnicoElemento));
+                context.update("formularioDialogos:duplicarEmpresa");
+                context.update("formularioDialogos:duplicarNit");
+            }
+            lovEmpresas.clear();
+            getLovEmpresas();
+        } else {
+            context.update("form:EmpresasDialogo");
+            context.execute("EmpresasDialogo.show()");
+            tipoActualizacion = tipoNuevo;
+            if (tipoNuevo == 1) {
+                context.update("formularioDialogos:nuevaEmpresa");
+                context.update("formularioDialogos:nuevoNit");
+            } else if (tipoNuevo == 2) {
+                context.update("formularioDialogos:duplicarEmpresa");
+                context.update("formularioDialogos:duplicarNit");
             }
         }
     }
@@ -1382,13 +1758,12 @@ public class ControlEstructuraPlanta implements Serializable {
     //EXPORTAR
 
     public String exportXML() {
-        if (organigramaSeleccionado != null) {
-            nombreTabla = ":formExportarO:datosOrganigramaExportar";
-            nombreXML = "Organigramas_XML";
-        }
         if (estructuraSeleccionada != null) {
             nombreTabla = ":formExportarE:datosEstructuraExportar";
             nombreXML = "Estructuras_XML";
+        } else if (organigramaSeleccionado != null) {
+            nombreTabla = ":formExportarO:datosOrganigramasExportar";
+            nombreXML = "Organigramas_XML";
         }
         return nombreTabla;
     }
@@ -1399,16 +1774,15 @@ public class ControlEstructuraPlanta implements Serializable {
      * @throws IOException Excepcion de In-Out de datos
      */
     public void validarExportPDF() throws IOException {
-        if (organigramaSeleccionado != null) {
-            exportPDF_O();
-        }
         if (estructuraSeleccionada != null) {
             exportPDF_E();
+        } else if (organigramaSeleccionado != null) {
+            exportPDF_O();
         }
     }
 
     public void exportPDF_O() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportarO:datosOrganigramaExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportarO:datosOrganigramasExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "Organigramas_PDF", false, false, "UTF-8", null, null);
@@ -1429,16 +1803,15 @@ public class ControlEstructuraPlanta implements Serializable {
      * @throws IOException Excepcion de In-Out de datos
      */
     public void validarExportXLS() throws IOException {
-        if (organigramaSeleccionado != null) {
-            exportXLS_O();
-        }
         if (estructuraSeleccionada != null) {
             exportXLS_E();
+        } else if (organigramaSeleccionado != null) {
+            exportXLS_O();
         }
     }
 
     public void exportXLS_O() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportarO:datosOrganigramaExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportarO:datosOrganigramasExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "Organigramas_XLS", false, false, "UTF-8", null, null);
@@ -1461,6 +1834,16 @@ public class ControlEstructuraPlanta implements Serializable {
     /**
      * Evento que cambia la lista reala a la filtrada
      */
+    public void anularBotonLOV() {
+        activarLOV = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+    }
+
+    public void activarBotonLOV() {
+        activarLOV = false;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+    }
+
     public void eventoFiltrarO() {
         if (tipoLista == 0) {
             tipoLista = 1;
@@ -1508,6 +1891,17 @@ public class ControlEstructuraPlanta implements Serializable {
         RequestContext.getCurrentInstance().update("form:infoRegistroEst");
     }
 
+    public void contarRegistrosLovEmp(int tipoListaLOV) {
+        if (tipoListaLOV == 1) {
+            infoRegistroEmpresa = String.valueOf(filtradoEmpresas.size());
+        } else if (lovEmpresas != null) {
+            infoRegistroEmpresa = String.valueOf(lovEmpresas.size());
+        } else {
+            infoRegistroEmpresa = String.valueOf(0);
+        }
+        RequestContext.getCurrentInstance().update("form:infoRegistroEmpresa");
+    }
+
     private void modificarInfoRegistrosCCosto(int valor) {
         infoRegistroCentroCosto = String.valueOf(valor);
         RequestContext.getCurrentInstance().update("form:infoRegistroCentroCosto");
@@ -1526,6 +1920,22 @@ public class ControlEstructuraPlanta implements Serializable {
         modificarInfoRegistroEsPa(filtrarLovEstructurasPadres.size());
     }
 
+    public void eventoFiltrarLovEmp() {
+        contarRegistrosLovEmp(1);
+    }
+
+    public void verificarNuevaExtructura() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (organigramaSeleccionado != null) {
+            context.update("formularioDialogos:DialogNuevaEstructura");
+            context.update("formularioDialogos:nuevoEstructura");
+            context.execute("DialogNuevaEstructura.show()");
+        } else {
+            context.update("formularioDialogos:validacionNuevaExtructura");
+            context.execute("validacionNuevaExtructura.show()");
+        }
+    }
+
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
     public void verificarRastro() {
         if (organigramaSeleccionado == null && estructuraSeleccionada == null) {
@@ -1542,7 +1952,6 @@ public class ControlEstructuraPlanta implements Serializable {
     public void verificarRastroOrganigrama() {
         RequestContext context = RequestContext.getCurrentInstance();
         int resultado = administrarRastros.obtenerTabla(organigramaSeleccionado.getSecuencia(), "ORGANIGRAMAS");
-        organigramaSeleccionado = null;
         if (resultado == 1) {
             context.execute("errorObjetosDB.show()");
         } else if (resultado == 2) {
@@ -1574,7 +1983,6 @@ public class ControlEstructuraPlanta implements Serializable {
     public void verificarRastroEstructura() {
         RequestContext context = RequestContext.getCurrentInstance();
         int resultado = administrarRastros.obtenerTabla(estructuraSeleccionada.getSecuencia(), "ESTRUCTURAS");
-        estructuraSeleccionada = null;
         if (resultado == 1) {
             context.execute("errorObjetosDB.show()");
         } else if (resultado == 2) {
@@ -1606,7 +2014,7 @@ public class ControlEstructuraPlanta implements Serializable {
     public void recordarSeleccionOr() {
         if (organigramaSeleccionado != null) {
             FacesContext c = FacesContext.getCurrentInstance();
-            tabla = (DataTable) c.getViewRoot().findComponent("form:datosOrganigrama");
+            tabla = (DataTable) c.getViewRoot().findComponent("form:datosOrganigramas");
             tabla.setSelection(organigramaSeleccionado);
         }
     }
@@ -1941,5 +2349,56 @@ public class ControlEstructuraPlanta implements Serializable {
 
     public void setActivarLOV(boolean activarLOV) {
         this.activarLOV = activarLOV;
+    }
+
+    public List<Empresas> getLovEmpresas() {
+        if (lovEmpresas == null) {
+            lovEmpresas = administrarEstructuraPlanta.consultarEmpresas();
+        }
+        return lovEmpresas;
+    }
+
+    public void setLovEmpresas(List<Empresas> listaEmpresas) {
+        this.lovEmpresas = listaEmpresas;
+    }
+
+    public Empresas getEmpresaSeleccionada() {
+        return empresaSeleccionada;
+    }
+
+    public void setEmpresaSeleccionada(Empresas empresaSeleccionada) {
+        this.empresaSeleccionada = empresaSeleccionada;
+    }
+
+    public List<Empresas> getFiltradoEmpresas() {
+        return filtradoEmpresas;
+    }
+
+    public void setFiltradoEmpresas(List<Empresas> filtradoEmpresas) {
+        this.filtradoEmpresas = filtradoEmpresas;
+    }
+
+    public String getInfoRegistroEmpresa() {
+        return infoRegistroEmpresa;
+    }
+
+    public void setInfoRegistroEmpresa(String infoRegistroEmpresa) {
+        this.infoRegistroEmpresa = infoRegistroEmpresa;
+    }
+
+    public Organigramas getDuplicarOrganigrama() {
+        return duplicarOrganigrama;
+    }
+
+    public void setDuplicarOrganigrama(Organigramas duplicarOrganigrama) {
+        this.duplicarOrganigrama = duplicarOrganigrama;
+    }
+
+    public Organigramas getNuevoOrganigrama() {
+        return nuevoOrganigrama;
+    }
+
+    public void setNuevoOrganigrama(Organigramas nuevoOrganigrama) {
+        this.nuevoOrganigrama = nuevoOrganigrama;
     }
 }

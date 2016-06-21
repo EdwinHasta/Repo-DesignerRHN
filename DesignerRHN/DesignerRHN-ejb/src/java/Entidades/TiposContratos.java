@@ -31,6 +31,8 @@ public class TiposContratos implements Serializable {
     @Size(max = 1)
     @Column(name = "VINCULACIONEMPRESA")
     private String vinculacionempresa;
+    @Transient
+    private String vinculacionempresacmp;
     @Size(max = 1)
     @Column(name = "FORZACOTIZACIONPILA30DIAS")
     private String forzacotizacionpila30dias;
@@ -88,6 +90,30 @@ public class TiposContratos implements Serializable {
 
     public String getVinculacionempresa() {
         return vinculacionempresa;
+    }
+
+    public String getVinculacionempresacmp() {
+        if (getVinculacionempresa() == null) {
+            vinculacionempresacmp = "";
+        } else if (getVinculacionempresa().equals("S")) {
+            vinculacionempresacmp = "SI";
+        } else if (getVinculacionempresa().equals("N")) {
+            vinculacionempresacmp = "NO";
+        } else {
+            vinculacionempresacmp = "";
+        }
+        return vinculacionempresacmp;
+    }
+
+    public void setVinculacionempresacmp(String vinculacionempresacmp) {
+         this.vinculacionempresacmp = vinculacionempresacmp;
+        if (this.vinculacionempresacmp.equals("SI")) {
+            setVinculacionempresa("S");
+        } else if (this.vinculacionempresacmp.equals("NO")) {
+            setVinculacionempresa("N");
+        } else {
+            setVinculacionempresa("");
+        }
     }
 
     public void setVinculacionempresa(String vinculacionempresa) {

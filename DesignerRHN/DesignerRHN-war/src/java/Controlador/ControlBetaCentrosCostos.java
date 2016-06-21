@@ -45,18 +45,19 @@ public class ControlBetaCentrosCostos implements Serializable {
     private int cualCelda, tipoLista, tipoActualizacion, k, bandera;
     private BigInteger l;
     private boolean aceptar, guardado;
+    private String permitirCambioBotonLov;
     //AutoCompletar
     private boolean permitirIndex;
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
-//EMPRESA
+    //EMPRESA
     private List<Empresas> lovEmpresas;
     private List<Empresas> filtradoListaEmpresas;
     private Empresas empresaSeleccionada;
     private int banderaModificacionEmpresa;
     private int indiceEmpresaMostrada;
-//LISTA CENTRO COSTO
+    //LISTA CENTRO COSTO
     private List<CentrosCostos> listCentrosCostosPorEmpresa;
     private List<CentrosCostos> lovCentrosCostosPorEmpresa;
     private List<CentrosCostos> filtrarCentrosCostos;
@@ -137,6 +138,7 @@ public class ControlBetaCentrosCostos implements Serializable {
         mostrartodos = true;
         activarLOV = true;
         cualCelda = -1;
+        permitirCambioBotonLov = "SIapagar";
     }
 
     @PostConstruct
@@ -186,10 +188,12 @@ public class ControlBetaCentrosCostos implements Serializable {
 
         if (permitirIndex == true) {
             if (cualCelda == 2) {
+                permitirCambioBotonLov = "NOapagar";
                 activarLOV = false;
                 RequestContext.getCurrentInstance().update("form:listaValores");
                 grupoTipoCentroCostoAutocompletar = centroCostoSeleccionado.getTipocentrocosto().getNombre();
             } else {
+                permitirCambioBotonLov = "SoloHacerNull";
                 activarLOV = true;
                 RequestContext.getCurrentInstance().update("form:listaValores");
             }
@@ -199,11 +203,24 @@ public class ControlBetaCentrosCostos implements Serializable {
     public void cambiarIndiceDefault() {
         System.out.println("cambiarIndiceDefault");
         System.err.println("cualCelda = " + cualCelda);
-        cualCelda = -1;
+//        if (cualCelda == 2) {
+//            activarLOV = false;
+//        } else {
+        if (permitirCambioBotonLov.equals("SoloHacerNull")) {
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
+        } else if (permitirCambioBotonLov.equals("SIapagar")) {
+            activarLOV = true;
+            RequestContext.getCurrentInstance().update("form:listaValores");
+            cualCelda = -1;
+        } else if (permitirCambioBotonLov.equals("NOapagar")) {
+            activarLOV = false;
+            RequestContext.getCurrentInstance().update("form:listaValores");
+        }
+        permitirCambioBotonLov = "SIapagar";
+//        }
         System.err.println("cualCelda quedo = " + cualCelda);
         System.err.println("centroCostoSeleccionado = " + centroCostoSeleccionado.getNombre());
-        activarLOV = true;
-        RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
     public void modificandoCentroCosto(CentrosCostos centroCosto, String confirmarCambio, String valorConfirmar) {

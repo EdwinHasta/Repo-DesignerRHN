@@ -8,9 +8,12 @@ import Entidades.TiposCotizantes;
 import Entidades.TiposTrabajadores;
 import Entidades.VigenciasDiasTT;
 import Entidades.VigenciasTiposTrabajadores;
+import Exportar.ExportarPDF;
+import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarTiposCotizantesInterface;
 import InterfaceAdministrar.AdministrarTiposTrabajadoresInterface;
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.*;
@@ -21,12 +24,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import org.primefaces.component.export.Exporter;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
 
 /**
- *
  * @author user
  */
 @ManagedBean
@@ -55,7 +58,9 @@ public class ControlTiposTrabajadores implements Serializable {
     private List<TiposTrabajadores> filtrarLovTiposTrabajadores;
     private TiposTrabajadores tipoTrabajadorLovSeleccionado;
     //Columnas Tabla Tipos Trabajadores
-    private Column tTCodigo, tTNombre, ttFactorD, ttTipoCot, ttDiasVacNoOrd, ttDiasVac;
+    private Column tTCodigo, tTNombre, ttFactorD, ttTipoCot, ttDiasVacNoOrd, ttDiasVac,
+            tTModalidad, tTTipo, tTNivel, tTBase, tTPor, tTMPS, tTPatronPS, tTPatronPP, tTPatronPR, tTCesCC,
+            VDTdias, VDTFecha;
     //Variables de control
     private int tipoActualizacion;
     private int bandera;
@@ -63,7 +68,7 @@ public class ControlTiposTrabajadores implements Serializable {
     private boolean guardado;
     private int cualCelda, tipoLista, tipoListaVD, cualCeldaVD;
     public String infoRegistroTT, infoRegistroTC, infoRegistroVD, infoRegistroLovTT;
-    private String altoTabla;
+    private String altoTabla, altoTablaVD;
     //modificar
     private List<TiposTrabajadores> listTTModificar;
     //crear
@@ -77,8 +82,17 @@ public class ControlTiposTrabajadores implements Serializable {
     private TiposTrabajadores editarTT;
     //duplicar
     private TiposTrabajadores duplicarTT;
+    //Vigencias Dias
+    private List<VigenciasDiasTT> listVDModificar;
+    private List<VigenciasDiasTT> listVDCrear;
+    private List<VigenciasDiasTT> listVDBorrar;
+    private VigenciasDiasTT nuevaVD;
+    private VigenciasDiasTT duplicarVD;
+    private VigenciasDiasTT editarVD;
     //Backs
     private TiposCotizantes tipoCotizanteBack;
+    private String nombreTTBack;
+    private Short codigoBack;
     private Date fechaVDBack;
     //pagina anterior
     private String paginaAnterior;
@@ -88,6 +102,15 @@ public class ControlTiposTrabajadores implements Serializable {
     private DataTable tablaTT, tablaVD;
 //    private Map<BigInteger, String> mapaModalidades;
     private boolean mostrartodos;
+    //RASTROS
+    private String nombreTablaRastro, msnConfirmarRastro, msnConfirmarRastroHistorico;
+    //
+    private String permitirCambioBotonLov;
+    private int tablaActiva;
+    //CLONAR
+    private String nombreNuevoClonado;
+    private Short codigoNuevoClonado;
+    private TiposTrabajadores tipoTrabajadorAClonar;
 
     /**
      * Creates a new instance of ControlTiposTrabajadores
@@ -109,6 +132,7 @@ public class ControlTiposTrabajadores implements Serializable {
         infoRegistroTT = "";
         infoRegistroTC = "";
         altoTabla = "180";
+        altoTablaVD = "50";
         //modificar
         listTTModificar = new ArrayList<TiposTrabajadores>();
         //crear
@@ -125,9 +149,23 @@ public class ControlTiposTrabajadores implements Serializable {
         activarLOV = true;
         tipoCotizanteBack = new TiposCotizantes();
         fechaVDBack = new Date();
-//        mapaModalidades = new LinkedHashMap<BigInteger, String>();
+//      mapaModalidades = new LinkedHashMap<BigInteger, String>();
         mostrartodos = true;
         lovTiposTrabajadores = null;
+
+        listVDModificar = new ArrayList<VigenciasDiasTT>();
+        listVDCrear = new ArrayList<VigenciasDiasTT>();
+        listVDBorrar = new ArrayList<VigenciasDiasTT>();
+        nuevaVD = new VigenciasDiasTT();
+        duplicarVD = new VigenciasDiasTT();
+        editarVD = new VigenciasDiasTT();
+        permitirCambioBotonLov = "SIapagarCelda";
+        tablaActiva = 0;
+        tipoTrabajadorAClonar = new TiposTrabajadores();
+        nombreNuevoClonado = "";
+        codigoNuevoClonado = new Short("0");
+        nombreTTBack = "";
+        codigoBack = new Short("0");
     }
 
     @PostConstruct
@@ -159,33 +197,6 @@ public class ControlTiposTrabajadores implements Serializable {
         contarRegistrosTT();
         contarRegistrosVD();
     }
-//
-//    public void llenarMapaModalidades() {
-//        for (int i = 0; i < listaTiposTrabajadores.size(); i++) {
-//            String modalidad;
-//            if (listaTiposTrabajadores.get(i).getModalidad() != null) {
-//                modalidad = listaTiposTrabajadores.get(i).getModalidad();
-//            } else {
-//                modalidad = " ";
-//            }
-//
-//            if (modalidad.equals("E")) {
-//                mapaModalidades.put(listaTiposTrabajadores.get(i).getSecuencia(), "EMPLEADO");
-//            } else if (modalidad.equals("P")) {
-//                mapaModalidades.put(listaTiposTrabajadores.get(i).getSecuencia(), "PENSIONADO");
-//            } else if (modalidad.equals("C")) {
-//                mapaModalidades.put(listaTiposTrabajadores.get(i).getSecuencia(), "DISPONIBLE");
-//            } else if (modalidad.equals("L")) {
-//                mapaModalidades.put(listaTiposTrabajadores.get(i).getSecuencia(), "LIQUIDADO");
-//            } else if (modalidad.equals("U")) {
-//                mapaModalidades.put(listaTiposTrabajadores.get(i).getSecuencia(), "UNIVERSITARIO");
-//            } else if (modalidad.equals("D")) {
-//                mapaModalidades.put(listaTiposTrabajadores.get(i).getSecuencia(), "DESTAJO");
-//            } else {
-//                mapaModalidades.put(listaTiposTrabajadores.get(i).getSecuencia(), " ");
-//            }
-//        }
-//    }
 
     public String retornarPagina() {
         return paginaAnterior;
@@ -196,38 +207,66 @@ public class ControlTiposTrabajadores implements Serializable {
         tipoTrabajadorSeleccionado = tipoTrabajador;
         tipoActualizacion = 0;
         cualCelda = celda;
-        System.out.println("tipoTrabajadorSeleccionado : " + tipoTrabajadorSeleccionado.getNombre());
         listaVigenciasDiasTT = administrarTiposTrabajadores.consultarDiasPorTipoT(tipoTrabajadorSeleccionado.getSecuencia());
-        System.out.println("cambiarIndice. listaVigenciasDiasTT : " + listaVigenciasDiasTT);
         if (cualCelda == 3) {
+            permitirCambioBotonLov = "NOapagarCelda";
             tipoCotizanteBack = tipoTrabajadorSeleccionado.getTipocotizante();
             activarBotonLOV();
         } else {
+            permitirCambioBotonLov = "SoloHacerNull";
             anularBotonLOV();
         }
+        if (cualCelda == 0) {
+            codigoBack = tipoTrabajadorSeleccionado.getCodigo();
+        } else if (cualCelda == 1) {
+            nombreTTBack = tipoTrabajadorSeleccionado.getNombre();
+        }
         contarRegistrosVD();
+        vigenciaDiaSeleccionado = null;
         context.update("form:datosVigenciasDTT");
+        tablaActiva = 1;
     }
 
     public void cambiarIndiceDefault() {
-        System.out.println("cambiarIndiceDefault");
-        System.err.println("cualCelda = " + cualCelda);
-        cualCelda = -1;
-        System.err.println("cualCelda quedo = " + cualCelda);
-        System.err.println("tipoTrabajadorSeleccionado = " + tipoTrabajadorSeleccionado.getNombre());
-        anularBotonLOV();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (permitirCambioBotonLov.equals("SoloHacerNull")) {
+            anularBotonLOV();
+        } else if (permitirCambioBotonLov.equals("SIapagarCelda")) {
+            anularBotonLOV();
+            cualCelda = -1;
+        } else if (permitirCambioBotonLov.equals("NOapagarCelda")) {
+            activarBotonLOV();
+        }
+        listaVigenciasDiasTT = administrarTiposTrabajadores.consultarDiasPorTipoT(tipoTrabajadorSeleccionado.getSecuencia());
+        contarRegistrosVD();
+        permitirCambioBotonLov = "SIapagarCelda";
+        tablaActiva = 1;
+        vigenciaDiaSeleccionado = null;
+        System.out.println("cambiarIndiceDefault() tablaActiva: " + tablaActiva);
+        context.update("form:datosVigenciasDTT");
     }
 
     public void cambiarIndiceVD(VigenciasDiasTT vigenciaDia, int celda) {
-        RequestContext context = RequestContext.getCurrentInstance();
+        System.out.println("cambiarIndiceVD celda: " + celda);
         vigenciaDiaSeleccionado = vigenciaDia;
         tipoActualizacion = 0;
         cualCeldaVD = celda;
 
-        if (cualCelda == 1) {
+        if (cualCeldaVD == 1) {
             fechaVDBack = vigenciaDiaSeleccionado.getFechaVigencia();
         }
         anularBotonLOV();
+        tablaActiva = 2;
+    }
+
+    public void cambiarIndiceVDDefault() {
+        System.out.println("cambiarIndiceDefault cualCeldaVD : " + cualCeldaVD);
+        cualCeldaVD = 0;
+        System.out.println("cambiarIndiceDefault cualCeldaVD : " + cualCeldaVD);
+        tipoActualizacion = 0;
+        anularBotonLOV();
+        tablaActiva = 2;
+        System.out.println("cambiarIndiceVDDefault() tablaActiva: " + tablaActiva);
     }
 
     public void asignarIndex(TiposTrabajadores tiposTrabajador, int column) {
@@ -242,6 +281,7 @@ public class ControlTiposTrabajadores implements Serializable {
         } else {
             anularBotonLOV();
         }
+        tablaActiva = 1;
     }
 
     public void lovTipoCotizanteNueyDup(int tipoAct) {
@@ -282,31 +322,101 @@ public class ControlTiposTrabajadores implements Serializable {
                 context.execute("dialogTiposCot.show()");
                 tipoActualizacion = 0;
             }
+            if (coincidencias == 1) {
+                modificarTT(tipoTrabajador);
+            }
         }
-        if (coincidencias == 1) {
-            if (!listTTCrear.contains(tipoTrabajadorSeleccionado)) {
-                if (listTTModificar.isEmpty()) {
-                    listTTModificar.add(tipoTrabajadorSeleccionado);
-                } else if (!listTTModificar.contains(tipoTrabajadorSeleccionado)) {
-                    listTTModificar.add(tipoTrabajadorSeleccionado);
-                }
-                if (guardado) {
-                    guardado = false;
-                    context.update("form:ACEPTAR");
+        if (column.equalsIgnoreCase("COD")) {
+            System.out.println("modificarTT COD valor : " + valor);
+            tipoTrabajadorSeleccionado.setCodigo(codigoBack);
+            Short cod = new Short(valor);
+            for (int i = 0; i < listaTiposTrabajadores.size(); i++) {
+                if (listaTiposTrabajadores.get(i).getCodigo() == cod) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
                 }
             }
+            if (coincidencias > 0) {
+                context.update("form:errorClonadoRepetido");
+                context.execute("errorClonadoRepetido.show()");
+                tipoActualizacion = 0;
+            } else {
+                tipoTrabajadorSeleccionado.setCodigo(cod);
+                modificarTT(tipoTrabajador);
+            }
+        }
+        if (column.equalsIgnoreCase("NOM")) {
+            System.out.println("modificarTT NOM valor : " + valor);
+            tipoTrabajadorSeleccionado.setNombre(nombreTTBack);
+//            llenarLOVTT();
+            for (int i = 0; i < listaTiposTrabajadores.size(); i++) {
+                if (listaTiposTrabajadores.get(i).getNombre().startsWith(valor.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias > 0) {
+                context.update("form:errorClonadoRepetido");
+                context.execute("errorClonadoRepetido.show()");
+            } else {
+                tipoTrabajadorSeleccionado.setNombre(valor);
+//                if (coincidencias == 1) {
+                modificarTT(tipoTrabajador);
+//                }
+            }
+            tipoActualizacion = 0;
         }
         activarBotonLOV();
         context.update("form:datosTTrabajadores");
     }
 
-    public void modificarVRL(TiposTrabajadores tipoTrabajador) {
+    public void modificarTT(TiposTrabajadores tipoTrabajador) {
+        System.out.println("Entro en el evento Change()");
         tipoTrabajadorSeleccionado = tipoTrabajador;
         if (!listTTCrear.contains(tipoTrabajadorSeleccionado)) {
             if (listTTModificar.isEmpty()) {
                 listTTModificar.add(tipoTrabajadorSeleccionado);
             } else if (!listTTModificar.contains(tipoTrabajadorSeleccionado)) {
                 listTTModificar.add(tipoTrabajadorSeleccionado);
+            }
+        }
+        if (guardado) {
+            guardado = false;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+        }
+    }
+
+    public void modificarFechaVD(VigenciasDiasTT vigenciaDia) {
+        vigenciaDiaSeleccionado = vigenciaDia;
+        int coincidencias = 0;
+        int indiceUnicoElemento = 0;
+        RequestContext context = RequestContext.getCurrentInstance();
+        vigenciaDiaSeleccionado.setFechaVigencia(fechaVDBack);
+
+        for (int i = 0; i < listaVigenciasDiasTT.size(); i++) {
+            if (listaVigenciasDiasTT.get(i).getFechaVigencia() == vigenciaDia.getFechaVigencia()) {
+                indiceUnicoElemento = i;
+                coincidencias++;
+            }
+        }
+        if (coincidencias == 1) {
+            context.update("form:dialogErrorFechas");
+            context.execute("dialogErrorFechas.show()");
+            tipoActualizacion = 0;
+        } else {
+            modificarVD(vigenciaDia);
+        }
+        activarBotonLOV();
+        context.update("form:datosVigenciasDTT");
+    }
+
+    public void modificarVD(VigenciasDiasTT vigenciaDia) {
+        vigenciaDiaSeleccionado = vigenciaDia;
+        if (!listVDCrear.contains(vigenciaDiaSeleccionado)) {
+            if (listVDModificar.isEmpty()) {
+                listVDModificar.add(vigenciaDiaSeleccionado);
+            } else if (!listVDModificar.contains(vigenciaDiaSeleccionado)) {
+                listVDModificar.add(vigenciaDiaSeleccionado);
             }
             if (guardado) {
                 guardado = false;
@@ -351,8 +461,8 @@ public class ControlTiposTrabajadores implements Serializable {
             }
         }
     }
-    //LOVS
 
+    //LOVS
     /**
      * Metodo que actualiza la tipo cotizacion seleccionada
      */
@@ -417,6 +527,7 @@ public class ControlTiposTrabajadores implements Serializable {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             altoTabla = "156";
+            altoTablaVD = "26";
             tTCodigo = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTCodigo");
             tTCodigo.setFilterStyle("width: 85%");
             tTNombre = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTNombre");
@@ -429,8 +540,34 @@ public class ControlTiposTrabajadores implements Serializable {
             ttDiasVacNoOrd.setFilterStyle("width: 85%");
             ttDiasVac = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:ttDiasVac");
             ttDiasVac.setFilterStyle("width: 85%");
+            tTModalidad = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTModalidad");
+            tTModalidad.setFilterStyle("width: 85%");
+            tTTipo = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTTipo");
+            tTTipo.setFilterStyle("width: 85%");
+            tTNivel = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTNivel");
+            tTNivel.setFilterStyle("width: 85%");
+            tTBase = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTBase");
+            tTBase.setFilterStyle("width: 85%");
+            tTPor = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTPor");
+            tTPor.setFilterStyle("width: 85%");
+            tTMPS = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTMPS");
+            tTMPS.setFilterStyle("width: 85%");
+            tTPatronPS = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTPatronPS");
+            tTPatronPS.setFilterStyle("width: 85%");
+            tTPatronPP = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTPatronPP");
+            tTPatronPP.setFilterStyle("width: 85%");
+            tTPatronPR = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTPatronPR");
+            tTPatronPR.setFilterStyle("width: 85%");
+            tTCesCC = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTCesCC");
+            tTCesCC.setFilterStyle("width: 85%");
+            //Vigencias Dias TT
+            VDTdias = (Column) c.getViewRoot().findComponent("form:datosVigenciasDTT:VDTdias");
+            VDTdias.setFilterStyle("width: 85%");
+            VDTFecha = (Column) c.getViewRoot().findComponent("form:datosVigenciasDTT:VDTFecha");
+            VDTFecha.setFilterStyle("width: 85%");
 
             RequestContext.getCurrentInstance().update("form:datosTTrabajadores");
+            RequestContext.getCurrentInstance().update("form:datosVigenciasDTT");
             bandera = 1;
 
         } else if (bandera == 1) {
@@ -441,6 +578,7 @@ public class ControlTiposTrabajadores implements Serializable {
     public void restaurarTablaTT() {
         FacesContext c = FacesContext.getCurrentInstance();
         altoTabla = "180";
+        altoTablaVD = "50";
         tTCodigo = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTCodigo");
         tTCodigo.setFilterStyle("display: none; visibility: hidden;");
         tTNombre = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTNombre");
@@ -453,8 +591,34 @@ public class ControlTiposTrabajadores implements Serializable {
         ttDiasVacNoOrd.setFilterStyle("display: none; visibility: hidden;");
         ttDiasVac = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:ttDiasVac");
         ttDiasVac.setFilterStyle("display: none; visibility: hidden;");
+        tTModalidad = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTModalidad");
+        tTModalidad.setFilterStyle("display: none; visibility: hidden;");
+        tTTipo = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTTipo");
+        tTTipo.setFilterStyle("display: none; visibility: hidden;");
+        tTNivel = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTNivel");
+        tTNivel.setFilterStyle("display: none; visibility: hidden;");
+        tTBase = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTBase");
+        tTBase.setFilterStyle("display: none; visibility: hidden;");
+        tTPor = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTPor");
+        tTPor.setFilterStyle("display: none; visibility: hidden;");
+        tTMPS = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTMPS");
+        tTMPS.setFilterStyle("display: none; visibility: hidden;");
+        tTPatronPS = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTPatronPS");
+        tTPatronPS.setFilterStyle("display: none; visibility: hidden;");
+        tTPatronPP = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTPatronPP");
+        tTPatronPP.setFilterStyle("display: none; visibility: hidden;");
+        tTPatronPR = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTPatronPR");
+        tTPatronPR.setFilterStyle("display: none; visibility: hidden;");
+        tTCesCC = (Column) c.getViewRoot().findComponent("form:datosTTrabajadores:tTCesCC");
+        tTCesCC.setFilterStyle("display: none; visibility: hidden;");
+        //Vigencias Dias TT
+        VDTdias = (Column) c.getViewRoot().findComponent("form:datosVigenciasDTT:VDTdias");
+        VDTdias.setFilterStyle("display: none; visibility: hidden;");
+        VDTFecha = (Column) c.getViewRoot().findComponent("form:datosVigenciasDTT:VDTFecha");
+        VDTFecha.setFilterStyle("display: none; visibility: hidden;");
 
         RequestContext.getCurrentInstance().update("form:datosTTrabajadores");
+        RequestContext.getCurrentInstance().update("form:datosVigenciasDTT");
         bandera = 0;
         filtrarTiposTrabajadores = null;
         tipoLista = 0;
@@ -467,7 +631,8 @@ public class ControlTiposTrabajadores implements Serializable {
     public void agregarNuevaTT() {
         RequestContext context = RequestContext.getCurrentInstance();
         int cont = 0;
-        if ((nuevoTipoT.getCodigo() == 0) || (nuevoTipoT.getNombre() != null)) {
+        Short cod = new Short("0");
+        if ((nuevoTipoT.getCodigo() != cod) || (nuevoTipoT.getNombre() != null)) {
 
             for (int j = 0; j < listaTiposTrabajadores.size(); j++) {
                 if (nuevoTipoT.getCodigo() == listaTiposTrabajadores.get(j).getCodigo()) {
@@ -491,6 +656,7 @@ public class ControlTiposTrabajadores implements Serializable {
                 nuevoTipoT.setSecuencia(nuevaSecuencia);
                 listTTCrear.add(nuevoTipoT);
                 listaTiposTrabajadores.add(nuevoTipoT);
+                perderSeleccionTT();
                 tipoTrabajadorSeleccionado = listaTiposTrabajadores.get(listaTiposTrabajadores.indexOf(nuevoTipoT));
 
                 anularBotonLOV();
@@ -507,7 +673,7 @@ public class ControlTiposTrabajadores implements Serializable {
                 context.execute("NuevoRegistroTT.hide()");
             }
         } else {
-            context.execute("errorRegNew.show()");
+            context.execute("errorNewRegNulos.show()");
         }
     }
 //LIMPIAR NUEVO REGISTRO
@@ -524,9 +690,23 @@ public class ControlTiposTrabajadores implements Serializable {
      */
     public void duplicarTT() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (tipoTrabajadorSeleccionado == null) {
+        if (tipoTrabajadorSeleccionado == null && vigenciaDiaSeleccionado == null) {
             context.execute("seleccionarRegistro.show()");
-        } else {
+        } else if (tablaActiva == 2 && vigenciaDiaSeleccionado != null) {
+            duplicarVD = new VigenciasDiasTT();
+            intNuevaSec++;
+            nuevaSecuencia = BigInteger.valueOf(intNuevaSec);
+
+            duplicarVD.setCodigo(vigenciaDiaSeleccionado.getCodigo());
+            duplicarVD.setDias(vigenciaDiaSeleccionado.getDias());
+            duplicarVD.setFechaVigencia(vigenciaDiaSeleccionado.getFechaVigencia());
+            duplicarVD.setTipoTrabajador(vigenciaDiaSeleccionado.getTipoTrabajador());
+            duplicarVD.setSecuencia(nuevaSecuencia);
+            System.out.println("duplicarTT abrir duplicarRegistroVD");
+            context.update("formularioDialogos:duplicarRegistroVD");
+            context.execute("duplicarRegistroVD.show()");
+
+        } else if (tablaActiva == 1 && tipoTrabajadorSeleccionado != null) {
             duplicarTT = new TiposTrabajadores();
             intNuevaSec++;
             nuevaSecuencia = BigInteger.valueOf(intNuevaSec);
@@ -550,6 +730,7 @@ public class ControlTiposTrabajadores implements Serializable {
             duplicarTT.setTipocotizante(tipoTrabajadorSeleccionado.getTipocotizante());
             duplicarTT.setSemestreespecial(tipoTrabajadorSeleccionado.getSemestreespecial());
             duplicarTT.setSecuencia(nuevaSecuencia);
+            System.out.println("duplicarTT abrir duplicarRegistroTT");
             context.update("formularioDialogos:duplicarRegistroTT");
             context.execute("duplicarRegistroTT.show()");
         }
@@ -584,6 +765,7 @@ public class ControlTiposTrabajadores implements Serializable {
                 duplicarTT.setSecuencia(nuevaSecuencia);
                 listaTiposTrabajadores.add(duplicarTT);
                 listTTCrear.add(duplicarTT);
+                perderSeleccionTT();
                 tipoTrabajadorSeleccionado = listaTiposTrabajadores.get(listaTiposTrabajadores.lastIndexOf(duplicarTT));
                 contarRegistrosTT();
                 if (guardado) {
@@ -595,11 +777,10 @@ public class ControlTiposTrabajadores implements Serializable {
                     restaurarTablaTT();
                 }
                 anularBotonLOV();
-                perderSeleccionTT();
                 context.execute("duplicarRegistroTT.hide()");
             }
         } else {
-            context.execute("errorRegNew.show()");
+            context.execute("errorNewRegNulos.show()");
         }
     }
 //LIMPIAR DUPLICAR
@@ -616,28 +797,201 @@ public class ControlTiposTrabajadores implements Serializable {
     /**
      * Metodo que borra las vigencias seleccionadas
      */
-    public void borrarTT() {
+    public void borrar() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (tipoTrabajadorSeleccionado == null) {
+        if (tipoTrabajadorSeleccionado == null && vigenciaDiaSeleccionado == null) {
             context.execute("seleccionarRegistro.show()");
         } else {
-            if (!listTTModificar.isEmpty() && listTTModificar.contains(tipoTrabajadorSeleccionado)) {
-                int modIndex = listTTModificar.indexOf(tipoTrabajadorSeleccionado);
-                listTTModificar.remove(modIndex);
-                listTTBorrar.add(tipoTrabajadorSeleccionado);
-            } else if (!listTTCrear.isEmpty() && listTTCrear.contains(tipoTrabajadorSeleccionado)) {
-                int crearIndex = listTTCrear.indexOf(tipoTrabajadorSeleccionado);
-                listTTCrear.remove(crearIndex);
-            } else {
-                listTTBorrar.add(tipoTrabajadorSeleccionado);
+
+            if (tablaActiva == 2 && vigenciaDiaSeleccionado != null) {
+
+                if (!listVDModificar.isEmpty() && listVDModificar.contains(vigenciaDiaSeleccionado)) {
+                    listVDModificar.remove(vigenciaDiaSeleccionado);
+                    listVDBorrar.add(vigenciaDiaSeleccionado);
+                } else if (!listVDCrear.isEmpty() && listVDCrear.contains(vigenciaDiaSeleccionado)) {
+                    listVDCrear.remove(vigenciaDiaSeleccionado);
+                } else {
+                    listVDBorrar.add(vigenciaDiaSeleccionado);
+                }
+                listaVigenciasDiasTT.remove(vigenciaDiaSeleccionado);
+                if (tipoListaVD == 1) {
+                    filtrarVigenciasDiasTT.remove(vigenciaDiaSeleccionado);
+                }
+
+            } else if (tablaActiva == 1 && tipoTrabajadorSeleccionado != null) {
+
+                if (!listTTModificar.isEmpty() && listTTModificar.contains(tipoTrabajadorSeleccionado)) {
+                    listTTModificar.remove(tipoTrabajadorSeleccionado);
+                    listTTBorrar.add(tipoTrabajadorSeleccionado);
+                } else if (!listTTCrear.isEmpty() && listTTCrear.contains(tipoTrabajadorSeleccionado)) {
+                    listTTCrear.remove(tipoTrabajadorSeleccionado);
+                } else {
+                    listTTBorrar.add(tipoTrabajadorSeleccionado);
+                }
+                listaTiposTrabajadores.remove(tipoTrabajadorSeleccionado);
+                if (tipoLista == 1) {
+                    filtrarTiposTrabajadores.remove(tipoTrabajadorSeleccionado);
+                }
+                contarRegistrosTT();
             }
-            listaTiposTrabajadores.remove(tipoTrabajadorSeleccionado);
+
+            perderSeleccionTT();
+            context.update("form:datosTTrabajadores");
+
+            if (guardado) {
+                guardado = false;
+                context.update("form:ACEPTAR");
+            }
+        }
+        anularBotonLOV();
+    }
+    //CREAR VD
+
+    /**
+     * Metodo que se encarga de agregar un nuevo VD
+     */
+    public void agregarNuevaVD() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        int cont = 0;
+        if ((nuevaVD.getDias() != null) && (nuevaVD.getFechaVigencia() != null)) {
+
+            for (int j = 0; j < listaVigenciasDiasTT.size(); j++) {
+                if (nuevaVD.getFechaVigencia() == listaVigenciasDiasTT.get(j).getFechaVigencia()) {
+                    cont++;
+                }
+            }
+            if (cont > 0) {
+                context.update("form:validacionFechas");
+                context.execute("validacionFechas.show()");
+            } else {
+                if (bandera == 1) {
+                    restaurarTablaTT();
+                }
+                intNuevaSec++;
+                nuevaSecuencia = BigInteger.valueOf(intNuevaSec);
+                nuevaVD.setSecuencia(nuevaSecuencia);
+                listVDCrear.add(nuevaVD);
+                listaVigenciasDiasTT.add(nuevaVD);
+                vigenciaDiaSeleccionado = listaVigenciasDiasTT.get(listaVigenciasDiasTT.indexOf(nuevaVD));
+                anularBotonLOV();
+                contarRegistrosVD();
+                nuevaVD = new VigenciasDiasTT();
+
+                if (guardado) {
+                    guardado = false;
+                    context.update("form:ACEPTAR");
+                }
+                context.update("form:datosVigenciasDTT");
+                context.execute("NuevoRegistroVD.hide()");
+            }
+        } else {
+            context.execute("errorNewRegNulosVD.show()");
+        }
+    }
+//LIMPIAR NUEVO REGISTRO
+
+    public void limpiarNuevaVD() {
+        nuevaVD = new VigenciasDiasTT();
+    }
+    //DUPLICAR VD
+
+    /**
+     * Metodo que duplica una vigencia especifica dado por la posicion de la
+     * fila
+     */
+    public void duplicarVDias() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (vigenciaDiaSeleccionado == null) {
+            context.execute("seleccionarRegistro.show()");
+        } else {
+            duplicarTT = new TiposTrabajadores();
+            intNuevaSec++;
+            nuevaSecuencia = BigInteger.valueOf(intNuevaSec);
+
+            duplicarVD.setCodigo(vigenciaDiaSeleccionado.getCodigo());
+            duplicarVD.setFechaVigencia(vigenciaDiaSeleccionado.getFechaVigencia());
+            duplicarVD.setDias(vigenciaDiaSeleccionado.getDias());
+            duplicarVD.setSecuencia(nuevaSecuencia);
+            duplicarVD.setTipoTrabajador(vigenciaDiaSeleccionado.getTipoTrabajador());
+
+            context.update("formularioDialogos:duplicarRegistroVD");
+            context.execute("duplicarRegistroVD.show()");
+        }
+    }
+
+    /**
+     * Metodo que confirma el duplicado y actualiza los datos de la tabla
+     */
+    public void confirmarDuplicarVD() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        int cont = 0;
+        if ((duplicarVD.getDias() != null) || (duplicarVD.getFechaVigencia() != null)) {
+
+            for (int j = 0; j < listaVigenciasDiasTT.size(); j++) {
+                if (duplicarVD.getFechaVigencia() == listaVigenciasDiasTT.get(j).getFechaVigencia()) {
+                    cont++;
+                }
+            }
+            if (cont > 0) {
+                context.update("form:validacionFechas");
+                context.execute("validacionFechas.show()");
+            } else {
+                intNuevaSec++;
+                nuevaSecuencia = BigInteger.valueOf(intNuevaSec);
+                duplicarVD.setSecuencia(nuevaSecuencia);
+                listaVigenciasDiasTT.add(duplicarVD);
+                listVDCrear.add(duplicarVD);
+                vigenciaDiaSeleccionado = listaVigenciasDiasTT.get(listaVigenciasDiasTT.indexOf(duplicarVD));
+                contarRegistrosVD();
+                if (guardado) {
+                    guardado = false;
+                    context.update("form:ACEPTAR");
+                }
+                duplicarVD = new VigenciasDiasTT();
+                if (bandera == 1) {
+                    restaurarTablaTT();
+                }
+                anularBotonLOV();
+                context.update("form:datosVigenciasDTT");
+                context.execute("duplicarRegistroVD.hide()");
+            }
+        } else {
+            context.execute("errorNewRegNulosVD.show()");
+        }
+    }
+//LIMPIAR DUPLICAR
+
+    /**
+     * Metodo que limpia los datos de un duplicar Vigencia
+     */
+    public void limpiarduplicarVD() {
+        duplicarVD = new VigenciasDiasTT();
+    }
+
+    //BORRAR VD
+    /**
+     * Metodo que borra las vigencias seleccionadas
+     */
+    public void borrarVD() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (vigenciaDiaSeleccionado == null) {
+            context.execute("seleccionarRegistro.show()");
+        } else {
+            if (!listVDModificar.isEmpty() && listVDModificar.contains(vigenciaDiaSeleccionado)) {
+                listVDModificar.remove(vigenciaDiaSeleccionado);
+                listVDBorrar.add(vigenciaDiaSeleccionado);
+            } else if (!listVDCrear.isEmpty() && listVDCrear.contains(vigenciaDiaSeleccionado)) {
+                listVDCrear.remove(vigenciaDiaSeleccionado);
+            } else {
+                listVDBorrar.add(vigenciaDiaSeleccionado);
+            }
+            listaVigenciasDiasTT.remove(vigenciaDiaSeleccionado);
             if (tipoLista == 1) {
-                filtrarTiposTrabajadores.remove(tipoTrabajadorSeleccionado);
+                filtrarVigenciasDiasTT.remove(vigenciaDiaSeleccionado);
             }
             contarRegistrosTT();
             perderSeleccionTT();
-            context.update("form:datosTTrabajadores");
+            context.update("form:datosVigenciasDTT");
 
             activarBotonLOV();
             if (guardado) {
@@ -712,19 +1066,15 @@ public class ControlTiposTrabajadores implements Serializable {
         }
     }
 
-    public void llamadoDialogoBuscarTT() {
+    public void llamadoDialogoTT(int tipoAct) {
         RequestContext context = RequestContext.getCurrentInstance();
+        tipoActualizacion = tipoAct;
         tipoTrabajadorLovSeleccionado = null;
         try {
             if (guardado == false) {
                 context.execute("confirmarGuardar.show()");
             } else {
-                if (lovTiposTrabajadores == null) {
-                    lovTiposTrabajadores = new ArrayList<TiposTrabajadores>();
-                    for (int i = 0; i < listaTiposTrabajadores.size(); i++) {
-                        lovTiposTrabajadores.add(listaTiposTrabajadores.get(i));
-                    }
-                }
+                llenarLOVTT();
                 context.update("form:lovTiposTra");
                 context.execute("dialogTiposTra.show()");
                 contarRegistrosLovTT(0);
@@ -734,21 +1084,46 @@ public class ControlTiposTrabajadores implements Serializable {
         }
     }
 
+    public void llenarLOVTT() {
+        if (lovTiposTrabajadores == null) {
+            lovTiposTrabajadores = new ArrayList<TiposTrabajadores>();
+            if (listaTiposTrabajadores != null) {
+                for (int i = 0; i < listaTiposTrabajadores.size(); i++) {
+                    lovTiposTrabajadores.add(listaTiposTrabajadores.get(i));
+                }
+            } else {
+                lovTiposTrabajadores = administrarTiposTrabajadores.buscarTiposTrabajadoresTT();
+            }
+        }
+    }
+
     public void seleccionarTipoTrabajador() {
         try {
             RequestContext context = RequestContext.getCurrentInstance();
-//            if (guardado == true) {
-            listaTiposTrabajadores.clear();
-            listaTiposTrabajadores.add(tipoTrabajadorLovSeleccionado);
-            tipoTrabajadorSeleccionado = tipoTrabajadorLovSeleccionado;
-            listaVigenciasDiasTT = administrarTiposTrabajadores.consultarDiasPorTipoT(tipoTrabajadorSeleccionado.getSecuencia());
-            filtrarLovTiposTrabajadores = null;
-            aceptar = true;
-            mostrartodos = false;
-            contarRegistrosTT();
-            contarRegistrosVD();
-            activarBotonLOV();
+            if (tipoActualizacion == 0) {
+                listaTiposTrabajadores.clear();
+                listaTiposTrabajadores.add(tipoTrabajadorLovSeleccionado);
+                tipoTrabajadorSeleccionado = tipoTrabajadorLovSeleccionado;
+                listaVigenciasDiasTT = administrarTiposTrabajadores.consultarDiasPorTipoT(tipoTrabajadorSeleccionado.getSecuencia());
+                filtrarLovTiposTrabajadores = null;
+                aceptar = true;
+                mostrartodos = false;
+                contarRegistrosTT();
+                contarRegistrosVD();
+                activarBotonLOV();
 
+                context.update("form:datosTTrabajadores");
+                context.update("form:datosVigenciasDTT");
+                context.update("form:mostrarTodos");
+            } else if (tipoActualizacion == 3) {
+                tipoTrabajadorAClonar = new TiposTrabajadores();
+                tipoTrabajadorAClonar.setCodigo(tipoTrabajadorLovSeleccionado.getCodigo());
+                tipoTrabajadorAClonar.setNombre(tipoTrabajadorLovSeleccionado.getNombre());
+                tipoTrabajadorAClonar.setSecuencia(tipoTrabajadorLovSeleccionado.getSecuencia());
+
+                context.update("form:codigoTipoTClonarBase");
+                context.update("form:nombreTipoTClonarBase");
+            }
             context.reset("form:lovTiposTra:globalFilter");
             context.execute("lovTiposTra.clearFilters()");
             context.update("form:dialogTiposTra");
@@ -756,13 +1131,96 @@ public class ControlTiposTrabajadores implements Serializable {
             context.update("form:aceptarTTra");
             context.execute("dialogTiposTra.hide()");
 
-            context.update("form:datosTTrabajadores");
-            context.update("form:datosVigenciasDTT");
-            context.update("form:mostrarTodos");
-//            }
-
         } catch (Exception e) {
             System.out.println("ERROR seleccionarTipoTrabajador : " + e.getMessage());
+        }
+    }
+
+    public void autocompletarClonado(String column) {
+        int coincidencias = 0;
+        int indiceUnicoElemento = 0;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (column.equalsIgnoreCase("COD")) {
+            for (int i = 0; i < listaTiposTrabajadores.size(); i++) {
+                if (listaTiposTrabajadores.get(i).getCodigo() == tipoTrabajadorAClonar.getCodigo()) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                tipoTrabajadorAClonar = new TiposTrabajadores();
+                tipoTrabajadorAClonar.setCodigo(listaTiposTrabajadores.get(indiceUnicoElemento).getCodigo());
+                tipoTrabajadorAClonar.setNombre(listaTiposTrabajadores.get(indiceUnicoElemento).getNombre());
+                tipoTrabajadorAClonar.setSecuencia(listaTiposTrabajadores.get(indiceUnicoElemento).getSecuencia());
+                context.update("form:codigoTipoTClonarBase");
+                context.update("form:nombreTipoTClonarBase");
+            }
+        } else if (column.equalsIgnoreCase("Nom")) {
+            for (int i = 0; i < listaTiposTrabajadores.size(); i++) {
+                if (listaTiposTrabajadores.get(i).getNombre().startsWith(tipoTrabajadorAClonar.getNombre().toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                tipoTrabajadorAClonar = new TiposTrabajadores();
+                tipoTrabajadorAClonar.setCodigo(listaTiposTrabajadores.get(indiceUnicoElemento).getCodigo());
+                tipoTrabajadorAClonar.setNombre(listaTiposTrabajadores.get(indiceUnicoElemento).getNombre());
+                tipoTrabajadorAClonar.setSecuencia(listaTiposTrabajadores.get(indiceUnicoElemento).getSecuencia());
+                context.update("form:codigoTipoTClonarBase");
+                context.update("form:nombreTipoTClonarBase");
+            }
+        }
+        if (coincidencias != 1) {
+            context.update("form:lovTiposTra");
+            context.update("form:dialogTiposTra");
+            context.execute("dialogTiposTra.show()");
+        }
+    }
+
+    public void clonarTT() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        System.out.println("Entro en Clonar()");
+        if (nombreNuevoClonado != null && codigoNuevoClonado != null && tipoTrabajadorAClonar.getSecuencia() != null) {
+            int error = 0;
+            for (int i = 0; i < listaTiposTrabajadores.size(); i++) {
+                if (listaTiposTrabajadores.get(i).getNombre().equals(nombreNuevoClonado)) {
+                    error++;
+                }
+                if (listaTiposTrabajadores.get(i).getCodigo() == codigoNuevoClonado) {
+                    error++;
+                }
+            }
+            if (error > 0) {
+                context.update("form:errorClonadoRepetido");
+                context.execute("errorClonadoRepetido.show()");
+            } else {
+                String retornoClonado = administrarTiposTrabajadores.clonarTT(nombreNuevoClonado, codigoNuevoClonado, tipoTrabajadorAClonar.getSecuencia());
+                if (retornoClonado.equals("S")) {
+                    listaTiposTrabajadores = null;
+                    getListaTiposTrabajadores();
+                    boolean banderita = false;
+                    if (listaTiposTrabajadores != null) {
+                        for (int i = 0; i < listaTiposTrabajadores.size(); i++) {
+                            if (listaTiposTrabajadores.get(i).getNombre().equals(nombreNuevoClonado)) {
+                                banderita = true;
+                            }
+                        }
+                        if (banderita) {
+                            FacesMessage msg = new FacesMessage("Información", "Tipo trabajador clonado correctamente");
+                            FacesContext.getCurrentInstance().addMessage(null, msg);
+                            context.update("form:growl");
+                        }
+                    }
+                } else {
+                    FacesMessage msg = new FacesMessage("Error", "ERROR clonando Tipo trabajador : " + retornoClonado);
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                    context.update("form:growl");
+                }
+            }
+        } else {
+            context.update("form:errorClonadoNulos");
+            context.execute("errorClonadoNulos.show()");
         }
     }
 
@@ -830,6 +1288,26 @@ public class ControlTiposTrabajadores implements Serializable {
                 }
                 listTTModificar.clear();
             }
+
+            if (!listVDBorrar.isEmpty()) {
+                for (int i = 0; i < listVDBorrar.size(); i++) {
+                    administrarTiposTrabajadores.borrarVD(listVDBorrar.get(i));
+                }
+                listVDBorrar.clear();
+            }
+            if (!listVDCrear.isEmpty()) {
+                for (int i = 0; i < listVDCrear.size(); i++) {
+                    administrarTiposTrabajadores.crearVD(listVDCrear.get(i));
+                }
+                listVDCrear.clear();
+            }
+            if (!listVDModificar.isEmpty()) {
+                for (int i = 0; i < listVDModificar.size(); i++) {
+                    administrarTiposTrabajadores.editarVD(listVDModificar.get(i));
+                }
+                listVDModificar.clear();
+            }
+
             listaTiposTrabajadores = null;
             getListaTiposTrabajadores();
             perderSeleccionTT();
@@ -854,6 +1332,7 @@ public class ControlTiposTrabajadores implements Serializable {
         if (bandera == 1) {
             restaurarTablaTT();
         }
+        tablaActiva = 0;
         listTTBorrar.clear();
         listTTCrear.clear();
         listTTModificar.clear();
@@ -880,6 +1359,7 @@ public class ControlTiposTrabajadores implements Serializable {
             restaurarTablaTT();
         }
         lovTiposTrabajadores = null;
+        tablaActiva = 0;
 
         activarBotonLOV();
         listTTBorrar.clear();
@@ -889,6 +1369,156 @@ public class ControlTiposTrabajadores implements Serializable {
         listaTiposTrabajadores = null;
         perderSeleccionTT();
         guardado = true;
+    }
+
+    //MOSTRAR DATOS CELDA
+    /**
+     * Metodo que muestra los dialogos de editar con respecto a la lista real o
+     * la lista filtrada y a la columna
+     */
+    public void editarCelda() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (tipoTrabajadorSeleccionado == null && vigenciaDiaSeleccionado == null) {
+            context.execute("seleccionarRegistro.show()");
+        } else {
+            if (tablaActiva == 1 && tipoTrabajadorSeleccionado != null) {
+                editarTT = tipoTrabajadorSeleccionado;
+
+                if (cualCelda == 0) {
+                    context.update("formularioDialogos:editarCodigoTT");
+                    context.execute("editarCodigoTT.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 1) {
+                    context.update("formularioDialogos:editarDescripTT");
+                    context.execute("editarDescripTT.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 2) {
+                    context.update("formularioDialogos:editarFactorDesTT");
+                    context.execute("editarFactorDesTT.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 3) {
+                    context.update("formularioDialogos:editarTipoCotTT");
+                    context.execute("editarTipoCotTT.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 4) {
+                    context.update("formularioDialogos:editarDiasVacNOTT");
+                    context.execute("editarDiasVacNOTT.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 5) {
+                    context.update("formularioDialogos:editarDiasVacTT");
+                    context.execute("editarDiasVacTT.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 8) {
+                    context.update("formularioDialogos:editarNivelEndTT");
+                    context.execute("editarNivelEndTT.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 10) {
+                    context.update("formularioDialogos:editarPorcentTT");
+                    context.execute("editarPorcentTT.show()");
+                    cualCelda = -1;
+                }
+            }
+            if (tablaActiva == 2 && vigenciaDiaSeleccionado != null) {
+                editarVD = vigenciaDiaSeleccionado;
+
+                if (cualCeldaVD == 0) {
+                    context.update("formularioDialogos:editarDiasVD");
+                    context.execute("editarDiasVD.show()");
+                    cualCeldaVD = -1;
+                } else if (cualCeldaVD == 1) {
+                    context.update("formularioDialogos:editarFechaVD");
+                    context.execute("editarFechaVD.show()");
+                    cualCeldaVD = -1;
+                }
+            }
+        }
+    }
+
+    public void verificarNuevoVigenciasDias() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (tipoTrabajadorSeleccionado != null) {
+            context.update("formularioDialogos:NuevoRegistroVD");
+            context.update("formularioDialogos:nuevoVD");
+            context.execute("NuevoRegistroVD.show()");
+        } else {
+            context.update("formularioDialogos:validacionNuevoVigenciasDias");
+            context.execute("validacionNuevoVigenciasDias.show()");
+        }
+    }
+
+    //METODO RASTROS PARA LAS TABLAS
+    public void verificarRastro() {
+        if (tipoTrabajadorSeleccionado == null && vigenciaDiaSeleccionado == null) {
+            RequestContext.getCurrentInstance().execute("verificarRastrosTablasH.show()");
+        } else {
+            if (tablaActiva == 2 && vigenciaDiaSeleccionado != null) {
+                verificarRastroVigenciasDias();
+            } else if (tablaActiva == 1 && tipoTrabajadorSeleccionado != null) {
+                verificarRastroTipoTrabajador();
+            }
+        }
+    }
+
+    public void verificarRastroTipoTrabajador() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        int resultado = administrarRastros.obtenerTabla(tipoTrabajadorSeleccionado.getSecuencia(), "TIPOSTRABAJADORES");
+        if (resultado == 1) {
+            context.execute("errorObjetosDB.show()");
+        } else if (resultado == 2) {
+            nombreTablaRastro = "TiposTrabajadores";
+            msnConfirmarRastro = "La tabla TIPOSTRABAJADORES tiene rastros para el registro seleccionado, ¿desea continuar?";
+            context.update("form:msnConfirmarRastro");
+            context.execute("confirmarRastro.show()");
+        } else if (resultado == 3) {
+            context.execute("errorRegistroRastro.show()");
+        } else if (resultado == 4) {
+            context.execute("errorTablaConRastro.show()");
+        } else if (resultado == 5) {
+            context.execute("errorTablaSinRastro.show()");
+        }
+    }
+
+    public void verificarRastroTipoTrabajadorH() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (administrarRastros.verificarHistoricosTabla("TIPOSTRABAJADORES")) {
+            nombreTablaRastro = "TiposTrabajadores";
+            msnConfirmarRastroHistorico = "La tabla TIPOSTRABAJADORES tiene rastros historicos, ¿Desea continuar?";
+            context.update("form:confirmarRastroHistorico");
+            context.execute("confirmarRastroHistorico.show()");
+        } else {
+            context.execute("errorRastroHistorico.show()");
+        }
+    }
+
+    public void verificarRastroVigenciasDias() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        int resultado = administrarRastros.obtenerTabla(vigenciaDiaSeleccionado.getSecuencia(), "VIGENCIASDIASTT");
+        if (resultado == 1) {
+            context.execute("errorObjetosDB.show()");
+        } else if (resultado == 2) {
+            nombreTablaRastro = "VigenciasDiasTT";
+            msnConfirmarRastro = "La tabla VIGENCIASDIASTT tiene rastros para el registro seleccionado, ¿desea continuar?";
+            context.update("form:msnConfirmarRastro");
+            context.execute("confirmarRastro.show()");
+        } else if (resultado == 3) {
+            context.execute("errorRegistroRastro.show()");
+        } else if (resultado == 4) {
+            context.execute("errorTablaConRastro.show()");
+        } else if (resultado == 5) {
+            context.execute("errorTablaSinRastro.show()");
+        }
+    }
+
+    public void verificarRastroVigenciasDiasH() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (administrarRastros.verificarHistoricosTabla("VIGENCIASDIASTT")) {
+            nombreTablaRastro = "VigenciasDiasTT";
+            msnConfirmarRastroHistorico = "La tabla VIGENCIASDIASTT tiene rastros historicos, ¿Desea continuar?";
+            context.update("form:confirmarRastroHistorico");
+            context.execute("confirmarRastroHistorico.show()");
+        } else {
+            context.execute("errorRastroHistorico.show()");
+        }
     }
 
     /**
@@ -970,7 +1600,7 @@ public class ControlTiposTrabajadores implements Serializable {
     public void contarRegistrosLovTT(int tipoListaLOV) {
         if (tipoListaLOV == 1) {
             infoRegistroLovTT = String.valueOf(filtrarLovTiposTrabajadores.size());
-        } else if (lovTiposCotizantes != null) {
+        } else if (lovTiposTrabajadores != null) {
             infoRegistroLovTT = String.valueOf(lovTiposTrabajadores.size());
         } else {
             infoRegistroLovTT = String.valueOf(0);
@@ -994,7 +1624,6 @@ public class ControlTiposTrabajadores implements Serializable {
             FacesContext c = FacesContext.getCurrentInstance();
             tablaTT = (DataTable) c.getViewRoot().findComponent("form:datosTTrabajadores");
             tablaTT.setSelection(tipoTrabajadorSeleccionado);
-            System.out.println("tipoTrabajadorSeleccionado: " + tipoTrabajadorSeleccionado);
         } else {
             RequestContext.getCurrentInstance().execute("datosTTrabajadores.unselectAllRows()");
         }
@@ -1007,6 +1636,21 @@ public class ControlTiposTrabajadores implements Serializable {
             tablaVD.setSelection(vigenciaDiaSeleccionado);
             System.out.println("vigenciaDiaSeleccionado: " + vigenciaDiaSeleccionado);
         }
+    }
+
+    public void exportPDF() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        DataTable tabla = (DataTable) context.getViewRoot().findComponent("formExportar:datosTTrabajadoresExportar");
+        Exporter exporter = new ExportarPDF();
+        exporter.export(context, tabla, "TiposTrabajadoresPDF", false, false, "UTF-8", null, null);
+        context.responseComplete();
+    }
+
+    public void exportXLS() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        DataTable tabla = (DataTable) context.getViewRoot().findComponent("formExportar:datosTTrabajadoresExportar");
+        Exporter exporter = new ExportarXLS();
+        exporter.export(context, tabla, "TiposTrabajadoresXLS", false, false, "UTF-8", null, null);
     }
 //
 //    public void selectOneMenus() {
@@ -1043,6 +1687,14 @@ public class ControlTiposTrabajadores implements Serializable {
 
     public void setAltoTabla(String altoTabla) {
         this.altoTabla = altoTabla;
+    }
+
+    public String getAltoTablaVD() {
+        return altoTablaVD;
+    }
+
+    public void setAltoTablaVD(String altoTablaVD) {
+        this.altoTablaVD = altoTablaVD;
     }
 
     public TiposTrabajadores getDuplicarTT() {
@@ -1137,7 +1789,6 @@ public class ControlTiposTrabajadores implements Serializable {
     }
 
     public List<VigenciasDiasTT> getListaVigenciasDiasTT() {
-        System.out.println("Entro en getListaVigenciasDiasTT listaVigenciasDiasTT : " + listaVigenciasDiasTT);
         return listaVigenciasDiasTT;
     }
 
@@ -1223,5 +1874,77 @@ public class ControlTiposTrabajadores implements Serializable {
 
     public void setMostrartodos(boolean mostrartodos) {
         this.mostrartodos = mostrartodos;
+    }
+
+    public String getMsnConfirmarRastro() {
+        return msnConfirmarRastro;
+    }
+
+    public void setMsnConfirmarRastro(String msnConfirmarRastro) {
+        this.msnConfirmarRastro = msnConfirmarRastro;
+    }
+
+    public String getNombreTablaRastro() {
+        return nombreTablaRastro;
+    }
+
+    public void setNombreTablaRastro(String nombreTablaRastro) {
+        this.nombreTablaRastro = nombreTablaRastro;
+    }
+
+    public String getMsnConfirmarRastroHistorico() {
+        return msnConfirmarRastroHistorico;
+    }
+
+    public void setMsnConfirmarRastroHistorico(String msnConfirmarRastroHistorico) {
+        this.msnConfirmarRastroHistorico = msnConfirmarRastroHistorico;
+    }
+
+    public VigenciasDiasTT getDuplicarVD() {
+        return duplicarVD;
+    }
+
+    public void setDuplicarVD(VigenciasDiasTT duplicarVD) {
+        this.duplicarVD = duplicarVD;
+    }
+
+    public VigenciasDiasTT getEditarVD() {
+        return editarVD;
+    }
+
+    public void setEditarVD(VigenciasDiasTT editarVD) {
+        this.editarVD = editarVD;
+    }
+
+    public VigenciasDiasTT getNuevaVD() {
+        return nuevaVD;
+    }
+
+    public void setNuevaVD(VigenciasDiasTT nuevaVD) {
+        this.nuevaVD = nuevaVD;
+    }
+
+    public Short getCodigoNuevoClonado() {
+        return codigoNuevoClonado;
+    }
+
+    public void setCodigoNuevoClonado(Short codigoNuevoClonado) {
+        this.codigoNuevoClonado = codigoNuevoClonado;
+    }
+
+    public String getNombreNuevoClonado() {
+        return nombreNuevoClonado;
+    }
+
+    public void setNombreNuevoClonado(String nombreNuevoClonado) {
+        this.nombreNuevoClonado = nombreNuevoClonado;
+    }
+
+    public TiposTrabajadores getTipoTrabajadorAClonar() {
+        return tipoTrabajadorAClonar;
+    }
+
+    public void setTipoTrabajadorAClonar(TiposTrabajadores tipoTrabajadorAClonar) {
+        this.tipoTrabajadorAClonar = tipoTrabajadorAClonar;
     }
 }

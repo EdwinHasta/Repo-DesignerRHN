@@ -234,4 +234,20 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             return null;
         }
     }
+    
+    @Override
+    public String clonarTipoT(EntityManager em, String nombreNuevo, Short codigoNuevo, BigInteger secTTClonado){
+        try {
+            em.clear();
+            String sqlQuery = "call XXXXXX_PKG.CLONARTIPOTRABAJADOR(?, ?, ?)";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secTTClonado);
+            query.setParameter(2, codigoNuevo);
+            query.setParameter(3, nombreNuevo);
+            query.executeUpdate();
+            return "S";
+        } catch (Exception e) {
+            return ("ERROR PersistenciaTiposTrabajadores.clonarTipoT" + e.toString());
+        }
+    }
 }

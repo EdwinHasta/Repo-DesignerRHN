@@ -30,6 +30,7 @@ public class PersistenciaOrganigramas implements PersistenciaOrganigramasInterfa
 //    private EntityManager em;
     @Override
     public void crear(EntityManager em, Organigramas organigramas) {
+        System.out.println("em : " + em);
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {

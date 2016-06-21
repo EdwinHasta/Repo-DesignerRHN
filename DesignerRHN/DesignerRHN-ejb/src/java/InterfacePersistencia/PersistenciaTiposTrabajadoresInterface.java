@@ -82,4 +82,6 @@ public interface PersistenciaTiposTrabajadoresInterface {
     
     public TiposTrabajadores buscarTipoTrabajadorCodigoTiposhort(EntityManager em, short codigo);
 
+    public String clonarTipoT(EntityManager em, String nombreNuevo, Short codigoNuevo, BigInteger secTTClonado);
+
 }

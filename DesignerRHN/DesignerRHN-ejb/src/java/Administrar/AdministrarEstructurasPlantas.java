@@ -74,10 +74,11 @@ public class AdministrarEstructurasPlantas implements AdministrarEstructurasPlan
     @EJB
     AdministrarSesionesInterface administrarSesiones;
     private EntityManager em;
-
+    private Organigramas org;
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------
+
     @Override
     public void obtenerConexion(String idSesion) {
         em = administrarSesiones.obtenerConexionSesion(idSesion);
@@ -87,13 +88,6 @@ public class AdministrarEstructurasPlantas implements AdministrarEstructurasPlan
     public List<Organigramas> listaOrganigramas() {
         List<Empresas> listaEmpresas = consultarEmpresas();
         List<Organigramas> listaOrganigramas = new ArrayList<Organigramas>();
-        /*
-         * for (Empresas empresa : listaEmpresas) { try { List<Organigramas>
-         * lista = persistenciaOrganigramas.buscarOrganigramasEmpresa(em,
-         * empresa.getSecuencia()); listaOrganigramas.addAll(lista); } catch
-         * (Exception e) { System.out.println("Error listaOrganigramas Empresa:
-         * " + empresa.getSecuencia() + " ex: " + e.toString()); } }
-         */
         System.out.println("listaEmpresas : " + listaEmpresas);
         System.out.println("em : " + em);
 
@@ -116,19 +110,6 @@ public class AdministrarEstructurasPlantas implements AdministrarEstructurasPlan
     }
 
     @Override
-    public List<Organigramas> listaTodosOrganigramas() {
-        List<Organigramas> listaOrganigramas = new ArrayList<Organigramas>();
-        try {
-            listaOrganigramas = persistenciaOrganigramas.buscarOrganigramas(em);
-            System.out.println("Ya salio del EJB");
-        } catch (Exception e) {
-            System.out.println("Error listaOrganigramas : "
-                    + e.toString());
-        }
-        return listaOrganigramas;
-    }
-
-    @Override
     public List<Empresas> consultarEmpresas() {
         List<Empresas> listaEmpresas = null;
         try {
@@ -139,6 +120,19 @@ public class AdministrarEstructurasPlantas implements AdministrarEstructurasPlan
             e.printStackTrace();
             return listaEmpresas;
         }
+    }
+
+    @Override
+    public List<Organigramas> listaTodosOrganigramas() {
+        List<Organigramas> listaOrganigramas = new ArrayList<Organigramas>();
+        try {
+            listaOrganigramas = persistenciaOrganigramas.buscarOrganigramas(em);
+            System.out.println("Ya salio del EJB");
+        } catch (Exception e) {
+            System.out.println("Error listaOrganigramas : "
+                    + e.toString());
+        }
+        return listaOrganigramas;
     }
 
     @Override
@@ -276,5 +270,24 @@ public class AdministrarEstructurasPlantas implements AdministrarEstructurasPlan
             System.out.println("Error lovEstructuras Admi : " + e.toString());
             return null;
         }
+    }
+
+    @Override
+    public void modificarOrganigrama(List<Organigramas> listOrganigramasModificados) {
+        for (int i = 0; i < listOrganigramasModificados.size(); i++) {
+            System.out.println("Modificando...");
+            org = listOrganigramasModificados.get(i);
+            persistenciaOrganigramas.editar(em, org);
+        }
+    }
+
+    @Override
+    public void borrarOrganigrama(Organigramas organigrama) {
+        persistenciaOrganigramas.borrar(em, organigrama);
+    }
+
+    @Override
+    public void crearOrganigrama(Organigramas organigrama) {
+        persistenciaOrganigramas.crear(em, organigrama);
     }
 }

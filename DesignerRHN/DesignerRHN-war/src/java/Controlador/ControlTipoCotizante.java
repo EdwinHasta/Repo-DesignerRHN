@@ -115,6 +115,8 @@ public class ControlTipoCotizante implements Serializable {
     private String altoTablaNF;
     //
     private boolean cambiosPagina;
+    //
+    private String paginaAnterior;
 
     public ControlTipoCotizante() {
         cambiosPagina = true;
@@ -154,6 +156,7 @@ public class ControlTipoCotizante implements Serializable {
         cualInsertar = ":formularioDialogos:NuevoRegistroTipoCotizante";
         cualNuevo = ":formularioDialogos:nuevoRegistroTipoCotizante";
         m = 0;
+        paginaAnterior = "";
     }
 
     @PostConstruct
@@ -169,7 +172,14 @@ public class ControlTipoCotizante implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
+    
+    public void recibirPagina(String pagina){
+        paginaAnterior = pagina;
+    }
 
+    public String retornarPagina(){
+        return paginaAnterior;
+    }
     //Ubicacion Celda Arriba 
     public void cambiarTipoCotizante() {
         //Si ninguna de las 3 listas (crear,modificar,borrar) tiene algo, hace esto
