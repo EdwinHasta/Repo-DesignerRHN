@@ -51,13 +51,12 @@ public class ControlHvReferencias implements Serializable {
     private HvReferencias editarHvReferencia;
     private HvReferencias hvReferenciaSeleccionada;
     //otros
-    private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
+    private int cualCelda, tipoLista, tipoActualizacion, k, bandera;
     private BigInteger l;
     private boolean aceptar, guardado;
     //AutoCompletar
-    private boolean permitirIndex;
+    private boolean permitirIndex, activarLov;
     //RASTRO
-    private BigInteger secRegistro;
     private Column cargo, nombre, numTelefono, numCelular;
     //borrado
     private int registrosBorrados;
@@ -65,12 +64,16 @@ public class ControlHvReferencias implements Serializable {
     private BigInteger secuenciaPersona;
 //Empleado
     private Personas personaSeleccionada;
+    private Empleados empleado;
 //otros
     private int tamano;
     private String infoRegistro;
     private HVHojasDeVida hvHojasDeVida;
     private List<HVHojasDeVida> listHVHojasDeVida;
-
+    private DataTable tablaC;
+    private String backUpDescripcion;
+    private Long backUpTelefono;
+   
     public ControlHvReferencias() {
         listHvReferencias = null;
         crearHvReferencias = new ArrayList<HvReferencias>();
@@ -80,11 +83,13 @@ public class ControlHvReferencias implements Serializable {
         editarHvReferencia = new HvReferencias();
         nuevoHvReferencia = new HvReferencias();
         duplicarHvReferencia = new HvReferencias();
-        personaSeleccionada = null;
+        empleado = new Empleados();
         secuenciaPersona = null;
         listHVHojasDeVida = new ArrayList<HVHojasDeVida>();
         guardado = true;
         tamano = 270;
+        activarLov = true;
+        hvHojasDeVida = new HVHojasDeVida();
     }
 
     @PostConstruct
@@ -100,92 +105,57 @@ public class ControlHvReferencias implements Serializable {
         }
     }
 
-    public void recibirEmpleado(BigInteger sec) {
-        System.out.println("ENTRE A RECIBIR EMPLEADO EN CONTROLHVREFERENCIAS");
-        if (sec == null) {
-            System.out.println("ERROR EN RECIVIR LA SECUENCIA DEL EMPLEADO EN ControlHvReferencias");
-            // sec = BigInteger.valueOf(10661039);
-        }
-        secuenciaPersona = sec;
-        listHvReferencias = null;
-        personaSeleccionada = null;
-        getPersonaSeleccionada();
-        getListHvReferencias();
+    public void recibirEmpleado(BigInteger secuencia) {
+            
+//            if(listHvReferencias.isEmpty() || listHvReferencias == null){
+//            RequestContext.getCurrentInstance().execute("formularioDialogos:perfilVacio");
+//                
+//            } else{
+            secuenciaPersona = secuencia;
+            listHvReferencias = null;
+            empleado = administrarHvReferencias.empleadoActual(secuencia);
+            getListHvReferencias();
+            contarRegistros();
+            deshabilitarBotonLov();
+                
+           //}
+            
+//            if (listHvReferencias != null) {
+//                hvReferenciaSeleccionada = listHvReferencias.get(0);
+//            }
     }
 
     public void mostrarNuevo() {
         System.err.println("nuevo Tipo Entrevista " + nuevoHvReferencia.getTipo());
     }
 
-    /* public void mostrarInfo(int indice, int celda) {
-     if (permitirIndex == true) {
-     index = indice;
-     cualCelda = celda;
-     secRegistro = listHvReferencias.get(index).getSecuencia();
-     System.err.println("MODIFICAR FECHA \n Indice" + indice + "Fecha " + listHvReferencias.get(indice).getNombrepersona());
-     System.out.println("Tipo Entrevista " + listHvReferencias.get(indice).getTipo());
-     if (!crearHvReferencias.contains(listHvReferencias.get(indice))) {
-
-     if (modificarHvReferencias.isEmpty()) {
-     modificarHvReferencias.add(listHvReferencias.get(indice));
-     } else if (!modificarHvReferencias.contains(listHvReferencias.get(indice))) {
-     modificarHvReferencias.add(listHvReferencias.get(indice));
-     }
-     if (guardado == true) {
-     guardado = false;
-     //RequestContext.getCurrentInstance().update("form:aceptar");
-     }
-     }
-     }
-     System.out.println("Indice: " + index + " Celda: " + cualCelda);
-
-     }
-     */
-    public void eventoFiltrar() {
-        try {
-            System.out.println("\n ENTRE A ControlHvReferencias.eventoFiltrar \n");
-            if (tipoLista == 0) {
-                tipoLista = 1;
-            }
-            RequestContext context = RequestContext.getCurrentInstance();
-            infoRegistro = "Cantidad de registros: " + filtrarHvReferencias.size();
-            context.update("form:informacionRegistro");
-        } catch (Exception e) {
-            System.out.println("ERROR ControlHvReferencias eventoFiltrar ERROR===" + e.getMessage());
-        }
-    }
-    private String backUpDescripcion;
-    private Long backUpTelefono;
-
-    public void cambiarIndice(int indice, int celda) {
+    public void cambiarIndice(HvReferencias hvReferencia, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
-
+        hvReferenciaSeleccionada = hvReferencia;
         if (permitirIndex == true) {
-            index = indice;
             cualCelda = celda;
-            secRegistro = listHvReferencias.get(index).getSecuencia();
+            hvReferenciaSeleccionada.getSecuencia();
             if (cualCelda == 0) {
                 if (tipoLista == 0) {
-                    backUpDescripcion = listHvReferencias.get(index).getNombrepersona();
+                    backUpDescripcion = hvReferenciaSeleccionada.getNombrepersona();
                 } else {
-                    backUpDescripcion = filtrarHvReferencias.get(index).getNombrepersona();
+                    backUpDescripcion = hvReferenciaSeleccionada.getNombrepersona();
                 }
             }
             if (cualCelda == 2) {
                 if (tipoLista == 0) {
-                    backUpTelefono = listHvReferencias.get(index).getTelefono();
+                    backUpTelefono = hvReferenciaSeleccionada.getTelefono();
                 } else {
-                    backUpTelefono = filtrarHvReferencias.get(index).getTelefono();
+                    backUpTelefono = hvReferenciaSeleccionada.getTelefono();
                 }
             }
         }
-        System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
 
-    public void asignarIndex(Integer indice, int LND, int dig) {
+    public void asignarIndex(HvReferencias hvReferencia, int LND, int dig) {
         try {
             System.out.println("\n ENTRE A ControlHvReferencias.asignarIndex \n");
-            index = indice;
+            hvReferenciaSeleccionada = hvReferencia;
             if (LND == 0) {
                 tipoActualizacion = 0;
             } else if (LND == 1) {
@@ -228,19 +198,14 @@ public class ControlHvReferencias implements Serializable {
         borrarHvReferencias.clear();
         crearHvReferencias.clear();
         modificarHvReferencias.clear();
-        index = -1;
-        secRegistro = null;
+        hvReferenciaSeleccionada = null;
         k = 0;
         listHvReferencias = null;
         guardado = true;
         permitirIndex = true;
         getListHvReferencias();
         RequestContext context = RequestContext.getCurrentInstance();
-        if (listHvReferencias == null || listHvReferencias.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
-        } else {
-            infoRegistro = "Cantidad de registros: " + listHvReferencias.size();
-        }
+        contarRegistros();
         context.update("form:informacionRegistro");
         context.update("form:datosHvReferencia");
         context.update("form:ACEPTAR");
@@ -267,18 +232,13 @@ public class ControlHvReferencias implements Serializable {
         borrarHvReferencias.clear();
         crearHvReferencias.clear();
         modificarHvReferencias.clear();
-        index = -1;
-        secRegistro = null;
+        hvReferenciaSeleccionada = null;
         k = 0;
         listHvReferencias = null;
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
-        if (listHvReferencias == null || listHvReferencias.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
-        } else {
-            infoRegistro = "Cantidad de registros: " + listHvReferencias.size();
-        }
+        contarRegistros();
         context.update("form:informacionRegistro");
         context.update("form:datosHvReferencia");
         context.update("form:ACEPTAR");
@@ -289,13 +249,13 @@ public class ControlHvReferencias implements Serializable {
         if (bandera == 0) {
             tamano = 246;
             nombre = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:nombre");
-            nombre.setFilterStyle("width: 270px");
+            nombre.setFilterStyle("width: 85%");
             cargo = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:cargo");
-            cargo.setFilterStyle("width: 145px");
+            cargo.setFilterStyle("width: 85%");
             numTelefono = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:numTelefono");
-            numTelefono.setFilterStyle("width: 135px");
+            numTelefono.setFilterStyle("width: 85%");
             numCelular = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:numCelular");
-            numCelular.setFilterStyle("width: 130px");
+            numCelular.setFilterStyle("width: 85%");
             RequestContext.getCurrentInstance().update("form:datosHvReferencia");
             System.out.println("Activar");
             bandera = 1;
@@ -317,9 +277,9 @@ public class ControlHvReferencias implements Serializable {
         }
     }
 
-    public void modificarHvReferencia(int indice, String confirmarCambio, String valorConfirmar) {
+    public void modificarHvReferencia(HvReferencias hvReferencia, String confirmarCambio, String valorConfirmar) {
         System.err.println("ENTRE A MODIFICAR HV Referencia");
-        index = indice;
+        hvReferenciaSeleccionada = hvReferencia;
 
         int contador = 0, pass = 0;
         Short a;
@@ -329,29 +289,29 @@ public class ControlHvReferencias implements Serializable {
         if (confirmarCambio.equalsIgnoreCase("N")) {
             System.err.println("ENTRE A MODIFICAR HvReferencia, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
-                if (!crearHvReferencias.contains(listHvReferencias.get(indice))) {
+                if (!crearHvReferencias.contains(hvReferenciaSeleccionada)) {
 
-                    if (listHvReferencias.get(indice).getNombrepersona() == null) {
+                    if (hvReferenciaSeleccionada.getNombrepersona() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        listHvReferencias.get(indice).setNombrepersona(backUpDescripcion);
-                    } else if (listHvReferencias.get(indice).getNombrepersona().isEmpty()) {
+                        hvReferenciaSeleccionada.setNombrepersona(backUpDescripcion);
+                    } else if (hvReferenciaSeleccionada.getNombrepersona().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        listHvReferencias.get(indice).setNombrepersona(backUpDescripcion);
+                        hvReferenciaSeleccionada.setNombrepersona(backUpDescripcion);
                     } else {
                         pass++;
                     }
-                    if (listHvReferencias.get(indice).getTelefono() == null) {
+                    if (hvReferenciaSeleccionada.getTelefono() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        listHvReferencias.get(indice).setTelefono(backUpTelefono);
+                        hvReferenciaSeleccionada.setTelefono(backUpTelefono);
                     } else {
                         pass++;
                     }
 
                     if (pass == 2) {
                         if (modificarHvReferencias.isEmpty()) {
-                            modificarHvReferencias.add(listHvReferencias.get(indice));
-                        } else if (!modificarHvReferencias.contains(listHvReferencias.get(indice))) {
-                            modificarHvReferencias.add(listHvReferencias.get(indice));
+                            modificarHvReferencias.add(hvReferenciaSeleccionada);
+                        } else if (!modificarHvReferencias.contains(hvReferenciaSeleccionada)) {
+                            modificarHvReferencias.add(hvReferenciaSeleccionada);
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -361,21 +321,19 @@ public class ControlHvReferencias implements Serializable {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
                     }
-                    index = -1;
-                    secRegistro = null;
                 } else {
-                    if (listHvReferencias.get(indice).getNombrepersona() == null) {
+                    if (hvReferenciaSeleccionada.getNombrepersona() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        listHvReferencias.get(indice).setNombrepersona(backUpDescripcion);
-                    } else if (listHvReferencias.get(indice).getNombrepersona().isEmpty()) {
+                        hvReferenciaSeleccionada.setNombrepersona(backUpDescripcion);
+                    } else if (hvReferenciaSeleccionada.getNombrepersona().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        listHvReferencias.get(indice).setNombrepersona(backUpDescripcion);
+                        hvReferenciaSeleccionada.setNombrepersona(backUpDescripcion);
                     } else {
                         pass++;
                     }
-                    if (listHvReferencias.get(indice).getTelefono() == null) {
+                    if (hvReferenciaSeleccionada.getTelefono() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        listHvReferencias.get(indice).setTelefono(backUpTelefono);
+                        hvReferenciaSeleccionada.setTelefono(backUpTelefono);
                     } else {
                         pass++;
                     }
@@ -389,32 +347,30 @@ public class ControlHvReferencias implements Serializable {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
                     }
-                    index = -1;
-                    secRegistro = null;
                 }
             } else {
 
-                if (!crearHvReferencias.contains(filtrarHvReferencias.get(indice))) {
-                    if (filtrarHvReferencias.get(indice).getNombrepersona() == null) {
+                if (!crearHvReferencias.contains(hvReferenciaSeleccionada)) {
+                    if (hvReferenciaSeleccionada.getNombrepersona() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        filtrarHvReferencias.get(indice).setNombrepersona(backUpDescripcion);
-                    } else if (filtrarHvReferencias.get(indice).getNombrepersona().isEmpty()) {
-                        filtrarHvReferencias.get(indice).setNombrepersona(backUpDescripcion);
+                        hvReferenciaSeleccionada.setNombrepersona(backUpDescripcion);
+                    } else if (hvReferenciaSeleccionada.getNombrepersona().isEmpty()) {
+                        hvReferenciaSeleccionada.setNombrepersona(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                     } else {
                         pass++;
                     }
-                    if (filtrarHvReferencias.get(indice).getTelefono() == null) {
+                    if (hvReferenciaSeleccionada.getTelefono() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        filtrarHvReferencias.get(indice).setTelefono(backUpTelefono);
+                        hvReferenciaSeleccionada.setTelefono(backUpTelefono);
                     } else {
                         pass++;
                     }
                     if (pass == 2) {
                         if (modificarHvReferencias.isEmpty()) {
-                            modificarHvReferencias.add(filtrarHvReferencias.get(indice));
-                        } else if (!modificarHvReferencias.contains(filtrarHvReferencias.get(indice))) {
-                            modificarHvReferencias.add(filtrarHvReferencias.get(indice));
+                            modificarHvReferencias.add(hvReferenciaSeleccionada);
+                        } else if (!modificarHvReferencias.contains(hvReferenciaSeleccionada)) {
+                            modificarHvReferencias.add(hvReferenciaSeleccionada);
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -424,21 +380,19 @@ public class ControlHvReferencias implements Serializable {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
                     }
-                    index = -1;
-                    secRegistro = null;
                 } else {
-                    if (filtrarHvReferencias.get(indice).getNombrepersona() == null) {
+                    if (hvReferenciaSeleccionada.getNombrepersona() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        filtrarHvReferencias.get(indice).setNombrepersona(backUpDescripcion);
-                    } else if (filtrarHvReferencias.get(indice).getNombrepersona().isEmpty()) {
+                        hvReferenciaSeleccionada.setNombrepersona(backUpDescripcion);
+                    } else if (hvReferenciaSeleccionada.getNombrepersona().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        filtrarHvReferencias.get(indice).setNombrepersona(backUpDescripcion);
+                        hvReferenciaSeleccionada.setNombrepersona(backUpDescripcion);
                     } else {
                         pass++;
                     }
-                    if (filtrarHvReferencias.get(indice).getTelefono() == null) {
+                    if (hvReferenciaSeleccionada.getTelefono() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        filtrarHvReferencias.get(indice).setTelefono(backUpTelefono);
+                        hvReferenciaSeleccionada.setTelefono(backUpTelefono);
                     } else {
                         pass++;
                     }
@@ -452,8 +406,6 @@ public class ControlHvReferencias implements Serializable {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
                     }
-                    index = -1;
-                    secRegistro = null;
                 }
 
             }
@@ -465,81 +417,34 @@ public class ControlHvReferencias implements Serializable {
 
     public void borrandoHvReferencias() {
 
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                System.out.println("Entro a borrandoHvReferencias");
-                if (!modificarHvReferencias.isEmpty() && modificarHvReferencias.contains(listHvReferencias.get(index))) {
-                    int modIndex = modificarHvReferencias.indexOf(listHvReferencias.get(index));
-                    modificarHvReferencias.remove(modIndex);
-                    borrarHvReferencias.add(listHvReferencias.get(index));
-                } else if (!crearHvReferencias.isEmpty() && crearHvReferencias.contains(listHvReferencias.get(index))) {
-                    int crearIndex = crearHvReferencias.indexOf(listHvReferencias.get(index));
-                    crearHvReferencias.remove(crearIndex);
-                } else {
-                    borrarHvReferencias.add(listHvReferencias.get(index));
-                }
-                listHvReferencias.remove(index);
+        if (hvReferenciaSeleccionada != null) {
+            System.out.println("Entro a borrandoHvReferencias");
+            if (!modificarHvReferencias.isEmpty() && modificarHvReferencias.contains(hvReferenciaSeleccionada)) {
+                modificarHvReferencias.remove(modificarHvReferencias.indexOf(hvReferenciaSeleccionada));
+                borrarHvReferencias.add(hvReferenciaSeleccionada);
+            } else if (!crearHvReferencias.isEmpty() && crearHvReferencias.contains(hvReferenciaSeleccionada)) {
+                crearHvReferencias.remove(crearHvReferencias.indexOf(hvReferenciaSeleccionada));
+            } else {
+                borrarHvReferencias.add(hvReferenciaSeleccionada);
             }
+            listHvReferencias.remove(hvReferenciaSeleccionada);
             if (tipoLista == 1) {
-                System.out.println("borrandoHvReferencias ");
-                if (!modificarHvReferencias.isEmpty() && modificarHvReferencias.contains(filtrarHvReferencias.get(index))) {
-                    int modIndex = modificarHvReferencias.indexOf(filtrarHvReferencias.get(index));
-                    modificarHvReferencias.remove(modIndex);
-                    borrarHvReferencias.add(filtrarHvReferencias.get(index));
-                } else if (!crearHvReferencias.isEmpty() && crearHvReferencias.contains(filtrarHvReferencias.get(index))) {
-                    int crearIndex = crearHvReferencias.indexOf(filtrarHvReferencias.get(index));
-                    crearHvReferencias.remove(crearIndex);
-                } else {
-                    borrarHvReferencias.add(filtrarHvReferencias.get(index));
-                }
-                int VCIndex = listHvReferencias.indexOf(filtrarHvReferencias.get(index));
-                listHvReferencias.remove(VCIndex);
-                filtrarHvReferencias.remove(index);
-
+                filtrarHvReferencias.remove(hvReferenciaSeleccionada);
             }
             RequestContext context = RequestContext.getCurrentInstance();
-            if (listHvReferencias == null || listHvReferencias.isEmpty()) {
-                infoRegistro = "Cantidad de registros: 0 ";
-            } else {
-                infoRegistro = "Cantidad de registros: " + listHvReferencias.size();
-            }
+            modificarInfoRegistro(listHvReferencias.size());
             context.update("form:informacionRegistro");
             context.update("form:datosHvReferencia");
-            index = -1;
-            secRegistro = null;
-
+            hvReferenciaSeleccionada = null;
             if (guardado == true) {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+        } else {
+            RequestContext.getCurrentInstance().execute("formularioDialogos:seleccionarRegistro.show()");
         }
-
     }
 
-    /* public void verificarBorrado() {
-     System.out.println("Estoy en verificarBorrado");
-     try {
-     System.err.println("Control Secuencia de ControlHvReferencias ");
-     competenciasCargos = administrarHvEntrevistas.verificarBorradoCompetenciasCargos(listHvEntrevistas.get(index).getSecuencia());
-
-     if (competenciasCargos.intValueExact() == 0) {
-     System.out.println("Borrado==0");
-     borrandoHvEntrevistas();
-     } else {
-     System.out.println("Borrado>0");
-
-     RequestContext context = RequestContext.getCurrentInstance();
-     context.update("form:validacionBorrar");
-     context.execute("validacionBorrar.show()");
-     index = -1;
-
-     competenciasCargos = new BigDecimal(-1);
-
-     }
-     } catch (Exception e) {
-     System.err.println("ERROR ControlHvReferencias verificarBorrado ERROR " + e);
-     }
-     }*/
     public void revisarDialogoGuardar() {
 
         if (!borrarHvReferencias.isEmpty() || !crearHvReferencias.isEmpty() || !modificarHvReferencias.isEmpty()) {
@@ -575,27 +480,29 @@ public class ControlHvReferencias implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listHvReferencias = null;
+            getListHvReferencias();
+            contarRegistros();
             context.update("form:datosHvReferencia");
-            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesMessage msg = new FacesMessage("InformaciÃ³n", "Se gurdarÃ³n los datos con Ã©xito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
             k = 0;
             guardado = true;
         }
-        index = -1;
+        hvReferenciaSeleccionada = null;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
     }
 
     public void editarCelda() {
-        if (index >= 0) {
+        if (hvReferenciaSeleccionada != null) {
             if (tipoLista == 0) {
-                editarHvReferencia = listHvReferencias.get(index);
+                editarHvReferencia = hvReferenciaSeleccionada;
             }
             if (tipoLista == 1) {
-                editarHvReferencia = filtrarHvReferencias.get(index);
+                editarHvReferencia = hvReferenciaSeleccionada;
             }
-
+            deshabilitarBotonLov();
             RequestContext context = RequestContext.getCurrentInstance();
             System.out.println("Entro a editar... valor celda: " + cualCelda);
             if (cualCelda == 0) {
@@ -618,9 +525,9 @@ public class ControlHvReferencias implements Serializable {
                 cualCelda = -1;
             }
 
+        } else {
+            RequestContext.getCurrentInstance().execute("formularioDialogos:seleccionarRegistro.show()");
         }
-        index = -1;
-        secRegistro = null;
     }
 
     public void agregarNuevoHvRefencias() {
@@ -633,33 +540,33 @@ public class ControlHvReferencias implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (nuevoHvReferencia.getNombrepersona() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Nombre \n";
+            mensajeValidacion = mensajeValidacion + "El campo Nombre no puede estar vacÃ­o \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("bandera");
             contador++;
         }
-        /*if (nuevoHvEntrevista.getTipo() == (null)) {
-         mensajeValidacion = mensajeValidacion + " *Debe tener un tipo entrevista \n";
-         System.out.println("Mensaje validacion : " + mensajeValidacion);
-         } else {
-         System.out.println("bandera");
-         contador++;
-         }*/
 
-        listHVHojasDeVida = administrarHvReferencias.consultarHvHojasDeVida(secuenciaPersona);
+        System.out.println("secuencia persona" + empleado.getPersona().getSecuencia());
+        listHVHojasDeVida = administrarHvReferencias.consultarHvHojasDeVida(empleado.getPersona().getSecuencia());
         if (listHVHojasDeVida == null) {
-            System.err.println("ERROR NULO HVHOJASDEVIDA");
+            System.err.println("ERROR NULO HVHOJASDEVIDA PARA LA SECUENCIA DE PERSONA :" + empleado.getPersona().getSecuencia());
         } else {
-            System.err.println("tamaño listHojasDeVida " + listHVHojasDeVida.size());
-            hvHojasDeVida = listHVHojasDeVida.get(0);
-            System.err.println("Agregar nuevo HVHojasDeVida " + hvHojasDeVida.getSecuencia());
-            nuevoHvReferencia.setHojadevida(hvHojasDeVida);
+//            if (!listHvReferencias.isEmpty()) {
+//                System.out.println("La lista estÃ¡ vacÃ­a ");
+//            } else {
+                System.err.println("tamaÃ±o listHojasDeVida " + listHVHojasDeVida.size());
+                hvHojasDeVida = listHVHojasDeVida.get(0);
+                System.err.println("Agregar nuevo HVHojasDeVida " + hvHojasDeVida.getSecuencia());
+                nuevoHvReferencia.setHojadevida(hvHojasDeVida);
+            //}
+
         }
 
         nuevoHvReferencia.setTipo("PERSONALES");
-        System.err.println("agregar tipo entrevista " + nuevoHvReferencia.getTipo());
+        System.err.println("agregar tipo referencia" + nuevoHvReferencia.getTipo());
         System.out.println("contador " + contador);
+        System.out.println("hvHojasDevida:" + hvHojasDeVida);
 
         if (contador == 1) {
             FacesContext c = FacesContext.getCurrentInstance();
@@ -679,25 +586,22 @@ public class ControlHvReferencias implements Serializable {
                 bandera = 0;
                 filtrarHvReferencias = null;
                 tipoLista = 0;
+                tamano = 270;
             }
             System.out.println("Despues de la bandera");
-
+            System.out.println("nueva referencia " + nuevoHvReferencia);
             k++;
             l = BigInteger.valueOf(k);
             nuevoHvReferencia.setSecuencia(l);
-            System.err.println("---------------AGREGAR REGISTRO----------------");
-            System.err.println("nombre " + nuevoHvReferencia.getNombrepersona());
-            System.err.println("cargo " + nuevoHvReferencia.getCargo());
-            System.err.println("numero de telefono" + nuevoHvReferencia.getTelefono());
-            System.err.println("numero de celular" + nuevoHvReferencia.getCelular());
-            System.err.println("-----------------------------------------------");
-
             crearHvReferencias.add(nuevoHvReferencia);
+            if (listHvReferencias == null) {
+                listHvReferencias = new ArrayList<HvReferencias>();
+            }
             listHvReferencias.add(nuevoHvReferencia);
+            hvReferenciaSeleccionada = nuevoHvReferencia;
             nuevoHvReferencia = new HvReferencias();
             context.update("form:datosHvReferencia");
-
-            infoRegistro = "Cantidad de registros: " + listHvReferencias.size();
+            modificarInfoRegistro(listHvReferencias.size());
             context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
@@ -705,12 +609,10 @@ public class ControlHvReferencias implements Serializable {
             }
 
             context.execute("nuevoRegistroHvReferencias.hide()");
-            index = -1;
-            secRegistro = null;
 
         } else {
-            context.update("form:validacionNuevaCentroCosto");
-            context.execute("validacionNuevaCentroCosto.show()");
+            context.update("form:validacionNuevaReferencia");
+            context.execute("validacionNuevaReferencia.show()");
             contador = 0;
         }
     }
@@ -718,43 +620,41 @@ public class ControlHvReferencias implements Serializable {
     public void limpiarNuevoHvReferencias() {
         System.out.println("limpiarNuevoHvEntrevistas");
         nuevoHvReferencia = new HvReferencias();
-        secRegistro = null;
-        index = -1;
 
     }
 
     //------------------------------------------------------------------------------
     public void duplicandoHvEntrevistas() {
         System.out.println("duplicandoHvEntrevistas");
-        if (index >= 0) {
+        if (hvReferenciaSeleccionada != null) {
             duplicarHvReferencia = new HvReferencias();
             k++;
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
                 duplicarHvReferencia.setSecuencia(l);
-                duplicarHvReferencia.setNombrepersona(listHvReferencias.get(index).getNombrepersona());
-                duplicarHvReferencia.setCargo(listHvReferencias.get(index).getCargo());
-                duplicarHvReferencia.setTelefono(listHvReferencias.get(index).getTelefono());
-                duplicarHvReferencia.setCelular(listHvReferencias.get(index).getCelular());
-                duplicarHvReferencia.setHojadevida(listHvReferencias.get(index).getHojadevida());
-                duplicarHvReferencia.setTipo(listHvReferencias.get(index).getTipo());
+                duplicarHvReferencia.setNombrepersona(hvReferenciaSeleccionada.getNombrepersona());
+                duplicarHvReferencia.setCargo(hvReferenciaSeleccionada.getCargo());
+                duplicarHvReferencia.setTelefono(hvReferenciaSeleccionada.getTelefono());
+                duplicarHvReferencia.setCelular(hvReferenciaSeleccionada.getCelular());
+                duplicarHvReferencia.setHojadevida(hvReferenciaSeleccionada.getHojadevida());
+                duplicarHvReferencia.setTipo(hvReferenciaSeleccionada.getTipo());
             }
             if (tipoLista == 1) {
                 duplicarHvReferencia.setSecuencia(l);
-                duplicarHvReferencia.setNombrepersona(filtrarHvReferencias.get(index).getNombrepersona());
-                duplicarHvReferencia.setCargo(filtrarHvReferencias.get(index).getCargo());
-                duplicarHvReferencia.setTelefono(filtrarHvReferencias.get(index).getTelefono());
-                duplicarHvReferencia.setCelular(filtrarHvReferencias.get(index).getCelular());
-                duplicarHvReferencia.setHojadevida(filtrarHvReferencias.get(index).getHojadevida());
-                duplicarHvReferencia.setTipo(filtrarHvReferencias.get(index).getTipo());
+                duplicarHvReferencia.setNombrepersona(hvReferenciaSeleccionada.getNombrepersona());
+                duplicarHvReferencia.setCargo(hvReferenciaSeleccionada.getCargo());
+                duplicarHvReferencia.setTelefono(hvReferenciaSeleccionada.getTelefono());
+                duplicarHvReferencia.setCelular(hvReferenciaSeleccionada.getCelular());
+                duplicarHvReferencia.setHojadevida(hvReferenciaSeleccionada.getHojadevida());
+                duplicarHvReferencia.setTipo(hvReferenciaSeleccionada.getTipo());
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarRRL");
             context.execute("duplicarRegistroHvReferencias.show()");
-            index = -1;
-            secRegistro = null;
+        } else {
+            RequestContext.getCurrentInstance().execute("formularioDialogos:seleccionarRegistro.show()");
         }
     }
 
@@ -784,10 +684,8 @@ public class ControlHvReferencias implements Serializable {
             }
             listHvReferencias.add(duplicarHvReferencia);
             crearHvReferencias.add(duplicarHvReferencia);
+            hvReferenciaSeleccionada = duplicarHvReferencia;
             context.update("form:datosHvReferencia");
-            index = -1;
-            secRegistro = null;
-
             System.err.println("---------------DUPLICAR REGISTRO----------------");
             System.err.println("nombre " + duplicarHvReferencia.getNombrepersona());
             System.err.println("cargo " + duplicarHvReferencia.getCargo());
@@ -797,7 +695,7 @@ public class ControlHvReferencias implements Serializable {
             if (guardado == true) {
                 guardado = false;
             }
-            infoRegistro = "Cantidad de registros: " + listHvReferencias.size();
+            modificarInfoRegistro(listHvReferencias.size());
             context.update("form:informacionRegistro");
             RequestContext.getCurrentInstance().update("form:ACEPTAR");
             if (bandera == 1) {
@@ -816,14 +714,15 @@ public class ControlHvReferencias implements Serializable {
                 bandera = 0;
                 filtrarHvReferencias = null;
                 tipoLista = 0;
+                tamano = 270;
             }
             duplicarHvReferencia = new HvReferencias();
             RequestContext.getCurrentInstance().execute("duplicarRegistroHvReferencias.hide()");
 
         } else {
             contador = 0;
-            context.update("form:validacionDuplicarVigencia");
-            context.execute("validacionDuplicarVigencia.show()");
+            context.update("form:validacionDuplicarReferencia");
+            context.execute("validacionDuplicarReferencia.show()");
         }
     }
 
@@ -837,8 +736,7 @@ public class ControlHvReferencias implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "REFERENCIASPERSONALES", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
+        hvReferenciaSeleccionada = null;
     }
 
     public void exportXLS() throws IOException {
@@ -847,55 +745,80 @@ public class ControlHvReferencias implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "REFERENCIASPERSONALES", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
+        hvReferenciaSeleccionada = null;
     }
 
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("lol");
-        if (!listHvReferencias.isEmpty()) {
-            if (secRegistro != null) {
-                System.out.println("lol 2");
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "HVREFERENCIAS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
-                System.out.println("resultado: " + resultado);
-                if (resultado == 1) {
-                    context.execute("errorObjetosDB.show()");
-                } else if (resultado == 2) {
-                    context.execute("confirmarRastro.show()");
-                } else if (resultado == 3) {
-                    context.execute("errorRegistroRastro.show()");
-                } else if (resultado == 4) {
-                    context.execute("errorTablaConRastro.show()");
-                } else if (resultado == 5) {
-                    context.execute("errorTablaSinRastro.show()");
-                }
-            } else {
-                context.execute("seleccionarRegistro.show()");
+        if (hvReferenciaSeleccionada != null) {
+            System.out.println("lol 2");
+            int resultado = administrarRastros.obtenerTabla(hvReferenciaSeleccionada.getSecuencia(), "HVREFERENCIAS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
+            System.out.println("resultado: " + resultado);
+            if (resultado == 1) {
+                context.execute("errorObjetosDB.show()");
+            } else if (resultado == 2) {
+                context.execute("confirmarRastro.show()");
+            } else if (resultado == 3) {
+                context.execute("errorRegistroRastro.show()");
+            } else if (resultado == 4) {
+                context.execute("errorTablaConRastro.show()");
+            } else if (resultado == 5) {
+                context.execute("errorTablaSinRastro.show()");
             }
         } else {
-            if (administrarRastros.verificarHistoricosTabla("HVREFERENCIAS")) { // igual acá
+            if (administrarRastros.verificarHistoricosTabla("HVREFERENCIAS")) { // igual acÃ¡
                 context.execute("confirmarRastroHistorico.show()");
             } else {
                 context.execute("errorRastroHistorico.show()");
             }
 
         }
-        index = -1;
+    }
+
+    public void eventoFiltrar() {
+        try {
+            System.out.println("\n ENTRE A ControlHvReferencias.eventoFiltrar \n");
+            if (tipoLista == 0) {
+                tipoLista = 1;
+            }
+            RequestContext context = RequestContext.getCurrentInstance();
+            modificarInfoRegistro(filtrarHvReferencias.size());
+            context.update("form:informacionRegistro");
+        } catch (Exception e) {
+            System.out.println("ERROR ControlHvReferencias eventoFiltrar ERROR===" + e.getMessage());
+        }
+    }
+
+    public void modificarInfoRegistro(int valor) {
+        infoRegistro = String.valueOf(valor);
+    }
+
+    public void contarRegistros() {
+        if (listHvReferencias != null) {
+            modificarInfoRegistro(listHvReferencias.size());
+        } else {
+            modificarInfoRegistro(0);
+        }
+    }
+
+    public void deshabilitarBotonLov() {
+        activarLov = true;
+    }
+
+    public void recordarSeleccion() {
+        if (hvReferenciaSeleccionada != null) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            tablaC = (DataTable) c.getViewRoot().findComponent("form:datosHvReferencia");
+            tablaC.setSelection(hvReferenciaSeleccionada);
+        }
     }
 
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<HvReferencias> getListHvReferencias() {
-        if (listHvReferencias == null) {
-            listHvReferencias = administrarHvReferencias.consultarHvReferenciasPersonalesPorPersona(secuenciaPersona);
-        }
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (listHvReferencias == null || listHvReferencias.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
-        } else {
-            infoRegistro = "Cantidad de registros: " + listHvReferencias.size();
-        }
-        context.update("form:informacionRegistro");
+       if(listHvReferencias == null){
+           listHvReferencias=administrarHvReferencias.consultarHvReferenciasPersonalesPorPersona(empleado.getPersona().getSecuencia());
+       }
         return listHvReferencias;
     }
 
@@ -943,14 +866,6 @@ public class ControlHvReferencias implements Serializable {
         this.editarHvReferencia = editarHvReferencia;
     }
 
-    public BigInteger getSecRegistro() {
-        return secRegistro;
-    }
-
-    public void setSecRegistro(BigInteger secRegistro) {
-        this.secRegistro = secRegistro;
-    }
-
     public int getRegistrosBorrados() {
         return registrosBorrados;
     }
@@ -976,11 +891,10 @@ public class ControlHvReferencias implements Serializable {
     }
 
     public Personas getPersonaSeleccionada() {
-        if (personaSeleccionada == null) {
-            personaSeleccionada = administrarHvReferencias.consultarPersonas(secuenciaPersona);
-        }
+//        if (personaSeleccionada == null) {
+//            personaSeleccionada = administrarHvReferencias.consultarPersonas(secuenciaPersona);
+//        }
         return personaSeleccionada;
-
     }
 
     public void setPersonaSeleccionada(Personas personaSeleccionada) {
@@ -1017,6 +931,38 @@ public class ControlHvReferencias implements Serializable {
 
     public void setInfoRegistro(String infoRegistro) {
         this.infoRegistro = infoRegistro;
+    }
+
+    public boolean isActivarLov() {
+        return activarLov;
+    }
+
+    public void setActivarLov(boolean activarLov) {
+        this.activarLov = activarLov;
+    }
+
+    public Empleados getEmpleado() {
+        return empleado;
+    }
+
+    public void setEmpleado(Empleados empleado) {
+        this.empleado = empleado;
+    }
+
+    public HVHojasDeVida getHvHojasDeVida() {
+        return hvHojasDeVida;
+    }
+
+    public void setHvHojasDeVida(HVHojasDeVida hvHojasDeVida) {
+        this.hvHojasDeVida = hvHojasDeVida;
+    }
+
+    public List<HVHojasDeVida> getListHVHojasDeVida() {
+        return listHVHojasDeVida;
+    }
+
+    public void setListHVHojasDeVida(List<HVHojasDeVida> listHVHojasDeVida) {
+        this.listHVHojasDeVida = listHVHojasDeVida;
     }
 
 }

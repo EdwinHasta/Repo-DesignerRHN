@@ -135,12 +135,12 @@ public class PersistenciaHvReferencias implements PersistenciaHvReferenciasInter
     }
 
     @Override
-    public List<HVHojasDeVida> consultarHvHojaDeVidaPorPersona(EntityManager em, BigInteger secEmpleado) {
+    public List<HVHojasDeVida> consultarHvHojaDeVidaPorPersona(EntityManager em, BigInteger secPersona) {
         try {
             em.clear();
-            System.out.println("PersistenciaHvReferencias secuencia empleado hoja de vida " + secEmpleado);
-            Query query = em.createQuery("SELECT hv FROM HVHojasDeVida hv , Personas e WHERE e.secuencia= hv.persona.secuencia AND e.secuencia = :secuenciaEmpl");
-            query.setParameter("secuenciaEmpl", secEmpleado);
+            System.out.println("PersistenciaHvReferencias secuencia empleado hoja de vida " + secPersona);
+            Query query = em.createQuery("SELECT hv FROM HVHojasDeVida hv , Personas p WHERE p.secuencia= hv.persona.secuencia AND p.secuencia = :secuenciaEmpl");
+            query.setParameter("secuenciaEmpl", secPersona);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<HVHojasDeVida> hvHojasDeVIda = query.getResultList();
             return hvHojasDeVIda;

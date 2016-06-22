@@ -5,6 +5,7 @@
  */
 package InterfaceAdministrar;
 
+import Entidades.Empleados;
 import Entidades.HVHojasDeVida;
 import Entidades.HvReferencias;
 import Entidades.Personas;
@@ -98,4 +99,6 @@ public interface AdministrarHvReferenciasInterface {
      * @return Empleado.
      */
     public Personas consultarPersonas(BigInteger secEmpleado);
+    
+    public Empleados empleadoActual(BigInteger secuencia);
 }

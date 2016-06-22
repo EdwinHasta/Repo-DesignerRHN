@@ -426,12 +426,12 @@
                             <fieldset style="position: absolute; left: 418px; top: 2px; width: 197px; height: 120px; border-radius: 7px; padding: 0px; border: none;">
                                 <!-- <legend style="font-weight: bold; color: blue">#{msg['experiencia']}</legend> -->
 
-                                <p:commandButton id="btnReferenciaLaboral" value="" action="perReferenciaLaboral" actionListener="#{controlHvReferencias.recibirEmpleado(controlEmpleadoIndividual.empleado.persona.secuencia)}" 
+                                <p:commandButton id="btnReferenciaLaboral" value="" action="perReferenciaLaboral" actionListener="#{controlHvReferencias.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" 
                                                  style="background-image: url(Imagenes/Iconos/referencialaboral.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; border:none; " process="@this"/>
                                 <h:outputText value="#{msg['referencialaboral']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B;" />
                                 <p:inputText id="referenciaLaboral" value="#{controlEmpleadoIndividual.referenciasPersonalesP}"  readonly="true" style="position: absolute; left: 45px; top: 15px; width: 140px; box-shadow: none; border: none;"/>
 
-                                <p:commandButton id="btnReferenciaFamiliar" value="" action="perReferenciaFamiliar"  actionListener="#{controlHvReferencias1.recibirEmpleado(controlEmpleadoIndividual.empleado.persona.secuencia)}" 
+                                <p:commandButton id="btnReferenciaFamiliar" value="" action="perReferenciaFamiliar"  actionListener="#{controlHvReferencias1.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" 
                                                  style="background-image: url(Imagenes/Iconos/referenciafamiliar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 41px; border:none;" process="@this"/>
                                 <h:outputText value="#{msg['referenciafamiliar']}" style="position: absolute; left: 47px; top: 41px; font-weight: bold; color: #14388B;" />
                                 <p:inputText id="referenciaFamiliar" value="#{controlEmpleadoIndividual.referenciasFamiliaresP}" readonly="true" style="position: absolute; left: 45px; top: 56px; width: 140px; box-shadow: none; border: none;"/>

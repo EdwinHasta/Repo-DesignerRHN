@@ -98,7 +98,6 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             System.out.println(this.getClass().getName() + ".buscarEmpleado() error " + e.toString());
             return null;
         }
-
     }
 
     /*@Override

@@ -889,6 +889,7 @@ public class ControlPerDirecciones implements Serializable {
         } else if (tipoN == 2) {
             tipoActualizacion = 2;
         }
+        modificarInfoRegistroCiudades(listaCiudades.size());
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("formularioDialogos:ciudadesDialogo");
         context.execute("ciudadesDialogo.show()");

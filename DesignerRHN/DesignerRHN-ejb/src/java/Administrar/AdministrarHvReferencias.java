@@ -12,6 +12,7 @@ import Entidades.HvReferencias;
 import Entidades.Personas;
 import Entidades.TiposFamiliares;
 import InterfaceAdministrar.AdministrarSesionesInterface;
+import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaHvReferenciasInterface;
 import InterfacePersistencia.PersistenciaPersonasInterface;
 import InterfacePersistencia.PersistenciaTiposFamiliaresInterface;
@@ -34,6 +35,8 @@ public class AdministrarHvReferencias implements AdministrarHvReferenciasInterfa
     PersistenciaTiposFamiliaresInterface persistenciaTiposFamiliares;
     @EJB
     PersistenciaPersonasInterface persistenciaPersonas;
+    @EJB
+    PersistenciaEmpleadoInterface persistenciaEmpleado;
     HvReferencias hvReferencias;
     List<HVHojasDeVida> hvHojasDeVida;
     /**
@@ -108,6 +111,7 @@ public class AdministrarHvReferencias implements AdministrarHvReferenciasInterfa
         return hvReferencias;
     }
 
+    @Override
     public Personas consultarPersonas(BigInteger secuencia) {
         Personas persona;
         try {
@@ -144,4 +148,15 @@ public class AdministrarHvReferencias implements AdministrarHvReferenciasInterfa
         }
     }
 
+     @Override
+    public Empleados empleadoActual(BigInteger secuenciaP){
+        try{
+        Empleados retorno = persistenciaEmpleado.buscarEmpleado(em, secuenciaP);
+        return retorno;
+        }catch(Exception  e){
+            System.out.println("Error empleadoActual Admi : "+e.toString());
+            return null;
+        }
+    }
+    
 }
