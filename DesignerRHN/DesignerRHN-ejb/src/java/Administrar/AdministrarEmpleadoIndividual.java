@@ -447,6 +447,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
         }
     }
 
+    @Override
     public String fotoEmpleado(Empleados empleado) {
         String rutaFoto;
         general = persistenciaGenerales.obtenerRutas(em);

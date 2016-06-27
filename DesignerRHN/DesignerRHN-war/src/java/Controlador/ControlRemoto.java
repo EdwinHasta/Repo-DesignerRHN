@@ -4,11 +4,6 @@ import Administrar.AdministrarCarpetaPersonal;
 import Banner.BannerInicioRed;
 import Entidades.*;
 import InterfaceAdministrar.*;
-/*import java.io.File;
- import java.io.FileOutputStream;
- import java.io.IOException;
- import java.io.InputStream;
- import java.io.OutputStream;*/
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -32,7 +27,6 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.context.RequestContext;
-//import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.UploadedFile;
 
@@ -42,6 +36,8 @@ public class ControlRemoto implements Serializable {
 
     @EJB
     AdministrarCarpetaPersonalInterface administrarCarpetaPersonal;
+    @EJB
+    AdministrarCarpetaDesignerInterface administrarCarpetaDesigner;
     
     private Empleados empleado;
     private Personas persona;
@@ -88,15 +84,13 @@ public class ControlRemoto implements Serializable {
     private VwTiposEmpleados emplSeleccionadoBE;
     private SelectItem[] tipoEmpleado;
     private boolean buscar, buscarEmp, mostrarT;
-    //private String destino = "C:\\Prueba\\Juguetito\\FirstFormWhitBD\\web\\ArchivosCargados\\";
     private UploadedFile file;
     private String nombreTabla;
     private Integer estadoEmpleado;
     //datos tablas ctrl+f11
     private Column tablasNombre, tablasDescripcion, moduloCodigo, moduloNombre, moduloObs;
     private boolean filtrosActivos;
-    @EJB
-    AdministrarCarpetaDesignerInterface administrarCarpetaDesigner;
+    
     private List<Modulos> listModulos;
     private List<Modulos> filtradolistModulos;
     private List<Tablas> listTablas;
@@ -107,7 +101,7 @@ public class ControlRemoto implements Serializable {
     private String tablaExportar, nombreArchivo;
     private BigInteger secuenciaMod;
     //PESTAÑA ACTUAL
-    private int numPestaña;
+    private int numPestanha;
     //SELECT ONE RADIO
     private String mensajePagos, tituloPago;
     private String pago;
@@ -151,10 +145,6 @@ public class ControlRemoto implements Serializable {
         vwActualesFormasPagos = new VWActualesFormasPagos();
         vwActualesVigenciasViajeros = new VWActualesVigenciasViajeros();
         vwActualesTiposTrabajadoresPosicion = new VWActualesTiposTrabajadores();
-        /*for (int i = 0; i < 59; i++) {
-         vwActualesTiposTrabajadoresesLista.add(new VWActualesTiposTrabajadores());
-         }*/
-        //vwActualesTiposTrabajadoresesLista.add(vwActualesTiposTrabajadores);
         administrarCarpetaPersonal = new AdministrarCarpetaPersonal();
         busquedaRapida = null;
         Imagen = "personal1" + extension;
@@ -176,8 +166,8 @@ public class ControlRemoto implements Serializable {
         selectModulo = null;
         tablaExportar = "data1";
         nombreArchivo = "Modulos";
-        //Inicializar pestaña en 0
-        numPestaña = 0;
+        //Inicializar pestanha en 0
+        numPestanha = 0;
         pago = "AUTOMATICO";
         tituloPago = "PAGOS AUTOMATICOS";
         mensajePagos = "Realice liquidaciones automáticas quincenales, mensuales, entre otras, por estructuras o por tipo de empleado. Primero ingrese los parametros a liquidar, después genere la liquidación para luego poder observar los comprobantes de pago. Usted puede deshacer todas las liquidaciones que desee siempre y cuando no se hayan cerrado. Al cerrar una liquidación se generan acumulados, por eso es importante estar seguro que la liquidación es correcta antes de cerrarla.";
@@ -209,16 +199,10 @@ public class ControlRemoto implements Serializable {
     }
 
     public void datosIniciales(int pestaña) {
-        numPestaña = pestaña;
+        numPestanha = pestaña;
     }
 
-    public void cancelarModificacion() {
-        //vigenciasCargosEmpleado = null;
-        //RequestContext context = RequestContext.getCurrentInstance();
-        //context.update("form:datosVCEmpleado");
-    }
-
-    public void valorImputText() throws ParseException {
+    public void valorInputText() throws ParseException {
         trabajador = vwActualesTiposTrabajadoresPosicion;
         if (trabajador.getEmpleado() != null) {
             secuencia = trabajador.getEmpleado().getSecuencia();
@@ -238,7 +222,8 @@ public class ControlRemoto implements Serializable {
         try {
             vwActualesTiposContratos = administrarCarpetaPersonal.consultarActualTipoContratoEmpleado(secuencia);
             fechaActualesTiposContratos = formato.format(vwActualesTiposContratos.getFechaVigencia());
-        } catch (Exception e) {
+        //} catch (Exception e) {
+        } catch (ParseException pe){
             vwActualesTiposContratos = null;
             fechaActualesTiposContratos = null;
         }
@@ -382,17 +367,19 @@ public class ControlRemoto implements Serializable {
             hv2 = false;
             mostrarT = true;
             try {
-                valorImputText();
+                valorInputText();
             } catch (ParseException ex) {
-                Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(this.getClass().getName()+"activos() error ");
+                ex.printStackTrace();
             }
             buscarEmplTipo = null;
             actualizarInformacionTipoTrabajador();
-            context.update("form:tabMenu:contenedor");
-            context.update("form:tabMenu:Activos");
-            context.update("form:tabMenu:Pensionados");
-            context.update("form:tabMenu:Retirados");
-            context.update("form:tabMenu:Aspirantes");
+            context.update("form:tabmenu:contenedor");
+            context.update("form:tabmenu:activos");
+            context.update("form:tabmenu:pensionados");
+            context.update("form:tabmenu:retirados");
+            context.update("form:tabmenu:aspirantes");
         }
     }
 
@@ -429,17 +416,18 @@ public class ControlRemoto implements Serializable {
             hv2 = true;
             mostrarT = true;
             try {
-                valorImputText();
+                valorInputText();
             } catch (ParseException ex) {
-                Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ControlRemoto.class.getName()+" error en la entrada");
             }
             buscarEmplTipo = null;
             actualizarInformacionTipoTrabajador();
-            context.update("form:tabMenu:contenedor");
-            context.update("form:tabMenu:Activos");
-            context.update("form:tabMenu:Pensionados");
-            context.update("form:tabMenu:Retirados");
-            context.update("form:tabMenu:Aspirantes");
+            context.update("form:tabmenu:contenedor");
+            context.update("form:tabmenu:activos");
+            context.update("form:tabmenu:pensionados");
+            context.update("form:tabmenu:retirados");
+            context.update("form:tabmenu:aspirantes");
         }
     }
 
@@ -476,17 +464,18 @@ public class ControlRemoto implements Serializable {
             hv2 = true;
             mostrarT = true;
             try {
-                valorImputText();
+                valorInputText();
             } catch (ParseException ex) {
-                Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ControlRemoto.class.getName()+" error en la entrada");
             }
             buscarEmplTipo = null;
             actualizarInformacionTipoTrabajador();
-            context.update("form:tabMenu:contenedor");
-            context.update("form:tabMenu:Activos");
-            context.update("form:tabMenu:Pensionados");
-            context.update("form:tabMenu:Retirados");
-            context.update("form:tabMenu:Aspirantes");
+            context.update("form:tabmenu:contenedor");
+            context.update("form:tabmenu:activos");
+            context.update("form:tabmenu:pensionados");
+            context.update("form:tabmenu:retirados");
+            context.update("form:tabmenu:aspirantes");
         }
     }
 
@@ -523,17 +512,18 @@ public class ControlRemoto implements Serializable {
             hv2 = true;
             mostrarT = true;
             try {
-                valorImputText();
+                valorInputText();
             } catch (ParseException ex) {
-                Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ControlRemoto.class.getName()+" error en la entrada");
             }
             buscarEmplTipo = null;
             actualizarInformacionTipoTrabajador();
-            context.update("form:tabMenu:contenedor");
-            context.update("form:tabMenu:Activos");
-            context.update("form:tabMenu:Pensionados");
-            context.update("form:tabMenu:Retirados");
-            context.update("form:tabMenu:Aspirantes");
+            context.update("form:tabmenu:contenedor");
+            context.update("form:tabmenu:activos");
+            context.update("form:tabmenu:pensionados");
+            context.update("form:tabmenu:retirados");
+            context.update("form:tabmenu:aspirantes");
         }
     }
 
@@ -547,11 +537,11 @@ public class ControlRemoto implements Serializable {
         if (tipoPersonal.equals("activos")) {
             result = administrarCarpetaPersonal.borrarActivo(secuencia);
             if (result == 0) {
-                context.update("formularioDialogos:activoEliminarPaso1");
-                context.execute("activoEliminarPaso1.show()");
+                context.update("formulariodialogos:activoeliminarpaso1");
+                context.execute("activoeliminarpaso1.show()");
             } else {
-                context.update("formularioDialogos:activoNoEliminar");
-                context.execute("activoNoEliminar.show()");
+                context.update("formulariodialogos:activonoeliminar");
+                context.execute("activonoeliminar.show()");
             }
         } else if (tipoPersonal.equals("retirados")) {
             accion = "reintegro";
@@ -561,44 +551,33 @@ public class ControlRemoto implements Serializable {
     public void paso2() {
         RequestContext context = RequestContext.getCurrentInstance();
 
-        context.update("formularioDialogos:activoEliminarPaso2");
-        context.execute("activoEliminarPaso2.show()");
+        context.update("formulariodialogos:activoeliminarpaso2");
+        context.execute("activoeliminarpaso2.show()");
     }
 
     public void paso3() {
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("formularioDialogos:activoEliminarPaso3");
-        context.execute("activoEliminarPaso3.show()");
+        context.update("formulariodialogos:activoeliminarpaso3");
+        context.execute("activoeliminarpaso3.show()");
     }
 
     public void paso4() {
         RequestContext context = RequestContext.getCurrentInstance();
         try {
             administrarCarpetaPersonal.borrarEmpleadoActivo(trabajador.getEmpleado().getSecuencia(), trabajador.getEmpleado().getPersona().getSecuencia());
-            context.update("formularioDialogos:activoEliminarPaso4");
-            context.execute("activoEliminarPaso4.show()");
+            context.update("formulariodialogos:activoeliminarpaso4");
+            context.execute("activoeeliminarpaso4.show()");
         } catch (Exception e) {
             System.out.println("Error en borrar al empleado");
         }
 
     }
 
-    /* private SelectItem[] createFilterOptions() {
-
-     SelectItem[] options = new SelectItem[4];
-     options[0] = new SelectItem("", "Select");
-
-     return options;
-     }
-
-     public SelectItem[] getTipoEmpleado() {
-     return tipoEmpleado;
-     }*/
     public void busquedaRapida() {
         filterBusquedaRapida = null;
         RequestContext context = RequestContext.getCurrentInstance();
         VWActualesTiposTrabajadores empleadoSeleccionado = administrarCarpetaPersonal.consultarActualTipoTrabajadorEmpleado(emplSeleccionado.getRfEmpleado());
-        if (empleadoSeleccionado.getTipoTrabajador().getTipo().equalsIgnoreCase("Activo")) {
+        if (empleadoSeleccionado.getTipoTrabajador().getTipo().equalsIgnoreCase("activo")) {
             Imagen = "personal1" + extension;
             styleActivos = "ui-state-highlight";
             stylePensionados = "";
@@ -614,7 +593,7 @@ public class ControlRemoto implements Serializable {
             hv2 = false;
             tipo = "ACTIVO";
         }
-        if (empleadoSeleccionado.getTipoTrabajador().getTipo().equalsIgnoreCase("Pensionado")) {
+        if (empleadoSeleccionado.getTipoTrabajador().getTipo().equalsIgnoreCase("pensionado")) {
             Imagen = "personal2" + extension;
             stylePensionados = "ui-state-highlight";
             styleActivos = "";
@@ -630,7 +609,7 @@ public class ControlRemoto implements Serializable {
             hv2 = true;
             tipo = "PENSIONADO";
         }
-        if (empleadoSeleccionado.getTipoTrabajador().getTipo().equalsIgnoreCase("Retirado")) {
+        if (empleadoSeleccionado.getTipoTrabajador().getTipo().equalsIgnoreCase("retirado")) {
             Imagen = "personal3" + extension;
             styleRetirados = "ui-state-highlight";
             stylePensionados = "";
@@ -646,7 +625,7 @@ public class ControlRemoto implements Serializable {
             hv2 = true;
             tipo = "RETIRADO";
         }
-        if (empleadoSeleccionado.getTipoTrabajador().getTipo().equalsIgnoreCase("Disponible")) {
+        if (empleadoSeleccionado.getTipoTrabajador().getTipo().equalsIgnoreCase("disponible")) {
             Imagen = "personal4" + extension;
             styleAspirantes = "ui-state-highlight";
             styleRetirados = "";
@@ -663,14 +642,14 @@ public class ControlRemoto implements Serializable {
             tipo = "DISPONIBLE";
         }
 
-        context.reset(":form:lvBusquedaRapida:globalFilter");
-        context.execute("busquedaR.clearFilters()");
-        context.execute("lvBr.hide()");
+        context.reset(":form:lvbusquedarapida:globalfilter");
+        context.execute("busquedar.clearfilters()");
+        context.execute("lvbr.hide()");
 
-        context.update("form:tabMenu:Activos");
-        context.update("form:tabMenu:Pensionados");
-        context.update("form:tabMenu:Retirados");
-        context.update("form:tabMenu:Aspirantes");
+        context.update("form:tabmenu:activos");
+        context.update("form:tabmenu:pensionados");
+        context.update("form:tabmenu:retirados");
+        context.update("form:tabmenu:aspirantes");
 
         vwActualesTiposTrabajadoresPosicion = empleadoSeleccionado;
         emplSeleccionado = null;
@@ -680,10 +659,10 @@ public class ControlRemoto implements Serializable {
         totalRegistros = 1;
         posicion = 0;
 
-        context.update("form:tabMenu:contenedor");
-        context.update("form:tabMenu:TipoPersonal");
-        context.update("form:tabMenu:panelInf");
-        context.update("form:tabMenu:contenedor:MostrarTodos");
+        context.update("form:tabmenu:contenedor");
+        context.update("form:tabmenu:tipopersonal");
+        context.update("form:tabmenu:panelinf");
+        context.update("form:tabmenu:contenedor:mostrartodos");
         actualizarInformacionTipoTrabajador();
         actualizarNavegacion();
     }
@@ -693,9 +672,9 @@ public class ControlRemoto implements Serializable {
         filterBusquedaRapida = null;
         emplSeleccionado = null;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.reset(":form:lvBusquedaRapida:globalFilter");
-        context.execute("busquedaR.clearFilters()");
-        context.execute("lvBr.hide()");
+        context.reset(":form:lvbusquedarapida:globalfilter");
+        context.execute("busquedar.clearfilters()");
+        context.execute("lvbr.hide()");
     }
 
     public void activarBuscar() {
@@ -713,12 +692,12 @@ public class ControlRemoto implements Serializable {
         mostrarT = false;
         totalRegistros = 1;
         posicion = 0;
-        context.reset("form:lvBuscarEmpleado:globalFilter");
-        context.execute("buscarE.clearFilters()");
-        context.execute("lvBE.hide()");
+        context.reset("form:lvbuscarempleado:globalfilter");
+        context.execute("lvbuscarempleado.clearfilters()");
+        context.execute("lvbe.hide()");
 
-        context.update("form:tabMenu:contenedor");
-        context.update("form:tabMenu:contenedor:MostrarTodos");
+        context.update("form:tabmenu:contenedor");
+        context.update("form:tabmenu:contenedor:mostrartodos");
         actualizarInformacionTipoTrabajador();
         actualizarNavegacion();
     }
@@ -728,9 +707,9 @@ public class ControlRemoto implements Serializable {
         filterBuscarEmpleado = null;
         emplSeleccionadoBE = null;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.reset("form:lvBuscarEmpleado:globalFilter");
-        context.execute("buscarE.clearFilters()");
-        context.execute("lvBE.hide()");
+        context.reset("form:lvbuscarempleado:globalfilter");
+        context.execute("buscare.clearfilters()");
+        context.execute("lvbe.hide()");
     }
 
     public void mostrarTodos() {
@@ -742,74 +721,42 @@ public class ControlRemoto implements Serializable {
         actualizarInformacionTipoTrabajador();
         actualizarNavegacion();
     }
-    /*
-     public void transformarArchivo(long size, InputStream in) {
-     try {
-     //extencion = fileName.split("[.]")[1];
-     //System.out.println(extencion);
-
-     OutputStream out = new FileOutputStream(new File(destino + identificacion + ".jpg"));
-     int reader = 0;
-     byte[] bytes = new byte[(int) size];
-     while ((reader = in.read(bytes)) != -1) {
-     out.write(bytes, 0, reader);
-     }
-     in.close();
-     out.flush();
-     out.close();
-     administrarCarpetaPersonal.actualizarFotoPersona(identificacion);
-     //RequestContext.getCurrentInstance().update("formEncrip:foto");
-     } catch (Exception e) {
-     //System.out.println("Pailander");
-     }
-     }
-
-     public void handleFileUpload(FileUploadEvent event) throws IOException {
-     transformarArchivo(event.getFile().getSize(), event.getFile().getInputstream());
-     RequestContext context = RequestContext.getCurrentInstance();
-     context.execute("Cargar.hide()");
-     context.execute("Exito.show()");
-     }
-     */
 
     public void probar(String nombreTab) {
-
-        //nombreTabla = nombreTab;
         setNombreTabla(nombreTab);
-
     }
 
     public void lab() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (tablaExportar.equals("Tablas")) {
-            tablasNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:Tablas:tablasNombre");
+        if (tablaExportar.equals("tablas")) {
+            tablasNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabmenu:tablas:tablasnombre");
             tablasNombre.setFilterStyle("");
-            tablasDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:Tablas:tablasDescripcion");
+            tablasDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabmenu:tablas:tablasdescripcion");
             tablasDescripcion.setFilterStyle("");
             altoTablas = "176";
-            context.update("form:tabMenu:Tablas");
+            context.update("form:tabmenu:tablas");
             filtrosActivos = true;
         } else if (tablaExportar.equals("data1")) {
-            moduloCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:data1:moduloCodigo");
+            moduloCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabmenu:data1:modulocodigo");
             moduloCodigo.setFilterStyle("width: 40px");
-            moduloNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:data1:moduloNombre");
+            moduloNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabmenu:data1:modulonombre");
             moduloNombre.setFilterStyle("");
-            moduloObs = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:data1:moduloObs");
+            moduloObs = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabmenu:data1:moduloobs");
             moduloObs.setFilterStyle("");
             altoModulos = "70";
-            context.update("form:tabMenu:data1");
+            context.update("form:tabmenu:data1");
             filtrosActivos = true;
         }
     }
 
     public void lab2() {
-        tablasNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:Tablas:tablasNombre");
+        tablasNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabmenu:tablas:tablasnombre");
         tablasNombre.setFilterStyle("display: none; visibility: hidden;");
-        tablasDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:Tablas:tablasDescripcion");
+        tablasDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabmenu:tablas:tablasdescripcion");
         tablasDescripcion.setFilterStyle("display: none; visibility: hidden;");
         altoTablas = "202";
         filtrosActivos = false;
-        RequestContext.getCurrentInstance().update("form:tabMenu:Tablas");
+        RequestContext.getCurrentInstance().update("form:tabmenu:tablas");
     }
 /////////////////////////  
     private Integer progress;
@@ -844,61 +791,63 @@ public class ControlRemoto implements Serializable {
     public void cambiarTablas() {
         secuenciaMod = selectModulo.getSecuencia();
         listTablas = administrarCarpetaDesigner.consultarTablas(secuenciaMod);
-        if (listTablas != null && !listTablas.isEmpty()) {
+        /*if (listTablas != null && !listTablas.isEmpty()) {
             buscarTablasLOV = false;
         } else {
             buscarTablasLOV = true;
-        }
+        }*/
+        buscarTablasLOV = ( listTablas == null || listTablas.isEmpty() );
         RequestContext context = RequestContext.getCurrentInstance();
-        if (tablaExportar.equals("Tablas")) {
-            tablasNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:Tablas:tablasNombre");
+        if (tablaExportar.equals("tablas")) {
+            tablasNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabmenu:tablas:tablasnombre");
             tablasNombre.setFilterStyle("display: none; visibility: hidden;");
-            tablasDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:Tablas:tablasDescripcion");
+            tablasDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabmenu:tablas:tablasdescripcion");
             tablasDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            context.execute("tabl.clearFilters()");
+            context.execute("tabl.clearfilters()");
             altoTablas = "202";
-            context.update("form:tabMenu:Tablas");
+            context.update("form:tabmenu:tablas");
             filtrosActivos = false;
         }
         mostrarTodasTablas = true;
-        context.update("form:tabMenu:mostrarTodasTablas");
-        context.update("form:tabMenu:buscarTablas");
+        context.update("form:tabmenu:mostrartodastablas");
+        context.update("form:tabmenu:buscartablas");
         tablaExportar = "data1";
-        nombreArchivo = "Modulos";
+        nombreArchivo = "modulos";
         filterListTablas = null;
     }
 
     public void exportarTabla() {
         if (tablaExportar.equals("data1")) {
-            moduloCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:data1:moduloCodigo");
+            moduloCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabmenu:data1:modulocodigo");
             moduloCodigo.setFilterStyle("display: none; visibility: hidden;");
-            moduloNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:data1:moduloNombre");
+            moduloNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabmenu:data1:modulonombre");
             moduloNombre.setFilterStyle("display: none; visibility: hidden;");
-            moduloObs = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:data1:moduloObs");
+            moduloObs = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabmenu:data1:moduloobs");
             moduloObs.setFilterStyle("display: none; visibility: hidden;");
             filtradolistModulos = null;
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("data1.clearFilters()");
             altoModulos = "93";
-            context.update("form:tabMenu:data1");
+            context.update("form:tabmenu:data1");
             filtrosActivos = false;
         }
-        tablaExportar = "Tablas";
-        nombreArchivo = "Tablas";
+        tablaExportar = "tablas";
+        nombreArchivo = "tablas";
     }
 
     public void redireccion(Integer indice) {
         if (indice >= 0) {
             if (listTablas.get(indice).getNombre().equalsIgnoreCase("USUARIOS")) {
                 RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("dirigirUsuario()");
+                context.execute("dirigirusuario()");
 
             } else if (listTablas.get(indice).getNombre().equalsIgnoreCase("USUARIOSVISTAS")) {
                 RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("dirigirUsuarioVista()");
+                context.execute("dirigirusuariovista()");
 
             }// Aca vienen un huevo de Else if para el resto de las pantallas
         }
+        infoTablas(selectTabla);
     }
 
     public void infoTablas(Tablas tab) {
@@ -907,8 +856,8 @@ public class ControlRemoto implements Serializable {
         BigInteger secuenciaTab = selectTabla.getSecuencia();
         pantalla = administrarCarpetaDesigner.consultarPantalla(secuenciaTab);
         RequestContext context = RequestContext.getCurrentInstance();
-        tablaExportar = "Tablas";
-        context.execute("VentanaTab.show()");
+        tablaExportar = "tablas";
+        context.execute("ventanatab.show()");
     }
 
     public void requerirBusquedaRapida() {
@@ -917,13 +866,13 @@ public class ControlRemoto implements Serializable {
             filterBusquedaRapida = null;
             busquedaRapida = administrarCarpetaPersonal.consultarRapidaEmpleados();
             if (busquedaRapida == null || busquedaRapida.isEmpty()) {
-                infoRegistroBusquedaRapida = "Cantidad de registros: 0 ";
+                infoRegistroBusquedaRapida = "Registros: 0 ";
             } else {
-                infoRegistroBusquedaRapida = "Cantidad de registros: " + busquedaRapida.size();
+                infoRegistroBusquedaRapida = "Registros: " + busquedaRapida.size();
             }
-            context.update("form:lvBr");
+            context.update("form:lvbr");
         }
-        context.execute("lvBr.show();");
+        context.execute("lvbr.show();");
     }
 
     public void requerirBuscarEmpleadoTipo() {
@@ -932,13 +881,13 @@ public class ControlRemoto implements Serializable {
             filterBuscarEmpleado = null;
             buscarEmplTipo = administrarCarpetaPersonal.consultarEmpleadosTipoTrabajador(tipo);
             if (buscarEmplTipo == null || buscarEmplTipo.isEmpty()) {
-                infoRegistroBuscarEmpleados = "Cantidad de registros: 0 ";
+                infoRegistroBuscarEmpleados = "Registros: 0 ";
             } else {
-                infoRegistroBuscarEmpleados = "Cantidad de registros: " + buscarEmplTipo.size();
+                infoRegistroBuscarEmpleados = "Registros: " + buscarEmplTipo.size();
             }
-            context.update("form:lvBE");
+            context.update("form:lvbe");
         }
-        context.execute("lvBE.show()");
+        context.execute("lvbe.show()");
         //actualizarInformacionTipoTrabajador();
     }
 
@@ -946,14 +895,14 @@ public class ControlRemoto implements Serializable {
         posicion = 0;
         requerirTipoTrabajador(posicion);
         try {
-            valorImputText();
+            valorInputText();
         } catch (ParseException ex) {
             //Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("error en primerTipoTrabajador");
         }
         actualizarInformacionTipoTrabajador();
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:tabMenu:contenedor");
+        context.update("form:tabmenu:contenedor");
     }
 
     public void atrasTipoTrabajador() {
@@ -961,13 +910,14 @@ public class ControlRemoto implements Serializable {
             posicion--;
             requerirTipoTrabajador(posicion);
             try {
-                valorImputText();
+                valorInputText();
             } catch (ParseException ex) {
-                Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ControlRemoto.class.getName()+" error en la entrada.");
             }
             actualizarInformacionTipoTrabajador();
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:tabMenu:contenedor");
+            context.update("form:tabmenu:contenedor");
         }
 
     }
@@ -977,28 +927,29 @@ public class ControlRemoto implements Serializable {
             posicion++;
             requerirTipoTrabajador(posicion);
             try {
-                valorImputText();
+                valorInputText();
             } catch (ParseException ex) {
-                Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ControlRemoto.class.getName()+" error en la entrada");
             }
             actualizarInformacionTipoTrabajador();
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:tabMenu:contenedor");
+            context.update("form:tabmenu:contenedor");
         }
-
     }
 
     public void ultimoTipoTrabajador() {
         posicion = totalRegistros - 1;
         requerirTipoTrabajador(posicion);
         try {
-            valorImputText();
+            valorInputText();
         } catch (ParseException ex) {
-            Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ControlRemoto.class.getName()+" error en la entrada");
         }
         actualizarInformacionTipoTrabajador();
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:tabMenu:contenedor");
+        context.update("form:tabmenu:contenedor");
     }
 
     public void validarEstadoNominaF() {
@@ -1016,15 +967,15 @@ public class ControlRemoto implements Serializable {
     public void actualizarInformacionTipoTrabajador() {
         informacionTiposTrabajadores = "Reg. " + (posicion + 1) + " de " + totalRegistros;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:tabMenu:informacionTT");
+        context.update("form:tabmenu:informacionTT");
     }
 
     public void actualizarNavegacion() {
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:tabMenu:btnPrimero");
-        context.update("form:tabMenu:btnAtras");
-        context.update("form:tabMenu:btnSiguiente");
-        context.update("form:tabMenu:btnUltimo");
+        context.update("form:tabmenu:btnprimero");
+        context.update("form:tabmenu:btnatras");
+        context.update("form:tabmenu:btnsiguiente");
+        context.update("form:tabmenu:btnultimo");
     }
 
     public VWActualesTiposTrabajadores requerirTipoTrabajador(int posicion) {
@@ -1036,9 +987,9 @@ public class ControlRemoto implements Serializable {
         banner.clear();
         //banner.add(new BannerInicioRed("Imagenes/sinPublicidad.JPG", ""));
         banner.add(new BannerInicioRed("http://www.nomina.com.co/images/publicidadInn/pInn01.png", "www.nomina.com.co"));
-        banner.add(new BannerInicioRed("http://www.nomina.com.co/images/publicidadInn/pInn02.png", ""));
-        banner.add(new BannerInicioRed("https://www.nomina.com.co/images/publicidadInn/pInn03.png", ""));
-        banner.add(new BannerInicioRed("https://www.nomina.com.co/images/publicidadInn/pInn04.png", ""));
+        banner.add(new BannerInicioRed("http://www.nomina.com.co/images/publicidadInn/pInn02.png", "www.nomina.com.co"));
+        banner.add(new BannerInicioRed("https://www.nomina.com.co/images/publicidadInn/pInn03.png", "www.nomina.com.co"));
+        banner.add(new BannerInicioRed("https://www.nomina.com.co/images/publicidadInn/pInn04.png", "www.nomina.com.co"));
     }
 
     public List<Tablas> getListTablas() {
@@ -1046,6 +997,7 @@ public class ControlRemoto implements Serializable {
     }
 
     public Modulos getSelectModulo() {
+        System.out.println(this.getClass().getName()+".getSelectModulo()");
         if (selectModulo == null) {
             if (listModulos == null) {
                 getListModulos();
@@ -1363,12 +1315,12 @@ public class ControlRemoto implements Serializable {
         return estadoEmpleado;
     }
 
-    public int getNumPestaña() {
-        return numPestaña;
+    public int getNumPestanha() {
+        return numPestanha;
     }
 
-    public void setNumPestaña(int numPestaña) {
-        this.numPestaña = numPestaña;
+    public void setNumPestanha(int numPestanha) {
+        this.numPestanha = numPestanha;
     }
 
     public String getAltoModulos() {
@@ -1478,25 +1430,25 @@ public class ControlRemoto implements Serializable {
         }
     }
 
-    public void pestañaActual(TabChangeEvent event) {
-        Tab pestaña = event.getTab();
-        if (pestaña.getId().equals("Personal")) {
-            numPestaña = 0;
-        } else if (pestaña.getId().equals("Nomina")) {
-            numPestaña = 1;
-        } else if (pestaña.getId().equals("Integracion")) {
-            numPestaña = 2;
-        } else if (pestaña.getId().equals("Gerencial")) {
-            numPestaña = 3;
-        } else if (pestaña.getId().equals("Designer")) {
-            numPestaña = 4;
+    public void pestanhaActual(TabChangeEvent event) {
+        Tab pestanha = event.getTab();
+        if (pestanha.getId().equals("personal")) {
+            numPestanha = 0;
+        } else if (pestanha.getId().equals("nomina")) {
+            numPestanha = 1;
+        } else if (pestanha.getId().equals("integracion")) {
+            numPestanha = 2;
+        } else if (pestanha.getId().equals("gerencial")) {
+            numPestanha = 3;
+        } else if (pestanha.getId().equals("designer")) {
+            numPestanha = 4;
         }
     }
 
     public void recargar() {
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:tablaInferiorDerecha");
-        context.update("form:tablaInferiorIzquierda");
+        context.update("form:tablainferiorderecha");
+        context.update("form:tablainferiorizquierda");
     }
 
     public void activarFiltro() {
@@ -1505,19 +1457,19 @@ public class ControlRemoto implements Serializable {
         Column columna3;
         DataTable tabla;
         DataTable tabla2;
-        tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tablaSuperiorDerecha");
-        tabla2 = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tablaSuperiorIzquierda");
-        columna = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tablaSuperiorDerecha:moduloNombre2");
-        columna2 = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tablaSuperiorDerecha:moduloObs2");
-        columna3 = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tablaSuperiorIzquierda:moduloCodigo1");
+        tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tablasuperiorderecha");
+        tabla2 = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tablasuperiorizquierda");
+        columna = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tablasuperiorderecha:modulonombre2");
+        columna2 = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tablasuperiorderecha:moduloobs2");
+        columna3 = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tablasuperiorizquierda:modulocodigo1");
         tabla.setStyle("font-size: 11px; width: 600px; position: relative;");
         tabla2.setStyle("font-size: 11px; width: 300px; position: relative; top: -6px;");
         columna.setFilterStyle("");
         columna2.setFilterStyle("");
         columna3.setFilterStyle("");
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:tablaSuperiorDerecha");
-        context.update("form:tablaSuperiorIzquierda");
+        context.update("form:tablasuperiorderecha");
+        context.update("form:tablasuperiorizquierda");
     }
 
     public void cambiarFormaPago() {
@@ -1525,13 +1477,13 @@ public class ControlRemoto implements Serializable {
         if (pago.equalsIgnoreCase("AUTOMATICO")) {
             tituloPago = "PAGOS AUTOMATICOS";
             mensajePagos = "Realice liquidaciones automáticas quincenales, mensuales, entre otras, por estructuras o por tipo de empleado. Primero ingrese los parametros a liquidar, después genere la liquidación para luego poder observar los comprobantes de pago. Usted puede deshacer todas las liquidaciones que desee siempre y cuando no se hayan cerrado. Al cerrar una liquidación se generan acumulados, por eso es importante estar seguro que la liquidación es correcta antes de cerrarla.";
-            context.update("form:tabMenu:tipoPago");
-            context.update("form:tabMenu:mensajePago");
+            context.update("form:tabmenu:tipopago");
+            context.update("form:tabmenu:mensajepago");
         } else if (pago.equalsIgnoreCase("NO AUTOMATICO")) {
             tituloPago = "PAGOS POR FUERA DE NÓMINA";
             mensajePagos = "Genere pagos por fuera de nómina cuando necesite liquidar vacaciones por anticipado, viaticos, entre otros. esta liquidaciones se pueden efectuar por estructura o por empleado. Primero ingrese los parametros a liquidar, después genere la liquidación para luego poder observar los comprobantes de pago. Usted puede deshacer todas las liquidaciones que desee siempre y cuando no se hayan cerrado. Al cerrar una liquidación se generan acumulados, por eso es importante estar seguro que la liquidación es correcta antes de cerrarla.";
-            context.update("form:tabMenu:tipoPago");
-            context.update("form:tabMenu:mensajePago");
+            context.update("form:tabmenu:tipopago");
+            context.update("form:tabmenu:mensajepago");
         }
     }
 
@@ -1540,37 +1492,37 @@ public class ControlRemoto implements Serializable {
             filtradoListTablasLOV = null;
             listTablasLOV = administrarCarpetaDesigner.consultarTablas(selectModulo.getSecuencia());
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:lovTablas");
-            context.execute("buscarTablasDialogo.show()");
+            context.update("form:lovtablas");
+            context.execute("buscartablasdialogo.show()");
         }
     }
 
     public void seleccionTabla() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (filtrosActivos == true) {
-            tablasNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:Tablas:tablasNombre");
+            tablasNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabmenu:tablas:tablasnombre");
             tablasNombre.setFilterStyle("display: none; visibility: hidden;");
-            tablasDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:Tablas:tablasDescripcion");
+            tablasDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabmenu:tablas:tablasdescripcion");
             tablasDescripcion.setFilterStyle("display: none; visibility: hidden;");
             altoTablas = "200";
             filtrosActivos = false;
-            context.execute("tabl.clearFilters()");
+            context.execute("tabl.clearfilters()");
         }
         tablaExportar = "data1";
-        nombreArchivo = "Modulos";
+        nombreArchivo = "modulos";
         listTablas.clear();
         listTablas.add(seleccionTablaLOV);
         mostrarTodasTablas = false;
         filtradoListTablasLOV = null;
         seleccionTablaLOV = null;
         buscar = true;
-        context.reset("form:lovTablas:globalFilter");
-        context.execute("lovTablas.clearFilters()");
-        context.execute("buscarTablasDialogo.hide()");
+        context.reset("form:lovtablas:globalFilter");
+        context.execute("lovtablas.clearFilters()");
+        context.execute("buscartablasdialogo.hide()");
         //context.update("form:lovTablas");
-        context.update("form:mostrarTodasTablas");
-        context.update("form:tabMenu:Tablas");
-        context.update("form:tabMenu:mostrarTodasTablas");
+        context.update("form:mostrartodastablas");
+        context.update("form:tabmenu:tablas");
+        context.update("form:tabmenu:mostrartodastablas");
     }
 
     public void cancelarSeleccionTabla() {
@@ -1578,8 +1530,8 @@ public class ControlRemoto implements Serializable {
         seleccionTablaLOV = null;
         buscar = true;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.reset("form:lovTablas:globalFilter");
-        context.execute("lovTablas.clearFilters()");
+        context.reset("form:lovtablas:globalfilter");
+        context.execute("lovtablas.clearFilters()");
         context.execute("buscarTablasDialogo.hide()");
     }
 
@@ -1589,16 +1541,16 @@ public class ControlRemoto implements Serializable {
         filterListTablas = null;
         mostrarTodasTablas = true;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:tabMenu:Tablas");
-        context.update("form:tabMenu:mostrarTodasTablas");
+        context.update("form:tabmenu:tablas");
+        context.update("form:tabmenu:mostrartodastablas");
     }
 
     public void validarBorradoLiquidacion() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (pago.equals("AUTOMATICO")) {
-            context.execute("confirmarBorrarLiquidacion.show()");
+            context.execute("confirmarborrarliquidacion.show()");
         } else if (pago.equals("NO AUTOMATICO")) {
-            context.execute("confirmarBorrarLiquidacionPorFuera.show()");
+            context.execute("confirmarborrarliquidacionporfuera.show()");
         }
     }
 

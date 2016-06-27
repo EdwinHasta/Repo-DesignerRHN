@@ -284,11 +284,15 @@ public class ControlNReporteNomina implements Serializable {
             if (!empleadoDesdeParametro.getStyle().contains(" color: red;")) {
                 empleadoDesdeParametro.setStyle(empleadoDesdeParametro.getStyle() + " color: red;");
             }
-        }else{
-            if (empleadoDesdeParametro.getStyle().contains(" color: red;")) {
-                
-                System.out.println("reeemplazarr "+empleadoDesdeParametro.getStyle().replace(" color: red;", ""));
-                empleadoDesdeParametro.setStyle( empleadoDesdeParametro.getStyle().replace(" color: red;", "") );
+        } else {
+            try {
+                if (empleadoDesdeParametro.getStyle().contains(" color: red;")) {
+
+                    System.out.println("reeemplazarr " + empleadoDesdeParametro.getStyle().replace(" color: red;", ""));
+                    empleadoDesdeParametro.setStyle(empleadoDesdeParametro.getStyle().replace(" color: red;", ""));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         RequestContext.getCurrentInstance().update("formParametros:empleadoDesdeParametro");

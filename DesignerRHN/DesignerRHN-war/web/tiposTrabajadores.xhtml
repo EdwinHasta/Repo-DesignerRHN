@@ -538,7 +538,7 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <lnk:calendar id="editFecha" value="#{info.fechaVigencia}" width="190" height="12" style="width: 99%; border-radius: 0px;">
+                                            <lnk:calendar id="editFecha" value="#{info.fechaVigencia}" width="190" height="12">
                                                 <p:ajax event="dateSelect" listener="#{controlTiposTrabajadores.modificarFechaVD(info)}" update="@this"/>
                                                 <p:ajax event="change" listener="#{controlTiposTrabajadores.modificarFechaVD(info)}" update="@this" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlTiposTrabajadores.cambiarIndiceVD(info, 1)}" process="@this"/> 
