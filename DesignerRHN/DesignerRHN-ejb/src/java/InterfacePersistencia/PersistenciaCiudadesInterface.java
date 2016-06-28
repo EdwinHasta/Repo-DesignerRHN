@@ -34,5 +34,5 @@ public interface PersistenciaCiudadesInterface {
      * Método encargado de buscar todas las ciudades existentes en la base de datos.
      * @return Retorna una lista de Ciudades.
      */
-    public List<Ciudades> ciudades(EntityManager em);
+    public List<Ciudades> consultarCiudades(EntityManager em);
 }

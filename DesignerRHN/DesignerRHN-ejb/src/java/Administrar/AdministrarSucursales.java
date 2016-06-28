@@ -101,7 +101,7 @@ public class AdministrarSucursales implements AdministrarSucursalesInterface {
     @Override
     public List<Ciudades> consultarLOVCiudades() {
         List<Ciudades> listLOVCiudades;
-        listLOVCiudades = persistenciaCiudades.ciudades(em);
+        listLOVCiudades = persistenciaCiudades.consultarCiudades(em);
         return listLOVCiudades;
     }
 

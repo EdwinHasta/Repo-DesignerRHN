@@ -177,7 +177,7 @@ public class AdministrarNReportePersonal implements AdministrarNReportePersonalI
     @Override
     public List<Ciudades> listCiudades() {
         try {
-            listCiudades = persistenciaCiudades.ciudades(em);
+            listCiudades = persistenciaCiudades.consultarCiudades(em);
             return listCiudades;
         } catch (Exception e) {
             System.out.println("Error listCiudades Administrar : " + e.toString());

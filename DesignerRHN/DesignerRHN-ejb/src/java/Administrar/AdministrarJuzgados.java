@@ -52,7 +52,7 @@ public class AdministrarJuzgados implements AdministrarJuzgadosInterface {
     public List<Ciudades> consultarLOVCiudades() {
         List<Ciudades> listaCiudades;
         try {
-            return listaCiudades = persistenciaCiudades.ciudades(em);
+            return listaCiudades = persistenciaCiudades.consultarCiudades(em);
         } catch (Exception e) {
             System.out.println("ADMINISTRARJUZGADOS BUSCARCIUDADES /n" + e.getMessage());
             return listaCiudades = null;

@@ -102,7 +102,7 @@ public class AdministrarEmpresasBancos implements AdministrarEmpresasBancosInter
 
     public List<Ciudades> consultarLOVCiudades() {
         List<Ciudades> listLOVCiudades;
-        listLOVCiudades = persistenciaCiudades.ciudades(em);
+        listLOVCiudades = persistenciaCiudades.consultarCiudades(em);
         return listLOVCiudades;
     }
 

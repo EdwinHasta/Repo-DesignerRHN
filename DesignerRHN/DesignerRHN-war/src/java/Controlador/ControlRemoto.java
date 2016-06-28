@@ -38,7 +38,6 @@ public class ControlRemoto implements Serializable {
     AdministrarCarpetaPersonalInterface administrarCarpetaPersonal;
     @EJB
     AdministrarCarpetaDesignerInterface administrarCarpetaDesigner;
-    
     private Empleados empleado;
     private Personas persona;
     private DetallesEmpresas detallesEmpresas;
@@ -90,7 +89,6 @@ public class ControlRemoto implements Serializable {
     //datos tablas ctrl+f11
     private Column tablasNombre, tablasDescripcion, moduloCodigo, moduloNombre, moduloObs;
     private boolean filtrosActivos;
-    
     private List<Modulos> listModulos;
     private List<Modulos> filtradolistModulos;
     private List<Tablas> listTablas;
@@ -125,6 +123,13 @@ public class ControlRemoto implements Serializable {
     private String informacionTiposTrabajadores;
     private final String extension;
     private List<BannerInicioRed> banner;
+    //Seleccion de empresa para ingreso de personal
+    private List<Empresas> filtradoLOVEmpresas;
+    private List<Empresas> lovEmpresas;
+    private Empresas empresaSeleccionada;
+    private String infoRegistroEmpresas;
+    private boolean activarAceptarEmpresas;
+    private Empresas unicaEmpresa;
 
     public ControlRemoto() {
         extension = ".png";
@@ -179,6 +184,11 @@ public class ControlRemoto implements Serializable {
         posicion = 0;
         totalRegistros = -1;
         banner = new ArrayList<BannerInicioRed>();
+        filtradoLOVEmpresas = new ArrayList<Empresas>();
+        infoRegistroEmpresas = "0";
+        activarAceptarEmpresas = true;
+        lovEmpresas = null;
+        unicaEmpresa = new Empresas();
     }
 
     @PostConstruct
@@ -192,6 +202,9 @@ public class ControlRemoto implements Serializable {
             totalRegistros = administrarCarpetaPersonal.obtenerTotalRegistrosTipoTrabajador(tipo);
             actualizarInformacionTipoTrabajador();
             llenarBannerDefault();
+            lovEmpresas = administrarCarpetaPersonal.consultarEmpresas();
+            RequestContext.getCurrentInstance().update("form:tabmenu:LovEmpresasDialogo");
+            RequestContext.getCurrentInstance().update("form:tabmenu:LovEmpresasTabla");
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
@@ -222,8 +235,8 @@ public class ControlRemoto implements Serializable {
         try {
             vwActualesTiposContratos = administrarCarpetaPersonal.consultarActualTipoContratoEmpleado(secuencia);
             fechaActualesTiposContratos = formato.format(vwActualesTiposContratos.getFechaVigencia());
-        //} catch (Exception e) {
-        } catch (ParseException pe){
+            //} catch (Exception e) {
+        } catch (ParseException pe) {
             vwActualesTiposContratos = null;
             fechaActualesTiposContratos = null;
         }
@@ -370,7 +383,7 @@ public class ControlRemoto implements Serializable {
                 valorInputText();
             } catch (ParseException ex) {
                 //Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println(this.getClass().getName()+"activos() error ");
+                System.out.println(this.getClass().getName() + "activos() error ");
                 ex.printStackTrace();
             }
             buscarEmplTipo = null;
@@ -419,7 +432,7 @@ public class ControlRemoto implements Serializable {
                 valorInputText();
             } catch (ParseException ex) {
                 //Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println(ControlRemoto.class.getName()+" error en la entrada");
+                System.out.println(ControlRemoto.class.getName() + " error en la entrada");
             }
             buscarEmplTipo = null;
             actualizarInformacionTipoTrabajador();
@@ -467,7 +480,7 @@ public class ControlRemoto implements Serializable {
                 valorInputText();
             } catch (ParseException ex) {
                 //Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println(ControlRemoto.class.getName()+" error en la entrada");
+                System.out.println(ControlRemoto.class.getName() + " error en la entrada");
             }
             buscarEmplTipo = null;
             actualizarInformacionTipoTrabajador();
@@ -515,7 +528,7 @@ public class ControlRemoto implements Serializable {
                 valorInputText();
             } catch (ParseException ex) {
                 //Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println(ControlRemoto.class.getName()+" error en la entrada");
+                System.out.println(ControlRemoto.class.getName() + " error en la entrada");
             }
             buscarEmplTipo = null;
             actualizarInformacionTipoTrabajador();
@@ -791,12 +804,11 @@ public class ControlRemoto implements Serializable {
     public void cambiarTablas() {
         secuenciaMod = selectModulo.getSecuencia();
         listTablas = administrarCarpetaDesigner.consultarTablas(secuenciaMod);
-        /*if (listTablas != null && !listTablas.isEmpty()) {
-            buscarTablasLOV = false;
-        } else {
-            buscarTablasLOV = true;
-        }*/
-        buscarTablasLOV = ( listTablas == null || listTablas.isEmpty() );
+        /*
+         * if (listTablas != null && !listTablas.isEmpty()) { buscarTablasLOV =
+         * false; } else { buscarTablasLOV = true; }
+         */
+        buscarTablasLOV = (listTablas == null || listTablas.isEmpty());
         RequestContext context = RequestContext.getCurrentInstance();
         if (tablaExportar.equals("tablas")) {
             tablasNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabmenu:tablas:tablasnombre");
@@ -913,7 +925,7 @@ public class ControlRemoto implements Serializable {
                 valorInputText();
             } catch (ParseException ex) {
                 //Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println(ControlRemoto.class.getName()+" error en la entrada.");
+                System.out.println(ControlRemoto.class.getName() + " error en la entrada.");
             }
             actualizarInformacionTipoTrabajador();
             RequestContext context = RequestContext.getCurrentInstance();
@@ -930,7 +942,7 @@ public class ControlRemoto implements Serializable {
                 valorInputText();
             } catch (ParseException ex) {
                 //Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println(ControlRemoto.class.getName()+" error en la entrada");
+                System.out.println(ControlRemoto.class.getName() + " error en la entrada");
             }
             actualizarInformacionTipoTrabajador();
             RequestContext context = RequestContext.getCurrentInstance();
@@ -945,7 +957,7 @@ public class ControlRemoto implements Serializable {
             valorInputText();
         } catch (ParseException ex) {
             //Logger.getLogger(ControlRemoto.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println(ControlRemoto.class.getName()+" error en la entrada");
+            System.out.println(ControlRemoto.class.getName() + " error en la entrada");
         }
         actualizarInformacionTipoTrabajador();
         RequestContext context = RequestContext.getCurrentInstance();
@@ -997,7 +1009,7 @@ public class ControlRemoto implements Serializable {
     }
 
     public Modulos getSelectModulo() {
-        System.out.println(this.getClass().getName()+".getSelectModulo()");
+        System.out.println(this.getClass().getName() + ".getSelectModulo()");
         if (selectModulo == null) {
             if (listModulos == null) {
                 getListModulos();
@@ -1571,6 +1583,56 @@ public class ControlRemoto implements Serializable {
         context.update("form:growl");
     }
 
+    public void redireccionPersonaIndividual() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        anularBotonEmpresas();
+        fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "personaIndividual");
+    }
+
+    public void anularBotonEmpresas() {
+        activarAceptarEmpresas = true;
+        RequestContext.getCurrentInstance().update("form:tabmenu:aceptarEmp");
+    }
+
+    public void eventoFiltrarEmpresas() {
+        anularBotonEmpresas();
+        infoRegistroEmpresas = String.valueOf(filtradoLOVEmpresas.size());
+        RequestContext.getCurrentInstance().update("form:tabmenu:infoRegistroEmpresas");
+    }
+
+    public void activarAceptarEmp() {
+        activarAceptarEmpresas = false;
+        RequestContext.getCurrentInstance().update("form:tabmenu:aceptarEmp");
+    }
+
+    public void asignarUnicaEmpresa() {
+        System.out.println("Entro en asignarUnicaEmpresa()");
+        getLovEmpresas();
+        if (lovEmpresas != null) {
+            if (lovEmpresas.size() == 1) {
+                unicaEmpresa = lovEmpresas.get(0);
+            }
+        }
+        System.out.println("Unica Empresa : " + unicaEmpresa);
+    }
+
+    public void actualizarLOVEmpresas() {
+        System.out.println("Entro en actualizarLOVEmpresas()");
+        RequestContext context = RequestContext.getCurrentInstance();
+        getLovEmpresas();
+        if (lovEmpresas != null) {
+            if (lovEmpresas.size() == 1) {
+                redireccionPersonaIndividual();
+            } else {
+                infoRegistroEmpresas = String.valueOf(lovEmpresas.size());
+                context.update("form:tabmenu:LovEmpresasDialogo");
+                context.update("form:tabmenu:LovEmpresasTabla");
+                context.update("form:tabmenu:infoRegistroEmpresas");
+                context.execute("LovEmpresasDialogo.show()");
+            }
+        }
+    }
+
     public boolean isBuscarTablasLOV() {
         return buscarTablasLOV;
     }
@@ -1613,6 +1675,58 @@ public class ControlRemoto implements Serializable {
 
     public void setBanner(List<BannerInicioRed> banner) {
         this.banner = banner;
+    }
+
+    public List<Empresas> getFiltradoLOVEmpresas() {
+        return filtradoLOVEmpresas;
+    }
+
+    public void setFiltradoLOVEmpresas(List<Empresas> filtradoLOVEmpresas) {
+        this.filtradoLOVEmpresas = filtradoLOVEmpresas;
+    }
+
+    public String getInfoRegistroEmpresas() {
+        return infoRegistroEmpresas;
+    }
+
+    public void setInfoRegistroEmpresas(String infoRegistroEmpresas) {
+        this.infoRegistroEmpresas = infoRegistroEmpresas;
+    }
+
+    public List<Empresas> getLovEmpresas() {
+        if (lovEmpresas == null) {
+            lovEmpresas = administrarCarpetaPersonal.consultarEmpresas();
+            System.out.println("cargo getLovEmpresas");
+        }
+        return lovEmpresas;
+    }
+
+    public void setLovEmpresas(List<Empresas> lovEmpresas) {
+        this.lovEmpresas = lovEmpresas;
+    }
+
+    public Empresas getEmpresaSeleccionada() {
+        return empresaSeleccionada;
+    }
+
+    public void setEmpresaSeleccionada(Empresas empresaSeleccionada) {
+        this.empresaSeleccionada = empresaSeleccionada;
+    }
+
+    public boolean isActivarAceptarEmpresas() {
+        return activarAceptarEmpresas;
+    }
+
+    public void setActivarAceptarEmpresas(boolean activarAceptarEmpresas) {
+        this.activarAceptarEmpresas = activarAceptarEmpresas;
+    }
+
+    public Empresas getUnicaEmpresa() {
+        return unicaEmpresa;
+    }
+
+    public void setUnicaEmpresa(Empresas unicaEmpresa) {
+        this.unicaEmpresa = unicaEmpresa;
     }
 
 }

@@ -315,13 +315,55 @@
                                             #{msg['saludocupacional1']}<br/>#{msg['saludocupacional2']}
                                         </p:tooltip>
                                         <p:spacer styleClass="separador"/>
-                                        <!-- Panel Ingresos Act. Pen. y Asp.-->
-                                        <p:commandButton id="ingresopersonal" value="" disabled="#{controlRemoto.activo}"  style="background-image: url(Imagenes/Iconos/ingreso.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%; border: none;" action="personaIndividual"
-                                                         styleClass="bticon"/>                            
-                                        <p:tooltip  for="ingresopersonal">
+                                        <!-- Panel Ingresos Act. Pen. y Asp.--> 
+                                        <p:commandButton id="IngresoPersonal" value="" disabled="#{controlRemoto.activo}" actionListener="#{controlRemoto.actualizarLOVEmpresas()}" widgetVar="IngresoPersonal" process="@this" 
+                                                         onstart="#{controlRemoto.asignarUnicaEmpresa()}" oncomplete="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonalVisible(controlRemoto.unicaEmpresa)}"
+                                                         styleClass="bticon" style="background-image: url(Imagenes/Iconos/ingreso.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%; border: none;"/>                            
+                                        <p:tooltip  for="IngresoPersonal">
                                             #{msg['ingresodepersonal1']}<br/>#{msg['ingresodepersonal2']}
                                         </p:tooltip>
-                                        <p:commandButton id="informacionjubilados" value="" disabled="#{controlRemoto.pensionado}"  style="background-image: url(Imagenes/Iconos/pensionado.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%; border: none;" 
+
+                                        <p:dialog header="#{msg['empresaM']}" widgetVar="LovEmpresasDialogo" id="LovEmpresasDialogo" draggable="false" resizable="false" closable="false" onShow="LovEmpresasTabla.filter();"
+                                                  showEffect="fade" hideEffect="fade" width="464" height="250">
+                                            <p:dataTable id="LovEmpresasTabla" widgetVar="LovEmpresasTabla" style=" width: 420px" var="empresaIPV" value="#{controlRemoto.lovEmpresas}" rowKey="#{empresaIPV.secuencia}"
+                                                         selection="#{controlRemoto.empresaSeleccionada}" scrollWidth="440" selectionMode="single" scrollable="true" scrollHeight="120"
+                                                         emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlRemoto.filtradoLOVEmpresas}">
+
+                                                <p:ajax event="filter" listener="#{controlRemoto.eventoFiltrarEmpresas()}"/>
+                                                <p:ajax event="rowSelect" process="@this" immediate="true" listener="#{controlRemoto.activarAceptarEmp()}" update=":form:tabmenu:aceptarEmp"/>
+                                                <p:ajax event="rowDblselect" listener="#{controlRemoto.redireccionPersonaIndividual()}"
+                                                immediate="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonalVisible(controlRemoto.empresaSeleccionada)}" process="@this" />
+
+                                                <f:facet name="header">  
+                                                    <h:outputText value="#{msg['buscarEIP']} :" style="position: absolute; left: 27px; top: 14px"/>  
+                                                    <p:inputText id="globalFilter" onkeyup="LovEmpresasTabla.filter();" style="width: 240px; position: relative; left: 40px; height: 12px; text-transform: uppercase;"/>  
+                                                </f:facet>
+                                                <p:column filterBy="#{empresaIPV.nombre}" filterMatchMode="contains" filterStyle="width: 85%; height: 12px; text-transform: uppercase;">
+                                                    <f:facet name="header">
+                                                        <h:outputText style="text-align: center" value="#{msg['nombreEmpresa']}" />
+                                                    </f:facet>
+                                                    <h:outputText  value="#{empresaIPV.nombre}" />
+                                                </p:column>
+                                                <p:column style="text-align: center" filterBy="#{empresaIPV.nit}" width="80" filterMatchMode="contains" filterStyle="width: 85%; height: 12px; text-transform: uppercase;">
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{msg['nitEmpresa']}" />
+                                                    </f:facet>
+                                                    <h:outputText value="#{empresaIPV.nit}"/>
+                                                </p:column>
+                                            </p:dataTable>
+
+                                            <h:outputText id="infoRegistroEmpresas" value="#{msg['infoRegistro']} #{controlRemoto.infoRegistroEmpresas}" 
+                                                          style="position: relative; left: 10px; top: 0px; font-weight: bold"/>
+
+                                            <p:commandButton id="aceptarEmp" style="position: relative; left: 185px; top: 15px" value="#{msg['aceptar']}" disabled="#{controlRemoto.activarAceptarEmpresas}" 
+                                                             actionListener="#{controlRemoto.redireccionPersonaIndividual()}" widgetVar="aceptarEmp"
+                                                              process="@this" immediate="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonalVisible(controlRemoto.empresaSeleccionada)}" icon="ui-icon-check"/>
+                                                             
+                                            <p:commandButton id="atrasEmp" style="position: relative; left: 185px; top: 15px" value="#{msg['atras']}" oncomplete="LovEmpresasDialogo.hide()"
+                                                             process="@this" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlRemoto.anularBotonEmpresas()}"/>
+                                        </p:dialog>
+
+                                        <p:commandButton id="informacionjubilados" value="" disabled="#{controlRemoto.pensionado}" style="background-image: url(Imagenes/Iconos/pensionado.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%; border: none;" 
                                                          styleClass="bticon"/>
                                         <p:tooltip  for="informacionjubilados" >
                                             #{msg['informacionjubilados1']}<br/>#{msg['informacionjubilados2']}

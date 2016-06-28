@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -587,6 +588,19 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
             System.out.println(this.getClass().getName()+" Error en obtenerEmpresa.");
             e.printStackTrace();
             return empresa;
+        }
+    }
+
+    @Override
+    public List<Empresas> consultarEmpresas(){
+        List<Empresas> listaEmpresas = new ArrayList<Empresas>();
+        try{
+        listaEmpresas = persistenciaEmpresas.buscarEmpresas(em);
+        return listaEmpresas;
+        } catch(Exception e){
+            System.out.println(this.getClass().getName()+" Error en consultarEmpresas");
+            e.printStackTrace();
+            return listaEmpresas;
         }
     }
 

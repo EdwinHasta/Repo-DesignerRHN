@@ -14,9 +14,9 @@
                 <h:form id="form">
                     <f:loadBundle basename="Recursos.parametro" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal">  
 
-                        <p:toolbar style="position: absolute; top: 37px; left: 12px; height: 23px">
+                        <p:toolbar styleClass="cssToolbar">
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; " actionListener="#{controlParametro.validarGuardado('GUARDADO RAPIDO')}" process="@this" />
@@ -65,6 +65,7 @@
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlParametro.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
+                                <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " action="nomina" process="@this">
                                     <f:actionListener binding="#{controlParametro.salir()}" />
                                     <f:actionListener binding="#{controlRemoto.validarEstadoNominaF()}" />
@@ -73,8 +74,8 @@
 
                             </p:toolbarGroup>  
                         </p:toolbar> 
-0
-                        <fieldset style="position: absolute; left: 5px; top: 70px;  width: 835px; height: 100px; border-radius: 10px; ">
+
+                        <fieldset style="position: absolute; left: 5px; top: 70px;  width: 835px; height: 100px; border-radius: 10px;">
                             <legend style=" color: blue;"><strong>#{msg['departamento']}</strong></legend>
                             <p:panel id="panelParametro" style="border: none;">
 

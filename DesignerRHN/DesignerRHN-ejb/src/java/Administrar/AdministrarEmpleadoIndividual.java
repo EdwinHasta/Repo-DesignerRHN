@@ -368,7 +368,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public List<Ciudades> ciudades() {
         List<Ciudades> listaCiudades;
-        listaCiudades = persistenciaCiudades.ciudades(em);
+        listaCiudades = persistenciaCiudades.consultarCiudades(em);
         return listaCiudades;
     }
 

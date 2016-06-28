@@ -215,10 +215,8 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     PersistenciaVigenciasEstadosCivilesInterface persistenciaVigenciasEstadosCiviles;
     @EJB
     PersistenciaVigenciasAfiliacionesInterface persistenciaVigenciasAfiliaciones;
-
     @EJB
     AdministrarSesionesInterface administrarSesiones;
-
     private EntityManager em;
 
     @Override
@@ -236,21 +234,21 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
             return null;
         }
     }
-    
+
     @Override
-    public Empresas obtenerEmpresa(BigInteger secEmpresa){
-        System.out.println(this.getClass().getName()+".obtenerEmpresa()");
+    public Empresas obtenerEmpresa(BigInteger secEmpresa) {
+        System.out.println(this.getClass().getName() + ".obtenerEmpresa()");
         Empresas empresa = null;
-        try{
-        empresa = persistenciaEmpresas.buscarEmpresasSecuencia(em, secEmpresa);
-        return empresa;
-        } catch(Exception e){
-            System.out.println(this.getClass().getName()+" Error en obtenerEmpresa.");
+        try {
+            empresa = persistenciaEmpresas.buscarEmpresasSecuencia(em, secEmpresa);
+            return empresa;
+        } catch (Exception e) {
+            System.out.println(this.getClass().getName() + " Error en obtenerEmpresa.");
             e.printStackTrace();
             return empresa;
         }
     }
-    
+
     @Override
     public List<TiposDocumentos> lovTiposDocumentos() {
         try {
@@ -265,7 +263,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     @Override
     public List<Ciudades> lovCiudades() {
         try {
-            List<Ciudades> lista = persistenciaCiudades.ciudades(em);
+            List<Ciudades> lista = persistenciaCiudades.consultarCiudades(em);
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovCiudades Admi : " + e.toString());
@@ -283,7 +281,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
             return null;
         }
     }
-    
+
     @Override
     public List<Cargos> lovCargosXEmpresa(BigInteger secEmpresa) {
         try {
@@ -387,9 +385,10 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     public List<TiposTrabajadores> lovTiposTrabajadores() {
         try {
             List<TiposTrabajadores> lista = persistenciaTiposTrabajadores.buscarTiposTrabajadores(em);
+            System.out.println("AdministrarPersonaIndividual lovTiposTrabajadores retorno lista : " + lista);
             return lista;
         } catch (Exception e) {
-            System.out.println("Error lovTiposTrabajadores Admi : " + e.toString());
+            System.err.println("Error lovTiposTrabajadores Admi : " + e.toString());
             return null;
         }
     }
@@ -677,61 +676,92 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     //@Override
+    @Override
     public String validarTipoTrabajadorReformaLaboral(BigInteger tipoTrabajador, BigInteger reformaLaboral) {
         try {
+            System.out.println("AdministrarPers... validarTipoTrabajadorReformaLaboral() :");
+            System.out.println("tipoTrabajador : " + tipoTrabajador + ",   reformaLaboral : " + reformaLaboral);
             String validar = persistenciaTiposTrabajadores.plantillaValidarTipoTrabajadorReformaLaboral(em, tipoTrabajador, reformaLaboral);
+            if(validar == null){
+                validar = " ";
+            }
             return validar;
         } catch (Exception e) {
             System.out.println("Error validarTipoTrabajadorReformaLaboral Admi : " + e.toString());
-            return null;
+            return " ";
         }
     }
 
     //@Override
+    @Override
     public String validarTipoTrabajadorTipoSueldo(BigInteger tipoTrabajador, BigInteger tipoSueldo) {
         try {
-            String validar = persistenciaTiposTrabajadores.plantillaValidarTipoTrabajadorTipoSueldo(em, tipoTrabajador, tipoSueldo);
-            return validar;
+           System.out.println("AdministrarPers... validarTipoTrabajadorTipoSueldo() :");
+            System.out.println("tipoTrabajador : " + tipoTrabajador + ",   tipoSueldo : " + tipoSueldo);
+            String retorno = persistenciaTiposTrabajadores.plantillaValidarTipoTrabajadorTipoSueldo(em, tipoTrabajador, tipoSueldo);
+            if(retorno == null){
+                retorno = " ";
+            }
+            return retorno; 
         } catch (Exception e) {
             System.out.println("Error validarTipoTrabajadorTipoSueldo Admi : " + e.toString());
-            return null;
+            return " ";
         }
     }
 
     //@Override
+    @Override
     public String validarTipoTrabajadorTipoContrato(BigInteger tipoTrabajador, BigInteger tipoContrato) {
         try {
+            System.out.println("AdministrarPers... validarTipoTrabajadorTipoContrato() :");
+            System.out.println("tipoTrabajador : " + tipoTrabajador + ",   tipoContrato : " + tipoContrato);
             String validar = persistenciaTiposTrabajadores.plantillaValidarTipoTrabajadorTipoContrato(em, tipoTrabajador, tipoContrato);
+            if(validar == null){
+                validar = " ";
+            }
             return validar;
         } catch (Exception e) {
             System.out.println("Error validarTipoTrabajadorTipoContrato Admi : " + e.toString());
-            return null;
+            return " ";
         }
     }
 
     //@Override
+    @Override
     public String validarTipoTrabajadorNormaLaboral(BigInteger tipoTrabajador, BigInteger normaLaboral) {
         try {
+            System.out.println("AdministrarPers... validarTipoTrabajadorNormaLaboral() :");
+            System.out.println("tipoTrabajador : " + tipoTrabajador + ",   normaLaboral : " + normaLaboral);
             String validar = persistenciaTiposTrabajadores.plantillaValidarTipoTrabajadorTipoSueldo(em, tipoTrabajador, normaLaboral);
+            if(validar == null){
+                validar = " ";
+            }
             return validar;
         } catch (Exception e) {
             System.out.println("Error validarTipoTrabajadorNormaLaboral Admi : " + e.toString());
-            return null;
+            return " ";
         }
     }
 
     //@Override
+    @Override
     public String validarTipoTrabajadorContrato(BigInteger tipoTrabajador, BigInteger contrato) {
         try {
+            System.out.println("AdministrarPers... validarTipoTrabajadorContrato() :");
+            System.out.println("tipoTrabajador : " + tipoTrabajador + ",   contrato : " + contrato);
             String validar = persistenciaTiposTrabajadores.plantillaValidarTipoTrabajadorTipoContrato(em, tipoTrabajador, contrato);
+            if(validar == null){
+                validar = " ";
+            }
             return validar;
         } catch (Exception e) {
             System.out.println("Error validarTipoTrabajadorContrato Admi : " + e.toString());
-            return null;
+            return " ";
         }
     }
 
     //Override
+    @Override
     public String obtenerCheckIntegralReformaLaboral(BigInteger reformaLaboral) {
         try {
             String variable = persistenciaReformasLaborales.obtenerCheckIntegralReformaLaboral(em, reformaLaboral);
@@ -743,6 +773,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
 
     }
 
+    @Override
     public void crearNuevaPersona(Personas persona) {
         try {
             persistenciaPersonas.crear(em, persona);
@@ -751,6 +782,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
         }
     }
 
+    @Override
     public Personas obtenerUltimoRegistroPersona(BigInteger documento) {
         try {
             Personas persona = persistenciaPersonas.obtenerUltimaPersonaAlmacenada(em, documento);
@@ -773,6 +805,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     @Override
     public Empleados obtenerUltimoRegistroEmpleado(BigInteger empresa, BigInteger codigoEmpleado) {
         try {
+            System.out.println("Admin..PersonaInd.. obtenerUltimoRegistroEmpleado() empresa : " + empresa + ",  codigoEmpleado : " + codigoEmpleado);
             Empleados empleado = persistenciaEmpleado.obtenerUltimoEmpleadoAlmacenado(em, empresa, codigoEmpleado);
             return empleado;
         } catch (Exception e) {
@@ -879,14 +912,14 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
             System.out.println("Error crearVigenciaFormaPago Admi : " + e.toString());
         }
     }
-    
+
     @Override
     public void crearVigenciaAfiliacion(VigenciasAfiliaciones vigencia) {
         try {
-            System.out.println("Admi vigencia crear Tipo Entidad: "+vigencia.getTipoentidad().getNombre());
-            System.out.println("Admi vigencia crear Secuencia: "+vigencia.getSecuencia());
-            System.out.println("Admi vigencia crear Empleado: "+vigencia.getEmpleado().getSecuencia());
-            System.out.println("Admi vigencia crear Fecha: "+vigencia.getFechainicial());
+            System.out.println("Admi vigencia crear Tipo Entidad: " + vigencia.getTipoentidad().getNombre());
+            System.out.println("Admi vigencia crear Secuencia: " + vigencia.getSecuencia());
+            System.out.println("Admi vigencia crear Empleado: " + vigencia.getEmpleado().getSecuencia());
+            System.out.println("Admi vigencia crear Fecha: " + vigencia.getFechainicial());
             persistenciaVigenciasAfiliaciones.crear(em, vigencia);
         } catch (Exception e) {
             System.out.println("Error crearVigenciaAfiliacion Admi : " + e.toString());
@@ -990,5 +1023,4 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
             return null;
         }
     }
-
 }

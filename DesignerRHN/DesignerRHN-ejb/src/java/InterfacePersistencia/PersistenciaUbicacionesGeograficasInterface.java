@@ -131,4 +131,6 @@ public interface PersistenciaUbicacionesGeograficasInterface {
      * parámetro.
      */
     public BigInteger contarVigenciasUbicacionesGeografica(EntityManager em, BigInteger secUbicacionesGeograficas);
+    
+    public int existeCiudadporSecuencia(EntityManager em, BigInteger secuenciaCiudad);
 }

@@ -71,7 +71,7 @@ public class AdministrarTelefonos implements AdministrarTelefonosInterface{
     
     @Override
     public List<Ciudades>  lovCiudades(){
-        return PersistenciaCiudades.ciudades(em);
+        return PersistenciaCiudades.consultarCiudades(em);
     }
     
     @Override

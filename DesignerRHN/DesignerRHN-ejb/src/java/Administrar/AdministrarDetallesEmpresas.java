@@ -215,7 +215,7 @@ public class AdministrarDetallesEmpresas implements AdministrarDetallesEmpresasI
     @Override
     public List<Ciudades> lovCiudades() {
         try {
-            List<Ciudades> lista = persistenciaCiudades.ciudades(em);
+            List<Ciudades> lista = persistenciaCiudades.consultarCiudades(em);
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovCiudades Admi : " + e.toString());

@@ -160,7 +160,7 @@ public class AdministrarUbicacionesGeograficas implements AdministrarUbicaciones
 
     public List<Ciudades> lovCiudades() {
         try {
-            List<Ciudades> listaCiudades = persistenciaCiudades.ciudades(em);
+            List<Ciudades> listaCiudades = persistenciaCiudades.consultarCiudades(em);
             return listaCiudades;
         } catch (Exception e) {
             System.out.println("\n ADMINISTRARUBICACIONESGEOGRAFICAS LOVCIUDADES ERROR : " + e);

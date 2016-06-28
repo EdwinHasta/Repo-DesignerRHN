@@ -46,7 +46,7 @@ public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigen
             em.persist(vigenciaRefLab);
             tx.commit();
         } catch (Exception e) {
-            PropertyConfigurator.configure("log4j.properties");
+//            PropertyConfigurator.configure("log4j.properties");
             logger.error("Metodo: crear - PersistenciaVigenciasReformasLaborales - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             if (tx.isActive()) {
                 tx.rollback();

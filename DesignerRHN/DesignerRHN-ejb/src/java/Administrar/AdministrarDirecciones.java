@@ -91,7 +91,7 @@ public class AdministrarDirecciones implements AdministrarDireccionesInterface {
 
     @Override
     public List<Ciudades> consultarLOVCiudades() {
-        return PersistenciaCiudades.ciudades(em);
+        return PersistenciaCiudades.consultarCiudades(em);
     }
 
     @Override

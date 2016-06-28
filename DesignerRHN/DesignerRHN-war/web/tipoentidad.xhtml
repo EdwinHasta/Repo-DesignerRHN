@@ -12,8 +12,8 @@
             <ui:define name="body">                  
                 <h:form id="form">
                     <p:growl id="growl" showDetail="true"/> 
-                    <p:panel  id="PanelTotal" header="Tipos Entidades" style="position: absolute; width: 874px; height: 510px; text-align: left"> 
-                        <p:toolbar styleClass="cssToolbar" style=" position: absolute; top: 40px; left: 20px; height: 24px">  
+                    <p:panel  id="PanelTotal" header="Tipos Entidades" styleClass="panelTotal"> 
+                        <p:toolbar styleClass="cssToolbar">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; "  actionListener="#{controlTiposEntidades.guardarCambiosTiposEntidades()}" process="@this" />
@@ -121,18 +121,13 @@
                                         <p:commandButton style="width: 303px; margin: -14px; height: 20px; border: none; color: blue"  action="grupotipoentidadtipoentidad" actionListener="#{controlGruposTiposEntidades.recibirPagina('atrasgrupotipoentidadtipoentidad')}"  id="fooGrupoAsociado" value=""/>
                                     </f:facet>
                                 </p:column>
-
-
                             </p:dataTable>
+                            <h:outputText id="informacionRegistro" value="Registros: #{controlTiposEntidades.infoRegistro}" style="position: relative; left: 10px; top: 5px; font-weight: bold"/>
 
                         </fieldset>
 
-                        <h:outputText id="informacionRegistro" value="Registros: #{controlTiposEntidades.infoRegistro}" style="position: absolute; left: 25px; top: 440px; font-weight: bold"/>
-                        <p:commandButton style=" position: absolute; left: 688px; top: 470px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;  font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value=""  onclick="confirmarGuardar.show();" disabled="#{controlTiposEntidades.guardado}" update="datosTipoEntidad"  process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 785px; top: 470px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" action="#{controlTiposEntidades.redirigirPaginaAnterior()}" value=""/>
-
-
-
+                        <p:commandButton style=" position: absolute; left: 688px; top: 475px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;  font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value=""  onclick="confirmarGuardar.show();" disabled="#{controlTiposEntidades.guardado}" update="datosTipoEntidad"  process="@this"   />
+                        <p:commandButton style=" position: absolute; left: 778px; top: 475px; height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" action="#{controlTiposEntidades.redirigirPaginaAnterior()}" value=""/>
                     </p:panel>
 
                     <p:dialog header="Grupos De Tipo Entidad" widgetVar="gruposTiposEntidadesDialogo" draggable="false" resizable="false" closable="false" id="gruposTiposEntidadesDialogo"  
@@ -140,9 +135,9 @@
                         <p:dataTable id="lovGruposTiposEntidades" style="width: 370px" var="grupos" value="#{controlTiposEntidades.listaGruposTiposEntidades}" rowKey="#{grupos.secuencia}"
                                      selection="#{controlTiposEntidades.gruposTiposEntidadesSeleccionada}" selectionMode="single" widgetVar="lovGruposTiposEntidades" scrollable="true" scrollWidth="385" scrollHeight="250"
                                      filteredValue="#{controlTiposEntidades.filtradoGruposTiposEntidades}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
-                           
+
                             <p:ajax event="filter" listener="#{controlTiposEntidades.eventoFiltrarGrupo()}"/>
-                            
+
                             <p:ajax event="rowSelect" listener="#{controlTiposEntidades.activarAceptar()}" update=":form:aceptarGTE"/>
                             <p:ajax event="rowDblselect" listener="#{controlTiposEntidades.actualizarGrupoTipoEntidad()}" update=":form:gruposTiposEntidadesDialogo" process="@this" />
                             <f:facet name="header">  
@@ -171,7 +166,6 @@
                     </p:dialog>
 
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlTiposEntidades.activarCtrlF11()}"/> 
-
 
                     <p:dialog id="confirmarGuardar" header="ATENCION...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
@@ -214,7 +208,6 @@
                 </h:form>
 
                 <h:form id="formularioDialogos">
-
 
                     <p:dialog id="confirmarRastro" header="Información" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="" closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />

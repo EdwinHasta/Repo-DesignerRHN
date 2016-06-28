@@ -101,7 +101,7 @@ public class AdministrarVigenciasTiposContratos implements AdministrarVigenciasT
     @Override
     public List<Ciudades> ciudades() {
         try {
-            ciudades = persistenciaCiudades.ciudades(em);
+            ciudades = persistenciaCiudades.consultarCiudades(em);
             return ciudades;
         } catch (Exception e) {
             return null;

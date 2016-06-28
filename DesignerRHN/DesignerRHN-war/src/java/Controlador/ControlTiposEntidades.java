@@ -89,7 +89,7 @@ public class ControlTiposEntidades implements Serializable {
         nuevoTipoEntidad = new TiposEntidades();
         nuevoTipoEntidad.setGrupo(new Grupostiposentidades());
         guardado = true;
-        tamano = 270;
+        tamano = 290;
         aceptar = true;
         tipoEntidadSeleccionada = null;
         activarLOV = true;
@@ -429,13 +429,13 @@ public class ControlTiposEntidades implements Serializable {
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            tamano = 246;
+            tamano = 266;
             codigo = (Column) c.getViewRoot().findComponent("form:datosTipoEntidad:codigo");
-            codigo.setFilterStyle("width: 200px");
+            codigo.setFilterStyle("width: 85%");
             nombre = (Column) c.getViewRoot().findComponent("form:datosTipoEntidad:nombre");
-            nombre.setFilterStyle("width: 270px");
+            nombre.setFilterStyle("width: 85%");
             grupoAsociado = (Column) c.getViewRoot().findComponent("form:datosTipoEntidad:grupoAsociado");
-            grupoAsociado.setFilterStyle("width: 270px");
+            grupoAsociado.setFilterStyle("width: 85%");
             RequestContext.getCurrentInstance().update("form:datosTipoEntidad");
             System.out.println("Activar");
             bandera = 1;
@@ -482,7 +482,7 @@ public class ControlTiposEntidades implements Serializable {
 
     public void cerrarFiltrado() {
         FacesContext c = FacesContext.getCurrentInstance();
-        tamano = 270;
+        tamano = 290;
         //CERRAR FILTRADO
         codigo = (Column) c.getViewRoot().findComponent("form:datosTipoEntidad:codigo");
         codigo.setFilterStyle("display: none; visibility: hidden;");

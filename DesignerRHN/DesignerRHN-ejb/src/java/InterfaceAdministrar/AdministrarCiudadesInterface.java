@@ -4,6 +4,7 @@
 package InterfaceAdministrar;
 
 import Entidades.Ciudades;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -38,4 +39,6 @@ public interface AdministrarCiudadesInterface {
      * @param idSesion Identificador se la sesion.
      */
     public void obtenerConexion(String idSesion);
+    
+    public int existeenUbicacionesGeograficas(BigInteger secCiudad);
 }

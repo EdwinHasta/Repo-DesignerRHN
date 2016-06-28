@@ -14,8 +14,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br>
- * Clase encargada de realizar operaciones sobre la tabla
+ * Clase Stateless.<br> Clase encargada de realizar operaciones sobre la tabla
  * 'UbicacionesGeograficas' de la base de datos.
  *
  * @author betelgeuse
@@ -26,8 +25,9 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-     private EntityManager em;
+    /*
+     * @PersistenceContext(unitName = "DesignerRHN-ejbPU") private EntityManager
+     * em;
      */
     @Override
     public void crear(EntityManager em, UbicacionesGeograficas ubicacionGeografica) {
@@ -205,4 +205,20 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
         }
     }
 
+    @Override
+    public int existeCiudadporSecuencia(EntityManager em, BigInteger secuenciaCiudad) {
+        int retorno = 0;
+        try {
+            em.clear();
+            String sqlQuery = "SELECT COUNT(*)FROM UBICACIONESGEOGRAFICAS WHERE CIUDAD = ?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secuenciaCiudad);
+            retorno = Integer.parseInt(query.getSingleResult().toString());
+            System.out.println("PERSISTENCIAUBICACIONESGEOGRAFICAS existeCiudadporSecuencia() retorno : " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.err.println("ERROR PERSISTENCIAUBICACIONESGEOGRAFICAS existeCiudadporSecuencia : " + e.toString());
+            return retorno;
+        }
+    }
 }

@@ -17,9 +17,8 @@ import javax.persistence.Query;
 //import org.apache.log4j.PropertyConfigurator;
 
 /**
- * Clase Stateless. <br>
- * Clase encargada de realizar operaciones sobre la tabla 'Empleados' de la base
- * de datos.
+ * Clase Stateless. <br> Clase encargada de realizar operaciones sobre la tabla
+ * 'Empleados' de la base de datos.
  *
  * @author betelgeuse
  */
@@ -30,8 +29,9 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     //private Date fechaDia;
     //private final SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
 
-    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-     private EntityManager em;*/
+    /*
+     * @PersistenceContext(unitName = "DesignerRHN-ejbPU") private EntityManager em;
+     */
     @Override
     public void crear(EntityManager em, Empleados empleados) {
         em.clear();
@@ -40,6 +40,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             tx.begin();
             em.merge(empleados);
             tx.commit();
+            System.out.println("PersistenciaEmpleados crear() se supone creo el empleado: " + empleados.getSecuencia() + ", persona: " + empleados.getPersona() + ", nombre: " + empleados.getPersona().getNombre());
         } catch (Exception e) {
             //PropertyConfigurator.configure("log4j.properties");
             //logger.error("Metodo: crear - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
@@ -100,13 +101,14 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
         }
     }
 
-    /*@Override
-     public List<Empleados> buscarEmpleados(EntityManager em) {
-     System.out.println(this.getClass().getName() + ".buscarEmpleados()");
-     em.clear();
-     List<Empleados> empleadosLista = (List<Empleados>) em.createQuery("SELECT e FROM Empleados e").getResultList();
-     return empleadosLista;
-     }*/
+    /*
+     * @Override public List<Empleados> buscarEmpleados(EntityManager em) {
+     * System.out.println(this.getClass().getName() + ".buscarEmpleados()");
+     * em.clear(); List<Empleados> empleadosLista = (List<Empleados>)
+     * em.createQuery("SELECT e FROM Empleados e").getResultList(); return
+     * empleadosLista;
+     }
+     */
     @Override
     public List<Empleados> buscarEmpleados(EntityManager em) {
         System.out.println(this.getClass().getName() + ".buscarEmpleados()");
@@ -435,14 +437,22 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     public Empleados obtenerUltimoEmpleadoAlmacenado(EntityManager em, BigInteger secuenciaEmpresa, BigInteger codigoEmpleado) {
         try {
             em.clear();
-            //Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.empresa.secuencia=:secuenciaEmpresa AND e.codigoempleado=:codigoEmpleado");
-            Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.empresa=:secuenciaEmpresa AND e.codigoempleado=:codigoEmpleado");
-            query.setParameter("secuenciaEmpresa", secuenciaEmpresa);
-            query.setParameter("codigoEmpleado", codigoEmpleado);
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            String sql = "SELECT * FROM EMPLEADOS WHERE EMPRESA = ? AND CODIGOEMPLEADO = ?";
+            Query query = em.createNativeQuery(sql, Empleados.class);
+            query.setParameter(1, secuenciaEmpresa);
+            query.setParameter(2, codigoEmpleado);
             Empleados empl = (Empleados) query.getSingleResult();
             return empl;
+//            em.clear();
+//            Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.empresa = :secuenciaEmpresa AND e.codigoempleado = :codigoEmpleado");
+//            query.setParameter("secuenciaEmpresa", secuenciaEmpresa);
+//            query.setParameter("codigoEmpleado", codigoEmpleado);
+//            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+//            Empleados empl = (Empleados) query.getSingleResult();
+//            return empl;
         } catch (Exception e) {
+            System.out.println(this.getClass().getName() + " error en obtenereUltimoEmpleadoAlmacenado");
+            e.printStackTrace();
             //PropertyConfigurator.configure("log4j.properties");
             //logger.error("Metodo: obtenerUltimoEmpleadoAlmacenado - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;

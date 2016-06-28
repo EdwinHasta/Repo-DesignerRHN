@@ -8,15 +8,17 @@ import InterfaceAdministrar.AdministrarCiudadesInterface;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaCiudadesInterface;
 import InterfacePersistencia.PersistenciaDepartamentosInterface;
+import InterfacePersistencia.PersistenciaUbicacionesGeograficasInterface;
+import Persistencia.PersistenciaUbicacionesGeograficas;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 
 /**
- * Clase Stateful. <br>
- * Clase encargada de realizar las operaciones lógicas para la pantalla
- * 'Ciudades'.
+ * Clase Stateful. <br> Clase encargada de realizar las operaciones lógicas para
+ * la pantalla 'Ciudades'.
  *
  * @author betelgeuse
  */
@@ -26,35 +28,31 @@ public class AdministrarCiudades implements AdministrarCiudadesInterface {
     //--------------------------------------------------------------------------
     //ATRIBUTOS
     //--------------------------------------------------------------------------    
-
     /**
-     * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia
-     * 'persistenciaCiudades'.
+     * Enterprise JavaBeans.<br> Atributo que representa la comunicación con la
+     * persistencia 'persistenciaCiudades'.
      */
     @EJB
     PersistenciaCiudadesInterface persistenciaCiudades;
     /**
-     * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia
-     * 'persistenciaDepartamentos'.
+     * Enterprise JavaBeans.<br> Atributo que representa la comunicación con la
+     * persistencia 'persistenciaDepartamentos'.
      */
     @EJB
     PersistenciaDepartamentosInterface persistenciaDepartamentos;
+    @EJB
+    PersistenciaUbicacionesGeograficasInterface persistenciaUbicacionesGeograficas;
     /**
-     * Enterprise JavaBean.<br>
-     * Atributo que representa todo lo referente a la conexión del usuario que
-     * está usando el aplicativo.
+     * Enterprise JavaBean.<br> Atributo que representa todo lo referente a la
+     * conexión del usuario que está usando el aplicativo.
      */
     @EJB
     AdministrarSesionesInterface administrarSesiones;
-
     private EntityManager em;
 
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------    
-
     @Override
     public void obtenerConexion(String idSesion) {
         em = administrarSesiones.obtenerConexionSesion(idSesion);
@@ -63,7 +61,7 @@ public class AdministrarCiudades implements AdministrarCiudadesInterface {
     @Override
     public List<Ciudades> consultarCiudades() {
         List<Ciudades> listaCiudades;
-        listaCiudades = persistenciaCiudades.ciudades(em);
+        listaCiudades = persistenciaCiudades.consultarCiudades(em);
         return listaCiudades;
     }
 
@@ -78,7 +76,7 @@ public class AdministrarCiudades implements AdministrarCiudadesInterface {
             } else {
                 c = listaCiudades.get(i);
             }
-            persistenciaCiudades.editar(em,c);
+            persistenciaCiudades.editar(em, c);
         }
     }
 
@@ -89,9 +87,9 @@ public class AdministrarCiudades implements AdministrarCiudadesInterface {
             if (listaCiudades.get(i).getDepartamento().getSecuencia() == null) {
 
                 listaCiudades.get(i).setDepartamento(null);
-                persistenciaCiudades.borrar(em,listaCiudades.get(i));
+                persistenciaCiudades.borrar(em, listaCiudades.get(i));
             } else {
-                persistenciaCiudades.borrar(em,listaCiudades.get(i));
+                persistenciaCiudades.borrar(em, listaCiudades.get(i));
             }
         }
     }
@@ -103,10 +101,20 @@ public class AdministrarCiudades implements AdministrarCiudadesInterface {
             if (listaCiudades.get(i).getDepartamento().getSecuencia() == null) {
 
                 listaCiudades.get(i).setDepartamento(null);
-                persistenciaCiudades.crear(em,listaCiudades.get(i));
+                persistenciaCiudades.crear(em, listaCiudades.get(i));
             } else {
-                persistenciaCiudades.crear(em,listaCiudades.get(i));
+                persistenciaCiudades.crear(em, listaCiudades.get(i));
             }
+        }
+    }
+
+    @Override
+    public int existeenUbicacionesGeograficas(BigInteger secCiudad) {
+        try {
+            return persistenciaUbicacionesGeograficas.existeCiudadporSecuencia(em, secCiudad);
+        } catch (Exception e) {
+            System.err.println("ERROR: AdministrarCiudades. existeenUbicacionesGeograficas() : " + e);
+            return 0;
         }
     }
 }

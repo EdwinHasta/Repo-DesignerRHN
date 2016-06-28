@@ -221,7 +221,7 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
 
     @Override
     public List<Ciudades> lovCiudades() {
-        return persistenciaCiudades.ciudades(em);
+        return persistenciaCiudades.consultarCiudades(em);
     }
 
     @Override

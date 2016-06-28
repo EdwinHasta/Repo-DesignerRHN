@@ -84,7 +84,7 @@ public class PersistenciaCiudades implements PersistenciaCiudadesInterface {
     }
 
     @Override
-    public List<Ciudades> ciudades(EntityManager em) {
+    public List<Ciudades> consultarCiudades(EntityManager em) {
         try {
             em.clear();
             Query query = em.createQuery("SELECT c FROM Ciudades c ORDER BY c.nombre");

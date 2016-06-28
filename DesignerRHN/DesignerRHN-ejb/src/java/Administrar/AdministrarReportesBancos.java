@@ -169,7 +169,7 @@ public class AdministrarReportesBancos implements AdministrarReportesBancosInter
     @Override
     public List<Ciudades> listCiudades() {
         try {
-            listCiudades = persistenciaCiudades.ciudades(em);
+            listCiudades = persistenciaCiudades.consultarCiudades(em);
             return listCiudades;
         } catch (Exception e) {
             System.out.println("Error listCiudades : " + e.toString());

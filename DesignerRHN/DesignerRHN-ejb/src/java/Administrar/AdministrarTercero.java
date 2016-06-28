@@ -139,7 +139,7 @@ public class AdministrarTercero implements AdministrarTerceroInterface{
     @Override
     public List<Ciudades> listCiudades(){
         try{
-            List<Ciudades> listCiudades = persistenciaCiudades.ciudades(em);
+            List<Ciudades> listCiudades = persistenciaCiudades.consultarCiudades(em);
             return listCiudades;
         }catch(Exception e){
             System.out.println("Error en listCiudades Admi : "+e.toString());
